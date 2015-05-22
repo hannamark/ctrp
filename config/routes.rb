@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  scope "/ctrp" do
+
+    get '/ctrp/', :to => redirect('/index.html')
+
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
