@@ -48,3 +48,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 gem 'annotate'
+gem 'ci_reporter_minitest'
