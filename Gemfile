@@ -47,3 +47,11 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 gem 'annotate'
+
+gem 'pg'
+
+gem 'rails_admin'
+
+gem 'devise'
+
+gem 'paper_trail'
