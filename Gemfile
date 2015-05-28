@@ -1,10 +1,11 @@
-source 'https://rubygems.org'
-
+source 'https://ncimvn.nci.nih.gov/nexus/content/repositories/rubygems-org/'
+#source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+# Use pg as the database for Active Record
+gem 'pg'
+gem 'activerecord-postgresql-adapter'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -48,10 +49,10 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 gem 'annotate'
 
-gem 'pg'
-
 gem 'rails_admin'
 
 gem 'devise'
 
 gem 'paper_trail'
+
+gem 'ci_reporter_minitest'
