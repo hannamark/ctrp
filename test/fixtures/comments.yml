@@ -4,7 +4,7 @@
 #
 #  id            :integer          not null, primary key
 #  instance_uuid :string(255)
-#  comment       :text
+#  content       :text
 #  username      :string(255)
 #  fullname      :string(255)
 #  org           :string(255)

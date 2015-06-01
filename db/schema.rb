@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20150527202556) do
 
   create_table "comments", force: :cascade do |t|
     t.string   "instance_uuid", limit: 255
-    t.text     "comment"
+    t.text     "content"
     t.string   "username",      limit: 255
     t.string   "fullname",      limit: 255
     t.string   "org",           limit: 255
