@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     resources :family_types
 
     resources :family_relationships
+
+    resources :comments
   end
 
   get '/ctrp/', :to => redirect('/index.html')
