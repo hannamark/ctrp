@@ -5,6 +5,16 @@ Rails.application.routes.draw do
     mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
     resources :organizations
+
+    resources :source_statuses
+
+    resources :source_contexts
+
+    resources :family_statuses
+
+    resources :family_types
+
+    resources :family_relationships
   end
 
   get '/ctrp/', :to => redirect('/index.html')
