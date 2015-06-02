@@ -17,14 +17,14 @@
 
 one:
   instance_uuid: MyString
-  comment: MyText
+  content: MyText
   username: MyString
-  fname: MyString
-  lname: MyString
+  fullname: MyString
+  org: MyString
 
 two:
   instance_uuid: MyString
-  comment: MyText
+  content: MyText
   username: MyString
-  fname: MyString
-  lname: MyString
+  fullname: MyString
+  org: MyString

@@ -3,6 +3,7 @@ require 'test_helper'
 class OrganizationsControllerTest < ActionController::TestCase
   setup do
     @organization = organizations(:one)
+    @organization.po_id = '123'
   end
 
   test "should get index" do

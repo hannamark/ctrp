@@ -21,12 +21,10 @@
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+one:
+  effective_date: 2015-05-18 09:45:13
+  expiration_date: 2015-05-18 09:45:13
+
+two:
+  effective_date: 2015-05-18 09:45:13
+  expiration_date: 2015-05-18 09:45:13

@@ -21,10 +21,8 @@
 
 one:
   name: MyString
-  effective_date: 2015-05-18 09:45:13
-  expiration_date: 2015-05-18 09:45:13
+  description: MyText
 
 two:
   name: MyString
-  effective_date: 2015-05-18 09:45:13
-  expiration_date: 2015-05-18 09:45:13
+  description: MyText
