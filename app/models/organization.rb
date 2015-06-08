@@ -41,4 +41,32 @@ class Organization < ActiveRecord::Base
 
   validates :po_id, uniqueness: true
   validates :name, presence: true
+
+  scope :contains, -> (column, value) { where("organizations.#{column} ilike ?", "%#{value}%") }
+  scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
+  scope :matches_wc, -> (column, value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      where("organizations.#{column} ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      where("organizations.#{column} ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      where("organizations.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      where("organizations.#{column} ilike ?", "#{value}")
+    end
+  }
+  scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
+  scope :with_family, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:families).where("families.name ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:families).where("families.name ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:families).where("families.name ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:families).where("families.name ilike ?", "#{value}")
+    end
+  }
 end

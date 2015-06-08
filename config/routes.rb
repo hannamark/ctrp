@@ -4,7 +4,12 @@ Rails.application.routes.draw do
 
     mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
-    resources :organizations
+    resources :organizations do
+      collection do
+        get 'search'
+        post 'search'
+      end
+    end
 
     resources :source_statuses
 
