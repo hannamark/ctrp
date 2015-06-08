@@ -64,16 +64,16 @@ class OrganizationsController < ApplicationController
   def search
     @organizations = Organization.all
     @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
-    @organizations = @organizations.matches('po_id', params[:'po-id']) if params[:'po-id'].present?
-    @organizations = @organizations.matches_wc('source_id', params[:'source-id']) if params[:'source-id'].present?
-    @organizations = @organizations.with_source_status(params[:'source-status']) if params[:'source-status'].present?
-    @organizations = @organizations.with_family(params[:'family-name']) if params[:'family-name'].present?
+    @organizations = @organizations.matches('po_id', params[:po_id]) if params[:po_id].present?
+    @organizations = @organizations.matches_wc('source_id', params[:source_id]) if params[:source_id].present?
+    @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
+    @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
     @organizations = @organizations.matches_wc('address', params[:address]) if params[:address].present?
     @organizations = @organizations.matches_wc('address2', params[:address2]) if params[:address2].present?
     @organizations = @organizations.matches_wc('city', params[:city]) if params[:city].present?
-    @organizations = @organizations.matches_wc('state_province', params[:'state-province']) if params[:'state-province'].present?
+    @organizations = @organizations.matches_wc('state_province', params[:state_province]) if params[:state_province].present?
     @organizations = @organizations.matches('country', params[:country]) if params[:country].present?
-    @organizations = @organizations.matches_wc('postal_code', params[:'postal-code']) if params[:'postal-code'].present?
+    @organizations = @organizations.matches_wc('postal_code', params[:postal_code]) if params[:postal_code].present?
     @organizations = @organizations.matches_wc('email', params[:email]) if params[:email].present?
     respond_to do |format|
       format.json { render :index }
