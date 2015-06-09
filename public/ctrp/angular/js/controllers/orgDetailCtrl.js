@@ -13,13 +13,14 @@
     function orgDetailCtrl(orgDetailObj, OrgService, toastr) {
 
         var vm = this;
-        vm.curOrg = orgDetailObj.data;
+        vm.curOrg = orgDetailObj || {name: ""}; //orgDetailObj.data;
+        vm.curOrg = vm.curOrg.data || vm.curOrg;
         console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
 
         //update organization (vm.curOrg)
         vm.updateOrg = function() {
             OrgService.upsertOrg(vm.curOrg).then(function(response) {
-                toastr.success('Organization ' + vm.curOrg.name + ' has been updated', 'Update Successful!');
+                toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
             });

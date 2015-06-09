@@ -51,7 +51,7 @@
                 })
 
                 .state('main.orgDetail', {
-                    url: '/organizations/:orgId/:orgName',
+                    url: '/organizations/:orgId',
                     templateUrl: 'angular/partials/orgDetails.html',
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
@@ -60,6 +60,19 @@
                             return OrgService.getOrgById($stateParams.orgId);
                         }
                     } //resolve the promise and pass it to controller
+                })
+
+                .state('main.addOrganization', {
+                    url: '/new_organization',
+                    templateUrl: 'angular/partials/orgDetails.html',
+                    controller: 'orgDetailCtrl as orgDetailView',
+                    resolve: {
+                        orgDetailObj: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        }
+                    }
                 })
 
 

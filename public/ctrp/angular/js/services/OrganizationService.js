@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .factory('OrgService', OrgService);
 
-    OrgService.$inject = ['PromiseService', 'URL_CONFIGS'];
+    OrgService.$inject = ['PromiseService', 'URL_CONFIGS', '$log'];
 
-    function OrgService(PromiseService, URL_CONFIGS) {
+    function OrgService(PromiseService, URL_CONFIGS, $log) {
 
         var services = {
             getAllOrgs : getAllOrgs,
@@ -47,6 +47,7 @@
             }
 
             //create a new org
+            $log.info('creating an organization: ' + JSON.stringify(orgObj));
             return PromiseService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
 
         } //upsertOrg
