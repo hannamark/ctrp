@@ -1,0 +1,102 @@
+<div class="row-fluid">
+    <form class="form-horizontal" role="form" novalidate>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Name:</label>
+            <div class="col-sm-9">
+            <input type="text" ng-model="orgDetailView.curOrg.name" required>
+            </div>
+        </div>
+<!--        <div class="form-group">
+            <label class="control-label col-sm-3">Organization Status:</label>
+            <div class="col-sm-9">
+                <select ng-model="orgDetailView.curOrg.organization_status_id"
+                        ng-options="orgStatus.id as orgStatus.name for orgStatus in orgDetailView.curOrg.orgStatuses">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>-->
+        <div class="form-group">
+            <label class="control-label col-sm-3">PO ID:</label>
+            <div class="col-sm-9">
+                <input type="text" ng-model="orgDetailView.curOrg.po_id" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Source:</label>
+            <div class="col-sm-9">
+                <input type="text" ng-model="orgDetailView.curOrg.source_id" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">ID:</label>
+            <div class="col-sm-9">
+                <input type="text" ng-model="orgDetailView.curOrg.id">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Address 1:</label>
+            <div class="col-sm-9">
+                <input ng-model="orgDetailView.curOrg.address">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Address 2:</label>
+            <div class="col-sm-9">
+                <input ng-model="orgDetailView.curOrg.address2">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">City:</label>
+            <div class="col-sm-9">
+                <input ng-model="orgDetailView.curOrg.city">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">State:</label>
+            <div class="col-sm-9">
+                <select ng-model="orgDetailView.curOrg.state_province" ng-options="state.name as state.name for state in orgDetailView.curOrg.states">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Postal Code:</label>
+            <div class="col-sm-9">
+                <input ng-model="orgDetailView.curOrg.postal_code">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Country:</label>
+            <div class="col-sm-9">
+                <select ng-model="orgDetailView.curOrg.country" ng-options="country.name as country.name for country in orgDetailView.curOrg.countries">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Email:</label>
+            <div class="col-sm-9">
+                <input ng-model="orgDetailView.curOrg.email" type="email" placeholder="Email">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Phone:</label>
+            <div class="col-sm-9">
+                <input ng-model="orgDetailView.curOrg.phone" type="number" placeholder="Phone">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Fax:</label>
+            <div class="col-sm-9">
+                <input ng-model="orgDetailView.curOrg.fax" type="number" placeholder="Fax">
+            </div>
+        </div>
+
+        <div id="buttonBar" class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <input type="submit" class="btn btn-default" ng-click="orgDetailView.updateOrg()" value="Save">
+                <input type="reset" class="btn btn-danger" value="Reset">
+            </div>
+        </div>
+    </form>
+</div>

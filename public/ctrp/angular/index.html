@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="ctrpApp">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/ctrp/angular/css/override.css">
+    <!--<link rel="stylesheet" href="/ctrp/angular/css/app.css">-->
+    <link rel="stylesheet" type="text/css" href="/ctrp/angular/third_party_libs/angular-toastr/dist/angular-toastr.min.css">
+
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-resource.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-animate.min.js"></script>
+    <script src="/ctrp/angular/third_party_libs/angular-toastr/dist/angular-toastr.tpls.js"></script>
+
+
+    <!-- angular modules/dependencies from third parties -->
+    <script src="/ctrp/angular/third_party_libs/angular-local-storage.js"></script>
+
+    <!--	  <script src="/ctrp/angular/js/app.js"></script>-->
+    <script src="/ctrp/angular/js/CTRPAngularApp.js"></script>
+
+    <!-- home-made Angular modules -->
+    <script src="/ctrp/angular/js/modules/Constants.js"></script>
+    <script src="/ctrp/angular/js/modules/PromiseServiceMod.js"></script>
+    <script src="/ctrp/angular/js/modules/LocalCacheModule.js"></script>
+
+    <!-- services -->
+    <script src="/ctrp/angular/js/services/OrganizationService.js"></script>
+    <script src="/ctrp/angular/js/services/cache/LocalCacheService.js"></script>
+
+    <!-- controllers -->
+    <script src="/ctrp/angular/js/controllers/organizationCtrl.js"></script>
+    <script src="/ctrp/angular/js/controllers/orgDetailCtrl.js"></script>
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-1"><!--empty column--></div>
+<div class="col-md-10">
+    <div ng-include src="'/ctrp/angular/partials/header.html'"></div>
+    <div ui-view></div>
+    <div ng-include src="'/ctrp/angular/partials/footer.html'"></div>
+</div>
+    <div class="col-md-1"><!--empty column--></div>
+</div>
+
+
+</body>
+</html>
