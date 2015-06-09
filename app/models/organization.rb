@@ -42,6 +42,7 @@ class Organization < ActiveRecord::Base
   validates :po_id, uniqueness: true
   validates :name, presence: true
 
+  # Scope definitions used for search
   scope :contains, -> (column, value) { where("organizations.#{column} ilike ?", "%#{value}%") }
   scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
   scope :matches_wc, -> (column, value) {
