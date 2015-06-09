@@ -1,15 +1,58 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
+<head lang="en" ng-app="ctrpApp">
     <meta charset="UTF-8">
-    <title></title>
+    <title>CTRP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/podemo/angular/css/override.css">
+    <!--<link rel="stylesheet" href="/podemo/angular/css/app.css">-->
+    <link rel="stylesheet" type="text/css"
+          href="/podemo/angular/third_party_libs/angular-toastr/dist/angular-toastr.min.css">
+
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-resource.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-animate.min.js"></script>
+    <script src="/podemo/angular/third_party_libs/angular-toastr/dist/angular-toastr.tpls.js"></script>
+
+
+    <!-- angular modules/dependencies from third parties -->
+    <script src="third_party_libs/angular-local-storage.js"></script>
+
+    <!--	  <script src="/podemo/angular/js/app.js"></script>-->
+    <script src="/podemo/angular/js/CTRPAngularApp.js"></script>
+
+    <!-- home-made Angular modules -->
+    <script src="/podemo/angular/js/modules/Constants.js"></script>
+    <script src="/podemo/angular/js/modules/PromiseServiceMod.js"></script>
+    <script src="/podemo/angular/js/modules/LocalCacheModule.js"></script>
+
+    <!-- services -->
+    <script src="/podemo/angular/js/services/OrganizationService.js"></script>
+    <script src="/podemo/angular/js/services/cache/LocalCacheService.js"></script>
+
+    <!-- controllers -->
+    <script src="/podemo/angular/js/controllers/organizationCtrl.js"></script>
+    <script src="/podemo/angular/js/controllers/orgDetailCtrl.js"></script>
 </head>
 <body>
-<img src="/ctrp/static/images/NIH-red-logo.png" /> National Cancer Institute | Clinical Trials Reporting Program
-<br />
-<br />
-# TODO Build theme to new NCI Branding guidelines: <a href="http://www.cancer.gov/digital-standards">http://www.cancer.gov/digital-standards</a>
-<br /><br />
-<a href="/ctrp/admin">Jump to Rails Admin</a>
+<div class="row pull-left">
+    <img src="/ctrp/static/images/NIH-red-logo.png"/> National Cancer Institute | Clinical Trials Reporting Program
+</div>
+<div class="row">
+    <div class="col-md-1"><!--empty column--></div>
+    <div class="col-md-10">
+        <div ng-include src="'partials/header.html'"></div>
+        <div ui-view></div>
+        <div ng-include src="'partials/footer.html'"></div>
+    </div>
+    <div class="col-md-1"><!--empty column--></div>
+</div>
+<div class="row pull-left">
+    <a href="/ctrp/admin">Jump to Rails Admin</a>
+</div>
 </body>
 </html>
