@@ -62,6 +62,7 @@ class OrganizationsController < ApplicationController
   end
 
   def search
+    # Scope chaining, reuse the scope definition
     @organizations = Organization.all
     @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
     @organizations = @organizations.matches('po_id', params[:po_id]) if params[:po_id].present?
