@@ -16,10 +16,10 @@
         vm.curOrg = orgDetailObj.data;
         console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
 
+        //update organization (vm.curOrg)
         vm.updateOrg = function() {
             OrgService.upsertOrg(vm.curOrg).then(function(response) {
                 toastr.success('Organization ' + vm.curOrg.name + ' has been updated', 'Update Successful!');
-              //  console.log('updateOrg, response = ' + JSON.stringify(response));
             }).catch(function(err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
             });
