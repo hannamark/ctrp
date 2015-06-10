@@ -1,11 +1,11 @@
-# source 'https://ncimvn.nci.nih.gov/nexus/content/repositories/rubygems-org/'
+source 'https://ncimvn.nci.nih.gov/nexus/content/repositories/rubygems-org/'
 #source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use pg as the database for Active Record
-
-#gem 'activerecord-postgresql-adapter'
+gem 'pg'
+gem 'activerecord-postgresql-adapter'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -56,53 +56,3 @@ gem 'devise'
 gem 'paper_trail'
 
 gem 'ci_reporter_minitest'
-source 'https://ncimvn.nci.nih.gov/nexus/content/repositories/rubygems-org/'
-#source 'https://rubygems.org'
-
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-
-# Use sqlite3 as the database for Active Record
-gem 'pg'
-gem 'activerecord-postgresql-adapter'
-# Use SCSS for stylesheets
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-
-#gem 'tzinfo-data', platforms: [:mingw, :mswin]
-
-
-group :test do
-  gem 'cucumber-rails', :require => false
-  # database_cleaner is not required, but highly recommended
-  gem 'database_cleaner'
-end
-
-gem 'selenium-webdriver'
-gem "devise_ldap_authenticatable"
-gem 'cancancan'
-gem 'countries'
-#gem 'paper_trail'
-gem 'multi_json'
-gem 'rack-test'
-gem 'rspec'
-gem 'activesupport'
-gem 'sinatra'
-gem 'mime-types'
-gem 'netrc'
-gem 'rdoc'
-gem 'rest-client'
-gem 'compass'
-gem 'protractor-rails'
-gem 'node'
