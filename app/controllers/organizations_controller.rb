@@ -64,7 +64,7 @@ class OrganizationsController < ApplicationController
   def search
     # Scope chaining, reuse the scope definition
     @organizations = Organization.all
-    @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
+    @organizations = @organizations.matches_name_wc(params[:name]) if params[:name].present?
     @organizations = @organizations.matches('po_id', params[:po_id]) if params[:po_id].present?
     @organizations = @organizations.matches_wc('source_id', params[:source_id]) if params[:source_id].present?
     @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
@@ -76,6 +76,7 @@ class OrganizationsController < ApplicationController
     @organizations = @organizations.matches('country', params[:country]) if params[:country].present?
     @organizations = @organizations.matches_wc('postal_code', params[:postal_code]) if params[:postal_code].present?
     @organizations = @organizations.matches_wc('email', params[:email]) if params[:email].present?
+    @organizations = @organizations.group(:'organizations.id')
     respond_to do |format|
       format.json { render :index }
     end
