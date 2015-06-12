@@ -35,6 +35,8 @@ class Organization < ActiveRecord::Base
   has_many :name_aliases
   has_many :family_memberships
   has_many :families, through: :family_memberships
+  has_many :po_affiliations
+  has_many :people, through: :po_affiliations
   belongs_to :source_status
   belongs_to :source_context
   belongs_to :source_cluster
