@@ -6,10 +6,10 @@
     'use strict';
 
     angular.module('Constants', [])
-        .constant('HOST', 'http://localhost:3000/')
+        .constant('HOST', 'http://localhost/')
         .constant('URL_CONFIGS', {
-            'ORG_LIST' : 'http://localhost:3000/ctrp/organizations.json',
-            'AN_ORG' : 'http://localhost:3000/ctrp/organizations/'
+            'ORG_LIST' : 'http://localhost/ctrp/organizations.json',
+            'AN_ORG' : 'http://localhost/ctrp/organizations/'
         });
 
 })();
