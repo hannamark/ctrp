@@ -26,33 +26,33 @@
                 url: '/main',
                 views: {
                     '': {
-                        templateUrl: 'angular/partials/main_content_frame.html'
+                        templateUrl: '/ctrp/angular/partials/main_content_frame.html'
                     },
 
                     'right_panel@main': {
-                        templateUrl: 'angular/partials/right_panel.html'
+                        templateUrl: '/ctrp/angular/partials/right_panel.html'
                     },
 
                     'main_content@main': {
-                        templateUrl: 'angular/partials/main_content.html'
+                        templateUrl: '/ctrp/angular/partials/main_content.html'
                     }
                 }
             })
 
                 .state('main.defaultContent', {
                     url: '/welcome',
-                    templateUrl: 'angular/partials/welcome_content.html'
+                    templateUrl: '/ctrp/angular/partials/welcome_content.html'
                 })
 
                 .state('main.organizations', {
                     url: '/organizations',
-                    templateUrl: 'angular/partials/organization_list.html',
+                    templateUrl: '/ctrp/angular/partials/organization_list.html',
                     controller: 'organizationCtrl as orgsView'
                 })
 
                 .state('main.orgDetail', {
                     url: '/organizations/:orgId',
-                    templateUrl: 'angular/partials/orgDetails.html',
+                    templateUrl: '/ctrp/angular/partials/orgDetails.html',
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
                         OrgService : 'OrgService',
@@ -64,7 +64,7 @@
 
                 .state('main.addOrganization', {
                     url: '/new_organization',
-                    templateUrl: 'angular/partials/orgDetails.html',
+                    templateUrl: '/ctrp/angular/partials/orgDetails.html',
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
                         orgDetailObj: function($q) {
