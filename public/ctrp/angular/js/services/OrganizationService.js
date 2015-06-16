@@ -25,7 +25,7 @@
             country : "",
             email : "",
             postal_code : ""
-            };
+            }; //initial Organization Search Parameters
 
         var services = {
             getAllOrgs : getAllOrgs,

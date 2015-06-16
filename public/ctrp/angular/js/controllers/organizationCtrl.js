@@ -17,7 +17,6 @@
         vm.orgList = [];
         vm.searchOrgs = function() {
             OrgService.searchOrgs(vm.searchParams).then(function(data) {
-                console.log('received search results: ' + JSON.stringify(data));
                 vm.orgList = data.data;
             }).catch(function(err) {
                 console.log('search organizations failed');
