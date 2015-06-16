@@ -3,7 +3,6 @@
 # Table name: people
 #
 #  id                :integer          not null, primary key
-#  person_id         :integer
 #  source_id         :string(255)
 #  name              :string(255)
 #  prefix            :string(255)

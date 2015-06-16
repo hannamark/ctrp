@@ -1,7 +1,6 @@
 class CreatePeople < ActiveRecord::Migration
   def change
     create_table :people do |t|
-      t.bigint :person_id
       t.string :source_id, :limit => 255
       t.string :name, :limit => 255
       t.string :prefix, :limit => 255

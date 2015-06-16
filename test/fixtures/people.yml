@@ -3,7 +3,6 @@
 # Table name: people
 #
 #  id                :integer          not null, primary key
-#  person_id         :integer
 #  source_id         :string(255)
 #  name              :string(255)
 #  prefix            :string(255)
@@ -26,7 +25,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  person_id: 
   source_id: MyString
   name: MyString
   prefix: MyString
@@ -36,7 +34,6 @@ one:
   phone: MyString
 
 two:
-  person_id: 
   source_id: MyString
   name: MyString
   prefix: MyString
