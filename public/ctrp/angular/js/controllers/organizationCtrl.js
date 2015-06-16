@@ -14,10 +14,15 @@
     function organizationCtrl(OrgService) {
         var vm = this;
         vm.searchParams = OrgService.getInitialOrgSearchParams();
+        vm.pagingOptions = {start : 1, rows: 10, total: 0};
         vm.orgList = [];
         vm.searchOrgs = function() {
             OrgService.searchOrgs(vm.searchParams).then(function(data) {
-                vm.orgList = data.data;
+                console.log("received search results: " + JSON.stringify(data.data));
+                vm.orgList = data.data.orgs;
+                vm.pagingOptions.start = data.data.start;
+                vm.pagingOptions.rows = data.data.rows;
+                vm.pagingOptions.total = data.data.total;
             }).catch(function(err) {
                 console.log('search organizations failed');
             });
