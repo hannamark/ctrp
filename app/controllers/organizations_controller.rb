@@ -62,6 +62,10 @@ class OrganizationsController < ApplicationController
   end
 
   def search
+    # Pagination params initialization
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 10 if params[:rows].blank?
+
     # Scope chaining, reuse the scope definition
     @organizations = Organization.all
     @organizations = @organizations.matches_name_wc(params[:name]) if params[:name].present?
@@ -76,10 +80,7 @@ class OrganizationsController < ApplicationController
     @organizations = @organizations.matches('country', params[:country]) if params[:country].present?
     @organizations = @organizations.matches_wc('postal_code', params[:postal_code]) if params[:postal_code].present?
     @organizations = @organizations.matches_wc('email', params[:email]) if params[:email].present?
-    @organizations = @organizations.group(:'organizations.id')
-    respond_to do |format|
-      format.json { render :index }
-    end
+    @organizations = @organizations.group(:'organizations.id').page(params[:start]).per(params[:rows])
   end
 
   private
