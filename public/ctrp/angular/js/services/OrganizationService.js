@@ -12,11 +12,27 @@
 
     function OrgService(PromiseService, URL_CONFIGS, $log) {
 
+        var initOrgSearchParams = {
+            name : "",
+            po_id : "",
+            source_id : "",
+            source_status : "",
+            family_name : "",
+            address : "",
+            address2 : "",
+            city : "",
+            state_province : "",
+            country : "",
+            email : "",
+            postal_code : ""
+            };
+
         var services = {
             getAllOrgs : getAllOrgs,
             getOrgById : getOrgById,
             upsertOrg : upsertOrg,
             searchOrgs : searchOrgs,
+            getInitialOrgSearchParams : getInitialOrgSearchParams
         };
 
         return services;
@@ -58,15 +74,24 @@
          *
          * @param searchParams, JSON object whose keys can include:
          * name, po_id, source_id, source_status, family_name, address, address2, city, state_province, country,
-         * postalcode, and email
+         * postal_code, and email
          *
-         * @returns {*}
+         * @returns Array of JSON objects
          */
         function searchOrgs(searchParams) {
             if (!!searchParams) {
                 return PromiseService.postDataExpectObj(URL_CONFIGS.SEARCH_ORG, searchParams);
             }
         } //searchOrgs
+
+
+        /**
+         * get initial paramater object for organizations search
+         * @return initOrgSearchParams
+         */
+        function getInitialOrgSearchParams() {
+            return initOrgSearchParams;
+        } //getInitialOrgSearchParams
 
     }
 

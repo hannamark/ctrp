@@ -2,3 +2,11 @@
     width:100%;
     height: 200px;
 }
+
+.col-border {
+    margin-top: 10px;
+    border: #cdcdcd medium dashed;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}

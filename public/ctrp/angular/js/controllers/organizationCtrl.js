@@ -13,9 +13,22 @@
 
     function organizationCtrl(OrgService) {
         var vm = this;
-
+        vm.searchParams = OrgService.getInitialOrgSearchParams();
         vm.orgList = [];
+        vm.searchOrgs = function() {
+            OrgService.searchOrgs(vm.searchParams).then(function(data) {
+                console.log('received search results: ' + JSON.stringify(data));
+                vm.orgList = data.data;
+            }).catch(function(err) {
+                console.log('search organizations failed');
+            });
+        }; //searchOrgs
+
         activate();
+
+
+
+    /****************************** implementations **************************/
 
         function activate() {
             getAllOrgs();
@@ -23,8 +36,6 @@
 
 
 
-
-        /**************************** implementations **************************/
 
         function getAllOrgs() {
             OrgService.getAllOrgs()
