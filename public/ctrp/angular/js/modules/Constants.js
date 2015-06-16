@@ -10,7 +10,8 @@
         .constant('URL_CONFIGS', {
             //relative urls to the host
             'ORG_LIST' : '/ctrp/organizations.json',
-            'AN_ORG' : '/ctrp/organizations/'
+            'AN_ORG' : '/ctrp/organizations/',
+            'SEARCH_ORG' : '/ctrp/organizations/search.json'
         });
 
 })();

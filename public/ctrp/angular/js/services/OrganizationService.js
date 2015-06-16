@@ -15,7 +15,8 @@
         var services = {
             getAllOrgs : getAllOrgs,
             getOrgById : getOrgById,
-            upsertOrg : upsertOrg
+            upsertOrg : upsertOrg,
+            searchOrgs : searchOrgs,
         };
 
         return services;
@@ -51,6 +52,22 @@
             return PromiseService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
 
         } //upsertOrg
+
+
+        /**
+         *
+         * @param searchParams, JSON object whose keys can include:
+         * name, po_id, source_id, source_status, family_name, address, address2, city, state_province, country,
+         * postalcode, and email
+         *
+         * @returns {*}
+         */
+        function searchOrgs(searchParams) {
+            if (!!searchParams) {
+                return PromiseService.postDataExpectObj(URL_CONFIGS.SEARCH_ORG, searchParams);
+            }
+        } //searchOrgs
+
     }
 
 
