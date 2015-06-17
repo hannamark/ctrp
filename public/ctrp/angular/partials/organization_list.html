@@ -28,11 +28,11 @@
                     <div class="col-md-6">
                         <!-- PO ID -->
                         <div class="form-group">
+                            <!-- ID used as PO_ID here -->
                             <label for="po_id" class="control-label col-sm-2">PO ID: </label>
-
                             <div class="col-sm-10">
                                 <input type="text" id="po_id" class="form-control" placeholder="PO ID"
-                                       ng-model="orgsView.searchParams.po_id"/>
+                                       ng-model="orgsView.searchParams.id"/>
                             </div>
                         </div>
                         <!-- PO ID ends -->
@@ -171,18 +171,18 @@
         </div>
     </div>
 </div>
+
 <!-- list of organizations -->
 <div class="row-fluid">
-    <table class="table table-bordered table-striped">
+    <table datatable="ng" dt-options="orgsView.dtOptions" dt-column-defs="orgsView.dtColumnDefs" class="table table-bordered table-striped lower">
         <thead>
         <th>Name</th>
-        <th>PO ID</th>
+        <th>Identifier</th>
         <th>ID</th>
-        <th>Organization Type</th>
-        <th>Organization Status</th>
+<!--        <th>Organization Type</th>
+        <th>Organization Status</th>-->
         <th>City</th>
         <th>State</th>
-<!--        <th>Operations</th>-->
         <th>Operations</th>
         </thead>
         <tbody>
@@ -190,11 +190,10 @@
             <td>{{org.name}}</td>
             <td>{{org.identifier}}</td>
             <td>{{org.id}}</td>
-            <td>{{org.organization_type}}</td>
-            <td>{{org.organization_status}}</td>
+<!--            <td>{{org.organization_type}}</td>
+            <td>{{org.organization_status}}</td>-->
             <td>{{org.city}}</td>
             <td>{{org.state}}</td>
-<!--            <td><a ui-sref="main.orgDetail({orgId : '{{org.id}}'})">View Details</a></td>-->
             <td>
                 <div class="btn-group" dropdown>
                     <button class="btn btn-success dropdown-toggle" dropdown-toggle type="button">
