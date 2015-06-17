@@ -10,3 +10,8 @@
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
 }
+
+.grid {
+    width: 500px;
+    height: 250px;
+}

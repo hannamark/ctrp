@@ -173,16 +173,21 @@
 </div>
 <!-- list of organizations -->
 <div class="row-fluid">
+    <div id="grid" ui-grid="orgsView.gridOptions" ui-grid-edit>
+
+    </div>
+</div>
+<!--
+<div class="row-fluid">
     <table class="table table-bordered table-striped">
         <thead>
         <th>Name</th>
-        <th>PO ID</th>
+        <th>Identifier</th>
         <th>ID</th>
         <th>Organization Type</th>
         <th>Organization Status</th>
         <th>City</th>
         <th>State</th>
-<!--        <th>Operations</th>-->
         <th>Operations</th>
         </thead>
         <tbody>
@@ -194,7 +199,6 @@
             <td>{{org.organization_status}}</td>
             <td>{{org.city}}</td>
             <td>{{org.state}}</td>
-<!--            <td><a ui-sref="main.orgDetail({orgId : '{{org.id}}'})">View Details</a></td>-->
             <td>
                 <div class="btn-group" dropdown>
                     <button class="btn btn-success dropdown-toggle" dropdown-toggle type="button">
@@ -210,4 +214,4 @@
         </tr>
         </tbody>
     </table>
-</div>
+</div>-->
