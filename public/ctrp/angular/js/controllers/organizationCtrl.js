@@ -18,8 +18,10 @@
         vm.orgList = [];
         vm.searchOrgs = function() {
             OrgService.searchOrgs(vm.searchParams).then(function(data) {
-                console.log("received search results: " + JSON.stringify(data.data));
+               // console.log("received search results: " + JSON.stringify(data.data));
+                vm.orgList = [];
                 vm.orgList = data.data.orgs;
+                console.log("orgList: " + JSON.stringify(vm.orgList));
                 vm.pagingOptions.start = data.data.start;
                 vm.pagingOptions.rows = data.data.rows;
                 vm.pagingOptions.total = data.data.total;
