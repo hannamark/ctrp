@@ -5,7 +5,6 @@
 <table>
   <thead>
     <tr>
-      <th>Po</th>
       <th>Source</th>
       <th>Name</th>
       <th>Address</th>
@@ -24,7 +23,6 @@
   <tbody>
     <% @organizations.each do |organization| %>
       <tr>
-        <td><%= organization.po_id %></td>
         <td><%= organization.source_id %></td>
         <td><%= organization.name %></td>
         <td><%= organization.address %></td>

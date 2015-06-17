@@ -3,7 +3,6 @@ require 'test_helper'
 class OrganizationsControllerTest < ActionController::TestCase
   setup do
     @organization = organizations(:one)
-    @organization.po_id = '123'
   end
 
   test "should get index" do
@@ -19,7 +18,7 @@ class OrganizationsControllerTest < ActionController::TestCase
 
   test "should create organization" do
     assert_difference('Organization.count') do
-      post :create, organization: { address2: @organization.address2, address: @organization.address, city: @organization.city, country: @organization.country, email: @organization.email, fax: @organization.fax, name: @organization.name, source_id: @organization.source_id, phone: @organization.phone, po_id: @organization.po_id, postal_code: @organization.postal_code, state_province: @organization.state_province }
+      post :create, organization: { address2: @organization.address2, address: @organization.address, city: @organization.city, country: @organization.country, email: @organization.email, fax: @organization.fax, name: @organization.name, source_id: @organization.source_id, phone: @organization.phone, postal_code: @organization.postal_code, state_province: @organization.state_province }
     end
 
     assert_redirected_to organization_path(assigns(:organization))
@@ -36,7 +35,7 @@ class OrganizationsControllerTest < ActionController::TestCase
   end
 
   test "should update organization" do
-    patch :update, id: @organization, organization: { address2: @organization.address2, address: @organization.address, city: @organization.city, country: @organization.country, email: @organization.email, fax: @organization.fax, name: @organization.name, source_id: @organization.source_id, phone: @organization.phone, po_id: @organization.po_id, postal_code: @organization.postal_code, state_province: @organization.state_province }
+    patch :update, id: @organization, organization: { address2: @organization.address2, address: @organization.address, city: @organization.city, country: @organization.country, email: @organization.email, fax: @organization.fax, name: @organization.name, source_id: @organization.source_id, phone: @organization.phone, postal_code: @organization.postal_code, state_province: @organization.state_province }
     assert_redirected_to organization_path(assigns(:organization))
   end
 
