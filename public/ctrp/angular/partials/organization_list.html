@@ -170,8 +170,8 @@
             </form>
         </div>
     </div>
-
 </div>
+<!-- list of organizations -->
 <div class="row-fluid">
     <table class="table table-bordered table-striped">
         <thead>
@@ -182,6 +182,7 @@
         <th>Organization Status</th>
         <th>City</th>
         <th>State</th>
+<!--        <th>Operations</th>-->
         <th>Operations</th>
         </thead>
         <tbody>
@@ -193,7 +194,19 @@
             <td>{{org.organization_status}}</td>
             <td>{{org.city}}</td>
             <td>{{org.state}}</td>
-            <td><a ui-sref="main.orgDetail({orgId : '{{org.id}}'})">View Details</a></td>
+<!--            <td><a ui-sref="main.orgDetail({orgId : '{{org.id}}'})">View Details</a></td>-->
+            <td>
+                <div class="btn-group" dropdown>
+                    <button class="btn btn-success dropdown-toggle" dropdown-toggle type="button">
+                        Action <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a ui-sref="main.orgDetail({orgId : '{{org.id}}'})">View Details</a></li>
+                        <li><a ui-sref="main.orgDetail({orgId : '{{org.id}}'})">Edit</a></li>
+                        <li><a href="">Delete</a></li>
+                    </ul>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>
