@@ -11,7 +11,8 @@
         'PromiseServiceModule',
         'LocalCacheModule',
         'ngAnimate',
-        'toastr'
+        'toastr',
+        'ui.bootstrap'
     ])
         .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
