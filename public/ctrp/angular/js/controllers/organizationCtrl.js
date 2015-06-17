@@ -9,12 +9,25 @@
     angular.module('ctrpApp')
         .controller('organizationCtrl', organizationCtrl);
 
-    organizationCtrl.$inject = ['OrgService'];
+    organizationCtrl.$inject = ['OrgService', 'DTOptionsBuilder', 'DTColumnDefBuilder'];
 
-    function organizationCtrl(OrgService) {
+    function organizationCtrl(OrgService, DTOptionsBuilder, DTColumnDefBuilder) {
         var vm = this;
         vm.searchParams = OrgService.getInitialOrgSearchParams();
         vm.pagingOptions = {start : 1, rows: 10, total: 0};
+        vm.dtOptions = DTOptionsBuilder.newOptions()
+            .withPaginationType('full_numbers')
+            .withDisplayLength(10)
+            .withLanguage({
+                "sSearch": "Filter:"
+            });
+
+        vm.dtColumnDefs = [
+            DTColumnDefBuilder.newColumnDef(0),
+            DTColumnDefBuilder.newColumnDef(5).notSortable()
+        ];
+
+
         vm.orgList = [];
         vm.searchOrgs = function() {
             OrgService.searchOrgs(vm.searchParams).then(function(data) {
