@@ -69,7 +69,7 @@ class OrganizationsController < ApplicationController
     # Scope chaining, reuse the scope definition
     @organizations = Organization.all
     @organizations = @organizations.matches_name_wc(params[:name]) if params[:name].present?
-    @organizations = @organizations.matches('po_id', params[:po_id]) if params[:po_id].present?
+    @organizations = @organizations.matches('id', params[:id]) if params[:id].present?
     @organizations = @organizations.matches_wc('source_id', params[:source_id]) if params[:source_id].present?
     @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
     @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
@@ -91,6 +91,6 @@ class OrganizationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def organization_params
-      params.require(:organization).permit(:po_id, :source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :source_status_id, :source_context_id)
+      params.require(:organization).permit(:source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :source_status_id, :source_context_id)
     end
 end
