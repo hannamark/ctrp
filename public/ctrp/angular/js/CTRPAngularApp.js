@@ -12,7 +12,8 @@
         'LocalCacheModule',
         'ngAnimate',
         'toastr',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'datatables'
     ])
         .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 

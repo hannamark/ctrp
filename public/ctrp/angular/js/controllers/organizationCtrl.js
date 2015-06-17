@@ -9,9 +9,9 @@
     angular.module('ctrpApp')
         .controller('organizationCtrl', organizationCtrl);
 
-    organizationCtrl.$inject = ['OrgService', 'DTOptionsBuilder', 'DTColumnBuilder'];
+    organizationCtrl.$inject = ['OrgService', 'DTOptionsBuilder', 'DTColumnDefBuilder'];
 
-    function organizationCtrl(OrgService, DTOptionsBuilder, DTColumnBuilder) {
+    function organizationCtrl(OrgService, DTOptionsBuilder, DTColumnDefBuilder) {
         var vm = this;
         vm.searchParams = OrgService.getInitialOrgSearchParams();
         vm.pagingOptions = {start : 1, rows: 10, total: 0};
