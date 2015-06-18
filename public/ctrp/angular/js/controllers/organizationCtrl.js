@@ -39,7 +39,7 @@
         //ui-grid plugin
         vm.gridOptions = {
             enableColumnResizing: true,
-            rowHeight: 50,
+            rowHeight: 60,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
