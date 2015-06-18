@@ -22,6 +22,9 @@ Rails.application.routes.draw do
     resources :family_relationships
 
     resources :comments
+
+    get '/countries' => 'util#get_countries'
+    get '/states' => 'util#get_states'
   end
 
   get '/ctrp/', :to => redirect('/index.html')
