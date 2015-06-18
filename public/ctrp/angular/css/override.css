@@ -11,7 +11,7 @@
     -webkit-border-radius: 2px;
 }
 
-.lower {
-    margin-top: 10px;
-    border-spacing: 10px;
+.grid {
+    width: 100%;
+    height: auto;
 }

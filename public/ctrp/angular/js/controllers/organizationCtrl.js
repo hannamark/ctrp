@@ -9,41 +9,79 @@
     angular.module('ctrpApp')
         .controller('organizationCtrl', organizationCtrl);
 
-    organizationCtrl.$inject = ['OrgService', 'DTOptionsBuilder', 'DTColumnDefBuilder'];
+    organizationCtrl.$inject = ['OrgService', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'uiGridConstants', '$scope'];
 
-    function organizationCtrl(OrgService, DTOptionsBuilder, DTColumnDefBuilder) {
+    function organizationCtrl(OrgService, DTOptionsBuilder, DTColumnDefBuilder, uiGridConstants, $scope) {
         var vm = this;
+        vm.orgList = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
-        vm.pagingOptions = {start : 1, rows: 10, total: 0};
+
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withPaginationType('full_numbers')
             .withDisplayLength(10)
             .withLanguage({
                 "sSearch": "Filter:"
             });
-
         vm.dtColumnDefs = [
             DTColumnDefBuilder.newColumnDef(0),
             DTColumnDefBuilder.newColumnDef(5).notSortable()
         ];
 
+        var paginationOptions = {
+            pageNumber: 1,
+            pageSize: 10,
+            sort: null,
+            total: null
+        }; //paginationOptions
 
-        vm.orgList = [];
+        vm.gridOptions = {
+            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSize: 10,
+            useExternalPagination: true,
+            useExternalSorting: false,
+            columnDefs: [
+                {name: 'name', enableSorting: true},
+                {name: 'identifier', enableSorting: true},
+                {name: 'ID', enableSorting: true},
+                {name: 'state', enableSorting: true}
+            ],
+            onRegisterApi: function(gridApi) {
+                vm.gridApi = gridApi;
+                //vm.gridApi.core.onsortChanged...
+                
+                vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
+                   paginationOptions.pageNumber = newPage;
+                    paginationOptions.pageSize = pageSize;
+                    vm.searchParams.start = paginationOptions.pageNumber;
+                    vm.searchParams.rows = paginationOptions.pageSize;
+                    vm.searchOrgs();
+                });
+            }
+        }; //gridOptions
+
+
+        activate();
+
         vm.searchOrgs = function() {
             OrgService.searchOrgs(vm.searchParams).then(function(data) {
-               // console.log("received search results: " + JSON.stringify(data.data));
+                console.log("received search results: " + JSON.stringify(data.data));
                 vm.orgList = [];
                 vm.orgList = data.data.orgs;
-                console.log("orgList: " + JSON.stringify(vm.orgList));
-                vm.pagingOptions.start = data.data.start;
-                vm.pagingOptions.rows = data.data.rows;
-                vm.pagingOptions.total = data.data.total;
+                paginationOptions.pageNumber = data.data.start;
+                paginationOptions.pageSize = data.data.rows;
+                paginationOptions.total = data.data.total;
+
+                vm.gridOptions.data = prepareGridData(vm.orgList);
+                vm.gridOptions.totalItems = data.data.total;
+                console.log('vm.gridOptions.data = ' + JSON.stringify(vm.gridOptions.data));
+                vm.gridOptions.paginationPageSize = data.data.rows;
+
             }).catch(function(err) {
                 console.log('search organizations failed');
             });
         }; //searchOrgs
 
-        activate();
+
 
 
 
@@ -61,10 +99,27 @@
                 .then(function(data) {
                 // console.log('received organizations : ' + JSON.stringify(data));
                     vm.orgList = data.data;
+                    vm.gridOptions.data = prepareGridData(vm.orgList);
+                    vm.gridOptions.totalItems = vm.orgList.length;
                 }).catch(function(err) {
                     console.log('failed to retrieve organizations');
                 });
         } //getAllOrgs
+
+
+        function prepareGridData(dataArr) {
+            var results = [];
+            angular.forEach(dataArr, function(item, index) {
+                // vm.gridOptions.data.push(item);
+
+                results.push({"name" : item.name,
+                    "identifier": "no identifier",
+                    "id": item.id, "state" : item.state_province});
+
+            });
+
+            return results;
+        }
 
     }
 
