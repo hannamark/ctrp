@@ -80,4 +80,5 @@ class Organization < ActiveRecord::Base
       joins(:families).where("families.name ilike ?", "#{value}")
     end
   }
+  scope :sort_by_col, -> (column, order) { order("#{column} #{order}") }
 end
