@@ -15,6 +15,7 @@
         var vm = this;
         vm.orgList = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
+        activate();
 
         vm.dtOptions = DTOptionsBuilder.newOptions()
             .withPaginationType('full_numbers')
@@ -35,42 +36,37 @@
         }; //paginationOptions
 
         vm.gridOptions = {
+            enableColumnResizing: true,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
             useExternalSorting: false,
             columnDefs: [
-                {name: 'name', enableSorting: true},
-                {name: 'identifier', enableSorting: true},
-                {name: 'ID', enableSorting: true},
-                {name: 'state', enableSorting: true}
+                {field: 'name', enableSorting: true},
+                {field: 'identifier', enableSorting: true},
+                {field: 'id', enableSorting: true, displayName: 'ID'},
+                {field: 'state', enableSorting: true}
             ],
             onRegisterApi: function(gridApi) {
                 vm.gridApi = gridApi;
                 //vm.gridApi.core.onsortChanged...
                 
                 vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
-                   paginationOptions.pageNumber = newPage;
-                    paginationOptions.pageSize = pageSize;
-                    vm.searchParams.start = paginationOptions.pageNumber;
-                    vm.searchParams.rows = paginationOptions.pageSize;
+                    vm.searchParams.start = newPage;
+                    vm.searchParams.rows = pageSize;
                     vm.searchOrgs();
                 });
             }
         }; //gridOptions
 
 
-        activate();
+
 
         vm.searchOrgs = function() {
             OrgService.searchOrgs(vm.searchParams).then(function(data) {
-                console.log("received search results: " + JSON.stringify(data.data));
+             //   console.log("received search results: " + JSON.stringify(data.data));
                 vm.orgList = [];
                 vm.orgList = data.data.orgs;
-                paginationOptions.pageNumber = data.data.start;
-                paginationOptions.pageSize = data.data.rows;
-                paginationOptions.total = data.data.total;
-
                 vm.gridOptions.data = prepareGridData(vm.orgList);
                 vm.gridOptions.totalItems = data.data.total;
                 console.log('vm.gridOptions.data = ' + JSON.stringify(vm.gridOptions.data));
