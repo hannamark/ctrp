@@ -46,11 +46,19 @@
             useExternalSorting: false,  //disabled for now
             columnDefs: [
                 {field: 'name', enableSorting: true, width: '40%',
-                    cellTemplate: '<div class="tooltip-uigrid" title="{{row.getProperty(col.field)}}"><a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\' })">View Details{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    cellTemplate: '<div class="tooltip-uigrid" title="{{row.getProperty(col.field)}}"><a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\' })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {field: 'identifier', enableSorting: true, width: '25%'},
+                {field: 'identifier', enableSorting: true, width: '20%'},
                 {field: 'id', enableSorting: true, displayName: 'ID', width: '10%'},
-                {field: 'state', enableSorting: true, width: '25%'}
+                {field: 'city', enableSorting: true, width: '15%'},
+                {field: 'state', enableSorting: true, width: '15%'}
+                /*
+                {field: 'operations', displayName: 'Operations', width: '20%',
+                    cellTemplate: '<div class="btn-group tooltip-uigrid" dropdown><button class="btn btn-success dropdown-toggle" dropdown-toggle type="button">Action <span class="caret"></span>' +
+                    '</button><ul class="dropdown-menu" role="menu"><li><a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\'})">View Details</a></li>' +
+                    '<li><a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\'})">Edit</a></li><li><a href="">Delete</a></li></ul></div>'
+                }
+                */
             ],
             onRegisterApi: function(gridApi) {
                 vm.gridApi = gridApi;
@@ -115,7 +123,9 @@
 
                 results.push({"name" : item.name,
                     "identifier": "no identifier",
-                    "id": item.id, "state" : item.state_province});
+                    "id": item.id, "city" : item.city,
+                    "state" : item.state_province
+                });
 
             });
 
