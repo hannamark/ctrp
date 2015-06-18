@@ -15,3 +15,9 @@
     width: 100%;
     height: auto;
 }
+
+.tooltip-uigrid {
+    overflow: visible;
+    white-space: normal;
+    word-wrap: normal;
+}
