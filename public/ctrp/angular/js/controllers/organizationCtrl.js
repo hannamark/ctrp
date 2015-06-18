@@ -9,9 +9,9 @@
     angular.module('ctrpApp')
         .controller('organizationCtrl', organizationCtrl);
 
-    organizationCtrl.$inject = ['OrgService', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'uiGridConstants', '$scope'];
+    organizationCtrl.$inject = ['OrgService', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'uiGridConstants', '$scope', '$state'];
 
-    function organizationCtrl(OrgService, DTOptionsBuilder, DTColumnDefBuilder, uiGridConstants, $scope) {
+    function organizationCtrl(OrgService, DTOptionsBuilder, DTColumnDefBuilder, uiGridConstants, $scope, $state) {
         var vm = this;
         vm.orgList = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
@@ -45,11 +45,13 @@
             useExternalPagination: true,
             useExternalSorting: false,  //disabled for now
             columnDefs: [
+                {field: 'id', enableSorting: true, displayName: 'ID', width: '5%'},
                 {field: 'name', enableSorting: true, width: '40%',
-                    cellTemplate: '<div class="tooltip-uigrid" title="{{row.getProperty(col.field)}}"><a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\' })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    //this does not work for .id
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.orgDetail({orgId : {{row.entity.id}} })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {field: 'identifier', enableSorting: true, width: '20%'},
-                {field: 'id', enableSorting: true, displayName: 'ID', width: '10%'},
+                {field: 'identifier', enableSorting: true, width: '25%'},
                 {field: 'city', enableSorting: true, width: '15%'},
                 {field: 'state', enableSorting: true, width: '15%'}
                 /*
