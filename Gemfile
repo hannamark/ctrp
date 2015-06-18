@@ -56,3 +56,5 @@ gem 'devise'
 gem 'paper_trail'
 
 gem 'ci_reporter_minitest'
+
+gem 'countries'
