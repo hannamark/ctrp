@@ -43,8 +43,12 @@
                 {field: 'name', enableSorting: true, width: '40%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\' })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    '<a href="angular#/main/organizations/{{row.entity.id}}">' +
+//                    '<a ui-sref="main.orgDetail({orgId: \'{{row.entity.id}}\' })">' +   //this is preferred, but does not work now.
+                    '{{row.entity.name}} </a></div>'
+//                    '<a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\' })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
+
                 {field: 'identifier', enableSorting: true, width: '25%'},
                 {field: 'city', enableSorting: true, width: '15%'},
                 {field: 'state', enableSorting: true, width: '15%'}
@@ -63,6 +67,10 @@
         }; //gridOptions
 
 
+        $scope.getUrl = function(row) {
+            console.log('row = ' + JSON.stringify(row));
+            return $state.href('main.orgDetail', {orgId : row.entity.id});
+        };
 
 
         vm.searchOrgs = function() {
@@ -112,9 +120,11 @@
             angular.forEach(dataArr, function(item, index) {
                 // vm.gridOptions.data.push(item);
 
+                var curId = item.id;
+                var curName = '<a ui-sref="main.orgDetail({orgId : ' + curId +' })">' + item.name + '</a>';
                 results.push({"name" : item.name,
-                    "identifier": "no identifier",
-                    "id": item.id, "city" : item.city,
+                    "identifier": "",
+                    "id": curId, "city" : item.city,
                     "state" : item.state_province
                 });
 
