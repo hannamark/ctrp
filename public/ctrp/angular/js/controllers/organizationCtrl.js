@@ -67,7 +67,6 @@
 
 
 
-
         vm.searchOrgs = function() {
             if (isSearchParamsDirty(vm.searchParams)) {
                 OrgService.searchOrgs(vm.searchParams).then(function (data) {
@@ -122,7 +121,7 @@
         function getAllOrgs() {
             OrgService.getAllOrgs()
                 .then(function(data) {
-                // console.log('received organizations : ' + JSON.stringify(data));
+                 console.log('received organizations : ' + JSON.stringify(data));
                     vm.orgList = data.data;
                     vm.gridOptions.data = prepareGridData(vm.orgList);
                     vm.gridOptions.totalItems = vm.orgList.length;
