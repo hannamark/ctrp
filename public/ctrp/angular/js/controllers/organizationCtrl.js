@@ -39,8 +39,8 @@
             useExternalPagination: true,
             useExternalSorting: false,  //disabled for now
             columnDefs: [
-                {field: 'id', enableSorting: true, displayName: 'ID', width: '5%'},
-                {field: 'name', enableSorting: true, width: '40%',
+                {field: 'id', enableSorting: true, displayName: 'ID', width: '8%'},
+                {field: 'name', enableSorting: true, width: '37%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -56,8 +56,7 @@
             ],
             onRegisterApi: function(gridApi) {
                 vm.gridApi = gridApi;
-                //vm.gridApi.core.onsortChanged...
-                
+                vm.gridApi.core.on.sortChanged($scope, vm.sortChangedCallBack)
                 vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
                     vm.searchParams.start = newPage;
                     vm.searchParams.rows = pageSize;
@@ -67,10 +66,6 @@
         }; //gridOptions
 
 
-        $scope.getUrl = function(row) {
-            console.log('row = ' + JSON.stringify(row));
-            return $state.href('main.orgDetail', {orgId : row.entity.id});
-        };
 
 
         vm.searchOrgs = function() {
@@ -88,6 +83,29 @@
                 getAllOrgs();
             }
         }; //searchOrgs
+
+
+
+        //callback for sorting columns
+        vm.sortChangedCallBack = function(grid, sortColumns) {
+            if (sortColumns.length == 0 || sortColumns[0].field != vm.gridOptions.columnDefs[0].field) {
+                getAllOrgs();
+            } else {
+                switch( sortColumns[0].sort.direction ) {
+                    case uiGridConstants.ASC:
+                        vm.searchParams.order = 'ASC';
+                        break;
+                    case uiGridConstants.DESC:
+                        vm.searchParams == 'DESC';
+                        break;
+                    case undefined:
+                        break;
+                }
+
+                //do the search with the updated sorting
+                vm.searchOrgs();
+            }
+        }; //sortChangedCallBack
 
         activate();
 
@@ -122,7 +140,7 @@
          */
         function isSearchParamsDirty(searchParams) {
             var isDirty = false;
-            var excludedKeys = ["sort", "rows", "start", "order", "total"];
+            var excludedKeys = ["rows", "start", "total"];
 
             for (var i = 0; i < Object.keys(searchParams).length; i++) {
                 var key = Object.keys(searchParams)[i];
@@ -138,7 +156,7 @@
 
 
         /**
-         * 
+         *
          * @param dataArr
          * @returns {Array}
          */
