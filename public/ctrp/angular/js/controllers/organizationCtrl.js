@@ -136,6 +136,30 @@
             return isDirty;
         }
 
+
+        /**
+         * 
+         * @param dataArr
+         * @returns {Array}
+         */
+        function prepareGridData(dataArr) {
+            var results = [];
+            angular.forEach(dataArr, function(item, index) {
+                // vm.gridOptions.data.push(item);
+
+                var curId = item.id;
+                var curName = '<a ui-sref="main.orgDetail({orgId : ' + curId +' })">' + item.name + '</a>';
+                results.push({"name" : item.name,
+                    "identifier": "",
+                    "id": curId, "city" : item.city,
+                    "state" : item.state_province
+                });
+
+            });
+
+            return results;
+        }
+
     }
 
 })();
