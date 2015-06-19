@@ -30,17 +30,22 @@
 
         vm.orgList = [];
         vm.searchOrgs = function() {
-            OrgService.searchOrgs(vm.searchParams).then(function(data) {
-               // console.log("received search results: " + JSON.stringify(data.data));
-                vm.orgList = [];
-                vm.orgList = data.data.orgs;
-                console.log("orgList: " + JSON.stringify(vm.orgList));
-                vm.pagingOptions.start = data.data.start;
-                vm.pagingOptions.rows = data.data.rows;
-                vm.pagingOptions.total = data.data.total;
-            }).catch(function(err) {
-                console.log('search organizations failed');
-            });
+            if (isSearchParamsDirty(vm.searchParams)) {
+                OrgService.searchOrgs(vm.searchParams).then(function (data) {
+                    // console.log("received search results: " + JSON.stringify(data.data));
+                    vm.orgList = [];
+                    vm.orgList = data.data.orgs;
+                    console.log("orgList: " + JSON.stringify(vm.orgList));
+                    vm.pagingOptions.start = data.data.start;
+                    vm.pagingOptions.rows = data.data.rows;
+                    vm.pagingOptions.total = data.data.total;
+                }).catch(function (err) {
+                    console.log('search organizations failed');
+                });
+            } else {
+                //if no search criteria, get all organizations by default
+                getAllOrgs();
+            }
         }; //searchOrgs
 
         activate();
@@ -65,6 +70,29 @@
                     console.log('failed to retrieve organizations');
                 });
         } //getAllOrgs
+
+
+        /**
+         * Check if the searchParams object has any search criteria
+         *
+         * @param searchParams JSON object
+         * @returns {boolean}
+         */
+        function isSearchParamsDirty(searchParams) {
+            var isDirty = false;
+            var excludedKeys = ["sort", "rows", "start", "order", "total"];
+
+            for (var i = 0; i < Object.keys(searchParams).length; i++) {
+                var key = Object.keys(searchParams)[i];
+
+                if (!!searchParams[key] && excludedKeys.indexOf(key) == -1) {
+                    isDirty = true;
+                    break;
+                }
+            }
+
+            return isDirty;
+        }
 
     }
 

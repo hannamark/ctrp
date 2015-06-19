@@ -24,7 +24,14 @@
             state_province : "",
             country : "",
             email : "",
-            postal_code : ""
+            postal_code : "",
+
+            //for pagination and sorting
+            sort: "",
+            order: "",
+            rows: 10,
+            start: 1,
+            total: ""
             }; //initial Organization Search Parameters
 
         var services = {
