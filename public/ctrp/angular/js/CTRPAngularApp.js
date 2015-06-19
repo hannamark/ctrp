@@ -7,13 +7,17 @@
 
     angular.module('ctrpApp', [
         'ui.router',
+        'ngTouch',
         'Constants',
         'PromiseServiceModule',
         'LocalCacheModule',
         'ngAnimate',
         'toastr',
         'ui.bootstrap',
-        'datatables'
+        'datatables',
+        'ui.grid',
+        'ui.grid.pagination'
+
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there

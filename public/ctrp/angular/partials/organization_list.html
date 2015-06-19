@@ -173,14 +173,13 @@
 </div>
 
 <!-- list of organizations -->
-<div class="row-fluid">
+
+<!--<div class="row-fluid">
     <table datatable="ng" dt-options="orgsView.dtOptions" dt-column-defs="orgsView.dtColumnDefs" class="table table-bordered table-striped lower">
         <thead>
         <th>Name</th>
         <th>Identifier</th>
         <th>ID</th>
-<!--        <th>Organization Type</th>
-        <th>Organization Status</th>-->
         <th>City</th>
         <th>State</th>
         <th>Operations</th>
@@ -190,8 +189,6 @@
             <td>{{org.name}}</td>
             <td>{{org.identifier}}</td>
             <td>{{org.id}}</td>
-<!--            <td>{{org.organization_type}}</td>
-            <td>{{org.organization_status}}</td>-->
             <td>{{org.city}}</td>
             <td>{{org.state}}</td>
             <td>
@@ -209,4 +206,9 @@
         </tr>
         </tbody>
     </table>
+</div>-->
+
+<!-- experimenting ui-grid -->
+<div class="row-fluid">
+    <div ui-grid="orgsView.gridOptions" ui-grid-pagination="" class="grid"></div>
 </div>
