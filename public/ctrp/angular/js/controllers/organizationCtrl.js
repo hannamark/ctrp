@@ -29,12 +29,6 @@
             DTColumnDefBuilder.newColumnDef(5).notSortable()
         ];
 
-        var paginationOptions = {
-            pageNumber: 1,
-            pageSize: 10,
-            sort: null,
-            total: null
-        }; //paginationOptions
 
         //ui-grid plugin
         vm.gridOptions = {
@@ -49,18 +43,12 @@
                 {field: 'name', enableSorting: true, width: '40%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.orgDetail({orgId : {{row.entity.id}} })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    '<a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\' })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {field: 'identifier', enableSorting: true, width: '25%'},
                 {field: 'city', enableSorting: true, width: '15%'},
                 {field: 'state', enableSorting: true, width: '15%'}
-                /*
-                {field: 'operations', displayName: 'Operations', width: '20%',
-                    cellTemplate: '<div class="btn-group tooltip-uigrid" dropdown><button class="btn btn-success dropdown-toggle" dropdown-toggle type="button">Action <span class="caret"></span>' +
-                    '</button><ul class="dropdown-menu" role="menu"><li><a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\'})">View Details</a></li>' +
-                    '<li><a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\'})">Edit</a></li><li><a href="">Delete</a></li></ul></div>'
-                }
-                */
+
             ],
             onRegisterApi: function(gridApi) {
                 vm.gridApi = gridApi;
@@ -82,6 +70,7 @@
              //   console.log("received search results: " + JSON.stringify(data.data));
                 vm.orgList = [];
                 vm.orgList = data.data.orgs;
+                vm.gridOptions.data.length = 0;
                 vm.gridOptions.data = prepareGridData(vm.orgList);
                 vm.gridOptions.totalItems = data.data.total;
                 console.log('vm.gridOptions.data = ' + JSON.stringify(vm.gridOptions.data));
