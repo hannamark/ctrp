@@ -44,7 +44,7 @@ And I have selected the function Edit Organization
 And I am on the edit organization information screen
 And I change the email of the organization I wish to edit
 And I submit my edit request
-Then the system should change the organization email in the organization record to the new phone number
+Then the system should change the organization email in the organization record to the new email
 And my name should be listed as last update with the current date and time
 
 Scenario: As a PO Curator, I can Edit organization city

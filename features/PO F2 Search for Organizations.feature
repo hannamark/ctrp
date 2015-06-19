@@ -42,7 +42,7 @@ And I am logged in to CTRP
 And I have selected the option to search for an organization
 When I provide the PO Organization ID of the organization I wish to search for
 And I submit my search request
-Then the system should display all organizations that contain the CTEP ID
+Then the system should display all organizations that contain the PO Organization ID
 
 Scenario: As any CTRP User, I am able to search for organizations by Family Name
 Given I know the Family name to which the organization I wish to search for belongs to
