@@ -37,7 +37,7 @@
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
-            useExternalSorting: false,  //disabled for now
+            useExternalSorting: true,  //disabled for now
             columnDefs: [
                 {field: 'id', enableSorting: true, displayName: 'ID', width: '8%'},
                 {field: 'name', enableSorting: true, width: '37%',
@@ -60,6 +60,7 @@
                 vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
                     vm.searchParams.start = newPage;
                     vm.searchParams.rows = pageSize;
+                    vm.searchParams.name = vm.searchParams.name || "*";
                     vm.searchOrgs();
                 });
             }
@@ -69,11 +70,13 @@
 
         vm.searchOrgs = function() {
             if (isSearchParamsDirty(vm.searchParams)) {
+                console.log("searching params: " + JSON.stringify(vm.searchParams));
                 OrgService.searchOrgs(vm.searchParams).then(function (data) {
                     // console.log("received search results: " + JSON.stringify(data.data));
                     vm.orgList = [];
                     vm.orgList = data.data.orgs;
-                    console.log("orgList: " + JSON.stringify(vm.orgList));
+                   // console.log("orgList: " + JSON.stringify(vm.orgList));
+                    vm.gridOptions.data = prepareGridData(vm.orgList); //data.data.orgs;
                 }).catch(function (err) {
                     console.log('search organizations failed');
                 });
@@ -87,6 +90,7 @@
 
         //callback for sorting columns
         vm.sortChangedCallBack = function(grid, sortColumns) {
+            console.log("sorting tables now");
             if (sortColumns.length == 0 || sortColumns[0].field != vm.gridOptions.columnDefs[0].field) {
                 getAllOrgs();
             } else {
@@ -121,7 +125,7 @@
         function getAllOrgs() {
             OrgService.getAllOrgs()
                 .then(function(data) {
-                 console.log('received organizations : ' + JSON.stringify(data));
+                 // console.log('received organizations : ' + JSON.stringify(data));
                     vm.orgList = data.data;
                     vm.gridOptions.data = prepareGridData(vm.orgList);
                     vm.gridOptions.totalItems = vm.orgList.length;
