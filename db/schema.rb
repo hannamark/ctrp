@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617171527) do
+ActiveRecord::Schema.define(version: 20150622182536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,48 @@ ActiveRecord::Schema.define(version: 20150617171527) do
   add_index "organizations", ["source_context_id"], name: "index_organizations_on_source_context_id", using: :btree
   add_index "organizations", ["source_status_id"], name: "index_organizations_on_source_status_id", using: :btree
 
+  create_table "people", force: :cascade do |t|
+    t.string   "source_id",         limit: 255
+    t.string   "name",              limit: 255
+    t.string   "prefix",            limit: 255
+    t.string   "suffix",            limit: 255
+    t.date     "status_date"
+    t.string   "email",             limit: 255
+    t.string   "phone",             limit: 255
+    t.integer  "source_status_id"
+    t.integer  "source_context_id"
+    t.integer  "source_cluster_id"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "uuid",              limit: 255
+  end
+
+  add_index "people", ["source_cluster_id"], name: "index_people_on_source_cluster_id", using: :btree
+  add_index "people", ["source_context_id"], name: "index_people_on_source_context_id", using: :btree
+  add_index "people", ["source_status_id"], name: "index_people_on_source_status_id", using: :btree
+
+  create_table "po_affiliation_statuses", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
+  create_table "po_affiliations", force: :cascade do |t|
+    t.integer  "person_id"
+    t.integer  "organization_id"
+    t.integer  "po_affiliation_status_id"
+    t.date     "status_date"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",                     limit: 255
+  end
+
+  add_index "po_affiliations", ["organization_id"], name: "index_po_affiliations_on_organization_id", using: :btree
+  add_index "po_affiliations", ["person_id"], name: "index_po_affiliations_on_person_id", using: :btree
+  add_index "po_affiliations", ["po_affiliation_status_id"], name: "index_po_affiliations_on_po_affiliation_status_id", using: :btree
+
   create_table "source_clusters", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.datetime "created_at",             null: false
@@ -183,4 +225,10 @@ ActiveRecord::Schema.define(version: 20150617171527) do
   add_foreign_key "organizations", "source_clusters"
   add_foreign_key "organizations", "source_contexts"
   add_foreign_key "organizations", "source_statuses"
+  add_foreign_key "people", "source_clusters"
+  add_foreign_key "people", "source_contexts"
+  add_foreign_key "people", "source_statuses"
+  add_foreign_key "po_affiliations", "organizations"
+  add_foreign_key "po_affiliations", "people"
+  add_foreign_key "po_affiliations", "po_affiliation_statuses"
 end
