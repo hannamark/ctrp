@@ -30,16 +30,43 @@
             sort: "",
             order: "",
             rows: 10,
-            start: 1,
-            total: ""
+            start: 1
             }; //initial Organization Search Parameters
+
+        var gridOptions = {
+            enableColumnResizing: true,
+            rowHeight: 60,
+            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSize: 10,
+            useExternalPagination: true,
+            useExternalSorting: true,  //disabled for now
+            columnDefs: [
+                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
+                {
+                    name: 'name', enableSorting: true, width: '35%',
+                    //this does not work for .id
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a href="angular#/main/organizations/{{row.entity.id}}">' +
+//                    '<a ui-sref="main.orgDetail({orgId: \'{{row.entity.id}}\' })">' +   //this is preferred, but does not work now.
+                    '{{row.entity.name}} </a></div>'
+//                    '<a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\' })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '25%'},
+                {name: 'city', enableSorting: true, width: '15%'},
+                {name: 'state', enableSorting: true, width: '15%'}
+
+            ]
+        };
 
         var services = {
             getAllOrgs : getAllOrgs,
             getOrgById : getOrgById,
             upsertOrg : upsertOrg,
             searchOrgs : searchOrgs,
-            getInitialOrgSearchParams : getInitialOrgSearchParams
+            getInitialOrgSearchParams : getInitialOrgSearchParams,
+            getGridOptions : getGridOptions,
+            a2zComparator : a2zComparator
         };
 
         return services;
@@ -99,6 +126,33 @@
         function getInitialOrgSearchParams() {
             return initOrgSearchParams;
         } //getInitialOrgSearchParams
+
+
+
+        function getGridOptions() {
+            return gridOptions;
+        }
+
+
+        /**
+         * A-Z Comparator for sorting an array of JSON objects
+         * by the 'name' field in each JSON object
+         *
+         */
+        function a2zComparator() {
+            var compare = function(a, b) {
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (a.name < b.name) {
+                    return -1;
+                }
+
+                return 0;
+            }
+
+            return compare;
+        } //a2zComparator
 
     }
 
