@@ -90,7 +90,6 @@ ActiveRecord::Schema.define(version: 20150617171527) do
   add_index "name_aliases", ["organization_id"], name: "index_name_aliases_on_organization_id", using: :btree
 
   create_table "organizations", force: :cascade do |t|
-    t.integer  "po_id",             limit: 8
     t.string   "source_id",         limit: 255
     t.string   "name",              limit: 255
     t.string   "address",           limit: 255

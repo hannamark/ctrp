@@ -3,7 +3,6 @@
 # Table name: organizations
 #
 #  id                :integer          not null, primary key
-#  po_id             :integer
 #  source_id         :string(255)
 #  name              :string(255)
 #  address           :string(255)

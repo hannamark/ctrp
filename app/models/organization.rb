@@ -3,7 +3,6 @@
 # Table name: organizations
 #
 #  id                :integer          not null, primary key
-#  po_id             :integer
 #  source_id         :string(255)
 #  name              :string(255)
 #  address           :string(255)
@@ -41,7 +40,6 @@ class Organization < ActiveRecord::Base
   belongs_to :source_context
   belongs_to :source_cluster
 
-  validates :po_id, uniqueness: true
   validates :name, presence: true
 
   # Scope definitions used for search
@@ -84,4 +82,5 @@ class Organization < ActiveRecord::Base
       joins(:families).where("families.name ilike ?", "#{value}")
     end
   }
+  scope :sort_by_col, -> (column, order) { order("#{column} #{order}") }
 end

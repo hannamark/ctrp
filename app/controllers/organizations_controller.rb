@@ -62,10 +62,16 @@ class OrganizationsController < ApplicationController
   end
 
   def search
+    # Pagination/sorting params initialization
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 10 if params[:rows].blank?
+    params[:sort] = 'name' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+
     # Scope chaining, reuse the scope definition
     @organizations = Organization.all
     @organizations = @organizations.matches_name_wc(params[:name]) if params[:name].present?
-    @organizations = @organizations.matches('po_id', params[:po_id]) if params[:po_id].present?
+    @organizations = @organizations.matches('id', params[:id]) if params[:id].present?
     @organizations = @organizations.matches_wc('source_id', params[:source_id]) if params[:source_id].present?
     @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
     @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
@@ -76,10 +82,7 @@ class OrganizationsController < ApplicationController
     @organizations = @organizations.matches('country', params[:country]) if params[:country].present?
     @organizations = @organizations.matches_wc('postal_code', params[:postal_code]) if params[:postal_code].present?
     @organizations = @organizations.matches_wc('email', params[:email]) if params[:email].present?
-    @organizations = @organizations.group(:'organizations.id')
-    respond_to do |format|
-      format.json { render :index }
-    end
+    @organizations = @organizations.sort_by_col(params[:sort], params[:order]).group(:'organizations.id').page(params[:start]).per(params[:rows])
   end
 
   private
@@ -90,6 +93,6 @@ class OrganizationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def organization_params
-      params.require(:organization).permit(:po_id, :source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :source_status_id, :source_context_id)
+      params.require(:organization).permit(:source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :source_status_id, :source_context_id)
     end
 end

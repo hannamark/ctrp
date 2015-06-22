@@ -1,31 +1,193 @@
 <div class="row-fluid">
-    <span class="pull-left">
-        <a class="btn btn-primary" ui-sref="main.addOrganization">Add an organization</a>
-    </span><br />
+    <div class="col-md-12 col-border">
+        <div class="row">
+            <h4>Search Organizations
+                <small>
+                    <mark>* for wild card (e.g. university* for any university)</mark>
+                </small>
+            </h4>
+        </div>
+        <div class="row">
+            <form class="form-horizontal" role="form">
+
+                <!-- first row -->
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <!-- organization name -->
+                        <div class="form-group">
+                            <label for="organization_name" class="control-label col-sm-2">Name: </label>
+
+                            <div class="col-sm-10">
+                                <input type="text" id="organization_name" class="form-control"
+                                       placeholder="Organization Name"
+                                       ng-model="orgsView.searchParams.name"/>
+                            </div>
+                        </div>
+                        <!-- organization name ends -->
+                    </div>
+                    <div class="col-md-6">
+                        <!-- PO ID -->
+                        <div class="form-group">
+                            <!-- ID used as PO_ID here -->
+                            <label for="po_id" class="control-label col-sm-2">PO ID: </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="po_id" class="form-control" placeholder="PO ID"
+                                       ng-model="orgsView.searchParams.id"/>
+                            </div>
+                        </div>
+                        <!-- PO ID ends -->
+                    </div>
+                </div><!-- first row ends -->
+
+                <!-- second row -->
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <!--source id-->
+                        <div class="form-group">
+                            <label for="source_id" class="control-label col-sm-2">Source: </label>
+
+                            <div class="col-sm-10">
+                                <input type="text" id="source_id" class="form-control" placeholder="Source ID"
+                                       ng-model="orgsView.searchParams.source_id"/>
+                            </div>
+                        </div>
+                        <!-- source id ends -->
+                    </div>
+                    <div class="col-md-6">
+                        <!--source status-->
+                        <div class="form-group">
+                            <label for="source_status" class="control-label col-sm-2">Source Status: </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="source_status" class="form-control" placeholder="Source Status"
+                                       ng-model="orgsView.searchParams.source_status"/>
+                            </div>
+                        </div>
+                        <!-- source status ends -->
+                    </div>
+                </div><!--second row ends -->
+
+                <!-- third row -->
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="address" class="control-label col-sm-2">Address:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="address" class="form-control" placeholder="Address"
+                                       ng-model="orgsView.searchParams.address"/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="address2" class="control-label col-sm-2">Address 2:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="address2" class="form-control" placeholder="Address 2"
+                                       ng-model="orgsView.searchParams.address2"/>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--third row ends -->
+
+
+                <!-- fourth row -->
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="family_name" class="control-label col-sm-2">Family Name:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="family_name" class="form-control" placeholder="Family Name"
+                                       ng-model="orgsView.searchParams.family_name"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email" class="control-label col-sm-2">Email:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="email" class="form-control" placeholder="Email"
+                                       ng-model="orgsView.searchParams.email"/>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--fourth row ends -->
+
+                <!-- fifth row -->
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="country" class="control-label col-sm-2">Country:</label>
+                            <div class="col-sm-10">
+
+                                <select class="form-control" ng-model="orgsView.searchParams.country"
+                                        ng-change="orgsView.watchCountrySelection()">
+                                <option value="" selected>Select a country</option>
+                                <option ng-repeat="country in orgsView.countriesArr" value="{{country.name}}">{{country.name}}</option>
+                                </select>
+                                    <!--<select ng-init="something = orgsView.countriesArr[0]"
+                                        ng-model="orgsView.searchParams.country"
+                                        ng-options="country.name for country in orgsView.countriesArr">
+
+                                </select>-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group" ng-hide="orgsView.states.length == 0">
+                            <label for="state" class="control-label col-sm-2">State:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" ng-model="orgsView.searchParams.state_province">
+                                    <option value="">Select a state or province</option>
+                                    <option ng-repeat="state in orgsView.states track by state.name"
+                                            value="{{state.name}}">{{state.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--fifth row ends -->
+
+                <!-- sixth row -->
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="city" class="control-label col-sm-2">City:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="city" class="form-control" placeholder="City"
+                                       ng-model="orgsView.searchParams.city"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="postal_code" class="control-label col-sm-2">Postal Code:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="postal_code" class="form-control" placeholder="Postal Code"
+                                       ng-model="orgsView.searchParams.postal_code"/>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- sixth row ends -->
+
+
+                <div class="row-fluid">
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-8">
+                            <button type="submit" class="btn btn-default btn-success" ng-click="orgsView.searchOrgs()">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<!-- list of organizations -->
 <div class="row-fluid">
-        <table class="table table-bordered table-striped">
-            <thead>
-            <th>Name</th>
-            <th>PO ID</th>
-            <th>ID</th>
-            <th>Organization Type</th>
-            <th>Organization Status</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Operations</th>
-            </thead>
-            <tbody>
-            <tr ng-repeat="org in orgsView.orgList track by $index">
-                <td>{{org.name}}</td>
-                <td>{{org.identifier}}</td>
-                <td>{{org.id}}</td>
-                <td>{{org.organization_type}}</td>
-                <td>{{org.organization_status}}</td>
-                <td>{{org.city}}</td>
-                <td>{{org.state}}</td>
-                <td><a ui-sref="main.orgDetail({orgId : '{{org.id}}'})">View Details</a></td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="col-md-12">
+        <div ui-grid="orgsView.gridOptions" ui-grid-pagination="" class="grid"></div>
+    </div>
 </div>

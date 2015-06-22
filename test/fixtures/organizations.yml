@@ -3,7 +3,6 @@
 # Table name: organizations
 #
 #  id                :integer          not null, primary key
-#  po_id             :integer
 #  source_id         :string(255)
 #  name              :string(255)
 #  address           :string(255)
@@ -32,7 +31,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  po_id: MyString
   source_id: MyString
   name: MyString
   address: MyString
@@ -46,7 +44,6 @@ one:
   fax: MyString
 
 two:
-  po_id: MyString
   source_id: MyString
   name: MyString
   address: MyString
