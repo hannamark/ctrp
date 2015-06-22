@@ -41,9 +41,9 @@
             useExternalPagination: true,
             useExternalSorting: true,  //disabled for now
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '8%'},
+                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
                 {
-                    name: 'name', enableSorting: true, width: '37%',
+                    name: 'name', enableSorting: true, width: '35%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -52,7 +52,7 @@
 //                    '<a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\' })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
 
-                {name: 'identifier', enableSorting: true, width: '25%'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '25%'},
                 {name: 'city', enableSorting: true, width: '15%'},
                 {name: 'state', enableSorting: true, width: '15%'}
 

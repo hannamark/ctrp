@@ -37,10 +37,10 @@
 
         vm.searchOrgs = function() {
                 vm.searchParams.name = vm.searchParams.name || "*";
-                console.log("searching params: " + JSON.stringify(vm.searchParams));
+               // console.log("searching params: " + JSON.stringify(vm.searchParams));
                 OrgService.searchOrgs(vm.searchParams).then(function (data) {
                   //  console.log("received search results: " + JSON.stringify(data.data));
-                    vm.gridOptions.data = prepareGridData(data.data.orgs); //data.data.orgs;
+                    vm.gridOptions.data = data.data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
                     vm.gridOptions.totalItems = data.data.total;
                 }).catch(function (err) {
                     console.log('search organizations failed');
