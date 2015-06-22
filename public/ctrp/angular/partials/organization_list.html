@@ -116,20 +116,33 @@
                 <div class="row-fluid">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="city" class="control-label col-sm-2">City:</label>
+                            <label for="country" class="control-label col-sm-2">Country:</label>
                             <div class="col-sm-10">
-                                <input type="text" id="city" class="form-control" placeholder="City"
-                                       ng-model="orgsView.searchParams.city"/>
+
+                                <select class="form-control" ng-model="orgsView.searchParams.country"
+                                        ng-change="orgsView.watchCountrySelection()">
+                                <option value="" selected>Select a country</option>
+                                <option ng-repeat="country in orgsView.countriesArr" value="{{country.name}}">{{country.name}}</option>
+                                </select>
+                                    <!--<select ng-init="something = orgsView.countriesArr[0]"
+                                        ng-model="orgsView.searchParams.country"
+                                        ng-options="country.name for country in orgsView.countriesArr">
+
+                                </select>-->
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <div class="form-group">
+                        <div class="form-group" ng-hide="orgsView.states.length == 0">
                             <label for="state" class="control-label col-sm-2">State:</label>
                             <div class="col-sm-10">
-                                <input type="text" id="state" class="form-control" placeholder="State"
-                                       ng-model="orgsView.searchParams.state_province"/>
+                                <select class="form-control" ng-model="orgsView.searchParams.state_province">
+                                    <option value="">Select a state or province</option>
+                                    <option ng-repeat="state in orgsView.states track by state.name"
+                                            value="{{state.name}}">{{state.name}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -139,10 +152,10 @@
                 <div class="row-fluid">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="country" class="control-label col-sm-2">Country:</label>
+                            <label for="city" class="control-label col-sm-2">City:</label>
                             <div class="col-sm-10">
-                                <input type="text" id="country" class="form-control" placeholder="Country"
-                                       ng-model="orgsView.searchParams.country"/>
+                                <input type="text" id="city" class="form-control" placeholder="City"
+                                       ng-model="orgsView.searchParams.city"/>
                             </div>
                         </div>
                     </div>

@@ -41,7 +41,7 @@
             useExternalPagination: true,
             useExternalSorting: true,  //disabled for now
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'ID', width: '8%'},
+                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '8%'},
                 {
                     name: 'name', enableSorting: true, width: '37%',
                     //this does not work for .id
@@ -65,7 +65,8 @@
             upsertOrg : upsertOrg,
             searchOrgs : searchOrgs,
             getInitialOrgSearchParams : getInitialOrgSearchParams,
-            getGridOptions : getGridOptions
+            getGridOptions : getGridOptions,
+            a2zComparator : a2zComparator
         };
 
         return services;
@@ -131,6 +132,27 @@
         function getGridOptions() {
             return gridOptions;
         }
+
+
+        /**
+         * A-Z Comparator for sorting an array of JSON objects
+         * by the 'name' field in each JSON object
+         *
+         */
+        function a2zComparator() {
+            var compare = function(a, b) {
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (a.name < b.name) {
+                    return -1;
+                }
+
+                return 0;
+            }
+
+            return compare;
+        } //a2zComparator
 
     }
 

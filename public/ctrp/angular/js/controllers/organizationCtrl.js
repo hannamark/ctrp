@@ -9,10 +9,14 @@
     angular.module('ctrpApp')
         .controller('organizationCtrl', organizationCtrl);
 
-    organizationCtrl.$inject = ['OrgService', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'uiGridConstants', '$scope', '$state'];
+    organizationCtrl.$inject = ['OrgService', 'uiGridConstants', '$scope', 'countryList', 'GeoLocationService'];
 
-    function organizationCtrl(OrgService, DTOptionsBuilder, DTColumnDefBuilder, uiGridConstants, $scope, $state) {
+    function organizationCtrl(OrgService, uiGridConstants, $scope, countryList, GeoLocationService) {
+
         var vm = this;
+        vm.countriesArr = countryList.data;
+        vm.countriesArr.sort(OrgService.a2zComparator());
+        vm.states = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
 
         //ui-grid plugin options
@@ -35,13 +39,22 @@
                 vm.searchParams.name = vm.searchParams.name || "*";
                 console.log("searching params: " + JSON.stringify(vm.searchParams));
                 OrgService.searchOrgs(vm.searchParams).then(function (data) {
-                    console.log("received search results: " + JSON.stringify(data.data));
+                  //  console.log("received search results: " + JSON.stringify(data.data));
                     vm.gridOptions.data = prepareGridData(data.data.orgs); //data.data.orgs;
                     vm.gridOptions.totalItems = data.data.total;
                 }).catch(function (err) {
                     console.log('search organizations failed');
                 });
         }; //searchOrgs
+
+
+        vm.watchCountrySelection = function() {
+            console.log('country selected: ' + vm.searchParams.country);
+            GeoLocationService.getStateListInCountry(vm.searchParams.country).then(function(response) {
+                vm.states = response.data;
+                vm.states.sort(OrgService.a2zComparator());
+            });
+        }; //watchCountrySelection
 
 
         activate();
