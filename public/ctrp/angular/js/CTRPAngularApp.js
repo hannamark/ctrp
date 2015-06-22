@@ -7,13 +7,17 @@
 
     angular.module('ctrpApp', [
         'ui.router',
+        'ngTouch',
         'Constants',
         'PromiseServiceModule',
         'LocalCacheModule',
         'ngAnimate',
         'toastr',
         'ui.bootstrap',
-        'datatables'
+        'datatables',
+        'ui.grid',
+        'ui.grid.pagination'
+
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
@@ -62,7 +66,13 @@
                 .state('main.organizations', {
                     url: '/organizations',
                     templateUrl: '/ctrp/angular/partials/organization_list.html',
-                    controller: 'organizationCtrl as orgsView'
+                    controller: 'organizationCtrl as orgsView',
+                    resolve: {
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
+                        }
+                    }
                 })
 
                 .state('main.orgDetail', {

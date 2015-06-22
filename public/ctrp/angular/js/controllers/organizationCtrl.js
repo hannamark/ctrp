@@ -9,90 +9,119 @@
     angular.module('ctrpApp')
         .controller('organizationCtrl', organizationCtrl);
 
-    organizationCtrl.$inject = ['OrgService', 'DTOptionsBuilder', 'DTColumnDefBuilder'];
+    organizationCtrl.$inject = ['OrgService', 'uiGridConstants', '$scope', 'countryList', 'GeoLocationService'];
 
-    function organizationCtrl(OrgService, DTOptionsBuilder, DTColumnDefBuilder) {
+    function organizationCtrl(OrgService, uiGridConstants, $scope, countryList, GeoLocationService) {
+
         var vm = this;
+        vm.countriesArr = countryList.data;
+        vm.countriesArr.sort(OrgService.a2zComparator());
+        vm.states = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
-        vm.pagingOptions = {start : 1, rows: 10, total: 0};
-        vm.dtOptions = DTOptionsBuilder.newOptions()
-            .withPaginationType('full_numbers')
-            .withDisplayLength(10)
-            .withLanguage({
-                "sSearch": "Filter:"
-            });
 
-        vm.dtColumnDefs = [
-            DTColumnDefBuilder.newColumnDef(0),
-            DTColumnDefBuilder.newColumnDef(5).notSortable()
-        ];
+        //ui-grid plugin options
+        vm.gridOptions = OrgService.getGridOptions();
+        vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
+        vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+        vm.gridOptions.onRegisterApi = function(gridApi) {
+                vm.gridApi = gridApi;
+                vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
+                vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
+                    vm.searchParams.start = newPage;
+                    vm.searchParams.rows = pageSize;
+                    vm.searchParams.name = vm.searchParams.name || "*";
+                    vm.searchOrgs();
+                });
+        }; //gridOptions
 
 
-        vm.orgList = [];
         vm.searchOrgs = function() {
-            if (isSearchParamsDirty(vm.searchParams)) {
+                vm.searchParams.name = vm.searchParams.name || "*";
+               // console.log("searching params: " + JSON.stringify(vm.searchParams));
                 OrgService.searchOrgs(vm.searchParams).then(function (data) {
-                    // console.log("received search results: " + JSON.stringify(data.data));
-                    vm.orgList = [];
-                    vm.orgList = data.data.orgs;
-                    console.log("orgList: " + JSON.stringify(vm.orgList));
-                    vm.pagingOptions.start = data.data.start;
-                    vm.pagingOptions.rows = data.data.rows;
-                    vm.pagingOptions.total = data.data.total;
+                  //  console.log("received search results: " + JSON.stringify(data.data));
+                    vm.gridOptions.data = data.data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
+                    vm.gridOptions.totalItems = data.data.total;
                 }).catch(function (err) {
                     console.log('search organizations failed');
                 });
-            } else {
-                //if no search criteria, get all organizations by default
-                getAllOrgs();
-            }
         }; //searchOrgs
 
+
+        vm.watchCountrySelection = function() {
+            console.log('country selected: ' + vm.searchParams.country);
+            GeoLocationService.getStateListInCountry(vm.searchParams.country).then(function(response) {
+                vm.states = response.data;
+                vm.states.sort(OrgService.a2zComparator());
+            });
+        }; //watchCountrySelection
+
+
         activate();
-
-
 
     /****************************** implementations **************************/
 
         function activate() {
-            getAllOrgs();
+            vm.searchOrgs();
         } //activate
 
 
 
 
-        function getAllOrgs() {
-            OrgService.getAllOrgs()
-                .then(function(data) {
-                // console.log('received organizations : ' + JSON.stringify(data));
-                    vm.orgList = data.data;
-                }).catch(function(err) {
-                    console.log('failed to retrieve organizations');
+        /**
+         *
+         * @param dataArr
+         * @returns {Array}
+         */
+        function prepareGridData(dataArr) {
+            var results = [];
+            angular.forEach(dataArr, function(item, index) {
+                // vm.gridOptions.data.push(item);
+
+                var curId = item.id;
+                var curName = '<a ui-sref="main.orgDetail({orgId : ' + curId +' })">' + item.name + '</a>';
+                results.push({"name" : item.name,
+                    "identifier": "",
+                    "id": curId, "city" : item.city,
+                    "state" : item.state_province
                 });
-        } //getAllOrgs
+            });
+
+            return results;
+        }
+
 
 
         /**
-         * Check if the searchParams object has any search criteria
-         *
-         * @param searchParams JSON object
-         * @returns {boolean}
+         * callback function for sorting UI-Grid columns
+         * @param grid
+         * @param sortColumns
          */
-        function isSearchParamsDirty(searchParams) {
-            var isDirty = false;
-            var excludedKeys = ["sort", "rows", "start", "order", "total"];
-
-            for (var i = 0; i < Object.keys(searchParams).length; i++) {
-                var key = Object.keys(searchParams)[i];
-
-                if (!!searchParams[key] && excludedKeys.indexOf(key) == -1) {
-                    isDirty = true;
-                    break;
+        function sortChangedCallBack(grid, sortColumns) {
+            console.log("sortColumns.length = " + sortColumns.length);
+            console.log("vm.gridOptions.columnDefs[0].name: " + vm.gridOptions.columnDefs[0].name);
+            if (sortColumns.length == 0) { // || sortColumns[0].name != vm.gridOptions.columnDefs[0].name
+                //remove sorting
+                vm.searchParams.sort = '';
+                vm.searchParams.order = '';
+            } else {
+                console.log("sortColumns[0].sort: " + JSON.stringify(sortColumns[0].sort));
+                vm.searchParams.sort = vm.gridOptions.columnDefs[0].name; //sort the column
+                switch( sortColumns[0].sort.direction ) {
+                    case uiGridConstants.ASC:
+                        vm.searchParams.order = 'ASC';
+                        break;
+                    case uiGridConstants.DESC:
+                        vm.searchParams.order = 'DESC';
+                        break;
+                    case undefined:
+                        break;
                 }
             }
 
-            return isDirty;
-        }
+            //do the search with the updated sorting
+            vm.searchOrgs();
+        }; //sortChangedCallBack
 
     }
 

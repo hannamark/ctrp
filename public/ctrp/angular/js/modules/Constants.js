@@ -11,7 +11,9 @@
             //relative urls to the host
             'ORG_LIST' : '/ctrp/organizations.json',
             'AN_ORG' : '/ctrp/organizations/',
-            'SEARCH_ORG' : '/ctrp/organizations/search.json'
+            'SEARCH_ORG' : '/ctrp/organizations/search.json',
+            'COUNTRY_LIST' : '/ctrp/countries.json',
+            'STATES_IN_COUNTRY' : '/ctrp/states.json?country='
         });
 
 })();
