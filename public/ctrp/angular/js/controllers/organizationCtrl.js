@@ -13,11 +13,12 @@
 
     function organizationCtrl(OrgService, DTOptionsBuilder, DTColumnDefBuilder, uiGridConstants, $scope, $state) {
         var vm = this;
-        vm.orgList = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
 
         //ui-grid plugin options
         vm.gridOptions = OrgService.getGridOptions();
+        vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
+        vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
         vm.gridOptions.onRegisterApi = function(gridApi) {
                 vm.gridApi = gridApi;
                 vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
@@ -35,9 +36,7 @@
                 console.log("searching params: " + JSON.stringify(vm.searchParams));
                 OrgService.searchOrgs(vm.searchParams).then(function (data) {
                     console.log("received search results: " + JSON.stringify(data.data));
-                    //vm.orgList = [];
-                    vm.orgList = data.data.orgs;
-                    vm.gridOptions.data = prepareGridData(vm.orgList); //data.data.orgs;
+                    vm.gridOptions.data = prepareGridData(data.data.orgs); //data.data.orgs;
                     vm.gridOptions.totalItems = data.data.total;
                 }).catch(function (err) {
                     console.log('search organizations failed');
