@@ -118,8 +118,7 @@
                         <div class="form-group">
                             <label for="country" class="control-label col-sm-2">Country:</label>
                             <div class="col-sm-10">
-
-                                <select class="form-control" ng-model="orgsView.searchParams.country"
+                                <select class="form-control" id="country" ng-model="orgsView.searchParams.country"
                                         ng-change="orgsView.watchCountrySelection()">
                                 <option value="" selected>Select a country</option>
                                 <option ng-repeat="country in orgsView.countriesArr" value="{{country.name}}">{{country.name}}</option>
@@ -137,7 +136,7 @@
                         <div class="form-group" ng-hide="orgsView.states.length == 0">
                             <label for="state" class="control-label col-sm-2">State:</label>
                             <div class="col-sm-10">
-                                <select class="form-control" ng-model="orgsView.searchParams.state_province">
+                                <select class="form-control" id="state" ng-model="orgsView.searchParams.state_province">
                                     <option value="">Select a state or province</option>
                                     <option ng-repeat="state in orgsView.states track by state.name"
                                             value="{{state.name}}">{{state.name}}
@@ -176,6 +175,10 @@
                         <div class="col-sm-offset-4 col-sm-8">
                             <button type="submit" class="btn btn-default btn-success" ng-click="orgsView.searchOrgs()">
                                 Search
+                            </button>
+
+                            <button type="reset" class="btn btn-default btn-danger" ng-click="orgsView.resetSearch()">
+                                Clear
                             </button>
                         </div>
                     </div>
