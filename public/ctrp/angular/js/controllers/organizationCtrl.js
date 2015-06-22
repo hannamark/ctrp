@@ -37,7 +37,7 @@
 
         vm.searchOrgs = function() {
                 vm.searchParams.name = vm.searchParams.name || "*";
-               // console.log("searching params: " + JSON.stringify(vm.searchParams));
+                console.log("searching params: " + JSON.stringify(vm.searchParams));
                 OrgService.searchOrgs(vm.searchParams).then(function (data) {
                   //  console.log("received search results: " + JSON.stringify(data.data));
                     vm.gridOptions.data = data.data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
@@ -46,6 +46,24 @@
                     console.log('search organizations failed');
                 });
         }; //searchOrgs
+
+
+        vm.resetSearch = function() {
+            vm.states.length = 0;
+            angular.forEach(Object.keys(vm.searchParams), function(key, index) {
+                if (vm.searchParams[key]) {
+                    if (key == "start") {
+                        vm.searchParams.start = 1;
+                    } else if (key == "rows") {
+                        vm.searchParams.rows = 10;
+                    } else {
+                        vm.searchParams[key] = '';
+                    }
+                }
+            });
+
+            vm.searchOrgs();
+        }
 
 
         vm.watchCountrySelection = function() {
