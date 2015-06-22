@@ -173,42 +173,6 @@
 </div>
 
 <!-- list of organizations -->
-
-<div class="row-fluid">
-    <table datatable="ng" dt-options="orgsView.dtOptions" dt-column-defs="orgsView.dtColumnDefs" class="table table-bordered table-striped lower">
-        <thead>
-        <th>Name</th>
-        <th>Identifier</th>
-        <th>ID</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Operations</th>
-        </thead>
-        <tbody>
-        <tr ng-repeat="org in orgsView.orgList track by $index">
-            <td>{{org.name}}</td>
-            <td>{{org.identifier}}</td>
-            <td>{{org.id}}</td>
-            <td>{{org.city}}</td>
-            <td>{{org.state}}</td>
-            <td>
-                <div class="btn-group" dropdown>
-                    <button class="btn btn-success dropdown-toggle" dropdown-toggle type="button">
-                        Action <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a ui-sref="main.orgDetail({orgId : '{{org.id}}'})">View Details</a></li>
-                        <li><a ui-sref="main.orgDetail({orgId : '{{org.id}}'})">Edit</a></li>
-                        <li><a href="">Delete</a></li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- experimenting ui-grid -->
 <div class="row-fluid">
     <div class="col-md-12">
         <div ui-grid="orgsView.gridOptions" ui-grid-pagination="" class="grid"></div>
