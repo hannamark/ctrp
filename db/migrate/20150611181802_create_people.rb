@@ -10,11 +10,13 @@ class CreatePeople < ActiveRecord::Migration
       t.string :phone, :limit => 255
       t.references :source_status, index: true
       t.references :source_context, index: true
+      t.references :source_cluster, index: true
 
       t.timestamps null: false
       t.ctrp_base_columns
     end
     add_foreign_key :people, :source_statuses
     add_foreign_key :people, :source_contexts
+    add_foreign_key :people, :source_clusters
   end
 end
