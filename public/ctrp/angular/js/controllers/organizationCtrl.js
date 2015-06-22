@@ -39,8 +39,8 @@
             useExternalPagination: true,
             useExternalSorting: true,  //disabled for now
             columnDefs: [
-                {field: 'id', enableSorting: true, displayName: 'ID', width: '8%'},
-                {field: 'name', enableSorting: true, width: '37%',
+                {name: 'id', enableSorting: true, displayName: 'ID', width: '8%'},
+                {name: 'name', enableSorting: true, width: '37%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -49,9 +49,9 @@
 //                    '<a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\' })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
 
-                {field: 'identifier', enableSorting: true, width: '25%'},
-                {field: 'city', enableSorting: true, width: '15%'},
-                {field: 'state', enableSorting: true, width: '15%'}
+                {name: 'identifier', enableSorting: true, width: '25%'},
+                {name: 'city', enableSorting: true, width: '15%'},
+                {name: 'state', enableSorting: true, width: '15%'}
 
             ],
             onRegisterApi: function(gridApi) {
@@ -73,7 +73,7 @@
                 console.log("searching params: " + JSON.stringify(vm.searchParams));
                 OrgService.searchOrgs(vm.searchParams).then(function (data) {
                     // console.log("received search results: " + JSON.stringify(data.data));
-                    vm.orgList = [];
+                    //vm.orgList = [];
                     vm.orgList = data.data.orgs;
                    // console.log("orgList: " + JSON.stringify(vm.orgList));
                     vm.gridOptions.data = prepareGridData(vm.orgList); //data.data.orgs;
@@ -90,18 +90,24 @@
 
         //callback for sorting columns
         vm.sortChangedCallBack = function(grid, sortColumns) {
-            console.log("sorting tables now");
-            if (sortColumns.length == 0 || sortColumns[0].field != vm.gridOptions.columnDefs[0].field) {
+            //console.log("sortColumns = " + JSON.stringify(sortColumns));
+            console.log("sortColumns.length = " + sortColumns.length);
+//            console.log("sortColumns[0].name: " + sortColumns[0].name);
+            console.log("vm.gridOptions.columnDefs[0].name: " + vm.gridOptions.columnDefs[0].name);
+            if (sortColumns.length == 0) { // || sortColumns[0].name != vm.gridOptions.columnDefs[0].name
+                console.log("in sorting, but getting all orgs");
                 getAllOrgs();
             } else {
+                console.log("uiGridConstants: " + JSON.stringify(sortColumns[0].sort));
                 switch( sortColumns[0].sort.direction ) {
                     case uiGridConstants.ASC:
                         vm.searchParams.order = 'ASC';
                         break;
                     case uiGridConstants.DESC:
-                        vm.searchParams == 'DESC';
+                        vm.searchParams.order == 'DESC';
                         break;
                     case undefined:
+                        vm.searchParams.order = '';
                         break;
                 }
 
@@ -125,7 +131,7 @@
         function getAllOrgs() {
             OrgService.getAllOrgs()
                 .then(function(data) {
-                 // console.log('received organizations : ' + JSON.stringify(data));
+                    console.log('received organizations : ' + JSON.stringify(data));
                     vm.orgList = data.data;
                     vm.gridOptions.data = prepareGridData(vm.orgList);
                     vm.gridOptions.totalItems = vm.orgList.length;
