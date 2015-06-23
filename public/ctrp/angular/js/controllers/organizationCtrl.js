@@ -52,19 +52,8 @@
 
 
         vm.resetSearch = function() {
-            vm.states.length = 0;
-            angular.forEach(Object.keys(vm.searchParams), function(key, index) {
-                if (vm.searchParams[key]) {
-                    if (key == "start") {
-                        vm.searchParams.start = 1;
-                    } else if (key == "rows") {
-                        vm.searchParams.rows = 10;
-                    } else {
-                        vm.searchParams[key] = '';
-                    }
-                }
-            });
-
+           // vm.states.length = 0;
+            vm.searchParams = OrgService.getInitialOrgSearchParams();
             vm.searchOrgs();
         }; //resetSearch
 
