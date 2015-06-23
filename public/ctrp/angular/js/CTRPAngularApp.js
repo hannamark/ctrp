@@ -9,6 +9,7 @@
         'ui.router',
         'ngTouch',
         'Constants',
+        'CommonTools',
         'PromiseServiceModule',
         'LocalCacheModule',
         'ngAnimate',
