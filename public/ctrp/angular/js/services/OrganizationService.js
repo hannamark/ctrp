@@ -8,10 +8,13 @@
     angular.module('ctrpApp')
         .factory('OrgService', OrgService);
 
-    OrgService.$inject = ['PromiseService', 'URL_CONFIGS', '$log'];
+    OrgService.$inject = ['PromiseService', 'URL_CONFIGS', 'MESSAGES', '$log',
+        'GeoLocationService', 'Common', '$rootScope'];
 
-    function OrgService(PromiseService, URL_CONFIGS, $log) {
+    function OrgService(PromiseService, URL_CONFIGS, MESSAGES, $log,
+                        GeoLocationService, Common, $rootScope) {
 
+        var statesOrProvinces = [];
         var initOrgSearchParams = {
             name : "",
             po_id : "",
@@ -54,7 +57,7 @@
 
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '25%'},
                 {name: 'city', enableSorting: true, width: '15%'},
-                {name: 'state', enableSorting: true, width: '15%'}
+                {name: 'state_province', enableSorting: true, width: '15%'}
 
             ]
         };
@@ -66,7 +69,8 @@
             searchOrgs : searchOrgs,
             getInitialOrgSearchParams : getInitialOrgSearchParams,
             getGridOptions : getGridOptions,
-            a2zComparator : a2zComparator
+            watchCountrySelection : watchCountrySelection,
+            getStatesOrProvinces : getStatesOrProvinces
         };
 
         return services;
@@ -104,6 +108,8 @@
         } //upsertOrg
 
 
+
+
         /**
          *
          * @param searchParams, JSON object whose keys can include:
@@ -117,6 +123,8 @@
                 return PromiseService.postDataExpectObj(URL_CONFIGS.SEARCH_ORG, searchParams);
             }
         } //searchOrgs
+
+
 
 
         /**
@@ -134,25 +142,61 @@
         }
 
 
+
+
         /**
-         * A-Z Comparator for sorting an array of JSON objects
-         * by the 'name' field in each JSON object
-         *
+         * Return a watcher for the selected country name
+         * @returns {Function}
          */
-        function a2zComparator() {
-            var compare = function(a, b) {
-                if (a.name > b.name) {
-                    return 1;
-                }
-                if (a.name < b.name) {
-                    return -1;
-                }
+        function watchCountrySelection() {
+            return function(countryName) {
+                if (!!countryName) {
 
-                return 0;
-            }
+                    GeoLocationService.getStateListInCountry(countryName)
+                        .then(function (response) {
+                            statesOrProvinces = response.data;
 
-            return compare;
-        } //a2zComparator
+                            //states or provinces are not available
+                            if (statesOrProvinces.length == 0) {
+                                broadcastMsg(MESSAGES.STATES_UNAVAIL, 'states or provinces are not available');
+                                return;
+                            }
+                            statesOrProvinces.sort(Common.a2zComparator());
+                            broadcastMsg(MESSAGES.STATES_AVAIL, 'come get your states or provinces');
+                        }).catch(function (err) {
+                            $log.info("error in retrieving states for country: " + countryName);
+                        });
+                } else {
+                    //countryName is not set
+                    broadcastMsg(MESSAGES.STATES_UNAVAIL, 'states or provinces are not available');
+                }
+            };
+        } //watchCountrySelection
+
+
+
+        /**
+         *
+         * @returns {Array}, sorted A-Z
+         */
+        function getStatesOrProvinces() {
+            return statesOrProvinces;
+        }
+
+
+
+        /**
+         * A helper function:
+         * Use $rootScope to broadcast messages
+         * @param msgCode
+         * @param msgContent
+         */
+        function broadcastMsg(msgCode, msgContent) {
+            $rootScope.$broadcast(msgCode, {content: msgContent});
+        } //broadcastMsg
+
+
+
 
     }
 

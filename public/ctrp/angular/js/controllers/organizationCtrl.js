@@ -9,13 +9,16 @@
     angular.module('ctrpApp')
         .controller('organizationCtrl', organizationCtrl);
 
-    organizationCtrl.$inject = ['OrgService', 'uiGridConstants', '$scope', 'countryList', 'GeoLocationService'];
+    organizationCtrl.$inject = ['OrgService', 'uiGridConstants', '$scope', 
+        'countryList', 'Common', 'MESSAGES'];
 
-    function organizationCtrl(OrgService, uiGridConstants, $scope, countryList, GeoLocationService) {
+    function organizationCtrl(OrgService, uiGridConstants, $scope,
+                              countryList, Common, MESSAGES) {
 
         var vm = this;
+        vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList.data;
-        vm.countriesArr.sort(OrgService.a2zComparator());
+        vm.countriesArr.sort(Common.a2zComparator());
         vm.states = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
 
@@ -63,17 +66,7 @@
             });
 
             vm.searchOrgs();
-        }
-
-
-        vm.watchCountrySelection = function() {
-            console.log('country selected: ' + vm.searchParams.country);
-            GeoLocationService.getStateListInCountry(vm.searchParams.country).then(function(response) {
-                vm.states = response.data;
-                vm.states.sort(OrgService.a2zComparator());
-            });
-        }; //watchCountrySelection
-
+        }; //resetSearch
 
         activate();
 
@@ -81,32 +74,9 @@
 
         function activate() {
             vm.searchOrgs();
+            listenToStatesProvinces();
         } //activate
 
-
-
-
-        /**
-         *
-         * @param dataArr
-         * @returns {Array}
-         */
-        function prepareGridData(dataArr) {
-            var results = [];
-            angular.forEach(dataArr, function(item, index) {
-                // vm.gridOptions.data.push(item);
-
-                var curId = item.id;
-                var curName = '<a ui-sref="main.orgDetail({orgId : ' + curId +' })">' + item.name + '</a>';
-                results.push({"name" : item.name,
-                    "identifier": "",
-                    "id": curId, "city" : item.city,
-                    "state" : item.state_province
-                });
-            });
-
-            return results;
-        }
 
 
 
@@ -116,15 +86,16 @@
          * @param sortColumns
          */
         function sortChangedCallBack(grid, sortColumns) {
-            console.log("sortColumns.length = " + sortColumns.length);
-            console.log("vm.gridOptions.columnDefs[0].name: " + vm.gridOptions.columnDefs[0].name);
-            if (sortColumns.length == 0) { // || sortColumns[0].name != vm.gridOptions.columnDefs[0].name
+//            console.log("sortColumns.length = " + sortColumns.length);
+//            console.log("sortColumns[0].name: " + sortColumns[0].name);
+//            console.log("vm.gridOptions.columnDefs[0].name: " + vm.gridOptions.columnDefs[0].name);
+            if (sortColumns.length == 0) {
+                console.log("removing sorting");
                 //remove sorting
                 vm.searchParams.sort = '';
                 vm.searchParams.order = '';
             } else {
-                console.log("sortColumns[0].sort: " + JSON.stringify(sortColumns[0].sort));
-                vm.searchParams.sort = vm.gridOptions.columnDefs[0].name; //sort the column
+                vm.searchParams.sort = sortColumns[0].name; //sort the column
                 switch( sortColumns[0].sort.direction ) {
                     case uiGridConstants.ASC:
                         vm.searchParams.order = 'ASC';
@@ -140,6 +111,26 @@
             //do the search with the updated sorting
             vm.searchOrgs();
         }; //sortChangedCallBack
+
+
+        /**
+         * Listen to the message for availability of states or provinces
+         * for the selected country
+         */
+        function listenToStatesProvinces() {
+            var currentCountry = vm.searchParams.country || "United States";
+            vm.watchCountrySelection(currentCountry);
+
+
+            $scope.$on(MESSAGES.STATES_AVAIL, function() {
+                console.log("states available for country: " + vm.searchParams.country);
+                vm.states = OrgService.getStatesOrProvinces();
+            });
+
+            $scope.$on(MESSAGES.STATES_UNAVAIL, function() {
+                vm.states = [];
+            })
+        }
 
     }
 

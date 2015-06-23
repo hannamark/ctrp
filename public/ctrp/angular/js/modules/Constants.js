@@ -14,6 +14,10 @@
             'SEARCH_ORG' : '/ctrp/organizations/search.json',
             'COUNTRY_LIST' : '/ctrp/countries.json',
             'STATES_IN_COUNTRY' : '/ctrp/states.json?country='
+        })
+        .constant('MESSAGES', {
+           'STATES_AVAIL' : 'states_or_provinces_available',
+            'STATES_UNAVAIL' : 'states_or_provinces_not_available'
         });
 
 })();
