@@ -44,6 +44,7 @@
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
+            enableFiltering: true,
             columnDefs: [
                 {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
                 {
