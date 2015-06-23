@@ -52,7 +52,7 @@
 
 
         vm.resetSearch = function() {
-            vm.states.length = 0;
+           // vm.states.length = 0;
             vm.searchParams = OrgService.getInitialOrgSearchParams();
             vm.searchOrgs();
         }; //resetSearch

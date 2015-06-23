@@ -42,7 +42,8 @@
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
-            useExternalSorting: true,  //disabled for now
+            useExternalSorting: true,
+            enableGridMenu: true,
             columnDefs: [
                 {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
                 {
@@ -57,7 +58,7 @@
 
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '25%'},
                 {name: 'city', enableSorting: true, width: '15%'},
-                {name: 'state_province', enableSorting: true, width: '15%'}
+                {name: 'state_province', displayName: 'State', enableSorting: true, width: '15%'}
 
             ]
         };
