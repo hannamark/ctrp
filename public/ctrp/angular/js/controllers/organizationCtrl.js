@@ -16,6 +16,7 @@
                               countryList, Common, MESSAGES) {
 
         var vm = this;
+        vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList.data;
         vm.countriesArr.sort(Common.a2zComparator());
         vm.states = [];
@@ -65,11 +66,7 @@
             });
 
             vm.searchOrgs();
-        }
-
-
-        vm.watchCountrySelection = OrgService.watchCountrySelection();
-
+        }; //resetSearch
 
         activate();
 
@@ -121,7 +118,12 @@
          * for the selected country
          */
         function listenToStatesProvinces() {
+            var currentCountry = vm.searchParams.country || "United States";
+            vm.watchCountrySelection(currentCountry);
+
+
             $scope.$on(MESSAGES.STATES_AVAIL, function() {
+                console.log("states available for country: " + vm.searchParams.country);
                 vm.states = OrgService.getStatesOrProvinces();
             });
 

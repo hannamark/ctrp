@@ -57,7 +57,7 @@
 
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '25%'},
                 {name: 'city', enableSorting: true, width: '15%'},
-                {name: 'state', enableSorting: true, width: '15%'}
+                {name: 'state_province', enableSorting: true, width: '15%'}
 
             ]
         };

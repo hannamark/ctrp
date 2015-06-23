@@ -84,6 +84,10 @@
                         OrgService : 'OrgService',
                         orgDetailObj : function($stateParams, OrgService) {
                             return OrgService.getOrgById($stateParams.orgId);
+                        },
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
                         }
                     } //resolve the promise and pass it to controller
                 })
