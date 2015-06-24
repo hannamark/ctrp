@@ -70,8 +70,12 @@
                     controller: 'organizationCtrl as orgsView',
                     resolve: {
                         GeoLocationService : 'GeoLocationService',
+                        OrgService : 'OrgService',
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
+                        },
+                        sourceStatusObj : function(OrgService) {
+                            return OrgService.getSourceStatuses();
                         }
                     }
                 })

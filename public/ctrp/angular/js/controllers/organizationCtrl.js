@@ -10,17 +10,20 @@
         .controller('organizationCtrl', organizationCtrl);
 
     organizationCtrl.$inject = ['OrgService', 'uiGridConstants', '$scope', 
-        'countryList', 'Common', 'MESSAGES'];
+        'countryList', 'Common', 'MESSAGES', 'sourceStatusObj'];
 
     function organizationCtrl(OrgService, uiGridConstants, $scope,
-                              countryList, Common, MESSAGES) {
+                              countryList, Common, MESSAGES, sourceStatusObj) {
 
         var vm = this;
+
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList.data;
         vm.countriesArr.sort(Common.a2zComparator());
         vm.states = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
+        vm.sourceStatusArr = sourceStatusObj.data;
+        vm.sourceStatusArr.sort(Common.a2zComparator());
 
         //ui-grid plugin options
         vm.gridOptions = OrgService.getGridOptions();

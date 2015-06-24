@@ -72,7 +72,8 @@
             getInitialOrgSearchParams : getInitialOrgSearchParams,
             getGridOptions : getGridOptions,
             watchCountrySelection : watchCountrySelection,
-            getStatesOrProvinces : getStatesOrProvinces
+            getStatesOrProvinces : getStatesOrProvinces,
+            getSourceStatuses : getSourceStatuses
         };
 
         return services;
@@ -196,6 +197,15 @@
         function broadcastMsg(msgCode, msgContent) {
             $rootScope.$broadcast(msgCode, {content: msgContent});
         } //broadcastMsg
+
+
+        /**
+         * retrieve source statuses from backend service
+         * @return {promise}
+         */
+        function getSourceStatuses() {
+            return PromiseService.getData(URL_CONFIGS.SOURCE_STATUSES);
+        } //getSourceStatuses
 
 
 
