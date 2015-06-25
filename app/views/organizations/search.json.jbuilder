@@ -10,3 +10,4 @@ json.rows params[:rows]
 json.total @organizations.total_count
 json.sort params[:sort]
 json.order params[:order]
+json.alias params[:alias]
