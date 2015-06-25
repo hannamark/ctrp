@@ -63,6 +63,7 @@
             <div class="col-sm-9">
                 <select class="form-control input-xs" id="country" ng-model="orgDetailView.curOrg.country"
                         ng-change="orgDetailView.watchCountrySelection(orgDetailView.curOrg.country)">
+                    <option value="" ng-selected="orgDetailView.curOrg.country == ''">Select a country</option>
                     <option ng-repeat="country in orgDetailView.countriesArr track by $index" value="{{country.name}}"
                             ng-selected="orgDetailView.curOrg.country == country.name">{{country.name}}</option>
                 </select>
@@ -74,7 +75,7 @@
             <label class="control-label col-sm-3">State:</label>
             <div class="col-sm-9">
                 <select class="form-control input-xs" id="state" ng-model="orgDetailView.curOrg.state_province">
-                    <option value="">Select a state or province</option>
+                    <option value="" ng-selected="orgDetailView.curOrg.state_province == ''">Select a state or province</option>
                     <option ng-repeat="state in orgDetailView.states track by $index"
                             value="{{state.name}}" ng-selected="state.name == orgDetailView.curOrg.state_province">{{state.name}}
                     </option>
