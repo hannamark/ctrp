@@ -70,8 +70,12 @@
                     controller: 'organizationCtrl as orgsView',
                     resolve: {
                         GeoLocationService : 'GeoLocationService',
+                        OrgService : 'OrgService',
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
+                        },
+                        sourceStatusObj : function(OrgService) {
+                            return OrgService.getSourceStatuses();
                         }
                     }
                 })
@@ -82,6 +86,9 @@
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
                         OrgService : 'OrgService',
+                        sourceStatusObj : function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        },
                         orgDetailObj : function($stateParams, OrgService) {
                             return OrgService.getOrgById($stateParams.orgId);
                         },
@@ -97,10 +104,18 @@
                     templateUrl: '/ctrp/angular/partials/orgDetails.html',
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
+                        OrgService : 'OrgService',
+                        sourceStatusObj : function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        },
                         orgDetailObj: function($q) {
                             var deferred = $q.defer();
                             deferred.resolve(null);
                             return deferred.promise;
+                        },
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
                         }
                     }
                 })
