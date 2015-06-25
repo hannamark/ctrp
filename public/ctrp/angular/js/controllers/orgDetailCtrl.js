@@ -14,6 +14,8 @@
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
                            $scope, countryList, Common, sourceStatusObj) {
         var vm = this;
+
+        console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList.data;
@@ -23,8 +25,6 @@
         vm.sourceStatusArr = sourceStatusObj.data;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         // console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
-        console.log('received source Status arr: ' + JSON.stringify(vm.sourceStatusArr));
-
 
 
         //update organization (vm.curOrg)
