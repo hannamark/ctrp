@@ -15,7 +15,6 @@
                            $scope, countryList, Common, sourceStatusObj) {
         var vm = this;
 
-        console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList.data;
@@ -24,7 +23,7 @@
         vm.curOrg = vm.curOrg.data || vm.curOrg;
         vm.sourceStatusArr = sourceStatusObj.data;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-        console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
+        //console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
 
         //update organization (vm.curOrg)
         vm.updateOrg = function() {
