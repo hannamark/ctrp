@@ -8,20 +8,22 @@
     angular.module('ctrpApp')
         .controller('orgDetailCtrl', orgDetailCtrl);
 
-    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', '$scope', 'countryList', 'Common'];
+    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES',
+        '$scope', 'countryList', 'Common', 'sourceStatusObj'];
 
-    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, $scope, countryList, Common) {
-
+    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
+                           $scope, countryList, Common, sourceStatusObj) {
         var vm = this;
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList.data;
         vm.countriesArr.sort(Common.a2zComparator());
-        vm.curOrg = orgDetailObj || {name: ""}; //orgDetailObj.data;
+        vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
         vm.curOrg = vm.curOrg.data || vm.curOrg;
-
-
-        console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
+        vm.sourceStatusArr = sourceStatusObj.data;
+        vm.sourceStatusArr.sort(Common.a2zComparator());
+        // console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
+        console.log('received source Status arr: ' + JSON.stringify(vm.sourceStatusArr));
 
 
 
@@ -52,6 +54,9 @@
          */
         function listenToStatesProvinces() {
             if (vm.curOrg.country) {
+                vm.watchCountrySelection(vm.curOrg.country);
+            } else {
+                vm.curOrg.country = 'United States'; //default country
                 vm.watchCountrySelection(vm.curOrg.country);
             }
 
