@@ -10,17 +10,20 @@
         .controller('organizationCtrl', organizationCtrl);
 
     organizationCtrl.$inject = ['OrgService', 'uiGridConstants', '$scope', 
-        'countryList', 'Common', 'MESSAGES'];
+        'countryList', 'Common', 'MESSAGES', 'sourceStatusObj'];
 
     function organizationCtrl(OrgService, uiGridConstants, $scope,
-                              countryList, Common, MESSAGES) {
+                              countryList, Common, MESSAGES, sourceStatusObj) {
 
         var vm = this;
+
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList.data;
         vm.countriesArr.sort(Common.a2zComparator());
         vm.states = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
+        vm.sourceStatusArr = sourceStatusObj.data;
+        vm.sourceStatusArr.sort(Common.a2zComparator());
 
         //ui-grid plugin options
         vm.gridOptions = OrgService.getGridOptions();
@@ -39,10 +42,10 @@
 
 
         vm.searchOrgs = function() {
-                vm.searchParams.name = vm.searchParams.name || "*";
+                // vm.searchParams.name = vm.searchParams.name || "*";
                 console.log("searching params: " + JSON.stringify(vm.searchParams));
                 OrgService.searchOrgs(vm.searchParams).then(function (data) {
-                  //  console.log("received search results: " + JSON.stringify(data.data));
+               //     console.log("received search results: " + JSON.stringify(data.data));
                     vm.gridOptions.data = data.data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
                     vm.gridOptions.totalItems = data.data.total;
                 }).catch(function (err) {
@@ -107,7 +110,7 @@
          * for the selected country
          */
         function listenToStatesProvinces() {
-            var currentCountry = vm.searchParams.country || "United States";
+            var currentCountry = vm.searchParams.country; // || "United States";
             vm.watchCountrySelection(currentCountry);
 
 

@@ -28,6 +28,18 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label col-sm-3">Source Status:</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="source_status" ng-model="orgDetailView.curOrg.source_status_id">
+                    <option value="">Select a status</option>
+                    <option ng-repeat="status in orgDetailView.sourceStatusArr"
+                            value="{{status.id}}" ng-selected="orgDetailView.curOrg.source_status_id == status.id">
+                        {{status.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label col-sm-3">ID:</label>
             <div class="col-sm-9">
                 <input disabled type="text" class="form-control input-xs"  ng-model="orgDetailView.curOrg.id">
@@ -52,7 +64,7 @@
                 <select class="form-control input-xs" id="country" ng-model="orgDetailView.curOrg.country"
                         ng-change="orgDetailView.watchCountrySelection(orgDetailView.curOrg.country)">
                     <option ng-repeat="country in orgDetailView.countriesArr track by $index" value="{{country.name}}"
-                            ng-selected="country.name==orgDetailView.curOrg.country">{{country.name}}</option>
+                            ng-selected="orgDetailView.curOrg.country == country.name">{{country.name}}</option>
                 </select>
             </div>
         </div>
