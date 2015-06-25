@@ -17,6 +17,7 @@
         var statesOrProvinces = [];
         var initOrgSearchParams = {
             name : "",
+            alias: true,
             po_id : "",
             source_id : "",
             source_status : "",
