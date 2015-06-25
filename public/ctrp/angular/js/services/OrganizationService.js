@@ -48,7 +48,7 @@
             columnDefs: [
                 {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
                 {
-                    name: 'name', enableSorting: true, width: '35%',
+                    name: 'name', enableSorting: true, width: '30%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -57,7 +57,8 @@
 //                    '<a ui-sref="main.orgDetail({orgId : \'{{row.entity.id}}\' })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
 
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '25%'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '13%'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: false, width: '17%'},
                 {name: 'city', enableSorting: true, width: '15%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '15%'}
 
