@@ -123,9 +123,11 @@
                             <div class="col-sm-10">
                                 <select class="form-control" id="country" ng-model="orgsView.searchParams.country"
                                         ng-change="orgsView.watchCountrySelection(orgsView.searchParams.country)">
-                                <option value="" selected>Select a country</option>
-                                <option ng-repeat="country in orgsView.countriesArr"
-                                        value="{{country.name}}">{{country.name}}</option>
+                                <option value="" selected>All countries</option>
+                                <option ng-repeat="country in orgsView.countriesArr" value="{{country.name}}"
+                                        ng-selected="country.name == orgsView.searchParams.country">
+                                    {{country.name}}
+                                </option>
                                 </select>
                             </div>
                         </div>

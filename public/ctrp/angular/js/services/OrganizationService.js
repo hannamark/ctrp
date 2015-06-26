@@ -26,7 +26,7 @@
             address2 : "",
             city : "",
             state_province : "",
-            country : "",
+            country : "United States", //default country
             email : "",
             postal_code : "",
 
@@ -60,7 +60,7 @@
                 },
 
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '13%'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: false, width: '17%'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '17%'},
                 {name: 'city', enableSorting: true, width: '15%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '15%'}
 
@@ -156,7 +156,9 @@
          */
         function watchCountrySelection() {
             return function(countryName) {
-                if (!!countryName) {
+                if (countryName) {
+
+                    console.log("countryName: " + countryName + ", calling GeoLocationService");
 
                     GeoLocationService.getStateListInCountry(countryName)
                         .then(function (response) {
