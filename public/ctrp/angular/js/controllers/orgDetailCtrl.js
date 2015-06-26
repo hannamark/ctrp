@@ -9,12 +9,11 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES',
-        '$scope', 'countryList', 'Common', 'sourceStatusObj'];
+        '$scope', 'countryList', 'Common', 'sourceStatusObj', '$state'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
-                           $scope, countryList, Common, sourceStatusObj) {
+                           $scope, countryList, Common, sourceStatusObj, $state) {
         var vm = this;
-
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList.data;
@@ -42,6 +41,7 @@
         /****************** implementations below ***************/
         function activate() {
             listenToStatesProvinces();
+            appendNewOrgFlag();
         }
 
 
@@ -65,7 +65,23 @@
             $scope.$on(MESSAGES.STATES_UNAVAIL, function() {
                 vm.states = [];
             })
+        } //listenToStatesProvinces
+
+
+        /**
+         * Append a 'new' key to the vm.curOrg to
+         * indicate this is a new organization, not an organization
+         * for editing/curating
+         *
+         */
+        function appendNewOrgFlag() {
+            if ($state.$current.name.indexOf('add') > -1) {
+                vm.curOrg.new = true;  //
+            }
         }
+
+
+
 
 
     }

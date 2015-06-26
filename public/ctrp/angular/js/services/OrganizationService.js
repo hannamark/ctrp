@@ -102,15 +102,15 @@
          * @returns {*}
          */
         function upsertOrg(orgObj) {
-            if (!!orgObj.id) {
-                var configObj = {}; //empty config
-                return PromiseService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + ".json", orgObj, configObj);
+            if (orgObj.new) {
+                //create a new org
+                $log.info('creating an organization: ' + JSON.stringify(orgObj));
+                return PromiseService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
             }
 
-            //create a new org
-            $log.info('creating an organization: ' + JSON.stringify(orgObj));
-            return PromiseService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
-
+            //update an existing organization
+            var configObj = {}; //empty config
+            return PromiseService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + ".json", orgObj, configObj);
         } //upsertOrg
 
 
