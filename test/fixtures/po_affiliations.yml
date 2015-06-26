@@ -6,10 +6,11 @@
 #  person_id                :integer
 #  organization_id          :integer
 #  po_affiliation_status_id :integer
-#  status_date              :date
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  uuid                     :string(255)
+#  effective_date           :datetime
+#  expiration_date          :datetime
 #
 # Indexes
 #

@@ -7,7 +7,6 @@
 #  name              :string(255)
 #  prefix            :string(255)
 #  suffix            :string(255)
-#  status_date       :date
 #  email             :string(255)
 #  phone             :string(255)
 #  source_status_id  :integer
