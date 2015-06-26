@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150622182536) do
+ActiveRecord::Schema.define(version: 20150626152204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,7 +118,6 @@ ActiveRecord::Schema.define(version: 20150622182536) do
     t.string   "name",              limit: 255
     t.string   "prefix",            limit: 255
     t.string   "suffix",            limit: 255
-    t.date     "status_date"
     t.string   "email",             limit: 255
     t.string   "phone",             limit: 255
     t.integer  "source_status_id"
@@ -145,10 +144,11 @@ ActiveRecord::Schema.define(version: 20150622182536) do
     t.integer  "person_id"
     t.integer  "organization_id"
     t.integer  "po_affiliation_status_id"
-    t.date     "status_date"
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.string   "uuid",                     limit: 255
+    t.datetime "effective_date"
+    t.datetime "expiration_date"
   end
 
   add_index "po_affiliations", ["organization_id"], name: "index_po_affiliations_on_organization_id", using: :btree
