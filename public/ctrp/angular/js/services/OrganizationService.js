@@ -47,9 +47,9 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
+                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '7%'},
                 {
-                    name: 'name', enableSorting: true, width: '30%',
+                    name: 'name', enableSorting: true, width: '20%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                  //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -59,10 +59,15 @@
 
                 },
 
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '13%'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '17%'},
-                {name: 'city', enableSorting: true, width: '15%'},
-                {name: 'state_province', displayName: 'State', enableSorting: true, width: '15%'}
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '13%'},
+                {name: 'city', enableSorting: true, width: '10%'},
+                {name: 'state_province', displayName: 'State', enableSorting: true, width: '12%'},
+                {name: 'email', enableSorting: true, width: '18%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'phone', enableSorting: true, width: '10%'}
 
             ]
         };
