@@ -22,7 +22,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  status_date: 2015-06-11
+  effective_date: 2015-06-11 09:45:13
+  expiration_date: 2015-06-11 09:45:13
 
 two:
-  status_date: 2015-06-11
+  effective_date: 2015-06-11 09:45:13
+  expiration_date: 2015-06-11 09:45:13

@@ -30,7 +30,6 @@ one:
   name: MyString
   prefix: MyString
   suffix: MyString
-  status_date: 2015-06-11
   email: MyString
   phone: MyString
 
@@ -39,6 +38,5 @@ two:
   name: MyString
   prefix: MyString
   suffix: MyString
-  status_date: 2015-06-11
   email: MyString
   phone: MyString
