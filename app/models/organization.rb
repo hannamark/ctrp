@@ -34,15 +34,19 @@ class Organization < ActiveRecord::Base
   has_many :name_aliases
   has_many :family_memberships
   has_many :families, through: :family_memberships
+  has_many :po_affiliations
+  has_many :people, through: :po_affiliations
   belongs_to :source_status
   belongs_to :source_context
   belongs_to :source_cluster
 
   validates :name, presence: true
 
-  # Scope definitions used for search
+  # Scope definitions for search
   scope :contains, -> (column, value) { where("organizations.#{column} ilike ?", "%#{value}%") }
+
   scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
+
   scope :matches_wc, -> (column, value) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
@@ -55,6 +59,7 @@ class Organization < ActiveRecord::Base
       where("organizations.#{column} ilike ?", "#{value}")
     end
   }
+
   scope :matches_name_wc, -> (value) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
@@ -67,7 +72,9 @@ class Organization < ActiveRecord::Base
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{value}", "#{value}")
     end
   }
+
   scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
+
   scope :with_family, -> (value) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
@@ -80,5 +87,14 @@ class Organization < ActiveRecord::Base
       joins(:families).where("families.name ilike ?", "#{value}")
     end
   }
-  scope :sort_by_col, -> (column, order) { order("#{column} #{order}") }
+
+  scope :sort_by_col, -> (column, order) {
+    if column == 'id'
+      order("#{column} #{order}")
+    elsif column == 'source_status'
+      joins("LEFT JOIN source_statuses ON source_statuses.id = organizations.source_status_id").order("source_statuses.name #{order}").group(:'source_statuses.name')
+    else
+      order("LOWER(organizations.#{column}) #{order}")
+    end
+  }
 end

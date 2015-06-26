@@ -8,12 +8,16 @@
     angular.module('ctrpApp')
         .factory('OrgService', OrgService);
 
-    OrgService.$inject = ['PromiseService', 'URL_CONFIGS', '$log'];
+    OrgService.$inject = ['PromiseService', 'URL_CONFIGS', 'MESSAGES', '$log',
+        'GeoLocationService', 'Common', '$rootScope'];
 
-    function OrgService(PromiseService, URL_CONFIGS, $log) {
+    function OrgService(PromiseService, URL_CONFIGS, MESSAGES, $log,
+                        GeoLocationService, Common, $rootScope) {
 
+        var statesOrProvinces = [];
         var initOrgSearchParams = {
             name : "",
+            alias: true,
             po_id : "",
             source_id : "",
             source_status : "",
@@ -30,16 +34,49 @@
             sort: "",
             order: "",
             rows: 10,
-            start: 1,
-            total: ""
+            start: 1
             }; //initial Organization Search Parameters
+
+        var gridOptions = {
+            enableColumnResizing: true,
+            rowHeight: 60,
+            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSize: 10,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            columnDefs: [
+                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
+                {
+                    name: 'name', enableSorting: true, width: '30%',
+                    //this does not work for .id
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                 //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
+                 //   '<a ui-sref="main.orgDetail({orgId: row.entity.id })">' +   //this is preferred, but does not work now.
+                 //   '{{row.entity.name}} ' +
+                    '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+
+                },
+
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '13%'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: false, width: '17%'},
+                {name: 'city', enableSorting: true, width: '15%'},
+                {name: 'state_province', displayName: 'State', enableSorting: true, width: '15%'}
+
+            ]
+        };
 
         var services = {
             getAllOrgs : getAllOrgs,
             getOrgById : getOrgById,
             upsertOrg : upsertOrg,
             searchOrgs : searchOrgs,
-            getInitialOrgSearchParams : getInitialOrgSearchParams
+            getInitialOrgSearchParams : getInitialOrgSearchParams,
+            getGridOptions : getGridOptions,
+            watchCountrySelection : watchCountrySelection,
+            getStatesOrProvinces : getStatesOrProvinces,
+            getSourceStatuses : getSourceStatuses
         };
 
         return services;
@@ -77,6 +114,8 @@
         } //upsertOrg
 
 
+
+
         /**
          *
          * @param searchParams, JSON object whose keys can include:
@@ -92,6 +131,8 @@
         } //searchOrgs
 
 
+
+
         /**
          * get initial paramater object for organizations search
          * @return initOrgSearchParams
@@ -99,6 +140,78 @@
         function getInitialOrgSearchParams() {
             return initOrgSearchParams;
         } //getInitialOrgSearchParams
+
+
+
+        function getGridOptions() {
+            return gridOptions;
+        }
+
+
+
+
+        /**
+         * Return a watcher for the selected country name
+         * @returns {Function}
+         */
+        function watchCountrySelection() {
+            return function(countryName) {
+                if (!!countryName) {
+
+                    GeoLocationService.getStateListInCountry(countryName)
+                        .then(function (response) {
+                            statesOrProvinces = response.data;
+
+                            //states or provinces are not available
+                            if (statesOrProvinces.length == 0) {
+                                broadcastMsg(MESSAGES.STATES_UNAVAIL, 'states or provinces are not available');
+                                return;
+                            }
+                            statesOrProvinces.sort(Common.a2zComparator());
+                            broadcastMsg(MESSAGES.STATES_AVAIL, 'come get your states or provinces');
+                        }).catch(function (err) {
+                            $log.info("error in retrieving states for country: " + countryName);
+                        });
+                } else {
+                    //countryName is not set
+                    broadcastMsg(MESSAGES.STATES_UNAVAIL, 'states or provinces are not available');
+                }
+            };
+        } //watchCountrySelection
+
+
+
+        /**
+         *
+         * @returns {Array}, sorted A-Z
+         */
+        function getStatesOrProvinces() {
+            return statesOrProvinces;
+        }
+
+
+
+        /**
+         * A helper function:
+         * Use $rootScope to broadcast messages
+         * @param msgCode
+         * @param msgContent
+         */
+        function broadcastMsg(msgCode, msgContent) {
+            $rootScope.$broadcast(msgCode, {content: msgContent});
+        } //broadcastMsg
+
+
+        /**
+         * retrieve source statuses from backend service
+         * @return {promise}
+         */
+        function getSourceStatuses() {
+            return PromiseService.getData(URL_CONFIGS.SOURCE_STATUSES);
+        } //getSourceStatuses
+
+
+
 
     }
 

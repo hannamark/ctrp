@@ -7,13 +7,18 @@
 
     angular.module('ctrpApp', [
         'ui.router',
+        'ngTouch',
         'Constants',
+        'CommonTools',
         'PromiseServiceModule',
         'LocalCacheModule',
         'ngAnimate',
         'toastr',
         'ui.bootstrap',
-        'datatables'
+        'datatables',
+        'ui.grid',
+        'ui.grid.pagination'
+
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
@@ -62,7 +67,17 @@
                 .state('main.organizations', {
                     url: '/organizations',
                     templateUrl: '/ctrp/angular/partials/organization_list.html',
-                    controller: 'organizationCtrl as orgsView'
+                    controller: 'organizationCtrl as orgsView',
+                    resolve: {
+                        GeoLocationService : 'GeoLocationService',
+                        OrgService : 'OrgService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
+                        },
+                        sourceStatusObj : function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        }
+                    }
                 })
 
                 .state('main.orgDetail', {
@@ -71,8 +86,15 @@
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
                         OrgService : 'OrgService',
+                        sourceStatusObj : function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        },
                         orgDetailObj : function($stateParams, OrgService) {
                             return OrgService.getOrgById($stateParams.orgId);
+                        },
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
                         }
                     } //resolve the promise and pass it to controller
                 })
@@ -82,10 +104,18 @@
                     templateUrl: '/ctrp/angular/partials/orgDetails.html',
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
+                        OrgService : 'OrgService',
+                        sourceStatusObj : function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        },
                         orgDetailObj: function($q) {
                             var deferred = $q.defer();
                             deferred.resolve(null);
                             return deferred.promise;
+                        },
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
                         }
                     }
                 })

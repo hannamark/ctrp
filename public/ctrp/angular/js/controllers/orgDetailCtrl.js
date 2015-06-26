@@ -8,14 +8,22 @@
     angular.module('ctrpApp')
         .controller('orgDetailCtrl', orgDetailCtrl);
 
-    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr'];
+    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES',
+        '$scope', 'countryList', 'Common', 'sourceStatusObj'];
 
-    function orgDetailCtrl(orgDetailObj, OrgService, toastr) {
-
+    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
+                           $scope, countryList, Common, sourceStatusObj) {
         var vm = this;
-        vm.curOrg = orgDetailObj || {name: ""}; //orgDetailObj.data;
+
+        vm.states = [];
+        vm.watchCountrySelection = OrgService.watchCountrySelection();
+        vm.countriesArr = countryList.data;
+        vm.countriesArr.sort(Common.a2zComparator());
+        vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
         vm.curOrg = vm.curOrg.data || vm.curOrg;
-        console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
+        vm.sourceStatusArr = sourceStatusObj.data;
+        vm.sourceStatusArr.sort(Common.a2zComparator());
+        //console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
 
         //update organization (vm.curOrg)
         vm.updateOrg = function() {
@@ -25,6 +33,40 @@
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
             });
         }; // updateOrg
+
+
+
+        activate()
+
+
+        /****************** implementations below ***************/
+        function activate() {
+            listenToStatesProvinces();
+        }
+
+
+
+        /**
+         * Listen to the message for availability of states or provinces
+         * for the selected country
+         */
+        function listenToStatesProvinces() {
+            if (vm.curOrg.country) {
+                vm.watchCountrySelection(vm.curOrg.country);
+            } else {
+                vm.curOrg.country = 'United States'; //default country
+                vm.watchCountrySelection(vm.curOrg.country);
+            }
+
+            $scope.$on(MESSAGES.STATES_AVAIL, function() {
+                vm.states = OrgService.getStatesOrProvinces();
+            });
+
+            $scope.$on(MESSAGES.STATES_UNAVAIL, function() {
+                vm.states = [];
+            })
+        }
+
 
     }
 

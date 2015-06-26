@@ -26,7 +26,8 @@
         /************** implementations below ************************/
 
         function getData(url) {
-            return $http.get(url);
+            // $http.get( url , { headers: { 'Cache-Control' : 'no-cache' } } );
+            return $http.get(url, {cache: false});
         }
 
 

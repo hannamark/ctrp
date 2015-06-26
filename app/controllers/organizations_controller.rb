@@ -67,10 +67,16 @@ class OrganizationsController < ApplicationController
     params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
+    # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
+    params[:alias] = true if !params.has_key?(:alias)
 
     # Scope chaining, reuse the scope definition
     @organizations = Organization.all
-    @organizations = @organizations.matches_name_wc(params[:name]) if params[:name].present?
+    if params[:alias]
+      @organizations = @organizations.matches_name_wc(params[:name]) if params[:name].present?
+    else
+      @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
+    end
     @organizations = @organizations.matches('id', params[:id]) if params[:id].present?
     @organizations = @organizations.matches_wc('source_id', params[:source_id]) if params[:source_id].present?
     @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
