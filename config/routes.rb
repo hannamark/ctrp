@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
     resources :source_contexts
 
+    resources :families
+
     resources :family_statuses
 
     resources :family_types
