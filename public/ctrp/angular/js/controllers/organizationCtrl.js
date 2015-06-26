@@ -35,7 +35,6 @@
                 vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
                     vm.searchParams.start = newPage;
                     vm.searchParams.rows = pageSize;
-                    vm.searchParams.name = vm.searchParams.name || "*";
                     vm.searchOrgs();
                 });
         }; //gridOptions
@@ -67,6 +66,7 @@
         function activate() {
             vm.searchOrgs();
             listenToStatesProvinces();
+            updateSearchResultsUponParamsChanges();
         } //activate
 
 
@@ -110,9 +110,7 @@
          * for the selected country
          */
         function listenToStatesProvinces() {
-            var currentCountry = vm.searchParams.country; // || "United States";
-            vm.watchCountrySelection(currentCountry);
-
+            vm.watchCountrySelection(vm.searchParams.country);
 
             $scope.$on(MESSAGES.STATES_AVAIL, function() {
                 console.log("states available for country: " + vm.searchParams.country);
@@ -121,7 +119,18 @@
 
             $scope.$on(MESSAGES.STATES_UNAVAIL, function() {
                 vm.states = [];
-            })
+            });
+        }  //listenToStatesProvinces
+
+
+        /**
+         * update search results while search parameters is changed
+         */
+        function updateSearchResultsUponParamsChanges() {
+            //can change vm.searchParams.country to vm.searchParams to watch all search parameters
+            $scope.$watch(function() {return vm.searchParams.country;}, function(newVal, oldval) {
+                vm.searchOrgs();
+            }, true);
         }
 
     }
