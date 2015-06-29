@@ -9,10 +9,10 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES',
-        '$scope', 'countryList', 'Common', 'sourceStatusObj', '$state'];
+        '$scope', 'countryList', 'Common', 'sourceStatusObj', '$state', '$modal'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
-                           $scope, countryList, Common, sourceStatusObj, $state) {
+                           $scope, countryList, Common, sourceStatusObj, $state, $modal) {
         var vm = this;
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
@@ -42,6 +42,11 @@
         function activate() {
             listenToStatesProvinces();
             appendNewOrgFlag();
+
+            //prepare the modal window for existing organizations
+            if (!vm.curOrg.new) {
+                prepareModal();
+            }
         }
 
 
@@ -81,6 +86,30 @@
         }
 
 
+        function prepareModal() {
+            vm.confirmDelete = function (size) {
+                var modalInstance = $modal.open({
+                    animation: true,
+                    templateUrl: 'delete_confirm_template.html',
+                    controller: 'ModalInstanceCtrl as vm',
+                    size: size,
+                    resolve: {
+                        orgId: function() {
+                            return vm.curOrg.id;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (selectedItem) {
+                    console.log("about to delete the orgDetail " + vm.curOrg.id);
+                    $state.go('main.organizations');
+                }, function () {
+                    console.log("operation canceled")
+                   // $state.go('main.orgDetail', {orgId: vm.curOrg.id});
+                });
+
+            } //prepareModal
+        }; //confirmDelete
 
 
 
