@@ -15,7 +15,11 @@ Rails.application.routes.draw do
 
     resources :source_contexts
 
-    resources :families
+    resources :families do
+      collection do
+        get ':id/organizations' => 'families#get_orgs'
+      end
+    end
 
     resources :family_statuses
 

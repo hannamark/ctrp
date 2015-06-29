@@ -61,6 +61,13 @@ class FamiliesController < ApplicationController
     end
   end
 
+  def get_orgs
+    @organizations = Family.find_by_id(params[:id]).organizations if Family.find_by_id(params[:id]).present?
+    respond_to do |format|
+      format.json { render 'organizations/index' }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_family
