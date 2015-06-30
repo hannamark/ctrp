@@ -28,7 +28,7 @@
     <script src="angular/third_party_libs/angular-animate/angular-animate.min.js"></script>
     <script src="angular/third_party_libs/angular-touch/angular-touch.min.js"></script>
     <script src="angular/third_party_libs/angular-toastr/dist/angular-toastr.tpls.js"></script>
-    <script src="angular/third_party_libs/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="angular/third_party_libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
 
     <!-- angular modules/dependencies from third parties -->
@@ -61,17 +61,16 @@
     <!-- controllers -->
     <script src="angular/js/controllers/organizationCtrl.js"></script>
     <script src="angular/js/controllers/orgDetailCtrl.js"></script>
+    <script src="angular/js/controllers/ModalInstanceCtrl.js"></script>
 
 </head>
 <body>
 <div class="row">
-    <div class="col-md-1"><!--empty column--></div>
-<div class="col-md-10">
+<div class="col-md-12">
     <div ng-include src="'angular/partials/header.html'"></div>
     <div ui-view></div>
     <div ng-include src="'angular/partials/footer.html'"></div>
 </div>
-    <div class="col-md-1"><!--empty column--></div>
 </div>
 
 

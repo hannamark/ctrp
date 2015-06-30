@@ -6,10 +6,11 @@
 #  person_id                :integer
 #  organization_id          :integer
 #  po_affiliation_status_id :integer
-#  status_date              :date
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  uuid                     :string(255)
+#  effective_date           :datetime
+#  expiration_date          :datetime
 #
 # Indexes
 #
@@ -21,7 +22,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  status_date: 2015-06-11
+  effective_date: 2015-06-11 09:45:13
+  expiration_date: 2015-06-11 09:45:13
 
 two:
-  status_date: 2015-06-11
+  effective_date: 2015-06-11 09:45:13
+  expiration_date: 2015-06-11 09:45:13

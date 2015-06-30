@@ -9,12 +9,11 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES',
-        '$scope', 'countryList', 'Common', 'sourceStatusObj'];
+        '$scope', 'countryList', 'Common', 'sourceStatusObj', '$state', '$modal'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
-                           $scope, countryList, Common, sourceStatusObj) {
+                           $scope, countryList, Common, sourceStatusObj, $state, $modal) {
         var vm = this;
-
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList.data;
@@ -42,6 +41,12 @@
         /****************** implementations below ***************/
         function activate() {
             listenToStatesProvinces();
+            appendNewOrgFlag();
+
+            //prepare the modal window for existing organizations
+            if (!vm.curOrg.new) {
+                prepareModal();
+            }
         }
 
 
@@ -65,7 +70,47 @@
             $scope.$on(MESSAGES.STATES_UNAVAIL, function() {
                 vm.states = [];
             })
+        } //listenToStatesProvinces
+
+
+        /**
+         * Append a 'new' key to the vm.curOrg to
+         * indicate this is a new organization, not an organization
+         * for editing/curating
+         *
+         */
+        function appendNewOrgFlag() {
+            if ($state.$current.name.indexOf('add') > -1) {
+                vm.curOrg.new = true;  //
+            }
         }
+
+
+        function prepareModal() {
+            vm.confirmDelete = function (size) {
+                var modalInstance = $modal.open({
+                    animation: true,
+                    templateUrl: 'delete_confirm_template.html',
+                    controller: 'ModalInstanceCtrl as vm',
+                    size: size,
+                    resolve: {
+                        orgId: function() {
+                            return vm.curOrg.id;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (selectedItem) {
+                    console.log("about to delete the orgDetail " + vm.curOrg.id);
+                    $state.go('main.organizations');
+                }, function () {
+                    console.log("operation canceled")
+                   // $state.go('main.orgDetail', {orgId: vm.curOrg.id});
+                });
+
+            } //prepareModal
+        }; //confirmDelete
+
 
 
     }

@@ -18,7 +18,6 @@
         'datatables',
         'ui.grid',
         'ui.grid.pagination'
-
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there

@@ -7,7 +7,6 @@
 #  name              :string(255)
 #  prefix            :string(255)
 #  suffix            :string(255)
-#  status_date       :date
 #  email             :string(255)
 #  phone             :string(255)
 #  source_status_id  :integer
@@ -31,7 +30,6 @@ one:
   name: MyString
   prefix: MyString
   suffix: MyString
-  status_date: 2015-06-11
   email: MyString
   phone: MyString
 
@@ -40,6 +38,5 @@ two:
   name: MyString
   prefix: MyString
   suffix: MyString
-  status_date: 2015-06-11
   email: MyString
   phone: MyString

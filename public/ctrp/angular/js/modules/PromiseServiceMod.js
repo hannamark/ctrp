@@ -17,7 +17,8 @@
             getData: getData,
             getDataV2: getDataV2,
             postDataExpectObj: postDataExpectObj,
-            updateObj: updateObj
+            updateObj: updateObj,
+            deleteObjFromBackend : deleteObjFromBackend
         };
 
         return services;
@@ -69,6 +70,16 @@
          */
         function updateObj(url, params, configObj) {
             return $http.put(url, params, configObj);
+        }
+
+
+        /**
+         *
+         * @param url (e.g. http://localhost/ctrp/organizations/15.json)
+         * @returns {HttpPromise}
+         */
+        function deleteObjFromBackend(url) {
+            return $http.delete(url);
         }
 
 
