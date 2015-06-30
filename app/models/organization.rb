@@ -55,7 +55,6 @@ class Organization < ActiveRecord::Base
   end
 
   def check_for_person
-    p po_affiliations.size
     unless po_affiliations.size == 0
       self.errors[:person] << "Cannot delete Organization while a Person is affiliated with it."
       return false
