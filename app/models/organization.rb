@@ -31,7 +31,7 @@
 class Organization < ActiveRecord::Base
   include BasicConcerns
 
-  has_many :name_aliases
+  has_many :name_aliases, dependent: :delete_all
   has_many :family_memberships
   has_many :families, through: :family_memberships
   has_many :po_affiliations
@@ -41,6 +41,26 @@ class Organization < ActiveRecord::Base
   belongs_to :source_cluster
 
   validates :name, presence: true
+
+  before_destroy :check_for_family
+  before_destroy :check_for_person
+
+  private
+
+  def check_for_family
+    unless family_memberships.size == 0
+      self.errors[:family] << "Cannot delete Organization while it belongs to a Family."
+      return false
+    end
+  end
+
+  def check_for_person
+    p po_affiliations.size
+    unless po_affiliations.size == 0
+      self.errors[:person] << "Cannot delete Organization while a Person is affiliated with it."
+      return false
+    end
+  end
 
   # Scope definitions for search
   scope :contains, -> (column, value) { where("organizations.#{column} ilike ?", "%#{value}%") }
