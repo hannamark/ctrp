@@ -32,7 +32,6 @@ class Family < ActiveRecord::Base
   private
 
   def check_for_organization
-    p family_memberships.size
     unless family_memberships.size == 0
       self.errors[:organization] << "Cannot delete Family while an Organization belongs to it."
       return false
