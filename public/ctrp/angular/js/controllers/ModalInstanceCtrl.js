@@ -41,7 +41,7 @@
                 } else {
                     $modalInstance.close('delete');
                 }
-            }, 2500);
+            }, 1500);
         }
 
     }
