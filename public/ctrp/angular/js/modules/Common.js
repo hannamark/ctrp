@@ -9,9 +9,9 @@
     angular.module('CommonTools', [])
         .factory('Common', Common);
 
-    Common.$inject = ['$q'];
+    Common.$inject = [];
 
-    function Common($q) {
+    function Common() {
 
         var commonTools = {
             a2zComparator : a2zComparator
