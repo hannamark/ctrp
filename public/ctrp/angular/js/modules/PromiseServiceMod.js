@@ -13,12 +13,6 @@
 
     function PromiseService($http, $q, $resource, $timeout, $log) {
 
-        var timeoutPromise = $timeout(function() {
-            $log.error("promise has been timed out");
-
-            defer.reject("Timed out");
-        });
-
         var services = {
             getData: getData,
             getDataV2: getDataV2,
