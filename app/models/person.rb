@@ -31,4 +31,20 @@ class Person < ActiveRecord::Base
   belongs_to :source_status
   belongs_to :source_context
   belongs_to :source_cluster
+
+  # Scope definitions for people search
+  scope :matches, -> (column, value) { where("people.#{column} = ?", "#{value}") }
+
+  scope :matches_wc, -> (column, value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      where("people.#{column} ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      where("people.#{column} ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      where("people.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      where("people.#{column} ilike ?", "#{value}")
+    end
+  }
 end
