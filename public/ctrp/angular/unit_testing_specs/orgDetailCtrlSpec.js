@@ -6,38 +6,43 @@
 
 describe('Testing Organization Details Controller', function() {
     var $controllerConstructor;
+    var $httpBackend;
     var scope;
     var Common;
 
-    beforeEach(module('Constants'));
-    beforeEach(module('LocalCacheModule'));
-    beforeEach(module('ctrpApp'));
-    beforeEach(module('CommonTools'));
-    beforeEach(module('PromiseServiceModule'));
-
-
-    beforeEach(inject(function($controller, $rootScope) {
-        $controllerConstructor = $controller;
-        scope = $rootScope.$new();
-
-        var $injector = angular.injector(['CommonTools']); //module name
-        /*
-        Common = function() {
-            return $injector.get('Common');
-        }
-
-        console.log('injected Common: ' + JSON.stringify(Object.keys(Common)));
-        */
-
-    }));
+    beforeEach(function() {
+       module('Constants');
+        module('LocalCacheModule');
+        module('CommonTools');
+        module('PromiseServiceModule');
+        module('ctrpApp');
+        inject(function($injector, $rootScope, Common, $httpBackend) {
+           // Common = $injector.get('Common');
+            $controllerConstructor = $injector.get('$controller');
+            $rootScope = $injector.get('$rootScope');
+            scope = $rootScope.$new();
+            Common.a2zComparator = function() {
+                var compare = function(a, b) {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    return 0;
+                };
+                return compare;
+            };
+            scope.$injector = ['Common'];
+        })
+    });
 
 
 
     it('should have three numbers in the orgDetailCtrl', function() {
 
-
         var ctrl = $controllerConstructor('orgDetailCtrl', {
-//            Common : Common,
+            Common : Common,
             $scope : scope,
             orgDetailObj : {data: ''},
             countryList: {data : ''},
