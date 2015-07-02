@@ -9,9 +9,15 @@
     angular.module('PromiseServiceModule', ['ngResource'])
         .factory('PromiseService', PromiseService);
 
-    PromiseService.$inject = ['$http', '$q', '$resource'];
+    PromiseService.$inject = ['$http', '$q', '$resource', '$timeout', '$log'];
 
-    function PromiseService($http, $q, $resource) {
+    function PromiseService($http, $q, $resource, $timeout, $log) {
+
+        var timeoutPromise = $timeout(function() {
+            $log.error("promise has been timed out");
+
+            defer.reject("Timed out");
+        });
 
         var services = {
             getData: getData,
@@ -27,6 +33,7 @@
         /************** implementations below ************************/
 
         function getData(url) {
+            var deferred = $q.defer();
             // $http.get( url , { headers: { 'Cache-Control' : 'no-cache' } } );
             return $http.get(url, {cache: false});
         }
@@ -81,6 +88,10 @@
         function deleteObjFromBackend(url) {
             return $http.delete(url);
         }
+
+
+
+
 
 
 
