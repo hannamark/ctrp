@@ -119,6 +119,12 @@
                     }
                 })
 
+                .state('main.sign_in', {
+                    url: '/sign_in',
+                    templateUrl: '/ctrp/angular/partials/sign_in.html',
+                    controller: 'userCtrl as userView'
+                })
+
 
 
         }).run(function() {

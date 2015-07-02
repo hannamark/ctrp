@@ -1,0 +1,30 @@
+<div class="row-fluid">
+    <form class="form-horizontal" role="form" novalidate>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Username:</label>
+            <div class="col-sm-9">
+                <input class="form-control" ng-model="userView.userObj.user.username">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3">Password:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control input-xs"  ng-model="userView.userObj.user.password">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Type:</label>
+            <div class="col-sm-9">
+                <input type="type" class="form-control input-xs"  ng-model="userView.userObj.type">
+            </div>
+        </div>
+
+        <div id="buttonBar" class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <input type="submit" class="btn btn-success" ng-click="userView.authenticate()" value="Save">
+                <input type="reset" class="btn btn-danger" value="Reset">
+            </div>
+        </div>
+    </form>
+</div>

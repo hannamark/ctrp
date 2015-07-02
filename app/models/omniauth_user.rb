@@ -37,28 +37,13 @@
 #  index_users_on_username              (username) UNIQUE
 #
 
-class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  #devise  :registerable,
-  #       :recoverable, :trackable, :validatable,
-   #      :confirmable, :lockable, :timeoutable, :omniauthable
-  devise  :confirmable, :timeoutable,  :validatable
-
-  ROLES = %i[ROLE_ADMIN ROLE_CURATOR]
-  validates :username, presence: true, uniqueness: { case_sensitive: false }
-
-  attr_accessor :password
-
-  def ldap_before_save
-    Rails.logger.info "Hi in ldap_before_save"
-    self.email = Devise::LDAP::Adapter.get_ldap_param(self.username,"mail").first
-    Rails.logger.info "Hi in ldap_before_save email = #{email.inspect}"
-  end
+class OmniauthUser < User
+  devise   :omniauthable, :registerable, :confirmable, :recoverable, :trackable, :rememberable
 
   def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
+    Rails.logger.info "HIII"
     data = access_token.info
-    user = User.where(:provider => access_token.provider, :uid => access_token.uid ).first
+    user = OmniauthUser.where(:provider => access_token.provider, :uid => access_token.uid ).first
     if user
       return user
     else
@@ -66,7 +51,7 @@ class User < ActiveRecord::Base
       if registered_user
         return registered_user
       else
-        user = User.new(provider:access_token.provider,
+        user = OmniauthUser.new(provider:access_token.provider,
                         username: data["email"],
                         email: data["email"],
                         uid: access_token.uid ,
@@ -79,13 +64,3 @@ class User < ActiveRecord::Base
     end
   end
 end
-
-=begin
-class LdapUser < User
-  devise :ldap_authenticatable, :rememberable, :trackable
-end
-
-class LocalUser < User
-  devise :database_authenticatable, :registerable, :confirmable, :recoverable, :trackable
-end
-=end

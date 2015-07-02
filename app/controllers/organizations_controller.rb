@@ -1,5 +1,11 @@
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+ # before_filter :get_user unless Rails.env.test?
+  #load_and_authorize_resource unless Rails.env.test?
+
+  respond_to :html, :json
+
 
   # GET /organizations
   # GET /organizations.json
@@ -54,14 +60,10 @@ class OrganizationsController < ApplicationController
   # DELETE /organizations/1
   # DELETE /organizations/1.json
   def destroy
+    @organization.destroy
     respond_to do |format|
-      if @organization.destroy
-        format.html { redirect_to organizations_url, notice: 'Organization was successfully destroyed.' }
-        format.json { head :no_content }
-      else
-        format.html { redirect_to organizations_url, alert: @organization.errors }
-        format.json { render json: @organization.errors, status: :unprocessable_entity  }
-      end
+      format.html { redirect_to organizations_url, notice: 'Organization was successfully destroyed.' }
+      format.json { head :no_content }
     end
   end
 
