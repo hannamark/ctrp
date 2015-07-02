@@ -13,6 +13,8 @@
 
     function PromiseService($http, $q, $resource, $timeout, $log) {
 
+        var timeout = true;
+        
         var services = {
             getData: getData,
             getDataV2: getDataV2,
