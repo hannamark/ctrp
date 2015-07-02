@@ -81,7 +81,8 @@
             getGridOptions : getGridOptions,
             watchCountrySelection : watchCountrySelection,
             getStatesOrProvinces : getStatesOrProvinces,
-            getSourceStatuses : getSourceStatuses
+            getSourceStatuses : getSourceStatuses,
+            deleteOrg : deleteOrg
         };
 
         return services;
@@ -216,6 +217,17 @@
         function getSourceStatuses() {
             return PromiseService.getData(URL_CONFIGS.SOURCE_STATUSES);
         } //getSourceStatuses
+
+
+        /**
+         * delete an organization with the given orgId
+         *
+         * @param orgId
+         * @returns {*}
+         */
+        function deleteOrg(orgId) {
+            return PromiseService.deleteObjFromBackend(URL_CONFIGS.AN_ORG + orgId + ".json");
+        }
 
 
 

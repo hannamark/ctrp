@@ -19,15 +19,6 @@ And I indicate to not search Aliases
 And I submit my search request
 Then the system should display all organizations that contain the name
 
-Scenario: As any CTRP User, I am able to search for organizations by aliases only
-Given I know the alias of the organization I wish to search for
-And I am logged in to CTRP
-And I have selected the option to search for an organization
-And I have selected the option to search only aliases
-When I provide the full or partial alias of the organization I wish to search for
-And I submit my search request
-Then the system should display all organizations that contain the alias
-
 Scenario: As any CTRP User, I am able to search for organizations by CTEP ID
 Given I know the CTEP ID of the organization I wish to search for
 And I am logged in to CTRP
