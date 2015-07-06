@@ -10,16 +10,16 @@
 (function () {
     'use strict';
 
-    angular.module('PromiseTimeoutServiceModule', ['ngResource', 'TimeoutHttpInterceptor', 'toastr'])
+    angular.module('PromiseTimeoutModule', ['ngResource', 'TimeoutHttpInterceptor', 'toastr'])
         .config(['$httpProvider', function($httpProvider) {
             $httpProvider.interceptors.push('timeoutHttpInterceptorService');
         }])
 
-        .factory('PromiseWithTimeoutService', PromiseWithTimeoutService);
+        .factory('PromiseTimeoutService', PromiseTimeoutService);
 
-    PromiseWithTimeoutService.$inject = ['$q', '$resource', '$timeout', '$log'];
+    PromiseTimeoutService.$inject = ['$q', '$resource', '$timeout', '$log'];
 
-    function PromiseWithTimeoutService($q, $resource, $timeout, $log) {
+    function PromiseTimeoutService($q, $resource, $timeout, $log) {
 
 
         var services = {
@@ -36,41 +36,23 @@
         /************** implementations below ************************/
 
         function getData(url) {
-            var deferred = $q.defer();
+            console.log("getData called in PromiseWithTimeoutService.js");
+           return function() {
+               var deferred = $q.defer();
 
-            $http.get(url).success(function(data) {
-                deferred.resolve(data);
-            }).error(function(error) {
-                console.log("received error: " + error.status);
-                if (error.status === 408) {
-                    //TODO: use toastr to raise error messages
-                    console.log("request has timed out");
-                    deferred.reject(error);
-                }
-            });
+               $http.get(url).success(function (data) {
+                   deferred.resolve(data);
+               }).error(function (error) {
+                   raiseErrorMessage(error);
+                   deferred.reject(error);
+               });
 
-            return deferred.promise;
+               return deferred.promise;
+           };
             // $http.get( url , { headers: { 'Cache-Control' : 'no-cache' } } );
             //return $http.get(url, {cache: false});
         }
 
-
-        /**
-         * Experimental only - for getting data with credentials
-         *
-         * @param url
-         * @returns promise
-         */
-        function getDataV2(url) {
-            return $http({
-                url: url,
-                method: 'GET',
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8'
-                }
-            });
-        }
 
 
         /**
@@ -79,18 +61,16 @@
          * @param params: JSON object
          */
         function postDataExpectObj(url, params) {
-            var deferred = $q.defer();
-
-            $http.post(url, params).success(function(data) {
-                deferred.resolve(data);
-            }).error(function(error) {
-                if (error.status === 408) {
-                    //TODO: use toastr to raise error messages
-                    console.log("request has timedout");
+            return function() {
+                var deferred = $q.defer();
+                $http.post(url, params).success(function (data) {
+                    deferred.resolve(data);
+                }).error(function (error) {
+                    raiseErrorMessage(error);
                     deferred.reject(error);
-                }
-            });
-            return deferred.promise;
+                });
+                return deferred.promise;
+            };
            // return $http.post(url, params);
         }
 
@@ -104,7 +84,19 @@
          * @returns {*}
          */
         function updateObj(url, params, configObj) {
-            return $http.put(url, params, configObj);
+
+            return function() {
+                var deferred = $q.defer();
+                $http.put(url, params, configObj).success(function(data) {
+                    deferred.resolve(data);
+                }).error(function(error) {
+                    raiseErrorMessage(error);
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            };
+
+            //return $http.put(url, params, configObj);
         }
 
 
@@ -118,6 +110,21 @@
         }
 
 
-    } //PromiseWithTimeoutService
+        /**
+         * Raise error message for AJAX calls
+         * @param error
+         * @param deferred
+         */
+        function raiseErrorMessage(error) {
+            var errorMsg = "Failed to retrieve data from service";
+            if (error.status === 408) {
+                errorMsg = "Retrieving data from service timed out";
+            }
+            toastr.error(errorMsg, 'Error');
+            console.log("request has timed out");
+        } //raiseErrorMessage
+
+
+    } //PromiseTimeoutService
 
 })();

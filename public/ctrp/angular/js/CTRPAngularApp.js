@@ -10,7 +10,7 @@
         'ngTouch',
         'Constants',
         'CommonTools',
-        'PromiseTimeoutServiceModule',
+        'PromiseTimeoutModule',
         'PromiseServiceModule',
         'LocalCacheModule',
         'ngAnimate',
@@ -87,14 +87,16 @@
                     resolve: {
                         OrgService : 'OrgService',
                         sourceStatusObj : function(OrgService) {
+                            console.log("getting source statuses!");
                             return OrgService.getSourceStatuses();
-                        },
-                        orgDetailObj : function($stateParams, OrgService) {
-                            return OrgService.getOrgById($stateParams.orgId);
                         },
                         GeoLocationService : 'GeoLocationService',
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
+                        },
+                        orgDetailObj : function($stateParams, OrgService) {
+                            console.log("getting org by id: " + $stateParams.orgId);
+                            return OrgService.getOrgById($stateParams.orgId);
                         }
                     } //resolve the promise and pass it to controller
                 })
