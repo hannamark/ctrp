@@ -119,6 +119,18 @@
                     }
                 })
 
+                .state('main.people', {
+                    url: '/people',
+                    templateUrl: '/ctrp/angular/partials/person_list.html',
+                    controller: 'personCtrl as personView',
+                    resolve: {
+                        OrgService : 'OrgService',
+                        sourceStatusObj : function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        }
+                    }
+                })
+
 
 
         }).run(function() {

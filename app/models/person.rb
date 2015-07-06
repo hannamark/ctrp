@@ -49,4 +49,14 @@ class Person < ActiveRecord::Base
       where("people.#{column} ilike ?", "#{value}")
     end
   }
+
+  scope :sort_by_col, -> (column, order) {
+    if column == 'id'
+      order("#{column} #{order}")
+    elsif column == 'source_status'
+      joins("LEFT JOIN source_statuses ON source_statuses.id = people.source_status_id").order("source_statuses.name #{order}").group(:'source_statuses.name')
+    else
+      order("LOWER(people.#{column}) #{order}")
+    end
+  }
 end

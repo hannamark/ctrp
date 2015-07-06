@@ -76,9 +76,8 @@ class PeopleController < ApplicationController
     @people = @people.matches_wc('email', params[:email]) if params[:email].present?
     @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
     @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
-
+    @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
   end
-
 
   private
     # Use callbacks to share common setup or constraints between actions.

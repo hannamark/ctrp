@@ -14,7 +14,10 @@
             'SEARCH_ORG' : '/ctrp/organizations/search.json',
             'COUNTRY_LIST' : '/ctrp/countries.json',
             'STATES_IN_COUNTRY' : '/ctrp/states.json?country=',
-            'SOURCE_STATUSES' : '/ctrp/source_statuses.json'
+            'SOURCE_STATUSES' : '/ctrp/source_statuses.json',
+            'PERSON_LIST': '/ctrp/people.json',
+            'A_PERSON': '/ctrp/person/',
+            'SEARCH_PERSON': '/ctrp/people/search.json'
         })
         .constant('MESSAGES', {
            'STATES_AVAIL' : 'states_or_provinces_available',
