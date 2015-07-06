@@ -10,6 +10,7 @@
         'ngTouch',
         'Constants',
         'CommonTools',
+        'PromiseTimeoutServiceModule',
         'PromiseServiceModule',
         'LocalCacheModule',
         'ngAnimate',

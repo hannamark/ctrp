@@ -2,15 +2,20 @@
  * Created by wangg5 on 7/2/15
  *
  * Improved PromiseService with $timeout and $resource
- *
+ * reference: https://developer.rackspace.com/blog/cancelling-ajax-requests-in-angularjs-applications/
  */
 
 
 
 (function () {
     'use strict';
-    angular.module('PromiseServiceModule', ['ngResource'])
-        .service('PromiseWithTimeoutService', PromiseWithTimeoutService);
+
+    angular.module('PromiseTimeoutServiceModule', ['ngResource', 'TimeoutHttpInterceptor', 'toastr'])
+        .config(['$httpProvider', function($httpProvider) {
+            $httpProvider.interceptors.push('timeoutHttpInterceptorService');
+        }])
+
+        .factory('PromiseWithTimeoutService', PromiseWithTimeoutService);
 
     PromiseWithTimeoutService.$inject = ['$q', '$resource', '$timeout', '$log'];
 
@@ -18,71 +23,99 @@
 
 
         var services = {
-            createResource: createResource
+            getData: getData,
+            getDataV2: getDataV2,
+            postDataExpectObj: postDataExpectObj,
+            updateObj: updateObj,
+            deleteObjFromBackend : deleteObjFromBackend
         };
 
         return services;
 
 
-        /**
-         *
-         * @param config (config.actions: get, post, update, delete, etc
-         *                config.options,
-         *                config.url
-         *                )
-         */
-        function createResource(config) {
-            var actions = config.actions || {};
-            var outstanding = [];
-            var resource = $resource(config.url, config.options, actions);
+        /************** implementations below ************************/
 
-            angular.forEach(Object.keys(actions), function(action, index) {
-                var method = resource[action];
-                resource[action] = function() {
-                    var deferred = $q.defer();
-                    var promise = method.apply(null, arguments).$promise; //promise object
+        function getData(url) {
+            var deferred = $q.defer();
 
-                    abortablePromiseWrap(promise, deferred, outstanding); //abort promise
-
-                    var abortFn = function() {
-                        deferred.reject('abort');
-                    };
-
-                    return {
-                      promise: deferred.promise,
-                      abort: abortFn
-                    };
-                };
+            $http.get(url).success(function(data) {
+                deferred.resolve(data);
+            }).error(function(error) {
+                console.log("received error: " + error.status);
+                if (error.status === 408) {
+                    //TODO: use toastr to raise error messages
+                    console.log("request has timed out");
+                    deferred.reject(error);
+                }
             });
 
-            resource.abortAll = function() {
-                _.invoke(outstanding, 'reject', 'Aborted all');
-                outstanding = [];
-            };
-
-            return resource;
-
-        } //createResource
-
-
-
-        function abortablePromiseWrap(promise, deferred, outstanding) {
-            promise.then(function() {
-                deferred.resolve.apply(deferred, arguments);
-            })
-                .catch(function() {
-                deferred.reject.apply(deferred, arguments);
-            })
-                .finally(function() {
-                    array.remove(outstanding, deferred);
-                });
-            outstanding.push(deferred);
+            return deferred.promise;
+            // $http.get( url , { headers: { 'Cache-Control' : 'no-cache' } } );
+            //return $http.get(url, {cache: false});
         }
 
 
+        /**
+         * Experimental only - for getting data with credentials
+         *
+         * @param url
+         * @returns promise
+         */
+        function getDataV2(url) {
+            return $http({
+                url: url,
+                method: 'GET',
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            });
+        }
 
 
+        /**
+         *
+         * @param url
+         * @param params: JSON object
+         */
+        function postDataExpectObj(url, params) {
+            var deferred = $q.defer();
 
+            $http.post(url, params).success(function(data) {
+                deferred.resolve(data);
+            }).error(function(error) {
+                if (error.status === 408) {
+                    //TODO: use toastr to raise error messages
+                    console.log("request has timedout");
+                    deferred.reject(error);
+                }
+            });
+            return deferred.promise;
+           // return $http.post(url, params);
+        }
+
+
+        /**
+         * Perform PUT request to update object
+         *
+         * @param url
+         * @param params
+         * @param configObj
+         * @returns {*}
+         */
+        function updateObj(url, params, configObj) {
+            return $http.put(url, params, configObj);
+        }
+
+
+        /**
+         *
+         * @param url (e.g. http://localhost/ctrp/organizations/15.json)
+         * @returns {HttpPromise}
+         */
+        function deleteObjFromBackend(url) {
+            return $http.delete(url);
+        }
 
 
     } //PromiseWithTimeoutService

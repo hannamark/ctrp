@@ -9,10 +9,10 @@
         .factory('OrgService', OrgService);
 
     OrgService.$inject = ['PromiseService', 'URL_CONFIGS', 'MESSAGES', '$log',
-        'GeoLocationService', 'Common', '$rootScope'];
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseWithTimeoutService'];
 
     function OrgService(PromiseService, URL_CONFIGS, MESSAGES, $log,
-                        GeoLocationService, Common, $rootScope) {
+                        GeoLocationService, Common, $rootScope, PromiseWithTimeoutService) {
 
         var statesOrProvinces = [];
         var initOrgSearchParams = {
@@ -98,6 +98,7 @@
 
         function getOrgById(orgId) {
             return PromiseService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
+           // return PromiseWithTimeoutService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
         } //getOrgById
 
 
