@@ -67,9 +67,6 @@ class PeopleController < ApplicationController
     params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
-    # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
-    params[:alias] = true if !params.has_key?(:alias)
-    # Scope chaining, reuse the scope definition
     @people = Person.all
     @people = @people.matches('id', params[:id]) if params[:id].present?
     @people = @people.mathes_wc('source_id',params[:source_id]) if params[:source_id].present?
@@ -78,6 +75,8 @@ class PeopleController < ApplicationController
     @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
     @people = @people.matches_wc('email', params[:email]) if params[:email].present?
     @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
+    @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
+
   end
 
 

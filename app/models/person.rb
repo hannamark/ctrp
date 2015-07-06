@@ -35,6 +35,8 @@ class Person < ActiveRecord::Base
   # Scope definitions for people search
   scope :matches, -> (column, value) { where("people.#{column} = ?", "#{value}") }
 
+  scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
+
   scope :matches_wc, -> (column, value) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
