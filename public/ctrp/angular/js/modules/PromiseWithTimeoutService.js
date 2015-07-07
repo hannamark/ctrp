@@ -11,48 +11,46 @@
     'use strict';
 
     angular.module('PromiseTimeoutModule', ['ngResource', 'TimeoutHttpInterceptor', 'toastr'])
-        .config(['$httpProvider', function($httpProvider) {
-            $httpProvider.interceptors.push('timeoutHttpInterceptorService');
+        .config(['$httpProvider', function ($httpProvider) {
+            // $httpProvider.interceptors.push('timeoutHttpInterceptorService');
         }])
 
-        .factory('PromiseTimeoutService', PromiseTimeoutService);
+        .service('PromiseTimeoutService', PromiseTimeoutService);
 
-    PromiseTimeoutService.$inject = ['$q', '$resource', '$timeout', '$log'];
+    PromiseTimeoutService.$inject = ['$q', '$resource', '$timeout', '$log', '$http', 'toastr'];
 
-    function PromiseTimeoutService($q, $resource, $timeout, $log) {
+    function PromiseTimeoutService($q, $resource, $timeout, $log, $http, toastr) {
 
 
-        var services = {
-            getData: getData,
-            getDataV2: getDataV2,
-            postDataExpectObj: postDataExpectObj,
-            updateObj: updateObj,
-            deleteObjFromBackend : deleteObjFromBackend
-        };
+        /*
+         var services = {
+         getData: getData,
+         getDataV2: getDataV2,
+         postDataExpectObj: postDataExpectObj,
+         updateObj: updateObj,
+         deleteObjFromBackend : deleteObjFromBackend
+         };
 
-        return services;
-
+         return services;
+         */
 
         /************** implementations below ************************/
 
-        function getData(url) {
+        this.getData = function (url) {
             console.log("getData called in PromiseWithTimeoutService.js");
-           return function() {
-               var deferred = $q.defer();
+            var deferred = $q.defer();
 
-               $http.get(url).success(function (data) {
-                   deferred.resolve(data);
-               }).error(function (error) {
-                   raiseErrorMessage(error);
-                   deferred.reject(error);
-               });
+            $http.get(url).success(function (data) {
+                deferred.resolve(data);
+            }).error(function (error) {
+                raiseErrorMessage(error);
+                deferred.reject(error);
+            });
 
-               return deferred.promise;
-           };
+            return deferred.promise;
             // $http.get( url , { headers: { 'Cache-Control' : 'no-cache' } } );
             //return $http.get(url, {cache: false});
-        }
-
+        }; //getData
 
 
         /**
@@ -60,19 +58,17 @@
          * @param url
          * @param params: JSON object
          */
-        function postDataExpectObj(url, params) {
-            return function() {
-                var deferred = $q.defer();
-                $http.post(url, params).success(function (data) {
-                    deferred.resolve(data);
-                }).error(function (error) {
-                    raiseErrorMessage(error);
-                    deferred.reject(error);
-                });
-                return deferred.promise;
-            };
-           // return $http.post(url, params);
-        }
+        this.postDataExpectObj = function (url, params) {
+            var deferred = $q.defer();
+            $http.post(url, params).success(function (data) {
+                deferred.resolve(data);
+            }).error(function (error) {
+                raiseErrorMessage(error);
+                deferred.reject(error);
+            });
+            return deferred.promise;
+            // return $http.post(url, params);
+        };
 
 
         /**
@@ -83,21 +79,18 @@
          * @param configObj
          * @returns {*}
          */
-        function updateObj(url, params, configObj) {
+        this.updateObj = function (url, params, configObj) {
 
-            return function() {
-                var deferred = $q.defer();
-                $http.put(url, params, configObj).success(function(data) {
-                    deferred.resolve(data);
-                }).error(function(error) {
-                    raiseErrorMessage(error);
-                    deferred.reject(error);
-                });
-                return deferred.promise;
-            };
-
+            var deferred = $q.defer();
+            $http.put(url, params, configObj).success(function (data) {
+                deferred.resolve(data);
+            }).error(function (error) {
+                raiseErrorMessage(error);
+                deferred.reject(error);
+            });
+            return deferred.promise;
             //return $http.put(url, params, configObj);
-        }
+        }; //updateObj
 
 
         /**
@@ -105,9 +98,9 @@
          * @param url (e.g. http://localhost/ctrp/organizations/15.json)
          * @returns {HttpPromise}
          */
-        function deleteObjFromBackend(url) {
+        this.deleteObjFromBackend = function (url) {
             return $http.delete(url);
-        }
+        }; //deleteObjFromBackend
 
 
         /**
