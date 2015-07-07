@@ -21,7 +21,7 @@
                                 <input type="text" id="organization_name" class="form-control"
                                        placeholder="Organization Name"
                                        ng-model="orgsView.searchParams.name"/>
-                                    <input type="checkbox" id="alias_search" ng-model="orgsView.searchParams.alias" /> Search Alias
+                                    <input type="checkbox" id="alias_search" id="name_alias" ng-model="orgsView.searchParams.alias" /> Search Alias
                             </div>
                         </div>
                         <!-- organization name ends -->
@@ -174,11 +174,11 @@
                 <div class="row-fluid">
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-8">
-                            <button type="submit" class="btn btn-default btn-success" ng-click="orgsView.searchOrgs()">
+                            <button type="submit" class="btn btn-default btn-success" id="submission_btn" ng-click="orgsView.searchOrgs()">
                                 Search
                             </button>
 
-                            <button type="reset" class="btn btn-default btn-danger" ng-click="orgsView.resetSearch()">
+                            <button type="reset" class="btn btn-default btn-danger" id="reset_btn" ng-click="orgsView.resetSearch()">
                                 Clear
                             </button>
                         </div>
