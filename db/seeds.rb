@@ -14,7 +14,7 @@ org = FamilyRelationship.create(code: 'ORG', name: 'Organizational')
 aff = FamilyRelationship.create(code: 'AFF', name: 'Affiliation')
 usa = "United state_provinces"
 
-
+if Organization.count  == 0
 org1 = Organization.create(id: 139020, source_id: 'MN021', name: 'University of Minnesota/Masonic Children\'s Hospital', source_status: source_act, source_context: ctep, address: '2450 Riverside Ave', city: 'Minneapolis', state_province: 'MN', country:usa)
 if !org1.new_record?
   org1.name_aliases.create(name: 'University of Minnesota Children\'s Hospital Fairview')
@@ -72,4 +72,5 @@ if !family2.new_record?
   family2.family_memberships.create(organization: org12, family_relationship: org)
   family2.family_memberships.create(organization: org13, family_relationship: org)
   family2.family_memberships.create(organization: org14, family_relationship: org)
+end
 end
