@@ -16,7 +16,7 @@
         var vm = this;
 
         vm.searchParams = PersonService.getInitialPersonSearchParams();
-        vm.sourceStatusArr = sourceStatusObj.data;
+        vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
 
         //ui-grid plugin options
