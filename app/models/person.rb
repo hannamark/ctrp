@@ -31,4 +31,45 @@ class Person < ActiveRecord::Base
   belongs_to :source_status
   belongs_to :source_context
   belongs_to :source_cluster
+
+  validates :name, presence: true
+
+  before_destroy :check_for_organization
+
+  private
+
+  def check_for_organization
+    unless po_affiliations.size == 0
+      self.errors[:organization] << "Cannot delete Person while it belongs to an Organization."
+      return false
+    end
+  end
+
+  # Scope definitions for people search
+  scope :matches, -> (column, value) { where("people.#{column} = ?", "#{value}") }
+
+  scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
+
+  scope :matches_wc, -> (column, value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      where("people.#{column} ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      where("people.#{column} ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      where("people.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      where("people.#{column} ilike ?", "#{value}")
+    end
+  }
+
+  scope :sort_by_col, -> (column, order) {
+    if column == 'id'
+      order("#{column} #{order}")
+    elsif column == 'source_status'
+      joins("LEFT JOIN source_statuses ON source_statuses.id = people.source_status_id").order("source_statuses.name #{order}").group(:'source_statuses.name')
+    else
+      order("LOWER(people.#{column}) #{order}")
+    end
+  }
 end
