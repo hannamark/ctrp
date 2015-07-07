@@ -16,7 +16,7 @@
             'STATES_IN_COUNTRY' : '/ctrp/states.json?country=',
             'SOURCE_STATUSES' : '/ctrp/source_statuses.json',
             'PERSON_LIST': '/ctrp/people.json',
-            'A_PERSON': '/ctrp/person/',
+            'A_PERSON': '/ctrp/people/',
             'SEARCH_PERSON': '/ctrp/people/search.json'
         })
         .constant('MESSAGES', {

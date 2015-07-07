@@ -42,7 +42,7 @@
                 {name: 'id', enableSorting: true, displayName: 'PO ID', width: '7%'},
                 {name: 'name', enableSorting: true, width: '20%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '13%'},
@@ -86,10 +86,10 @@
         /**
          * Update or insert a new person
          *
-         * @param orgObj
+         * @param personObj
          * @returns {*}
          */
-        function upsertPerson(orgObj) {
+        function upsertPerson(personObj) {
             if (personObj.new) {
                 //create a new person
                 $log.info('creating an person: ' + JSON.stringify(personObj));

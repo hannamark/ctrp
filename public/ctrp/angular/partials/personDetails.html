@@ -1,0 +1,87 @@
+<div class="row-fluid">
+    <script type="text/ng-template" id="delete_confirm_template.html">
+        <div class="modal-header">
+            <h3 class="modal-title">{{vm.modalTitle}}</h3>
+        </div>
+        <div class="modal-body">
+            <div ng-show="vm.deletionStatus == ''">
+                <strong>This will be a permanent deletion</strong>
+            </div>
+            <div ng-show="vm.deletionStatus != ''">
+                <strong>{{vm.deletionStatus}}</strong>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" ng-click="vm.ok()">Delete Now</button>
+            <button class="btn btn-primary" ng-click="vm.cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <form class="form-horizontal" role="form" novalidate>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Name:</label>
+            <div class="col-sm-9">
+            <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.name" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">PO ID:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control input-xs"  ng-model="personDetailView.curPerson.id" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Source ID:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control input-xs"  ng-model="personDetailView.curPerson.source_id" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Source Status:</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="source_status" ng-model="personDetailView.curPerson.source_status_id">
+                    <option value="">Select a status</option>
+                    <option ng-repeat="status in personDetailView.sourceStatusArr"
+                            value="{{status.id}}" ng-selected="personDetailView.curPerson.source_status_id == status.id">
+                        {{status.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Prefix:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control input-xs"  ng-model="personDetailView.curPerson.prefix">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Suffix:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control input-xs"  ng-model="personDetailView.curPerson.suffix">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Email:</label>
+            <div class="col-sm-9">
+                <input type="email" class="form-control input-xs"  ng-model="personDetailView.curPerson.email" type="email" placeholder="Email">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Phone:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control input-xs"  ng-model="personDetailView.curPerson.phone" type="text" placeholder="Phone">
+            </div>
+        </div>
+
+
+        <div id="buttonBar" class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()" value="Save">
+                <input type="reset" class="btn btn-danger" value="Reset">
+                <button ng-hide="personDetailView.curPerson.new" class="btn btn-warning" ng-click="personDetailView.confirmDelete('sm')">
+                    Delete This Person
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
