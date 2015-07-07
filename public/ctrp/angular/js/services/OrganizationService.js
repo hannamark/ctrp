@@ -8,11 +8,12 @@
     angular.module('ctrpApp')
         .factory('OrgService', OrgService);
 
-    OrgService.$inject = ['PromiseService', 'URL_CONFIGS', 'MESSAGES', '$log',
+    OrgService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log',
         'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService'];
 
-    function OrgService(PromiseService, URL_CONFIGS, MESSAGES, $log,
-                        GeoLocationService, Common, $rootScope, PromiseTimeoutService) {
+    function OrgService(URL_CONFIGS, MESSAGES, $log,
+                        GeoLocationService, Common, $rootScope,
+                        PromiseTimeoutService) {
 
         var statesOrProvinces = [];
         var initOrgSearchParams = {
@@ -217,7 +218,7 @@
          * @return {promise}
          */
         function getSourceStatuses() {
-            return PromiseService.getData(URL_CONFIGS.SOURCE_STATUSES);
+            return PromiseTimeoutService.getData(URL_CONFIGS.SOURCE_STATUSES);
         } //getSourceStatuses
 
 
@@ -228,7 +229,7 @@
          * @returns {*}
          */
         function deleteOrg(orgId) {
-            return PromiseService.deleteObjFromBackend(URL_CONFIGS.AN_ORG + orgId + ".json");
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.AN_ORG + orgId + ".json");
         }
 
 

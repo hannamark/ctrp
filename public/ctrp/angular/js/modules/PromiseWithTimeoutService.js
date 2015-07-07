@@ -21,21 +21,12 @@
 
     function PromiseTimeoutService($q, $resource, $timeout, $log, $http, toastr) {
 
-
-        /*
-         var services = {
-         getData: getData,
-         getDataV2: getDataV2,
-         postDataExpectObj: postDataExpectObj,
-         updateObj: updateObj,
-         deleteObjFromBackend : deleteObjFromBackend
-         };
-
-         return services;
+        /**
+         * get data from service
+         *
+         * @param url
+         * @returns {*}
          */
-
-        /************** implementations below ************************/
-
         this.getData = function (url) {
             console.log("getData called in PromiseWithTimeoutService.js");
             var deferred = $q.defer();
@@ -48,8 +39,6 @@
             });
 
             return deferred.promise;
-            // $http.get( url , { headers: { 'Cache-Control' : 'no-cache' } } );
-            //return $http.get(url, {cache: false});
         }; //getData
 
 
@@ -67,7 +56,6 @@
                 deferred.reject(error);
             });
             return deferred.promise;
-            // return $http.post(url, params);
         };
 
 
@@ -89,7 +77,6 @@
                 deferred.reject(error);
             });
             return deferred.promise;
-            //return $http.put(url, params, configObj);
         }; //updateObj
 
 
