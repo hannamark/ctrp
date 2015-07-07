@@ -34,6 +34,17 @@ class Person < ActiveRecord::Base
 
   validates :name, presence: true
 
+  before_destroy :check_for_organization
+
+  private
+
+  def check_for_organization
+    unless po_affiliations.size == 0
+      self.errors[:organization] << "Cannot delete Person while it belongs to an Organization."
+      return false
+    end
+  end
+
   # Scope definitions for people search
   scope :matches, -> (column, value) { where("people.#{column} = ?", "#{value}") }
 
