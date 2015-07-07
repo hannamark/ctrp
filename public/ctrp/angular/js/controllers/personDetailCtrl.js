@@ -14,7 +14,7 @@
     function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES,
                            $scope, Common, sourceStatusObj, $state, $modal) {
         var vm = this;
-        vm.curPerson = personDetailObj || {name: "", country: ""}; //personDetailObj.data;
+        vm.curPerson = personDetailObj || {name: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj.data;
         vm.sourceStatusArr.sort(Common.a2zComparator());

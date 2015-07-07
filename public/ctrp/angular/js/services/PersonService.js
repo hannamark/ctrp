@@ -39,20 +39,20 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '7%'},
+                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
                 {name: 'name', enableSorting: true, width: '20%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '13%'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '10%'},
                 {name: 'prefix', enableSorting: true, width: '10%'},
-                {name: 'suffix', enableSorting: true, width: '12%'},
+                {name: 'suffix', enableSorting: true, width: '10%'},
                 {name: 'email', enableSorting: true, width: '18%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phone', enableSorting: true, width: '10%'}
+                {name: 'phone', enableSorting: true, width: '12%'}
             ]
         };
 

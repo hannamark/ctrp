@@ -32,6 +32,8 @@ class Person < ActiveRecord::Base
   belongs_to :source_context
   belongs_to :source_cluster
 
+  validates :name, presence: true
+
   # Scope definitions for people search
   scope :matches, -> (column, value) { where("people.#{column} = ?", "#{value}") }
 
