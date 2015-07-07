@@ -16,7 +16,7 @@
         var vm = this;
         vm.curPerson = personDetailObj || {name: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
-        vm.sourceStatusArr = sourceStatusObj.data;
+        vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         //console.log('received personDetailObj: ' + JSON.stringify(personDetailObj));
 
