@@ -12,7 +12,7 @@ source_act = SourceStatus.create(code: 'ACT', name: 'Active')
 source_pend = SourceStatus.create(code: 'PEND', name: 'Pending')
 org = FamilyRelationship.create(code: 'ORG', name: 'Organizational')
 aff = FamilyRelationship.create(code: 'AFF', name: 'Affiliation')
-usa = "United state_provinces"
+usa = "United States"
 
 if Organization.count  == 0
 org1 = Organization.create(id: 139020, source_id: 'MN021', name: 'University of Minnesota/Masonic Children\'s Hospital', source_status: source_act, source_context: ctep, address: '2450 Riverside Ave', city: 'Minneapolis', state_province: 'MN', country:usa)
