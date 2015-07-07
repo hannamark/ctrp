@@ -22,7 +22,7 @@
         vm.countriesArr.sort(Common.a2zComparator());
         vm.states = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
-        vm.sourceStatusArr = sourceStatusObj.data;
+        vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
 
         //ui-grid plugin options
@@ -44,9 +44,10 @@
                 // vm.searchParams.name = vm.searchParams.name || "*";
                 //console.log("searching params: " + JSON.stringify(vm.searchParams));
                 OrgService.searchOrgs(vm.searchParams).then(function (data) {
-                  //  console.log("received search results: " + JSON.stringify(data.data));
-                    vm.gridOptions.data = data.data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
-                    vm.gridOptions.totalItems = data.data.total;
+                    // console.log("received search results: " + JSON.stringify(data));
+                    vm.gridOptions.data = data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
+                    vm.gridOptions.totalItems = data.total;
+                    vm.gridHeight = vm.gridOptions.rowHeight * vm.gridOptions.data.length;
                 }).catch(function (err) {
                     console.log('search organizations failed');
                 });
