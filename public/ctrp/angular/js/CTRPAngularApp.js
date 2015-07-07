@@ -15,7 +15,7 @@
         'ngAnimate',
         'toastr',
         'ui.bootstrap',
-        'datatables',
+//        'datatables',
         'ui.grid',
         'ui.grid.pagination'
     ])
