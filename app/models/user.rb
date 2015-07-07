@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   #devise  :registerable,
   #       :recoverable, :trackable, :validatable,
    #      :confirmable, :lockable, :timeoutable, :omniauthable
-  devise  :confirmable, :timeoutable,  :validatable
+  devise   :timeoutable,  :validatable
 
   ROLES = %i[ROLE_ADMIN ROLE_CURATOR]
   validates :username, presence: true, uniqueness: { case_sensitive: false }
