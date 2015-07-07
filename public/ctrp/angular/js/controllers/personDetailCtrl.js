@@ -63,7 +63,7 @@
                 var modalInstance = $modal.open({
                     animation: true,
                     templateUrl: 'delete_confirm_template.html',
-                    controller: 'ModalInstanceCtrl as vm',
+                    controller: 'ModalInstancePersonCtrl as vm',
                     size: size,
                     resolve: {
                         personId: function() {
@@ -80,8 +80,8 @@
                    // $state.go('main.personDetail', {personId: vm.curPerson.id});
                 });
 
-            } //prepareModal
-        }; //confirmDelete
+            } //confirmDelete
+        }; //prepareModal
 
 
 
