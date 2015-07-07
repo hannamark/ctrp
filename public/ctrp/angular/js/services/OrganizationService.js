@@ -9,10 +9,10 @@
         .factory('OrgService', OrgService);
 
     OrgService.$inject = ['PromiseService', 'URL_CONFIGS', 'MESSAGES', '$log',
-        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService'];
+        'GeoLocationService', 'Common', '$rootScope'];
 
     function OrgService(PromiseService, URL_CONFIGS, MESSAGES, $log,
-                        GeoLocationService, Common, $rootScope, PromiseTimeoutService) {
+                        GeoLocationService, Common, $rootScope) {
 
         var statesOrProvinces = [];
         var initOrgSearchParams = {
@@ -92,14 +92,14 @@
         /*********************** implementations *****************/
 
         function getAllOrgs() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.ORG_LIST);
+            return PromiseService.getData(URL_CONFIGS.ORG_LIST);
         } //getAllOrgs
 
 
         function getOrgById(orgId) {
             console.log("calling getOrgById in OrgService");
             //return PromiseService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
-            return PromiseTimeoutService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
+            return PromiseService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
         } //getOrgById
 
 
@@ -113,12 +113,12 @@
             if (orgObj.new) {
                 //create a new org
                 $log.info('creating an organization: ' + JSON.stringify(orgObj));
-                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
+                return PromiseService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
             }
 
             //update an existing organization
             var configObj = {}; //empty config
-            return PromiseTimeoutService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + ".json", orgObj, configObj);
+            return PromiseService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + ".json", orgObj, configObj);
         } //upsertOrg
 
 
