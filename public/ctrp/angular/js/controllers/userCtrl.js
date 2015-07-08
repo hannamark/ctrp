@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .controller('userCtrl', userCtrl);
 
-    userCtrl.$inject = ['$scope', '$http', '$window'];
+    userCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$state', '$timeout'];
 
-    function userCtrl($scope, $http, $window) {
+    function userCtrl($scope, $http, $window, toastr, $state, $timeout) {
         var vm = this;
         vm.userObj = {
             "user": {
@@ -28,6 +28,15 @@
                 //console.log('status: ' + data.status);
                 console.log('data token: ' + data.data.token);
                 $window.sessionStorage.token = data.data.token;
+                if (data.data.status == 200) {
+                    toastr.success('Login is successful', 'Logged In!');
+                    $timeout(function() {
+                        $state.go('main.organizations')
+                    }, 1500);
+                } else {
+                    toastr.error("Login failed", "Failed to Login");
+                }
+
             }).cach(function(err) {
                 console.log('error status: ' + err.status);
             }).finally(function(complete) {
