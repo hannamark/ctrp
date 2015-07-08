@@ -54,10 +54,14 @@ class PeopleController < ApplicationController
   # DELETE /people/1
   # DELETE /people/1.json
   def destroy
-    @person.destroy
     respond_to do |format|
-      format.html { redirect_to people_url, notice: 'Person was successfully destroyed.' }
-      format.json { head :no_content }
+      if @person.destroy
+        format.html { redirect_to people_url, notice: 'Person was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to people_url, alert: @person.errors }
+        format.json { render json: @person.errors, status: :unprocessable_entity  }
+      end
     end
   end
 
@@ -69,16 +73,15 @@ class PeopleController < ApplicationController
     params[:order] = 'asc' if params[:order].blank?
     @people = Person.all
     @people = @people.matches('id', params[:id]) if params[:id].present?
-    @people = @people.mathes_wc('source_id',params[:source_id]) if params[:source_id].present?
+    @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
     @people = @people.matches_wc('name', params[:name]) if params[:name].present?
     @people = @people.matches_wc('prefix', params[:prefix]) if params[:prefix].present?
     @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
     @people = @people.matches_wc('email', params[:email]) if params[:email].present?
     @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
     @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
-
+    @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
   end
-
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -88,6 +91,6 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:source_id, :name, :suffix,:prefix, :email, :phone)
+      params.require(:person).permit(:source_id, :name, :suffix,:prefix, :email, :phone, :source_status_id)
     end
 end
