@@ -67,7 +67,9 @@ class SessionsController < Devise::SessionsController
         sign_in(user_class, self.resource)
         #respond_with self.resource, :location => after_sign_in_path_for(self.resource)
         # TODO REMOVE !!!
-          render json: { token: create_token(user) }
+        token = create_token({:user_id => self.resource.id})
+        Rails.logger.info "Result of warden authenticate JWT token = #{token.inspect}"
+        render json: { token: token}
         #respond_with self.resource, :location => podemo_path
      end
     rescue
@@ -100,9 +102,9 @@ class SessionsController < Devise::SessionsController
 
   private
 
-  def create_token(user)
+  def create_token(token_data)
     secret = "secret" # must be an environment variable
-    JWT.encode(user, secret)
+    JWT.encode(token_data, secret)
   end
   #- See more at: http://blog.moove-it.com/token-based-authentication-json-web-tokenjwt/#sthash.QlxioFfO.dpuf
 end

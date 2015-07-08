@@ -28,19 +28,40 @@ class ApplicationController < ActionController::Base
 
     #token = params["token"]
     #decoded_token = JWT.decode token, "secret"
-    #Rails.logger.info decoded_token
-    if local_user_signed_in?
-      Rails.logger.info "Hi In authenticate_user! local"
-      authenticate_local_user!
-    elsif ldap_user_signed_in?
-      Rails.logger.info "Hi In authenticate_user! ldap"
-      authenticate_ldap_user!
+    token = request.headers['Authorization']
+    ## If the App was accessed with the Angular UI, it will have a token, else the token will be nil
+    if token.nil?
+      if local_user_signed_in?
+        Rails.logger.info "Hi In authenticate_user! local"
+        authenticate_local_user!
+      elsif ldap_user_signed_in?
+        Rails.logger.info "Hi In authenticate_user! ldap"
+        authenticate_ldap_user!
+      else
+        Rails.logger.info "Hi In authenticate_user! omniauth"
+        authenticate_user!
+      end
+      Rails.logger.info "Hi In authenticate_user!!! params = #{params.inspect} USER_ID = #{session[:user_id]}"
     else
-      Rails.logger.info "Hi In authenticate_user! omniauth"
-      authenticate_user!
+
+      ## This code is written for LDAP users only
+      ## TODO - change
+      Rails.logger.info "token = " + token
+      decoded_token = JWT.decode token, "secret"
+      user_id =  decoded_token[0]["user_id"]
+      user = User.find_by_id(user_id)
+      Rails.logger.info "User retrieved from token = #{user.inspect}"
+      Rails.logger.info "User session = #{session[user_id].inspect}"
+      current_user = user
+      current_ldap_user = user
+      begin
+        sign_in user, :event => :authentication
+      rescue => e
+        e.backtrace
+        end
+      Rails.logger.info "User session = #{session[user_id].inspect}"
     end
-    Rails.logger.info "Hi In authenticate_user!!! params = #{params.inspect} USER_ID = #{session[:user_id]}"
-  end
+ end
 =begin
 # DECODE the token and get the JWT user id. Check is the user is valid by checking the DB. If the user exists, the current_user method
 # will return the User found in the database. After implementing this logic, we can override the "current_user" method

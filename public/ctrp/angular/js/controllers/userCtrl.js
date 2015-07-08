@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .controller('userCtrl', userCtrl);
 
-    userCtrl.$inject = ['$scope', '$http'];
+    userCtrl.$inject = ['$scope', '$http', '$window'];
 
-    function userCtrl($scope, $http) {
+    function userCtrl($scope, $http, $window) {
         var vm = this;
         vm.userObj = {
             "user": {
@@ -24,7 +24,10 @@
         //
         vm.authenticate = function() {
             $http.post('sign_in', vm.userObj).then(function(data) {
-                console.log('status: ' + data.status);
+                console.log("Received data: " + JSON.stringify(data));
+                //console.log('status: ' + data.status);
+                console.log('data token: ' + data.data.token);
+                $window.sessionStorage.token = data.data.token;
             }).cach(function(err) {
                 console.log('error status: ' + err.status);
             }).finally(function(complete) {

@@ -17,7 +17,8 @@
         'ui.bootstrap',
         'datatables',
         'ui.grid',
-        'ui.grid.pagination'
+        'ui.grid.pagination',
+        'AuthService'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
@@ -26,18 +27,22 @@
                 $httpProvider.defaults.headers.common = {};
             }
 
+            $httpProvider.interceptors.push('AuthInterceptor');
+
             //disable IE ajax request caching
             $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
             $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
             $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
+            //interceptor below:
+            $httpProvider.defaults.useXDomain = true;
+            delete $httpProvider.defaults.headers.common['X-Requested-With'];
         }])
 
-        .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+        .config(function ($stateProvider, $urlRouterProvider) {
 
-            $httpProvider.defaults.useXDomain = true;
-            //  $httpProvider.defaults.withCredentials = true;
-            delete $httpProvider.defaults.headers.common['X-Requested-With'];
-            //    $httpProvider.interceptors.push('AuthInterceptor');
+
+
 
             $urlRouterProvider.otherwise('/main/welcome');
 
