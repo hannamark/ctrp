@@ -54,10 +54,14 @@ class FamiliesController < ApplicationController
   # DELETE /families/1
   # DELETE /families/1.json
   def destroy
-    @family.destroy
     respond_to do |format|
-      format.html { redirect_to families_url, notice: 'Family was successfully destroyed.' }
-      format.json { head :no_content }
+      if @family.destroy
+        format.html { redirect_to families_url, notice: 'Family was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to families_url, alert: @family.errors }
+        format.json { render json: @family.errors, status: :unprocessable_entity  }
+      end
     end
   end
 

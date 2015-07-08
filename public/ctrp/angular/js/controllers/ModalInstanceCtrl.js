@@ -13,14 +13,17 @@
 
     function ModalInstanceCtrl($modalInstance, OrgService, orgId, $timeout) {
         var vm = this;
+        vm.modalTitle = "Please confirm";
         vm.deletionStatus = "";
         vm.ok = function() {
             OrgService.deleteOrg(orgId).then(function(data) {
                 console.log("delete data returned: " + JSON.stringify(data));
-                timeoutCloseModal("Deletion Successful", data.status); //204 for successful deletion
+                vm.modalTitle = "Deletion is successful";
+                timeoutCloseModal("Permanently deleted", data.status); //204 for successful deletion
             }).catch(function(err) {
-                console.log("failed to delete " + err.status);
-                timeoutCloseModal("Failed to delete", err.status);
+                vm.modalTitle = "Deletion failed";
+                console.log("failed to delete the organization, error code: " + err.status);
+                timeoutCloseModal(err.data || "Failed to delete", err.status);
             });
         };
 
@@ -30,7 +33,7 @@
 
 
         function timeoutCloseModal (deletionStatus, httpStatusCode) {
-            vm.deletionStatus = deletionStatus;
+            vm.deletionStatus = JSON.stringify(deletionStatus);
             $timeout(function() {
                 if (httpStatusCode > 206) {
                     //failed deletion is treated the same as cancel
@@ -38,7 +41,7 @@
                 } else {
                     $modalInstance.close('delete');
                 }
-            }, 2500);
+            }, 1500);
         }
 
     }

@@ -8,11 +8,12 @@
     angular.module('ctrpApp')
         .factory('OrgService', OrgService);
 
-    OrgService.$inject = ['PromiseService', 'URL_CONFIGS', 'MESSAGES', '$log',
-        'GeoLocationService', 'Common', '$rootScope'];
+    OrgService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log',
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService'];
 
-    function OrgService(PromiseService, URL_CONFIGS, MESSAGES, $log,
-                        GeoLocationService, Common, $rootScope) {
+    function OrgService(URL_CONFIGS, MESSAGES, $log,
+                        GeoLocationService, Common, $rootScope,
+                        PromiseTimeoutService) {
 
         var statesOrProvinces = [];
         var initOrgSearchParams = {
@@ -97,7 +98,9 @@
 
 
         function getOrgById(orgId) {
-            return PromiseService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
+            console.log("calling getOrgById in OrgService");
+            //return PromiseService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
+            return PromiseTimeoutService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
         } //getOrgById
 
 
@@ -111,12 +114,12 @@
             if (orgObj.new) {
                 //create a new org
                 $log.info('creating an organization: ' + JSON.stringify(orgObj));
-                return PromiseService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
             }
 
             //update an existing organization
             var configObj = {}; //empty config
-            return PromiseService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + ".json", orgObj, configObj);
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + ".json", orgObj, configObj);
         } //upsertOrg
 
 
@@ -132,7 +135,7 @@
          */
         function searchOrgs(searchParams) {
             if (!!searchParams) {
-                return PromiseService.postDataExpectObj(URL_CONFIGS.SEARCH_ORG, searchParams);
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_ORG, searchParams);
             }
         } //searchOrgs
 
@@ -215,7 +218,7 @@
          * @return {promise}
          */
         function getSourceStatuses() {
-            return PromiseService.getData(URL_CONFIGS.SOURCE_STATUSES);
+            return PromiseTimeoutService.getData(URL_CONFIGS.SOURCE_STATUSES);
         } //getSourceStatuses
 
 
@@ -226,7 +229,7 @@
          * @returns {*}
          */
         function deleteOrg(orgId) {
-            return PromiseService.deleteObjFromBackend(URL_CONFIGS.AN_ORG + orgId + ".json");
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.AN_ORG + orgId + ".json");
         }
 
 

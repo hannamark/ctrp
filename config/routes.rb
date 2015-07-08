@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+
   scope "/ctrp" do
     devise_for :users
 
@@ -30,6 +32,13 @@ Rails.application.routes.draw do
     resources :family_memberships
 
     resources :comments
+
+    resources :people do
+      collection do
+        get 'search'
+        post 'search'
+      end
+    end
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'

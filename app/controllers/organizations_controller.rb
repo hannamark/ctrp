@@ -54,10 +54,14 @@ class OrganizationsController < ApplicationController
   # DELETE /organizations/1
   # DELETE /organizations/1.json
   def destroy
-    @organization.destroy
     respond_to do |format|
-      format.html { redirect_to organizations_url, notice: 'Organization was successfully destroyed.' }
-      format.json { head :no_content }
+      if @organization.destroy
+        format.html { redirect_to organizations_url, notice: 'Organization was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to organizations_url, alert: @organization.errors }
+        format.json { render json: @organization.errors, status: :unprocessable_entity  }
+      end
     end
   end
 
