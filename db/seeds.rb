@@ -74,3 +74,13 @@ if !family2.new_record?
   family2.family_memberships.create(organization: org14, family_relationship: org)
 end
 end
+
+person1=Person.create(id:1699192, source_id:'33303', name:'Ajeet Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
+person2=Person.create(id:7857011, source_id:'518786', name:'Alicia Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
+person3=Person.create(id:3567738, source_id:'515762', name:'Amy M. Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
+person4=Person.create(id:2944806, source_id:'41379', name:'Amy L. Jonson', prefix:'Dr.', suffix:'', email:'jonso001@umn.edu', phone:'612-624-2620')
+person5=Person.create(id:1832268, source_id:'34482', name:'Badrinath R. Konety', prefix:'Dr.', suffix:'', email:'brkonety@umn.edu', phone:'612-624-2620')
+person6=Person.create(id:10161459, source_id:'46120', name:'Christine Holmberg', prefix:'Dr.', suffix:'', email:'christine.holmberg@charite.de', phone:'-1152')
+person7=Person.create(id:366649, source_id:'11640', name:'Christopher Yancey Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
+person8=Person.create(id:2026171, source_id:'35504', name:'Daniel Evan Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
+person9=Person.create(id:672434, source_id:'19844', name:'David Marc Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
