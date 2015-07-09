@@ -114,7 +114,7 @@
             vm.watchCountrySelection(vm.searchParams.country);
 
             $scope.$on(MESSAGES.STATES_AVAIL, function() {
-                console.log("states available for country: " + vm.searchParams.country);
+                //console.log("states available for country: " + vm.searchParams.country);
                 vm.states = OrgService.getStatesOrProvinces();
             });
 
@@ -133,6 +133,8 @@
                 vm.searchOrgs();
             }, true);
         }
+
+
 
     }
 
