@@ -16,9 +16,9 @@
                               countryList, Common, MESSAGES, sourceStatusObj) {
 
         var vm = this;
-
+        // console.log("countryList: " + JSON.stringify(countryList));
         vm.watchCountrySelection = OrgService.watchCountrySelection();
-        vm.countriesArr = countryList.data;
+        vm.countriesArr = countryList;
         vm.countriesArr.sort(Common.a2zComparator());
         vm.states = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();

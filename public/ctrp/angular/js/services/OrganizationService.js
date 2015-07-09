@@ -171,7 +171,7 @@
 
                     GeoLocationService.getStateListInCountry(countryName)
                         .then(function (response) {
-                            statesOrProvinces = response.data;
+                            statesOrProvinces = response;
 
                             //states or provinces are not available
                             if (statesOrProvinces.length == 0) {
