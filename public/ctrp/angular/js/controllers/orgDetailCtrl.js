@@ -14,6 +14,7 @@
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
                            $scope, countryList, Common, sourceStatusObj, $state, $modal) {
         var vm = this;
+        vm.name = "tony";
         vm.numbers = [1, 2, 3];
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
