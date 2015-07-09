@@ -37,7 +37,7 @@
 
 
 
-        activate()
+        activate();
 
 
         /****************** implementations below ***************/
