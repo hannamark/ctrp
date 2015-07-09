@@ -59,7 +59,9 @@
                         <div class="form-group">
                             <label for="source_status" class="control-label col-sm-2">Source Status: </label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="source_status" ng-model="orgsView.searchParams.source_status">
+                                <select class="form-control" id="source_status"
+                                        ng-model="orgsView.searchParams.source_status"
+                                        ng-change="orgsView.searchOrgs()">
                                     <option value="">Select a status</option>
                                     <option ng-repeat="status in orgsView.sourceStatusArr" value="{{status.name}}">{{status.name}}</option>
                                 </select>
@@ -138,7 +140,7 @@
                             <label for="state" class="control-label col-sm-2">State:</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="state" ng-model="orgsView.searchParams.state_province">
-                                    <option value="">Select a state or province</option>
+                                    <option value="">All states/provinces</option>
                                     <option ng-repeat="state in orgsView.states track by state.name"
                                             value="{{state.name}}">{{state.name}}
                                     </option>
