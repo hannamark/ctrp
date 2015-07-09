@@ -140,7 +140,7 @@
                             <label for="state" class="control-label col-sm-2">State:</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="state" ng-model="orgsView.searchParams.state_province">
-                                    <option value="">Select a state or province</option>
+                                    <option value="">All states/provinces</option>
                                     <option ng-repeat="state in orgsView.states track by state.name"
                                             value="{{state.name}}">{{state.name}}
                                     </option>
