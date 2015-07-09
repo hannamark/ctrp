@@ -11,14 +11,7 @@ describe('Testing Organization Details Controller', function() {
     var commoner;
     var ctrl;
 
-    beforeEach(
-        module('ctrpApp')
-        //module('Constants');
-        //module('LocalCacheModule');
-        //module('CommonTools');
-        //module('PromiseServiceModule');
-        //module('PromiseTimeoutModule');
-    );
+    beforeEach(module('ctrpApp'));
     beforeEach(module('CommonTools'));
     beforeEach(module('Constants'));
     beforeEach(module('LocalCacheModule'));
@@ -30,19 +23,6 @@ describe('Testing Organization Details Controller', function() {
             $rootScope = $injector.get('$rootScope');
             scope = $rootScope.$new();
         spyOn(commoner, 'a2zComparator');
-
-        commoner.a2zComparator = function() {
-            return function(a, b) {
-                if (a.name > b.name) {
-                    return 1;
-                }
-                if (a.name < b.name) {
-                    return -1;
-                }
-
-                return 0;
-            }
-        };
 
         //build the controller
         ctrl = $controllerConstructor('orgDetailCtrl', {
@@ -58,6 +38,9 @@ describe('Testing Organization Details Controller', function() {
 
     it('should have three numbers in the orgDetailCtrl', function() {
         expect(ctrl.numbers.length).toBe(3);
+    });
+
+    it('name should be tony in the orgDetailCtrl', function() {
         expect(ctrl.name).toBe("tony");
     });
 
