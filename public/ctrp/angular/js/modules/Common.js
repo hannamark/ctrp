@@ -7,43 +7,33 @@
     'use strict';
 
     angular.module('CommonTools', [])
-        .factory('Common', Common);
+        .service('Common', Common);
 
     Common.$inject = [];
 
-    function Common() {
+    function Common() {}
 
-        var commonTools = {
-            a2zComparator : a2zComparator
-        };
+    /********************* implementations below ****************************/
 
-
-        return commonTools;
-
-
-        /********************* implementations below ****************************/
-
-        /**
-         * A-Z Comparator for sorting an array of JSON objects
-         * by the 'name' field in each JSON object
-         *
-         */
-        function a2zComparator() {
-            var compare = function(a, b) {
-                if (a.name > b.name) {
-                    return 1;
-                }
-                if (a.name < b.name) {
-                    return -1;
-                }
-
-                return 0;
+    /**
+     * A-Z Comparator for sorting an array of JSON objects
+     * by the 'name' field in each JSON object
+     *
+     */
+    Common.prototype.a2zComparator = function() {
+        var compare = function(a, b) {
+            if (a.name > b.name) {
+                return 1;
+            }
+            if (a.name < b.name) {
+                return -1;
             }
 
-            return compare;
-        } //a2zComparator
+            return 0;
+        }
 
+        return compare;
+    } //a2zComparator
 
-    }
 
 })();

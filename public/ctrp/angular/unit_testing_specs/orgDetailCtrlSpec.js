@@ -13,26 +13,31 @@ describe('Testing Organization Details Controller', function() {
     beforeEach(function() {
        module('Constants');
         module('LocalCacheModule');
-        module('CommonTools');
+       // module('CommonTools');
         module('PromiseServiceModule');
+        module('PromiseTimeoutModule');
         module('ctrpApp');
         inject(function($injector, $rootScope, Common, $httpBackend) {
-           // Common = $injector.get('Common');
+            Common = $injector.get('Common');
             $controllerConstructor = $injector.get('$controller');
             $rootScope = $injector.get('$rootScope');
             scope = $rootScope.$new();
-            Common.a2zComparator = function() {
-                var compare = function(a, b) {
-                    if (a.name < b.name) {
-                        return -1;
-                    }
-                    if (a.name > b.name) {
-                        return 1;
-                    }
-                    return 0;
-                };
-                return compare;
-            };
+
+            //function Common() {}
+            //Common.prototype.a2zComparator = function() {
+            //    var compare = function(a, b) {
+            //        if (a.name < b.name) {
+            //            return -1;
+            //        }
+            //        if (a.name > b.name) {
+            //            return 1;
+            //        }
+            //        return 0;
+            //    };
+            //    return compare;
+            //};
+//            Common = new Common();
+            spyOn(Common, 'a2zComparator');
             scope.$injector = ['Common'];
         })
     });
@@ -40,8 +45,7 @@ describe('Testing Organization Details Controller', function() {
 
 
     it('should have three numbers in the orgDetailCtrl', function() {
-
-        var ctrl = $controllerConstructor('orgDetailCtrl', {
+         var ctrl = $controllerConstructor('orgDetailCtrl', {
             Common : Common,
             $scope : scope,
             orgDetailObj : {data: ''},
