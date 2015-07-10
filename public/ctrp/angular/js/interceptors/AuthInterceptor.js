@@ -2,9 +2,9 @@
     'use strict';
     angular.module('ctrpApp')
         .factory('AuthInterceptor', AuthInterceptor);
-    AuthInterceptor.$inject = ['$window', '$timeout'];
+    AuthInterceptor.$inject = ['$window', '$timeout', 'LocalCacheService'];
     //function AuthInterceptor(AuthTokenService) {
-    function AuthInterceptor($window, $timeout) {
+    function AuthInterceptor($window, $timeout, LocalCacheService) {
         var methodObj = {
             request : request,
             response : response
@@ -13,7 +13,7 @@
         /*************** implementations below ****************/
         function request(config) {
             //var token = AuthTokenService.getToken();
-            var token = $window.sessionStorage.token;
+            var token = LocalCacheService.getCacheWithKey("token"); //$window.localStorage.token;
             console.log("Printing token")
             console.log(token)
             if (token) {

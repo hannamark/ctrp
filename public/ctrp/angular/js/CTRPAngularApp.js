@@ -126,14 +126,7 @@
                 .state('main.sign_in', {
                     url: '/sign_in',
                     templateUrl: '/ctrp/angular/partials/sign_in.html',
-                    controller: 'userCtrl as userView',
-                    resolve: {
-                        logOut: function($q) {
-                            var deferred = $q.defer();
-                            deferred.resolve(null);
-                            return deferred.promise;
-                        }
-                    }
+                    controller: 'userCtrl as userView'
                 });
                 //.state('main.sign_out', {
                 //    url: '/sign_out',
