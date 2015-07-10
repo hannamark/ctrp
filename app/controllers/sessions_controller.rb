@@ -92,7 +92,7 @@ class SessionsController < Devise::SessionsController
     Rails.logger.info "params = #{request.params} "
 
 
-    user = User.find_by_username(request.params['user']["username"])
+    user = User.find_by_username(request.params["username"])
     Rails.logger.info "user = #{user.inspect} "
         ##User.find_by_id(user_id)User.where(username: request.params['user']["username"])
     sign_in user, :bypass => true
