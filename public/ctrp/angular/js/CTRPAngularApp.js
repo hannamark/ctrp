@@ -134,20 +134,20 @@
                             return deferred.promise;
                         }
                     }
-                })
-                .state('main.sign_out', {
-                    url: '/sign_out',
-                    controller: 'userCtrl',
-                    resolve: {
-                        logOut: function($q) {
-                            var deferred = $q.defer();
-                            //config.headers.Authorization = '';
-                            deferred.resolve({data: "logout"});
-                            return deferred.promise;
-                        }
-                    }
-
-                })
+                });
+                //.state('main.sign_out', {
+                //    url: '/sign_out',
+                //    controller: 'userCtrl',
+                //    resolve: {
+                //        logOut: function($q) {
+                //            var deferred = $q.defer();
+                //            //config.headers.Authorization = '';
+                //            deferred.resolve({data: "logout"});
+                //            return deferred.promise;
+                //        }
+                //    }
+                //
+                //})
 
 
         }).run(function() {
