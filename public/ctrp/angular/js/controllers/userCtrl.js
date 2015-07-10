@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .controller('userCtrl', userCtrl);
 
-    userCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$state', '$timeout'];
+    userCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$state', '$timeout', 'LocalCacheService'];
 
-    function userCtrl($scope, $http, $window, toastr, $state, $timeout) {
+    function userCtrl($scope, $http, $window, toastr, $state, $timeout, LocalCacheService) {
         var vm = this;
         vm.userObj = {
             "user": {
@@ -24,11 +24,13 @@
         //
         vm.authenticate = function() {
             $http.post('sign_in', vm.userObj).then(function(data) {
-                console.log("Received data: " + JSON.stringify(data));
+                console.log("Received data in authenticate: " + JSON.stringify(data));
                 //console.log('status: ' + data.status);
                 console.log('data token: ' + data.data.token);
-                $window.sessionStorage.token = data.data.token;
+                // $window.sessionStorage.token = data.data.token;
                 if (data.data.status == 200) {
+                    LocalCacheService.cacheItem("token", data.data.token);
+                    LocalCacheService.cacheItem("username", vm.userObj.user.username);
                     toastr.success('Login is successful', 'Logged In!');
                     $timeout(function() {
                         $state.go('main.organizations')
@@ -51,6 +53,24 @@
             });
             */
         }; // authenticate
+
+
+        vm.logOut = function() {
+            var username = LocalCacheService.getCacheWithKey("username");
+            console.log("username: " + username + " to be logged out...");
+            $http.post('/ctrp/sign_out', {username: username}).success(function(res) {
+                toastr.success("Successfully logged out", "Logged Out!");
+                if (res.data.status == 200) {
+                    console.log("logout response status is 200");
+                }
+                $timeout(function() {
+                    $state.go('main.organizations');
+                }, 1500);
+            }).error(function(err) {
+                toastr.error("Error in log out", "Error");
+                console.log("error in logout");
+            });
+        }
 
 
     }
