@@ -8,14 +8,34 @@
     angular.module('ctrpApp')
         .controller('userCtrl', userCtrl);
 
-    userCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$state', '$timeout'];
+    userCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$state', '$timeout', 'logOut'];
 
-    function userCtrl($scope, $http, $window, toastr, $state, $timeout) {
+    function userCtrl($scope, $http, $window, toastr, $state, $timeout, logOut) {
         var vm = this;
+
+        if (!!logOut) {
+            $http.post('/ctrp/sign_out', {username: $window.sessionStorage.username}).success(function(res) {
+                console.log("received response for logout: " + JSON.stringify(res));
+                if (res.data.status == 200) {
+                    console.log("res status is 200");
+                    $timeout(function() {
+                        $window.sessionStorage.token = '';
+                        $window.sessionStorage.username = '';
+                        console.log("Token reset");
+                        toastr.success("You are logged out", "Logged out");
+                        $state.go('main.organizations');
+                    }, 1500);
+                }
+            }).error(function(err) {
+                console.log("error in logging user out " + new Date());
+            });
+
+        }
+
         vm.userObj = {
             "user": {
-                username: vm.username,
-                password: vm.password
+                username: '',
+                password: ''
             },
             "type": vm.type
         };
@@ -27,9 +47,10 @@
                 console.log("Received data: " + JSON.stringify(data));
                 //console.log('status: ' + data.status);
                 console.log('data token: ' + data.data.token);
-                $window.sessionStorage.token = data.data.token;
                 if (data.data.status == 200) {
-                    toastr.success('Login is successful', 'Logged In!');
+                    $window.sessionStorage.username = vm.userObj.user.username;
+                    $window.sessionStorage.token = data.data.token;
+                    toastr.success('Login is successful', 'Logged In!'); //retrieve: vm.userObj.user.username
                     $timeout(function() {
                         $state.go('main.organizations')
                     }, 1500);

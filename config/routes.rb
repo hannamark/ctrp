@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     devise_scope :local_user do
       get 'sign_in' => 'sessions#new', :as => :new_session
       post 'sign_in' => 'sessions#create', :as => :create_session
-      delete 'sign_out' => 'sessions#destroy', :as => :destroy_session
+      post 'sign_out' => 'sessions#destroy', :as => :destroy_session
     end
 
   end
