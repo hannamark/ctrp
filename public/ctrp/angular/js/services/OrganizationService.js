@@ -167,8 +167,7 @@
             return function(countryName) {
                 if (countryName) {
 
-                    console.log("countryName: " + countryName + ", calling GeoLocationService");
-
+                   // console.log("countryName: " + countryName + ", calling GeoLocationService");
                     GeoLocationService.getStateListInCountry(countryName)
                         .then(function (response) {
                             statesOrProvinces = response;
