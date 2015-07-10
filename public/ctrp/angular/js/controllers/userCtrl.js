@@ -47,24 +47,11 @@
                 console.log("Received data in authenticate: " + JSON.stringify(data));
                 //console.log('status: ' + data.status);
                 console.log('data token: ' + data.data.token);
-<<<<<<< HEAD
-                // $window.sessionStorage.token = data.data.token;
-||||||| merged common ancestors
-                $window.sessionStorage.token = data.data.token;
-=======
->>>>>>> 158c920fccfd510cea7e3da53a2aeb6eccc57736
+
                 if (data.data.status == 200) {
-<<<<<<< HEAD
                     LocalCacheService.cacheItem("token", data.data.token);
                     LocalCacheService.cacheItem("username", vm.userObj.user.username);
                     toastr.success('Login is successful', 'Logged In!');
-||||||| merged common ancestors
-                    toastr.success('Login is successful', 'Logged In!');
-=======
-                    $window.sessionStorage.username = vm.userObj.user.username;
-                    $window.sessionStorage.token = data.data.token;
-                    toastr.success('Login is successful', 'Logged In!'); //retrieve: vm.userObj.user.username
->>>>>>> 158c920fccfd510cea7e3da53a2aeb6eccc57736
                     $timeout(function() {
                         $state.go('main.organizations')
                     }, 1500);
