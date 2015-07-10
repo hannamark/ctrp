@@ -17,8 +17,7 @@
         'ui.bootstrap',
         'datatables',
         'ui.grid',
-        'ui.grid.pagination',
-        'AuthService'
+        'ui.grid.pagination'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
@@ -127,9 +126,28 @@
                 .state('main.sign_in', {
                     url: '/sign_in',
                     templateUrl: '/ctrp/angular/partials/sign_in.html',
-                    controller: 'userCtrl as userView'
+                    controller: 'userCtrl as userView',
+                    resolve: {
+                        logOut: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        }
+                    }
                 })
+                .state('main.sign_out', {
+                    url: '/sign_out',
+                    controller: 'userCtrl',
+                    resolve: {
+                        logOut: function($q) {
+                            var deferred = $q.defer();
+                            //config.headers.Authorization = '';
+                            deferred.resolve({data: "logout"});
+                            return deferred.promise;
+                        }
+                    }
 
+                })
 
 
         }).run(function() {

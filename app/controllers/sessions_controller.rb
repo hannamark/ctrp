@@ -1,6 +1,5 @@
 class SessionsController < Devise::SessionsController
-  LDAP_USER = "LDAP"
-  LOCAL_USER = "LOCAL"
+  skip_before_filter :verify_signed_out_user
 
   def create
 
@@ -58,7 +57,7 @@ class SessionsController < Devise::SessionsController
           #raise "Error in Authentication"
           flash[:error] = error_string
          # return redirect_to new_session_path
-          render "/podemo/sign_in"
+          render "/ctrp/sign_in"
           return
         end
         # Now we know the user is authenticated, sign them in to the site with Devise
@@ -66,7 +65,6 @@ class SessionsController < Devise::SessionsController
         Rails.logger.info "#{self.resource.inspect}"
         sign_in(user_class, self.resource)
         #respond_with self.resource, :location => after_sign_in_path_for(self.resource)
-        # TODO REMOVE !!!
         token = create_token({:user_id => self.resource.id})
         Rails.logger.info "Result of warden authenticate JWT token = #{token.inspect}"
         render json: { token: token}
@@ -90,6 +88,21 @@ class SessionsController < Devise::SessionsController
 
   def destroy
     Rails.logger.info "HI IN DESTROY"
+    Rails.logger.info "session = #{session.inspect}"
+    Rails.logger.info "params = #{request.params} "
+
+
+    user = User.find_by_username(request.params['user']["username"])
+    Rails.logger.info "user = #{user.inspect} "
+        ##User.find_by_id(user_id)User.where(username: request.params['user']["username"])
+    sign_in user, :bypass => true
+    Rails.logger.info "after sign_in user = #{user.inspect} "
+    sign_out(user)
+    Rails.logger.info "after sign_out user = #{user.inspect} "
+#    token = request.headers['Authorization']
+#    unless token.nil?
+#      Rails.logger.error ""
+#    end
     # Destroy session
     method(:destroy).super_method.call
   end

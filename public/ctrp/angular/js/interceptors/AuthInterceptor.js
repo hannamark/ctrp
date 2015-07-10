@@ -1,10 +1,10 @@
 (function() {
     'use strict';
-    angular.module('AuthService', [])
+    angular.module('ctrpApp')
         .factory('AuthInterceptor', AuthInterceptor);
-    AuthInterceptor.$inject = ['$window'];
+    AuthInterceptor.$inject = ['$window', '$timeout'];
     //function AuthInterceptor(AuthTokenService) {
-    function AuthInterceptor($window) {
+    function AuthInterceptor($window, $timeout) {
         var methodObj = {
             request : request,
             response : response
@@ -30,7 +30,16 @@
          * @returns {*}
          */
         function response(response) {
+            console.log("Printing response");
+            console.log(JSON.stringify(response));
+
+            //$timeout(function() {
+               // console.log("access denied!");
+                //toastr.error("You need to log in", "Access Denied");
+                //$state.go('main.sign_in');
+            //}, 2000);
             return response;
         } //response
+
     }
 }());
