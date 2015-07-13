@@ -47,5 +47,5 @@ describe('Testing Organization Details Controller', function() {
     it('name should be tony in the orgDetailCtrl', function() {
         expect(ctrl.name).toBe("tony");
     });
-    
+
 });
