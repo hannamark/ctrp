@@ -11,7 +11,8 @@
 
     function timeoutHttpInterceptorService($rootScope, $q) {
         var services = {
-            request : request
+            request : request,
+            response : response
         };
 
         return services;
@@ -19,9 +20,15 @@
         /********* implementations below ***********/
 
         function request(config) {
-            config.timeout = 2000;
+            config.timeout = 15000; //15 seconds timeout
             return config;
-        }
+        } //request
+
+
+        function response(res) {
+            console.log("status code of the http response: " + res.status);
+            return res;
+        } //response
     }
 
 })();
