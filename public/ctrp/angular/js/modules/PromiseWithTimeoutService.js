@@ -12,7 +12,7 @@
 
     angular.module('PromiseTimeoutModule', ['ngResource', 'TimeoutHttpInterceptor', 'toastr'])
         .config(['$httpProvider', function ($httpProvider) {
-            // $httpProvider.interceptors.push('timeoutHttpInterceptorService');
+             $httpProvider.interceptors.push('timeoutHttpInterceptorService');
         }])
 
         .service('PromiseTimeoutService', PromiseTimeoutService);
@@ -28,7 +28,7 @@
          * @returns {*}
          */
         this.getData = function (url) {
-            console.log("getData called in PromiseWithTimeoutService.js");
+           // $log.info("getData called in PromiseWithTimeoutService.js");
             var deferred = $q.defer();
 
             $http.get(url).success(function (data) {
