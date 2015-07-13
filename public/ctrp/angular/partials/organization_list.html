@@ -9,15 +9,14 @@
         </div>
         <div class="row">
             <form class="form-horizontal" role="form">
-
                 <!-- first row -->
                 <div class="row-fluid">
                     <div class="col-md-6">
                         <!-- organization name -->
                         <div class="form-group">
-                            <label for="organization_name" class="control-label col-sm-2">Name: </label>
+                            <label for="organization_name" class="col-xs-12 col-sm-2 control-label">Name: </label>
 
-                            <div class="col-sm-10">
+                            <div class="col-xs-12 col-sm-10">
                                 <input type="text" id="organization_name" class="form-control"
                                        placeholder="Organization Name"
                                        ng-model="orgsView.searchParams.name"/>
@@ -30,8 +29,8 @@
                         <!-- PO ID -->
                         <div class="form-group">
                             <!-- ID used as PO_ID here -->
-                            <label for="po_id" class="control-label col-sm-2">PO ID: </label>
-                            <div class="col-sm-10">
+                            <label for="po_id" class="control-label col-xs-12 col-sm-2">PO ID: </label>
+                            <div class="col-xs-12 col-sm-10">
                                 <input type="text" id="po_id" class="form-control" placeholder="PO ID"
                                        ng-model="orgsView.searchParams.id"/>
                             </div>
@@ -45,9 +44,9 @@
                     <div class="col-md-6">
                         <!--source id-->
                         <div class="form-group">
-                            <label for="source_id" class="control-label col-sm-2">Source: </label>
+                            <label for="source_id" class="control-label col-xs-12 col-sm-2">Source: </label>
 
-                            <div class="col-sm-10">
+                            <div class="col-xs-12 col-sm-10">
                                 <input type="text" id="source_id" class="form-control" placeholder="Source ID"
                                        ng-model="orgsView.searchParams.source_id"/>
                             </div>
@@ -57,8 +56,8 @@
                     <div class="col-md-6">
                         <!--source status-->
                         <div class="form-group">
-                            <label for="source_status" class="control-label col-sm-2">Source Status: </label>
-                            <div class="col-sm-10">
+                            <label for="source_status" class="control-label col-xs-12 col-sm-2">Source Status: </label>
+                            <div class="col-xs-12 col-sm-10">
                                 <select class="form-control" id="source_status"
                                         ng-model="orgsView.searchParams.source_status"
                                         ng-change="orgsView.searchOrgs()">
@@ -75,8 +74,8 @@
                 <div class="row-fluid">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="address" class="control-label col-sm-2">Address:</label>
-                            <div class="col-sm-10">
+                            <label for="address" class="control-label col-xs-12 col-sm-2">Address:</label>
+                            <div class="col-xs-12 col-sm-10">
                                 <input type="text" id="address" class="form-control" placeholder="Address"
                                        ng-model="orgsView.searchParams.address"/>
                             </div>
@@ -85,8 +84,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="address2" class="control-label col-sm-2">Address 2:</label>
-                            <div class="col-sm-10">
+                            <label for="address2" class="control-label col-xs-12 col-sm-2">Address 2:</label>
+                            <div class="col-xs-12 col-sm-10">
                                 <input type="text" id="address2" class="form-control" placeholder="Address 2"
                                        ng-model="orgsView.searchParams.address2"/>
                             </div>
@@ -99,8 +98,8 @@
                 <div class="row-fluid">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="family_name" class="control-label col-sm-2">Family Name:</label>
-                            <div class="col-sm-10">
+                            <label for="family_name" class="control-label col-xs-12 col-sm-2">Family Name:</label>
+                            <div class="col-xs-12 col-sm-10">
                                 <input type="text" id="family_name" class="form-control" placeholder="Family Name"
                                        ng-model="orgsView.searchParams.family_name"/>
                             </div>
@@ -108,8 +107,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="email" class="control-label col-sm-2">Email:</label>
-                            <div class="col-sm-10">
+                            <label for="email" class="control-label col-xs-12 col-sm-2">Email:</label>
+                            <div class="col-xs-12 col-sm-10">
                                 <input type="text" id="email" class="form-control" placeholder="Email"
                                        ng-model="orgsView.searchParams.email"/>
                             </div>
@@ -121,8 +120,8 @@
                 <div class="row-fluid">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="country" class="control-label col-sm-2">Country:</label>
-                            <div class="col-sm-10">
+                            <label for="country" class="control-label col-xs-12 col-sm-2">Country:</label>
+                            <div class="col-xs-12 col-sm-10">
                                 <select class="form-control" id="country" ng-model="orgsView.searchParams.country"
                                         ng-change="orgsView.watchCountrySelection(orgsView.searchParams.country)">
                                 <option value="" selected>All countries</option>
@@ -137,8 +136,8 @@
 
                     <div class="col-md-6">
                         <div class="form-group" ng-hide="orgsView.states.length == 0">
-                            <label for="state" class="control-label col-sm-2">State:</label>
-                            <div class="col-sm-10">
+                            <label for="state" class="control-label col-xs-12 col-sm-2">State:</label>
+                            <div class="col-xs-12 col-sm-10">
                                 <select class="form-control" id="state" ng-model="orgsView.searchParams.state_province"
                                         ng-change="orgsView.searchOrgs()">
                                     <option value="">All states/provinces</option>
@@ -155,8 +154,8 @@
                 <div class="row-fluid">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="city" class="control-label col-sm-2">City:</label>
-                            <div class="col-sm-10">
+                            <label for="city" class="control-label col-xs-12 col-sm-2">City:</label>
+                            <div class="col-xs-12 col-sm-10">
                                 <input type="text" id="city" class="form-control" placeholder="City"
                                        ng-model="orgsView.searchParams.city"/>
                             </div>
@@ -164,8 +163,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="postal_code" class="control-label col-sm-2">Postal Code:</label>
-                            <div class="col-sm-10">
+                            <label for="postal_code" class="control-label col-xs-12 col-sm-2">Postal Code:</label>
+                            <div class="col-xs-12 col-sm-10">
                                 <input type="text" id="postal_code" class="form-control" placeholder="Postal Code"
                                        ng-model="orgsView.searchParams.postal_code"/>
                             </div>

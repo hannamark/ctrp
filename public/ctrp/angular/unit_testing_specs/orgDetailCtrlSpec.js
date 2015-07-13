@@ -16,8 +16,9 @@ describe('Testing Organization Details Controller', function() {
     beforeEach(module('Constants'));
     beforeEach(module('LocalCacheModule'));
     beforeEach(module('PromiseTimeoutModule'));
+    beforeEach(module('LocalCacheModule'));
 
-    beforeEach(inject(function($injector, $controller, $rootScope, Common, $httpBackend) {
+    beforeEach(inject(function($injector, $controller, $rootScope, Common, $httpBackend, LocalCacheService) {
             commoner = Common; //$injector.get('Common');
             $controllerConstructor = $injector.get('$controller');
             $rootScope = $injector.get('$rootScope');
@@ -32,6 +33,9 @@ describe('Testing Organization Details Controller', function() {
             countryList: '',
             sourceStatusObj: ''
         });
+
+
+
     }));
 
 
@@ -43,7 +47,5 @@ describe('Testing Organization Details Controller', function() {
     it('name should be tony in the orgDetailCtrl', function() {
         expect(ctrl.name).toBe("tony");
     });
-
-
 
 });

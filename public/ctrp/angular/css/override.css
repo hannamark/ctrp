@@ -9,6 +9,9 @@
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
+    -webkit-transition: margin-left 0.3s linear;
+    -moz-transition: margin-left 0.3s linear;
+    transition: margin-left 0.3s linear;
 }
 
 .grid {
