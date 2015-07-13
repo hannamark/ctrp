@@ -47,15 +47,5 @@ describe('Testing Organization Details Controller', function() {
     it('name should be tony in the orgDetailCtrl', function() {
         expect(ctrl.name).toBe("tony");
     });
-
-    //it('Using LocalCacheService to test storage and deletion', function() {
-    //    var name = "Tony";
-    //    var key = "name";
-    //
-    //    spyOn(LocalCacheService, 'cacheItem');
-    //    expect(LocalCacheService.cacheItem).toHaveBeenCalled();
-    //});
-
-
-
+    
 });
