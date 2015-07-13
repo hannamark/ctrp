@@ -22,7 +22,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "should show person" do
-    get :show, id: @person, :format => "json"
+    get :show, id: @person, format: "json"
     assert_response :success
   end
 
