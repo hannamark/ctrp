@@ -104,7 +104,11 @@ class SessionsController < Devise::SessionsController
 #      Rails.logger.error ""
 #    end
     # Destroy session
-    method(:destroy).super_method.call
+    #method(:destroy).super_method.call
+    render :status => 200,
+           :json => { :success => true,
+                      :info => "Logged out",
+           }
   end
 
   def new
