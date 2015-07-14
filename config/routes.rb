@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
 
+
   scope "/ctrp" do
     devise_for :users
 
@@ -39,6 +40,8 @@ Rails.application.routes.draw do
         post 'search'
       end
     end
+
+    resources :po_affiliations
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'
