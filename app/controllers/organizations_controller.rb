@@ -1,7 +1,7 @@
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
-  before_filter :get_user unless Rails.env.test?
+  #before_filter :get_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
 
   respond_to :html, :json
@@ -69,6 +69,7 @@ class OrganizationsController < ApplicationController
 
   def search
     # Pagination/sorting params initialization
+    Rails.logger.info "IN SEARCH"
     params[:start] = 1 if params[:start].blank?
     params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'name' if params[:sort].blank?

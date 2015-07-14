@@ -78,12 +78,13 @@
         vm.logOut = function() {
             var username = LocalCacheService.getCacheWithKey("username");
             console.log("username: " + username + " to be logged out...");
+            LocalCacheService.removeItemFromCache("token");
+            LocalCacheService.removeItemFromCache("username");
+
             $http.post('/ctrp/sign_out', {username: username}).success(function(res) {
                 toastr.success("Successfully logged out", "Logged Out!");
                 if (res.status == 200) {
                     console.log("logout response status is 200");
-                    LocalCacheService.removeItemFromCache("token");
-                    LocalCacheService.removeItemFromCache("username");
                 }
                 $timeout(function() {
                     $state.go('main.organizations');
