@@ -39,7 +39,8 @@ And I select one of the organizations to be nullified
 Then all references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
 And all references in CTRP to the nullified organization as Sponsor will reference the retained organization as Sponsor
 And all references in CTRP to the nullified organization as Participating Site will reference the retained organization as Participating Site
-And all accrual submitted in CTRP on the nullified organization Participating Site will be transferred to the retained organization Participating Site
+And all accrual submitted in CTRP on the nullified organization as a Participating Site will be transferred to the retained organization as a Participating Site
+And all persons affiliated with the nullified organization will be affiliated with the retained organization
 And the name of the Nullified organization will be listed as an alias on the retained organization
 And if both organizations had CTEP IDs only the retained organization CTEP ID will be associated with the retained organization
 And the status of the organization to be nullified will be "Nullified"
