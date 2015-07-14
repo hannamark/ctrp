@@ -38,3 +38,10 @@ When the Responsible Party Type is Sponsor-Investigator
 And I have performed a person search
 And I have selected a person and the Investigator
 Then the person selected will be recorded as the Investigator for the Sponsor-Investigator Responsible Party
+
+Scenario 6: I can associate an organization as the Funding Source on a clinical trial
+Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
+And I am on the Register Trial Funding Source screen
+When I have performed an organization look-up
+And I have selected an organization as the trial's Funding Source
+Then the selected organization will be associated the the trial as Funding Source
