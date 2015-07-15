@@ -73,20 +73,27 @@
 describe('Person service testing', function() {
     'use strict';
     var personService;
+    var queue;
 
     beforeEach(module('ctrpApp'));
 
     describe('person service unit test', function() {
-        beforeEach(inject(function($injector) {
-            personService = $injector.get('PersonService');
+        beforeEach(inject(function() {
+                var $injector = angular.injector(['ctrpApp']);
+                personService = $injector.get('PersonService');
+            //    personService = PersonService;
+
         }
         ));
 
-        it('Should have called getAllPeople', function() {
-           spyOn()
-        });
+        it('Should have called getAllPeople', inject(function($q, personService) {
+            var deferred = $q.defer();
+            spyOn(personService, 'getAllPeople').andReturn(deferred.promise);
 
-    })
+            expect(personService.getAllPeople).toHaveBeenCalled();
+        }));
+
+    });
 
 
 });

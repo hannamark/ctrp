@@ -9,16 +9,19 @@
         .controller('personDetailCtrl', personDetailCtrl);
 
     personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'MESSAGES',
-        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal'];
+        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', '$timeout'];
 
     function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES,
-                           $scope, Common, sourceStatusObj, $state, $modal) {
+                           $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout) {
         var vm = this;
         vm.curPerson = personDetailObj || {name: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         //console.log('received personDetailObj: ' + JSON.stringify(personDetailObj));
+        vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
+        console.log("search params: " + JSON.stringify(vm.orgsSearchParams));
+
 
         //update person (vm.curPerson)
         vm.updatePerson = function() {
@@ -28,6 +31,28 @@
                 console.log("error in updating person " + JSON.stringify(vm.curPerson));
             });
         }; // updatePerson
+
+
+        vm.foundOrgs = [];
+        var orgsPromise = '';
+        vm.searchOrgs = function() {
+            if (orgsPromise) {
+                $timeout.cancel(orgsPromise);
+            }
+
+            orgsPromise = $timeout(function() {
+                if (vm.orgsSearchParams.name) {
+                    OrgService.searchOrgs(vm.orgsSearchParams).then(function(res) {
+                        vm.foundOrgs = res.orgs; //an array
+                        console.log("received orgs: " + JSON.stringify(res));
+                    }).catch(function(error) {
+                        console.log("error in retrieving orgs: " + JSON.stringify(error));
+                    })
+                } else {
+                    vm.foundOrgs = [];
+                }
+            }, 250); //250 ms
+        }; //searchOrgs
 
 
 

@@ -20,23 +20,28 @@
     <form class="form-horizontal" role="form" novalidate>
         <div class="form-group">
             <label class="control-label col-sm-3">Name:</label>
+
             <div class="col-sm-9">
-            <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.name" required>
+                <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.name" required>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-3">Source ID:</label>
+
             <div class="col-sm-9">
-                <input type="text" class="form-control input-xs"  ng-model="personDetailView.curPerson.source_id" required>
+                <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.source_id"
+                       required>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-3">Source Status:</label>
+
             <div class="col-sm-9">
                 <select class="form-control" id="source_status" ng-model="personDetailView.curPerson.source_status_id">
                     <option value="">Select a status</option>
                     <option ng-repeat="status in personDetailView.sourceStatusArr"
-                            value="{{status.id}}" ng-selected="personDetailView.curPerson.source_status_id == status.id">
+                            value="{{status.id}}"
+                            ng-selected="personDetailView.curPerson.source_status_id == status.id">
                         {{status.name}}
                     </option>
                 </select>
@@ -44,27 +49,99 @@
         </div>
         <div class="form-group">
             <label class="control-label col-sm-3">Prefix:</label>
+
             <div class="col-sm-9">
-                <input type="text" class="form-control input-xs"  ng-model="personDetailView.curPerson.prefix">
+                <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.prefix">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-3">Suffix:</label>
+
             <div class="col-sm-9">
-                <input type="text" class="form-control input-xs"  ng-model="personDetailView.curPerson.suffix">
+                <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.suffix">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-3">Email:</label>
+
             <div class="col-sm-9">
-                <input type="email" class="form-control input-xs"  ng-model="personDetailView.curPerson.email" type="email" placeholder="Email">
+                <input type="email" class="form-control input-xs" ng-model="personDetailView.curPerson.email"
+                       type="email" placeholder="Email">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-3">Phone:</label>
+
             <div class="col-sm-9">
-                <input type="text" class="form-control input-xs"  ng-model="personDetailView.curPerson.phone" type="text" placeholder="Phone">
+                <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.phone" type="text"
+                       placeholder="Phone">
             </div>
+        </div>
+        <div class="form-group">
+            <label for="po_affiliation_id" class="control-label col-sm-3">
+                Affiliated Organizations:
+            </label>
+            <div class="col-sm-9">
+                    <div class="box1 col-md-6">
+                        <label style="display:none;"></label>
+                        <input type="text" class="filter form-control" id="po_affiliation_id"
+                               placeholder="search organizations" ng-keyup="personDetailView.searchOrgs()" ng-model="personDetailView.orgsSearchParams.name" />
+                        <div class="btn-group buttons pull-right">
+                            <button class="btn moveall btn-default" title="move all">
+                                <i class="glyphicon glyphicon-arrow-right"></i>
+                                <i class="glyphicon glyphicon-arrow-right"></i>
+                            </button>
+                            <button type="button" class="btn move btn-default" title="move selected">
+                                <i class="glyphicon glyphicon-arrow-right"></i>
+                            </button>
+                        </div>
+                        <select multiple="multiple" id="duallistbox" class="form-control" style="height: 194px;">
+                            <option ng-repeat="org in personDetailView.foundOrgs" value="{{org.id}}">{{org.name}}</option>
+                            <!--<option value="1">James</option>-->
+                            <!--<option value="2">Tom</option>-->
+                        </select>
+                    </div>
+
+
+                    <div class="box2 col-md-6">
+                        <label style="display:none;"></label>
+                        <input type="text" class="filter form-control" placeholder="Filter organizations"/>
+                        <div class="btn-group buttons">
+                            <button class="btn moveall btn-default" title="move all">
+                                <i class="glyphicon glyphicon-arrow-left"></i>
+                                <i class="glyphicon glyphicon-arrow-left"></i>
+                            </button>
+                            <button type="button" class="btn move btn-default" title="move selected">
+                                <i class="glyphicon glyphicon-arrow-left"></i>
+                            </button>
+                        </div>
+                        <select multiple="multiple" id="duallistbox" class="form-control" style="height: 194px;">
+                            <option value="1">James</option>
+                            <option value="2">Tom</option>
+                        </select>
+                    </div>
+
+                    <!--<div class="col-xs-12 col-md-4">-->
+                        <!--<select multiple="multiple" name="found_organizations"-->
+                                <!--style="width: 200px; height: 200px;">-->
+                            <!--<option value="2">Jane Adams</option>-->
+                            <!--<option value="3">John Doe</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                    <!--<div class="col-xs-12 col-md-4">-->
+                        <!--<button type="button" name="add">>></button>-->
+                        <!--</br>-->
+                        <!--<button type="button" name="remove"><<</button>-->
+                    <!--</div>-->
+                    <!--<div class="col-xs-12 col-md-4 pull-left">-->
+                        <!--<select multiple="multiple" name="selected_organizations"-->
+                                <!--style="width: 200px; height: 200px;">-->
+                            <!--<option value="2">Jane Adams</option>-->
+                            <!--<option value="3">John Doe</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+
         </div>
 
 
@@ -72,7 +149,8 @@
             <div class="col-sm-offset-3 col-sm-9">
                 <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()" value="Save">
                 <input type="reset" class="btn btn-danger" value="Reset">
-                <button ng-hide="personDetailView.curPerson.new" class="btn btn-warning" ng-click="personDetailView.confirmDelete('sm')">
+                <button ng-hide="personDetailView.curPerson.new" class="btn btn-warning"
+                        ng-click="personDetailView.confirmDelete('sm')">
                     Delete This Person
                 </button>
             </div>
