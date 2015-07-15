@@ -37,7 +37,7 @@ class Ability
     if user.role == 'ROLE_ADMIN'
       can :manage, :all
     elsif user.role == 'ROLE_CURATOR'
-      can :manage, [Organization, OrganizationType, OrganizationStatus]
+      can :manage, [Organization, SourceStatus, SourceCluster, SourceContext]
     else
       can :read, Organization
     end
