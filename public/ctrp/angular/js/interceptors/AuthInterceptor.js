@@ -2,9 +2,9 @@
     'use strict';
     angular.module('ctrpApp')
         .factory('AuthInterceptor', AuthInterceptor);
-    AuthInterceptor.$inject = ['$window', '$timeout', 'LocalCacheService'];
+    AuthInterceptor.$inject = ['$window', '$timeout', 'LocalCacheService', '$location'];
     //function AuthInterceptor(AuthTokenService) {
-    function AuthInterceptor($window, $timeout, LocalCacheService) {
+    function AuthInterceptor($window, $timeout, LocalCacheService, $location) {
         var methodObj = {
             request: request,
             response: response,
@@ -45,8 +45,15 @@
 
         function responseError(rejection) {
             console.log("bad response");
-            if (rejection.config.handleError && rejection.status === 403) {
+            if (rejection.status === 403) {
                 //show error dialog
+                console.log("403: Forbidden");
+                $location.path("/main/error403");
+            }
+            if (rejection.status === 401) {
+                //show error dialog
+                console.log("401: Unauthorized");
+                $location.path("/main/sign_in");
             }
             return rejection;
         }

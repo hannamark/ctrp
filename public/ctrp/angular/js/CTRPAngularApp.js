@@ -128,6 +128,12 @@
                     url: '/sign_in',
                     templateUrl: '/ctrp/angular/partials/sign_in.html',
                     controller: 'userCtrl as userView'
+                })
+
+                .state('main.error403', {
+                    url: '/error403',
+                    templateUrl: '/ctrp/angular/partials/error403.html',
+                    controller: 'userCtrl as userView'
                 });
                 //.state('main.sign_out', {
                 //    url: '/sign_out',
