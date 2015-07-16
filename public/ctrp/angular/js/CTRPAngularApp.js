@@ -27,18 +27,23 @@
                 $httpProvider.defaults.headers.common = {};
             }
 
+            $httpProvider.interceptors.push('AuthInterceptor');
+
+
             //disable IE ajax request caching
             $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
             $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
             $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
+            //interceptor below:
+            $httpProvider.defaults.useXDomain = true;
+            delete $httpProvider.defaults.headers.common['X-Requested-With'];
         }])
 
-        .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+        .config(function ($stateProvider, $urlRouterProvider) {
 
-            $httpProvider.defaults.useXDomain = true;
-            //  $httpProvider.defaults.withCredentials = true;
-            delete $httpProvider.defaults.headers.common['X-Requested-With'];
-            //    $httpProvider.interceptors.push('AuthInterceptor');
+
+
 
             $urlRouterProvider.otherwise('/main/welcome');
 
@@ -122,50 +127,39 @@
                     }
                 })
 
-                .state('main.people', {
-                    url: '/people',
-                    templateUrl: '/ctrp/angular/partials/person_list.html',
-                    controller: 'personCtrl as personView',
-                    resolve: {
-                        OrgService: 'OrgService',
-                        sourceStatusObj: function(OrgService) {
-                            return OrgService.getSourceStatuses();
-                        }
-                    }
+                .state('main.sign_in', {
+                    url: '/sign_in',
+                    templateUrl: '/ctrp/angular/partials/sign_in.html',
+                    controller: 'userCtrl as userView'
                 })
 
-                .state('main.personDetail', {
-                    url: '/people/:personId',
-                    templateUrl: '/ctrp/angular/partials/personDetails.html',
-                    controller: 'personDetailCtrl as personDetailView',
-                    resolve: {
-                        OrgService: 'OrgService',
-                        PersonService: 'PersonService',
-                        sourceStatusObj: function(OrgService) {
-                            return OrgService.getSourceStatuses();
-                        },
-                        personDetailObj: function($stateParams, PersonService) {
-                            return PersonService.getPersonById($stateParams.personId);
-                        }
-                    } //resolve the promise and pass it to controller
-                })
+                .state('main.error403', {
+                    url: '/error403',
+                    templateUrl: '/ctrp/angular/partials/error403.html',
+                    controller: 'userCtrl as userView'
+                });
+                //.state('main.sign_out', {
+                //    url: '/sign_out',
+                //    controller: 'userCtrl',
+                //    resolve: {
+                //        logOut: function($q) {
+                //            var deferred = $q.defer();
+                //            //config.headers.Authorization = '';
+                //            deferred.resolve({data: "logout"});
+                //            return deferred.promise;
+                //        }
+                //    }
+                //
+                //})
 
-                .state('main.addPerson', {
-                    url: '/new_person',
-                    templateUrl: '/ctrp/angular/partials/personDetails.html',
-                    controller: 'personDetailCtrl as personDetailView',
-                    resolve: {
-                        OrgService: 'OrgService',
-                        sourceStatusObj: function(OrgService) {
-                            return OrgService.getSourceStatuses();
-                        },
-                        personDetailObj: function($q) {
-                            var deferred = $q.defer();
-                            deferred.resolve(null);
-                            return deferred.promise;
-                        }
-                    }
-                })
+
+        }).run(function() {
+            console.log('running ctrp angular app');
+        });
+
+
+
+})();
 
         }).run(function() {
             console.log('running ctrp angular app');

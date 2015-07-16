@@ -1,10 +1,21 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
+  # ==> LDAP Configuration 
+  # config.ldap_logger = true
+  config.ldap_create_user = true
+  # config.ldap_update_password = true
+  config.ldap_config = "#{Rails.root}/config/ldap.yml"
+  # config.ldap_check_group_membership = false
+  # config.ldap_check_group_membership_without_admin = false
+  # config.ldap_check_attributes = false
+  config.ldap_use_admin_to_bind = true
+  # config.ldap_ad_group_check = false
+
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  config.secret_key = '410ab5885eeca91e278a0e129ad791dc8ac6841197e07a88b74f4fa8a7a6b63877c9d5bde8aced992b8acede557d8549cc017c7b28dd52a65eea963ab30ed3fc'
+  config.secret_key = '38a95735883c60c67c55f0f98fd2dac08acea47ddf89f93d3d1a33d3f3e1abb34f298dc430ec93c3b7e2e7ae38075c7d8b0a457dc96800153631447a491ffaf8'
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
@@ -29,7 +40,7 @@ Devise.setup do |config|
   # session. If you need permissions, you should implement that in a before filter.
   # You can also supply a hash where the value is a boolean determining whether
   # or not authentication should be aborted when the value is not present.
-  # config.authentication_keys = [ :email ]
+  config.authentication_keys = [ :username ]
 
   # Configure parameters from the request object used for authentication. Each entry
   # given should be a request method and it will automatically be passed to the
@@ -97,7 +108,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.
-  # config.pepper = '1d98a82e52207167b1d4724747c795e9c5e74d0017f985c16a82fa416adb615cc1f03360bce0ac61e600b7ba79e305aeba5c277438245e4adf6e2f27159bba2a'
+  # config.pepper = '4e90ee96e865e4a5dcd27ae912e10e1ee0063aa4308d1835e23d4abe45f49b686f9400e6fbc0b4838221633a3cce9f6cf24ecd56965313d823fb76b5244704fd'
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -205,7 +216,7 @@ Devise.setup do |config|
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
   # "users/sessions/new". It's turned off by default because it's slower if you
   # are using only default views.
-  # config.scoped_views = false
+  config.scoped_views = true
 
   # Configure the default scope given to Warden. By default it's the first
   # devise role declared in your routes (usually :user).
@@ -233,6 +244,8 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  require "omniauth-google-oauth2"
+  config.omniauth :google_oauth2, "854577199956-negn6igsivllfav5rbsnebbgijmc3j52.apps.googleusercontent.com", "mreuJ81Gs9jItII7Eo7EeUHy", { access_type: "offline", approval_prompt: "" }
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
