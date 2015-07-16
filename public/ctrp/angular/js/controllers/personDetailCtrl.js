@@ -20,8 +20,7 @@
         vm.sourceStatusArr.sort(Common.a2zComparator());
         //console.log('received personDetailObj: ' + JSON.stringify(personDetailObj));
         vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
-        console.log("search params: " + JSON.stringify(vm.orgsSearchParams));
-
+        console.log("person: " + JSON.stringify(vm.curPerson));
 
         //update person (vm.curPerson)
         vm.updatePerson = function() {
@@ -34,6 +33,8 @@
 
 
         vm.foundOrgs = [];
+        vm.selectedOrgs = [];
+        vm.savedSelection = []; //save selected organizations
         var orgsPromise = '';
         vm.searchOrgs = function() {
             if (orgsPromise) {
@@ -44,7 +45,8 @@
                 if (vm.orgsSearchParams.name) {
                     OrgService.searchOrgs(vm.orgsSearchParams).then(function(res) {
                         vm.foundOrgs = res.orgs; //an array
-                        console.log("received orgs: " + JSON.stringify(res));
+                       // vm.selectedOrgs = res.orgs;
+                       // console.log("received orgs: " + JSON.stringify(res));
                     }).catch(function(error) {
                         console.log("error in retrieving orgs: " + JSON.stringify(error));
                     })
@@ -62,6 +64,7 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewPersonFlag();
+            watchSelectedOrgs();
 
             //prepare the modal window for existing people
             if (!vm.curPerson.new) {
@@ -107,6 +110,37 @@
 
             } //confirmDelete
         }; //prepareModal
+
+
+        function watchSelectedOrgs() {
+            $scope.$watch(function() {return vm.selectedOrgs;}, function(newVal, oldVal) {
+
+                if (!!newVal) {
+
+                    angular.forEach(newVal, function(org, idx) {
+                        org = JSON.parse(org);
+
+                        if (!isOrgSaved(vm.savedSelection, org)) {
+                            vm.savedSelection.push(org);
+                        }
+                    });
+                } //if
+
+            }, true);
+        }
+
+
+        function isOrgSaved(targetOrgsArr, orgObj) {
+            var exists = false;
+            for (var i = 0; i < targetOrgsArr.length; i++) {
+                var curOrg = targetOrgsArr[i];
+                if (curOrg.id == orgObj.id) {
+                    exists = true;
+                    break;
+                }
+            }
+            return exists;
+        }
 
 
 
