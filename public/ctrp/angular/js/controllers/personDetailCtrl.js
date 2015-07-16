@@ -121,6 +121,9 @@
                         org = JSON.parse(org);
 
                         if (!isOrgSaved(vm.savedSelection, org)) {
+                            org.affiliate_status = "";
+                            org.effective_date = "fd";
+                            org.expiration_date = "ss";
                             vm.savedSelection.push(org);
                         }
                     });

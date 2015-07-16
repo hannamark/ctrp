@@ -127,12 +127,12 @@
                             <th>Expiration Date</th>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="org in personDetailView.savedSelection">
+                            <tr ng-repeat="org in personDetailView.savedSelection track by $index">
                                 <td><a href="">Delete</a></td>
                                 <td>{{org.id}}</td>
                                 <td>{{org.name}}</td>
                                 <td>
-                                    <select class="form-control" id="source_status">
+                                    <select class="form-control" id="source_status" ng-model="personDetailView.savedSelection[$index].affiliate_status">
                                         <option value="">Select a status</option>
                                         <option ng-repeat="status in personDetailView.sourceStatusArr"
                                                 value="{{status.id}}"
@@ -142,8 +142,9 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <div class="input-group add-on col-md-2 date datepicker" date-date-format="yyyy-mm-dd">
-                                        <input type="text" class="form-control date-picker" date-date-format="yyyy-mm-dd"/>
+                                    <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
+                                        <input type="text" class="form-control date-picker" date-date-format="yyyy-mm-dd"
+                                               ng-model="personDetailView.savedSelection[$index].effective_date" />
                                         <div class="input-group-btn">
                                             <button class="btn btn-default"><i class="fa fa-calendar"></i></button>
                                         </div>
@@ -151,8 +152,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="input-group add-on col-md-2 date datepicker" date-date-format="yyyy-mm-dd">
-                                        <input type="text" class="form-control date-picker" date-date-format="yyyy-mm-dd"/>
+                                    <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
+                                        <input type="text" class="form-control date-picker" date-date-format="yyyy-mm-dd" ng-model="personDetailView.savedSelection[$index].expiration_date"/>
                                         <div class="input-group-btn">
                                             <button class="btn btn-default"><i class="fa fa-calendar"></i></button>
                                         </div>
