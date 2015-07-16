@@ -160,11 +160,3 @@
 
 
 })();
-
-        }).run(function() {
-            console.log('running ctrp angular app');
-        });
-
-
-
-})();
