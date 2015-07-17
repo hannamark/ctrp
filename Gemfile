@@ -59,6 +59,8 @@ gem "devise_ldap_authenticatable"
 gem 'cancancan'
 gem 'jwt'
 
+# Add http client
+gem 'rest-client'
 
 gem 'paper_trail'
 
