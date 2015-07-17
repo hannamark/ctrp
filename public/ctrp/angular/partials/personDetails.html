@@ -87,16 +87,13 @@
                         <input type="text" class="filter form-control" id="po_affiliation_id"
                                placeholder="search organizations" ng-keyup="personDetailView.searchOrgs()" ng-model="personDetailView.orgsSearchParams.name" />
                         <div class="btn-group buttons pull-right">
-                            <button class="btn moveall btn-default" title="move all">
+                            <button class="btn moveall btn-default" title="Select all" ng-click="personDetailView.batchSelect('selectAll')">
                                 <i class="glyphicon glyphicon-arrow-right"></i>
-                                <i class="glyphicon glyphicon-arrow-right"></i>
-                            </button>
-                            <button type="button" class="btn move btn-default" title="move selected">
                                 <i class="glyphicon glyphicon-arrow-right"></i>
                             </button>
                         </div>
                         <select multiple="multiple" id="duallistbox" class="form-control" ng-model="personDetailView.selectedOrgs" style="height: 194px;">
-                            <option ng-repeat="org in personDetailView.foundOrgs track by $index" value="{{org}}">
+                            <option ng-animate="'animate'" ng-repeat="org in personDetailView.foundOrgs track by $index" value="{{org}}">
                                 {{org.name}}</option>
                         </select>
                         <!--<span>{{personDetailView.selectedOrgs}}</span>-->
@@ -108,39 +105,41 @@
                         <label style="display:none;"></label>
                         <input type="text" class="filter form-control" placeholder="Filter organizations"/>
                         <div class="btn-group buttons">
-                            <button type="button" class="btn move btn-default" title="move selected">
-                                <i class="glyphicon glyphicon-arrow-left"></i>
-                            </button>
-                            <button class="btn moveall btn-default" title="move all">
+                            <button class="btn moveall btn-default" title="Remove all" ng-click="personDetailView.batchSelect('removeAll')">
                                 <i class="glyphicon glyphicon-arrow-left"></i>
                                 <i class="glyphicon glyphicon-arrow-left"></i>
                             </button>
 
                         </div>
-                        <table class="table table-bordered table-striped table-condensed" ng-hide="personDetailView.savedSelection.length == 0">
+                        <table class="table table-bordered table-striped table-condensed"
+                               ng-hide="personDetailView.savedSelection.length == 0" ng-animate="'animate'">
                             <thead>
                             <th>Remove</th>
                             <th>PO ID</th>
                             <th>Organization</th>
-                            <th>Affiliation Status</th>
+                            <!--<th>Affiliation Status</th>-->
                             <th>Effective Date</th>
                             <th>Expiration Date</th>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="org in personDetailView.savedSelection track by $index">
-                                <td><a href="">Delete</a></td>
+                            <tr ng-animate="'animate'" ng-repeat="org in personDetailView.savedSelection track by $index">
+                                <td style="vertical-align: middle">
+                                    <button ng-click="personDetailView.deleteSelection($index)">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </button>
+                                </td>
                                 <td>{{org.id}}</td>
                                 <td>{{org.name}}</td>
-                                <td>
-                                    <select class="form-control" id="source_status" ng-model="personDetailView.savedSelection[$index].affiliate_status">
-                                        <option value="">Select a status</option>
-                                        <option ng-repeat="status in personDetailView.sourceStatusArr"
-                                                value="{{status.id}}"
-                                                ng-selected="'Active' == status.name">
-                                            {{status.name}}
-                                        </option> <!-- active selected by default -->
-                                    </select>
-                                </td>
+                                <!--<td>-->
+                                    <!--<select class="form-control" id="source_status" ng-model="personDetailView.savedSelection[$index].affiliate_status">-->
+                                        <!--<option value="">Select a status</option>-->
+                                        <!--<option ng-repeat="status in personDetailView.sourceStatusArr"-->
+                                                <!--value="{{status.id}}"-->
+                                                <!--ng-selected="'Active' == status.name">-->
+                                            <!--{{status.name}}-->
+                                        <!--</option> &lt;!&ndash; active selected by default &ndash;&gt;-->
+                                    <!--</select>-->
+                                <!--</td>-->
                                 <td>
                                     <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
                                         <input type="text" class="form-control date-picker" date-date-format="yyyy-mm-dd"

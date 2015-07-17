@@ -24,7 +24,7 @@
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
-            vm.curPerson.affiliatedTo = preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
+            vm.curPerson.po_affiliations_attributes = preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             console.log("curPerson is: " + JSON.stringify(vm.curPerson));
             /*
             PersonService.upsertPerson(vm.curPerson).then(function (response) {
@@ -59,6 +59,24 @@
                 }
             }, 250); //250 ms
         }; //searchOrgs
+
+        //delete the affiliated organization from table view
+        vm.deleteSelection = function(index) {
+            if (index < vm.savedSelection.length) {
+                vm.savedSelection.splice(index,1);
+            }
+        };// deleteSelection
+
+        //select or de-select all organizations form affiliations
+        vm.batchSelect = function(intention) {
+
+            if (intention == "selectAll") {
+                vm.savedSelection = vm.foundOrgs.slice(); //clone
+            } else {
+                vm.savedSelection.length = 0;
+            }
+
+        }; //batchSelect
 
 
         activate()
@@ -127,7 +145,7 @@
 
                         if (!isOrgSaved(vm.savedSelection, org)) {
                             org.affiliate_status = "";
-                            org.effective_date = "fd";
+                            org.effective_date = new Date(); //if not existent
                             org.expiration_date = "ss";
                             vm.savedSelection.push(org);
                         }
@@ -172,7 +190,7 @@
 
                 //cleaned fields of Organization object
                 var cleanedOrg = {
-                    "org_id": org.id,
+                    "organization_id": org.id,
                     "affiliate_status": org.affiliate_status,
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date
