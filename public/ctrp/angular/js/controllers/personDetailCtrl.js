@@ -28,7 +28,12 @@
         //update person (vm.curPerson)
         vm.updatePerson = function () {
             vm.curPerson.po_affiliations_attributes = preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
-            console.log("curPerson is: " + JSON.stringify(vm.curPerson));
+            angular.forEach(vm.curPerson.po_affiliations_attributes, function(aff, idx) {
+                console.log(typeof aff.expiration_date);
+                console.log(JSON.stringify(aff));
+            });
+
+            //console.log("curPerson is: " + JSON.stringify(vm.curPerson));
             /*
             PersonService.upsertPerson(vm.curPerson).then(function (response) {
                 toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
@@ -162,9 +167,9 @@
                         org = JSON.parse(org);
 
                         if (!isOrgSaved(vm.savedSelection, org)) {
-                            org.affiliate_status = "";
+                          //  org.affiliate_status = "";
                             org.effective_date = new Date(); //if not existent
-                            org.expiration_date = "ss";
+                            org.expiration_date = "";
                             org.opened_effective = false;
                             org.opened_expiration = false;
                             vm.savedSelection.push(org);
@@ -211,7 +216,7 @@
                 //cleaned fields of Organization object
                 var cleanedOrg = {
                     "organization_id": org.id,
-                    "affiliate_status": org.affiliate_status,
+                  //  "affiliate_status": org.affiliate_status,
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date
                 };
