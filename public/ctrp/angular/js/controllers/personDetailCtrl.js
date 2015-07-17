@@ -8,18 +8,21 @@
     angular.module('ctrpApp')
         .controller('personDetailCtrl', personDetailCtrl);
 
-    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'MESSAGES',
+    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'MESSAGES', 'DateService',
         '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', '$timeout'];
 
-    function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES,
+    function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES, DateService,
                               $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout) {
         var vm = this;
         vm.curPerson = personDetailObj || {name: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-        //console.log('received personDetailObj: ' + JSON.stringify(personDetailObj));
         vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
+        vm.foundOrgs = [];
+        vm.selectedOrgs = [];
+        vm.savedSelection = []; //save selected organizations
+        vm.selectedOrgFilter = "";
         console.log("person: " + JSON.stringify(vm.curPerson));
 
         //update person (vm.curPerson)
@@ -36,9 +39,7 @@
         }; // updatePerson
 
 
-        vm.foundOrgs = [];
-        vm.selectedOrgs = [];
-        vm.savedSelection = []; //save selected organizations
+
         var orgsPromise = '';
         vm.searchOrgs = function () {
             if (orgsPromise) {
@@ -77,6 +78,23 @@
             }
 
         }; //batchSelect
+
+        vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
+        vm.dateOptions = DateService.getDateOptions();
+        vm.today = DateService.today();
+        vm.openCalendar = function($event, index, type) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            if (type == "effective") {
+                vm.savedSelection[index].opened_effective = true;
+            } else {
+                vm.savedSelection[index].opened_expiration = true;
+            }
+
+
+        }; //openCalendar
+
 
 
         activate()
@@ -147,6 +165,8 @@
                             org.affiliate_status = "";
                             org.effective_date = new Date(); //if not existent
                             org.expiration_date = "ss";
+                            org.opened_effective = false;
+                            org.opened_expiration = false;
                             vm.savedSelection.push(org);
                         }
                     });

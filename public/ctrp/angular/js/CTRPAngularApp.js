@@ -18,7 +18,8 @@
         'ui.bootstrap',
 //        'datatables',
         'ui.grid',
-        'ui.grid.pagination'
+        'ui.grid.pagination',
+        'DateServiceMod'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there

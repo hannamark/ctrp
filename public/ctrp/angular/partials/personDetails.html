@@ -81,123 +81,145 @@
             <label for="po_affiliation_id" class="control-label col-sm-3">
                 Affiliated Organizations:
             </label>
+
             <div class="col-sm-9">
-                    <div class="box1 col-md-6">
-                        <label style="display:none;"></label>
-                        <input type="text" class="filter form-control" id="po_affiliation_id"
-                               placeholder="search organizations" ng-keyup="personDetailView.searchOrgs()" ng-model="personDetailView.orgsSearchParams.name" />
+                <div class="box1 col-md-6">
+                    <label style="display:none;"></label>
+                    <input type="text" class="filter form-control" id="po_affiliation_id"
+                           placeholder="Search organizations" ng-keyup="personDetailView.searchOrgs()"
+                           ng-model="personDetailView.orgsSearchParams.name"/>
+
+                    <div ng-hide="personDetailView.foundOrgs.length == 0" class="fadein fadeout">
                         <div class="btn-group buttons pull-right">
-                            <button class="btn moveall btn-default" title="Select all" ng-click="personDetailView.batchSelect('selectAll')">
+                            <button class="btn moveall btn-default" title="Select all"
+                                    ng-click="personDetailView.batchSelect('selectAll')">
                                 <i class="glyphicon glyphicon-arrow-right"></i>
                                 <i class="glyphicon glyphicon-arrow-right"></i>
                             </button>
                         </div>
-                        <select multiple="multiple" id="duallistbox" class="form-control" ng-model="personDetailView.selectedOrgs" style="height: 194px;">
-                            <option ng-animate="'animate'" ng-repeat="org in personDetailView.foundOrgs track by $index" value="{{org}}">
-                                {{org.name}}</option>
+                        <select multiple="multiple" id="duallistbox" class="form-control"
+                                ng-model="personDetailView.selectedOrgs"
+                                style="height: 194px;">
+                            <option ng-animate="'animate'" ng-repeat="org in personDetailView.foundOrgs track by $index"
+                                    value="{{org}}">
+                                {{org.name}}
+                            </option>
                         </select>
-                        <!--<span>{{personDetailView.selectedOrgs}}</span>-->
-                        <!--<span>{{personDetailView.savedSelection}}</span>-->
                     </div>
+                    <!--<span>{{personDetailView.selectedOrgs}}</span>-->
+                    <!--<span>{{personDetailView.savedSelection}}</span>-->
+                </div>
 
+                <div class="box2 col-md-6 fadein fadeout" ng-hide="personDetailView.savedSelection.length == 0">
+                    <label style="display:none;"></label>
+                    <input type="text" class="filter form-control" placeholder="Filter selected organizations"
+                           ng-model="personDetailView.selectedOrgFilter"/>
 
-                    <div class="box2 col-md-6">
-                        <label style="display:none;"></label>
-                        <input type="text" class="filter form-control" placeholder="Filter organizations"/>
-                        <div class="btn-group buttons">
-                            <button class="btn moveall btn-default" title="Remove all" ng-click="personDetailView.batchSelect('removeAll')">
-                                <i class="glyphicon glyphicon-arrow-left"></i>
-                                <i class="glyphicon glyphicon-arrow-left"></i>
-                            </button>
+                    <div class="btn-group buttons">
+                        <button class="btn moveall btn-default" title="Remove all"
+                                ng-click="personDetailView.batchSelect('removeAll')">
+                            <i class="glyphicon glyphicon-arrow-left"></i>
+                            <i class="glyphicon glyphicon-arrow-left"></i>
+                        </button>
 
-                        </div>
-                        <table class="table table-bordered table-striped table-condensed"
-                               ng-hide="personDetailView.savedSelection.length == 0" ng-animate="'animate'">
-                            <thead>
-                            <th>Remove</th>
-                            <th>PO ID</th>
-                            <th>Organization</th>
-                            <!--<th>Affiliation Status</th>-->
-                            <th>Effective Date</th>
-                            <th>Expiration Date</th>
-                            </thead>
-                            <tbody>
-                            <tr ng-animate="'animate'" ng-repeat="org in personDetailView.savedSelection track by $index">
-                                <td style="vertical-align: middle">
-                                    <button ng-click="personDetailView.deleteSelection($index)">
-                                        <i class="glyphicon glyphicon-remove"></i>
-                                    </button>
-                                </td>
-                                <td>{{org.id}}</td>
-                                <td>{{org.name}}</td>
-                                <!--<td>-->
-                                    <!--<select class="form-control" id="source_status" ng-model="personDetailView.savedSelection[$index].affiliate_status">-->
-                                        <!--<option value="">Select a status</option>-->
-                                        <!--<option ng-repeat="status in personDetailView.sourceStatusArr"-->
-                                                <!--value="{{status.id}}"-->
-                                                <!--ng-selected="'Active' == status.name">-->
-                                            <!--{{status.name}}-->
-                                        <!--</option> &lt;!&ndash; active selected by default &ndash;&gt;-->
-                                    <!--</select>-->
-                                <!--</td>-->
-                                <td>
-                                    <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
-                                        <input type="text" class="form-control date-picker" date-date-format="yyyy-mm-dd"
-                                               ng-model="personDetailView.savedSelection[$index].effective_date" />
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                                        </div>
-
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
-                                        <input type="text" class="form-control date-picker" date-date-format="yyyy-mm-dd" ng-model="personDetailView.savedSelection[$index].expiration_date"/>
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                            </tr>
-                            </tbody>
-                        </table>
                     </div>
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <th>Remove</th>
+                        <th>PO ID</th>
+                        <th>Organization</th>
+                        <!--<th>Affiliation Status</th>-->
+                        <th>Effective Date</th>
+                        <th>Expiration Date</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-animate="'animate'"
+                            ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index">
+                            <td style="vertical-align: middle">
+                                <button ng-click="personDetailView.deleteSelection($index)">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </button>
+                            </td>
+                            <td>{{org.id}}</td>
+                            <td>{{org.name}}</td>
+                            <!--<td>-->
+                            <!--<select class="form-control" id="source_status" ng-model="personDetailView.savedSelection[$index].affiliate_status">-->
+                            <!--<option value="">Select a status</option>-->
+                            <!--<option ng-repeat="status in personDetailView.sourceStatusArr"-->
+                            <!--value="{{status.id}}"-->
+                            <!--ng-selected="'Active' == status.name">-->
+                            <!--{{status.name}}-->
+                            <!--</option> &lt;!&ndash; active selected by default &ndash;&gt;-->
+                            <!--</select>-->
+                            <!--</td>-->
+                            <td>
+                                <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control" datepicker-popup="{{personDetailView.dateFormat}}"
+                                           ng-model="org.effective_date" is-open="org.opened_effective"
+                                           is-open="opened" datepicker-options="personDetailView.dateOptions"
+                                           ng-required="false" close-text="Close"/>
+                                  <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="personDetailView.openCalendar($event, $index, 'effective')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                  </span>
 
-                    <!--<div class="col-xs-12 col-md-4">-->
-                        <!--<select multiple="multiple" name="found_organizations"-->
-                                <!--style="width: 200px; height: 200px;">-->
-                            <!--<option value="2">Jane Adams</option>-->
-                            <!--<option value="3">John Doe</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                    <!--<div class="col-xs-12 col-md-4">-->
-                        <!--<button type="button" name="add">>></button>-->
-                        <!--</br>-->
-                        <!--<button type="button" name="remove"><<</button>-->
-                    <!--</div>-->
-                    <!--<div class="col-xs-12 col-md-4 pull-left">-->
-                        <!--<select multiple="multiple" name="selected_organizations"-->
-                                <!--style="width: 200px; height: 200px;">-->
-                            <!--<option value="2">Jane Adams</option>-->
-                            <!--<option value="3">John Doe</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control" datepicker-popup="{{personDetailView.dateFormat}}"
+                                           ng-model="org.expiration_date" is-open="org.opened_expiration"
+                                           is-open="opened" datepicker-options="personDetailView.dateOptions"
+                                           ng-required="false" close-text="Close"/>
+                                  <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="personDetailView.openCalendar($event, $index, 'expiration')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                  </span>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--<div class="col-xs-12 col-md-4">-->
+                <!--<select multiple="multiple" name="found_organizations"-->
+                <!--style="width: 200px; height: 200px;">-->
+                <!--<option value="2">Jane Adams</option>-->
+                <!--<option value="3">John Doe</option>-->
+                <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-xs-12 col-md-4">-->
+                <!--<button type="button" name="add">>></button>-->
+                <!--</br>-->
+                <!--<button type="button" name="remove"><<</button>-->
+                <!--</div>-->
+                <!--<div class="col-xs-12 col-md-4 pull-left">-->
+                <!--<select multiple="multiple" name="selected_organizations"-->
+                <!--style="width: 200px; height: 200px;">-->
+                <!--<option value="2">Jane Adams</option>-->
+                <!--<option value="3">John Doe</option>-->
+                <!--</select>-->
+                <!--</div>-->
                 <!--</div>-->
 
-        </div>
-
-
-        <div id="buttonBar" class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()" value="Save">
-                <input type="reset" class="btn btn-danger" value="Reset">
-                <button ng-hide="personDetailView.curPerson.new" class="btn btn-warning"
-                        ng-click="personDetailView.confirmDelete('sm')">
-                    Delete This Person
-                </button>
             </div>
-        </div>
+
+
+            <div id="buttonBar" class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()"
+                           value="Save">
+                    <input type="reset" class="btn btn-danger" value="Reset">
+                    <button ng-hide="personDetailView.curPerson.new" class="btn btn-warning"
+                            ng-click="personDetailView.confirmDelete('sm')">
+                        Delete This Person
+                    </button>
+                </div>
+            </div>
     </form>
 </div>
