@@ -30,17 +30,19 @@
             vm.curPerson.po_affiliations_attributes = preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             angular.forEach(vm.curPerson.po_affiliations_attributes, function(aff, idx) {
                 console.log(typeof aff.expiration_date);
+
+                //convert the ISO date to Locale Date String
+                aff['effective_date'] = DateService.convertISODateToLocaleDateStr(aff['effective_date']);
+                aff['expiration_date'] = DateService.convertISODateToLocaleDateStr(aff['expiration_date']);
                 console.log(JSON.stringify(aff));
+                vm.curPerson.po_affiliations_attributes[idx] = aff;
             });
 
-            //console.log("curPerson is: " + JSON.stringify(vm.curPerson));
-            /*
             PersonService.upsertPerson(vm.curPerson).then(function (response) {
                 toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(vm.curPerson));
             });
-            */
         }; // updatePerson
 
 
