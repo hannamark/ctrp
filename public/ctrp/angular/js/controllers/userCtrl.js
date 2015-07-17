@@ -59,7 +59,7 @@
                     toastr.error("Login failed", "Failed to Login");
                 }
 
-            }).cach(function(err) {
+            }).catch(function(err) {
                 console.log('error status: ' + err.status);
             }).finally(function(complete) {
                 console.log('http call completed!');

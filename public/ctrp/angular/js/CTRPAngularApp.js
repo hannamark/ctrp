@@ -137,6 +137,51 @@
                     url: '/error403',
                     templateUrl: '/ctrp/angular/partials/error403.html',
                     controller: 'userCtrl as userView'
+                })
+
+                .state('main.people', {
+                    url: '/people',
+                    templateUrl: '/ctrp/angular/partials/person_list.html',
+                    controller: 'personCtrl as personView',
+                    resolve: {
+                        OrgService: 'OrgService',
+                        sourceStatusObj: function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        }
+                    }
+                })
+
+                .state('main.personDetail', {
+                    url: '/people/:personId',
+                    templateUrl: '/ctrp/angular/partials/personDetails.html',
+                    controller: 'personDetailCtrl as personDetailView',
+                    resolve: {
+                        OrgService: 'OrgService',
+                        PersonService: 'PersonService',
+                        sourceStatusObj: function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        },
+                        personDetailObj: function($stateParams, PersonService) {
+                            return PersonService.getPersonById($stateParams.personId);
+                        }
+                    } //resolve the promise and pass it to controller
+                })
+
+                .state('main.addPerson', {
+                    url: '/new_person',
+                    templateUrl: '/ctrp/angular/partials/personDetails.html',
+                    controller: 'personDetailCtrl as personDetailView',
+                    resolve: {
+                        OrgService: 'OrgService',
+                        sourceStatusObj: function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        },
+                        personDetailObj: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        }
+                    }
                 });
                 //.state('main.sign_out', {
                 //    url: '/sign_out',
@@ -152,14 +197,6 @@
                 //
                 //})
 
-
-        }).run(function() {
-            console.log('running ctrp angular app');
-        });
-
-
-
-})();
 
         }).run(function() {
             console.log('running ctrp angular app');
