@@ -1,7 +1,7 @@
 @Global
 Feature: Create an organization
 
-Scenario 1: As any CTRP User, I can request the creation of a new Organization in CTRP
+Scenario: #1 As any CTRP User, I can request the creation of a new Organization in CTRP
 Given I am logged in to CTRP
 And I have complete a Search for Organization
 And I am have selected the Add Organization function
@@ -17,7 +17,7 @@ Then the system should create an organization record that contains a unique PO I
 And the organization status should be Pending
 
 @PO
-Scenario 2: As a PO Curator, I can request the creation of a new Organization in CTRP
+Scenario: #2 As a PO Curator, I can request the creation of a new Organization in CTRP
 Given I am logged in to CTRP
 And I have complete a Search for Organization
 And I am have selected the Add Organization function
@@ -33,7 +33,7 @@ And I submit my create request
 Then the system should create an organization record that contains a unique PO ID, the organization name, the CTEP ID as Null, the city, the state, the country, the zip code, my name, and the current date and time
 And the organization status should be Active
 
-Scenario 3: As any CTRP User, I can request the creation of a new Organization in CTRP that is a duplicate
+Scenario: #3 As any CTRP User, I can request the creation of a new Organization in CTRP that is a duplicate
 Given I am logged in to CTRP
 And I have complete a Search for Organization
 And I am have selected the Add Organization function
