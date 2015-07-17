@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'
+    get '/backoffice' => 'backoffice#index'
 
     # Devise related routes
     #devise_for :users
