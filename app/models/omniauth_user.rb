@@ -32,18 +32,30 @@
 #  index_users_on_username              (username) UNIQUE
 #
 
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+class OmniauthUser < User
+  devise   :omniauthable, :registerable, :confirmable, :recoverable, :trackable, :rememberable
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {
-  email: tester1@test.com
-}
-# column: value
-#
-two: {
-  email: tester2@test.com
-}
-#  column: value
+  def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
+    Rails.logger.info "HIII"
+    data = access_token.info
+    user = OmniauthUser.where(:provider => access_token.provider, :uid => access_token.uid ).first
+    if user
+      return user
+    else
+      registered_user = User.where(:email => access_token.info.email).first
+      if registered_user
+        return registered_user
+      else
+        user = OmniauthUser.new(provider:access_token.provider,
+                        username: data["email"],
+                        email: data["email"],
+                        uid: access_token.uid ,
+                        password: Devise.friendly_token[0,20]
+        )
+        user.skip_confirmation!
+        user.save
+        user
+      end
+    end
+  end
+end

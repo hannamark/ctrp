@@ -46,12 +46,20 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
+gem 'coffee-script-source', '1.8.0'
 
 gem 'annotate'
 
 gem 'rails_admin'
 
+# Gems related to Authentication and Authorization
 gem 'devise'
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem "devise_ldap_authenticatable"
+gem 'cancancan'
+gem 'jwt'
+
 
 gem 'paper_trail'
 

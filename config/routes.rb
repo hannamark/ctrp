@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
     mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
+    get '/ctrp/', :to => redirect('/index.html')
     resources :organizations do
       collection do
         get 'search'
@@ -17,19 +18,11 @@ Rails.application.routes.draw do
 
     resources :source_contexts
 
-    resources :families do
-      collection do
-        get ':id/organizations' => 'families#get_orgs'
-      end
-    end
-
     resources :family_statuses
 
     resources :family_types
 
     resources :family_relationships
-
-    resources :family_memberships
 
     resources :comments
 
@@ -42,9 +35,33 @@ Rails.application.routes.draw do
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'
-  end
+    get '/backoffice' => 'backoffice#index'
 
-  get '/ctrp/', :to => redirect('/index.html')
+    # Devise related routes
+    #devise_for :users
+    devise_for :ldap_users, :local_users, skip: [ :sessions ]
+    devise_for :omniauth_users, :controllers => { :omniauth_callbacks => "omniauth_users/omniauth_callbacks" }
+    devise_scope :local_user do
+      get 'sign_in' => 'sessions#new', :as => :new_session
+      post 'sign_in' => 'sessions#create', :as => :create_session
+      post 'sign_out' => 'sessions#destroy', :as => :destroy_session
+    end
+
+  end
+  # Devise related routes
+
+  #get '/ctrp/', :to => redirect('/index.html')
+
+  # Devise related routes
+  #devise_for :users
+  #devise_for :ldap_users, :local_users, skip: [ :sessions ]
+  #devise_for :omniauth_users, :controllers => { :omniauth_callbacks => "omniauth_users/omniauth_callbacks" }
+  #devise_scope :local_user do
+  #   get 'sign_in' => 'sessions#new', :as => :new_session
+  #   post 'sign_in' => 'sessions#create', :as => :create_session
+  #   delete 'sign_out' => 'sessions#destroy', :as => :destroy_session
+  #end
+ 
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

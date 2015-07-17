@@ -32,18 +32,6 @@
 #  index_users_on_username              (username) UNIQUE
 #
 
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {
-  email: tester1@test.com
-}
-# column: value
-#
-two: {
-  email: tester2@test.com
-}
-#  column: value
+class LocalUser < User
+  devise :database_authenticatable, :registerable, :recoverable, :trackable
+end

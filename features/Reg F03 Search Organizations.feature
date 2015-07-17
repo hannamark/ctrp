@@ -1,7 +1,7 @@
 @Global @Reg
 Feature: As any CTRP User, I am able to Search Organizations by various criteria
 
-Scenario 1: I am able to search for organizations by PO Organization ID
+Scenario: #1 I am able to search for organizations by PO Organization ID
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Organizations"
 When I provide the PO Organization ID of the organization I wish to search for
@@ -17,7 +17,7 @@ State
 Country
 Zip
 
-Scenario 2: I am able to search for organizations by CTEP Organization ID
+Scenario: #2 I am able to search for organizations by CTEP Organization ID
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Organizations"
 When I provide the CTEP Organization ID of the organization I wish to search for
@@ -33,7 +33,7 @@ State
 Country
 Zip
 
-Scenario 3: I am able to search for organizations by organization name
+Scenario: #3 I am able to search for organizations by organization name
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Organizations"
 When I provide the full or partial name of the organization I wish to search for
@@ -49,7 +49,7 @@ State
 Country
 Zip
 
-Scenario 4: I am able to search for organizations by Family name
+Scenario: #4 I am able to search for organizations by Family name
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Organizations"
 When I select the Family of the organization I wish to search for
@@ -65,7 +65,7 @@ State
 Country
 Zip
 
-Scenario 5: I am able to search for organizations by city
+Scenario: #5 I am able to search for organizations by city
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Organizations"
 When I provide the full or partial name of the city of the organization I wish to search for
@@ -81,7 +81,7 @@ State
 Country
 Zip
 
-Scenario 6: I am able to search for organizations by state
+Scenario: #6 I am able to search for organizations by state
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Organizations"
 When I select the state of the organization I wish to search for
@@ -97,7 +97,7 @@ State
 Country
 Zip
 
-Scenario 7: I am able to search for organizations by country
+Scenario: #7 I am able to search for organizations by country
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Organizations"
 When I select the country of the organization I wish to search for
@@ -113,7 +113,7 @@ State
 Country
 Zip
 
-Scenario 8: I am able to search for organizations by zip code
+Scenario: #8 I am able to search for organizations by zip code
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Organizations"
 When I provide the full or partial zip code of the organization I wish to search for
@@ -129,7 +129,7 @@ State
 Country
 Zip
 
-Scenario 9: I am able to search for organizations by multiple criteria
+Scenario: #9 I am able to search for organizations by multiple criteria
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Organizations"
 When I select multiple search criteria of the organization I wish to search for

@@ -43,11 +43,13 @@ GEM
       rake (~> 10.4)
     arel (6.0.0)
     bcrypt (3.1.10)
+    bcrypt (3.1.10-x86-mingw32)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
     byebug (5.0.0)
       columnize (= 0.9.0)
+    cancancan (1.11.0)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
     ci_reporter_minitest (1.0.0)
@@ -59,7 +61,7 @@ GEM
     coffee-script (2.4.1)
       coffee-script-source
       execjs
-    coffee-script-source (1.9.1.1)
+    coffee-script-source (1.8.0)
     columnize (0.9.0)
     countries (0.11.4)
       currencies (~> 0.4.2)
@@ -73,14 +75,20 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise_ldap_authenticatable (0.8.5)
+      devise (>= 3.4.1)
+      net-ldap (>= 0.6.0, <= 0.11)
     erubis (2.7.0)
     execjs (2.5.2)
+    faraday (0.9.1)
+      multipart-post (>= 1.2, < 3)
     font-awesome-rails (4.3.0.0)
       railties (>= 3.2, < 5.0)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
     haml (4.0.6)
       tilt
+    hashie (3.4.2)
     i18n (0.7.0)
     i18n_data (0.7.0)
     jbuilder (2.2.16)
@@ -93,6 +101,7 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (1.8.2)
+    jwt (1.5.1)
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -104,11 +113,29 @@ GEM
     mini_portile (0.6.2)
     minitest (5.7.0)
     multi_json (1.11.0)
+    multi_xml (0.5.5)
+    multipart-post (2.0.0)
     nested_form (0.3.2)
+    net-ldap (0.11)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     nokogiri (1.6.6.2-x86-mingw32)
       mini_portile (~> 0.6.0)
+    oauth2 (1.0.0)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (~> 1.2)
+    omniauth (1.2.2)
+      hashie (>= 1.2, < 4)
+      rack (~> 1.0)
+    omniauth-google-oauth2 (0.2.6)
+      omniauth (> 1.0)
+      omniauth-oauth2 (~> 1.1)
+    omniauth-oauth2 (1.3.0)
+      oauth2 (~> 1.0)
+      omniauth (~> 1.2)
     orm_adapter (0.5.0)
     paper_trail (3.0.8)
       activerecord (>= 3.0, < 5.0)
@@ -210,12 +237,18 @@ DEPENDENCIES
   activerecord-postgresql-adapter
   annotate
   byebug
+  cancancan
   ci_reporter_minitest
   coffee-rails (~> 4.1.0)
+  coffee-script-source (= 1.8.0)
   countries
   devise
+  devise_ldap_authenticatable
   jbuilder (~> 2.0)
   jquery-rails
+  jwt
+  omniauth
+  omniauth-google-oauth2
   paper_trail
   pg
   rails (= 4.2.0)
