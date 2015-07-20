@@ -83,7 +83,15 @@
         vm.batchSelect = function(intention) {
 
             if (intention == "selectAll") {
-                vm.savedSelection = vm.foundOrgs.slice(); //clone
+                //vm.savedSelection = vm.foundOrgs.slice(); //clone
+                vm.savedSelection = vm.foundOrgs.map(function(org) {
+                   org.effective_date = new Date();
+                    org.expiration_date = "";
+                    org.opened_effective = false;
+                    org.opened_expiration = false;
+
+                    return org;
+                });
             } else {
                 vm.savedSelection.length = 0;
             }
@@ -98,9 +106,9 @@
             $event.stopPropagation();
 
             if (type == "effective") {
-                vm.savedSelection[index].opened_effective = true;
+                vm.savedSelection[index].opened_effective = !vm.savedSelection[index].opened_effective;
             } else {
-                vm.savedSelection[index].opened_expiration = true;
+                vm.savedSelection[index].opened_expiration = !vm.savedSelection[index].opened_expiration;
             }
 
 
