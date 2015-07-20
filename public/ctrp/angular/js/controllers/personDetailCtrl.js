@@ -38,7 +38,11 @@
                 vm.curPerson.po_affiliations_attributes[idx] = aff;
             });
 
-            PersonService.upsertPerson(vm.curPerson).then(function (response) {
+            //create a nested Person object
+            var newPerson = {};
+            newPerson.new = vm.curPerson.new || '';
+            newPerson.person = vm.curPerson;
+            PersonService.upsertPerson(newPerson).then(function (response) {
                 toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(vm.curPerson));
