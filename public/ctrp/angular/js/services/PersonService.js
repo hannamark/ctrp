@@ -98,7 +98,7 @@
 
             //update an existing person
             var configObj = {}; //empty config
-            return PromiseService.updateObj(URL_CONFIGS.A_PERSON + personObj.id + ".json", personObj, configObj);
+            return PromiseService.updateObj(URL_CONFIGS.A_PERSON + personObj.person.id + ".json", personObj, configObj);
         } //upsertPerson
 
 

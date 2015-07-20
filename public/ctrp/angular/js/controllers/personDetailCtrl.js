@@ -29,7 +29,7 @@
         vm.updatePerson = function () {
             vm.curPerson.po_affiliations_attributes = preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             angular.forEach(vm.curPerson.po_affiliations_attributes, function(aff, idx) {
-                console.log(typeof aff.expiration_date);
+                //console.log(typeof aff.expiration_date);
 
                 //convert the ISO date to Locale Date String
                 aff['effective_date'] = DateService.convertISODateToLocaleDateStr(aff['effective_date']);
