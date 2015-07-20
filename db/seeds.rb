@@ -90,10 +90,13 @@ person9=Person.find_or_create_by(id:672434, source_id:'19844', name:'David Marc 
 # Set Role for Admin
 
 user_admin = User.find_by_username("ctrpadmin")
-user_admin.role = "ROLE_ADMIN"
-user_admin.save!
+unless user_admin.nil?
+  user_admin.role = "ROLE_ADMIN"
+  user_admin.save!
+end
 
 user_curator = User.find_by_username("ctrpcurator")
-user_curator.role = "ROLE_CURATOR"
-user_curator.save!
-
+unless user_curator.nil?
+  user_curator.role = "ROLE_CURATOR"
+  user_curator.save!
+end
