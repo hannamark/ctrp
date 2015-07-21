@@ -14,7 +14,7 @@
     function personCtrl(PersonService, uiGridConstants, $scope, Common, sourceStatusObj) {
 
         var vm = this;
-
+        console.log("received sourceStatusObj: " + JSON.stringify(sourceStatusObj));
         vm.searchParams = PersonService.getInitialPersonSearchParams();
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
