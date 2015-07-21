@@ -1,0 +1,27 @@
+{
+  "name": "podemo",
+  "description": "Cucumber support for protractor",
+  "version": "0.1.0",
+  "author": {
+    "name": "Shilpi Singh"
+  },
+  "main": "lib/index.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "dependencies": {
+    "chai": "3.0.x",
+    "chai-as-promised": "5.1.x"
+  },
+  "keywords": [
+    "protractor",
+    "cucumber",
+    "angular",
+    "angularjs",
+    "testing",
+    "behaviour driven development",
+    "bdd",
+    "selenium"
+  ],
+  "devDependencies": {}
+}
