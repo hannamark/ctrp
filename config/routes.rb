@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
 
 
+  resources :po_affiliation_statuses
+
   scope "/ctrp" do
     devise_for :users
 
@@ -45,6 +47,8 @@ Rails.application.routes.draw do
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'
+
+    resources :po_affiliation_statuses
   end
 
   get '/ctrp/', :to => redirect('/index.html')
