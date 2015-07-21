@@ -14,6 +14,7 @@
     function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES,
                            $scope, Common, sourceStatusObj, $state, $modal) {
         var vm = this;
+        console.log("in person detail controller now");
         vm.curPerson = personDetailObj || {name: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;

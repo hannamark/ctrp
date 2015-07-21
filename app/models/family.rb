@@ -37,4 +37,25 @@ class Family < ActiveRecord::Base
       return false
     end
   end
+
+  scope :matches_wc, -> (column, value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      where("families.#{column} ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      where("families.#{column} ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      where("families.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      where("families.#{column} ilike ?", "#{value}")
+    end
+  }
+
+  scope :sort_by_col, -> (column, order) {
+    if column == 'id'
+      order("#{column} #{order}")
+    else
+      order("LOWER(families.#{column}) #{order}")
+    end
+  }
 end

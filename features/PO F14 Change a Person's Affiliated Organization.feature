@@ -12,6 +12,8 @@ When I select the option to change a Person's Affiliated Organization
 And I submit my change request
 Then the system should set the selected organization as the Person Record Affiliated Organization
 And the effective date should be the current date or entered date
+And the Affiliated Organization status should be "Active"
 And the previous Person Record Affiliate Organization should have an expiration date of the current date or entered date
 And my name should be listed as last update with the current date and time
+And the Affiliated Organization status should be "Inactive"
 

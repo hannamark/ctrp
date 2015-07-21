@@ -1,13 +1,13 @@
 @Global @Reg
 Feature: As a CTRP User, I can indicate if a trial has an associated IND or IDE and if so, enter information about the IND or IDE
 
-Scenario 1: I can indicate that the trial does not have an associated IND or IDE
+Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
 And I am on the Register Trial IND/IDE Information screen
 When I have selected "No" for the question "Does this trial have an associated IND or IDE?"
 Then the IND/IDE Information for the trial registration will be complete
 
-Scenario 2: I can enter the IND or IDE information for a trial
+Scenario: #2 I can enter the IND or IDE information for a trial
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
 And I am on the Register Trial IND/IDE Information screen
 And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
@@ -21,7 +21,7 @@ And I have selected the Expanded Access Type if I selected "Yes" for Expanded Ac
 And I have selected "Yes" or "No" for Exempt
 Then the IND/IDE Information for the trial registration will be complete
 
-Scenario 3: I can enter the IND and IDE information for multiple IND or IDE registrations for a trial
+Scenario: #3 I can enter the IND and IDE information for multiple IND or IDE registrations for a trial
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
 And I am on the Register Trial IND/IDE Information screen
 And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"

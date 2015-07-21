@@ -24,6 +24,15 @@ Rails.application.routes.draw do
 
     resources :family_relationships
 
+    resources :family_memberships
+
+    resources :families do
+      collection do
+        get 'search'
+        post 'search'
+      end
+    end
+
     resources :comments
 
     resources :people do
@@ -35,6 +44,8 @@ Rails.application.routes.draw do
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'
+    get '/backoffice' => 'backoffice#index'
+    get '/backoffice/download_log'
 
     # Devise related routes
     #devise_for :users

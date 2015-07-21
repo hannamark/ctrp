@@ -13,10 +13,11 @@
         return methodObj;
         /*************** implementations below ****************/
         function request(config) {
+            config.timeout = 15000; //15 seconds timeout
             //var token = AuthTokenService.getToken();
             var token = LocalCacheService.getCacheWithKey("token"); //$window.localStorage.token;
-            console.log("Printing token")
-            console.log(token)
+           // console.log("Printing token")
+           // console.log(token)
             if (token) {
 // used by the policies in sails.js
                 //config.headers.Authorization = 'Bearer ' + token;
@@ -31,8 +32,8 @@
          * @returns {*}
          */
         function response(response) {
-            console.log("Printing response");
-            console.log(JSON.stringify(response));
+          //  console.log("Printing response");
+          //  console.log(JSON.stringify(response));
 
             //$timeout(function() {
             // console.log("access denied!");
