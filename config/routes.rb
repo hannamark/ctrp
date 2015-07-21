@@ -24,6 +24,15 @@ Rails.application.routes.draw do
 
     resources :family_relationships
 
+    resources :family_memberships
+
+    resources :families do
+      collection do
+        get 'search'
+        post 'search'
+      end
+    end
+
     resources :comments
 
     resources :people do
