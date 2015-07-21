@@ -24,6 +24,8 @@ Rails.application.routes.draw do
 
     resources :family_relationships
 
+    resources :family_memberships
+
     resources :comments
 
     resources :people do
