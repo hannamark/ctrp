@@ -139,6 +139,35 @@
                     controller: 'userCtrl as userView'
                 })
 
+                .state('main.families', {
+                    url: '/families',
+                    templateUrl: '/ctrp/angular/partials/family_list.html',
+                    controller: 'familyCtrl as familyView'
+                })
+
+                .state('main.familyDetail', {
+                    url: '/families/:familyId',
+                    templateUrl: '/ctrp/angular/partials/familyDetails.html',
+                    controller: 'familyDetailCtrl as familyDetailView',
+                    resolve: {
+                        FamilyService: 'FamilyService'
+                    } //resolve the promise and pass it to controller
+                })
+
+                .state('main.addFamily', {
+                    url: '/new_family',
+                    templateUrl: '/ctrp/angular/partials/familyDetails.html',
+                    controller: 'familyDetailCtrl as familyDetailView',
+                    resolve: {
+                        familyDetailObj: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        }
+                    }
+                })
+
+
                 .state('main.people', {
                     url: '/people',
                     templateUrl: '/ctrp/angular/partials/person_list.html',
