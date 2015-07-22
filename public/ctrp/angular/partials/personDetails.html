@@ -100,7 +100,7 @@
                         <select multiple="multiple" id="duallistbox" class="form-control"
                                 ng-model="personDetailView.selectedOrgs"
                                 style="height: 194px;">
-                            <option ng-animate="'animate'" ng-repeat="org in personDetailView.foundOrgs track by $index"
+                            <option class="animated-item" ng-repeat="org in personDetailView.foundOrgs track by $index"
                                     value="{{org}}">
                                 {{org.name}}
                             </option>
@@ -128,12 +128,13 @@
                         <th>Remove</th>
                         <th>PO ID</th>
                         <th>Organization</th>
-                        <!--<th>Affiliation Status</th>-->
+                        <th>Affiliation Status</th>
+                        <th>Id</th>
                         <th>Effective Date</th>
                         <th>Expiration Date</th>
                         </thead>
                         <tbody>
-                        <tr ng-animate="'animate'"
+                        <tr class="animated-item"
                             ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index">
                             <td style="vertical-align: middle">
                                 <button ng-click="personDetailView.deleteSelection($index)">
@@ -142,16 +143,15 @@
                             </td>
                             <td>{{org.id}}</td>
                             <td>{{org.name}}</td>
-                            <!--<td>-->
-                            <!--<select class="form-control" id="source_status" ng-model="personDetailView.savedSelection[$index].affiliate_status">-->
-                            <!--<option value="">Select a status</option>-->
-                            <!--<option ng-repeat="status in personDetailView.sourceStatusArr"-->
-                            <!--value="{{status.id}}"-->
-                            <!--ng-selected="'Active' == status.name">-->
-                            <!--{{status.name}}-->
-                            <!--</option> &lt;!&ndash; active selected by default &ndash;&gt;-->
-                            <!--</select>-->
-                            <!--</td>-->
+                            <td>
+                            <select class="form-control" id="po_affiliation_status_id" ng-model="org.po_affiliation_status_id">
+                                <option ng-repeat="po_aff_status in personDetailView.poAffStatuses" value="{{po_aff_status.id}}">{{po_aff_status.name}}</option>
+                            <!--<option ng-repeat="po_aff_status in personDetailView.poAffStatuses" value="{{po_aff_status.id}}"-->
+                                    <!--ng-selected="'Active' == po_aff_status.name && org.expiration_date == '' || 'Inactive' == po_aff_status.name &&-->
+                                    <!--org.expiration_date != ''">{{po_aff_status.name}}</option>-->
+                            </select>
+                            </td>
+                            <td>{{org.po_affiliation_status_id}}</td>
                             <td>
                                 <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control" datepicker-popup="{{personDetailView.dateFormat}}"
