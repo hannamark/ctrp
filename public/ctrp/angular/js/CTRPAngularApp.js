@@ -19,7 +19,8 @@
 //        'datatables',
         'ui.grid',
         'ui.grid.pagination',
-        'DateServiceMod'
+        'DateServiceMod',
+        'CTRPUnderscoreModule'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
@@ -147,6 +148,9 @@
                         },
                         personDetailObj: function($stateParams, PersonService) {
                             return PersonService.getPersonById($stateParams.personId);
+                        },
+                        poAffStatuses : function(PersonService) {
+                            return PersonService.getPoAffStatuses();
                         }
                     } //resolve the promise and pass it to controller
                 })
@@ -164,6 +168,9 @@
                             var deferred = $q.defer();
                             deferred.resolve(null);
                             return deferred.promise;
+                        },
+                        poAffStatuses : function(PersonService) {
+                            return PersonService.getPoAffStatuses();
                         }
                     }
                 })

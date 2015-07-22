@@ -22,6 +22,39 @@
     word-wrap: normal;
 }
 
+.animated-item {
+    -webkit-transition: all linear 0.5s;
+    -o-transition: all linear 0.5s;
+    transition: all linear 0.5s;
+}
+
+.animated-item.ng-enter {
+    opacity: 0;    
+}
+/*.animated-item.ng-enter-stagger {*/
+    /*/!*-webkit-transition-delay: 0.5s;*!/*/
+    /*/!*-moz-transition-delay: 0.5s;*!/*/
+    /*/!*-ms-transition-delay: 0.5s;*!/*/
+    /*/!*-o-transition-delay: 0.5s;*!/*/
+    /*transition-delay: 0.5s;*/
+    /*transition-duration: 0;*/
+/*}*/
+.animated-item.ng-enter-active {
+    opacity: 1;
+}
+.animated-item.ng-leave {
+    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
+    -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
+    -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
+    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
+    transition-duration: 0.3s;
+    opacity: 0.5;
+}
+
+.animated-item.ng-leave-active {
+    opacity: 0;
+}
+
 .animate-enter,
 .animate-leave
 {

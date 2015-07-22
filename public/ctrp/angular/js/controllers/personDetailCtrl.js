@@ -9,13 +9,13 @@
         .controller('personDetailCtrl', personDetailCtrl);
 
     personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'MESSAGES', 'DateService',
-        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', '$timeout'];
+        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', '$timeout', 'poAffStatuses', '_'];
 
     function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES, DateService,
-                              $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout) {
+                              $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout, poAffStatuses, _) {
         var vm = this;
-        vm.curPerson = personDetailObj || {name: ""}; //personDetailObj.data;
-        vm.curPerson = vm.curPerson.data || vm.curPerson;
+        vm.curPerson = personDetailObj.data || {name: ""}; //personDetailObj.data;
+       // vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
@@ -29,23 +29,29 @@
         vm.updatePerson = function () {
             vm.curPerson.po_affiliations_attributes = preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             angular.forEach(vm.curPerson.po_affiliations_attributes, function(aff, idx) {
-                //console.log(typeof aff.expiration_date);
+               //convert the ISO date to Locale Date String
+                aff['effective_date'] = aff.effective_date ? DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
+                aff['expiration_date'] = aff.expiration_date ? DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
 
-                //convert the ISO date to Locale Date String
-                aff['effective_date'] = DateService.convertISODateToLocaleDateStr(aff['effective_date']);
-                aff['expiration_date'] = DateService.convertISODateToLocaleDateStr(aff['expiration_date']);
-                console.log(JSON.stringify(aff));
+                var affStatusIndex = -1; //PoAffiliationStatus index
+                if (aff.effective_date && !aff.expiration_date) {
+                    affStatusIndex = _.findIndex(poAffStatuses, {'name' : 'Active'});
+                } else if (aff.expiration_date) {
+                    affStatusIndex = _.findIndex(poAffStatuses, {'name' : 'Inactive'});
+                }
+                aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
                 vm.curPerson.po_affiliations_attributes[idx] = aff;
             });
 
             //create a nested Person object
             var newPerson = {};
             newPerson.new = vm.curPerson.new || '';
+            newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
             PersonService.upsertPerson(newPerson).then(function (response) {
                 toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
-                console.log("error in updating person " + JSON.stringify(vm.curPerson));
+                console.log("error in updating person " + JSON.stringify(newPerson));
             });
         }; // updatePerson
 
@@ -72,6 +78,7 @@
             }, 250); //250 ms
         }; //searchOrgs
 
+
         //delete the affiliated organization from table view
         vm.deleteSelection = function(index) {
             if (index < vm.savedSelection.length) {
@@ -83,20 +90,16 @@
         vm.batchSelect = function(intention) {
 
             if (intention == "selectAll") {
-                //vm.savedSelection = vm.foundOrgs.slice(); //clone
-                vm.savedSelection = vm.foundOrgs.map(function(org) {
-                   org.effective_date = new Date();
-                    org.expiration_date = "";
-                    org.opened_effective = false;
-                    org.opened_expiration = false;
-
-                    return org;
+                angular.forEach(vm.foundOrgs, function(org, idx) {
+                   if (!isOrgSaved(vm.savedSelection, org)) {
+                       vm.savedSelection.unshift(initSelectedOrg(org));
+                   }
                 });
             } else {
                 vm.savedSelection.length = 0;
             }
-
         }; //batchSelect
+
 
         vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
         vm.dateOptions = DateService.getDateOptions();
@@ -110,8 +113,6 @@
             } else {
                 vm.savedSelection[index].opened_expiration = !vm.savedSelection[index].opened_expiration;
             }
-
-
         }; //openCalendar
 
 
@@ -176,17 +177,11 @@
             }, function (newVal, oldVal) {
 
                 if (!!newVal) {
-
                     angular.forEach(newVal, function (org, idx) {
                         org = JSON.parse(org);
 
                         if (!isOrgSaved(vm.savedSelection, org)) {
-                          //  org.affiliate_status = "";
-                            org.effective_date = new Date(); //if not existent
-                            org.expiration_date = "";
-                            org.opened_effective = false;
-                            org.opened_expiration = false;
-                            vm.savedSelection.push(org);
+                            vm.savedSelection.unshift(initSelectedOrg(org));
                         }
                     });
                 } //if
@@ -204,15 +199,14 @@
          */
         function isOrgSaved(targetOrgsArr, orgObj) {
             var exists = false;
-            for (var i = 0; i < targetOrgsArr.length; i++) {
-                var curOrg = targetOrgsArr[i];
-                if (curOrg.id == orgObj.id) {
-                    exists = true;
-                    break;
-                }
-            }
+            _.each(targetOrgsArr, function(org, idx) {
+               if (org.id == orgObj.id) {
+                   exists = true;
+                   return exists;
+               }
+            });
             return exists;
-        }
+        } //isOrgSaved
 
 
         /**
@@ -225,12 +219,10 @@
          */
         function preparePOAffiliationArr(savedSelectionArr) {
             var results = [];
-            angular.forEach(savedSelectionArr, function (org, index) {
-
-                //cleaned fields of Organization object
+            _.each(savedSelectionArr, function(org, index) {
                 var cleanedOrg = {
                     "organization_id": org.id,
-                  //  "affiliate_status": org.affiliate_status,
+                    "po_affiliation_status_id": '', //org.po_affiliation_status_id,
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date
                 };
@@ -239,6 +231,24 @@
 
             return results;
         } //preparePOAffiliationArr
+
+
+        /**
+         * Initialize the selected organization for its affiliation status, po_effective_date
+         * po_expiration_date, etc
+         *
+         * @param org
+         * @returns org
+         */
+        function initSelectedOrg(org) {
+            org.po_affiliation_status_id = "";
+            org.effective_date = new Date(); //today as the effective date
+            org.expiration_date = "";
+            org.opened_effective = false;
+            org.opened_expiration = false;
+
+            return org;
+        } //initSelectedOrg
 
 
     }

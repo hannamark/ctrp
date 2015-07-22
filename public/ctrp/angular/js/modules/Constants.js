@@ -17,7 +17,8 @@
             'SOURCE_STATUSES' : '/ctrp/source_statuses.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
-            'SEARCH_PERSON': '/ctrp/people/search.json'
+            'SEARCH_PERSON': '/ctrp/people/search.json',
+            'PO_AFF_STATUSES' : '/ctrp/po_affiliation_statuses.json'
         })
         .constant('MESSAGES', {
            'STATES_AVAIL' : 'states_or_provinces_available',

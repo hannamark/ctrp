@@ -84,3 +84,7 @@ person6=Person.find_or_create_by(id:10161459, source_id:'46120', name:'Christine
 person7=Person.find_or_create_by(id:366649, source_id:'11640', name:'Christopher Yancey Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
 person8=Person.find_or_create_by(id:2026171, source_id:'35504', name:'Daniel Evan Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
 person9=Person.find_or_create_by(id:672434, source_id:'19844', name:'David Marc Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
+
+
+PoAffiliationStatus.find_or_create_by(name: 'Active', code: '001Active')
+PoAffiliationStatus.find_or_create_by(name: 'Inactive', code: '002Inactive')
