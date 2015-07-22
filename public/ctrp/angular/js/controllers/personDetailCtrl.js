@@ -15,7 +15,6 @@
                               $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout, poAffStatuses, _) {
         var vm = this;
         vm.curPerson = personDetailObj.data || {name: ""}; //personDetailObj.data;
-       // vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
