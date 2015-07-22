@@ -19,7 +19,8 @@
 //        'datatables',
         'ui.grid',
         'ui.grid.pagination',
-        'DateServiceMod'
+        'DateServiceMod',
+        'CTRPUnderscoreModule'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there

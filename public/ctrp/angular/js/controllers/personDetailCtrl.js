@@ -9,15 +9,17 @@
         .controller('personDetailCtrl', personDetailCtrl);
 
     personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'MESSAGES', 'DateService',
-        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', '$timeout', 'poAffStatuses'];
+        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', '$timeout', 'poAffStatuses', '_'];
 
     function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES, DateService,
-                              $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout, poAffStatuses) {
+                              $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout, poAffStatuses, _) {
         var vm = this;
-        console.log("received poAffStatuses: " + JSON.stringify(poAffStatuses));
+        _.each(poAffStatuses, function(po) {
+            console.log(po.id);
+        });
         vm.poAffStatuses = poAffStatuses;
-        vm.curPerson = personDetailObj || {name: ""}; //personDetailObj.data;
-        vm.curPerson = vm.curPerson.data || vm.curPerson;
+        vm.curPerson = personDetailObj.data || {name: ""}; //personDetailObj.data;
+       // vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
@@ -34,8 +36,14 @@
                //convert the ISO date to Locale Date String
                 aff['effective_date'] = aff.effective_date ? DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
                 aff['expiration_date'] = aff.expiration_date ? DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
-                console.log("status id for affiliation: " + aff.po_affiliation_status_id);
-                console.log(JSON.stringify(aff));
+
+                var affStatusIndex = -1; //PoAffiliationStatus index
+                if (aff.effective_date && !aff.expiration_date) {
+                    affStatusIndex = _.findIndex(poAffStatuses, {'name' : 'Active'});
+                } else if (aff.expiration_date) {
+                    affStatusIndex = _.findIndex(poAffStatuses, {'name' : 'Inactive'});
+                }
+                aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
                 vm.curPerson.po_affiliations_attributes[idx] = aff;
             });
 
@@ -74,6 +82,7 @@
             }, 250); //250 ms
         }; //searchOrgs
 
+
         //delete the affiliated organization from table view
         vm.deleteSelection = function(index) {
             if (index < vm.savedSelection.length) {
@@ -95,6 +104,7 @@
             }
         }; //batchSelect
 
+
         vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
@@ -107,8 +117,6 @@
             } else {
                 vm.savedSelection[index].opened_expiration = !vm.savedSelection[index].opened_expiration;
             }
-
-
         }; //openCalendar
 
 
@@ -195,13 +203,12 @@
          */
         function isOrgSaved(targetOrgsArr, orgObj) {
             var exists = false;
-            for (var i = 0; i < targetOrgsArr.length; i++) {
-                var curOrg = targetOrgsArr[i];
-                if (curOrg.id == orgObj.id) {
-                    exists = true;
-                    break;
-                }
-            }
+            _.each(targetOrgsArr, function(org, idx) {
+               if (org.id == orgObj.id) {
+                   exists = true;
+                   return exists;
+               }
+            });
             return exists;
         } //isOrgSaved
 
@@ -216,9 +223,7 @@
          */
         function preparePOAffiliationArr(savedSelectionArr) {
             var results = [];
-            angular.forEach(savedSelectionArr, function (org, index) {
-
-                //cleaned fields of Organization object
+            _.each(savedSelectionArr, function(org, index) {
                 var cleanedOrg = {
                     "organization_id": org.id,
                     "po_affiliation_status_id": '', //org.po_affiliation_status_id,
