@@ -58,6 +58,10 @@
                         LocalCacheService.removeItemFromCache("token");
                         LocalCacheService.removeItemFromCache("username");
                         toastr.success('Success', 'Successfully logged out');
+
+                        $timeout(function() {
+                            $state.go('main.defaultContent');
+                        }, 1000);
                     }
                     $log.info("success in log out: " + JSON.stringify(data));
                 }).catch(function (err) {
