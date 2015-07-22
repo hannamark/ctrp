@@ -9,31 +9,36 @@
     angular.module('CommonTools', [])
         .service('Common', Common);
 
-    Common.$inject = [];
+    Common.$inject = ['$rootScope'];
 
-    function Common() {}
+    function Common($rootScope) {
 
-    /********************* implementations below ****************************/
+        /**
+         * A-Z Comparator for sorting an array of JSON objects
+         * by the 'name' field in each JSON object
+         *
+         */
+        this.a2zComparator = function() {
+            var compare = function(a, b) {
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (a.name < b.name) {
+                    return -1;
+                }
 
-    /**
-     * A-Z Comparator for sorting an array of JSON objects
-     * by the 'name' field in each JSON object
-     *
-     */
-    Common.prototype.a2zComparator = function() {
-        var compare = function(a, b) {
-            if (a.name > b.name) {
-                return 1;
+                return 0;
             }
-            if (a.name < b.name) {
-                return -1;
-            }
 
-            return 0;
-        }
+            return compare;
+        }; //a2zComparator
 
-        return compare;
-    } //a2zComparator
 
+        this.broadcastMsg = function(message) {
+            $rootScope.$broadcast(message, {});
+        }; //broadcastMsg
+
+
+    }
 
 })();
