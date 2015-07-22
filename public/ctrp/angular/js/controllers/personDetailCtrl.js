@@ -14,10 +14,6 @@
     function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES, DateService,
                               $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout, poAffStatuses, _) {
         var vm = this;
-        _.each(poAffStatuses, function(po) {
-            console.log(po.id);
-        });
-        vm.poAffStatuses = poAffStatuses;
         vm.curPerson = personDetailObj.data || {name: ""}; //personDetailObj.data;
        // vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
