@@ -150,7 +150,10 @@
                     templateUrl: '/ctrp/angular/partials/familyDetails.html',
                     controller: 'familyDetailCtrl as familyDetailView',
                     resolve: {
-                        FamilyService: 'FamilyService'
+                        FamilyService: 'FamilyService',
+                        familyDetailObj: function($stateParams, FamilyService) {
+                            return FamilyService.getFamilyById($stateParams.familyId);
+                        }
                     } //resolve the promise and pass it to controller
                 })
 

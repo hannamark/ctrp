@@ -31,11 +31,12 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
-                {name: 'name', enableSorting: true, width: '20%',
+                {name: 'id', enableSorting: true, displayName: 'Family ID', width: '20%'},
+                {name: 'name', enableSorting: true, width: '30%%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                }
+                },
+                {name: 'description', enableSorting:false, displayName: 'Description',width: '30%'}
             ]
         };
 

@@ -1,19 +1,17 @@
 /**
- * Created by wus4 on 7/6/15.
+ * Created by dullam on 7/20/2015.
  */
 
 (function () {
     'use strict';
-
     angular.module('ctrpApp')
         .controller('familyDetailCtrl', familyDetailCtrl);
-
     familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal'];
-
     function familyDetailCtrl(familyDetailObj, FamilyService, toastr, MESSAGES,
                               $scope, Common, $state, $modal) {
         var vm = this;
+        //console.log("in details controller ......."+JSON.stringify(familyDetailObj));
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
         vm.curFamily = vm.curFamily.data || vm.curFamily;
 
@@ -27,11 +25,7 @@
             });
         }; // updateFamily
 
-
-
         activate()
-
-
         /****************** implementations below ***************/
         function activate() {
             appendNewFamilyFlag();
@@ -41,7 +35,6 @@
                 prepareModal();
             }
         }
-
 
         /**
          * Append a 'new' key to the vm.curFamily to
@@ -80,9 +73,6 @@
             } //confirmDelete
         }; //prepareModal
 
-
-
     }
-
 
 })();

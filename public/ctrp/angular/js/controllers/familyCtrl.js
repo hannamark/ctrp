@@ -36,7 +36,7 @@
             // vm.searchParams.name = vm.searchParams.name || "*";
             //console.log("searching params: " + JSON.stringify(vm.searchParams));
             FamilyService.searchFamilies(vm.searchParams).then(function (data) {
-                //  console.log("received search results: " + JSON.stringify(data.data));
+                //console.log("received search results: " + JSON.stringify(data.data));
                 vm.gridOptions.data = data.data.families; //prepareGridData(data.data.orgs); //data.data.orgs;
                 vm.gridOptions.totalItems = data.data.total;
             }).catch(function (err) {
@@ -92,7 +92,7 @@
             }
 
             //do the search with the updated sorting
-            vm.searchPeople();
+            vm.searchFamilies();
         }; //sortChangedCallBack
 
         /**
@@ -100,7 +100,7 @@
          */
         function updateSearchResultsUponParamsChanges() {
             //can change vm.searchParams.country to vm.searchParams to watch all search parameters
-            $scope.$watch(function() {return vm.searchParams.country;}, function(newVal, oldval) {
+            $scope.$watch(function() {return vm.searchParams.name;}, function(newVal, oldval) {
                 vm.searchFamilies();
             }, true);
         }
