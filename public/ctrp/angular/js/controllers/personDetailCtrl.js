@@ -87,13 +87,20 @@
 
         //select or de-select all organizations form affiliations
         vm.batchSelect = function(intention) {
-
             if (intention == "selectAll") {
-                angular.forEach(vm.foundOrgs, function(org, idx) {
+                //iterate the organizations asynchronously
+                async.each(vm.foundOrgs, function(org, cb) {
                    if (!isOrgSaved(vm.savedSelection, org)) {
                        vm.savedSelection.unshift(initSelectedOrg(org));
                    }
+                    cb();
+                }, function(err) {
+                    if (err) {
+                        console.log("an error occurred when iterating the organizations");
+                    }
                 });
+
+
             } else {
                 vm.savedSelection.length = 0;
             }
@@ -115,8 +122,7 @@
         }; //openCalendar
 
 
-
-        activate()
+        activate();
 
 
         /****************** implementations below ***************/
