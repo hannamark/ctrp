@@ -1,7 +1,7 @@
 <!--<div class="row">
 <strong>CTRP</strong> <p><h4>Clinical Trials Reporting Program</h4></p>
 </div>-->
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" ng-controller="headerNavigationCtrl as headerView">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -30,6 +30,7 @@
                         <li><a href="">One More Link</a></li>
                         <li class="divider"></li>
                         <li><a href="">One more separated link</a></li>
+                        <li>{{headerView.name}}</li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -46,8 +47,9 @@
                         <li><a ui-sref="main.addFamily">Add a Family</a></li>
                     </ul>
                 </li>
+                <li class="animated-item" ng-show="!headerView.signedIn"><a ui-sref="main.sign_in">Sign in</a></li>
+                <li class="animated-item" ng-show="headerView.signedIn"><a ng-href="" ng-click="headerView.logOut()">Sign out</a></li>
                 <li><a href="/ctrp/admin">Rails Admin</a></li>
-                <li><button class="btn btn-danger">Logout</button></li>
             </ul>
             <form class="navbar-form navbar-left" role="search" novalidate>
                 <div class="form-group">
