@@ -9,5 +9,5 @@ And I have selected the Update Trial Status option
 Then the trial status, trial status history, trial start date, trial primary completion date, and trial completion date will be displayed
 And I will be able to update trial status and trial status dates and edit trial status history
 And I will be able to update trial start date, primary completion date, and completion date with actual or anticipated dates
-And I will be able to review or cancel my update of trial status and dates
+And I will be able to save or cancel my update of trial status and dates
 
