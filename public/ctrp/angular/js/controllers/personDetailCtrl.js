@@ -27,16 +27,16 @@
         //update person (vm.curPerson)
         vm.updatePerson = function () {
             vm.curPerson.po_affiliations_attributes = preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
-            angular.forEach(vm.curPerson.po_affiliations_attributes, function(aff, idx) {
-               //convert the ISO date to Locale Date String
+            angular.forEach(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
+                //convert the ISO date to Locale Date String
                 aff['effective_date'] = aff.effective_date ? DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
                 aff['expiration_date'] = aff.expiration_date ? DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
 
                 var affStatusIndex = -1; //PoAffiliationStatus index
                 if (aff.effective_date && !aff.expiration_date) {
-                    affStatusIndex = _.findIndex(poAffStatuses, {'name' : 'Active'});
+                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
                 } else if (aff.expiration_date) {
-                    affStatusIndex = _.findIndex(poAffStatuses, {'name' : 'Inactive'});
+                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
                 }
                 aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
                 vm.curPerson.po_affiliations_attributes[idx] = aff;
@@ -53,7 +53,6 @@
                 console.log("error in updating person " + JSON.stringify(newPerson));
             });
         }; // updatePerson
-
 
 
         var orgsPromise = '';
@@ -79,28 +78,26 @@
 
 
         //delete the affiliated organization from table view
-        vm.deleteSelection = function(index) {
+        vm.deleteSelection = function (index) {
             if (index < vm.savedSelection.length) {
-                vm.savedSelection.splice(index,1);
+                vm.savedSelection.splice(index, 1);
             }
         };// deleteSelection
 
         //select or de-select all organizations form affiliations
-        vm.batchSelect = function(intention) {
+        vm.batchSelect = function (intention) {
             if (intention == "selectAll") {
                 //iterate the organizations asynchronously
-                async.each(vm.foundOrgs, function(org, cb) {
-                   if (!isOrgSaved(vm.savedSelection, org)) {
-                       vm.savedSelection.unshift(initSelectedOrg(org));
-                   }
+                async.each(vm.foundOrgs, function (org, cb) {
+                    if (!isOrgSaved(vm.savedSelection, org)) {
+                        vm.savedSelection.unshift(initSelectedOrg(org));
+                    }
                     cb();
-                }, function(err) {
+                }, function (err) {
                     if (err) {
                         console.log("an error occurred when iterating the organizations");
                     }
                 });
-
-
             } else {
                 vm.savedSelection.length = 0;
             }
@@ -110,7 +107,7 @@
         vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
-        vm.openCalendar = function($event, index, type) {
+        vm.openCalendar = function ($event, index, type) {
             $event.preventDefault();
             $event.stopPropagation();
 
@@ -204,11 +201,11 @@
          */
         function isOrgSaved(targetOrgsArr, orgObj) {
             var exists = false;
-            _.each(targetOrgsArr, function(org, idx) {
-               if (org.id == orgObj.id) {
-                   exists = true;
-                   return exists;
-               }
+            _.each(targetOrgsArr, function (org, idx) {
+                if (org.id == orgObj.id) {
+                    exists = true;
+                    return exists;
+                }
             });
             return exists;
         } //isOrgSaved
@@ -224,7 +221,7 @@
          */
         function preparePOAffiliationArr(savedSelectionArr) {
             var results = [];
-            _.each(savedSelectionArr, function(org, index) {
+            _.each(savedSelectionArr, function (org, index) {
                 var cleanedOrg = {
                     "organization_id": org.id,
                     "po_affiliation_status_id": '', //org.po_affiliation_status_id,
