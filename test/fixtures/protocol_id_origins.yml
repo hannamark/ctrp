@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: study_models
+# Table name: protocol_id_origins
 #
 #  id         :integer          not null, primary key
 #  code       :string(255)

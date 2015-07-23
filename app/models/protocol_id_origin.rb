@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: time_perspectives
+# Table name: protocol_id_origins
 #
 #  id         :integer          not null, primary key
 #  code       :string(255)
@@ -10,10 +10,5 @@
 #  uuid       :string(255)
 #
 
-require 'test_helper'
-
-class TimePerspectiveTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class ProtocolIdOrigin < ActiveRecord::Base
 end

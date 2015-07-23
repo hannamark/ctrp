@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: study_models
+# Table name: protocol_id_origins
 #
 #  id         :integer          not null, primary key
 #  code       :string(255)
@@ -12,7 +12,7 @@
 
 require 'test_helper'
 
-class StudyModelTest < ActiveSupport::TestCase
+class ProtocolIdOriginTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

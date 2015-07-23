@@ -6,13 +6,8 @@ class CreateTrials < ActiveRecord::Migration
       t.text :official_title
       t.string :pilot, :limit => 255
       t.string :research_category, :limit => 255
-      t.json :lead_org
-      t.json :co_lead_org
-      t.json :principal_investigator
-      t.json :co_principal_investigator
-      t.json :sponsor
-      t.json :investigator
-      t.json :funding_source
+      t.string :primary_purpose_other, :limit => 255
+      t.string :secondary_purpose_other, :limit => 255
       t.string :program_code, :limit => 255
       t.string :grant_question, :limit => 255
       t.date :start_date
@@ -27,13 +22,16 @@ class CreateTrials < ActiveRecord::Migration
       t.string :intervention_indicator, :limit => 255
       t.string :sec801_indicator, :limit => 255
       t.string :data_monitor_indicator, :limit => 255
+      t.json :history
       t.references :study_source, index: true
       t.references :phase, index: true
       t.references :primary_purpose, index: true
       t.references :secondary_purpose, index: true
-      t.references :study_model, index: true
-      t.references :time_perspective, index: true
       t.references :responsible_party, index: true
+      t.references :lead_org, references: :organizations, index: true
+      t.references :pi, references: :people, index: true
+      t.references :sponsor, references: :organizations, index: true
+      t.references :investigator, references: :people, index: true
 
       t.timestamps null: false
       t.ctrp_base_columns
@@ -42,8 +40,10 @@ class CreateTrials < ActiveRecord::Migration
     add_foreign_key :trials, :phases
     add_foreign_key :trials, :primary_purposes
     add_foreign_key :trials, :secondary_purposes
-    add_foreign_key :trials, :study_models
-    add_foreign_key :trials, :time_perspectives
     add_foreign_key :trials, :responsible_parties
+    add_foreign_key :trials, :organizations, column: :lead_org_id
+    add_foreign_key :trials, :people, column: :pi_id
+    add_foreign_key :trials, :organizations, column: :sponsor_id
+    add_foreign_key :trials, :people, column: :investigator_id
   end
 end

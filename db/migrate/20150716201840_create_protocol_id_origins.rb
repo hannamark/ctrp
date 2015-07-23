@@ -1,6 +1,6 @@
-class CreateStudyModels < ActiveRecord::Migration
+class CreateProtocolIdOrigins < ActiveRecord::Migration
   def change
-    create_table :study_models do |t|
+    create_table :protocol_id_origins do |t|
 
       t.static_member_base_columns
       t.timestamps null: false
