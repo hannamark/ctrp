@@ -56,7 +56,9 @@ And I have selected the option to search for a person
 When I select the person_trial_relationship of the person I wish to search for
 And I submit my search request
 Then the system should display all persons that have the person_trial_relationship
-@person_trial_relationship: Principal Investigator, Responsible Party
+|Example: person_trial_relationship|
+|Principal Investigator| 
+|Responsible Party|
 
 Scenario: As any CTRP User, search for persons with multiple parameters
 Given I know multiple parameters of the person I wish to search for
