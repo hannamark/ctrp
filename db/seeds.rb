@@ -86,5 +86,5 @@ person8=Person.find_or_create_by(id:2026171, source_id:'35504', name:'Daniel Eva
 person9=Person.find_or_create_by(id:672434, source_id:'19844', name:'David Marc Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
 
 
-PoAffiliationStatus.find_or_create_by(name: 'Active', code: '001Active')
-PoAffiliationStatus.find_or_create_by(name: 'Inactive', code: '002Inactive')
+PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')
+PoAffiliationStatus.find_or_create_by(name: 'Inactive', code: 'INACTIVE')
