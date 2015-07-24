@@ -4,15 +4,15 @@
 #
 #  id         :integer          not null, primary key
 #  trial_id   :integer
-#  co_pi_id   :integer
+#  person_id  :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  uuid       :string(255)
 #
 # Indexes
 #
-#  index_trial_co_pis_on_co_pi_id  (co_pi_id)
-#  index_trial_co_pis_on_trial_id  (trial_id)
+#  index_trial_co_pis_on_person_id  (person_id)
+#  index_trial_co_pis_on_trial_id   (trial_id)
 #
 
 require 'test_helper'

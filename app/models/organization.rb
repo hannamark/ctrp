@@ -39,6 +39,12 @@ class Organization < ActiveRecord::Base
   belongs_to :source_status
   belongs_to :source_context
   belongs_to :source_cluster
+  has_many :trial_funding_sources
+  has_many :fs_trials, through: :trial_funding_sources, source: :trial
+  has_many :trial_co_lead_orgs
+  has_many :colo_trials, through: :trial_co_lead_orgs, source: :trial
+  has_many :lo_trials, foreign_key: :lead_org_id, class_name: "Trial"
+  has_many :sponsor_trials, foreign_key: :sponsor_id, class_name: "Trial"
 
   validates :name, presence: true
 

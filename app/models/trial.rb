@@ -64,11 +64,11 @@ class Trial < ActiveRecord::Base
   belongs_to :sponsor, class_name: "Organization"
   belongs_to :investigator, class_name: "Person"
   has_many :trial_funding_sources
-  has_many :funding_sources, through: :trial_funding_sources
+  has_many :funding_sources, through: :trial_funding_sources, source: :organization
   has_many :trial_co_lead_orgs
-  has_many :co_lead_orgs, through: :trial_co_lead_orgs
+  has_many :co_lead_orgs, through: :trial_co_lead_orgs, source: :organization
   has_many :trial_co_pis
-  has_many :co_pis, through: :trial_co_pis
+  has_many :co_pis, through: :trial_co_pis, source: :person
 
   validates :official_title, presence: true
 end
