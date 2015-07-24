@@ -23,6 +23,6 @@ When I select the review option
 Then CTRP will check the updated information 
 And if there are no errors, I can submit the trial with indication of a successful submission
 And the information updates will be registered in CTRP
-And the CTRO will be able to acknowledge the Update to trial information
+And the CTRO will be able to acknowledge or reject the Update to trial information
 
 
