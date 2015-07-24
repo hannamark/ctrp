@@ -142,7 +142,16 @@
                 .state('main.families', {
                     url: '/families',
                     templateUrl: '/ctrp/angular/partials/family_list.html',
-                    controller: 'familyCtrl as familyView'
+                    controller: 'familyCtrl as familyView',
+                    resolve: {
+                        FamilyService: 'FamilyService',
+                        familyStatusObj : function(FamilyService) {
+                            return FamilyService.getFamilyStatuses();
+                        },
+                        familyTypeObj : function(FamilyService) {
+                            return FamilyService.getFamilyTypes();
+                        }
+                    }
                 })
 
                 .state('main.familyDetail', {
@@ -151,6 +160,12 @@
                     controller: 'familyDetailCtrl as familyDetailView',
                     resolve: {
                         FamilyService: 'FamilyService',
+                        familyStatusObj : function(FamilyService) {
+                            return FamilyService.getFamilyStatuses();
+                        },
+                        familyTypeObj : function(FamilyService) {
+                            return FamilyService.getFamilyTypes();
+                        },
                         familyDetailObj: function($stateParams, FamilyService) {
                             return FamilyService.getFamilyById($stateParams.familyId);
                         }
@@ -162,6 +177,13 @@
                     templateUrl: '/ctrp/angular/partials/familyDetails.html',
                     controller: 'familyDetailCtrl as familyDetailView',
                     resolve: {
+                        FamilyService: 'FamilyService',
+                        familyStatusObj : function(FamilyService) {
+                            return FamilyService.getFamilyStatuses();
+                        },
+                        familyTypeObj : function(FamilyService) {
+                            return FamilyService.getFamilyTypes();
+                        },
                         familyDetailObj: function($q) {
                             var deferred = $q.defer();
                             deferred.resolve(null);

@@ -8,15 +8,19 @@
     angular.module('ctrpApp')
         .controller('familyCtrl', familyCtrl);
 
-    familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', 'Common'];
+    familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', 'Common','familyStatusObj','familyTypeObj'];
 
-    function familyCtrl(FamilyService, uiGridConstants, $scope, Common) {
+    function familyCtrl(FamilyService, uiGridConstants, $scope, Common,familyStatusObj,familyTypeObj) {
 
         var vm = this;
 
         vm.searchParams = FamilyService.getInitialFamilySearchParams();
 
-
+        vm.familyStatusArr = familyStatusObj.data;
+        vm.familyStatusArr.sort(Common.a2zComparator());
+        vm.familyTypeArr = familyTypeObj.data;
+        vm.familyTypeArr.sort(Common.a2zComparator());
+        console.log("hello ....." +JSON.stringify(familyStatusObj));
         //ui-grid plugin options
         vm.gridOptions = FamilyService.getGridOptions();
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;

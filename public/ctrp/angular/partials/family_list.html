@@ -13,7 +13,7 @@
                 <!-- first row -->
                 <div class="row-fluid">
                     <div class="col-md-6">
-                        <!-- person name -->
+                        <!-- family name -->
                         <div class="form-group">
                             <label for="family_name" class="control-label col-sm-2">Name: </label>
 
@@ -24,7 +24,49 @@
                             </div>
                         </div>
                         <!-- family name ends -->
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Family ID -->
+                        <div class="form-group">
+                            <label for="id" class="control-label col-sm-2">Family ID: </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="id" class="form-control" placeholder="Family ID"
+                                       ng-model="familyView.searchParams.id"/>
+                            </div>
+                        </div>
+                        <!-- PO ID ends -->
+                    </div>
+                </div><!-- first row ends -->
 
+                <!-- second row -->
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <!--family status-->
+                        <div class="form-group">
+                            <label for="family_status" class="control-label col-sm-2">Family Status: </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="family_status" ng-model="familyView.searchParams.family_status">
+                                    <option value="">Select a status</option>
+                                    <option ng-repeat="status in familyView.familyStatusArr" value="{{status.name}}">{{status.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- family status ends -->
+                    </div>
+                    <div class="col-md-6">
+                        <!--family type-->
+                        <div class="form-group">
+                            <label for="family_type" class="control-label col-sm-2">Family Type: </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="family_type" ng-model="familyView.searchParams.family_type">
+                                    <option value="">Select a type</option>
+                                    <option ng-repeat="type in familyView.familyTypeArr" value="{{type.name}}">{{type.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- family type ends -->
+                    </div>
+                </div><!--second row ends -->
 
 
 

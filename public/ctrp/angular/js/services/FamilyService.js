@@ -14,6 +14,9 @@
 
         var initFamilySearchParams = {
             name: "",
+            id: "",
+            family_status:"",
+            family_type:"",
             //for pagination and sorting
             sort: "",
             order: "",
@@ -36,6 +39,8 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
+                {name: 'family_status', displayName: 'Family Status', enableSorting: true, width: '10%'},
+                {name: 'family_type', displayName: 'Family Type', enableSorting: true, width: '10%'},
                 {name: 'description', enableSorting:false, displayName: 'Description',width: '30%'}
             ]
         };
@@ -47,7 +52,10 @@
             searchFamilies : searchFamilies,
             getInitialFamilySearchParams : getInitialFamilySearchParams,
             getGridOptions : getGridOptions,
-            deleteFamily : deleteFamily
+            deleteFamily : deleteFamily,
+            getFamilyStatuses : getFamilyStatuses,
+            getFamilyTypes : getFamilyTypes
+
         };
 
         return services;
@@ -140,13 +148,20 @@
 
 
         /**
-         * retrieve source statuses from backend service
+         * retrieve family statuses from backend service
          * @return {promise}
          */
-        function getSourceStatuses() {
-            return PromiseService.getData(URL_CONFIGS.SOURCE_STATUSES);
-        } //getSourceStatuses
+        function getFamilyStatuses() {
+            return PromiseService.getData(URL_CONFIGS.FAMILY_STATUSES);
+        } //getFamilyStatuses
 
+        /**
+         * retrieve family types from backend service
+         * @return {promise}
+         */
+        function getFamilyTypes() {
+            return PromiseService.getData(URL_CONFIGS.FAMILY_TYPES);
+        } //getFamilyStatuses
 
         /**
          * delete an family with the given familyId

@@ -6,15 +6,16 @@
     'use strict';
     angular.module('ctrpApp')
         .controller('familyDetailCtrl', familyDetailCtrl);
-    familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'toastr', 'MESSAGES',
+    familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'familyStatusObj','familyTypeObj','toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal'];
-    function familyDetailCtrl(familyDetailObj, FamilyService, toastr, MESSAGES,
+    function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,toastr, MESSAGES,
                               $scope, Common, $state, $modal) {
         var vm = this;
         //console.log("in details controller ......."+JSON.stringify(familyDetailObj));
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
         vm.curFamily = vm.curFamily.data || vm.curFamily;
-
+        vm.familyStatusArr = familyStatusObj.data;
+        vm.familyTypeArr = familyTypeObj.data;
 
         //update family (vm.curFamily)
         vm.updateFamily = function() {
