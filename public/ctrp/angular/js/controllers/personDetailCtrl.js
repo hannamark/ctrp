@@ -23,11 +23,13 @@
         vm.savedSelection = []; //save selected organizations
         vm.selectedOrgFilter = "";
         console.log("person: " + JSON.stringify(vm.curPerson));
+        console.log("poAffStatuses " + JSON.stringify(poAffStatuses));
+
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
             vm.curPerson.po_affiliations_attributes = preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
-            angular.forEach(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
+            _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
                 //convert the ISO date to Locale Date String
                 aff['effective_date'] = aff.effective_date ? DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
                 aff['expiration_date'] = aff.expiration_date ? DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
@@ -39,7 +41,7 @@
                     affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
                 }
                 aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
-                vm.curPerson.po_affiliations_attributes[idx] = aff;
+                vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
             });
 
             //create a nested Person object
@@ -131,6 +133,10 @@
             if (!vm.curPerson.new) {
                 prepareModal();
             }
+
+            if (vm.curPerson.po_affiliations.length > 0) {
+                populatePoAffiliations();
+            }
         }
 
 
@@ -221,10 +227,10 @@
          */
         function preparePOAffiliationArr(savedSelectionArr) {
             var results = [];
-            _.each(savedSelectionArr, function (org, index) {
+            _.each(savedSelectionArr, function (org) {
                 var cleanedOrg = {
                     "organization_id": org.id,
-                    "po_affiliation_status_id": '', //org.po_affiliation_status_id,
+                    "po_affiliation_status_id": org.po_affiliation_status_id,
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date
                 };
@@ -243,7 +249,7 @@
          * @returns org
          */
         function initSelectedOrg(org) {
-            org.po_affiliation_status_id = "";
+            org.po_affiliation_status_id = '';
             org.effective_date = new Date(); //today as the effective date
             org.expiration_date = "";
             org.opened_effective = false;
@@ -251,6 +257,35 @@
 
             return org;
         } //initSelectedOrg
+
+
+        /**
+         * Asynchronously populate the vm.savedSelection array for presenting
+         * the existing po_affiliation with the person being presented
+         *
+         */
+        function populatePoAffiliations() {
+            //find the organization name with the given id
+            var findOrgName = function(poAff, cb) {
+                OrgService.getOrgById(poAff.organization_id).then(function(organization) {
+                    var curOrg = {"id" : poAff.organization_id, "name": organization.name};
+                    curOrg.effective_date = DateService.convertISODateToLocaleDateStr(poAff.effective_date);
+                    curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
+                    curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
+                    vm.savedSelection.push(curOrg);
+                }).catch(function(err) {
+                    console.log("error in retrieving organization name with id: " + poAff.organization_id);
+                });
+                cb();
+            };
+
+            //return the organizations
+            var retOrgs = function() {
+                return vm.savedSelection;
+            };
+
+            async.eachSeries(vm.curPerson.po_affiliations, findOrgName, retOrgs);
+        } //populatePoAffiliations
 
 
     }

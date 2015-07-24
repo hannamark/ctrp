@@ -55,13 +55,15 @@
          * @param isoDate (e.g. '2011-06-02T09:34:29+02:00')
          */
         this.convertISODateToLocaleDateStr = function(isoDate) {
-            var date = new Date(isoDate);
-            var day = date.getDate();
-            var year = date.getFullYear();
-            var monthNum = date.getMonth() + 1;
-            var month = monthsDict[monthNum];
-            var dateStr = month + " " + day + ", " + year;
-
+            var dateStr = '';
+            if (!!isoDate) {
+                var date = new Date(isoDate);
+                var day = date.getDate();
+                var year = date.getFullYear();
+                var monthNum = date.getMonth() + 1;
+                var month = monthsDict[monthNum];
+                dateStr = month + " " + day + ", " + year;
+            }
             return dateStr;
         }; //convertISODateToLocale
 
