@@ -90,7 +90,10 @@ And I have selected the option to search for an organization
 When I select the organization_trial_relationship of the organization I wish to search for
 And I submit my search request
 Then the system should display all organizations that have the organization_trial_relationship
-@organization_trial_relationship values: lead organization, sponsor organization, participating site
+|organization_trial_relationship values| 
+|lead organization| 
+|sponsor organization| 
+|participating site|
 
 Scenario: As any CTRP User, search for organizations with multiple parameters
 Given I know multiple parameters of the organization I wish to search for
