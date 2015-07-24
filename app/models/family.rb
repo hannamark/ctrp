@@ -24,7 +24,7 @@ class Family < ActiveRecord::Base
   has_many :organizations, through: :family_memberships
   belongs_to :family_status
   belongs_to :family_type
-
+  #accepts_nested_attributes_for  :family_memberships
   validates :name, uniqueness: true
 
   before_destroy :check_for_organization
@@ -37,6 +37,12 @@ class Family < ActiveRecord::Base
       return false
     end
   end
+
+  #scopes for search API
+  scope :matches, -> (column, value) { where("families.#{column} = ?", "#{value}") }
+
+  scope :with_family_status, -> (value) { joins(:family_status).where("family_statuses.name = ?", "#{value}") }
+  scope :with_family_type, -> (value) { joins(:family_type).where("family_types.name = ?", "#{value}") }
 
   scope :matches_wc, -> (column, value) {
     str_len = value.length

@@ -85,6 +85,23 @@ person7=Person.find_or_create_by(id:366649, source_id:'11640', name:'Christopher
 person8=Person.find_or_create_by(id:2026171, source_id:'35504', name:'Daniel Evan Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
 person9=Person.find_or_create_by(id:672434, source_id:'19844', name:'David Marc Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
 
+############## SEEDING STATIC DATA BEGINS ##################
+# NOTE:: In this section insert seeds for static data ,for example source_statuses, family_statuses.It will load minimum required data to create entities for fresh installation of app.So seed file purpose will be served.
+#This might be useful in production app also.
+
+#source_statuses
+
+#family_statuses
+FamilyStatus.find_or_create_by(id:1,code:'ACTIVE',name:'Active')
+FamilyStatus.find_or_create_by(id:2,code:'INACTIVE',name:'Inactive')
+
+#family_types
+FamilyType.find_or_create_by(id:1,code:'CANCERCENTER',name:'Cancer Center')
+FamilyType.find_or_create_by(id:2,code:'NCTN',name:'NCTN')
+FamilyType.find_or_create_by(id:3,code:'NIH',name:'NIH')
+FamilyType.find_or_create_by(id:4,code:'RESEARCHCENTER',name:'Research Center')
+
+########### SEEDING STATIC DATA ENDS #######################
 
 
 # Set Role for Admin
