@@ -6,11 +6,11 @@ Given I am in the CTRP Registration application
 And I have selected the option to view my trials in CTRP (trials where I am listed as owner)
 When I select the Verify Data option on one of my trial
 Then the Trial Verification Data information will be displayed including
-NCI Trial Identifier
-ClinicalTrials.gov Identifier
-Lead Organization Trial Identifier
-Title
-Verification History with Date, Verification Method, and Verified By
+|NCI Trial Identifier|
+|ClinicalTrials.gov Identifier|
+|Lead Organization Trial Identifier|
+|Title|
+|Verification History with Date, Verification Method, and Verified By|
 And I can select the option to Save Verification Record or Cancer
 
 Scenario: #2 I search my trials and select the Verify Trial Data option and Save a Verification Record
