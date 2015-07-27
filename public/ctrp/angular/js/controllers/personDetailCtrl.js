@@ -50,11 +50,11 @@
 
             console.log("newPerson is: " + JSON.stringify(newPerson));
 
-            PersonService.upsertPerson(newPerson).then(function (response) {
-                toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
-            }).catch(function (err) {
-                console.log("error in updating person " + JSON.stringify(newPerson));
-            });
+            //PersonService.upsertPerson(newPerson).then(function (response) {
+            //    toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
+            //}).catch(function (err) {
+            //    console.log("error in updating person " + JSON.stringify(newPerson));
+            //});
         }; // updatePerson
 
 
@@ -83,7 +83,8 @@
         //delete the affiliated organization from table view
         vm.deleteSelection = function (index) {
             if (index < vm.savedSelection.length) {
-                vm.savedSelection.splice(index, 1);
+                vm.savedSelection[index]._destroy = true;
+               // vm.savedSelection.splice(index, 1);
             }
         };// deleteSelection
 
@@ -103,6 +104,9 @@
                 });
             } else {
                 vm.savedSelection.length = 0;
+                _.each(vm.savedSelection, function(org, index) {
+                   vm.savedSelection[index]._destroy = true; //mark it for destroy
+                });
             }
         }; //batchSelect
 
@@ -234,7 +238,8 @@
                     "po_affiliation_status_id": org.po_affiliation_status_id,
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date,
-                    "id" : org.po_affiliation_id || ''
+                    "id" : org.po_affiliation_id || '',
+                    "_destroy" : org._destroy
                 };
                 results.push(cleanedOrg);
             });
@@ -256,6 +261,7 @@
             org.expiration_date = "";
             org.opened_effective = false;
             org.opened_expiration = false;
+            org._destroy = false;
 
             return org;
         } //initSelectedOrg
@@ -275,6 +281,7 @@
                     curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
                     curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
                     curOrg.po_affiliation_id = poAff.id; //po affiliation id
+                    curOrg._destroy = poAff._destroy || false;
                     vm.savedSelection.push(curOrg);
                 }).catch(function(err) {
                     console.log("error in retrieving organization name with id: " + poAff.organization_id);

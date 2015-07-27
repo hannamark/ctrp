@@ -133,7 +133,7 @@
                         </thead>
                         <tbody>
                         <tr class="animated-item"
-                            ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index">
+                            ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} && {'_destroy' : false} track by $index">
                             <td style="vertical-align: middle">
                                 <button ng-click="personDetailView.deleteSelection($index)">
                                     <i class="glyphicon glyphicon-remove"></i>
