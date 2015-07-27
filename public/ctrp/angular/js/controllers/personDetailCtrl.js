@@ -50,11 +50,11 @@
 
             console.log("newPerson is: " + JSON.stringify(newPerson));
 
-            //PersonService.upsertPerson(newPerson).then(function (response) {
-            //    toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
-            //}).catch(function (err) {
-            //    console.log("error in updating person " + JSON.stringify(newPerson));
-            //});
+            PersonService.upsertPerson(newPerson).then(function (response) {
+                toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
+            }).catch(function (err) {
+                console.log("error in updating person " + JSON.stringify(newPerson));
+            });
         }; // updatePerson
 
 
