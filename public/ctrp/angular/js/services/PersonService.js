@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .factory('PersonService', PersonService);
 
-    PersonService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope'];
+    PersonService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope', 'PromiseTimeoutService'];
 
-    function PersonService(PromiseService, URL_CONFIGS, $log, $rootScope) {
+    function PersonService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService) {
 
         var initPersonSearchParams = {
             name: "",
@@ -64,7 +64,8 @@
             getInitialPersonSearchParams : getInitialPersonSearchParams,
             getGridOptions : getGridOptions,
             getSourceStatuses : getSourceStatuses,
-            deletePerson : deletePerson
+            deletePerson : deletePerson,
+            getPoAffStatuses : getPoAffStatuses
         };
 
         return services;
@@ -98,9 +99,8 @@
 
             //update an existing person
             var configObj = {}; //empty config
-            return PromiseService.updateObj(URL_CONFIGS.A_PERSON + personObj.id + ".json", personObj, configObj);
+            return PromiseService.updateObj(URL_CONFIGS.A_PERSON + personObj.person.id + ".json", personObj, configObj);
         } //upsertPerson
-
 
 
 
@@ -173,6 +173,15 @@
          */
         function deletePerson(personId) {
             return PromiseService.deleteObjFromBackend(URL_CONFIGS.A_PERSON + personId + ".json");
+        }
+
+
+        /**
+         * Retrieve PoAffiliationStatuses
+         * @returns {*}
+         */
+        function getPoAffStatuses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PO_AFF_STATUSES);
         }
 
 

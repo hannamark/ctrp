@@ -31,6 +31,7 @@ class Person < ActiveRecord::Base
   belongs_to :source_status
   belongs_to :source_context
   belongs_to :source_cluster
+  accepts_nested_attributes_for :po_affiliations, allow_destroy: true
 
   validates :name, presence: true
 

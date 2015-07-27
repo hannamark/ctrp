@@ -17,6 +17,7 @@
             'SOURCE_STATUSES' : '/ctrp/source_statuses.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
+            'PO_AFF_STATUSES' : '/ctrp/po_affiliation_statuses.json',
             'SEARCH_PERSON': '/ctrp/people/search.json',
             'A_FAMILY': '/ctrp/families/',
             'FAMILY_LIST': '/ctrp/families.json',

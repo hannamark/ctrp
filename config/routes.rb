@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
 
+
+
+
   scope "/ctrp" do
     devise_for :users
 
@@ -18,6 +21,12 @@ Rails.application.routes.draw do
 
     resources :source_contexts
 
+    resources :families do
+      collection do
+        get ':id/organizations' => 'families#get_orgs'
+      end
+    end
+
     resources :family_statuses
 
     resources :family_types
@@ -25,13 +34,6 @@ Rails.application.routes.draw do
     resources :family_relationships
 
     resources :family_memberships
-
-    resources :families do
-      collection do
-        get 'search'
-        post 'search'
-      end
-    end
 
     resources :comments
 
@@ -41,6 +43,9 @@ Rails.application.routes.draw do
         post 'search'
       end
     end
+
+    resources :po_affiliations
+    resources :po_affiliation_statuses
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'
