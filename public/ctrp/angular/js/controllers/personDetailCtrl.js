@@ -14,7 +14,8 @@
     function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES, DateService,
                               $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout, poAffStatuses, _) {
         var vm = this;
-        vm.curPerson = personDetailObj.data || {name: ""}; //personDetailObj.data;
+        vm.curPerson = personDetailObj || {name: ""}; //personDetailObj.data;
+        vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
@@ -49,11 +50,11 @@
 
             console.log("newPerson is: " + JSON.stringify(newPerson));
 
-            PersonService.upsertPerson(newPerson).then(function (response) {
-                toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
-            }).catch(function (err) {
-                console.log("error in updating person " + JSON.stringify(newPerson));
-            });
+            //PersonService.upsertPerson(newPerson).then(function (response) {
+            //    toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
+            //}).catch(function (err) {
+            //    console.log("error in updating person " + JSON.stringify(newPerson));
+            //});
         }; // updatePerson
 
 
@@ -134,7 +135,7 @@
                 prepareModal();
             }
 
-            if (vm.curPerson.po_affiliations.length > 0) {
+            if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
             }
         }
@@ -233,7 +234,7 @@
                     "po_affiliation_status_id": org.po_affiliation_status_id,
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date,
-                    "id" : org.id || ''
+                    "id" : org.po_affiliation_id || ''
                 };
                 results.push(cleanedOrg);
             });
@@ -273,7 +274,7 @@
                     curOrg.effective_date = DateService.convertISODateToLocaleDateStr(poAff.effective_date);
                     curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
                     curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
-                    curOrg.id = poAff.id; //po affiliation id
+                    curOrg.po_affiliation_id = poAff.id; //po affiliation id
                     vm.savedSelection.push(curOrg);
                 }).catch(function(err) {
                     console.log("error in retrieving organization name with id: " + poAff.organization_id);
