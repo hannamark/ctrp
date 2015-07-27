@@ -233,7 +233,7 @@
                     "po_affiliation_status_id": org.po_affiliation_status_id,
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date,
-                    "po_affiliation_id" : org.po_affiliation_id || ''
+                    "id" : org.id || ''
                 };
                 results.push(cleanedOrg);
             });
@@ -273,7 +273,7 @@
                     curOrg.effective_date = DateService.convertISODateToLocaleDateStr(poAff.effective_date);
                     curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
                     curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
-                    curOrg.po_affiliation_id = poAff.id;
+                    curOrg.id = poAff.id; //po affiliation id
                     vm.savedSelection.push(curOrg);
                 }).catch(function(err) {
                     console.log("error in retrieving organization name with id: " + poAff.organization_id);
