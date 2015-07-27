@@ -47,7 +47,11 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1
   # PATCH/PUT /people/1.json
   def update
+
     respond_to do |format|
+      puts "in update case "
+      puts person_params
+      #@person.po_affiliations.destroy
       if @person.update(person_params)
         format.html { redirect_to @person, notice: 'Person was successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
@@ -98,7 +102,7 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:source_id, :name, :suffix,:prefix, :email, :phone, :source_status_id, po_affiliations_attributes: [:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id])
+      params.require(:person).permit(:source_id, :name, :suffix,:prefix, :email, :phone, :source_status_id, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
     end
 
 end
