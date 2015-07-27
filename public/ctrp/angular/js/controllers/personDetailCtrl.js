@@ -213,8 +213,8 @@
         function isOrgSaved(targetOrgsArr, orgObj) {
             var exists = false;
             _.each(targetOrgsArr, function (org, idx) {
-                if (org.id == orgObj.id) {
-                    exists = true;
+                if (org.id == orgObj.id && !org._destroy) { //what if the user deletes the po_affiliation accidentally???
+                    exists = true;  //exists and not targeted for destroy
                     return exists;
                 }
             });
