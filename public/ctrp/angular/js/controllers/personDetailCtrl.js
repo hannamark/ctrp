@@ -22,7 +22,7 @@
         vm.selectedOrgs = [];
         vm.savedSelection = []; //save selected organizations
         vm.selectedOrgFilter = "";
-        //console.log("person: " + JSON.stringify(vm.curPerson));
+        console.log("person: " + JSON.stringify(vm.curPerson));
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
