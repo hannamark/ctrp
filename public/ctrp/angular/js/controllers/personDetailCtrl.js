@@ -81,12 +81,12 @@
 
 
         //delete the affiliated organization from table view
-        vm.deleteSelection = function (index) {
+        vm.toggleSelection = function (index) {
             if (index < vm.savedSelection.length) {
-                vm.savedSelection[index]._destroy = true;
+                vm.savedSelection[index]._destroy = !vm.savedSelection[index]._destroy;
                // vm.savedSelection.splice(index, 1);
             }
-        };// deleteSelection
+        };// toggleSelection
 
         //select or de-select all organizations form affiliations
         vm.batchSelect = function (intention) {
@@ -213,8 +213,8 @@
         function isOrgSaved(targetOrgsArr, orgObj) {
             var exists = false;
             _.each(targetOrgsArr, function (org, idx) {
-                if (org.id == orgObj.id) {
-                    exists = true;
+                if (org.id == orgObj.id) { //what if the user deletes the po_affiliation accidentally???
+                    exists = true;  //exists and not targeted for destroy
                     return exists;
                 }
             });
