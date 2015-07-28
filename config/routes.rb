@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     get '/states' => 'util#get_states'
     get '/backoffice' => 'backoffice#index'
     get '/backoffice/download_log'
+    get '/backoffice/static_members'
 
     # Devise related routes
     #devise_for :users
