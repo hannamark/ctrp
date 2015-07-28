@@ -2,7 +2,9 @@ class BackofficeController < ApplicationController
 
 
   def index
+  end
 
+  def static_members
   end
 
   def download_log

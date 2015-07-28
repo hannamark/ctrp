@@ -132,12 +132,12 @@
                         <th>Expiration Date</th>
                         </thead>
                         <tbody>
-                        <tr class="animated-item"
-                            ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} && {'_destroy' : false} track by $index">
+                        <tr ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index"
+                                ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                             <td style="vertical-align: middle">
-                                <button ng-click="personDetailView.deleteSelection($index)">
-                                    <i class="glyphicon glyphicon-remove"></i>
-                                </button>
+                                <label class="btn btn-default" ng-click="personDetailView.toggleSelection($index)">
+                                    <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                </label>
                             </td>
                             <td>{{org.id}}</td>
                             <td>{{org.name}}</td>
@@ -146,9 +146,10 @@
                                     <input type="text" class="form-control" datepicker-popup="{{personDetailView.dateFormat}}"
                                            ng-model="org.effective_date" is-open="org.opened_effective"
                                            is-open="opened" datepicker-options="personDetailView.dateOptions"
-                                           ng-required="false" close-text="Close"/>
+                                           ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                   <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="personDetailView.openCalendar($event, $index, 'effective')">
+                                        <button type="button" class="btn btn-default" ng-click="personDetailView.openCalendar($event, $index, 'effective')"
+                                                ng-disabled="org._destroy">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                   </span>
@@ -160,9 +161,10 @@
                                     <input type="text" class="form-control" datepicker-popup="{{personDetailView.dateFormat}}"
                                            ng-model="org.expiration_date" is-open="org.opened_expiration"
                                            is-open="opened" datepicker-options="personDetailView.dateOptions"
-                                           ng-required="false" close-text="Close"/>
+                                           ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                   <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="personDetailView.openCalendar($event, $index, 'expiration')">
+                                        <button type="button" class="btn btn-default" ng-click="personDetailView.openCalendar($event, $index, 'expiration')"
+                                                ng-disabled="org._destroy">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                   </span>
