@@ -23,8 +23,9 @@ Rails.application.routes.draw do
 
     resources :families do
       collection do
-        get ':id/organizations' => 'families#get_orgs'
-      end
+            get 'search'
+            post 'search'
+          end
     end
 
     resources :family_statuses
