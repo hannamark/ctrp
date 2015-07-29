@@ -84,12 +84,12 @@
 
 </head>
 <body>
-<div class="row">
-    <div class="col-md-12">
-        <div ng-include src="'angular/partials/header.html'"></div>
-        <div ui-view></div>
-        <div ng-include src="'angular/partials/footer.html'"></div>
+<div ng-include src="'angular/partials/header.html'"></div>
+<div class="container top-offset-lg">
+    <div class="row">
+        <div class="col-md-12" ui-view></div>
     </div>
 </div>
+<div ng-include src="'angular/partials/footer.html'"></div>
 </body>
 </html>

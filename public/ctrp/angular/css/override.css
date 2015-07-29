@@ -1,8 +1,3 @@
-.NCILogo img {
-    width:100%;
-    height: 200px;
-}
-
 .col-border {
     margin-top: 10px;
     border: #cdcdcd medium dashed;
@@ -32,7 +27,7 @@
 }
 
 .animated-item.ng-enter {
-    opacity: 0;    
+    opacity: 0;
 }
 /*.animated-item.ng-enter-stagger {*/
     /*/!*-webkit-transition-delay: 0.5s;*!/*/
@@ -61,4 +56,51 @@
 .deleted-text {
     color:red;
     text-decoration:line-through;
+}
+
+.navbar-fixed-top {
+    margin-top: 107px;
+}
+
+header {
+    margin: 21px 0;
+}
+header img {
+    width: 60%;
+}
+
+.footer {
+    bottom: 0;
+    color: #FFF;
+    background-color: #123E57;
+    padding:25px 0;
+}
+
+.footer ul {
+    text-align: center;
+}
+.footer ul li a {
+    color: #FFF;
+}
+.top-offset-xs {
+	margin-top: 25px;
+}
+.top-offset-sm {
+	margin-top: 50px;
+}
+.top-offset-md {
+	margin-top: 75px;
+}
+.top-offset-lg {
+	margin-top: 100px;
+}
+
+.row-blue {
+    background-color: #2A71A5;
+    height:29px;
+}
+
+.container-fluid.no-pad {
+    padding-left: 0;
+    padding-right: 0;
 }
