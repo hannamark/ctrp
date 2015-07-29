@@ -18,14 +18,14 @@
     </script>
 
     <form class="form-horizontal" role="form" novalidate>
-        <div class="form-group col-xs-12 col-lg-12">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Name:</label>
 
             <div class="col-sm-9">
                 <input type="text" class="form-control input-sm" ng-model="personDetailView.curPerson.name" required>
             </div>
         </div>
-        <div class="form-group col-xs-12 col-lg-12">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source ID:</label>
 
             <div class="col-sm-9">
@@ -33,7 +33,7 @@
                        required>
             </div>
         </div>
-        <div class="form-group col-xs-12 col-lg-12">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source Status:</label>
 
             <div class="col-sm-9">
@@ -47,21 +47,21 @@
                 </select>
             </div>
         </div>
-        <div class="form-group col-xs-12 col-lg-12">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Prefix:</label>
 
             <div class="col-sm-9">
                 <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.prefix">
             </div>
         </div>
-        <div class="form-group col-xs-12 col-lg-12">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Suffix:</label>
 
             <div class="col-sm-9">
                 <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.suffix">
             </div>
         </div>
-        <div class="form-group col-xs-12 col-lg-12">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Email:</label>
 
             <div class="col-sm-9">
@@ -69,7 +69,7 @@
                        type="email" placeholder="Email">
             </div>
         </div>
-        <div class="form-group col-xs-12 col-lg-12">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Phone:</label>
 
             <div class="col-sm-9">
@@ -77,7 +77,7 @@
                        placeholder="Phone">
             </div>
         </div>
-        <div class="form-group col-xs-12 col-lg-12">
+        <div class="form-group col-sm-12">
             <label for="po_affiliation_id" class="control-label col-sm-3">
                 Affiliated Organizations:
             </label>
@@ -106,8 +106,6 @@
                             </option>
                         </select>
                     </div>
-                    <!--<span>{{personDetailView.selectedOrgs}}</span>-->
-                    <!--<span>{{personDetailView.savedSelection}}</span>-->
                 </div>
 
                 <div class="col-md-6 animated-item pull-right" ng-hide="personDetailView.savedSelection.length == 0">
@@ -115,7 +113,7 @@
                     <input type="text" class="form-control" placeholder="Filter affiliated organizations"
                            ng-model="personDetailView.selectedOrgFilter"/>
 
-                    <div class="btn-group buttons">
+                    <div class="btn-toolbar">
                         <button class="btn moveall btn-default" title="Remove all"
                                 ng-click="personDetailView.batchSelect('removeAll')">
                             <i class="glyphicon glyphicon-arrow-left"></i>
@@ -180,28 +178,6 @@
                         </tbody>
                     </table>
                 </div>
-
-                <!--<div class="col-xs-12 col-md-4">-->
-                <!--<select multiple="multiple" name="found_organizations"-->
-                <!--style="width: 200px; height: 200px;">-->
-                <!--<option value="2">Jane Adams</option>-->
-                <!--<option value="3">John Doe</option>-->
-                <!--</select>-->
-                <!--</div>-->
-                <!--<div class="col-xs-12 col-md-4">-->
-                <!--<button type="button" name="add">>></button>-->
-                <!--</br>-->
-                <!--<button type="button" name="remove"><<</button>-->
-                <!--</div>-->
-                <!--<div class="col-xs-12 col-md-4 pull-left">-->
-                <!--<select multiple="multiple" name="selected_organizations"-->
-                <!--style="width: 200px; height: 200px;">-->
-                <!--<option value="2">Jane Adams</option>-->
-                <!--<option value="3">John Doe</option>-->
-                <!--</select>-->
-                <!--</div>-->
-                <!--</div>-->
-
             </div>
 
 
