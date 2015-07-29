@@ -99,8 +99,3 @@ header img {
     background-color: #2A71A5;
     height:29px;
 }
-
-.container-fluid.no-pad {
-    padding-left: 0;
-    padding-right: 0;
-}
