@@ -54,6 +54,105 @@
                 <input type="text" class="form-control input-xs" ng-model="familyDetailView.curFamily.description" required>
             </div>
         </div>
+        <div class="form-group">
+            <label for="po_affiliation_id" class="control-label col-sm-3">
+                Affiliated Organizations:
+            </label>
+
+            <div class="col-sm-9">
+                <div class="box1 col-md-6">
+                    <label style="display:none;"></label>
+                    <input type="text" class="filter form-control" id="po_affiliation_id"
+                           placeholder="Search organizations" ng-keyup="familyDetailView.searchOrgs()"
+                           ng-model="familyDetailView.orgsSearchParams.name"/>
+
+                    <div ng-hide="familyDetailView.foundOrgs.length == 0" class="fadein fadeout">
+                        <div class="btn-group buttons pull-right">
+                            <button class="btn moveall btn-default" title="Select all"
+                                    ng-click="familyDetailView.batchSelect('selectAll')">
+                                <i class="glyphicon glyphicon-arrow-right"></i>
+                                <i class="glyphicon glyphicon-arrow-right"></i>
+                            </button>
+                        </div>
+                        <select multiple="multiple" id="duallistbox" class="form-control"
+                                ng-model="familyDetailView.selectedOrgs"
+                                style="height: 194px;">
+                            <option class="animated-item" ng-repeat="org in familyDetailView.foundOrgs track by $index"
+                                    value="{{org}}">
+                                {{org.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <!--<span>{{familyDetailView.selectedOrgs}}</span>-->
+                    <!--<span>{{familyDetailView.savedSelection}}</span>-->
+                </div>
+
+                <div class="box2 col-md-6 fadein fadeout" ng-hide="familyDetailView.savedSelection.length == 0">
+                    <label style="display:none;"></label>
+                    <input type="text" class="filter form-control" placeholder="Filter selected organizations"
+                           ng-model="familyDetailView.selectedOrgFilter"/>
+
+                    <div class="btn-group buttons">
+                        <button class="btn moveall btn-default" title="Remove all"
+                                ng-click="familyDetailView.batchSelect('removeAll')">
+                            <i class="glyphicon glyphicon-arrow-left"></i>
+                            <i class="glyphicon glyphicon-arrow-left"></i>
+                        </button>
+
+                    </div>
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <th>Remove</th>
+                        <th>PO ID</th>
+                        <th>Organization</th>
+                        <th>Effective Date</th>
+                        <th>Expiration Date</th>
+                        </thead>
+                        <tbody>
+                        <tr class="animated-item"
+                            ng-repeat="org in familyDetailView.savedSelection | filter: {'name': familyDetailView.selectedOrgFilter} && {'_destroy' : false} track by $index">
+                            <td style="vertical-align: middle">
+                                <button ng-click="familyDetailView.deleteSelection($index)">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </button>
+                            </td>
+                            <td>{{org.id}}</td>
+                            <td>{{org.name}}</td>
+                            <td>
+                                <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control" datepicker-popup="{{familyDetailView.dateFormat}}"
+                                           ng-model="org.effective_date" is-open="org.opened_effective"
+                                           is-open="opened" datepicker-options="familyDetailView.dateOptions"
+                                           ng-required="false" close-text="Close"/>
+                                  <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                  </span>
+
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control" datepicker-popup="{{familyDetailView.dateFormat}}"
+                                           ng-model="org.expiration_date" is-open="org.opened_expiration"
+                                           is-open="opened" datepicker-options="familyDetailView.dateOptions"
+                                           ng-required="false" close-text="Close"/>
+                                  <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                  </span>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
         <div id="buttonBar" class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
                 <input type="submit" class="btn btn-success" ng-click="familyDetailView.updateFamily()" value="Save">

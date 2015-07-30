@@ -24,7 +24,8 @@ class Family < ActiveRecord::Base
   has_many :organizations, through: :family_memberships
   belongs_to :family_status
   belongs_to :family_type
-  #accepts_nested_attributes_for  :family_memberships
+  accepts_nested_attributes_for  :family_memberships, allow_destroy: true
+
   validates :name, uniqueness: true
 
   before_destroy :check_for_organization

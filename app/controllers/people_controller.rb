@@ -49,8 +49,6 @@ class PeopleController < ApplicationController
   def update
 
     respond_to do |format|
-      puts "in update case "
-      puts person_params
       #@person.po_affiliations.destroy
       if @person.update(person_params)
         format.html { redirect_to @person, notice: 'Person was successfully updated.' }
