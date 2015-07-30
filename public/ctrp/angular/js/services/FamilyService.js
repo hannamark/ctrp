@@ -34,14 +34,15 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'Family ID', width: '20%'},
-                {name: 'name', enableSorting: true, width: '30%%',
+                {name: 'id', enableSorting: true, displayName: 'Family ID', width: '10%'},
+                {name: 'name', enableSorting: true, width: '20%%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'family_status', displayName: 'Family Status', enableSorting: true, width: '10%'},
                 {name: 'family_type', displayName: 'Family Type', enableSorting: true, width: '10%'},
-                {name: 'description', enableSorting:false, displayName: 'Description',width: '30%'}
+                {name: 'description', enableSorting:false, displayName: 'Description',width: '20%'},
+                {name: 'affiliatedOrgs', enableSorting:false, displayName: 'Affiliated Organizations', width:'30%'}
             ]
         };
 
@@ -54,7 +55,8 @@
             getGridOptions : getGridOptions,
             deleteFamily : deleteFamily,
             getFamilyStatuses : getFamilyStatuses,
-            getFamilyTypes : getFamilyTypes
+            getFamilyTypes : getFamilyTypes,
+            getAffiliatedOrgsByFamily :getAffiliatedOrgsByFamily
 
         };
 
@@ -63,6 +65,10 @@
 
 
         /*********************** implementations *****************/
+
+        function getAffiliatedOrgsByFamily() {
+            return 'affiliatedOrgFromFunction';
+        }
 
         function getAllFamilies() {
             return PromiseService.getData(URL_CONFIGS.FAMILY_LIST);

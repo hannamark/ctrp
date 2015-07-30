@@ -152,6 +152,9 @@
                         },
                         familyTypeObj : function(FamilyService) {
                             return FamilyService.getFamilyTypes();
+                        },
+                        affiliatedOrg :function(FamilyService) {
+                            return FamilyService.getAffiliatedOrgsByFamily();
                         }
                     }
                 })

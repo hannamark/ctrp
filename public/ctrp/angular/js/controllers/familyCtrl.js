@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .controller('familyCtrl', familyCtrl);
 
-    familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', 'Common','familyStatusObj','familyTypeObj'];
+    familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', 'Common','familyStatusObj','familyTypeObj','affiliatedOrg'];
 
-    function familyCtrl(FamilyService, uiGridConstants, $scope, Common,familyStatusObj,familyTypeObj) {
+    function familyCtrl(FamilyService, uiGridConstants, $scope, Common,familyStatusObj,familyTypeObj,affiliatedOrg) {
 
         var vm = this;
 
@@ -21,6 +21,8 @@
         vm.familyTypeArr = familyTypeObj.data;
         vm.familyTypeArr.sort(Common.a2zComparator());
         console.log("hello ....." +JSON.stringify(familyStatusObj));
+        console.log("aff orgs ....." +JSON.stringify(affiliatedOrg));
+
         //ui-grid plugin options
         vm.gridOptions = FamilyService.getGridOptions();
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
@@ -40,8 +42,12 @@
             // vm.searchParams.name = vm.searchParams.name || "*";
             //console.log("searching params: " + JSON.stringify(vm.searchParams));
             FamilyService.searchFamilies(vm.searchParams).then(function (data) {
-                //console.log("received search results: " + JSON.stringify(data.data));
+                console.log("received search results: " + JSON.stringify(data.data));
                 vm.gridOptions.data = data.data.families; //prepareGridData(data.data.orgs); //data.data.orgs;
+
+                console.log("vm grid: " + JSON.stringify(vm.gridOptions.data));
+
+                console.log("received search results: " + JSON.stringify(data.data));
                 vm.gridOptions.totalItems = data.data.total;
             }).catch(function (err) {
                 console.log('search people failed');
