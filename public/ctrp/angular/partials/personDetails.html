@@ -173,24 +173,24 @@
 
                                 </div>
                             </td>
-
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+        </div>
 
 
-            <div id="buttonBar" class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                    <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()"
-                           value="Save">
-                    <input type="reset" class="btn btn-danger" value="Reset">
-                    <button ng-hide="personDetailView.curPerson.new" class="btn btn-warning"
-                            ng-click="personDetailView.confirmDelete('sm')">
-                        Delete This Person
-                    </button>
-                </div>
+        <div id="buttonBar" class="form-group col-sm-12">
+            <div class="col-sm-offset-3 col-sm-9">
+                <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()"
+                       value="Save">
+                <input type="reset" class="btn btn-danger" value="Reset">
+                <button ng-hide="personDetailView.curPerson.new" class="btn btn-warning"
+                        ng-click="personDetailView.confirmDelete('sm')">
+                    Delete This Person
+                </button>
             </div>
+        </div>
     </form>
 </div>
