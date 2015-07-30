@@ -18,26 +18,26 @@
     </script>
 
     <form class="form-horizontal" role="form" novalidate>
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Name:</label>
             <div class="col-sm-9">
             <input type="text" class="form-control input-xs" id="organization_name" ng-model="orgDetailView.curOrg.name" required>
             </div>
         </div>
-        <div class="form-group" ng-hide="orgDetailView.curOrg.new">
-            <label class="control-label col-sm-3">PO ID:</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" id="organization_id" ng-model="orgDetailView.curOrg.id"
-                       ng-disabled="!orgDetailView.curOrg.new" required>
-            </div>
-        </div>
-        <div class="form-group">
+        <!--<div class="form-group col-sm-12" ng-hide="orgDetailView.curOrg.new">-->
+            <!--<label class="control-label col-sm-3">PO ID:</label>-->
+            <!--<div class="col-sm-9">-->
+                <!--<input type="text" class="form-control input-xs" id="organization_id" ng-model="orgDetailView.curOrg.id"-->
+                       <!--ng-disabled="!orgDetailView.curOrg.new" required>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source:</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control input-xs" id="source_id" ng-model="orgDetailView.curOrg.source_id" required>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source Status:</label>
             <div class="col-sm-9">
                 <select class="form-control" id="source_status" ng-model="orgDetailView.curOrg.source_status_id">
@@ -49,20 +49,20 @@
                 </select>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Address 1:</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control input-xs" id="address"  ng-model="orgDetailView.curOrg.address">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Address 2:</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control input-xs" id="address2"  ng-model="orgDetailView.curOrg.address2">
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Country:</label>
             <div class="col-sm-9">
                 <select class="form-control input-xs" id="country" ng-model="orgDetailView.curOrg.country"
@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <div class="form-group" ng-hide="orgDetailView.curOrg.state_province == '' ||
+        <div class="form-group col-sm-12" ng-hide="orgDetailView.curOrg.state_province == '' ||
                                                     orgDetailView.states.length == 0">
             <label class="control-label col-sm-3">State:</label>
             <div class="col-sm-9">
@@ -87,40 +87,40 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">City:</label>
             <div class="col-sm-9">
                 <input class="form-control" id="city" ng-model="orgDetailView.curOrg.city">
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Postal Code:</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control input-xs" id="postal_code"  ng-model="orgDetailView.curOrg.postal_code"
                         placeholder="Postal Code">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Email:</label>
             <div class="col-sm-9">
                 <input type="email" class="form-control input-xs" id="email"  ng-model="orgDetailView.curOrg.email" type="email" placeholder="Email">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Phone:</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control input-xs" id="phone"  ng-model="orgDetailView.curOrg.phone" type="text" placeholder="Phone">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Fax:</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control input-xs" id="fax"  ng-model="orgDetailView.curOrg.fax" type="text" placeholder="Fax">
             </div>
         </div>
 
-        <div id="buttonBar" class="form-group">
+        <div id="buttonBar" class="form-group col-sm-12">
             <div class="col-sm-offset-3 col-sm-9">
                 <input type="submit" class="btn btn-success" id="save_btn" ng-click="orgDetailView.updateOrg()" value="Save">
                 <input type="reset" class="btn btn-danger" id="reset_btn" value="Reset">
