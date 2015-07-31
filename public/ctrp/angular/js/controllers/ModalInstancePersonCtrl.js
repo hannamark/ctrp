@@ -16,10 +16,14 @@
         vm.modalTitle = "Please confirm";
         vm.deletionStatus = "";
         vm.ok = function() {
+            var successMsg = 'Permanently deleted';
+            var failMsg = 'Fail to delete';
             PersonService.deletePerson(personId).then(function(data) {
                 console.log("delete data returned: " + JSON.stringify(data));
-                vm.modalTitle = "Deletion is successful";
-                timeoutCloseModal("Permanently deleted", data.status); //204 for successful deletion
+                vm.modalTitle = "Deletion was successful";
+                var message = data.status == 204 ? successMsg : failMsg;
+                vm.modalTitle = data.status == 204 ? vm.modalTitle : 'Deletion failed'
+                timeoutCloseModal(message, data.status); //204 for successful deletion
             }).catch(function(err) {
                 vm.modalTitle = "Deletion failed";
                 console.log("failed to delete the person, error code: " + err.status);
@@ -34,8 +38,10 @@
 
         function timeoutCloseModal (deletionStatus, httpStatusCode) {
             vm.deletionStatus = JSON.stringify(deletionStatus);
+            console.log("deletion status = " + vm.deletionStatus);
+            console.log("httpstatusCode = " + httpStatusCode);
             $timeout(function() {
-                if (httpStatusCode > 206) {
+                if (parseInt(httpStatusCode) > 206) {
                     //failed deletion is treated the same as cancel
                     $modalInstance.dismiss('cancel');
                 } else {
