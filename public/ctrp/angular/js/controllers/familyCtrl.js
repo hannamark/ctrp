@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .controller('familyCtrl', familyCtrl);
 
-    familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', 'Common','familyStatusObj','familyTypeObj','affiliatedOrg'];
+    familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', 'Common','familyStatusObj','familyTypeObj'];
 
-    function familyCtrl(FamilyService, uiGridConstants, $scope, Common,familyStatusObj,familyTypeObj,affiliatedOrg) {
+    function familyCtrl(FamilyService, uiGridConstants, $scope, Common,familyStatusObj,familyTypeObj) {
 
         var vm = this;
 
@@ -20,8 +20,6 @@
         vm.familyStatusArr.sort(Common.a2zComparator());
         vm.familyTypeArr = familyTypeObj.data;
         vm.familyTypeArr.sort(Common.a2zComparator());
-        console.log("hello ....." +JSON.stringify(familyStatusObj));
-        console.log("aff orgs ....." +JSON.stringify(affiliatedOrg));
 
         //ui-grid plugin options
         vm.gridOptions = FamilyService.getGridOptions();
