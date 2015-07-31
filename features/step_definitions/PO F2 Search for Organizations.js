@@ -13,7 +13,7 @@ var MenuItem = require('../support/PoCommonBar');
 
 
 module.exports = function() {
-    var page = new LoginPage();
+    var Login = new LoginPage();
     var MenuItemList = new MenuItem();
     var Search = new ListOfOrganizationPage();
 
@@ -23,9 +23,9 @@ module.exports = function() {
 
     this.Given(/^I am logged in to CTRP$/, function (callback) {
        browser.get('angular#/main/sign_in');
-        page.setUsername();
-        page.setPassword();
-        page.login();
+        Login.setUsername();
+        Login.setPassword();
+        Login.login();
        setTimeout(callback, 10000);
     });
 
@@ -33,7 +33,6 @@ module.exports = function() {
         MenuItemList.clickOrganizations();
         MenuItemList.clickListOrganizations();
         setTimeout(callback, 1000);
-      //  callback();
     });
 
     this.When(/^I provide the full or partial name of the organization I wish to search for$/, function (callback) {
@@ -42,12 +41,11 @@ module.exports = function() {
     });
 
     this.When(/^I indicate to include aliases$/, function (callback) {
-        Search.checkAlias('false');
+        Search.checkAlias('true');
         setTimeout(callback, 1000);
     });
 
     this.When(/^I submit my search request$/, function (callback) {
-        var Search = new ListOfOrganizationPage();
         Search.clickSearchButton();
         setTimeout(callback, 1000);
     });
