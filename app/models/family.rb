@@ -26,7 +26,7 @@ class Family < ActiveRecord::Base
   belongs_to :family_type
   accepts_nested_attributes_for  :family_memberships, allow_destroy: true
 
-  validates :name, uniqueness: true
+  validates :name, presence: true, uniqueness: true
 
   before_destroy :check_for_organization
 
