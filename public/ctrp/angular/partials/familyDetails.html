@@ -57,19 +57,19 @@
                 <input type="text" class="form-control input-xs" ng-model="familyDetailView.curFamily.description">
             </div>
         </div>
-        <div class="form-group">
-            <label for="po_affiliation_id" class="control-label col-sm-3">
+        <div class="form-group col-sm-12">
+            <label for="family_membership_id" class="control-label col-sm-3">
                 Affiliated Organizations:
             </label>
 
             <div class="col-sm-9">
-                <div class="box1 col-md-6">
+                <div class="col-md-6 animated-item pull-left">
                     <label style="display:none;"></label>
-                    <input type="text" class="filter form-control" id="po_affiliation_id"
+                    <input type="text" class="form-control" id="family_membership_id"
                            placeholder="Search organizations" ng-keyup="familyDetailView.searchOrgs()"
                            ng-model="familyDetailView.orgsSearchParams.name"/>
 
-                    <div ng-hide="familyDetailView.foundOrgs.length == 0" class="fadein fadeout">
+                    <div ng-hide="familyDetailView.foundOrgs.length == 0" class="animated-item">
                         <div class="btn-group buttons pull-right">
                             <button class="btn moveall btn-default" title="Select all"
                                     ng-click="familyDetailView.batchSelect('selectAll')">
@@ -86,16 +86,14 @@
                             </option>
                         </select>
                     </div>
-                    <!--<span>{{familyDetailView.selectedOrgs}}</span>-->
-                    <!--<span>{{familyDetailView.savedSelection}}</span>-->
                 </div>
 
-                <div class="box2 col-md-6 fadein fadeout" ng-hide="familyDetailView.savedSelection.length == 0">
+                <div class="col-md-6 animated-item pull-right" ng-hide="familyDetailView.savedSelection.length == 0">
                     <label style="display:none;"></label>
-                    <input type="text" class="filter form-control" placeholder="Filter selected organizations"
+                    <input type="text" class="form-control" placeholder="Filter selected organizations"
                            ng-model="familyDetailView.selectedOrgFilter"/>
 
-                    <div class="btn-group buttons">
+                    <div class="btn-toolbar">
                         <button class="btn moveall btn-default" title="Remove all"
                                 ng-click="familyDetailView.batchSelect('removeAll')">
                             <i class="glyphicon glyphicon-arrow-left"></i>

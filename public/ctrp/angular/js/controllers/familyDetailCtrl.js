@@ -93,7 +93,7 @@
                     }
                 });
             } else {
-                vm.savedSelection.length = 0;
+                //vm.savedSelection.length = 0;
                 _.each(vm.savedSelection, function(org, index) {
                     vm.savedSelection[index]._destroy = true; //mark it for destroy
                 });
