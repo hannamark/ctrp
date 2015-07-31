@@ -42,7 +42,10 @@
                 {name: 'family_status', displayName: 'Family Status', enableSorting: true, width: '10%'},
                 {name: 'family_type', displayName: 'Family Type', enableSorting: true, width: '10%'},
                 {name: 'description', enableSorting:false, displayName: 'Description',width: '20%'},
-                {name: 'affiliatedOrgs', enableSorting:false, displayName: 'Affiliated Organizations', width:'30%'}
+
+                { name: 'aff_orgs',width:'30%',displayName:'Affiliated Organizations',enableSorting:false,
+                    cellTemplate: '<div style="height: auto" ng-repeat="org in row.entity.aff_orgs">{{org.name}}</div>'
+                }
             ]
         };
 
@@ -55,9 +58,7 @@
             getGridOptions : getGridOptions,
             deleteFamily : deleteFamily,
             getFamilyStatuses : getFamilyStatuses,
-            getFamilyTypes : getFamilyTypes,
-            getAffiliatedOrgsByFamily :getAffiliatedOrgsByFamily
-
+            getFamilyTypes : getFamilyTypes
         };
 
         return services;
@@ -65,10 +66,6 @@
 
 
         /*********************** implementations *****************/
-
-        function getAffiliatedOrgsByFamily() {
-            return 'affiliatedOrgFromFunction';
-        }
 
         function getAllFamilies() {
             return PromiseService.getData(URL_CONFIGS.FAMILY_LIST);
