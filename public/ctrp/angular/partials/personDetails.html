@@ -17,20 +17,23 @@
         </div>
     </script>
 
-    <form class="form-horizontal" role="form" novalidate>
-        <div class="form-group col-sm-12">
+    <form class="form-horizontal" role="form" name="person_form" novalidate>
+        <div class="form-group col-sm-12" ng-class="{'has-error' : person_form.name.$error.required && person_form.name.$dirty }">
             <label class="control-label col-sm-3">Name:</label>
-
             <div class="col-sm-9">
-                <input type="text" class="form-control input-sm" ng-model="personDetailView.curPerson.name" required>
+                <input type="text" name="name" class="form-control input-sm" ng-model="personDetailView.curPerson.name" required>
+                <p ng-show="person_form.name.$error.required && person_form.name.$dirty" class="help-inline">
+                    Name is required
+                </p>
             </div>
+
+
         </div>
         <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source ID:</label>
 
             <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.source_id"
-                       required>
+                <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.source_id">
             </div>
         </div>
         <div class="form-group col-sm-12">
@@ -86,7 +89,7 @@
                 <div class="col-md-6 animated-item pull-left">
                     <label style="display:none;"></label>
                     <input type="text" class="form-control" id="po_affiliation_id"
-                           placeholder="Search organizations" ng-keyup="personDetailView.searchOrgs()"
+                           placeholder="Search organizations (* for wildcard)" ng-keyup="personDetailView.searchOrgs()"
                            ng-model="personDetailView.orgsSearchParams.name"/>
 
                     <div ng-hide="personDetailView.foundOrgs.length == 0" class="animated-item">
@@ -184,7 +187,7 @@
         <div id="buttonBar" class="form-group col-sm-12">
             <div class="col-sm-offset-3 col-sm-9">
                 <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()"
-                       value="Save">
+                       value="Save" ng-disabled="person_form.$invalid">
                 <input type="reset" class="btn btn-danger" value="Reset">
                 <button ng-hide="personDetailView.curPerson.new" class="btn btn-warning"
                         ng-click="personDetailView.confirmDelete('sm')">

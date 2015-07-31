@@ -7,7 +7,26 @@ exports.config = {
     },
 
 
-baseURL: 'http://localhost/ctrp/',
+baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
+
+    params: {
+        login: {
+            user: 'ctrpadmin',
+            password: 'Welcome01'
+        }
+    },
+
+/*    onPrepare: function() {
+        var width = 1024;
+        var height = 600;
+        browser.driver.manage().window().setSize(width, height);
+        // implicit and page load timeouts
+        browser.manage().timeouts().pageLoadTimeout(40000);
+        browser.manage().timeouts().implicitlyWait(25000);
+
+        // for non-angular page
+        browser.ignoreSynchronization = true;
+    },*/
 
     jasmineNodeOpts: {
         onComplete: null,
@@ -16,11 +35,15 @@ baseURL: 'http://localhost/ctrp/',
         includeStackTrace: true
     },
 
+    allScriptsTimeout: 5000,
+    getPageTimeout: 5000,
+
    framework: 'cucumber',
 
     specs: [
-        'features/PO\ F2\ Search\ for\ Organizations.feature'
-       // 'features/*.feature'
+        'features/PO\ F2\ Search\ for\ Organizations.feature',
+      //  'features/Reg\ F01\ Search\ Clinical\ Trials.feature'
+      //  'features/*.feature'
     ],
 
     jasmineNodeOpts: {

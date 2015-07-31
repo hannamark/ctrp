@@ -17,11 +17,14 @@
         </div>
     </script>
 
-    <form class="form-horizontal" role="form" novalidate>
-        <div class="form-group col-sm-12">
+    <form class="form-horizontal" role="form" name="organization_form" novalidate>
+        <div class="form-group col-sm-12" ng-class="{'has-error' : organization_form.name.$error.required && organization_form.name.$dirty }">
             <label class="control-label col-sm-3">Name:</label>
             <div class="col-sm-9">
-            <input type="text" class="form-control input-xs" id="organization_name" ng-model="orgDetailView.curOrg.name" required>
+            <input type="text" class="form-control input-xs" name="name" id="organization_name" ng-model="orgDetailView.curOrg.name" required>
+                <p ng-show="organization_form.name.$error.required && organization_form.name.$dirty" class="help-inline">
+                    Organization name is required
+                </p>
             </div>
         </div>
         <!--<div class="form-group col-sm-12" ng-hide="orgDetailView.curOrg.new">-->
@@ -34,7 +37,7 @@
         <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source:</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" id="source_id" ng-model="orgDetailView.curOrg.source_id" required>
+                <input type="text" class="form-control input-xs" id="source_id" ng-model="orgDetailView.curOrg.source_id">
             </div>
         </div>
         <div class="form-group col-sm-12">
@@ -122,7 +125,7 @@
 
         <div id="buttonBar" class="form-group col-sm-12">
             <div class="col-sm-offset-3 col-sm-9">
-                <input type="submit" class="btn btn-success" id="save_btn" ng-click="orgDetailView.updateOrg()" value="Save">
+                <input type="submit" class="btn btn-success" id="save_btn" ng-click="orgDetailView.updateOrg()" ng-disabled="organization_form.$invalid" value="Save">
                 <input type="reset" class="btn btn-danger" id="reset_btn" value="Reset">
                 <button ng-hide="orgDetailView.curOrg.new" class="btn btn-warning" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
                     Delete This Organization
