@@ -2,57 +2,54 @@
  * Created by singhs10 on 7/16/15.
  */
 
-var fs = require('fs');
+//var fs = require('fs');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-var supports = require('../support/Page_ListOfOrganizations');
-//var support = require('../support.js');
+var LoginPage = require('../support/LoginPage');
+var ListOfOrganizationPage = require('../support/ListOfOrganizationsPage');
+var MenuItem = require('../support/PoCommonBar');
+
 
 module.exports = function() {
-    this.Given(/^I know the name of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-       var searchorg = "boston*";
-        callback();
+    var page = new LoginPage();
+    var MenuItemList = new MenuItem();
+    var Search = new ListOfOrganizationPage();
+
+    this.Given(/^I know the name of the organization I wish to search for$/, function () {
+       searchorg = "boston xyxxx*";
     });
 
     this.Given(/^I am logged in to CTRP$/, function (callback) {
-        //browser.get('http://localhost/ctrp/angular#/main/welcome');
-        browser.get('http://localhost/ctrp/angular#/main/sign_in');
-        element(by.model('userView.userObj.user.username')).sendKeys('ctrpadmin');
-        element(by.model('userView.userObj.user.password')).sendKeys('Welcome01');
-        element(by.css('.btn.btn-success')).click();
-        setTimeout(callback, 10000);
+       browser.get('angular#/main/sign_in');
+        page.setUsername();
+        page.setPassword();
+        page.login();
+       setTimeout(callback, 10000);
     });
 
     this.Given(/^I have selected the option to search for an organization$/, function (callback) {
-        expect(element(by.linkText("Organizations")).isPresent()).to.become(true);
-        element(by.linkText("Organizations")).click();
-     //   expect(element(by.linkText("List of Organizations")).isPresent()).to.become(false);
-     //   element(by.linkText("List of Organizations")).click();
-     //   expect(element(by.css('a[ui-sref="main.organizations"]')).isPresent()).to.become(true);
-       //    element(by.css('a[ui-sref="main.organizations"]')).click();
-        callback();
+        MenuItemList.clickOrganizations();
+        MenuItemList.clickListOrganizations();
+        setTimeout(callback, 1000);
+      //  callback();
     });
 
     this.When(/^I provide the full or partial name of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-      //  element(by.model('orgsView.searchParams.name')).sendKeys('university*');
-      //  element(by.id('organization_name')).sendKeys('university*');
-        supports.action_Fill_SearchField_Org_Name("university*", "false", "1234","ctep","Pending","add1","add2","fam","test","","","city","98");
-       // element(by.buttonText("Clear")).click();
-        setTimeout(callback, 10000);
+       Search.setOrgName('university*');
+       setTimeout(callback, 1000);
     });
 
     this.When(/^I indicate to include aliases$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.checkAlias('false');
+        setTimeout(callback, 1000);
     });
 
     this.When(/^I submit my search request$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var Search = new ListOfOrganizationPage();
+        Search.clickSearchButton();
+        setTimeout(callback, 1000);
     });
 
     this.Then(/^the system should display all organizations that contain the name or the alias$/, function (callback) {
@@ -259,4 +256,12 @@ module.exports = function() {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
     });
+
+    this.Given(/^I know the name of the organization_trial_relationship I wish to search for$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+
+
 }
