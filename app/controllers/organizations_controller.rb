@@ -95,6 +95,7 @@ class OrganizationsController < ApplicationController
     @organizations = @organizations.matches('country', params[:country]) if params[:country].present?
     @organizations = @organizations.matches_wc('postal_code', params[:postal_code]) if params[:postal_code].present?
     @organizations = @organizations.matches_wc('email', params[:email]) if params[:email].present?
+    @organizations = @organizations.matches_wc('phone', params[:phone]) if params[:phone].present?
     @organizations = @organizations.sort_by_col(params[:sort], params[:order]).group(:'organizations.id').page(params[:start]).per(params[:rows])
   end
 
