@@ -11,9 +11,6 @@
     'use strict';
 
     angular.module('PromiseTimeoutModule', ['ngResource', 'toastr'])
-        //.config(['$httpProvider', function ($httpProvider) {
-        //     $httpProvider.interceptors.push('timeoutHttpInterceptorService');
-        //}])
 
         .service('PromiseTimeoutService', PromiseTimeoutService);
 
