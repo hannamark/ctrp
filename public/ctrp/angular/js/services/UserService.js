@@ -51,6 +51,7 @@
          * Log out user from backend as well as removing local cache
          */
         this.logout = function () {
+            Common.broadcastMsg('loggedOut');
             var username = LocalCacheService.getCacheWithKey("username");
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username})
                 .then(function (data) {

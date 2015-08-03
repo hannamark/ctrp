@@ -39,6 +39,10 @@
             $scope.$on('signedIn', function() {
                 vm.signedIn = UserService.isLoggedIn();
             });
+
+            $scope.$on('loggedOut', function() {
+                vm.signedIn = false;
+            })
         } //listenToLoginEvent
 
     };
