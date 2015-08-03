@@ -1,0 +1,5 @@
+<%= form_tag("/ctrp/search_json/search", method: "get") do %>
+    <%= label_tag(:model_name, "Model Name to Search:") %>
+    <%= text_field_tag(:model_name) %>
+    <%= submit_tag("Search") %>
+<% end %>

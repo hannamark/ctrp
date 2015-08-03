@@ -53,6 +53,8 @@ Rails.application.routes.draw do
     get '/backoffice' => 'backoffice#index'
     get '/backoffice/download_log'
     get '/backoffice/static_members'
+    get '/search_json' => 'search_json#index'
+    get '/search_json/search'
 
     # Devise related routes
     #devise_for :users
