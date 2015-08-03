@@ -1,8 +1,11 @@
-<!--<div class="row">
-<strong>CTRP</strong> <p><h4>Clinical Trials Reporting Program</h4></p>
-</div>-->
-<nav class="navbar navbar-default nav-search-bar" ng-controller="headerNavigationCtrl as headerView">
-    <div class="container-fluid">
+<header>
+    <div class="container">
+        <img class="img-responsive" src="/ctrp/angular/images/nci-logo-full.svg" alt="National Cancer Institute">
+    </div>
+</header>
+<nav class="navbar navbar-default navbar-fixed-top nav-search-bar" ng-controller="headerNavigationCtrl as headerView">
+    <div class="container-fluid row-blue"></div>
+    <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapse-1">
@@ -36,7 +39,13 @@
                         <li><a ui-sref="main.addPerson">Add a Person</a></li>
                     </ul>
                 </li>
-               
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Families<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a ui-sref="main.families">List of Families</a></li>
+                        <li><a ui-sref="main.addFamily">Add a Family</a></li>
+                    </ul>
+                </li>
                 <li class="animated-item" ng-show="!headerView.signedIn"><a ui-sref="main.sign_in">Sign in</a></li>
                 <li class="animated-item" ng-show="headerView.signedIn"><a ng-href="" ng-click="headerView.logOut()">Sign out</a></li>
                 <li><a href="/ctrp/admin">Backoffice</a></li>
