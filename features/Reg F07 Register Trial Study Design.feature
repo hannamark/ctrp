@@ -7,7 +7,6 @@ And the Clinical Research Categories are defined as:
 | Interventional |
 | Observational  |
 | Ancillary-Correlative |
-| Expanded Access |
 And I am on the Register Trial Study Design screen
 When I have selected the trial's Clinical Research Category
 And I have selected the trial's Primary Purpose
@@ -21,7 +20,6 @@ And the Clinical Research Categories are defined as:
 | Interventional |
 | Observational  |
 | Ancillary-Correlative |
-| Expanded Access |
 And I am on the Register Trial Study Design screen
 When I have not selected the trial's Clinical Research Category
 And I have selected the trial's Primary Purpose
@@ -34,7 +32,6 @@ And the Clinical Research Categories are defined as:
 | Interventional |
 | Observational  |
 | Ancillary-Correlative |
-| Expanded Access |
 And I am on the Register Trial Study Design screen
 When I have selected the trial's Clinical Research Category
 And I have not selected the trial's Primary Purpose
@@ -47,7 +44,6 @@ And the Clinical Research Categories are defined as:
 | Interventional |
 | Observational  |
 | Ancillary-Correlative |
-| Expanded Access |
 And I am on the Register Trial Study Design screen
 When I have selected the trial's Clinical Research Category
 And I have selected the trial's Primary Purpose

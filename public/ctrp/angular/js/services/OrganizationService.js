@@ -30,6 +30,7 @@
             country : "United States", //default country
             email : "",
             postal_code : "",
+            phone: "",
 
             //for pagination and sorting
             sort: "",
