@@ -34,14 +34,14 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'Family ID', width: '10%'},
+                {name: 'id', enableSorting: true, displayName: 'Family ID', width: '7%'},
                 {name: 'name', enableSorting: true, width: '20%%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'family_status', displayName: 'Family Status', enableSorting: true, width: '10%'},
                 {name: 'family_type', displayName: 'Family Type', enableSorting: true, width: '10%'},
-                {name: 'description', enableSorting:false, displayName: 'Description',width: '20%'},
+                {name: 'description', enableSorting:false, displayName: 'Description',width: '23%'},
 
                 { name: 'aff_orgs',width:'30%',displayName:'Affiliated Organizations',enableSorting:false,
                     cellTemplate: '<div style="height: auto" ng-repeat="org in row.entity.aff_orgs">{{org.name}}</div>'
