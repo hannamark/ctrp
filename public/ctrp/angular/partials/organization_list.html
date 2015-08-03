@@ -1,5 +1,5 @@
 <div class="row-fluid">
-    <div class="col-md-12 col-border">
+    <div class="col-xs-12 col-border">
         <div class="row">
             <h4>Search Organizations
                 <small>
@@ -11,7 +11,7 @@
         <div class="row">
             <form class="form-horizontal" role="form">
                 <!-- first row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <!-- organization name -->
                         <div class="form-group">
@@ -41,7 +41,7 @@
                 </div><!-- first row ends -->
 
                 <!-- second row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <!--source id-->
                         <div class="form-group">
@@ -72,7 +72,7 @@
                 </div><!--second row ends -->
 
                 <!-- third row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="address" class="control-label col-xs-12 col-sm-2">Address:</label>
@@ -96,7 +96,7 @@
 
 
                 <!-- fourth row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="family_name" class="control-label col-xs-12 col-sm-2">Family Name:</label>
@@ -118,7 +118,7 @@
                 </div><!--fourth row ends -->
 
                 <!-- fifth row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="country" class="control-label col-xs-12 col-sm-2">Country:</label>
@@ -136,24 +136,6 @@
                     </div>
 
                     <div class="col-md-6">
-                        <div class="form-group" ng-hide="orgsView.states.length == 0">
-                            <label for="state" class="control-label col-xs-12 col-sm-2">State:</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <select class="form-control" id="state" ng-model="orgsView.searchParams.state_province"
-                                        ng-change="orgsView.searchOrgs()">
-                                    <option value="">All states/provinces</option>
-                                    <option ng-repeat="state in orgsView.states track by state.name"
-                                            value="{{state.name}}">{{state.name}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div><!--fifth row ends -->
-
-                <!-- sixth row -->
-                <div class="row-fluid">
-                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="city" class="control-label col-xs-12 col-sm-2">City:</label>
                             <div class="col-xs-12 col-sm-10">
@@ -161,6 +143,24 @@
                                        ng-model="orgsView.searchParams.city"/>
                             </div>
                         </div>
+                    </div>
+                </div><!--fifth row ends -->
+
+                <!-- sixth row -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" ng-hide="orgsView.states.length == 0">
+                        <label for="state" class="control-label col-xs-12 col-sm-2">State:</label>
+                        <div class="col-xs-12 col-sm-10">
+                            <select class="form-control" id="state" ng-model="orgsView.searchParams.state_province"
+                                    ng-change="orgsView.searchOrgs()">
+                                <option value="">All states/provinces</option>
+                                <option ng-repeat="state in orgsView.states track by state.name"
+                                        value="{{state.name}}">{{state.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -174,7 +174,7 @@
                 </div><!-- sixth row ends -->
 
 
-                <div class="row-fluid">
+                <div class="row">
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-8">
                             <button type="submit" class="btn btn-default btn-success" id="submission_btn" ng-click="orgsView.searchOrgs()">
