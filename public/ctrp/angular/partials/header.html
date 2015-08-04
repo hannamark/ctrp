@@ -10,7 +10,7 @@
             <div class="top-bar-section pull-right">
                 <ul class="list-inline">
                     <li class="animated-item" ng-show="!headerView.signedIn"><a ui-sref="main.sign_in">Sign in</a></li>
-                    <li class="animated-item" ng-show="headerView.signedIn"><a ng-click="headerView.logOut()">Sign out</a></li>
+                    <li class="animated-item" ng-show="headerView.signedIn"><a href="" ng-click="headerView.logOut()">Sign out</a></li>
                     <li style="color: #ffffff" ng-show="headerView.signedIn">(You are signed in as <strong>{{headerView.username}}</strong>)</li>
                 </ul>
             </div>
