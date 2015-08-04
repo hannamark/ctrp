@@ -41,7 +41,7 @@
 
         var gridOptions = {
             enableColumnResizing: true,
-            rowHeight: 60,
+            rowHeight: 50,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
