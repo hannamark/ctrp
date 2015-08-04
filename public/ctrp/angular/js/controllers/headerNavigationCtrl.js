@@ -14,6 +14,7 @@
 
         var vm = this;
         vm.signedIn = UserService.isLoggedIn();
+        vm.username = UserService.getLoggedInUsername();
 
 
         vm.logOut = function() {
@@ -38,10 +39,12 @@
         function listenToLoginEvent() {
             $scope.$on('signedIn', function() {
                 vm.signedIn = UserService.isLoggedIn();
+                vm.username = UserService.getLoggedInUsername();
             });
 
             $scope.$on('loggedOut', function() {
                 vm.signedIn = false;
+                vm.username = '';
             })
         } //listenToLoginEvent
 
