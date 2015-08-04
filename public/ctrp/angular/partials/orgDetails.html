@@ -17,6 +17,12 @@
         </div>
     </script>
 
+    <div class="col-xs-12 col-border">
+        <div class="row">
+            <p><h4 ng-if="orgDetailView.curOrg.new"><mark>Add an organization</mark></h4></p>
+            <p><h4 ng-if="!orgDetailView.curOrg.new"><mark>Edit the organization</mark></h4></p>
+        </div>
+        <div class="row">
     <form class="form-horizontal" role="form" name="organization_form" novalidate>
         <div class="form-group col-sm-12" ng-class="{'has-error' : organization_form.name.$error.required && organization_form.name.$dirty }">
             <label class="control-label col-sm-3">Name:</label>
@@ -133,4 +139,6 @@
             </div>
         </div>
     </form>
+        </div>
+    </div>
 </div>
