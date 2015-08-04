@@ -146,3 +146,45 @@ header img {
     width: 100%;
     margin-bottom: -80px;
 }
+
+.top-bar-section {
+    left: 0;
+    margin-top: 5px;
+    margin-right: 30%;
+    position: relative;
+    width: auto;
+    transition: left 300ms ease-out;
+}
+
+.top-bar-section ul {
+    display: block;
+    font-size: 13px;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+}
+
+.top-bar-section .divider,
+.top-bar-section [role="separator"] {
+    border-top: solid 1px #ffffff;
+    clear: both;
+    height: 29px;
+    width: 100%;    
+}
+
+.top-bar-section ul li > a button,
+.top-bar-section ul li > a {
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
+    font-weight: bold;
+    text-transform: none;
+    width: 100%;
+}
+
+.top-bar-section ul li > a:hover {
+    color: #cccccc;
+    text-decoration: none;
+}
