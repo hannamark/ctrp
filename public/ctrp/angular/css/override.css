@@ -195,3 +195,28 @@ header img {
     color: #cccccc;
     text-decoration: none;
 }
+
+.checkbox .btn,
+.checkbox-inline .btn {
+    padding-left: 2em;
+    min-width: 8em;
+}
+
+.checkbox-inline {
+    margin-top: -5em;
+    margin-left: -2.5em;
+}
+
+.checkbox label,
+.checkbox-inline label {
+    text-align: left;
+    margin-top: -0.4em;
+}
+
+.checkbox-info {
+
+}
+
+.checkbox-circle {
+
+}
