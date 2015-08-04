@@ -70,6 +70,14 @@
                 });
         }; //logout
 
+
+        /**
+         * Get the logged in username from browser cache
+         */
+        this.getLoggedInUsername = function() {
+            return LocalCacheService.getCacheWithKey('username') || '';
+        }
+
     }
 
 

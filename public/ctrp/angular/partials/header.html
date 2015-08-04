@@ -7,10 +7,10 @@
     <nav class="navbar navbar-default navbar-fixed-top nav-search-bar" ng-controller="headerNavigationCtrl as headerView" ui-scrollpoint="+0">
         <div class="container-fluid row-blue">
             <div class="top-bar-section pull-right">
-                <ul>
+                <ul class="list-inline">
                     <li class="animated-item" ng-show="!headerView.signedIn"><a ui-sref="main.sign_in">Sign in</a></li>
-                    <li class="animated-item" ng-show="headerView.signedIn"><a class="button" ng-click="headerView.logOut()">Sign
-                        out</a></li>
+                    <li class="animated-item" ng-show="headerView.signedIn"><a href="" ng-click="headerView.logOut()">Sign out</a></li>
+                    <li style="color: #ffffff" ng-show="headerView.signedIn">(You are signed in as <strong>{{headerView.username}}</strong>)</li>
                 </ul>
             </div>
         </div>
