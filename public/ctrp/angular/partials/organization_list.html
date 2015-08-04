@@ -1,4 +1,4 @@
-<div class="row-fluid">
+<div class="row">
     <div class="col-xs-12 col-border">
         <div class="row">
             <h4>Search Organizations
@@ -23,8 +23,12 @@
                                        ng-model="orgsView.searchParams.name"/>
                             </div>
                             <div class="col-xs-12 col-sm-3">
-                                <input type="checkbox" id="alias_search" id="name_alias"
+                                    <div ng-class="orgsView.searchParams.alias == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
+                                    <label for="alias_search" class="btn btn-default">
+                                 <input type="checkbox" id="alias_search" id="name_alias"
                                        ng-model="orgsView.searchParams.alias"/> Search Alias
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <!-- organization name ends -->
@@ -222,7 +226,7 @@
 </div>
 
 <!-- list of organizations -->
-<div class="row-fluid">
+<div class="row">
     <div class="col-md-12">
         <div ui-grid="orgsView.gridOptions" ui-grid-pagination="" class="grid" ui-grid-auto-resize
              style="height: {{orgsView.gridHeight}}"></div>
