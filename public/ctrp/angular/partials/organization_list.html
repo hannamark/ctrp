@@ -16,40 +16,46 @@
                         <!-- organization name -->
                         <div class="form-group">
                             <label for="organization_name" class="col-xs-12 col-sm-2 control-label">Name: </label>
-
-                            <div class="col-xs-12 col-sm-10">
+                            <div class="col-xs-12 col-sm-7">
                                 <input type="text" id="organization_name" class="form-control"
                                        placeholder="Organization Name"
                                        ng-model="orgsView.searchParams.name"/>
-                                    <input type="checkbox" id="alias_search" id="name_alias" ng-model="orgsView.searchParams.alias" /> Search Alias
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <input type="checkbox" id="alias_search" id="name_alias" ng-model="orgsView.searchParams.alias" /> Search Alias
                             </div>
                         </div>
                         <!-- organization name ends -->
                     </div>
                     <div class="col-md-6">
-                        <div class="row">
                             <!-- PO ID -->
                             <div class="form-group">
                                 <!-- ID used as PO_ID here -->
                                 <label for="po_id" class="control-label col-xs-12 col-sm-2">PO ID: </label>
-                                <div class="col-xs-12 col-sm-10">
+                                <div class="col-xs-12 col-sm-4">
                                     <input type="text" id="po_id" class="form-control" placeholder="PO ID"
                                            ng-model="orgsView.searchParams.id"/>
                                 </div>
+
+                                    <label for="phone" class="control-label col-xs-12 col-sm-2">Phone:</label>
+                                    <div class="col-xs-12 col-sm-4 pull-right">
+                                        <input type="text" id="phone" class="form-control" placeholder="Phone"
+                                               ng-model="orgsView.searchParams.phone"/>
+                                    </div>
                             </div>
                             <!-- PO ID ends -->
-                            </div>
-                        <div class="row">
-                            <!-- phone -->
-                            <div class="form-group">
-                                <label for="phone" class="control-label col-xs-12 col-sm-2">Phone: </label>
-                                <div class="col-xs-12 col-sm-10">
-                                    <input type="text" id="phone" class="form-control" placeholder="Phone"
-                                           ng-model="orgsView.searchParams.phone"/>
-                                </div>
-                            </div>
-                            <!--end of phone -->
-                            </div>
+
+                        <!--<div class="row">-->
+                            <!--&lt;!&ndash; phone &ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="phone" class="control-label col-xs-12 col-sm-2">Phone: </label>-->
+                                <!--<div class="col-xs-12 col-sm-10">-->
+                                    <!--<input type="text" id="phone" class="form-control" placeholder="Phone"-->
+                                           <!--ng-model="orgsView.searchParams.phone"/>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--&lt;!&ndash;end of phone &ndash;&gt;-->
+                            <!--</div>-->
                 </div><!-- first row ends -->
 
                 <!-- second row -->
