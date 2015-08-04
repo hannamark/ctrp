@@ -96,7 +96,12 @@
 }
 
 .navbar-fixed-top {
-    margin-top: 107px;
+    /*margin-top: 107px;*/
+    position: relative;
+}
+
+.navbar-fixed-bottom {
+    /*margin-bottom: 0;*/
 }
 
 header {
@@ -135,4 +140,9 @@ header img {
 .row-blue {
     background-color: #2A71A5;
     height:29px;
+}
+
+.contain-to-grid {
+    width: 100%;
+    margin-bottom: -80px;
 }
