@@ -18,10 +18,14 @@
     </script>
 
     <form class="form-horizontal" name="family_form" role="form" novalidate>
-        <div class="form-group col-sm-12" ng-class="{'has-error' : family_form.name.$error.required && family_form.name.$dirty }">
+        <div class="form-group col-sm-12"
+             ng-class="{'has-error' : family_form.name.$error.required && family_form.name.$dirty }">
             <label class="control-label col-sm-3">Family Name:</label>
+
             <div class="col-sm-9">
-                <input type="text" name="name" class="form-control input-xs" ng-model="familyDetailView.curFamily.name" required>
+                <input type="text" name="name" class="form-control input-xs" ng-model="familyDetailView.curFamily.name"
+                       required>
+
                 <p ng-show="family_form.name.$error.required && family_form.name.$dirty" class="help-inline">
                     Family name is required
                 </p>
@@ -29,11 +33,13 @@
         </div>
         <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Family Status:</label>
+
             <div class="col-sm-9">
                 <select class="form-control" id="family_status" ng-model="familyDetailView.curFamily.family_status_id">
                     <option value="">Select a status</option>
                     <option ng-repeat="status in familyDetailView.familyStatusArr"
-                            value="{{status.id}}" ng-selected="familyDetailView.curFamily.family_status_id == status.id">
+                            value="{{status.id}}"
+                            ng-selected="familyDetailView.curFamily.family_status_id == status.id">
                         {{status.name}}
                     </option>
                 </select>
@@ -41,6 +47,7 @@
         </div>
         <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Family Type:</label>
+
             <div class="col-sm-9">
                 <select class="form-control" id="family_type" ng-model="familyDetailView.curFamily.family_type_id">
                     <option value="">Select a status</option>
@@ -53,6 +60,7 @@
         </div>
         <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Description:</label>
+
             <div class="col-sm-9">
                 <input type="text" class="form-control input-xs" ng-model="familyDetailView.curFamily.description">
             </div>
@@ -121,12 +129,14 @@
                             <td>{{org.name}}</td>
                             <td>
                                 <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control" datepicker-popup="{{familyDetailView.dateFormat}}"
+                                    <input type="text" class="form-control"
+                                           datepicker-popup="{{familyDetailView.dateFormat}}"
                                            ng-model="org.effective_date" is-open="org.opened_effective"
                                            is-open="opened" datepicker-options="familyDetailView.dateOptions"
                                            ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                   <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')"
+                                        <button type="button" class="btn btn-default"
+                                                ng-click="familyDetailView.openCalendar($event, $index, 'effective')"
                                                 ng-disabled="org._destroy">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
@@ -136,12 +146,14 @@
                             </td>
                             <td>
                                 <div class="input-group add-on col-sm-12 date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control" datepicker-popup="{{familyDetailView.dateFormat}}"
+                                    <input type="text" class="form-control"
+                                           datepicker-popup="{{familyDetailView.dateFormat}}"
                                            ng-model="org.expiration_date" is-open="org.opened_expiration"
                                            is-open="opened" datepicker-options="familyDetailView.dateOptions"
                                            ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                   <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')"
+                                        <button type="button" class="btn btn-default"
+                                                ng-click="familyDetailView.openCalendar($event, $index, 'expiration')"
                                                 ng-disabled="org._destroy">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
@@ -154,14 +166,15 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
+        </div>
         <div id="buttonBar" class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
                 <input type="submit" class="btn btn-success" ng-click="familyDetailView.updateFamily()"
                        ng-disabled="family_form.$invalid" value="Save">
                 <input type="reset" class="btn btn-danger" value="Reset">
-                <button ng-hide="familyDetailView.curFamily.new" class="btn btn-warning" ng-click="familyDetailView.confirmDelete('sm')">
+                <button ng-hide="familyDetailView.curFamily.new" class="btn btn-warning"
+                        ng-click="familyDetailView.confirmDelete('sm')">
                     Delete This Family
                 </button>
             </div>
