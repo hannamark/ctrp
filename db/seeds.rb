@@ -22,14 +22,14 @@ usa = "United States"
 #source_statuses
 
 #family_statuses
-FamilyStatus.find_or_create_by(code:'ACTIVE',name:'Active')
-FamilyStatus.find_or_create_by(code:'INACTIVE',name:'Inactive')
+FamilyStatus.find_or_create_by(id:1,code:'ACTIVE',name:'Active')
+FamilyStatus.find_or_create_by(id:2,code:'INACTIVE',name:'Inactive')
 
 #family_types
-FamilyType.find_or_create_by(code:'CANCERCENTER',name:'Cancer Center')
-FamilyType.find_or_create_by(code:'NCTN',name:'NCTN')
-FamilyType.find_or_create_by(code:'NIH',name:'NIH')
-FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Center')
+FamilyType.find_or_create_by(id:1,code:'CANCERCENTER',name:'Cancer Center')
+FamilyType.find_or_create_by(id:2,code:'NCTN',name:'NCTN')
+FamilyType.find_or_create_by(id:3,code:'NIH',name:'NIH')
+FamilyType.find_or_create_by(id:4,code:'RESEARCHCENTER',name:'Research Center')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
@@ -123,16 +123,45 @@ family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2
 
 
 
-# Set Role for Admin
-
+##Set Role for Admin
 user_admin = User.find_by_username("ctrpadmin")
 unless user_admin.nil?
   user_admin.role = "ROLE_ADMIN"
   user_admin.save!
 end
 
+##Set Role for Curator
 user_curator = User.find_by_username("ctrpcurator")
 unless user_curator.nil?
   user_curator.role = "ROLE_CURATOR"
   user_curator.save!
 end
+
+
+##Add NCICTRP team
+LdapUser.delete_all
+#charlie = LdapUser.find_or_create_by(username: "shivece", email: "shivece@mail.nih.gov", role: "ROLE_ADMIN")
+#mahesh = LdapUser.find_or_create_by(username: "yelisettim", email: "yelisettim@mail.nih.gov", role: "ROLE_ADMIN")
+#shilpi = LdapUser.find_or_create_by(username: "singhs10", email: "singhs10@mail.nih.gov", role: "ROLE_ADMIN")
+#shamim = LdapUser.find_or_create_by(username: "ahmeds6", email: "ahmeds6@mail.nih.gov", role: "ROLE_ADMIN")
+#murali = LdapUser.find_or_create_by(username: "dullam", email: "dullam@mail.nih.gov", role: "ROLE_ADMIN")
+#tony = LdapUser.find_or_create_by(username: "wangg5", email: "wangg5@mail.nih.gov", role: "ROLE_ADMIN")
+#shenpei = LdapUser.find_or_create_by(username: "wus4", email: "wus4@mail.nih.gov", role: "ROLE_ADMIN")
+#sarada = LdapUser.find_or_create_by(username: "schintal", email: "schintal@mail.nih.gov", role: "ROLE_ADMIN")
+#hemant = LdapUser.find_or_create_by(username: "undalehv", email: "undalehv@mail.nih.gov", role: "ROLE_ADMIN")
+
+## Save the users by bypassing validation. We want to save the user without the password
+["shivece@mail.nih.gov", "yelisettim@mail.nih.gov", "singhs10@mail.nih.gov", "ahmeds6@mail.nih.gov", "dullam@mail.nih.gov", "wangg5@mail.nih.gov",
+ "wus4@mail.nih.gov", "schintal@mail.nih.gov", "undalehv@mail.nih.gov"].each do |email|
+  begin
+    ldap_user = LdapUser.new
+    ldap_user.email = email
+    ldap_user.username = email.split("@")[0]
+    ldap_user.role = "ROLE_ADMIN"
+    ldap_user.save(validate: false)
+  rescue Exception => e
+    Rails.logger.info "Exception thrown #{e.inspect}"
+  end
+end
+
+
