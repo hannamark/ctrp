@@ -14,17 +14,23 @@ class SessionsController < Devise::SessionsController
       # Copy user data to ldap_user and local_user
       request.params['ldap_user'] = request.params['local_user'] = request.params['user']
 
-      # First try logging in as an LDAP user
-      user_class = :ldap_user
       user = User.where(username: request.params['user']["username"])
       Rails.logger.info "user #{user.inspect} " unless user.blank?
-      error_string = 'LDAP details incorrect'
-      # Use Warden to authenticate the user, if we get nil back, it failed.
-      Rails.logger.info "Before warden authenticate for LDAP =  #{self.resource.inspect}"
-      self.resource = warden.authenticate scope: user_class
-      Rails.logger.info "Result of warden authenticate for LDAP = #{self.resource.inspect}"
-      if self.resource.nil?
-        # Since LDAP Authentication has failed, try logging in as a Local user
+      unless user.is_a?(LocalUser)
+        # First try logging in as an LDAP user
+        user_class = :ldap_user
+        error_string = 'LDAP details incorrect'
+        # Use Warden to authenticate the user, if we get nil back, it failed.
+        Rails.logger.info "Before warden authenticate for LDAP =  #{self.resource.inspect}"
+        begin
+          self.resource = warden.authenticate scope: user_class
+        rescue
+          Rails.logger.info "LDAP Authentication failed."
+        end
+        Rails.logger.info "Result of warden authenticate for LDAP = #{self.resource.inspect}"
+      end
+      # If the user is a localUser or LDAP Authentication has failed, try logging in as a Local user
+      if self.resource.nil? || user.is_a?(LocalUser)
         Rails.logger.info "LDAP Authentication failed. Logging in as an local user"
         user_class = :local_user
         self.resource = warden.authenticate({ scope: resource_name, recall: "#{controller_path}#new" })
@@ -85,9 +91,9 @@ class SessionsController < Devise::SessionsController
 
   private
 
-  def create_token(token_data)
-    secret = "secret" # must be an environment variable
-    JWT.encode(token_data, secret)
-  end
+#  def create_token(token_data)
+#    secret = "secret" # must be an environment variable
+#    JWT.encode(token_data, secret)
+#  end
   #- See more at: http://blog.moove-it.com/token-based-authentication-json-web-tokenjwt/#sthash.QlxioFfO.dpuf
 end
