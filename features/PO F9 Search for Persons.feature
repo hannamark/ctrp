@@ -1,13 +1,29 @@
 @Global
 Feature: Search for persons
 
-Scenario: As any CTRP User, I am able to search for persons by name
+Scenario: As any CTRP User, I am able to search for persons by first name
 Given I know the name of the person I wish to search for
 And I am logged in to CTRP
 And I have selected the option to search for a person
-When I provide the full or partial name of the person I wish to search for
+When I provide the full or partial first name of the person I wish to search for
 And I submit my search request
-Then the system should display all persons that contain the name
+Then the system should display all persons that contain the first name
+
+Scenario: As any CTRP User, I am able to search for persons by last name
+Given I know the name of the person I wish to search for
+And I am logged in to CTRP
+And I have selected the option to search for a person
+When I provide the full or partial last name of the person I wish to search for
+And I submit my search request
+Then the system should display all persons that contain the last name
+
+Scenario: As any CTRP User, I am able to search for persons by middle name
+Given I know the name of the person I wish to search for
+And I am logged in to CTRP
+And I have selected the option to search for a person
+When I provide the full or partial middle name of the person I wish to search for
+And I submit my search request
+Then the system should display all persons that contain the middle name
 
 Scenario: As any CTRP User, I am able to search for persons by CTEP Person ID
 Given I know the CTEP ID of the person I wish to search for
