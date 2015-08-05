@@ -6,6 +6,50 @@ Given I have selected the option to register a National, Externally Peer-Reviewe
 And I have completed the registration sections
 When I have selected Review Trial
 Then the CTRP application will check that all required fields have been entered
+| Required Fields |
+|Lead Organization Trial Identifier|
+|Title|
+|Phase|
+|Is this a Pilot?|
+|Trial Type|
+|Primary Purpose|
+|Lead Organization|
+|Principal Investigator|
+|Sponsor|
+|Responsible Party|
+|Funding Source|
+|Is this trial funded by an NCI grant?|
+|Does this trial have an associated IND/IDE?|
+|Trial Status Date|
+|Trial Status|
+|Trial Start Date|
+|Trial Start Date Actual or Anticipated qualifier|
+|Primary Completion Date|
+|Primary Completion Date Actual or Anticipated qualifier|
+|Trial Oversight Authority Country|
+|Trial Oversight Authority Organization Name|
+|FDA Regulated Intervention Indicator|
+|Section 801 Indicator|
+|Delayed Posting Indicator|
+|Protocol Document|
+|IRB Approval Document|
+And the CTRP application will check that all conditional fields have been entered
+|Condition : Conditional Field|
+|Sponsor-Investigator as Responsible Party : Investigator|
+|Funded by NCI Grant : Funding Mechanism, Institute Code, Serial Number, NCI Division/Program Code|
+|IND/IDE : IND/IDE Type, IND/IDE Number, IND/IDE Grantor, IND/IDE Holder Type, NIH Institution or NCI Division|
+|Interventional Trial : Informed Consent Document|
+|Administratively Complete, Withdrawn, Temporarily Closed Trial Status : Why Study Stopped|
+And the CTRP application will check if any optional fields have been entered
+|Optional Fields|
+|ClinicalTrials.gov Identifier|
+|Other Protocol Identifiers|
+|Secondary Purpose|
+|Program Code|
+|Completion Date|
+|Completion Date Anticipated or Actual qualifier|
+|List of Participating Site Documents|
+|Other Documents|
 And the CTRP application will check that all registration sections have been completed
 And the option to Register Trial will be available
 
