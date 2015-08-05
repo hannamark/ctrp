@@ -31,6 +31,8 @@
     <script src="angular/third_party_libs/angular-toastr/dist/angular-toastr.tpls.js"></script>
     <script src="angular/third_party_libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
+    <script type="text/javascript" src="angular/third_party_libs/angular-ui-scrollpoint/dist/scrollpoint.min.js"></script>
+
 
     <!-- angular modules/dependencies from third parties -->
     <script src="angular/third_party_libs/angular-local-storage.js"></script>
@@ -84,12 +86,12 @@
 
 </head>
 <body>
-<div class="row">
-    <div class="col-md-12">
-        <div ng-include src="'angular/partials/header.html'"></div>
-        <div ui-view></div>
-        <div ng-include src="'angular/partials/footer.html'"></div>
+<div ng-include src="'angular/partials/header.html'"></div>
+<div class="container top-offset-lg">
+    <div class="row">
+        <div class="col-md-12" ui-view></div>
     </div>
 </div>
+<div ng-include src="'angular/partials/footer.html'"></div>
 </body>
 </html>

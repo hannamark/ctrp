@@ -1,53 +1,33 @@
-<div class="row-fluid">
-    <!--<form class="form-horizontal" role="form" novalidate>-->
-        <!--<div class="form-group">-->
-            <!--<label class="control-label col-sm-3">Username:</label>-->
-            <!--<div class="col-sm-9">-->
-                <!--<input class="form-control" ng-model="userView.userObj.user.username">-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--<div class="form-group">-->
-            <!--<label class="control-label col-sm-3">Password:</label>-->
-            <!--<div class="col-sm-9">-->
-                <!--<input type="password" class="form-control input-xs"  ng-model="userView.userObj.user.password">-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--<div id="buttonBar" class="form-group">-->
-            <!--<div class="col-sm-offset-3 col-sm-9">-->
-                <!--<input type="submit" class="btn btn-success" ng-click="userView.authenticate()" value="Login">-->
-                <!--<input type="reset" class="btn btn-danger" value="Reset">-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</form>-->
-
-    <div class="col-sm-3"></div>
-    <div class="col-sm-6">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="panel-title text-center">Signin</div>
-        </div>
-        <div class="panel-body">
-            <form class="form-horizontal" role="form" novalidate>
-                <div class="form-group col-md-12">
-                <div class="input-group">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title text-center">Sign In</div>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form" novalidate>
+                        <div class="form-group col-md-12">
+                            <div class="input-group">
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-user"></i>
                     </span>
-                    <input class="form-control" type="text" ng-model="userView.userObj.user.username" placeholder="Username">
-                </div>
-                </div>
-                <div class="form-group col-md-12">
-                <div class="input-group">
+                                <input class="form-control" type="text" ng-model="userView.userObj.user.username"
+                                       placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="input-group">
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
-                    <input type="password" class="form-control" ng-model="userView.userObj.user.password" placeholder="Password">
-                </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-8 controls">
+                                <input type="password" class="form-control" ng-model="userView.userObj.user.password"
+                                       placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-8 controls">
                         <span class="btn-toolbar">
                         <button class="btn btn-default" ng-click="userView.authenticate()" ng-disabled="userView.userObj.user.password == '' ||
                         userView.userObj.user.username == ''">
@@ -55,13 +35,12 @@
                         </button>
                         <button class="btn btn-danger" type="reset"><i class="glyphicon glyphicon-remove"></i></button>
                         </span>
-                    </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
+        <div class="col-sm-3"></div>
     </div>
-    </div>
-    <div class="col-sm-3"></div>
-
-
 </div>

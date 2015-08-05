@@ -44,9 +44,9 @@
         function responseError(rejection) {
             console.log("bad response");
             if (rejection.status === 403 || rejection.status === 401) {
-                $injector.get('UserService').logout();
                 $injector.get('toastr').clear();
                 $injector.get('toastr').error('Access to the resources is not authorized', 'Error');
+                // $injector.get('UserService').logout();
                 console.log("error status code: " + rejection.status);
                 //redirect to login page
                 $injector.get('$state').go('main.sign_in');

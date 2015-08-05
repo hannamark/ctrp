@@ -7,7 +7,13 @@ ctrpadmin_json_body = {
 }
 
 
-RestClient.post 'http://localhost/ctrp/local_users', ctrpadmin_json_body.to_json, :content_type => :json
+RestClient.post('http://localhost/ctrp/local_users', ctrpadmin_json_body.to_json, :content_type => :json) do |response, request, result, &block|
+    if [301, 302, 307].include? response.code
+        redirected_url = response.headers[:location]
+    else
+        response.return!(request, result, &block)
+    end
+end
 
 
 ## Sign_up ctrpcurator as LocalUser
@@ -17,6 +23,12 @@ ctrpcurator_json_body = {
 }
 
 
-RestClient.post 'http://localhost/ctrp/local_users', ctrpcurator_json_body.to_json, :content_type => :json
+RestClient.post('http://localhost/ctrp/local_users', ctrpcurator_json_body.to_json, :content_type => :json) do |response, request, result, &block|
+    if [301, 302, 307].include? response.code
+        redirected_url = response.headers[:location]
+    else
+        response.return!(request, result, &block)
+    end
+end
 
 

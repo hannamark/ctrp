@@ -1,5 +1,7 @@
 class PeopleController < ApplicationController
   before_action :set_person, only: [:show, :edit, :update, :destroy]
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  load_and_authorize_resource unless Rails.env.test?
 
   # GET /people
   # GET /people.json

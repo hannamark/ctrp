@@ -30,6 +30,7 @@
             country : "United States", //default country
             email : "",
             postal_code : "",
+            phone: "",
 
             //for pagination and sorting
             sort: "",
@@ -40,7 +41,7 @@
 
         var gridOptions = {
             enableColumnResizing: true,
-            rowHeight: 60,
+            rowHeight: 50,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,

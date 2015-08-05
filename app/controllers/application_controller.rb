@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  respond_to :html, :xml, :json
   #check_authorization :unless => :devise_controller?
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
     render :text => exception, :status => 500
@@ -110,6 +111,11 @@ class ApplicationController < ActionController::Base
     end
     @current_user = User.find_by_id(@user_id)
   end
+
+#  def create_token(token_data)
+#    secret = "secret" # must be an environment variable
+#    JWT.encode(token_data, secret)
+#  end
 
 
   protected
