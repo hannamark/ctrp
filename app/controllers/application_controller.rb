@@ -112,10 +112,10 @@ class ApplicationController < ActionController::Base
     @current_user = User.find_by_id(@user_id)
   end
 
-#  def create_token(token_data)
-#    secret = "secret" # must be an environment variable
-#    JWT.encode(token_data, secret)
-#  end
+  def create_token(token_data)
+    secret = "secret" # must be an environment variable
+    JWT.encode(token_data, secret)
+  end
 
 
   protected
