@@ -178,7 +178,6 @@
                                 broadcastMsg(MESSAGES.STATES_UNAVAIL, 'states or provinces are not available');
                                 return;
                             }
-                            statesOrProvinces.sort(Common.a2zComparator());
                             broadcastMsg(MESSAGES.STATES_AVAIL, 'come get your states or provinces');
                         }).catch(function (err) {
                             $log.info("error in retrieving states for country: " + countryName);
