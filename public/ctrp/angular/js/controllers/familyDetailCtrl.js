@@ -6,9 +6,9 @@
     'use strict';
     angular.module('ctrpApp')
         .controller('familyDetailCtrl', familyDetailCtrl);
-    familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'familyStatusObj','familyTypeObj','OrgService','DateService','$timeout','toastr', 'MESSAGES',
+    familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'familyStatusObj','familyTypeObj','familyRelationshipObj','OrgService','DateService','$timeout','toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal'];
-    function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,OrgService,DateService,$timeout,toastr, MESSAGES,
+    function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,familyRelationshipObj,OrgService,DateService,$timeout,toastr, MESSAGES,
                               $scope, Common, $state, $modal) {
         var vm = this;
         //console.log("in details controller ......."+JSON.stringify(familyDetailObj));
@@ -16,6 +16,8 @@
         vm.curFamily = vm.curFamily.data || vm.curFamily;
         vm.familyStatusArr = familyStatusObj.data;
         vm.familyTypeArr = familyTypeObj.data;
+        vm.familyRelationshipArr = familyRelationshipObj.data;
+        console.log("helo@@@ "+JSON.stringify(familyRelationshipObj));
         //Organization Affiliations
         vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
         vm.foundOrgs = [];
@@ -219,7 +221,7 @@
             _.each(savedSelectionArr, function (org) {
                 var cleanedOrg = {
                     "organization_id": org.id,
-                    //"po_affiliation_status_id": org.po_affiliation_status_id,
+                    "family_relationship_id": org.family_relationship_id,
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date,
                     "id" : org.family_membership_id || '',
@@ -264,8 +266,10 @@
                     curOrg.effective_date = DateService.convertISODateToLocaleDateStr(familyAff.effective_date);
                     curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(familyAff.expiration_date);
                     curOrg.family_membership_id = familyAff.id; //family affiliation id
+                    curOrg.family_relationship_id=familyAff.family_relationship_id;
                     curOrg._destroy = familyAff._destroy || false;
                     vm.savedSelection.push(curOrg);
+                    console.log("@@@@@@ "+JSON.stringify(curOrg));
                 }).catch(function(err) {
                     console.log("error in retrieving organization name with id: " + familyAff.organization_id);
                 });

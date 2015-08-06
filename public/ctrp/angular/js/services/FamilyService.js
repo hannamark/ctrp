@@ -58,7 +58,8 @@
             getGridOptions : getGridOptions,
             deleteFamily : deleteFamily,
             getFamilyStatuses : getFamilyStatuses,
-            getFamilyTypes : getFamilyTypes
+            getFamilyTypes : getFamilyTypes,
+            getFamilyRelationships :getFamilyRelationships
         };
 
         return services;
@@ -165,6 +166,10 @@
         function getFamilyTypes() {
             return PromiseService.getData(URL_CONFIGS.FAMILY_TYPES);
         } //getFamilyStatuses
+
+        function getFamilyRelationships() {
+            return PromiseService.getData(URL_CONFIGS.FAMILY_RELATIONSHIPS);
+        }
 
         /**
          * delete an family with the given familyId

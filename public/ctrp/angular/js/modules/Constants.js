@@ -23,7 +23,8 @@
             'FAMILY_LIST': '/ctrp/families.json',
             'SEARCH_FAMILY': '/ctrp/families/search.json',
             'FAMILY_STATUSES':'/ctrp/family_statuses.json',
-            'FAMILY_TYPES':'/ctrp/family_types.json'
+            'FAMILY_TYPES':'/ctrp/family_types.json',
+            'FAMILY_RELATIONSHIPS' :'/ctrp/family_relationships.json'
         })
         .constant('MESSAGES', {
            'STATES_AVAIL' : 'states_or_provinces_available',

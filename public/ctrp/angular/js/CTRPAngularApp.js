@@ -171,6 +171,9 @@
                         },
                         familyDetailObj: function($stateParams, FamilyService) {
                             return FamilyService.getFamilyById($stateParams.familyId);
+                        },
+                        familyRelationshipObj: function(FamilyService) {
+                            return FamilyService.getFamilyRelationships();
                         }
                     } //resolve the promise and pass it to controller
                 })
