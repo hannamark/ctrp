@@ -32,3 +32,17 @@ RestClient.post('http://localhost/ctrp/local_users', ctrpcurator_json_body.to_js
 end
 
 
+## Sign_up testerctrpcurator as LocalUser
+testercurator_json_body = {
+    "local_user" => {"username" => "testercurator", "password" => "Welcome01", "email" => "testercurator@x.com"},
+    "type" => "LocalUser"
+}
+
+
+RestClient.post('http://localhost/ctrp/local_users', testercurator_json_body.to_json, :content_type => :json) do |response, request, result, &block|
+    if [301, 302, 307].include? response.code
+        redirected_url = response.headers[:location]
+    else
+        response.return!(request, result, &block)
+    end
+end
