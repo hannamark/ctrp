@@ -45,7 +45,7 @@
             $scope.name = "tony wang";
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
-            console.log("running the controller in the form directive");
+            console.log("running the controller in the form directive, UseGrid: " + $scope.UseGrid);
 
             activate();
 
