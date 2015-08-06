@@ -135,6 +135,7 @@
                                 <th>Remove</th>
                                 <th>PO ID</th>
                                 <th>Organization</th>
+                                <th>Family Relationship</th>
                                 <th>Effective Date</th>
                                 <th>Expiration Date</th>
                                 </thead>
@@ -149,6 +150,19 @@
                                     </td>
                                     <td>{{org.id}}</td>
                                     <td>{{org.name}}</td>
+                                    <td>
+                                            <select class="form-control" id="family_relationship"
+                                                    ng-model="org.family_relationship_id">
+                                                <option value="">Select Relationship</option>
+                                                <option ng-repeat="relation in familyDetailView.familyRelationshipArr"
+                                                        value="{{relation.id}}"
+                                                        ng-selected="org.family_relationship_id == relation.id">
+                                                        {{relation.name}}
+                                                </option>
+                                            </select>
+                                    </td>
+
+
                                     <td>
                                         <div class="input-group add-on col-sm-12 date datepicker"
                                              date-date-format="yyyy-mm-dd">
