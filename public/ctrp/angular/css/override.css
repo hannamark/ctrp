@@ -151,7 +151,7 @@ header img {
 
 .contain-to-grid {
     width: 100%;
-    margin-bottom: -80px;
+    margin-bottom: -50px;
 }
 
 .top-bar-section {
@@ -181,7 +181,6 @@ header img {
     width: 100%;
 }
 
-.top-bar-section ul li > a button,
 .top-bar-section ul li > a {
     text-decoration: none;
     color: #ffffff;
