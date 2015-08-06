@@ -121,3 +121,16 @@ When I provide the curator name of the organization I wish to search for
 And I submit my search request
 Then the system should display all organizations that contain the curator name
 
+@PO
+Scenario: As a PO Curator or a CTRP Administrator, I can search for organizations by status
+Given I know the status of the organization I wish to search for
+And I am logged in to CTRP
+And I am on a search organizations screen
+When I provide the status of the organization I wish to search for
+|Organization Status|
+|Active|
+|Inactive|
+|Pending|
+|Nullified|
+And I submit my search request
+Then the system should display all organizations that have a matching organization status
