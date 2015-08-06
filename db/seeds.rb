@@ -137,6 +137,13 @@ unless user_curator.nil?
   user_curator.save!
 end
 
+##Set Role for Curator
+user_curator = User.find_by_username("testercurator")
+unless user_curator.nil?
+  user_curator.role = "ROLE_CURATOR"
+  user_curator.save!
+end
+
 
 ##Add NCICTRPDEV team
 LdapUser.delete_all

@@ -14,8 +14,16 @@ class SessionsController < Devise::SessionsController
       # Copy user data to ldap_user and local_user
       request.params['ldap_user'] = request.params['local_user'] = request.params['user']
 
-      user = User.where(username: request.params['user']["username"])
-      Rails.logger.info "user #{user.inspect} " unless user.blank?
+      user = User.find_by_username(request.params['user']["username"])
+      unless user.blank?
+        if user.is_a?(LocalUser)
+          Rails.logger.info "LocalUser #{user.inspect} " unless user.blank?
+        elsif user.is_a?(LdapUser)
+          Rails.logger.info "LdapUser #{user.inspect} " unless user.blank?
+        else
+          Rails.logger.info "OmniauthUser #{user.inspect} " unless user.blank?
+        end
+      end
       unless user.is_a?(LocalUser)
         # First try logging in as an LDAP user
         user_class = :ldap_user
@@ -31,7 +39,9 @@ class SessionsController < Devise::SessionsController
       end
       # If the user is a localUser or LDAP Authentication has failed, try logging in as a Local user
       if self.resource.nil? || user.is_a?(LocalUser)
-        Rails.logger.info "LDAP Authentication failed. Logging in as an local user"
+        if self.resource.nil?
+          Rails.logger.info "LDAP Authentication failed. Logging in as an local user"
+        end
         user_class = :local_user
         self.resource = warden.authenticate({ scope: resource_name, recall: "#{controller_path}#new" })
         Rails.logger.info "Result of warden authenticate = #{self.resource.inspect}"
