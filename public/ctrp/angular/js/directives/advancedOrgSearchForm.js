@@ -13,13 +13,16 @@
     angular.module('ctrpApp')
         .directive('advancedOrgSearchForm', advancedOrgSearchForm);
 
-    advancedOrgSearchForm.$inject = ['OrgService'];
+    advancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', 'MESSAGES'];
 
-    function advancedOrgSearchForm(OrgService) {
+    function advancedOrgSearchForm(OrgService, GeoLocationService, Common, MESSAGES) {
 
         var directiveObj = {
-            restrict : 'E',
-            scope: {countries: '=', sourceStatuses: '=' },  //false: directive uses the parent scope so it can access the parent's ng-model
+            restrict : 'EA',
+            scope: {
+//                sourceStatuses: '=',
+//                countries: '='
+            },
             templateUrl: '/ctrp/angular/js/directives/advancedOrgSearchFormTemplate.html',
             link: linkFn,
             controller: orgSearchController
@@ -32,22 +35,99 @@
 
         function linkFn(scope, element, attr, controller) {
             // element.text('this is the advanced search form');
-           // scope.sourceStatuses.length;
-           // scope.countries.length;
-            console.log('countries length: ' + scope.countries.length);
-            console.log('sourceStatuses length: ' + scope.sourceStatuses.length);
+
+
         } //linkFn
 
 
         function orgSearchController($scope) {
             $scope.name = "tony wang";
+            $scope.searchParams = OrgService.getInitialOrgSearchParams();
+            $scope.watchCountrySelection = OrgService.watchCountrySelection();
             console.log("running the controller in the form directive");
 
-            $scope.countriesArr = $scope.$parent.countriesArr;
-            $scope.states = []; //$scope.$parent.states;
-            $scope.sourceStatusArr = $scope.$parent.sourceStatusArr;
+            activate();
 
-            // console.log('sourceStatusArr.length = ' + $scope.$parent.sourceStatuses.length);
+            function activate() {
+                getPromisedData();
+                listenToStatesProvinces();
+            } //activate
+
+            //ui-grid plugin options
+            $scope.gridOptions = OrgService.getGridOptions();
+            //$scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
+            //$scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+            $scope.gridOptions.onRegisterApi = function(gridApi) {
+                $scope.gridApi = gridApi;
+                $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
+                $scope.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
+                    $scope.searchParams.start = newPage;
+                    $scope.searchParams.rows = pageSize;
+                    $scope.searchOrgs();
+                });
+            }; //gridOptions
+
+            $scope.searchOrgs = function() {
+                // $scope.searchParams.name = $scope.searchParams.name || "*";
+                //console.log("searching params: " + JSON.stringify($scope.searchParams));
+                OrgService.searchOrgs($scope.searchParams).then(function (data) {
+                    // console.log("received search results: " + JSON.stringify(data));
+                    $scope.gridOptions.data = data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
+                    $scope.gridOptions.totalItems = data.total;
+                    $scope.gridHeight = $scope.gridOptions.rowHeight * ($scope.gridOptions.data.length + 1);
+
+                    $scope.$parent.gridOptions = $scope.gridOptions;
+                    $scope.$parent.gridHeight = $scope.gridHeight;
+                }).catch(function (err) {
+                    console.log('search organizations failed');
+                });
+            }; //searchOrgs
+
+
+            $scope.resetSearch = function() {
+                // $scope.states.length = 0;
+                $scope.searchParams = OrgService.getInitialOrgSearchParams();
+                $scope.searchOrgs();
+            }; //resetSearch
+
+
+
+
+            function getPromisedData () {
+                //get source statuses
+                OrgService.getSourceStatuses().then(function (statuses) {
+                    //console.log("received statuses: " + JSON.stringify(statuses));
+                    statuses.sort(Common.a2zComparator());
+                    $scope.sourceStatuses = statuses;
+                });
+
+                //get countries
+                GeoLocationService.getCountryList().then(function (countries) {
+                    countries.sort(Common.a2zComparator());
+                    $scope.countries = countries;
+                });
+            } //getPromisedData
+
+
+            
+            
+            /**
+             * Listen to the message for availability of states or provinces
+             * for the selected country
+             */
+            function listenToStatesProvinces() {
+                $scope.watchCountrySelection($scope.searchParams.country);
+
+                $scope.$on(MESSAGES.STATES_AVAIL, function() {
+                    //console.log("states available for country: " + $scope.searchParams.country);
+                    $scope.states = OrgService.getStatesOrProvinces();
+                });
+
+                $scope.$on(MESSAGES.STATES_UNAVAIL, function() {
+                    $scope.states = [];
+                });
+            }  //listenToStatesProvinces
+            
 
         } //orgSearchController
 

@@ -1,7 +1,7 @@
-<div class="row">
-    name is: <strong>{{name}}</strong> from the Advanced Search Form template
-</div>
-<div class="row">
+<!--<div class="row">-->
+    <!--name is: <strong>{{name}}</strong> from the Advanced Search Form template-->
+<!--</div>-->
+
     <form class="form-horizontal" role="form">
         <!-- first row -->
         <div class="row">
@@ -12,13 +12,13 @@
                     <div class="col-xs-12 col-sm-7">
                         <input type="text" id="organization_name" class="form-control"
                                placeholder="Organization Name"
-                               ng-model="orgsView.searchParams.name"/>
+                               ng-model="searchParams.name"/>
                     </div>
                     <div class="col-xs-12 col-sm-3">
-                        <div ng-class="orgsView.searchParams.alias == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
+                        <div ng-class="searchParams.alias == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
                             <label for="alias_search" class="btn btn-default">
                                 <input type="checkbox" id="alias_search" id="name_alias"
-                                       ng-model="orgsView.searchParams.alias"/> Search Alias
+                                       ng-model="searchParams.alias"/> Search Alias
                             </label>
                         </div>
                     </div>
@@ -33,14 +33,14 @@
 
                     <div class="col-xs-12 col-sm-4">
                         <input type="text" id="po_id" class="form-control" placeholder="PO ID"
-                               ng-model="orgsView.searchParams.id"/>
+                               ng-model="searchParams.id"/>
                     </div>
 
                     <label for="phone" class="control-label col-xs-12 col-sm-2">Phone:</label>
 
                     <div class="col-xs-12 col-sm-4 pull-right">
                         <input type="text" id="phone" class="form-control" placeholder="Phone"
-                               ng-model="orgsView.searchParams.phone"/>
+                               ng-model="searchParams.phone"/>
                     </div>
                 </div>
                 <!-- PO ID ends -->
@@ -57,7 +57,7 @@
 
                     <div class="col-xs-12 col-sm-10">
                         <input type="text" id="source_id" class="form-control" placeholder="Source ID"
-                               ng-model="orgsView.searchParams.source_id"/>
+                               ng-model="searchParams.source_id"/>
                     </div>
                 </div>
                 <!-- source id ends -->
@@ -69,8 +69,8 @@
 
                     <div class="col-xs-12 col-sm-10">
                         <select class="form-control" id="source_status"
-                                ng-model="orgsView.searchParams.source_status"
-                                ng-change="orgsView.searchOrgs()">
+                                ng-model="searchParams.source_status"
+                                ng-change="searchOrgs()">
                             <option value="">Select a status</option>
                             <option ng-repeat="status in sourceStatuses" value="{{status.name}}">
                                 {{status.name}}
@@ -91,7 +91,7 @@
 
                     <div class="col-xs-12 col-sm-10">
                         <input type="text" id="address" class="form-control" placeholder="Address"
-                               ng-model="orgsView.searchParams.address"/>
+                               ng-model="searchParams.address"/>
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@
 
                     <div class="col-xs-12 col-sm-10">
                         <input type="text" id="address2" class="form-control" placeholder="Address 2"
-                               ng-model="orgsView.searchParams.address2"/>
+                               ng-model="searchParams.address2"/>
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@
 
                     <div class="col-xs-12 col-sm-10">
                         <input type="text" id="family_name" class="form-control" placeholder="Family Name"
-                               ng-model="orgsView.searchParams.family_name"/>
+                               ng-model="searchParams.family_name"/>
                     </div>
                 </div>
             </div>
@@ -128,7 +128,7 @@
 
                     <div class="col-xs-12 col-sm-10">
                         <input type="text" id="email" class="form-control" placeholder="Email"
-                               ng-model="orgsView.searchParams.email"/>
+                               ng-model="searchParams.email"/>
                     </div>
                 </div>
             </div>
@@ -142,11 +142,11 @@
                     <label for="country" class="control-label col-xs-12 col-sm-2">Country:</label>
 
                     <div class="col-xs-12 col-sm-10">
-                        <select class="form-control" id="country" ng-model="orgsView.searchParams.country"
-                                ng-change="orgsView.watchCountrySelection(orgsView.searchParams.country)">
+                        <select class="form-control" id="country" ng-model="searchParams.country"
+                                ng-change="watchCountrySelection(searchParams.country)">
                             <option value="" selected>All countries</option>
                             <option ng-repeat="country in countries" value="{{country.name}}"
-                                    ng-selected="country.name == orgsView.searchParams.country">
+                                    ng-selected="country.name == searchParams.country">
                                 {{country.name}}
                             </option>
                         </select>
@@ -160,7 +160,7 @@
 
                     <div class="col-xs-12 col-sm-10">
                         <input type="text" id="city" class="form-control" placeholder="City"
-                               ng-model="orgsView.searchParams.city"/>
+                               ng-model="searchParams.city"/>
                     </div>
                 </div>
             </div>
@@ -170,14 +170,14 @@
         <!-- sixth row -->
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group" ng-hide="orgsView.states.length == 0">
+                <div class="form-group" ng-hide="states.length == 0">
                     <label for="state" class="control-label col-xs-12 col-sm-2">State:</label>
 
                     <div class="col-xs-12 col-sm-10">
-                        <select class="form-control" id="state" ng-model="orgsView.searchParams.state_province"
-                                ng-change="orgsView.searchOrgs()">
+                        <select class="form-control" id="state" ng-model="searchParams.state_province"
+                                ng-change="searchOrgs()">
                             <option value="">All states/provinces</option>
-                            <option ng-repeat="state in orgsView.states track by state.name"
+                            <option ng-repeat="state in states track by state.name"
                                     value="{{state.name}}">{{state.name}}
                             </option>
                         </select>
@@ -190,7 +190,7 @@
 
                     <div class="col-xs-12 col-sm-10">
                         <input type="text" id="postal_code" class="form-control" placeholder="Postal Code"
-                               ng-model="orgsView.searchParams.postal_code"/>
+                               ng-model="searchParams.postal_code"/>
                     </div>
                 </div>
             </div>
@@ -201,16 +201,23 @@
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-8">
                     <button type="submit" class="btn btn-default btn-success" id="submission_btn"
-                            ng-click="orgsView.searchOrgs()">
+                            ng-click="searchOrgs()">
                         Search
                     </button>
 
                     <button type="reset" class="btn btn-default btn-danger" id="reset_btn"
-                            ng-click="orgsView.resetSearch()">
+                            ng-click="resetSearch()">
                         Clear
                     </button>
                 </div>
             </div>
         </div>
     </form>
-</div>
+{{searchParams}}
+
+<!-- list of organizations -->
+<!--<div class="row">-->
+    <!--<p><h4>Organization Search Results:</h4></p>-->
+    <!--<div ui-grid="gridOptions" ui-grid-pagination="" class="grid" ui-grid-auto-resize-->
+         <!--style="height: {{orgsView.gridHeight}}"></div>-->
+<!--</div>-->

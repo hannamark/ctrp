@@ -22,8 +22,8 @@
         vm.countriesArr.sort(Common.a2zComparator());
         vm.states = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
+        sourceStatusObj.sort(Common.a2zComparator());
         vm.sourceStatusArr = sourceStatusObj;
-        vm.sourceStatusArr.sort(Common.a2zComparator());
 
         //ui-grid plugin options
         vm.gridOptions = OrgService.getGridOptions();
