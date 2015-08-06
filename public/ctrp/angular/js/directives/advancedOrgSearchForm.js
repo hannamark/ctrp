@@ -13,15 +13,16 @@
     angular.module('ctrpApp')
         .directive('advancedOrgSearchForm', advancedOrgSearchForm);
 
-    advancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', 'MESSAGES'];
+    advancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', 'MESSAGES', 'uiGridConstants'];
 
-    function advancedOrgSearchForm(OrgService, GeoLocationService, Common, MESSAGES) {
+    function advancedOrgSearchForm(OrgService, GeoLocationService, Common, MESSAGES, uiGridConstants) {
 
         var directiveObj = {
             restrict : 'EA',
             scope: {
-//                sourceStatuses: '=',
-//                countries: '='
+               // sourceStatuses: '=',
+               // countries: '='
+                UseGrid: '='
             },
             templateUrl: '/ctrp/angular/js/directives/advancedOrgSearchFormTemplate.html',
             link: linkFn,
@@ -35,7 +36,7 @@
 
         function linkFn(scope, element, attr, controller) {
             // element.text('this is the advanced search form');
-
+            console.log('useGrid: ' + scope.UseGrid)
 
         } //linkFn
 
@@ -76,8 +77,8 @@
                     $scope.gridOptions.totalItems = data.total;
                     $scope.gridHeight = $scope.gridOptions.rowHeight * ($scope.gridOptions.data.length + 1);
 
-                    $scope.$parent.gridOptions = $scope.gridOptions;
-                    $scope.$parent.gridHeight = $scope.gridHeight;
+                    // $scope.$parent.gridOptions = $scope.gridOptions;
+                    // $scope.$parent.gridHeight = $scope.gridHeight;
                 }).catch(function (err) {
                     console.log('search organizations failed');
                 });
@@ -127,6 +128,38 @@
                     $scope.states = [];
                 });
             }  //listenToStatesProvinces
+
+
+
+            /**
+             * callback function for sorting UI-Grid columns
+             * @param grid
+             * @param sortColumns
+             */
+            function sortChangedCallBack(grid, sortColumns) {
+
+                if (sortColumns.length == 0) {
+                    console.log("removing sorting");
+                    //remove sorting
+                    $scope.searchParams.sort = '';
+                    $scope.searchParams.order = '';
+                } else {
+                    $scope.searchParams.sort = sortColumns[0].name; //sort the column
+                    switch( sortColumns[0].sort.direction ) {
+                        case uiGridConstants.ASC:
+                            $scope.searchParams.order = 'ASC';
+                            break;
+                        case uiGridConstants.DESC:
+                            $scope.searchParams.order = 'DESC';
+                            break;
+                        case undefined:
+                            break;
+                    }
+                }
+
+                //do the search with the updated sorting
+                $scope.searchOrgs();
+            }; //sortChangedCallBack
             
 
         } //orgSearchController
