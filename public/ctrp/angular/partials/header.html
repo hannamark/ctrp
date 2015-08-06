@@ -1,17 +1,36 @@
-<header>
+<header ng-controller="headerNavigationCtrl as headerView">
     <div class="container">
-        <img class="img-responsive" src="/ctrp/angular/images/nci-logo-full.svg" alt="National Cancer Institute">
+        <div class="row">
+            <div class="col-xs-12 col-sm-7">
+                <img class="img-responsive" src="/ctrp/angular/images/nci-logo-full.svg" alt="National Cancer Institute">
+            </div>
+            <div class="col-xs-12 col-sm-5">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6 pull-left">
+                        <div class="row">
+                            <strong>Most recent actvity: (place holder)</strong>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 pull-left">
+                        <ul class="list-inline">
+                            <li class="animated-item" ng-show="headerView.signedIn">Welcome <strong>{{headerView.username}}</strong></li>
+                            <li class="animated-item" ng-show="headerView.signedIn"><a href="" ng-click="headerView.logOut()">Sign Out</a></li>
+                            <li class="animated-item" ng-show="!headerView.signedIn"><a ui-sref="main.sign_in">Sign In</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </header>
 <div class="contain-to-grid">
-    <nav class="navbar navbar-default navbar-fixed-top nav-search-bar"
-         ng-controller="headerNavigationCtrl as headerView">
+    <nav class="navbar navbar-default navbar-fixed-top nav-search-bar">
         <div class="container-fluid row-blue">
             <div class="top-bar-section pull-right">
                 <ul class="list-inline">
-                    <li class="animated-item" ng-show="!headerView.signedIn"><a ui-sref="main.sign_in">Sign in</a></li>
-                    <li class="animated-item" ng-show="headerView.signedIn"><a href="" ng-click="headerView.logOut()">Sign out</a></li>
-                    <li style="color: #ffffff" ng-show="headerView.signedIn">(You are signed in as <strong>{{headerView.username}}</strong>)</li>
+                    <li><a href="">Contact Us</a></li>
+                    <li><a href="">Dictionary</a></li>
                 </ul>
             </div>
         </div>
@@ -52,14 +71,6 @@
                             <li><a ui-sref="main.addPerson">Add a Person</a></li>
                         </ul>
                     </li>
-                    <!--<li class="dropdown">-->
-                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Families<span-->
-                                <!--class="caret"></span></a>-->
-                        <!--<ul class="dropdown-menu" role="menu">-->
-                            <!--<li><a ui-sref="main.families">List of Families</a></li>-->
-                            <!--<li><a ui-sref="main.addFamily">Add a Family</a></li>-->
-                        <!--</ul>-->
-                    <!--</li>-->
                     <li><a href="/ctrp/backoffice">Backoffice</a></li>
                 </ul>
                 <!--<form class="navbar-form navbar-left" role="search" novalidate>-->
