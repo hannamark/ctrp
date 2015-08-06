@@ -19,7 +19,6 @@
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-        vm.countriesArr.sort(Common.a2zComparator());
         vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());

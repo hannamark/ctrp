@@ -19,7 +19,6 @@
         // console.log("countryList: " + JSON.stringify(countryList));
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-        vm.countriesArr.sort(Common.a2zComparator());
         vm.states = [];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
         vm.sourceStatusArr = sourceStatusObj;
