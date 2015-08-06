@@ -138,30 +138,41 @@ unless user_curator.nil?
 end
 
 
-##Add NCICTRP team
+##Add NCICTRPDEV team
 LdapUser.delete_all
-#charlie = LdapUser.find_or_create_by(username: "shivece", email: "shivece@mail.nih.gov", role: "ROLE_ADMIN")
-#mahesh = LdapUser.find_or_create_by(username: "yelisettim", email: "yelisettim@mail.nih.gov", role: "ROLE_ADMIN")
-#shilpi = LdapUser.find_or_create_by(username: "singhs10", email: "singhs10@mail.nih.gov", role: "ROLE_ADMIN")
-#shamim = LdapUser.find_or_create_by(username: "ahmeds6", email: "ahmeds6@mail.nih.gov", role: "ROLE_ADMIN")
-#murali = LdapUser.find_or_create_by(username: "dullam", email: "dullam@mail.nih.gov", role: "ROLE_ADMIN")
-#tony = LdapUser.find_or_create_by(username: "wangg5", email: "wangg5@mail.nih.gov", role: "ROLE_ADMIN")
-#shenpei = LdapUser.find_or_create_by(username: "wus4", email: "wus4@mail.nih.gov", role: "ROLE_ADMIN")
-#sarada = LdapUser.find_or_create_by(username: "schintal", email: "schintal@mail.nih.gov", role: "ROLE_ADMIN")
-#hemant = LdapUser.find_or_create_by(username: "undalehv", email: "undalehv@mail.nih.gov", role: "ROLE_ADMIN")
+
+charlie ="shivece@mail.nih.gov"
+mahesh = "yelisettim@mail.nih.gov"
+shilpi = "singhs10@mail.nih.gov"
+shamim = "ahmeds6@mail.nih.gov"
+murali = "dullam@mail.nih.gov"
+tony = "wangg5@mail.nih.gov"
+shenpei = "wus4@mail.nih.gov"
+sarada = "schintal@mail.nih.gov"
+hemant = "undalehv@mail.nih.gov"
+
+
+ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant]
+
+##Add CTRP Business Analysts
+
+joe = "martuccijj@mail.nih.gov"
+jose = "galvezjj@mail.nih.gov"
+michael = "izbickimj@mail.nih.gov"
+
+ba_users = [joe, jose, michael]
+
+all_users = ncictrpdev_users + ba_users
 
 ## Save the users by bypassing validation. We want to save the user without the password
-["shivece@mail.nih.gov", "yelisettim@mail.nih.gov", "singhs10@mail.nih.gov", "ahmeds6@mail.nih.gov", "dullam@mail.nih.gov", "wangg5@mail.nih.gov",
- "wus4@mail.nih.gov", "schintal@mail.nih.gov", "undalehv@mail.nih.gov"].each do |email|
-  begin
+begin
+  all_users.each do |email|
     ldap_user = LdapUser.new
     ldap_user.email = email
     ldap_user.username = email.split("@")[0]
     ldap_user.role = "ROLE_ADMIN"
     ldap_user.save(validate: false)
-  rescue Exception => e
-    Rails.logger.info "Exception thrown #{e.inspect}"
   end
+rescue Exception => e
+  Rails.logger.info "Exception thrown #{e.inspect}"
 end
-
-
