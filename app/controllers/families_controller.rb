@@ -1,7 +1,7 @@
 class FamiliesController < ApplicationController
   before_action :set_family, only: [:show, :edit, :update, :destroy]
-  #before_filter :wrapper_authenticate_user unless Rails.env.test?
-  #load_and_authorize_resource unless Rails.env.test?
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  load_and_authorize_resource unless Rails.env.test?
 
   # GET /families
   # GET /families.json
@@ -88,7 +88,7 @@ class FamiliesController < ApplicationController
 
     if params[:id].present? || params[:name].present? || params[:family_status].present? || params[:family_type].present?
       @families = Family.all
-      @families = @families.matches('id', params[:id]) if params[:id].present?
+      @families = @families.matches('id', params[:po_id]) if params[:po_id].present?
       @families = @families.matches_wc('name', params[:name]) if params[:name].present?
       @families = @families.with_family_status(params[:family_status]) if params[:family_status].present?
       @families = @families.with_family_type(params[:family_type]) if params[:family_type].present?
