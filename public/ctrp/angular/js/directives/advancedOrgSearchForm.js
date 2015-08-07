@@ -4,7 +4,11 @@
 
 
 /**
- * Reusable advanced organization search form
+ * Reusable advanced organization search form,
+ *
+ * Feeds the organization search results to the container scope with the variable
+ * name 'orgSearchResults' *
+ *
  */
 (function() {
 
