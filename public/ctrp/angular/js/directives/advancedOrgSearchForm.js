@@ -11,18 +11,16 @@
     'use strict';
 
     angular.module('ctrpApp')
-        .directive('advancedOrgSearchForm', advancedOrgSearchForm);
+        .directive('ctrpAdvancedOrgSearchForm', ctrpAdvancedOrgSearchForm);
 
-    advancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', 'MESSAGES', 'uiGridConstants'];
+    ctrpAdvancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', 'MESSAGES', 'uiGridConstants'];
 
-    function advancedOrgSearchForm(OrgService, GeoLocationService, Common, MESSAGES, uiGridConstants) {
+    function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common, MESSAGES, uiGridConstants) {
 
         var directiveObj = {
-            restrict : 'EA',
+            restrict : 'E',
             scope: {
-               // sourceStatuses: '=',
-               // countries: '='
-                UseGrid: '='
+                showgrid: '='
             },
             templateUrl: '/ctrp/angular/js/directives/advancedOrgSearchFormTemplate.html',
             link: linkFn,
@@ -36,7 +34,7 @@
 
         function linkFn(scope, element, attr, controller) {
             // element.text('this is the advanced search form');
-            console.log('useGrid: ' + scope.UseGrid)
+            console.log('showgrid: ' + scope.showgrid)
 
         } //linkFn
 
@@ -45,7 +43,7 @@
             $scope.name = "tony wang";
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
-            console.log("running the controller in the form directive, UseGrid: " + $scope.UseGrid);
+            console.log("running the controller in the form directive, showgrid: " + $scope.showgrid);
 
             activate();
 
@@ -73,12 +71,15 @@
                 //console.log("searching params: " + JSON.stringify($scope.searchParams));
                 OrgService.searchOrgs($scope.searchParams).then(function (data) {
                     // console.log("received search results: " + JSON.stringify(data));
-                    $scope.gridOptions.data = data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
-                    $scope.gridOptions.totalItems = data.total;
-                    $scope.gridHeight = $scope.gridOptions.rowHeight * ($scope.gridOptions.data.length + 1);
+                    if ($scope.showgrid) {
+                        $scope.gridOptions.data = data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
+                        $scope.gridOptions.totalItems = data.total;
+                        $scope.gridHeight = $scope.gridOptions.rowHeight * ($scope.gridOptions.data.length + 1);
+                        // $scope.$parent.gridOptions = $scope.gridOptions;
+                        // $scope.$parent.gridHeight = $scope.gridHeight;
+                    }
+                    $scope.$parent.orgSearchResults = data.org; //array
 
-                    // $scope.$parent.gridOptions = $scope.gridOptions;
-                    // $scope.$parent.gridHeight = $scope.gridHeight;
                 }).catch(function (err) {
                     console.log('search organizations failed');
                 });
@@ -165,7 +166,7 @@
         } //orgSearchController
 
 
-    } //advancedOrgSearchForm
+    } //ctrpAdvancedOrgSearchForm
 
 
 })();
