@@ -26,7 +26,8 @@
         var directiveObj = {
             restrict : 'E',
             scope: {
-                showgrid: '='
+                showgrid: '=',  //boolean
+                orgSearchResults: '@orgSearchResults'  //access to parent scope
             },
             templateUrl: '/ctrp/angular/js/directives/advancedOrgSearchFormTemplate.html',
             link: linkFn,
@@ -49,6 +50,7 @@
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             //console.log("running the controller in the form directive, showgrid: " + $scope.showgrid);
+            console.log("parent scope: " + Object.keys($scope.$parent));
 
             activate();
 
@@ -168,13 +170,12 @@
                         OrgService.searchOrgs($scope.searchParams).then(function (data) {
 
                             if ($scope.showgrid && data.orgs) {
-                                $scope.gridOptions.data = data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
+                                $scope.gridOptions.data = data.orgs;
                                 $scope.gridOptions.totalItems = data.total;
                                 $scope.gridHeight = $scope.gridOptions.rowHeight * (data.orgs.length + 1);
-                                // $scope.$parent.gridOptions = $scope.gridOptions;
-                                // $scope.$parent.gridHeight = $scope.gridHeight;
-                            }
-                            $scope.$parent.orgSearchResults = data.org; //array
+                             }
+                            $scope.$parent.orgSearchResults = data.orgs; //array
+
                         }).catch(function (error) {
                             console.log("error in retrieving orgs: " + JSON.stringify(error));
                         });
