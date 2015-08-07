@@ -53,7 +53,7 @@ if !org5.new_record?
 end
 org6 = Organization.create(id: 173475, source_id: 'NY139', name: 'Syracuse Veterans Administration Medical Center', source_status: source_act, source_context: ctep, address: ' 800 Irving Ave', city: 'Syracuse', state_province:'New York', country:usa)
 org7 = Organization.create(id: 150970, source_id: 'NC088', name: 'Veterans Administration Medical Center.', source_status: source_act, source_context: ctep, address: '50 Irving St NW', city: '', state_province:'District of Columbia', country:usa)
-org8 = Organization.create(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa)
+org8 = Organization.create(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, phone: '336-716-0891', postal_code: '27157')
 if !org8.new_record?
   org8.name_aliases.create(name: 'Wake Forest Cancer Center Research Base')
 end
@@ -166,8 +166,12 @@ ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sara
 joe = "martuccijj@mail.nih.gov"
 jose = "galvezjj@mail.nih.gov"
 michael = "izbickimj@mail.nih.gov"
+sandy = "lightbodysj@mail.nih.gov"
+kirsten = "larcokl@mail.nih.gov"
+deb = "hopeda@mail.nih.gov"
 
-ba_users = [joe, jose, michael]
+
+ba_users = [joe, jose, michael, sandy, kirsten, deb]
 
 all_users = ncictrpdev_users + ba_users
 
@@ -179,6 +183,7 @@ begin
     ldap_user.username = email.split("@")[0]
     ldap_user.role = "ROLE_ADMIN"
     ldap_user.save(validate: false)
+    #Rails.logger.info "Saved user = #{ldap_user.inspect}"
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"
