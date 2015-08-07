@@ -15,7 +15,12 @@ class SessionsController < Devise::SessionsController
       request.params['ldap_user'] = request.params['local_user'] = request.params['user']
 
       user = User.find_by_username(request.params['user']["username"])
-      unless user.blank?
+      if user.blank?
+        error_text = "The User does not exist in the database as an LdapUser or a LocalUser"
+        Rails.logger.error error_text
+        raise error_text
+      else
+        ## Print informational login messages
         if user.is_a?(LocalUser)
           Rails.logger.info "LocalUser #{user.inspect} " unless user.blank?
         elsif user.is_a?(LdapUser)
@@ -24,7 +29,7 @@ class SessionsController < Devise::SessionsController
           Rails.logger.info "OmniauthUser #{user.inspect} " unless user.blank?
         end
       end
-      unless user.is_a?(LocalUser)
+      if user.is_a?(LdapUser)
         # First try logging in as an LDAP user
         user_class = :ldap_user
         error_string = 'LDAP details incorrect'
@@ -45,6 +50,9 @@ class SessionsController < Devise::SessionsController
         user_class = :local_user
         self.resource = warden.authenticate({ scope: resource_name, recall: "#{controller_path}#new" })
         Rails.logger.info "Result of warden authenticate = #{self.resource.inspect}"
+        if self.resource.nil?
+          raise "Unable to login user=#{user.inspect}"
+        end
         set_flash_message(:notice, :signed_in) if is_flashing_format?
         sign_in(resource_name, resource)
         yield resource if block_given?
@@ -63,10 +71,13 @@ class SessionsController < Devise::SessionsController
 
     rescue Exception => e
       Rails.logger.info "In Session Controller, exception handling"
-      Rails.logger.info "Exception thrown #{e.inspect}"
+      Rails.logger.info "Unable to Login user"
       Rails.logger.info "#{self.resource.inspect}" unless self.resource.nil?
       flash[:error] = error_string
-      render "/ctrp/sign_in"
+      render :status => 403,
+             :json => { :success => false,
+                        :info => "Login Failure",
+             }
     ensure
     end
 
