@@ -82,16 +82,21 @@ class PeopleController < ApplicationController
     params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
-    @people = Person.all
-    @people = @people.matches('id', params[:po_id]) if params[:po_id].present?
-    @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
-    @people = @people.matches_wc('name', params[:name]) if params[:name].present?
-    @people = @people.matches_wc('prefix', params[:prefix]) if params[:prefix].present?
-    @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
-    @people = @people.matches_wc('email', params[:email]) if params[:email].present?
-    @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
-    @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
-    @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
+
+    if params[:po_id].present? || params[:source_id].present? || params[:name].present? || params[:prefix].present? || params[:suffix].present? || params[:email].present? || params[:phone].present? || params[:source_status].present?
+      @people = Person.all
+      @people = @people.matches('id', params[:po_id]) if params[:po_id].present?
+      @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
+      @people = @people.matches_wc('name', params[:name]) if params[:name].present?
+      @people = @people.matches_wc('prefix', params[:prefix]) if params[:prefix].present?
+      @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
+      @people = @people.matches_wc('email', params[:email]) if params[:email].present?
+      @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
+      @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
+      @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
+    else
+      @people = []
+    end
   end
 
   private
