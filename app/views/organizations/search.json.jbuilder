@@ -7,7 +7,7 @@ json.orgs do
 end
 json.start params[:start]
 json.rows params[:rows]
-json.total @organizations.total_count
+json.total @organizations.respond_to?(:total_count) ? @organizations.total_count : @organizations.size
 json.sort params[:sort]
 json.order params[:order]
 json.alias params[:alias]

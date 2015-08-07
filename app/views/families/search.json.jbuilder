@@ -11,6 +11,6 @@ json.families do
 end
 json.start params[:start]
 json.rows params[:rows]
-json.total @families.total_count
+json.total @families.respond_to?(:total_count) ? @families.total_count : @families.size
 json.sort params[:sort]
 json.order params[:order]

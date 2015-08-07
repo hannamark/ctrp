@@ -85,12 +85,17 @@ class FamiliesController < ApplicationController
     params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
-    @families = Family.all
-    @families = @families.matches('id', params[:id]) if params[:id].present?
-    @families = @families.matches_wc('name', params[:name]) if params[:name].present?
-    @families = @families.with_family_status(params[:family_status]) if params[:family_status].present?
-    @families = @families.with_family_type(params[:family_type]) if params[:family_type].present?
-    @families = @families.sort_by_col(params[:sort], params[:order]).group(:'families.id').page(params[:start]).per(params[:rows])
+
+    if params[:id].present? || params[:name].present? || params[:family_status].present? || params[:family_type].present?
+      @families = Family.all
+      @families = @families.matches('id', params[:id]) if params[:id].present?
+      @families = @families.matches_wc('name', params[:name]) if params[:name].present?
+      @families = @families.with_family_status(params[:family_status]) if params[:family_status].present?
+      @families = @families.with_family_type(params[:family_type]) if params[:family_type].present?
+      @families = @families.sort_by_col(params[:sort], params[:order]).group(:'families.id').page(params[:start]).per(params[:rows])
+    else
+      @families = []
+    end
   end
 
   private

@@ -7,6 +7,6 @@ json.people do
 end
 json.start params[:start]
 json.rows params[:rows]
-json.total @people.total_count
+json.total @people.respond_to?(:total_count) ? @people.total_count : @people.size
 json.sort params[:sort]
 json.order params[:order]
