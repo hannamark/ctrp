@@ -83,7 +83,7 @@ class PeopleController < ApplicationController
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
     @people = Person.all
-    @people = @people.matches('id', params[:id]) if params[:id].present?
+    @people = @people.matches('id', params[:po_id]) if params[:po_id].present?
     @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
     @people = @people.matches_wc('name', params[:name]) if params[:name].present?
     @people = @people.matches_wc('prefix', params[:prefix]) if params[:prefix].present?
