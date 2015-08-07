@@ -1,0 +1,68 @@
+<div class="row" id="adv-org-search-modal">
+    <div class="modal-body">
+        <div class="row">
+            <ctrp-advanced-org-search-form showgrid=false></ctrp-advanced-org-search-form>
+        </div>
+        <div class="row">
+            <form class="form-horizontal" role="form" name="person_form" novalidate>
+                <!--left column -->
+                <div class="col-sm-6 animated-item pull-left">
+                    <input type="text" class="form-control animated-item" placeholder="Filter found organizations"
+                           ng-model="orgName"/>
+
+                    <div class="btn-group buttons pull-right">
+                        <button class="btn moveall btn-default" title="Select all"
+                                ng-click="orgSearchModalView.batchSelect('selectAll')">
+                            <i class="glyphicon glyphicon-arrow-right"></i>
+                            <i class="glyphicon glyphicon-arrow-right"></i>
+                        </button>
+                    </div>
+                    <select name="foundOrgs" multiple="multiple" id="duallistbox" class="form-control"
+                            ng-model="orgSearchModalView.selectedOrgs" style="height: 194px;">
+                        <option class="animated-item"
+                                ng-repeat="org in orgSearchModalView.foundOrgs track by $index"
+                                value="{{org}}">
+                            {{org.name}}
+                        </option>
+                    </select>
+
+                </div>
+                <!-- end of left column -->
+                <!-- right column -->
+                <div class="col-sm-6 animated-item pull-right">
+                    <input type="text" class="form-control" placeholder="Filter affiliated organizations"
+                           ng-model="orgSearchModalView.selectedOrgFilter"/>
+
+                    <div class="btn-toolbar">
+                        <button class="btn moveall btn-default" title="Remove all"
+                                ng-click="orgSearchModalView.batchSelect('removeAll')">
+                            <i class="glyphicon glyphicon-arrow-left"></i>
+                            <i class="glyphicon glyphicon-arrow-left"></i>
+                        </button>
+                    </div>
+
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <th>Remove</th>
+                        <th>PO ID</th>
+                        <th>Organization</th>
+                        <th>Effective Date</th>
+                        <th>Expiration Date</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- end of right column -->
+            </form>
+        </div>
+    </div>
+
+

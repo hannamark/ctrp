@@ -19,13 +19,9 @@
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-        vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
-        vm.foundOrgs = [];
-        vm.selectedOrgs = [];
-        vm.savedSelection = []; //save selected organizations
-        vm.selectedOrgFilter = "";
-        $scope.orgsSearchResults = []; //for receiving feeds from org search form directive
-        vm.advancedFormShown = false;
+       // vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
+        vm.savedSelection = [];
+        //vm.advancedFormShown = false;
         //console.log("person: " + JSON.stringify(vm.curPerson));
 
         //update person (vm.curPerson)
@@ -61,57 +57,36 @@
         }; // updatePerson
 
 
-        var orgsPromise = '';
-        vm.searchOrgs = function () {
-            if (orgsPromise) {
-                $timeout.cancel(orgsPromise);
-            }
 
-            orgsPromise = $timeout(function () {
-                if (vm.orgsSearchParams.name) {
-                    OrgService.searchOrgs(vm.orgsSearchParams).then(function (res) {
-                        vm.foundOrgs = res.orgs; //an array
-                        // vm.selectedOrgs = res.orgs;
-                        // console.log("received orgs: " + JSON.stringify(res));
-                    }).catch(function (error) {
-                        console.log("error in retrieving orgs: " + JSON.stringify(error));
-                    });
-                } else {
-                    vm.foundOrgs = [];
-                }
-            }, 250); //250 ms
-        }; //searchOrgs
-
-
-        //delete the affiliated organization from table view
-        vm.toggleSelection = function (index) {
-            if (index < vm.savedSelection.length) {
-                vm.savedSelection[index]._destroy = !vm.savedSelection[index]._destroy;
-               // vm.savedSelection.splice(index, 1);
-            }
-        };// toggleSelection
-
-        //select or de-select all organizations form affiliations
-        vm.batchSelect = function (intention) {
-            if (intention == "selectAll") {
-                //iterate the organizations asynchronously
-                async.each(vm.foundOrgs, function (org, cb) {
-                    if (!isOrgSaved(vm.savedSelection, org)) {
-                        vm.savedSelection.unshift(initSelectedOrg(org));
-                    }
-                    cb();
-                }, function (err) {
-                    if (err) {
-                        console.log("an error occurred when iterating the organizations");
-                    }
-                });
-            } else {
-               // vm.savedSelection.length = 0;
-                _.each(vm.savedSelection, function(org, index) {
-                   vm.savedSelection[index]._destroy = true; //mark it for destroy
-                });
-            }
-        }; //batchSelect
+        ////delete the affiliated organization from table view
+        //vm.toggleSelection = function (index) {
+        //    if (index < vm.savedSelection.length) {
+        //        vm.savedSelection[index]._destroy = !vm.savedSelection[index]._destroy;
+        //       // vm.savedSelection.splice(index, 1);
+        //    }
+        //};// toggleSelection
+        //
+        ////select or de-select all organizations form affiliations
+        //vm.batchSelect = function (intention) {
+        //    if (intention == "selectAll") {
+        //        //iterate the organizations asynchronously
+        //        async.each(vm.foundOrgs, function (org, cb) {
+        //            if (!isOrgSaved(vm.savedSelection, org)) {
+        //                vm.savedSelection.unshift(initSelectedOrg(org));
+        //            }
+        //            cb();
+        //        }, function (err) {
+        //            if (err) {
+        //                console.log("an error occurred when iterating the organizations");
+        //            }
+        //        });
+        //    } else {
+        //       // vm.savedSelection.length = 0;
+        //        _.each(vm.savedSelection, function(org, index) {
+        //           vm.savedSelection[index]._destroy = true; //mark it for destroy
+        //        });
+        //    }
+        //}; //batchSelect
 
 
         vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
@@ -128,10 +103,10 @@
             }
         }; //openCalendar
 
-
-        vm.toggleAdvancedSearchForm = function() {
-            vm.advancedFormShown = !vm.advancedFormShown;
-        }; //toggleAdvancedSearchForm
+        //
+        //vm.toggleAdvancedSearchForm = function() {
+        //    vm.advancedFormShown = !vm.advancedFormShown;
+        //}; //toggleAdvancedSearchForm
 
 
         activate();
@@ -140,8 +115,6 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewPersonFlag();
-            watchSelectedOrgs();
-            watchOrgSearchResults();
 
             //prepare the modal window for existing people
             if (!vm.curPerson.new) {
@@ -189,27 +162,39 @@
                     // $state.go('main.personDetail', {personId: vm.curPerson.id});
                 });
 
-            } //confirmDelete
+            }; //confirmDelete
+
+
+            vm.searchOrgsForAffiliation = function(size) {
+                //
+
+                var modalInstance2 = $modal.open({
+                    animation: true,
+                    templateUrl: '/ctrp/angular/partials/modals/advanced_org_search_form_modal.html',
+                    controller: 'advancedOrgSearchModalCtrl as orgSearchModalView',
+                    size: size,
+                    //resolve: {
+                    //    personId: function () {
+                    //        return vm.curPerson.id;
+                    //    }
+                    //}
+                });
+
+                //modalInstance2.result.then(function (selectedItem) {
+                //    console.log("about to delete the personDetail " + vm.curPerson.id);
+                //   // $state.go('main.people');
+                //}, function () {
+                //    console.log("operation canceled")
+                //    // $state.go('main.personDetail', {personId: vm.curPerson.id});
+                //});
+            }
+
         }; //prepareModal
 
 
-        function watchSelectedOrgs() {
-            $scope.$watch(function () {
-                return vm.selectedOrgs;
-            }, function (newVal, oldVal) {
 
-                if (!!newVal) {
-                    angular.forEach(newVal, function (org, idx) {
-                        org = JSON.parse(org);
 
-                        if (!isOrgSaved(vm.savedSelection, org)) {
-                            vm.savedSelection.unshift(initSelectedOrg(org));
-                        }
-                    });
-                } //if
 
-            }, true);
-        }
 
 
         /**
@@ -307,21 +292,7 @@
         } //populatePoAffiliations
 
 
-        /**
-         * Watch the organization search results from advanced search
-         */
-        function watchOrgSearchResults() {
-            $scope.$watch('orgSearchResults', function(newVal, oldVal) {
-                vm.foundOrgs.length = 0;
-                _.each($scope.orgSearchResults, function(newOrg, idx) {
-                    if (!isOrgSaved(vm.foundOrgs, newOrg)) {
-                        vm.foundOrgs.unshift(newOrg);
-                    }
-                   // console.log("received newOrg: " + JSON.stringify(newOrg));
 
-                });
-            }, true);
-        } //watchOrgSearchResults
 
 
 

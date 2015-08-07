@@ -160,13 +160,14 @@
 
                 orgsPromise = $timeout(function () {
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
-
+                       // console.log("received data for org search: " + JSON.stringify(data));
                         if ($scope.showgrid && data.orgs) {
                             $scope.gridOptions.data = data.orgs;
                             $scope.gridOptions.totalItems = data.total;
                             $scope.gridHeight = $scope.gridOptions.rowHeight * (data.orgs.length + 1);
                         }
                         $scope.$parent.orgSearchResults = data.orgs; //array
+                        console.log($scope.$parent);
 
                     }).catch(function (error) {
                         console.log("error in retrieving orgs: " + JSON.stringify(error));
