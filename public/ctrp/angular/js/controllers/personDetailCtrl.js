@@ -24,7 +24,9 @@
         vm.selectedOrgs = [];
         vm.savedSelection = []; //save selected organizations
         vm.selectedOrgFilter = "";
-        console.log("person: " + JSON.stringify(vm.curPerson));
+        $scope.orgsSearchResults = []; //for receiving feeds from org search form directive
+        vm.advancedFormShown = false;
+        //console.log("person: " + JSON.stringify(vm.curPerson));
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -127,6 +129,11 @@
         }; //openCalendar
 
 
+        vm.toggleAdvancedSearchForm = function() {
+            vm.advancedFormShown = !vm.advancedFormShown;
+        }; //toggleAdvancedSearchForm
+
+
         activate();
 
 
@@ -134,6 +141,7 @@
         function activate() {
             appendNewPersonFlag();
             watchSelectedOrgs();
+            watchOrgSearchResults();
 
             //prepare the modal window for existing people
             if (!vm.curPerson.new) {
@@ -297,6 +305,24 @@
 
             async.eachSeries(vm.curPerson.po_affiliations, findOrgName, retOrgs);
         } //populatePoAffiliations
+
+
+
+        function watchOrgSearchResults() {
+            $scope.$watch('orgSearchResults', function(newVal, oldVal) {
+                vm.foundOrgs.length = 0;
+                _.each($scope.orgSearchResults, function(newOrg, idx) {
+                    if (!isOrgSaved(vm.foundOrgs, newOrg)) {
+                        vm.foundOrgs.unshift(newOrg);
+                    }
+                   console.log("received newOrg: " + JSON.stringify(newOrg));
+
+                });
+            }, true);
+        } //watchOrgSearchResults
+
+
+
 
 
     }

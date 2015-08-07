@@ -101,6 +101,10 @@
                                placeholder="Phone">
                     </div>
                 </div>
+                <div class="form-group col-sm-12" ng-show="personDetailView.advancedFormShown">
+                    <button class="btn btn-default" ng-click="personDetailView.toggleAdvancedSearchForm()">Use simple search</button>
+                    <ctrp-advanced-org-search-form showgrid=false></ctrp-advanced-org-search-form>
+                </div>
                 <div class="form-group col-sm-12">
                     <label for="po_affiliation_id" class="control-label col-sm-3">
                         Affiliated Organizations:
@@ -108,11 +112,12 @@
 
                     <div class="col-sm-9">
                         <div class="col-md-6 animated-item pull-left">
-                            <label style="display:none;"></label>
+                            <button class="btn btn-default" ng-click="personDetailView.toggleAdvancedSearchForm()"
+                                    ng-hide="personDetailView.advancedFormShown">Used advanced search</button>
                             <input type="text" class="form-control" id="po_affiliation_id"
                                    placeholder="Search organizations (* for wildcard)"
                                    ng-keyup="personDetailView.searchOrgs()"
-                                   ng-model="personDetailView.orgsSearchParams.name"/>
+                                   ng-model="personDetailView.orgsSearchParams.name" ng-hide="personDetailView.advancedFormShown"/>
 
                             <div ng-hide="personDetailView.foundOrgs.length == 0" class="animated-item">
                                 <div class="btn-group buttons pull-right">
