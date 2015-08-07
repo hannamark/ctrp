@@ -109,7 +109,9 @@
 
                 //country change triggers searchOrgs() function
                 $scope.$watch('searchParams.country', function(newVal, oldVal) {
-                    $scope.searchOrgs();
+                    if (oldVal != newVal) {
+                        $scope.searchOrgs();
+                    }
                 }, true);
 
                 $scope.$on(MESSAGES.STATES_AVAIL, function() {
