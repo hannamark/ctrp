@@ -307,7 +307,9 @@
         } //populatePoAffiliations
 
 
-
+        /**
+         * Watch the organization search results from advanced search
+         */
         function watchOrgSearchResults() {
             $scope.$watch('orgSearchResults', function(newVal, oldVal) {
                 vm.foundOrgs.length = 0;
@@ -315,7 +317,7 @@
                     if (!isOrgSaved(vm.foundOrgs, newOrg)) {
                         vm.foundOrgs.unshift(newOrg);
                     }
-                   console.log("received newOrg: " + JSON.stringify(newOrg));
+                   // console.log("received newOrg: " + JSON.stringify(newOrg));
 
                 });
             }, true);
