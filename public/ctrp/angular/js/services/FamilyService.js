@@ -14,7 +14,7 @@
 
         var initFamilySearchParams = {
             name: "",
-            id: "",
+            po_id: "",
             family_status:"",
             family_type:"",
             //for pagination and sorting
