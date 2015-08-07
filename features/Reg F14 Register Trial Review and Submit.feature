@@ -7,6 +7,8 @@ And I have completed the registration sections
 When I have selected Review Trial
 Then the CTRP application will check that all required fields have been entered
 | Required Fields |
+|CTRP Protocol ID - NCI-YYYY-NNNNN|
+|Study Source|
 |Lead Organization Trial Identifier|
 |Title|
 |Phase|
