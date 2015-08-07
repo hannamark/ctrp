@@ -13,9 +13,11 @@
     angular.module('ctrpApp')
         .directive('ctrpAdvancedOrgSearchForm', ctrpAdvancedOrgSearchForm);
 
-    ctrpAdvancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', 'MESSAGES', 'uiGridConstants'];
+    ctrpAdvancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common',
+        'MESSAGES', 'uiGridConstants', '$timeout'];
 
-    function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common, MESSAGES, uiGridConstants) {
+    function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common,
+                                       MESSAGES, uiGridConstants, $timeout) {
 
         var directiveObj = {
             restrict : 'E',
@@ -40,10 +42,9 @@
 
 
         function orgSearchController($scope) {
-            $scope.name = "tony wang";
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
-            console.log("running the controller in the form directive, showgrid: " + $scope.showgrid);
+            //console.log("running the controller in the form directive, showgrid: " + $scope.showgrid);
 
             activate();
 
@@ -66,30 +67,12 @@
                 });
             }; //gridOptions
 
-            $scope.searchOrgs = function() {
-                // $scope.searchParams.name = $scope.searchParams.name || "*";
-                //console.log("searching params: " + JSON.stringify($scope.searchParams));
-                OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                    // console.log("received search results: " + JSON.stringify(data));
-                    if ($scope.showgrid) {
-                        $scope.gridOptions.data = data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
-                        $scope.gridOptions.totalItems = data.total;
-                        $scope.gridHeight = $scope.gridOptions.rowHeight * ($scope.gridOptions.data.length + 1);
-                        // $scope.$parent.gridOptions = $scope.gridOptions;
-                        // $scope.$parent.gridHeight = $scope.gridHeight;
-                    }
-                    $scope.$parent.orgSearchResults = data.org; //array
-
-                }).catch(function (err) {
-                    console.log('search organizations failed');
-                });
-            }; //searchOrgs
-
-
             $scope.resetSearch = function() {
                 // $scope.states.length = 0;
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
-                $scope.searchOrgs();
+                // $scope.searchOrgs();
+                $scope.$parent.orgSearchResults = [];
+                $scope.gridOptions.data = [];
             }; //resetSearch
 
 
@@ -119,6 +102,11 @@
              */
             function listenToStatesProvinces() {
                 $scope.watchCountrySelection($scope.searchParams.country);
+
+                //country change triggers searchOrgs() function
+                $scope.$watch('searchParams.country', function(newVal, oldVal) {
+                    $scope.searchOrgs();
+                }, true);
 
                 $scope.$on(MESSAGES.STATES_AVAIL, function() {
                     //console.log("states available for country: " + $scope.searchParams.country);
@@ -161,6 +149,31 @@
                 //do the search with the updated sorting
                 $scope.searchOrgs();
             }; //sortChangedCallBack
+
+
+
+            var orgsPromise = '';
+            $scope.searchOrgs = function () {
+                if (orgsPromise) {
+                    $timeout.cancel(orgsPromise);
+                }
+
+                orgsPromise = $timeout(function () {
+                        OrgService.searchOrgs($scope.searchParams).then(function (data) {
+
+                            if ($scope.showgrid && data.orgs) {
+                                $scope.gridOptions.data = data.orgs; //prepareGridData(data.data.orgs); //data.data.orgs;
+                                $scope.gridOptions.totalItems = data.total;
+                                $scope.gridHeight = $scope.gridOptions.rowHeight * (data.orgs.length + 1);
+                                // $scope.$parent.gridOptions = $scope.gridOptions;
+                                // $scope.$parent.gridHeight = $scope.gridHeight;
+                            }
+                            $scope.$parent.orgSearchResults = data.org; //array
+                        }).catch(function (error) {
+                            console.log("error in retrieving orgs: " + JSON.stringify(error));
+                        });
+                }, 250); //250 ms
+            }; //searchOrgs
             
 
         } //orgSearchController

@@ -73,7 +73,7 @@
                         // console.log("received orgs: " + JSON.stringify(res));
                     }).catch(function (error) {
                         console.log("error in retrieving orgs: " + JSON.stringify(error));
-                    })
+                    });
                 } else {
                     vm.foundOrgs = [];
                 }
