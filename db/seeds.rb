@@ -166,8 +166,12 @@ ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sara
 joe = "martuccijj@mail.nih.gov"
 jose = "galvezjj@mail.nih.gov"
 michael = "izbickimj@mail.nih.gov"
+sandy = "lightbodysj@mail.nih.gov"
+kirsten = "larcokl@mail.nih.gov"
+deb = "hopeda@mail.nih.gov"
 
-ba_users = [joe, jose, michael]
+
+ba_users = [joe, jose, michael, sandy, kirsten, deb]
 
 all_users = ncictrpdev_users + ba_users
 
@@ -179,6 +183,7 @@ begin
     ldap_user.username = email.split("@")[0]
     ldap_user.role = "ROLE_ADMIN"
     ldap_user.save(validate: false)
+    #Rails.logger.info "Saved user = #{ldap_user.inspect}"
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"
