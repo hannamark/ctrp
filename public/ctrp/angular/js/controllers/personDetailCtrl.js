@@ -19,10 +19,7 @@
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-       // vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
         vm.savedSelection = [];
-        //vm.advancedFormShown = false;
-        //console.log("person: " + JSON.stringify(vm.curPerson));
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -57,36 +54,36 @@
         }; // updatePerson
 
 
+        //delete the affiliated organization from table view
+        vm.toggleSelection = function (index) {
+            if (index < vm.savedSelection.length) {
+                vm.savedSelection[index]._destroy = !vm.savedSelection[index]._destroy;
+               // vm.savedSelection.splice(index, 1);
+            }
+        };// toggleSelection
 
-        ////delete the affiliated organization from table view
-        //vm.toggleSelection = function (index) {
-        //    if (index < vm.savedSelection.length) {
-        //        vm.savedSelection[index]._destroy = !vm.savedSelection[index]._destroy;
-        //       // vm.savedSelection.splice(index, 1);
-        //    }
-        //};// toggleSelection
-        //
-        ////select or de-select all organizations form affiliations
-        //vm.batchSelect = function (intention) {
-        //    if (intention == "selectAll") {
-        //        //iterate the organizations asynchronously
-        //        async.each(vm.foundOrgs, function (org, cb) {
-        //            if (!isOrgSaved(vm.savedSelection, org)) {
-        //                vm.savedSelection.unshift(OrgService.initSelectedOrg(org));
-        //            }
-        //            cb();
-        //        }, function (err) {
-        //            if (err) {
-        //                console.log("an error occurred when iterating the organizations");
-        //            }
-        //        });
-        //    } else {
-        //       // vm.savedSelection.length = 0;
-        //        _.each(vm.savedSelection, function(org, index) {
-        //           vm.savedSelection[index]._destroy = true; //mark it for destroy
-        //        });
-        //    }
-        //}; //batchSelect
+        //select or de-select all organizations form affiliations
+        vm.batchSelect = function (intention, selectedOrgsArr) {
+            if (intention == "selectAll") {
+                //iterate the organizations asynchronously
+                async.each(selectedOrgsArr, function (org, cb) {
+                    if (OrgService.isOrgSaved(vm.savedSelection, org) == -1) {
+                        vm.savedSelection.unshift(OrgService.initSelectedOrg(org));
+                    }
+                    cb();
+                }, function (err) {
+                    if (err) {
+                        console.log("an error occurred when iterating the organizations");
+                    }
+                });
+            } else {
+               // vm.savedSelection.length = 0;
+                _.each(vm.savedSelection, function(org, index) {
+                   vm.savedSelection[index]._destroy = true; //mark it for destroy
+                });
+            }
+            console.log("vm.savedSelection.length = " + vm.savedSelection.length);
+        }; //batchSelect
 
 
         vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
@@ -103,14 +100,7 @@
             }
         }; //openCalendar
 
-        //
-        //vm.toggleAdvancedSearchForm = function() {
-        //    vm.advancedFormShown = !vm.advancedFormShown;
-        //}; //toggleAdvancedSearchForm
-
-
         activate();
-
 
         /****************** implementations below ***************/
         function activate() {
@@ -166,8 +156,6 @@
 
 
             vm.searchOrgsForAffiliation = function(size) {
-                //
-
                 var modalInstance2 = $modal.open({
                     animation: true,
                     templateUrl: '/ctrp/angular/partials/modals/advanced_org_search_form_modal.html',
@@ -180,20 +168,15 @@
                     //}
                 });
 
-                //modalInstance2.result.then(function (selectedItem) {
-                //    console.log("about to delete the personDetail " + vm.curPerson.id);
-                //   // $state.go('main.people');
-                //}, function () {
-                //    console.log("operation canceled")
-                //    // $state.go('main.personDetail', {personId: vm.curPerson.id});
-                //});
+                modalInstance2.result.then(function (selectedOrgs) {
+                    console.log("received selected items: " + JSON.stringify(selectedOrgs));
+                    vm.batchSelect('selectAll', selectedOrgs);
+                }, function () {
+                    console.log("operation canceled");
+                });
             }
 
         }; //prepareModal
-
-
-
-
 
 
         /**

@@ -3,56 +3,55 @@
  */
 
 
-(function() {
+(function () {
 
     'use strict';
 
     angular.module('ctrpApp')
         .controller('advancedOrgSearchModalCtrl', advancedOrgSearchModalCtrl);
 
-    advancedOrgSearchModalCtrl.$inject = ['$scope', '_', 'OrgService'];
+    advancedOrgSearchModalCtrl.$inject = ['$scope', '$modalInstance', '$q'];
 
-    function advancedOrgSearchModalCtrl($scope, _, OrgService) {
+    function advancedOrgSearchModalCtrl($scope, $modalInstance, $q) {
         var vm = this;
+        $scope.selectedOrgsArray = [];
+        $scope.orgSearchResults = {orgs: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
 
-        vm.foundOrgs = [];
-        vm.selectedOrgs = [];
-        $scope.orgSearchResults = []; //for receiving feeds from org search form directive
+        vm.cancel = function() {
+            $modalInstance.dismiss('cancel');
+        }; //cancel
 
-
-
+        vm.confirmSelection = function() {
+            $modalInstance.close($scope.selectedOrgsArray);
+        }; //confirmSelection
 
 
         activate();
 
         function activate() {
             watchOrgSearchResults();
+            watchSelectedOrgs();
         }
 
 
-        /******************/
-
-
-
-
-
+        /******** implementations below **********/
 
         /**
          * Watch the organization search results from advanced search
          */
         function watchOrgSearchResults() {
-            $scope.$watch('orgSearchResults', function(newVal, oldVal) {
-                vm.foundOrgs.length = 0;
-                _.each($scope.orgSearchResults, function(newOrg, idx) {
-                    if (!OrgService.isOrgSaved(vm.foundOrgs, newOrg)) {
-                        vm.foundOrgs.unshift(newOrg);
-                    }
-                   // console.log("received newOrg: " + JSON.stringify(newOrg));
-
-                });
+            $scope.$watch('orgSearchResults', function (newVal, oldVal) {
+                $scope.orgSearchResults = newVal;
             }, true);
         } //watchOrgSearchResults
 
+
+        function watchSelectedOrgs() {
+            $scope.$watch('selectedOrgsArray', function(newVal, oldVal) {
+                console.log('selectedOrgsArray.length: ' + $scope.selectedOrgsArray.length);
+            }, true);
+
+        } //watchSelectedOrgs
 
 
     }

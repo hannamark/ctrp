@@ -246,17 +246,17 @@
          *
          * @param targetOrgsArr
          * @param orgObj
-         * @returns {boolean}
+         * @returns {Integer} index
          */
         function isOrgSaved(targetOrgsArr, orgObj) {
-            var exists = false;
+            var index = -1;
             _.each(targetOrgsArr, function (org, idx) {
                 if (org.id == orgObj.id) { //what if the user deletes the po_affiliation accidentally???
-                    exists = true;  //exists and not targeted for destroy
-                    return exists;
+                    index = idx;
+                    return;
                 }
             });
-            return exists;
+            return index;
         } //isOrgSaved
 
 

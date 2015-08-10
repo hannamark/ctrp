@@ -29,7 +29,8 @@
                 showgrid: '=',  //boolean
                 enablerowselection: '=',  //boolean
                 usedinmodal: '=',  //boolean
-                orgSearchResults: '@orgSearchResults'
+                orgSearchResults: '@orgSearchResults',
+                selectedOrgsArray: '@selectedOrgsArray',
             },
             templateUrl: '/ctrp/angular/js/directives/advancedOrgSearchFormTemplate.html',
             link: linkFn,
@@ -65,8 +66,8 @@
             //$scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
             //$scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
 
-            $scope.$watch('usedinmodal', function(newVal, oldVal) {
-               console.log('usedinmodal: ' + newVal);
+            $scope.$watch('usedinmodal', function (newVal, oldVal) {
+                console.log('usedinmodal: ' + newVal);
                 $scope.resetSearch();
                 if (newVal) {
                     //unlink the name if used in modal
@@ -91,8 +92,8 @@
                 });
 
                 gridApi.selection.on.rowSelectionChanged($scope, rowSelectionCallBack);
-                gridApi.selection.on.rowSelectionChangedBatch($scope, function(rows) {
-                    _.each(rows, function(row, index) {
+                gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
+                    _.each(rows, function (row, index) {
                         rowSelectionCallBack(row);
                     });
                 });
@@ -102,7 +103,7 @@
                 // $scope.states.length = 0;
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
                 // $scope.searchOrgs();
-                $scope.$parent.orgSearchResults = [];
+                $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];
             }; //resetSearch
 
@@ -181,32 +182,28 @@
 
             function rowSelectionCallBack(row) {
                 if (row.isSelected) {
-                    //TODO: Add the organization from this row to the container
-                    console.log("add organization with the hashkey: " + row.uid);
-                    //console.log("row.entity: " + JSON.stringify(row.entity));
+                    $scope.$parent.selectedOrgsArray.push(row.entity);
                 } else {
-                    //TODO: Remove the organization from the container
-                    console.log("removing the row...");
+                    var curRowSavedIndex = OrgService.isOrgSaved($scope.$parent.selectedOrgsArray, row.entity);
+                    $scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
                 }
-
             } //rowSelectionCallBack
 
-           // var orgsPromise = '';
+
             $scope.searchOrgs = function () {
+                OrgService.searchOrgs($scope.searchParams).then(function (data) {
+                    // console.log("received data for org search: " + JSON.stringify(data));
+                    if ($scope.showgrid && data.orgs) {
+                        $scope.gridOptions.data = data.orgs;
+                        $scope.gridOptions.totalItems = data.total;
+                        $scope.gridHeight = $scope.gridOptions.rowHeight * (data.orgs.length + 1);
+                    }
+                    $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
+                    // console.log($scope.$parent);
 
-                    OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                       // console.log("received data for org search: " + JSON.stringify(data));
-                        if ($scope.showgrid && data.orgs) {
-                            $scope.gridOptions.data = data.orgs;
-                            $scope.gridOptions.totalItems = data.total;
-                            $scope.gridHeight = $scope.gridOptions.rowHeight * (data.orgs.length + 1);
-                        }
-                        $scope.$parent.orgSearchResults = data.orgs; //array
-                        console.log($scope.$parent);
-
-                    }).catch(function (error) {
-                        console.log("error in retrieving orgs: " + JSON.stringify(error));
-                    });
+                }).catch(function (error) {
+                    console.log("error in retrieving orgs: " + JSON.stringify(error));
+                });
             }; //searchOrgs
 
 

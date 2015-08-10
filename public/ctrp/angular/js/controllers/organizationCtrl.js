@@ -14,7 +14,8 @@
     function organizationCtrl(OrgService, $scope) {
 
         var vm = this;
-        $scope.orgSearchResults = [];
+        $scope.orgSearchResults = {orgs: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
+        $scope.selectedOrgs = []; // orgs selected in the ui-grid
 
 
         activate();
@@ -31,7 +32,8 @@
          */
         function watchOrgSearchResults() {
             $scope.$watch('orgSearchResults', function(newVal, oldVal) {
-                vm.orgSearchResults = newVal;
+                $scope.orgSearchResults = newVal;
+               // console.log("received orgSearchResults: " + JSON.stringify(newVal));
             }, true);
         } //watchOrgSearchResults
 
