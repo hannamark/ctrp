@@ -22,14 +22,14 @@ usa = "United States"
 #source_statuses
 
 #family_statuses
-FamilyStatus.find_or_create_by(id:1,code:'ACTIVE',name:'Active')
-FamilyStatus.find_or_create_by(id:2,code:'INACTIVE',name:'Inactive')
+FamilyStatus.find_or_create_by(code:'ACTIVE',name:'Active')
+FamilyStatus.find_or_create_by(code:'INACTIVE',name:'Inactive')
 
 #family_types
-FamilyType.find_or_create_by(id:1,code:'CANCERCENTER',name:'Cancer Center')
-FamilyType.find_or_create_by(id:2,code:'NCTN',name:'NCTN')
-FamilyType.find_or_create_by(id:3,code:'NIH',name:'NIH')
-FamilyType.find_or_create_by(id:4,code:'RESEARCHCENTER',name:'Research Center')
+FamilyType.find_or_create_by(code:'CANCERCENTER',name:'Cancer Center')
+FamilyType.find_or_create_by(code:'NCTN',name:'NCTN')
+FamilyType.find_or_create_by(code:'NIH',name:'NIH')
+FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Center')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
