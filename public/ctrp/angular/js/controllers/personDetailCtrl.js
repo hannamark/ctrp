@@ -26,7 +26,7 @@
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
-            vm.curPerson.po_affiliations_attributes = preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
+            vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
                 //convert the ISO date to Locale Date String
                 aff['effective_date'] = aff.effective_date ? DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
@@ -72,7 +72,7 @@
         //        //iterate the organizations asynchronously
         //        async.each(vm.foundOrgs, function (org, cb) {
         //            if (!isOrgSaved(vm.savedSelection, org)) {
-        //                vm.savedSelection.unshift(initSelectedOrg(org));
+        //                vm.savedSelection.unshift(OrgService.initSelectedOrg(org));
         //            }
         //            cb();
         //        }, function (err) {
@@ -196,71 +196,6 @@
 
 
 
-
-        /**
-         * Check if targetOrgsArr contains orgObj by checking the 'id' field
-         *
-         * @param targetOrgsArr
-         * @param orgObj
-         * @returns {boolean}
-         */
-        function isOrgSaved(targetOrgsArr, orgObj) {
-            var exists = false;
-            _.each(targetOrgsArr, function (org, idx) {
-                if (org.id == orgObj.id) { //what if the user deletes the po_affiliation accidentally???
-                    exists = true;  //exists and not targeted for destroy
-                    return exists;
-                }
-            });
-            return exists;
-        } //isOrgSaved
-
-
-        /**
-         * Clean up the organization by keeping the essential fields
-         * (org_id, affiliate_status, effective_date, expiration_date)
-         *
-         *
-         * @param savedSelectionArr
-         * @returns {Array}
-         */
-        function preparePOAffiliationArr(savedSelectionArr) {
-            var results = [];
-            _.each(savedSelectionArr, function (org) {
-                var cleanedOrg = {
-                    "organization_id": org.id,
-                    "po_affiliation_status_id": org.po_affiliation_status_id,
-                    "effective_date": org.effective_date,
-                    "expiration_date": org.expiration_date,
-                    "id" : org.po_affiliation_id || '',
-                    "_destroy" : org._destroy
-                };
-                results.push(cleanedOrg);
-            });
-
-            return results;
-        } //preparePOAffiliationArr
-
-
-        /**
-         * Initialize the selected organization for its affiliation status, po_effective_date
-         * po_expiration_date, etc
-         *
-         * @param org
-         * @returns org
-         */
-        function initSelectedOrg(org) {
-            org.po_affiliation_status_id = '';
-            org.effective_date = new Date(); //today as the effective date
-            org.expiration_date = "";
-            org.opened_effective = false;
-            org.opened_expiration = false;
-            org._destroy = false;
-
-            return org;
-        } //initSelectedOrg
-
-
         /**
          * Asynchronously populate the vm.savedSelection array for presenting
          * the existing po_affiliation with the person being presented
@@ -290,11 +225,6 @@
 
             async.eachSeries(vm.curPerson.po_affiliations, findOrgName, retOrgs);
         } //populatePoAffiliations
-
-
-
-
-
 
 
 

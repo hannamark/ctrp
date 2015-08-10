@@ -215,6 +215,10 @@
 <!-- use the ui-grid to present the organization search results, if showgrid is set to 'true' -->
 <div class="row" ng-show="showgrid">
     <p><h4>Organization Search Results:</h4></p>
-    <div ui-grid="gridOptions" ui-grid-pagination="" class="grid" ui-grid-auto-resize
+    <div ng-show="enablerowselection" ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid" ui-grid-auto-resize
          style="height: {{gridHeight}}"></div>
+
+    <!--<div ng-show="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize-->
+         <!--style="height: {{gridHeight}}"></div>-->
+
 </div>

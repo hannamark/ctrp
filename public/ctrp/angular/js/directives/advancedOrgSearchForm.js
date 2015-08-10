@@ -18,16 +18,17 @@
         .directive('ctrpAdvancedOrgSearchForm', ctrpAdvancedOrgSearchForm);
 
     ctrpAdvancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common',
-        'MESSAGES', 'uiGridConstants', '$timeout'];
+        'MESSAGES', 'uiGridConstants', '$timeout', '_'];
 
     function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common,
-                                       MESSAGES, uiGridConstants, $timeout) {
+                                       MESSAGES, uiGridConstants, $timeout, _) {
 
         var directiveObj = {
             restrict: 'E',
             scope: {
                 showgrid: '=',  //boolean
-                orgSearchResults: '@orgSearchResults'  //access to parent scope
+                enablerowselection: '=',
+                orgSearchResults: '@orgSearchResults'
             },
             templateUrl: '/ctrp/angular/js/directives/advancedOrgSearchFormTemplate.html',
             link: linkFn,
@@ -41,7 +42,8 @@
 
         function linkFn(scope, element, attr, controller) {
             // element.text('this is the advanced search form');
-            console.log('showgrid: ' + scope.showgrid)
+            console.log('showgrid: ' + scope.showgrid);
+            console.log('enablerowselection: ' + scope.enablerowselection);
 
         } //linkFn
 
@@ -68,6 +70,16 @@
                     $scope.searchParams.start = newPage;
                     $scope.searchParams.rows = pageSize;
                     $scope.searchOrgs();
+                });
+
+                console.log("keys: " + Object.keys($scope.gridApi));
+
+                gridApi.selection.on.rowSelectionChanged($scope, rowSelectionCallBack);
+
+                gridApi.selection.on.rowSelectionChangedBatch($scope, function(rows) {
+                    _.each(rows, function(row, index) {
+                        rowSelectionCallBack(row);
+                    });
                 });
             }; //gridOptions
 
@@ -151,6 +163,18 @@
                 $scope.searchOrgs();
             }; //sortChangedCallBack
 
+
+            function rowSelectionCallBack(row) {
+                if (row.isSelected) {
+                    //TODO: Add the organization from this row to the container
+                    console.log("add organization with the hashkey: " + row.uid);
+                    //console.log("row.entity: " + JSON.stringify(row.entity));
+                } else {
+                    //TODO: Remove the organization from the container
+                    console.log("removing the row...");
+                }
+
+            } //rowSelectionCallBack
 
             var orgsPromise = '';
             $scope.searchOrgs = function () {
