@@ -51,9 +51,9 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '7%'},
+                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '9%'},
                 {
-                    name: 'name', enableSorting: true, width: '20%',
+                    name: 'name', enableSorting: true, width: '18%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                  //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -67,7 +67,7 @@
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '13%'},
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '12%'},
-                {name: 'email', enableSorting: true, width: '18%',
+                {name: 'email', enableSorting: true, width: '15%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },

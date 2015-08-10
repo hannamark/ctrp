@@ -64,15 +64,22 @@
             $scope.gridOptions = OrgService.getGridOptions();
             //$scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
             //$scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
-            if ($scope.usedinmodal) {
-                //unlink the name if used in modal
-                //find the organization name index in the column definitions
-                var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
-                if (orgNameIndex > -1) {
-                    $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" ' +
-                        'title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>';
+
+            $scope.$watch('usedinmodal', function(newVal, oldVal) {
+               console.log('usedinmodal: ' + newVal);
+                $scope.resetSearch();
+                if (newVal) {
+                    //unlink the name if used in modal
+                    //find the organization name index in the column definitions
+                    var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
+                    if (orgNameIndex > -1) {
+                        $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" ' +
+                            'title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>';
+                    }
+                } else {
+                    $scope.gridOptions = OrgService.getGridOptions();
                 }
-            }
+            });
 
             $scope.gridOptions.onRegisterApi = function (gridApi) {
                 $scope.gridApi = gridApi;
@@ -83,10 +90,7 @@
                     $scope.searchOrgs();
                 });
 
-                console.log("keys: " + Object.keys($scope.gridApi));
-
                 gridApi.selection.on.rowSelectionChanged($scope, rowSelectionCallBack);
-
                 gridApi.selection.on.rowSelectionChangedBatch($scope, function(rows) {
                     _.each(rows, function(row, index) {
                         rowSelectionCallBack(row);
@@ -187,13 +191,9 @@
 
             } //rowSelectionCallBack
 
-            var orgsPromise = '';
+           // var orgsPromise = '';
             $scope.searchOrgs = function () {
-                if (orgsPromise) {
-                    $timeout.cancel(orgsPromise);
-                }
 
-                orgsPromise = $timeout(function () {
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
                        // console.log("received data for org search: " + JSON.stringify(data));
                         if ($scope.showgrid && data.orgs) {
@@ -207,7 +207,6 @@
                     }).catch(function (error) {
                         console.log("error in retrieving orgs: " + JSON.stringify(error));
                     });
-                }, 250); //250 ms
             }; //searchOrgs
 
 

@@ -229,9 +229,10 @@ header img {
     #adv-org-search-modal  {
         top: 5%;
         right: 50%;
+        margin: 5px;
         outline: none;
         max-width: 900px;
-        height: 850px;
+        height: 940px;
     }
 
     .modal-body {
