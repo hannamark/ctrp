@@ -4,7 +4,6 @@
 #
 #  id                :integer          not null, primary key
 #  source_id         :string(255)
-#  name              :string(255)
 #  prefix            :string(255)
 #  suffix            :string(255)
 #  email             :string(255)
@@ -15,6 +14,9 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
+#  fname             :string(255)
+#  mname             :string(255)
+#  lname             :string(255)
 #
 # Indexes
 #
@@ -33,7 +35,8 @@ class Person < ActiveRecord::Base
   belongs_to :source_cluster
   accepts_nested_attributes_for :po_affiliations, allow_destroy: true
 
-  validates :name, presence: true
+  validates :fname, presence: true
+  validates :lname, presence: true
 
   before_destroy :check_for_organization
 

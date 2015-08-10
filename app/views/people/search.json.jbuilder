@@ -1,6 +1,6 @@
 json.people do
   json.array!(@people) do |person|
-    json.extract! person, :id, :source_id, :name, :prefix, :suffix, :email, :phone
+    json.extract! person, :id, :source_id, :fname, :lname, :prefix, :suffix, :email, :phone
     json.source_status person.source_status.present? ? person.source_status.name : nil
     json.url person_url(person, format: :json)
   end

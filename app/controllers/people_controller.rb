@@ -80,14 +80,15 @@ class PeopleController < ApplicationController
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
     params[:rows] = 10 if params[:rows].blank?
-    params[:sort] = 'name' if params[:sort].blank?
+    params[:sort] = 'lname' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:po_id].present? || params[:source_id].present? || params[:name].present? || params[:prefix].present? || params[:suffix].present? || params[:email].present? || params[:phone].present? || params[:source_status].present?
+    if params[:po_id].present? || params[:source_id].present? || params[:fname].present? || params[:lname].present? || params[:prefix].present? || params[:suffix].present? || params[:email].present? || params[:phone].present? || params[:source_status].present?
       @people = Person.all
       @people = @people.matches('id', params[:po_id]) if params[:po_id].present?
       @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
-      @people = @people.matches_wc('name', params[:name]) if params[:name].present?
+      @people = @people.matches_wc('fname', params[:fname]) if params[:fname].present?
+      @people = @people.matches_wc('lname', params[:lname]) if params[:lname].present?
       @people = @people.matches_wc('prefix', params[:prefix]) if params[:prefix].present?
       @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
       @people = @people.matches_wc('email', params[:email]) if params[:email].present?
@@ -107,7 +108,7 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:source_id, :name, :suffix,:prefix, :email, :phone, :source_status_id, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
+      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :source_status_id, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
     end
 
 end

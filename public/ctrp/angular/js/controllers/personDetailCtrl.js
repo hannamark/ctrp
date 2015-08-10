@@ -15,7 +15,7 @@
                               $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout, poAffStatuses, _) {
         var vm = this;
         console.log("in person detail controller now");
-        vm.curPerson = personDetailObj || {name: ""}; //personDetailObj.data;
+        vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
@@ -52,7 +52,7 @@
             console.log("newPerson is: " + JSON.stringify(newPerson));
 
             PersonService.upsertPerson(newPerson).then(function (response) {
-                toastr.success('Person ' + vm.curPerson.name + ' has been recorded', 'Operation Successful!');
+                toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
             });
