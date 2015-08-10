@@ -13,7 +13,7 @@ And I provide the country of the organization I wish to create
 And I provide the zip code of the organization I wish to create
 And I provide either the Phone or email of the organization I wish to create
 And I submit my create request
-Then the system should create an organization record that contains a unique PO ID, the organization name, the CTEP ID as Null, the city, the state, the country, the zip code, my name, and the current date and time
+Then the system should create an organization record that contains a unique PO ID, the organization name, the CTEP ID as Null, the city, the state, the country, and the zip code
 And the organization status should be Pending
 
 @PO
@@ -30,7 +30,7 @@ And I provide the country of the organization I wish to create
 And I provide the zip code of the organization I wish to create
 And I provide either the Phone or email of the organization I wish to create
 And I submit my create request
-Then the system should create an organization record that contains a unique PO ID, the organization name, the CTEP ID as Null, the city, the state, the country, the zip code, my name, and the current date and time
+Then the system should create an organization record that contains a unique PO ID, the organization name, the CTEP ID as Null, the city, the state, the country, and the zip code
 And the organization status should be Active
 
 Scenario: #3 As any CTRP User, I can request the creation of a new Organization in CTRP that is a duplicate
