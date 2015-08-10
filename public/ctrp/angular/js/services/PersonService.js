@@ -13,7 +13,9 @@
     function PersonService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService) {
 
         var initPersonSearchParams = {
-            name: "",
+            fname: "",
+            mname: "",
+            lname: "",
             po_id: "",
             source_id: "",
             source_status: "",
@@ -40,7 +42,11 @@
             enableFiltering: true,
             columnDefs: [
                 {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
-                {name: 'name', enableSorting: true, width: '20%',
+                {name: 'fname', displayName: 'First Name', enableSorting: true, width: '10%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {name: 'lname', displayName: 'Last Name', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
@@ -107,8 +113,7 @@
         /**
          *
          * @param searchParams, JSON object whose keys can include:
-         * name, po_id, source_id, source_status, family_name, address, address2, city, state_province, country,
-         * postal_code, and email
+         * fname, lname, po_id, source_id, source_status, prefix, suffix, email, phone
          *
          * @returns Array of JSON objects
          */
