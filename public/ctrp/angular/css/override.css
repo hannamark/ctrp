@@ -10,7 +10,7 @@
 
 .grid {
     width: 100%;
-    height: auto;
+    height: 400px;
 }
 
 .tooltip-uigrid {
@@ -44,7 +44,7 @@
     -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
     -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
     transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
-    transition-duration: 0.4s;
+    transition-duration: 0.9s;
     opacity: 0.8;
 }
 
@@ -223,3 +223,30 @@ header img {
 .footer-fixed {
     margin-top: 5%;
 }
+
+/* large modal window */
+@media screen and (min-width: 768px) {
+    #adv-org-search-modal  {
+        top: 5%;
+        right: 50%;
+        margin-left: 3px;
+        margin-right: 3px;
+        outline: none;
+        max-width: 900px;
+        height: 940px;
+    }
+
+    .modal-body {
+        max-width: 900px;
+        overflow: hidden;
+    }
+
+    /*.modal-footer,*/
+    /*.modal-header {*/
+        /*max-width: 900px;*/
+        /*overflow: hidden;*/
+    /*}*/
+
+}
+
+/*#adv-org-search-modal .modal-dialog  {width:75%;}*/

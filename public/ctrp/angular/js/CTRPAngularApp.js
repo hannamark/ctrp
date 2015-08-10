@@ -19,6 +19,7 @@
 //        'datatables',
         'ui.grid',
         'ui.grid.pagination',
+        'ui.grid.selection',
         'ui.scrollpoint',
         'DateServiceMod',
         'CTRPUnderscoreModule'

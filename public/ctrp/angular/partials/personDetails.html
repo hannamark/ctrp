@@ -16,7 +16,6 @@
             <button class="btn btn-primary" ng-click="vm.cancel()">Cancel</button>
         </div>
     </script>
-
     <div class="col-xs-12 col-border">
         <div class="row">
             <p>
@@ -120,53 +119,27 @@
                                placeholder="Phone">
                     </div>
                 </div>
+                <div class="form-group col-sm-12 animated-item" ng-show="personDetailView.advancedFormShown">
+                    <button class="btn btn-default" ng-click="personDetailView.toggleAdvancedSearchForm()">Use simple
+                        search
+                    </button>
+                    <ctrp-advanced-org-search-form showgrid=false></ctrp-advanced-org-search-form>
+                </div>
                 <div class="form-group col-sm-12">
-                    <label for="po_affiliation_id" class="control-label col-sm-3">
-                        Affiliated Organizations:
+                    <label class="control-label col-sm-3">
+                        Add Affiliated Organization:
                     </label>
 
                     <div class="col-sm-9">
-                        <div class="col-md-6 animated-item pull-left">
-                            <label style="display:none;"></label>
-                            <input type="text" class="form-control" id="po_affiliation_id"
-                                   placeholder="Search organizations (* for wildcard)"
-                                   ng-keyup="personDetailView.searchOrgs()"
-                                   ng-model="personDetailView.orgsSearchParams.name"/>
-
-                            <div ng-hide="personDetailView.foundOrgs.length == 0" class="animated-item">
-                                <div class="btn-group buttons pull-right">
-                                    <button class="btn moveall btn-default" title="Select all"
-                                            ng-click="personDetailView.batchSelect('selectAll')">
-                                        <i class="glyphicon glyphicon-arrow-right"></i>
-                                        <i class="glyphicon glyphicon-arrow-right"></i>
-                                    </button>
-                                </div>
-                                <select multiple="multiple" id="duallistbox" class="form-control"
-                                        ng-model="personDetailView.selectedOrgs"
-                                        style="height: 194px;">
-                                    <option class="animated-item"
-                                            ng-repeat="org in personDetailView.foundOrgs track by $index"
-                                            value="{{org}}">
-                                        {{org.name}}
-                                    </option>
-                                </select>
-                            </div>
+                        <div class="row">
+                            <button class="btn btn-primary" ng-click="personDetailView.searchOrgsForAffiliation('lg')">
+                                <i class="glyphicon glyphicon-search"></i> Search Organizations
+                            </button>
+                            <button class="btn btn-danger" ng-click="personDetailView.batchSelect('removeAll')" ng-show="personDetailView.savedSelection.length > 0">
+                                <i class="glyphicon glyphicon-remove"></i> Remove All Affiliated Organizations
+                            </button>
                         </div>
-
-                        <div class="col-md-6 animated-item pull-right"
-                             ng-hide="personDetailView.savedSelection.length == 0">
-                            <label style="display:none;"></label>
-                            <input type="text" class="form-control" placeholder="Filter affiliated organizations"
-                                   ng-model="personDetailView.selectedOrgFilter"/>
-
-                            <div class="btn-toolbar">
-                                <button class="btn moveall btn-default" title="Remove all"
-                                        ng-click="personDetailView.batchSelect('removeAll')">
-                                    <i class="glyphicon glyphicon-arrow-left"></i>
-                                    <i class="glyphicon glyphicon-arrow-left"></i>
-                                </button>
-
-                            </div>
+                        <div class="row animated-item" ng-show="personDetailView.savedSelection.length > 0">
                             <table class="table table-bordered table-striped table-condensed">
                                 <thead>
                                 <th>Remove</th>
@@ -226,9 +199,10 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- row for the table ends -->
+                        <!--</div>-->
                     </div>
                 </div>
-
 
                 <div id="buttonBar" class="form-group col-sm-12">
                     <div class="col-sm-offset-3 col-sm-9">

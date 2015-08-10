@@ -8,10 +8,10 @@
     angular.module('ctrpApp')
         .factory('OrgService', OrgService);
 
-    OrgService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log',
+    OrgService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
         'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService'];
 
-    function OrgService(URL_CONFIGS, MESSAGES, $log,
+    function OrgService(URL_CONFIGS, MESSAGES, $log, _,
                         GeoLocationService, Common, $rootScope,
                         PromiseTimeoutService) {
 
@@ -42,6 +42,8 @@
         var gridOptions = {
             enableColumnResizing: true,
             rowHeight: 50,
+            enableRowSelection: true,
+            enableRowHeaderSelection: true,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
@@ -49,9 +51,9 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '7%'},
+                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '9%'},
                 {
-                    name: 'name', enableSorting: true, width: '20%',
+                    name: 'name', enableSorting: true, width: '18%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                  //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -65,7 +67,7 @@
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '13%'},
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '12%'},
-                {name: 'email', enableSorting: true, width: '18%',
+                {name: 'email', enableSorting: true, width: '15%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -84,7 +86,10 @@
             watchCountrySelection : watchCountrySelection,
             getStatesOrProvinces : getStatesOrProvinces,
             getSourceStatuses : getSourceStatuses,
-            deleteOrg : deleteOrg
+            deleteOrg : deleteOrg,
+            isOrgSaved : isOrgSaved,
+            preparePOAffiliationArr : preparePOAffiliationArr,
+            initSelectedOrg : initSelectedOrg,
         };
 
         return services;
@@ -230,6 +235,73 @@
         function deleteOrg(orgId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.AN_ORG + orgId + ".json");
         }
+
+
+
+
+
+        /**
+         * Check if targetOrgsArr contains orgObj by checking the 'id' field
+         *
+         * @param targetOrgsArr
+         * @param orgObj
+         * @returns {Integer} index
+         */
+        function isOrgSaved(targetOrgsArr, orgObj) {
+            var index = -1;
+            _.each(targetOrgsArr, function (org, idx) {
+                if (org.id == orgObj.id) { //what if the user deletes the po_affiliation accidentally???
+                    index = idx;
+                    return;
+                }
+            });
+            return index;
+        } //isOrgSaved
+
+
+        /**
+         * Clean up the organization by keeping the essential fields
+         * (org_id, affiliate_status, effective_date, expiration_date)
+         *
+         *
+         * @param savedSelectionArr
+         * @returns {Array}
+         */
+        function preparePOAffiliationArr(savedSelectionArr) {
+            var results = [];
+            _.each(savedSelectionArr, function (org) {
+                var cleanedOrg = {
+                    "organization_id": org.id,
+                    "po_affiliation_status_id": org.po_affiliation_status_id,
+                    "effective_date": org.effective_date,
+                    "expiration_date": org.expiration_date,
+                    "id" : org.po_affiliation_id || '',
+                    "_destroy" : org._destroy
+                };
+                results.push(cleanedOrg);
+            });
+
+            return results;
+        } //preparePOAffiliationArr
+
+
+        /**
+         * Initialize the selected organization for its affiliation status, po_effective_date
+         * po_expiration_date, etc
+         *
+         * @param org
+         * @returns org
+         */
+        function initSelectedOrg(org) {
+            org.po_affiliation_status_id = '';
+            org.effective_date = new Date(); //today as the effective date
+            org.expiration_date = "";
+            org.opened_effective = false;
+            org.opened_expiration = false;
+            org._destroy = false;
+
+            return org;
+        } //initSelectedOrg
 
 
 
