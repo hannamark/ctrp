@@ -27,7 +27,8 @@
             restrict: 'E',
             scope: {
                 showgrid: '=',  //boolean
-                enablerowselection: '=',
+                enablerowselection: '=',  //boolean
+                usedinmodal: '=',  //boolean
                 orgSearchResults: '@orgSearchResults'
             },
             templateUrl: '/ctrp/angular/js/directives/advancedOrgSearchFormTemplate.html',
@@ -63,6 +64,16 @@
             $scope.gridOptions = OrgService.getGridOptions();
             //$scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
             //$scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+            if ($scope.usedinmodal) {
+                //unlink the name if used in modal
+                //find the organization name index in the column definitions
+                var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
+                if (orgNameIndex > -1) {
+                    $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" ' +
+                        'title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>';
+                }
+            }
+
             $scope.gridOptions.onRegisterApi = function (gridApi) {
                 $scope.gridApi = gridApi;
                 $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack)

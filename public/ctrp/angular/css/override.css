@@ -230,16 +230,20 @@ header img {
         top: 5%;
         right: 50%;
         outline: none;
-        max-width:900px;
-        height: 800px;
-        overflow: auto;
+        max-width: 900px;
+        height: 850px;
     }
 
-    .modal-footer,
-    .modal-header {
+    .modal-body {
         max-width: 900px;
         overflow: hidden;
     }
+
+    /*.modal-footer,*/
+    /*.modal-header {*/
+        /*max-width: 900px;*/
+        /*overflow: hidden;*/
+    /*}*/
 
 }
 
