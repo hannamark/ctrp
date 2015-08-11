@@ -27,7 +27,7 @@
         <div class="form-group col-sm-12" ng-class="{'has-error' : organization_form.name.$error.required && organization_form.name.$dirty }">
             <label class="control-label col-sm-3">Name:</label>
             <div class="col-sm-9">
-            <input type="text" class="form-control input-xs" name="name" id="organization_name" ng-model="orgDetailView.curOrg.name" required>
+            <input type="text" class="form-control input-xs" name="name" id="organization_name" ng-model="orgDetailView.curOrg.name" auto-focus required>
                 <p ng-show="organization_form.name.$error.required && organization_form.name.$dirty" class="help-inline">
                     Organization name is required
                 </p>

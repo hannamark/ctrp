@@ -37,9 +37,7 @@
                     <label class="control-label col-sm-3">Family Name:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" name="name" class="form-control input-xs"
-                               ng-model="familyDetailView.curFamily.name"
-                               required>
+                        <input type="text" name="name" class="form-control input-xs" ng-model="familyDetailView.curFamily.name" auto-focus required>
 
                         <p ng-show="family_form.name.$error.required && family_form.name.$dirty" class="help-inline">
                             Family name is required
