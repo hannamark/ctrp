@@ -176,6 +176,11 @@
 
         }; //prepareModal
 
+        vm.reset = function() {
+            vm.batchSelect('removeAll');
+            vm.savedSelection.length = 0;
+        }; //reset
+
 
         /**
          * Asynchronously populate the vm.savedSelection array for presenting
