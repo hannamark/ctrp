@@ -28,7 +28,7 @@
                 }
 
                 return 0;
-            }
+            };
 
             return compare;
         }; //a2zComparator
