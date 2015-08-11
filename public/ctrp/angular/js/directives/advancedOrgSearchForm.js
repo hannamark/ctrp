@@ -118,7 +118,7 @@
 
                 //get countries
                 GeoLocationService.getCountryList().then(function (countries) {
-                    countries.sort(Common.a2zComparator());
+                    // countries.sort(Common.a2zComparator());
                     $scope.countries = countries;
                 });
             } //getPromisedData
@@ -181,11 +181,13 @@
 
 
             function rowSelectionCallBack(row) {
-                if (row.isSelected) {
-                    $scope.$parent.selectedOrgsArray.push(row.entity);
-                } else {
-                    var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedOrgsArray, row.entity);
-                    $scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
+                if (angular.isDefined($scope.$parent.selectedOrgsArray)) {
+                    if (row.isSelected) {
+                        $scope.$parent.selectedOrgsArray.push(row.entity);
+                    } else {
+                        var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedOrgsArray, row.entity);
+                        $scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
+                    }
                 }
             } //rowSelectionCallBack
 

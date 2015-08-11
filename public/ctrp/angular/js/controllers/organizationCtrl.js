@@ -15,7 +15,7 @@
 
         var vm = this;
         $scope.orgSearchResults = {orgs: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
-        $scope.selectedOrgs = []; // orgs selected in the ui-grid
+        $scope.selectedOrgsArray = []; // orgs selected in the ui-grid
 
 
         activate();
