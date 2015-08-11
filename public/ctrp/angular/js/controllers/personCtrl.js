@@ -50,7 +50,7 @@
         vm.resetSearch = function() {
            // vm.states.length = 0;
             vm.searchParams = PersonService.getInitialPersonSearchParams();
-            vm.searchPeople();
+            vm.gridOptions.data.length = 0;
         }; //resetSearch
 
         activate();
