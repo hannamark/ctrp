@@ -209,6 +209,7 @@
                         <input type="submit" class="btn btn-success" ng-click="familyDetailView.updateFamily()"
                                ng-disabled="family_form.$invalid" value="Save">
                         <input type="reset" class="btn btn-warning" value="Reset">
+                        <button class="btn btn-default" back-button>Cancel</button>
                         <button ng-hide="familyDetailView.curFamily.new" class="btn btn-danger"
                                 ng-click="familyDetailView.confirmDelete('sm')">
                             Delete This Family

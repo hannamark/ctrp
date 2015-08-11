@@ -209,6 +209,7 @@
                         <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()"
                                value="Save" ng-disabled="person_form.$invalid">
                         <input type="reset" class="btn btn-warning" value="Reset" ng-click="personDetailView.reset()">
+                        <button class="btn btn-default" back-button>Cancel</button>
                         <button ng-hide="personDetailView.curPerson.new" class="btn btn-danger"
                                 ng-click="personDetailView.confirmDelete('sm')">
                             Delete This Person
