@@ -133,6 +133,7 @@
             <div class="col-sm-offset-3 col-sm-9">
                 <input type="submit" class="btn btn-success" id="save_btn" ng-click="orgDetailView.updateOrg()" ng-disabled="organization_form.$invalid" value="Save">
                 <input type="reset" class="btn btn-warning" id="reset_btn" value="Reset">
+                <button class="btn btn-default" back-button>Cancel</button>
                 <button ng-hide="orgDetailView.curOrg.new" class="btn btn-danger" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
                     Delete This Organization
                 </button>
