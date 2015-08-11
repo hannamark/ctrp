@@ -87,7 +87,7 @@
             getStatesOrProvinces : getStatesOrProvinces,
             getSourceStatuses : getSourceStatuses,
             deleteOrg : deleteOrg,
-            isOrgSaved : isOrgSaved,
+            indexOfOrganization : indexOfOrganization,
             preparePOAffiliationArr : preparePOAffiliationArr,
             initSelectedOrg : initSelectedOrg,
         };
@@ -248,7 +248,7 @@
          * @param orgObj
          * @returns {Integer} index
          */
-        function isOrgSaved(targetOrgsArr, orgObj) {
+        function indexOfOrganization(targetOrgsArr, orgObj) {
             var index = -1;
             _.each(targetOrgsArr, function (org, idx) {
                 if (org.id == orgObj.id) { //what if the user deletes the po_affiliation accidentally???
@@ -257,7 +257,7 @@
                 }
             });
             return index;
-        } //isOrgSaved
+        } //indexOfOrganization
 
 
         /**
