@@ -20,6 +20,7 @@
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.savedSelection = [];
+        vm.selectedOrgFilter = '';
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
