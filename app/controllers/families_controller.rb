@@ -86,7 +86,7 @@ class FamiliesController < ApplicationController
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:id].present? || params[:name].present? || params[:family_status].present? || params[:family_type].present?
+    if params[:ctrp_id].present? || params[:name].present? || params[:family_status].present? || params[:family_type].present?
       @families = Family.all
       @families = @families.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @families = @families.matches_wc('name', params[:name]) if params[:name].present?

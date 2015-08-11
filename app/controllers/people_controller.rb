@@ -83,7 +83,7 @@ class PeopleController < ApplicationController
     params[:sort] = 'lname' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:po_id].present? || params[:source_id].present? || params[:fname].present? || params[:lname].present? || params[:prefix].present? || params[:suffix].present? || params[:email].present? || params[:phone].present? || params[:source_status].present?
+    if params[:ctrp_id].present? || params[:source_id].present? || params[:fname].present? || params[:lname].present? || params[:prefix].present? || params[:suffix].present? || params[:email].present? || params[:phone].present? || params[:source_status].present?
       @people = Person.all
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
