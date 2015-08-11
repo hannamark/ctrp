@@ -56,7 +56,7 @@
         vm.resetSearch = function() {
             // vm.states.length = 0;
             vm.searchParams = FamilyService.getInitialFamilySearchParams();
-            vm.searchFamilies();
+            vm.gridOptions.data.length = 0;
         }; //resetSearch
 
         activate();
@@ -67,7 +67,6 @@
             vm.searchFamilies();
             updateSearchResultsUponParamsChanges();
         } //activate
-
 
 
 

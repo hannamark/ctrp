@@ -107,9 +107,7 @@
             appendNewPersonFlag();
 
             //prepare the modal window for existing people
-            //if (!vm.curPerson.new) {
-                prepareModal();
-            //}
+            prepareModal();
 
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
