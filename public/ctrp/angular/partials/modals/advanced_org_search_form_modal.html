@@ -10,7 +10,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="align-content: center">
-                <button class="btn btn-success" ng-click="orgSearchModalView.confirmSelection()">Confirm Selection</button>
+                <button class="btn btn-success" ng-click="orgSearchModalView.confirmSelection()"
+                        ng-disabled="selectedOrgsArray.length == 0">Confirm Selection</button>
                 <button class="btn btn-danger" ng-click="orgSearchModalView.cancel()">Close</button>
             </div>
         </div>
