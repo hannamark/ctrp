@@ -85,7 +85,7 @@ class PeopleController < ApplicationController
 
     if params[:po_id].present? || params[:source_id].present? || params[:fname].present? || params[:lname].present? || params[:prefix].present? || params[:suffix].present? || params[:email].present? || params[:phone].present? || params[:source_status].present?
       @people = Person.all
-      @people = @people.matches('id', params[:po_id]) if params[:po_id].present?
+      @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
       @people = @people.matches_wc('fname', params[:fname]) if params[:fname].present?
       @people = @people.matches_wc('lname', params[:lname]) if params[:lname].present?
