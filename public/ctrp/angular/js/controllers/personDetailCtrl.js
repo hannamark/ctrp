@@ -107,9 +107,9 @@
             appendNewPersonFlag();
 
             //prepare the modal window for existing people
-            if (!vm.curPerson.new) {
+            //if (!vm.curPerson.new) {
                 prepareModal();
-            }
+            //}
 
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
@@ -169,7 +169,7 @@
                 });
 
                 modalInstance2.result.then(function (selectedOrgs) {
-                    console.log("received selected items: " + JSON.stringify(selectedOrgs));
+                   // console.log("received selected items: " + JSON.stringify(selectedOrgs));
                     vm.batchSelect('selectAll', selectedOrgs);
                 }, function () {
                     console.log("operation canceled");
