@@ -184,7 +184,7 @@
                 if (row.isSelected) {
                     $scope.$parent.selectedOrgsArray.push(row.entity);
                 } else {
-                    var curRowSavedIndex = OrgService.isOrgSaved($scope.$parent.selectedOrgsArray, row.entity);
+                    var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedOrgsArray, row.entity);
                     $scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
                 }
             } //rowSelectionCallBack

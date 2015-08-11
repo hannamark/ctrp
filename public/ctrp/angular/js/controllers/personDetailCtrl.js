@@ -67,7 +67,7 @@
             if (intention == "selectAll") {
                 //iterate the organizations asynchronously
                 async.each(selectedOrgsArr, function (org, cb) {
-                    if (OrgService.isOrgSaved(vm.savedSelection, org) == -1) {
+                    if (OrgService.indexOfOrganization(vm.savedSelection, org) == -1) {
                         vm.savedSelection.unshift(OrgService.initSelectedOrg(org));
                     }
                     cb();

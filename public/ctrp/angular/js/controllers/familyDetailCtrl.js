@@ -85,7 +85,7 @@
             if (intention == "selectAll") {
                 //iterate the organizations asynchronously
                 async.each(vm.foundOrgs, function (org, cb) {
-                    if (OrgService.isOrgSaved(vm.savedSelection, org) == -1) {
+                    if (OrgService.indexOfOrganization(vm.savedSelection, org) == -1) {
                         vm.savedSelection.unshift(initSelectedOrg(org));
                     }
                     cb();
@@ -179,7 +179,7 @@
                     angular.forEach(newVal, function (org, idx) {
                         org = JSON.parse(org);
 
-                        if (OrgService.isOrgSaved(vm.savedSelection, org) == -1) {
+                        if (OrgService.indexOfOrganization(vm.savedSelection, org) == -1) {
                             vm.savedSelection.unshift(initSelectedOrg(org));
                         }
                     });
