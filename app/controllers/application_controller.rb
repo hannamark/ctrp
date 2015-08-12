@@ -34,8 +34,7 @@ class ApplicationController < ActionController::Base
   def wrapper_authenticate_user
     Rails.logger.info "In wrapper_authenticate_user session = #{session.inspect}"
 
-    #token = params["token"]
-    #decoded_token = JWT.decode token, "secret"
+    # Extract JWT token from the request header
     token = request.headers['Authorization']
     ## If the App was accessed with the Angular UI, it will have a token, else the token will be nil
     if token.nil?
