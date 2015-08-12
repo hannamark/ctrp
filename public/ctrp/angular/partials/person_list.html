@@ -3,7 +3,7 @@
         <div class="row">
             <h4>Search People
                 <small>
-                    <mark>* for wild card (e.g. John Doe*)</mark>
+                    <mark>* for wild card (e.g. John*)</mark>
                 </small>
             </h4>
         </div>
@@ -15,24 +15,30 @@
                     <div class="col-md-6">
                         <!-- person name -->
                         <div class="form-group">
-                            <label for="person_name" class="control-label col-sm-2">Name: </label>
+                            <label for="person_fname" class="control-label col-sm-3">First Name: </label>
+                            <div class="col-sm-3">
+                                <input type="text" id="person_fname" class="form-control"
+                                       placeholder="First Name"
+                                       ng-model="personView.searchParams.fname" auto-focus/>
+                            </div>
+                            <label for="person_lname" class="control-label col-sm-3">Last Name: </label>
 
-                            <div class="col-sm-10">
-                                <input type="text" id="person_name" class="form-control"
-                                       placeholder="Person Name"
-                                       ng-model="personView.searchParams.name"/>
+                            <div class="col-sm-3">
+                                <input type="text" id="person_lname" class="form-control"
+                                       placeholder="Last Name"
+                                       ng-model="personView.searchParams.lname"/>
                             </div>
                         </div>
-                        <!-- organization name ends -->
+                        <!-- person name ends -->
                     </div>
                     <div class="col-md-6">
                         <!-- PO ID -->
                         <div class="form-group">
-                            <!-- ID used as PO_ID here -->
-                            <label for="po_id" class="control-label col-sm-2">PO ID: </label>
+                            <!-- ID used as ctrp_id here -->
+                            <label for="ctrp_id" class="control-label col-sm-2">PO ID: </label>
                             <div class="col-sm-10">
-                                <input type="text" id="po_id" class="form-control" placeholder="PO ID"
-                                       ng-model="personView.searchParams.po_id"/>
+                                <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
+                                       ng-model="personView.searchParams.ctrp_id"/>
                             </div>
                         </div>
                         <!-- PO ID ends -->
@@ -42,16 +48,25 @@
                 <!-- second row -->
                 <div class="row-fluid">
                     <div class="col-md-6">
-                        <!--source id-->
                         <div class="form-group">
+                            <!--source context-->
+                            <label for="source_context" class="control-label col-sm-2">Source Context: </label>
+                            <div class="col-sm-4">
+                                <select class="form-control" id="source_context" ng-model="personView.searchParams.source_context">
+                                    <option value="">Select a context</option>
+                                    <option ng-repeat="context in personView.sourceContextArr" value="{{context.name}}">{{context.name}}</option>
+                                </select>
+                            </div>
+                            <!--source context ends-->
+                            <!--source id-->
                             <label for="source_id" class="control-label col-sm-2">Source ID: </label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-4">
                                 <input type="text" id="source_id" class="form-control" placeholder="Source ID"
                                        ng-model="personView.searchParams.source_id"/>
                             </div>
+                            <!-- source id ends -->
                         </div>
-                        <!-- source id ends -->
                     </div>
                     <div class="col-md-6">
                         <!--source status-->
@@ -117,12 +132,12 @@
                 <div class="row-fluid">
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-8">
-                            <button type="submit" class="btn btn-default btn-success" ng-click="personView.searchPeople()">
-                                Search
+                            <button type="submit" class="btn btn-primary" ng-click="personView.searchPeople()">
+                               <i class="glyphicon glyphicon-search"></i> Search
                             </button>
 
                             <button type="reset" class="btn btn-default btn-danger" ng-click="personView.resetSearch()">
-                                Clear
+                               <i class="glyphicon glyphicon-remove"></i> Clear
                             </button>
                         </div>
                     </div>

@@ -4,7 +4,6 @@
 #
 #  id                :integer          not null, primary key
 #  source_id         :string(255)
-#  name              :string(255)
 #  prefix            :string(255)
 #  suffix            :string(255)
 #  email             :string(255)
@@ -15,6 +14,9 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
+#  fname             :string(255)
+#  mname             :string(255)
+#  lname             :string(255)
 #
 # Indexes
 #
@@ -27,7 +29,9 @@
 
 one:
   source_id: MyString
-  name: MyString
+  fname: MyString
+  mname: MyString
+  lname: MyString
   prefix: MyString
   suffix: MyString
   email: MyString
@@ -35,7 +39,9 @@ one:
 
 two:
   source_id: MyString
-  name: MyString
+  fname: MyString
+  mname: MyString
+  lname: MyString
   prefix: MyString
   suffix: MyString
   email: MyString
