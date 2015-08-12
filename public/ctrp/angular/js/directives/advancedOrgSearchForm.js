@@ -17,11 +17,11 @@
     angular.module('ctrpApp')
         .directive('ctrpAdvancedOrgSearchForm', ctrpAdvancedOrgSearchForm);
 
-    ctrpAdvancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common',
-        'MESSAGES', 'uiGridConstants', '$timeout', '_'];
+    ctrpAdvancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location',
+        'MESSAGES', 'uiGridConstants', '$timeout', '_', '$anchorScroll'];
 
-    function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common,
-                                       MESSAGES, uiGridConstants, $timeout, _) {
+    function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common, $location,
+                                       MESSAGES, uiGridConstants, $timeout, _, $anchorScroll) {
 
         var directiveObj = {
             restrict: 'E',
@@ -206,6 +206,8 @@
                         $scope.gridOptions.data = data.orgs;
                         $scope.gridOptions.totalItems = data.total;
                         $scope.gridHeight = $scope.gridOptions.rowHeight * (data.orgs.length + 1);
+                        $location.hash('orgSearchResults');
+                        $anchorScroll();
                     }
                     $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
                     // console.log($scope.$parent);
