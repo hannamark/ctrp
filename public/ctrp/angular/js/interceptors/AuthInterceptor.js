@@ -42,7 +42,7 @@
 
 
         function responseError(rejection) {
-            console.log("bad response");
+            console.log("bad response status: " + rejection.status);
             if (rejection.status === 403 || rejection.status === 401) {
                 $injector.get('toastr').clear();
                 $injector.get('toastr').error('Access to the resources is not authorized', 'Error');

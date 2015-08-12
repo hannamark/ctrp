@@ -12,11 +12,10 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-warning" ng-click="vm.ok()">Delete Now</button>
+            <button class="btn btn-danger" ng-click="vm.ok()">Delete Now</button>
             <button class="btn btn-primary" ng-click="vm.cancel()">Cancel</button>
         </div>
     </script>
-
     <div class="col-xs-12 col-border">
         <div class="row">
             <p>
@@ -33,19 +32,36 @@
         <div class="row">
             <form class="form-horizontal" role="form" name="person_form" novalidate>
                 <div class="form-group col-sm-12"
-                     ng-class="{'has-error' : person_form.name.$error.required && person_form.name.$dirty }">
-                    <label class="control-label col-sm-3">Name:</label>
+                     ng-class="{'has-error' : person_form.fname.$error.required && person_form.fname.$dirty }">
+                    <label class="control-label col-sm-3">First Name:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" name="name" class="form-control input-sm"
-                               ng-model="personDetailView.curPerson.name" required>
-
-                        <p ng-show="person_form.name.$error.required && person_form.name.$dirty" class="help-inline">
-                            Name is required
+                        <input type="text" name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" auto-focus required>
+                        <p ng-show="person_form.fname.$error.required && person_form.fname.$dirty" class="help-inline">
+                            Fist Name is required
                         </p>
                     </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Middle Name:</label>
 
+                    <div class="col-sm-9">
+                        <input type="text" name="mname" class="form-control input-sm"
+                               ng-model="personDetailView.curPerson.mname">
+                    </div>
+                </div>
+                <div class="form-group col-sm-12"
+                     ng-class="{'has-error' : person_form.lname.$error.required && person_form.lname.$dirty }">
+                    <label class="control-label col-sm-3">Last Name:</label>
 
+                    <div class="col-sm-9">
+                        <input type="text" name="lname" class="form-control input-sm"
+                               ng-model="personDetailView.curPerson.lname" required>
+
+                        <p ng-show="person_form.lname.$error.required && person_form.lname.$dirty" class="help-inline">
+                            Last Name is required
+                        </p>
+                    </div>
                 </div>
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Source ID:</label>
@@ -101,53 +117,29 @@
                                placeholder="Phone">
                     </div>
                 </div>
+                <div class="form-group col-sm-12 animated-item" ng-show="personDetailView.advancedFormShown">
+                    <button class="btn btn-default" ng-click="personDetailView.toggleAdvancedSearchForm()">Use simple
+                        search
+                    </button>
+                    <ctrp-advanced-org-search-form showgrid=false></ctrp-advanced-org-search-form>
+                </div>
                 <div class="form-group col-sm-12">
-                    <label for="po_affiliation_id" class="control-label col-sm-3">
-                        Affiliated Organizations:
+                    <label class="control-label col-sm-3">
+                        Add Affiliated Organization:
                     </label>
 
                     <div class="col-sm-9">
-                        <div class="col-md-6 animated-item pull-left">
-                            <label style="display:none;"></label>
-                            <input type="text" class="form-control" id="po_affiliation_id"
-                                   placeholder="Search organizations (* for wildcard)"
-                                   ng-keyup="personDetailView.searchOrgs()"
-                                   ng-model="personDetailView.orgsSearchParams.name"/>
-
-                            <div ng-hide="personDetailView.foundOrgs.length == 0" class="animated-item">
-                                <div class="btn-group buttons pull-right">
-                                    <button class="btn moveall btn-default" title="Select all"
-                                            ng-click="personDetailView.batchSelect('selectAll')">
-                                        <i class="glyphicon glyphicon-arrow-right"></i>
-                                        <i class="glyphicon glyphicon-arrow-right"></i>
-                                    </button>
-                                </div>
-                                <select multiple="multiple" id="duallistbox" class="form-control"
-                                        ng-model="personDetailView.selectedOrgs"
-                                        style="height: 194px;">
-                                    <option class="animated-item"
-                                            ng-repeat="org in personDetailView.foundOrgs track by $index"
-                                            value="{{org}}">
-                                        {{org.name}}
-                                    </option>
-                                </select>
-                            </div>
+                        <div class="row">
+                            <button class="btn btn-primary" ng-click="personDetailView.searchOrgsForAffiliation('lg')">
+                                <i class="glyphicon glyphicon-search"></i> Search Organizations
+                            </button>
+                            <button class="btn btn-danger" ng-click="personDetailView.batchSelect('removeAll')" ng-show="personDetailView.savedSelection.length > 0">
+                                <i class="glyphicon glyphicon-remove"></i> Remove All Affiliated Organizations
+                            </button>
                         </div>
+                        <div class="row animated-item" ng-show="personDetailView.savedSelection.length > 0">
 
-                        <div class="col-md-6 animated-item pull-right"
-                             ng-hide="personDetailView.savedSelection.length == 0">
-                            <label style="display:none;"></label>
-                            <input type="text" class="form-control" placeholder="Filter affiliated organizations"
-                                   ng-model="personDetailView.selectedOrgFilter"/>
-
-                            <div class="btn-toolbar">
-                                <button class="btn moveall btn-default" title="Remove all"
-                                        ng-click="personDetailView.batchSelect('removeAll')">
-                                    <i class="glyphicon glyphicon-arrow-left"></i>
-                                    <i class="glyphicon glyphicon-arrow-left"></i>
-                                </button>
-
-                            </div>
+                            <br /><input type="text" ng-model="personDetailView.selectedOrgFilter" class="form-control" placeholder="Filter selected organizations"/>
                             <table class="table table-bordered table-striped table-condensed">
                                 <thead>
                                 <th>Remove</th>
@@ -207,16 +199,18 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- row for the table ends -->
+                        <!--</div>-->
                     </div>
                 </div>
-
 
                 <div id="buttonBar" class="form-group col-sm-12">
                     <div class="col-sm-offset-3 col-sm-9">
                         <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()"
                                value="Save" ng-disabled="person_form.$invalid">
-                        <input type="reset" class="btn btn-danger" value="Reset">
-                        <button ng-hide="personDetailView.curPerson.new" class="btn btn-warning"
+                        <input type="reset" class="btn btn-warning" value="Reset" ng-click="personDetailView.reset()">
+                        <button class="btn btn-default" back-button>Cancel</button>
+                        <button ng-hide="personDetailView.curPerson.new" class="btn btn-danger"
                                 ng-click="personDetailView.confirmDelete('sm')">
                             Delete This Person
                         </button>

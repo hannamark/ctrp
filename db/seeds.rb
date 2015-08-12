@@ -22,14 +22,14 @@ usa = "United States"
 #source_statuses
 
 #family_statuses
-FamilyStatus.find_or_create_by(id:1,code:'ACTIVE',name:'Active')
-FamilyStatus.find_or_create_by(id:2,code:'INACTIVE',name:'Inactive')
+FamilyStatus.find_or_create_by(code:'ACTIVE',name:'Active')
+FamilyStatus.find_or_create_by(code:'INACTIVE',name:'Inactive')
 
 #family_types
-FamilyType.find_or_create_by(id:1,code:'CANCERCENTER',name:'Cancer Center')
-FamilyType.find_or_create_by(id:2,code:'NCTN',name:'NCTN')
-FamilyType.find_or_create_by(id:3,code:'NIH',name:'NIH')
-FamilyType.find_or_create_by(id:4,code:'RESEARCHCENTER',name:'Research Center')
+FamilyType.find_or_create_by(code:'CANCERCENTER',name:'Cancer Center')
+FamilyType.find_or_create_by(code:'NCTN',name:'NCTN')
+FamilyType.find_or_create_by(code:'NIH',name:'NIH')
+FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Center')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
@@ -97,15 +97,15 @@ end
 end
 
 ####People
-person1=Person.find_or_create_by(id:1699192, source_id:'33303', name:'Ajeet Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
-person2=Person.find_or_create_by(id:7857011, source_id:'518786', name:'Alicia Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
-person3=Person.find_or_create_by(id:3567738, source_id:'515762', name:'Amy M. Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
-person4=Person.find_or_create_by(id:2944806, source_id:'41379', name:'Amy L. Jonson', prefix:'Dr.', suffix:'', email:'jonso001@umn.edu', phone:'612-624-2620')
-person5=Person.find_or_create_by(id:1832268, source_id:'34482', name:'Badrinath R. Konety', prefix:'Dr.', suffix:'', email:'brkonety@umn.edu', phone:'612-624-2620')
-person6=Person.find_or_create_by(id:10161459, source_id:'46120', name:'Christine Holmberg', prefix:'Dr.', suffix:'', email:'christine.holmberg@charite.de', phone:'-1152')
-person7=Person.find_or_create_by(id:366649, source_id:'11640', name:'Christopher Yancey Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
-person8=Person.find_or_create_by(id:2026171, source_id:'35504', name:'Daniel Evan Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
-#person9=Person.find_or_create_by(id:672434, source_id:'19844', name:'David Marc Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
+person1=Person.find_or_create_by(id:1699192, source_id:'33303', fname:'Ajeet', lname:'Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
+person2=Person.find_or_create_by(id:7857011, source_id:'518786', fname:'Alicia', lname:'Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
+person3=Person.find_or_create_by(id:3567738, source_id:'515762', fname:'Amy', mname:'M.', lname:'Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
+person4=Person.find_or_create_by(id:2944806, source_id:'41379', fname:'Amy', mname:'L.', lname:'Jonson', prefix:'Dr.', suffix:'', email:'jonso001@umn.edu', phone:'612-624-2620')
+person5=Person.find_or_create_by(id:1832268, source_id:'34482', fname:'Badrinath', mname:'R.', lname:'Konety', prefix:'Dr.', suffix:'', email:'brkonety@umn.edu', phone:'612-624-2620')
+person6=Person.find_or_create_by(id:10161459, source_id:'46120', fname:'Christine', lname:'Holmberg', prefix:'Dr.', suffix:'', email:'christine.holmberg@charite.de', phone:'-1152')
+person7=Person.find_or_create_by(id:366649, source_id:'11640', fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
+person8=Person.find_or_create_by(id:2026171, source_id:'35504', fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
+#person9=Person.find_or_create_by(id:672434, source_id:'19844', fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
 
 
 PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')

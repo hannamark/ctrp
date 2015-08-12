@@ -13,7 +13,7 @@ class PeopleControllerTest < ActionController::TestCase
 
   test "should create person" do
     assert_difference('Person.count') do
-      post :create, person: { name: @person.name, prefix: @person.prefix, suffix: @person.suffix,source_id: @person.source_id, phone: @person.phone, email: @person.email }, format: "json"
+      post :create, person: { fname: @person.fname, mname: @person.mname, lname: @person.lname, prefix: @person.prefix, suffix: @person.suffix,source_id: @person.source_id, phone: @person.phone, email: @person.email }, format: "json"
     end
 
     #assert_redirected_to person_path(assigns(:person))
@@ -27,7 +27,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "should update person" do
-    patch :update, id: @person, person: { name: @person.name, prefix: @person.prefix, suffix: @person.suffix,source_id: @person.source_id, phone: @person.phone, email: @person.email }, format: "json"
+    patch :update, id: @person, person: { fname: @person.fname, mname: @person.mname, lname: @person.lname, prefix: @person.prefix, suffix: @person.suffix,source_id: @person.source_id, phone: @person.phone, email: @person.email }, format: "json"
     #assert_redirected_to person_path(assigns(:person))
     assert_template :show
     assert_response :ok

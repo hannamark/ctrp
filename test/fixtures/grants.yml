@@ -1,0 +1,32 @@
+# == Schema Information
+#
+# Table name: grants
+#
+#  id                :integer          not null, primary key
+#  funding_mechanism :string(255)
+#  institute_code    :string(255)
+#  serial_number     :integer
+#  nci               :string(255)
+#  trial_id          :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  uuid              :string(255)
+#
+# Indexes
+#
+#  index_grants_on_trial_id  (trial_id)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  funding_mechanism: MyString
+  institute_code: MyString
+  serial_number: 1
+  nci: MyString
+
+two:
+  funding_mechanism: MyString
+  institute_code: MyString
+  serial_number: 1
+  nci: MyString

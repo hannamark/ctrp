@@ -9,9 +9,9 @@
     angular.module('CommonTools', [])
         .service('Common', Common);
 
-    Common.$inject = ['$rootScope'];
+    Common.$inject = ['$rootScope', '_'];
 
-    function Common($rootScope) {
+    function Common($rootScope, _) {
 
         /**
          * A-Z Comparator for sorting an array of JSON objects
@@ -28,7 +28,7 @@
                 }
 
                 return 0;
-            }
+            };
 
             return compare;
         }; //a2zComparator
@@ -41,6 +41,29 @@
         this.broadcastMsg = function(message) {
             $rootScope.$broadcast(message, {});
         }; //broadcastMsg
+
+
+        /**
+         * Find the index of the given keyName and needleValue in the array of JSON
+         * -1: not found
+         * @param arrayOfJson
+         * @param keyName
+         * @param needleValue
+         * @returns {number}
+         */
+        this.indexOfObjectInJsonArray = function(arrayOfJson, keyName, needleValue) {
+            var index = -1;
+
+            if (_.isArray(arrayOfJson)) {
+                _.each(arrayOfJson, function(item, idx) {
+                   if (item[keyName] && item[keyName] == needleValue) {
+                       index = idx;
+                       return;
+                   }
+                });
+            }
+            return index;
+        }
 
 
     }

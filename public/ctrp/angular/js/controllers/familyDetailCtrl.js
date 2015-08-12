@@ -85,7 +85,7 @@
             if (intention == "selectAll") {
                 //iterate the organizations asynchronously
                 async.each(vm.foundOrgs, function (org, cb) {
-                    if (!isOrgSaved(vm.savedSelection, org)) {
+                    if (OrgService.indexOfOrganization(vm.savedSelection, org) == -1) {
                         vm.savedSelection.unshift(initSelectedOrg(org));
                     }
                     cb();
@@ -179,7 +179,7 @@
                     angular.forEach(newVal, function (org, idx) {
                         org = JSON.parse(org);
 
-                        if (!isOrgSaved(vm.savedSelection, org)) {
+                        if (OrgService.indexOfOrganization(vm.savedSelection, org) == -1) {
                             vm.savedSelection.unshift(initSelectedOrg(org));
                         }
                     });
@@ -187,25 +187,6 @@
 
             }, true);
         }
-
-
-        /**
-         * Check if targetOrgsArr contains orgObj by checking the 'id' field
-         *
-         * @param targetOrgsArr
-         * @param orgObj
-         * @returns {boolean}
-         */
-        function isOrgSaved(targetOrgsArr, orgObj) {
-            var exists = false;
-            _.each(targetOrgsArr, function (org, idx) {
-                if (org.id == orgObj.id) {
-                    exists = true;
-                    return exists;
-                }
-            });
-            return exists;
-        } //isOrgSaved
 
 
         /**

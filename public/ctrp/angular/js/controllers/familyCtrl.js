@@ -56,7 +56,7 @@
         vm.resetSearch = function() {
             // vm.states.length = 0;
             vm.searchParams = FamilyService.getInitialFamilySearchParams();
-            vm.searchFamilies();
+            vm.gridOptions.data.length = 0;
         }; //resetSearch
 
         activate();
@@ -65,9 +65,8 @@
 
         function activate() {
             vm.searchFamilies();
-            updateSearchResultsUponParamsChanges();
+            // updateSearchResultsUponParamsChanges();
         } //activate
-
 
 
 
@@ -102,16 +101,6 @@
             //do the search with the updated sorting
             vm.searchFamilies();
         }; //sortChangedCallBack
-
-        /**
-         * update search results while search parameters is changed
-         */
-        function updateSearchResultsUponParamsChanges() {
-            //can change vm.searchParams.country to vm.searchParams to watch all search parameters
-            $scope.$watch(function() {return vm.searchParams.name;}, function(newVal, oldval) {
-                vm.searchFamilies();
-            }, true);
-        }
 
     }
 

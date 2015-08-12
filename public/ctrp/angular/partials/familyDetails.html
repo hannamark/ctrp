@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-warning" ng-click="vm.ok()">Delete Now</button>
+            <button class="btn btn-danger" ng-click="vm.ok()">Delete Now</button>
             <button class="btn btn-primary" ng-click="vm.cancel()">Cancel</button>
         </div>
     </script>
@@ -37,9 +37,7 @@
                     <label class="control-label col-sm-3">Family Name:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" name="name" class="form-control input-xs"
-                               ng-model="familyDetailView.curFamily.name"
-                               required>
+                        <input type="text" name="name" class="form-control input-xs" ng-model="familyDetailView.curFamily.name" auto-focus required>
 
                         <p ng-show="family_form.name.$error.required && family_form.name.$dirty" class="help-inline">
                             Family name is required
@@ -210,8 +208,9 @@
                     <div class="col-sm-offset-3 col-sm-9">
                         <input type="submit" class="btn btn-success" ng-click="familyDetailView.updateFamily()"
                                ng-disabled="family_form.$invalid" value="Save">
-                        <input type="reset" class="btn btn-danger" value="Reset">
-                        <button ng-hide="familyDetailView.curFamily.new" class="btn btn-warning"
+                        <input type="reset" class="btn btn-warning" value="Reset">
+                        <button class="btn btn-default" back-button>Cancel</button>
+                        <button ng-hide="familyDetailView.curFamily.new" class="btn btn-danger"
                                 ng-click="familyDetailView.confirmDelete('sm')">
                             Delete This Family
                         </button>
