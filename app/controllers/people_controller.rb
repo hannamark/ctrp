@@ -83,7 +83,7 @@ class PeopleController < ApplicationController
     params[:sort] = 'lname' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:ctrp_id].present? || params[:source_id].present? || params[:fname].present? || params[:lname].present? || params[:prefix].present? || params[:suffix].present? || params[:email].present? || params[:phone].present? || params[:source_status].present?
+    if params[:ctrp_id].present? || params[:source_id].present? || params[:fname].present? || params[:lname].present? || params[:prefix].present? || params[:suffix].present? || params[:email].present? || params[:phone].present? || params[:source_context].present? || params[:source_status].present?
       @people = Person.all
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
@@ -93,6 +93,7 @@ class PeopleController < ApplicationController
       @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
       @people = @people.matches_wc('email', params[:email]) if params[:email].present?
       @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
+      @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
       @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
     else

@@ -206,6 +206,9 @@
                     controller: 'personCtrl as personView',
                     resolve: {
                         OrgService: 'OrgService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj: function(OrgService) {
                             return OrgService.getSourceStatuses();
                         }

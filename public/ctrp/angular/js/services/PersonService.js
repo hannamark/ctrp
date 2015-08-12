@@ -18,6 +18,7 @@
             lname: "",
             //po_id: "",
             ctrp_id: "",
+            source_context: "",
             source_id: "",
             source_status: "",
             prefix: "",
@@ -51,15 +52,16 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
+                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '10%'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '10%'},
-                {name: 'prefix', enableSorting: true, width: '10%'},
-                {name: 'suffix', enableSorting: true, width: '10%'},
+                {name: 'prefix', enableSorting: true, width: '6%'},
+                {name: 'suffix', enableSorting: true, width: '6%'},
                 {name: 'email', enableSorting: true, width: '18%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phone', enableSorting: true, width: '12%'}
+                {name: 'phone', enableSorting: true, width: '10%'}
             ]
         };
 
@@ -70,6 +72,7 @@
             searchPeople : searchPeople,
             getInitialPersonSearchParams : getInitialPersonSearchParams,
             getGridOptions : getGridOptions,
+            getSourceContexts : getSourceContexts,
             getSourceStatuses : getSourceStatuses,
             deletePerson : deletePerson,
             getPoAffStatuses : getPoAffStatuses
@@ -161,6 +164,13 @@
             $rootScope.$broadcast(msgCode, {content: msgContent});
         } //broadcastMsg
 
+        /**
+         * retrieve source contexts from backend service
+         * @return {promise}
+         */
+        function getSourceContexts() {
+            return PromiseService.getData(URL_CONFIGS.SOURCE_CONTEXTS);
+        } //getSourceContexts
 
         /**
          * retrieve source statuses from backend service

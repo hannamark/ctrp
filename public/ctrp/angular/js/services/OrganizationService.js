@@ -21,6 +21,7 @@
             alias: true,
             // po_id : "",
             ctrp_id : "",
+            source_context : "",
             source_id : "",
             source_status : "",
             family_name : "",
@@ -52,9 +53,9 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '9%'},
+                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
                 {
-                    name: 'name', enableSorting: true, width: '18%',
+                    name: 'name', enableSorting: true, width: '23%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                  //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -63,12 +64,12 @@
                     '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
-
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '13%'},
+                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '8%'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '8%'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
                 {name: 'city', enableSorting: true, width: '10%'},
-                {name: 'state_province', displayName: 'State', enableSorting: true, width: '12%'},
-                {name: 'email', enableSorting: true, width: '15%',
+                {name: 'state_province', displayName: 'State', enableSorting: true, width: '10%'},
+                {name: 'email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -86,6 +87,7 @@
             getGridOptions : getGridOptions,
             watchCountrySelection : watchCountrySelection,
             getStatesOrProvinces : getStatesOrProvinces,
+            getSourceContexts : getSourceContexts,
             getSourceStatuses : getSourceStatuses,
             deleteOrg : deleteOrg,
             indexOfOrganization : indexOfOrganization,
@@ -217,6 +219,13 @@
             $rootScope.$broadcast(msgCode, {content: msgContent});
         } //broadcastMsg
 
+        /**
+         * retrieve source contexts from backend service
+         * @return {promise}
+         */
+        function getSourceContexts() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SOURCE_CONTEXTS);
+        } //getSourceContexts
 
         /**
          * retrieve source statuses from backend service
