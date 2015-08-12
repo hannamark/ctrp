@@ -17,4 +17,8 @@
 #
 
 class OtherId < ActiveRecord::Base
+  include BasicConcerns
+
+  belongs_to :pritocol_id_origin
+  belongs_to :trial
 end

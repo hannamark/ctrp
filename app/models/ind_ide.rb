@@ -24,4 +24,9 @@
 #
 
 class IndIde < ActiveRecord::Base
+  include BasicConcerns
+
+  belongs_to :expanded_access_type
+  belongs_to :holder_type
+  belongs_to :trial
 end
