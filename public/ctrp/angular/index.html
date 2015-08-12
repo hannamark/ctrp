@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css"
           href="angular/third_party_libs/datatables/media/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="angular/third_party_libs/angular-ui-grid/ui-grid.min.css">
+    <!--<link rel="stylesheet" type="text/css" href="angular/css/ui-grid-theme.css">-->
     <!--<link rel="stylesheet" href="http://ui-grid.info/release/ui-grid-unstable.css" type="text/css">-->
 
     <!--<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>-->
@@ -31,6 +32,8 @@
     <script src="angular/third_party_libs/angular-toastr/dist/angular-toastr.tpls.js"></script>
     <script src="angular/third_party_libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
+    <script type="text/javascript" src="angular/third_party_libs/angular-ui-scrollpoint/dist/scrollpoint.min.js"></script>
+
 
     <!-- angular modules/dependencies from third parties -->
     <script src="angular/third_party_libs/angular-local-storage.js"></script>
@@ -40,46 +43,64 @@
     <script src="angular/third_party_libs/angular-datatables/dist/angular-datatables.min.js"></script>
     <script src="angular/third_party_libs/angular-ui-grid/ui-grid.min.js"></script>
 
-    <!--<script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>-->
-    <!--<script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>-->
-    <!--<script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>-->
-    <!--<script src="http://ui-grid.info/release/ui-grid-unstable.js"></script>-->
-
     <!-- Angular app main file -->
     <script src="angular/js/CTRPAngularApp.js"></script>
 
     <!-- injectors -->
-    <script src="angular/js/interceptors/TimeoutHttpInterceptor.js"></script>
+    <!--<script src="angular/js/interceptors/TimeoutHttpInterceptor.js"></script>-->
     <!-- home-made Angular modules -->
     <script src="angular/js/modules/Constants.js"></script>
     <script src="angular/js/modules/Common.js"></script>
     <script src="angular/js/modules/PromiseServiceMod.js"></script>
     <script src="angular/js/modules/LocalCacheModule.js"></script>
     <script src="angular/js/modules/PromiseWithTimeoutService.js"></script>
+    <script src="angular/js/modules/DateServiceModule.js"></script>
+    <script src="angular/js/modules/CTRPUnderscoreModule.js"></script>
+
 
     <!-- services -->
     <script src="angular/js/services/OrganizationService.js"></script>
     <script src="angular/js/services/cache/LocalCacheService.js"></script>
     <script src="angular/js/services/GeoLocationService.js"></script>
     <script src="angular/js/services/PersonService.js"></script>
+    <script src="angular/js/services/FamilyService.js"></script>
+    <script src="angular/js/services/UserService.js"></script>
+
+    <!-- directives -->
+    <script src="angular/js/directives/advancedOrgSearchForm.js"></script>
+    <script src="angular/js/directives/autoFocus.js"></script>
+    <script src="angular/js/directives/backButton.js"></script>
+
 
     <!-- controllers -->
     <script src="angular/js/controllers/organizationCtrl.js"></script>
     <script src="angular/js/controllers/orgDetailCtrl.js"></script>
     <script src="angular/js/controllers/ModalInstanceCtrl.js"></script>
+    <script src="angular/js/controllers/personCtrl.js"></script>
+    <script src="angular/js/controllers/personDetailCtrl.js"></script>
+    <script src="angular/js/controllers/ModalInstancePersonCtrl.js"></script>
     <script src="angular/js/controllers/userCtrl.js"></script>
+    <script src="angular/js/controllers/familyCtrl.js"></script>
+    <script src="angular/js/controllers/familyDetailCtrl.js"></script>
+    <script src="angular/js/controllers/ModalInstanceFamilyCtrl.js"></script>
+    <script src="angular/js/controllers/headerNavigationCtrl.js"></script>
+    <script src="angular/js/controllers/modal/advancedOrgSearchModalCtrl.js"></script>
+
+
     <!-- interceptors -->
     <script src="angular/js/interceptors/AuthInterceptor.js"></script>
 
 
+
+
 </head>
 <body>
-<div class="row">
-    <div class="col-md-12">
-        <div ng-include src="'angular/partials/header.html'"></div>
-        <div ui-view></div>
-        <div ng-include src="'angular/partials/footer.html'"></div>
+<div ng-include src="'angular/partials/header.html'"></div>
+<div class="container top-offset-lg">
+    <div class="row">
+        <div class="col-md-12" ui-view></div>
     </div>
 </div>
+<div ng-include src="'angular/partials/footer.html'"></div>
 </body>
 </html>

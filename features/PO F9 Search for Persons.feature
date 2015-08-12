@@ -1,13 +1,29 @@
 @Global
 Feature: Search for persons
 
-Scenario: As any CTRP User, I am able to search for persons by name
+Scenario: As any CTRP User, I am able to search for persons by first name
 Given I know the name of the person I wish to search for
 And I am logged in to CTRP
 And I have selected the option to search for a person
-When I provide the full or partial name of the person I wish to search for
+When I provide the full or partial first name of the person I wish to search for
 And I submit my search request
-Then the system should display all persons that contain the name
+Then the system should display all persons that contain the first name
+
+Scenario: As any CTRP User, I am able to search for persons by last name
+Given I know the name of the person I wish to search for
+And I am logged in to CTRP
+And I have selected the option to search for a person
+When I provide the full or partial last name of the person I wish to search for
+And I submit my search request
+Then the system should display all persons that contain the last name
+
+Scenario: As any CTRP User, I am able to search for persons by middle name
+Given I know the name of the person I wish to search for
+And I am logged in to CTRP
+And I have selected the option to search for a person
+When I provide the full or partial middle name of the person I wish to search for
+And I submit my search request
+Then the system should display all persons that contain the middle name
 
 Scenario: As any CTRP User, I am able to search for persons by CTEP Person ID
 Given I know the CTEP ID of the person I wish to search for
@@ -49,17 +65,16 @@ When I select an organization for the affiliated organization search
 And I submit my search request
 Then the system should display all persons who are affiliated with the selected organization
 
-Scenario: As any CTRP User, search for persons by <person_trial_relationship>
-Given I know the name of the < person_trial_relationship > I wish to search for
+Scenario: As any CTRP User, search for persons by person_trial_relationship
+Given I know the name of the person_trial_relationship I wish to search for
 And I am logged in to CTRP
 And I have selected the option to search for a person
-When I select the < person_trial_relationship > of the person I wish to search for
+When I select the person_trial_relationship of the person I wish to search for
 And I submit my search request
-Then the system should display all persons that have the < person_trial_relationship>
-
-|<person_trial_relationship>|
-|Principal Investigator |
-|Responsible Party |
+Then the system should display all persons that have the person_trial_relationship
+|Example: person_trial_relationship|
+|Principal Investigator| 
+|Responsible Party|
 
 Scenario: As any CTRP User, search for persons with multiple parameters
 Given I know multiple parameters of the person I wish to search for

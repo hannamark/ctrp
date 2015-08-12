@@ -1,0 +1,62 @@
+
+exports.config = {
+    seleniumAddress: 'http://localhost:4444/wd/hub',
+
+    capabilities: {
+        'browserName' : 'firefox'
+    },
+
+
+baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
+
+    params: {
+        login: {
+            user: 'ctrpadmin',
+            password: 'Welcome01'
+        }
+    },
+
+/*    onPrepare: function() {
+        var width = 1024;
+        var height = 600;
+        browser.driver.manage().window().setSize(width, height);
+        // implicit and page load timeouts
+        browser.manage().timeouts().pageLoadTimeout(40000);
+        browser.manage().timeouts().implicitlyWait(25000);
+
+        // for non-angular page
+        browser.ignoreSynchronization = true;
+    },*/
+
+    jasmineNodeOpts: {
+        onComplete: null,
+        isVerbose: true,
+        showColors: true,
+        includeStackTrace: true
+    },
+
+    allScriptsTimeout: 5000,
+    getPageTimeout: 5000,
+
+   framework: 'cucumber',
+
+    specs: [
+        'features/PO\ F2\ Search\ for\ Organizations.feature',
+      //  'features/Reg\ F01\ Search\ Clinical\ Trials.feature'
+      //  'features/*.feature'
+    ],
+
+    jasmineNodeOpts: {
+        showColors: true
+    },
+
+    cucumberOpts: {
+        //require: 'features/step_definitions.js',
+        format: 'pretty'
+     //  tags: '@Globalxx'
+       /*     "@runThat",
+            "~@ignoreThis"]*/// or summary
+    },
+
+    resultJsonOutputFile: 'test/reports/cuke-report.json'
+};

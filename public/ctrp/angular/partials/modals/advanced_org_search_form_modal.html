@@ -1,0 +1,21 @@
+<div id="adv-org-search-modal">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="orgSearchModalView.cancel()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <ctrp-advanced-org-search-form showgrid=true enablerowselection=true usedinmodal=true></ctrp-advanced-org-search-form>
+                </div>
+            </div>
+            <div class="modal-footer" style="align-content: center">
+                <button class="btn btn-success" ng-click="orgSearchModalView.confirmSelection()"
+                        ng-disabled="selectedOrgsArray.length == 0">Confirm Selection</button>
+                <button class="btn btn-danger" ng-click="orgSearchModalView.cancel()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

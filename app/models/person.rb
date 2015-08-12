@@ -4,7 +4,6 @@
 #
 #  id                :integer          not null, primary key
 #  source_id         :string(255)
-#  name              :string(255)
 #  prefix            :string(255)
 #  suffix            :string(255)
 #  email             :string(255)
@@ -15,6 +14,9 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
+#  fname             :string(255)
+#  mname             :string(255)
+#  lname             :string(255)
 #
 # Indexes
 #
@@ -36,7 +38,10 @@ class Person < ActiveRecord::Base
   has_many :pi_trials, foreign_key: :pi_id, class_name: "Trial"
   has_many :investigator_trials, foreign_key: :investigator_id, class_name: "Trial"
 
-  validates :name, presence: true
+  accepts_nested_attributes_for :po_affiliations, allow_destroy: true
+
+  validates :fname, presence: true
+  validates :lname, presence: true
 
   before_destroy :check_for_organization
 
@@ -51,6 +56,8 @@ class Person < ActiveRecord::Base
 
   # Scope definitions for people search
   scope :matches, -> (column, value) { where("people.#{column} = ?", "#{value}") }
+
+  scope :with_source_context, -> (value) { joins(:source_context).where("source_contexts.name = ?", "#{value}") }
 
   scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
 
@@ -70,6 +77,8 @@ class Person < ActiveRecord::Base
   scope :sort_by_col, -> (column, order) {
     if column == 'id'
       order("#{column} #{order}")
+    elsif column == 'source_context'
+      joins("LEFT JOIN source_contexts ON source_contexts.id = people.source_context_id").order("source_contexts.name #{order}").group(:'source_contexts.name')
     elsif column == 'source_status'
       joins("LEFT JOIN source_statuses ON source_statuses.id = people.source_status_id").order("source_statuses.name #{order}").group(:'source_statuses.name')
     else

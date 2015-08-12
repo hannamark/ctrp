@@ -7,33 +7,33 @@ And I am on the Search Clinical Trials Screen
 When I select the option to search "My Trials"
 Then CTRP will display all trials where I am listed as a Trial Owner and the trials match the trial search criteria
 And the Clinical Trials Search Results will display:
-NCI Trial Identifier
-Title
-Lead Organization
-Lead Org Trial Identifier
-Principal Investigator
-ClinicalTrials.gov Identifier
-Other Identifiers
-Current Trial Status
-Current Processing Status
-Available Actions
-Accrual Disease Terminology
-Sites
-Phase
-Primary Purpose
-Category
-Trial Start Date
-Responsible Party
-Sponsor
-Summary 4 Funding Sponsor Type
-Record Verification Date
-Submitter
-Primary Completion Date
-Last Update Submitted
-Last Updater Name
-Last Amendment Submitted
-Last Amender Name
-On-Hold Reason
+|NCI Trial Identifier|
+|Title|
+|Lead Organization|
+|Lead Org Trial Identifier|
+|Principal Investigator|
+|ClinicalTrials.gov Identifier|
+|Other Identifiers|
+|Current Trial Status|
+|Current Processing Status|
+|Available Actions|
+|Accrual Disease Terminology|
+|Sites|
+|Phase|
+|Primary Purpose|
+|Category|
+|Trial Start Date|
+|Responsible Party|
+|Sponsor|
+|Summary 4 Funding Sponsor Type|
+|Record Verification Date|
+|Submitter|
+|Primary Completion Date|
+|Last Update Submitted|
+|Last Updater Name|
+|Last Amendment Submitted|
+|Last Amender Name|
+|On-Hold Reason|
 
 Scenario: #2 I can search all clinical trials registered in CTRP
 Given I am logged into the CTRP Registration application
@@ -41,16 +41,16 @@ And I am on the Search Clinical Trials Screen
 When I select the option to search "All Trials"
 Then CTRP will display all trials that match the trial search criteria
 And the Clinical Trials Search Results will display:
-NCI Trial Identifier
-Title
-Current Trial Status
-Lead Organization
-Lead Org Trial Identifier
-Principal Investigator
-ClinicalTrials.gov Identifier
-Other Identifiers
-Sites
-Available Actions
+|NCI Trial Identifier|
+|Title|
+|Current Trial Status|
+|Lead Organization|
+|Lead Org Trial Identifier|
+|Principal Investigator|
+|ClinicalTrials.gov Identifier|
+|Other Identifiers|
+|Sites|
+|Available Actions|
 
 
 Scenario: #3 I can search for my saved draft clinical trials registrations in CTRP
@@ -59,12 +59,12 @@ And I am on the Search Clinical Trials Screen
 When I select the option to search "Saved Drafts"
 Then CTRP will display all of my draft registrations that match the trial search criteria
 And the Clinical Trials Search Results will display:
-Temp Trial Identifier
-Title
-Lead Organization
-Lead Org Trial Identifier
-Action to Complete Registration
-Action to Delete Draft Registration
+|Temp Trial Identifier|
+|Title|
+|Lead Organization|
+|Lead Org Trial Identifier|
+|Action to Complete Registration
+|Action to Delete Draft Registration|
 
 
 Scenario: #4 I can search for clinical trials by Title

@@ -9,13 +9,16 @@
     angular.module('ctrpApp')
         .controller('personCtrl', personCtrl);
 
-    personCtrl.$inject = ['PersonService', 'uiGridConstants', '$scope', 'Common', 'sourceStatusObj'];
+    personCtrl.$inject = ['PersonService', 'uiGridConstants', '$scope', 'Common', 'sourceContextObj', 'sourceStatusObj'];
 
-    function personCtrl(PersonService, uiGridConstants, $scope, Common, sourceStatusObj) {
+    function personCtrl(PersonService, uiGridConstants, $scope, Common, sourceContextObj, sourceStatusObj) {
 
         var vm = this;
-
+        console.log("received sourceContextObj: " + JSON.stringify(sourceContextObj));
+        console.log("received sourceStatusObj: " + JSON.stringify(sourceStatusObj));
         vm.searchParams = PersonService.getInitialPersonSearchParams();
+        vm.sourceContextArr = sourceContextObj;
+        vm.sourceContextArr.sort(Common.a2zComparator());
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
 
@@ -50,7 +53,7 @@
         vm.resetSearch = function() {
            // vm.states.length = 0;
             vm.searchParams = PersonService.getInitialPersonSearchParams();
-            vm.searchPeople();
+            vm.gridOptions.data.length = 0;
         }; //resetSearch
 
         activate();

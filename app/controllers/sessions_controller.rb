@@ -14,21 +14,45 @@ class SessionsController < Devise::SessionsController
       # Copy user data to ldap_user and local_user
       request.params['ldap_user'] = request.params['local_user'] = request.params['user']
 
-      # First try logging in as an LDAP user
-      user_class = :ldap_user
-      user = User.where(username: request.params['user']["username"])
-      Rails.logger.info "user #{user.inspect} " unless user.blank?
-      error_string = 'LDAP details incorrect'
-      # Use Warden to authenticate the user, if we get nil back, it failed.
-      Rails.logger.info "Before warden authenticate for LDAP =  #{self.resource.inspect}"
-      self.resource = warden.authenticate scope: user_class
-      Rails.logger.info "Result of warden authenticate for LDAP = #{self.resource.inspect}"
-      if self.resource.nil?
-        # Since LDAP Authentication has failed, try logging in as a Local user
-        Rails.logger.info "LDAP Authentication failed. Logging in as an local user"
+      user = User.find_by_username(request.params['user']["username"])
+      if user.blank?
+        error_text = "The User does not exist in the database as an LdapUser or a LocalUser"
+        Rails.logger.error error_text
+        raise error_text
+      else
+        ## Print informational login messages
+        if user.is_a?(LocalUser)
+          Rails.logger.info "LocalUser #{user.inspect} " unless user.blank?
+        elsif user.is_a?(LdapUser)
+          Rails.logger.info "LdapUser #{user.inspect} " unless user.blank?
+        else
+          Rails.logger.info "OmniauthUser #{user.inspect} " unless user.blank?
+        end
+      end
+      if user.is_a?(LdapUser)
+        # First try logging in as an LDAP user
+        user_class = :ldap_user
+        error_string = 'LDAP details incorrect'
+        # Use Warden to authenticate the user, if we get nil back, it failed.
+        Rails.logger.info "Before warden authenticate for LDAP =  #{self.resource.inspect}"
+        begin
+          self.resource = warden.authenticate scope: user_class
+        rescue
+          Rails.logger.info "LDAP Authentication failed."
+        end
+        Rails.logger.info "Result of warden authenticate for LDAP = #{self.resource.inspect}"
+      end
+      # If the user is a localUser or LDAP Authentication has failed, try logging in as a Local user
+      if self.resource.nil? || user.is_a?(LocalUser)
+        if self.resource.nil?
+          Rails.logger.info "LDAP Authentication failed. Logging in as an local user"
+        end
         user_class = :local_user
         self.resource = warden.authenticate({ scope: resource_name, recall: "#{controller_path}#new" })
         Rails.logger.info "Result of warden authenticate = #{self.resource.inspect}"
+        if self.resource.nil?
+          raise "Unable to login user=#{user.inspect}"
+        end
         set_flash_message(:notice, :signed_in) if is_flashing_format?
         sign_in(resource_name, resource)
         yield resource if block_given?
@@ -47,10 +71,13 @@ class SessionsController < Devise::SessionsController
 
     rescue Exception => e
       Rails.logger.info "In Session Controller, exception handling"
-      Rails.logger.info "Exception thrown #{e.inspect}"
+      Rails.logger.info "Unable to Login user"
       Rails.logger.info "#{self.resource.inspect}" unless self.resource.nil?
       flash[:error] = error_string
-      render "/ctrp/sign_in"
+      render :status => 403,
+             :json => { :success => false,
+                        :info => "Login Failure",
+             }
     ensure
     end
 
@@ -85,9 +112,9 @@ class SessionsController < Devise::SessionsController
 
   private
 
-  def create_token(token_data)
-    secret = "secret" # must be an environment variable
-    JWT.encode(token_data, secret)
-  end
+#  def create_token(token_data)
+#    secret = "secret" # must be an environment variable
+#    JWT.encode(token_data, secret)
+#  end
   #- See more at: http://blog.moove-it.com/token-based-authentication-json-web-tokenjwt/#sthash.QlxioFfO.dpuf
 end

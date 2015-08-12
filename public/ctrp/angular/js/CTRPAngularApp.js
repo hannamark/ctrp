@@ -18,7 +18,11 @@
         'ui.bootstrap',
 //        'datatables',
         'ui.grid',
-        'ui.grid.pagination'
+        'ui.grid.pagination',
+        'ui.grid.selection',
+        'ui.scrollpoint',
+        'DateServiceMod',
+        'CTRPUnderscoreModule'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
@@ -139,12 +143,72 @@
                     controller: 'userCtrl as userView'
                 })
 
+                .state('main.families', {
+                    url: '/families',
+                    templateUrl: '/ctrp/angular/partials/family_list.html',
+                    controller: 'familyCtrl as familyView',
+                    resolve: {
+                        FamilyService: 'FamilyService',
+                        familyStatusObj : function(FamilyService) {
+                            return FamilyService.getFamilyStatuses();
+                        },
+                        familyTypeObj : function(FamilyService) {
+                            return FamilyService.getFamilyTypes();
+                        }
+                    }
+                })
+
+                .state('main.familyDetail', {
+                    url: '/families/:familyId',
+                    templateUrl: '/ctrp/angular/partials/familyDetails.html',
+                    controller: 'familyDetailCtrl as familyDetailView',
+                    resolve: {
+                        FamilyService: 'FamilyService',
+                        familyStatusObj : function(FamilyService) {
+                            return FamilyService.getFamilyStatuses();
+                        },
+                        familyTypeObj : function(FamilyService) {
+                            return FamilyService.getFamilyTypes();
+                        },
+                        familyDetailObj: function($stateParams, FamilyService) {
+                            return FamilyService.getFamilyById($stateParams.familyId);
+                        },
+                        familyRelationshipObj: function(FamilyService) {
+                            return FamilyService.getFamilyRelationships();
+                        }
+                    } //resolve the promise and pass it to controller
+                })
+
+                .state('main.addFamily', {
+                    url: '/new_family',
+                    templateUrl: '/ctrp/angular/partials/familyDetails.html',
+                    controller: 'familyDetailCtrl as familyDetailView',
+                    resolve: {
+                        FamilyService: 'FamilyService',
+                        familyStatusObj : function(FamilyService) {
+                            return FamilyService.getFamilyStatuses();
+                        },
+                        familyTypeObj : function(FamilyService) {
+                            return FamilyService.getFamilyTypes();
+                        },
+                        familyDetailObj: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        }
+                    }
+                })
+
+
                 .state('main.people', {
                     url: '/people',
                     templateUrl: '/ctrp/angular/partials/person_list.html',
                     controller: 'personCtrl as personView',
                     resolve: {
                         OrgService: 'OrgService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj: function(OrgService) {
                             return OrgService.getSourceStatuses();
                         }
@@ -163,6 +227,9 @@
                         },
                         personDetailObj: function($stateParams, PersonService) {
                             return PersonService.getPersonById($stateParams.personId);
+                        },
+                        poAffStatuses : function(PersonService) {
+                            return PersonService.getPoAffStatuses();
                         }
                     } //resolve the promise and pass it to controller
                 })
@@ -180,6 +247,9 @@
                             var deferred = $q.defer();
                             deferred.resolve(null);
                             return deferred.promise;
+                        },
+                        poAffStatuses : function(PersonService) {
+                            return PersonService.getPoAffStatuses();
                         }
                     }
                 });

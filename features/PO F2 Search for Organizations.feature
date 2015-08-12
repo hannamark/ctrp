@@ -83,18 +83,17 @@ When I provide the full or partial phone number of the organization I wish to se
 And I submit my search request
 Then the system should display all organizations with matching phone numbers
 
-Scenario: As any CTRP User, search for organizations by <organization_trial_relationship>
-Given I know the name of the < organization_trial_relationship > I wish to search for
+Scenario: As any CTRP User, search for organizations by organization_trial_relationship
+Given I know the name of the organization_trial_relationship I wish to search for
 And I am logged in to CTRP
 And I have selected the option to search for an organization
-When I select the < organization_trial_relationship > of the organization I wish to search for
+When I select the organization_trial_relationship of the organization I wish to search for
 And I submit my search request
-Then the system should display all organizations that have the < organization_trial_relationship>
-
-|<organization_trial_relationship>|
-|lead organization    |
-|sponsor organization |
-|participating site   |
+Then the system should display all organizations that have the organization_trial_relationship
+|Example: organization_trial_relationship| 
+|lead organization| 
+|sponsor organization| 
+|participating site|
 
 Scenario: As any CTRP User, search for organizations with multiple parameters
 Given I know multiple parameters of the organization I wish to search for
@@ -122,3 +121,16 @@ When I provide the curator name of the organization I wish to search for
 And I submit my search request
 Then the system should display all organizations that contain the curator name
 
+@PO
+Scenario: As a PO Curator or a CTRP Administrator, I can search for organizations by status
+Given I know the status of the organization I wish to search for
+And I am logged in to CTRP
+And I am on a search organizations screen
+When I provide the status of the organization I wish to search for
+|Organization Status|
+|Active|
+|Inactive|
+|Pending|
+|Nullified|
+And I submit my search request
+Then the system should display all organizations that have a matching organization status

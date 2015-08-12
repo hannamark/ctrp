@@ -10,10 +10,7 @@
 (function () {
     'use strict';
 
-    angular.module('PromiseTimeoutModule', ['ngResource', 'TimeoutHttpInterceptor', 'toastr'])
-        .config(['$httpProvider', function ($httpProvider) {
-             $httpProvider.interceptors.push('timeoutHttpInterceptorService');
-        }])
+    angular.module('PromiseTimeoutModule', ['ngResource', 'toastr'])
 
         .service('PromiseTimeoutService', PromiseTimeoutService);
 

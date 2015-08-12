@@ -8,13 +8,17 @@
     angular.module('ctrpApp')
         .factory('PersonService', PersonService);
 
-    PersonService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope'];
+    PersonService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope', 'PromiseTimeoutService'];
 
-    function PersonService(PromiseService, URL_CONFIGS, $log, $rootScope) {
+    function PersonService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService) {
 
         var initPersonSearchParams = {
-            name: "",
-            po_id: "",
+            fname: "",
+            mname: "",
+            lname: "",
+            //po_id: "",
+            ctrp_id: "",
+            source_context: "",
             source_id: "",
             source_status: "",
             prefix: "",
@@ -31,7 +35,7 @@
 
         var gridOptions = {
             enableColumnResizing: true,
-            rowHeight: 60,
+            rowHeight: 50,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
@@ -40,19 +44,24 @@
             enableFiltering: true,
             columnDefs: [
                 {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
-                {name: 'name', enableSorting: true, width: '20%',
+                {name: 'fname', displayName: 'First Name', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
+                {name: 'lname', displayName: 'Last Name', enableSorting: true, width: '10%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '10%'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '10%'},
-                {name: 'prefix', enableSorting: true, width: '10%'},
-                {name: 'suffix', enableSorting: true, width: '10%'},
+                {name: 'prefix', enableSorting: true, width: '6%'},
+                {name: 'suffix', enableSorting: true, width: '6%'},
                 {name: 'email', enableSorting: true, width: '18%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phone', enableSorting: true, width: '12%'}
+                {name: 'phone', enableSorting: true, width: '10%'}
             ]
         };
 
@@ -63,8 +72,10 @@
             searchPeople : searchPeople,
             getInitialPersonSearchParams : getInitialPersonSearchParams,
             getGridOptions : getGridOptions,
+            getSourceContexts : getSourceContexts,
             getSourceStatuses : getSourceStatuses,
-            deletePerson : deletePerson
+            deletePerson : deletePerson,
+            getPoAffStatuses : getPoAffStatuses
         };
 
         return services;
@@ -98,17 +109,15 @@
 
             //update an existing person
             var configObj = {}; //empty config
-            return PromiseService.updateObj(URL_CONFIGS.A_PERSON + personObj.id + ".json", personObj, configObj);
+            return PromiseService.updateObj(URL_CONFIGS.A_PERSON + personObj.person.id + ".json", personObj, configObj);
         } //upsertPerson
-
 
 
 
         /**
          *
          * @param searchParams, JSON object whose keys can include:
-         * name, po_id, source_id, source_status, family_name, address, address2, city, state_province, country,
-         * postal_code, and email
+         * fname, lname, po_id, source_id, source_status, prefix, suffix, email, phone
          *
          * @returns Array of JSON objects
          */
@@ -155,6 +164,13 @@
             $rootScope.$broadcast(msgCode, {content: msgContent});
         } //broadcastMsg
 
+        /**
+         * retrieve source contexts from backend service
+         * @return {promise}
+         */
+        function getSourceContexts() {
+            return PromiseService.getData(URL_CONFIGS.SOURCE_CONTEXTS);
+        } //getSourceContexts
 
         /**
          * retrieve source statuses from backend service
@@ -173,6 +189,15 @@
          */
         function deletePerson(personId) {
             return PromiseService.deleteObjFromBackend(URL_CONFIGS.A_PERSON + personId + ".json");
+        }
+
+
+        /**
+         * Retrieve PoAffiliationStatuses
+         * @returns {*}
+         */
+        function getPoAffStatuses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PO_AFF_STATUSES);
         }
 
 

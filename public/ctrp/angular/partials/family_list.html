@@ -1,0 +1,95 @@
+<div class="row-fluid">
+    <div class="col-md-12 col-border">
+        <div class="row">
+            <h4>Search Family
+                <small>
+                    <mark>* for wild card (e.g. Yal* for Yale Family)</mark>
+                </small>
+            </h4>
+        </div>
+        <div class="row">
+            <form class="form-horizontal" role="form">
+
+                <!-- first row -->
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <!-- family name -->
+                        <div class="form-group">
+                            <label for="family_name" class="control-label col-sm-2">Name: </label>
+
+                            <div class="col-sm-10">
+                                <input type="text" id="family_name" class="form-control"
+                                       placeholder="Family Name"
+                                       ng-model="familyView.searchParams.name" auto-focus/>
+                            </div>
+                        </div>
+                        <!-- family name ends -->
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Family ID -->
+                        <div class="form-group">
+                            <label for="ctrp_id" class="control-label col-sm-2">Family ID: </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="ctrp_id" class="form-control" placeholder="Family ID"
+                                       ng-model="familyView.searchParams.ctrp_id"/>
+                            </div>
+                        </div>
+                        <!-- PO ID ends -->
+                    </div>
+                </div><!-- first row ends -->
+
+                <!-- second row -->
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <!--family status-->
+                        <div class="form-group">
+                            <label for="family_status" class="control-label col-sm-2">Family Status: </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="family_status" ng-model="familyView.searchParams.family_status">
+                                    <option value="">Select a status</option>
+                                    <option ng-repeat="status in familyView.familyStatusArr" value="{{status.name}}">{{status.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- family status ends -->
+                    </div>
+                    <div class="col-md-6">
+                        <!--family type-->
+                        <div class="form-group">
+                            <label for="family_type" class="control-label col-sm-2">Family Type: </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="family_type" ng-model="familyView.searchParams.family_type">
+                                    <option value="">Select a type</option>
+                                    <option ng-repeat="type in familyView.familyTypeArr" value="{{type.name}}">{{type.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- family type ends -->
+                    </div>
+                </div><!--second row ends -->
+
+
+
+                <div class="row-fluid">
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-8">
+                            <button type="submit" class="btn btn-primary" ng-click="familyView.searchFamilies()">
+                               <i class="glyphicon glyphicon-search"></i> Search
+                            </button>
+
+                            <button type="reset" class="btn btn-default btn-danger" ng-click="familyView.resetSearch()">
+                               <i class="glyphicon glyphicon-remove"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- list of families -->
+<div class="row-fluid">
+    <p><h4>Family Search Results:</h4></p>
+        <div ui-grid="familyView.gridOptions" ui-grid-pagination="" class="grid"></div>
+</div>

@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
 
+
+
+
   scope "/ctrp" do
     devise_for :users
 
@@ -18,11 +21,20 @@ Rails.application.routes.draw do
 
     resources :source_contexts
 
+    resources :families do
+      collection do
+            get 'search'
+            post 'search'
+          end
+    end
+
     resources :family_statuses
 
     resources :family_types
 
     resources :family_relationships
+
+    resources :family_memberships
 
     resources :comments
 
@@ -33,9 +45,14 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :po_affiliations
+    resources :po_affiliation_statuses
+
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'
     get '/backoffice' => 'backoffice#index'
+    get '/backoffice/download_log'
+    get '/backoffice/static_members'
 
     # Devise related routes
     #devise_for :users
