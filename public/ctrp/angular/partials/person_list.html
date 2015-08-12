@@ -48,16 +48,25 @@
                 <!-- second row -->
                 <div class="row-fluid">
                     <div class="col-md-6">
-                        <!--source id-->
                         <div class="form-group">
+                            <!--source context-->
+                            <label for="source_context" class="control-label col-sm-2">Source Context: </label>
+                            <div class="col-sm-4">
+                                <select class="form-control" id="source_context" ng-model="personView.searchParams.source_context">
+                                    <option value="">Select a context</option>
+                                    <option ng-repeat="context in personView.sourceContextArr" value="{{context.name}}">{{context.name}}</option>
+                                </select>
+                            </div>
+                            <!--source context ends-->
+                            <!--source id-->
                             <label for="source_id" class="control-label col-sm-2">Source ID: </label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-4">
                                 <input type="text" id="source_id" class="form-control" placeholder="Source ID"
                                        ng-model="personView.searchParams.source_id"/>
                             </div>
+                            <!-- source id ends -->
                         </div>
-                        <!-- source id ends -->
                     </div>
                     <div class="col-md-6">
                         <!--source status-->

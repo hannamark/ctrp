@@ -78,7 +78,7 @@ class OrganizationsController < ApplicationController
     params[:alias] = true if !params.has_key?(:alias)
 
     # Scope chaining, reuse the scope definition
-    if params[:name].present? || params[:ctrp_id].present? || params[:source_id].present? || params[:source_status].present? || params[:family_name].present? || params[:address].present? || params[:address2].present? || params[:city].present? || params[:state_province].present? || params[:country].present? || params[:postal_code].present? || params[:email].present? || params[:phone].present?
+    if params[:name].present? || params[:ctrp_id].present? || params[:source_context].present? || params[:source_id].present? || params[:source_status].present? || params[:family_name].present? || params[:address].present? || params[:address2].present? || params[:city].present? || params[:state_province].present? || params[:country].present? || params[:postal_code].present? || params[:email].present? || params[:phone].present?
       @organizations = Organization.all
       if params[:alias]
         @organizations = @organizations.matches_name_wc(params[:name]) if params[:name].present?
@@ -86,6 +86,7 @@ class OrganizationsController < ApplicationController
         @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
       end
       @organizations = @organizations.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
+      @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
       @organizations = @organizations.matches_wc('source_id', params[:source_id]) if params[:source_id].present?
       @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
       @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?

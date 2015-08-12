@@ -52,6 +52,8 @@ class Person < ActiveRecord::Base
   # Scope definitions for people search
   scope :matches, -> (column, value) { where("people.#{column} = ?", "#{value}") }
 
+  scope :with_source_context, -> (value) { joins(:source_context).where("source_contexts.name = ?", "#{value}") }
+
   scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
 
   scope :matches_wc, -> (column, value) {
@@ -70,6 +72,8 @@ class Person < ActiveRecord::Base
   scope :sort_by_col, -> (column, order) {
     if column == 'id'
       order("#{column} #{order}")
+    elsif column == 'source_context'
+      joins("LEFT JOIN source_contexts ON source_contexts.id = people.source_context_id").order("source_contexts.name #{order}").group(:'source_contexts.name')
     elsif column == 'source_status'
       joins("LEFT JOIN source_statuses ON source_statuses.id = people.source_status_id").order("source_statuses.name #{order}").group(:'source_statuses.name')
     else

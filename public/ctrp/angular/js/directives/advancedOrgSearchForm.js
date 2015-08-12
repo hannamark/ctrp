@@ -109,6 +109,13 @@
 
 
             function getPromisedData() {
+                //get source contexts
+                OrgService.getSourceContexts().then(function (contexts) {
+                    //console.log("received contexts: " + JSON.stringify(contexts));
+                    contexts.sort(Common.a2zComparator());
+                    $scope.sourceContexts = contexts;
+                });
+
                 //get source statuses
                 OrgService.getSourceStatuses().then(function (statuses) {
                     //console.log("received statuses: " + JSON.stringify(statuses));
