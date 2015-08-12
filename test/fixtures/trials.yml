@@ -1,0 +1,98 @@
+# == Schema Information
+#
+# Table name: trials
+#
+#  id                      :integer          not null, primary key
+#  nci_id                  :string(255)
+#  lead_protocol_id        :string(255)
+#  official_title          :text
+#  pilot                   :string(255)
+#  research_category       :string(255)
+#  primary_purpose_other   :string(255)
+#  secondary_purpose_other :string(255)
+#  program_code            :string(255)
+#  grant_question          :string(255)
+#  start_date              :date
+#  start_date_qual         :string(255)
+#  primary_comp_date       :date
+#  primary_comp_date_qual  :string(255)
+#  comp_date               :date
+#  comp_date_qual          :string(255)
+#  ind_ide_question        :string(255)
+#  authority_country       :string(255)
+#  authority_org           :string(255)
+#  intervention_indicator  :string(255)
+#  sec801_indicator        :string(255)
+#  data_monitor_indicator  :string(255)
+#  history                 :json
+#  study_source_id         :integer
+#  phase_id                :integer
+#  primary_purpose_id      :integer
+#  secondary_purpose_id    :integer
+#  responsible_party_id    :integer
+#  lead_org_id             :integer
+#  pi_id                   :integer
+#  sponsor_id              :integer
+#  investigator_id         :integer
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  uuid                    :string(255)
+#
+# Indexes
+#
+#  index_trials_on_investigator_id       (investigator_id)
+#  index_trials_on_lead_org_id           (lead_org_id)
+#  index_trials_on_phase_id              (phase_id)
+#  index_trials_on_pi_id                 (pi_id)
+#  index_trials_on_primary_purpose_id    (primary_purpose_id)
+#  index_trials_on_responsible_party_id  (responsible_party_id)
+#  index_trials_on_secondary_purpose_id  (secondary_purpose_id)
+#  index_trials_on_sponsor_id            (sponsor_id)
+#  index_trials_on_study_source_id       (study_source_id)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nci_id: MyString
+  lead_protocol_id: MyString
+  official_title: MyText
+  pilot: MyString
+  research_category: MyString
+  program_code: MyString
+  grant_question: MyString
+  start_date: 2015-07-16
+  start_date_qual: MyString
+  primary_comp_date: 2015-07-16
+  primary_comp_date_qual: MyString
+  comp_date: 2015-07-16
+  comp_date_qual: MyString
+  ind_ide_question: MyString
+  authority_country: MyString
+  authority_org: MyString
+  intervention_indicator: MyString
+  sec801_indicator: MyString
+  data_monitor_indicator: MyString
+  history:
+
+two:
+  nci_id: MyString
+  lead_protocol_id: MyString
+  official_title: MyText
+  pilot: MyString
+  research_category: MyString
+  program_code: MyString
+  grant_question: MyString
+  start_date: 2015-07-16
+  start_date_qual: MyString
+  primary_comp_date: 2015-07-16
+  primary_comp_date_qual: MyString
+  comp_date: 2015-07-16
+  comp_date_qual: MyString
+  ind_ide_question: MyString
+  authority_country: MyString
+  authority_org: MyString
+  intervention_indicator: MyString
+  sec801_indicator: MyString
+  data_monitor_indicator: MyString
+  history:
