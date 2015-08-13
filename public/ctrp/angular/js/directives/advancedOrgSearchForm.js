@@ -18,16 +18,16 @@
         .directive('ctrpAdvancedOrgSearchForm', ctrpAdvancedOrgSearchForm);
 
     ctrpAdvancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location',
-        'MESSAGES', 'uiGridConstants', '$timeout', '_', '$anchorScroll'];
+        'MESSAGES', 'uiGridConstants', '$timeout', '_', '$anchorScroll', '$compile'];
 
     function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common, $location,
-                                       MESSAGES, uiGridConstants, $timeout, _, $anchorScroll) {
+                                       MESSAGES, uiGridConstants, $timeout, _, $anchorScroll, $compile) {
 
         var directiveObj = {
             restrict: 'E',
             scope: {
                 showgrid: '=',  //boolean
-                enablerowselection: '=',  //boolean
+                enablerowselection: '=?',  //boolean
                 usedinmodal: '=',  //boolean
                 orgSearchResults: '@orgSearchResults',
                 selectedOrgsArray: '@selectedOrgsArray',
@@ -42,10 +42,12 @@
 
         /**************** implementations below ******************/
 
-        function linkFn(scope, element, attr, controller) {
+        function linkFn(scope, element, attrs, controller) {
             // element.text('this is the advanced search form');
             console.log('showgrid: ' + scope.showgrid);
             console.log('enablerowselection: ' + scope.enablerowselection);
+            // scope.enablerowselection = attrs.enablerowselection || false;
+            $compile(element.contents())(scope);
 
         } //linkFn
 
@@ -65,6 +67,7 @@
             $scope.gridOptions = OrgService.getGridOptions();
             //$scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
             //$scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+            //$scope.enablerowselection = false;
 
             $scope.$watch('usedinmodal', function (newVal, oldVal) {
                 console.log('usedinmodal: ' + newVal);
