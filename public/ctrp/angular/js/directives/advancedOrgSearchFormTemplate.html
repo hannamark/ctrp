@@ -213,13 +213,17 @@
 <!-- use the ui-grid to present the organization search results, if showgrid is set to 'true' -->
 <div class="row" ng-show="showgrid">
     <div class="col-sm-12">
-        <a href="" id="org_search_results"></a>
-        <p><h4>Organization Search Results:</h4></p>
-        <div ng-if="enablerowselection" ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
+        <div class="row" ng-if="gridOptions.totalItems != null">
+            <a href="" id="org_search_results"></a>
+            <p><h4>Organization Search Results: {{gridOptions.totalItems}}</h4></p>
+        </div>
+        <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
+            <div ng-if="enablerowselection" ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
              ui-grid-auto-resize
              style="height: {{gridHeight}}"></div>
 
-        <div ng-if="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize
-        style="height: {{gridHeight}}"></div>
+            <div ng-if="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize
+            style="height: {{gridHeight}}"></div>
+        </div>
     </div>
 </div>

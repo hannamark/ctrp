@@ -108,6 +108,7 @@
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];
+                $scope.gridOptions.totalItems = null;
             }; //resetSearch
 
 
