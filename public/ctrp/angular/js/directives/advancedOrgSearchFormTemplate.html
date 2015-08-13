@@ -155,8 +155,7 @@
                     <select class="form-control" id="country" ng-model="searchParams.country"
                             ng-change="watchCountrySelection(searchParams.country)">
                         <option value="" selected>All countries</option>
-                        <option ng-repeat="country in countries" value="{{country.name}}"
-                                ng-selected="country.name == searchParams.country">
+                        <option ng-repeat="country in countries" value="{{country.name}}">
                             {{country.name}}
                         </option>
                     </select>
