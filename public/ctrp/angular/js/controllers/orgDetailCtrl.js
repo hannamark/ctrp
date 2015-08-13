@@ -14,13 +14,13 @@
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
                            $scope, countryList, Common, sourceStatusObj, $state, $modal) {
         var vm = this;
+        vm.name = "tony";
         vm.numbers = [1, 2, 3];
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
-        vm.countriesArr = countryList.data;
+        vm.countriesArr = countryList;
         vm.countriesArr.sort(Common.a2zComparator());
         vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
-        //vm.curOrg = vm.curOrg || vm.curOrg;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         //console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
@@ -36,7 +36,7 @@
 
 
 
-        activate()
+        activate();
 
 
         /****************** implementations below ***************/

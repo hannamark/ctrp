@@ -8,55 +8,44 @@ describe('Testing Organization Details Controller', function() {
     var $controllerConstructor;
     var $httpBackend;
     var scope;
-    var Common;
+    var commoner;
+    var ctrl;
 
-    beforeEach(function() {
-       module('Constants');
-        module('LocalCacheModule');
-        module('CommonTools');
-        module('PromiseServiceModule');
-        module('ctrpApp');
-        inject(function($injector, $rootScope, Common, $httpBackend) {
-           // Common = $injector.get('Common');
+    beforeEach(module('ctrpApp'));
+    beforeEach(module('CommonTools'));
+    beforeEach(module('Constants'));
+    beforeEach(module('LocalCacheModule'));
+    beforeEach(module('PromiseTimeoutModule'));
+    beforeEach(module('LocalCacheModule'));
+
+    beforeEach(inject(function($injector, $controller, $rootScope, Common, $httpBackend, LocalCacheService) {
+            commoner = Common; //$injector.get('Common');
             $controllerConstructor = $injector.get('$controller');
             $rootScope = $injector.get('$rootScope');
             scope = $rootScope.$new();
-            Common.a2zComparator = function() {
-                var compare = function(a, b) {
-                    if (a.name < b.name) {
-                        return -1;
-                    }
-                    if (a.name > b.name) {
-                        return 1;
-                    }
-                    return 0;
-                };
-                return compare;
-            };
-            scope.$injector = ['Common'];
-        })
-    });
+        spyOn(commoner, 'a2zComparator');
+
+        //build the controller
+        ctrl = $controllerConstructor('orgDetailCtrl', {
+            Common : commoner,
+            $scope : scope,
+            orgDetailObj : '',
+            countryList: '',
+            sourceStatusObj: ''
+        });
+
+
+
+    }));
 
 
 
     it('should have three numbers in the orgDetailCtrl', function() {
-
-        var ctrl = $controllerConstructor('orgDetailCtrl', {
-            Common : Common,
-            $scope : scope,
-            orgDetailObj : {data: ''},
-            countryList: {data : ''},
-            sourceStatusObj: {data: ''}
-        });
         expect(ctrl.numbers.length).toBe(3);
     });
 
-    /*
-    it('Common is truthy or not', function() {
-        expect(Common).toBeTruthy();
+    it('name should be tony in the orgDetailCtrl', function() {
+        expect(ctrl.name).toBe("tony");
     });
-    */
-
-
 
 });

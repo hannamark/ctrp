@@ -7,28 +7,18 @@
     'use strict';
 
     angular.module('CommonTools', [])
-        .factory('Common', Common);
+        .service('Common', Common);
 
-    Common.$inject = [];
+    Common.$inject = ['$rootScope'];
 
-    function Common() {
-
-        var commonTools = {
-            a2zComparator : a2zComparator
-        };
-
-
-        return commonTools;
-
-
-        /********************* implementations below ****************************/
+    function Common($rootScope) {
 
         /**
          * A-Z Comparator for sorting an array of JSON objects
          * by the 'name' field in each JSON object
          *
          */
-        function a2zComparator() {
+        this.a2zComparator = function() {
             var compare = function(a, b) {
                 if (a.name > b.name) {
                     return 1;
@@ -41,7 +31,16 @@
             }
 
             return compare;
-        } //a2zComparator
+        }; //a2zComparator
+
+
+        /**
+         * Broastcast message to other components
+         * @param message
+         */
+        this.broadcastMsg = function(message) {
+            $rootScope.$broadcast(message, {});
+        }; //broadcastMsg
 
 
     }

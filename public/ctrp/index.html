@@ -5,10 +5,7 @@
     <title>CTRP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/podemo/angular/css/override.css">
-    <!--<link rel="stylesheet" href="/podemo/angular/css/app.css">-->
-    <link rel="stylesheet" type="text/css"
-          href="/podemo/angular/third_party_libs/angular-toastr/dist/angular-toastr.min.css">
+    <link rel="stylesheet" href="/ctrp/angular/css/override.css">
 
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -16,32 +13,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-resource.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-animate.min.js"></script>
-    <script src="/podemo/angular/third_party_libs/angular-toastr/dist/angular-toastr.tpls.js"></script>
 
 
     <!-- angular modules/dependencies from third parties -->
     <script src="third_party_libs/angular-local-storage.js"></script>
 
-    <!--	  <script src="/podemo/angular/js/app.js"></script>-->
-    <script src="/podemo/angular/js/CTRPAngularApp.js"></script>
-
-    <!-- home-made Angular modules -->
-    <script src="/podemo/angular/js/modules/Constants.js"></script>
-    <script src="/podemo/angular/js/modules/PromiseServiceMod.js"></script>
-    <script src="/podemo/angular/js/modules/LocalCacheModule.js"></script>
-
-    <!-- services -->
-    <script src="/podemo/angular/js/services/OrganizationService.js"></script>
-    <script src="/podemo/angular/js/services/cache/LocalCacheService.js"></script>
-
-    <!-- controllers -->
-    <script src="/podemo/angular/js/controllers/organizationCtrl.js"></script>
-    <script src="/podemo/angular/js/controllers/orgDetailCtrl.js"></script>
 </head>
 <body>
-<div class="row pull-left">
-    <img src="/ctrp/static/images/NIH-red-logo.png"/> National Cancer Institute | Clinical Trials Reporting Program
+<div>
+    <img src="/ctrp/static/images/NIH-red-logo.png"/> <b>National Cancer Institute | Clinical Trials Reporting Program</b>
 </div>
+<h3>CTRP AUM Home Menu</h3>
 <div class="row">
     <div class="col-md-1"><!--empty column--></div>
     <div class="col-md-10">
@@ -53,9 +35,14 @@
 </div>
 <div class="row">
     <ul>
-    <li><a href="/ctrp/admin">Jump to the Rails Admin</a></li>
-    <li><a href="/ctrp/angular">Jump to the AngularJS View</a></li>
+    <li><a href="/ctrp/angular#/main/sign_in">Log In</a></li>
+    <li><a href="/ctrp/angular#/main/organizations">Organization</a></li>
+    <li><a href="/ctrp/angular#/main/people">Person</a></li>
+    <li><a href="/ctrp/angular#/main/registration">Registration</a></li>
+    <li><a href="/ctrp/angular#/main/trials">Trials</a></li>
+    <li><a href="/ctrp/backoffice">Backoffice</a></li>
     </ul>
 </div>
+<!--test-->
 </body>
 </html>

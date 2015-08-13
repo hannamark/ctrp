@@ -1,0 +1,38 @@
+<head lang="en" ng-app="ctrpApp">
+  <meta charset="UTF-8">
+  <title>CTRP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/ctrp/angular/css/override.css">
+
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-resource.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-animate.min.js"></script>
+
+
+  <!-- angular modules/dependencies from third parties -->
+  <script src="third_party_libs/angular-local-storage.js"></script>
+
+</head>
+<body>
+<div>
+  <img src="/ctrp/static/images/NIH-red-logo.png"/> <b>National Cancer Institute | Clinical Trials Reporting Program</b>
+</div>
+<h3>CTRP Backoffice</h3>
+
+<div>
+  <ul>
+    <li><a href="/ctrp/">Main</a></li>
+    <li><a href="/ctrp/admin">Rails Admin</a></li>
+    <li><%= link_to 'Download Log', backoffice_download_log_url %></li>
+    <li><a href="/ctrp/admin/app_setting">App Setting</a></li>
+    <li><a href="/ctrp/backoffice/static_members">Static Members</a></li>
+  </ul>
+</div>
+
+
+</body>
+</html>

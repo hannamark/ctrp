@@ -40,11 +40,6 @@
     <script src="angular/third_party_libs/angular-datatables/dist/angular-datatables.min.js"></script>
     <script src="angular/third_party_libs/angular-ui-grid/ui-grid.min.js"></script>
 
-    <!--<script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>-->
-    <!--<script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>-->
-    <!--<script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>-->
-    <!--<script src="http://ui-grid.info/release/ui-grid-unstable.js"></script>-->
-
     <!-- Angular app main file -->
     <script src="angular/js/CTRPAngularApp.js"></script>
 
@@ -56,16 +51,36 @@
     <script src="angular/js/modules/PromiseServiceMod.js"></script>
     <script src="angular/js/modules/LocalCacheModule.js"></script>
     <script src="angular/js/modules/PromiseWithTimeoutService.js"></script>
+    <script src="angular/js/modules/DateServiceModule.js"></script>
+    <script src="angular/js/modules/CTRPUnderscoreModule.js"></script>
+
 
     <!-- services -->
     <script src="angular/js/services/OrganizationService.js"></script>
     <script src="angular/js/services/cache/LocalCacheService.js"></script>
     <script src="angular/js/services/GeoLocationService.js"></script>
+    <script src="angular/js/services/PersonService.js"></script>
+    <script src="angular/js/services/FamilyService.js"></script>
+    <script src="angular/js/services/UserService.js"></script>
+
 
     <!-- controllers -->
     <script src="angular/js/controllers/organizationCtrl.js"></script>
     <script src="angular/js/controllers/orgDetailCtrl.js"></script>
     <script src="angular/js/controllers/ModalInstanceCtrl.js"></script>
+    <script src="angular/js/controllers/personCtrl.js"></script>
+    <script src="angular/js/controllers/personDetailCtrl.js"></script>
+    <script src="angular/js/controllers/ModalInstancePersonCtrl.js"></script>
+    <script src="angular/js/controllers/userCtrl.js"></script>
+    <script src="angular/js/controllers/familyCtrl.js"></script>
+    <script src="angular/js/controllers/familyDetailCtrl.js"></script>
+    <script src="angular/js/controllers/ModalInstanceFamilyCtrl.js"></script>
+    <script src="angular/js/controllers/headerNavigationCtrl.js"></script>
+
+
+    <!-- interceptors -->
+    <script src="angular/js/interceptors/AuthInterceptor.js"></script>
+
 
 </head>
 <body>

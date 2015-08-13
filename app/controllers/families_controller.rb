@@ -10,6 +10,11 @@ class FamiliesController < ApplicationController
   # GET /families/1
   # GET /families/1.json
   def show
+    @export_data = Family.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render :json => @export_data.to_json(:include => :family_memberships) }
+    end
   end
 
   # GET /families/new
@@ -72,6 +77,20 @@ class FamiliesController < ApplicationController
     end
   end
 
+  def search
+    # Pagination/sorting params initialization
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 10 if params[:rows].blank?
+    params[:sort] = 'name' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+    @families = Family.all
+    @families = @families.matches('id', params[:id]) if params[:id].present?
+    @families = @families.matches_wc('name', params[:name]) if params[:name].present?
+    @families = @families.with_family_status(params[:family_status]) if params[:family_status].present?
+    @families = @families.with_family_type(params[:family_type]) if params[:family_type].present?
+    @families = @families.sort_by_col(params[:sort], params[:order]).group(:'families.id').page(params[:start]).per(params[:rows])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_family
@@ -80,6 +99,6 @@ class FamiliesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def family_params
-      params.require(:family).permit(:name, :description, :family_status_id, :family_type_id)
+      params.require(:family).permit(:name, :description, :family_status_id, :family_type_id, family_memberships_attributes: [:id,:_destroy,:organization_id,:family_relationship_id,:effective_date,:expiration_date])
     end
 end

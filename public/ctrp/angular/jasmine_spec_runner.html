@@ -35,16 +35,22 @@
     <!-- Angular app main file -->
     <script src="./js/CTRPAngularApp.js"></script>
 
+    <!-- interceptors -->
+    <script src="./js/interceptors/TimeoutHttpInterceptor.js"></script>
     <!-- home-made Angular modules -->
     <script src="./js/modules/Constants.js"></script>
     <script src="./js/modules/Common.js"></script>
     <script src="./js/modules/PromiseServiceMod.js"></script>
+    <script src="./js/modules/PromiseWithTimeoutService.js"></script>
     <script src="./js/modules/LocalCacheModule.js"></script>
+    <script src="./js/interceptors/TimeoutHttpInterceptor.js"></script>
+    <script src="./js/modules/PromiseWithTimeoutService.js"></script>
 
     <!-- services -->
     <script src="./js/services/OrganizationService.js"></script>
     <script src="./js/services/cache/LocalCacheService.js"></script>
     <script src="./js/services/GeoLocationService.js"></script>
+    <script src="./js/services/PersonService.js"></script>
 
     <!-- controllers -->
     <script src="./js/controllers/organizationCtrl.js"></script>
@@ -54,7 +60,9 @@
 
 
     <!-- angular testing spec files below -->
-    <script src="./unit_testing_specs/orgDetailCtrlSpec.js"></script>
+    <!--<script src="./unit_testing_specs/orgDetailCtrlSpec.js"></script>-->
+    <script src="./unit_testing_specs/personSpec.js"></script>
+
 
 </head>
 <body>

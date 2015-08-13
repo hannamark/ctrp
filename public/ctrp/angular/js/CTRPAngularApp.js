@@ -18,7 +18,9 @@
         'ui.bootstrap',
 //        'datatables',
         'ui.grid',
-        'ui.grid.pagination'
+        'ui.grid.pagination',
+        'DateServiceMod',
+        'CTRPUnderscoreModule'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
@@ -27,18 +29,23 @@
                 $httpProvider.defaults.headers.common = {};
             }
 
+            $httpProvider.interceptors.push('AuthInterceptor');
+
+
             //disable IE ajax request caching
             $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
             $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
             $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
+            //interceptor below:
+            $httpProvider.defaults.useXDomain = true;
+            delete $httpProvider.defaults.headers.common['X-Requested-With'];
         }])
 
-        .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+        .config(function ($stateProvider, $urlRouterProvider) {
 
-            $httpProvider.defaults.useXDomain = true;
-            //  $httpProvider.defaults.withCredentials = true;
-            delete $httpProvider.defaults.headers.common['X-Requested-With'];
-            //    $httpProvider.interceptors.push('AuthInterceptor');
+
+
 
             $urlRouterProvider.otherwise('/main/welcome');
 
@@ -122,6 +129,135 @@
                     }
                 })
 
+                .state('main.sign_in', {
+                    url: '/sign_in',
+                    templateUrl: '/ctrp/angular/partials/sign_in.html',
+                    controller: 'userCtrl as userView'
+                })
+
+                .state('main.error403', {
+                    url: '/error403',
+                    templateUrl: '/ctrp/angular/partials/error403.html',
+                    controller: 'userCtrl as userView'
+                })
+
+                .state('main.families', {
+                    url: '/families',
+                    templateUrl: '/ctrp/angular/partials/family_list.html',
+                    controller: 'familyCtrl as familyView',
+                    resolve: {
+                        FamilyService: 'FamilyService',
+                        familyStatusObj : function(FamilyService) {
+                            return FamilyService.getFamilyStatuses();
+                        },
+                        familyTypeObj : function(FamilyService) {
+                            return FamilyService.getFamilyTypes();
+                        }
+                    }
+                })
+
+                .state('main.familyDetail', {
+                    url: '/families/:familyId',
+                    templateUrl: '/ctrp/angular/partials/familyDetails.html',
+                    controller: 'familyDetailCtrl as familyDetailView',
+                    resolve: {
+                        FamilyService: 'FamilyService',
+                        familyStatusObj : function(FamilyService) {
+                            return FamilyService.getFamilyStatuses();
+                        },
+                        familyTypeObj : function(FamilyService) {
+                            return FamilyService.getFamilyTypes();
+                        },
+                        familyDetailObj: function($stateParams, FamilyService) {
+                            return FamilyService.getFamilyById($stateParams.familyId);
+                        }
+                    } //resolve the promise and pass it to controller
+                })
+
+                .state('main.addFamily', {
+                    url: '/new_family',
+                    templateUrl: '/ctrp/angular/partials/familyDetails.html',
+                    controller: 'familyDetailCtrl as familyDetailView',
+                    resolve: {
+                        FamilyService: 'FamilyService',
+                        familyStatusObj : function(FamilyService) {
+                            return FamilyService.getFamilyStatuses();
+                        },
+                        familyTypeObj : function(FamilyService) {
+                            return FamilyService.getFamilyTypes();
+                        },
+                        familyDetailObj: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        }
+                    }
+                })
+
+
+                .state('main.people', {
+                    url: '/people',
+                    templateUrl: '/ctrp/angular/partials/person_list.html',
+                    controller: 'personCtrl as personView',
+                    resolve: {
+                        OrgService: 'OrgService',
+                        sourceStatusObj: function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        }
+                    }
+                })
+
+                .state('main.personDetail', {
+                    url: '/people/:personId',
+                    templateUrl: '/ctrp/angular/partials/personDetails.html',
+                    controller: 'personDetailCtrl as personDetailView',
+                    resolve: {
+                        OrgService: 'OrgService',
+                        PersonService: 'PersonService',
+                        sourceStatusObj: function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        },
+                        personDetailObj: function($stateParams, PersonService) {
+                            return PersonService.getPersonById($stateParams.personId);
+                        },
+                        poAffStatuses : function(PersonService) {
+                            return PersonService.getPoAffStatuses();
+                        }
+                    } //resolve the promise and pass it to controller
+                })
+
+                .state('main.addPerson', {
+                    url: '/new_person',
+                    templateUrl: '/ctrp/angular/partials/personDetails.html',
+                    controller: 'personDetailCtrl as personDetailView',
+                    resolve: {
+                        OrgService: 'OrgService',
+                        sourceStatusObj: function(OrgService) {
+                            return OrgService.getSourceStatuses();
+                        },
+                        personDetailObj: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        },
+                        poAffStatuses : function(PersonService) {
+                            return PersonService.getPoAffStatuses();
+                        }
+                    }
+                });
+                //.state('main.sign_out', {
+                //    url: '/sign_out',
+                //    controller: 'userCtrl',
+                //    resolve: {
+                //        logOut: function($q) {
+                //            var deferred = $q.defer();
+                //            //config.headers.Authorization = '';
+                //            deferred.resolve({data: "logout"});
+                //            return deferred.promise;
+                //        }
+                //    }
+                //
+                //})
 
 
         }).run(function() {
