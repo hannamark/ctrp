@@ -30,10 +30,7 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
     user ||= User.new
-    #if local_user_signed_in?
-    #  Rails.logger.info "YEYE LOCAL"
-    #end
-    Rails.logger.info "IN HERE!!!!!!!!!!!! user = #{user.inspect}"
+    Rails.logger.info "In Cancancan's ability.rb's initialize method user = #{user.inspect}"
     if user.role == 'ROLE_ADMIN'
       can :manage, :all
     elsif user.role == 'ROLE_CURATOR'
