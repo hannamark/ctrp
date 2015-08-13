@@ -28,7 +28,7 @@
             address2 : "",
             city : "",
             state_province : "",
-            country : "United States", //default country
+            country : "", //default country ? United States ?
             email : "",
             postal_code : "",
             phone: "",
