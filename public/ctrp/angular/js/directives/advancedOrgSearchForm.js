@@ -206,7 +206,7 @@
                         $scope.gridOptions.data = data.orgs;
                         $scope.gridOptions.totalItems = data.total;
                         $scope.gridHeight = $scope.gridOptions.rowHeight * (data.orgs.length + 1);
-                        $location.hash('orgSearchResults');
+                        $location.hash('org_search_results');
                         $anchorScroll();
                     }
                     $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
