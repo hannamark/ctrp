@@ -38,6 +38,14 @@ ActiveRecord::Schema.define(version: 20150810153001) do
     t.string   "uuid",          limit: 255
   end
 
+  create_table "expanded_access_types", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
   create_table "families", force: :cascade do |t|
     t.string   "name",             limit: 255
     t.text     "description"
@@ -90,6 +98,46 @@ ActiveRecord::Schema.define(version: 20150810153001) do
     t.string   "uuid",       limit: 255
   end
 
+  create_table "grants", force: :cascade do |t|
+    t.string   "funding_mechanism", limit: 255
+    t.string   "institute_code",    limit: 255
+    t.integer  "serial_number"
+    t.string   "nci",               limit: 255
+    t.integer  "trial_id"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "uuid",              limit: 255
+  end
+
+  add_index "grants", ["trial_id"], name: "index_grants_on_trial_id", using: :btree
+
+  create_table "holder_types", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
+  create_table "ind_ides", force: :cascade do |t|
+    t.string   "type",                    limit: 255
+    t.integer  "number"
+    t.string   "grantor",                 limit: 255
+    t.string   "nih_nci",                 limit: 255
+    t.string   "expanded_access",         limit: 255
+    t.string   "exempt",                  limit: 255
+    t.integer  "holder_type_id"
+    t.integer  "expanded_access_type_id"
+    t.integer  "trial_id"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "uuid",                    limit: 255
+  end
+
+  add_index "ind_ides", ["expanded_access_type_id"], name: "index_ind_ides_on_expanded_access_type_id", using: :btree
+  add_index "ind_ides", ["holder_type_id"], name: "index_ind_ides_on_holder_type_id", using: :btree
+  add_index "ind_ides", ["trial_id"], name: "index_ind_ides_on_trial_id", using: :btree
+
   create_table "name_aliases", force: :cascade do |t|
     t.string   "name",            limit: 255
     t.integer  "organization_id"
@@ -124,6 +172,18 @@ ActiveRecord::Schema.define(version: 20150810153001) do
   add_index "organizations", ["source_context_id"], name: "index_organizations_on_source_context_id", using: :btree
   add_index "organizations", ["source_status_id"], name: "index_organizations_on_source_status_id", using: :btree
 
+  create_table "other_ids", force: :cascade do |t|
+    t.string   "protocol_id",           limit: 255
+    t.integer  "protocol_id_origin_id"
+    t.integer  "trial_id"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "uuid",                  limit: 255
+  end
+
+  add_index "other_ids", ["protocol_id_origin_id"], name: "index_other_ids_on_protocol_id_origin_id", using: :btree
+  add_index "other_ids", ["trial_id"], name: "index_other_ids_on_trial_id", using: :btree
+
   create_table "people", force: :cascade do |t|
     t.string   "source_id",         limit: 255
     t.string   "prefix",            limit: 255
@@ -144,6 +204,14 @@ ActiveRecord::Schema.define(version: 20150810153001) do
   add_index "people", ["source_cluster_id"], name: "index_people_on_source_cluster_id", using: :btree
   add_index "people", ["source_context_id"], name: "index_people_on_source_context_id", using: :btree
   add_index "people", ["source_status_id"], name: "index_people_on_source_status_id", using: :btree
+
+  create_table "phases", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
 
   create_table "po_affiliation_statuses", force: :cascade do |t|
     t.string   "code",       limit: 255
@@ -168,6 +236,38 @@ ActiveRecord::Schema.define(version: 20150810153001) do
   add_index "po_affiliations", ["person_id"], name: "index_po_affiliations_on_person_id", using: :btree
   add_index "po_affiliations", ["po_affiliation_status_id"], name: "index_po_affiliations_on_po_affiliation_status_id", using: :btree
 
+  create_table "primary_purposes", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
+  create_table "protocol_id_origins", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
+  create_table "responsible_parties", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
+  create_table "secondary_purposes", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
   create_table "source_clusters", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.datetime "created_at",             null: false
@@ -190,6 +290,115 @@ ActiveRecord::Schema.define(version: 20150810153001) do
     t.datetime "updated_at",             null: false
     t.string   "uuid",       limit: 255
   end
+
+  create_table "study_sources", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
+  create_table "trial_co_lead_orgs", force: :cascade do |t|
+    t.integer  "trial_id"
+    t.integer  "organization_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "uuid",            limit: 255
+  end
+
+  add_index "trial_co_lead_orgs", ["organization_id"], name: "index_trial_co_lead_orgs_on_organization_id", using: :btree
+  add_index "trial_co_lead_orgs", ["trial_id"], name: "index_trial_co_lead_orgs_on_trial_id", using: :btree
+
+  create_table "trial_co_pis", force: :cascade do |t|
+    t.integer  "trial_id"
+    t.integer  "person_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
+  add_index "trial_co_pis", ["person_id"], name: "index_trial_co_pis_on_person_id", using: :btree
+  add_index "trial_co_pis", ["trial_id"], name: "index_trial_co_pis_on_trial_id", using: :btree
+
+  create_table "trial_funding_sources", force: :cascade do |t|
+    t.integer  "trial_id"
+    t.integer  "organization_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "uuid",            limit: 255
+  end
+
+  add_index "trial_funding_sources", ["organization_id"], name: "index_trial_funding_sources_on_organization_id", using: :btree
+  add_index "trial_funding_sources", ["trial_id"], name: "index_trial_funding_sources_on_trial_id", using: :btree
+
+  create_table "trial_status_wrappers", force: :cascade do |t|
+    t.date     "status_date"
+    t.text     "why_stopped"
+    t.integer  "trial_status_id"
+    t.integer  "trial_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "uuid",            limit: 255
+  end
+
+  add_index "trial_status_wrappers", ["trial_id"], name: "index_trial_status_wrappers_on_trial_id", using: :btree
+  add_index "trial_status_wrappers", ["trial_status_id"], name: "index_trial_status_wrappers_on_trial_status_id", using: :btree
+
+  create_table "trial_statuses", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
+  create_table "trials", force: :cascade do |t|
+    t.string   "nci_id",                  limit: 255
+    t.string   "lead_protocol_id",        limit: 255
+    t.text     "official_title"
+    t.string   "pilot",                   limit: 255
+    t.string   "research_category",       limit: 255
+    t.string   "primary_purpose_other",   limit: 255
+    t.string   "secondary_purpose_other", limit: 255
+    t.string   "program_code",            limit: 255
+    t.string   "grant_question",          limit: 255
+    t.date     "start_date"
+    t.string   "start_date_qual",         limit: 255
+    t.date     "primary_comp_date"
+    t.string   "primary_comp_date_qual",  limit: 255
+    t.date     "comp_date"
+    t.string   "comp_date_qual",          limit: 255
+    t.string   "ind_ide_question",        limit: 255
+    t.string   "authority_country",       limit: 255
+    t.string   "authority_org",           limit: 255
+    t.string   "intervention_indicator",  limit: 255
+    t.string   "sec801_indicator",        limit: 255
+    t.string   "data_monitor_indicator",  limit: 255
+    t.json     "history"
+    t.integer  "study_source_id"
+    t.integer  "phase_id"
+    t.integer  "primary_purpose_id"
+    t.integer  "secondary_purpose_id"
+    t.integer  "responsible_party_id"
+    t.integer  "lead_org_id"
+    t.integer  "pi_id"
+    t.integer  "sponsor_id"
+    t.integer  "investigator_id"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "uuid",                    limit: 255
+  end
+
+  add_index "trials", ["investigator_id"], name: "index_trials_on_investigator_id", using: :btree
+  add_index "trials", ["lead_org_id"], name: "index_trials_on_lead_org_id", using: :btree
+  add_index "trials", ["phase_id"], name: "index_trials_on_phase_id", using: :btree
+  add_index "trials", ["pi_id"], name: "index_trials_on_pi_id", using: :btree
+  add_index "trials", ["primary_purpose_id"], name: "index_trials_on_primary_purpose_id", using: :btree
+  add_index "trials", ["responsible_party_id"], name: "index_trials_on_responsible_party_id", using: :btree
+  add_index "trials", ["secondary_purpose_id"], name: "index_trials_on_secondary_purpose_id", using: :btree
+  add_index "trials", ["sponsor_id"], name: "index_trials_on_sponsor_id", using: :btree
+  add_index "trials", ["study_source_id"], name: "index_trials_on_study_source_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -236,14 +445,37 @@ ActiveRecord::Schema.define(version: 20150810153001) do
   add_foreign_key "family_memberships", "families"
   add_foreign_key "family_memberships", "family_relationships"
   add_foreign_key "family_memberships", "organizations"
+  add_foreign_key "grants", "trials"
+  add_foreign_key "ind_ides", "expanded_access_types"
+  add_foreign_key "ind_ides", "holder_types"
+  add_foreign_key "ind_ides", "trials"
   add_foreign_key "name_aliases", "organizations"
   add_foreign_key "organizations", "source_clusters"
   add_foreign_key "organizations", "source_contexts"
   add_foreign_key "organizations", "source_statuses"
+  add_foreign_key "other_ids", "protocol_id_origins"
+  add_foreign_key "other_ids", "trials"
   add_foreign_key "people", "source_clusters"
   add_foreign_key "people", "source_contexts"
   add_foreign_key "people", "source_statuses"
   add_foreign_key "po_affiliations", "organizations"
   add_foreign_key "po_affiliations", "people"
   add_foreign_key "po_affiliations", "po_affiliation_statuses"
+  add_foreign_key "trial_co_lead_orgs", "organizations"
+  add_foreign_key "trial_co_lead_orgs", "trials"
+  add_foreign_key "trial_co_pis", "people"
+  add_foreign_key "trial_co_pis", "trials"
+  add_foreign_key "trial_funding_sources", "organizations"
+  add_foreign_key "trial_funding_sources", "trials"
+  add_foreign_key "trial_status_wrappers", "trial_statuses"
+  add_foreign_key "trial_status_wrappers", "trials"
+  add_foreign_key "trials", "organizations", column: "lead_org_id"
+  add_foreign_key "trials", "organizations", column: "sponsor_id"
+  add_foreign_key "trials", "people", column: "investigator_id"
+  add_foreign_key "trials", "people", column: "pi_id"
+  add_foreign_key "trials", "phases"
+  add_foreign_key "trials", "primary_purposes"
+  add_foreign_key "trials", "responsible_parties"
+  add_foreign_key "trials", "secondary_purposes"
+  add_foreign_key "trials", "study_sources"
 end
