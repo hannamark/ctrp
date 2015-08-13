@@ -105,6 +105,13 @@
             $scope.resetSearch = function () {
                 // $scope.states.length = 0;
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
+                Object.keys($scope.searchParams).forEach(function(key, index) {
+                    if (key != 'alias') {
+                        $scope.searchParams[key] = '';
+                    } else {
+                        $scope.searchParams['alias'] = true;
+                    }
+                });
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];
