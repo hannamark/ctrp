@@ -17,7 +17,7 @@ class SearchJsonController < ApplicationController
 
 
     require 'json'
-    file = File.read('sample.json')
+    file = File.read('newdatadictioanry.json')
     data_hash = JSON.parse(file)
     puts data_hash['title']
     puts data_hash.keys

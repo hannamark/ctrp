@@ -2,8 +2,6 @@ Rails.application.routes.draw do
 
 
 
-
-
   scope "/ctrp" do
     devise_for :users
 
