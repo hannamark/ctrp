@@ -17,7 +17,7 @@
         vm.familyStatusArr = familyStatusObj.data;
         vm.familyTypeArr = familyTypeObj.data;
         vm.familyRelationshipArr = familyRelationshipObj.data;
-        console.log("helo@@@ "+JSON.stringify(familyRelationshipObj));
+
         //Organization Affiliations
         vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
         vm.foundOrgs = [];
@@ -117,6 +117,10 @@
             }
         }; //openCalendar
 
+        vm.msg = "Hello from a controller method.";
+        vm.returnHello = function() {
+            return $scope.msg ;
+        }
 
         activate()
         /****************** implementations below ***************/
@@ -283,6 +287,7 @@
 
             async.eachSeries(vm.curFamily.family_memberships, findOrgName, retOrgs);
         } //populateFamilyMemberships
+
 
 
     }

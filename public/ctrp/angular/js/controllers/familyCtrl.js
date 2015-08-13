@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .controller('familyCtrl', familyCtrl);
 
-    familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', 'Common','familyStatusObj','familyTypeObj'];
+    familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', '$rootScope','Common','familyStatusObj','familyTypeObj','$modal'];
 
-    function familyCtrl(FamilyService, uiGridConstants, $scope, Common,familyStatusObj,familyTypeObj) {
+    function familyCtrl(FamilyService, uiGridConstants, $scope, $rootScope,Common,familyStatusObj,familyTypeObj,$modal) {
 
         var vm = this;
 
@@ -20,6 +20,36 @@
         vm.familyStatusArr.sort(Common.a2zComparator());
         vm.familyTypeArr = familyTypeObj.data;
         vm.familyTypeArr.sort(Common.a2zComparator());
+        vm.gridScope=vm;
+
+        $scope.dynamicPopover = {
+            content: 'Hello, World!',
+            templateUrl: 'display_aff_orgs.html',
+            title: 'Family Memberships'
+
+        };
+
+        $scope.showOrgs = function(family_id){
+
+            var modalInstance = $modal.open({
+                animation:    true,
+                templateUrl: 'display_aff_orgs.html',
+                controller:  'ModalInstanceFamilyMembersCtrl as vm',
+                resolve: {
+                    familyId: function() {
+                        return family_id;
+                    }
+                }
+            });
+
+
+            modalInstance.result.then(function () {
+            //console.log("about to delete the familyDetail " + vm.curFamily.id);
+                //$state.go('main.families');
+            }, function () {
+                console.log("operation canceled")
+            });
+        };
 
         //ui-grid plugin options
         vm.gridOptions = FamilyService.getGridOptions();
@@ -67,9 +97,6 @@
             vm.searchFamilies();
             updateSearchResultsUponParamsChanges();
         } //activate
-
-
-
 
         /**
          * callback function for sorting UI-Grid columns
