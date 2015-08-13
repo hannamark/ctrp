@@ -72,6 +72,7 @@ class FamiliesController < ApplicationController
     end
   end
 
+# GET /get_orgs/1.json
   def get_orgs
     @organizations = Family.find_by_id(params[:id]).organizations if Family.find_by_id(params[:id]).present?
     respond_to do |format|
@@ -106,6 +107,7 @@ class FamiliesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def family_params
-      params.require(:family).permit(:name, :description, :family_status_id, :family_type_id, family_memberships_attributes: [:id,:_destroy,:organization_id,:family_relationship_id,:effective_date,:expiration_date])
+      print @params;
+      params.require(:family).permit(:name, :family_status_id, :family_type_id, family_memberships_attributes: [:id,:_destroy,:organization_id,:family_relationship_id,:effective_date,:expiration_date])
     end
 end

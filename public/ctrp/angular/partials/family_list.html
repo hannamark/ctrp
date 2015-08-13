@@ -1,4 +1,18 @@
 <div class="row-fluid">
+    <script type="text/ng-template" id="display_aff_orgs.html">
+        <div class="modal-header">
+            <h3 class="modal-title">{{vm.modalTitle}}</h3>
+        </div>
+        <div class="modal-body">
+            <div ng-repeat="org in vm.aff_orgs">
+                <strong>{{org.name}}</strong>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" id="delete_btn" ng-click="vm.close()">Close</button>
+        </div>
+    </script>
+
     <div class="col-md-12 col-border">
         <div class="row">
             <h4>Search Family
@@ -91,5 +105,5 @@
 <!-- list of families -->
 <div class="row-fluid">
     <p><h4>Family Search Results:</h4></p>
-        <div ui-grid="familyView.gridOptions" ui-grid-pagination="" class="grid"></div>
+        <div ui-grid="familyView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
 </div>

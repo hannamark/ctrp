@@ -28,6 +28,12 @@ Rails.application.routes.draw do
           end
     end
 
+    resources :families do
+      member do
+        get  'get_orgs'
+      end
+      end
+
     resources :family_statuses
 
     resources :family_types
