@@ -43,6 +43,7 @@
 
         var gridOptions = {
             enableColumnResizing: true,
+            totalItems: null,
             rowHeight: 50,
             enableRowSelection: true,
             enableRowHeaderSelection: true,
