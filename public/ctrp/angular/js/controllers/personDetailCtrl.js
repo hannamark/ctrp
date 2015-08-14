@@ -173,7 +173,7 @@
                 }, function () {
                     console.log("operation canceled");
                 });
-            }
+            };
 
         }; //prepareModal
 
