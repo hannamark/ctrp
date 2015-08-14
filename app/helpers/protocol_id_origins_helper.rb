@@ -1,0 +1,2 @@
+module ProtocolIdOriginsHelper
+end

@@ -1,0 +1,2 @@
+module SecondaryPurposesHelper
+end

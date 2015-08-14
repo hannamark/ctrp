@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-
-
-
-
   scope "/ctrp" do
     devise_for :users
 
@@ -64,6 +60,16 @@ Rails.application.routes.draw do
       post 'sign_out' => 'sessions#destroy', :as => :destroy_session
     end
 
+    resources :study_sources
+    resources :phases
+    resources :primary_purposes
+    resources :secondary_purposes
+    resources :responsible_parties
+    resources :trials
+    resources :protocol_id_origins
+    resources :holder_types
+    resources :expanded_access_types
+    resources :trial_statuses
   end
   # Devise related routes
 
