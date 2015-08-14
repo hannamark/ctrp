@@ -27,7 +27,7 @@
             restrict: 'E',
             scope: {
                 showgrid: '=',  //boolean
-                enablerowselection: '=?',  //boolean
+                enablerowselection: '=',  //boolean
                 usedinmodal: '=',  //boolean
                 orgSearchResults: '@orgSearchResults',
                 selectedOrgsArray: '@selectedOrgsArray',
@@ -72,16 +72,19 @@
             $scope.$watch('usedinmodal', function (newVal, oldVal) {
                 console.log('usedinmodal: ' + newVal);
                 $scope.resetSearch();
+
+                //find the organization name index in the column definitions
+                var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
                 if (newVal) {
                     //unlink the name if used in modal
-                    //find the organization name index in the column definitions
-                    var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
                     if (orgNameIndex > -1) {
                         $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" ' +
                             'title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>';
                     }
                 } else {
-                    $scope.gridOptions = OrgService.getGridOptions();
+                    // $scope.gridOptions = OrgService.getGridOptions();
+                    $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                        '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
                 }
             });
 

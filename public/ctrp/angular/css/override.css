@@ -229,16 +229,14 @@ header img {
     #adv-org-search-modal  {
         top: 5%;
         right: 50%;
-        margin-left: 3px;
-        margin-right: 3px;
-        outline: none;
-        max-width: 900px;
-        height: 940px;
+        max-width: 920px;
+        max-height: 1080px;
     }
 
     .modal-body {
-        max-width: 900px;
-        overflow: hidden;
+        max-width: 920px;
+        margin-left: 5px;
+        overflow: auto;
     }
 
     /*.modal-footer,*/
