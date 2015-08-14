@@ -194,7 +194,7 @@
 
     <div class="row">
         <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-8">
+            <div class="col-sm-12 text-center">
                 <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="searchOrgs()">
                 <i class="glyphicon glyphicon-search"></i> Search
                 </button>
@@ -213,16 +213,18 @@
 <div class="row" ng-show="showgrid">
     <div class="col-sm-12">
         <div class="row" ng-if="gridOptions.totalItems != null">
-            <a href="" id="org_search_results"></a>
-            <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
+            <div class="col-sm-11">
+                <a href="" id="org_search_results"></a>
+                <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
+            </div>
         </div>
         <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
             <div ng-if="enablerowselection" ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
              ui-grid-auto-resize
              style="height: {{gridHeight}}"></div>
 
-            <div ng-if="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize
-            style="height: {{gridHeight}}"></div>
+            <!--<div ng-if="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize-->
+            <!--style="height: {{gridHeight}}"></div>-->
         </div>
     </div>
 </div>
