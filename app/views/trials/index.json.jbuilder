@@ -1,0 +1,4 @@
+json.array!(@trials) do |trial|
+  json.extract! trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category, :primary_purpose_other, :secondary_purpose_other, :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :comp_date, :comp_date_qual, :ind_ide_question, :authority_country, :authority_org, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history, :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id
+  json.url trial_url(trial, format: :json)
+end

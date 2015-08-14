@@ -64,6 +64,7 @@ class Trial < ActiveRecord::Base
   belongs_to :sponsor, class_name: "Organization"
   belongs_to :investigator, class_name: "Person"
   has_many :other_ids
+  has_many :ind_ides
   has_many :grants
   has_many :trial_status_wrappers
   has_many :trial_funding_sources
