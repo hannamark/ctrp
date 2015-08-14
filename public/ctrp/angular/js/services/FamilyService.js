@@ -26,6 +26,7 @@
 
         var gridOptions = {
             enableColumnResizing: true,
+            totalItems: null,
             rowHeight: 50,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,

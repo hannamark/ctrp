@@ -87,6 +87,7 @@
             // vm.states.length = 0;
             vm.searchParams = FamilyService.getInitialFamilySearchParams();
             vm.gridOptions.data.length = 0;
+            vm.gridOptions.totalItems = null;
         }; //resetSearch
 
         activate();
@@ -94,7 +95,7 @@
         /****************************** implementations **************************/
 
         function activate() {
-            vm.searchFamilies();
+            // vm.searchFamilies();
             // updateSearchResultsUponParamsChanges();
         } //activate
 

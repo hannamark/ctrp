@@ -104,6 +104,14 @@
 
 <!-- list of families -->
 <div class="row">
-    <p><h4>Family Search Results:</h4></p>
-        <div ui-grid="familyView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+    <div class="col-sm-12">
+        <div class="row" ng-if="familyView.gridOptions.totalItems != null">
+            <p><h4>Family Search Results: {{familyView.gridOptions.totalItems}} found</h4></p>
+        </div>
+        <div class="row animated-item" ng-if="familyView.gridOptions.data.length > 0"">
+            <div ui-grid="familyView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+        </div>
+    </div>
+
+
 </div>
