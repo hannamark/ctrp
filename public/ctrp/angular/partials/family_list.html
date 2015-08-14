@@ -1,4 +1,4 @@
-<div class="row-fluid">
+<div class="row">
     <script type="text/ng-template" id="display_aff_orgs.html">
         <div class="modal-header">
             <h3 class="modal-title">{{vm.modalTitle}}</h3>
@@ -25,11 +25,11 @@
             <form class="form-horizontal" role="form">
 
                 <!-- first row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <!-- family name -->
                         <div class="form-group">
-                            <label for="family_name" class="control-label col-sm-2">Name: </label>
+                            <label for="family_name" class="control-label col-sm-2">Family Name: </label>
 
                             <div class="col-sm-10">
                                 <input type="text" id="family_name" class="form-control"
@@ -53,7 +53,7 @@
                 </div><!-- first row ends -->
 
                 <!-- second row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <!--family status-->
                         <div class="form-group">
@@ -84,9 +84,9 @@
 
 
 
-                <div class="row-fluid">
+                <div class="row">
                     <div class="form-group">
-                        <div class="col-sm-offset-4 col-sm-8">
+                        <div class="col-sm-12 text-center">
                             <button type="submit" class="btn btn-primary" ng-click="familyView.searchFamilies()">
                                <i class="glyphicon glyphicon-search"></i> Search
                             </button>
@@ -103,7 +103,7 @@
 </div>
 
 <!-- list of families -->
-<div class="row-fluid">
+<div class="row">
     <p><h4>Family Search Results:</h4></p>
         <div ui-grid="familyView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
 </div>

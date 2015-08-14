@@ -76,17 +76,7 @@
                 .state('main.organizations', {
                     url: '/organizations',
                     templateUrl: '/ctrp/angular/partials/organization_list.html',
-                    controller: 'organizationCtrl as orgsView',
-                    resolve: {
-                        GeoLocationService : 'GeoLocationService',
-                        OrgService : 'OrgService',
-                        countryList : function(GeoLocationService) {
-                            return GeoLocationService.getCountryList();
-                        },
-                        sourceStatusObj : function(OrgService) {
-                            return OrgService.getSourceStatuses();
-                        }
-                    }
+                    controller: 'organizationCtrl as orgsView'
                 })
 
                 .state('main.orgDetail', {
