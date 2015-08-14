@@ -1,4 +1,4 @@
-<div class="row-fluid">
+<div class="row">
     <div class="col-md-12 col-border">
         <div class="row">
             <h4>Search People
@@ -11,19 +11,19 @@
             <form class="form-horizontal" role="form">
 
                 <!-- first row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <!-- person name -->
                         <div class="form-group">
-                            <label for="person_fname" class="control-label col-sm-3">First Name: </label>
-                            <div class="col-sm-3">
+                            <label for="person_fname" class="control-label col-sm-2">First Name: </label>
+                            <div class="col-sm-4">
                                 <input type="text" id="person_fname" class="form-control"
                                        placeholder="First Name"
                                        ng-model="personView.searchParams.fname" auto-focus/>
                             </div>
-                            <label for="person_lname" class="control-label col-sm-3">Last Name: </label>
+                            <label for="person_lname" class="control-label col-sm-2">Last Name: </label>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <input type="text" id="person_lname" class="form-control"
                                        placeholder="Last Name"
                                        ng-model="personView.searchParams.lname"/>
@@ -36,6 +36,7 @@
                         <div class="form-group">
                             <!-- ID used as ctrp_id here -->
                             <label for="ctrp_id" class="control-label col-sm-2">PO ID: </label>
+
                             <div class="col-sm-10">
                                 <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
                                        ng-model="personView.searchParams.ctrp_id"/>
@@ -43,18 +44,23 @@
                         </div>
                         <!-- PO ID ends -->
                     </div>
-                </div><!-- first row ends -->
+                </div>
+                <!-- first row ends -->
 
                 <!-- second row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <!--source context-->
                             <label for="source_context" class="control-label col-sm-2">Source Context: </label>
+
                             <div class="col-sm-4">
-                                <select class="form-control" id="source_context" ng-model="personView.searchParams.source_context">
+                                <select class="form-control" id="source_context"
+                                        ng-model="personView.searchParams.source_context">
                                     <option value="">Select a context</option>
-                                    <option ng-repeat="context in personView.sourceContextArr" value="{{context.name}}">{{context.name}}</option>
+                                    <option ng-repeat="context in personView.sourceContextArr" value="{{context.name}}">
+                                        {{context.name}}
+                                    </option>
                                 </select>
                             </div>
                             <!--source context ends-->
@@ -72,22 +78,28 @@
                         <!--source status-->
                         <div class="form-group">
                             <label for="source_status" class="control-label col-sm-2">Source Status: </label>
+
                             <div class="col-sm-10">
-                                <select class="form-control" id="source_status" ng-model="personView.searchParams.source_status">
+                                <select class="form-control" id="source_status"
+                                        ng-model="personView.searchParams.source_status">
                                     <option value="">Select a status</option>
-                                    <option ng-repeat="status in personView.sourceStatusArr" value="{{status.name}}">{{status.name}}</option>
+                                    <option ng-repeat="status in personView.sourceStatusArr" value="{{status.name}}">
+                                        {{status.name}}
+                                    </option>
                                 </select>
                             </div>
                         </div>
                         <!-- source status ends -->
                     </div>
-                </div><!--second row ends -->
+                </div>
+                <!--second row ends -->
 
                 <!-- third row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="prefix" class="control-label col-sm-2">Prefix:</label>
+
                             <div class="col-sm-10">
                                 <input type="text" id="prefix" class="form-control" placeholder="Prefix"
                                        ng-model="personView.searchParams.prefix"/>
@@ -98,20 +110,23 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="suffix" class="control-label col-sm-2">Suffix:</label>
+
                             <div class="col-sm-10">
                                 <input type="text" id="suffix" class="form-control" placeholder="Suffix"
                                        ng-model="personView.searchParams.suffix"/>
                             </div>
                         </div>
                     </div>
-                </div><!--third row ends -->
+                </div>
+                <!--third row ends -->
 
 
                 <!-- fourth row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="email" class="control-label col-sm-2">Email:</label>
+
                             <div class="col-sm-10">
                                 <input type="text" id="email" class="form-control" placeholder="Email"
                                        ng-model="personView.searchParams.email"/>
@@ -121,23 +136,25 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="phone" class="control-label col-sm-2">Phone:</label>
+
                             <div class="col-sm-10">
                                 <input type="text" id="phone" class="form-control" placeholder="Phone"
                                        ng-model="personView.searchParams.phone"/>
                             </div>
                         </div>
                     </div>
-                </div><!--fourth row ends -->
+                </div>
+                <!--fourth row ends -->
 
-                <div class="row-fluid">
+                <div class="row">
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-8">
                             <button type="submit" class="btn btn-primary" ng-click="personView.searchPeople()">
-                               <i class="glyphicon glyphicon-search"></i> Search
+                                <i class="glyphicon glyphicon-search"></i> Search
                             </button>
 
                             <button type="reset" class="btn btn-default btn-danger" ng-click="personView.resetSearch()">
-                               <i class="glyphicon glyphicon-remove"></i> Clear
+                                <i class="glyphicon glyphicon-remove"></i> Clear
                             </button>
                         </div>
                     </div>
@@ -148,7 +165,15 @@
 </div>
 
 <!-- list of people -->
-<div class="row-fluid">
-    <p><h4>People Search Results:</h4></p>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row" ng-if="personView.gridOptions.totalItems != null">
+            <p><h4>People Search Results: {{personView.gridOptions.totalItems}} found</h4></p>
+        </div>
+        <div class="row animated-item" ng-if="personView.gridOptions.data.length > 0"
+        ">
         <div ui-grid="personView.gridOptions" ui-grid-pagination="" class="grid"></div>
+    </div>
+</div>
+
 </div>
