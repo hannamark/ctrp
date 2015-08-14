@@ -26,6 +26,7 @@
 
         var gridOptions = {
             enableColumnResizing: true,
+            totalItems: null,
             rowHeight: 50,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
@@ -34,18 +35,19 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'Family ID', width: '7%'},
-                {name: 'name', enableSorting: true, width: '20%%',
+                {name: 'id', enableSorting: true, displayName: 'Family ID', width: '4%'},
+                {name: 'name', enableSorting: true, width: '35%%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'family_status', displayName: 'Family Status', enableSorting: true, width: '10%'},
                 {name: 'family_type', displayName: 'Family Type', enableSorting: true, width: '10%'},
-                {name: 'description', enableSorting:false, displayName: 'Description',width: '23%'},
+                { name: 'aff_orgs',cellTemplate:'<button class="btn primary"  ng-mouseover="grid.appScope.showOrgs(row.entity.id)">Show Organizations</button>' }
+                /*{name:'aff_orgs',displayName: 'Family Memeberships',
+                    cellTemplate:'<button ng-bind="row.entity.id" popover-placement="right"  Popover-animation="true" popover-trigger="mouseenter" popover-template="grid.appScope.dynamicPopover.templateUrl" popover-title="{{grid.appScope.dynamicPopover.title}}" type="button" class="btn btn-default">Show Orgs</button>'}
 
-                { name: 'aff_orgs',width:'30%',displayName:'Affiliated Organizations',enableSorting:false,
-                    cellTemplate: '<div style="height: auto" ng-repeat="org in row.entity.aff_orgs">{{org.name}}</div>'
-                }
+                /*{name:'aff' ,displayName:'Family Members',
+                cellTemplate:'<div> <span grid.appScope.custom-popover popover-html="Some Popover Text" popover-placement="right" popover-label="Label"></span>'}*/
             ]
         };
 
@@ -59,7 +61,8 @@
             deleteFamily : deleteFamily,
             getFamilyStatuses : getFamilyStatuses,
             getFamilyTypes : getFamilyTypes,
-            getFamilyRelationships :getFamilyRelationships
+            getFamilyRelationships :getFamilyRelationships,
+            getAffiliatedOrgsByFamilyId :getAffiliatedOrgsByFamilyId
         };
 
         return services;
@@ -67,6 +70,13 @@
 
 
         /*********************** implementations *****************/
+        function sample() {
+            var scope = angular.element(document.getElementById('container')).scope();
+            scope.$apply(function(){
+                scope.msg = scope.msg + ' I am the newly addded message from the outside of the controller.';
+            })
+            alert(scope.returnHello());
+        }
 
         function getAllFamilies() {
             return PromiseService.getData(URL_CONFIGS.FAMILY_LIST);
@@ -77,7 +87,9 @@
             return PromiseService.getData(URL_CONFIGS.A_FAMILY + familyId + '.json');
         } //getFamilyById
 
-
+        function getAffiliatedOrgsByFamilyId(familyId) {
+            return PromiseService.getData(URL_CONFIGS.A_FAMILY + familyId + '/get_orgs.json');
+        }
         /**
          * Update or insert a new family
          *

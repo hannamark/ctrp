@@ -1,4 +1,18 @@
-<div class="row-fluid">
+<div class="row">
+    <script type="text/ng-template" id="display_aff_orgs.html">
+        <div class="modal-header">
+            <h3 class="modal-title">{{vm.modalTitle}}</h3>
+        </div>
+        <div class="modal-body">
+            <div ng-repeat="org in vm.aff_orgs">
+                <strong>{{org.name}}</strong>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" id="delete_btn" ng-click="vm.close()">Close</button>
+        </div>
+    </script>
+
     <div class="col-md-12 col-border">
         <div class="row">
             <h4>Search Family
@@ -11,11 +25,11 @@
             <form class="form-horizontal" role="form">
 
                 <!-- first row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <!-- family name -->
                         <div class="form-group">
-                            <label for="family_name" class="control-label col-sm-2">Name: </label>
+                            <label for="family_name" class="control-label col-sm-2">Family Name: </label>
 
                             <div class="col-sm-10">
                                 <input type="text" id="family_name" class="form-control"
@@ -39,7 +53,7 @@
                 </div><!-- first row ends -->
 
                 <!-- second row -->
-                <div class="row-fluid">
+                <div class="row">
                     <div class="col-md-6">
                         <!--family status-->
                         <div class="form-group">
@@ -70,9 +84,9 @@
 
 
 
-                <div class="row-fluid">
+                <div class="row">
                     <div class="form-group">
-                        <div class="col-sm-offset-4 col-sm-8">
+                        <div class="col-sm-12 text-center">
                             <button type="submit" class="btn btn-primary" ng-click="familyView.searchFamilies()">
                                <i class="glyphicon glyphicon-search"></i> Search
                             </button>
@@ -89,7 +103,15 @@
 </div>
 
 <!-- list of families -->
-<div class="row-fluid">
-    <p><h4>Family Search Results:</h4></p>
-        <div ui-grid="familyView.gridOptions" ui-grid-pagination="" class="grid"></div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row" ng-if="familyView.gridOptions.totalItems != null">
+            <p><h4>Family Search Results: {{familyView.gridOptions.totalItems}} found</h4></p>
+        </div>
+        <div class="row animated-item" ng-if="familyView.gridOptions.data.length > 0"">
+            <div ui-grid="familyView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+        </div>
+    </div>
+
+
 </div>

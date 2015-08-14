@@ -4,7 +4,6 @@
 #
 #  id               :integer          not null, primary key
 #  name             :string(255)
-#  description      :text
 #  family_status_id :integer
 #  family_type_id   :integer
 #  created_at       :datetime         not null

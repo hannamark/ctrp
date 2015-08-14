@@ -155,8 +155,7 @@
                     <select class="form-control" id="country" ng-model="searchParams.country"
                             ng-change="watchCountrySelection(searchParams.country)">
                         <option value="" selected>All countries</option>
-                        <option ng-repeat="country in countries" value="{{country.name}}"
-                                ng-selected="country.name == searchParams.country">
+                        <option ng-repeat="country in countries" value="{{country.name}}">
                             {{country.name}}
                         </option>
                     </select>
@@ -209,7 +208,7 @@
 
     <div class="row">
         <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-8">
+            <div class="col-sm-12 text-center">
                 <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="searchOrgs()">
                 <i class="glyphicon glyphicon-search"></i> Search
                 </button>
@@ -227,13 +226,19 @@
 <!-- use the ui-grid to present the organization search results, if showgrid is set to 'true' -->
 <div class="row" ng-show="showgrid">
     <div class="col-sm-12">
-        <a href="" id="orgSearchResults"></a>
-        <p><h4>Organization Search Results:</h4></p>
-        <div ng-show="enablerowselection" ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
+        <div class="row" ng-if="gridOptions.totalItems != null">
+            <div class="col-sm-11">
+                <a href="" id="org_search_results"></a>
+                <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
+            </div>
+        </div>
+        <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
+            <div ng-if="enablerowselection" ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
              ui-grid-auto-resize
              style="height: {{gridHeight}}"></div>
 
-        <!--<div ng-show="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize-->
-        <!--style="height: {{gridHeight}}"></div>-->
+            <!--<div ng-if="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize-->
+            <!--style="height: {{gridHeight}}"></div>-->
+        </div>
     </div>
 </div>

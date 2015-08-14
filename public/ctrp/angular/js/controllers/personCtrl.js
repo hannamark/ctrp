@@ -54,6 +54,7 @@
            // vm.states.length = 0;
             vm.searchParams = PersonService.getInitialPersonSearchParams();
             vm.gridOptions.data.length = 0;
+            vm.gridOptions.totalItems = null;
         }; //resetSearch
 
         activate();
@@ -61,8 +62,7 @@
     /****************************** implementations **************************/
 
         function activate() {
-            vm.searchPeople();
-            updateSearchResultsUponParamsChanges();
+            // vm.searchPeople();
         } //activate
 
 
@@ -74,9 +74,7 @@
          * @param sortColumns
          */
         function sortChangedCallBack(grid, sortColumns) {
-//            console.log("sortColumns.length = " + sortColumns.length);
-//            console.log("sortColumns[0].name: " + sortColumns[0].name);
-//            console.log("vm.gridOptions.columnDefs[0].name: " + vm.gridOptions.columnDefs[0].name);
+
             if (sortColumns.length == 0) {
                 console.log("removing sorting");
                 //remove sorting
@@ -99,16 +97,6 @@
             //do the search with the updated sorting
             vm.searchPeople();
         }; //sortChangedCallBack
-
-        /**
-         * update search results while search parameters is changed
-         */
-        function updateSearchResultsUponParamsChanges() {
-            //can change vm.searchParams.country to vm.searchParams to watch all search parameters
-            $scope.$watch(function() {return vm.searchParams.country;}, function(newVal, oldval) {
-                vm.searchPeople();
-            }, true);
-        }
 
     }
 
