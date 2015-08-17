@@ -8,11 +8,11 @@
     angular.module('ctrpApp')
         .controller('personDetailCtrl', personDetailCtrl);
 
-    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'MESSAGES', 'DateService',
-        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', '$timeout', 'poAffStatuses', '_'];
+    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService',
+        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
 
-    function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES, DateService,
-                              $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout, poAffStatuses, _) {
+    function personDetailCtrl(personDetailObj, PersonService, toastr, DateService,
+                              $scope, Common, sourceStatusObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
         console.log("in person detail controller now");
         vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;

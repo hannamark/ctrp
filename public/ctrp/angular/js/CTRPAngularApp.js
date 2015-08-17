@@ -127,12 +127,6 @@
                     controller: 'userCtrl as userView'
                 })
 
-                .state('main.error403', {
-                    url: '/error403',
-                    templateUrl: '/ctrp/angular/partials/error403.html',
-                    controller: 'userCtrl as userView'
-                })
-
                 .state('main.families', {
                     url: '/families',
                     templateUrl: '/ctrp/angular/partials/family_list.html',
@@ -248,19 +242,6 @@
                         }
                     }
                 });
-                //.state('main.sign_out', {
-                //    url: '/sign_out',
-                //    controller: 'userCtrl',
-                //    resolve: {
-                //        logOut: function($q) {
-                //            var deferred = $q.defer();
-                //            //config.headers.Authorization = '';
-                //            deferred.resolve({data: "logout"});
-                //            return deferred.promise;
-                //        }
-                //    }
-                //
-                //})
 
 
         }).run(function() {
