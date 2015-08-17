@@ -88,6 +88,10 @@
             vm.searchParams = FamilyService.getInitialFamilySearchParams();
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
+
+            Object.keys(vm.searchParams).forEach(function(key, index) {
+                vm.searchParams[key] = '';
+            });
         }; //resetSearch
 
         activate();
