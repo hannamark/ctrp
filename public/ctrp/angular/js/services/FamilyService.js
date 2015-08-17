@@ -36,7 +36,7 @@
             enableFiltering: true,
             columnDefs: [
                 {name: 'id', enableSorting: true, displayName: 'Family ID', width: '4%'},
-                {name: 'name', enableSorting: true, width: '35%%',
+                {name: 'name', enableSorting: true, displayName: 'Family Name', width: '35%%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
