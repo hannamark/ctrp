@@ -23,5 +23,7 @@
     "bdd",
     "selenium"
   ],
-  "devDependencies": {}
+  "devDependencies": {
+    "protractor-cucumber-junit": "^1.1.3"
+  }
 }

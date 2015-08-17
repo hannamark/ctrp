@@ -18,4 +18,8 @@
 #
 
 class TrialStatusWrapper < ActiveRecord::Base
+  include BasicConcerns
+
+  belongs_to :trial_status
+  belongs_to :trial
 end

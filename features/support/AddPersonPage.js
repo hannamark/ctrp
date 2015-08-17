@@ -1,0 +1,93 @@
+/**
+ * Created by singhs10 on 8/10/15.
+ */
+
+var helper = require('../support/helper');
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+var expect = require('chai').expect;
+
+AddPersonPage = function () {
+
+    this.addPersonFirstName = element(by.model('personDetailView.curPerson.fname'));
+    this.addPersonSecondName = element(by.model('personDetailView.curPerson.mname'));
+    this.addPersonLastName = element(by.model('personDetailView.curPerson.lname'));
+    this.addPersonSourceId = element(by.model('personDetailView.curPerson.source_id'));
+    this.addPersonSourceStatus = element(by.model('personDetailView.curPerson.source_status_id'));
+    this.addPersonPrefix = element(by.model('personDetailView.curPerson.prefix'));
+    this.addPersonSuffix = element(by.model('personDetailView.curPerson.suffix'));
+    this.addPersonEmail = element(by.model('personDetailView.curPerson.email'));
+    this.addPersonPhone = element(by.model('personDetailView.curPerson.phone'));
+    this.addPersonSearchAffiliatedOrg = element(by.model('personDetailView.orgsSearchParams.name'));
+    this.addPersonAffiliatedOrg = element(by.css('select[ng-model="personDetailView.selectedOrgs"]'));
+    this.addPersonSelectAllAffiliatedOrg = element(by.css('button[title="Select all"]'));
+    this.addPersonRemoveAllAffiliatedOrg = element(by.css('button[title="Remove all"]'));
+    this.personSaveButton = element(by.css('input[value="Save"]'));
+    this.personResetButton = element(by.css('input[value="Reset"]'));
+
+    var addPerson = new helper();
+
+    this.setAddPersonFirstName = function(personFirstName){
+        addPerson.setValue(this.addPersonFirstName,personFirstName,"Add Person by First Name field");
+    };
+
+    this.setAddPersonSecondName = function(personSecondName){
+        addPerson.setValue(this.addPersonSecondName,personSecondName,"Add Person by Second Name field");
+    };
+
+    this.setAddPersonLastName = function(personLastName){
+        addPerson.setValue(this.addPersonLastName,personLastName,"Add Person by Last Name field");
+    };
+
+    this.setAddPersonSourceId= function(personSourceId){
+        addPerson.setValue(this.addPersonSourceId,personSourceId,"Add Person by Source Id field");
+    };
+
+    this.selectAddPersonSourceStatus = function(personSourceStatus){
+        addPerson.selectValue(this.addPersonSourceStatus,personSourceStatus,"Add Person by Source Status field");
+    };
+
+    this.setAddPersonPrefix = function(personPrefix){
+        addPerson.setValue(this.addPersonPrefix,personPrefix,"Add Person by Prefix field");
+    };
+
+    this.setAddPersonSuffix = function(personSuffix){
+        addPerson.setValue(this.addPersonSuffix,personSuffix,"Add Person by Suffix field");
+    };
+
+    this.setAddPersonEmail = function(personEmail){
+        addPerson.setValue(this.addPersonEmail,personEmail,"Add Person by Email field");
+    };
+
+    this.setAddPersonPhone = function(personPhone){
+        addPerson.setValue(this.addPersonPhone,personPhone,"Add Person by Phone field");
+    };
+
+    this.setAddPersonSearchAffiliatedOrg = function(personSearchAffiliatedOrg){
+        addPerson.setValue(this.addPersonSearchAffiliatedOrg,personSearchAffiliatedOrg,"Add Person by Affiliated Search field");
+    };
+
+    this.selectAddPersonAffiliatedOrg = function(personAffiliatedOrg){
+        addPerson.setValue(this.addPersonAffiliatedOrg, personAffiliatedOrg, "Add Person by Affiliated Org");
+    };
+
+    this.clickSelectAllAffiliatedOrg = function(){
+        addPerson.clickButton(this.addPersonSelectAllAffiliatedOrg,"Add Person Select All Affiliated Org button");
+    };
+
+    this.clickRemoveAllAffiliatedOrg = function(){
+        addPerson.clickButton(this.addPersonRemoveAllAffiliatedOrg,"Add Person Remove All Affiliated Org button");
+    };
+
+    this.clickSave = function(){
+        addPerson.clickButton(this.personSaveButton,"Add Person by Save button");
+    };
+
+    this.clickReset = function(){
+        addPerson.clickButton(this.personResetButton,"Add Person by Reset button");
+    };
+
+
+};
+module.exports = AddPersonPage;

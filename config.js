@@ -8,6 +8,7 @@ exports.config = {
 
 
 baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
+  //  baseUrl: 'http://localhost/ctrp/',
 
     params: {
         login: {
@@ -35,13 +36,14 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
         includeStackTrace: true
     },
 
-    allScriptsTimeout: 5000,
-    getPageTimeout: 5000,
+    allScriptsTimeout: 50000,
+    getPageTimeout: 50000,
 
    framework: 'cucumber',
 
     specs: [
-        'features/PO\ F2\ Search\ for\ Organizations.feature',
+        'features/PO\ F2\ Search\ for\ Organizations.feature'
+     //   'features/PO\ F3\ Create\ an\ Organization.feature'
       //  'features/Reg\ F01\ Search\ Clinical\ Trials.feature'
       //  'features/*.feature'
     ],

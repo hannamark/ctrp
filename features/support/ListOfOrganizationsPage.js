@@ -3,130 +3,152 @@
  */
 
 var helper = require('../support/helper');
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+var expect = require('chai').expect;
 
 ListOfOrganizationsPage = function () {
 
-     this.orgName = element(by.model('orgsView.searchParams.name'));
-     this.alias = element(by.model('orgsView.searchParams.alias'));
-     this.poId = element(by.model('orgsView.searchParams.id'));
-     this.source = element(by.model('orgsView.searchParams.source_id'));
-     this.sourceStatus = element(by.model('orgsView.searchParams.source_status'));
-     this.address = element(by.model('orgsView.searchParams.address'));
-     this.address2 = element(by.model('orgsView.searchParams.address2'));
-     this.familyName = element(by.model('orgsView.searchParams.family_name'));
-     this.email = element(by.model('orgsView.searchParams.email'));
-     this.country = element(by.model('orgsView.searchParams.country'));
-     this.state = element(by.model('orgsView.searchParams.state_province'));
-     this.city = element(by.model('orgsView.searchParams.city'));
-     this.postalCode = element(by.model('orgsView.searchParams.postal_code'));
-     this.searchButton = element(by.css('button[ng-click="orgsView.searchOrgs()"]'));
+     this.orgName = element(by.model('searchParams.name'));
+     this.alias = element(by.model('searchParams.alias'));
+     this.poId = element(by.model('searchParams.ctrp_id'));
+     this.phone = element(by.model('searchParams.phone'));
+     this.sourceContext = element(by.model('searchParams.source_context'));
+     this.sourceId = element(by.model('searchParams.source_id'));
+     this.sourceStatus = element(by.model('searchParams.source_status'));
+     this.address = element(by.model('searchParams.address'));
+     this.address2 = element(by.model('searchParams.address2'));
+     this.familyName = element(by.model('searchParams.family_name'));
+     this.email = element(by.model('searchParams.email'));
+     this.country = element(by.model('searchParams.country'));
+     this.state = element(by.model('searchParams.state_province'));
+     this.city = element(by.model('searchParams.city'));
+     this.postalCode = element(by.model('searchParams.postal_code'));
+     this.searchButton = element(by.css('button[ng-click="searchOrgs()"]'));
      this.clearButton = element(by.buttonText('Clear'));
 
-     this.setOrgName = function(orgName){
+    this.names = element.all(by.binding('grid.getCellValue(row, col) '));
+
+    var search = new helper();
+
+    this.setOrgName = function(orgName){
+        search.setValue(this.orgName,orgName,"Organization Search by Name field");
+    };
+
+ /*    this.setOrgName = function(orgName){
          helper.wait(this.orgName,"Organization Search by Name field");
          this.orgName.clear();
          this.orgName.sendKeys(orgName);
-     };
+     };*/
 
-     this.checkAlias = function(aliass){
-        // helper.wait(this.checkAlias(),"Organization Alias checkbox");
-         var CheckBoxState = this.alias.getAttribute('checked');
-         if (CheckBoxState != aliass)
+   /*  this.checkAlias = function(alias){
+         search.wait(this.alias,"Organization Alias checkbox");
+         var CheckBoxState = this.alias.isSelected(); //.getAttribute('checked');
+         if (!CheckBoxState && alias) //check it now
             {
                 this.alias.click();
-            }
+            } else if (CheckBoxState && !alias) {
+             console.log("trying to uncheck");
+             this.alias.click();
+         } else if (!CheckBoxState && !alias) {
+
+         }
+
      };
+*/
 
-
-/*    this.checkAlias = function(aliass) {
+    this.checkAlias = function(aliass) {
         var useSslInput = this.alias;
-        if (useSslInput.isSelected() != aliass) {
-            useSslInput.isSelected().then(function (selected) {
-                if (!selected) {
-                    useSslInput.click();
-                }
-            });
-        } else {
+        if (useSslInput.isSelected() != aliass && aliass) {
             useSslInput.isSelected().then(function (selected) {
                 if (selected) {
                     useSslInput.click();
                 }
             });
+        } else {
+            useSslInput.isSelected().then(function (selected) {
+                if (!selected) {
+                    useSslInput.click();
+                }
+            });
         }
-    };*/
+    };
 
      this.setPoId = function(poId){
-         helper.wait(this.poId,"Organization Search by PO ID field");
-         this.poId.clear();
-         this.poId.sendKeys(poId);
+         search.setValue(this.poId,poId,"Organization Search by PO ID field");
      };
 
-     this.setSource = function(source){
-         helper.wait(this.source,"Organization Search by Source field");
-         this.source.clear();
-         this.source.sendKeys(source);
+    this.setPhone = function(phone){
+        search.setValue(this.phone,phone,"Organization Search by Phone field");
+    };
+
+    this.selectSourceContext = function(sourceContext){
+        search.selectValue(this.sourceContext,sourceContext,"Organization Search by Source Context field");
+    };
+
+     this.setSourceId = function(sourceId){
+         search.setValue(this.sourceId,sourceId,"Organization Search by SourceId field");
      };
+
+
 
      this.selectSourceStatus = function(sourceStatus){
-         helper.wait(this.sourceStatus,"Organization Search by Source Status field");
-         this.sourceStatus.$('[value="' + sourceStatus + '"]').click();
+         search.selectValue(this.sourceStatus,sourceStatus,"Organization Search by Source Status field");
      };
 
      this.setAddress = function(address){
-         helper.wait(this.address,"Organization Search by address field");
-         this.address.clear();
-         this.address.sendKeys(address);
+         search.setValue(this.address,address,"Organization Search by address field");
      };
 
      this.setAddress2 = function(address2){
-         helper.wait(this.address2,"Organization Search by address2 field");
-         this.address2.clear();
-         this.address2.sendKeys(address2);
+         search.setValue(this.address2,address2,"Organization Search by Address2 field");
      };
 
      this.setFamilyName = function(familyName){
-         helper.wait(this.familyName,"Organization Search by Family Name field");
-         this.familyName.clear();
-         this.familyName.sendKeys(familyName);
+         search.setValue(this.familyName,familyName,"Organization Search by Family Name field");
      };
 
      this.setEmail = function(email){
-         helper.wait(this.email,"Organization Search by Email field");
-         this.email.clear();
-         this.email.sendKeys(email);
+         search.setValue(this.email,email,"Organization Search by Email field");
      };
 
      this.selectCountry = function(country){
-         helper.wait(this.country,"Organization Search by Country field");
-         this.country.$('[value="' + country + '"]').click();
+         search.selectValue(this.country,country,"Organization Search by Name field");
      };
 
      this.selectState = function(state){
-         helper.wait(this.state,"Organization Search by State field");
-         this.state.$('[value="' + state + '"]').click();
+         search.selectValue(this.state,state,"Organization Search by State field");
      };
 
      this.setCity = function(city){
-         helper.wait(this.city,"Organization Search by City field");
-         this.city.clear();
-         this.city.sendKeys(city);
+         search.setValue(this.city,city,"Organization Search by City field");
      };
 
      this.setPostalCode = function(postalCode){
-         helper.wait(this.postalCode,"Organization Search by Postal Code field");
-         this.postalCode.clear();
-         this.postalCode.sendKeys(postalCode);
+         search.setValue(this.postalCode,postalCode,"Organization Search by Postal Code field");
      };
 
      this.clickSearchButton = function(){
-         helper.wait(this.searchButton,"Organization Click Search button");
+         search.wait(this.searchButton,"Organization Click Search button");
          this.searchButton.click();
      };
 
      this.clickClearButton = function(){
-         helper.wait(this.clearButton,"Organization Click Clear button");
+         search.wait(this.clearButton,"Organization Click Clear button");
          this.clearButton.click();
      };
+
+    this.inResults = function(nameString) {
+        return this.names.filter(function(name) {
+            return name.getText().then(function(text) {
+                return text === nameString;
+            });
+        }).then(function(filteredElements) {
+            // Only the elements that passed the filter will be here. This is an array.
+            return filteredElements.length > 0;
+        });
+    };
 
 };
 module.exports = ListOfOrganizationsPage;

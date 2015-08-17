@@ -18,10 +18,10 @@
         .directive('ctrpAdvancedOrgSearchForm', ctrpAdvancedOrgSearchForm);
 
     ctrpAdvancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location',
-        'MESSAGES', 'uiGridConstants', '$timeout', '_', '$anchorScroll'];
+        'MESSAGES', 'uiGridConstants', '$timeout', '_', '$anchorScroll', '$compile'];
 
     function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common, $location,
-                                       MESSAGES, uiGridConstants, $timeout, _, $anchorScroll) {
+                                       MESSAGES, uiGridConstants, $timeout, _, $anchorScroll, $compile) {
 
         var directiveObj = {
             restrict: 'E',
@@ -42,10 +42,12 @@
 
         /**************** implementations below ******************/
 
-        function linkFn(scope, element, attr, controller) {
+        function linkFn(scope, element, attrs, controller) {
             // element.text('this is the advanced search form');
             console.log('showgrid: ' + scope.showgrid);
             console.log('enablerowselection: ' + scope.enablerowselection);
+            // scope.enablerowselection = attrs.enablerowselection || false;
+            $compile(element.contents())(scope);
 
         } //linkFn
 
@@ -65,20 +67,24 @@
             $scope.gridOptions = OrgService.getGridOptions();
             //$scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
             //$scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+            //$scope.enablerowselection = false;
 
             $scope.$watch('usedinmodal', function (newVal, oldVal) {
                 console.log('usedinmodal: ' + newVal);
                 $scope.resetSearch();
+
+                //find the organization name index in the column definitions
+                var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
                 if (newVal) {
                     //unlink the name if used in modal
-                    //find the organization name index in the column definitions
-                    var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
                     if (orgNameIndex > -1) {
                         $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" ' +
                             'title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>';
                     }
                 } else {
-                    $scope.gridOptions = OrgService.getGridOptions();
+                    // $scope.gridOptions = OrgService.getGridOptions();
+                    $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                        '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
                 }
             });
 
@@ -102,9 +108,17 @@
             $scope.resetSearch = function () {
                 // $scope.states.length = 0;
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
+                Object.keys($scope.searchParams).forEach(function(key, index) {
+                    if (key != 'alias') {
+                        $scope.searchParams[key] = '';
+                    } else {
+                        $scope.searchParams['alias'] = true;
+                    }
+                });
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];
+                $scope.gridOptions.totalItems = null;
             }; //resetSearch
 
 
@@ -206,7 +220,7 @@
                         $scope.gridOptions.data = data.orgs;
                         $scope.gridOptions.totalItems = data.total;
                         $scope.gridHeight = $scope.gridOptions.rowHeight * (data.orgs.length + 1);
-                        $location.hash('orgSearchResults');
+                        $location.hash('org_search_results');
                         $anchorScroll();
                     }
                     $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
