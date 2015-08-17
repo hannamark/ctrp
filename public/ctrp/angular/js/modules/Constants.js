@@ -25,7 +25,10 @@
             'SEARCH_FAMILY': '/ctrp/families/search.json',
             'FAMILY_STATUSES':'/ctrp/family_statuses.json',
             'FAMILY_TYPES':'/ctrp/family_types.json',
-            'FAMILY_RELATIONSHIPS' :'/ctrp/family_relationships.json'
+            'FAMILY_RELATIONSHIPS' :'/ctrp/family_relationships.json',
+            'TRIAL_LIST': '/ctrp/trials.json',
+            'A_TRIAL': '/ctrp/trials/',
+            'SEARCH_TRIAL': '/ctrp/trials/search.json'
         })
         .constant('MESSAGES', {
            'STATES_AVAIL' : 'states_or_provinces_available',

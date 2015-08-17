@@ -242,7 +242,22 @@
                             return PersonService.getPoAffStatuses();
                         }
                     }
+                })
+
+                .state('main.addTrial', {
+                    url: '/new_trial',
+                    templateUrl: '/ctrp/angular/partials/trialDetails.html',
+                    controller: 'trialDetailCtrl as trialDetailView',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        trialDetailObj: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        }
+                    }
                 });
+
                 //.state('main.sign_out', {
                 //    url: '/sign_out',
                 //    controller: 'userCtrl',
