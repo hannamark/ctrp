@@ -37,6 +37,7 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 50,
+            enableRowSelection: false,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
@@ -44,8 +45,12 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
-                {name: 'fname', displayName: 'First Name', enableSorting: true, width: '10%',
+                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '6%',
+                    cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify"></div>',
+                    visible: false
+                },
+                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '7%'},
+                {name: 'fname', displayName: 'First Name', enableSorting: true, width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
@@ -53,12 +58,12 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '10%'},
+                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '10%'},
                 {name: 'prefix', enableSorting: true, width: '6%'},
                 {name: 'suffix', enableSorting: true, width: '6%'},
-                {name: 'email', enableSorting: true, width: '18%',
+                {name: 'email', enableSorting: true,
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },

@@ -169,10 +169,14 @@
     <div class="col-sm-12">
         <div class="row" ng-if="personView.gridOptions.totalItems != null">
             <p><h4>People Search Results: {{personView.gridOptions.totalItems}} found</h4></p>
-        </div>
+            <h5>
+                <mark>Curation Mode: </mark>
+                <toggle-switch ng-model="personView.curationShown"></toggle-switch>
+            </h5>
+        </div><br />
         <div class="row animated-item" ng-if="personView.gridOptions.data.length > 0"
         ">
-        <div ui-grid="personView.gridOptions" ui-grid-pagination="" class="grid"></div>
+        <div ui-grid="personView.gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
     </div>
 </div>
 
