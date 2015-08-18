@@ -100,7 +100,7 @@
         function rowSelectionCallBack(row) {
             if (row.isSelected) {
                 //  + JSON.stringify(row.entity);
-                console.log('row is selected: ' + row.entity.id);
+                console.log('row is selected: ' + JSON.stringify(row.entity));
                 if (vm.entitiesToBeCurated.length < 2) {
                     vm.entitiesToBeCurated.push(row);
                 } else {

@@ -10,7 +10,7 @@
 
 .grid {
     width: 100%;
-    height: 400px;
+    height: 450px;
 }
 
 .tooltip-uigrid {
@@ -234,9 +234,9 @@ header img {
     }
 
     .modal-body {
-        max-width: 920px;
+        max-width: 950px;
         margin-left: 5px;
-        overflow: auto;
+        overflow: hidden;
     }
 
     /*.modal-footer,*/
