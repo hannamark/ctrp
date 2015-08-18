@@ -169,7 +169,7 @@
     <div class="col-sm-12">
         <div class="row" ng-if="personView.gridOptions.totalItems != null">
             <p><h4>People Search Results: {{personView.gridOptions.totalItems}} found</h4></p>
-            <h5>
+            <h5 ng-show="personView.gridOptions.totalItems > 0">
                 <mark>Curation Mode: </mark>
                 <toggle-switch ng-model="personView.curationShown"></toggle-switch>
                 <button class="btn btn-warning" ng-show="personView.curationReady" ng-click="personView.commitNullification()">Commit Nullification</button>
@@ -183,10 +183,9 @@
                 <strong>Please click the above Commit button to nullify the selected person</strong>
             </div>-->
         </div><br />
-        <div class="row animated-item" ng-if="personView.gridOptions.data.length > 0"
-        ">
-        <div ui-grid="personView.gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
-    </div>
+        <div class="row animated-item" ng-if="personView.gridOptions.data.length > 0">
+            <div ui-grid="personView.gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
+        </div>
 </div>
 
 </div>
