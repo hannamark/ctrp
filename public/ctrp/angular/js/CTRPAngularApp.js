@@ -22,7 +22,8 @@
         'ui.grid.selection',
         'ui.scrollpoint',
         'DateServiceMod',
-        'CTRPUnderscoreModule'
+        'CTRPUnderscoreModule',
+        'toggle-switch'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there

@@ -54,6 +54,33 @@ class Person < ActiveRecord::Base
     end
   end
 
+
+  def self.nullify_duplicates(params)
+
+    self.transaction do
+      @toBeNullifiedPerson = Person.find_by_id(params[:id_to_be_nullified]);
+      @toBeRetainedPerson =  Person.find_by_id(params[:id_to_be_retained]);
+      #print "hello "+toBeRetainedPerson
+      raise ActiveRecord::RecordNotFound if @toBeNullifiedPerson.nil? or @toBeRetainedPerson.nil?
+      poAffiliationsOfNullifiedPerson = PoAffiliation.where(person_id:@toBeNullifiedPerson.id);
+
+      ##Iterating through po_afilliations of to be nullified person and assigning to retained person.
+      ##
+      poAffiliationsOfNullifiedPerson.each do |po_affiliation|
+        new_po_aff=po_affiliation.clone;# Should be careful when deciding between dup and clone. See more details in Active Record dup and clone documentation.
+        new_po_aff.person_id=@toBeRetainedPerson.id;
+        new_po_aff.save!
+      end
+
+      ## Destroy associations of to_be_nullified_person
+      ##
+
+      ## Destroy to_be_nullified_person
+      ##
+      @toBeNullifiedPerson.destroy!
+    end
+  end
+
   # Scope definitions for people search
   scope :matches, -> (column, value) { where("people.#{column} = ?", "#{value}") }
 

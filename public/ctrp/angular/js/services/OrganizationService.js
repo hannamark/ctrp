@@ -46,6 +46,7 @@
             totalItems: null,
             rowHeight: 50,
             enableRowSelection: true,
+            enableFullRowSelection: true,
             enableRowHeaderSelection: true,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
