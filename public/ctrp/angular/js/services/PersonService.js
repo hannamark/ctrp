@@ -83,7 +83,8 @@
             getSourceContexts : getSourceContexts,
             getSourceStatuses : getSourceStatuses,
             deletePerson : deletePerson,
-            getPoAffStatuses : getPoAffStatuses
+            getPoAffStatuses : getPoAffStatuses,
+            curatePerson : curatePerson
         };
 
         return services;
@@ -206,6 +207,16 @@
          */
         function getPoAffStatuses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PO_AFF_STATUSES);
+        }
+
+
+        /**
+         * Nullify a person and merge his/her association to the retained person
+         *
+         * @param curationObject, JSON object: {'id_to_be_nullified': '', 'id_to_be_retained': ''}
+         */
+        function curatePerson(curationObject) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CURATE_PERSON, curationObject);
         }
 
 

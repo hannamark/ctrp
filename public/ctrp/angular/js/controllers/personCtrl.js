@@ -10,9 +10,9 @@
         .controller('personCtrl', personCtrl);
 
     personCtrl.$inject = ['PersonService', 'uiGridConstants', '$scope',
-        'Common', 'sourceContextObj', 'sourceStatusObj', '_'];
+        'Common', 'sourceContextObj', 'sourceStatusObj', '_', 'toastr'];
 
-    function personCtrl(PersonService, uiGridConstants, $scope, Common, sourceContextObj, sourceStatusObj, _) {
+    function personCtrl(PersonService, uiGridConstants, $scope, Common, sourceContextObj, sourceStatusObj, _, toastr) {
 
         var vm = this;
         vm.searchParams = PersonService.getInitialPersonSearchParams();
@@ -52,13 +52,13 @@
 
         vm.curationShown = false;
         $scope.nullifyEntity = function (rowEntity) {
-            console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
+           // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
             if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
                 //TODO: warning to user for nullifying active entity
                 //cannot nullify Active entity (e.g. person)
                 vm.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
                 vm.nullifiedId = '';
-                console.log('cannot nullify this row, it is active');
+                console.log('cannot nullify this row, because it is active');
             } else {
                 vm.warningMessage = false;
                 vm.nullifiedId = rowEntity.id || '';
@@ -66,7 +66,14 @@
         }; //nullifyEntity
 
         vm.commitNullification = function() {
-
+            PersonService.curatePerson(vm.toBeCurated).then(function(res) {
+                console.log('successful in curation: res is: ' + JSON.stringify(res));
+                vm.searchPeople();
+                toastr.success('Curation was successful', 'Curated!');
+            }).catch(function(err) {
+                toastr.error('There was an error in curation', 'Curation error');
+                console.log('error in curation, err is: ' + JSON.stringify(err));
+            });
         }; //commitNullification
 
 
@@ -90,7 +97,7 @@
         function sortChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length == 0) {
-                console.log("removing sorting");
+                //console.log("removing sorting");
                 //remove sorting
                 vm.searchParams.sort = '';
                 vm.searchParams.order = '';
@@ -127,9 +134,8 @@
             }
 
             if (row.isSelected) {
-                //  + JSON.stringify(row.entity);
-                //first in, first out; capacity of 2 row entities
-                console.log('row is selected: ' + JSON.stringify(row.entity));
+
+                //console.log('row is selected: ' + JSON.stringify(row.entity));
                 if (vm.selectedRows.length < 2) {
                     vm.selectedRows.unshift(row);
                 } else {
@@ -233,8 +239,8 @@
                 if (vm.toBeCurated.id_to_be_nullified && vm.toBeCurated.id_to_be_retained) {
                     vm.curationReady = true;
                 }
-                console.log('nullified object: ' + JSON.stringify(vm.toBeCurated));
-                console.log('curationReady: ' + vm.curationReady);
+                // console.log('nullified object: ' + JSON.stringify(vm.toBeCurated));
+                // console.log('curationReady: ' + vm.curationReady);
             }, true);
         } //watchReadinessOfCuration
 
