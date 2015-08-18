@@ -172,7 +172,16 @@
             <h5>
                 <mark>Curation Mode: </mark>
                 <toggle-switch ng-model="personView.curationShown"></toggle-switch>
+                <button class="btn btn-warning" ng-show="personView.curationReady">Commit Nullification</button>
             </h5>
+            <div class="alert alert-danger fade in" ng-show="personView.warningMessage != false">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>{{personView.warningMessage}}</strong>
+            </div>
+            <div class="alert alert-info fade in" ng-show="personView.curationReady">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>Please click the above Commit button to nullify the selected person</strong>
+            </div>
         </div><br />
         <div class="row animated-item" ng-if="personView.gridOptions.data.length > 0"
         ">

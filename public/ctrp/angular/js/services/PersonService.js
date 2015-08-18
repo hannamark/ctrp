@@ -37,7 +37,7 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 50,
-            enableFullRowSelection: true,
+            // enableFullRowSelection: true,
             enableSelectAll: false,
             //enableRowSelection: false,
             paginationPageSizes: [10, 25, 50, 100],
@@ -48,7 +48,7 @@
             enableFiltering: true,
             columnDefs: [
                 {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '6%',
-                    cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify"></div>',
+                    cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
                 {name: 'id', enableSorting: true, displayName: 'PO ID', width: '7%'},

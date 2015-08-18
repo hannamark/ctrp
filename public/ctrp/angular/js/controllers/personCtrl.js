@@ -20,6 +20,11 @@
         vm.sourceContextArr.sort(Common.a2zComparator());
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
+        vm.nullifiedId = '';
+        vm.warningMessage = false;
+
+        vm.selectedRows = [];
+        console.log('received sourceStatusArr: ' + JSON.stringify(vm.sourceStatusArr));
 
 
         vm.searchPeople = function () {
@@ -40,16 +45,25 @@
             vm.searchParams = PersonService.getInitialPersonSearchParams();
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
-            Object.keys(vm.searchParams).forEach(function (key, index) {
+            Object.keys(vm.searchParams).forEach(function (key) {
                 vm.searchParams[key] = '';
             });
         }; //resetSearch
 
         vm.curationShown = false;
-        vm.entitiesToBeCurated = [];
-       // var firstColumn = vm.gridOptions.columnDefs[0];
-
-
+        $scope.nullifyEntity = function (rowEntity) {
+            console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
+            if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
+                //TODO: warning to user for nullifying active entity
+                //cannot nullify Active entity (e.g. person)
+                vm.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
+                vm.nullifiedId = '';
+                console.log('cannot nullify this row, it is active');
+            } else {
+                vm.warningMessage = false;
+                vm.nullifiedId = rowEntity.id || '';
+            }
+        }; //nullifyEntity
 
 
         activate();
@@ -58,7 +72,9 @@
 
         function activate() {
             prepareGidOptions();
+            watchReadinessOfCuration();
             // vm.searchPeople();
+
         } //activate
 
 
@@ -98,21 +114,32 @@
          * @param row
          */
         function rowSelectionCallBack(row) {
+
+            if (!vm.curationShown) {
+                //if not on curation mode, do not show row selection
+                row.isSelected = vm.curationShown;
+                vm.gridApi.grid.refresh();
+                return;
+            }
+
             if (row.isSelected) {
                 //  + JSON.stringify(row.entity);
+                //first in, first out; capacity of 2 row entities
                 console.log('row is selected: ' + JSON.stringify(row.entity));
-                if (vm.entitiesToBeCurated.length < 2) {
-                    vm.entitiesToBeCurated.push(row);
+                if (vm.selectedRows.length < 2) {
+                    vm.selectedRows.unshift(row);
                 } else {
-                    vm.entitiesToBeCurated.pop().isSelected = false;
-                    vm.entitiesToBeCurated.unshift(row);
+                    var deselectedRow = vm.selectedRows.pop();
+                    deselectedRow.isSelected = false;
+                    vm.nullifiedId = deselectedRow.entity.id === vm.nullifiedId ? '' : vm.nullifiedId;
+                    vm.selectedRows.unshift(row);
                     vm.gridApi.grid.refresh(); //refresh grid
                 }
             } else {
                 //de-select the row
-                //remove it from the vm.entitiesToBeCurated, if exists
+                //remove it from the vm.selectedRows, if exists
                 var needleIndex = -1;
-                _.each(vm.entitiesToBeCurated, function(existingRow, idx) {
+                _.each(vm.selectedRows, function (existingRow, idx) {
                     if (existingRow.entity.id == row.entity.id) {
                         needleIndex = idx;
                         return;
@@ -120,7 +147,12 @@
                 });
 
                 if (needleIndex > -1) {
-                    vm.entitiesToBeCurated.splice(needleIndex, 1);
+                    var deselectedRowArr = vm.selectedRows.splice(needleIndex, 1);
+                    deselectedRowArr[0].isSelected = false;
+                    //reset the nullifiedId if the row is de-selected
+                    vm.nullifiedId = deselectedRowArr[0].entity.id === vm.nullifiedId ? '' : vm.nullifiedId;
+                    vm.curationReady = false;
+
                 }
             }
 
@@ -146,7 +178,6 @@
 
                 vm.gridApi.selection.on.rowSelectionChanged($scope, rowSelectionCallBack);
                 vm.gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
-
                     _.each(rows, function (row, index) {
                         rowSelectionCallBack(row);
                     });
@@ -156,12 +187,21 @@
             }; //gridOptions
 
             //watch the curation switch button to turn on/off the curation choices
-            $scope.$watch(function() {return vm.curationShown;}, function(newVal, oldVal) {
+            $scope.$watch(function () { return vm.curationShown; }, function (newVal, oldVal) {
                 vm.gridOptions.columnDefs[0].visible = newVal;
                 if (newVal == false) {
-                    while (vm.entitiesToBeCurated.length > 0) {
-                        vm.entitiesToBeCurated.pop().isSelected = false;
+                    //purge the container for rows to be curated when not on curation mode
+                    while (vm.selectedRows.length > 0) {
+                        // vm.selectedRows.pop().isSelected = false;
+                        var deselectedRow = vm.selectedRows.pop();
+                        deselectedRow.isSelected = false;
+                        vm.nullifiedId = deselectedRow.entity.id == vm.nullifiedId ? '' : vm.nullifiedId;
                     }
+                } else {
+                    // initializations for curation
+                    vm.selectedRows = [];
+                    vm.nullifiedId = '';
+                    vm.warningMessage = false;
                 }
                 vm.gridApi.grid.refresh();
             }, true);
@@ -169,6 +209,40 @@
         } //prepareGridOptions
 
 
+
+        /**
+         * watch the readiness of curation submission
+         */
+        function watchReadinessOfCuration() {
+            $scope.$watch(function() {return vm.nullifiedId;}, function(curVal, preVal) {
+                initCurationObj();
+                vm.toBeCurated.id_to_be_nullified = vm.nullifiedId;
+                if (vm.selectedRows.length == 2 && vm.nullifiedId) {
+                    _.each(vm.selectedRows, function (curRow) {
+                        if (curRow.entity.id != vm.nullifiedId) {
+                            vm.toBeCurated['id_to_be_retained'] = curRow.entity.id;
+                            return;
+                        }
+                    });
+                }
+
+                if (vm.toBeCurated.id_to_be_nullified && vm.toBeCurated.id_to_be_retained) {
+                    vm.curationReady = true;
+                }
+                console.log('nullified object: ' + JSON.stringify(vm.toBeCurated));
+                console.log('curationReady: ' + vm.curationReady);
+            }, true);
+        } //watchReadinessOfCuration
+
+
+        /**
+         * initialize curation object and curation ready status
+         */
+        function initCurationObj() {
+            vm.toBeCurated = {'id_to_be_nullified': '', 'id_to_be_retained': ''};
+            vm.curationReady = false;
+            return;
+        } //initCurationObj
 
 
     }
