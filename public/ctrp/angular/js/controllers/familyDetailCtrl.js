@@ -97,7 +97,14 @@
         vm.msg = "Hello from a controller method.";
         vm.returnHello = function() {
             return $scope.msg ;
-        }
+        };
+
+        vm.reset = function() {
+            vm.batchSelect('removeAll');
+            vm.curFamily.family_status_id = '';
+            vm.curFamily.family_type_id = '';
+            vm.savedSelection.length = 0;
+        };
 
         activate();
         /****************** implementations below ***************/
