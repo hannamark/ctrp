@@ -12,8 +12,8 @@
     personCtrl.$inject = ['PersonService', 'uiGridConstants', '$scope',
         'Common', 'sourceContextObj', 'sourceStatusObj', '_', 'toastr', '$location', '$anchorScroll'];
 
-    function personCtrl(PersonService, uiGridConstants, $scope, $location, $anchorScroll,
-                        Common, sourceContextObj, sourceStatusObj, _, toastr) {
+    function personCtrl(PersonService, uiGridConstants, $scope,
+                        Common, sourceContextObj, sourceStatusObj, _, toastr, $location, $anchorScroll) {
 
         var vm = this;
         vm.searchParams = PersonService.getInitialPersonSearchParams();
