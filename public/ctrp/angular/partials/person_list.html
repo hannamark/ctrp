@@ -172,7 +172,7 @@
             <h5>
                 <mark>Curation Mode: </mark>
                 <toggle-switch ng-model="personView.curationShown"></toggle-switch>
-                <button class="btn btn-warning" ng-show="personView.curationReady">Commit Nullification</button>
+                <button class="btn btn-warning" ng-show="personView.curationReady" ng-click="personView.commitNullification()">Commit Nullification</button>
             </h5>
             <div class="alert alert-danger fade in" ng-show="personView.warningMessage != false">
                 <a href="" class="close" data-dismiss="alert">&times;</a>

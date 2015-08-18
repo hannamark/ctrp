@@ -65,6 +65,10 @@
             }
         }; //nullifyEntity
 
+        vm.commitNullification = function() {
+
+        }; //commitNullification
+
 
         activate();
 
