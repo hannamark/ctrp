@@ -10,9 +10,10 @@
         .controller('personCtrl', personCtrl);
 
     personCtrl.$inject = ['PersonService', 'uiGridConstants', '$scope',
-        'Common', 'sourceContextObj', 'sourceStatusObj', '_', 'toastr'];
+        'Common', 'sourceContextObj', 'sourceStatusObj', '_', 'toastr', '$location', '$anchorScroll'];
 
-    function personCtrl(PersonService, uiGridConstants, $scope, Common, sourceContextObj, sourceStatusObj, _, toastr) {
+    function personCtrl(PersonService, uiGridConstants, $scope, $location, $anchorScroll,
+                        Common, sourceContextObj, sourceStatusObj, _, toastr) {
 
         var vm = this;
         vm.searchParams = PersonService.getInitialPersonSearchParams();
@@ -34,6 +35,8 @@
                 //  console.log("received search results: " + JSON.stringify(data.data));
                 vm.gridOptions.data = data.data.people; //prepareGridData(data.data.orgs); //data.data.orgs;
                 vm.gridOptions.totalItems = data.data.total;
+                $location.hash('people_search_results');
+                $anchorScroll();
             }).catch(function (err) {
                 console.log('search people failed');
             });
