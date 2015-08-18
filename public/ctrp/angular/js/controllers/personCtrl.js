@@ -67,7 +67,7 @@
 
         vm.commitNullification = function() {
             PersonService.curatePerson(vm.toBeCurated).then(function(res) {
-                console.log('successful in curation: res is: ' + JSON.stringify(res));
+                // console.log('successful in curation: res is: ' + JSON.stringify(res));
                 initCurationObj()
                 vm.searchPeople();
                 toastr.success('Curation was successful', 'Curated!');
