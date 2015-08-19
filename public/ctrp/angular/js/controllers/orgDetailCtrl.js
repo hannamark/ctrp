@@ -25,7 +25,7 @@
         //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
         var pendingStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'PEND');
         vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
-        vm.curOrg.source_status_id = vm.sourceStatusArr[pendingStatusIndex].id || '1';
+        vm.curOrg.source_status_id = vm.curOrg.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
         vm.curationReady = false;
         console.log('received source status arra: ' + JSON.stringify(vm.sourceStatusArr));
         console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
