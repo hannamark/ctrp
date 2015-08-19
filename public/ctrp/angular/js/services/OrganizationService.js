@@ -55,7 +55,7 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
+                {name: 'id', enableSorting: true, displayName: 'CTRP ID', width: '10%'},
                 {
                     name: 'name', enableSorting: true, width: '23%',
                     //this does not work for .id
