@@ -1,7 +1,7 @@
 class PeopleController < ApplicationController
   before_action :set_person, only: [:show, :edit, :update, :destroy]
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+  #load_and_authorize_resource unless Rails.env.test?
 
   # GET /people
   # GET /people.json
@@ -76,7 +76,22 @@ class PeopleController < ApplicationController
     end
   end
 
+  def curate
+
+    respond_to do |format|
+      if Person.nullify_duplicates(params)
+        format.html { redirect_to people_url, notice: 'Person was successfully curated.' }
+      else
+        format.json { render json: @person.errors, status: :unprocessable_entity  }
+      end
+
+    end
+
+  end
+
   def search
+    print params
+    print @params
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
     params[:rows] = 10 if params[:rows].blank?

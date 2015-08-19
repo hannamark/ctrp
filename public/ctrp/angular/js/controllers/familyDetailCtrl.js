@@ -97,7 +97,14 @@
         vm.msg = "Hello from a controller method.";
         vm.returnHello = function() {
             return $scope.msg ;
-        }
+        };
+
+        vm.reset = function() {
+            vm.batchSelect('removeAll');
+            vm.curFamily.family_status_id = '';
+            vm.curFamily.family_type_id = '';
+            vm.savedSelection.length = 0;
+        };
 
         activate();
         /****************** implementations below ***************/
@@ -124,26 +131,29 @@
 
 
         function prepareModal() {
-            vm.confirmDelete = function (size) {
-                var modalInstance = $modal.open({
-                    animation: true,
-                    templateUrl: 'delete_confirm_template.html',
-                    controller: 'ModalInstanceFamilyCtrl as vm',
-                    size: size,
-                    resolve: {
-                        familyId: function() {
-                            return vm.curFamily.id;
-                        }
-                    }
-                });
 
-                modalInstance.result.then(function (selectedItem) {
-                    console.log("about to delete the familyDetail " + vm.curFamily.id);
-                    $state.go('main.families');
-                }, function () {
-                    console.log("operation canceled")
-                });
-            }; //confirmDelete
+            if (!vm.curFamily.new) {
+                vm.confirmDelete = function (size) {
+                    var modalInstance = $modal.open({
+                        animation: true,
+                        templateUrl: 'delete_confirm_template.html',
+                        controller: 'ModalInstanceFamilyCtrl as vm',
+                        size: size,
+                        resolve: {
+                            familyId: function () {
+                                return vm.curFamily.id;
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function (selectedItem) {
+                        console.log("about to delete the familyDetail " + vm.curFamily.id);
+                        $state.go('main.families');
+                    }, function () {
+                        console.log("operation canceled")
+                    });
+                }; //confirmDelete
+            }
 
             vm.searchOrgsForAffiliation = function(size) {
                 var modalInstance2 = $modal.open({

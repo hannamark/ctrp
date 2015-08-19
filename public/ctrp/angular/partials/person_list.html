@@ -35,7 +35,7 @@
                         <!-- PO ID -->
                         <div class="form-group">
                             <!-- ID used as ctrp_id here -->
-                            <label for="ctrp_id" class="control-label col-sm-2">PO ID: </label>
+                            <label for="ctrp_id" class="control-label col-sm-2">CTRP ID: </label>
 
                             <div class="col-sm-10">
                                 <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
@@ -168,12 +168,25 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="row" ng-if="personView.gridOptions.totalItems != null">
+            <a href="" id="people_search_results"></a>
             <p><h4>People Search Results: {{personView.gridOptions.totalItems}} found</h4></p>
+            <h5 ng-show="personView.gridOptions.totalItems > 0">
+                <mark>Curation Mode: </mark>
+                <toggle-switch ng-model="personView.curationShown"></toggle-switch>
+                <button class="btn btn-warning" ng-show="personView.curationReady" ng-click="personView.commitNullification()">Commit Nullification</button>
+            </h5>
+            <div class="alert alert-danger fade in" ng-show="personView.warningMessage != false">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>{{personView.warningMessage}}</strong>
+            </div>
+            <!--<div class="alert alert-info fade in" ng-show="personView.curationReady">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>Please click the above Commit button to nullify the selected person</strong>
+            </div>-->
+        </div><br />
+        <div class="row animated-item" ng-if="personView.gridOptions.data.length > 0">
+            <div ui-grid="personView.gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
         </div>
-        <div class="row animated-item" ng-if="personView.gridOptions.data.length > 0"
-        ">
-        <div ui-grid="personView.gridOptions" ui-grid-pagination="" class="grid"></div>
-    </div>
 </div>
 
 </div>

@@ -179,6 +179,7 @@
 
         vm.reset = function() {
             vm.batchSelect('removeAll');
+            vm.curPerson.source_status_id = '';
             vm.savedSelection.length = 0;
         }; //reset
 
