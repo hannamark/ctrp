@@ -77,7 +77,8 @@ class Person < ActiveRecord::Base
 
       ## Destroy to_be_nullified_person
       ##
-      @toBeNullifiedPerson.destroy!
+      @toBeNullifiedPerson.source_status_id=SourceStatus.find_by_code('NULLIFIED').id;
+      @toBeNullifiedPerson.save!
     end
   end
 

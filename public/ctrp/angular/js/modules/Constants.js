@@ -12,6 +12,7 @@
             'ORG_LIST' : '/ctrp/organizations.json',
             'AN_ORG' : '/ctrp/organizations/',
             'SEARCH_ORG' : '/ctrp/organizations/search.json',
+            'CURATE_ORG' : '/ctrp/organizations/curate',
             'COUNTRY_LIST' : '/ctrp/countries.json',
             'STATES_IN_COUNTRY' : '/ctrp/states.json?country=',
             'SOURCE_CONTEXTS' : '/ctrp/source_contexts.json',
