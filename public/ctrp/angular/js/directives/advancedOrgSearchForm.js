@@ -21,7 +21,7 @@
         'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr','$anchorScroll', '$compile'];
 
     function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common, $location,
-                                       MESSAGES, uiGridConstants, $timeout, _,toastr, $anchorScroll, $compile) {
+                                       MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile) {
 
         var directiveObj = {
             restrict: 'E',
@@ -278,6 +278,21 @@
                         $scope.gridOptions.data = data.orgs;
                         $scope.gridOptions.totalItems = data.total;
                         $scope.gridHeight = $scope.gridOptions.rowHeight * (data.orgs.length + 1);
+
+                        //pin the selected rows, if any, at the top of the results
+                        _.each($scope.selectedRows, function(curRow, idx) {
+                            var ctrpId = curRow.entity.id;
+                            var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                            if (indexOfCurRowInGridData > -1) {
+                                $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
+                                $scope.gridOptions.totalItems--;
+                            }
+                            $scope.gridOptions.data.unshift(curRow.entity);
+                            $scope.gridOptions.totalItems++;
+
+                        });
+
+
                         $location.hash('org_search_results');
                         $anchorScroll();
                     }
@@ -292,13 +307,17 @@
 
             $scope.nullifyEntity = function (rowEntity) {
                 // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
-                if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
+                var isActive = rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1;
+                var isNullified = rowEntity.source_status && rowEntity.source_status.indexOf('Nul') > -1;
+                if (isNullified || isActive) {
                     //TODO: warning to user for nullifying active entity
                     //cannot nullify Active entity (e.g. person)
+                    if(isActive)
                     $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
+                    else
+                        $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
                     $scope.nullifiedId = '';
                     console.log('cannot nullify this row, because it is active');
-                    toastr.error('Cannot nullify this Organization, because it is active', 'Curation error');
                 } else {
                     $scope.warningMessage = false;
                     $scope.nullifiedId = rowEntity.id || '';
@@ -307,7 +326,6 @@
 
            $scope.commitNullification = function() {
 
-               alert('hello commit sucessfull');
                 OrgService.curateOrg($scope.toBeCurated).then(function(res) {
                     // console.log('successful in curation: res is: ' + JSON.stringify(res));
                     initCurationObj()

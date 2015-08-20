@@ -235,11 +235,23 @@
                     <h5 ng-show="gridOptions.totalItems > 0">
                     <mark>Curation Mode: </mark>
                         <toggle-switch ng-change="toggleCustom()" ng-model="curationShown"></toggle-switch>
-                    <button class="btn btn-warning" ng-show="curationReady" ng-click="commitNullification()">Commit Nullification</button>
+                        <button class="btn" ng-click="commitNullification()" ng-show="curationShown"
+                                ng-disabled="!curationReady"
+                                ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>
                 </h5>
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="alert alert-danger fade in" ng-show="warningMessage != false">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>{{warningMessage}}</strong>
+            </div>
+            <!--<div class="alert alert-info fade in" ng-show="personView.curationReady">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>Please click the above Commit button to nullify the selected person</strong>
+            </div>-->
+        </div> <br />
         <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
             <div ng-if="enablerowselection" ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
              ui-grid-auto-resize
