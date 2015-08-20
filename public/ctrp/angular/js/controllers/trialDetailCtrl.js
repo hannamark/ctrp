@@ -23,11 +23,12 @@
             });
         }; // updatePerson
 
-        activate()
+        activate();
 
         /****************** implementations below ***************/
         function activate() {
             appendNewTrialFlag();
+            prepareModal();
         }
 
         /**
@@ -41,5 +42,26 @@
                 vm.curTrial.new = true;  //
             }
         }
+
+        function prepareModal() {
+            vm.searchOrg = function(size, type) {
+                var modalInstance = $modal.open({
+                    animation: true,
+                    templateUrl: '/ctrp/angular/partials/modals/advanced_org_search_form_modal.html',
+                    controller: 'advancedOrgSearchModalCtrl as orgSearchModalView',
+                    size: size
+                });
+
+                modalInstance.result.then(function (selectedOrg) {
+                    if (type == 'lead') {
+                        vm.selectedLeadOrg = selectedOrg[0];
+                        vm.curTrial.lead_org_id = selectedOrg[0].id;
+                    }
+                }, function () {
+                    console.log("operation canceled");
+                });
+            }
+
+        } //prepareModal
     }
 })();
