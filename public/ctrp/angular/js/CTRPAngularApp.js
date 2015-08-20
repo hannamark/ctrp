@@ -23,7 +23,8 @@
         'ui.scrollpoint',
         'DateServiceMod',
         'CTRPUnderscoreModule',
-        'toggle-switch'
+        'toggle-switch',
+        'TimeoutModule'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
