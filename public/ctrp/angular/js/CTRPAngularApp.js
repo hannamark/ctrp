@@ -254,6 +254,9 @@
                             var deferred = $q.defer();
                             deferred.resolve(null);
                             return deferred.promise;
+                        },
+                        researchCategoryObj: function(TrialService) {
+                            return TrialService.getResearchCategories();
                         }
                     }
                 });

@@ -69,6 +69,6 @@ class ResearchCategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def research_category_params
-      params[:research_category]
+      params.require(:research_category).permit(:code, :name)
     end
 end

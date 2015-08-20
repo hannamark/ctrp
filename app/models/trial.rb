@@ -57,6 +57,7 @@ class Trial < ActiveRecord::Base
 
   belongs_to :study_source
   belongs_to :phase
+  belongs_to :research_category
   belongs_to :primary_purpose
   belongs_to :secondary_purpose
   belongs_to :responsible_party

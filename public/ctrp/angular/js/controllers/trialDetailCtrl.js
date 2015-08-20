@@ -7,12 +7,13 @@
     angular.module('ctrpApp')
         .controller('trialDetailCtrl', trialDetailCtrl);
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
-        '$scope', 'Common', '$state', '$modal'];
+        '$scope', 'Common', '$state', '$modal', 'researchCategoryObj'];
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
-                              $scope, Common, $state, $modal) {
+                              $scope, Common, $state, $modal, researchCategoryObj) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
+        vm.researchCategoryArr = researchCategoryObj;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
