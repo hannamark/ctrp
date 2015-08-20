@@ -33,8 +33,21 @@
             //console.log("searching params: " + JSON.stringify(vm.searchParams));
             PersonService.searchPeople(vm.searchParams).then(function (data) {
                 //  console.log("received search results: " + JSON.stringify(data.data));
-                vm.gridOptions.data = data.data.people; //prepareGridData(data.data.orgs); //data.data.orgs;
+                vm.gridOptions.data = data.data.people;
                 vm.gridOptions.totalItems = data.data.total;
+                //pin the selected rows, if any, at the top of the results
+                _.each(vm.selectedRows, function(curRow, idx) {
+                    var ctrpId = curRow.entity.id;
+                    var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray(vm.gridOptions.data, 'id', ctrpId);
+                    if (indexOfCurRowInGridData > -1) {
+                        vm.gridOptions.data.splice(indexOfCurRowInGridData, 1);
+                        vm.gridOptions.totalItems--;
+                    }
+                    vm.gridOptions.data.unshift(curRow.entity);
+                    vm.gridOptions.totalItems++;
+
+                });
+               // vm.gridApi.grid.refresh();
                 $location.hash('people_search_results');
                 $anchorScroll();
             }).catch(function (err) {
