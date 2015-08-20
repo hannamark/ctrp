@@ -7,7 +7,6 @@
 #  lead_protocol_id        :string(255)
 #  official_title          :text
 #  pilot                   :string(255)
-#  research_category       :string(255)
 #  primary_purpose_other   :string(255)
 #  secondary_purpose_other :string(255)
 #  program_code            :string(255)
@@ -37,6 +36,7 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  uuid                    :string(255)
+#  research_category_id    :integer
 #
 # Indexes
 #
@@ -45,6 +45,7 @@
 #  index_trials_on_phase_id              (phase_id)
 #  index_trials_on_pi_id                 (pi_id)
 #  index_trials_on_primary_purpose_id    (primary_purpose_id)
+#  index_trials_on_research_category_id  (research_category_id)
 #  index_trials_on_responsible_party_id  (responsible_party_id)
 #  index_trials_on_secondary_purpose_id  (secondary_purpose_id)
 #  index_trials_on_sponsor_id            (sponsor_id)

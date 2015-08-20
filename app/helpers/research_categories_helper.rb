@@ -1,0 +1,2 @@
+module ResearchCategoriesHelper
+end
