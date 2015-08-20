@@ -175,7 +175,8 @@
                 <h5 ng-show="personView.gridOptions.totalItems > 0">
                     <mark>Curation Mode: </mark>
                     <toggle-switch ng-model="personView.curationShown"></toggle-switch>
-                    <button class="btn" ng-click="personView.commitNullification()" ng-disabled="!personView.curationReady"
+                    <button class="btn" ng-click="personView.commitNullification()" ng-show="personView.curationShown"
+                            ng-disabled="!personView.curationReady"
                             ng-class="personView.curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>
                 </h5>
 
