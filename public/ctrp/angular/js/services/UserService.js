@@ -35,7 +35,7 @@
                         Common.broadcastMsg("signedIn");
 
                         $timeout(function () {
-                            $state.go('main.organizations')
+                            $state.go('main.defaultContent')
                         }, 1500);
                     } else {
                         toastr.error('Login failed', 'Login error');
