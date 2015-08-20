@@ -8,6 +8,16 @@ And I have selected the option to search for a person
 When I provide the full or partial first name of the person I wish to search for
 And I submit my search request
 Then the system should display all persons that contain the first name
+And the search results should display:
+|CTRP Person ID|
+|CTEP Person ID|
+|First Name|
+|Last Name|
+|Middle Name|
+|Email Address|
+|Phone Number|
+|Organizational Affiliations|
+|Status|
 
 Scenario: As any CTRP User, I am able to search for persons by last name
 Given I know the name of the person I wish to search for
@@ -16,14 +26,16 @@ And I have selected the option to search for a person
 When I provide the full or partial last name of the person I wish to search for
 And I submit my search request
 Then the system should display all persons that contain the last name
-
-Scenario: As any CTRP User, I am able to search for persons by middle name
-Given I know the name of the person I wish to search for
-And I am logged in to CTRP
-And I have selected the option to search for a person
-When I provide the full or partial middle name of the person I wish to search for
-And I submit my search request
-Then the system should display all persons that contain the middle name
+And the search results should display:
+|CTRP Person ID|
+|CTEP Person ID|
+|First Name|
+|Last Name|
+|Middle Name|
+|Email Address|
+|Phone Number|
+|Organizational Affiliations|
+|Status|
 
 Scenario: As any CTRP User, I am able to search for persons by CTEP Person ID
 Given I know the CTEP ID of the person I wish to search for
@@ -32,6 +44,16 @@ And I have selected the option to search for a person
 When I provide the CTEP Person ID of the person I wish to search for
 And I submit my search request
 Then the system should display all persons that contain the CTEP Person ID
+And the search results should display:
+|CTRP Person ID|
+|CTEP Person ID|
+|First Name|
+|Last Name|
+|Middle Name|
+|Email Address|
+|Phone Number|
+|Organizational Affiliations|
+|Status|
 
 Scenario: As any CTRP User, I am able to search for persons by PO Person ID
 Given I know the PO Person ID of the person I wish to search for
@@ -40,6 +62,16 @@ And I have selected the option to search for a person
 When I provide the PO Person ID of the person I wish to search for
 And I submit my search request
 Then the system should display all persons that contain the PO Person ID
+And the search results should display:
+|CTRP Person ID|
+|CTEP Person ID|
+|First Name|
+|Last Name|
+|Middle Name|
+|Email Address|
+|Phone Number|
+|Organizational Affiliations|
+|Status|
 
 Scenario: As any CTRP User, I am able to search for persons by email
 Given I know the email of the person I am searching
@@ -48,6 +80,16 @@ And I have selected the option to search for a person
 When I provide the email of the person I wish to search for
 And I submit my search request
 Then the system should display all persons that have that email address
+And the search results should display:
+|CTRP Person ID|
+|CTEP Person ID|
+|First Name|
+|Last Name|
+|Middle Name|
+|Email Address|
+|Phone Number|
+|Organizational Affiliations|
+|Status|
 
 Scenario: As any CTRP User, I am able to search for persons by phone number
 Given I know the phone number of the person
@@ -56,6 +98,16 @@ And I have selected the option to search for an person
 When I provide the full or partial phone number of the person I wish to search for
 And I submit my search request
 Then the system should display all persons with matching phone number
+And the search results should display:
+|CTRP Person ID|
+|CTEP Person ID|
+|First Name|
+|Last Name|
+|Middle Name|
+|Email Address|
+|Phone Number|
+|Organizational Affiliations|
+|Status|
 
 Scenario: As any CTRP User, I am able to search for persons by affiliated organization
 Given I know the name of the organization I want to use in the search
@@ -64,6 +116,16 @@ And I have performed an organization search
 When I select an organization for the affiliated organization search
 And I submit my search request
 Then the system should display all persons who are affiliated with the selected organization
+And the search results should display:
+|CTRP Person ID|
+|CTEP Person ID|
+|First Name|
+|Last Name|
+|Middle Name|
+|Email Address|
+|Phone Number|
+|Organizational Affiliations|
+|Status|
 
 Scenario: As any CTRP User, search for persons by person_trial_relationship
 Given I know the name of the person_trial_relationship I wish to search for
