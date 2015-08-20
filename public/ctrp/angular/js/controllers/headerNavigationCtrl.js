@@ -64,7 +64,7 @@
                     watchIdleEvents();
                 } else {
                     Idle.unwatch();
-                    closeModals();
+                    // closeModals();
                 }
             });
         } //watchForInactivity
