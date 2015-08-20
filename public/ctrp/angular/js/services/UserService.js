@@ -35,7 +35,7 @@
                         Common.broadcastMsg("signedIn");
 
                         $timeout(function () {
-                            $state.go('main.organizations')
+                            $state.go('main.defaultContent')
                         }, 1500);
                     } else {
                         toastr.error('Login failed', 'Login error');
@@ -61,7 +61,7 @@
                         toastr.success('Success', 'Successfully logged out');
 
                         $timeout(function() {
-                            $state.go('main.defaultContent');
+                            $state.go('main.sign_in');
                         }, 500);
                     }
                     $log.info("success in log out: " + JSON.stringify(data));
