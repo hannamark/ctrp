@@ -168,39 +168,37 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="row" ng-if="personView.gridOptions.totalItems != null">
-            <div class="col-sm-3">
-                <!-- options -->
+            <div class="col-sm-6">
+                <!-- information section -->
                 <a href="" id="people_search_results"></a>
                 <p><h4>People Search Results: {{personView.gridOptions.totalItems}} found</h4></p>
                 <h5 ng-show="personView.gridOptions.totalItems > 0">
                     <mark>Curation Mode: </mark>
                     <toggle-switch ng-model="personView.curationShown"></toggle-switch>
-                    <button class="btn btn-warning" ng-show="personView.curationReady" ng-click="personView.commitNullification()">Commit Nullification</button>
+                    <button class="btn" ng-click="personView.commitNullification()" ng-disabled="!personView.curationReady"
+                            ng-class="personView.curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>
                 </h5>
+
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-6">
                 <div class="row">
-                    <div class="alert alert-danger fade in" ng-show="personView.warningMessage != false">
-                        <a href="" class="close" data-dismiss="alert">&times;</a>
-                        <strong>{{personView.warningMessage}}</strong>
-                    </div>
-                    <!--<div class="alert alert-info fade in" ng-show="personView.curationReady">
-                        <a href="" class="close" data-dismiss="alert">&times;</a>
-                        <strong>Please click the above Commit button to nullify the selected person</strong>
-                    </div>-->
-                </div>
-                <div class="row" ng-show="personView.warningMessage == false && personView.selectedRows.length > 0">
-                    <table class="table table-bordered table-hover">
-                        <thead></thead>
-                    </table>
+                    <!-- TODO: add confirmation message of the two selected persons -->
                 </div>
             </div>
-
-
-        </div><br />
+        </div>
+        <div class="row">
+            <div class="alert alert-danger fade in" ng-show="personView.warningMessage != false">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>{{personView.warningMessage}}</strong>
+            </div>
+            <!--<div class="alert alert-info fade in" ng-show="personView.curationReady">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>Please click the above Commit button to nullify the selected person</strong>
+            </div>-->
+        </div> <br />
         <div class="row animated-item" ng-if="personView.gridOptions.data.length > 0">
             <div ui-grid="personView.gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
         </div>
-</div>
+    </div>
 
 </div>

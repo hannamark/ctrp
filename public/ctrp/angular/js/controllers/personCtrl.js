@@ -72,7 +72,7 @@
             if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
                 //TODO: warning to user for nullifying active entity
                 //cannot nullify Active entity (e.g. person)
-                vm.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
+                vm.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is not allowed';
                 vm.nullifiedId = '';
                 console.log('cannot nullify this row, because it is active');
             } else {
@@ -82,9 +82,11 @@
         }; //nullifyEntity
 
         vm.commitNullification = function() {
+
             PersonService.curatePerson(vm.toBeCurated).then(function(res) {
                 // console.log('successful in curation: res is: ' + JSON.stringify(res));
-                initCurationObj()
+                initCurationObj();
+                clearSelectedRows();
                 vm.searchPeople();
                 toastr.success('Curation was successful', 'Curated!');
             }).catch(function(err) {
@@ -218,12 +220,11 @@
                 vm.gridOptions.columnDefs[0].visible = newVal;
                 if (newVal == false) {
                     //purge the container for rows to be curated when not on curation mode
-                    while (vm.selectedRows.length > 0) {
-                        // vm.selectedRows.pop().isSelected = false;
-                        var deselectedRow = vm.selectedRows.pop();
-                        deselectedRow.isSelected = false;
-                        vm.nullifiedId = deselectedRow.entity.id == vm.nullifiedId ? '' : vm.nullifiedId;
+                    var lastRow = clearSelectedRows();
+                    if (!!lastRow) {
+                        vm.nullifiedId = lastRow.entity.id == vm.nullifiedId ? '' : vm.nullifiedId;
                     }
+
                 } else {
                     // initializations for curation
                     vm.selectedRows = [];
@@ -270,6 +271,21 @@
             vm.curationReady = false;
             return;
         } //initCurationObj
+
+
+        /**
+         * clear up the selectedRows array,
+         * @returns {*} the last row being cleared, empty array
+         */
+        function clearSelectedRows() {
+            var deselectedRow = null;
+            while (vm.selectedRows.length > 0) {
+                deselectedRow = vm.selectedRows.shift();
+                deselectedRow.isSelected = false;
+            }
+
+            return deselectedRow;
+        }
 
 
     }
