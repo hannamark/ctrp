@@ -1,3 +1,25 @@
+<script type="text/ng-template" id="warning-dialog.html">
+    <div class="modal-header">
+        <h3>Since you have been inactive, the system will log you out soon</h3>
+    </div>
+    <div idle-countdown="countdown" ng-init="countdown=5" class="modal-body">
+        <progressbar max="5" value="5" animate="false" class="progress-striped active">
+            You'll be logged out in {{countdown}} seconds.
+        </progressbar>
+    </div>
+
+</script>
+<script type="text/ng-template" id="timedout-dialog.html">
+    <div class="modal-header">
+        <h3>You have been logged out for exceeding our inactivity threshold</h3>
+    </div>
+    <div class="modal-body">
+        <p>
+            Your authentication session has been cleared. Please log back in if needed. <strong>Thank you</strong>
+        </p>
+    </div>
+</script>
+
 <header ng-controller="headerNavigationCtrl as headerView">
     <div class="container">
         <div class="row">
