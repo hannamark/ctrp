@@ -67,6 +67,7 @@
         }; //resetSearch
 
         vm.curationShown = false;
+
         $scope.nullifyEntity = function (rowEntity) {
            // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
             if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {

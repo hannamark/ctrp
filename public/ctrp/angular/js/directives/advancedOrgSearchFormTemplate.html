@@ -223,6 +223,7 @@
 </form>
 <!--<strong>Search Parameters:</strong> {{searchParams}}-->
 
+
 <!-- use the ui-grid to present the organization search results, if showgrid is set to 'true' -->
 <div class="row" ng-show="showgrid">
     <div class="col-sm-12">
@@ -230,6 +231,13 @@
             <div class="col-sm-11">
                 <a href="" id="org_search_results"></a>
                 <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
+                <div  ng-if="usedinmodal !=1 ">
+                    <h5 ng-show="gridOptions.totalItems > 0">
+                    <mark>Curation Mode: </mark>
+                        <toggle-switch ng-change="toggleCustom()" ng-model="curationShown"></toggle-switch>
+                    <button class="btn btn-warning" ng-show="curationReady" ng-click="commitNullification()">Commit Nullification</button>
+                </h5>
+                </div>
             </div>
         </div>
         <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
