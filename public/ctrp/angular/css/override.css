@@ -98,6 +98,7 @@
 .navbar-fixed-top {
     position:absolute;
     top:107px;
+    height:80px;
     /*margin-top: 107px;*/
     /*position: relative;*/
 }

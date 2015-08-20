@@ -8,11 +8,14 @@
     angular.module('ctrpApp')
         .controller('headerNavigationCtrl', headerNavigationCtrl);
 
-    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'Keepalive', '$modal', '$timeout'];
+    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'Keepalive', '$modal', '$timeout', '$state'];
 
-    function headerNavigationCtrl(UserService, $scope, Idle, Keepalive, $modal, $timeout) {
+    function headerNavigationCtrl(UserService, $scope, Idle, Keepalive, $modal, $timeout, $state) {
+
+        $scope.uiRouterState = $state;
 
         var vm = this;
+
         vm.signedIn = UserService.isLoggedIn();
         vm.username = UserService.getLoggedInUsername();
         vm.warning = null;
@@ -25,8 +28,8 @@
         }; //logOut
 
 
-        activate();
 
+        activate();
 
 
         /*********implementations below***********/
@@ -34,9 +37,6 @@
             listenToLoginEvent();
             watchForInactivity();
         }
-
-
-
 
 
         function listenToLoginEvent() {
