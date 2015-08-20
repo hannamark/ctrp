@@ -43,18 +43,11 @@
             $scope.$on('signedIn', function() {
                 vm.signedIn = UserService.isLoggedIn();
                 vm.username = UserService.getLoggedInUsername();
-                /*
-                Idle.watch();
-                closeModals();
-                watchIdleEvents();
-                */
             });
 
             $scope.$on('loggedOut', function() {
                 vm.signedIn = false;
                 vm.username = '';
-//                Idle.unwatch();
-//                closeModals();
             });
         } //listenToLoginEvent
 
@@ -74,7 +67,7 @@
                     closeModals();
                 }
             });
-        }
+        } //watchForInactivity
 
 
 
@@ -83,13 +76,11 @@
         function closeModals() {
             if (vm.warning) {
                 vm.warning.close('closed');
-                //$modalInstance.close();
                 vm.warning = null;
             }
 
             if (vm.timedout) {
                 vm.timedout.close('closed');
-                //$modalInstance.close();
                 vm.timedout = null;
             }
         } //closeModals
