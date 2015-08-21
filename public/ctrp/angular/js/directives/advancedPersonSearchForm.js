@@ -20,11 +20,11 @@
         var directiveObj = {
             restrict: 'E',
             scope: {
-//                showgrid: '=',  //boolean
+                showGrid: '=',  //boolean
                 maxRowSelectable : '=', //int
                 isInModal: '=',  //boolean
-//                personSearchResults: '@personSearchResults',
-//                selectedPersonsArray: '@selectedPersonsArray',
+                personSearchResults: '@personSearchResults',
+                selectedPersonsArray: '@selectedPersonsArray',
             },
             templateUrl: '/ctrp/angular/js/directives/advancedPersonSearchFormTemplate.html',
             link: linkFn,
@@ -66,24 +66,27 @@
                 // $scope.searchParams.name = $scope.searchParams.name || "*";
                 //console.log("searching params: " + JSON.stringify($scope.searchParams));
                 PersonService.searchPeople($scope.searchParams).then(function (data) {
-                    //  console.log("received search results: " + JSON.stringify(data.data));
-                    $scope.gridOptions.data = data.data.people;
-                    $scope.gridOptions.totalItems = data.data.total;
-                    //pin the selected rows, if any, at the top of the results
-                    _.each($scope.selectedRows, function(curRow, idx) {
-                        var ctrpId = curRow.entity.id;
-                        var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
-                        if (indexOfCurRowInGridData > -1) {
-                            $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
-                            $scope.gridOptions.totalItems--;
-                        }
-                        $scope.gridOptions.data.unshift(curRow.entity);
-                        $scope.gridOptions.totalItems++;
+                    if ($scope.showGrid && data.data.people) {
+                        //  console.log("received search results: " + JSON.stringify(data.data));
+                        $scope.gridOptions.data = data.data.people;
+                        $scope.gridOptions.totalItems = data.data.total;
+                        //pin the selected rows, if any, at the top of the results
+                        _.each($scope.selectedRows, function (curRow, idx) {
+                            var ctrpId = curRow.entity.id;
+                            var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                            if (indexOfCurRowInGridData > -1) {
+                                $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
+                                $scope.gridOptions.totalItems--;
+                            }
+                            $scope.gridOptions.data.unshift(curRow.entity);
+                            $scope.gridOptions.totalItems++;
 
-                    });
-                    // $scope.gridApi.grid.refresh();
-                    $location.hash('people_search_results');
-                    $anchorScroll();
+                        });
+                        // $scope.gridApi.grid.refresh();
+                        $location.hash('people_search_results');
+                        $anchorScroll();
+                    }
+                    $scope.$parent.personSearchResults = data.data; //{people: [], total, }
                 }).catch(function (err) {
                     console.log('search people failed');
                 });
@@ -98,6 +101,7 @@
                 Object.keys($scope.searchParams).forEach(function (key) {
                     $scope.searchParams[key] = '';
                 });
+                $scope.$parent.personSearchResults = {};
             }; //resetSearch
 
             $scope.curationShown = false;
@@ -181,11 +185,23 @@
              */
             function rowSelectionCallBack(row) {
 
+                if (angular.isDefined($scope.$parent.selectedPersonsArray)) {
+                    if (row.isSelected) {
+                        $scope.$parent.selectedPersonsArray.push(row.entity);
+                    } else {
+                        var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedPersonsArray, row.entity);
+                        $scope.$parent.selectedPersonsArray.splice(curRowSavedIndex, 1);
+                    }
+                }
+
                 if (!$scope.curationShown) {
                     //if not on curation mode, do not show row selection
                     row.isSelected = $scope.curationShown;
                     $scope.gridApi.grid.refresh();
                     return;
+                } else if ($scope.isInModal) {
+                    row.isSelected = $scope.isInModal; // ????????
+                    $scope.gridApi.grid.refresh();
                 }
 
                 if (row.isSelected) {
