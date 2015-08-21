@@ -243,6 +243,11 @@
                             return PersonService.getPoAffStatuses();
                         }
                     }
+                })
+                .state('main.testPerson', {
+                   url: '/person_directive',
+                    templateUrl: '/ctrp/angular/partials/personDetails.html',
+                    controller: 'personListCtrl as personSearchView'
                 });
 
 
