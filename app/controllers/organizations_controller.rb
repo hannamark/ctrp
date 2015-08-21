@@ -67,6 +67,21 @@ class OrganizationsController < ApplicationController
     end
   end
 
+
+  def curate
+
+    respond_to do |format|
+      if Organization.nullify_duplicates(params)
+        format.html { redirect_to organizations_url, notice: 'Organization was successfully curated.' }
+      else
+        format.json { render json: @organization.errors, status: :unprocessable_entity  }
+      end
+
+    end
+
+  end
+
+
   def search
     # Pagination/sorting params initialization
     Rails.logger.info "IN SEARCH"

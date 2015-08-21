@@ -2,6 +2,10 @@
  * Created by singhs10 on 7/30/15.
  */
 var helper = require('../support/helper');
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+var expect = require('chai').expect;
 
 var LoginPage = function(){
 
@@ -10,26 +14,25 @@ var LoginPage = function(){
     this.loginButton = element(by.css('button[ng-click="userView.authenticate()"]'));
     this.cancelButton = element(by.css('input[value="Reset"]'));
     var params = browser.params;
+    var login = new helper();
 
     this.setUsername = function(){
-        helper.wait(this.username,"Username field");
-        this.username.clear();
-        this.username.sendKeys(params.login.user);
+        login.setValue(this.username,params.login.user,"Username field");
     };
 
     this.setPassword = function(){
-        helper.wait(this.password,"Password field");
-        this.password.clear();
-        this.password.sendKeys(params.login.password);
+        login.setValue(this.password,params.login.password,"Password field");
     };
 
     this.login = function(){
-        helper.wait(this.loginButton,"Login button");
+        login.wait(this.loginButton,"Login button");
         this.loginButton.click();
+      //  expect(browser.getCurrentUrl()).to.eventually.equal('http://localhost/ctrp/angular#/main/organizations');
+        expect(browser.getCurrentUrl()).to.eventually.equal('http://ctrp-ci.nci.nih.gov/ctrp/angular#/main/organizations');//.and.notify(next);
     };
 
     this.cancel = function(){
-        helper.wait(this.cancelButton,"Cancel button");
+        login.wait(this.cancelButton,"Cancel button");
         this.cancelButton.click();
     };
 

@@ -35,14 +35,17 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'Family ID', width: '4%'},
-                {name: 'name', enableSorting: true, width: '35%%',
+                {name: 'id', enableSorting: true, displayName: 'Family ID', width: '7%'},
+                {name: 'name', enableSorting: true, displayName: 'Family Name', width: '35%%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'family_status', displayName: 'Family Status', enableSorting: true, width: '10%'},
                 {name: 'family_type', displayName: 'Family Type', enableSorting: true, width: '10%'},
-                { name: 'aff_orgs',cellTemplate:'<button class="btn primary"  ng-mouseover="grid.appScope.showOrgs(row.entity.id)">Show Organizations</button>' }
+                {name: 'family_members', enableSorting:false, displayName:'Family Members', width: '25%',
+                cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}} Show Family Members</a></div>'}
+                /*{ name: 'aff_orgs',cellTemplate:'<button class="btn primary"  ng-mouseover="grid.appScope.showOrgs(row.entity.id)">Show Organizations</button>' }*/
                 /*{name:'aff_orgs',displayName: 'Family Memeberships',
                     cellTemplate:'<button ng-bind="row.entity.id" popover-placement="right"  Popover-animation="true" popover-trigger="mouseenter" popover-template="grid.appScope.dynamicPopover.templateUrl" popover-title="{{grid.appScope.dynamicPopover.title}}" type="button" class="btn btn-default">Show Orgs</button>'}
 

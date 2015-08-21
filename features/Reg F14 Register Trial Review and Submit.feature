@@ -28,6 +28,8 @@ Then the CTRP application will check that all required fields have been entered
 |Trial Start Date Actual or Anticipated qualifier|
 |Primary Completion Date|
 |Primary Completion Date Actual or Anticipated qualifier|
+|Completion Date|
+|Completion Date Actual or Anticipated qualifier|
 |Trial Oversight Authority Country|
 |Trial Oversight Authority Organization Name|
 |FDA Regulated Intervention Indicator|

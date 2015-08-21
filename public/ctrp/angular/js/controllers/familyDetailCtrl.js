@@ -6,25 +6,22 @@
     'use strict';
     angular.module('ctrpApp')
         .controller('familyDetailCtrl', familyDetailCtrl);
-    familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'familyStatusObj','familyTypeObj','familyRelationshipObj','OrgService','DateService','$timeout','toastr', 'MESSAGES',
-        '$scope', 'Common', '$state', '$modal'];
-    function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,familyRelationshipObj,OrgService,DateService,$timeout,toastr, MESSAGES,
-                              $scope, Common, $state, $modal) {
+    familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'familyStatusObj','familyTypeObj','familyRelationshipObj','OrgService','DateService','toastr',
+        '$scope', '$state', '$modal'];
+    function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,familyRelationshipObj,
+                              OrgService, DateService, toastr, $scope, $state, $modal) {
         var vm = this;
-        //console.log("in details controller ......."+JSON.stringify(familyDetailObj));
+       // console.log("in details controller ......."+JSON.stringify(familyDetailObj));
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
         vm.curFamily = vm.curFamily.data || vm.curFamily;
         vm.familyStatusArr = familyStatusObj.data;
         vm.familyTypeArr = familyTypeObj.data;
-        vm.familyRelationshipArr = familyRelationshipObj.data;
+        vm.familyRelationshipArr = familyRelationshipObj == null ? '' : familyRelationshipObj.data;
 
-        //Organization Affiliations
-        vm.orgsSearchParams = OrgService.getInitialOrgSearchParams();
-        vm.foundOrgs = [];
         vm.selectedOrgs = [];
         vm.savedSelection = []; //save selected organizations
         vm.selectedOrgFilter = "";
-        console.log("family: " + JSON.stringify(vm.curFamily));
+        //console.log("family: " + JSON.stringify(vm.curFamily));
 
 
         vm.updateFamily = function() {
@@ -36,7 +33,7 @@
                 vm.curFamily.family_memberships_attributes[idx] = aff; //update the family memberships with the correct data format
             });
 
-            //create a nested Person object
+            //create a nested Family object
             var newFamily = {};
             newFamily.new = vm.curFamily.new || '';
             newFamily.id = vm.curFamily.id || '';
@@ -50,27 +47,6 @@
             });
         }; // updateFamily
 
-        var orgsPromise = '';
-        vm.searchOrgs = function () {
-            if (orgsPromise) {
-                $timeout.cancel(orgsPromise);
-            }
-
-            orgsPromise = $timeout(function () {
-                if (vm.orgsSearchParams.name) {
-                    OrgService.searchOrgs(vm.orgsSearchParams).then(function (res) {
-                        vm.foundOrgs = res.orgs; //an array
-                        // vm.selectedOrgs = res.orgs;
-                        // console.log("received orgs: " + JSON.stringify(res));
-                    }).catch(function (error) {
-                        console.log("error in retrieving orgs: " + JSON.stringify(error));
-                    })
-                } else {
-                    vm.foundOrgs = [];
-                }
-            }, 250); //250 ms
-        }; //searchOrgs
-
 
         //delete the affiliated organization from table view
         vm.toggleSelection = function (index) {
@@ -80,13 +56,13 @@
             }
         };// toggleSelection
 
-        //select or de-select all organizations form affiliations
-        vm.batchSelect = function (intention) {
+
+        vm.batchSelect = function (intention, selectedOrgsArr) {
             if (intention == "selectAll") {
                 //iterate the organizations asynchronously
-                async.each(vm.foundOrgs, function (org, cb) {
+                async.each(selectedOrgsArr, function (org, cb) {
                     if (OrgService.indexOfOrganization(vm.savedSelection, org) == -1) {
-                        vm.savedSelection.unshift(initSelectedOrg(org));
+                        vm.savedSelection.unshift(OrgService.initSelectedOrg(org));
                     }
                     cb();
                 }, function (err) {
@@ -95,11 +71,12 @@
                     }
                 });
             } else {
-                //vm.savedSelection.length = 0;
+                // vm.savedSelection.length = 0;
                 _.each(vm.savedSelection, function(org, index) {
                     vm.savedSelection[index]._destroy = true; //mark it for destroy
                 });
             }
+            console.log("vm.savedSelection.length = " + vm.savedSelection.length);
         }; //batchSelect
 
 
@@ -120,18 +97,21 @@
         vm.msg = "Hello from a controller method.";
         vm.returnHello = function() {
             return $scope.msg ;
-        }
+        };
 
-        activate()
+        vm.reset = function() {
+            vm.batchSelect('removeAll');
+            vm.curFamily.family_status_id = '';
+            vm.curFamily.family_type_id = '';
+            vm.savedSelection.length = 0;
+        };
+
+        activate();
         /****************** implementations below ***************/
         function activate() {
             appendNewFamilyFlag();
-            watchSelectedOrgs();
+            prepareModal();
 
-            //prepare the modal window for existing families
-            if (!vm.curFamily.new) {
-                prepareModal();
-            }
             if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
                 populateFamilyMemberships();
             }
@@ -151,46 +131,47 @@
 
 
         function prepareModal() {
-            vm.confirmDelete = function (size) {
-                var modalInstance = $modal.open({
-                    animation: true,
-                    templateUrl: 'delete_confirm_template.html',
-                    controller: 'ModalInstanceFamilyCtrl as vm',
-                    size: size,
-                    resolve: {
-                        familyId: function() {
-                            return vm.curFamily.id;
-                        }
-                    }
-                });
 
-                modalInstance.result.then(function (selectedItem) {
-                    console.log("about to delete the familyDetail " + vm.curFamily.id);
-                    $state.go('main.families');
-                }, function () {
-                    console.log("operation canceled")
-                });
-
-            } //confirmDelete
-        }; //prepareModal
-
-        function watchSelectedOrgs() {
-            $scope.$watch(function () {
-                return vm.selectedOrgs;
-            }, function (newVal, oldVal) {
-
-                if (!!newVal) {
-                    angular.forEach(newVal, function (org, idx) {
-                        org = JSON.parse(org);
-
-                        if (OrgService.indexOfOrganization(vm.savedSelection, org) == -1) {
-                            vm.savedSelection.unshift(initSelectedOrg(org));
+            if (!vm.curFamily.new) {
+                vm.confirmDelete = function (size) {
+                    var modalInstance = $modal.open({
+                        animation: true,
+                        templateUrl: 'delete_confirm_template.html',
+                        controller: 'ModalInstanceFamilyCtrl as vm',
+                        size: size,
+                        resolve: {
+                            familyId: function () {
+                                return vm.curFamily.id;
+                            }
                         }
                     });
-                } //if
 
-            }, true);
-        }
+                    modalInstance.result.then(function (selectedItem) {
+                        console.log("about to delete the familyDetail " + vm.curFamily.id);
+                        $state.go('main.families');
+                    }, function () {
+                        console.log("operation canceled")
+                    });
+                }; //confirmDelete
+            }
+
+            vm.searchOrgsForAffiliation = function(size) {
+                var modalInstance2 = $modal.open({
+                    animation: true,
+                    templateUrl: '/ctrp/angular/partials/modals/advanced_org_search_form_modal.html',
+                    controller: 'advancedOrgSearchModalCtrl as orgSearchModalView',
+                    size: size
+                });
+
+                modalInstance2.result.then(function (selectedOrgs) {
+                   // console.log("received selected items: " + JSON.stringify(selectedOrgs));
+                    vm.batchSelect('selectAll', selectedOrgs);
+                }, function () {
+                    console.log("operation canceled");
+                });
+            }; //searchOrgsForAffiliation
+
+        }; //prepareModal
 
 
         /**

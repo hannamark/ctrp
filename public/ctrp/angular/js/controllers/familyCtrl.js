@@ -8,9 +8,11 @@
     angular.module('ctrpApp')
         .controller('familyCtrl', familyCtrl);
 
-    familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', '$rootScope','Common','familyStatusObj','familyTypeObj','$modal'];
+    familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', '$rootScope',
+        'Common','familyStatusObj','familyTypeObj','$modal', '$location', '$anchorScroll'];
 
-    function familyCtrl(FamilyService, uiGridConstants, $scope, $rootScope,Common,familyStatusObj,familyTypeObj,$modal) {
+    function familyCtrl(FamilyService, uiGridConstants, $scope, $rootScope,
+                        Common,familyStatusObj,familyTypeObj,$modal, $location, $anchorScroll) {
 
         var vm = this;
 
@@ -73,10 +75,12 @@
                 console.log("received search results: " + JSON.stringify(data.data));
                 vm.gridOptions.data = data.data.families; //prepareGridData(data.data.orgs); //data.data.orgs;
 
-                console.log("vm grid: " + JSON.stringify(vm.gridOptions.data));
-
-                console.log("received search results: " + JSON.stringify(data.data));
+                //console.log("vm grid: " + JSON.stringify(vm.gridOptions.data));
+                //console.log("received search results: " + JSON.stringify(data.data));
                 vm.gridOptions.totalItems = data.data.total;
+
+                $location.hash('family_search_results');
+                $anchorScroll();
             }).catch(function (err) {
                 console.log('search people failed');
             });
@@ -88,6 +92,10 @@
             vm.searchParams = FamilyService.getInitialFamilySearchParams();
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
+
+            Object.keys(vm.searchParams).forEach(function(key, index) {
+                vm.searchParams[key] = '';
+            });
         }; //resetSearch
 
         activate();
@@ -105,9 +113,6 @@
          * @param sortColumns
          */
         function sortChangedCallBack(grid, sortColumns) {
-//            console.log("sortColumns.length = " + sortColumns.length);
-//            console.log("sortColumns[0].name: " + sortColumns[0].name);
-//            console.log("vm.gridOptions.columnDefs[0].name: " + vm.gridOptions.columnDefs[0].name);
             if (sortColumns.length == 0) {
                 console.log("removing sorting");
                 //remove sorting

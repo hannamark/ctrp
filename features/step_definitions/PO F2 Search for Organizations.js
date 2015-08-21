@@ -17,207 +17,250 @@ module.exports = function() {
     var MenuItemList = new MenuItem();
     var Search = new ListOfOrganizationPage();
 
-    this.Given(/^I know the name of the organization I wish to search for$/, function () {
-       searchorg = "boston xyxxx*";
+    this.Given(/^I know the name of the organization I wish to search for$/, function (callback) {
+        // callback();//
+        setTimeout(callback, 2000);
     });
 
     this.Given(/^I am logged in to CTRP$/, function (callback) {
-       browser.get('angular#/main/sign_in');
+        browser.get('angular#/main/sign_in');
+        //  browser.get('http://localhost/ctrp/angular#/main/sign_in');
+        //  browser.sleep(5000);
         Login.setUsername();
         Login.setPassword();
         Login.login();
-       setTimeout(callback, 10000);
+        // callback();
+        setTimeout(callback, 5000);
     });
 
     this.Given(/^I have selected the option to search for an organization$/, function (callback) {
         MenuItemList.clickOrganizations();
         MenuItemList.clickListOrganizations();
-        setTimeout(callback, 1000);
+        //callback();//
+        setTimeout(callback, 5000);
     });
 
     this.When(/^I provide the full or partial name of the organization I wish to search for$/, function (callback) {
-       Search.setOrgName('university*');
-       setTimeout(callback, 1000);
+        Search.setOrgName('university*');
+        // callback();
+        setTimeout(callback, 2000);
     });
 
     this.When(/^I indicate to include aliases$/, function (callback) {
-        Search.checkAlias('true');
-        setTimeout(callback, 1000);
+        // Search.checkAlias('true');
+        setTimeout(callback, 2000);
+        // callback();
     });
 
     this.When(/^I submit my search request$/, function (callback) {
         Search.clickSearchButton();
-        setTimeout(callback, 1000);
+        setTimeout(callback, 2000);
+        // callback();
     });
 
     this.Then(/^the system should display all organizations that contain the name or the alias$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        expect(Search.inResults('University of Minnesota/Masonic Children\'s Hospital')).to.become(true);
+        expect(Search.inResults('University of Minnesota Medical Center-Fairview')).to.become(true);
+        expect(Search.inResults('University of Minnesota Medical Center-Fairview-Riverside')).to.become(true).and.notify(callback);
+        // setTimeout(callback, 2000);
+        //  callback();
     });
 
     this.When(/^I indicate to not search Aliases$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.checkAlias('false');
+        setTimeout(callback, 2000);
+        //  callback();
     });
 
     this.Then(/^the system should display all organizations that contain the name$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        expect(Search.inResults('University of Minnesota/Masonic Children\'s Hospital')).to.become(true);
+        expect(Search.inResults('University of Minnesota Medical Center-Fairview')).to.become(true);
+        expect(Search.inResults('University of Minnesota Medical Center-Fairview-Riverside')).to.become(false);
+        setTimeout(callback, 2000);
+        //  callback();
     });
 
     this.Given(/^I know the CTEP ID of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        setTimeout(callback, 2000);
+        // callback();
     });
 
     this.When(/^I provide the CTEP ID of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.setSourceId('NC164');
+        setTimeout(callback, 2000);
+        //  callback();
     });
 
     this.Then(/^the system should display all organizations that contain the CTEP ID$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        expect(Search.inResults('NC164')).to.become(true);
+        setTimeout(callback, 2000);
+        //  callback();
     });
 
     this.Given(/^I know the PO Organization ID of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        setTimeout(callback, 2000);
+        //  callback();
     });
 
     this.When(/^I provide the PO Organization ID of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.setPoId('153109');
+        setTimeout(callback, 2000);
+        // callback();
     });
 
     this.Then(/^the system should display all organizations that contain the PO Organization ID$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        expect(Search.inResults('153109')).to.become(true);
+        setTimeout(callback, 2000);
+        // callback();
     });
 
     this.Given(/^I know the Family name to which the organization I wish to search for belongs to$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        setTimeout(callback, 2000);
+        //  callback();
     });
 
     this.When(/^I provide the full or partial Family name of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.setFamilyName('Masonic Cancer Center');
+        //  callback();//
+        setTimeout(callback, 2000);
     });
 
     this.Then(/^the system should display all organizations that are members of the Family Name$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        expect(Search.inResults('Masonic Cancer Center')).to.become(true).and.notify(callback);
+        //  callback();
+        //  setTimeout(callback, 2000);
     });
 
     this.Given(/^I know the name of the city I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        //  callback();
+        setTimeout(callback, 2000);
     });
 
     this.When(/^I provide the full or partial city of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.setCity('Wilmington');
+        //  callback();
+        setTimeout(callback, 2000);
     });
 
     this.Then(/^the system should display all organizations whose address contains the city$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        expect(Search.inResults('Wilmington')).to.become(true);
+        //  callback();
+        setTimeout(callback, 2000);
     });
 
     this.Given(/^I know the name of the state I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        //  callback();
+        setTimeout(callback, 2000);
     });
 
     this.When(/^I select the state from a list of states displayed by CTRP$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.selectCountry('United States');
+        Search.selectState('North Carolina');
+        //  callback();
+        setTimeout(callback, 3000);
     });
 
     this.Then(/^the system should display all organizations whose address contains the state$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        expect(Search.inResults('North Carolina')).to.become(true);
+        //  callback();
+        setTimeout(callback, 3000);
     });
 
     this.Given(/^I know the name of the country I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        //  callback();
+        setTimeout(callback, 3000);
     });
 
     this.When(/^I select the country from a list of countries displayed by CTRP$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.selectCountry('Switzerland');
+        //  callback();
+        setTimeout(callback, 3000);
     });
 
     this.Then(/^the system should display all organizations whose address contains the country$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        expect(Search.inResults('Switzerland')).to.become(true).and.notify(callback);
+        //  callback();
+        // setTimeout(callback, 2000);
     });
 
     this.Given(/^I know the name of the zip code I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        //  callback();
+        setTimeout(callback, 2000);
     });
 
     this.When(/^I provide the full or partial zip code of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.setPostalCode('27157');
+        //  callback();
+        setTimeout(callback, 2000);
     });
 
     this.Then(/^the system should display all organizations whose address contains the zip code$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        expect(Search.inResults('27157')).to.become(true).and.notify(callback);
+        //  callback();
+        //  setTimeout(callback, 2000);
     });
 
     this.Given(/^I know the organization phone number I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        //   callback();
+        setTimeout(callback, 2000);
     });
 
     this.When(/^I provide the full or partial phone number of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.setPhone('336-716-0891');
+        //   callback();
+        setTimeout(callback,2000);
     });
 
     this.Then(/^the system should display all organizations with matching phone numbers$/, function (callback) {
+        expect(Search.inResults('336-716-0891')).to.become(true);
+        //   callback();
+        setTimeout(callback, 2000);
+    });
+
+    this.Given(/^I know the name of the organization_trial_relationship I wish to search for$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
     });
 
-    this.Given(/^I know the name of the (.*) I wish to search forxx$/, function (organizationTrialRelationship, callback) {
+    this.When(/^I select the organization_trial_relationship of the organization I wish to search for$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
     });
 
-    this.When(/^I select the (.*) of the organization I wish to search for$/, function (organizationTrialRelationship, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Then(/^the system should display all organizations that have the (.*)$/, function (organizationTrialRelationship, table, callback) {
+    this.Then(/^the system should display all organizations that have the organization_trial_relationship$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
     });
 
     this.Given(/^I know multiple parameters of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        //   callback();
+        setTimeout(callback, 2000);
     });
 
     this.Given(/^I am on the search organizations screen$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        MenuItemList.clickOrganizations();
+        MenuItemList.clickListOrganizations();
+        // callback();
+        setTimeout(callback, 3000);
     });
 
     this.When(/^I provide the parameters of the organization I wish to search for$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        Search.setOrgName('university*');
+        Search.setSourceId('MN022');
+        Search.selectCountry('United States');
+        Search.selectState('Minnesota');
+        // callback();
+        setTimeout(callback, 3000);
     });
 
     this.Then(/^the system should display all organizations that contain all of the entered parameters$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        expect(Search.inResults('University of Minnesota Medical Center-Fairview')).to.become(true);
+        expect(Search.inResults('MN022')).to.become(true);
+        // expect(Search.inResults('United States')).to.become(true);
+        expect(Search.inResults('Minnesota')).to.become(true);
+        expect(Search.inResults('MN021')).to.become(false);
+        // callback();
+        setTimeout(callback, 3000);
     });
 
     this.Given(/^I know the name of the curator date I wish to search for$/, function (callback) {
@@ -255,11 +298,26 @@ module.exports = function() {
         callback.pending();
     });
 
-    this.Given(/^I know the name of the organization_trial_relationship I wish to search for$/, function (callback) {
+
+    this.Given(/^I know the status of the organization I wish to search for$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
     });
 
+    this.Given(/^I am on a search organizations screen$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.When(/^I provide the status of the organization I wish to search for$/, function (table, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the system should display all organizations that have a matching organization status$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
 
 
 }

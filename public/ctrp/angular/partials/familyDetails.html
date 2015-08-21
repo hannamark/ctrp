@@ -21,12 +21,12 @@
         <div class="row">
             <p>
             <h4 ng-if="familyDetailView.curFamily.new">
-                <mark>Add a family</mark>
+                <mark>Add Family</mark>
             </h4>
             </p>
             <p>
             <h4 ng-if="!familyDetailView.curFamily.new">
-                <mark>Edit the family</mark>
+                <mark>Edit Family</mark>
             </h4>
             </p>
         </div>
@@ -76,51 +76,21 @@
                 </div>
 
                 <div class="form-group col-sm-12">
-                    <label for="family_membership_id" class="control-label col-sm-3">
+                    <label class="control-label col-sm-3">
                         Add Family Membership:
                     </label>
 
                     <div class="col-sm-9">
-                        <div class="col-md-6 animated-item pull-left">
-                            <label style="display:none;"></label>
-                            <input type="text" class="form-control" id="family_membership_id"
-                                   placeholder="Search organizations" ng-keyup="familyDetailView.searchOrgs()"
-                                   ng-model="familyDetailView.orgsSearchParams.name"/>
-
-                            <div ng-hide="familyDetailView.foundOrgs.length == 0" class="animated-item">
-                                <div class="btn-group buttons pull-right">
-                                    <button class="btn moveall btn-default" title="Select all"
-                                            ng-click="familyDetailView.batchSelect('selectAll')">
-                                        <i class="glyphicon glyphicon-arrow-right"></i>
-                                        <i class="glyphicon glyphicon-arrow-right"></i>
-                                    </button>
-                                </div>
-                                <select multiple="multiple" id="duallistbox" class="form-control"
-                                        ng-model="familyDetailView.selectedOrgs"
-                                        style="height: 194px;">
-                                    <option class="animated-item"
-                                            ng-repeat="org in familyDetailView.foundOrgs track by $index"
-                                            value="{{org}}">
-                                        {{org.name}}
-                                    </option>
-                                </select>
-                            </div>
+                        <div class="row">
+                            <button class="btn btn-primary" ng-click="familyDetailView.searchOrgsForAffiliation('lg')">
+                                <i class="glyphicon glyphicon-search"></i> Search Organizations
+                            </button>
+                            <button class="btn btn-danger" ng-click="familyDetailView.batchSelect('removeAll')" ng-show="familyDetailView.savedSelection.length > 0">
+                                <i class="glyphicon glyphicon-remove"></i> Remove All Affiliated Organizations
+                            </button>
                         </div>
-
-                        <div class="col-md-6 animated-item pull-right"
-                             ng-hide="familyDetailView.savedSelection.length == 0">
-                            <label style="display:none;"></label>
-                            <input type="text" class="form-control" placeholder="Filter selected organizations"
-                                   ng-model="familyDetailView.selectedOrgFilter"/>
-
-                            <div class="btn-toolbar">
-                                <button class="btn moveall btn-default" title="Remove all"
-                                        ng-click="familyDetailView.batchSelect('removeAll')">
-                                    <i class="glyphicon glyphicon-arrow-left"></i>
-                                    <i class="glyphicon glyphicon-arrow-left"></i>
-                                </button>
-
-                            </div>
+                        <div class="row animated-item" ng-show="familyDetailView.savedSelection.length > 0">
+                            <br /><input type="text" ng-model="familyDetailView.selectedOrgFilter" class="form-control" placeholder="Filter selected organizations"/>
                             <table class="table table-bordered table-striped table-condensed">
                                 <thead>
                                 <th>Remove</th>
@@ -142,15 +112,15 @@
                                     <td>{{org.id}}</td>
                                     <td>{{org.name}}</td>
                                     <td>
-                                            <select class="form-control" id="family_relationship"
-                                                    ng-model="org.family_relationship_id">
-                                                <option value="">Select Relationship</option>
-                                                <option ng-repeat="relation in familyDetailView.familyRelationshipArr"
-                                                        value="{{relation.id}}"
-                                                        ng-selected="org.family_relationship_id == relation.id">
-                                                        {{relation.name}}
-                                                </option>
-                                            </select>
+                                        <select class="form-control" id="family_relationship"
+                                                ng-model="org.family_relationship_id">
+                                            <option value="">Select Relationship</option>
+                                            <option ng-repeat="relation in familyDetailView.familyRelationshipArr"
+                                                    value="{{relation.id}}"
+                                                    ng-selected="org.family_relationship_id == relation.id">
+                                                {{relation.name}}
+                                            </option>
+                                        </select>
                                     </td>
 
 
@@ -194,6 +164,7 @@
                                 </tr>
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
@@ -201,7 +172,7 @@
                     <div class="col-sm-offset-3 col-sm-9">
                         <input type="submit" class="btn btn-success" ng-click="familyDetailView.updateFamily()"
                                ng-disabled="family_form.$invalid" value="Save">
-                        <input type="reset" class="btn btn-warning" value="Reset">
+                        <input type="reset" class="btn btn-warning" ng-click="familyDetailView.reset()" value="Reset">
                         <button class="btn btn-default" back-button>Cancel</button>
                         <button ng-hide="familyDetailView.curFamily.new" class="btn btn-danger"
                                 ng-click="familyDetailView.confirmDelete('sm')">

@@ -22,7 +22,9 @@
         'ui.grid.selection',
         'ui.scrollpoint',
         'DateServiceMod',
-        'CTRPUnderscoreModule'
+        'CTRPUnderscoreModule',
+        'toggle-switch',
+        'TimeoutModule'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
@@ -127,12 +129,6 @@
                     controller: 'userCtrl as userView'
                 })
 
-                .state('main.error403', {
-                    url: '/error403',
-                    templateUrl: '/ctrp/angular/partials/error403.html',
-                    controller: 'userCtrl as userView'
-                })
-
                 .state('main.families', {
                     url: '/families',
                     templateUrl: '/ctrp/angular/partials/family_list.html',
@@ -182,6 +178,11 @@
                             return FamilyService.getFamilyTypes();
                         },
                         familyDetailObj: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        },
+                        familyRelationshipObj : function($q) {
                             var deferred = $q.defer();
                             deferred.resolve(null);
                             return deferred.promise;

@@ -8,11 +8,11 @@
     angular.module('ctrpApp')
         .controller('personDetailCtrl', personDetailCtrl);
 
-    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'MESSAGES', 'DateService',
-        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', '$timeout', 'poAffStatuses', '_'];
+    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService',
+        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
 
-    function personDetailCtrl(personDetailObj, PersonService, toastr, MESSAGES, DateService,
-                              $scope, Common, sourceStatusObj, $state, $modal, OrgService, $timeout, poAffStatuses, _) {
+    function personDetailCtrl(personDetailObj, PersonService, toastr, DateService,
+                              $scope, Common, sourceStatusObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
         console.log("in person detail controller now");
         vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
@@ -21,6 +21,13 @@
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.savedSelection = [];
         vm.selectedOrgFilter = '';
+
+        //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
+        var pendingStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'PEND');
+        vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
+        vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
+
+        console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -173,12 +180,13 @@
                 }, function () {
                     console.log("operation canceled");
                 });
-            }
+            };
 
         }; //prepareModal
 
         vm.reset = function() {
             vm.batchSelect('removeAll');
+            vm.curPerson.source_status_id = '';
             vm.savedSelection.length = 0;
         }; //reset
 

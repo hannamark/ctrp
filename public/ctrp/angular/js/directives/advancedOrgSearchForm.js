@@ -18,10 +18,10 @@
         .directive('ctrpAdvancedOrgSearchForm', ctrpAdvancedOrgSearchForm);
 
     ctrpAdvancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location',
-        'MESSAGES', 'uiGridConstants', '$timeout', '_', '$anchorScroll', '$compile'];
+        'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr','$anchorScroll', '$compile'];
 
     function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common, $location,
-                                       MESSAGES, uiGridConstants, $timeout, _, $anchorScroll, $compile) {
+                                       MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile) {
 
         var directiveObj = {
             restrict: 'E',
@@ -39,6 +39,7 @@
 
         return directiveObj;
 
+        //$scope.selectedRows = [];
 
         /**************** implementations below ******************/
 
@@ -55,24 +56,31 @@
         function orgSearchController($scope) {
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
-
+            $scope.curationShown = false;
+            $scope.selectedRows=[];
+            $scope.nullifiedId = '';
+            $scope.warningMessage = false;
             activate();
 
             function activate() {
                 getPromisedData();
                 listenToStatesProvinces();
+                prepareGidOptions();
+                watchReadinessOfCuration();
             } //activate
 
             //ui-grid plugin options
-            $scope.gridOptions = OrgService.getGridOptions();
             //$scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
             //$scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
             //$scope.enablerowselection = false;
 
-            $scope.$watch('usedinmodal', function (newVal, oldVal) {
-                console.log('usedinmodal: ' + newVal);
-                $scope.resetSearch();
+           /*
+           //watch the curation switch button to turn on/off the curation choices
+            */
 
+
+            $scope.$watch('usedinmodal', function (newVal, oldVal) {
+                $scope.resetSearch();
                 //find the organization name index in the column definitions
                 var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
                 if (newVal) {
@@ -85,25 +93,33 @@
                     // $scope.gridOptions = OrgService.getGridOptions();
                     $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                         '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
+                   //make visible if it is not in modal and curator mode is off.
+
                 }
+
+
+
             });
-
-            $scope.gridOptions.onRegisterApi = function (gridApi) {
-                $scope.gridApi = gridApi;
-                $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
-                $scope.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                    $scope.searchParams.start = newPage;
-                    $scope.searchParams.rows = pageSize;
-                    $scope.searchOrgs();
-                });
-
-                gridApi.selection.on.rowSelectionChanged($scope, rowSelectionCallBack);
-                gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
-                    _.each(rows, function (row, index) {
-                        rowSelectionCallBack(row);
+            function prepareGidOptions() {
+                $scope.gridOptions = OrgService.getGridOptions();
+                $scope.gridOptions.onRegisterApi = function (gridApi) {
+                    $scope.gridApi = gridApi;
+                    $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
+                    $scope.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                        $scope.searchParams.start = newPage;
+                        $scope.searchParams.rows = pageSize;
+                        $scope.searchOrgs();
                     });
-                });
-            }; //gridOptions
+
+                    gridApi.selection.on.rowSelectionChanged($scope, rowSelectionCallBack);
+                    gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
+                        _.each(rows, function (row, index) {
+                            rowSelectionCallBack(row);
+                        });
+                    });
+                }; //gridOptions
+
+            }
 
             $scope.resetSearch = function () {
                 // $scope.states.length = 0;
@@ -210,6 +226,48 @@
                         $scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
                     }
                 }
+
+
+                if (!$scope.curationShown) {
+                    //if not on curation mode, do not show row selection
+                    row.isSelected = $scope.curationShown;
+                    $scope.gridApi.grid.refresh();
+                    return;
+                }
+
+                if (row.isSelected) {
+
+                    //console.log('row is selected: ' + JSON.stringify(row.entity));
+                    if ($scope.selectedRows.length < 2) {
+                        $scope.selectedRows.unshift(row);
+                    } else {
+                        var deselectedRow = $scope.selectedRows.pop();
+                        deselectedRow.isSelected = false;
+                        $scope.nullifiedId = deselectedRow.entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
+                        $scope.selectedRows.unshift(row);
+                        $scope.gridApi.grid.refresh(); //refresh grid
+                    }
+                } else {
+                    //de-select the row
+                    //remove it from the vm.selectedRows, if exists
+                    var needleIndex = -1;
+                    _.each($scope.selectedRows, function (existingRow, idx) {
+                        if (existingRow.entity.id == row.entity.id) {
+                            needleIndex = idx;
+                            return;
+                        }
+                    });
+
+                    if (needleIndex > -1) {
+                        var deselectedRowArr = $scope.selectedRows.splice(needleIndex, 1);
+                        deselectedRowArr[0].isSelected = false;
+                        //reset the nullifiedId if the row is de-selected
+                        $scope.nullifiedId = deselectedRowArr[0].entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
+                        $scope.curationReady = false;
+
+                    }
+                }
+
             } //rowSelectionCallBack
 
 
@@ -220,6 +278,21 @@
                         $scope.gridOptions.data = data.orgs;
                         $scope.gridOptions.totalItems = data.total;
                         $scope.gridHeight = $scope.gridOptions.rowHeight * (data.orgs.length + 1);
+
+                        //pin the selected rows, if any, at the top of the results
+                        _.each($scope.selectedRows, function(curRow, idx) {
+                            var ctrpId = curRow.entity.id;
+                            var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                            if (indexOfCurRowInGridData > -1) {
+                                $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
+                                $scope.gridOptions.totalItems--;
+                            }
+                            $scope.gridOptions.data.unshift(curRow.entity);
+                            $scope.gridOptions.totalItems++;
+
+                        });
+
+
                         $location.hash('org_search_results');
                         $anchorScroll();
                     }
@@ -230,6 +303,102 @@
                     console.log("error in retrieving orgs: " + JSON.stringify(error));
                 });
             }; //searchOrgs
+
+
+            $scope.nullifyEntity = function (rowEntity) {
+                // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
+                var isActive = rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1;
+                var isNullified = rowEntity.source_status && rowEntity.source_status.indexOf('Nul') > -1;
+                if (isNullified || isActive) {
+                    //TODO: warning to user for nullifying active entity
+                    //cannot nullify Active entity (e.g. person)
+                    if(isActive)
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
+                    else
+                        $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
+                    $scope.nullifiedId = '';
+                    console.log('cannot nullify this row, because it is active');
+                } else {
+                    $scope.warningMessage = false;
+                    $scope.nullifiedId = rowEntity.id || '';
+                }
+            }; //nullifyEntity
+
+           $scope.commitNullification = function() {
+
+                OrgService.curateOrg($scope.toBeCurated).then(function(res) {
+                    // console.log('successful in curation: res is: ' + JSON.stringify(res));
+                    initCurationObj()
+                    $scope.searchOrgs();
+                    toastr.success('Curation was successful', 'Curated!');
+                }).catch(function(err) {
+                    toastr.error('There was an error in curation', 'Curation error');
+                    console.log('error in curation, err is: ' + JSON.stringify(err));
+                });
+
+            }; //commitNullification
+
+            $scope.toggleCustom = function() {
+                if($scope.curationShown) $scope.curationShown=false;
+                else $scope.curationShown=true;
+                var newVal=$scope.curationShown;
+
+                $scope.gridOptions.columnDefs[0].visible = newVal;
+                if (newVal == false) {
+                    //purge the container for rows to be curated when not on curation mode
+                    while ($scope.selectedRows.length > 0) {
+                        alert('len '+$scope.selectedRows.length);
+                        // vm.selectedRows.pop().isSelected = false;
+                        var deselectedRow = $scope.selectedRows.pop();
+                        deselectedRow.isSelected = false;
+                        $scope.nullifiedId = deselectedRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                    }
+                } else {
+                    // initializations for curation
+                    $scope.selectedRows = [];
+                    $scope.nullifiedId = '';
+                    $scope.warningMessage = false;
+                }
+                $scope.gridApi.grid.refresh();
+
+            };
+
+            /**
+             * watch the readiness of curation submission
+             */
+            function watchReadinessOfCuration() {
+                $scope.$watch('nullifiedId', function(curVal, preVal) {
+                    initCurationObj();
+                    $scope.toBeCurated.id_to_be_nullified = $scope.nullifiedId;
+                    if ($scope.selectedRows.length == 2 && $scope.nullifiedId) {
+                        _.each($scope.selectedRows, function (curRow) {
+                            if (curRow.entity.id != $scope.nullifiedId) {
+                                $scope.toBeCurated['id_to_be_retained'] = curRow.entity.id;
+                                return;
+                            }
+                        });
+                    }
+
+                    if ($scope.toBeCurated.id_to_be_nullified && $scope.toBeCurated.id_to_be_retained) {
+                        $scope.curationReady = true;
+                    }
+                    // console.log('nullified object: ' + JSON.stringify(vm.toBeCurated));
+                    // console.log('curationReady: ' + vm.curationReady);
+                }, true);
+            } //watchReadinessOfCuration
+
+
+            /**
+             * initialize curation object and curation ready status
+             */
+            function initCurationObj() {
+                $scope.toBeCurated = {'id_to_be_nullified': '', 'id_to_be_retained': ''};
+                $scope.curationReady = false;
+                return;
+            } //initCurationObj
+
+
+
 
 
         } //orgSearchController
