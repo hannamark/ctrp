@@ -245,6 +245,12 @@
                     }
                 })
 
+                .state('main.testPerson', {
+                    url: '/person_directive',
+                    templateUrl: '/ctrp/angular/partials/personDetails.html',
+                    controller: 'personListCtrl as personSearchView'
+                })
+
                 .state('main.addTrial', {
                     url: '/new_trial',
                     templateUrl: '/ctrp/angular/partials/trialDetails.html',

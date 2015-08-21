@@ -228,9 +228,13 @@
                 }
 
 
-                if (!$scope.curationShown) {
+                if (!$scope.usedinmodal) {
                     //if not on curation mode, do not show row selection
-                    row.isSelected = $scope.curationShown;
+                    row.isSelected = true;
+                    $scope.gridApi.grid.refresh();
+                    return;
+                } else if ($scope.usedinmodal) {
+                    row.isSelected =true;
                     $scope.gridApi.grid.refresh();
                     return;
                 }
