@@ -161,7 +161,7 @@
                 <p><h4>People Search Results: {{gridOptions.totalItems}} found</h4></p>
                 <h5 ng-show="gridOptions.totalItems > 0">
                     <mark>Curation Mode: </mark>
-                    <toggle-switch ng-model="curationShown"></toggle-switch>
+                    <toggle-switch ng-model="curationShown" ng-change="toggleCurationMode()"></toggle-switch>
                     <button class="btn" ng-click="commitNullification()" ng-show="curationShown"
                             ng-disabled="!curationReady"
                             ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>

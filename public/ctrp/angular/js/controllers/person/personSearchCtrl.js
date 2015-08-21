@@ -17,7 +17,6 @@
         $scope.selectedPersonsArray = []; // persons selected in the ui-grid
 
 
-
         activate();
 
 
@@ -32,7 +31,13 @@
         function watchpersonSearchResults() {
             $scope.$watch('personSearchResults', function(newVal, oldVal) {
                 $scope.personSearchResults = newVal;
-                console.log("received personSearchResults: " + JSON.stringify(newVal));
+               // console.log("received personSearchResults: " + JSON.stringify(newVal));
+            }, true);
+
+
+            $scope.$watch('selectedPersonsArray', function(newVal, oldVal) {
+                // $scope.personSearchResults = newVal;
+                //console.log("received selectedPersonsArray: " + JSON.stringify(newVal));
             }, true);
         } //watchpersonSearchResults
 

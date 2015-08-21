@@ -46,7 +46,7 @@
         
         
         
-        function advPersonSearchDirectiveController($scope, $timeout, uiGridConstants, OrgService) {
+        function advPersonSearchDirectiveController($scope) {
 
             console.log('$scope.isInModal: ' + $scope.isInModal);
             console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
@@ -102,6 +102,9 @@
                     $scope.searchParams[key] = '';
                 });
                 $scope.$parent.personSearchResults = {};
+                if (angular.isDefined($scope.$parent.selectedPersonsArray)) {
+                    $scope.$parent.selectedPersonsArray = [];
+                }
             }; //resetSearch
 
             $scope.curationShown = false;
@@ -194,6 +197,7 @@
                     }
                 }
 
+                /*
                 if (!$scope.curationShown) {
                     //if not on curation mode, do not show row selection
                     row.isSelected = $scope.curationShown;
@@ -203,6 +207,7 @@
                     row.isSelected = $scope.isInModal; // ????????
                     $scope.gridApi.grid.refresh();
                 }
+                */
 
                 if (row.isSelected) {
 
@@ -244,12 +249,10 @@
             function getPromisedData() {
 
                 OrgService.getSourceContexts().then(function(data) {
-                   console.log('source context array: ' + JSON.stringify(data));
                     $scope.sourceContextArr = data.sort(Common.a2zComparator());
                 });
 
                 OrgService.getSourceStatuses().then(function(data) {
-                   console.log('source status array: ' + JSON.stringify(data));
                     $scope.sourceStatusArr = data.sort(Common.a2zComparator());
                 });
 
@@ -285,10 +288,15 @@
 
                 }; //gridOptions
 
-                //watch the curation switch button to turn on/off the curation choices
-                $scope.$watch('curationShown', function (newVal, oldVal) {
-                    $scope.gridOptions.columnDefs[0].visible = newVal;
-                    if (newVal == false) {
+
+                /**
+                 * toggle the curation mode (on/off)
+                 */
+                $scope.toggleCurationMode = function() {
+                    $scope.curationShown = !$scope.curationShown;
+                    $scope.gridOptions.columnDefs[0].visible = $scope.curationShown;
+
+                    if ($scope.curationShown == false) {
                         //purge the container for rows to be curated when not on curation mode
                         var lastRow = clearSelectedRows();
                         if (!!lastRow) {
@@ -302,7 +310,8 @@
                         $scope.warningMessage = false;
                     }
                     $scope.gridApi.grid.refresh();
-                }, true);
+                }; //toggleCurationMode
+
 
             } //prepareGridOptions
 
@@ -327,8 +336,6 @@
                     if ($scope.toBeCurated.id_to_be_nullified && $scope.toBeCurated.id_to_be_retained) {
                         $scope.curationReady = true;
                     }
-                    // console.log('nullified object: ' + JSON.stringify($scope.toBeCurated));
-                    // console.log('curationReady: ' + $scope.curationReady);
                 }, true);
             } //watchReadinessOfCuration
 
@@ -353,6 +360,7 @@
                     deselectedRow = $scope.selectedRows.shift();
                     deselectedRow.isSelected = false;
                 }
+                //TODO: clear the $parent's scope data
 
                 return deselectedRow;
             }
