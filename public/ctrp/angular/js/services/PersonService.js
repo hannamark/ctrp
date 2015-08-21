@@ -52,11 +52,15 @@
                     visible: false
                 },
                 {name: 'id', enableSorting: true, displayName: 'CTRP ID', width: '7%'},
-                {name: 'fname', displayName: 'First Name', enableSorting: true, width: '8%',
+                {name: 'fname', displayName: 'First', enableSorting: true, width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'lname', displayName: 'Last Name', enableSorting: true, width: '10%',
+                {name: 'mname', displayName: 'Middle', enableSorting: true, width: '10%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {name: 'lname', displayName: 'Last', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
