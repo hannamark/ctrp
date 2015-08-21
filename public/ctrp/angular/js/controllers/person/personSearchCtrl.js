@@ -8,10 +8,13 @@
     angular.module('ctrpApp')
         .controller('personSearchCtrl', personSearchCtrl);
 
-    personSearchCtrl.$inject = [];
+    personSearchCtrl.$inject = ['PersonService', '$scope'];
     
-    function personSearchCtrl() {
-        
+    function personSearchCtrl(PersonService, $scope) {
+        var vm = this;
+
+        vm.name = 'Tony';
+
     } //personSearchCtrl
     
     
