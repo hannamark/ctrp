@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12 col-border">
         <div class="row">
-            <h4>Search People
+            <h4>Search Persons
                 <small>
                     <mark>* for wild card (e.g. John*)</mark>
                 </small>
@@ -35,7 +35,7 @@
                         <!-- CTRP ID -->
                         <div class="form-group">
                             <!-- ID used as ctrp_id here -->
-                            <label for="ctrp_id" class="control-label col-sm-2">CTRP ID: </label>
+                            <label for="ctrp_id" class="control-label col-sm-2"><nobr>CTRP ID:</nobr></label>
 
                             <div class="col-sm-10">
                                 <input type="text" id="ctrp_id" class="form-control" placeholder="CTRP ID"
@@ -57,7 +57,7 @@
                             <div class="col-sm-4">
                                 <select class="form-control" id="source_context"
                                         ng-model="personView.searchParams.source_context">
-                                    <option value="">Select a Context</option>
+                                    <option value="">All Contexts</option>
                                     <option ng-repeat="context in personView.sourceContextArr" value="{{context.name}}">
                                         {{context.name}}
                                     </option>
@@ -65,7 +65,7 @@
                             </div>
                             <!--source context ends-->
                             <!--source id-->
-                            <label for="source_id" class="control-label col-sm-2">Source ID: </label>
+                            <label for="source_id" class="control-label col-sm-2"><nobr>Source ID:</nobr></label>
 
                             <div class="col-sm-4">
                                 <input type="text" id="source_id" class="form-control" placeholder="Source ID"

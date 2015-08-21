@@ -25,7 +25,7 @@
             <!-- PO ID -->
             <div class="form-group">
                 <!-- ID used as ctrp_id here -->
-                <label for="ctrp_id" class="control-label col-xs-12 col-sm-2">CTRP ID: </label>
+                <label for="ctrp_id" class="control-label col-xs-12 col-sm-2"><nobr>CTRP ID:</nobr></label>
 
                 <div class="col-xs-12 col-sm-4">
                     <input type="text" id="ctrp_id" class="form-control" placeholder="CTRP ID"
@@ -55,7 +55,7 @@
                     <select class="form-control" id="source_context"
                             ng-model="searchParams.source_context"
                             ng-change="searchOrgs()">
-                        <option value="">Select a Context</option>
+                        <option value="">All Contexts</option>
                         <option ng-repeat="context in sourceContexts" value="{{context.name}}">
                             {{context.name}}
                         </option>
@@ -108,7 +108,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="address2" class="control-label col-xs-12 col-sm-2">Address 2:</label>
+                <label for="address2" class="control-label col-xs-12 col-sm-2"><nobr>Address 2:</nobr></label>
 
                 <div class="col-xs-12 col-sm-10">
                     <input type="text" id="address2" class="form-control" placeholder="Address 2"

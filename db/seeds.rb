@@ -7,6 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 ctep = SourceContext.create(code: 'CTEP', name: 'CTEP')
+ctrp = SourceContext.create(code: 'CTRP', name: 'CTRP')
 nlm = SourceContext.create(code: 'NLM', name: 'NLM')
 source_act = SourceStatus.create(code: 'ACT', name: 'Active')
 source_pend = SourceStatus.create(code: 'PEND', name: 'Pending')
@@ -31,7 +32,7 @@ FamilyStatus.find_or_create_by(code:'INACTIVE',name:'Inactive')
 FamilyType.find_or_create_by(code:'CANCERCENTER',name:'Cancer Center')
 FamilyType.find_or_create_by(code:'NCTN',name:'NCTN')
 FamilyType.find_or_create_by(code:'NIH',name:'NIH')
-FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Center')
+FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
 
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
@@ -105,7 +106,7 @@ if !org2.new_record?
   org2.name_aliases.create(name: 'Masonic Cancer Center, University of Minnesota')
 end
 org3 = Organization.create(id: 153109, source_id: 'NC164', name: 'Coastal Carolina Radiation Oncology', source_status: source_act, source_context: ctep, address: '1988 S 16th St', city: 'Wilmington', state_province:'North Carolina', country:usa)
-org4 = Organization.create(id: 12733422, name: 'Comprehensive Cancer Center of Wake Forest University', source_status: source_act, address: '1 Medical Center Blvd', city: '', state_province:'North Carolina', country: usa) #labeled unknown in directory
+org4 = Organization.create(id: 12733422, name: 'Comprehensive Cancer Center of Wake Forest University', source_status: source_act, source_context:ctrp, address: '1 Medical Center Blvd', city: '', state_province:'North Carolina', country: usa) #labeled unknown in directory
 org5 = Organization.create(id: 117163, source_id: 'LA032', name: 'Ochsner Baptist Medical Center', source_status: source_act, source_context: ctep, address: '2700 Napoleon Ave', city: 'New Orleans', state_province:'Louisiana', country:usa)
 if !org5.new_record?
   org5.name_aliases.create(name: 'Ochsner Baptist Medical Center')
@@ -122,13 +123,13 @@ org11 = Organization.create(id: 36296115, source_id: 'NC274', name: 'Wake Forest
 org12 = Organization.create(id: 36296009, source_id: 'NC272', name: 'Wake Forest University at Mount Airy', source_status: source_act, source_context: ctep, address: '910 Worth St.', city: 'Mt. Airy', state_province:'North Carolina', country:usa)
 org13 = Organization.create(id: 149074, source_id: 'NC002', name: 'Wake Forest University Health Sciences', source_status: source_act, source_context: ctep, address: '1 Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa) #no source id
 org14 = Organization.create(id: 149221, source_id: 'NC008', name: 'Wake Medical Center-Breast Screening and Diagnostic', source_status: source_act, source_context: ctep, address: '3000 New Bern Avenue ', city: 'Raleigh', state_province:'North Carolina', country:usa)
-org15 = Organization.create(id: 23875109, name: 'ACORN Research, LLC', source_status: source_pend,address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa) #no source id
+org15 = Organization.create(id: 23875109, name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctrp, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa) #no source id
 org16 = Organization.create(id: 24068, source_id: 'ACT', name: 'Actelion Pharmaceuticals Switzerland', source_status: source_act, source_context: ctep, address: 'Gewerbestrasse 16', city: 'Allschwil', state_province:'Basel-Landschaft', country: 'Switzerland')
 if !org16.new_record?
   org16.name_aliases.create(name: 'Actelion')
 end
-org17 = Organization.create(id: 8352734, name: 'Boston University School Of Public Health', source_status: source_act, address: '715 Albany St', city: 'Boston', state_province:'Massachusetts', country: usa) #no source id
-org18 = Organization.create(id: 34563051, name: 'UCB, Inc.', source_status: source_act, address: '1950 Lake Park Drive', city: 'Smyrna', state_province:'Georgia', country: usa) #no source id
+org17 = Organization.create(id: 8352734, name: 'Boston University School Of Public Health', source_status: source_act,  source_context:ctrp, address: '715 Albany St', city: 'Boston', state_province:'Massachusetts', country: usa) #no source id
+org18 = Organization.create(id: 34563051, name: 'UCB, Inc.', source_status: source_act,  source_context:ctrp, address: '1950 Lake Park Drive', city: 'Smyrna', state_province:'Georgia', country: usa) #no source id
 if !org18.new_record?
   org18.name_aliases.create(name: 'UCB Pharma')
 end
