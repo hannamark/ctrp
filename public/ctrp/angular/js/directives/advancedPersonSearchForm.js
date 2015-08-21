@@ -20,12 +20,11 @@
         var directiveObj = {
             restrict: 'E',
             scope: {
-                showgrid: '=',  //boolean
-                //enablerowselection: '=',  //boolean
+//                showgrid: '=',  //boolean
                 maxRowSelectable : '=', //int
                 isInModal: '=',  //boolean
-                personSearchResults: '@personSearchResults',
-                selectedPersonsArray: '@selectedPersonsArray',
+//                personSearchResults: '@personSearchResults',
+//                selectedPersonsArray: '@selectedPersonsArray',
             },
             templateUrl: '/ctrp/angular/js/directives/advancedPersonSearchFormTemplate.html',
             link: linkFn,
@@ -60,9 +59,7 @@
             $scope.sourceStatusArr.sort(Common.a2zComparator());
             $scope.nullifiedId = '';
             $scope.warningMessage = false;
-
             $scope.selectedRows = [];
-            console.log('received sourceStatusArr: ' + JSON.stringify($scope.sourceStatusArr));
 
 
             $scope.searchPeople = function () {
