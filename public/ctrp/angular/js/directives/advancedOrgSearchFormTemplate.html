@@ -81,7 +81,7 @@
                     <select class="form-control" id="source_status"
                             ng-model="searchParams.source_status"
                             ng-change="searchOrgs()">
-                        <option value="">Select a status</option>
+                        <option value="">Select a Status</option>
                         <option ng-repeat="status in sourceStatuses" value="{{status.name}}">
                             {{status.name}}
                         </option>
@@ -154,7 +154,7 @@
                 <div class="col-xs-12 col-sm-10">
                     <select class="form-control" id="country" ng-model="searchParams.country"
                             ng-change="watchCountrySelection(searchParams.country)">
-                        <option value="" selected>All countries</option>
+                        <option value="" selected>All Countries</option>
                         <option ng-repeat="country in countries" value="{{country.name}}">
                             {{country.name}}
                         </option>
@@ -185,7 +185,7 @@
                 <div class="col-xs-12 col-sm-10">
                     <select class="form-control" id="state" ng-model="searchParams.state_province"
                             ng-change="searchOrgs()">
-                        <option value="">All states/provinces</option>
+                        <option value="">All States/Provinces</option>
                         <option ng-repeat="state in states track by state.name"
                                 value="{{state.name}}">{{state.name}}
                         </option>
