@@ -32,7 +32,7 @@ FamilyStatus.find_or_create_by(code:'INACTIVE',name:'Inactive')
 FamilyType.find_or_create_by(code:'CANCERCENTER',name:'Cancer Center')
 FamilyType.find_or_create_by(code:'NCTN',name:'NCTN')
 FamilyType.find_or_create_by(code:'NIH',name:'NIH')
-FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Center')
+FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
 
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
