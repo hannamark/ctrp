@@ -262,8 +262,20 @@
                             deferred.resolve(null);
                             return deferred.promise;
                         },
+                        phaseObj: function(TrialService) {
+                            return TrialService.getPhases();
+                        },
                         researchCategoryObj: function(TrialService) {
                             return TrialService.getResearchCategories();
+                        },
+                        primaryPurposeObj: function(TrialService) {
+                            return TrialService.getPrimaryPurposes();
+                        },
+                        secondaryPurposeObj: function(TrialService) {
+                            return TrialService.getSecondaryPurposes();
+                        },
+                        responsiblePartyObj: function(TrialService) {
+                            return TrialService.getResponsibleParties();
                         }
                     }
                 });

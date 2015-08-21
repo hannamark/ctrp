@@ -19,12 +19,15 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Add Lead Organization:</label>
+                    <label class="control-label col-sm-3">Phase:</label>
                     <div class="col-sm-9">
-                        <button class="btn btn-primary" ng-click="trialDetailView.searchOrg('lg', 'lead')">
-                            <i class="glyphicon glyphicon-search"></i> Search Organizations
-                        </button>
-                        {{trialDetailView.selectedLeadOrg.name}}
+                        <select class="form-control" id="phase" ng-model="trialDetailView.curTrial.phase_id">
+                            <option value="">Select a Phase</option>
+                            <option ng-repeat="phase in trialDetailView.phaseArr"
+                                    value="{{phase.id}}" ng-selected="trialDetailView.curTrial.phase_id == phase.id">
+                                {{phase.name}}
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
@@ -35,6 +38,51 @@
                             <option ng-repeat="category in trialDetailView.researchCategoryArr"
                                     value="{{category.id}}" ng-selected="trialDetailView.curTrial.research_category_id == category.id">
                                 {{category.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Primary Purpose:</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id">
+                            <option value="">Select a Primary Purpose</option>
+                            <option ng-repeat="primaryPurpose in trialDetailView.primaryPurposeArr"
+                                    value="{{primaryPurpose.id}}" ng-selected="trialDetailView.curTrial.primary_purpose_id == primaryPurpose.id">
+                                {{primaryPurpose.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Secondary Purpose:</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id">
+                            <option value="">Select a Secondary Purpose</option>
+                            <option ng-repeat="secondaryPurpose in trialDetailView.secondaryPurposeArr"
+                                    value="{{secondaryPurpose.id}}" ng-selected="trialDetailView.curTrial.secondary_purpose_id == secondaryPurpose.id">
+                                {{secondaryPurpose.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Add Lead Organization:</label>
+                    <div class="col-sm-9">
+                        <button class="btn btn-primary" ng-click="trialDetailView.searchOrg('lg', 'lead')">
+                            <i class="glyphicon glyphicon-search"></i> Search Organizations
+                        </button>
+                        {{trialDetailView.selectedLeadOrg.name}}
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Responsible Party:</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id">
+                            <option value="">Select a Responsible Party</option>
+                            <option ng-repeat="responsibleParty in trialDetailView.responsiblePartyArr"
+                                    value="{{responsibleParty.id}}" ng-selected="trialDetailView.curTrial.responsible_party_id == responsibleParty.id">
+                                {{responsibleParty.name}}
                             </option>
                         </select>
                     </div>

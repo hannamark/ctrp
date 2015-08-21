@@ -31,7 +31,11 @@
             'TRIAL_LIST': '/ctrp/trials.json',
             'A_TRIAL': '/ctrp/trials/',
             'SEARCH_TRIAL': '/ctrp/trials/search.json',
-            'RESEARCH_CATEGORIES': '/ctrp/research_categories.json'
+            'PHASES': '/ctrp/phases.json',
+            'RESEARCH_CATEGORIES': '/ctrp/research_categories.json',
+            'PRIMARY_PURPOSES': '/ctrp/primary_purposes.json',
+            'SECONDARY_PURPOSES': '/ctrp/secondary_purposes.json',
+            'RESPONSIBLE_PARTIES': '/ctrp/responsible_parties.json'
         })
         .constant('MESSAGES', {
            'STATES_AVAIL' : 'states_or_provinces_available',

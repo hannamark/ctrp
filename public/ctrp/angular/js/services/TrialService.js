@@ -47,7 +47,11 @@
             searchTrials: searchTrials,
             getInitialTrialSearchParams: getInitialTrialSearchParams,
             getGridOptions: getGridOptions,
+            getPhases: getPhases,
             getResearchCategories: getResearchCategories,
+            getPrimaryPurposes: getPrimaryPurposes,
+            getSecondaryPurposes: getSecondaryPurposes,
+            getResponsibleParties: getResponsibleParties,
             deleteTrial: deleteTrial
         };
 
@@ -121,13 +125,25 @@
             $rootScope.$broadcast(msgCode, {content: msgContent});
         } //broadcastMsg
 
-        /**
-         * retrieve research categories from backend service
-         * @return {promise}
-         */
+        function getPhases() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PHASES);
+        }
+
         function getResearchCategories() {
             return PromiseTimeoutService.getData(URL_CONFIGS.RESEARCH_CATEGORIES);
-        } //getResearchCategories
+        }
+
+        function getPrimaryPurposes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PRIMARY_PURPOSES);
+        }
+
+        function getSecondaryPurposes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SECONDARY_PURPOSES);
+        }
+
+        function getResponsibleParties() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.RESPONSIBLE_PARTIES);
+        }
 
         /**
          * delete an trial with the given trialId
