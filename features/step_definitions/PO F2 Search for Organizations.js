@@ -154,26 +154,27 @@ module.exports = function() {
     });
 
     this.When(/^I select the state from a list of states displayed by CTRP$/, function (callback) {
+        Search.selectCountry('United States');
         Search.selectState('North Carolina');
         //  callback();
-        setTimeout(callback, 2000);
+        setTimeout(callback, 3000);
     });
 
     this.Then(/^the system should display all organizations whose address contains the state$/, function (callback) {
         expect(Search.inResults('North Carolina')).to.become(true);
         //  callback();
-        setTimeout(callback, 2000);
+        setTimeout(callback, 3000);
     });
 
     this.Given(/^I know the name of the country I wish to search for$/, function (callback) {
         //  callback();
-        setTimeout(callback, 2000);
+        setTimeout(callback, 3000);
     });
 
     this.When(/^I select the country from a list of countries displayed by CTRP$/, function (callback) {
         Search.selectCountry('Switzerland');
         //  callback();
-        setTimeout(callback, 2000);
+        setTimeout(callback, 3000);
     });
 
     this.Then(/^the system should display all organizations whose address contains the country$/, function (callback) {
@@ -240,7 +241,7 @@ module.exports = function() {
         MenuItemList.clickOrganizations();
         MenuItemList.clickListOrganizations();
         // callback();
-        setTimeout(callback, 2000);
+        setTimeout(callback, 3000);
     });
 
     this.When(/^I provide the parameters of the organization I wish to search for$/, function (callback) {
@@ -249,7 +250,7 @@ module.exports = function() {
         Search.selectCountry('United States');
         Search.selectState('Minnesota');
         // callback();
-        setTimeout(callback, 2000);
+        setTimeout(callback, 3000);
     });
 
     this.Then(/^the system should display all organizations that contain all of the entered parameters$/, function (callback) {
@@ -259,7 +260,7 @@ module.exports = function() {
         expect(Search.inResults('Minnesota')).to.become(true);
         expect(Search.inResults('MN021')).to.become(false);
         // callback();
-        setTimeout(callback, 2000);
+        setTimeout(callback, 3000);
     });
 
     this.Given(/^I know the name of the curator date I wish to search for$/, function (callback) {

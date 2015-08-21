@@ -22,7 +22,13 @@
         vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-        //console.log('received orgDetailObj: ' + JSON.stringify(orgDetailObj));
+        //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
+        var pendingStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'PEND');
+        vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
+        vm.curOrg.source_status_id = vm.curOrg.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
+        vm.curationReady = false;
+        console.log('received source status arra: ' + JSON.stringify(vm.sourceStatusArr));
+        console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
 
         //update organization (vm.curOrg)
         vm.updateOrg = function() {

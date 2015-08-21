@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150813202839) do
+ActiveRecord::Schema.define(version: 20150814000001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,6 +251,14 @@ ActiveRecord::Schema.define(version: 20150813202839) do
     t.string   "uuid",       limit: 255
   end
 
+  create_table "research_categories", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
   create_table "responsible_parties", force: :cascade do |t|
     t.string   "code",       limit: 255
     t.string   "name",       limit: 255
@@ -357,7 +365,6 @@ ActiveRecord::Schema.define(version: 20150813202839) do
     t.string   "lead_protocol_id",        limit: 255
     t.text     "official_title"
     t.string   "pilot",                   limit: 255
-    t.string   "research_category",       limit: 255
     t.string   "primary_purpose_other",   limit: 255
     t.string   "secondary_purpose_other", limit: 255
     t.string   "program_code",            limit: 255
@@ -387,6 +394,7 @@ ActiveRecord::Schema.define(version: 20150813202839) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "uuid",                    limit: 255
+    t.integer  "research_category_id"
   end
 
   add_index "trials", ["investigator_id"], name: "index_trials_on_investigator_id", using: :btree
@@ -394,6 +402,7 @@ ActiveRecord::Schema.define(version: 20150813202839) do
   add_index "trials", ["phase_id"], name: "index_trials_on_phase_id", using: :btree
   add_index "trials", ["pi_id"], name: "index_trials_on_pi_id", using: :btree
   add_index "trials", ["primary_purpose_id"], name: "index_trials_on_primary_purpose_id", using: :btree
+  add_index "trials", ["research_category_id"], name: "index_trials_on_research_category_id", using: :btree
   add_index "trials", ["responsible_party_id"], name: "index_trials_on_responsible_party_id", using: :btree
   add_index "trials", ["secondary_purpose_id"], name: "index_trials_on_secondary_purpose_id", using: :btree
   add_index "trials", ["sponsor_id"], name: "index_trials_on_sponsor_id", using: :btree
@@ -474,6 +483,7 @@ ActiveRecord::Schema.define(version: 20150813202839) do
   add_foreign_key "trials", "people", column: "pi_id"
   add_foreign_key "trials", "phases"
   add_foreign_key "trials", "primary_purposes"
+  add_foreign_key "trials", "research_categories"
   add_foreign_key "trials", "responsible_parties"
   add_foreign_key "trials", "secondary_purposes"
   add_foreign_key "trials", "study_sources"

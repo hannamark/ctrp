@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       collection do
         get 'search'
         post 'search'
+        post 'curate'
       end
     end
 
@@ -44,6 +45,7 @@ Rails.application.routes.draw do
       collection do
         get 'search'
         post 'search'
+        post 'curate'
       end
     end
 
@@ -76,6 +78,7 @@ Rails.application.routes.draw do
     resources :holder_types
     resources :expanded_access_types
     resources :trial_statuses
+    resources :research_categories
   end
   # Devise related routes
 

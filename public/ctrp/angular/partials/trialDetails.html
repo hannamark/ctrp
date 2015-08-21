@@ -1,0 +1,53 @@
+<div class="row-fluid">
+    <div class="col-xs-12 col-border">
+        <div class="row">
+            <p><h4 ng-if="trialDetailView.curTrial.new"><mark>Add an Trial</mark></h4></p>
+            <p><h4 ng-if="!trialDetailView.curTrial.new"><mark>Edit the Trial</mark></h4></p>
+        </div>
+        <div class="row">
+            <form class="form-horizontal" role="form" name="trial_form" novalidate>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Lead Protocol Identifier:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control input-xs" id="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id">
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Official Title:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control input-xs" id="official_title" ng-model="trialDetailView.curTrial.official_title">
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Add Lead Organization:</label>
+                    <div class="col-sm-9">
+                        <button class="btn btn-primary" ng-click="trialDetailView.searchOrg('lg', 'lead')">
+                            <i class="glyphicon glyphicon-search"></i> Search Organizations
+                        </button>
+                        {{trialDetailView.selectedLeadOrg.name}}
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Research Category:</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="research_category" ng-model="trialDetailView.curTrial.research_category_id">
+                            <option value="">Select a Research Category</option>
+                            <option ng-repeat="category in trialDetailView.researchCategoryArr"
+                                    value="{{category.id}}" ng-selected="trialDetailView.curTrial.research_category_id == category.id">
+                                {{category.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="buttonBar" class="form-group col-sm-12">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <input type="submit" class="btn btn-success" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" value="Save">
+                        <input type="reset" class="btn btn-warning" id="reset_btn" value="Reset">
+                        <button class="btn btn-default" back-button>Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

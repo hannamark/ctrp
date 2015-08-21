@@ -22,7 +22,9 @@
         'ui.grid.selection',
         'ui.scrollpoint',
         'DateServiceMod',
-        'CTRPUnderscoreModule'
+        'CTRPUnderscoreModule',
+        'toggle-switch',
+        'TimeoutModule'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
@@ -241,7 +243,38 @@
                             return PersonService.getPoAffStatuses();
                         }
                     }
+                })
+
+                .state('main.addTrial', {
+                    url: '/new_trial',
+                    templateUrl: '/ctrp/angular/partials/trialDetails.html',
+                    controller: 'trialDetailCtrl as trialDetailView',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        trialDetailObj: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        },
+                        researchCategoryObj: function(TrialService) {
+                            return TrialService.getResearchCategories();
+                        }
+                    }
                 });
+
+                //.state('main.sign_out', {
+                //    url: '/sign_out',
+                //    controller: 'userCtrl',
+                //    resolve: {
+                //        logOut: function($q) {
+                //            var deferred = $q.defer();
+                //            //config.headers.Authorization = '';
+                //            deferred.resolve({data: "logout"});
+                //            return deferred.promise;
+                //        }
+                //    }
+                //
+                //})
 
 
         }).run(function() {

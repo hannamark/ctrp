@@ -46,6 +46,7 @@
             totalItems: null,
             rowHeight: 50,
             enableRowSelection: true,
+            //enableFullRowSelection: true,
             enableRowHeaderSelection: true,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
@@ -54,7 +55,11 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'PO ID', width: '10%'},
+                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '6%',
+                    cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
+                    visible: false
+                },
+                {name: 'id', enableSorting: true, displayName: 'CTRP ID', width: '10%'},
                 {
                     name: 'name', enableSorting: true, width: '23%',
                     //this does not work for .id
@@ -94,6 +99,7 @@
             indexOfOrganization : indexOfOrganization,
             preparePOAffiliationArr : preparePOAffiliationArr,
             initSelectedOrg : initSelectedOrg,
+            curateOrg : curateOrg
         };
 
         return services;
@@ -314,7 +320,14 @@
             return org;
         } //initSelectedOrg
 
-
+        /**
+         * Nullify a Organization and merge his/her association to the retained Organizations
+         *
+         * @param curationObject, JSON object: {'id_to_be_nullified': '', 'id_to_be_retained': ''}
+         */
+        function curateOrg(curationObject) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CURATE_ORG, curationObject);
+        }
 
 
     }

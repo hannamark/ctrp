@@ -67,6 +67,25 @@ class Organization < ActiveRecord::Base
     end
   end
 
+  def self.nullify_duplicates(params)
+
+    self.transaction do
+      @toBeNullifiedOrg = Organization.find_by_id(params[:id_to_be_nullified]);
+      @toBeRetainedOrg =  Organization.find_by_id(params[:id_to_be_retained]);
+      raise ActiveRecord::RecordNotFound if @toBeNullifiedOrg.nil? or @toBeRetainedOrg.nil?
+
+
+      ## Destroy associations of to_be_nullified_org and assigned to retained Organization
+      ##
+
+      ## change the status of org to Nullified, to_be_nullified_org
+      ##
+      @toBeNullifiedOrg.source_status_id=SourceStatus.find_by_code('NULLIFIED').id;
+      @toBeNullifiedOrg.save!
+    end
+
+  end
+
   # Scope definitions for search
   scope :contains, -> (column, value) { where("organizations.#{column} ilike ?", "%#{value}%") }
 

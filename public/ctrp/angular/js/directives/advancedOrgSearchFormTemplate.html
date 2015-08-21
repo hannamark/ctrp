@@ -25,7 +25,7 @@
             <!-- PO ID -->
             <div class="form-group">
                 <!-- ID used as ctrp_id here -->
-                <label for="ctrp_id" class="control-label col-xs-12 col-sm-2">PO ID: </label>
+                <label for="ctrp_id" class="control-label col-xs-12 col-sm-2">CTRP ID: </label>
 
                 <div class="col-xs-12 col-sm-4">
                     <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
@@ -213,7 +213,7 @@
                 <i class="glyphicon glyphicon-search"></i> Search
                 </button>
 
-                <button type="reset" class="btn btn-danger" id="reset_btn"
+                <button class="btn btn-danger" id="reset_btn"
                         ng-click="resetSearch()">
                     <i class="glyphicon glyphicon-remove"></i> Clear
                 </button>
@@ -223,6 +223,7 @@
 </form>
 <!--<strong>Search Parameters:</strong> {{searchParams}}-->
 
+
 <!-- use the ui-grid to present the organization search results, if showgrid is set to 'true' -->
 <div class="row" ng-show="showgrid">
     <div class="col-sm-12">
@@ -230,8 +231,27 @@
             <div class="col-sm-11">
                 <a href="" id="org_search_results"></a>
                 <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
+                <div  ng-if="usedinmodal !=1 ">
+                    <h5 ng-show="gridOptions.totalItems > 0">
+                    <mark>Curation Mode: </mark>
+                        <toggle-switch ng-change="toggleCustom()" ng-model="curationShown"></toggle-switch>
+                        <button class="btn" ng-click="commitNullification()" ng-show="curationShown"
+                                ng-disabled="!curationReady"
+                                ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>
+                </h5>
+                </div>
             </div>
         </div>
+        <div class="row">
+            <div class="alert alert-danger fade in" ng-show="warningMessage != false">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>{{warningMessage}}</strong>
+            </div>
+            <!--<div class="alert alert-info fade in" ng-show="personView.curationReady">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>Please click the above Commit button to nullify the selected person</strong>
+            </div>-->
+        </div> <br />
         <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
             <div ng-if="enablerowselection" ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
              ui-grid-auto-resize
