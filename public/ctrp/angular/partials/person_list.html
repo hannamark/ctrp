@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12 col-border">
         <div class="row">
-            <h4>Search Persons
+            <h4>Search People
                 <small>
                     <mark>* for wild card (e.g. John*)</mark>
                 </small>
@@ -32,13 +32,13 @@
                         <!-- person name ends -->
                     </div>
                     <div class="col-md-6">
-                        <!-- PO ID -->
+                        <!-- CTRP ID -->
                         <div class="form-group">
                             <!-- ID used as ctrp_id here -->
                             <label for="ctrp_id" class="control-label col-sm-2">CTRP ID: </label>
 
                             <div class="col-sm-10">
-                                <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
+                                <input type="text" id="ctrp_id" class="form-control" placeholder="CTRP ID"
                                        ng-model="personView.searchParams.ctrp_id"/>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                             <div class="col-sm-4">
                                 <select class="form-control" id="source_context"
                                         ng-model="personView.searchParams.source_context">
-                                    <option value="">Select a context</option>
+                                    <option value="">Select a Context</option>
                                     <option ng-repeat="context in personView.sourceContextArr" value="{{context.name}}">
                                         {{context.name}}
                                     </option>
