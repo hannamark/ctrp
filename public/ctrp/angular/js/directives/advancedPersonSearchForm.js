@@ -89,12 +89,16 @@
             //default to curationMode eanbled to true if max row selectable is > 0
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
+            } else {
+                $scope.curationModeEnabled = false;
             }
 
             console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
 
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
             $scope.curationModeEnabled = $scope.curationMode == undefined ? $scope.curationModeEnabled : $scope.curationMode;
+            //prevent users trick (e.g. maxRowSelectable = 0, curationMode = true)
+            $scope.curationModeEnabled = $scope.maxRowSelectable <= 0 ? false : $scope.curationModeEnabled;
             $scope.showGrid = $scope.showGrid == undefined ? false : $scope.showGrid;
 
 
