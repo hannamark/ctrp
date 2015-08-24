@@ -347,17 +347,18 @@
 
 
             /**
-             * watch the readiness of curation submission
+             * watch the readiness of curation submission, default max row selection: 2
              */
             function watchReadinessOfCuration() {
                 $scope.$watch('nullifiedId', function(curVal, preVal) {
                     initCurationObj();
                     $scope.toBeCurated.id_to_be_nullified = $scope.nullifiedId;
-                    if ($scope.selectedRows.length == 2 && $scope.nullifiedId) {
+                    if ($scope.selectedRows.length == $scope.maxRowSelectable && $scope.nullifiedId) {
                         _.each($scope.selectedRows, function (curRow) {
-                            if (curRow.entity.id != $scope.nullifiedId) {
+                            if (curRow.entity.id == $scope.nullifiedId) {
+                                $scope.nullifiedPerson = curRow.entity.lname + ', ' + curRow.entity.fname + ' ( ' + curRow.entity.id + ' )';
+                            } else {
                                 $scope.toBeCurated['id_to_be_retained'] = curRow.entity.id;
-                                return;
                             }
                         });
                     }
