@@ -227,7 +227,6 @@
             function rowSelectionCallBack(row) {
 
                 if ($scope.maxRowSelectable && $scope.maxRowSelectable > 0) {
-                    //TODO: logic for selecting/deselecting rows visually, and control the selectedRows array
                     if (row.isSelected) {
                         //console.log('row is selected: ' + JSON.stringify(row.entity));
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {
@@ -334,7 +333,7 @@
                         $scope.nullifiedId = '';
                         $scope.warningMessage = false;
                     }
-                     $scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
+                    $scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
                     $scope.gridApi.grid.refresh();
                 }; //toggleCurationMode
 
@@ -386,7 +385,9 @@
                     deselectedRow = $scope.selectedRows.shift();
                     deselectedRow.isSelected = false;
                 }
-                //TODO: clear the $parent's scope data
+                if (angular.isDefined($scope.$parent.selectedPersonsArray)) {
+                    $scope.$parent.selectedPersonsArray = [];
+                }
 
                 return deselectedRow;
             }
