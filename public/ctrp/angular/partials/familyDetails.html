@@ -37,7 +37,7 @@
                     <label class="control-label col-sm-3">Family Name:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" name="name" class="form-control input-xs" ng-model="familyDetailView.curFamily.name" auto-focus required>
+                        <input type="text" name="name" class="form-control input-xs" ng-model="familyDetailView.curFamily.name" required auto-focus/>
 
                         <p ng-show="family_form.name.$error.required && family_form.name.$dirty" class="help-inline">
                             Family name is required
@@ -86,7 +86,7 @@
                                 <i class="glyphicon glyphicon-search"></i> Search Organizations
                             </button>
                             <button class="btn btn-danger" ng-click="familyDetailView.batchSelect('removeAll')" ng-show="familyDetailView.savedSelection.length > 0">
-                                <i class="glyphicon glyphicon-remove"></i> Remove All Affiliated Organizations
+                                <i class="glyphicon glyphicon-remove"></i> Remove All Family Members
                             </button>
                         </div>
                         <div class="row animated-item" ng-show="familyDetailView.savedSelection.length > 0">
