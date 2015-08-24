@@ -96,6 +96,18 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Trial Status:</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="trial_status" ng-model="trialDetailView.curTrial.trial_status_id">
+                            <option value="">Select a Trial Status</option>
+                            <option ng-repeat="trialStatus in trialDetailView.trialStatusArr"
+                                    value="{{trialStatus.id}}" ng-selected="trialDetailView.curTrial.trial_status_id == trialStatus.id">
+                                {{trialStatus.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
 
                 <div id="buttonBar" class="form-group col-sm-12">
                     <div class="col-sm-offset-3 col-sm-9">

@@ -276,6 +276,9 @@
                         },
                         responsiblePartyObj: function(TrialService) {
                             return TrialService.getResponsibleParties();
+                        },
+                        trialStatusObj: function(TrialService) {
+                            return TrialService.getTrialStatuses();
                         }
                     }
                 });

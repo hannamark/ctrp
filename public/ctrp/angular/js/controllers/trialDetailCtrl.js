@@ -8,10 +8,10 @@
         .controller('trialDetailCtrl', trialDetailCtrl);
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
-        'secondaryPurposeObj', 'responsiblePartyObj'];
+        'secondaryPurposeObj', 'responsiblePartyObj', 'trialStatusObj'];
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
                              $scope, Common, $state, $modal, phaseObj, researchCategoryObj, primaryPurposeObj,
-                             secondaryPurposeObj, responsiblePartyObj) {
+                             secondaryPurposeObj, responsiblePartyObj, trialStatusObj) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
@@ -20,6 +20,7 @@
         vm.primaryPurposeArr = primaryPurposeObj;
         vm.secondaryPurposeArr = secondaryPurposeObj;
         vm.responsiblePartyArr = responsiblePartyObj;
+        vm.trialStatusArr = trialStatusObj;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {

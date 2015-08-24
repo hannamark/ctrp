@@ -52,6 +52,7 @@
             getPrimaryPurposes: getPrimaryPurposes,
             getSecondaryPurposes: getSecondaryPurposes,
             getResponsibleParties: getResponsibleParties,
+            getTrialStatuses: getTrialStatuses,
             deleteTrial: deleteTrial
         };
 
@@ -143,6 +144,10 @@
 
         function getResponsibleParties() {
             return PromiseTimeoutService.getData(URL_CONFIGS.RESPONSIBLE_PARTIES);
+        }
+
+        function getTrialStatuses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_STATUSES);
         }
 
         /**

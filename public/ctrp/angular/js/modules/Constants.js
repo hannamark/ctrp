@@ -35,10 +35,11 @@
             'RESEARCH_CATEGORIES': '/ctrp/research_categories.json',
             'PRIMARY_PURPOSES': '/ctrp/primary_purposes.json',
             'SECONDARY_PURPOSES': '/ctrp/secondary_purposes.json',
-            'RESPONSIBLE_PARTIES': '/ctrp/responsible_parties.json'
+            'RESPONSIBLE_PARTIES': '/ctrp/responsible_parties.json',
+            'TRIAL_STATUSES': '/ctrp/trial_statuses.json'
         })
         .constant('MESSAGES', {
-           'STATES_AVAIL' : 'states_or_provinces_available',
+            'STATES_AVAIL' : 'states_or_provinces_available',
             'STATES_UNAVAIL' : 'states_or_provinces_not_available'
         });
 
