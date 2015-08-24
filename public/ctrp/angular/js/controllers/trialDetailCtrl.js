@@ -69,6 +69,23 @@
                 });
             }
 
+            vm.searchPerson = function(size, type) {
+                var modalInstance = $modal.open({
+                    animation: true,
+                    templateUrl: '/ctrp/angular/partials/modals/advanced_person_search_form_modal.html',
+                    controller: 'personSearchCtrl as personSearchModalView',
+                    size: size
+                });
+
+                modalInstance.result.then(function (selectedPerson) {
+                    if (type == 'pi') {
+                        vm.selectedPi = selectedPerson[0];
+                        vm.curTrial.pi_id = selectedPerson[0].id;
+                    }
+                }, function () {
+                    console.log("operation canceled");
+                });
+            }
         } //prepareModal
     }
 })();
