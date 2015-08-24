@@ -76,5 +76,7 @@ class Trial < ActiveRecord::Base
   has_many :trial_co_pis
   has_many :co_pis, through: :trial_co_pis, source: :person
 
+  accepts_nested_attributes_for :trial_status_wrappers, allow_destroy: true
+
   validates :official_title, presence: true
 end
