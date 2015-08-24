@@ -20,9 +20,9 @@
         var directiveObj = {
             restrict: 'E',
             scope: {
-                showGrid: '=',  //boolean
-                maxRowSelectable : '=', //int
-                isInModal: '=',  //boolean
+                showGrid: '=?',  //boolean, optional; default to false
+                maxRowSelectable : '=', //int, required!
+                curationMode: '=?', // boolean, optional; default to false unless maxRowSelectable is set to > 0
                 personSearchResults: '@personSearchResults',
                 selectedPersonsArray: '@selectedPersonsArray',
             },
@@ -37,7 +37,8 @@
         function linkFn(scope, element, attrs) {
 
             //element.text('hello replaced text!');
-            console.log('isUsedInModal: ' + attrs.isInModal);
+            // console.log('isUsedInModal: ' + attrs.isInModal);
+            // console.log('curationMode enabled: ' + attrs.curationModeEnabled)
             //pass to controller scope, but will require a timeout in controller - inconvenient
             // scope.isInModal = attrs.isInModal; //
             $compile(element.contents())(scope);
@@ -50,6 +51,7 @@
 
             console.log('$scope.isInModal: ' + $scope.isInModal);
             console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
+            console.log('showGrid: ' + $scope.showGrid);
 
             $scope.maxRowSelectable = $scope.maxRowSelectable || 0; //default to 0
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
@@ -60,6 +62,19 @@
             $scope.nullifiedId = '';
             $scope.warningMessage = false;
             $scope.selectedRows = [];
+            $scope.curationShown = false;
+            $scope.curationModeEnabled = false;
+
+
+            $scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
+            //default to curationMode eanbled to true if max row selectable is > 0
+            if ($scope.maxRowSelectable > 0) {
+                $scope.curationModeEnabled = true;
+            }
+
+            //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
+            $scope.curationModeEnabled = $scope.curationMode == undefined ? $scope.curationModeEnabled : $scope.curationMode;
+            $scope.showGrid = $scope.showGrid == undefined ? false : $scope.showGrid;
 
 
             $scope.searchPeople = function () {
@@ -101,13 +116,15 @@
                 Object.keys($scope.searchParams).forEach(function (key) {
                     $scope.searchParams[key] = '';
                 });
-                $scope.$parent.personSearchResults = {};
+
+                if (angular.isDefined($scope.$parent.personSearchResults)) {
+                    $scope.$parent.personSearchResults = {};
+                }
                 if (angular.isDefined($scope.$parent.selectedPersonsArray)) {
                     $scope.$parent.selectedPersonsArray = [];
                 }
             }; //resetSearch
 
-            $scope.curationShown = false;
 
             $scope.nullifyEntity = function (rowEntity) {
                 // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
@@ -188,6 +205,8 @@
              */
             function rowSelectionCallBack(row) {
 
+                /*
+                //update the selection in the $parent's scope
                 if (angular.isDefined($scope.$parent.selectedPersonsArray)) {
                     if (row.isSelected) {
                         $scope.$parent.selectedPersonsArray.push(row.entity);
@@ -197,20 +216,64 @@
                     }
                 }
 
-                /*
+                //show selection/deselection visually
                 if (!$scope.curationShown) {
                     //if not on curation mode, do not show row selection
                     row.isSelected = $scope.curationShown;
                     $scope.gridApi.grid.refresh();
                     return;
                 } else if ($scope.isInModal) {
-                    row.isSelected = $scope.isInModal; // ????????
+                    row.isSelected = $scope.isInModal; // ???????? --- how to deal with the modal selection??
                     $scope.gridApi.grid.refresh();
                 }
+                row.isSelected = $scope.curationShown;
                 */
 
-                if (row.isSelected) {
 
+                if ($scope.maxRowSelectable && $scope.maxRowSelectable > 0) {
+                    //TODO: logic for selecting/deselecting rows visually, and control the selectedRows array
+                    if (row.isSelected) {
+                        //console.log('row is selected: ' + JSON.stringify(row.entity));
+                        if ($scope.selectedRows.length < $scope.maxRowSelectable) {
+                            $scope.selectedRows.unshift(row);
+                            $scope.$parent.selectedPersonsArray.push(row.entity);
+                        } else {
+                            var deselectedRow = $scope.selectedRows.pop();
+                            deselectedRow.isSelected = false;
+                            $scope.nullifiedId = deselectedRow.entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
+                            $scope.selectedRows.unshift(row);
+                            $scope.gridApi.grid.refresh(); //refresh grid
+
+                            var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedPersonsArray, deselectedRow.entity);
+                            $scope.$parent.selectedPersonsArray.splice(curRowSavedIndex, 1);
+                        }
+                    } else {
+                        //de-select the row
+                        //remove it from the $scope.selectedRows, if exists
+                        var needleIndex = -1;
+                        _.each($scope.selectedRows, function (existingRow, idx) {
+                            if (existingRow.entity.id == row.entity.id) {
+                                needleIndex = idx;
+                                return;
+                            }
+                        });
+
+                        if (needleIndex > -1) {
+                            var deselectedRowArr = $scope.selectedRows.splice(needleIndex, 1);
+                            deselectedRowArr[0].isSelected = false;
+                            //reset the nullifiedId if the row is de-selected
+                            $scope.nullifiedId = deselectedRowArr[0].entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
+                            $scope.curationReady = false;
+
+                        }
+                        var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedPersonsArray, row.entity);
+                        $scope.$parent.selectedPersonsArray.splice(curRowSavedIndex, 1);
+                    }
+                }
+
+
+                /*
+                if (row.isSelected) {
                     //console.log('row is selected: ' + JSON.stringify(row.entity));
                     if ($scope.selectedRows.length < $scope.maxRowSelectable) {
                         $scope.selectedRows.unshift(row);
@@ -241,6 +304,7 @@
 
                     }
                 }
+                */
 
             } //rowSelectionCallBack
 
@@ -309,6 +373,7 @@
                         $scope.nullifiedId = '';
                         $scope.warningMessage = false;
                     }
+                     $scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
                     $scope.gridApi.grid.refresh();
                 }; //toggleCurationMode
 

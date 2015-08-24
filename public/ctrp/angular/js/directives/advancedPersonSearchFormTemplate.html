@@ -159,7 +159,7 @@
                 <!-- information section -->
                 <a href="" id="people_search_results"></a>
                 <p><h4>People Search Results: {{gridOptions.totalItems}} found</h4></p>
-                <h5 ng-show="gridOptions.totalItems > 0">
+                <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true">
                     <mark>Curation Mode: </mark>
                     <toggle-switch ng-model="curationShown" ng-change="toggleCurationMode()"></toggle-switch>
                     <button class="btn" ng-click="commitNullification()" ng-show="curationShown"
