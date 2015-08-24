@@ -247,8 +247,8 @@
 
                 .state('main.testPerson', {
                     url: '/person_directive',
-                    templateUrl: '/ctrp/angular/partials/personDetails.html',
-                    controller: 'personListCtrl as personSearchView'
+                    templateUrl: '/ctrp/angular/partials/person_search.html',
+                    controller: 'personSearchCtrl as personSearchView'
                 })
 
                 .state('main.addTrial', {
