@@ -343,8 +343,8 @@
             }; //commitNullification
 
             $scope.toggleCustom = function() {
-                if($scope.curationShown) $scope.curationShown=false;
-                else $scope.curationShown=true;
+
+                $scope.curationShown = !$scope.curationShown;
                 var newVal=$scope.curationShown;
 
                 $scope.gridOptions.columnDefs[0].visible = newVal;
