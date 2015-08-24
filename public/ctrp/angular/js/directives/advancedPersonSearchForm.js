@@ -1,5 +1,27 @@
 /**
  * Created by wangg5 on 8/21/15.
+ *
+ * Directive component for showing advanced person search form
+ *
+ * Usage example: show the results in the ui-grid, allows max row slection to 2, and curationMode is false
+ *
+ * @show-grid, @curation-mode are optional, defaulted to false
+ * @max-row-seletable is required (integer), if not set explicitly --> it is defaulted to 0
+ *
+ * <div class="row">
+ *   <ctrp-advanced-person-search-form show-grid="true" max-row-selectable="2" curation-mode="false"></ctrp-advanced-person-search-form>
+ *  </div>
+ *
+ ***********************************************************************************************************************
+ * If the container scope of this directive needs to access the person search results and/or the selected persons,     *
+ * initialize personSearchResults to JSON object {} and selectedPersonsArray to array [] in the container scope, e.g.  *
+ *                                                                                                                     *
+ * $scope.personSearchResults = {};                                                                                    *
+ * $scope.selectedPersonsArray = [];                                                                                   *
+ *                                                                                                                     *
+ * *********************************************************************************************************************
+ *
+ *
  */
 
 
@@ -49,8 +71,6 @@
         
         function advPersonSearchDirectiveController($scope) {
 
-            console.log('$scope.isInModal: ' + $scope.isInModal);
-            console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
             console.log('showGrid: ' + $scope.showGrid);
 
             $scope.maxRowSelectable = $scope.maxRowSelectable || 0; //default to 0
@@ -65,12 +85,13 @@
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
 
-
             $scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             //default to curationMode eanbled to true if max row selectable is > 0
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
             }
+
+            console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
 
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
             $scope.curationModeEnabled = $scope.curationMode == undefined ? $scope.curationModeEnabled : $scope.curationMode;
@@ -205,31 +226,6 @@
              */
             function rowSelectionCallBack(row) {
 
-                /*
-                //update the selection in the $parent's scope
-                if (angular.isDefined($scope.$parent.selectedPersonsArray)) {
-                    if (row.isSelected) {
-                        $scope.$parent.selectedPersonsArray.push(row.entity);
-                    } else {
-                        var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedPersonsArray, row.entity);
-                        $scope.$parent.selectedPersonsArray.splice(curRowSavedIndex, 1);
-                    }
-                }
-
-                //show selection/deselection visually
-                if (!$scope.curationShown) {
-                    //if not on curation mode, do not show row selection
-                    row.isSelected = $scope.curationShown;
-                    $scope.gridApi.grid.refresh();
-                    return;
-                } else if ($scope.isInModal) {
-                    row.isSelected = $scope.isInModal; // ???????? --- how to deal with the modal selection??
-                    $scope.gridApi.grid.refresh();
-                }
-                row.isSelected = $scope.curationShown;
-                */
-
-
                 if ($scope.maxRowSelectable && $scope.maxRowSelectable > 0) {
                     //TODO: logic for selecting/deselecting rows visually, and control the selectedRows array
                     if (row.isSelected) {
@@ -269,42 +265,9 @@
                         var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedPersonsArray, row.entity);
                         $scope.$parent.selectedPersonsArray.splice(curRowSavedIndex, 1);
                     }
-                }
-
-
-                /*
-                if (row.isSelected) {
-                    //console.log('row is selected: ' + JSON.stringify(row.entity));
-                    if ($scope.selectedRows.length < $scope.maxRowSelectable) {
-                        $scope.selectedRows.unshift(row);
-                    } else {
-                        var deselectedRow = $scope.selectedRows.pop();
-                        deselectedRow.isSelected = false;
-                        $scope.nullifiedId = deselectedRow.entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
-                        $scope.selectedRows.unshift(row);
-                        $scope.gridApi.grid.refresh(); //refresh grid
-                    }
                 } else {
-                    //de-select the row
-                    //remove it from the $scope.selectedRows, if exists
-                    var needleIndex = -1;
-                    _.each($scope.selectedRows, function (existingRow, idx) {
-                        if (existingRow.entity.id == row.entity.id) {
-                            needleIndex = idx;
-                            return;
-                        }
-                    });
-
-                    if (needleIndex > -1) {
-                        var deselectedRowArr = $scope.selectedRows.splice(needleIndex, 1);
-                        deselectedRowArr[0].isSelected = false;
-                        //reset the nullifiedId if the row is de-selected
-                        $scope.nullifiedId = deselectedRowArr[0].entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
-                        $scope.curationReady = false;
-
-                    }
+                    row.isSelected = false; //do not show selection visually
                 }
-                */
 
             } //rowSelectionCallBack
 
@@ -319,8 +282,6 @@
                 OrgService.getSourceStatuses().then(function(data) {
                     $scope.sourceStatusArr = data.sort(Common.a2zComparator());
                 });
-
-
             } //getPromisedData
 
 
