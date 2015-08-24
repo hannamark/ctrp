@@ -1,0 +1,71 @@
+<div class="row">
+    <button class="btn btn-primary" ng-click="searchPerson('lg')"><i class="glyphicon glyphicon-search"></i> Search Persons</button>
+    <!--TODO: add savedSelection in the controller -->
+    <button class="btn btn-danger" ng-click="batchSelect('removeAll')" ng-show="savedSelection.length > 0">
+        <i class="glyphicon glyphicon-remove"></i> Remove All Person(s)
+    </button>
+</div>
+<div class="row animated-item" ng-show="savedSelection.length > 0">
+
+    <br /><input type="text" ng-model="selectedPersonFilter" class="form-control" placeholder="Filter selected organizations"/>
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+        <th>Remove</th>
+        <th>PO ID</th>
+        <th>Organization</th>
+        <th>Effective Date</th>
+        <th>Expiration Date</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="org in savedSelection | filter: {'name': selectedPersonFilter} track by $index"
+            ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+            <td style="vertical-align: middle">
+                <label class="btn btn-default"
+                       ng-click="toggleSelection($index)">
+                    <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                </label>
+            </td>
+            <td>{{org.id}}</td>
+            <td>{{org.name}}</td>
+            <td>
+                <div class="input-group add-on col-sm-12 date datepicker"
+                     date-date-format="yyyy-mm-dd">
+                    <input type="text" class="form-control input-normal"
+                           datepicker-popup="{{dateFormat}}"
+                           ng-model="org.effective_date" is-open="org.opened_effective"
+                           is-open="opened" datepicker-options="dateOptions"
+                           ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
+                                  <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default"
+                                                ng-click="openCalendar($event, $index, 'effective')"
+                                                ng-disabled="org._destroy">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                  </span>
+
+                </div>
+            </td>
+            <td>
+                <div class="input-group add-on col-sm-12 date datepicker"
+                     date-date-format="yyyy-mm-dd">
+                    <input type="text" class="form-control"
+                           datepicker-popup="{{dateFormat}}"
+                           ng-model="org.expiration_date" is-open="org.opened_expiration"
+                           is-open="opened" datepicker-options="dateOptions"
+                           ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
+                                  <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default"
+                                                ng-click="openCalendar($event, $index, 'expiration')"
+                                                ng-disabled="org._destroy">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                  </span>
+
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- row for the table ends -->
+<!--</div>-->

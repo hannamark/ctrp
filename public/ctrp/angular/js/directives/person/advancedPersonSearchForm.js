@@ -48,7 +48,7 @@
                 personSearchResults: '@personSearchResults',
                 selectedPersonsArray: '@selectedPersonsArray',
             },
-            templateUrl: '/ctrp/angular/js/directives/advancedPersonSearchFormTemplate.html',
+            templateUrl: '/ctrp/angular/js/directives/person/advancedPersonSearchFormTemplate.html',
             link: linkFn,
             controller: advPersonSearchDirectiveController
         };
