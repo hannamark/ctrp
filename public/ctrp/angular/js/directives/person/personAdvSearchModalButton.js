@@ -43,26 +43,32 @@
 
         function personAdvSearchModalButtonController($scope, $modal) {
 
-            $scope.personSearchResults = {};
-            $scope.selectedPersonsArray = [];
+            $scope.savedSelection = [];
             $scope.showGrid = true;
             $scope.curationMode = false;
             $scope.selectedPersonFilter = '';
             $scope.savedSelection = []; //TODO: to be passed to the container scope
+            var modalOpened = false;
 
             $scope.searchPerson = function(size) {
+                if (modalOpened) return; //prevent modal open twice in single click
+
                 var modalInstance = $modal.open({
                     animation: true,
                     templateUrl: '/ctrp/angular/partials/modals/advanced_person_search_form_modal.html',
                     controller: 'advancedPersonSearchModalCtrl as advPersonSearchModalView',
                     size: size
                 });
+                modalOpened = true;
 
                 modalInstance.result.then(function (selectedPersons) {
                     // console.log("received selected items: " + JSON.stringify(selectedPersons));
                     //TODO: $scope.batchSelect('selectAll', selectedPersons);
+                    $scope.savedSelection = selectedPersons;
                     console.log('modal resolved the promise for selected Persons: ' + JSON.stringify(selectedPersons));
+                    modalOpened = false;
                 }, function () {
+                    modalOpened = false;
                     console.log("operation canceled");
                 });
             }; //searchPerson
@@ -70,7 +76,7 @@
 
 
             // batch select or deselect persons
-            $scope.batchSelect = function() {
+            $scope.batchSelect = function(intention, selectedPersons) {
                 //TODO: copy from the batchSelect from personDetails
             }; //batchSelect
 
@@ -111,7 +117,7 @@
         function watchPersonSearchResults() {
             $scope.$watch('personSearchResults', function (newVal, oldVal) {
                 $scope.personSearchResults = newVal;
-                console.log('in Modal, personSearchResults: ' + JSON.stringify($scope.personSearchResults));
+                //console.log('in Modal, personSearchResults: ' + JSON.stringify($scope.personSearchResults));
             }, true);
         } //watchPersonSearchResults
 
