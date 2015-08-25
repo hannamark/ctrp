@@ -29,10 +29,22 @@
         vm.updateTrial = function() {
             vm.curTrial.pi_id = $scope.selectedPersonsArray[0] ? $scope.selectedPersonsArray[0].id : '';
 
-            TrialService.upsertTrial(vm.curTrial).then(function(response) {
+            // Construct nested attributes
+            vm.curTrial.trial_status_wrappers_attributes = [];
+            _.each(vm.addedStatuses, function (status) {
+                vm.curTrial.trial_status_wrappers_attributes.push(status);
+            });
+
+            // An outer param wrapper is needed for nested attributes to work
+            var outerTrial = {};
+            outerTrial.new = vm.curTrial.new;
+            outerTrial.id = vm.curTrial.id;
+            outerTrial.trial = vm.curTrial;
+
+            TrialService.upsertTrial(outerTrial).then(function(response) {
                 toastr.success('Trial ' + vm.curTrial.name + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
-                console.log("error in updating trial " + JSON.stringify(vm.curTrial));
+                console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
         }; // updatePerson
 
@@ -46,6 +58,7 @@
             vm.status_date_opened = !vm.status_date_opened;
         }; //openCalendar
 
+        // Add trial status to a temp array
         vm.addStatus = function () {
             var newStatus = {};
             newStatus.status_date = vm.status_date ? DateService.convertISODateToLocaleDateStr(vm.status_date) : '';
