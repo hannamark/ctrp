@@ -21,7 +21,8 @@
         vm.secondaryPurposeArr = secondaryPurposeObj;
         vm.responsiblePartyArr = responsiblePartyObj;
         vm.trialStatusArr = trialStatusObj;
-        vm.opened = false;
+        vm.status_date_opened = false;
+        vm.addedStatuses = [];
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
@@ -36,12 +37,19 @@
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
         vm.openCalendar = function ($event) {
-            console.log('in open calendar')
             $event.preventDefault();
             $event.stopPropagation();
 
-            vm.opened = !vm.opened;
+            vm.status_date_opened = !vm.status_date_opened;
         }; //openCalendar
+
+        vm.addStatus = function () {
+            var newStatus = {};
+            newStatus.status_date = vm.status_date ? DateService.convertISODateToLocaleDateStr(vm.status_date) : '';
+            newStatus.trial_status_id = vm.trial_status_id;
+            newStatus.why_stopped = vm.why_stopped;
+            vm.addedStatuses.push(newStatus);
+        };
 
         activate();
 
