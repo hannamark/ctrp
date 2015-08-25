@@ -75,10 +75,46 @@ class Organization < ActiveRecord::Base
       raise ActiveRecord::RecordNotFound if @toBeNullifiedOrg.nil? or @toBeRetainedOrg.nil?
 
 
-      ## Destroy associations of to_be_nullified_org and assigned to retained Organization
+      #All references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
       ##
+       @toBeNullifiedOrg.lo_trials.each do |trial|
+        p "To be nullified org lo trials " +trial.official_title;
+        trial.lead_org_id=@toBeRetainedOrg.id;
+        trial.save!;
+       end
 
-      ## change the status of org to Nullified, to_be_nullified_org
+
+      #All references in CTRP to the nullified organization as Sponsor will reference the retained organization as Sponsor
+      ##
+      @toBeNullifiedOrg.sponsor_trials.each do |trial|
+        p "To be nullified org sponsor trials " +trial.official_title;
+        trial.sponsor_id=@toBeRetainedOrg.id;
+        trial.save!;
+      end
+
+      #All references in CTRP to the nullified organization as Participating Site will reference the retained organization as Participating Site
+      ## Future Implementation
+
+      #All accrual submitted in CTRP on the nullified organization as a Participating Site will be transferred to the retained organization as a Participating Site
+      ## Future Implementation
+
+      #All persons affiliated with the nullified organization will be affiliated with the retained organization
+      ##
+      poAffiliationsOfNullifiedOrganization = PoAffiliation.where(organization_id:@toBeNullifiedOrg.id);
+      poAffiliationsOfNullifiedOrganization.each do |po_affiliation|
+        new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
+        new_po_aff.organization_id=@toBeRetainedOrg.id;
+        new_po_aff.save!
+      end
+
+      #Name of the Nullified organization will be listed as an alias on the retained organization
+      ##
+      NameAlias.create(organization_id:@toBeRetainedOrg.id,name:@toBeNullifiedOrg.name);
+
+      #If both organizations had CTEP IDs only the retained organization CTEP ID will be associated with the retained organization
+
+
+      #The status of the organization to be nullified will be "Nullified"
       ##
       @toBeNullifiedOrg.source_status_id=SourceStatus.find_by_code('NULLIFIED').id;
       @toBeNullifiedOrg.save!
