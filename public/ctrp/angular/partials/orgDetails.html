@@ -92,9 +92,7 @@
             <div class="col-sm-9">
                 <select class="form-control input-xs" id="state" ng-model="orgDetailView.curOrg.state_province">
                     <option value="" ng-selected="orgDetailView.curOrg.state_province == ''">Select a state or province</option>
-                    <option ng-repeat="state in orgDetailView.states track by $index"
-                            value="{{state.name}}" ng-selected="state.name == orgDetailView.curOrg.state_province">{{state.name}}
-                    </option>
+                    <option ng-repeat="state in orgDetailView.states track by $index" value="{{state.name}}" ng-selected="state.name==orgDetailView.curOrg.state_province">{{state.name}}</option>
                 </select>
             </div>
         </div>
