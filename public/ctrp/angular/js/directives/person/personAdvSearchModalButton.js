@@ -15,7 +15,7 @@
         .controller('advancedPersonSearchModalCtrl', advancedPersonSearchModalCtrl)
         .directive('ctrpPersonAdvSearchModalButton', ctrpPersonAdvSearchModalButton);
 
-    advancedPersonSearchModalCtrl.$inject = ['$scope', '$modalInstance']; //for modal controller
+    advancedPersonSearchModalCtrl.$inject = ['$scope', '$modalInstance', 'maxRowSelectable']; //for modal controller
     ctrpPersonAdvSearchModalButton.$inject = ['$modal', '$compile', '_', '$timeout']; //modal button directive
 
 
@@ -25,9 +25,9 @@
             restrict: 'E',
             scope: {
                 maxRowSelectable : '=?', //int, required!
+                useBuiltInTemplate: '=?', //boolean
                 selectedPersonsArray: '@selectedPersonsArray',
             },
-//            template: '<button class="btn btn-default">Hello</button>',
             templateUrl: '/ctrp/angular/js/directives/person/personAdvSearchModalButtonTemplate.html',
             link: linkerFn,
             controller: personAdvSearchModalButtonController
@@ -40,18 +40,19 @@
             $compile(element.contents())(scope);
           //  element.text('hello world!');
             console.log('in linkerFn for personAdvSearchModal Button');
+          //  scope.useBuiltInTemplate = attrs.useBuiltInTemplate == undefined ? false : true;
         } //linkerFn
 
 
-        function personAdvSearchModalButtonController($scope) {
+        function personAdvSearchModalButtonController($scope, $timeout) {
 
             $scope.savedSelection = []; //TODO: to be passed to the container scope
             $scope.showGrid = true;
             $scope.curationMode = false;
-            $scope.selectedPersonFilter = '';
-            $scope.
+            //$scope.useBuiltInTemplate = $scope.useBuiltInTemplate == undefined ? false : $scope.useBuiltInTemplate;
             var modalOpened = false;
 
+            console.log('maxRow selectable: ' + $scope.maxRowSelectable + ', builtInTemplate: ' + $scope.useBuiltInTemplate);
             $scope.searchPerson = function(size) {
                 if (modalOpened) return; //prevent modal open twice in single click
 
@@ -59,32 +60,23 @@
                     animation: true,
                     templateUrl: '/ctrp/angular/partials/modals/advanced_person_search_form_modal.html',
                     controller: 'advancedPersonSearchModalCtrl as advPersonSearchModalView',
-                    size: size
+                    size: size,
+                    resolve: {
+                        maxRowSelectable: function () {
+                            return $scope.maxRowSelectable
+                        }
+                    }
                 });
                 modalOpened = true;
 
-                modalInstance.result.then(function (selectedPersons) {
-                    // console.log("received selected items: " + JSON.stringify(selectedPersons));
-                    //TODO: $scope.batchSelect('selectAll', selectedPersons);
-                   // $scope.savedSelection = selectedPersons;
-                    console.log('modal resolved the promise for selected Persons: ' + JSON.stringify(selectedPersons));
-                    if (angular.isArray(selectedPersons) && selectedPersons.length > 0) {
+                modalInstance.result.then(function (selectedPerson) {
 
-                        $scope.$apply(function() {
-                            $scope.savedSelection = $scope.savedSelection.concat(selectedPersons);
-                        });
-
-                        $scope.$parent.selectedPersonsArray = $scope.$parent.selectedPersonsArray.concat(selectedPersons);
-
-
-                        /*
-                        _.each(selectedPersons, function(personItem, idx) {
-                            console.log("pushing the personItem: " + JSON.stringify(personItem));
-                           $scope.savedSelection.push(personItem);
-                           $scope.$parent.selectedPersonsArray.push(personItem);
-                        });
-                        */
+                    if (angular.isArray(selectedPerson) && selectedPerson.length > 0) {
+                        // $scope.savedSelection = $scope.savedSelection.concat(selectedPersons);
+                        $scope.savedSelection = selectedPerson;
+                       // $scope.$parent.selectedPersonsArray = $scope.savedSelection;
                     }
+
                     modalOpened = false;
                 }, function () {
                     modalOpened = false;
@@ -96,12 +88,28 @@
             //delete the affiliated organization from table view
             $scope.toggleSelection = function (index) {
                 if (index < $scope.savedSelection.length) {
-                    $scope.savedSelection[index]._destroy = !$scope.savedSelection[index]._destroy;
+                    $scope.savedSelection.splice(index, 1);
+                    // $scope.savedSelection[index]._destroy = !$scope.savedSelection[index]._destroy;
                 }
             };// toggleSelection
 
 
-        }
+            /**
+             * Update the selected persons array in the $parent's scope
+             * @param updateSelectionArr
+             */
+            function updatePersonsInParentScope(updateSelectionArr) {
+
+                if (angular.isDefined($scope.$parent.selectedPersonsArray)) {
+                    $scope.$parent.selectedPersonsArray = updateSelectionArr;
+                }
+            }
+
+            $scope.$watchCollection('savedSelection', function(newVal) {
+               updatePersonsInParentScope(newVal); //update the selected persons in $parent's scope
+            });
+
+        } //personAdvSearchModalButtonController
 
     } //personAdvSearchModalButton
 
@@ -113,10 +121,12 @@
      * @param $scope
      * @param $modalInstance
      */
-    function advancedPersonSearchModalCtrl($scope, $modalInstance) {
+    function advancedPersonSearchModalCtrl($scope, $modalInstance, maxRowSelectable) {
         var vm = this;
+        vm.maxRowSelectable = maxRowSelectable; //to be passed to the adv person search form
+        console.log('in Modal, received promise maxRowSelectable: ' + maxRowSelectable);
         $scope.personSearchResults = {people: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
-        $scope.selectedPersonsArray = [];
+        $scope.selectedPersonsArray = [];  // persons selected in the modal
 
         vm.cancel = function() {
             $modalInstance.dismiss('cancel');

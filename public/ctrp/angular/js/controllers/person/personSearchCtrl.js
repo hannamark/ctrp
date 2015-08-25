@@ -14,7 +14,7 @@
         var vm = this;
 
         $scope.personSearchResults = {people: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
-        $scope.selectedPersonsArray = []; // persons selected in the ui-grid
+        $scope.selectedPersonsArray = []; // persons selected in the ui-grid, fed by the embedded directive controller scope
 
 
         activate();

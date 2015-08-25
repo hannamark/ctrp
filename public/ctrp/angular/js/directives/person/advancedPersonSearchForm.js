@@ -72,6 +72,7 @@
         function advPersonSearchDirectiveController($scope) {
 
             console.log('showGrid: ' + $scope.showGrid);
+            console.log('in adv person search form, maxRowSelectable: ' + $scope.maxRowSelectable);
 
             $scope.maxRowSelectable = $scope.maxRowSelectable || 0; //default to 0
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
@@ -245,6 +246,7 @@
 
                             var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedPersonsArray, deselectedRow.entity);
                             $scope.$parent.selectedPersonsArray.splice(curRowSavedIndex, 1);
+                            $scope.$parent.selectedPersonsArray.push(row.entity);
                         }
                     } else {
                         //de-select the row
