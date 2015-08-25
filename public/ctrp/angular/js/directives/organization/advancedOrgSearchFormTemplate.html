@@ -186,9 +186,7 @@
                     <select class="form-control" id="state" ng-model="searchParams.state_province"
                             ng-change="searchOrgs()">
                         <option value="">All States/Provinces</option>
-                        <option ng-repeat="state in states track by state.name"
-                                value="{{state.name}}">{{state.name}}
-                        </option>
+                        <option ng-repeat="state in states track by state.name" value="{{state.name}}">{{state.name}}</option>
                     </select>
                 </div>
             </div>
