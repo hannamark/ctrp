@@ -12,12 +12,14 @@
     'use strict';
 
     angular.module('ctrpApp')
+        .controller('advancedPersonSearchModalCtrl', advancedPersonSearchModalCtrl)
         .directive('ctrpPersonAdvSearchModalButton', ctrpPersonAdvSearchModalButton);
 
-    ctrpPersonAdvSearchModalButton.$inject = ['$modal', '$compile'];
+    advancedPersonSearchModalCtrl.$inject = ['$scope', '$modalInstance']; //for modal controller
+    ctrpPersonAdvSearchModalButton.$inject = ['$modal', '$compile', '_', '$timeout']; //modal button directive
 
 
-    function ctrpPersonAdvSearchModalButton($modal, $compile) {
+    function ctrpPersonAdvSearchModalButton($modal, $compile, _, $timeout) {
 
         var directiveObj = {
             restrict: 'E',
@@ -41,13 +43,13 @@
         } //linkerFn
 
 
-        function personAdvSearchModalButtonController($scope, $modal) {
+        function personAdvSearchModalButtonController($scope) {
 
-            $scope.savedSelection = [];
+            $scope.savedSelection = []; //TODO: to be passed to the container scope
             $scope.showGrid = true;
             $scope.curationMode = false;
             $scope.selectedPersonFilter = '';
-            $scope.savedSelection = []; //TODO: to be passed to the container scope
+            $scope.
             var modalOpened = false;
 
             $scope.searchPerson = function(size) {
@@ -64,8 +66,25 @@
                 modalInstance.result.then(function (selectedPersons) {
                     // console.log("received selected items: " + JSON.stringify(selectedPersons));
                     //TODO: $scope.batchSelect('selectAll', selectedPersons);
-                    $scope.savedSelection = selectedPersons;
+                   // $scope.savedSelection = selectedPersons;
                     console.log('modal resolved the promise for selected Persons: ' + JSON.stringify(selectedPersons));
+                    if (angular.isArray(selectedPersons) && selectedPersons.length > 0) {
+
+                        $scope.$apply(function() {
+                            $scope.savedSelection = $scope.savedSelection.concat(selectedPersons);
+                        });
+
+                        $scope.$parent.selectedPersonsArray = $scope.$parent.selectedPersonsArray.concat(selectedPersons);
+
+
+                        /*
+                        _.each(selectedPersons, function(personItem, idx) {
+                            console.log("pushing the personItem: " + JSON.stringify(personItem));
+                           $scope.savedSelection.push(personItem);
+                           $scope.$parent.selectedPersonsArray.push(personItem);
+                        });
+                        */
+                    }
                     modalOpened = false;
                 }, function () {
                     modalOpened = false;
@@ -74,11 +93,12 @@
             }; //searchPerson
 
 
-
-            // batch select or deselect persons
-            $scope.batchSelect = function(intention, selectedPersons) {
-                //TODO: copy from the batchSelect from personDetails
-            }; //batchSelect
+            //delete the affiliated organization from table view
+            $scope.toggleSelection = function (index) {
+                if (index < $scope.savedSelection.length) {
+                    $scope.savedSelection[index]._destroy = !$scope.savedSelection[index]._destroy;
+                }
+            };// toggleSelection
 
 
         }
@@ -87,11 +107,12 @@
 
 
 
-    //controller for the person search modal form
-    angular.module('ctrpApp')
-        .controller('advancedPersonSearchModalCtrl', advancedPersonSearchModalCtrl);
-    advancedPersonSearchModalCtrl.$inject = ['$scope', '$modalInstance'];
-
+    /**
+     * Adv person search modal controller
+     *
+     * @param $scope
+     * @param $modalInstance
+     */
     function advancedPersonSearchModalCtrl($scope, $modalInstance) {
         var vm = this;
         $scope.personSearchResults = {people: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};

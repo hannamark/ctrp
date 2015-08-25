@@ -36,7 +36,7 @@
 
 
             $scope.$watch('selectedPersonsArray', function(newVal, oldVal) {
-                 $scope.personSearchResults = newVal;
+                 $scope.selectedPersonsArray = newVal;
                  console.log("received selectedPersonsArray: " + JSON.stringify(newVal));
             }, true);
         } //watchpersonSearchResults

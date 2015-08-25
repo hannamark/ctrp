@@ -10,3 +10,42 @@ fasdfdsaf
 <div class="row">
     <ctrp-person-adv-search-modal-button></ctrp-person-adv-search-modal-button>
 </div>
+
+<div class="row animated-item" ng-show="selectedPersonsArray.length > 0">
+
+    <br /><input type="text" ng-model="selectedPersonFilter" class="form-control" placeholder="Filter selected personanizations"/>
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+        <th>Remove</th>
+        <th>PO ID</th>
+        <th>Prefix</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Suffix</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Source Context</th>
+        <th>Source Status</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="person in selectedPersonsArray | filter: {'name': selectedPersonFilter} track by $index"
+            class="animated-item" ng-class="person._destroy == true ? 'deleted-text' : ''">
+            <td style="vertical-align: middle">
+                <label class="btn btn-default"
+                       ng-click="toggleSelection($index)">
+                    <i class="glyphicon" ng-class="person._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                </label>
+            </td>
+            <td>{{person.id}}</td>
+            <td>{{person.prefix}}</td>
+            <td>{{person.fname}}</td>
+            <td>{{person.lname}}</td>
+            <td>{{person.suffix}}</td>
+            <td>{{person.email}}</td>
+            <td>{{person.phone}}</td>
+            <td>{{person.source_context}}</td>
+            <td>{{person.source_status}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
