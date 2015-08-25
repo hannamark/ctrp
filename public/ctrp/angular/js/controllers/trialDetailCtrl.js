@@ -63,6 +63,12 @@
             var newStatus = {};
             newStatus.status_date = vm.status_date ? DateService.convertISODateToLocaleDateStr(vm.status_date) : '';
             newStatus.trial_status_id = vm.trial_status_id;
+            // For displaying status name in the table
+            _.each(vm.trialStatusArr, function (status) {
+                if (status.id == vm.trial_status_id) {
+                    newStatus.trial_status_name = status.name;
+                }
+            })
             newStatus.why_stopped = vm.why_stopped;
             vm.addedStatuses.push(newStatus);
         };

@@ -140,7 +140,7 @@
                             </tr>
                             </tbody>
                         </table>
-                        <table class="table table-bordered table-striped table-condensed">
+                        <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedStatuses.length > 0">
                             <thead>
                             <th>Status Date</th>
                             <th>Status</th>
@@ -149,10 +149,10 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="status in trialDetailView.addedStatuses track by $index">
-                                <td>{{status.status_date}}</td>
-                                <td>{{status.trial_status_id}}</td>
-                                <td>{{status.why_stopped}}</td>
-                                <td></td>
+                                <td class="col-md-2">{{status.status_date}}</td>
+                                <td class="col-md-3">{{status.trial_status_name}}</td>
+                                <td class="col-md-5">{{status.why_stopped}}</td>
+                                <td class="col-md-2"></td>
                             </tr>
                             </tbody>
                         </table>
