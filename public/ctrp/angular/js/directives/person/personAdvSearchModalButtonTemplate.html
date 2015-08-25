@@ -1,25 +1,12 @@
 <div class="row">
-<strong>Examples of the ctrpPersonAdvSearchModalButton:</strong>
-    <ul>
-        <li>
-    use-built-in-template: false (turn off the build in template for displaying selected persons)
-            </li>
-        <li>
-    max-row-selectable: maximum number of people that could be selected in the pop-up modal
-        </li>
-        </ul>
-</div>
+    <button class="btn btn-primary" ng-click="searchPerson('lg')"><i class="glyphicon glyphicon-search"></i> Search Persons</button>
 
-<!--
-<div class="row">
-    <ctrp-advanced-person-search-form show-grid="true" max-row-selectable="2" curation-mode="true"></ctrp-advanced-person-search-form>
+    <!--TODO: add savedSelection in the controller -->
+    <button class="btn btn-danger" ng-click="batchSelect('removeAll')" ng-show="savedSelection.length > 0">
+        <i class="glyphicon glyphicon-remove"></i> Remove All Person(s)
+    </button>
 </div>
--->
-<div class="row">
-    <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="true"></ctrp-person-adv-search-modal-button>
-</div>
-
-<div class="row animated-item" ng-show="selectedPersonsArray.length > 0">
+<div ng-if="useBuiltInTemplate" class="row animated-item" ng-show="savedSelection.length > 0">
 
     <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -35,7 +22,7 @@
         <th>Source Status</th>
         </thead>
         <tbody>
-        <tr ng-repeat="person in selectedPersonsArray | filter: {'name': selectedPersonFilter} track by $index"
+        <tr ng-repeat="person in savedSelection track by $index"
             class="animated-item" ng-class="person._destroy == true ? 'deleted-text' : ''">
             <td style="vertical-align: middle">
                 <label class="btn btn-default"
@@ -56,3 +43,5 @@
         </tbody>
     </table>
 </div>
+<!-- row for the table ends -->
+<!--</div>-->
