@@ -162,15 +162,20 @@
                 <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true">
                     <mark>Curation Mode: </mark>
                     <toggle-switch ng-model="curationShown" ng-change="toggleCurationMode()"></toggle-switch>
+
                     <button class="btn" ng-click="commitNullification()" ng-show="curationShown"
                             ng-disabled="!curationReady"
-                            ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>
+                            ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification
+                    </button>
+                    <div class="alert alert-danger fade in" ng-show="curationReady">
+                        <strong>Please confirm: {{nullifiedPerson}} will be nullified </strong>
+                    </div>
                 </h5>
 
             </div>
             <div class="col-sm-6">
                 <div class="row">
-                    <!-- TODO: add confirmation message of the two selected persons -->
+
                 </div>
             </div>
         </div>
