@@ -99,13 +99,42 @@
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Trial Status:</label>
                     <div class="col-sm-9">
-                        <select class="form-control" id="trial_status" ng-model="trialDetailView.curTrial.trial_status_id">
-                            <option value="">Select a Trial Status</option>
-                            <option ng-repeat="trialStatus in trialDetailView.trialStatusArr"
-                                    value="{{trialStatus.id}}" ng-selected="trialDetailView.curTrial.trial_status_id == trialStatus.id">
-                                {{trialStatus.name}}
-                            </option>
-                        </select>
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <th>Status Date</th>
+                        <th>Status</th>
+                        <th>Why Study Stopped</th>
+                        <th></th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}"
+                                           is-open="trialDetailView.opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event)">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <select class="form-control" id="trial_status" ng-model="trialDetailView.curTrial.trial_status_id">
+                                        <option value="">Select a Trial Status</option>
+                                        <option ng-repeat="trialStatus in trialDetailView.trialStatusArr"
+                                                value="{{trialStatus.id}}" ng-selected="trialDetailView.curTrial.trial_status_id == trialStatus.id">
+                                            {{trialStatus.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
                     </div>
                 </div>
 

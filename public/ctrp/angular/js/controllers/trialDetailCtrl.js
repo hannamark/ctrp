@@ -21,6 +21,7 @@
         vm.secondaryPurposeArr = secondaryPurposeObj;
         vm.responsiblePartyArr = responsiblePartyObj;
         vm.trialStatusArr = trialStatusObj;
+        vm.opened = false;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
@@ -30,6 +31,17 @@
                 console.log("error in updating trial " + JSON.stringify(vm.curTrial));
             });
         }; // updatePerson
+
+        vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
+        vm.dateOptions = DateService.getDateOptions();
+        vm.today = DateService.today();
+        vm.openCalendar = function ($event) {
+            console.log('in open calendar')
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            vm.opened = !vm.opened;
+        }; //openCalendar
 
         activate();
 
