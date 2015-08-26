@@ -24,6 +24,10 @@
         </div>
         <div class="row">
     <form class="form-horizontal" role="form" name="organization_form" novalidate>
+        <div ng-if="!orgDetailView.curOrg.new" class="form-group col-sm-12">
+            <label class="control-label col-sm-3">CTRP ID:</label>
+            <div class="col-sm-9">{{orgDetailView.curOrg.id}}</div>
+        </div>
         <div class="form-group col-sm-12" ng-class="{'has-error' : organization_form.name.$error.required && organization_form.name.$dirty }">
             <label class="control-label col-sm-3">Name:</label>
             <div class="col-sm-9">
@@ -40,6 +44,15 @@
                        <!--ng-disabled="!orgDetailView.curOrg.new" required>-->
             <!--</div>-->
         <!--</div>-->
+        <div class="form-group col-sm-12">
+            <label class="control-label col-sm-3">Source Context:</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="source_context" ng-model="orgDetailView.curOrg.source_context_id">
+                    <option value="">Select a context</option>
+                    <option ng-repeat="context in orgDetailView.sourceContextArr" value="{{context.id}}" ng-selected="orgDetailView.curOrg.source_context_id == context.id">{{context.name}}</option>
+                </select>
+            </div>
+        </div>
         <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source ID:</label>
             <div class="col-sm-9">

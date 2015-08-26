@@ -87,6 +87,9 @@
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
                         OrgService : 'OrgService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj : function(OrgService) {
                             console.log("getting source statuses!");
                             return OrgService.getSourceStatuses();
@@ -108,6 +111,9 @@
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
                         OrgService : 'OrgService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj : function(OrgService) {
                             return OrgService.getSourceStatuses();
                         },
