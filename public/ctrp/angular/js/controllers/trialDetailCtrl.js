@@ -22,6 +22,9 @@
         vm.responsiblePartyArr = responsiblePartyObj;
         vm.trialStatusArr = trialStatusObj;
         vm.status_date_opened = false;
+        vm.start_date_opened = false;
+        vm.primary_comp_date_opened = false;
+        vm.comp_date_opened = false;
         vm.addedStatuses = [];
         $scope.selectedPersonsArray = [];
 
@@ -58,11 +61,19 @@
         vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
-        vm.openCalendar = function ($event) {
+        vm.openCalendar = function ($event, type) {
             $event.preventDefault();
             $event.stopPropagation();
 
-            vm.status_date_opened = !vm.status_date_opened;
+            if (type == 'status_date') {
+                vm.status_date_opened = !vm.status_date_opened;
+            } else if (type == 'start_date') {
+                vm.start_date_opened = !vm.start_date_opened;
+            } else if (type == 'primary_comp_date') {
+                vm.primary_comp_date_opened = !vm.primary_comp_date_opened;
+            } else if (type == 'comp_date') {
+                vm.comp_date_opened = !vm.comp_date_opened;
+            }
         }; //openCalendar
 
         // Add trial status to a temp array

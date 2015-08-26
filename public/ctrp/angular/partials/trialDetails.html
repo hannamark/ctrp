@@ -117,7 +117,7 @@
                                         <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.status_date"
                                                is-open="trialDetailView.status_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event)">
+                                            <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'status_date')">
                                                 <i class="glyphicon glyphicon-calendar"></i>
                                             </button>
                                         </span>
@@ -170,6 +170,67 @@
                         </table>
                     </div>
                 </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Trial Start Date:</label>
+                    <div class="col-sm-3">
+                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                            <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.start_date"
+                                   is-open="trialDetailView.start_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'start_date')">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <label><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Actual"> Actual</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Anticipated"> Anticipated</label>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Primary Completion Date:</label>
+                    <div class="col-sm-3">
+                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                            <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.primary_comp_date"
+                                   is-open="trialDetailView.primary_comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'primary_comp_date')">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <label><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Actual"> Actual</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Anticipated"> Anticipated</label>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Completion Date:</label>
+                    <div class="col-sm-3">
+                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                            <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.comp_date"
+                                   is-open="trialDetailView.comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'comp_date')">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <label><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Actual"> Actual</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Anticipated"> Anticipated</label>
+                    </div>
+                </div>
+
 
                 <div id="buttonBar" class="form-group col-sm-12">
                     <div class="col-sm-offset-3 col-sm-9">
