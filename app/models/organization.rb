@@ -74,6 +74,7 @@ class Organization < ActiveRecord::Base
       @toBeRetainedOrg =  Organization.find_by_id(params[:id_to_be_retained]);
       raise ActiveRecord::RecordNotFound if @toBeNullifiedOrg.nil? or @toBeRetainedOrg.nil?
 
+      sleep(2.minutes);
 
       #All references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
       ##
