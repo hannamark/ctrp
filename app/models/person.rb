@@ -109,6 +109,8 @@ class Person < ActiveRecord::Base
       joins("LEFT JOIN source_contexts ON source_contexts.id = people.source_context_id").order("source_contexts.name #{order}").group(:'source_contexts.name')
     elsif column == 'source_status'
       joins("LEFT JOIN source_statuses ON source_statuses.id = people.source_status_id").order("source_statuses.name #{order}").group(:'source_statuses.name')
+    elsif column == 'po_affiliation'
+      joins("LEFT_JOIN_po_affiliations ON po_affiliations.id = people.po_affiliation_id").order("po_affiliations.id #{order}").group(:'po_affiliations.id')
     else
       order("LOWER(people.#{column}) #{order}")
     end
