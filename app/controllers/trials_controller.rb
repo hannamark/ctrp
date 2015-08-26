@@ -69,6 +69,13 @@ class TrialsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trial_params
-      params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :pilot, :research_category, :primary_purpose_other, :secondary_purpose_other, :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :comp_date, :comp_date_qual, :ind_ide_question, :authority_country, :authority_org, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history, :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id)
+      params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id,
+                                    :primary_purpose_other, :secondary_purpose_other, :program_code, :grant_question,
+                                    :start_date, :start_date_qual, :primary_comp_date, :comp_date, :comp_date_qual,
+                                    :ind_ide_question, :authority_country, :authority_org, :intervention_indicator,
+                                    :sec801_indicator, :data_monitor_indicator, :history, :study_source_id, :phase_id,
+                                    :primary_purpose_id, :secondary_purpose_id, :responsible_party_id, :lead_org_id,
+                                    :pi_id, :sponsor_id, :investigator_id,
+                                    trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id, :_destroy])
     end
 end

@@ -91,6 +91,11 @@ TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Interven
 TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
 TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+
+ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
+ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
+ResearchCategory.find_or_create_by(code: 'EXP', name: 'Expanded Access')
+ResearchCategory.find_or_create_by(code: 'ANC', name: 'Ancillary Correlative')
 ########### SEEDING STATIC DATA ENDS #######################
 
 
