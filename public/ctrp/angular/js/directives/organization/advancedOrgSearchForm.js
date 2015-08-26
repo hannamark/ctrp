@@ -74,9 +74,9 @@
             //$scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
             //$scope.enablerowselection = false;
 
-           /*
-           //watch the curation switch button to turn on/off the curation choices
-            */
+            /*
+             //watch the curation switch button to turn on/off the curation choices
+             */
 
 
             $scope.$watch('usedinmodal', function (newVal, oldVal) {
@@ -93,7 +93,7 @@
                     // $scope.gridOptions = OrgService.getGridOptions();
                     $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                         '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
-                   //make visible if it is not in modal and curator mode is off.
+                    //make visible if it is not in modal and curator mode is off.
 
                 }
 
@@ -228,16 +228,31 @@
                 }
 
 
-                if (!$scope.usedinmodal) {
+                /*
+                if (!$scope.curationShown) {
+                    //if not on curation mode, do not show row selection
+                    row.isSelected = $scope.curationShown;
+                    $scope.gridApi.grid.refresh();
+                    return;
+                }
+                */
+
+
+                if (!$scope.curationShown && !$scope.usedinmodal) {
+                                      //if not on curation mode, do not show row selection
+                                     row.isSelected = $scope.curationShown;
+                                     $scope.gridApi.grid.refresh();
+                                        return;
+                }
+
+                if (!$scope.curationShown && $scope.usedinmodal) {
                     //if not on curation mode, do not show row selection
                     row.isSelected = true;
                     $scope.gridApi.grid.refresh();
                     return;
-                } else if ($scope.usedinmodal) {
-                    row.isSelected =true;
-                    $scope.gridApi.grid.refresh();
-                    return;
                 }
+
+
 
                 if (row.isSelected) {
 
@@ -317,7 +332,7 @@
                     //TODO: warning to user for nullifying active entity
                     //cannot nullify Active entity (e.g. person)
                     if(isActive)
-                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
+                        $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
                     else
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
                     $scope.nullifiedId = '';
@@ -328,11 +343,12 @@
                 }
             }; //nullifyEntity
 
-           $scope.commitNullification = function() {
+            $scope.commitNullification = function() {
 
                 OrgService.curateOrg($scope.toBeCurated).then(function(res) {
                     // console.log('successful in curation: res is: ' + JSON.stringify(res));
-                    initCurationObj()
+                    initCurationObj();
+                    clearSelectedRows();
                     $scope.searchOrgs();
                     toastr.success('Curation was successful', 'Curated!');
                 }).catch(function(err) {
@@ -343,8 +359,8 @@
             }; //commitNullification
 
             $scope.toggleCustom = function() {
-
-                $scope.curationShown = !$scope.curationShown;
+                if($scope.curationShown) $scope.curationShown=false;
+                else $scope.curationShown=true;
                 var newVal=$scope.curationShown;
 
                 $scope.gridOptions.columnDefs[0].visible = newVal;
@@ -401,7 +417,22 @@
                 return;
             } //initCurationObj
 
+            /**
+             * clear up the selectedRows array,
+             * @returns {*} the last row being cleared, empty array
+             */
+            function clearSelectedRows() {
+                var deselectedRow = null;
+                while ($scope.selectedRows.length > 0) {
+                    deselectedRow = $scope.selectedRows.shift();
+                    deselectedRow.isSelected = false;
+                }
+                if (angular.isDefined($scope.$parent.selectedOrgsArray)) {
+                    $scope.$parent.selectedOrgsArray = [];
+                }
 
+                return deselectedRow;
+            }
 
 
 

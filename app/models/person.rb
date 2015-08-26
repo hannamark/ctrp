@@ -67,7 +67,7 @@ class Person < ActiveRecord::Base
       ##Iterating through po_afilliations of to be nullified person and assigning to retained person.
       ##
       poAffiliationsOfNullifiedPerson.each do |po_affiliation|
-        new_po_aff=po_affiliation.clone;# Should be careful when deciding between dup and clone. See more details in Active Record dup and clone documentation.
+        new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
         new_po_aff.person_id=@toBeRetainedPerson.id;
         new_po_aff.save!
       end
