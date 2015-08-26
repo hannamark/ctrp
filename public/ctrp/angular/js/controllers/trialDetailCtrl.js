@@ -48,6 +48,13 @@
             });
         }; // updatePerson
 
+        // Delete the trial status
+        vm.toggleSelection = function (index) {
+            if (index < vm.addedStatuses.length) {
+                vm.addedStatuses[index]._destroy = !vm.addedStatuses[index]._destroy;
+            }
+        };// toggleSelection
+
         vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
@@ -70,6 +77,7 @@
                 }
             })
             newStatus.why_stopped = vm.why_stopped;
+            newStatus._destroy = false;
             vm.addedStatuses.push(newStatus);
         };
 

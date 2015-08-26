@@ -77,8 +77,10 @@
                 </div>
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Add Principle Investigator:</label>
-                    <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false"></ctrp-person-adv-search-modal-button>
-                    {{selectedPersonsArray[0].fname + ' ' + selectedPersonsArray[0].mname + ' ' + selectedPersonsArray[0].lname}}
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control input-xs" disabled value="{{selectedPersonsArray[0].fname + ' ' + selectedPersonsArray[0].mname + ' ' + selectedPersonsArray[0].lname}}"/>
+                        <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false"></ctrp-person-adv-search-modal-button>
+                    </div>
                 </div>
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Responsible Party:</label>
@@ -142,17 +144,21 @@
                         </table>
                         <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedStatuses.length > 0">
                             <thead>
+                            <th></th>
                             <th>Status Date</th>
                             <th>Status</th>
                             <th>Why Study Stopped</th>
-                            <th></th>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="status in trialDetailView.addedStatuses track by $index">
+                            <tr ng-repeat="status in trialDetailView.addedStatuses track by $index" ng-class="status._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                <td class="col-md-1" style="vertical-align: middle">
+                                    <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index)">
+                                        <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                    </label>
+                                </td>
                                 <td class="col-md-2">{{status.status_date}}</td>
                                 <td class="col-md-3">{{status.trial_status_name}}</td>
-                                <td class="col-md-5">{{status.why_stopped}}</td>
-                                <td class="col-md-2"></td>
+                                <td class="col-md-6">{{status.why_stopped}}</td>
                             </tr>
                             </tbody>
                         </table>
