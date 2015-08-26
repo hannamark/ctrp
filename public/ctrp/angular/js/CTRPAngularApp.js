@@ -268,6 +268,9 @@
                             deferred.resolve(null);
                             return deferred.promise;
                         },
+                        protocolIdOriginObj: function(TrialService) {
+                            return TrialService.getProtocolIdOrigins();
+                        },
                         phaseObj: function(TrialService) {
                             return TrialService.getPhases();
                         },

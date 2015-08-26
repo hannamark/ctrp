@@ -7,14 +7,15 @@
     angular.module('ctrpApp')
         .controller('trialDetailCtrl', trialDetailCtrl);
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
-        '$scope', 'Common', '$state', '$modal', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
+        '$scope', 'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'responsiblePartyObj', 'trialStatusObj'];
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
-                             $scope, Common, $state, $modal, phaseObj, researchCategoryObj, primaryPurposeObj,
+                             $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, responsiblePartyObj, trialStatusObj) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
+        vm.protocolIdOriginArr = protocolIdOriginObj;
         vm.phaseArr = phaseObj;
         vm.researchCategoryArr = researchCategoryObj;
         vm.primaryPurposeArr = primaryPurposeObj;
@@ -25,6 +26,7 @@
         vm.start_date_opened = false;
         vm.primary_comp_date_opened = false;
         vm.comp_date_opened = false;
+        vm.addedOtherIds = [];
         vm.addedStatuses = [];
         $scope.selectedPersonsArray = [];
 
@@ -33,6 +35,11 @@
             vm.curTrial.pi_id = $scope.selectedPersonsArray[0] ? $scope.selectedPersonsArray[0].id : '';
 
             // Construct nested attributes
+            vm.curTrial.other_ids_attributes = [];
+            _.each(vm.addedOtherIds, function (otherId) {
+                vm.curTrial.other_ids_attributes.push(otherId);
+            });
+
             vm.curTrial.trial_status_wrappers_attributes = [];
             _.each(vm.addedStatuses, function (status) {
                 vm.curTrial.trial_status_wrappers_attributes.push(status);
@@ -52,9 +59,15 @@
         }; // updatePerson
 
         // Delete the trial status
-        vm.toggleSelection = function (index) {
-            if (index < vm.addedStatuses.length) {
-                vm.addedStatuses[index]._destroy = !vm.addedStatuses[index]._destroy;
+        vm.toggleSelection = function (index, type) {
+            if (type == 'other_id') {
+                if (index < vm.addedOtherIds.length) {
+                    vm.addedOtherIds[index]._destroy = !vm.addedOtherIds[index]._destroy;
+                }
+            } else if (type == 'trial_status') {
+                if (index < vm.addedStatuses.length) {
+                    vm.addedStatuses[index]._destroy = !vm.addedStatuses[index]._destroy;
+                }
             }
         };// toggleSelection
 
@@ -75,6 +88,21 @@
                 vm.comp_date_opened = !vm.comp_date_opened;
             }
         }; //openCalendar
+
+        // Add other ID to a temp array
+        vm.addOtherId = function () {
+            var newId = {};
+            newId.protocol_id_origin_id = vm.protocol_id_origin_id;
+            // For displaying other ID origin name in the table
+            _.each(vm.protocolIdOriginArr, function (origin) {
+                if (origin.id == vm.protocol_id_origin_id) {
+                    newId.protocol_id_origin_name = origin.name;
+                }
+            })
+            newId.protocol_id = vm.protocol_id;
+            newId._destroy = false;
+            vm.addedOtherIds.push(newId);
+        };
 
         // Add trial status to a temp array
         vm.addStatus = function () {

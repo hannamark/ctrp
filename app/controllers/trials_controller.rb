@@ -76,6 +76,7 @@ class TrialsController < ApplicationController
                                     :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                     :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id,
+                                    other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id, :_destroy])
     end
 end

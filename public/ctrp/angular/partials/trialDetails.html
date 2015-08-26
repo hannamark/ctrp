@@ -13,6 +13,62 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Other Trial Identifier:</label>
+                    <div class="col-sm-9">
+                        <table class="table table-striped table-condensed">
+                            <thead>
+                            <th>Protocol ID Origin</th>
+                            <th>Protocol ID</th>
+                            <th></th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div>
+                                        <select class="form-control" id="protocol_id_origin" ng-model="trialDetailView.protocol_id_origin_id">
+                                            <option value="">Select a Protocol ID Origin</option>
+                                            <option ng-repeat="origin in trialDetailView.protocolIdOriginArr" value="{{origin.id}}">
+                                                {{origin.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="col-md-6">
+                                    <div>
+                                        <input type="text" class="form-control input-xs" id="protocol_id" ng-model="trialDetailView.protocol_id" />
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div>
+                                        <button class="btn btn-primary" ng-click="trialDetailView.addOtherId()">
+                                            <i class="glyphicon glyphicon-plus"></i> Add
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedOtherIds.length > 0">
+                            <thead>
+                            <th></th>
+                            <th>Protocol ID Origin</th>
+                            <th>Protocol ID</th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="otherId in trialDetailView.addedOtherIds track by $index" ng-class="otherId._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                <td class="col-md-1" style="vertical-align: middle">
+                                    <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'other_id')">
+                                        <i ng-class="otherId._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                    </label>
+                                </td>
+                                <td class="col-md-4">{{otherId.protocol_id_origin_name}}</td>
+                                <td class="col-md-7">{{otherId.protocol_id}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Official Title:</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control input-xs" id="official_title" ng-model="trialDetailView.curTrial.official_title">
@@ -174,7 +230,7 @@
                             <tbody>
                             <tr ng-repeat="status in trialDetailView.addedStatuses track by $index" ng-class="status._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                 <td class="col-md-1" style="vertical-align: middle">
-                                    <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index)">
+                                    <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
                                         <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                     </label>
                                 </td>
