@@ -1,8 +1,8 @@
 <div class="row-fluid">
     <div class="col-xs-12 col-border">
         <div class="row">
-            <p><h4 ng-if="trialDetailView.curTrial.new"><mark>Add an Trial</mark></h4></p>
-            <p><h4 ng-if="!trialDetailView.curTrial.new"><mark>Edit the Trial</mark></h4></p>
+            <p><h4 ng-if="trialDetailView.curTrial.new"><mark>Add Trial</mark></h4></p>
+            <p><h4 ng-if="!trialDetailView.curTrial.new"><mark>Edit Trial</mark></h4></p>
         </div>
         <div class="row">
             <form class="form-horizontal" role="form" name="trial_form" novalidate>
@@ -55,6 +55,12 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Describe "Other" Primary Purpose:</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control input-xs" id="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Secondary Purpose:</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id">
@@ -64,6 +70,12 @@
                                 {{secondaryPurpose.name}}
                             </option>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Describe "Other" Secondary Purpose:</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control input-xs" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other" />
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
