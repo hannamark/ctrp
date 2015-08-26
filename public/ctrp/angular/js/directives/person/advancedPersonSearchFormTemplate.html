@@ -48,9 +48,7 @@
                     <select class="form-control" id="source_context"
                             ng-model="searchParams.source_context">
                         <option value="">Select a context</option>
-                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}">
-                            {{context.name}}
-                        </option>
+                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}">{{context.name}}</option>
                     </select>
                 </div>
                 <!--source context ends-->
@@ -73,9 +71,7 @@
                     <select class="form-control" id="source_status"
                             ng-model="searchParams.source_status">
                         <option value="">Select a status</option>
-                        <option ng-repeat="status in sourceStatusArr" value="{{status.name}}">
-                            {{status.name}}
-                        </option>
+                        <option ng-repeat="status in sourceStatusArr" value="{{status.name}}">{{status.name}}</option>
                     </select>
                 </div>
             </div>
