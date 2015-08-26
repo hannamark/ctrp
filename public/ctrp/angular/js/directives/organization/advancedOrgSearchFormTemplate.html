@@ -56,9 +56,7 @@
                             ng-model="searchParams.source_context"
                             ng-change="searchOrgs()">
                         <option value="">All Contexts</option>
-                        <option ng-repeat="context in sourceContexts" value="{{context.name}}">
-                            {{context.name}}
-                        </option>
+                        <option ng-repeat="context in sourceContexts" value="{{context.name}}">{{context.name}}</option>
                     </select>
                 </div>
             <!-- source context ends -->
@@ -82,9 +80,7 @@
                             ng-model="searchParams.source_status"
                             ng-change="searchOrgs()">
                         <option value="">Select a Status</option>
-                        <option ng-repeat="status in sourceStatuses" value="{{status.name}}">
-                            {{status.name}}
-                        </option>
+                        <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
                     </select>
                 </div>
             </div>
@@ -155,9 +151,7 @@
                     <select class="form-control" id="country" ng-model="searchParams.country"
                             ng-change="watchCountrySelection(searchParams.country)">
                         <option value="" selected>All Countries</option>
-                        <option ng-repeat="country in countries" value="{{country.name}}">
-                            {{country.name}}
-                        </option>
+                        <option ng-repeat="country in countries" value="{{country.name}}">{{country.name}}</option>
                     </select>
                 </div>
             </div>
@@ -186,9 +180,7 @@
                     <select class="form-control" id="state" ng-model="searchParams.state_province"
                             ng-change="searchOrgs()">
                         <option value="">All States/Provinces</option>
-                        <option ng-repeat="state in states track by state.name"
-                                value="{{state.name}}">{{state.name}}
-                        </option>
+                        <option ng-repeat="state in states track by state.name" value="{{state.name}}">{{state.name}}</option>
                     </select>
                 </div>
             </div>
