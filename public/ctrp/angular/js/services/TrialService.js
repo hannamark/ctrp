@@ -47,6 +47,7 @@
             searchTrials: searchTrials,
             getInitialTrialSearchParams: getInitialTrialSearchParams,
             getGridOptions: getGridOptions,
+            getProtocolIdOrigins: getProtocolIdOrigins,
             getPhases: getPhases,
             getResearchCategories: getResearchCategories,
             getPrimaryPurposes: getPrimaryPurposes,
@@ -125,6 +126,10 @@
         function broadcastMsg(msgCode, msgContent) {
             $rootScope.$broadcast(msgCode, {content: msgContent});
         } //broadcastMsg
+
+        function getProtocolIdOrigins() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PROTOCOL_ID_ORIGINS);
+        }
 
         function getPhases() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PHASES);
