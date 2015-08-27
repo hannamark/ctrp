@@ -74,7 +74,7 @@
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'phone', enableSorting: true, width: '10%'},
-                {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs',width:'30%',cellTemplate:'<master-directive button-label="Click" mod="row.entity.affiliated_orgs_first5"></master-directive>'}
+                {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs',width:'25%',cellTemplate:'<master-directive button-label="Click" mod="row.entity.affiliated_orgs_first5"></master-directive>'}
             ]
         };
 
