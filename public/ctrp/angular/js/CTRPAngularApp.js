@@ -87,6 +87,9 @@
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
                         OrgService : 'OrgService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj : function(OrgService) {
                             console.log("getting source statuses!");
                             return OrgService.getSourceStatuses();
@@ -108,6 +111,9 @@
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
                         OrgService : 'OrgService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj : function(OrgService) {
                             return OrgService.getSourceStatuses();
                         },
@@ -244,11 +250,61 @@
                         }
                     }
                 })
+
                 .state('main.testPerson', {
-                   url: '/person_directive',
+                    url: '/person_directive',
                     templateUrl: '/ctrp/angular/partials/person_search.html',
                     controller: 'personSearchCtrl as personSearchView'
+                })
+
+                .state('main.addTrial', {
+                    url: '/new_trial',
+                    templateUrl: '/ctrp/angular/partials/trialDetails.html',
+                    controller: 'trialDetailCtrl as trialDetailView',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        trialDetailObj: function($q) {
+                            var deferred = $q.defer();
+                            deferred.resolve(null);
+                            return deferred.promise;
+                        },
+                        protocolIdOriginObj: function(TrialService) {
+                            return TrialService.getProtocolIdOrigins();
+                        },
+                        phaseObj: function(TrialService) {
+                            return TrialService.getPhases();
+                        },
+                        researchCategoryObj: function(TrialService) {
+                            return TrialService.getResearchCategories();
+                        },
+                        primaryPurposeObj: function(TrialService) {
+                            return TrialService.getPrimaryPurposes();
+                        },
+                        secondaryPurposeObj: function(TrialService) {
+                            return TrialService.getSecondaryPurposes();
+                        },
+                        responsiblePartyObj: function(TrialService) {
+                            return TrialService.getResponsibleParties();
+                        },
+                        trialStatusObj: function(TrialService) {
+                            return TrialService.getTrialStatuses();
+                        }
+                    }
                 });
+
+                //.state('main.sign_out', {
+                //    url: '/sign_out',
+                //    controller: 'userCtrl',
+                //    resolve: {
+                //        logOut: function($q) {
+                //            var deferred = $q.defer();
+                //            //config.headers.Authorization = '';
+                //            deferred.resolve({data: "logout"});
+                //            return deferred.promise;
+                //        }
+                //    }
+                //
+                //})
 
 
         }).run(function() {

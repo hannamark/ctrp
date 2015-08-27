@@ -48,9 +48,7 @@
                     <select class="form-control" id="source_context"
                             ng-model="searchParams.source_context">
                         <option value="">Select a context</option>
-                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}">
-                            {{context.name}}
-                        </option>
+                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}">{{context.name}}</option>
                     </select>
                 </div>
                 <!--source context ends-->
@@ -73,9 +71,7 @@
                     <select class="form-control" id="source_status"
                             ng-model="searchParams.source_status">
                         <option value="">Select a status</option>
-                        <option ng-repeat="status in sourceStatusArr" value="{{status.name}}">
-                            {{status.name}}
-                        </option>
+                        <option ng-repeat="status in sourceStatusArr" value="{{status.name}}">{{status.name}}</option>
                     </select>
                 </div>
             </div>
@@ -162,15 +158,20 @@
                 <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true">
                     <mark>Curation Mode: </mark>
                     <toggle-switch ng-model="curationShown" ng-change="toggleCurationMode()"></toggle-switch>
+
                     <button class="btn" ng-click="commitNullification()" ng-show="curationShown"
                             ng-disabled="!curationReady"
-                            ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>
+                            ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification
+                    </button>
+                    <div class="alert alert-danger fade in" ng-show="curationReady">
+                        <strong>Please confirm: {{nullifiedPerson}} will be nullified </strong>
+                    </div>
                 </h5>
 
             </div>
             <div class="col-sm-6">
                 <div class="row">
-                    <!-- TODO: add confirmation message of the two selected persons -->
+
                 </div>
             </div>
         </div>

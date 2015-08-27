@@ -48,7 +48,7 @@
                 personSearchResults: '@personSearchResults',
                 selectedPersonsArray: '@selectedPersonsArray',
             },
-            templateUrl: '/ctrp/angular/js/directives/advancedPersonSearchFormTemplate.html',
+            templateUrl: '/ctrp/angular/js/directives/person/advancedPersonSearchFormTemplate.html',
             link: linkFn,
             controller: advPersonSearchDirectiveController
         };
@@ -72,6 +72,7 @@
         function advPersonSearchDirectiveController($scope) {
 
             console.log('showGrid: ' + $scope.showGrid);
+            console.log('in adv person search form, maxRowSelectable: ' + $scope.maxRowSelectable);
 
             $scope.maxRowSelectable = $scope.maxRowSelectable || 0; //default to 0
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
@@ -107,7 +108,7 @@
                 //console.log("searching params: " + JSON.stringify($scope.searchParams));
                 PersonService.searchPeople($scope.searchParams).then(function (data) {
                     if ($scope.showGrid && data.data.people) {
-                        //  console.log("received search results: " + JSON.stringify(data.data));
+                        //console.log("received person search results: " + JSON.stringify(data.data));
                         $scope.gridOptions.data = data.data.people;
                         $scope.gridOptions.totalItems = data.data.total;
                         //pin the selected rows, if any, at the top of the results
@@ -166,7 +167,7 @@
             }; //nullifyEntity
 
             $scope.commitNullification = function() {
-
+                console.log('tobeCurated: ' + JSON.stringify($scope.toBeCurated));
                 PersonService.curatePerson($scope.toBeCurated).then(function(res) {
                     // console.log('successful in curation: res is: ' + JSON.stringify(res));
                     initCurationObj();
@@ -230,7 +231,7 @@
              */
             function rowSelectionCallBack(row) {
 
-                if ($scope.maxRowSelectable && $scope.maxRowSelectable > 0) {
+                if ($scope.maxRowSelectable && $scope.maxRowSelectable > 0 && $scope.curationShown) {
                     if (row.isSelected) {
                         //console.log('row is selected: ' + JSON.stringify(row.entity));
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {
@@ -245,6 +246,7 @@
 
                             var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedPersonsArray, deselectedRow.entity);
                             $scope.$parent.selectedPersonsArray.splice(curRowSavedIndex, 1);
+                            $scope.$parent.selectedPersonsArray.push(row.entity);
                         }
                     } else {
                         //de-select the row
@@ -322,24 +324,27 @@
                  */
                 $scope.toggleCurationMode = function() {
                     $scope.curationShown = !$scope.curationShown;
+                }; //toggleCurationMode
+
+
+
+                //watcher for $scope.curationShown
+                $scope.$watch('curationShown', function(newVal) {
                     $scope.gridOptions.columnDefs[0].visible = $scope.curationShown;
-
-                    if ($scope.curationShown == false) {
-                        //purge the container for rows to be curated when not on curation mode
-                        var lastRow = clearSelectedRows();
-                        if (!!lastRow) {
-                            $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
-                        }
-
-                    } else {
+                    if (newVal) {
                         // initializations for curation
                         $scope.selectedRows = [];
                         $scope.nullifiedId = '';
                         $scope.warningMessage = false;
+                    } else {
+                        var lastRow = clearSelectedRows();
+                        if (!!lastRow) {
+                            $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                        }
                     }
                     $scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
                     $scope.gridApi.grid.refresh();
-                }; //toggleCurationMode
+                }, true);
 
 
             } //prepareGridOptions
@@ -347,17 +352,18 @@
 
 
             /**
-             * watch the readiness of curation submission
+             * watch the readiness of curation submission, default max row selection: 2
              */
             function watchReadinessOfCuration() {
                 $scope.$watch('nullifiedId', function(curVal, preVal) {
                     initCurationObj();
                     $scope.toBeCurated.id_to_be_nullified = $scope.nullifiedId;
-                    if ($scope.selectedRows.length == 2 && $scope.nullifiedId) {
+                    if ($scope.selectedRows.length == $scope.maxRowSelectable && $scope.nullifiedId) {
                         _.each($scope.selectedRows, function (curRow) {
-                            if (curRow.entity.id != $scope.nullifiedId) {
+                            if (curRow.entity.id == $scope.nullifiedId) {
+                                $scope.nullifiedPerson = curRow.entity.lname + ', ' + curRow.entity.fname + ' ( ' + curRow.entity.id + ' )';
+                            } else {
                                 $scope.toBeCurated['id_to_be_retained'] = curRow.entity.id;
-                                return;
                             }
                         });
                     }

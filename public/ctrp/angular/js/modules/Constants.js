@@ -27,10 +27,20 @@
             'SEARCH_FAMILY': '/ctrp/families/search.json',
             'FAMILY_STATUSES':'/ctrp/family_statuses.json',
             'FAMILY_TYPES':'/ctrp/family_types.json',
-            'FAMILY_RELATIONSHIPS' :'/ctrp/family_relationships.json'
+            'FAMILY_RELATIONSHIPS' :'/ctrp/family_relationships.json',
+            'TRIAL_LIST': '/ctrp/trials.json',
+            'A_TRIAL': '/ctrp/trials/',
+            'SEARCH_TRIAL': '/ctrp/trials/search.json',
+            'PROTOCOL_ID_ORIGINS': '/ctrp/protocol_id_origins.json',
+            'PHASES': '/ctrp/phases.json',
+            'RESEARCH_CATEGORIES': '/ctrp/research_categories.json',
+            'PRIMARY_PURPOSES': '/ctrp/primary_purposes.json',
+            'SECONDARY_PURPOSES': '/ctrp/secondary_purposes.json',
+            'RESPONSIBLE_PARTIES': '/ctrp/responsible_parties.json',
+            'TRIAL_STATUSES': '/ctrp/trial_statuses.json'
         })
         .constant('MESSAGES', {
-           'STATES_AVAIL' : 'states_or_provinces_available',
+            'STATES_AVAIL' : 'states_or_provinces_available',
             'STATES_UNAVAIL' : 'states_or_provinces_not_available'
         });
 

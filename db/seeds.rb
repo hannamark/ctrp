@@ -91,6 +91,11 @@ TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Interven
 TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
 TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+
+ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
+ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
+ResearchCategory.find_or_create_by(code: 'EXP', name: 'Expanded Access')
+ResearchCategory.find_or_create_by(code: 'ANC', name: 'Ancillary Correlative')
 ########### SEEDING STATIC DATA ENDS #######################
 
 
@@ -157,6 +162,7 @@ end
 end
 
 ####People
+if Person.count == 0
 person1=Person.find_or_create_by(id:1699192, source_id:'33303', source_context: ctep, fname:'Ajeet', lname:'Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
 person2=Person.find_or_create_by(id:7857011, source_id:'518786', source_context: ctrp, fname:'Alicia', lname:'Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
 person3=Person.find_or_create_by(id:3567738, source_id:'515762', source_context: ctep, fname:'Amy', mname:'M.', lname:'Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
@@ -166,7 +172,7 @@ person6=Person.find_or_create_by(id:10161459, source_id:'46120', source_context:
 person7=Person.find_or_create_by(id:366649, source_id:'11640', source_context: ctep, fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
 person8=Person.find_or_create_by(id:2026171, source_id:'35504', source_context: ctrp, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
 person9=Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
-
+end
 
 PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')
 PoAffiliationStatus.find_or_create_by(name: 'Inactive', code: 'INACTIVE')
