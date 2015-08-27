@@ -64,12 +64,20 @@ class Person < ActiveRecord::Base
       raise ActiveRecord::RecordNotFound if @toBeNullifiedPerson.nil? or @toBeRetainedPerson.nil?
       poAffiliationsOfNullifiedPerson = PoAffiliation.where(person_id:@toBeNullifiedPerson.id);
 
+      poAffiliationsOfRetainedPerson  = PoAffiliation.where(person_id:@toBeRetainedPerson.id);
+
+      orgs = poAffiliationsOfRetainedPerson.collect{|x| x.organization_id}
+
       ##Iterating through po_afilliations of to be nullified person and assigning to retained person.
       ##
       poAffiliationsOfNullifiedPerson.each do |po_affiliation|
-        new_po_aff=po_affiliation.clone;# Should be careful when deciding between dup and clone. See more details in Active Record dup and clone documentation.
-        new_po_aff.person_id=@toBeRetainedPerson.id;
-        new_po_aff.save!
+        #new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
+        if(!orgs.include?po_affiliation.organization_id)
+          po_affiliation.person_id=@toBeRetainedPerson.id;
+          po_affiliation.save!
+        else
+          po_affiliation.destroy!
+        end
       end
 
       ## Destroy associations of to_be_nullified_person
@@ -109,6 +117,8 @@ class Person < ActiveRecord::Base
       joins("LEFT JOIN source_contexts ON source_contexts.id = people.source_context_id").order("source_contexts.name #{order}").group(:'source_contexts.name')
     elsif column == 'source_status'
       joins("LEFT JOIN source_statuses ON source_statuses.id = people.source_status_id").order("source_statuses.name #{order}").group(:'source_statuses.name')
+    elsif column == 'po_affiliation'
+      joins("LEFT_JOIN_po_affiliations ON po_affiliations.id = people.po_affiliation_id").order("po_affiliations.id #{order}").group(:'po_affiliations.id')
     else
       order("LOWER(people.#{column}) #{order}")
     end

@@ -66,6 +66,7 @@
                 getPromisedData();
                 listenToStatesProvinces();
                 prepareGidOptions();
+                watchCurationShown();
                 watchReadinessOfCuration();
             } //activate
 
@@ -228,13 +229,26 @@
                 }
 
 
-                if (!$scope.usedinmodal) {
+                /*
+                if (!$scope.curationShown) {
                     //if not on curation mode, do not show row selection
-                    row.isSelected = true;
+                    row.isSelected = $scope.curationShown;
                     $scope.gridApi.grid.refresh();
                     return;
-                } else if ($scope.usedinmodal) {
-                    row.isSelected =true;
+                }
+                */
+
+
+                if (!$scope.curationShown && !$scope.usedinmodal) {
+                                      //if not on curation mode, do not show row selection
+                                     row.isSelected = $scope.curationShown;
+                                     $scope.gridApi.grid.refresh();
+                                        return;
+                }
+
+                if (!$scope.curationShown && $scope.usedinmodal) {
+                    //if not on curation mode, do not show row selection
+                    row.isSelected = true;
                     $scope.gridApi.grid.refresh();
                     return;
                 }
@@ -343,29 +357,36 @@
             }; //commitNullification
 
             $scope.toggleCustom = function() {
-
                 $scope.curationShown = !$scope.curationShown;
-                var newVal=$scope.curationShown;
-
-                $scope.gridOptions.columnDefs[0].visible = newVal;
-                if (newVal == false) {
-                    //purge the container for rows to be curated when not on curation mode
-                    while ($scope.selectedRows.length > 0) {
-                        alert('len '+$scope.selectedRows.length);
-                        // vm.selectedRows.pop().isSelected = false;
-                        var deselectedRow = $scope.selectedRows.pop();
-                        deselectedRow.isSelected = false;
-                        $scope.nullifiedId = deselectedRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
-                    }
-                } else {
-                    // initializations for curation
-                    $scope.selectedRows = [];
-                    $scope.nullifiedId = '';
-                    $scope.warningMessage = false;
-                }
-                $scope.gridApi.grid.refresh();
-
             };
+
+
+            /**
+             * Watch curationShown for dynamically adjusting the ui-grid
+             */
+            function watchCurationShown() {
+                $scope.$watch('curationShown', function(newVal) {
+
+                   $scope.gridOptions.columnDefs[0].visible = newVal;
+                   if (newVal) {
+                       //purge the container for rows to be curated when not on curation mode
+                       while ($scope.selectedRows.length > 0) {
+                           //alert('len '+$scope.selectedRows.length);
+                           // vm.selectedRows.pop().isSelected = false;
+                           var deselectedRow = $scope.selectedRows.pop();
+                           deselectedRow.isSelected = false;
+                           $scope.nullifiedId = deselectedRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                       }
+                   } else {
+                       // initializations for curation
+                       $scope.selectedRows = [];
+                       $scope.nullifiedId = '';
+                       $scope.warningMessage = false;
+                   }
+                   $scope.gridApi.grid.refresh();
+                });
+            }
+
 
             /**
              * watch the readiness of curation submission
@@ -401,7 +422,22 @@
                 return;
             } //initCurationObj
 
+            /**
+             * clear up the selectedRows array,
+             * @returns {*} the last row being cleared, empty array
+             */
+            function clearSelectedRows() {
+                var deselectedRow = null;
+                while ($scope.selectedRows.length > 0) {
+                    deselectedRow = $scope.selectedRows.shift();
+                    deselectedRow.isSelected = false;
+                }
+                if (angular.isDefined($scope.$parent.selectedOrgsArray)) {
+                    $scope.$parent.selectedOrgsArray = [];
+                }
 
+                return deselectedRow;
+            }
 
 
 

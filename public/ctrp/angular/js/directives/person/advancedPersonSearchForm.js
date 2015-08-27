@@ -108,7 +108,7 @@
                 //console.log("searching params: " + JSON.stringify($scope.searchParams));
                 PersonService.searchPeople($scope.searchParams).then(function (data) {
                     if ($scope.showGrid && data.data.people) {
-                        //  console.log("received search results: " + JSON.stringify(data.data));
+                        //console.log("received person search results: " + JSON.stringify(data.data));
                         $scope.gridOptions.data = data.data.people;
                         $scope.gridOptions.totalItems = data.data.total;
                         //pin the selected rows, if any, at the top of the results
@@ -167,7 +167,7 @@
             }; //nullifyEntity
 
             $scope.commitNullification = function() {
-
+                console.log('tobeCurated: ' + JSON.stringify($scope.toBeCurated));
                 PersonService.curatePerson($scope.toBeCurated).then(function(res) {
                     // console.log('successful in curation: res is: ' + JSON.stringify(res));
                     initCurationObj();
@@ -324,24 +324,37 @@
                  */
                 $scope.toggleCurationMode = function() {
                     $scope.curationShown = !$scope.curationShown;
+                }; //toggleCurationMode
+
+
+
+                //watcher for $scope.curationShown
+                $scope.$watch('curationShown', function(newVal) {
                     $scope.gridOptions.columnDefs[0].visible = $scope.curationShown;
 
-                    if ($scope.curationShown == false) {
-                        //purge the container for rows to be curated when not on curation mode
+                    if (newVal) {
+                        // $scope.selectedRows = [];
+                        //clearSelectedRows();
+                        $scope.nullifiedId = '';
+                        $scope.warningMessage = false;
+                    } else {
                         var lastRow = clearSelectedRows();
                         if (!!lastRow) {
                             $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
                         }
-
-                    } else {
-                        // initializations for curation
-                        $scope.selectedRows = [];
-                        $scope.nullifiedId = '';
-                        $scope.warningMessage = false;
                     }
-                    $scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
+                    /*
+                    var lastRow = clearSelectedRows();
+                    if (!!lastRow) {
+                        $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                    }
+                    $scope.warningMessage = false;
+                    */
+
+
+                    //$scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
                     $scope.gridApi.grid.refresh();
-                }; //toggleCurationMode
+                }, true);
 
 
             } //prepareGridOptions

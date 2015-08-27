@@ -25,4 +25,6 @@ class PoAffiliation < ActiveRecord::Base
   belongs_to :person
   belongs_to :organization
   belongs_to :po_affiliation_status
+
+  validates :effective_date, presence: true
 end
