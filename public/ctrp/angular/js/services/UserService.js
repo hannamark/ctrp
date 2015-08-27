@@ -53,7 +53,7 @@
         this.logout = function () {
             Common.broadcastMsg('loggedOut');
             var username = LocalCacheService.getCacheWithKey("username");
-            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username})
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: "Angular"})
                 .then(function (data) {
                     if (data.success) {
                         LocalCacheService.removeItemFromCache("token");
