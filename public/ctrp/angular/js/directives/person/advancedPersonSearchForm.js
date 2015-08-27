@@ -331,9 +331,11 @@
                 //watcher for $scope.curationShown
                 $scope.$watch('curationShown', function(newVal) {
                     $scope.gridOptions.columnDefs[0].visible = $scope.curationShown;
+                    /*
                     if (newVal) {
                         // initializations for curation
-                        $scope.selectedRows = [];
+                        // $scope.selectedRows = [];
+                        clearSelectedRows();
                         $scope.nullifiedId = '';
                         $scope.warningMessage = false;
                     } else {
@@ -342,6 +344,14 @@
                             $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
                         }
                     }
+                    */
+                    var lastRow = clearSelectedRows();
+                    if (!!lastRow) {
+                        $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                    }
+                    $scope.warningMessage = false;
+
+
                     $scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
                     $scope.gridApi.grid.refresh();
                 }, true);
