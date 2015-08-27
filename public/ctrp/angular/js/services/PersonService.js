@@ -52,7 +52,7 @@
                     visible: false
                 },
                 {name: 'id', enableSorting: true, displayName: 'CTRP ID', width: '7%'},
-                {name: 'fname', displayName: 'First', enableSorting: true, width: '5%',
+                {name: 'fname', displayName: 'First', enableSorting: true, width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
@@ -69,7 +69,7 @@
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '10%'},
                 {name: 'prefix', enableSorting: true, width: '6%'},
                 {name: 'suffix', enableSorting: true, width: '4%'},
-                {name: 'email', enableSorting: true, width: '10%',
+                {name: 'email', enableSorting: true, width: '15%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -77,7 +77,8 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs',cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0"><master-directive button-label="Click" mod="row.entity.affiliated_orgs_first5"></master-directive></div><div ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'}
+                {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs',cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0"><master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5"></master-directive></div>' +
+                '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'}
             ]
         };
 
