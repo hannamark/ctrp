@@ -13,6 +13,13 @@
                              $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, responsiblePartyObj, trialStatusObj) {
         var vm = this;
+        vm.accordion1 = true;
+        vm.accordion2 = true;
+        vm.accordion3 = true;
+        vm.accordion4 = true;
+        vm.accordion5 = true;
+        vm.accordion6 = true;
+        vm.accordion7 = true;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.protocolIdOriginArr = protocolIdOriginObj;

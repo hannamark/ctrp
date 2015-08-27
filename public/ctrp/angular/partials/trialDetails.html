@@ -1,342 +1,405 @@
 <div class="row-fluid">
     <div class="col-xs-12 col-border">
         <div class="row">
-            <p><h4 ng-if="trialDetailView.curTrial.new"><mark>Add Trial</mark></h4></p>
+            <p><h4 ng-if="trialDetailView.curTrial.new"><mark>Register Trial</mark></h4></p>
             <p><h4 ng-if="!trialDetailView.curTrial.new"><mark>Edit Trial</mark></h4></p>
         </div>
         <div class="row">
             <form class="form-horizontal" role="form" name="trial_form" novalidate>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Lead Protocol Identifier:</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control input-xs" id="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id">
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Other Trial Identifier:</label>
-                    <div class="col-sm-9">
-                        <table class="table table-striped table-condensed">
-                            <thead>
-                            <th>Protocol ID Origin</th>
-                            <th>Protocol ID</th>
-                            <th></th>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div>
-                                        <select class="form-control" id="protocol_id_origin" ng-model="trialDetailView.protocol_id_origin_id">
-                                            <option value="">Select a Protocol ID Origin</option>
-                                            <option ng-repeat="origin in trialDetailView.protocolIdOriginArr" value="{{origin.id}}">
-                                                {{origin.name}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td class="col-md-6">
-                                    <div>
-                                        <input type="text" class="form-control input-xs" id="protocol_id" ng-model="trialDetailView.protocol_id" />
-                                    </div>
-                                </td>
-                                <td class="col-md-2">
-                                    <div>
-                                        <button class="btn btn-primary" ng-click="trialDetailView.addOtherId()">
-                                            <i class="glyphicon glyphicon-plus"></i> Add
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedOtherIds.length > 0">
-                            <thead>
-                            <th></th>
-                            <th>Protocol ID Origin</th>
-                            <th>Protocol ID</th>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="otherId in trialDetailView.addedOtherIds track by $index" ng-class="otherId._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                <td class="col-md-1" style="vertical-align: middle">
-                                    <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'other_id')">
-                                        <i ng-class="otherId._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                                    </label>
-                                </td>
-                                <td class="col-md-4">{{otherId.protocol_id_origin_name}}</td>
-                                <td class="col-md-7">{{otherId.protocol_id}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Official Title:</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control input-xs" id="official_title" ng-model="trialDetailView.curTrial.official_title">
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Phase:</label>
-                    <div class="col-sm-9">
-                        <select class="form-control" id="phase" ng-model="trialDetailView.curTrial.phase_id">
-                            <option value="">Select a Phase</option>
-                            <option ng-repeat="phase in trialDetailView.phaseArr"
-                                    value="{{phase.id}}" ng-selected="trialDetailView.curTrial.phase_id == phase.id">
-                                {{phase.name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Research Category:</label>
-                    <div class="col-sm-9">
-                        <select class="form-control" id="research_category" ng-model="trialDetailView.curTrial.research_category_id">
-                            <option value="">Select a Research Category</option>
-                            <option ng-repeat="category in trialDetailView.researchCategoryArr"
-                                    value="{{category.id}}" ng-selected="trialDetailView.curTrial.research_category_id == category.id">
-                                {{category.name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Primary Purpose:</label>
-                    <div class="col-sm-9">
-                        <select class="form-control" id="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id" ng-change="trialDetailView.watchOption('primary_purpose')">
-                            <option value="">Select a Primary Purpose</option>
-                            <option ng-repeat="primaryPurpose in trialDetailView.primaryPurposeArr"
-                                    value="{{primaryPurpose.id}}" ng-selected="trialDetailView.curTrial.primary_purpose_id == primaryPurpose.id">
-                                {{primaryPurpose.name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div ng-show="trialDetailView.showPrimaryPurposeOther" class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Describe "Other" Primary Purpose:</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control input-xs" id="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other" />
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Secondary Purpose:</label>
-                    <div class="col-sm-9">
-                        <select class="form-control" id="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id" ng-change="trialDetailView.watchOption('secondary_purpose')">
-                            <option value="">Select a Secondary Purpose</option>
-                            <option ng-repeat="secondaryPurpose in trialDetailView.secondaryPurposeArr"
-                                    value="{{secondaryPurpose.id}}" ng-selected="trialDetailView.curTrial.secondary_purpose_id == secondaryPurpose.id">
-                                {{secondaryPurpose.name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div ng-show="trialDetailView.showSecondaryPurposeOther" class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Describe "Other" Secondary Purpose:</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control input-xs" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other" />
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Add Lead Organization:</label>
-                    <div class="col-sm-9">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-8">
-                                <input type="text" class="form-control input-xs" disabled value="{{trialDetailView.selectedLeadOrg.name}}"/>
-                            </div>
-                            <button class="btn btn-primary" ng-click="trialDetailView.searchOrg('lg', 'lead')">
-                                <i class="glyphicon glyphicon-search"></i> Search Organizations
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Add Principle Investigator:</label>
-                    <div class="col-sm-9">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-8">
-                                <input type="text" class="form-control input-xs" disabled value="{{selectedPersonsArray[0].fname + ' ' + (selectedPersonsArray[0].mname ? selectedPersonsArray[0].mname + ' ' : '') + selectedPersonsArray[0].lname}}"/>
-                            </div>
-                            <div class="col-xs-12 col-sm-4">
-                                <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false"></ctrp-person-adv-search-modal-button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Responsible Party:</label>
-                    <div class="col-sm-9">
-                        <select class="form-control" id="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id">
-                            <option value="">Select a Responsible Party</option>
-                            <option ng-repeat="responsibleParty in trialDetailView.responsiblePartyArr"
-                                    value="{{responsibleParty.id}}" ng-selected="trialDetailView.curTrial.responsible_party_id == responsibleParty.id">
-                                {{responsibleParty.name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Trial Status:</label>
-                    <div class="col-sm-9">
-                        <table class="table table-striped table-condensed">
-                            <thead>
-                            <th>Status Date</th>
-                            <th>Status</th>
-                            <th>Why Study Stopped</th>
-                            <th></th>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="col-md-3">
-                                    <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                        <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.status_date"
-                                               is-open="trialDetailView.status_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'status_date')">
-                                                <i class="glyphicon glyphicon-calendar"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="col-md-3">
-                                    <div>
-                                        <select class="form-control" id="trial_status" ng-model="trialDetailView.trial_status_id">
-                                            <option value="">Select a Trial Status</option>
-                                            <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" value="{{trialStatus.id}}">
-                                                {{trialStatus.name}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td class="col-md-4">
-                                    <div>
-                                        <textarea class="form-control input-xs" id="why_stopped" ng-model="trialDetailView.why_stopped" />
-                                    </div>
-                                </td>
-                                <td class="col-md-2">
-                                    <div>
-                                        <button class="btn btn-primary" ng-click="trialDetailView.addStatus()">
-                                            <i class="glyphicon glyphicon-plus"></i> Add
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedStatuses.length > 0">
-                            <thead>
-                            <th></th>
-                            <th>Status Date</th>
-                            <th>Status</th>
-                            <th>Why Study Stopped</th>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="status in trialDetailView.addedStatuses track by $index" ng-class="status._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                <td class="col-md-1" style="vertical-align: middle">
-                                    <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
-                                        <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                                    </label>
-                                </td>
-                                <td class="col-md-2">{{status.status_date}}</td>
-                                <td class="col-md-3">{{status.trial_status_name}}</td>
-                                <td class="col-md-6">{{status.why_stopped}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Trial Start Date:</label>
-                    <div class="col-sm-3">
-                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                            <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.start_date"
-                                   is-open="trialDetailView.start_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'start_date')">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-sm-1">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Actual"> Actual</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Anticipated"> Anticipated</label>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Primary Completion Date:</label>
-                    <div class="col-sm-3">
-                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                            <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.primary_comp_date"
-                                   is-open="trialDetailView.primary_comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'primary_comp_date')">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-sm-1">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Actual"> Actual</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Anticipated"> Anticipated</label>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Completion Date:</label>
-                    <div class="col-sm-3">
-                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                            <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.comp_date"
-                                   is-open="trialDetailView.comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'comp_date')">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-sm-1">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Actual"> Actual</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Anticipated"> Anticipated</label>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">FDA Regulated Intervention Indicator:</label>
-                    <div class="col-sm-1">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.intervention_indicator" value="No"> No</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.intervention_indicator" value="Yes"> Yes</label>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Section 801 Indicator:</label>
-                    <div class="col-sm-1">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.sec801_indicator" value="No"> No</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.sec801_indicator" value="Yes"> Yes</label>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Data Monitoring Committee Appointed Indicator:</label>
-                    <div class="col-sm-1">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="No"> No</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <label><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="Yes"> Yes</label>
-                    </div>
-                </div>
+                <accordion close-others="false">
+                    <accordion-group is-open="trialDetailView.accordion1">
+                        <accordion-heading>
+                            Trial Identifiers  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion1, 'glyphicon-chevron-right': !trialDetailView.accordion1}"></i>
+                        </accordion-heading>
 
-                <div id="buttonBar" class="form-group col-sm-12">
-                    <div class="col-sm-offset-3 col-sm-9">
-                        <input type="submit" class="btn btn-success" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" value="Save">
-                        <input type="reset" class="btn btn-warning" id="reset_btn" value="Reset">
-                        <button class="btn btn-default" back-button>Cancel</button>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Lead Protocol Identifier:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control input-xs" id="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Other Trial Identifier:</label>
+                            <div class="col-sm-9">
+                                <table class="table table-striped table-condensed">
+                                    <thead>
+                                    <th>Protocol ID Origin</th>
+                                    <th>Protocol ID</th>
+                                    <th></th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <div>
+                                                <select class="form-control" id="protocol_id_origin" ng-model="trialDetailView.protocol_id_origin_id">
+                                                    <option value="">Select a Protocol ID Origin</option>
+                                                    <option ng-repeat="origin in trialDetailView.protocolIdOriginArr" value="{{origin.id}}">
+                                                        {{origin.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-6">
+                                            <div>
+                                                <input type="text" class="form-control input-xs" id="protocol_id" ng-model="trialDetailView.protocol_id" />
+                                            </div>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <div>
+                                                <button class="btn btn-primary" ng-click="trialDetailView.addOtherId()">
+                                                    <i class="glyphicon glyphicon-plus"></i> Add
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedOtherIds.length > 0">
+                                    <thead>
+                                    <th></th>
+                                    <th>Protocol ID Origin</th>
+                                    <th>Protocol ID</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="otherId in trialDetailView.addedOtherIds track by $index" ng-class="otherId._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                        <td class="col-md-1" style="vertical-align: middle">
+                                            <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'other_id')">
+                                                <i ng-class="otherId._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                            </label>
+                                        </td>
+                                        <td class="col-md-4">{{otherId.protocol_id_origin_name}}</td>
+                                        <td class="col-md-7">{{otherId.protocol_id}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </accordion-group>
+
+                    <accordion-group is-open="trialDetailView.accordion2">
+                        <accordion-heading>
+                            Trial Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion2, 'glyphicon-chevron-right': !trialDetailView.accordion2}"></i>
+                        </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Official Title:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control input-xs" id="official_title" ng-model="trialDetailView.curTrial.official_title">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Phase:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="phase" ng-model="trialDetailView.curTrial.phase_id">
+                                    <option value="">Select a Phase</option>
+                                    <option ng-repeat="phase in trialDetailView.phaseArr"
+                                            value="{{phase.id}}" ng-selected="trialDetailView.curTrial.phase_id == phase.id">
+                                        {{phase.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Research Category:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="research_category" ng-model="trialDetailView.curTrial.research_category_id">
+                                    <option value="">Select a Research Category</option>
+                                    <option ng-repeat="category in trialDetailView.researchCategoryArr"
+                                            value="{{category.id}}" ng-selected="trialDetailView.curTrial.research_category_id == category.id">
+                                        {{category.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Primary Purpose:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id" ng-change="trialDetailView.watchOption('primary_purpose')">
+                                    <option value="">Select a Primary Purpose</option>
+                                    <option ng-repeat="primaryPurpose in trialDetailView.primaryPurposeArr"
+                                            value="{{primaryPurpose.id}}" ng-selected="trialDetailView.curTrial.primary_purpose_id == primaryPurpose.id">
+                                        {{primaryPurpose.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div ng-show="trialDetailView.showPrimaryPurposeOther" class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Describe "Other" Primary Purpose:</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control input-xs" id="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Secondary Purpose:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id" ng-change="trialDetailView.watchOption('secondary_purpose')">
+                                    <option value="">Select a Secondary Purpose</option>
+                                    <option ng-repeat="secondaryPurpose in trialDetailView.secondaryPurposeArr"
+                                            value="{{secondaryPurpose.id}}" ng-selected="trialDetailView.curTrial.secondary_purpose_id == secondaryPurpose.id">
+                                        {{secondaryPurpose.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div ng-show="trialDetailView.showSecondaryPurposeOther" class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Describe "Other" Secondary Purpose:</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control input-xs" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other" />
+                            </div>
+                        </div>
+                    </accordion-group>
+
+                    <accordion-group is-open="trialDetailView.accordion3">
+                        <accordion-heading>
+                            Lead Organization/Principal Investigator  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion3, 'glyphicon-chevron-right': !trialDetailView.accordion3}"></i>
+                        </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Add Lead Organization:</label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-8">
+                                        <input type="text" class="form-control input-xs" disabled value="{{trialDetailView.selectedLeadOrg.name}}"/>
+                                    </div>
+                                    <button class="btn btn-primary" ng-click="trialDetailView.searchOrg('lg', 'lead')">
+                                        <i class="glyphicon glyphicon-search"></i> Search Organizations
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Add Principle Investigator:</label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-8">
+                                        <input type="text" class="form-control input-xs" disabled value="{{selectedPersonsArray[0].fname + ' ' + (selectedPersonsArray[0].mname ? selectedPersonsArray[0].mname + ' ' : '') + selectedPersonsArray[0].lname}}"/>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false"></ctrp-person-adv-search-modal-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </accordion-group>
+
+                    <accordion-group is-open="trialDetailView.accordion4">
+                        <accordion-heading>
+                            Sponsor/Responsible Party  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion4, 'glyphicon-chevron-right': !trialDetailView.accordion4}"></i>
+                        </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Responsible Party:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id">
+                                    <option value="">Select a Responsible Party</option>
+                                    <option ng-repeat="responsibleParty in trialDetailView.responsiblePartyArr"
+                                            value="{{responsibleParty.id}}" ng-selected="trialDetailView.curTrial.responsible_party_id == responsibleParty.id">
+                                        {{responsibleParty.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </accordion-group>
+
+                    <accordion-group is-open="trialDetailView.accordion5">
+                        <accordion-heading>
+                            Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion5, 'glyphicon-chevron-right': !trialDetailView.accordion5}"></i>
+                        </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Trial Status:</label>
+                            <div class="col-sm-9">
+                                <table class="table table-striped table-condensed">
+                                    <thead>
+                                    <th>Status Date</th>
+                                    <th>Status</th>
+                                    <th>Why Study Stopped</th>
+                                    <th></th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="col-md-3">
+                                            <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                                <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.status_date"
+                                                       is-open="trialDetailView.status_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'status_date')">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-3">
+                                            <div>
+                                                <select class="form-control" id="trial_status" ng-model="trialDetailView.trial_status_id">
+                                                    <option value="">Select a Trial Status</option>
+                                                    <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" value="{{trialStatus.id}}">
+                                                        {{trialStatus.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-4">
+                                            <div>
+                                                <textarea class="form-control input-xs" id="why_stopped" ng-model="trialDetailView.why_stopped" />
+                                            </div>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <div>
+                                                <button class="btn btn-primary" ng-click="trialDetailView.addStatus()">
+                                                    <i class="glyphicon glyphicon-plus"></i> Add
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedStatuses.length > 0">
+                                    <thead>
+                                    <th></th>
+                                    <th>Status Date</th>
+                                    <th>Status</th>
+                                    <th>Why Study Stopped</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="status in trialDetailView.addedStatuses track by $index" ng-class="status._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                        <td class="col-md-1" style="vertical-align: middle">
+                                            <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
+                                                <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                            </label>
+                                        </td>
+                                        <td class="col-md-2">{{status.status_date}}</td>
+                                        <td class="col-md-3">{{status.trial_status_name}}</td>
+                                        <td class="col-md-6">{{status.why_stopped}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </accordion-group>
+
+                    <accordion-group is-open="trialDetailView.accordion6">
+                        <accordion-heading>
+                            Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion6, 'glyphicon-chevron-right': !trialDetailView.accordion6}"></i>
+                        </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Trial Start Date:</label>
+                            <div class="col-sm-3">
+                                <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.start_date"
+                                           is-open="trialDetailView.start_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'start_date')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Actual"> Actual</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Anticipated"> Anticipated</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Primary Completion Date:</label>
+                            <div class="col-sm-3">
+                                <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.primary_comp_date"
+                                           is-open="trialDetailView.primary_comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'primary_comp_date')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Actual"> Actual</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Anticipated"> Anticipated</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Completion Date:</label>
+                            <div class="col-sm-3">
+                                <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control input-normal" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.comp_date"
+                                           is-open="trialDetailView.comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'comp_date')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Actual"> Actual</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Anticipated"> Anticipated</label>
+                            </div>
+                        </div>
+                    </accordion-group>
+
+                    <accordion-group is-open="trialDetailView.accordion7">
+                        <accordion-heading>
+                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion7, 'glyphicon-chevron-right': !trialDetailView.accordion7}"></i>
+                        </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">FDA Regulated Intervention Indicator:</label>
+                            <div class="col-sm-1">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.intervention_indicator" value="No"> No</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.intervention_indicator" value="Yes"> Yes</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Section 801 Indicator:</label>
+                            <div class="col-sm-1">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.sec801_indicator" value="No"> No</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.sec801_indicator" value="Yes"> Yes</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Data Monitoring Committee Appointed Indicator:</label>
+                            <div class="col-sm-1">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="No"> No</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="Yes"> Yes</label>
+                            </div>
+                        </div>
+                    </accordion-group>
+
+                    <div id="buttonBar" class="form-group col-sm-12">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <input type="submit" class="btn btn-success" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" value="Save">
+                            <input type="reset" class="btn btn-warning" id="reset_btn" value="Reset">
+                            <button class="btn btn-default" back-button>Cancel</button>
+                        </div>
                     </div>
-                </div>
+                </accordion>
             </form>
         </div>
     </div>
