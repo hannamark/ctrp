@@ -231,7 +231,7 @@
              */
             function rowSelectionCallBack(row) {
 
-                if ($scope.maxRowSelectable && $scope.maxRowSelectable > 0 && $scope.curationShown) {
+                if ($scope.maxRowSelectable && $scope.maxRowSelectable > 0) {
                     if (row.isSelected) {
                         //console.log('row is selected: ' + JSON.stringify(row.entity));
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {
