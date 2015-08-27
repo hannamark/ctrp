@@ -152,7 +152,7 @@
                     <div class="col-sm-9">
                         <div class="row">
                             <div class="col-xs-12 col-sm-8">
-                                <input type="text" class="form-control input-xs" disabled value="{{selectedPersonsArray[0].fname + ' ' + selectedPersonsArray[0].mname + ' ' + selectedPersonsArray[0].lname}}"/>
+                                <input type="text" class="form-control input-xs" disabled value="{{selectedPersonsArray[0].fname + ' ' + (selectedPersonsArray[0].mname ? selectedPersonsArray[0].mname + ' ' : '') + selectedPersonsArray[0].lname}}"/>
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false"></ctrp-person-adv-search-modal-button>
