@@ -66,6 +66,7 @@
                 getPromisedData();
                 listenToStatesProvinces();
                 prepareGidOptions();
+                watchCurationShown();
                 watchReadinessOfCuration();
             } //activate
 
@@ -74,9 +75,9 @@
             //$scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
             //$scope.enablerowselection = false;
 
-            /*
-             //watch the curation switch button to turn on/off the curation choices
-             */
+           /*
+           //watch the curation switch button to turn on/off the curation choices
+            */
 
 
             $scope.$watch('usedinmodal', function (newVal, oldVal) {
@@ -93,7 +94,7 @@
                     // $scope.gridOptions = OrgService.getGridOptions();
                     $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                         '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
-                    //make visible if it is not in modal and curator mode is off.
+                   //make visible if it is not in modal and curator mode is off.
 
                 }
 
@@ -252,8 +253,6 @@
                     return;
                 }
 
-
-
                 if (row.isSelected) {
 
                     //console.log('row is selected: ' + JSON.stringify(row.entity));
@@ -332,7 +331,7 @@
                     //TODO: warning to user for nullifying active entity
                     //cannot nullify Active entity (e.g. person)
                     if(isActive)
-                        $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
                     else
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
                     $scope.nullifiedId = '';
@@ -343,12 +342,11 @@
                 }
             }; //nullifyEntity
 
-            $scope.commitNullification = function() {
+           $scope.commitNullification = function() {
 
                 OrgService.curateOrg($scope.toBeCurated).then(function(res) {
                     // console.log('successful in curation: res is: ' + JSON.stringify(res));
-                    initCurationObj();
-                    clearSelectedRows();
+                    initCurationObj()
                     $scope.searchOrgs();
                     toastr.success('Curation was successful', 'Curated!');
                 }).catch(function(err) {
@@ -359,29 +357,36 @@
             }; //commitNullification
 
             $scope.toggleCustom = function() {
-                if($scope.curationShown) $scope.curationShown=false;
-                else $scope.curationShown=true;
-                var newVal=$scope.curationShown;
-
-                $scope.gridOptions.columnDefs[0].visible = newVal;
-                if (newVal == false) {
-                    //purge the container for rows to be curated when not on curation mode
-                    while ($scope.selectedRows.length > 0) {
-                        alert('len '+$scope.selectedRows.length);
-                        // vm.selectedRows.pop().isSelected = false;
-                        var deselectedRow = $scope.selectedRows.pop();
-                        deselectedRow.isSelected = false;
-                        $scope.nullifiedId = deselectedRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
-                    }
-                } else {
-                    // initializations for curation
-                    $scope.selectedRows = [];
-                    $scope.nullifiedId = '';
-                    $scope.warningMessage = false;
-                }
-                $scope.gridApi.grid.refresh();
-
+                $scope.curationShown = !$scope.curationShown;
             };
+
+
+            /**
+             * Watch curationShown for dynamically adjusting the ui-grid
+             */
+            function watchCurationShown() {
+                $scope.$watch('curationShown', function(newVal) {
+
+                   $scope.gridOptions.columnDefs[0].visible = newVal;
+                   if (newVal) {
+                       //purge the container for rows to be curated when not on curation mode
+                       while ($scope.selectedRows.length > 0) {
+                           //alert('len '+$scope.selectedRows.length);
+                           // vm.selectedRows.pop().isSelected = false;
+                           var deselectedRow = $scope.selectedRows.pop();
+                           deselectedRow.isSelected = false;
+                           $scope.nullifiedId = deselectedRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                       }
+                   } else {
+                       // initializations for curation
+                       $scope.selectedRows = [];
+                       $scope.nullifiedId = '';
+                       $scope.warningMessage = false;
+                   }
+                   $scope.gridApi.grid.refresh();
+                });
+            }
+
 
             /**
              * watch the readiness of curation submission
