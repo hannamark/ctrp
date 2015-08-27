@@ -66,6 +66,7 @@
                 getPromisedData();
                 listenToStatesProvinces();
                 prepareGidOptions();
+                watchCurationShown();
                 watchReadinessOfCuration();
             } //activate
 
@@ -343,29 +344,36 @@
             }; //commitNullification
 
             $scope.toggleCustom = function() {
-
                 $scope.curationShown = !$scope.curationShown;
-                var newVal=$scope.curationShown;
-
-                $scope.gridOptions.columnDefs[0].visible = newVal;
-                if (newVal == false) {
-                    //purge the container for rows to be curated when not on curation mode
-                    while ($scope.selectedRows.length > 0) {
-                        alert('len '+$scope.selectedRows.length);
-                        // vm.selectedRows.pop().isSelected = false;
-                        var deselectedRow = $scope.selectedRows.pop();
-                        deselectedRow.isSelected = false;
-                        $scope.nullifiedId = deselectedRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
-                    }
-                } else {
-                    // initializations for curation
-                    $scope.selectedRows = [];
-                    $scope.nullifiedId = '';
-                    $scope.warningMessage = false;
-                }
-                $scope.gridApi.grid.refresh();
-
             };
+
+
+            /**
+             * Watch curationShown for dynamically adjusting the ui-grid
+             */
+            function watchCurationShown() {
+                $scope.$watch('curationShown', function(newVal) {
+
+                   $scope.gridOptions.columnDefs[0].visible = newVal;
+                   if (newVal) {
+                       //purge the container for rows to be curated when not on curation mode
+                       while ($scope.selectedRows.length > 0) {
+                           //alert('len '+$scope.selectedRows.length);
+                           // vm.selectedRows.pop().isSelected = false;
+                           var deselectedRow = $scope.selectedRows.pop();
+                           deselectedRow.isSelected = false;
+                           $scope.nullifiedId = deselectedRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                       }
+                   } else {
+                       // initializations for curation
+                       $scope.selectedRows = [];
+                       $scope.nullifiedId = '';
+                       $scope.warningMessage = false;
+                   }
+                   $scope.gridApi.grid.refresh();
+                });
+            }
+
 
             /**
              * watch the readiness of curation submission

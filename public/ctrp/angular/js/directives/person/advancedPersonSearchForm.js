@@ -324,25 +324,8 @@
                  */
                 $scope.toggleCurationMode = function() {
                     $scope.curationShown = !$scope.curationShown;
-
-                    /*
-                    if ($scope.curationShown == false) {
-                        //purge the container for rows to be curated when not on curation mode
-                        var lastRow = clearSelectedRows();
-                        if (!!lastRow) {
-                            $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
-                        }
-
-                    } else {
-                        // initializations for curation
-                        $scope.selectedRows = [];
-                        $scope.nullifiedId = '';
-                        $scope.warningMessage = false;
-                    }
-                    $scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
-                    $scope.gridApi.grid.refresh();
-                    */
                 }; //toggleCurationMode
+
 
 
                 //watcher for $scope.curationShown
