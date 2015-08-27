@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
 
 
+
   scope "/ctrp" do
     devise_for :users
 
@@ -26,6 +27,13 @@ Rails.application.routes.draw do
             get 'search'
             post 'search'
           end
+    end
+
+    resources :versions do
+      collection do
+        get 'diff'
+        get 'history'
+      end
     end
 
     resources :family_statuses

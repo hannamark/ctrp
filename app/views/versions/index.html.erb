@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Versions</h1>
+
+
+<select name="user_id">
+  <%= @data_tables.each do |dt| %>
+      <option value="<%= dt.item_type %>"><%= dt.item_type %></option>
+  <% end %>
+</select>
+<br>
+<table>
+  <thead>
+    <tr>
+      <th colspan="1">Item Type</th>
+      <th colspan="1">Item Id</th>
+      <th colspan="1">Event</th>
+      <th colspan="1">Whodunnit</th>
+      <th colspan="1">Createa At</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @versions.each do |version| %>
+      <tr>
+        <td><%= link_to version.item_type, :action => 'history', :item_type => version.item_type, :item_id => version.item_id %></td>
+        <td><%= version.item_id %></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

@@ -68,3 +68,4 @@ gem 'paper_trail'
 gem 'ci_reporter_minitest'
 
 gem 'countries'
+gem 'diffy'

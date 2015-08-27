@@ -78,6 +78,7 @@ GEM
     devise_ldap_authenticatable (0.8.5)
       devise (>= 3.4.1)
       net-ldap (>= 0.6.0, <= 0.11)
+    diffy (3.0.7)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
@@ -256,6 +257,7 @@ DEPENDENCIES
   countries
   devise
   devise_ldap_authenticatable
+  diffy
   jbuilder (~> 2.0)
   jquery-rails
   jwt
@@ -273,3 +275,6 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+
+BUNDLED WITH
+   1.10.5

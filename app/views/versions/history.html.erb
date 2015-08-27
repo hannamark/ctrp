@@ -1,0 +1,22 @@
+<h2>Previous Versions</h2>
+
+
+      <div class="container">
+        <h1>History</h1>
+
+        <ul>
+          <% @datas.each do |version| %>
+              <li>
+                <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
+                Event ID: <%= version.id %><br/>
+                <b>Target:</b> <%= version.item_type %>
+                <small>(id: <%= version.item_id %>)</small><br>
+                <b>action</b> <%= version.event %>;<br/>
+                <div>
+                  Changeset:
+                  <pre><%= version.object_changes %></pre>
+                </div>
+              </li>
+          <% end %>
+        </ul>
+      </div>
