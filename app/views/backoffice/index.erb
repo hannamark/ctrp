@@ -32,6 +32,23 @@
     <li><a href="/ctrp/backoffice/static_members">Static Members</a></li>
   </ul>
 </div>
+<div>
+  <h4>User Management Links</h4>
+  <ul>
+  <% if local_user_signed_in? %>
+      <b>Current Local User is <%= current_local_user.username %></b><br/>
+      <li><%= link_to 'Edit User Account', edit_local_user_registration_path %></li>
+  <% end %>
+  <% if ldap_user_signed_in? %>
+      <b>Current ldap User is <%= current_ldap_user.username %></b><br/>
+  <% end %>
+    <li><a href="/ctrp/users">List Users</a></li>
+    <li><a href="/ctrp/sign_in">Sign In</a></li>
+    <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
+    <li><%= link_to 'Sign out', destroy_session_path, method: :delete %></li>
+
+  </ul>
+</div>
 
 
 </body>
