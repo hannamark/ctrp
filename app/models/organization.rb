@@ -74,7 +74,7 @@ class Organization < ActiveRecord::Base
       @toBeRetainedOrg =  Organization.find_by_id(params[:id_to_be_retained]);
       raise ActiveRecord::RecordNotFound if @toBeNullifiedOrg.nil? or @toBeRetainedOrg.nil?
 
-      sleep(2.minutes);
+      #sleep(2.minutes);
 
       #All references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
       ##
@@ -102,10 +102,20 @@ class Organization < ActiveRecord::Base
       #All persons affiliated with the nullified organization will be affiliated with the retained organization
       ##
       poAffiliationsOfNullifiedOrganization = PoAffiliation.where(organization_id:@toBeNullifiedOrg.id);
+
+      poAffiliationsOfRetainedOrganization = PoAffiliation.where(organization_id:@toBeRetainedOrg.id);
+
+      persons = poAffiliationsOfRetainedOrganization.collect{|x| x.person_id}
+
       poAffiliationsOfNullifiedOrganization.each do |po_affiliation|
-        new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
-        new_po_aff.organization_id=@toBeRetainedOrg.id;
-        new_po_aff.save!
+        #new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
+        if(!persons.include?po_affiliation.person_id)
+          po_affiliation.organization_id=@toBeRetainedOrg.id;
+          po_affiliation.save!
+        else
+          po_affiliation.destroy!
+        end
+
       end
 
       #Name of the Nullified organization will be listed as an alias on the retained organization

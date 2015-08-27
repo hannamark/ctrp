@@ -64,12 +64,20 @@ class Person < ActiveRecord::Base
       raise ActiveRecord::RecordNotFound if @toBeNullifiedPerson.nil? or @toBeRetainedPerson.nil?
       poAffiliationsOfNullifiedPerson = PoAffiliation.where(person_id:@toBeNullifiedPerson.id);
 
+      poAffiliationsOfRetainedPerson  = PoAffiliation.where(person_id:@toBeRetainedPerson.id);
+
+      orgs = poAffiliationsOfRetainedPerson.collect{|x| x.organization_id}
+
       ##Iterating through po_afilliations of to be nullified person and assigning to retained person.
       ##
       poAffiliationsOfNullifiedPerson.each do |po_affiliation|
-        new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
-        new_po_aff.person_id=@toBeRetainedPerson.id;
-        new_po_aff.save!
+        #new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
+        if(!orgs.include?po_affiliation.organization_id)
+          po_affiliation.person_id=@toBeRetainedPerson.id;
+          po_affiliation.save!
+        else
+          po_affiliation.destroy!
+        end
       end
 
       ## Destroy associations of to_be_nullified_person
