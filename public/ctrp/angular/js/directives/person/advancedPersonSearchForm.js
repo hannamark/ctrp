@@ -231,7 +231,7 @@
              */
             function rowSelectionCallBack(row) {
 
-                if ($scope.maxRowSelectable && $scope.maxRowSelectable > 0 && $scope.curationShown) {
+                if ($scope.maxRowSelectable && $scope.maxRowSelectable > 0) {
                     if (row.isSelected) {
                         //console.log('row is selected: ' + JSON.stringify(row.entity));
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {
@@ -331,9 +331,10 @@
                 //watcher for $scope.curationShown
                 $scope.$watch('curationShown', function(newVal) {
                     $scope.gridOptions.columnDefs[0].visible = $scope.curationShown;
+
                     if (newVal) {
-                        // initializations for curation
-                        $scope.selectedRows = [];
+                        // $scope.selectedRows = [];
+                        //clearSelectedRows();
                         $scope.nullifiedId = '';
                         $scope.warningMessage = false;
                     } else {
@@ -342,7 +343,16 @@
                             $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
                         }
                     }
-                    $scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
+                    /*
+                    var lastRow = clearSelectedRows();
+                    if (!!lastRow) {
+                        $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                    }
+                    $scope.warningMessage = false;
+                    */
+
+
+                    //$scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
                     $scope.gridApi.grid.refresh();
                 }, true);
 
