@@ -45,7 +45,7 @@
                 /*{name: 'family_members', enableSorting:false, displayName:'Family Members', width: '25%',
                 cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                 '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}} Show Family Members</a></div>'},*/
-                {name: 'aff_orgs', displayName:'Family Members',width:'30%',cellTemplate:'<master-directive button-label="Family Members" mod="row.entity.aff_orgs"></master-directive>'}
+                {name: 'aff_orgs', displayName:'Family Members',width:'30%',cellTemplate:'<div ng-show="row.entity.aff_orgs.length > 0"><master-directive button-label="Family Members" mod="row.entity.aff_orgs"></master-directive></div><div class="text-center" ng-show="row.entity.aff_orgs.length == 0">--</div>'}
             ]
         };
 
