@@ -18,7 +18,8 @@
         vm.userObj = {
             "user": {
                 username: '',
-                password: ''
+                password: '',
+                source: 'Angular'
             },
             "type": vm.type
         };
