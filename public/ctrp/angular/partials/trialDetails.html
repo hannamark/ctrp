@@ -101,7 +101,7 @@
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Primary Purpose:</label>
                     <div class="col-sm-9">
-                        <select class="form-control" id="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id">
+                        <select class="form-control" id="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id" ng-change="trialDetailView.watchOption('primary_purpose')">
                             <option value="">Select a Primary Purpose</option>
                             <option ng-repeat="primaryPurpose in trialDetailView.primaryPurposeArr"
                                     value="{{primaryPurpose.id}}" ng-selected="trialDetailView.curTrial.primary_purpose_id == primaryPurpose.id">
@@ -110,7 +110,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group col-sm-12">
+                <div ng-show="trialDetailView.showPrimaryPurposeOther" class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Describe "Other" Primary Purpose:</label>
                     <div class="col-sm-9">
                         <textarea class="form-control input-xs" id="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other" />
@@ -119,7 +119,7 @@
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Secondary Purpose:</label>
                     <div class="col-sm-9">
-                        <select class="form-control" id="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id">
+                        <select class="form-control" id="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id" ng-change="trialDetailView.watchOption('secondary_purpose')">
                             <option value="">Select a Secondary Purpose</option>
                             <option ng-repeat="secondaryPurpose in trialDetailView.secondaryPurposeArr"
                                     value="{{secondaryPurpose.id}}" ng-selected="trialDetailView.curTrial.secondary_purpose_id == secondaryPurpose.id">
@@ -128,7 +128,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group col-sm-12">
+                <div ng-show="trialDetailView.showSecondaryPurposeOther" class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Describe "Other" Secondary Purpose:</label>
                     <div class="col-sm-9">
                         <textarea class="form-control input-xs" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other" />

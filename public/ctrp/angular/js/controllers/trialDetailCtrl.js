@@ -29,6 +29,8 @@
         vm.addedOtherIds = [];
         vm.addedStatuses = [];
         $scope.selectedPersonsArray = [];
+        vm.primaryPurposeOther = false;
+        vm.secondaryPurposeOther = false;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
@@ -120,6 +122,26 @@
             vm.addedStatuses.push(newStatus);
         };
 
+        vm.watchOption = function(type) {
+            if (type == 'primary_purpose') {
+                var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
+                if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
+                    vm.showPrimaryPurposeOther = true;
+                } else {
+                    vm.showPrimaryPurposeOther = false;
+                    vm.curTrial.primary_purpose_other = '';
+                }
+            } else if (type == 'secondary_purpose') {
+                var otherObj = vm.secondaryPurposeArr.filter(findOtherOption);
+                if (otherObj[0].id == vm.curTrial.secondary_purpose_id) {
+                    vm.showSecondaryPurposeOther = true;
+                } else {
+                    vm.showSecondaryPurposeOther = false;
+                    vm.curTrial.secondary_purpose_other = '';
+                }
+            }
+        };
+
         activate();
 
         /****************** implementations below ***************/
@@ -159,5 +181,14 @@
                 });
             }
         } //prepareModal
+
+        // Return true if the option is "Other"
+        function findOtherOption(option) {
+            if (option.name == 'Other') {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 })();
