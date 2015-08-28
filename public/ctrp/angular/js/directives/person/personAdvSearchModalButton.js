@@ -63,7 +63,7 @@
                     size: size,
                     resolve: {
                         maxRowSelectable: function () {
-                            return $scope.maxRowSelectable
+                            return $scope.maxRowSelectable;
                         }
                     }
                 });
@@ -124,12 +124,13 @@
     function advancedPersonSearchModalCtrl($scope, $modalInstance, maxRowSelectable) {
         var vm = this;
         vm.maxRowSelectable = maxRowSelectable; //to be passed to the adv person search form
-        console.log('in Modal, received promise maxRowSelectable: ' + maxRowSelectable);
+
+        // console.log('in Modal, received promise maxRowSelectable: ' + maxRowSelectable + ', also received usedInModal: ' + usedInModal);
         $scope.personSearchResults = {people: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
         $scope.selectedPersonsArray = [];  // persons selected in the modal
 
         vm.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $modalInstance.dismiss('canceled');
         }; //cancel
 
         vm.confirmSelection = function() {

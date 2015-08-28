@@ -43,7 +43,8 @@
             restrict: 'E',
             scope: {
                 showGrid: '=?',  //boolean, optional; default to false
-                maxRowSelectable : '=', //int, required!
+                usedInModal: '=?', //boolean, optional; default to false
+                maxRowSelectable : '=', //int, optional; if not not set, use MAX_VALUE -> can select all results
                 curationMode: '=?', // boolean, optional; default to false unless maxRowSelectable is set to > 0
                 personSearchResults: '@personSearchResults',
                 selectedPersonsArray: '@selectedPersonsArray',
@@ -74,7 +75,8 @@
             console.log('showGrid: ' + $scope.showGrid);
             console.log('in adv person search form, maxRowSelectable: ' + $scope.maxRowSelectable);
 
-            $scope.maxRowSelectable = $scope.maxRowSelectable || 0; //default to 0
+            //if
+            $scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? Number.MAX_SAFE_INTEGER : $scope.maxRowSelectable ; //default to 0
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
             $scope.sourceContextArr = []; //sourceContextObj;
             $scope.sourceContextArr.sort(Common.a2zComparator());
@@ -94,18 +96,13 @@
                 $scope.curationModeEnabled = false;
             }
 
-            console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
-
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
             $scope.curationModeEnabled = $scope.curationMode == undefined ? $scope.curationModeEnabled : $scope.curationMode;
-            //prevent users trick (e.g. maxRowSelectable = 0, curationMode = true)
-            $scope.curationModeEnabled = $scope.maxRowSelectable <= 0 ? false : $scope.curationModeEnabled;
+            $scope.usedInModal = $scope.usedInModal == undefined ? false : $scope.usedInModal;
             $scope.showGrid = $scope.showGrid == undefined ? false : $scope.showGrid;
 
 
             $scope.searchPeople = function () {
-                // $scope.searchParams.name = $scope.searchParams.name || "*";
-                //console.log("searching params: " + JSON.stringify($scope.searchParams));
                 PersonService.searchPeople($scope.searchParams).then(function (data) {
                     if ($scope.showGrid && data.data.people) {
                         //console.log("received person search results: " + JSON.stringify(data.data));
@@ -231,7 +228,7 @@
              */
             function rowSelectionCallBack(row) {
 
-                if ($scope.maxRowSelectable && $scope.maxRowSelectable > 0) {
+                if ($scope.maxRowSelectable > 0 && $scope.curationShown || $scope.usedInModal) {
                     if (row.isSelected) {
                         //console.log('row is selected: ' + JSON.stringify(row.entity));
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {

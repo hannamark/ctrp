@@ -1,7 +1,6 @@
 <div class="row">
     <button class="btn btn-primary" ng-click="searchPerson('lg')"><i class="glyphicon glyphicon-search"></i> Search Persons</button>
 
-    <!--TODO: add savedSelection in the controller -->
     <button ng-if="useBuiltInTemplate" class="btn btn-danger" ng-click="batchSelect('removeAll')" ng-show="savedSelection.length > 0">
         <i class="glyphicon glyphicon-remove"></i> Remove All Person(s)
     </button>
