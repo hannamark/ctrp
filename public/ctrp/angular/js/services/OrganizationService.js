@@ -50,6 +50,7 @@
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
+            enableSelectAll: false,
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
