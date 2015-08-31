@@ -138,6 +138,14 @@
                 <input type="text" class="form-control input-xs" id="fax"  ng-model="orgDetailView.curOrg.fax" type="text" placeholder="Fax">
             </div>
         </div>
+        <div ng-show="orgDetailView.curOrg.families.length > 0" class="form-group col-sm-12">
+            <label class="control-label col-sm-3">Families:</label>
+            <div class="col-sm-9">
+                <p ng-repeat="family in orgDetailView.curOrg.families">
+                    <a href="/ctrp/angular#/main/families/{{family.id}}">{{family.name}}</a>
+                </p>
+            </div>
+        </div>
 
         <div id="buttonBar" class="form-group col-sm-12">
             <div class="col-sm-offset-3 col-sm-9">
