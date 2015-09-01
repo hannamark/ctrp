@@ -41,20 +41,24 @@
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
-            if (vm.selectedPiArray[0]) {
+            if (vm.selectedPiArray.length > 0) {
                 vm.curTrial.pi_id = vm.selectedPiArray[0].id;
             }
 
             // Construct nested attributes
-            vm.curTrial.other_ids_attributes = [];
-            _.each(vm.addedOtherIds, function (otherId) {
-                vm.curTrial.other_ids_attributes.push(otherId);
-            });
+            if (vm.addedOtherIds.length > 0) {
+                vm.curTrial.other_ids_attributes = [];
+                _.each(vm.addedOtherIds, function (otherId) {
+                    vm.curTrial.other_ids_attributes.push(otherId);
+                });
+            }
 
-            vm.curTrial.trial_status_wrappers_attributes = [];
-            _.each(vm.addedStatuses, function (status) {
-                vm.curTrial.trial_status_wrappers_attributes.push(status);
-            });
+            if (vm.addedStatuses.length > 0) {
+                vm.curTrial.trial_status_wrappers_attributes = [];
+                _.each(vm.addedStatuses, function (status) {
+                    vm.curTrial.trial_status_wrappers_attributes.push(status);
+                });
+            }
 
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
