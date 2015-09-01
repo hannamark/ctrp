@@ -197,7 +197,7 @@
 
         // Return true if the option is "Other"
         function findOtherOption(option) {
-            if (option.name == 'Other') {
+            if (option.code == 'OTH') {
                 return true;
             } else {
                 return false;
