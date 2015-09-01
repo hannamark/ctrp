@@ -52,7 +52,7 @@
             //$scope.useBuiltInTemplate = $scope.useBuiltInTemplate == undefined ? false : $scope.useBuiltInTemplate;
             var modalOpened = false;
 
-            console.log('maxRow selectable: ' + $scope.maxRowSelectable + ', builtInTemplate: ' + $scope.useBuiltInTemplate);
+            //console.log('maxRow selectable: ' + $scope.maxRowSelectable + ', builtInTemplate: ' + $scope.useBuiltInTemplate);
             $scope.searchPerson = function(size) {
                 if (modalOpened) return; //prevent modal open twice in single click
 
@@ -83,6 +83,10 @@
                     console.log("operation canceled");
                 });
             }; //searchPerson
+
+            $scope.$watch('selectedPersonsArray', function(newVal) {
+                $scope.selectedPersonsArray = newVal;
+            }.bind(this));
 
 
             //delete the affiliated organization from table view
