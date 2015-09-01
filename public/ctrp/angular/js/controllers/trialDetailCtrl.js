@@ -20,6 +20,7 @@
         vm.accordion5 = true;
         vm.accordion6 = true;
         vm.accordion7 = true;
+        vm.accordion8 = true;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -41,6 +42,7 @@
         vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
         vm.curTrial.pilot = 'No';
+        vm.curTrial.grant_question = 'Yes';
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
