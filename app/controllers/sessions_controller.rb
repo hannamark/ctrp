@@ -70,11 +70,14 @@ class SessionsController < Devise::SessionsController
       #user.token = token
       #user.save!
       Rails.logger.info "Result of warden authenticate JWT token = #{token.inspect}"
-      render json: { token: token}
+      auth_json = create_authorization_json(self.resource, token)
+      Rails.logger.info "authjson= #{auth_json.inspect}"
+      render json: auth_json
 
-    rescue Exception => e
+    rescue  => e
       Rails.logger.info "In Session Controller, exception handling"
       Rails.logger.info "Unable to Login user"
+      Rails.logger.info e.backtrace
       Rails.logger.info "#{self.resource.inspect}" unless self.resource.nil?
       flash[:error] = error_string
       render :status => 403,
