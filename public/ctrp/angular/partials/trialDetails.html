@@ -198,13 +198,27 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Responsible Party:</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id">
+                                <select class="form-control" id="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id" ng-change="trialDetailView.watchOption('responsible_party')">
                                     <option value="">Select a Responsible Party</option>
                                     <option ng-repeat="responsibleParty in trialDetailView.responsiblePartyArr"
                                             value="{{responsibleParty.id}}" ng-selected="trialDetailView.curTrial.responsible_party_id == responsibleParty.id">
                                         {{responsibleParty.name}}
                                     </option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div ng-show="trialDetailView.showInvestigator" class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Investigator:</label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-8">
+                                        <input type="text" class="form-control input-xs" disabled value="{{trialDetailView.selectedInvArray[0].fname + ' ' + (trialDetailView.selectedInvArray[0].mname ? trialDetailView.selectedInvArray[0].mname + ' ' : '') + trialDetailView.selectedInvArray[0].lname}}"/>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedInvArray"></ctrp-person-adv-search-modal-button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </accordion-group>

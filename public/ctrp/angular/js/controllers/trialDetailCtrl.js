@@ -36,13 +36,19 @@
         vm.addedOtherIds = [];
         vm.addedStatuses = [];
         vm.selectedPiArray = [];
+        vm.selectedInvArray = [];
         vm.primaryPurposeOther = false;
         vm.secondaryPurposeOther = false;
+        vm.showInvestigator = false;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
             if (vm.selectedPiArray.length > 0) {
                 vm.curTrial.pi_id = vm.selectedPiArray[0].id;
+            }
+
+            if (vm.selectedInvArray.length > 0) {
+                vm.curTrial.investigator_id = vm.selectedInvArray[0].id;
             }
 
             // Construct nested attributes
@@ -113,7 +119,7 @@
                 if (origin.id == vm.protocol_id_origin_id) {
                     newId.protocol_id_origin_name = origin.name;
                 }
-            })
+            });
             newId.protocol_id = vm.protocol_id;
             newId._destroy = false;
             vm.addedOtherIds.push(newId);
@@ -129,7 +135,7 @@
                 if (status.id == vm.trial_status_id) {
                     newStatus.trial_status_name = status.name;
                 }
-            })
+            });
             newStatus.why_stopped = vm.why_stopped;
             newStatus._destroy = false;
             vm.addedStatuses.push(newStatus);
@@ -151,6 +157,17 @@
                 } else {
                     vm.showSecondaryPurposeOther = false;
                     vm.curTrial.secondary_purpose_other = '';
+                }
+            } else if (type == 'responsible_party') {
+                var invOptions = vm.responsiblePartyArr.filter(findInvestigatorOption);
+                for (var i = 0; i < invOptions.length; i++) {
+                    if (invOptions[i].id == vm.curTrial.responsible_party_id) {
+                        vm.showInvestigator = true;
+                        break;
+                    } else {
+                        vm.showInvestigator = false;
+                        vm.selectedInvArray = [];
+                    }
                 }
             }
         };
@@ -198,6 +215,15 @@
         // Return true if the option is "Other"
         function findOtherOption(option) {
             if (option.code == 'OTH') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Return true if the option is "Principal Investigator" or "Sponsor Investigator"
+        function findInvestigatorOption(option) {
+            if (option.code == 'PI' || option.code == 'SI') {
                 return true;
             } else {
                 return false;
