@@ -26,7 +26,7 @@
             scope: {
                 maxRowSelectable : '=?', //int, required!
                 useBuiltInTemplate: '=?', //boolean
-                selectedPersonsArray: '@selectedPersonsArray',
+                selectedPersonsArray: '='
             },
             templateUrl: '/ctrp/angular/js/directives/person/personAdvSearchModalButtonTemplate.html',
             link: linkerFn,
@@ -38,7 +38,6 @@
 
         function linkerFn(scope, element, attrs) {
             $compile(element.contents())(scope);
-          //  element.text('hello world!');
             console.log('in linkerFn for personAdvSearchModal Button');
           //  scope.useBuiltInTemplate = attrs.useBuiltInTemplate == undefined ? false : true;
         } //linkerFn
@@ -46,9 +45,10 @@
 
         function personAdvSearchModalButtonController($scope, $timeout) {
 
-            $scope.savedSelection = []; //TODO: to be passed to the container scope
+            $scope.savedSelection = [];
             $scope.showGrid = true;
             $scope.curationMode = false;
+            $scope.selectedPersonsArray = [];
             //$scope.useBuiltInTemplate = $scope.useBuiltInTemplate == undefined ? false : $scope.useBuiltInTemplate;
             var modalOpened = false;
 
@@ -72,9 +72,9 @@
                 modalInstance.result.then(function (selectedPerson) {
 
                     if (angular.isArray(selectedPerson) && selectedPerson.length > 0) {
-                        // $scope.savedSelection = $scope.savedSelection.concat(selectedPersons);
                         $scope.savedSelection = selectedPerson;
-                       // $scope.$parent.selectedPersonsArray = $scope.savedSelection;
+                        $scope.selectedPersonsArray = selectedPerson;
+                        console.log('modal resolved selectedPerson: ' + JSON.stringify(selectedPerson));
                     }
 
                     modalOpened = false;
@@ -93,21 +93,6 @@
                 }
             };// toggleSelection
 
-
-            /**
-             * Update the selected persons array in the $parent's scope
-             * @param updateSelectionArr
-             */
-            function updatePersonsInParentScope(updateSelectionArr) {
-
-                if (angular.isDefined($scope.$parent.selectedPersonsArray)) {
-                    $scope.$parent.selectedPersonsArray = updateSelectionArr;
-                }
-            }
-
-            $scope.$watchCollection('savedSelection', function(newVal) {
-               updatePersonsInParentScope(newVal); //update the selected persons in $parent's scope
-            });
 
         } //personAdvSearchModalButtonController
 
