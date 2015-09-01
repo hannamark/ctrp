@@ -153,6 +153,53 @@ class ApplicationController < ActionController::Base
   end
 
 
+  ## TODO secret must be an environmental variable
+  def create_authorization_json(user, token)
+    begin
+      Rails.logger.info "In create_authorization_json user=#{user.inspect}"
+      all = "all"
+      role = user.role || ""
+      role_json = Hash.new
+      role_json = case role
+                    when "ROLE_SUPER"
+                      {resource_urls: {can:  all},
+                       links: {can: all}
+                      }
+                    when "ROLE_ADMIN"
+                      {resource_urls: {can:  all},
+                       links: {can: all}
+                      }
+                    when "ROLE_CURATOR"
+                      {resource_urls: {can:  all},
+                       links: {cannot: ["useradmin"]}
+                      }
+                    when "ROLE_RO"
+                      {resource_urls: {can: {all: {operations: ["read"]}}},
+                       links: {cannot: "backoffice"}
+                      }
+                    else
+                      {resource_urls: {can:  all},
+                       links: {can: all}
+                      }
+                  end
+
+      Rails.logger.info "In create_authorization_json role_json = #{role_json.inspect}"
+
+      auth_json = {
+          application_version: "0.1", # should be retrieved from Config file
+          token: token
+                    }.merge!(role_json)
+
+      Rails.logger.info "In create_authorization_json auth_json = #{auth_json.inspect}"
+      return auth_json
+    rescue => e
+      Rails.logger.info "In Application Controller, exception handling"
+      Rails.logger.info e.message
+      Rails.logger.info e.backtrace
+    end
+  end
+
+
   protected
 
   def configure_permitted_parameters
