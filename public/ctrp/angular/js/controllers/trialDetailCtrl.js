@@ -37,8 +37,8 @@
         vm.addedStatuses = [];
         vm.selectedPiArray = [];
         vm.selectedInvArray = [];
-        vm.primaryPurposeOther = false;
-        vm.secondaryPurposeOther = false;
+        vm.showPrimaryPurposeOther = false;
+        vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
 
         //update trial (vm.curTrial)
