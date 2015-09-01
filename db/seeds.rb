@@ -62,7 +62,7 @@ SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
 ResponsibleParty.find_or_create_by(code: 'SP', name: 'Sponsor')
-ResponsibleParty.find_or_create_by(code: 'PI', name: 'Principle Investigator')
+ResponsibleParty.find_or_create_by(code: 'PI', name: 'Principal Investigator')
 ResponsibleParty.find_or_create_by(code: 'SI', name: 'Sponsor Investigator')
 
 ProtocolIdOrigin.find_or_create_by(code: 'CTEP', name: 'CTEP')
