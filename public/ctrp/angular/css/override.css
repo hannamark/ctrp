@@ -238,7 +238,7 @@ header img {
     .modal-body {
         max-width: 950px;
         margin-left: 5px;
-        overflow: hidden;
+        overflow: auto;
     }
 
     /*.modal-footer,*/
