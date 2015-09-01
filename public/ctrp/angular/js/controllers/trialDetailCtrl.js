@@ -35,13 +35,13 @@
         vm.comp_date_opened = false;
         vm.addedOtherIds = [];
         vm.addedStatuses = [];
-        $scope.selectedPersonsArray = [];
+        vm.selectedPersonsArray = [];
         vm.primaryPurposeOther = false;
         vm.secondaryPurposeOther = false;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
-            vm.curTrial.pi_id = $scope.selectedPersonsArray[0] ? $scope.selectedPersonsArray[0].id : '';
+            vm.curTrial.pi_id = vm.selectedPersonsArray[0].id;
 
             // Construct nested attributes
             vm.curTrial.other_ids_attributes = [];
