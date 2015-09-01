@@ -103,6 +103,16 @@
                         </div>
 
                         <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Pilot:</label>
+                            <div class="col-sm-1">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.pilot" value="No"> No</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label><input type="radio" ng-model="trialDetailView.curTrial.pilot" value="Yes"> Yes</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Research Category:</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="research_category" ng-model="trialDetailView.curTrial.research_category_id">

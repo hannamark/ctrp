@@ -40,6 +40,7 @@
         vm.showPrimaryPurposeOther = false;
         vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
+        vm.curTrial.pilot = 'No';
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
