@@ -35,13 +35,15 @@
         vm.comp_date_opened = false;
         vm.addedOtherIds = [];
         vm.addedStatuses = [];
-        vm.selectedPersonsArray = [];
+        vm.selectedPiArray = [];
         vm.primaryPurposeOther = false;
         vm.secondaryPurposeOther = false;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
-            vm.curTrial.pi_id = vm.selectedPersonsArray[0].id;
+            if (vm.selectedPiArray[0]) {
+                vm.curTrial.pi_id = vm.selectedPiArray[0].id;
+            }
 
             // Construct nested attributes
             vm.curTrial.other_ids_attributes = [];
