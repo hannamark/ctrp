@@ -238,7 +238,7 @@
                     controller: 'personCtrl as personView',
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
-                        label: 'Person'
+                        label: 'Persons'
                     }
                 })
 
