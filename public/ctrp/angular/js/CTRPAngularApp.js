@@ -200,16 +200,7 @@
                 .state('main.people', {
                     url: '/people',
                     templateUrl: '/ctrp/angular/partials/person_list.html',
-                    controller: 'personCtrl as personView',
-                    resolve: {
-                        OrgService: 'OrgService',
-                        sourceContextObj: function(OrgService) {
-                            return OrgService.getSourceContexts();
-                        },
-                        sourceStatusObj: function(OrgService) {
-                            return OrgService.getSourceStatuses();
-                        }
-                    }
+                    controller: 'personCtrl as personView'
                 })
 
                 .state('main.personDetail', {
@@ -292,23 +283,15 @@
                     }
                 });
 
-                //.state('main.sign_out', {
-                //    url: '/sign_out',
-                //    controller: 'userCtrl',
-                //    resolve: {
-                //        logOut: function($q) {
-                //            var deferred = $q.defer();
-                //            //config.headers.Authorization = '';
-                //            deferred.resolve({data: "logout"});
-                //            return deferred.promise;
-                //        }
-                //    }
-                //
-                //})
 
-
-        }).run(function() {
+        }).run(function($rootScope, $urlRouter, $state, $stateParams) {
             console.log('running ctrp angular app');
+            $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+                console.log('upon state changes, $state.$current.name: ' + $state.$current.name);
+                console.log('toState: ' + JSON.stringify(toState));
+                console.log('toParams: ' + JSON.stringify(toParams));
+                console.log('fromState: ' + JSON.stringify(fromState));
+            });
         });
 
 
