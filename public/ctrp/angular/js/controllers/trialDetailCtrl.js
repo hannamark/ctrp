@@ -8,10 +8,10 @@
         .controller('trialDetailCtrl', trialDetailCtrl);
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
-        'secondaryPurposeObj', 'responsiblePartyObj', 'trialStatusObj'];
+        'secondaryPurposeObj', 'responsiblePartyObj', 'trialStatusObj', 'countryList'];
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
                              $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
-                             secondaryPurposeObj, responsiblePartyObj, trialStatusObj) {
+                             secondaryPurposeObj, responsiblePartyObj, trialStatusObj, countryList) {
         var vm = this;
         vm.accordion1 = true;
         vm.accordion2 = true;
@@ -30,6 +30,8 @@
         vm.secondaryPurposeArr = secondaryPurposeObj;
         vm.responsiblePartyArr = responsiblePartyObj;
         vm.trialStatusArr = trialStatusObj;
+        vm.countryArr = countryList;
+        vm.authorityOrgArr = [];
         vm.status_date_opened = false;
         vm.start_date_opened = false;
         vm.primary_comp_date_opened = false;
@@ -172,6 +174,8 @@
                         vm.selectedInvArray = [];
                     }
                 }
+            } else if (type == 'authority_country') {
+                vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.curTrial.authority_country);
             }
         };
 

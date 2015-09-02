@@ -288,6 +288,10 @@
                         },
                         trialStatusObj: function(TrialService) {
                             return TrialService.getTrialStatuses();
+                        },
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
                         }
                     }
                 });
