@@ -8,10 +8,10 @@
         .controller('trialDetailCtrl', trialDetailCtrl);
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
-        'secondaryPurposeObj', 'responsiblePartyObj', 'trialStatusObj', 'countryList'];
+        'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'trialStatusObj', 'countryList'];
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
                              $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
-                             secondaryPurposeObj, responsiblePartyObj, trialStatusObj, countryList) {
+                             secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, trialStatusObj, countryList) {
         var vm = this;
         vm.accordion1 = true;
         vm.accordion2 = true;
@@ -29,6 +29,7 @@
         vm.primaryPurposeArr = primaryPurposeObj;
         vm.secondaryPurposeArr = secondaryPurposeObj;
         vm.responsiblePartyArr = responsiblePartyObj;
+        vm.fundingMechanismArr = fundingMechanismObj;
         vm.trialStatusArr = trialStatusObj;
         vm.countryArr = countryList;
         vm.authorityOrgArr = [];
@@ -37,6 +38,7 @@
         vm.primary_comp_date_opened = false;
         vm.comp_date_opened = false;
         vm.addedOtherIds = [];
+        vm.addedGrants = [];
         vm.addedStatuses = [];
         vm.selectedPiArray = [];
         vm.selectedInvArray = [];
@@ -90,6 +92,10 @@
                 if (index < vm.addedOtherIds.length) {
                     vm.addedOtherIds[index]._destroy = !vm.addedOtherIds[index]._destroy;
                 }
+            }else if (type == 'grant') {
+                if (index < vm.addedGrants.length) {
+                    vm.addedGrants[index]._destroy = !vm.addedGrants[index]._destroy;
+                }
             } else if (type == 'trial_status') {
                 if (index < vm.addedStatuses.length) {
                     vm.addedStatuses[index]._destroy = !vm.addedStatuses[index]._destroy;
@@ -128,6 +134,17 @@
             newId.protocol_id = vm.protocol_id;
             newId._destroy = false;
             vm.addedOtherIds.push(newId);
+        };
+
+        // Add grant to a temp array
+        vm.addGrant = function () {
+            var newGrant = {};
+            newGrant.funding_mechanism = vm.funding_mechanism;
+            newGrant.institute_code = vm.institute_code;
+            newGrant.serial_number = vm.serial_number;
+            newGrant.nci = vm.nci;
+            newGrant._destroy = false;
+            vm.addedGrants.push(newGrant);
         };
 
         // Add trial status to a temp array

@@ -11,4 +11,8 @@ class UtilController < ActionController::Base
     country = Country.find_country_by_name(params[:country])
     @states = country.states.sort_by { |k, v| v["name"] } if country.present?
   end
+
+  def get_funding_mechanisms
+    @funding_mechanisms = AppSetting.find_by_code('FM').big_value.split(',')
+  end
 end

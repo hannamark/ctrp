@@ -37,6 +37,7 @@
             'PRIMARY_PURPOSES': '/ctrp/primary_purposes.json',
             'SECONDARY_PURPOSES': '/ctrp/secondary_purposes.json',
             'RESPONSIBLE_PARTIES': '/ctrp/responsible_parties.json',
+            'FUNDING_MECHANISMS': '/ctrp/funding_mechanisms.json',
             'TRIAL_STATUSES': '/ctrp/trial_statuses.json'
         })
         .constant('MESSAGES', {

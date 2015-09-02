@@ -286,6 +286,9 @@
                         responsiblePartyObj: function(TrialService) {
                             return TrialService.getResponsibleParties();
                         },
+                        fundingMechanismObj: function(TrialService) {
+                            return TrialService.getFundingMechanisms();
+                        },
                         trialStatusObj: function(TrialService) {
                             return TrialService.getTrialStatuses();
                         },

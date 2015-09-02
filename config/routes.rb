@@ -87,6 +87,8 @@ Rails.application.routes.draw do
     resources :expanded_access_types
     resources :trial_statuses
     resources :research_categories
+
+    get 'funding_mechanisms' => 'util#get_funding_mechanisms'
   end
   # Devise related routes
 

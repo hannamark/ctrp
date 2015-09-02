@@ -53,6 +53,7 @@
             getPrimaryPurposes: getPrimaryPurposes,
             getSecondaryPurposes: getSecondaryPurposes,
             getResponsibleParties: getResponsibleParties,
+            getFundingMechanisms: getFundingMechanisms,
             getTrialStatuses: getTrialStatuses,
             getAuthorityOrgArr: getAuthorityOrgArr,
             deleteTrial: deleteTrial
@@ -150,6 +151,10 @@
 
         function getResponsibleParties() {
             return PromiseTimeoutService.getData(URL_CONFIGS.RESPONSIBLE_PARTIES);
+        }
+
+        function getFundingMechanisms() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.FUNDING_MECHANISMS);
         }
 
         function getTrialStatuses() {
