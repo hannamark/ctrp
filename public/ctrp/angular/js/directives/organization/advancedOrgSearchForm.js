@@ -81,7 +81,7 @@
 
 
             $scope.$watch('usedinmodal', function (newVal, oldVal) {
-                $scope.resetSearch();
+                // $scope.resetSearch();
                 //find the organization name index in the column definitions
                 var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
                 if (newVal) {
@@ -97,9 +97,6 @@
                    //make visible if it is not in modal and curator mode is off.
 
                 }
-
-
-
             });
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions();
