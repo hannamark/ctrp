@@ -8,7 +8,7 @@
 
 <!--% if user_signed_in? %-->
     <li>
-      <%= link_to('Logout', destroy_session_path, :method => :delete) %> <br />
+      <%= link_to('Logout', destroyrailslogin_session_path, :method => :delete) %> <br />
     </li>
     <li>
       <%= link_to "Sign in with Google",omniauth_user_omniauth_authorize_path(:google_oauth2) %>

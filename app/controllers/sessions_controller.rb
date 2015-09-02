@@ -70,6 +70,7 @@ class SessionsController < Devise::SessionsController
       #user.token = token
       #user.save!
       Rails.logger.info "Result of warden authenticate JWT token = #{token.inspect}"
+      #self.resource.current_role = self.resource.role
       auth_json = create_authorization_json(self.resource, token)
       Rails.logger.info "authjson= #{auth_json.inspect}"
       render json: auth_json
@@ -87,6 +88,11 @@ class SessionsController < Devise::SessionsController
     ensure
     end
 
+  end
+
+  def destroyrailslogin
+    Rails.logger.info "In Session Controller, destroy method, without Angular"
+      method(:destroy).super_method.call
   end
 
   def destroy
@@ -111,7 +117,7 @@ class SessionsController < Devise::SessionsController
     current_user = nil
     current_ldap_user = nil
     current_local_user = nil
-   # Destroy session
+    # Destroy session
     #method(:destroy).super_method.call
     if source == "Angular"
       render :status => 200,
