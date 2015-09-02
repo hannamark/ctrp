@@ -16,7 +16,7 @@
         'ngAnimate',
         'toastr',
         'ui.bootstrap',
-//        'datatables',
+        'ncy-angular-breadcrumb',
         'ui.grid',
         'ui.grid.pagination',
         'ui.grid.selection',
@@ -67,18 +67,29 @@
                     'main_content@main': {
                         templateUrl: '/ctrp/angular/partials/main_content.html'
                     }
+                },
+                ncyBreadcrumb: {
+                    label: 'Home',
+                    skip: true
                 }
             })
 
                 .state('main.defaultContent', {
                     url: '/welcome',
-                    templateUrl: '/ctrp/angular/partials/welcome_content.html'
+                    templateUrl: '/ctrp/angular/partials/welcome_content.html',
+                    ncyBreadcrumb: {
+                        label: 'Home'
+                    }
                 })
 
                 .state('main.organizations', {
                     url: '/organizations',
                     templateUrl: '/ctrp/angular/partials/organization_list.html',
-                    controller: 'organizationCtrl as orgsView'
+                    controller: 'organizationCtrl as orgsView',
+                    ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
+                        label: 'Organizations'
+                    }
                 })
 
                 .state('main.orgDetail', {
@@ -102,7 +113,11 @@
                             console.log("getting org by id: " + $stateParams.orgId);
                             return OrgService.getOrgById($stateParams.orgId);
                         }
-                    } //resolve the promise and pass it to controller
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        parent: 'main.organizations',
+                        label: 'Organization Detail'
+                    }
                 })
 
                 .state('main.addOrganization', {
@@ -126,13 +141,21 @@
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
                         }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'main.organizations',
+                        label: 'Add Organization'
                     }
                 })
 
                 .state('main.sign_in', {
                     url: '/sign_in',
                     templateUrl: '/ctrp/angular/partials/sign_in.html',
-                    controller: 'userCtrl as userView'
+                    controller: 'userCtrl as userView',
+                    ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
+                        label: 'Sign In'
+                    }
                 })
 
                 .state('main.families', {
@@ -147,6 +170,10 @@
                         familyTypeObj : function(FamilyService) {
                             return FamilyService.getFamilyTypes();
                         }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
+                        label: 'Families'
                     }
                 })
 
@@ -168,7 +195,11 @@
                         familyRelationshipObj: function(FamilyService) {
                             return FamilyService.getFamilyRelationships();
                         }
-                    } //resolve the promise and pass it to controller
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        parent: 'main.families',
+                        label: 'Family Detail'
+                    }
                 })
 
                 .state('main.addFamily', {
@@ -193,6 +224,10 @@
                             deferred.resolve(null);
                             return deferred.promise;
                         }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'main.families',
+                        label: 'Add Family'
                     }
                 })
 
@@ -201,14 +236,9 @@
                     url: '/people',
                     templateUrl: '/ctrp/angular/partials/person_list.html',
                     controller: 'personCtrl as personView',
-                    resolve: {
-                        OrgService: 'OrgService',
-                        sourceContextObj: function(OrgService) {
-                            return OrgService.getSourceContexts();
-                        },
-                        sourceStatusObj: function(OrgService) {
-                            return OrgService.getSourceStatuses();
-                        }
+                    ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
+                        label: 'Person'
                     }
                 })
 
@@ -228,7 +258,11 @@
                         poAffStatuses : function(PersonService) {
                             return PersonService.getPoAffStatuses();
                         }
-                    } //resolve the promise and pass it to controller
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        parent: 'main.people',
+                        label: 'Person Detail'
+                    }
                 })
 
                 .state('main.addPerson', {
@@ -248,6 +282,10 @@
                         poAffStatuses : function(PersonService) {
                             return PersonService.getPoAffStatuses();
                         }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'main.people',
+                        label: 'Add Person'
                     }
                 })
 
@@ -255,6 +293,13 @@
                     url: '/person_directive',
                     templateUrl: '/ctrp/angular/partials/person_search.html',
                     controller: 'personSearchCtrl as personSearchView'
+                })
+                .state('main.trials', {
+                    url: '',
+                    ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
+                        label: 'Trials'
+                    }
                 })
 
                 .state('main.addTrial', {
@@ -289,26 +334,25 @@
                         trialStatusObj: function(TrialService) {
                             return TrialService.getTrialStatuses();
                         }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'main.trials',
+                        label: 'Register Trial'
                     }
                 });
 
-                //.state('main.sign_out', {
-                //    url: '/sign_out',
-                //    controller: 'userCtrl',
-                //    resolve: {
-                //        logOut: function($q) {
-                //            var deferred = $q.defer();
-                //            //config.headers.Authorization = '';
-                //            deferred.resolve({data: "logout"});
-                //            return deferred.promise;
-                //        }
-                //    }
-                //
-                //})
 
-
-        }).run(function() {
+        }).run(function($rootScope, $urlRouter, $state, $stateParams) {
             console.log('running ctrp angular app');
+            /*
+            $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+                console.log('upon state changes, $state.$current.name: ' + $state.$current.name);
+                console.log('current $state.$parent: ' + JSON.stringify($state.$parent));
+                console.log('toState: ' + JSON.stringify(toState));
+                console.log('toParams: ' + JSON.stringify(toParams));
+                console.log('fromState: ' + JSON.stringify(fromState));
+            });
+            */
         });
 
 
