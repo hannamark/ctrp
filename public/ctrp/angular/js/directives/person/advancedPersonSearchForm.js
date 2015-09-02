@@ -186,9 +186,46 @@
                 getPromisedData();
                 prepareGidOptions();
                 watchReadinessOfCuration();
+                hideHyperLinkInModal();
                 // $scope.searchPeople();
 
             } //activate
+
+
+            /**
+             * Hide hyper link on names in modal
+             */
+            function hideHyperLinkInModal() {
+                $scope.$watch('usedInModal', function (newVal, oldVal) {
+                    //find the organization name index in the column definitions
+                    var firstNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'fname');
+                    var middleNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'mname');
+                    var lastNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'lname');
+
+                    if (newVal) {
+                        //unlink the name if used in modal
+                        if (firstNameIndex > -1) {
+                            $scope.gridOptions.columnDefs[firstNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" ' +
+                                'title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>';
+
+                            $scope.gridOptions.columnDefs[middleNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" ' +
+                                'title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>';
+
+                            $scope.gridOptions.columnDefs[lastNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" ' +
+                                'title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>';
+                        }
+                    } else {
+                        $scope.gridOptions.columnDefs[firstNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                            '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
+
+                        $scope.gridOptions.columnDefs[middleNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                            '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
+
+                        $scope.gridOptions.columnDefs[lastNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                            '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
+                    }
+                });
+            } //hideHyperLinkInModal
 
 
             /**
