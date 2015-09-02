@@ -88,7 +88,7 @@
                     controller: 'organizationCtrl as orgsView',
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
-                        label: 'Organizations'
+                        label: 'Search Organizations'
                     }
                 })
 
@@ -173,7 +173,7 @@
                     },
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
-                        label: 'Families'
+                        label: 'Search Families'
                     }
                 })
 
@@ -238,7 +238,7 @@
                     controller: 'personCtrl as personView',
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
-                        label: 'Persons'
+                        label: 'Search Persons'
                     }
                 })
 
@@ -298,7 +298,7 @@
                     url: '',
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
-                        label: 'Trials'
+                        label: 'Search Trials'
                     }
                 })
 
