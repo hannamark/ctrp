@@ -51,7 +51,11 @@
 
 
 
-            $urlRouterProvider.otherwise('/main/welcome');
+            // $urlRouterProvider.otherwise('/main/welcome'); //the bug in ui.router causes this to be infinite loop
+            $urlRouterProvider.otherwise(function($injector) {
+               var $state = $injector.get('$state');
+                $state.go('main.defaultContent');
+            });
 
             $stateProvider.state('main', {
                 url: '/main',
