@@ -66,6 +66,13 @@
                 });
             }
 
+            if (vm.addedGrants.length > 0) {
+                vm.curTrial.grants_attributes = [];
+                _.each(vm.addedGrants, function (grant) {
+                    vm.curTrial.grants_attributes.push(grant);
+                });
+            }
+
             if (vm.addedStatuses.length > 0) {
                 vm.curTrial.trial_status_wrappers_attributes = [];
                 _.each(vm.addedStatuses, function (status) {
