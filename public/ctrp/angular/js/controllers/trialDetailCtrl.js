@@ -99,7 +99,7 @@
                 if (index < vm.addedOtherIds.length) {
                     vm.addedOtherIds[index]._destroy = !vm.addedOtherIds[index]._destroy;
                 }
-            }else if (type == 'grant') {
+            } else if (type == 'grant') {
                 if (index < vm.addedGrants.length) {
                     vm.addedGrants[index]._destroy = !vm.addedGrants[index]._destroy;
                 }
