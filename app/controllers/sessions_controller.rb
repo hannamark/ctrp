@@ -66,12 +66,19 @@ class SessionsController < Devise::SessionsController
 
       ## Generate JWT token
       token = create_token({:user_id => self.resource.id})
+      #user = User.find_by_id(self.resource.id)
+      #user.token = token
+      #user.save!
       Rails.logger.info "Result of warden authenticate JWT token = #{token.inspect}"
-      render json: { token: token}
+      #self.resource.current_role = self.resource.role
+      auth_json = create_authorization_json(self.resource, token)
+      Rails.logger.info "authjson= #{auth_json.inspect}"
+      render json: auth_json
 
-    rescue Exception => e
+    rescue  => e
       Rails.logger.info "In Session Controller, exception handling"
       Rails.logger.info "Unable to Login user"
+      Rails.logger.info e.backtrace
       Rails.logger.info "#{self.resource.inspect}" unless self.resource.nil?
       flash[:error] = error_string
       render :status => 403,
@@ -83,25 +90,43 @@ class SessionsController < Devise::SessionsController
 
   end
 
+  def destroyrailslogin
+    Rails.logger.info "In Session Controller, destroy method, without Angular"
+      method(:destroy).super_method.call
+  end
+
   def destroy
     Rails.logger.info "In Session Controller, destroy method"
-    Rails.logger.info "session = #{session.inspect}"
+    #Rails.logger.info "session = #{session.inspect}"
     Rails.logger.info "params = #{request.params} "
 
 
-    user = User.find_by_username(request.params["username"])
+    user = User.find_by_username(request.params["username"]) || User.find_by_username(request.params['user']["username"])
     Rails.logger.info "user = #{user.inspect} "
-        ##User.find_by_id(user_id)User.where(username: request.params['user']["username"])
-    sign_in user, :bypass => true
-    Rails.logger.info "after sign_in user = #{user.inspect} "
+    source = request.params["source"] || ""
+    #sign_in user, :bypass => true
+    #Rails.logger.info "after sign_in user = #{user.inspect} "
     sign_out(user)
-    Rails.logger.info "after sign_out user = #{user.inspect} "
-   # Destroy session
+    #Rails.logger.info "after sign_out user = #{user.inspect} "
+
+    ## Reset the token in the DB
+    #user.token = nil
+    #user.save!
+
+    reset_current_user
+    current_user = nil
+    current_ldap_user = nil
+    current_local_user = nil
+    # Destroy session
     #method(:destroy).super_method.call
-    render :status => 200,
-           :json => { :success => true,
-                      :info => "Logged out",
-           }
+    if source == "Angular"
+      render :status => 200,
+             :json => { :success => true,
+                        :info => "Logged out",
+             }
+    else
+      method(:destroy).super_method.call
+    end
   end
 
   def new
@@ -110,11 +135,4 @@ class SessionsController < Devise::SessionsController
     self.resource = User.new
   end
 
-  private
-
-#  def create_token(token_data)
-#    secret = "secret" # must be an environment variable
-#    JWT.encode(token_data, secret)
-#  end
-  #- See more at: http://blog.moove-it.com/token-based-authentication-json-web-tokenjwt/#sthash.QlxioFfO.dpuf
 end

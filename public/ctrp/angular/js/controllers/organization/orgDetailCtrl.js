@@ -9,10 +9,10 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES',
-        '$scope', 'countryList', 'Common', 'sourceStatusObj', '$state', '$modal'];
+        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$modal'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
-                           $scope, countryList, Common, sourceStatusObj, $state, $modal) {
+                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
         var vm = this;
         vm.name = "tony";
         vm.numbers = [1, 2, 3];
@@ -20,6 +20,7 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
+        vm.sourceContextArr = sourceContextObj;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)

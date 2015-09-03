@@ -41,6 +41,12 @@ Rails.application.routes.draw do
 
     resources :comments
 
+    resources :users
+
+    #resource :local_users
+
+    #resource :ldap_users
+
     resources :people do
       collection do
         get 'search'
@@ -59,7 +65,9 @@ Rails.application.routes.draw do
     get '/backoffice/static_members'
 
     # Devise related routes
-    #devise_for :users
+    devise_scope :user do
+      delete "sign_out" => "sessions#destroyrailslogin", :as => :destroyrailslogin_session
+    end
     devise_for :ldap_users, :local_users, skip: [ :sessions ]
     devise_for :omniauth_users, :controllers => { :omniauth_callbacks => "omniauth_users/omniauth_callbacks" }
     devise_scope :local_user do
@@ -79,6 +87,10 @@ Rails.application.routes.draw do
     resources :expanded_access_types
     resources :trial_statuses
     resources :research_categories
+
+    get 'funding_mechanisms' => 'util#get_funding_mechanisms'
+    get 'institute_codes' => 'util#get_institute_codes'
+    get 'nci' => 'util#get_nci'
   end
   # Devise related routes
 

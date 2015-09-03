@@ -25,10 +25,10 @@
             <!-- PO ID -->
             <div class="form-group">
                 <!-- ID used as ctrp_id here -->
-                <label for="ctrp_id" class="control-label col-xs-12 col-sm-2">CTRP ID: </label>
+                <label for="ctrp_id" class="control-label col-xs-12 col-sm-2"><nobr>CTRP ID:</nobr></label>
 
                 <div class="col-xs-12 col-sm-4">
-                    <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
+                    <input type="text" id="ctrp_id" class="form-control" placeholder="CTRP ID"
                            ng-model="searchParams.ctrp_id"/>
                 </div>
 
@@ -55,10 +55,8 @@
                     <select class="form-control" id="source_context"
                             ng-model="searchParams.source_context"
                             ng-change="searchOrgs()">
-                        <option value="">Select a context</option>
-                        <option ng-repeat="context in sourceContexts" value="{{context.name}}">
-                            {{context.name}}
-                        </option>
+                        <option value="">All Contexts</option>
+                        <option ng-repeat="context in sourceContexts" value="{{context.name}}">{{context.name}}</option>
                     </select>
                 </div>
             <!-- source context ends -->
@@ -81,10 +79,8 @@
                     <select class="form-control" id="source_status"
                             ng-model="searchParams.source_status"
                             ng-change="searchOrgs()">
-                        <option value="">Select a status</option>
-                        <option ng-repeat="status in sourceStatuses" value="{{status.name}}">
-                            {{status.name}}
-                        </option>
+                        <option value="">Select a Status</option>
+                        <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
                     </select>
                 </div>
             </div>
@@ -108,7 +104,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="address2" class="control-label col-xs-12 col-sm-2">Address 2:</label>
+                <label for="address2" class="control-label col-xs-12 col-sm-2"><nobr>Address 2:</nobr></label>
 
                 <div class="col-xs-12 col-sm-10">
                     <input type="text" id="address2" class="form-control" placeholder="Address 2"
@@ -154,10 +150,8 @@
                 <div class="col-xs-12 col-sm-10">
                     <select class="form-control" id="country" ng-model="searchParams.country"
                             ng-change="watchCountrySelection(searchParams.country)">
-                        <option value="" selected>All countries</option>
-                        <option ng-repeat="country in countries" value="{{country.name}}">
-                            {{country.name}}
-                        </option>
+                        <option value="" selected>All Countries</option>
+                        <option ng-repeat="country in countries" value="{{country.name}}">{{country.name}}</option>
                     </select>
                 </div>
             </div>
@@ -185,10 +179,8 @@
                 <div class="col-xs-12 col-sm-10">
                     <select class="form-control" id="state" ng-model="searchParams.state_province"
                             ng-change="searchOrgs()">
-                        <option value="">All states/provinces</option>
-                        <option ng-repeat="state in states track by state.name"
-                                value="{{state.name}}">{{state.name}}
-                        </option>
+                        <option value="">All States/Provinces</option>
+                        <option ng-repeat="state in states track by state.name" value="{{state.name}}">{{state.name}}</option>
                     </select>
                 </div>
             </div>

@@ -31,10 +31,19 @@
             'TRIAL_LIST': '/ctrp/trials.json',
             'A_TRIAL': '/ctrp/trials/',
             'SEARCH_TRIAL': '/ctrp/trials/search.json',
-            'RESEARCH_CATEGORIES': '/ctrp/research_categories.json'
+            'PROTOCOL_ID_ORIGINS': '/ctrp/protocol_id_origins.json',
+            'PHASES': '/ctrp/phases.json',
+            'RESEARCH_CATEGORIES': '/ctrp/research_categories.json',
+            'PRIMARY_PURPOSES': '/ctrp/primary_purposes.json',
+            'SECONDARY_PURPOSES': '/ctrp/secondary_purposes.json',
+            'RESPONSIBLE_PARTIES': '/ctrp/responsible_parties.json',
+            'FUNDING_MECHANISMS': '/ctrp/funding_mechanisms.json',
+            'INSTITUTE_CODES': '/ctrp/institute_codes.json',
+            'NCI': '/ctrp/nci.json',
+            'TRIAL_STATUSES': '/ctrp/trial_statuses.json'
         })
         .constant('MESSAGES', {
-           'STATES_AVAIL' : 'states_or_provinces_available',
+            'STATES_AVAIL' : 'states_or_provinces_available',
             'STATES_UNAVAIL' : 'states_or_provinces_not_available'
         });
 

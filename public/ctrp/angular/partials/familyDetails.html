@@ -37,7 +37,7 @@
                     <label class="control-label col-sm-3">Family Name:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" name="name" class="form-control input-xs" ng-model="familyDetailView.curFamily.name" auto-focus required>
+                        <input type="text" name="name" class="form-control input-xs" ng-model="familyDetailView.curFamily.name" required auto-focus/>
 
                         <p ng-show="family_form.name.$error.required && family_form.name.$dirty" class="help-inline">
                             Family name is required
@@ -51,11 +51,7 @@
                         <select class="form-control" id="family_status"
                                 ng-model="familyDetailView.curFamily.family_status_id">
                             <option value="">Select a status</option>
-                            <option ng-repeat="status in familyDetailView.familyStatusArr"
-                                    value="{{status.id}}"
-                                    ng-selected="familyDetailView.curFamily.family_status_id == status.id">
-                                {{status.name}}
-                            </option>
+                            <option ng-repeat="status in familyDetailView.familyStatusArr" value="{{status.id}}" ng-selected="familyDetailView.curFamily.family_status_id == status.id">{{status.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -86,7 +82,7 @@
                                 <i class="glyphicon glyphicon-search"></i> Search Organizations
                             </button>
                             <button class="btn btn-danger" ng-click="familyDetailView.batchSelect('removeAll')" ng-show="familyDetailView.savedSelection.length > 0">
-                                <i class="glyphicon glyphicon-remove"></i> Remove All Affiliated Organizations
+                                <i class="glyphicon glyphicon-remove"></i> Remove All Family Members
                             </button>
                         </div>
                         <div class="row animated-item" ng-show="familyDetailView.savedSelection.length > 0">
@@ -94,7 +90,7 @@
                             <table class="table table-bordered table-striped table-condensed">
                                 <thead>
                                 <th>Remove</th>
-                                <th>PO ID</th>
+                                <th>CTRP ID</th>
                                 <th>Organization</th>
                                 <th>Family Relationship</th>
                                 <th>Effective Date</th>
@@ -115,11 +111,8 @@
                                         <select class="form-control" id="family_relationship"
                                                 ng-model="org.family_relationship_id">
                                             <option value="">Select Relationship</option>
-                                            <option ng-repeat="relation in familyDetailView.familyRelationshipArr"
-                                                    value="{{relation.id}}"
-                                                    ng-selected="org.family_relationship_id == relation.id">
-                                                {{relation.name}}
-                                            </option>
+                                            <!-- such a stinky long line only satisfies QA :D -->
+                                            <option ng-repeat="relation in familyDetailView.familyRelationshipArr" value="{{relation.id}}" ng-selected="org.family_relationship_id == relation.id">{{relation.name}}</option>
                                         </select>
                                     </td>
 

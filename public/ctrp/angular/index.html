@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="angular/third_party_libs/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="angular/third_party_libs/bootstrap/dist/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="angular/css/override.css">
@@ -15,20 +14,12 @@
     <link rel="stylesheet" type="text/css" href="angular/third_party_libs/angular-ui-grid/ui-grid.min.css">
     <link rel="stylesheet" type="text/css" href="angular/third_party_libs/angular-toggle-switch/angular-toggle-switch.css">
     <link rel="stylesheet" type="text/css" href="angular/third_party_libs/angular-toggle-switch/angular-toggle-switch-bootstrap.css">
-    <!--<link rel="stylesheet" type="text/css" href="angular/css/ui-grid-theme.css">-->
-    <!--<link rel="stylesheet" href="http://ui-grid.info/release/ui-grid-unstable.css" type="text/css">-->
 
-    <!--<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>-->
     <script src="angular/third_party_libs/jquery/dist/jquery.min.js"></script>
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
     <script src="angular/third_party_libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.min.js"></script>-->
     <script src="angular/third_party_libs/angular/angular.min.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>-->
     <script src="angular/third_party_libs/ui-router/release/angular-ui-router.min.js"></script>
-    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-resource.min.js"></script>-->
     <script src="angular/third_party_libs/angular-resource/angular-resource.min.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-animate.min.js"></script>-->
     <script src="angular/third_party_libs/angular-animate/angular-animate.min.js"></script>
     <script src="angular/third_party_libs/angular-touch/angular-touch.min.js"></script>
     <script src="angular/third_party_libs/angular-toastr/dist/angular-toastr.tpls.js"></script>
@@ -46,6 +37,7 @@
     <script src="angular/third_party_libs/angular-ui-grid/ui-grid.min.js"></script>
     <script src="angular/third_party_libs/angular-toggle-switch/angular-toggle-switch.js"></script>
     <script src="angular/third_party_libs/ng-idle/angular-idle.min.js"></script>
+    <script src="angular/third_party_libs/angular-breadcrumb/release/angular-breadcrumb.min.js"></script>
 
     <!-- Angular app main file -->
     <script src="angular/js/CTRPAngularApp.js"></script>
@@ -73,25 +65,29 @@
     <script src="angular/js/services/TrialService.js"></script>
 
     <!-- directives -->
-    <script src="angular/js/directives/advancedOrgSearchForm.js"></script>
+    <script src="angular/js/directives/organization/advancedOrgSearchForm.js"></script>
+    <script src="angular/js/directives/person/advancedPersonSearchForm.js"></script>
+    <script src="angular/js/directives/person/personAdvSearchModalButton.js"></script>
     <script src="angular/js/directives/autoFocus.js"></script>
     <script src="angular/js/directives/backButton.js"></script>
+    <script src="angular/js/directives/masterDirective.js"></script>
 
 
     <!-- controllers -->
-    <script src="angular/js/controllers/organizationCtrl.js"></script>
-    <script src="angular/js/controllers/orgDetailCtrl.js"></script>
-    <script src="angular/js/controllers/ModalInstanceCtrl.js"></script>
-    <script src="angular/js/controllers/personCtrl.js"></script>
-    <script src="angular/js/controllers/personDetailCtrl.js"></script>
-    <script src="angular/js/controllers/ModalInstancePersonCtrl.js"></script>
+    <script src="angular/js/controllers/organization/organizationCtrl.js"></script>
+    <script src="angular/js/controllers/organization/orgDetailCtrl.js"></script>
+    <script src="angular/js/controllers/organization/ModalInstanceCtrl.js"></script>
+    <script src="angular/js/controllers/person/personCtrl.js"></script>
+    <script src="angular/js/controllers/person/personDetailCtrl.js"></script>
+    <script src="angular/js/controllers/person/personSearchCtrl.js"></script>
+    <script src="angular/js/controllers/person/ModalInstancePersonCtrl.js"></script>
     <script src="angular/js/controllers/userCtrl.js"></script>
-    <script src="angular/js/controllers/familyCtrl.js"></script>
-    <script src="angular/js/controllers/familyDetailCtrl.js"></script>
-    <script src="angular/js/controllers/ModalInstanceFamilyCtrl.js"></script>
+    <script src="angular/js/controllers/family/familyCtrl.js"></script>
+    <script src="angular/js/controllers/family/familyDetailCtrl.js"></script>
+    <script src="angular/js/controllers/family/ModalInstanceFamilyCtrl.js"></script>
     <script src="angular/js/controllers/headerNavigationCtrl.js"></script>
-    <script src="angular/js/controllers/modal/advancedOrgSearchModalCtrl.js"></script>
-    <script src="angular/js/controllers/ModalInstanceFamilyMembersCtrl.js"></script>
+    <script src="angular/js/controllers/organization/advancedOrgSearchModalCtrl.js"></script>
+    <script src="angular/js/controllers/family/ModalInstanceFamilyMembersCtrl.js"></script>
     <script src="angular/js/controllers/trialDetailCtrl.js"></script>
 
 

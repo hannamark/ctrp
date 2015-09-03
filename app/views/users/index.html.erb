@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3">Username</th>
+      <th colspan="3">Email</th>
+      <th colspan="3">Type</th>
+      <th colspan="*">Role</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td colspan="3"><%= user.username %></td>
+        <td colspan="3"><%= user.email %></td>
+        <td colspan="3"><%= user.type %></td>
+        <td colspan="*"><%= user.role %></td>
+        
+      </tr>
+  <% end %>
+  <tr> <%= link_to 'Back', '/ctrp/backoffice' %> </tr>
+  </tbody>
+</table>
+
+<br>
