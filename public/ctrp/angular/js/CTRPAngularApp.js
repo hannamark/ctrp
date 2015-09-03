@@ -335,8 +335,21 @@
                         responsiblePartyObj: function(TrialService) {
                             return TrialService.getResponsibleParties();
                         },
+                        fundingMechanismObj: function(TrialService) {
+                            return TrialService.getFundingMechanisms();
+                        },
+                        instituteCodeObj: function(TrialService) {
+                            return TrialService.getInstituteCodes();
+                        },
+                        nciObj: function(TrialService) {
+                            return TrialService.getNci();
+                        },
                         trialStatusObj: function(TrialService) {
                             return TrialService.getTrialStatuses();
+                        },
+                        GeoLocationService : 'GeoLocationService',
+                        countryList: function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
                         }
                     },
                     ncyBreadcrumb: {

@@ -8,10 +8,10 @@
         .controller('trialDetailCtrl', trialDetailCtrl);
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
-        'secondaryPurposeObj', 'responsiblePartyObj', 'trialStatusObj'];
+        'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj', 'countryList'];
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
                              $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
-                             secondaryPurposeObj, responsiblePartyObj, trialStatusObj) {
+                             secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj, countryList) {
         var vm = this;
         vm.accordion1 = true;
         vm.accordion2 = true;
@@ -20,6 +20,7 @@
         vm.accordion5 = true;
         vm.accordion6 = true;
         vm.accordion7 = true;
+        vm.accordion8 = true;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -28,33 +29,58 @@
         vm.primaryPurposeArr = primaryPurposeObj;
         vm.secondaryPurposeArr = secondaryPurposeObj;
         vm.responsiblePartyArr = responsiblePartyObj;
+        vm.fundingMechanismArr = fundingMechanismObj;
+        vm.instituteCodeArr = instituteCodeObj;
+        vm.nciArr = nciObj;
         vm.trialStatusArr = trialStatusObj;
+        vm.countryArr = countryList;
+        vm.authorityOrgArr = [];
         vm.status_date_opened = false;
         vm.start_date_opened = false;
         vm.primary_comp_date_opened = false;
         vm.comp_date_opened = false;
         vm.addedOtherIds = [];
+        vm.addedGrants = [];
         vm.addedStatuses = [];
         vm.selectedPiArray = [];
-        vm.primaryPurposeOther = false;
-        vm.secondaryPurposeOther = false;
+        vm.selectedInvArray = [];
+        vm.showPrimaryPurposeOther = false;
+        vm.showSecondaryPurposeOther = false;
+        vm.showInvestigator = false;
+        vm.curTrial.pilot = 'No';
+        vm.curTrial.grant_question = 'Yes';
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
-            if (vm.selectedPiArray[0]) {
+            if (vm.selectedPiArray.length > 0) {
                 vm.curTrial.pi_id = vm.selectedPiArray[0].id;
             }
 
-            // Construct nested attributes
-            vm.curTrial.other_ids_attributes = [];
-            _.each(vm.addedOtherIds, function (otherId) {
-                vm.curTrial.other_ids_attributes.push(otherId);
-            });
+            if (vm.selectedInvArray.length > 0) {
+                vm.curTrial.investigator_id = vm.selectedInvArray[0].id;
+            }
 
-            vm.curTrial.trial_status_wrappers_attributes = [];
-            _.each(vm.addedStatuses, function (status) {
-                vm.curTrial.trial_status_wrappers_attributes.push(status);
-            });
+            // Construct nested attributes
+            if (vm.addedOtherIds.length > 0) {
+                vm.curTrial.other_ids_attributes = [];
+                _.each(vm.addedOtherIds, function (otherId) {
+                    vm.curTrial.other_ids_attributes.push(otherId);
+                });
+            }
+
+            if (vm.addedGrants.length > 0) {
+                vm.curTrial.grants_attributes = [];
+                _.each(vm.addedGrants, function (grant) {
+                    vm.curTrial.grants_attributes.push(grant);
+                });
+            }
+
+            if (vm.addedStatuses.length > 0) {
+                vm.curTrial.trial_status_wrappers_attributes = [];
+                _.each(vm.addedStatuses, function (status) {
+                    vm.curTrial.trial_status_wrappers_attributes.push(status);
+                });
+            }
 
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
@@ -74,6 +100,10 @@
             if (type == 'other_id') {
                 if (index < vm.addedOtherIds.length) {
                     vm.addedOtherIds[index]._destroy = !vm.addedOtherIds[index]._destroy;
+                }
+            } else if (type == 'grant') {
+                if (index < vm.addedGrants.length) {
+                    vm.addedGrants[index]._destroy = !vm.addedGrants[index]._destroy;
                 }
             } else if (type == 'trial_status') {
                 if (index < vm.addedStatuses.length) {
@@ -109,10 +139,21 @@
                 if (origin.id == vm.protocol_id_origin_id) {
                     newId.protocol_id_origin_name = origin.name;
                 }
-            })
+            });
             newId.protocol_id = vm.protocol_id;
             newId._destroy = false;
             vm.addedOtherIds.push(newId);
+        };
+
+        // Add grant to a temp array
+        vm.addGrant = function () {
+            var newGrant = {};
+            newGrant.funding_mechanism = vm.funding_mechanism;
+            newGrant.institute_code = vm.institute_code;
+            newGrant.serial_number = vm.serial_number;
+            newGrant.nci = vm.nci;
+            newGrant._destroy = false;
+            vm.addedGrants.push(newGrant);
         };
 
         // Add trial status to a temp array
@@ -125,7 +166,7 @@
                 if (status.id == vm.trial_status_id) {
                     newStatus.trial_status_name = status.name;
                 }
-            })
+            });
             newStatus.why_stopped = vm.why_stopped;
             newStatus._destroy = false;
             vm.addedStatuses.push(newStatus);
@@ -148,6 +189,19 @@
                     vm.showSecondaryPurposeOther = false;
                     vm.curTrial.secondary_purpose_other = '';
                 }
+            } else if (type == 'responsible_party') {
+                var invOptions = vm.responsiblePartyArr.filter(findInvestigatorOption);
+                for (var i = 0; i < invOptions.length; i++) {
+                    if (invOptions[i].id == vm.curTrial.responsible_party_id) {
+                        vm.showInvestigator = true;
+                        break;
+                    } else {
+                        vm.showInvestigator = false;
+                        vm.selectedInvArray = [];
+                    }
+                }
+            } else if (type == 'authority_country') {
+                vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.curTrial.authority_country);
             }
         };
 
@@ -193,7 +247,16 @@
 
         // Return true if the option is "Other"
         function findOtherOption(option) {
-            if (option.name == 'Other') {
+            if (option.code == 'OTH') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Return true if the option is "Principal Investigator" or "Sponsor Investigator"
+        function findInvestigatorOption(option) {
+            if (option.code == 'PI' || option.code == 'SI') {
                 return true;
             } else {
                 return false;

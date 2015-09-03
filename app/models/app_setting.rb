@@ -14,4 +14,5 @@
 #
 
 class AppSetting < ActiveRecord::Base
+  include BasicConcerns
 end
