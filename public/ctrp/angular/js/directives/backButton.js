@@ -14,9 +14,9 @@
     angular.module('ctrpApp')
         .directive('backButton', backButton);
 
-    backButton.$inject = ['$window'];
+    backButton.$inject = ['$breadcrumb', '$state'];
 
-    function backButton($window) {
+    function backButton($breadcrumb, $state) {
 
         return {
             restrict: 'A',
@@ -25,8 +25,13 @@
                 element.bind('click', goBack);
 
                 function goBack() {
-                    $window.history.back();
-                    scope.$apply();
+                    //console.log('last state: ' + JSON.stringify($breadcrumb.getLastStep()));
+                    //console.log('states chain: ' + JSON.stringify($breadcrumb.getStatesChain()));
+                    var lastState = $breadcrumb.getStatesChain(); //array
+                    lastState = lastState[lastState.length - 1] || '';
+                    lastState = lastState.ncyBreadcrumb || '';
+                    console.log('going back to last state: ' + lastState.parent);
+                    $state.transitionTo(lastState.parent);
                 }
             }
         };

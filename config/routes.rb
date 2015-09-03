@@ -66,14 +66,14 @@ Rails.application.routes.draw do
 
     # Devise related routes
     devise_scope :user do
-      delete "sign_out" => "devise/sessions#destroy", :as => :destroy_session
+      delete "sign_out" => "sessions#destroyrailslogin", :as => :destroyrailslogin_session
     end
     devise_for :ldap_users, :local_users, skip: [ :sessions ]
     devise_for :omniauth_users, :controllers => { :omniauth_callbacks => "omniauth_users/omniauth_callbacks" }
     devise_scope :local_user do
       get 'sign_in' => 'sessions#new', :as => :new_session
       post 'sign_in' => 'sessions#create', :as => :create_session
-     # post 'sign_out' => 'sessions#destroy', :as => :destroy_session
+      post 'sign_out' => 'sessions#destroy', :as => :destroy_session
     end
 
     resources :study_sources
