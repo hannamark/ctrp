@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: rep_data_set_methods
+# Table name: central_contact_types
 #
 #  id         :integer          not null, primary key
 #  code       :string(255)
@@ -10,10 +10,5 @@
 #  uuid       :string(255)
 #
 
-require 'test_helper'
-
-class RepDataSetMethodTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class CentralContactType < ActiveRecord::Base
 end

@@ -1,6 +1,6 @@
-class CreateRepDataSetMethods < ActiveRecord::Migration
+class CreateIdentifierTypes < ActiveRecord::Migration
   def change
-    create_table :rep_data_set_methods do |t|
+    create_table :identifier_types do |t|
 
       t.static_member_base_columns
       t.timestamps null: false

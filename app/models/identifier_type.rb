@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: rep_data_set_methods
+# Table name: identifier_types
 #
 #  id         :integer          not null, primary key
 #  code       :string(255)
@@ -10,5 +10,5 @@
 #  uuid       :string(255)
 #
 
-class RepDataSetMethod < ActiveRecord::Base
+class IdentifierType < ActiveRecord::Base
 end

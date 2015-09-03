@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: industrials
+# Table name: central_contact_types
 #
 #  id         :integer          not null, primary key
 #  code       :string(255)
@@ -12,7 +12,7 @@
 
 require 'test_helper'
 
-class IndustrialTest < ActiveSupport::TestCase
+class CentralContactTypeTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

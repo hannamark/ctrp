@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: industrials
+# Table name: identifier_types
 #
 #  id         :integer          not null, primary key
 #  code       :string(255)
@@ -10,5 +10,10 @@
 #  uuid       :string(255)
 #
 
-class Industrial < ActiveRecord::Base
+require 'test_helper'
+
+class IdentifierTypeTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
 end
