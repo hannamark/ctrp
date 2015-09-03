@@ -15,4 +15,12 @@ class UtilController < ActionController::Base
   def get_funding_mechanisms
     @funding_mechanisms = AppSetting.find_by_code('FM').big_value.split(',')
   end
+
+  def get_institute_codes
+    @institute_codes = AppSetting.find_by_code('IC').big_value.split(',')
+  end
+
+  def get_nci
+    @nci = AppSetting.find_by_code('NCI').big_value.split(',')
+  end
 end

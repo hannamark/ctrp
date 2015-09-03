@@ -54,6 +54,8 @@
             getSecondaryPurposes: getSecondaryPurposes,
             getResponsibleParties: getResponsibleParties,
             getFundingMechanisms: getFundingMechanisms,
+            getInstituteCodes: getInstituteCodes,
+            getNci: getNci,
             getTrialStatuses: getTrialStatuses,
             getAuthorityOrgArr: getAuthorityOrgArr,
             deleteTrial: deleteTrial
@@ -155,6 +157,14 @@
 
         function getFundingMechanisms() {
             return PromiseTimeoutService.getData(URL_CONFIGS.FUNDING_MECHANISMS);
+        }
+
+        function getInstituteCodes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.INSTITUTE_CODES);
+        }
+
+        function getNci() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.NCI);
         }
 
         function getTrialStatuses() {
