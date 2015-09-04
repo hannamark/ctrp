@@ -157,38 +157,13 @@ class ApplicationController < ActionController::Base
   def create_authorization_json(user, token)
     begin
       Rails.logger.info "In create_authorization_json user=#{user.inspect}"
-      all = "all"
-      role = user.role || ""
-      role_json = Hash.new
-      role_json = case role
-                    when "ROLE_SUPER"
-                      {resource_urls: {can:  all},
-                       links: {can: all}
-                      }
-                    when "ROLE_ADMIN"
-                      {resource_urls: {can:  all},
-                       links: {can: all}
-                      }
-                    when "ROLE_CURATOR"
-                      {resource_urls: {can:  all},
-                       links: {cannot: ["useradmin"]}
-                      }
-                    when "ROLE_RO"
-                      {resource_urls: {can: {all: {operations: ["read"]}}},
-                       links: {cannot: "backoffice"}
-                      }
-                    else
-                      {resource_urls: {can:  all},
-                       links: {can: all}
-                      }
-                  end
-
-      Rails.logger.info "In create_authorization_json role_json = #{role_json.inspect}"
 
       auth_json = {
           application_version: "0.1", # should be retrieved from Config file
-          token: token
-                    }.merge!(role_json)
+          token: token,
+          role: user.role,
+          env: Rails.env
+                    }
 
       Rails.logger.info "In create_authorization_json auth_json = #{auth_json.inspect}"
       return auth_json
