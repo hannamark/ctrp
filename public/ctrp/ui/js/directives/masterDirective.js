@@ -11,8 +11,8 @@
                     mod: '='
                 },
                 //template: '{{mod}}',// <br /> <div popover-placement="bottom" popover-template="\'t.html\'">Click to Open Popover</div>'
-                template: '<div class="text-center"><button popover-placement="left" type="button" class="btn btn-default" popover-trigger="focus" popover-template="\'/ctrp/angular/js/directives/masterDirectiveTemplate.html\'">{{label}}</button></div>',
-                //templateUrl: '/ctrp/angular/js/directives/masterDirectiveTemplate.html',
+                template: '<div class="text-center"><button popover-placement="left" type="button" class="btn btn-default" popover-trigger="focus" popover-template="\'/ctrp/ui/js/directives/masterDirectiveTemplate.html\'">{{label}}</button></div>',
+                //templateUrl: '/ctrp/ui/js/directives/masterDirectiveTemplate.html',
                 //template: '<button popover-template="dynamicPopover.templateUrl" popover-title="{{dynamicPopover.title}}" type="button" class="btn btn-default">Popover With Template</button>',
                 /*link: function(scope, element, attrs) {
                     element.text('replaced text');
@@ -27,7 +27,7 @@
                     console.log(JSON.stringify($scope.mod));
 
                 }
-                //templateUrl: '/ctrp/angular/js/directives/masterDirectiveTemplate.html'
+                //templateUrl: '/ctrp/ui/js/directives/masterDirectiveTemplate.html'
 
             }
         }

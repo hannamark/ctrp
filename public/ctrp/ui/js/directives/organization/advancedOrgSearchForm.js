@@ -32,7 +32,7 @@
                 orgSearchResults: '@orgSearchResults',
                 selectedOrgsArray: '@selectedOrgsArray',
             },
-            templateUrl: '/ctrp/angular/js/directives/organization/advancedOrgSearchFormTemplate.html',
+            templateUrl: '/ctrp/ui/js/directives/organization/advancedOrgSearchFormTemplate.html',
             link: linkFn,
             controller: orgSearchController
         };

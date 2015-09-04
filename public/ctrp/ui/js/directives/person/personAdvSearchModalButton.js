@@ -28,7 +28,7 @@
                 useBuiltInTemplate: '=?', //boolean
                 selectedPersonsArray: '='
             },
-            templateUrl: '/ctrp/angular/js/directives/person/personAdvSearchModalButtonTemplate.html',
+            templateUrl: '/ctrp/ui/js/directives/person/personAdvSearchModalButtonTemplate.html',
             link: linkerFn,
             controller: personAdvSearchModalButtonController
         };
@@ -58,7 +58,7 @@
 
                 var modalInstance = $modal.open({
                     animation: true,
-                    templateUrl: '/ctrp/angular/partials/modals/advanced_person_search_form_modal.html',
+                    templateUrl: '/ctrp/ui/partials/modals/advanced_person_search_form_modal.html',
                     controller: 'advancedPersonSearchModalCtrl as advPersonSearchModalView',
                     size: size,
                     resolve: {

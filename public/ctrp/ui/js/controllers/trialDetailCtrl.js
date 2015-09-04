@@ -229,7 +229,7 @@
             vm.searchOrg = function(size, type) {
                 var modalInstance = $modal.open({
                     animation: true,
-                    templateUrl: '/ctrp/angular/partials/modals/advanced_org_search_form_modal.html',
+                    templateUrl: '/ctrp/ui/partials/modals/advanced_org_search_form_modal.html',
                     controller: 'advancedOrgSearchModalCtrl as orgSearchModalView',
                     size: size
                 });

@@ -61,15 +61,15 @@
                 url: '/main',
                 views: {
                     '': {
-                        templateUrl: '/ctrp/angular/partials/main_content_frame.html'
+                        templateUrl: '/ctrp/ui/partials/main_content_frame.html'
                     },
 
                     'right_panel@main': {
-                        templateUrl: '/ctrp/angular/partials/right_panel.html'
+                        templateUrl: '/ctrp/ui/partials/right_panel.html'
                     },
 
                     'main_content@main': {
-                        templateUrl: '/ctrp/angular/partials/main_content.html'
+                        templateUrl: '/ctrp/ui/partials/main_content.html'
                     }
                 },
                 ncyBreadcrumb: {
@@ -80,7 +80,7 @@
 
                 .state('main.defaultContent', {
                     url: '/welcome',
-                    templateUrl: '/ctrp/angular/partials/welcome_content.html',
+                    templateUrl: '/ctrp/ui/partials/welcome_content.html',
                     ncyBreadcrumb: {
                         label: 'Home'
                     }
@@ -88,7 +88,7 @@
 
                 .state('main.organizations', {
                     url: '/organizations',
-                    templateUrl: '/ctrp/angular/partials/organization_list.html',
+                    templateUrl: '/ctrp/ui/partials/organization_list.html',
                     controller: 'organizationCtrl as orgsView',
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
@@ -98,7 +98,7 @@
 
                 .state('main.orgDetail', {
                     url: '/organizations/:orgId',
-                    templateUrl: '/ctrp/angular/partials/orgDetails.html',
+                    templateUrl: '/ctrp/ui/partials/orgDetails.html',
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
                         OrgService : 'OrgService',
@@ -126,7 +126,7 @@
 
                 .state('main.addOrganization', {
                     url: '/new_organization',
-                    templateUrl: '/ctrp/angular/partials/orgDetails.html',
+                    templateUrl: '/ctrp/ui/partials/orgDetails.html',
                     controller: 'orgDetailCtrl as orgDetailView',
                     resolve: {
                         OrgService : 'OrgService',
@@ -154,7 +154,7 @@
 
                 .state('main.sign_in', {
                     url: '/sign_in',
-                    templateUrl: '/ctrp/angular/partials/sign_in.html',
+                    templateUrl: '/ctrp/ui/partials/sign_in.html',
                     controller: 'userCtrl as userView',
                     ncyBreadcrumb: {
                         parent: '',
@@ -165,7 +165,7 @@
 
                 .state('main.families', {
                     url: '/families',
-                    templateUrl: '/ctrp/angular/partials/family_list.html',
+                    templateUrl: '/ctrp/ui/partials/family_list.html',
                     controller: 'familyCtrl as familyView',
                     resolve: {
                         FamilyService: 'FamilyService',
@@ -184,7 +184,7 @@
 
                 .state('main.familyDetail', {
                     url: '/families/:familyId',
-                    templateUrl: '/ctrp/angular/partials/familyDetails.html',
+                    templateUrl: '/ctrp/ui/partials/familyDetails.html',
                     controller: 'familyDetailCtrl as familyDetailView',
                     resolve: {
                         FamilyService: 'FamilyService',
@@ -209,7 +209,7 @@
 
                 .state('main.addFamily', {
                     url: '/new_family',
-                    templateUrl: '/ctrp/angular/partials/familyDetails.html',
+                    templateUrl: '/ctrp/ui/partials/familyDetails.html',
                     controller: 'familyDetailCtrl as familyDetailView',
                     resolve: {
                         FamilyService: 'FamilyService',
@@ -239,7 +239,7 @@
 
                 .state('main.people', {
                     url: '/people',
-                    templateUrl: '/ctrp/angular/partials/person_list.html',
+                    templateUrl: '/ctrp/ui/partials/person_list.html',
                     controller: 'personCtrl as personView',
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
@@ -249,7 +249,7 @@
 
                 .state('main.personDetail', {
                     url: '/people/:personId',
-                    templateUrl: '/ctrp/angular/partials/personDetails.html',
+                    templateUrl: '/ctrp/ui/partials/personDetails.html',
                     controller: 'personDetailCtrl as personDetailView',
                     resolve: {
                         OrgService: 'OrgService',
@@ -272,7 +272,7 @@
 
                 .state('main.addPerson', {
                     url: '/new_person',
-                    templateUrl: '/ctrp/angular/partials/personDetails.html',
+                    templateUrl: '/ctrp/ui/partials/personDetails.html',
                     controller: 'personDetailCtrl as personDetailView',
                     resolve: {
                         OrgService: 'OrgService',
@@ -296,7 +296,7 @@
 
                 .state('main.testPerson', {
                     url: '/person_directive',
-                    templateUrl: '/ctrp/angular/partials/person_search.html',
+                    templateUrl: '/ctrp/ui/partials/person_search.html',
                     controller: 'personSearchCtrl as personSearchView'
                 })
                 .state('main.trials', {
@@ -309,7 +309,7 @@
 
                 .state('main.addTrial', {
                     url: '/new_trial',
-                    templateUrl: '/ctrp/angular/partials/trialDetails.html',
+                    templateUrl: '/ctrp/ui/partials/trialDetails.html',
                     controller: 'trialDetailCtrl as trialDetailView',
                     resolve: {
                         TrialService: 'TrialService',
