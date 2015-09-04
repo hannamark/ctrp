@@ -21,6 +21,7 @@
         vm.accordion6 = true;
         vm.accordion7 = true;
         vm.accordion8 = true;
+        vm.accordion9 = true;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -42,6 +43,7 @@
         vm.addedOtherIds = [];
         vm.addedGrants = [];
         vm.addedStatuses = [];
+        vm.addedIndIdes = [];
         vm.selectedPiArray = [];
         vm.selectedInvArray = [];
         vm.showPrimaryPurposeOther = false;
@@ -82,6 +84,13 @@
                 });
             }
 
+            if (vm.addedIndIdes.length > 0) {
+                vm.curTrial.ind_ides_attributes = [];
+                _.each(vm.addedIndIdes, function (indIde) {
+                    vm.curTrial.ind_ides_attributes.push(indIde);
+                });
+            }
+
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -108,6 +117,10 @@
             } else if (type == 'trial_status') {
                 if (index < vm.addedStatuses.length) {
                     vm.addedStatuses[index]._destroy = !vm.addedStatuses[index]._destroy;
+                }
+            } else if (type == 'ind_ide') {
+                if (index < vm.addedIndIdes.length) {
+                    vm.addedIndIdes[index]._destroy = !vm.addedIndIdes[index]._destroy;
                 }
             }
         };// toggleSelection
@@ -170,6 +183,33 @@
             newStatus.why_stopped = vm.why_stopped;
             newStatus._destroy = false;
             vm.addedStatuses.push(newStatus);
+        };
+
+        // Add IND/IDE to a temp array
+        vm.addIndIde = function () {
+            var newIndIde = {};
+            newIndIde.type = vm.type;
+            newIndIde.number = vm.number;
+            newIndIde.grantor = vm.grantor;
+            newIndIde.holder_type_id = vm.holder_type_id;
+            // For displaying name in the table
+            _.each(vm.holderTypeArr, function (holderType) {
+                if (holderType.id == vm.holder_type_id) {
+                    newIndIde.holder_type_name = holderType.name;
+                }
+            });
+            newIndIde.nih_nci = vm.nih_nci;
+            newIndIde.expanded_access = vm.expanded_access;
+            newIndIde.expanded_access_type_id = vm.expanded_access_type_id;
+            // For displaying name in the table
+            _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
+                if (expandedAccessType.id == vm.expanded_access_type_id) {
+                    newIndIde.expanded_access_type_name = expandedAccessType.name;
+                }
+            });
+            newIndIde.exempt = vm.exempt;
+            newIndIde._destroy = false;
+            vm.addedIndIdes.push(newIndIde);
         };
 
         vm.watchOption = function(type) {

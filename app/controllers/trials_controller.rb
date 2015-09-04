@@ -78,6 +78,8 @@ class TrialsController < ApplicationController
                                     :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
-                                    trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id, :_destroy])
+                                    trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id, :_destroy],
+                                    ind_ides_attributes: [:id, :type, :number, :grantor, :holder_type_id, :nih_nci,
+                                                          :expanded_access, :expanded_access_type_id, :exempt, :_destroy])
     end
 end
