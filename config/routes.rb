@@ -31,6 +31,19 @@ Rails.application.routes.draw do
       end
       end
 
+    #TODO put related routs in namespaces
+    scope '/familystuff' do
+
+      resources :family_statuses
+
+      resources :family_types
+
+      resources :family_relationships
+
+      resources :family_memberships
+
+    end
+
     resources :family_statuses
 
     resources :family_types
