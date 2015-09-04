@@ -157,8 +157,9 @@
                     templateUrl: '/ctrp/angular/partials/sign_in.html',
                     controller: 'userCtrl as userView',
                     ncyBreadcrumb: {
-                        parent: 'main.defaultContent',
-                        label: 'Sign In'
+                        parent: '',
+                        label: 'Sign in',
+                        skip: true
                     }
                 })
 
