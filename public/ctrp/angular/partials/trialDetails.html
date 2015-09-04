@@ -500,7 +500,7 @@
                                     <tr>
                                         <td class="col-md-1">
                                             <div>
-                                                <select class="form-control" id="type" ng-model="trialDetailView.type">
+                                                <select class="form-control" id="ind_ide_type" ng-model="trialDetailView.ind_ide_type">
                                                     <option value="">--Select--</option>
                                                     <option value="IND">IND</option>
                                                     <option value="IDE">IDE</option>
@@ -509,7 +509,7 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div>
-                                                <input type="text" class="form-control input-xs" id="number" ng-model="trialDetailView.number" />
+                                                <input type="text" class="form-control input-xs" id="ind_ide_number" ng-model="trialDetailView.ind_ide_number" />
                                             </div>
                                         </td>
                                         <td class="col-md-1">
@@ -591,8 +591,8 @@
                                                 <i ng-class="indIde._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>
-                                        <td class="col-md-1">{{indIde.type}}</td>
-                                        <td class="col-md-1">{{indIde.number}}</td>
+                                        <td class="col-md-1">{{indIde.ind_ide_type}}</td>
+                                        <td class="col-md-1">{{indIde.ind_ide_number}}</td>
                                         <td class="col-md-1">{{indIde.grantor}}</td>
                                         <td class="col-md-1">{{indIde.holder_type_name}}</td>
                                         <td class="col-md-3">{{indIde.nih_nci}}</td>

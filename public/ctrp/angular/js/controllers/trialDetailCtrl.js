@@ -192,8 +192,8 @@
         // Add IND/IDE to a temp array
         vm.addIndIde = function () {
             var newIndIde = {};
-            newIndIde.type = vm.type;
-            newIndIde.number = vm.number;
+            newIndIde.ind_ide_type = vm.ind_ide_type;
+            newIndIde.ind_ide_number = vm.ind_ide_number;
             newIndIde.grantor = vm.grantor;
             newIndIde.holder_type_id = vm.holder_type_id;
             // For displaying name in the table

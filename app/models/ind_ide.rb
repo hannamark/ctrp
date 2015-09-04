@@ -3,8 +3,8 @@
 # Table name: ind_ides
 #
 #  id                      :integer          not null, primary key
-#  type                    :string(255)
-#  number                  :integer
+#  ind_ide_type            :string(255)
+#  ind_ide_number          :integer
 #  grantor                 :string(255)
 #  nih_nci                 :string(255)
 #  expanded_access         :string(255)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150814000001) do
+ActiveRecord::Schema.define(version: 20150814000002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,8 +119,8 @@ ActiveRecord::Schema.define(version: 20150814000001) do
   end
 
   create_table "ind_ides", force: :cascade do |t|
-    t.string   "type",                    limit: 255
-    t.integer  "number"
+    t.string   "ind_ide_type",            limit: 255
+    t.integer  "ind_ide_number"
     t.string   "grantor",                 limit: 255
     t.string   "nih_nci",                 limit: 255
     t.string   "expanded_access",         limit: 255
