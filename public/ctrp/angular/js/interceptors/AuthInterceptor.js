@@ -45,7 +45,7 @@
             console.log("bad response status: " + rejection.status);
             if (rejection.status > 226) {
                 $injector.get('toastr').clear();
-                $injector.get('toastr').error('Access to the resources is not authorized', 'Error');
+                $injector.get('toastr').error('Access to the resources is not authorized', 'Error Code: ' + rejection.status);
                 // $injector.get('UserService').logout();
                 console.log("error status code: " + rejection.status);
                 //redirect to login page
