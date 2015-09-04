@@ -8,10 +8,12 @@
         .controller('trialDetailCtrl', trialDetailCtrl);
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
-        'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj', 'countryList'];
+        'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
                              $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
-                             secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj, countryList) {
+                             secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
+                             holderTypeObj, expandedAccessTypeObj, countryList) {
         var vm = this;
         vm.accordion1 = true;
         vm.accordion2 = true;
@@ -34,6 +36,8 @@
         vm.instituteCodeArr = instituteCodeObj;
         vm.nciArr = nciObj;
         vm.trialStatusArr = trialStatusObj;
+        vm.holderTypeArr = holderTypeObj;
+        vm.expandedAccessTypeArr = expandedAccessTypeObj;
         vm.countryArr = countryList;
         vm.authorityOrgArr = [];
         vm.status_date_opened = false;

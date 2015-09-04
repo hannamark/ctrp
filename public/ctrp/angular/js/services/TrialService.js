@@ -57,6 +57,8 @@
             getInstituteCodes: getInstituteCodes,
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
+            getHolderTypes: getHolderTypes,
+            getExpandedAccessTypes: getExpandedAccessTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             deleteTrial: deleteTrial
         };
@@ -169,6 +171,14 @@
 
         function getTrialStatuses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_STATUSES);
+        }
+
+        function getHolderTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.HOLDER_TYPES);
+        }
+
+        function getExpandedAccessTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
         }
 
         function getAuthorityOrgArr(country) {
