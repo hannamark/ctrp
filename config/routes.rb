@@ -71,6 +71,10 @@ Rails.application.routes.draw do
     get '/backoffice/download_log'
     get '/backoffice/static_members'
 
+    #DmzUtils routes
+    get '/dmzutils/appver' => 'dmz_utils#get_appver'
+
+
     # Devise related routes
     devise_scope :user do
       delete "sign_out" => "sessions#destroyrailslogin", :as => :destroyrailslogin_session
