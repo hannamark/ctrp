@@ -106,7 +106,7 @@ AppSetting.find_or_create_by(code: 'IC', name: 'Institute Code List', value: 'se
 
 AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List', value: 'see big value', big_value: 'CCR,CCT/CTB,CIP,CDP,CTEP,DCB,DCCPS,DCEG,DCP,DEA,DTP,OD,OSB/SPOREs,TRP,RRP,N/A')
 
-AppSetting.find_or_create_by(code: 'APP_VER', name: 'Application Version', value: '5.0', big_value: '')
+#AppSetting.find_or_create_by(code: 'APP_VER', name: 'Application Version', value: '5.0', big_value: '')
 ########## SEEDING APP SETTINGS ENDS ##########
 
 if Organization.count  == 0

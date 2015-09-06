@@ -1,1 +1,1 @@
-json.appver @appver.value
+json.appver @appver
