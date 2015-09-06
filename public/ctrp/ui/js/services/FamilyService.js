@@ -35,17 +35,16 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'id', enableSorting: true, displayName: 'Family ID', width: '7%'},
-                {name: 'name', enableSorting: true, displayName: 'Family Name', width: '35%%',
+                {name: 'name', enableSorting: true, displayName: 'Family Name', width: '50%%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'family_status', displayName: 'Family Status', enableSorting: true, width: '10%'},
-                {name: 'family_type', displayName: 'Family Type', enableSorting: true, width: '10%'},
+                {name: 'family_type', displayName: 'Family Type', enableSorting: true, width: '20%'},
                 /*{name: 'family_members', enableSorting:false, displayName:'Family Members', width: '25%',
                 cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                 '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}} Show Family Members</a></div>'},*/
-                {name: 'aff_orgs', displayName:'Family Members',width:'30%',cellTemplate:'<div ng-show="row.entity.aff_orgs.length > 0"><master-directive button-label="Family Members" mod="row.entity.aff_orgs"></master-directive></div><div class="text-center" ng-show="row.entity.aff_orgs.length == 0">--</div>'}
+                {name: 'aff_orgs', displayName:'Family Members',width:'20%',cellTemplate:'<div ng-show="row.entity.aff_orgs.length > 0"><master-directive button-label="Family Members" mod="row.entity.aff_orgs"></master-directive></div><div class="text-center" ng-show="row.entity.aff_orgs.length == 0">--</div>'}
             ]
         };
 
