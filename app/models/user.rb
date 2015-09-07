@@ -53,6 +53,7 @@ class  User < ActiveRecord::Base
   #       :recoverable, :trackable, :validatable,
    #      :confirmable, :lockable, :timeoutable, :omniauthable
   devise   :timeoutable,  :validatable
+  has_one :organization
 
   ROLES = %i[ROLE_READONLY ROLE_SITE_ADMIN ROLE_SUPER ROLE_ADMIN ROLE_CURATOR]
   validates :username, presence: true, uniqueness: { case_sensitive: false }

@@ -50,9 +50,7 @@ Rails.application.routes.draw do
 
     resources :users
 
-    #resource :local_users
-
-    #resource :ldap_users
+    resources :after_signup
 
     resources :people do
       collection do
@@ -78,13 +76,17 @@ Rails.application.routes.draw do
     # Devise related routes
     devise_scope :user do
       delete "sign_out" => "sessions#destroyrailslogin", :as => :destroyrailslogin_session
+      #get "sign_up" => "registrations#new"
     end
+
     devise_for :ldap_users, :local_users, skip: [ :sessions ]
     devise_for :omniauth_users, :controllers => { :omniauth_callbacks => "omniauth_users/omniauth_callbacks" }
+    devise_for :local_users, :controllers => { :registrations => :registrations }
     devise_scope :local_user do
       get 'sign_in' => 'sessions#new', :as => :new_session
       post 'sign_in' => 'sessions#create', :as => :create_session
       post 'sign_out' => 'sessions#destroy', :as => :destroy_session
+      post 'sign_up' => 'registrations#create', :as => :create_registration
     end
 
     resources :study_sources
