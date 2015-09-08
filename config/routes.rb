@@ -70,8 +70,8 @@ Rails.application.routes.draw do
     get '/backoffice/static_members'
 
     #DmzUtils routes
-    get '/dmzutils/appver' => 'dmz_utils#get_appver'
-
+    get '/dmzutils/appver' => 'dmz_utils#get_app_ver'
+    get '/dmzutils/loginbulletin' => 'dmz_utils#get_login_bulletin'
 
     # Devise related routes
     devise_scope :user do
