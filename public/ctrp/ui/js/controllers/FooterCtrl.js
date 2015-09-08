@@ -13,20 +13,10 @@
     function FooterCtrl(UserService, $scope) {
 
         var vm = this;
-        vm.appVersion = $scope.$parent.appVersion || '4.0.0';
-
-        if (!UserService.isLoggedIn()) {
-            UserService.getAppVerFromDMZ().then(function(data) {
-                //console.log('retrieved data from dmz: ' + JSON.stringify(data));
-                vm.appVersion = data.appver;
-            }).catch(function(err) {
-                   console.log('error in retrieving data from dmz utils');
-            });
-        }
-
-        console.log($scope.$parent.$id);
-        console.log($scope.$id);
-        console.log($scope.$parent);
+        vm.appVersion = '';
+        $scope.$on('updatedAppVersion', function() {
+            vm.appVersion = UserService.getAppVersion();
+        });
 
     } //FooterCtrl
 

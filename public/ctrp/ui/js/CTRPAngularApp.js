@@ -364,22 +364,22 @@
             console.log('running ctrp angular app');
 
             $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-                /*
-                console.log('upon state changes, $state.$current.name: ' + $state.$current.name);
-                console.log('current $state.$parent: ' + JSON.stringify($state.$parent));
-                console.log('toState: ' + JSON.stringify(toState));
-                console.log('toParams: ' + JSON.stringify(toParams));
-                console.log('fromState: ' + JSON.stringify(fromState));
-                */
 
-
+                //get appversion from DMZ if unauthenticated
+                var tempUserService = $injector.get('UserService'); //reference to UserService
                 if (toState.name == 'main.sign_in') {
-                    console.log('showing sign in form');
-                    $injector.get('Common').broadcastMsg('redirectToSignIn');
+
+                    if (!tempUserService.isLoggedIn()) {
+                        tempUserService.getAppVerFromDMZ().then(function(data) {
+                           // console.log('retrieved data from dmz: ' + JSON.stringify(data));
+                            tempUserService.setAppVersion(data.appver);
+                        });
+                    }
+                } else {
+                    //do not show appversion on other pages
+                    tempUserService.setAppVersion('');
                 }
-
             });
-
         });
 
 

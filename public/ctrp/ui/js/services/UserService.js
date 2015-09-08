@@ -13,6 +13,8 @@
     function UserService(LocalCacheService, PromiseTimeoutService, $log,
                          $timeout, $state, toastr, Common, DMZ_UTILS) {
 
+        var appVersion = '';
+
         /**
          * Check if the the user/viewer is logged in by checking the
          * local cache for existence of both token and username
@@ -33,7 +35,8 @@
                     if (data.token) {
                         LocalCacheService.cacheItem("token", data.token);
                         LocalCacheService.cacheItem("username", userObj.user.username);
-                        LocalCacheService.cacheItem("app_version", data.application_version);
+                        this.setAppVersion(data.application_version);
+                        // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg("signedIn");
@@ -105,6 +108,24 @@
         this.getAppVerFromDMZ = function() {
             return PromiseTimeoutService.getData(DMZ_UTILS.APP_VERSION);
         }
+
+
+        this.setAppVersion = function(version) {
+            if (!version) {
+                //if null or empty value
+                appVersion = '';
+                LocalCacheService.removeItemFromCache("app_version");
+            } else {
+                appVersion = version;
+                LocalCacheService.cacheItem("app_version", version);
+            }
+            //notify listeners
+            Common.broadcastMsg('updatedAppVersion');
+        };
+
+        this.getAppVersion = function() {
+            return appVersion || LocalCacheService.getCacheWithKey('app_version');
+        };
 
     }
 
