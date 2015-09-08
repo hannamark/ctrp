@@ -89,22 +89,24 @@ Rails.application.routes.draw do
       post 'sign_up' => 'registrations#create', :as => :create_registration
     end
 
-    resources :study_sources
-    resources :phases
-    resources :primary_purposes
-    resources :secondary_purposes
-    resources :responsible_parties
-    resources :trials
-    resources :protocol_id_origins
-    resources :holder_types
-    resources :expanded_access_types
-    resources :trial_statuses
-    resources :research_categories
+    scope '/registry' do
+      resources :study_sources
+      resources :phases
+      resources :primary_purposes
+      resources :secondary_purposes
+      resources :responsible_parties
+      resources :trials
+      resources :protocol_id_origins
+      resources :holder_types
+      resources :expanded_access_types
+      resources :trial_statuses
+      resources :research_categories
 
-    get 'funding_mechanisms' => 'util#get_funding_mechanisms'
-    get 'institute_codes' => 'util#get_institute_codes'
-    get 'nci' => 'util#get_nci'
-    get 'nih' => 'util#get_nih'
+      get 'funding_mechanisms' => 'util#get_funding_mechanisms'
+      get 'institute_codes' => 'util#get_institute_codes'
+      get 'nci' => 'util#get_nci'
+      get 'nih' => 'util#get_nih'
+    end
   end
   # Devise related routes
 
