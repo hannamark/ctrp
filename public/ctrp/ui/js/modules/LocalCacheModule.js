@@ -12,6 +12,7 @@
             localStorageServiceProvider.setPrefix('CTRP-NCI')
                 .setStorageType('localStorage'); //for caching data in browser's localStorage data store
             localStorageServiceProvider.setNotify(true, true) // send signals for setItem and removeItem
+                .setStorageCookie(10, '/'); //for fallback, 10 days
         });
 
 

@@ -31,6 +31,13 @@
         </div>
         <div class="row">
             <form class="form-horizontal" role="form" name="person_form" novalidate>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Prefix:</label>
+
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.prefix">
+                    </div>
+                </div>
                 <div class="form-group col-sm-12"
                      ng-class="{'has-error' : person_form.fname.$error.required && person_form.fname.$dirty }">
                     <label class="control-label col-sm-3">First Name:</label>
@@ -38,7 +45,7 @@
                     <div class="col-sm-9">
                         <input type="text" name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus/>
                         <p ng-show="person_form.fname.$error.required && person_form.fname.$dirty" class="help-inline">
-                            Fist Name is required
+                            First Name is required
                         </p>
                     </div>
                 </div>
@@ -64,6 +71,13 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Suffix:</label>
+
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.suffix">
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Source ID:</label>
 
                     <div class="col-sm-9">
@@ -83,20 +97,6 @@
                                 <option ng-repeat="status in personDetailView.sourceStatusArr" value="{{status.id}}" ng-selected="personDetailView.curPerson.source_status_id == status.id">{{status.name}}</option>
                             </select>
                         </div>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Prefix:</label>
-
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.prefix">
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Suffix:</label>
-
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.suffix">
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
