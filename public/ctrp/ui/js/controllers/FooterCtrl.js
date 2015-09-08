@@ -12,13 +12,13 @@
 
     function FooterCtrl(UserService, $scope) {
 
-        //var vm = this;
-        $scope.appVersion = $scope.$parent.appVersion || '4.0.0';
+        var vm = this;
+        vm.appVersion = $scope.$parent.appVersion || '4.0.0';
 
-        if (UserService.isLoggedIn()) {
+        if (!UserService.isLoggedIn()) {
             UserService.getAppVerFromDMZ().then(function(data) {
                 //console.log('retrieved data from dmz: ' + JSON.stringify(data));
-                $scope.appVersion = data.appver;
+                vm.appVersion = data.appver;
             }).catch(function(err) {
                    console.log('error in retrieving data from dmz utils');
             });

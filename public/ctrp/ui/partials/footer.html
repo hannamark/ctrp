@@ -1,4 +1,4 @@
-<footer class="footer footer-fixed" ng-controller="FooterCtrl">
+<footer class="footer footer-fixed" ng-controller="FooterCtrl as footerView">
     <div class="container center-block">
         <ul class="list-inline">
             <li><a href="http://www.hhs.gov/">U.S. Department of Health and Human Services</a>&nbsp;&nbsp;&nbsp;&nbsp;|</li>
@@ -8,7 +8,7 @@
         </ul>
         <br /><br />
         <div class="text-center">
-            CTRP Version {{appVersion}}
+            CTRP Version {{footerView.appVersion}}
         </div>
         <div class="text-center">
             NIH ... Turning Discovery Into Health<sup>®</sup>
