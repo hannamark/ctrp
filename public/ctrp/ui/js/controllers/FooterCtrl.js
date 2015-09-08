@@ -13,7 +13,7 @@
     function FooterCtrl(UserService, $scope) {
 
         var vm = this;
-        $scope.appVersion = '';
+        $scope.appVersion = UserService.getAppVersion() || '';
         $scope.$on('updatedAppVersion', function() {
             $scope.appVersion = UserService.getAppVersion() || '';
             //console.log('updated app version in footer: ' + vm.appVersion);
