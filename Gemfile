@@ -68,3 +68,9 @@ gem 'paper_trail'
 gem 'ci_reporter_minitest'
 
 gem 'countries'
+
+# Add Wizard gem
+gem 'wicked'
+
+# Add Bootstrap
+gem 'bootstrap-sass', '~> 3.3.5'

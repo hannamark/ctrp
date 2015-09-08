@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150814000002) do
+ActiveRecord::Schema.define(version: 20150904000000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -409,29 +409,43 @@ ActiveRecord::Schema.define(version: 20150814000002) do
   add_index "trials", ["study_source_id"], name: "index_trials_on_study_source_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "username",               limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "email",                       limit: 255, default: "",    null: false
+    t.string   "username",                    limit: 255, default: "",    null: false
+    t.string   "encrypted_password",          limit: 255, default: "",    null: false
     t.string   "type"
-    t.string   "provider",               limit: 255
-    t.string   "uid",                    limit: 255
-    t.string   "role",                   limit: 255
-    t.string   "reset_password_token",   limit: 255
+    t.string   "provider",                    limit: 255
+    t.string   "uid",                         limit: 255
+    t.string   "role",                        limit: 255
+    t.string   "reset_password_token",        limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0,  null: false
+    t.integer  "sign_in_count",                           default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
-    t.integer  "failed_attempts",                    default: 0,  null: false
-    t.string   "unlock_token",           limit: 255
+    t.string   "current_sign_in_ip",          limit: 255
+    t.string   "last_sign_in_ip",             limit: 255
+    t.integer  "failed_attempts",                         default: 0,     null: false
+    t.string   "unlock_token",                limit: 255
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.text     "street_address"
+    t.string   "zipcode"
+    t.string   "country"
+    t.string   "state"
+    t.string   "middle_name"
+    t.string   "prs_organization_name"
+    t.boolean  "receive_email_notifications"
+    t.string   "role_requested"
+    t.integer  "organization_id"
+    t.boolean  "approved",                                default: false, null: false
   end
 
+  add_index "users", ["approved"], name: "index_users_on_approved", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["organization_id"], name: "index_users_on_organization_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
