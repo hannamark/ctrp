@@ -371,6 +371,7 @@
 
             $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
+                event.preventDefault();
                 //get appversion from DMZ if unauthenticated
                 var tempUserService = $injector.get('UserService'); //reference to UserService
                 if (toState.name == 'main.sign_in') {
