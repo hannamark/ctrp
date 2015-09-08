@@ -26,17 +26,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  type: 
-  number: 1
+  ind_ide_type:
+  ind_ide_number: 1
   grantor: MyString
   nih_nci: MyString
-  expanded_access: MyString
-  exempt: MyString
 
 two:
-  type: 
-  number: 1
+  ind_ide_type:
+  ind_ide_number: 1
   grantor: MyString
   nih_nci: MyString
-  expanded_access: MyString
-  exempt: MyString
