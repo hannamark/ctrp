@@ -31,6 +31,13 @@ Rails.application.routes.draw do
       end
       end
 
+    #TODO put related routs in namespaces
+    scope '/familystuff' do
+
+      resources :family_statuses, :family_types, :family_relationships, :family_memberships
+
+    end
+
     resources :family_statuses
 
     resources :family_types
@@ -43,9 +50,7 @@ Rails.application.routes.draw do
 
     resources :users
 
-    #resource :local_users
-
-    #resource :ldap_users
+    resources :after_signup
 
     resources :people do
       collection do
@@ -64,16 +69,24 @@ Rails.application.routes.draw do
     get '/backoffice/download_log'
     get '/backoffice/static_members'
 
+    #DmzUtils routes
+    get '/dmzutils/appver' => 'dmz_utils#get_appver'
+
+
     # Devise related routes
     devise_scope :user do
       delete "sign_out" => "sessions#destroyrailslogin", :as => :destroyrailslogin_session
+      #get "sign_up" => "registrations#new"
     end
+
     devise_for :ldap_users, :local_users, skip: [ :sessions ]
     devise_for :omniauth_users, :controllers => { :omniauth_callbacks => "omniauth_users/omniauth_callbacks" }
+    devise_for :local_users, :controllers => { :registrations => :registrations }
     devise_scope :local_user do
       get 'sign_in' => 'sessions#new', :as => :new_session
       post 'sign_in' => 'sessions#create', :as => :create_session
       post 'sign_out' => 'sessions#destroy', :as => :destroy_session
+      post 'sign_up' => 'registrations#create', :as => :create_registration
     end
 
     resources :study_sources
@@ -91,6 +104,7 @@ Rails.application.routes.draw do
     get 'funding_mechanisms' => 'util#get_funding_mechanisms'
     get 'institute_codes' => 'util#get_institute_codes'
     get 'nci' => 'util#get_nci'
+    get 'nih' => 'util#get_nih'
   end
   # Devise related routes
 

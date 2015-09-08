@@ -8,10 +8,12 @@
         .controller('trialDetailCtrl', trialDetailCtrl);
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
-        'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj', 'countryList'];
+        'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
                              $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
-                             secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj, countryList) {
+                             secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
+                             holderTypeObj, expandedAccessTypeObj, countryList) {
         var vm = this;
         vm.accordion1 = true;
         vm.accordion2 = true;
@@ -21,6 +23,7 @@
         vm.accordion6 = true;
         vm.accordion7 = true;
         vm.accordion8 = true;
+        vm.accordion9 = true;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -33,6 +36,10 @@
         vm.instituteCodeArr = instituteCodeObj;
         vm.nciArr = nciObj;
         vm.trialStatusArr = trialStatusObj;
+        vm.grantorArr = [];
+        vm.holderTypeArr = holderTypeObj;
+        vm.nihNciArr = [];
+        vm.expandedAccessTypeArr = expandedAccessTypeObj;
         vm.countryArr = countryList;
         vm.authorityOrgArr = [];
         vm.status_date_opened = false;
@@ -42,6 +49,7 @@
         vm.addedOtherIds = [];
         vm.addedGrants = [];
         vm.addedStatuses = [];
+        vm.addedIndIdes = [];
         vm.selectedPiArray = [];
         vm.selectedInvArray = [];
         vm.showPrimaryPurposeOther = false;
@@ -82,6 +90,13 @@
                 });
             }
 
+            if (vm.addedIndIdes.length > 0) {
+                vm.curTrial.ind_ides_attributes = [];
+                _.each(vm.addedIndIdes, function (indIde) {
+                    vm.curTrial.ind_ides_attributes.push(indIde);
+                });
+            }
+
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -108,6 +123,10 @@
             } else if (type == 'trial_status') {
                 if (index < vm.addedStatuses.length) {
                     vm.addedStatuses[index]._destroy = !vm.addedStatuses[index]._destroy;
+                }
+            } else if (type == 'ind_ide') {
+                if (index < vm.addedIndIdes.length) {
+                    vm.addedIndIdes[index]._destroy = !vm.addedIndIdes[index]._destroy;
                 }
             }
         };// toggleSelection
@@ -172,6 +191,33 @@
             vm.addedStatuses.push(newStatus);
         };
 
+        // Add IND/IDE to a temp array
+        vm.addIndIde = function () {
+            var newIndIde = {};
+            newIndIde.ind_ide_type = vm.ind_ide_type;
+            newIndIde.ind_ide_number = vm.ind_ide_number;
+            newIndIde.grantor = vm.grantor;
+            newIndIde.holder_type_id = vm.holder_type_id;
+            // For displaying name in the table
+            _.each(vm.holderTypeArr, function (holderType) {
+                if (holderType.id == vm.holder_type_id) {
+                    newIndIde.holder_type_name = holderType.name;
+                }
+            });
+            newIndIde.nih_nci = vm.nih_nci;
+            newIndIde.expanded_access = vm.expanded_access;
+            newIndIde.expanded_access_type_id = vm.expanded_access_type_id;
+            // For displaying name in the table
+            _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
+                if (expandedAccessType.id == vm.expanded_access_type_id) {
+                    newIndIde.expanded_access_type_name = expandedAccessType.name;
+                }
+            });
+            newIndIde.exempt = vm.exempt;
+            newIndIde._destroy = false;
+            vm.addedIndIdes.push(newIndIde);
+        };
+
         vm.watchOption = function(type) {
             if (type == 'primary_purpose') {
                 var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
@@ -199,6 +245,32 @@
                         vm.showInvestigator = false;
                         vm.selectedInvArray = [];
                     }
+                }
+            } else if (type == 'ind_ide_type') {
+                if (vm.ind_ide_type == 'IND') {
+                    vm.grantorArr = ['CDER', 'CBER'];
+                } else if (vm.ind_ide_type == 'IDE') {
+                    vm.grantorArr = ['CDRH', 'CBER'];
+                } else {
+                    vm.grantorArr = [];
+                }
+            } else if (type == 'holder_type') {
+                var nciOption = vm.holderTypeArr.filter(findNciOption);
+                var nihOption = vm.holderTypeArr.filter(findNihOption);
+                if (nciOption[0].id == vm.holder_type_id) {
+                    TrialService.getNci().then(function (response) {
+                        vm.nihNciArr = response;
+                    }).catch(function (err) {
+                        console.log("Error in retrieving NCI Division/Program code.");
+                    });
+                } else if (nihOption[0].id == vm.holder_type_id) {
+                    TrialService.getNih().then(function (response) {
+                        vm.nihNciArr = response;
+                    }).catch(function (err) {
+                        console.log("Error in retrieving NIH Institution code.");
+                    });
+                } else {
+                    vm.nihNciArr = [];
                 }
             } else if (type == 'authority_country') {
                 vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.curTrial.authority_country);
@@ -257,6 +329,22 @@
         // Return true if the option is "Principal Investigator" or "Sponsor Investigator"
         function findInvestigatorOption(option) {
             if (option.code == 'PI' || option.code == 'SI') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function findNciOption(option) {
+            if (option.code == 'NCI') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function findNihOption(option) {
+            if (option.code == 'NIH') {
                 return true;
             } else {
                 return false;

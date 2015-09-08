@@ -263,7 +263,7 @@
                                         <td class="col-md-2">
                                             <div>
                                                 <select class="form-control" id="funding_mechanism" ng-model="trialDetailView.funding_mechanism">
-                                                    <option value="">--Select--</option>
+                                                    <option value="">-Select-</option>
                                                     <option ng-repeat="mechanism in trialDetailView.fundingMechanismArr" value="{{mechanism.code}}">
                                                         {{mechanism.code}}
                                                     </option>
@@ -273,7 +273,7 @@
                                         <td class="col-md-2">
                                             <div>
                                                 <select class="form-control" id="institute_code" ng-model="trialDetailView.institute_code">
-                                                    <option value="">--Select--</option>
+                                                    <option value="">-Select-</option>
                                                     <option ng-repeat="institute in trialDetailView.instituteCodeArr" value="{{institute.code}}">
                                                         {{institute.code}}
                                                     </option>
@@ -288,7 +288,7 @@
                                         <td class="col-md-3">
                                             <div>
                                                 <select class="form-control" id="nci" ng-model="trialDetailView.nci">
-                                                    <option value="">--Select--</option>
+                                                    <option value="">-Select-</option>
                                                     <option ng-repeat="nci in trialDetailView.nciArr" value="{{nci.code}}">
                                                         {{nci.code}}
                                                     </option>
@@ -479,7 +479,136 @@
 
                     <accordion-group is-open="trialDetailView.accordion8">
                         <accordion-heading>
-                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion8, 'glyphicon-chevron-right': !trialDetailView.accordion8}"></i>
+                            FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion8, 'glyphicon-chevron-right': !trialDetailView.accordion8}"></i>
+                        </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <div class="col-sm-12">
+                                <table class="table table-striped table-condensed">
+                                    <thead>
+                                    <th>IND/IDE Types</th>
+                                    <th>IND/IDE Number</th>
+                                    <th>IND/IDE Grantor</th>
+                                    <th>IND/IDE Holder Type</th>
+                                    <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
+                                    <th>Expanded Access?</th>
+                                    <th>Expanded Access Type (if applicable)</th>
+                                    <th>Exempt? (if applicable)</th>
+                                    <th></th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="col-md-1">
+                                            <div>
+                                                <select class="form-control" id="ind_ide_type" ng-model="trialDetailView.ind_ide_type" ng-change="trialDetailView.watchOption('ind_ide_type')">
+                                                    <option value="">-Select-</option>
+                                                    <option value="IND">IND</option>
+                                                    <option value="IDE">IDE</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <div>
+                                                <input type="text" class="form-control input-xs" id="ind_ide_number" ng-model="trialDetailView.ind_ide_number" />
+                                            </div>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <div>
+                                                <select class="form-control" id="grantor" ng-model="trialDetailView.grantor">
+                                                    <option value="">-Select-</option>
+                                                    <option ng-repeat="grantor in trialDetailView.grantorArr" value="{{grantor}}">
+                                                        {{grantor}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <div>
+                                                <select class="form-control" id="holder_type" ng-model="trialDetailView.holder_type_id" ng-change="trialDetailView.watchOption('holder_type')">
+                                                    <option value="">-Select-</option>
+                                                    <option ng-repeat="holderType in trialDetailView.holderTypeArr" value="{{holderType.id}}">
+                                                        {{holderType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-3">
+                                            <div>
+                                                <select class="form-control" id="nih_nci" ng-model="trialDetailView.nih_nci">
+                                                    <option value="">-Select-</option>
+                                                    <option ng-repeat="nihNci in trialDetailView.nihNciArr" value="{{nihNci.code}}">
+                                                        {{nihNci.code}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <div>
+                                                <label><input type="checkbox" id="expanded_access" ng-model="trialDetailView.expanded_access" /> Yes</label>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <div>
+                                                <select class="form-control" id="expanded_access_type" ng-model="trialDetailView.expanded_access_type_id">
+                                                    <option value="">-Select-</option>
+                                                    <option ng-repeat="expandedAccessType in trialDetailView.expandedAccessTypeArr" value="{{expandedAccessType.id}}">
+                                                        {{expandedAccessType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <div>
+                                                <label><input type="checkbox" id="exempt" ng-model="trialDetailView.exempt" /> Yes</label>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <div>
+                                                <button class="btn btn-primary" ng-click="trialDetailView.addIndIde()">
+                                                    <i class="glyphicon glyphicon-plus"></i> Add
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedIndIdes.length > 0">
+                                    <thead>
+                                    <th></th>
+                                    <th>IND/IDE Types</th>
+                                    <th>IND/IDE Number</th>
+                                    <th>IND/IDE Grantor</th>
+                                    <th>IND/IDE Holder Type</th>
+                                    <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
+                                    <th>Expanded Access?</th>
+                                    <th>Expanded Access Type (if applicable)</th>
+                                    <th>Exempt? (if applicable)</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="indIde in trialDetailView.addedIndIdes track by $index" ng-class="indIde._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                        <td class="col-md-1" style="vertical-align: middle">
+                                            <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'ind_ide')">
+                                                <i ng-class="indIde._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                            </label>
+                                        </td>
+                                        <td class="col-md-1">{{indIde.ind_ide_type}}</td>
+                                        <td class="col-md-1">{{indIde.ind_ide_number}}</td>
+                                        <td class="col-md-1">{{indIde.grantor}}</td>
+                                        <td class="col-md-1">{{indIde.holder_type_name}}</td>
+                                        <td class="col-md-3">{{indIde.nih_nci}}</td>
+                                        <td class="col-md-1">{{indIde.expanded_access}}</td>
+                                        <td class="col-md-2">{{indIde.expanded_access_type_name}}</td>
+                                        <td class="col-md-1">{{indIde.exempt}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </accordion-group>
+
+                    <accordion-group is-open="trialDetailView.accordion9">
+                        <accordion-heading>
+                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion9, 'glyphicon-chevron-right': !trialDetailView.accordion9}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
