@@ -35,7 +35,7 @@
                     if (data.token) {
                         LocalCacheService.cacheItem("token", data.token);
                         LocalCacheService.cacheItem("username", userObj.user.username);
-                        setAppVersion(data.application_version);
+                        _setAppVersion(data.application_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
                         toastr.success('Login is successful', 'Logged In!');
@@ -111,19 +111,19 @@
 
 
         this.setAppVersion = function(version) {
-            setAppVersion(version);
+            _setAppVersion(version);
         };
 
 
         this.getAppVersion = function() {
-            return appVersion || LocalCacheService.getCacheWithKey('app_version');
+            return LocalCacheService.getCacheWithKey('app_version'); // || appVersion;
         };
 
 
 
         /******* helper functions *********/
 
-        function setAppVersion(version) {
+        function _setAppVersion(version) {
             if (!version) {
                 //if null or empty value
                 appVersion = '';
