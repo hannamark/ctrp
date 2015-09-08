@@ -42,6 +42,7 @@
             'NCI': '/ctrp/nci.json',
             'TRIAL_STATUSES': '/ctrp/trial_statuses.json',
             'HOLDER_TYPES': '/ctrp/holder_types.json',
+            'NIH': '/ctrp/nih.json',
             'EXPANDED_ACCESS_TYPES': '/ctrp/expanded_access_types.json'
         })
         .constant('MESSAGES', {

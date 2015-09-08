@@ -524,7 +524,7 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div>
-                                                <select class="form-control" id="holder_type" ng-model="trialDetailView.holder_type_id">
+                                                <select class="form-control" id="holder_type" ng-model="trialDetailView.holder_type_id" ng-change="trialDetailView.watchOption('holder_type')">
                                                     <option value="">--Select--</option>
                                                     <option ng-repeat="holderType in trialDetailView.holderTypeArr" value="{{holderType.id}}">
                                                         {{holderType.name}}

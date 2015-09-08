@@ -38,6 +38,7 @@
         vm.trialStatusArr = trialStatusObj;
         vm.grantorArr = [];
         vm.holderTypeArr = holderTypeObj;
+        vm.nihNciArr = [];
         vm.expandedAccessTypeArr = expandedAccessTypeObj;
         vm.countryArr = countryList;
         vm.authorityOrgArr = [];
@@ -234,14 +235,6 @@
                     vm.showSecondaryPurposeOther = false;
                     vm.curTrial.secondary_purpose_other = '';
                 }
-            } else if (type == 'ind_ide_type') {
-                if (vm.ind_ide_type == 'IND') {
-                    vm.grantorArr = ['CDER', 'CBER'];
-                } else if (vm.ind_ide_type == 'IDE') {
-                    vm.grantorArr = ['CDRH', 'CBER'];
-                } else {
-                    vm.grantorArr = [];
-                }
             } else if (type == 'responsible_party') {
                 var invOptions = vm.responsiblePartyArr.filter(findInvestigatorOption);
                 for (var i = 0; i < invOptions.length; i++) {
@@ -252,6 +245,32 @@
                         vm.showInvestigator = false;
                         vm.selectedInvArray = [];
                     }
+                }
+            } else if (type == 'ind_ide_type') {
+                if (vm.ind_ide_type == 'IND') {
+                    vm.grantorArr = ['CDER', 'CBER'];
+                } else if (vm.ind_ide_type == 'IDE') {
+                    vm.grantorArr = ['CDRH', 'CBER'];
+                } else {
+                    vm.grantorArr = [];
+                }
+            } else if (type == 'holder_type') {
+                var nciOption = vm.holderTypeArr.filter(findNciOption);
+                var nihOption = vm.holderTypeArr.filter(findNihOption);
+                if (nciOption[0].id == vm.holder_type_id) {
+                    TrialService.getNci().then(function (response) {
+                        vm.nihNciArr = response;
+                    }).catch(function (err) {
+                        console.log("Error in retrieving NCI Division/Program code.");
+                    });
+                } else if (nihOption[0].id == vm.holder_type_id) {
+                    TrialService.getNih().then(function (response) {
+                        vm.nihNciArr = response;
+                    }).catch(function (err) {
+                        console.log("Error in retrieving NIH Institution code.");
+                    });
+                } else {
+                    vm.nihNciArr = [];
                 }
             } else if (type == 'authority_country') {
                 vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.curTrial.authority_country);
@@ -310,6 +329,22 @@
         // Return true if the option is "Principal Investigator" or "Sponsor Investigator"
         function findInvestigatorOption(option) {
             if (option.code == 'PI' || option.code == 'SI') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function findNciOption(option) {
+            if (option.code == 'NCI') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function findNihOption(option) {
+            if (option.code == 'NIH') {
                 return true;
             } else {
                 return false;

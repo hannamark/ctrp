@@ -58,6 +58,7 @@
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
             getHolderTypes: getHolderTypes,
+            getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             deleteTrial: deleteTrial
@@ -175,6 +176,10 @@
 
         function getHolderTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.HOLDER_TYPES);
+        }
+
+        function getNih() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.NIH);
         }
 
         function getExpandedAccessTypes() {
