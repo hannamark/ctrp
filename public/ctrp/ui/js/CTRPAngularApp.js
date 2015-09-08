@@ -376,8 +376,10 @@
                         });
                     }
                 } else {
-                    //do not show appversion on other pages
-                    tempUserService.setAppVersion('');
+                    //do not show appversion on other pages unless authenticated
+                    if (!tempUserService.isLoggedIn()) {
+                        tempUserService.setAppVersion('');
+                    }
                 }
             });
         });

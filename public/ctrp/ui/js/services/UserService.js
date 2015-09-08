@@ -35,7 +35,7 @@
                     if (data.token) {
                         LocalCacheService.cacheItem("token", data.token);
                         LocalCacheService.cacheItem("username", userObj.user.username);
-                        this.setAppVersion(data.application_version);
+                        setAppVersion(data.application_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
                         toastr.success('Login is successful', 'Logged In!');
@@ -107,10 +107,23 @@
          */
         this.getAppVerFromDMZ = function() {
             return PromiseTimeoutService.getData(DMZ_UTILS.APP_VERSION);
-        }
+        };
 
 
         this.setAppVersion = function(version) {
+            setAppVersion(version);
+        };
+
+
+        this.getAppVersion = function() {
+            return appVersion || LocalCacheService.getCacheWithKey('app_version');
+        };
+
+
+
+        /******* helper functions *********/
+
+        function setAppVersion(version) {
             if (!version) {
                 //if null or empty value
                 appVersion = '';
@@ -121,11 +134,8 @@
             }
             //notify listeners
             Common.broadcastMsg('updatedAppVersion');
-        };
+        }
 
-        this.getAppVersion = function() {
-            return appVersion || LocalCacheService.getCacheWithKey('app_version');
-        };
 
     }
 
