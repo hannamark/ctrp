@@ -23,4 +23,8 @@ class UtilController < ActionController::Base
   def get_nci
     @nci = AppSetting.find_by_code('NCI').big_value.split(',')
   end
+
+  def get_nih
+    @nih = AppSetting.find_by_code('NIH').big_value.split(';')
+  end
 end

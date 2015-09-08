@@ -3,18 +3,18 @@
 # Table name: ind_ides
 #
 #  id                      :integer          not null, primary key
-#  type                    :string(255)
-#  number                  :integer
+#  ind_ide_type            :string(255)
+#  ind_ide_number          :integer
 #  grantor                 :string(255)
 #  nih_nci                 :string(255)
-#  expanded_access         :string(255)
-#  exempt                  :string(255)
 #  holder_type_id          :integer
 #  expanded_access_type_id :integer
 #  trial_id                :integer
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  uuid                    :string(255)
+#  expanded_access         :boolean
+#  exempt                  :boolean
 #
 # Indexes
 #

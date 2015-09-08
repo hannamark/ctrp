@@ -104,6 +104,7 @@ Rails.application.routes.draw do
     get 'funding_mechanisms' => 'util#get_funding_mechanisms'
     get 'institute_codes' => 'util#get_institute_codes'
     get 'nci' => 'util#get_nci'
+    get 'nih' => 'util#get_nih'
   end
   # Devise related routes
 

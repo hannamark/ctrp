@@ -119,18 +119,18 @@ ActiveRecord::Schema.define(version: 20150903001205) do
   end
 
   create_table "ind_ides", force: :cascade do |t|
-    t.string   "type",                    limit: 255
-    t.integer  "number"
+    t.string   "ind_ide_type",            limit: 255
+    t.integer  "ind_ide_number"
     t.string   "grantor",                 limit: 255
     t.string   "nih_nci",                 limit: 255
-    t.string   "expanded_access",         limit: 255
-    t.string   "exempt",                  limit: 255
     t.integer  "holder_type_id"
     t.integer  "expanded_access_type_id"
     t.integer  "trial_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "uuid",                    limit: 255
+    t.boolean  "expanded_access"
+    t.boolean  "exempt"
   end
 
   add_index "ind_ides", ["expanded_access_type_id"], name: "index_ind_ides_on_expanded_access_type_id", using: :btree

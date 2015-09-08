@@ -40,7 +40,10 @@
             'FUNDING_MECHANISMS': '/ctrp/funding_mechanisms.json',
             'INSTITUTE_CODES': '/ctrp/institute_codes.json',
             'NCI': '/ctrp/nci.json',
-            'TRIAL_STATUSES': '/ctrp/trial_statuses.json'
+            'TRIAL_STATUSES': '/ctrp/trial_statuses.json',
+            'HOLDER_TYPES': '/ctrp/holder_types.json',
+            'NIH': '/ctrp/nih.json',
+            'EXPANDED_ACCESS_TYPES': '/ctrp/expanded_access_types.json'
         })
         .constant('MESSAGES', {
             'STATES_AVAIL' : 'states_or_provinces_available',
