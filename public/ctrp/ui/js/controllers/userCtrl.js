@@ -14,6 +14,7 @@
     function userCtrl($scope, $http, $window, toastr, $state,
                       $timeout, LocalCacheService, UserService) {
         var vm = this;
+        $scope.appVersion = '1.0.0';
 
         vm.userObj = {
             "user": {

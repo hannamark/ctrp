@@ -360,17 +360,26 @@
                 });
 
 
-        }).run(function($rootScope, $urlRouter, $state, $stateParams) {
+        }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector) {
             console.log('running ctrp angular app');
-            /*
+
             $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+                /*
                 console.log('upon state changes, $state.$current.name: ' + $state.$current.name);
                 console.log('current $state.$parent: ' + JSON.stringify($state.$parent));
                 console.log('toState: ' + JSON.stringify(toState));
                 console.log('toParams: ' + JSON.stringify(toParams));
                 console.log('fromState: ' + JSON.stringify(fromState));
+                */
+
+
+                if (toState.name == 'main.sign_in') {
+                    console.log('showing sign in form');
+                    $injector.get('Common').broadcastMsg('redirectToSignIn');
+                }
+
             });
-            */
+
         });
 
 

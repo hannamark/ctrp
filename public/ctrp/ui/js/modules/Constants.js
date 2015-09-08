@@ -45,6 +45,9 @@
         .constant('MESSAGES', {
             'STATES_AVAIL' : 'states_or_provinces_available',
             'STATES_UNAVAIL' : 'states_or_provinces_not_available'
+        })
+        .constant('DMZ_UTILS', {
+            'APP_VERSION' : '/ctrp/dmzutils/appver.json'
         });
 
 })();
