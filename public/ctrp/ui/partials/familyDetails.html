@@ -164,7 +164,7 @@
                 <div id="buttonBar" class="form-group">
                     <div class="col-sm-offset-3 col-sm-9">
                         <input type="submit" class="btn btn-success" ng-click="familyDetailView.updateFamily()"
-                               ng-disabled="family_form.$invalid" value="Save">
+                               ng-disabled="family_form.$invalid" value="Save" ctrp-click-once>
                         <input type="reset" class="btn btn-warning" ng-click="familyDetailView.reset()" value="Reset">
                         <button class="btn btn-default" back-button>Cancel</button>
                         <button ng-hide="familyDetailView.curFamily.new" class="btn btn-danger"

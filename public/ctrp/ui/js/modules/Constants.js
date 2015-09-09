@@ -50,7 +50,8 @@
             'STATES_UNAVAIL' : 'states_or_provinces_not_available'
         })
         .constant('DMZ_UTILS', {
-            'APP_VERSION' : '/ctrp/dmzutils/appver.json'
+            'APP_VERSION' : '/ctrp/dmzutils/app_ver.json',
+            'LOGIN_BULLETIN' : '/ctrp/dmzutils/login_bulletin.json'
         });
 
 })();
