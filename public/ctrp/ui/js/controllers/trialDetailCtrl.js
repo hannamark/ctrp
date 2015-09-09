@@ -247,6 +247,7 @@
                     }
                 }
             } else if (type == 'ind_ide_type') {
+                vm.grantor = '';
                 if (vm.ind_ide_type == 'IND') {
                     vm.grantorArr = ['CDER', 'CBER'];
                 } else if (vm.ind_ide_type == 'IDE') {
@@ -255,6 +256,7 @@
                     vm.grantorArr = [];
                 }
             } else if (type == 'holder_type') {
+                vm.nih_nci = '';
                 var nciOption = vm.holderTypeArr.filter(findNciOption);
                 var nihOption = vm.holderTypeArr.filter(findNihOption);
                 if (nciOption[0].id == vm.holder_type_id) {
@@ -273,6 +275,7 @@
                     vm.nihNciArr = [];
                 }
             } else if (type == 'authority_country') {
+                vm.curTrial.authority_org = '';
                 vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.curTrial.authority_country);
             }
         };
