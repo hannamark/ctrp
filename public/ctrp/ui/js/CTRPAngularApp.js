@@ -8,6 +8,7 @@
     angular.module('ctrpApp', [
         'ui.router',
         'ngTouch',
+        'ngSanitize',
         'Constants',
         'CommonTools',
         'PromiseTimeoutModule',
