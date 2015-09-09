@@ -222,6 +222,12 @@ unless user_curator.nil?
   user_curator.save!
 end
 
+##Set Role for ReadOnly
+user_readonly = User.find_by_username("ctrpreadonly")
+unless user_readonly.nil?
+  user_readonly.role = "ROLE_RO"
+  user_readonly.save!
+end
 
 ##Add NCICTRPDEV team
 LdapUser.delete_all

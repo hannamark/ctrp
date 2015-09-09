@@ -48,7 +48,11 @@ Rails.application.routes.draw do
 
     resources :comments
 
-    resources :users
+    resources :users do
+      collection do
+        get 'manage'
+      end
+    end
 
     resources :after_signup
 
