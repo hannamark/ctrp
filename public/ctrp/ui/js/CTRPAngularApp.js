@@ -366,26 +366,26 @@
                 });
 
 
-        }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector) {
+        }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService) {
             console.log('running ctrp angular app');
 
             $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
                 event.preventDefault();
                 //get appversion from DMZ if unauthenticated
-                var tempUserService = $injector.get('UserService'); //reference to UserService
+                //var tempUserService = $injector.get('UserService'); //reference to UserService
                 if (toState.name == 'main.sign_in') {
 
-                    if (!tempUserService.isLoggedIn()) {
-                        tempUserService.getAppVerFromDMZ().then(function(data) {
+                    if (!UserService.isLoggedIn()) {
+                        UserService.getAppVerFromDMZ().then(function(data) {
                            // console.log('retrieved data from dmz: ' + JSON.stringify(data));
-                            tempUserService.setAppVersion(data.appver);
+                            UserService.setAppVersion(data.app_ver);
                         });
                     }
                 } else {
                     //do not show appversion on other pages unless authenticated
-                    if (!tempUserService.isLoggedIn()) {
-                        tempUserService.setAppVersion('');
+                    if (!UserService.isLoggedIn()) {
+                        UserService.setAppVersion('');
                     }
                 }
             });
