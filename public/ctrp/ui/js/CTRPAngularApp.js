@@ -156,6 +156,12 @@
                     url: '/sign_in',
                     templateUrl: '/ctrp/ui/partials/sign_in.html',
                     controller: 'userCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService',
+                        loginBulletin: function(UserService) {
+                            return UserService.getLoginBulletin();
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: '',
                         label: 'Sign in',

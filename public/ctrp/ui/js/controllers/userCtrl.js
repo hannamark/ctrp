@@ -9,12 +9,13 @@
         .controller('userCtrl', userCtrl);
 
     userCtrl.$inject = ['$scope', '$http', '$window', 'toastr',
-        '$state', '$timeout', 'LocalCacheService', 'UserService'];
+        '$state', '$timeout', 'LocalCacheService', 'UserService', 'loginBulletin'];
 
     function userCtrl($scope, $http, $window, toastr, $state,
-                      $timeout, LocalCacheService, UserService) {
+                      $timeout, LocalCacheService, UserService, loginBulletin) {
         var vm = this;
-        $scope.appVersion = '1.0.0';
+        console.log('received loginBulletin: ' + JSON.stringify(loginBulletin));
+        vm.loginBulletin = loginBulletin['login_bulletin'] || '';
 
         vm.userObj = {
             "user": {

@@ -119,6 +119,10 @@
             return LocalCacheService.getCacheWithKey('app_version'); // || appVersion;
         };
 
+        this.getLoginBulletin = function() {
+            return PromiseTimeoutService.getData(DMZ_UTILS.LOGIN_BULLETIN);
+        };
+
 
 
         /******* helper functions *********/
