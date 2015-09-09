@@ -41,7 +41,7 @@
         } //linkerFn
 
 
-        function ctrpAdvancedOrgSearchForm2Controller($scope, $log, _, $anchorScroll, toastr) {
+        function ctrpAdvancedOrgSearchForm2Controller($scope, $log, $location, _, $anchorScroll, toastr) {
             $log.info('in ctrpAdvancedOrgSearchForm2Controller');
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
