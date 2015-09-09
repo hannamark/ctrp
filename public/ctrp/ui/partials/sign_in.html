@@ -2,11 +2,8 @@
     <div class="row">
         <div class="col-sm-3"></div>
         <div class="col-sm-6">
-            <div class="row animated-item" ng-hide="userView.loginBulletin==''">
-                <div class="well well-sm">
-                    {{userView.loginBulletin}}
-                </div>
-
+            <div class="row animated-item" ng-hide="userView.loginBulletin == ''">
+                <p ng-bind-html="userView.loginBulletin"></p>
             </div>
             <div class="row">
             <div class="panel panel-default">
