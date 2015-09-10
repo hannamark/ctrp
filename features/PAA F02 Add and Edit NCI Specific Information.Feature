@@ -8,18 +8,18 @@ And see the value for Study Source
 When I select a different Study Source value of National, Externally Peer-Reviewed, Institutional, Industrial, or Other
 Then the selected value for Study Source will be associated with the trial
 
-Scenario: #2 I can associate one or more organizations as the Funding Source for a clinical trial
+Scenario: #2 I can associate one or more organizations as the Specific Funding Source for a clinical trial
 Given I have selected a trial to abstract 
 And I am on the NCI Specific Information page screen
 And I have selected organization look-up
 When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed
-Then the selected organization will be associated to the trial as Funding Source
+Then the selected organization will be associated to the trial as Specific Funding Source
 
-Scenario: #3 I can unassociate one or more organizations from the Funding Source for a clinical trial
+Scenario: #3 I can unassociate one or more organizations from the Specific Funding Source for a clinical trial
 Given I have selected a trial to abstract 
 And I am on the NCI Specific Information page screen
-When I have selected the organization to remove from the trial's Funding Source
-Then the selected organization will not be associated to the trial as Funding Source
+When I have selected the organization to remove from the trial's Specific Funding Source
+Then the selected organization will not be associated to the trial as Specific Funding Source
 
 Scenario: #4 I can view and edit the Program Code 
 Given I am logged into the CTRP PA application
