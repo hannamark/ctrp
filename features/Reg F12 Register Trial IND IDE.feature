@@ -15,7 +15,7 @@ When I have selected the IND/IDE Type from a list
 And I have entered the IND/IDE number
 And I have selected the IND/IDE Grantor from a list based on IND or IDE selected
 And I have selected the IND/IDE Holder Type from a list
-And I have selected the NIH Institution or NCI Division/Program Code from a list
+And I have selected the NIH Institution or NCI Division/Program from a list
 Then the IND/IDE Information for the trial registration will be complete
 
 Scenario: #3 I can enter the IND and IDE information for multiple IND or IDE registrations for a trial
