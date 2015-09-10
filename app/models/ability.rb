@@ -32,16 +32,12 @@ class Ability
     user ||= User.new
     Rails.logger.info "In Cancancan's ability.rb's initialize method user = #{user.inspect}"
     if user.role == 'ROLE_SUPER'
-      #can :access, :rails_admin
-      #can :dashboard
-      #can :access_backoffice, :manage_backoffice
       can :manage, :all
     elsif user.role == 'ROLE_ADMIN'
       can :manage, :all
-     # can :access_backoffice, :manage_backoffice
     elsif user.role == 'ROLE_CURATOR'
       can :manage, :all
-      #can :manage, [Organization, SourceStatus, SourceCluster, SourceContext, Family, Person]
+      cannot :access_backoffice, :manage_backoffice
     elsif user.role == "ROLE_RO"
       can :read, :all
     else

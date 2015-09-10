@@ -159,8 +159,11 @@
                     controller: 'userCtrl as userView',
                     resolve: {
                         UserService: 'UserService',
-                        loginBulletin: function(UserService) {
-                            return UserService.getLoginBulletin();
+                        loginBulletin: function(UserService, $q) {
+                            var deferred = $q.defer();
+                            deferred.resolve({'login_bulletin': 'No Message'});
+                            return deferred.promise;
+                            //return UserService.getLoginBulletin();
                         }
                     },
                     ncyBreadcrumb: {

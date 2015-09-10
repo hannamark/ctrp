@@ -1,9 +1,10 @@
 /**
+ * *******************************************************************************************
+ * This directive is obsolete as of 9/10/2015, which is superseded by advancedOrgSearchForm2 *
+ * *******************************************************************************************
+ *
  * Created by wangg5 on 8/6/15.
- */
-
-
-/**
+ *
  * Reusable advanced organization search form,
  *
  * Feeds the organization search results to the container scope with the variable

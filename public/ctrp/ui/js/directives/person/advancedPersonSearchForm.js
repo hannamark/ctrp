@@ -88,7 +88,7 @@
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
 
-            $scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
+            //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             //default to curationMode eanbled to true if max row selectable is > 0
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
