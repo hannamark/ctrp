@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150904000000) do
+ActiveRecord::Schema.define(version: 20150909194412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -328,6 +328,21 @@ ActiveRecord::Schema.define(version: 20150904000000) do
   add_index "trial_co_pis", ["person_id"], name: "index_trial_co_pis_on_person_id", using: :btree
   add_index "trial_co_pis", ["trial_id"], name: "index_trial_co_pis_on_trial_id", using: :btree
 
+  create_table "trial_documents", force: :cascade do |t|
+    t.string   "file"
+    t.string   "file_name",        limit: 255
+    t.string   "document_type",    limit: 255
+    t.string   "document_subtype", limit: 255
+    t.integer  "added_by_id"
+    t.integer  "trial_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "uuid",             limit: 255
+  end
+
+  add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree
+  add_index "trial_documents", ["trial_id"], name: "index_trial_documents_on_trial_id", using: :btree
+
   create_table "trial_funding_sources", force: :cascade do |t|
     t.integer  "trial_id"
     t.integer  "organization_id"
@@ -487,6 +502,8 @@ ActiveRecord::Schema.define(version: 20150904000000) do
   add_foreign_key "trial_co_lead_orgs", "trials"
   add_foreign_key "trial_co_pis", "people"
   add_foreign_key "trial_co_pis", "trials"
+  add_foreign_key "trial_documents", "trials"
+  add_foreign_key "trial_documents", "users", column: "added_by_id"
   add_foreign_key "trial_funding_sources", "organizations"
   add_foreign_key "trial_funding_sources", "trials"
   add_foreign_key "trial_status_wrappers", "trial_statuses"

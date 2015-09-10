@@ -25,7 +25,8 @@
         'DateServiceMod',
         'CTRPUnderscoreModule',
         'toggle-switch',
-        'TimeoutModule'
+        'TimeoutModule',
+        'ngFileUpload'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there

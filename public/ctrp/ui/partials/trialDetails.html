@@ -634,6 +634,19 @@
                         </div>
                     </accordion-group>
 
+                    <accordion-group is-open="trialDetailView.accordion10">
+                        <accordion-heading>
+                            Trial Related Documents  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion10, 'glyphicon-chevron-right': !trialDetailView.accordion10}"></i>
+                        </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Protocol Document:</label>
+                            <div class="col-sm-9">
+                                <input type="file" ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB">
+                            </div>
+                        </div>
+                    </accordion-group>
+
                     <div id="buttonBar" class="form-group col-sm-12">
                         <div class="col-sm-offset-3 col-sm-9">
                             <input type="submit" class="btn btn-success" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" value="Save">

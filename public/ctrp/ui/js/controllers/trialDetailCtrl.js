@@ -9,11 +9,11 @@
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
-        'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'Upload'];
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
                              $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
-                             holderTypeObj, expandedAccessTypeObj, countryList) {
+                             holderTypeObj, expandedAccessTypeObj, countryList, Upload) {
         var vm = this;
         vm.accordion1 = true;
         vm.accordion2 = true;
@@ -24,6 +24,7 @@
         vm.accordion7 = true;
         vm.accordion8 = true;
         vm.accordion9 = true;
+        vm.accordion10 = true;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -104,6 +105,16 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
+                Upload.upload({
+                    url: '/ctrp/registry/trial_documents.json',
+                    method: 'POST',
+                    fields: {
+                        'trial_document[document_type]': 'Protocol Document',
+                        'trial_document[trial_id]': response.id
+                    },
+                    file: vm.protocol_document,
+                    fileFormDataName: 'trial_document[file]'
+                });
                 toastr.success('Trial ' + vm.curTrial.name + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
