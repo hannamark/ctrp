@@ -66,10 +66,19 @@
             $scope.showGrid = $scope.showGrid == undefined ? false : $scope.showGrid;
 
 
+            $scope.typeAheadNameSearch = function() {
+                var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
+                return OrgService.searchOrgs({name: wildcardOrgName}).then(function(res) {
+                   return res.orgs.map(function(org) {
+                       return org.name;
+                   });
+                });
+            }; //typeAheadNameSearch
+
             /* searchOrgs */
             $scope.searchOrgs = function () {
                 OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                    // console.log("received data for org search: " + JSON.stringify(data));
+                     // console.log("received data for org search: " + JSON.stringify(data));
                     if ($scope.showGrid && data.orgs) {
                         $scope.gridOptions.data = data.orgs;
                         $scope.gridOptions.totalItems = data.total;
