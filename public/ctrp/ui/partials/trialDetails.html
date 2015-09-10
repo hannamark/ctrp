@@ -370,7 +370,7 @@
                                         </td>
                                         <td class="col-md-4">
                                             <div>
-                                                <textarea class="form-control input-xs" id="why_stopped" ng-model="trialDetailView.why_stopped" />
+                                                <textarea style="resize: vertical;" class="form-control input-xs" id="why_stopped" ng-model="trialDetailView.why_stopped" />
                                             </div>
                                         </td>
                                         <td class="col-md-2">
@@ -491,14 +491,11 @@
                                     <th>IND/IDE Grantor</th>
                                     <th>IND/IDE Holder Type</th>
                                     <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
-                                    <th>Expanded Access?</th>
-                                    <th>Expanded Access Type (if applicable)</th>
-                                    <th>Exempt? (if applicable)</th>
                                     <th></th>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td class="col-md-1">
+                                        <td class="col-md-2">
                                             <div>
                                                 <select class="form-control" id="ind_ide_type" ng-model="trialDetailView.ind_ide_type" ng-change="trialDetailView.watchOption('ind_ide_type')">
                                                     <option value="">-Select-</option>
@@ -507,12 +504,12 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td class="col-md-1">
+                                        <td class="col-md-2">
                                             <div>
                                                 <input type="text" class="form-control input-xs" id="ind_ide_number" ng-model="trialDetailView.ind_ide_number" />
                                             </div>
                                         </td>
-                                        <td class="col-md-1">
+                                        <td class="col-md-2">
                                             <div>
                                                 <select class="form-control" id="grantor" ng-model="trialDetailView.grantor">
                                                     <option value="">-Select-</option>
@@ -522,7 +519,7 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td class="col-md-1">
+                                        <td class="col-md-2">
                                             <div>
                                                 <select class="form-control" id="holder_type" ng-model="trialDetailView.holder_type_id" ng-change="trialDetailView.watchOption('holder_type')">
                                                     <option value="">-Select-</option>
@@ -544,26 +541,6 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div>
-                                                <label><input type="checkbox" id="expanded_access" ng-model="trialDetailView.expanded_access" /> Yes</label>
-                                            </div>
-                                        </td>
-                                        <td class="col-md-2">
-                                            <div>
-                                                <select class="form-control" id="expanded_access_type" ng-model="trialDetailView.expanded_access_type_id">
-                                                    <option value="">-Select-</option>
-                                                    <option ng-repeat="expandedAccessType in trialDetailView.expandedAccessTypeArr" value="{{expandedAccessType.id}}">
-                                                        {{expandedAccessType.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td class="col-md-1">
-                                            <div>
-                                                <label><input type="checkbox" id="exempt" ng-model="trialDetailView.exempt" /> Yes</label>
-                                            </div>
-                                        </td>
-                                        <td class="col-md-1">
-                                            <div>
                                                 <button class="btn btn-primary" ng-click="trialDetailView.addIndIde()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
@@ -580,9 +557,6 @@
                                     <th>IND/IDE Grantor</th>
                                     <th>IND/IDE Holder Type</th>
                                     <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
-                                    <th>Expanded Access?</th>
-                                    <th>Expanded Access Type (if applicable)</th>
-                                    <th>Exempt? (if applicable)</th>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="indIde in trialDetailView.addedIndIdes track by $index" ng-class="indIde._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
@@ -591,14 +565,11 @@
                                                 <i ng-class="indIde._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>
-                                        <td class="col-md-1">{{indIde.ind_ide_type}}</td>
-                                        <td class="col-md-1">{{indIde.ind_ide_number}}</td>
-                                        <td class="col-md-1">{{indIde.grantor}}</td>
-                                        <td class="col-md-1">{{indIde.holder_type_name}}</td>
+                                        <td class="col-md-2">{{indIde.ind_ide_type}}</td>
+                                        <td class="col-md-2">{{indIde.ind_ide_number}}</td>
+                                        <td class="col-md-2">{{indIde.grantor}}</td>
+                                        <td class="col-md-2">{{indIde.holder_type_name}}</td>
                                         <td class="col-md-3">{{indIde.nih_nci}}</td>
-                                        <td class="col-md-1">{{indIde.expanded_access}}</td>
-                                        <td class="col-md-2">{{indIde.expanded_access_type_name}}</td>
-                                        <td class="col-md-1">{{indIde.exempt}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
