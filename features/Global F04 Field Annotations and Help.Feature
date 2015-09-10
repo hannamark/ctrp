@@ -1,5 +1,5 @@
 @PA @global
-Feature: As any CTRP PA User, I can add and edit Trial Dates and Status
+Feature: As any CTRP PA User, I will see helpful comments on Trial Date and Status fields
 
 Scenario: #1 PA Trial Status Comments (Trial Status)
 Given I am logged into the CTRP Protocol Abstraction application
