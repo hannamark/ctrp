@@ -3,10 +3,10 @@ class ChangeColumnsForIndIde < ActiveRecord::Migration
     change_table :ind_ides do |t|
       t.rename :type, :ind_ide_type
       t.rename :number, :ind_ide_number
-      t.remove :expanded_access
-      t.column :expanded_access, :boolean
-      t.remove :exempt
-      t.column :exempt, :boolean
     end
+    remove_column :ind_ides, :expanded_access, :string
+    add_column :ind_ides, :expanded_access, :boolean
+    remove_column :ind_ides, :exempt, :string
+    add_column :ind_ides, :exempt, :boolean
   end
 end
