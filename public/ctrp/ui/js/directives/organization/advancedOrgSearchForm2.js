@@ -282,8 +282,8 @@
                         //console.log('row is selected: ' + JSON.stringify(row.entity));
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {
                             $scope.selectedRows.unshift(row);
-                            pushToParentScope(row.entity);
-                            //$scope.$parent.selectedOrgsArray.push(row.entity);
+                            //pushToParentScope(row.entity);
+                            $scope.$parent.selectedOrgsArray.push(row.entity);
                         } else {
                             var deselectedRow = $scope.selectedRows.pop();
                             deselectedRow.isSelected = false;
@@ -294,8 +294,8 @@
                             var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedOrgsArray, deselectedRow.entity);
                             //$scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
                             spliceInParentScope(curRowSavedIndex);
-                            pushToParentScope(row.entity);
-                            // $scope.$parent.selectedOrgsArray.push(row.entity);
+                            //pushToParentScope(row.entity);
+                            $scope.$parent.selectedOrgsArray.push(row.entity);
                         }
                     } else {
                         //de-select the row
