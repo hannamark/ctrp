@@ -24,7 +24,7 @@ module.exports = function() {
 
     this.Given(/^I am logged in to CTRP$/, function (callback) {
         browser.get('angular#/main/sign_in');
-        //  browser.get('http://localhost/ctrp/angular#/main/sign_in');
+        //  browser.get('http://localhost/ctrp/ui#/main/sign_in');
         //  browser.sleep(5000);
         Login.setUsername();
         Login.setPassword();

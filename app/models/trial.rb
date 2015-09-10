@@ -77,7 +77,9 @@ class Trial < ActiveRecord::Base
   has_many :co_pis, through: :trial_co_pis, source: :person
 
   accepts_nested_attributes_for :other_ids, allow_destroy: true
+  accepts_nested_attributes_for :grants, allow_destroy: true
   accepts_nested_attributes_for :trial_status_wrappers, allow_destroy: true
+  accepts_nested_attributes_for :ind_ides, allow_destroy:  true
 
   validates :official_title, presence: true
 end
