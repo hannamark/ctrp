@@ -1,0 +1,7 @@
+<%= form_for(@user, :url => wizard_path, :method => :put) do |f| %>
+    <%= f.text_field :street_address, :placeholder => 'street_address' %>
+    <%= f.submit 'Next', :class => 'btn btn-primary' %>
+<% end %>
+
+
+<%= link_to 'skip', next_wizard_path %>

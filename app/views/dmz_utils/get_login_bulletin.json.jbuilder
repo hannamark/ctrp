@@ -1,0 +1,1 @@
+json.login_bulletin @login_bulletin
