@@ -50,6 +50,12 @@
                 console.log("error status code: " + rejection.status);
                 //redirect to login page
                 $injector.get('$state').go('main.sign_in');
+                /*
+                var i = 0;
+                while (i < 5) {
+
+                }
+                */
             }
 
             return rejection;
