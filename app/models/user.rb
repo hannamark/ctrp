@@ -60,6 +60,31 @@ class  User < ActiveRecord::Base
 
   attr_accessor :password
 
+  def self.get_roles
+    ROLES
+  end
+
+  def get_privileges
+    privileges_json = []
+    if self.role.nil?
+      return {}
+    end
+
+    privileges_json = case self.role
+                        when "ROLE_READONLY"
+                          [{"READONLY" => true}]
+                        when  "ROLE_SITE_ADMIN"
+                          [{"READONLY" => true}, {"ADMIN" => true}]
+                        when  "ROLE_SUPER"
+                          [{"READONLY" => true}, {"CURATOR" => true}, {"ADMIN" => true}]
+                        when  "ROLE_ADMIN"
+                          [{"READONLY" => true}, {"ADMIN" => true}]
+                        when  "ROLE_CURATOR"
+                          [{"READONLY" => true}, {"CURATOR" => true}]
+                      end
+
+  end
+
   def ldap_before_save
     Rails.logger.info "In ldap_before_save"
     self.email = Devise::LDAP::Adapter.get_ldap_param(self.username,"mail").first
