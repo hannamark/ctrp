@@ -72,17 +72,16 @@ class  User < ActiveRecord::Base
 
     privileges_json = case self.role
                         when "ROLE_READONLY"
-                          [{"READONLY" => true}]
+                          [{type: "READONLY", enabled: true}]
                         when  "ROLE_SITE_ADMIN"
-                          [{"READONLY" => true}, {"ADMIN" => true}]
+                          [{type: "READONLY", enabled: true}, {type: "ADMIN", enabled: true}]
                         when  "ROLE_SUPER"
-                          [{"READONLY" => true}, {"CURATOR" => true}, {"ADMIN" => true}]
+                          [{type: "READONLY", enabled: true}, {type: "CURATOR", enabled: true}, {type: "ADMIN", enabled: true}]
                         when  "ROLE_ADMIN"
-                          [{"READONLY" => true}, {"ADMIN" => true}]
+                          [{type: "READONLY", enabled: true}, {type: "ADMIN", enabled: true}]
                         when  "ROLE_CURATOR"
-                          [{"READONLY" => true}, {"CURATOR" => true}]
+                          [{type: "READONLY", enabled: true}, {type: "CURATOR", enabled: true}]
                       end
-
   end
 
   def ldap_before_save
