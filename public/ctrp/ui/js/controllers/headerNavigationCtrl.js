@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .controller('headerNavigationCtrl', headerNavigationCtrl);
 
-    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'Keepalive', '$modal', '$timeout', '$state'];
+    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'Keepalive', '$modal', '$timeout', '$state', '_'];
 
-    function headerNavigationCtrl(UserService, $scope, Idle, Keepalive, $modal, $timeout, $state) {
+    function headerNavigationCtrl(UserService, $scope, Idle, Keepalive, $modal, $timeout, $state, _) {
 
         $scope.uiRouterState = $state;
 
@@ -18,6 +18,9 @@
 
         vm.signedIn = UserService.isLoggedIn();
         vm.username = UserService.getLoggedInUsername();
+        vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+        vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
+        vm.userModel = 'READONLY'; //default
         vm.warning = null;
         vm.timedout = null;
 
@@ -43,11 +46,15 @@
             $scope.$on('signedIn', function() {
                 vm.signedIn = UserService.isLoggedIn();
                 vm.username = UserService.getLoggedInUsername();
+                vm.userRole = UserService.getUserRole().split("_")[1].toLowerCase();
+                vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
             });
 
             $scope.$on('loggedOut', function() {
                 vm.signedIn = false;
                 vm.username = '';
+                vm.userRole = '';
+                vm.userPrivileges = [];
             });
         } //listenToLoginEvent
 
@@ -118,6 +125,22 @@
 
             });
         } //watchIdleEvents
+
+
+        /**
+         * Process the user privileges array that contains the privileges set to 'true'
+         * @param userPrivilegesArr
+         */
+        function processUserPrivileges(userPrivilegesArr) {
+            var processedPrivilegesArray = [];
+            _.each(userPrivilegesArr, function(privilegeItem) {
+                if (privilegeItem.enabled) {
+                    processedPrivilegesArray.push(privilegeItem.type);
+                }
+            });
+
+            return processedPrivilegesArray;
+        }
 
 
 

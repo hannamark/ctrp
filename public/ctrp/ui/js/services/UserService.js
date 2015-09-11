@@ -31,13 +31,16 @@
         this.login = function (userObj) {
             PromiseTimeoutService.postDataExpectObj('sign_in', userObj)
                 .then(function (data) {
-                   // console.log('successful login, data returned: ' + JSON.stringify(data));
+                    console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
                         LocalCacheService.cacheItem("token", data.token);
                         LocalCacheService.cacheItem("username", userObj.user.username);
                         _setAppVersion(data.application_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
+
+                        var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
+                        LocalCacheService.cacheItem("privileges", dummyPrivileges);//data.privileges);
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg("signedIn");
 
@@ -63,10 +66,7 @@
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: "Angular"})
                 .then(function (data) {
                     if (data.success) {
-                        LocalCacheService.removeItemFromCache("token");
-                        LocalCacheService.removeItemFromCache("username");
-                        LocalCacheService.removeItemFromCache("app_version");
-                        LocalCacheService.removeItemFromCache("user_role");
+                        LocalCacheService.clearAllCache();
                         toastr.success('Success', 'Successfully logged out');
 
                         $timeout(function() {
@@ -93,6 +93,15 @@
          */
         this.getUserRole = function() {
             return LocalCacheService.getCacheWithKey('user_role') || '';
+        };
+
+
+        /**
+         * Get the user privileges from localStorage of the browser
+         * @returns {*|Array}
+         */
+        this.getUserPrivileges = function() {
+            return LocalCacheService.getCacheWithKey('privileges') || [];
         };
 
 
