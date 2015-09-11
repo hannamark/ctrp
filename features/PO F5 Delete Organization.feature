@@ -8,8 +8,7 @@ And I have searched for an organization and found the one I wish to delete
 When I have selected the function Delete Organization
 And I submit my delete request
 And there are no occurrences of the organization in use in CTRP
-Then the system will change the organization status to Deleted 
-And my name will be listed as last update with the current date and time
+Then the system will delete the organization record
 
 Scenario: As a PO Curator, I cannot Delete Organization with Trial Records
 Given I know which organization I want to delete
