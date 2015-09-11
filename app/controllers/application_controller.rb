@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
        username = params["username"]
       unless username.blank?
         Rails.logger.info "Authenticating user with username = #{username.inspect}"
-        user = User.find_by_username(username)
+        user = User.find_by_username(username.downcase)
       else
         @current_user = get_user
       end

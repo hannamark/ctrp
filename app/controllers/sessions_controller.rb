@@ -8,13 +8,22 @@ class SessionsController < Devise::SessionsController
       error_string = 'Login failed'
       Rails.logger.info "In SessionController's create method"
       #Rails.logger.info "#{request.inspect}"
-      Rails.logger.info "request params = #{request.params['user']} "
-      Rails.logger.info "user = #{request.params['user']} "
+      #Rails.logger.info "request params = #{request.params.inspect} "
+     # Rails.logger.info "user = #{request.params['user']} "
 
+      unless request.params['user'].blank? && request.params['user']["username"].blank?
+        username = request.params['user']["username"]
+        request.params['user']["username"]= username.downcase
+        Rails.logger.info "username = #{request.params['user']["username"].inspect} "
+      end
       # Copy user data to ldap_user and local_user
       request.params['ldap_user'] = request.params['local_user'] = request.params['user']
 
-      user = User.find_by_username(request.params['user']["username"])
+      user = nil
+      unless username.nil?
+        user = User.find_by_username(request.params['user']["username"].downcase)
+      end
+
       if user.blank?
         error_text = "The User does not exist in the database as an LdapUser or a LocalUser"
         Rails.logger.error error_text
