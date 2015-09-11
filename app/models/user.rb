@@ -67,7 +67,7 @@ class  User < ActiveRecord::Base
   def get_privileges
     privileges_json = []
     if self.role.nil?
-      return {}
+      return []
     end
 
     privileges_json = case self.role
