@@ -2,7 +2,7 @@
 (function(angular){
 'use strict';
 
-var Module = angular.module('datePicker', []);
+var Module = angular.module('datePicker', ['angularMoment']);
 
 Module.constant('datePickerConfig', {
   template: 'templates/datepicker.html',
@@ -270,28 +270,31 @@ Module.directive('datePicker', ['datePickerConfig', 'datePickerUtils', function 
 'use strict';
 
 angular.module('datePicker').factory('datePickerUtils', function(){
-  var truncateToDay = function(date){
-    date.setHours(0 - date.getTimezoneOffset() / 60, 0, 0, 0);
+  var createNewDate = function(year, month, day, hour, minute) {
+    // without any arguments, the default date will be 1899-12-31T00:00:00.000Z
+    return new Date(Date.UTC(year | 0, month | 0, day | 0, hour | 0, minute | 0));
   };
   return {
     getVisibleMinutes : function(date, step) {
       date = new Date(date || new Date());
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours());
+      var year = date.getFullYear();
+      var month = date.getMonth();
+      var day = date.getDate();
+      var hour = date.getUTCHours();
       var minutes = [];
-      var stop = date.getTime() + 60 * 60 * 1000;
-      while (date.getTime() < stop) {
-        minutes.push(date);
-        date = new Date(date.getTime() + step * 60 * 1000);
+      var minute, pushedDate;
+      for (minute = 0 ; minute < 60 ; minute += step) {
+        pushedDate = createNewDate(year, month, day, hour, minute);
+        minutes.push(pushedDate);
       }
       return minutes;
     },
     getVisibleWeeks : function(date) {
       date = new Date(date || new Date());
-      var startMonth = date.getMonth(), startYear = date.getYear();
+      var startMonth = date.getMonth();
+      var startYear = date.getYear();
       // set date to start of the week
       date.setDate(1);
-      // truncate date to get rid of time informations
-      truncateToDay(date);
 
       if (date.getDay() === 0) {
         // day is sunday, let's get back to the previous week
@@ -306,42 +309,42 @@ angular.module('datePicker').factory('datePickerUtils', function(){
       }
 
       var weeks = [];
+      var week;
       while (weeks.length < 6) {
-        /*jshint -W116 */
-        if(date.getYear()=== startYear && date.getMonth() > startMonth) break;
-        var week = [];
-        for (var i = 0; i < 7; i++) {
-          week.push(new Date(date));
-          date.setDate(date.getDate() + 1);
+        if (date.getYear() === startYear && date.getMonth() > startMonth) {
+          break;
         }
+        week = this.getDaysOfWeek(date);
         weeks.push(week);
+        date.setDate(date.getDate() + 7);
       }
       return weeks;
     },
     getVisibleYears : function(date) {
-      var years = [];
       date = new Date(date || new Date());
       date.setFullYear(date.getFullYear() - (date.getFullYear() % 10));
-      date.setMonth(0);
-      date.setDate(1);
-      truncateToDay(date);
+      var year = date.getFullYear();
+      var years = [];
       var pushedDate;
       for (var i = 0; i < 12; i++) {
-        pushedDate = new Date(date);
-        pushedDate.setFullYear(date.getFullYear() + (i - 1));
+        pushedDate = createNewDate(year);
         years.push(pushedDate);
+        year++;
       }
       return years;
     },
     getDaysOfWeek : function(date) {
       date = new Date(date || new Date());
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
       date.setDate(date.getDate() - (date.getDay() - 1));
-      truncateToDay(date);
+      var year = date.getFullYear();
+      var month = date.getMonth();
+      var day = date.getDate();
       var days = [];
+      var pushedDate;
       for (var i = 0; i < 7; i++) {
-        days.push(new Date(date));
-        date.setDate(date.getDate() + 1);
+        pushedDate = createNewDate(year, month, day);
+        days.push(pushedDate);
+        day++;
       }
       return days;
     },
@@ -351,19 +354,21 @@ angular.module('datePicker').factory('datePickerUtils', function(){
       var months = [];
       var pushedDate;
       for (var month = 0; month < 12; month++) {
-        pushedDate = new Date(year, month, 1);
-        truncateToDay(pushedDate);
+        pushedDate = createNewDate(year, month, 1);
         months.push(pushedDate);
       }
       return months;
     },
     getVisibleHours : function(date) {
       date = new Date(date || new Date());
-      truncateToDay(date);
+      var year = date.getFullYear();
+      var month = date.getMonth();
+      var day = date.getDate();
       var hours = [];
-      for (var i = 0; i < 24; i++) {
-        hours.push(date);
-        date = new Date(date.getTime() + 60 * 60 * 1000);
+      var hour, pushedDate;
+      for (hour = 0 ; hour < 24 ; hour++) {
+        pushedDate = createNewDate(year, month, day, hour);
+        hours.push(pushedDate);
       }
       return hours;
     },
@@ -405,7 +410,20 @@ angular.module('datePicker').factory('datePickerUtils', function(){
     isValidDate : function(value) {
       // Invalid Date: getTime() returns NaN
       return value && !(value.getTime && value.getTime() !== value.getTime());
-    }
+    },
+    toMomentFormat : function(angularFormat) {
+        function replaceAll(find, replace, string) {
+          return string.replace(new RegExp(find, 'g'), replace);
+        }
+
+        var momentFormat = angularFormat;
+        momentFormat = replaceAll('y', 'Y', momentFormat);
+        momentFormat = replaceAll('d', 'D', momentFormat);
+        momentFormat = replaceAll('E', 'd', momentFormat);
+        momentFormat = replaceAll('sss', 'SSS', momentFormat);
+        momentFormat = replaceAll('w', 'W', momentFormat);
+        return momentFormat;
+      }
   };
 });
 'use strict';
@@ -467,7 +485,7 @@ Module.constant('dateTimeConfig', {
   },
   format: 'yyyy-MM-dd HH:mm',
   views: ['date', 'year', 'month', 'hours', 'minutes'],
-  dismiss: false,
+  autoClose: false,
   position: 'relative'
 });
 
@@ -481,8 +499,8 @@ Module.directive('dateTimeAppend', function () {
   };
 });
 
-Module.directive('dateTime', ['$compile', '$document', '$filter', 'dateTimeConfig', '$parse', 'datePickerUtils',
-                function ($compile, $document, $filter, dateTimeConfig, $parse, datePickerUtils) {
+Module.directive('dateTime', ['$compile', '$document', '$filter', 'dateTimeConfig', '$parse', 'datePickerUtils', 'moment',
+                function ($compile, $document, $filter, dateTimeConfig, $parse, datePickerUtils, moment) {
   var body = $document.find('body');
   var dateFilter = $filter('date');
 
@@ -495,7 +513,7 @@ Module.directive('dateTime', ['$compile', '$document', '$filter', 'dateTimeConfi
       var views = $parse(attrs.views)(scope) || dateTimeConfig.views.concat();
       var view = attrs.view || views[0];
       var index = views.indexOf(view);
-      var dismiss = attrs.dismiss ? $parse(attrs.dismiss)(scope) : dateTimeConfig.dismiss;
+      var dismiss = attrs.autoClose ? $parse(attrs.autoClose)(scope) : dateTimeConfig.autoClose;
       var picker = null;
       var position = attrs.position || dateTimeConfig.position;
       var container = null;
@@ -511,8 +529,16 @@ Module.directive('dateTime', ['$compile', '$document', '$filter', 'dateTimeConfi
         return dateFilter(value, format);
       }
 
-      function parser() {
-        return ngModel.$modelValue;
+      function parser(viewValue) {
+        if(viewValue.length === format.length) {
+          var date = moment(viewValue, datePickerUtils.toMomentFormat(format));
+          if(date.isValid()) {
+            clear();
+            return date.toDate();
+          }
+          return undefined;
+        }
+        return undefined;
       }
 
       ngModel.$formatters.push(formatter);
