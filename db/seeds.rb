@@ -198,13 +198,24 @@ family5 = Family.find_or_create_by(name: 'NRG Oncology',family_status_id:1,famil
 family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2,family_type_id:1)#Cancer Center
 
 
-
-
+##Set Role for Super Admin
+user_admin = User.find_by_username("ctrpsuper")
+unless user_admin.nil?
+  user_admin.role = "ROLE_SUPER"
+  user_admin.save!
+end
 
 ##Set Role for Admin
 user_admin = User.find_by_username("ctrpadmin")
 unless user_admin.nil?
   user_admin.role = "ROLE_ADMIN"
+  user_admin.save!
+end
+
+##Set Role for Site Admin
+user_admin = User.find_by_username("ctrpsiteadmin")
+unless user_admin.nil?
+  user_admin.role = "ROLE_SITE_ADMIN"
   user_admin.save!
 end
 
