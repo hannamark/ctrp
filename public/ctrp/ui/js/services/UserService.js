@@ -39,8 +39,8 @@
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
 
-                        var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
-                        LocalCacheService.cacheItem("privileges", dummyPrivileges);//data.privileges);
+                        //var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
+                        LocalCacheService.cacheItem("privileges", data.privileges);
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg("signedIn");
 
