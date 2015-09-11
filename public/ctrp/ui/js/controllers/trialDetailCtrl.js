@@ -9,11 +9,11 @@
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
         '$scope', 'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
-        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'Upload'];
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
                              $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
-                             holderTypeObj, expandedAccessTypeObj, countryList, Upload) {
+                             holderTypeObj, expandedAccessTypeObj, countryList) {
         var vm = this;
         vm.accordion1 = true;
         vm.accordion2 = true;
@@ -105,16 +105,7 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                Upload.upload({
-                    url: '/ctrp/registry/trial_documents.json',
-                    method: 'POST',
-                    fields: {
-                        'trial_document[document_type]': 'Protocol Document',
-                        'trial_document[trial_id]': response.id
-                    },
-                    file: vm.protocol_document,
-                    fileFormDataName: 'trial_document[file]'
-                });
+                uploadDocuments(response.id);
                 toastr.success('Trial ' + vm.curTrial.name + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
@@ -362,6 +353,12 @@
                 return true;
             } else {
                 return false;
+            }
+        }
+
+        function uploadDocuments(trialId) {
+            if (vm.protocol_document) {
+                TrialService.uploadDocument(trialId, 'Protocol Document', '', vm.protocol_document);
             }
         }
     }

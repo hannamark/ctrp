@@ -43,7 +43,8 @@
             'TRIAL_STATUSES': '/ctrp/registry/trial_statuses.json',
             'HOLDER_TYPES': '/ctrp/registry/holder_types.json',
             'NIH': '/ctrp/registry/nih.json',
-            'EXPANDED_ACCESS_TYPES': '/ctrp/registry/expanded_access_types.json'
+            'EXPANDED_ACCESS_TYPES': '/ctrp/registry/expanded_access_types.json',
+            'TRIAL_DOCUMENT_LIST': '/ctrp/registry/trial_documents.json'
         })
         .constant('MESSAGES', {
             'STATES_AVAIL' : 'states_or_provinces_available',
