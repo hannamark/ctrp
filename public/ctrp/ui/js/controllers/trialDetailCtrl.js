@@ -360,6 +360,15 @@
             if (vm.protocol_document) {
                 TrialService.uploadDocument(trialId, 'Protocol Document', '', vm.protocol_document);
             }
+            if (vm.irb_approval) {
+                TrialService.uploadDocument(trialId, 'IRB Approval', '', vm.irb_approval);
+            }
+            if (vm.participating_sites) {
+                TrialService.uploadDocument(trialId, 'List of Participating Sites', '', vm.participating_sites);
+            }
+            if (vm.informed_consent) {
+                TrialService.uploadDocument(trialId, 'Informed Consent', '', vm.informed_consent);
+            }
         }
     }
 })();
