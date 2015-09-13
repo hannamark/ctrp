@@ -35,7 +35,6 @@
 #  role_requested              :string
 #  organization_id             :integer
 #  approved                    :boolean          default(FALSE), not null
-#  requested_role              :string
 #
 # Indexes
 #
@@ -104,6 +103,7 @@ class  User < ActiveRecord::Base
   def process_disapproval
     unless self.role.blank?
       self.approved = false
+      # TODO should role be nullified?
       self.save!
     end
   end

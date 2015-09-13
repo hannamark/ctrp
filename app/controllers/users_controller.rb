@@ -43,7 +43,11 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = current_user || current_local_user || current_ldap_user || current_omniauth_user
+      unless params.nil? || params[:id].nil?
+        @user = User.find(params[:id])
+      else
+        @user = current_user || current_local_user || current_ldap_user || current_omniauth_user
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
