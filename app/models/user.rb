@@ -55,6 +55,9 @@ class  User < ActiveRecord::Base
   devise   :timeoutable,  :validatable
   has_one :organization
 
+  scope :approved, -> { where(approved: true) }
+  scope :not_approved, -> { where(approved: false) }
+
   ROLES = %i[ROLE_READONLY ROLE_SITE_ADMIN ROLE_SUPER ROLE_ADMIN ROLE_CURATOR]
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
@@ -114,13 +117,3 @@ class  User < ActiveRecord::Base
   end
 
 end
-
-=begin
-class LdapUser < User
-  devise :ldap_authenticatable, :rememberable, :trackable
-end
-
-class LocalUser < User
-  devise :database_authenticatable, :registerable, :confirmable, :recoverable, :trackable
-end
-=end
