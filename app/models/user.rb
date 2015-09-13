@@ -35,6 +35,7 @@
 #  role_requested              :string
 #  organization_id             :integer
 #  approved                    :boolean          default(FALSE), not null
+#  requested_role              :string
 #
 # Indexes
 #
@@ -82,6 +83,29 @@ class  User < ActiveRecord::Base
       end
     end
     users
+  end
+
+  def process_approval
+    # When an ADMIN approves of the user request for privileges, the role is updated
+    # if it is not already chosen and the approved field is set to true
+    if self.role.blank?
+      if self.organization_id.blank?
+        self.role = "ROLE_READONLY"
+      else
+        self.role = "ROLE_SITE_ADMIN"
+      end
+    end
+
+    self.approved = true
+    self.save!
+
+  end
+
+  def process_disapproval
+    unless self.role.blank?
+      self.approved = false
+      self.save!
+    end
   end
 
   def get_privileges

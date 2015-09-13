@@ -24,6 +24,22 @@ class UsersController < ApplicationController
     render :edit
   end
 
+  def approve
+    # When an ADMIN approves of the user request for privileges, the role is updated
+    # if it is not already chosen and the approved field is set to true
+    @user.process_approval
+    redirect_to users_path
+
+  end
+
+  def disapprove
+      # When an ADMIN disapproves of the user request for privileges, the role is set to nill
+      # and the approved field is set to false
+    @user.process_disapproval
+    redirect_to users_path
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

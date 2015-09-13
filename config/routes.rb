@@ -49,8 +49,9 @@ Rails.application.routes.draw do
     resources :comments
 
     resources :users do
-      collection do
-        get 'manage'
+      member do
+        post 'approve'
+        post 'disapprove'
       end
     end
 
