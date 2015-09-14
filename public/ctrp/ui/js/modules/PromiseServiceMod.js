@@ -1,5 +1,6 @@
 /**
  * Created by wangg5 on 6/1/15.
+ * This is Obsolete, use PromiseWithTimeoutService instead
  */
 
 

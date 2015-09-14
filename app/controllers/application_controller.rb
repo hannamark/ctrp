@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   respond_to :html, :xml, :json
-  #check_authorization :unless => :devise_controller?
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+ # check_authorization :unless => :devise_controller?
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
     render :text => exception, :status => 500
   end
@@ -48,7 +49,7 @@ class ApplicationController < ActionController::Base
        username = params["username"]
       unless username.blank?
         Rails.logger.info "Authenticating user with username = #{username.inspect}"
-        user = User.find_by_username(username)
+        user = User.find_by_username(username.downcase)
       else
         @current_user = get_user
       end
@@ -144,10 +145,12 @@ class ApplicationController < ActionController::Base
     begin
       Rails.logger.info "In create_authorization_json user=#{user.inspect}"
 
+      app_version = Rails.configuration.application_version
       auth_json = {
-          application_version: "0.1", # should be retrieved from Config file
+          application_version: app_version,
           token: token,
           role: user.role,
+          privileges: user.get_privileges,
           env: Rails.env
                     }
 
@@ -181,5 +184,8 @@ class ApplicationController < ActionController::Base
   end
 =end
 
+  def after_sign_out_path_for(resource)
+    request.referrer
+  end
 
 end

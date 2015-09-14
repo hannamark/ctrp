@@ -24,7 +24,7 @@ module Ctrp
     config.active_record.raise_in_transactional_callbacks = true
 
     config.paths["log"] = "../../logs/#{Rails.env}.log"
-    config.application_version = "5.0.0"
+    config.application_version = "5.0"
 
   end
 end

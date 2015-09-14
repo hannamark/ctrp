@@ -50,7 +50,12 @@ Rails.application.routes.draw do
 
     resources :comments
 
-    resources :users
+    resources :users do
+      member do
+        post 'approve'
+        post 'disapprove'
+      end
+    end
 
     resources :after_signup
 
