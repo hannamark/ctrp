@@ -176,11 +176,11 @@
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
-                                        <input type="text" class="form-control input-xs" disabled value="{{trialDetailView.selectedLeadOrg.name}}"/>
+                                        <input type="text" class="form-control input-xs" disabled value="{{trialDetailView.selectedLoArray[0].name}}"/>
                                     </div>
-                                    <button class="btn btn-primary" ng-click="trialDetailView.searchOrg('lg', 'lead')">
-                                        <i class="glyphicon glyphicon-search"></i> Search Organizations
-                                    </button>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedLoArray"></ctrp-org-adv-search-modal-button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

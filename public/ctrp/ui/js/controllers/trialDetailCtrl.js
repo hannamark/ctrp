@@ -52,6 +52,7 @@
         vm.addedGrants = [];
         vm.addedStatuses = [];
         vm.addedIndIdes = [];
+        vm.selectedLoArray = [];
         vm.selectedPiArray = [];
         vm.selectedInvArray = [];
         vm.showPrimaryPurposeOther = false;
@@ -62,6 +63,10 @@
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
+            if (vm.selectedLoArray.length > 0) {
+                vm.curTrial.lead_org_id = vm.selectedLoArray[0].id
+            }
+
             if (vm.selectedPiArray.length > 0) {
                 vm.curTrial.pi_id = vm.selectedPiArray[0].id;
             }
