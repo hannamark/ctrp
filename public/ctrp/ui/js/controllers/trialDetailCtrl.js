@@ -54,6 +54,7 @@
         vm.addedIndIdes = [];
         vm.selectedLoArray = [];
         vm.selectedPiArray = [];
+        vm.selectedSponsorArray = [];
         vm.selectedInvArray = [];
         vm.showPrimaryPurposeOther = false;
         vm.showSecondaryPurposeOther = false;
@@ -69,6 +70,10 @@
 
             if (vm.selectedPiArray.length > 0) {
                 vm.curTrial.pi_id = vm.selectedPiArray[0].id;
+            }
+
+            if (vm.selectedSponsorArray.length > 0) {
+                vm.curTrial.sponsor_id = vm.selectedSponsorArray[0].id;
             }
 
             if (vm.selectedInvArray.length > 0) {
