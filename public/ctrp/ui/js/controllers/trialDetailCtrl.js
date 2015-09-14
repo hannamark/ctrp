@@ -49,6 +49,7 @@
         vm.primary_comp_date_opened = false;
         vm.comp_date_opened = false;
         vm.addedOtherIds = [];
+        vm.addedFses = [];
         vm.addedGrants = [];
         vm.addedStatuses = [];
         vm.addedIndIdes = [];
@@ -56,6 +57,7 @@
         vm.selectedPiArray = [];
         vm.selectedSponsorArray = [];
         vm.selectedInvArray = [];
+        vm.selectedFsArray = [];
         vm.showPrimaryPurposeOther = false;
         vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
@@ -85,6 +87,13 @@
                 vm.curTrial.other_ids_attributes = [];
                 _.each(vm.addedOtherIds, function (otherId) {
                     vm.curTrial.other_ids_attributes.push(otherId);
+                });
+            }
+
+            if (vm.addedFses.length > 0) {
+                vm.curTrial.trial_funding_sources_attributes = [];
+                _.each(vm.addedFses, function (fs) {
+                    vm.curTrial.trial_funding_sources_attributes.push(fs);
                 });
             }
 
@@ -230,6 +239,19 @@
             newIndIde._destroy = false;
             vm.addedIndIdes.push(newIndIde);
         };
+
+        // Add Founding Source to a temp array
+        $scope.$watch(function() {
+            return vm.selectedFsArray.length;
+        }, function(newValue, oldValue) {
+            if (newValue == oldValue + 1) {
+                var newFs = {};
+                newFs.organization_id = vm.selectedFsArray[vm.selectedFsArray.length - 1].id;
+                newFs.organization_name = vm.selectedFsArray[vm.selectedFsArray.length - 1].name;
+                newFs._destroy = false;
+                vm.addedFses.push(newFs);
+            }
+        });
 
         vm.watchOption = function(type) {
             if (type == 'primary_purpose') {
