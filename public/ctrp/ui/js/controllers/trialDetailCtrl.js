@@ -25,6 +25,7 @@
         vm.accordion8 = true;
         vm.accordion9 = true;
         vm.accordion10 = true;
+        vm.accordion11 = true;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.protocolIdOriginArr = protocolIdOriginObj;
