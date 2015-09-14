@@ -10,10 +10,10 @@
     'use strict';
 
     angular.module('ctrpApp')
-        .controller('advancedOrgSearchModalCtrl', advancedOrgSearchModalCtrl)
+        .controller('advancedOrgSearchForm2ModalCtrl', advancedOrgSearchForm2ModalCtrl)
         .directive('ctrpOrgAdvSearchModalButton', ctrpOrgAdvSearchModalButton);
 
-    advancedOrgSearchModalCtrl.$inject = ['$scope', '$modalInstance', 'maxRowSelectable']; //for modal controller
+    advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', '$modalInstance', 'maxRowSelectable']; //for modal controller
     ctrpOrgAdvSearchModalButton.$inject = ['$modal', '$compile', '_', '$timeout']; //modal button directive
 
 
@@ -21,7 +21,7 @@
         var directiveObj = {
             restrict: 'E',
             scope: {
-                maxRowSelectable : '=?', //int, required!
+                maxRowSelectable: '=?', //int, required!
                 useBuiltInTemplate: '=?', //boolean
                 selectedOrgsArray: '=',
                 allowOverwrite: '=' //boolean, overwrite existing selected organizations or not (default to false)
@@ -52,6 +52,7 @@
             //$scope.useBuiltInTemplate = $scope.useBuiltInTemplate == undefined ? false : $scope.useBuiltInTemplate;
             var modalOpened = false;
 
+
             //console.log('maxRow selectable: ' + $scope.maxRowSelectable + ', builtInTemplate: ' + $scope.useBuiltInTemplate);
             $scope.searchOrgs = function(size) {
                 if (modalOpened) return; //prevent modal open twice in single click
@@ -59,7 +60,7 @@
                 var modalInstance = $modal.open({
                     animation: true,
                     templateUrl: '/ctrp/ui/partials/modals/advanced_org_search_form_modal2.html',
-                    controller: 'advancedOrgSearchModalCtrl as advOrgSearchModalView',
+                    controller: 'advancedOrgSearchForm2ModalCtrl as advOrgSearchForm2ModalView',
                     size: size,
                     resolve: {
                         maxRowSelectable: function () {
@@ -106,6 +107,12 @@
                 }
             };// toggleSelection
 
+            $scope.batchSelect = function(intention) {
+                if (intention == 'removeAll') {
+                    $scope.savedSelection.length = 0;
+                }
+            }
+
 
         } //orgAdvSearchModalButtonController
     } //ctrpOrgAdvSearchModalButton
@@ -120,11 +127,11 @@
      * @param $scope
      * @param $modalInstance
      */
-    function advancedOrgSearchModalCtrl($scope, $modalInstance, maxRowSelectable) {
+    function advancedOrgSearchForm2ModalCtrl($scope, $modalInstance, maxRowSelectable) {
         var vm = this;
-        vm.maxRowSelectable = maxRowSelectable; //to be passed to the adv org search form
+        vm.maxRowSelectable = maxRowSelectable || 1; //to be passed to the adv org search form
 
-        console.log('in Modal, received promise maxRowSelectable: ' + maxRowSelectable);
+        console.log('in Modal, received promise maxRowSelectable: ' + vm.maxRowSelectable);
         $scope.orgSearchResults = {orgs: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
         $scope.selectedOrgsArray = [];  // orgs selected in the modal
 
@@ -160,7 +167,7 @@
 
         } //watchSelectedOrgs
 
-    } //advancedOrgSearchModalCtrl
+    } //advancedOrgSearchForm2ModalCtrl
 
 
 })();
