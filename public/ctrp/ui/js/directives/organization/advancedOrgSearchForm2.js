@@ -76,7 +76,12 @@
             }; //typeAheadNameSearch
 
             /* searchOrgs */
-            $scope.searchOrgs = function () {
+            $scope.searchOrgs = function (newSearchFlag) {
+
+                if (newSearchFlag == 'fromStart') {
+                    $scope.searchParams.start = 1;
+                }
+
                 OrgService.searchOrgs($scope.searchParams).then(function (data) {
                      // console.log("received data for org search: " + JSON.stringify(data));
                     if ($scope.showGrid && data.orgs) {
