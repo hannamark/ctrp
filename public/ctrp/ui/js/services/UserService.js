@@ -14,6 +14,7 @@
                          $timeout, $state, toastr, Common, DMZ_UTILS) {
 
         var appVersion = '';
+        var currentUserPrivilege = '';
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -131,6 +132,22 @@
         this.getLoginBulletin = function() {
             return PromiseTimeoutService.getData(DMZ_UTILS.LOGIN_BULLETIN);
         };
+
+        /*
+        this.setUserPrivilege = function(privilege) {
+            if (privilege) {
+                userPrivilege = privilege;
+                LocalCacheService.cacheItem('current_privilege', privilege);
+            }
+        };
+
+
+        this.getUserPrivilege = function() {
+            userPrivilege = LocalCacheService.getCacheWithKey('current_privilege');
+
+            return userPrivilege || '';
+        };
+        */
 
 
 

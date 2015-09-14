@@ -39,6 +39,7 @@
         function activate() {
             listenToLoginEvent();
             watchForInactivity();
+            watchUserModelSelection();
         }
 
 
@@ -140,6 +141,17 @@
             });
 
             return processedPrivilegesArray;
+        }
+
+
+        /**
+         * Watch user privilege selections and broadcast different notifications
+         *
+         */
+        function watchUserModelSelection() {
+            $scope.$watch(function() {return vm.userModel;}, function(newVal, oldVal) {
+                console.log('userModel value: ' + newVal);
+            }, true);
         }
 
 
