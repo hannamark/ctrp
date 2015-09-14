@@ -14,17 +14,17 @@
         .directive('ctrpOrgAdvSearchModalButton', ctrpOrgAdvSearchModalButton);
 
     advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', '$modalInstance', 'maxRowSelectable']; //for modal controller
-    ctrpOrgAdvSearchModalButton.$inject = ['$modal', '$compile', '_', '$timeout']; //modal button directive
+    ctrpOrgAdvSearchModalButton.$inject = ['$modal', '$compile', '_', '$timeout', 'Common']; //modal button directive
 
 
-    function ctrpOrgAdvSearchModalButton($modal, $compile, _, $timeout) {
+    function ctrpOrgAdvSearchModalButton($modal, $compile, _, $timeout, Common) {
         var directiveObj = {
             restrict: 'E',
             scope: {
                 maxRowSelectable: '=?', //int, required!
                 useBuiltInTemplate: '=?', //boolean
                 selectedOrgsArray: '=',
-                allowOverwrite: '=' //boolean, overwrite existing selected organizations or not (default to false)
+                allowOverwrite: '=' //boolean, overwrite previously selected organizations or not (default to true)
 
             },
             templateUrl: '/ctrp/ui/js/directives/organization/advancedOrgSearchModalButtonTemplate.html',
@@ -48,7 +48,7 @@
             $scope.showGrid = true;
             $scope.curationMode = false;
             $scope.selectedOrgsArray = [];
-            $scope.allowOverwrite = $scope.allowOverwrite == undefined ? false : $scope.allowOverwrite;
+            $scope.allowOverwrite = $scope.allowOverwrite == undefined ? true : $scope.allowOverwrite;
             //$scope.useBuiltInTemplate = $scope.useBuiltInTemplate == undefined ? false : $scope.useBuiltInTemplate;
             var modalOpened = false;
 
@@ -78,10 +78,17 @@
                             $scope.selectedOrgsArray = selectedOrgs;
                         } else {
                             //concatenate
-                            $scope.savedSelection = $scope.savedSelection.concat(selectedOrgs);
-                            $scope.selectedOrgsArray = $scope.selectedOrgsArray.concat(selectedOrgs);
+                            _.each(selectedOrgs, function(selectedOrg, index) {
+                                //prevent pushing duplicated org
+                               if (Common.indexOfObjectInJsonArray($scope.savedSelection, "id", selectedOrg.id) == -1) {
+                                   $scope.savedSelection.push(selectedOrg);
+                               }
+                            });
+
+                            // $scope.savedSelection = $scope.savedSelection.concat(selectedOrgs);
+                            $scope.selectedOrgsArray = $scope.savedSelection; //$scope.selectedOrgsArray.concat(selectedOrgs);
                         }
-                        console.log('modal resolved selectedOrgs: ' + JSON.stringify(selectedOrgs));
+                        // console.log('modal resolved selectedOrgs: ' + JSON.stringify(selectedOrgs));
                     }
 
                     modalOpened = false;
@@ -90,13 +97,6 @@
                     console.log("operation canceled");
                 });
             }; //searchOrg
-
-            /*
-            // is this redundant???
-            $scope.$watchCollection('selectedOrgsArray', function(newVal) {
-                $scope.selectedOrgsArray = newVal;
-            }.bind(this));
-            */
 
 
             //delete the affiliated organization from table view
