@@ -24,7 +24,7 @@ And I will be able to enter a Local Trial Identifier <Local Trial Identifier >
 And I will be able to select a Site Principal Investigator <Site Principal Investigator>
 And I will be able to enter a Site Specific Program Code <Site Specific Program Code>
 And I will be able to enter one or more Site Recruitment Status <Site Recruitment Status> and Status Dates <Site Recruitment Status Date>
-And I will be able to save the participating site information
+And I will be able to save the participating site information with response <Message>
 
 Example:
 |Local Trial Identifier | Site Principal Investigator 	| Site Specific Program Code 	| Site Recruitment Status 	| Site Recruitment Status Date 	|Message                              	|
@@ -33,7 +33,7 @@ Example:
 |Case123		| 				| B2				| Active			| 09/11/2015			|Please choose a Site Principal Investigator using the lookup	|
 |Case123		| Galvez, Jose			| B2				| Active			| 				|A valid Recruitment Status Date is required	|
 |Case123		| Galvez, Jose			| B2				| 				| 09/11/2015			|Please enter a value for Recruitment Status	|
-|Case123                | Galvez, Jose                	|                          	| Active                	| 09/11/2015                   	|Your site has been added to
+|Case123                | Galvez, Jose                	|                          	| Active                	| 09/11/2015                   	|Your site has been added to the trial |
 
 Scenario: #3 As a CTRP User, after entering my participating site information, CTRP will display a summary of trial and participating site information
 Given I have saved by participating site information
