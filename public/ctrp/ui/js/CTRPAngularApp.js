@@ -168,6 +168,12 @@
                             return UserService.getLoginBulletin();
                         }
                     },
+                    onEnter: function($state, UserService, toastr) {
+                        if (UserService.isLoggedIn()) {
+                            toastr.warning('Redirecting ...', 'You are already signed in')
+                            $state.go('main.defaultContent');
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: '',
                         label: 'Sign in',
