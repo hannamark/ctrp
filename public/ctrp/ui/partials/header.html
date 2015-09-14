@@ -38,14 +38,10 @@
                 <div class="row" ng-show="headerView.signedIn && headerView.userPrivileges.length > 0">
                     <strong>Privileges: </strong>
                     <div class="btn-group">
-                        <label class="btn btn-success" ng-model="headerView.userModel" ng-repeat="privilege in headerView.userPrivileges">
+                        <label class="btn btn-primary" ng-model="headerView.userModel" ng-repeat="privilege in headerView.userPrivileges" btn-radio="'{{privilege}}'">
                             {{privilege}}
                         </label>
                     </div>
-                    <!--<md-radio-group ng-model="headerView.userModel">
-                        <md-radio-button ng-repeat="privilege in headerView.userPrivileges" value="{{privilege}}" aria-label="{{privilege}}">{{privilege}}</md-radio-button>
-                    </md-radio-group>-->
-
                 </div>
             </div>
         </div>
