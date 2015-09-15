@@ -138,6 +138,10 @@
                 if (index < vm.addedOtherIds.length) {
                     vm.addedOtherIds[index]._destroy = !vm.addedOtherIds[index]._destroy;
                 }
+            } else if (type == 'funding_source') {
+                if (index < vm.addedFses.length) {
+                    vm.addedFses[index]._destroy = !vm.addedFses[index]._destroy;
+                }
             } else if (type == 'grant') {
                 if (index < vm.addedGrants.length) {
                     vm.addedGrants[index]._destroy = !vm.addedGrants[index]._destroy;

@@ -255,10 +255,8 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Data Table 4 Funding Source:</label>
                             <div class="col-sm-9">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-4">
-                                        <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
-                                    </div>
+                                <div class="col-xs-12 col-sm-4">
+                                    <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
                                 </div>
                             </div>
                         </div>
@@ -266,7 +264,16 @@
                         <div ng-repeat="fs in trialDetailView.addedFses track by $index" class="form-group col-sm-12">
                             <label class="control-label col-sm-3"></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control input-xs" disabled value="{{fs.organization_name}}"/>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-8">
+                                        <input type="text" class="form-control input-xs" ng-class="fs._destroy == true ? 'deleted-text animated-item' : 'animated-item'" disabled value="{{fs.organization_name}}"/>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'funding_source')">
+                                            <i ng-class="fs._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
