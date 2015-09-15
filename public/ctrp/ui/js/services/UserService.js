@@ -88,9 +88,10 @@
             return LocalCacheService.getCacheWithKey('username') || '';
         }
 
-        this.getUserByUsername=function() {
+        this.getUserDetailsByUsername = function(username) {
             console.log('123456***** ');
-            return PromiseService.getData(URL_CONFIGS.A_USER + 'ctrpsuper' + '.json');
+            var username = LocalCacheService.getCacheWithKey('username');
+            return PromiseService.getData(URL_CONFIGS.A_USER + username + '.json');
         } //getUserByName
 
         /**

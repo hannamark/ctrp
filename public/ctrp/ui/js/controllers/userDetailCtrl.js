@@ -9,22 +9,27 @@
         .controller('userDetailCtrl', userDetailCtrl);
 
     userDetailCtrl.$inject = ['UserService', 'toastr', 'MESSAGES',
-        '$scope', 'countryList', 'Common','$state', '$modal'];
+        '$scope', 'countryList', 'Common','$state', '$modal', 'LocalCacheService'];
 
     function userDetailCtrl(UserService,
-                           $scope, countryList, $state, $modal) {
+                           $scope, countryList, $state, $modal, LocalCacheService) {
         var vm = this;
+        // console.log("curuser is " + vm.curUser);
+        // var username =  LocalCacheService.getCacheWithKey('username');
+        vm.userDetails = '';
+
+        UserService.getUserDetailsByUsername().then(function(details) {
+            console.log('user details: ' + JSON.stringify(details));
+            vm.userDetails = details.data;
+        });
+
+
         activate();
-        console.log("curuser is " + vm.curUser);
 
         /****************** implementations below ***************/
         function activate() {
 
-            UserService.getUserByUsername().then(function (data) {
-                console.log("received search results: " + JSON.stringify(data.data));
-            }).catch(function (err) {
-                console.log('getting user details failed');
-            });
+
         }
 
 
