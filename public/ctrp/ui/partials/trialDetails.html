@@ -176,11 +176,11 @@
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
-                                        <input type="text" class="form-control input-xs" disabled value="{{trialDetailView.selectedLeadOrg.name}}"/>
+                                        <input type="text" class="form-control input-xs" disabled value="{{trialDetailView.selectedLoArray[0].name}}"/>
                                     </div>
-                                    <button class="btn btn-primary" ng-click="trialDetailView.searchOrg('lg', 'lead')">
-                                        <i class="glyphicon glyphicon-search"></i> Search Organizations
-                                    </button>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedLoArray"></ctrp-org-adv-search-modal-button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -204,6 +204,20 @@
                         <accordion-heading>
                             Sponsor/Responsible Party  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion4, 'glyphicon-chevron-right': !trialDetailView.accordion4}"></i>
                         </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Sponsor:</label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-8">
+                                        <input type="text" class="form-control input-xs" disabled value="{{trialDetailView.selectedSponsorArray[0].name}}"/>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedSponsorArray"></ctrp-org-adv-search-modal-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Responsible Party:</label>
@@ -235,7 +249,45 @@
 
                     <accordion-group is-open="trialDetailView.accordion5">
                         <accordion-heading>
-                            NIH Grant Information (for NIH funded Trials)  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion5, 'glyphicon-chevron-right': !trialDetailView.accordion5}"></i>
+                            Data Table 4 Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion5, 'glyphicon-chevron-right': !trialDetailView.accordion5}"></i>
+                        </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Data Table 4 Funding Source:</label>
+                            <div class="col-sm-9">
+                                <div class="col-xs-12 col-sm-4">
+                                    <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-repeat="fs in trialDetailView.addedFses track by $index" class="form-group col-sm-12">
+                            <label class="control-label col-sm-3"></label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-8">
+                                        <input type="text" class="form-control input-xs" ng-class="fs._destroy == true ? 'deleted-text animated-item' : 'animated-item'" disabled value="{{fs.organization_name}}"/>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'funding_source')">
+                                            <i ng-class="fs._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Program code:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control input-xs" id="program_code" ng-model="trialDetailView.curTrial.program_code">
+                            </div>
+                        </div>
+                    </accordion-group>
+
+                    <accordion-group is-open="trialDetailView.accordion6">
+                        <accordion-heading>
+                            NIH Grant Information (for NIH funded Trials)  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion6, 'glyphicon-chevron-right': !trialDetailView.accordion6}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -331,9 +383,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion6">
+                    <accordion-group is-open="trialDetailView.accordion7">
                         <accordion-heading>
-                            Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion6, 'glyphicon-chevron-right': !trialDetailView.accordion6}"></i>
+                            Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion7, 'glyphicon-chevron-right': !trialDetailView.accordion7}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -408,9 +460,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion7">
+                    <accordion-group is-open="trialDetailView.accordion8">
                         <accordion-heading>
-                            Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion7, 'glyphicon-chevron-right': !trialDetailView.accordion7}"></i>
+                            Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion8, 'glyphicon-chevron-right': !trialDetailView.accordion8}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -477,9 +529,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion8">
+                    <accordion-group is-open="trialDetailView.accordion9">
                         <accordion-heading>
-                            FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion8, 'glyphicon-chevron-right': !trialDetailView.accordion8}"></i>
+                            FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion9, 'glyphicon-chevron-right': !trialDetailView.accordion9}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -577,9 +629,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion9">
+                    <accordion-group is-open="trialDetailView.accordion10">
                         <accordion-heading>
-                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion9, 'glyphicon-chevron-right': !trialDetailView.accordion9}"></i>
+                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion10, 'glyphicon-chevron-right': !trialDetailView.accordion10}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -630,6 +682,65 @@
                             </div>
                             <div class="col-sm-2">
                                 <label><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="Yes"> Yes</label>
+                            </div>
+                        </div>
+                    </accordion-group>
+
+                    <accordion-group is-open="trialDetailView.accordion11">
+                        <accordion-heading>
+                            Trial Related Documents  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion11, 'glyphicon-chevron-right': !trialDetailView.accordion11}"></i>
+                        </accordion-heading>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Protocol Document:</label>
+                            <div class="col-sm-9">
+                                <input type="file" ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">IRB Approval:</label>
+                            <div class="col-sm-9">
+                                <input type="file" ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">List of Participating Sites:</label>
+                            <div class="col-sm-9">
+                                <input type="file" ngf-select ng-model="trialDetailView.participating_sites" name="participating_sites" ngf-max-size="10MB">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3">Informed Consent Document:</label>
+                            <div class="col-sm-9">
+                                <input type="file" ngf-select ng-model="trialDetailView.informed_consent" name="informed_consent" ngf-max-size="10MB">
+                            </div>
+                        </div>
+
+                        <div ng-repeat="i in trialDetailView.getNumArr(trialDetailView.otherDocNum) track by $index">
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-3">Other:</label>
+                                <div class="col-sm-3">
+                                    <input type="file" ngf-select ng-model="trialDetailView.other_documents[$index]" name="other_documents" ngf-max-size="10MB">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-3"></label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control input-xs" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Please describe the document">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3"></label>
+                            <div class="col-sm-9">
+                                <button class="btn btn-primary" ng-click="trialDetailView.addOtherDoc()">
+                                    <i class="glyphicon glyphicon-plus"></i> Add More ...
+                                </button>
                             </div>
                         </div>
                     </accordion-group>

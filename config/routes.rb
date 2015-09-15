@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :trial_documents
+
   scope "/ctrp" do
     devise_for :users
 
@@ -107,6 +109,7 @@ Rails.application.routes.draw do
       resources :expanded_access_types
       resources :trial_statuses
       resources :research_categories
+      resources :trial_documents
 
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'
