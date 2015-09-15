@@ -19,7 +19,7 @@
         vm.username = UserService.getLoggedInUsername();
         vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
         vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
-        vm.userPrivilege = UserService.getUserPrivilege(); //'READONLY'; //default
+        vm.userPrivilege = UserService.getPrivilege(); //'READONLY'; //default
         vm.warning = null;
         vm.timedout = null;
         vm.uiRouterState = $state;

@@ -54,7 +54,7 @@
         } //linkFn
 
 
-        function orgSearchController($scope, $log) {
+        function orgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
             $log.warn('ctrpAdvancedOrgSearchForm has been deprecated, please use ctrpAdvancedOrgSearchForm2');
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
