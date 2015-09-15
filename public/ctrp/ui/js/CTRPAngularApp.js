@@ -398,7 +398,7 @@
                     if (!UserService.isLoggedIn()) {
                         UserService.getAppVerFromDMZ().then(function(data) {
                            // console.log('retrieved data from dmz: ' + JSON.stringify(data));
-                            UserService.setAppVersion(data.app_ver);
+                            UserService.setAppVersion(data.app_version);
                         });
                     }
                 } else {

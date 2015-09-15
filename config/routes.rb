@@ -77,7 +77,8 @@ Rails.application.routes.draw do
     get '/backoffice/static_members'
 
     #DmzUtils routes
-    get '/dmzutils/app_ver' => 'dmz_utils#get_app_ver'
+    get '/dmzutils/app_version' => 'dmz_utils#get_app_version'
+    get '/dmzutils/app_rel_milestone' => 'dmz_utils#get_app_rel_milestone'
     get '/dmzutils/login_bulletin' => 'dmz_utils#get_login_bulletin'
 
     # Devise related routes
