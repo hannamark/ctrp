@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::Base
   respond_to :html, :xml, :json
-  #check_authorization :unless => :devise_controller?
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+ # check_authorization :unless => :devise_controller?
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
     render :text => exception, :status => 500
   end
   rescue_from CanCan::AccessDenied do |exception|
     Rails.logger.debug "Access denied onn #{exception.action} #{exception.subject.inspect}"
-    Rails.logger.debug "Access denied onn #{exception.action}"
     Rails.logger.debug "Access denied onn #{exception.subject.inspect}"
     unless exception.subject ==  :rails_admin
       respond_with do |format|
@@ -34,13 +34,6 @@ class ApplicationController < ActionController::Base
     cookies['XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
   end
 
-  #def is_role_read_only?
-  #  Rails.logger.info "In ApplicationController, method is_role_ro @current_user = #{@current_user.inspect}"
-  #  return false if @current_user.blank? || @current_user.role.blank?
-  #  return true if @current_user.role == "ROLE_RO"
-  #  return false
-  #end
-
   def reset_current_user
     @current_user = nil
   end
@@ -53,14 +46,10 @@ class ApplicationController < ActionController::Base
     ## If the App was accessed with the Angular UI, it will have a token, else the token will be nil
     if token.blank?
       ## The App was signed/accessed via the Rails App (not Angular)
-     # Rails.logger.info "non-Angular Authentication PARAMS = #{params.inspect}"
-     # Rails.logger.info "SESSION = #{session.inspect}"
-     # Rails.logger.info "CURRENT_USER = #{current_user.inspect}"
-     # Rails.logger.info "CURRENT_Local User= #{current_local_user.inspect}"
-      username = params["username"]
+       username = params["username"]
       unless username.blank?
         Rails.logger.info "Authenticating user with username = #{username.inspect}"
-        user = User.find_by_username(username)
+        user = User.find_by_username(username.downcase)
       else
         @current_user = get_user
       end
@@ -70,7 +59,7 @@ class ApplicationController < ActionController::Base
       if local_user_signed_in?
         Rails.logger.info "In authenticate_user signing in as local_user"
         authenticate_local_user!
-        Rails.logger.info "Completed authenticate_user signing in as local_user session = #{session.inspect}"
+        Rails.logger.info "Completed authenticate_user signing in as local_user"
       elsif ldap_user_signed_in?
         Rails.logger.info "In authenticate_user signing in as ldap_user"
         authenticate_ldap_user!
@@ -91,8 +80,6 @@ class ApplicationController < ActionController::Base
         raise "Unable to decode token. The Authentication of the user cannot be performed"
       end
       user = User.find_by_id(user_id)
-      #current_user = user
-      #current_ldap_user = user
       begin
         # All options given to sign_in is passed forward to the set_user method in warden.
         # The only exception is the :bypass option, which bypass warden callbacks and stores
@@ -104,7 +91,7 @@ class ApplicationController < ActionController::Base
         Rails.logger.debug "Unable to authenticate user exception #{e.backtrace}"
         raise "Unable to authenticate User. The Authentication of the user cannot be performed"
       end
-      #Rails.logger.info "User session after authentication = #{session.inspect}" unless session.nil?
+      @current_user = user
       current_user = user
       if user.is_a?(LdapUser)
         current_ldap_user = user
@@ -114,13 +101,13 @@ class ApplicationController < ActionController::Base
         current_user = user
       end
     end
-    @current_user = get_user
     Rails.logger.info "End of wrapper_authenticate_user"
   end
 
+  # This method is used by the non-Angular login
   def get_user
     Rails.logger.info "In get_user"
-    Rails.logger.info "In get_user USER_ID  = #{session.inspect}"
+   # Rails.logger.info "In get_user USER_ID  = #{session.inspect}"
     unless session.nil? || session["warden.user.user.key"].nil? || session["warden.user.user.key"][0].nil? || session["warden.user.user.key"][0][0].nil?
       @user_id  = session["warden.user.user.key"][0][0]
       return @current_user = User.find_by_id(@user_id)
@@ -133,11 +120,11 @@ class ApplicationController < ActionController::Base
       @user_id = current_ldap_user.id
       @current_user = current_ldap_user
     else
-      Rails.logger.info "#{current_omniauth_user.inspect}"
-      Rails.logger.info "#{current_user.inspect}"
-      @user_id = current_user.id
+      Rails.logger.info "#{current_omniauth_user.inspect}" unless current_omniauth_user.nil?
+      Rails.logger.info "#{current_user.inspect}" unless current_user.nil?
+      @user_id = current_user.id  unless current_user.nil?
+      @current_user = User.find_by_id(@user_id)  unless @user_id.nil?
     end
-    @current_user = User.find_by_id(@user_id)
   end
 
   ## TODO secret must be an environmental variable
@@ -157,38 +144,15 @@ class ApplicationController < ActionController::Base
   def create_authorization_json(user, token)
     begin
       Rails.logger.info "In create_authorization_json user=#{user.inspect}"
-      all = "all"
-      role = user.role || ""
-      role_json = Hash.new
-      role_json = case role
-                    when "ROLE_SUPER"
-                      {resource_urls: {can:  all},
-                       links: {can: all}
-                      }
-                    when "ROLE_ADMIN"
-                      {resource_urls: {can:  all},
-                       links: {can: all}
-                      }
-                    when "ROLE_CURATOR"
-                      {resource_urls: {can:  all},
-                       links: {cannot: ["useradmin"]}
-                      }
-                    when "ROLE_RO"
-                      {resource_urls: {can: {all: {operations: ["read"]}}},
-                       links: {cannot: "backoffice"}
-                      }
-                    else
-                      {resource_urls: {can:  all},
-                       links: {can: all}
-                      }
-                  end
 
-      Rails.logger.info "In create_authorization_json role_json = #{role_json.inspect}"
-
+      app_version = Rails.configuration.application_version
       auth_json = {
-          application_version: "0.1", # should be retrieved from Config file
-          token: token
-                    }.merge!(role_json)
+          application_version: app_version,
+          token: token,
+          role: user.role,
+          privileges: user.get_privileges,
+          env: Rails.env
+                    }
 
       Rails.logger.info "In create_authorization_json auth_json = #{auth_json.inspect}"
       return auth_json
@@ -219,4 +183,9 @@ class ApplicationController < ActionController::Base
     end
   end
 =end
+
+  def after_sign_out_path_for(resource)
+    request.referrer
+  end
+
 end

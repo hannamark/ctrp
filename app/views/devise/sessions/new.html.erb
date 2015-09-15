@@ -1,19 +1,10 @@
-<h2>Log in as LOCAL or LDAP user</h2>
+
 
 <div>
   <%= form_for(resource, :as => 'user', url: create_session_path) do %>
       <fieldset>
         <legend>Log In</legend>
         <table>
-          <tr>
-            <td>
-              <%= radio_button_tag 'type', 'LocalUser', :checked => true  %>
-              <%= label_tag(:local_user_type, "Local User") %>
-            </td>
-            <td><%= radio_button_tag 'type', 'LdapUser'  %>
-              <%= label_tag(:ldap_user_type, "LDAP User") %>
-            </td>
-          </tr>
           <tr>
             <td>
               <label>Username </label>

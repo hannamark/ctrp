@@ -1,72 +1,60 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user
+  before_filter :authenticate_user!, :only => :update
 
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    # The Current User logged in
+    Rails.logger.info "@user = #{@user.inspect}"
+    if @user.blank?
+      @users = []
+    else
+      @users = @user.get_all_users_by_role
+    end
   end
-
-  # GET /users/1
-  # GET /users/1.json
+  
   def show
-  end
-
-  # GET /users/new
-  def new
-    @user = User.new
-  end
-
-  # GET /users/1/edit
-  def edit
-    Rails.logger.info "IN HERE!!! user_params = #{params.inspect}"
-    @user = User.find_by_id(params[:id])
-  end
-
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+    unless params.nil? || params[:id].nil?
+      user_identifier = params[:id]
+      if  user_identifier.to_i > 0
+        @user = User.find(user_identifier)
       else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        @user =  User.find_by_username(user_identifier)
       end
     end
   end
 
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
+    @user = current_user
+    @user.update_attributes(params[:user])
+    render :edit
   end
 
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+  def approve
+    # When an ADMIN approves of the user request for privileges, the role is updated
+    # if it is not already chosen and the approved field is set to true
+    @user.process_approval
+    redirect_to users_path
+
   end
+
+  def disapprove
+      # When an ADMIN disapproves of the user request for privileges, the role is set to nill
+      # and the approved field is set to false
+    @user.process_disapproval
+    redirect_to users_path
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      unless params.nil? || params[:id].nil? || params[:username].nil?
+        @user = User.find(params[:id]) || User.find(params[:username])
+      else
+        @user = current_user || current_local_user || current_ldap_user || current_omniauth_user
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

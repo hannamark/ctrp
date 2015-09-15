@@ -1,0 +1,68 @@
+<div class="row">
+<strong>Examples of the ctrpPersonAdvSearchModalButton:</strong>
+    <ul>
+        <li>
+    use-built-in-template: false (turn off the build in template for displaying selected persons)
+            </li>
+        <li>
+    max-row-selectable: maximum number of people that could be selected in the pop-up modal
+        </li>
+        </ul>
+</div>
+
+<!--
+<div class="row">
+    <ctrp-advanced-person-search-form show-grid="true" max-row-selectable="2" curation-mode="true"></ctrp-advanced-person-search-form>
+</div>
+-->
+<!--
+<div class="row">
+    <ctrp-advanced-org-search-form2 show-grid="true" max-row-selectable="2" curation-mode="true"></ctrp-advanced-org-search-form2>
+</div>
+-->
+
+<div class="row">
+    <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="true" allow-overwrite="false"></ctrp-person-adv-search-modal-button>
+</div>
+
+<div class="row animated-item" ng-show="selectedPersonsArray.length > 0">
+
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+        <th>Remove</th>
+        <th>PO ID</th>
+        <th>Prefix</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Suffix</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Source Context</th>
+        <th>Source Status</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="person in selectedPersonsArray | filter: {'name': selectedPersonFilter} track by $index"
+            class="animated-item" ng-class="person._destroy == true ? 'deleted-text' : ''">
+            <td style="vertical-align: middle">
+                <label class="btn btn-default"
+                       ng-click="toggleSelection($index)">
+                    <i class="glyphicon" ng-class="person._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                </label>
+            </td>
+            <td>{{person.id}}</td>
+            <td>{{person.prefix}}</td>
+            <td>{{person.fname}}</td>
+            <td>{{person.lname}}</td>
+            <td>{{person.suffix}}</td>
+            <td>{{person.email}}</td>
+            <td>{{person.phone}}</td>
+            <td>{{person.source_context}}</td>
+            <td>{{person.source_status}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="true" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
+</div>
