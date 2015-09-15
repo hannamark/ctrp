@@ -19,9 +19,9 @@
         .directive('ctrpAdvancedOrgSearchForm', ctrpAdvancedOrgSearchForm);
 
     ctrpAdvancedOrgSearchForm.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location',
-        'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr','$anchorScroll', '$compile'];
+        'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr','$anchorScroll', '$compile', '$log'];
 
-    function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common, $location,
+    function ctrpAdvancedOrgSearchForm(OrgService, GeoLocationService, Common, $location, $log,
                                        MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile) {
 
         var directiveObj = {
@@ -49,12 +49,13 @@
             console.log('showgrid: ' + scope.showgrid);
             console.log('enablerowselection: ' + scope.enablerowselection);
             // scope.enablerowselection = attrs.enablerowselection || false;
-            $compile(element.contents())(scope);
+            // $compile(element.contents())(scope);
 
         } //linkFn
 
 
-        function orgSearchController($scope) {
+        function orgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
+            $log.warn('ctrpAdvancedOrgSearchForm has been deprecated, please use ctrpAdvancedOrgSearchForm2');
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.curationShown = false;
@@ -363,7 +364,7 @@
              * Watch curationShown for dynamically adjusting the ui-grid
              */
             function watchCurationShown() {
-                $scope.$watch('curationShown', function(newVal) {
+                $scope.$watch('curationShown', function(newVal, oldVal) {
 
                    $scope.gridOptions.columnDefs[0].visible = newVal;
                    if (newVal) {
@@ -381,7 +382,10 @@
                        $scope.nullifiedId = '';
                        $scope.warningMessage = false;
                    }
-                   $scope.gridApi.grid.refresh();
+
+                    if (newVal != oldVal) {
+                        $scope.gridApi.grid.refresh();
+                    }
                 });
             }
 

@@ -76,8 +76,9 @@
                     if (angular.isArray(selectedPersons) && selectedPersons.length > 0) {
 
                         if ($scope.allowOverwrite) {
+                            console.log('overwring the previous person');
                             $scope.savedSelection = selectedPersons;
-                            $scope.selectedOrgsArray = selectedPersons;
+                            $scope.selectedPersonsArray = selectedPersons;
                         } else {
                             //concatenate
                             _.each(selectedPersons, function(selectedPerson, index) {
@@ -89,10 +90,6 @@
 
                             $scope.selectedPersonsArray = $scope.savedSelection; //$scope.selectedOrgsArray.concat(selectedOrgs);
                         }
-
-
-
-
                     }
 
                     modalOpened = false;

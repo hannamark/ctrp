@@ -129,7 +129,7 @@
      */
     function advancedOrgSearchForm2ModalCtrl($scope, $modalInstance, maxRowSelectable) {
         var vm = this;
-        vm.maxRowSelectable = maxRowSelectable || 1; //to be passed to the adv org search form
+        vm.maxRowSelectable = maxRowSelectable || undefined; //to be passed to the adv org search form
 
         console.log('in Modal, received promise maxRowSelectable: ' + vm.maxRowSelectable);
         $scope.orgSearchResults = {orgs: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};

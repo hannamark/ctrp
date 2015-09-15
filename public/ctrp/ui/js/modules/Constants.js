@@ -17,6 +17,8 @@
             'STATES_IN_COUNTRY' : '/ctrp/states.json?country=',
             'SOURCE_CONTEXTS' : '/ctrp/source_contexts.json',
             'SOURCE_STATUSES' : '/ctrp/source_statuses.json',
+            'A_USER': '/ctrp/users/',
+            'USER_LIST': '/ctrp/users.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
             'CURATE_PERSON' : '/ctrp/people/curate',
@@ -46,12 +48,19 @@
             'EXPANDED_ACCESS_TYPES': '/ctrp/registry/expanded_access_types.json'
         })
         .constant('MESSAGES', {
-            'STATES_AVAIL' : 'states_or_provinces_available',
-            'STATES_UNAVAIL' : 'states_or_provinces_not_available'
+            'STATES_AVAIL': 'states_or_provinces_available',
+            'STATES_UNAVAIL': 'states_or_provinces_not_available',
+            'PRIVILEGE_CHANGED': 'user_privilege_changed'
         })
         .constant('DMZ_UTILS', {
-            'APP_VERSION' : '/ctrp/dmzutils/app_ver.json',
+            'APP_VERSION' : '/ctrp/dmzutils/app_version.json',
+            'APP_REL_MILESTONE' : '/ctrp/dmzutils/app_rel_milestone.json',
             'LOGIN_BULLETIN' : '/ctrp/dmzutils/login_bulletin.json'
+        })
+        .constant('PRIVILEGES', {
+            //key mirrors value
+            'READONLY' : 'READONLY',
+            'CURATOR' : 'CURATOR'
         });
 
 })();
