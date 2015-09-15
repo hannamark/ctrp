@@ -51,6 +51,7 @@
         })
         .constant('DMZ_UTILS', {
             'APP_VERSION' : '/ctrp/dmzutils/app_version.json',
+            'APP_REL_MILESTONE' : '/ctrp/dmzutils/app_rel_milestone.json',
             'LOGIN_BULLETIN' : '/ctrp/dmzutils/login_bulletin.json'
         });
 
