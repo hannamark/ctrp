@@ -170,7 +170,7 @@
                     },
                     onEnter: function($state, UserService, toastr) {
                         if (UserService.isLoggedIn()) {
-                            toastr.warning('Redirecting ...', 'You are already signed in')
+                            toastr.warning('Redirected ...', 'You are already signed in')
                             $state.go('main.defaultContent');
                         }
                     },

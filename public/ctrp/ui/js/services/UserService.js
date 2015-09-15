@@ -7,13 +7,11 @@
     angular.module('ctrpApp')
         .service('UserService', UserService);
 
+    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log',
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS'];
 
-    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService','PromiseService', '$log',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS','URL_CONFIGS'];
-
-
-    function UserService(LocalCacheService, PromiseTimeoutService,PromiseService, $log,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS) {
+    function UserService(LocalCacheService, PromiseTimeoutService, $log,
+                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS) {
 
         var appVersion = '';
         var appRelMilestone = '';
@@ -41,6 +39,9 @@
                         _setAppVersion(data.application_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
+
+                        //var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
+                        LocalCacheService.cacheItem("privileges", data.privileges);
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg("signedIn");
 
@@ -66,10 +67,7 @@
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: "Angular"})
                 .then(function (data) {
                     if (data.success) {
-                        LocalCacheService.removeItemFromCache("token");
-                        LocalCacheService.removeItemFromCache("username");
-                        LocalCacheService.removeItemFromCache("app_version");
-                        LocalCacheService.removeItemFromCache("user_role");
+                        LocalCacheService.clearAllCache();
                         toastr.success('Success', 'Successfully logged out');
 
                         $timeout(function() {
@@ -101,6 +99,15 @@
          */
         this.getUserRole = function() {
             return LocalCacheService.getCacheWithKey('user_role') || '';
+        };
+
+
+        /**
+         * Get the user privileges from localStorage of the browser
+         * @returns {*|Array}
+         */
+        this.getUserPrivileges = function() {
+            return LocalCacheService.getCacheWithKey('privileges') || [];
         };
 
 
@@ -140,6 +147,21 @@
         this.getLoginBulletin = function() {
             return PromiseTimeoutService.getData(DMZ_UTILS.LOGIN_BULLETIN);
         };
+
+
+        this.setUserPrivilege = function(privilege) {
+            var userCurrentPrivilege = PRIVILEGES.READONLY; //default privilege
+            if (privilege) {
+                userCurrentPrivilege = privilege;
+            }
+            LocalCacheService.cacheItem('current_privilege', userCurrentPrivilege);
+        };
+
+
+        this.getUserPrivilege = function() {
+            return LocalCacheService.getCacheWithKey('current_privilege') || PRIVILEGES.READONLY;
+        };
+
 
 
 

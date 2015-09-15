@@ -364,7 +364,7 @@
              * Watch curationShown for dynamically adjusting the ui-grid
              */
             function watchCurationShown() {
-                $scope.$watch('curationShown', function(newVal) {
+                $scope.$watch('curationShown', function(newVal, oldVal) {
 
                    $scope.gridOptions.columnDefs[0].visible = newVal;
                    if (newVal) {
@@ -382,7 +382,10 @@
                        $scope.nullifiedId = '';
                        $scope.warningMessage = false;
                    }
-                   $scope.gridApi.grid.refresh();
+
+                    if (newVal != oldVal) {
+                        $scope.gridApi.grid.refresh();
+                    }
                 });
             }
 
