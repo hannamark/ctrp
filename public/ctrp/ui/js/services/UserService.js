@@ -7,11 +7,13 @@
     angular.module('ctrpApp')
         .service('UserService', UserService);
 
-    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS'];
 
-    function UserService(LocalCacheService, PromiseTimeoutService, $log,
-                         $timeout, $state, toastr, Common, DMZ_UTILS) {
+    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService','PromiseService', '$log',
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS','URL_CONFIGS'];
+
+
+    function UserService(LocalCacheService, PromiseTimeoutService,PromiseService, $log,
+                         $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS) {
 
         var appVersion = '';
         var appRelMilestone = '';
@@ -87,6 +89,11 @@
         this.getLoggedInUsername = function() {
             return LocalCacheService.getCacheWithKey('username') || '';
         }
+
+        this.getUserByUsername=function() {
+            console.log('123456***** ');
+            return PromiseService.getData(URL_CONFIGS.A_USER + 'ctrpsuper' + '.json');
+        } //getUserByName
 
         /**
          * Get the user role of the logged in user

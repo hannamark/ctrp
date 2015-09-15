@@ -181,6 +181,23 @@
                     }
                 })
 
+                .state('main.userDetail', {
+                    url: '/userDetail/username',
+                    templateUrl: '/ctrp/ui/partials/userDetails.html',
+                    controller: 'userDetailCtrl as userDetailView',
+                    resolve: {
+                        UserService: 'UserService',
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
+                        }
+                    }//, //resolve the promise and pass it to controller
+                    //ncyBreadcrumb: {
+                    //    parent: 'main.people',
+                    //     label: 'Person Detail'
+                    //  }
+                })
+
                 .state('main.families', {
                     url: '/families',
                     templateUrl: '/ctrp/ui/partials/family_list.html',

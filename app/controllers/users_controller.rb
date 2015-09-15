@@ -15,7 +15,14 @@ class UsersController < ApplicationController
   end
   
   def show
-    @user = User.find(params[:id])
+    unless params.nil? || params[:id].nil?
+      user_identifier = params[:id]
+      if  user_identifier.to_i > 0
+        @user = User.find(user_identifier)
+      else
+        @user =  User.find_by_username(user_identifier)
+      end
+    end
   end
 
   def update
@@ -43,8 +50,8 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      unless params.nil? || params[:id].nil?
-        @user = User.find(params[:id])
+      unless params.nil? || params[:id].nil? || params[:username].nil?
+        @user = User.find(params[:id]) || User.find(params[:username])
       else
         @user = current_user || current_local_user || current_ldap_user || current_omniauth_user
       end
