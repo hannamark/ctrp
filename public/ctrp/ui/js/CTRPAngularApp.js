@@ -396,14 +396,19 @@
 
                     if (!UserService.isLoggedIn()) {
                         UserService.getAppVerFromDMZ().then(function(data) {
-                           // console.log('retrieved data from dmz: ' + JSON.stringify(data));
+                            console.log('retrieved data from dmz: ' + JSON.stringify(data));
                             UserService.setAppVersion(data.app_version);
+                        });
+                        UserService.getAppRelMilestoneFromDMZ().then(function(data) {
+                            console.log('retrieved data from dmz: ' + JSON.stringify(data));
+                            UserService.setAppRelMilestone(data.app_rel_milestone);
                         });
                     }
                 } else {
-                    //do not show appversion on other pages unless authenticated
+                    //do not show app version or release milestone on other pages unless authenticated
                     if (!UserService.isLoggedIn()) {
                         UserService.setAppVersion('');
+                        UserService.setAppRelMilestone('');
                     }
                 }
             });

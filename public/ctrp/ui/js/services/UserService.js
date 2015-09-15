@@ -14,6 +14,7 @@
                          $timeout, $state, toastr, Common, DMZ_UTILS) {
 
         var appVersion = '';
+        var appRelMilestone = '';
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -109,14 +110,24 @@
             return PromiseTimeoutService.getData(DMZ_UTILS.APP_VERSION);
         };
 
+        this.getAppRelMilestoneFromDMZ = function() {
+            return PromiseTimeoutService.getData(DMZ_UTILS.APP_REL_MILESTONE);
+        };
 
         this.setAppVersion = function(version) {
             _setAppVersion(version);
         };
 
+        this.setAppRelMilestone = function(milestone) {
+            _setAppRelMilestone(milestone);
+        };
 
         this.getAppVersion = function() {
             return LocalCacheService.getCacheWithKey('app_version'); // || appVersion;
+        };
+
+        this.getAppRelMilestone = function() {
+            return LocalCacheService.getCacheWithKey('app_rel_milestone'); // || appRelMilestone;
         };
 
         this.getLoginBulletin = function() {
@@ -140,6 +151,18 @@
             Common.broadcastMsg('updatedAppVersion');
         }
 
+        function _setAppRelMilestone(milestone) {
+            if (!milestone) {
+                //if null or empty value
+                appRelMilestone = '';
+                LocalCacheService.removeItemFromCache("app_rel_milestone");
+            } else {
+                appRelMilestone = milestone;
+                LocalCacheService.cacheItem("app_rel_milestone", milestone);
+            }
+            //notify listeners
+            Common.broadcastMsg('updatedAppRelMilestone');
+        }
 
     }
 
