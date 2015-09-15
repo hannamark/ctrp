@@ -8,13 +8,12 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES'];
 
     function UserService(LocalCacheService, PromiseTimeoutService, $log,
-                         $timeout, $state, toastr, Common, DMZ_UTILS) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES) {
 
         var appVersion = '';
-        var currentUserPrivilege = '';
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -133,21 +132,20 @@
             return PromiseTimeoutService.getData(DMZ_UTILS.LOGIN_BULLETIN);
         };
 
-        /*
+
         this.setUserPrivilege = function(privilege) {
+            var userCurrentPrivilege = PRIVILEGES.READONLY; //default privilege
             if (privilege) {
-                userPrivilege = privilege;
-                LocalCacheService.cacheItem('current_privilege', privilege);
+                userCurrentPrivilege = privilege;
             }
+            LocalCacheService.cacheItem('current_privilege', userCurrentPrivilege);
         };
 
 
         this.getUserPrivilege = function() {
-            userPrivilege = LocalCacheService.getCacheWithKey('current_privilege');
-
-            return userPrivilege || '';
+            return LocalCacheService.getCacheWithKey('current_privilege') || PRIVILEGES.READONLY;
         };
-        */
+
 
 
 

@@ -8,21 +8,21 @@
     angular.module('ctrpApp')
         .controller('headerNavigationCtrl', headerNavigationCtrl);
 
-    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'Keepalive', '$modal', '$timeout', '$state', '_'];
+    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'Keepalive',
+        '$modal', '$timeout', '$state', '_', 'Common'];
 
-    function headerNavigationCtrl(UserService, $scope, Idle, Keepalive, $modal, $timeout, $state, _) {
-
-        $scope.uiRouterState = $state;
+    function headerNavigationCtrl(UserService, $scope, Idle, Keepalive,
+                                  $modal, $timeout, $state, _, Common) {
 
         var vm = this;
-
         vm.signedIn = UserService.isLoggedIn();
         vm.username = UserService.getLoggedInUsername();
         vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
         vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
-        vm.userModel = 'READONLY'; //default
+        vm.userPrivilege = UserService.getUserPrivilege(); //'READONLY'; //default
         vm.warning = null;
         vm.timedout = null;
+        vm.uiRouterState = $state;
 
 
         vm.logOut = function() {
@@ -149,8 +149,10 @@
          *
          */
         function watchUserModelSelection() {
-            $scope.$watch(function() {return vm.userModel;}, function(newVal, oldVal) {
-                console.log('userModel value: ' + newVal);
+            $scope.$watch(function() {return vm.userPrivilege;}, function(newVal, oldVal) {
+                console.log('userPrivilege value: ' + newVal);
+                UserService.setUserPrivilege(newVal);
+                Common.broadcastMsg('privilegeChanged');
             }, true);
         }
 

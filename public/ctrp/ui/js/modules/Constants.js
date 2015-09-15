@@ -52,6 +52,11 @@
         .constant('DMZ_UTILS', {
             'APP_VERSION' : '/ctrp/dmzutils/app_version.json',
             'LOGIN_BULLETIN' : '/ctrp/dmzutils/login_bulletin.json'
+        })
+        .constant('PRIVILEGES', {
+            //key mirrors value
+            'READONLY' : 'READONLY',
+            'CURATOR' : 'CURATOR'
         });
 
 })();
