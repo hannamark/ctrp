@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-6681e82
+ * v0.11.0-master-afc0963
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1034,7 +1034,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     extractElementByName: function(element, nodeName, scanDeep, warnNotFound) {
       var found = scanTree(element);
       if (!found && !!warnNotFound) {
-        $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element.",[nodeName]) );
+        $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element '{1}'.",[nodeName, element[0].outerHTML]) );
       }
 
       return angular.element(found || element);
@@ -3078,7 +3078,7 @@ function InterimElementProvider() {
    *
    * @param {object=} scope Scope within the current context
    * @param {object=} element The element the ripple effect should be applied to
-   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
+   * @param {object=} options (Optional) Configuration options to override the default ripple configuration
    */
 
   angular.module('material.core')
@@ -3086,12 +3086,11 @@ function InterimElementProvider() {
 
   function MdButtonInkRipple($mdInkRipple) {
     return {
-      attach: attach
-    };
+      attach: function attachRipple(scope, element, options) {
+        options = angular.extend(optionsForElement(element), options);
 
-    function attach(scope, element, options) {
-      var elementOptions = optionsForElement(element);
-      return $mdInkRipple.attach(scope, element, angular.extend(elementOptions, options));
+        return $mdInkRipple.attach(scope, element, options);
+      }
     };
 
     function optionsForElement(element) {
@@ -3340,6 +3339,8 @@ InkRippleCtrl.prototype.bindEvents = function () {
  * @param event {MouseEvent}
  */
 InkRippleCtrl.prototype.handleMousedown = function (event) {
+  if ( this.mousedown ) return;
+
   // When jQuery is loaded, we have to get the original event
   if (event.hasOwnProperty('originalEvent')) event = event.originalEvent;
   this.mousedown = true;
@@ -3356,9 +3357,13 @@ InkRippleCtrl.prototype.handleMousedown = function (event) {
  * mouseup or mouseleave event)
  */
 InkRippleCtrl.prototype.handleMouseup = function () {
-  var ctrl       = this;
-  this.mousedown = false;
-  this.$mdUtil.nextTick(function () { ctrl.clearRipples(); }, false);
+  if ( this.mousedown || this.lastRipple ) {
+    var ctrl       = this;
+    this.mousedown = false;
+    this.$mdUtil.nextTick(function () {
+      ctrl.clearRipples();
+    }, false);
+  }
 };
 
 /**
@@ -3366,7 +3371,9 @@ InkRippleCtrl.prototype.handleMouseup = function () {
  * Depending on logic within `fadeInComplete`, some removals will be postponed.
  */
 InkRippleCtrl.prototype.clearRipples = function () {
-  for (var i = 0; i < this.ripples.length; i++) this.fadeInComplete(this.ripples[ i ]);
+  for (var i = 0; i < this.ripples.length; i++) {
+    this.fadeInComplete(this.ripples[ i ]);
+  }
 };
 
 /**
@@ -3386,12 +3393,23 @@ InkRippleCtrl.prototype.clearTimeout = function () {
   }
 };
 
+InkRippleCtrl.prototype.isRippleAllowed = function () {
+  var element = this.$element[0];
+  do {
+    if (!element.tagName || element.tagName === 'BODY') break;
+    if (element && element.hasAttribute && element.hasAttribute('disabled')) return false;
+  } while (element = element.parentNode);
+  return true;
+};
+
 /**
  * Creates a new ripple and adds it to the container.  Also tracks ripple in `this.ripples`.
  * @param left
  * @param top
  */
 InkRippleCtrl.prototype.createRipple = function (left, top) {
+  if (!this.isRippleAllowed()) return;
+
   var ctrl        = this;
   var ripple      = angular.element('<div class="md-ripple"></div>');
   var width       = this.$element.prop('clientWidth');
@@ -3422,9 +3440,14 @@ InkRippleCtrl.prototype.createRipple = function (left, top) {
   this.container.append(ripple);
   this.ripples.push(ripple);
   ripple.addClass('md-ripple-placed');
+
   this.$mdUtil.nextTick(function () {
+
     ripple.addClass('md-ripple-scaled md-ripple-active');
-    ctrl.$timeout(function () { ctrl.clearRipples(); }, DURATION, false);
+    ctrl.$timeout(function () {
+      ctrl.clearRipples();
+    }, DURATION, false);
+
   }, false);
 
   function rgbaToRGB (color) {
@@ -3446,7 +3469,9 @@ InkRippleCtrl.prototype.createRipple = function (left, top) {
  */
 InkRippleCtrl.prototype.fadeInComplete = function (ripple) {
   if (this.lastRipple === ripple) {
-    if (!this.timeout && !this.mousedown) this.removeRipple(ripple);
+    if (!this.timeout && !this.mousedown) {
+      this.removeRipple(ripple);
+    }
   } else {
     this.removeRipple(ripple);
   }
@@ -3465,14 +3490,19 @@ InkRippleCtrl.prototype.removeRipple = function (ripple) {
   if (this.ripples.length === 0) this.container.css({ backgroundColor: '' });
   // use a 2-second timeout in order to allow for the animation to finish
   // we don't actually care how long the animation takes
-  this.$timeout(function () { ctrl.fadeOutComplete(ripple); }, DURATION, false);
+  this.$timeout(function () {
+    ctrl.fadeOutComplete(ripple);
+  }, DURATION, false);
 };
 
 /**
  * Removes the provided ripple from the DOM
  * @param ripple
  */
-InkRippleCtrl.prototype.fadeOutComplete = function (ripple) { ripple.remove(); };
+InkRippleCtrl.prototype.fadeOutComplete = function (ripple) {
+  ripple.remove();
+  this.lastRipple = null;
+};
 
 /**
  * Used to create an empty directive.  This is used to track flag-directives whose children may have
@@ -5626,9 +5656,13 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $timeout) {
         }, 100);
       })
       .on('focus', function() {
-        if (scope.mouseActive === false) { element.addClass('md-focused'); }
+        if (scope.mouseActive === false) {
+          element.addClass('md-focused');
+        }
       })
-      .on('blur', function() { element.removeClass('md-focused'); });
+      .on('blur', function(ev) {
+        element.removeClass('md-focused');
+      });
   }
 
 }
@@ -7175,6 +7209,26 @@ function iosScrollFix(node) {
   var DEFAULT_DEBOUNCE_INTERVAL = 500;
 
   /**
+   * Height of the calendar pane used to check if the pane is going outside the boundary of
+   * the viewport. See calendar.scss for how $md-calendar-height is computed; an extra 20px is
+   * also added to space the pane away from the exact edge of the screen.
+   *
+   *  This is computed statically now, but can be changed to be measured if the circumstances
+   *  of calendar sizing are changed.
+   */
+  var CALENDAR_PANE_HEIGHT = 368;
+
+  /**
+   * Width of the calendar pane used to check if the pane is going outside the boundary of
+   * the viewport. See calendar.scss for how $md-calendar-width is computed; an extra 20px is
+   * also added to space the pane away from the exact edge of the screen.
+   *
+   *  This is computed statically now, but can be changed to be measured if the circumstances
+   *  of calendar sizing are changed.
+   */
+  var CALENDAR_PANE_WIDTH = 360;
+
+  /**
    * Controller for md-datepicker.
    *
    * @ngInject @constructor
@@ -7261,6 +7315,9 @@ function iosScrollFix(node) {
 
     /** Pre-bound click handler is saved so that the event listener can be removed. */
     this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
+
+    /** Pre-bound resize handler so that the event listener can be removed. */
+    this.windowResizeHandler = $mdUtil.debounce(angular.bind(this, this.closeCalendarPane), 100);
 
     // Unless the user specifies so, the datepicker should not be a tab stop.
     // This is necessary because ngAria might add a tabindex to anything with an ng-model
@@ -7404,12 +7461,33 @@ function iosScrollFix(node) {
     var elementRect = this.inputContainer.getBoundingClientRect();
     var bodyRect = document.body.getBoundingClientRect();
 
-    calendarPane.style.left = (elementRect.left - bodyRect.left) + 'px';
-    calendarPane.style.top = (elementRect.top - bodyRect.top) + 'px';
+    // Check to see if the calendar pane would go off the screen. If so, adjust position
+    // accordingly to keep it within the viewport.
+    var paneTop = elementRect.top - bodyRect.top;
+    var paneLeft = elementRect.left - bodyRect.left;
+
+    // If the right edge of the pane would be off the screen and shifting it left by the
+    // difference would not go past the left edge of the screen.
+    if (paneLeft + CALENDAR_PANE_WIDTH > bodyRect.right &&
+        bodyRect.right - CALENDAR_PANE_WIDTH > 0) {
+      paneLeft = bodyRect.right - CALENDAR_PANE_WIDTH;
+      calendarPane.classList.add('md-datepicker-pos-adjusted');
+    }
+
+    // If the bottom edge of the pane would be off the screen and shifting it up by the
+    // difference would not go past the top edge of the screen.
+    if (paneTop + CALENDAR_PANE_HEIGHT > bodyRect.bottom &&
+        bodyRect.bottom - CALENDAR_PANE_HEIGHT > 0) {
+      paneTop = bodyRect.bottom - CALENDAR_PANE_HEIGHT;
+      calendarPane.classList.add('md-datepicker-pos-adjusted');
+    }
+
+    calendarPane.style.left = paneLeft + 'px';
+    calendarPane.style.top = paneTop + 'px';
     document.body.appendChild(this.calendarPane);
 
     // The top of the calendar pane is a transparent box that shows the text input underneath.
-    // Since the pane is flowing, though, the page underneath the pane *adjacent* to the input is
+    // Since the pane is floating, though, the page underneath the pane *adjacent* to the input is
     // also shown unless we cover it up. The inputMask does this by filling up the remaining space
     // based on the width of the input.
     this.inputMask.style.left = elementRect.width + 'px';
@@ -7424,6 +7502,7 @@ function iosScrollFix(node) {
   DatePickerCtrl.prototype.detachCalendarPane = function() {
     this.$element.removeClass('md-datepicker-open');
     this.calendarPane.classList.remove('md-pane-open');
+    this.calendarPane.classList.remove('md-datepicker-pos-adjusted');
 
     if (this.calendarPane.parentNode) {
       // Use native DOM removal because we do not want any of the angular state of this element
@@ -7456,6 +7535,8 @@ function iosScrollFix(node) {
       this.$mdUtil.nextTick(function() {
         document.body.addEventListener('click', self.bodyClickHandler);
       }, false);
+
+      window.addEventListener('resize', this.windowResizeHandler);
     }
   };
 
@@ -7468,6 +7549,7 @@ function iosScrollFix(node) {
     this.$mdUtil.enableScrolling();
 
     document.body.removeEventListener('click', this.bodyClickHandler);
+    window.removeEventListener('resize', this.windowResizeHandler);
   };
 
   /** Gets the controller instance for the calendar in the floating pane. */
@@ -8219,7 +8301,6 @@ function MdDialogProvider($$interimElementProvider) {
      * Show method for dialogs
      */
     function onShow(scope, element, options, controller) {
-      element = $mdUtil.extractElementByName(element, 'md-dialog');
       angular.element($document[0].body).addClass('md-dialog-is-showing');
 
       wrapSimpleContent();
@@ -8305,8 +8386,11 @@ function MdDialogProvider($$interimElementProvider) {
      * unless overridden in the options.parent
      */
     function captureSourceAndParent(element, options) {
-      var origin = {element: null, bounds: null, focus: angular.noop};
-      options.origin = angular.extend({}, origin, options.origin || {});
+      options.origin = angular.extend({
+        element: null,
+        bounds: null,
+        focus: angular.noop
+      }, options.origin || {});
 
       var source = angular.element((options.targetEvent || {}).target);
       if (source && source.length) {
@@ -8320,7 +8404,14 @@ function MdDialogProvider($$interimElementProvider) {
         }
       }
 
-      // In case the user provides a raw dom element, always wrap it in jqLite
+      // If the parent specifier is a simple string selector, then query for
+      // the DOM element.
+      if ( angular.isString(options.parent) ) {
+        var simpleSelector = options.parent;
+            container = $document[0].querySelectorAll(selector);
+        options.parent = container.length ? container[0] : null;
+      }
+      // If we have a reference to a raw dom element, always wrap it in jqLite
       options.parent = angular.element(options.parent || $rootElement);
 
     }
@@ -13558,22 +13649,22 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     scope: {},
     require: '?ngModel',
     template:
-      '<div class="md-slider-wrapper">\
-        <div class="md-track-container">\
-          <div class="md-track"></div>\
-          <div class="md-track md-track-fill"></div>\
-          <div class="md-track-ticks"></div>\
-        </div>\
-        <div class="md-thumb-container">\
-          <div class="md-thumb"></div>\
-          <div class="md-focus-thumb"></div>\
-          <div class="md-focus-ring"></div>\
-          <div class="md-sign">\
-            <span class="md-thumb-text"></span>\
-          </div>\
-          <div class="md-disabled-thumb"></div>\
-        </div>\
-      </div>',
+      '<div class="md-slider-wrapper">' +
+        '<div class="md-track-container">' +
+          '<div class="md-track"></div>' +
+          '<div class="md-track md-track-fill"></div>' +
+          '<div class="md-track-ticks"></div>' +
+        '</div>' +
+        '<div class="md-thumb-container">' +
+          '<div class="md-thumb"></div>' +
+          '<div class="md-focus-thumb"></div>' +
+          '<div class="md-focus-ring"></div>' +
+          '<div class="md-sign">' +
+            '<span class="md-thumb-text"></span>' +
+          '</div>' +
+          '<div class="md-disabled-thumb"></div>' +
+        '</div>' +
+      '</div>',
     compile: compile
   };
 
@@ -14722,7 +14813,7 @@ function MdToastDirective() {
  *   - `position` - `{string=}`: Where to place the toast. Available: any combination
  *     of 'bottom', 'left', 'top', 'right', 'fit'. Default: 'bottom left'.
  *   - `controller` - `{string=}`: The controller to associate with this toast.
- *     The controller will be injected the local `$hideToast`, which is a function
+ *     The controller will be injected the local `$mdToast.hide( )`, which is a function
  *     used to hide the toast.
  *   - `locals` - `{string=}`: An object containing key/value pairs. The keys will
  *     be used as names of values to inject into the controller. For example,
@@ -15260,6 +15351,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         var autohide = scope.hasOwnProperty('autohide') ? scope.autohide : attr.hasOwnProperty('mdAutohide');
         if (autohide || mouseActive || ($document[0].activeElement !== parent[0]) ) {
           parent.off('blur mouseleave touchend touchcancel', leaveHandler );
+          parent.triggerHandler("blur");
           setVisible(false);
         }
         mouseActive = false;
@@ -21596,105 +21688,104 @@ function MdTabs () {
     },
     template:         function (element, attr) {
       attr[ "$mdTabsTemplate" ] = element.html();
-      return '\
-        <md-tabs-wrapper>\
-          <md-tab-data></md-tab-data>\
-          <md-prev-button\
-              tabindex="-1"\
-              role="button"\
-              aria-label="Previous Page"\
-              aria-disabled="{{!$mdTabsCtrl.canPageBack()}}"\
-              ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageBack() }"\
-              ng-if="$mdTabsCtrl.shouldPaginate"\
-              ng-click="$mdTabsCtrl.previousPage()">\
-            <md-icon md-svg-icon="md-tabs-arrow"></md-icon>\
-          </md-prev-button>\
-          <md-next-button\
-              tabindex="-1"\
-              role="button"\
-              aria-label="Next Page"\
-              aria-disabled="{{!$mdTabsCtrl.canPageForward()}}"\
-              ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageForward() }"\
-              ng-if="$mdTabsCtrl.shouldPaginate"\
-              ng-click="$mdTabsCtrl.nextPage()">\
-            <md-icon md-svg-icon="md-tabs-arrow"></md-icon>\
-          </md-next-button>\
-          <md-tabs-canvas\
-              tabindex="0"\
-              aria-activedescendant="tab-item-{{$mdTabsCtrl.tabs[$mdTabsCtrl.focusIndex].id}}"\
-              ng-focus="$mdTabsCtrl.redirectFocus()"\
-              ng-class="{\
-                  \'md-paginated\': $mdTabsCtrl.shouldPaginate,\
-                  \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs\
-              }"\
-              ng-keydown="$mdTabsCtrl.keydown($event)"\
-              role="tablist">\
-            <md-pagination-wrapper\
-                ng-class="{ \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs }"\
-                md-tab-scroll="$mdTabsCtrl.scroll($event)">\
-              <md-tab-item\
-                  tabindex="-1"\
-                  class="md-tab"\
-                  style="max-width: {{ $mdTabsCtrl.maxTabWidth + \'px\' }}"\
-                  ng-repeat="tab in $mdTabsCtrl.tabs"\
-                  role="tab"\
-                  aria-controls="tab-content-{{::tab.id}}"\
-                  aria-selected="{{tab.isActive()}}"\
-                  aria-disabled="{{tab.scope.disabled || \'false\'}}"\
-                  ng-click="$mdTabsCtrl.select(tab.getIndex())"\
-                  ng-class="{\
-                      \'md-active\':    tab.isActive(),\
-                      \'md-focused\':   tab.hasFocus(),\
-                      \'md-disabled\':  tab.scope.disabled\
-                  }"\
-                  ng-disabled="tab.scope.disabled"\
-                  md-swipe-left="$mdTabsCtrl.nextPage()"\
-                  md-swipe-right="$mdTabsCtrl.previousPage()"\
-                  md-tabs-template="::tab.label"\
-                  md-scope="::tab.parent"></md-tab-item>\
-              <md-ink-bar></md-ink-bar>\
-            </md-pagination-wrapper>\
-            <div class="md-visually-hidden md-dummy-wrapper">\
-              <md-dummy-tab\
-                  class="md-tab"\
-                  tabindex="-1"\
-                  id="tab-item-{{::tab.id}}"\
-                  role="tab"\
-                  aria-controls="tab-content-{{::tab.id}}"\
-                  aria-selected="{{tab.isActive()}}"\
-                  aria-disabled="{{tab.scope.disabled || \'false\'}}"\
-                  ng-focus="$mdTabsCtrl.hasFocus = true"\
-                  ng-blur="$mdTabsCtrl.hasFocus = false"\
-                  ng-repeat="tab in $mdTabsCtrl.tabs"\
-                  md-tabs-template="::tab.label"\
-                  md-scope="::tab.parent"></md-dummy-tab>\
-            </div>\
-          </md-tabs-canvas>\
-        </md-tabs-wrapper>\
-        <md-tabs-content-wrapper ng-show="$mdTabsCtrl.hasContent && $mdTabsCtrl.selectedIndex >= 0">\
-          <md-tab-content\
-              id="tab-content-{{::tab.id}}"\
-              role="tabpanel"\
-              aria-labelledby="tab-item-{{::tab.id}}"\
-              md-swipe-left="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementIndex(1)"\
-              md-swipe-right="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementIndex(-1)"\
-              ng-if="$mdTabsCtrl.hasContent"\
-              ng-repeat="(index, tab) in $mdTabsCtrl.tabs"\
-              ng-class="{\
-                \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
-                \'md-active\':        tab.isActive(),\
-                \'md-left\':          tab.isLeft(),\
-                \'md-right\':         tab.isRight(),\
-                \'md-no-scroll\':     $mdTabsCtrl.dynamicHeight\
-              }">\
-            <div\
-                md-tabs-template="::tab.template"\
-                md-connected-if="tab.isActive()"\
-                md-scope="::tab.parent"\
-                ng-if="$mdTabsCtrl.enableDisconnect || tab.shouldRender()"></div>\
-          </md-tab-content>\
-        </md-tabs-content-wrapper>\
-      ';
+      return '' +
+        '<md-tabs-wrapper> ' +
+          '<md-tab-data></md-tab-data> ' +
+          '<md-prev-button ' +
+              'tabindex="-1" ' +
+              'role="button" ' +
+              'aria-label="Previous Page" ' +
+              'aria-disabled="{{!$mdTabsCtrl.canPageBack()}}" ' +
+              'ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageBack() }" ' +
+              'ng-if="$mdTabsCtrl.shouldPaginate" ' +
+              'ng-click="$mdTabsCtrl.previousPage()"> ' +
+            '<md-icon md-svg-icon="md-tabs-arrow"></md-icon> ' +
+          '</md-prev-button> ' +
+          '<md-next-button ' +
+              'tabindex="-1" ' +
+              'role="button" ' +
+              'aria-label="Next Page" ' +
+              'aria-disabled="{{!$mdTabsCtrl.canPageForward()}}" ' +
+              'ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageForward() }" ' +
+              'ng-if="$mdTabsCtrl.shouldPaginate" ' +
+              'ng-click="$mdTabsCtrl.nextPage()"> ' +
+            '<md-icon md-svg-icon="md-tabs-arrow"></md-icon> ' +
+          '</md-next-button> ' +
+          '<md-tabs-canvas ' +
+              'tabindex="0" ' +
+              'aria-activedescendant="tab-item-{{$mdTabsCtrl.tabs[$mdTabsCtrl.focusIndex].id}}" ' +
+              'ng-focus="$mdTabsCtrl.redirectFocus()" ' +
+              'ng-class="{ ' +
+                  '\'md-paginated\': $mdTabsCtrl.shouldPaginate, ' +
+                  '\'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs ' +
+              '}" ' +
+              'ng-keydown="$mdTabsCtrl.keydown($event)" ' +
+              'role="tablist"> ' +
+            '<md-pagination-wrapper ' +
+                'ng-class="{ \'md-center-tabs\': $mdTabsCtrl.shouldCenterTabs }" ' +
+                'md-tab-scroll="$mdTabsCtrl.scroll($event)"> ' +
+              '<md-tab-item ' +
+                  'tabindex="-1" ' +
+                  'class="md-tab" ' +
+                  'style="max-width: {{ $mdTabsCtrl.maxTabWidth + \'px\' }}" ' +
+                  'ng-repeat="tab in $mdTabsCtrl.tabs" ' +
+                  'role="tab" ' +
+                  'aria-controls="tab-content-{{::tab.id}}" ' +
+                  'aria-selected="{{tab.isActive()}}" ' +
+                  'aria-disabled="{{tab.scope.disabled || \'false\'}}" ' +
+                  'ng-click="$mdTabsCtrl.select(tab.getIndex())" ' +
+                  'ng-class="{ ' +
+                      '\'md-active\':    tab.isActive(), ' +
+                      '\'md-focused\':   tab.hasFocus(), ' +
+                      '\'md-disabled\':  tab.scope.disabled ' +
+                  '}" ' +
+                  'ng-disabled="tab.scope.disabled" ' +
+                  'md-swipe-left="$mdTabsCtrl.nextPage()" ' +
+                  'md-swipe-right="$mdTabsCtrl.previousPage()" ' +
+                  'md-tabs-template="::tab.label" ' +
+                  'md-scope="::tab.parent"></md-tab-item> ' +
+              '<md-ink-bar></md-ink-bar> ' +
+            '</md-pagination-wrapper> ' +
+            '<div class="md-visually-hidden md-dummy-wrapper"> ' +
+              '<md-dummy-tab ' +
+                  'class="md-tab" ' +
+                  'tabindex="-1" ' +
+                  'id="tab-item-{{::tab.id}}" ' +
+                  'role="tab" ' +
+                  'aria-controls="tab-content-{{::tab.id}}" ' +
+                  'aria-selected="{{tab.isActive()}}" ' +
+                  'aria-disabled="{{tab.scope.disabled || \'false\'}}" ' +
+                  'ng-focus="$mdTabsCtrl.hasFocus = true" ' +
+                  'ng-blur="$mdTabsCtrl.hasFocus = false" ' +
+                  'ng-repeat="tab in $mdTabsCtrl.tabs" ' +
+                  'md-tabs-template="::tab.label" ' +
+                  'md-scope="::tab.parent"></md-dummy-tab> ' +
+            '</div> ' +
+          '</md-tabs-canvas> ' +
+        '</md-tabs-wrapper> ' +
+        '<md-tabs-content-wrapper ng-show="$mdTabsCtrl.hasContent && $mdTabsCtrl.selectedIndex >= 0"> ' +
+          '<md-tab-content ' +
+              'id="tab-content-{{::tab.id}}" ' +
+              'role="tabpanel" ' +
+              'aria-labelledby="tab-item-{{::tab.id}}" ' +
+              'md-swipe-left="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementIndex(1)" ' +
+              'md-swipe-right="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementIndex(-1)" ' +
+              'ng-if="$mdTabsCtrl.hasContent" ' +
+              'ng-repeat="(index, tab) in $mdTabsCtrl.tabs" ' +
+              'ng-class="{ ' +
+                '\'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null, ' +
+                '\'md-active\':        tab.isActive(), ' +
+                '\'md-left\':          tab.isLeft(), ' +
+                '\'md-right\':         tab.isRight(), ' +
+                '\'md-no-scroll\':     $mdTabsCtrl.dynamicHeight ' +
+              '}"> ' +
+            '<div ' +
+                'md-tabs-template="::tab.template" ' +
+                'md-connected-if="tab.isActive()" ' +
+                'md-scope="::tab.parent" ' +
+                'ng-if="$mdTabsCtrl.enableDisconnect || tab.shouldRender()"></div> ' +
+          '</md-tab-content> ' +
+        '</md-tabs-content-wrapper>';
     },
     controller:       'MdTabsController',
     controllerAs:     '$mdTabsCtrl',

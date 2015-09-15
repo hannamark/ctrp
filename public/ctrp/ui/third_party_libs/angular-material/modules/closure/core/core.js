@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-6681e82
+ * v0.11.0-master-afc0963
  */
 goog.provide('ng.material.core');
 
@@ -1013,7 +1013,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     extractElementByName: function(element, nodeName, scanDeep, warnNotFound) {
       var found = scanTree(element);
       if (!found && !!warnNotFound) {
-        $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element.",[nodeName]) );
+        $log.warn( $mdUtil.supplant("Unable to find node '{0}' in element '{1}'.",[nodeName, element[0].outerHTML]) );
       }
 
       return angular.element(found || element);
@@ -3029,7 +3029,7 @@ function InterimElementProvider() {
    *
    * @param {object=} scope Scope within the current context
    * @param {object=} element The element the ripple effect should be applied to
-   * @param {object=} options (Optional) Configuration options to override the defaultripple configuration
+   * @param {object=} options (Optional) Configuration options to override the default ripple configuration
    */
 
   angular.module('material.core')
@@ -3037,12 +3037,11 @@ function InterimElementProvider() {
 
   function MdButtonInkRipple($mdInkRipple) {
     return {
-      attach: attach
-    };
+      attach: function attachRipple(scope, element, options) {
+        options = angular.extend(optionsForElement(element), options);
 
-    function attach(scope, element, options) {
-      var elementOptions = optionsForElement(element);
-      return $mdInkRipple.attach(scope, element, angular.extend(elementOptions, options));
+        return $mdInkRipple.attach(scope, element, options);
+      }
     };
 
     function optionsForElement(element) {
@@ -3279,6 +3278,8 @@ InkRippleCtrl.prototype.bindEvents = function () {
  * @param event {MouseEvent}
  */
 InkRippleCtrl.prototype.handleMousedown = function (event) {
+  if ( this.mousedown ) return;
+
   // When jQuery is loaded, we have to get the original event
   if (event.hasOwnProperty('originalEvent')) event = event.originalEvent;
   this.mousedown = true;
@@ -3295,9 +3296,13 @@ InkRippleCtrl.prototype.handleMousedown = function (event) {
  * mouseup or mouseleave event)
  */
 InkRippleCtrl.prototype.handleMouseup = function () {
-  var ctrl       = this;
-  this.mousedown = false;
-  this.$mdUtil.nextTick(function () { ctrl.clearRipples(); }, false);
+  if ( this.mousedown || this.lastRipple ) {
+    var ctrl       = this;
+    this.mousedown = false;
+    this.$mdUtil.nextTick(function () {
+      ctrl.clearRipples();
+    }, false);
+  }
 };
 
 /**
@@ -3305,7 +3310,9 @@ InkRippleCtrl.prototype.handleMouseup = function () {
  * Depending on logic within `fadeInComplete`, some removals will be postponed.
  */
 InkRippleCtrl.prototype.clearRipples = function () {
-  for (var i = 0; i < this.ripples.length; i++) this.fadeInComplete(this.ripples[ i ]);
+  for (var i = 0; i < this.ripples.length; i++) {
+    this.fadeInComplete(this.ripples[ i ]);
+  }
 };
 
 /**
@@ -3325,12 +3332,23 @@ InkRippleCtrl.prototype.clearTimeout = function () {
   }
 };
 
+InkRippleCtrl.prototype.isRippleAllowed = function () {
+  var element = this.$element[0];
+  do {
+    if (!element.tagName || element.tagName === 'BODY') break;
+    if (element && element.hasAttribute && element.hasAttribute('disabled')) return false;
+  } while (element = element.parentNode);
+  return true;
+};
+
 /**
  * Creates a new ripple and adds it to the container.  Also tracks ripple in `this.ripples`.
  * @param left
  * @param top
  */
 InkRippleCtrl.prototype.createRipple = function (left, top) {
+  if (!this.isRippleAllowed()) return;
+
   var ctrl        = this;
   var ripple      = angular.element('<div class="md-ripple"></div>');
   var width       = this.$element.prop('clientWidth');
@@ -3361,9 +3379,14 @@ InkRippleCtrl.prototype.createRipple = function (left, top) {
   this.container.append(ripple);
   this.ripples.push(ripple);
   ripple.addClass('md-ripple-placed');
+
   this.$mdUtil.nextTick(function () {
+
     ripple.addClass('md-ripple-scaled md-ripple-active');
-    ctrl.$timeout(function () { ctrl.clearRipples(); }, DURATION, false);
+    ctrl.$timeout(function () {
+      ctrl.clearRipples();
+    }, DURATION, false);
+
   }, false);
 
   function rgbaToRGB (color) {
@@ -3385,7 +3408,9 @@ InkRippleCtrl.prototype.createRipple = function (left, top) {
  */
 InkRippleCtrl.prototype.fadeInComplete = function (ripple) {
   if (this.lastRipple === ripple) {
-    if (!this.timeout && !this.mousedown) this.removeRipple(ripple);
+    if (!this.timeout && !this.mousedown) {
+      this.removeRipple(ripple);
+    }
   } else {
     this.removeRipple(ripple);
   }
@@ -3404,14 +3429,19 @@ InkRippleCtrl.prototype.removeRipple = function (ripple) {
   if (this.ripples.length === 0) this.container.css({ backgroundColor: '' });
   // use a 2-second timeout in order to allow for the animation to finish
   // we don't actually care how long the animation takes
-  this.$timeout(function () { ctrl.fadeOutComplete(ripple); }, DURATION, false);
+  this.$timeout(function () {
+    ctrl.fadeOutComplete(ripple);
+  }, DURATION, false);
 };
 
 /**
  * Removes the provided ripple from the DOM
  * @param ripple
  */
-InkRippleCtrl.prototype.fadeOutComplete = function (ripple) { ripple.remove(); };
+InkRippleCtrl.prototype.fadeOutComplete = function (ripple) {
+  ripple.remove();
+  this.lastRipple = null;
+};
 
 /**
  * Used to create an empty directive.  This is used to track flag-directives whose children may have
