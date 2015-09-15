@@ -32,11 +32,11 @@
     angular.module('ctrpApp')
         .directive('ctrpAdvancedPersonSearchForm', ctrpAdvancedPersonSearchForm);
 
-    ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', '$location',
+    ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', '$location', 'UserService',
             'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', 'OrgService', '$compile', 'MESSAGES'];
 
 
-    function ctrpAdvancedPersonSearchForm(PersonService, Common, $location, uiGridConstants,
+    function ctrpAdvancedPersonSearchForm(PersonService, Common, $location, uiGridConstants, UserService,
                                           $timeout,  _, toastr, $anchorScroll, OrgService, $compile, MESSAGES) {
 
         var directiveObj = {
@@ -64,16 +64,14 @@
             // console.log('curationMode enabled: ' + attrs.curationModeEnabled)
             //pass to controller scope, but will require a timeout in controller - inconvenient
             // scope.isInModal = attrs.isInModal; //
-            scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
-                console.log('received notification');
-            });
+
             $compile(element.contents())(scope);
             
         } //linkFn
         
         
         
-        function advPersonSearchDirectiveController($scope) {
+        function advPersonSearchDirectiveController($scope, uiGridConstants, UserService) {
 
             $scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? Number.MAX_SAFE_INTEGER : $scope.maxRowSelectable ; //default to 0
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
@@ -184,6 +182,7 @@
                 prepareGidOptions();
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
+                watchUserPrivilegeSelection()
                 // $scope.searchPeople();
 
             } //activate
@@ -444,6 +443,18 @@
                 }
 
                 return deselectedRow;
+            }
+
+
+            function watchUserPrivilegeSelection() {
+                $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
+
+                    if (UserService.getPrivilege() == 'CURATOR') {
+                        $scope.curationShown = true;
+                    } else {
+                        $scope.curationShown = false;
+                    }
+                });
             }
 
         } //advPersonSearchDirectiveController

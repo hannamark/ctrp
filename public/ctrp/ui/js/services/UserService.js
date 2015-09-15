@@ -133,6 +133,10 @@
         };
 
 
+        /**
+         *
+         * @param privilege
+         */
         this.setUserPrivilege = function(privilege) {
             var userCurrentPrivilege = PRIVILEGES.READONLY; //default privilege
             if (privilege) {
@@ -142,7 +146,11 @@
         };
 
 
-        this.getUserPrivilege = function() {
+        /**
+         * Get the current user's privilege
+         * @returns {*|string}
+         */
+        this.getPrivilege = function() {
             return LocalCacheService.getCacheWithKey('current_privilege') || PRIVILEGES.READONLY;
         };
 
