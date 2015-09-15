@@ -26,15 +26,15 @@
                 selectedOrgsArray: '@selectedOrgsArray'
             },
             templateUrl: '/ctrp/ui/js/directives/organization/advancedOrgSearchFormTemplate2.html',
-            link: linkerFn,
-            controller: ctrpAdvancedOrgSearchForm2Controller
+            link: linkFn,
+            controller: ctrpAdvancedOrgSearchController
         };
 
         return directiveObj;
 
         /************************* implementations below *******************************/
 
-        function linkerFn(scope, element, attrs) {
+        function linkFn(scope, element, attrs) {
             console.log('showGrid: ' + attrs.showGrid);
             console.log('maxRowSelectable: ' + attrs.maxRowSelectable);
             scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
@@ -42,11 +42,11 @@
             });
 
              // $compile(element.contents())(scope);
-        } //linkerFn
+        } //linkFn
 
 
-        function ctrpAdvancedOrgSearchForm2Controller($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
-            $log.info('in ctrpAdvancedOrgSearchForm2Controller');
+        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
+            $log.info('in ctrpAdvancedOrgSearchController');
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows=[];
@@ -131,7 +131,6 @@
                 });
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
-                $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
 
                 if (angular.isDefined($scope.$parent.orgSearchResults)) {
@@ -511,7 +510,7 @@
             }
 
 
-        } //ctrpAdvancedOrgSearchForm2Controller
+        } //ctrpAdvancedOrgSearchController
     }
     
 })();
