@@ -395,7 +395,8 @@
                         }
                     },
                     ncyBreadcrumb: {
-                        parent: 'main.trials',
+                        //parent: 'main.trials',
+                        parent: 'main.defaultContent',
                         label: 'Register Trial'
                     }
                 });
