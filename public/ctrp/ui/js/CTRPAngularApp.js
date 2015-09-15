@@ -168,6 +168,12 @@
                             return UserService.getLoginBulletin();
                         }
                     },
+                    onEnter: function($state, UserService, toastr) {
+                        if (UserService.isLoggedIn()) {
+                            toastr.warning('Redirecting ...', 'You are already signed in')
+                            $state.go('main.defaultContent');
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: '',
                         label: 'Sign in',
@@ -391,7 +397,7 @@
                     if (!UserService.isLoggedIn()) {
                         UserService.getAppVerFromDMZ().then(function(data) {
                            // console.log('retrieved data from dmz: ' + JSON.stringify(data));
-                            UserService.setAppVersion(data.app_ver);
+                            UserService.setAppVersion(data.app_version);
                         });
                     }
                 } else {

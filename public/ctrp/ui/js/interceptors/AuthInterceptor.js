@@ -47,7 +47,7 @@
             if (rejection.status > 226 && errorCount < 1) {
                 $injector.get('toastr').clear();
                 $injector.get('toastr').error('Access to the resources is not authorized', 'Error Code: ' + rejection.status);
-                // $injector.get('UserService').logout();
+                $injector.get('UserService').logout();
                 console.log("error status code: " + rejection.status);
                 //redirect to login page
                 $injector.get('$state').go('main.sign_in');
