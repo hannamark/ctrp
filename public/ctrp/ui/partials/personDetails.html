@@ -129,12 +129,13 @@
 
                     <div class="col-sm-9">
                         <div class="row">
-                            <button class="btn btn-primary" ng-click="personDetailView.searchOrgsForAffiliation('lg')">
+                            <!--<button class="btn btn-primary" ng-click="personDetailView.searchOrgsForAffiliation('lg')">
                                 <i class="glyphicon glyphicon-search"></i> Search Organizations
                             </button>
                             <button class="btn btn-danger" ng-click="personDetailView.batchSelect('removeAll')" ng-show="personDetailView.savedSelection.length > 0">
                                 <i class="glyphicon glyphicon-remove"></i> Remove All Affiliated Organizations
-                            </button>
+                            </button>-->
+                            <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.savedSelection"></ctrp-org-adv-search-modal-button>
                         </div>
                         <div class="row animated-item" ng-show="personDetailView.savedSelection.length > 0">
 

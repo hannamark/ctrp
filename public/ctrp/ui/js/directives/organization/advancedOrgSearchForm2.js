@@ -58,7 +58,7 @@
             $scope.curationModeEnabled = false;
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
-            $scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? Number.MAX_SAFE_INTEGER : $scope.maxRowSelectable ; //default to 0
+            $scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? Number.MAX_SAFE_INTEGER : $scope.maxRowSelectable ; //default to MAX
             //default to curationMode eanbled to true if max row selectable is > 0
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
@@ -225,17 +225,18 @@
              * Listen to the message for availability of states or provinces
              * for the selected country
              */
+            /*
             function listenToStatesProvinces() {
 
                 $scope.watchCountrySelection($scope.searchParams.country);
-                /*
+
                 //country change triggers searchOrgs() function
                 $scope.$watch('searchParams.country', function (newVal, oldVal) {
                     if (oldVal != newVal) {
                         $scope.searchOrgs();
                     }
                 }, true);
-                */
+
 
                 $scope.$on(MESSAGES.STATES_AVAIL, function () {
                     console.log("states available for country: " + $scope.searchParams.country);
@@ -246,6 +247,8 @@
                     $scope.states = [];
                 });
             }  //listenToStatesProvinces
+
+            */
 
 
             function watchCountryAndGetStates() {
