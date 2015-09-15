@@ -173,6 +173,8 @@
             }; //commitNullification
 
 
+
+
             activate();
 
             /****************************** implementations **************************/
@@ -182,7 +184,8 @@
                 prepareGidOptions();
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
-                watchUserPrivilegeSelection()
+                watchUserPrivilegeSelection();
+                watchPrivilegeSubRoutine();
                 // $scope.searchPeople();
 
             } //activate
@@ -448,13 +451,14 @@
 
             function watchUserPrivilegeSelection() {
                 $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
-
-                    if (UserService.getPrivilege() == 'CURATOR') {
-                        $scope.curationShown = true;
-                    } else {
-                        $scope.curationShown = false;
-                    }
+                   // console.log('privilege: ' + userPrivilege);
+                    watchPrivilegeSubRoutine();
                 });
+            }
+
+            function watchPrivilegeSubRoutine() {
+                var userPrivilege = UserService.getPrivilege();
+                $scope.curationShown = userPrivilege == 'CURATOR' ? true : false;
             }
 
         } //advPersonSearchDirectiveController
