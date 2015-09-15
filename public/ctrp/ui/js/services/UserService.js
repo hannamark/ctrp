@@ -91,7 +91,7 @@
         this.getUserDetailsByUsername = function(username) {
             console.log('123456***** ');
             var username = LocalCacheService.getCacheWithKey('username');
-            return PromiseService.getData(URL_CONFIGS.A_USER + username + '.json');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         } //getUserByName
 
         /**
