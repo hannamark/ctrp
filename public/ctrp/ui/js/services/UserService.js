@@ -8,10 +8,10 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS'];
 
     function UserService(LocalCacheService, PromiseTimeoutService, $log,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS) {
 
         var appVersion = '';
 
