@@ -189,11 +189,11 @@
                 watchUserPrivilegeChange(); //for switching to curation mode, etc
                 getPromisedData();
                 prepareGidOptions();
-                listenToStatesProvinces();
+                watchCountryAndGetStates();
+                //listenToStatesProvinces();
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
             }
-
 
 
             /* private helper functions below */
@@ -246,6 +246,22 @@
                     $scope.states = [];
                 });
             }  //listenToStatesProvinces
+
+
+            function watchCountryAndGetStates() {
+                $scope.$watch('searchParams.country', function(newVal, oldVal) {
+
+                    if (!!newVal && newVal != oldVal) {
+                        GeoLocationService.getStateListInCountry(newVal)
+                            .then(function (response) {
+                                $scope.states = response;
+                            }).catch(function (err) {
+                                $scope.states.length = 0; //no states or provinces found
+                            });
+                    }
+
+                }, true);
+            } //watchCountryAndGetStates
 
 
 
