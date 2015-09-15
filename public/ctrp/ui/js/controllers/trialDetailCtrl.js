@@ -63,6 +63,7 @@
         vm.showInvestigator = false;
         vm.curTrial.pilot = 'No';
         vm.curTrial.grant_question = 'Yes';
+        vm.otherDocNum = 1;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
@@ -319,6 +320,16 @@
             }
         };
 
+        // Transfer a number to an array
+        vm.getNumArr = function(num) {
+            return new Array(num);
+        };
+
+        // Add an other document
+        vm.addOtherDoc = function() {
+            vm.otherDocNum++;
+        };
+
         activate();
 
         /****************** implementations below ***************/
@@ -405,6 +416,9 @@
             }
             if (vm.informed_consent) {
                 TrialService.uploadDocument(trialId, 'Informed Consent', '', vm.informed_consent);
+            }
+            for (var key in vm.other_documents) {
+                TrialService.uploadDocument(trialId, 'Other Document', vm.other_document_subtypes[key], vm.other_documents[key]);
             }
         }
     }

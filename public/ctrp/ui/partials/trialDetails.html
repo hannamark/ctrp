@@ -718,6 +718,31 @@
                                 <input type="file" ngf-select ng-model="trialDetailView.informed_consent" name="informed_consent" ngf-max-size="10MB">
                             </div>
                         </div>
+
+                        <div ng-repeat="i in trialDetailView.getNumArr(trialDetailView.otherDocNum) track by $index">
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-3">Other:</label>
+                                <div class="col-sm-3">
+                                    <input type="file" ngf-select ng-model="trialDetailView.other_documents[$index]" name="other_documents" ngf-max-size="10MB">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-3"></label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control input-xs" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Please describe the document">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3"></label>
+                            <div class="col-sm-9">
+                                <button class="btn btn-primary" ng-click="trialDetailView.addOtherDoc()">
+                                    <i class="glyphicon glyphicon-plus"></i> Add More ...
+                                </button>
+                            </div>
+                        </div>
                     </accordion-group>
 
                     <div id="buttonBar" class="form-group col-sm-12">
