@@ -40,8 +40,6 @@
          */
         this.broadcastMsg = function(message) {
             $rootScope.$broadcast(message, {});
-            $rootScope.$emit(message, {});
-            console.log('broadcasting all directions');
         }; //broadcastMsg
 
 

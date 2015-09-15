@@ -9,10 +9,10 @@
         .controller('headerNavigationCtrl', headerNavigationCtrl);
 
     headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'Keepalive',
-        '$modal', '$timeout', '$state', '_', 'Common'];
+        '$modal', '$timeout', '$state', '_', 'Common', 'MESSAGES', '$rootScope'];
 
     function headerNavigationCtrl(UserService, $scope, Idle, Keepalive,
-                                  $modal, $timeout, $state, _, Common) {
+                                  $modal, $timeout, $state, _, Common, MESSAGES, $rootScope) {
 
         var vm = this;
         vm.signedIn = UserService.isLoggedIn();
@@ -39,7 +39,7 @@
         function activate() {
             listenToLoginEvent();
             watchForInactivity();
-            watchUserModelSelection();
+            watchUserPrivilegeSelection();
         }
 
 
@@ -145,14 +145,15 @@
 
 
         /**
-         * Watch user privilege selections and broadcast different notifications
+         * Watch user privilege selections and broadcast notifications
          *
          */
-        function watchUserModelSelection() {
+        function watchUserPrivilegeSelection() {
             $scope.$watch(function() {return vm.userPrivilege;}, function(newVal, oldVal) {
                 console.log('userPrivilege value: ' + newVal);
                 UserService.setUserPrivilege(newVal);
-                Common.broadcastMsg('privilegeChanged');
+                $rootScope.$broadcast(MESSAGES.PRIVILEGE_CHANGED);
+                $scope.$emit(MESSAGES.PRIVILEGE_CHANGED);
             }, true);
         }
 
