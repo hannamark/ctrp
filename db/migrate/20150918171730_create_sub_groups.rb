@@ -8,6 +8,6 @@ class CreateSubGroups < ActiveRecord::Migration
       t.timestamps null: false
       t.ctrp_base_columns
     end
-    add_foreign_key :interventions, :trials
+    add_foreign_key :sub_groups, :trials
   end
 end
