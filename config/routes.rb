@@ -80,6 +80,7 @@ Rails.application.routes.draw do
     get '/dmzutils/app_version' => 'dmz_utils#get_app_version'
     get '/dmzutils/app_rel_milestone' => 'dmz_utils#get_app_rel_milestone'
     get '/dmzutils/login_bulletin' => 'dmz_utils#get_login_bulletin'
+    get '/dmzutils/git_revision' => 'dmz_utils#get_git_revision'
 
     # Devise related routes
     devise_scope :user do
