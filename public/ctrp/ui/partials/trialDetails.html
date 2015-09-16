@@ -654,7 +654,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control input-xs" id="authority_country" ng-model="trialDetailView.curTrial.authority_country"
                                         ng-change="trialDetailView.watchOption('authority_country')">
-                                    <option value="">Select a country</option>
+                                    <option value="">Select a Country</option>
                                     <option ng-repeat="country in trialDetailView.countryArr track by $index" value="{{country.name}}" ng-selected="trialDetailView.curTrial.authority_country == country.name">{{country.name}}</option>
                                 </select>
                             </div>
