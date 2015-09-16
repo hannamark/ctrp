@@ -4,21 +4,23 @@
 
 (function () {
     'use strict';
-    angular.module('ctrpApp')
-        .controller('trialDetailCtrl', trialDetailCtrl);
-    trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
-        '$scope', 'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
+
+    angular.module('ctrpApp').controller('trialDetailCtrl', trialDetailCtrl);
+
+    trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope',
+        'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
         'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
-    function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
-                             $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
+
+    function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope,
+                             Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
                              holderTypeObj, expandedAccessTypeObj, countryList) {
         var vm = this;
+        vm.curTrial = trialDetailObj || {official_title: ""}; //trialDetailObj.data;
+        vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
         vm.collapsed = false;
-        vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
-        vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.protocolIdOriginArr = protocolIdOriginObj;
         vm.phaseArr = phaseObj;
         vm.researchCategoryArr = researchCategoryObj;
@@ -352,7 +354,6 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewTrialFlag();
-            prepareModal();
         }
 
         /**
@@ -366,26 +367,6 @@
                 vm.curTrial.new = true;  //
             }
         }
-
-        function prepareModal() {
-            vm.searchOrg = function(size, type) {
-                var modalInstance = $modal.open({
-                    animation: true,
-                    templateUrl: '/ctrp/ui/partials/modals/advanced_org_search_form_modal.html',
-                    controller: 'advancedOrgSearchModalCtrl as orgSearchModalView',
-                    size: size
-                });
-
-                modalInstance.result.then(function (selectedOrg) {
-                    if (type == 'lead') {
-                        vm.selectedLeadOrg = selectedOrg[0];
-                        vm.curTrial.lead_org_id = selectedOrg[0].id;
-                    }
-                }, function () {
-                    console.log("operation canceled");
-                });
-            }
-        } //prepareModal
 
         // Return true if the option is "Other"
         function findOtherOption(option) {
