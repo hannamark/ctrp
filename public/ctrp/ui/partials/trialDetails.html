@@ -97,7 +97,10 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Official Title:</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control input-xs" id="official_title" ng-model="trialDetailView.curTrial.official_title" />
+                                <textarea class="form-control input-xs" id="official_title" name="official_title" ng-model="trialDetailView.curTrial.official_title" required />
+                                <p ng-show="trial_form.official_title.$error.required && trial_form.official_title.$dirty" class="help-inline text-danger">
+                                    Official title is required
+                                </p>
                             </div>
                         </div>
 
