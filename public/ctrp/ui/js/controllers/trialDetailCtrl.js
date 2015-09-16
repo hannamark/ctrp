@@ -182,71 +182,87 @@
 
         // Add other ID to a temp array
         vm.addOtherId = function () {
-            var newId = {};
-            newId.protocol_id_origin_id = vm.protocol_id_origin_id;
-            // For displaying other ID origin name in the table
-            _.each(vm.protocolIdOriginArr, function (origin) {
-                if (origin.id == vm.protocol_id_origin_id) {
-                    newId.protocol_id_origin_name = origin.name;
-                }
-            });
-            newId.protocol_id = vm.protocol_id;
-            newId._destroy = false;
-            vm.addedOtherIds.push(newId);
+            if (vm.protocol_id_origin_id && vm.protocol_id) {
+                var newId = {};
+                newId.protocol_id_origin_id = vm.protocol_id_origin_id;
+                // For displaying other ID origin name in the table
+                _.each(vm.protocolIdOriginArr, function (origin) {
+                    if (origin.id == vm.protocol_id_origin_id) {
+                        newId.protocol_id_origin_name = origin.name;
+                    }
+                });
+                newId.protocol_id = vm.protocol_id;
+                newId._destroy = false;
+                vm.addedOtherIds.push(newId);
+            } else {
+                alert('Please select a Protocol ID Origin and enter a Protocol ID');
+            }
         };
 
         // Add grant to a temp array
         vm.addGrant = function () {
-            var newGrant = {};
-            newGrant.funding_mechanism = vm.funding_mechanism;
-            newGrant.institute_code = vm.institute_code;
-            newGrant.serial_number = vm.serial_number;
-            newGrant.nci = vm.nci;
-            newGrant._destroy = false;
-            vm.addedGrants.push(newGrant);
+            if (vm.funding_mechanism && vm.institute_code && vm.serial_number && vm.nci) {
+                var newGrant = {};
+                newGrant.funding_mechanism = vm.funding_mechanism;
+                newGrant.institute_code = vm.institute_code;
+                newGrant.serial_number = vm.serial_number;
+                newGrant.nci = vm.nci;
+                newGrant._destroy = false;
+                vm.addedGrants.push(newGrant);
+            } else {
+                alert('Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code');
+            }
         };
 
         // Add trial status to a temp array
         vm.addStatus = function () {
-            var newStatus = {};
-            newStatus.status_date = vm.status_date ? DateService.convertISODateToLocaleDateStr(vm.status_date) : '';
-            newStatus.trial_status_id = vm.trial_status_id;
-            // For displaying status name in the table
-            _.each(vm.trialStatusArr, function (status) {
-                if (status.id == vm.trial_status_id) {
-                    newStatus.trial_status_name = status.name;
-                }
-            });
-            newStatus.why_stopped = vm.why_stopped;
-            newStatus._destroy = false;
-            vm.addedStatuses.push(newStatus);
+            if (vm.status_date && vm.trial_status_id) {
+                var newStatus = {};
+                newStatus.status_date = vm.status_date ? DateService.convertISODateToLocaleDateStr(vm.status_date) : '';
+                newStatus.trial_status_id = vm.trial_status_id;
+                // For displaying status name in the table
+                _.each(vm.trialStatusArr, function (status) {
+                    if (status.id == vm.trial_status_id) {
+                        newStatus.trial_status_name = status.name;
+                    }
+                });
+                newStatus.why_stopped = vm.why_stopped;
+                newStatus._destroy = false;
+                vm.addedStatuses.push(newStatus);
+            } else {
+                alert('Please provide a Status Date and select a Status');
+            }
         };
 
         // Add IND/IDE to a temp array
         vm.addIndIde = function () {
-            var newIndIde = {};
-            newIndIde.ind_ide_type = vm.ind_ide_type;
-            newIndIde.ind_ide_number = vm.ind_ide_number;
-            newIndIde.grantor = vm.grantor;
-            newIndIde.holder_type_id = vm.holder_type_id;
-            // For displaying name in the table
-            _.each(vm.holderTypeArr, function (holderType) {
-                if (holderType.id == vm.holder_type_id) {
-                    newIndIde.holder_type_name = holderType.name;
-                }
-            });
-            newIndIde.nih_nci = vm.nih_nci;
-            newIndIde.expanded_access = vm.expanded_access;
-            newIndIde.expanded_access_type_id = vm.expanded_access_type_id;
-            // For displaying name in the table
-            _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
-                if (expandedAccessType.id == vm.expanded_access_type_id) {
-                    newIndIde.expanded_access_type_name = expandedAccessType.name;
-                }
-            });
-            newIndIde.exempt = vm.exempt;
-            newIndIde._destroy = false;
-            vm.addedIndIdes.push(newIndIde);
+            if (vm.ind_ide_type && vm.ind_ide_number && vm.grantor && vm.holder_type_id) {
+                var newIndIde = {};
+                newIndIde.ind_ide_type = vm.ind_ide_type;
+                newIndIde.ind_ide_number = vm.ind_ide_number;
+                newIndIde.grantor = vm.grantor;
+                newIndIde.holder_type_id = vm.holder_type_id;
+                // For displaying name in the table
+                _.each(vm.holderTypeArr, function (holderType) {
+                    if (holderType.id == vm.holder_type_id) {
+                        newIndIde.holder_type_name = holderType.name;
+                    }
+                });
+                newIndIde.nih_nci = vm.nih_nci;
+                newIndIde.expanded_access = vm.expanded_access;
+                newIndIde.expanded_access_type_id = vm.expanded_access_type_id;
+                // For displaying name in the table
+                _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
+                    if (expandedAccessType.id == vm.expanded_access_type_id) {
+                        newIndIde.expanded_access_type_name = expandedAccessType.name;
+                    }
+                });
+                newIndIde.exempt = vm.exempt;
+                newIndIde._destroy = false;
+                vm.addedIndIdes.push(newIndIde);
+            } else {
+                alert('Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type');
+            }
         };
 
         // Add Founding Source to a temp array
