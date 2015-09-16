@@ -33,8 +33,9 @@
 #  prs_organization_name       :string
 #  receive_email_notifications :boolean
 #  role_requested              :string
-#  organization_id             :integer
 #  approved                    :boolean          default(FALSE), not null
+#  organization_id             :integer
+#  source                      :string
 #
 # Indexes
 #

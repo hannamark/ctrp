@@ -33,8 +33,9 @@
 #  prs_organization_name       :string
 #  receive_email_notifications :boolean
 #  role_requested              :string
-#  organization_id             :integer
 #  approved                    :boolean          default(FALSE), not null
+#  organization_id             :integer
+#  source                      :string
 #
 # Indexes
 #
@@ -53,7 +54,7 @@ class  User < ActiveRecord::Base
   #       :recoverable, :trackable, :validatable,
    #      :confirmable, :lockable, :timeoutable, :omniauthable
   devise   :timeoutable,  :validatable
-  has_one :organization
+  belongs_to :organization
 
   scope :approved, -> { where(approved: true) }
   scope :not_approved, -> { where(approved: false) }
