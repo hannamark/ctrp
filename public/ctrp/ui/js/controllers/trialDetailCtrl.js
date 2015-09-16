@@ -15,17 +15,8 @@
                              secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
                              holderTypeObj, expandedAccessTypeObj, countryList) {
         var vm = this;
-        vm.accordion1 = true;
-        vm.accordion2 = true;
-        vm.accordion3 = true;
-        vm.accordion4 = true;
-        vm.accordion5 = true;
-        vm.accordion6 = true;
-        vm.accordion7 = true;
-        vm.accordion8 = true;
-        vm.accordion9 = true;
-        vm.accordion10 = true;
-        vm.accordion11 = true;
+        vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
+        vm.collapsed = false;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -133,6 +124,16 @@
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
         }; // updatePerson
+
+        vm.collapseAccordion = function() {
+            vm.accordions = [false, false, false, false, false, false, false, false, false, false, false];
+            vm.collapsed = true;
+        };
+
+        vm.expandAccordion = function() {
+            vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
+            vm.collapsed = false;
+        };
 
         // Delete the trial status
         vm.toggleSelection = function (index, type) {

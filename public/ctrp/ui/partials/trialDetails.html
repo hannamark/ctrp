@@ -4,12 +4,22 @@
             <p><h4 ng-if="trialDetailView.curTrial.new"><mark>Register Trial</mark></h4></p>
             <p><h4 ng-if="!trialDetailView.curTrial.new"><mark>Edit Trial</mark></h4></p>
         </div>
+
+        <div class="row">
+            <button class="btn btn-primary" ng-show="!trialDetailView.collapsed" ng-click="trialDetailView.collapseAccordion()">
+                <i class="glyphicon glyphicon-minus"></i> Collapse All
+            </button>
+            <button class="btn btn-primary" ng-show="trialDetailView.collapsed" ng-click="trialDetailView.expandAccordion()">
+                <i class="glyphicon glyphicon-plus"></i> Expand All
+            </button>
+        </div>
+
         <div class="row">
             <form class="form-horizontal" role="form" name="trial_form" novalidate>
                 <accordion close-others="false">
-                    <accordion-group is-open="trialDetailView.accordion1">
+                    <accordion-group is-open="trialDetailView.accordions[0]">
                         <accordion-heading>
-                            Trial Identifiers  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion1, 'glyphicon-chevron-right': !trialDetailView.accordion1}"></i>
+                            Trial Identifiers  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[0], 'glyphicon-chevron-right': !trialDetailView.accordions[0]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -77,9 +87,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion2">
+                    <accordion-group is-open="trialDetailView.accordions[1]">
                         <accordion-heading>
-                            Trial Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion2, 'glyphicon-chevron-right': !trialDetailView.accordion2}"></i>
+                            Trial Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[1], 'glyphicon-chevron-right': !trialDetailView.accordions[1]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -166,9 +176,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion3">
+                    <accordion-group is-open="trialDetailView.accordions[2]">
                         <accordion-heading>
-                            Lead Organization/Principal Investigator  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion3, 'glyphicon-chevron-right': !trialDetailView.accordion3}"></i>
+                            Lead Organization/Principal Investigator  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[2], 'glyphicon-chevron-right': !trialDetailView.accordions[2]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -200,9 +210,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion4">
+                    <accordion-group is-open="trialDetailView.accordions[3]">
                         <accordion-heading>
-                            Sponsor/Responsible Party  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion4, 'glyphicon-chevron-right': !trialDetailView.accordion4}"></i>
+                            Sponsor/Responsible Party  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[3], 'glyphicon-chevron-right': !trialDetailView.accordions[3]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -247,9 +257,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion5">
+                    <accordion-group is-open="trialDetailView.accordions[4]">
                         <accordion-heading>
-                            Data Table 4 Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion5, 'glyphicon-chevron-right': !trialDetailView.accordion5}"></i>
+                            Data Table 4 Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[4], 'glyphicon-chevron-right': !trialDetailView.accordions[4]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -285,9 +295,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion6">
+                    <accordion-group is-open="trialDetailView.accordions[5]">
                         <accordion-heading>
-                            NIH Grant Information (for NIH funded Trials)  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion6, 'glyphicon-chevron-right': !trialDetailView.accordion6}"></i>
+                            NIH Grant Information (for NIH funded Trials)  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[5], 'glyphicon-chevron-right': !trialDetailView.accordions[5]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -383,9 +393,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion7">
+                    <accordion-group is-open="trialDetailView.accordions[6]">
                         <accordion-heading>
-                            Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion7, 'glyphicon-chevron-right': !trialDetailView.accordion7}"></i>
+                            Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[6], 'glyphicon-chevron-right': !trialDetailView.accordions[6]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -460,9 +470,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion8">
+                    <accordion-group is-open="trialDetailView.accordions[7]">
                         <accordion-heading>
-                            Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion8, 'glyphicon-chevron-right': !trialDetailView.accordion8}"></i>
+                            Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[7], 'glyphicon-chevron-right': !trialDetailView.accordions[7]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -529,9 +539,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion9">
+                    <accordion-group is-open="trialDetailView.accordions[8]">
                         <accordion-heading>
-                            FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion9, 'glyphicon-chevron-right': !trialDetailView.accordion9}"></i>
+                            FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[8], 'glyphicon-chevron-right': !trialDetailView.accordions[8]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -629,9 +639,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion10">
+                    <accordion-group is-open="trialDetailView.accordions[9]">
                         <accordion-heading>
-                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion10, 'glyphicon-chevron-right': !trialDetailView.accordion10}"></i>
+                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[9], 'glyphicon-chevron-right': !trialDetailView.accordions[9]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -686,9 +696,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion11">
+                    <accordion-group is-open="trialDetailView.accordions[10]">
                         <accordion-heading>
-                            Trial Related Documents  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion11, 'glyphicon-chevron-right': !trialDetailView.accordion11}"></i>
+                            Trial Related Documents  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[10], 'glyphicon-chevron-right': !trialDetailView.accordions[10]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
