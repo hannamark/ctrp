@@ -61,6 +61,7 @@
         vm.showPrimaryPurposeOther = false;
         vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
+        vm.showInvSearchBtn = true;
         vm.curTrial.pilot = 'No';
         vm.curTrial.grant_question = 'Yes';
         vm.otherDocNum = 1;
@@ -258,6 +259,16 @@
             }
         });
 
+        // If the responsible party is PI, the Investigator field changes with PI field
+        $scope.$watch(function() {
+            return vm.selectedPiArray;
+        }, function(newValue, oldValue) {
+            var piOption = vm.responsiblePartyArr.filter(findPiOption);
+            if (piOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.selectedInvArray = vm.selectedPiArray;
+            }
+        });
+
         vm.watchOption = function(type) {
             if (type == 'primary_purpose') {
                 var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
@@ -276,15 +287,20 @@
                     vm.curTrial.secondary_purpose_other = '';
                 }
             } else if (type == 'responsible_party') {
-                var invOptions = vm.responsiblePartyArr.filter(findInvestigatorOption);
-                for (var i = 0; i < invOptions.length; i++) {
-                    if (invOptions[i].id == vm.curTrial.responsible_party_id) {
-                        vm.showInvestigator = true;
-                        break;
-                    } else {
-                        vm.showInvestigator = false;
-                        vm.selectedInvArray = [];
-                    }
+                var piOption = vm.responsiblePartyArr.filter(findPiOption);
+                var siOption = vm.responsiblePartyArr.filter(findSiOption);
+                if (piOption[0].id == vm.curTrial.responsible_party_id) {
+                    vm.showInvestigator = true;
+                    vm.showInvSearchBtn = false;
+                    // Copy the value from Principal Investigator
+                    vm.selectedInvArray = vm.selectedPiArray;
+                } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
+                    vm.showInvestigator = true;
+                    vm.showInvSearchBtn = true;
+                    vm.selectedInvArray = [];
+                } else {
+                    vm.showInvestigator = false;
+                    vm.selectedInvArray = [];
                 }
             } else if (type == 'ind_ide_type') {
                 vm.grantor = '';
@@ -379,9 +395,18 @@
             }
         }
 
-        // Return true if the option is "Principal Investigator" or "Sponsor Investigator"
-        function findInvestigatorOption(option) {
-            if (option.code == 'PI' || option.code == 'SI') {
+        // Return true if the option is "Principal Investigator"
+        function findPiOption(option) {
+            if (option.code == 'PI') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Return true if the option is "Sponsor Investigator"
+        function findSiOption(option) {
+            if (option.code == 'SI') {
                 return true;
             } else {
                 return false;
