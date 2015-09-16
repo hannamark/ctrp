@@ -24,6 +24,8 @@
         vm.accordion7 = true;
         vm.accordion8 = true;
         vm.accordion9 = true;
+        vm.accordion10 = true;
+        vm.accordion11 = true;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -47,21 +49,35 @@
         vm.primary_comp_date_opened = false;
         vm.comp_date_opened = false;
         vm.addedOtherIds = [];
+        vm.addedFses = [];
         vm.addedGrants = [];
         vm.addedStatuses = [];
         vm.addedIndIdes = [];
+        vm.selectedLoArray = [];
         vm.selectedPiArray = [];
+        vm.selectedSponsorArray = [];
         vm.selectedInvArray = [];
+        vm.selectedFsArray = [];
         vm.showPrimaryPurposeOther = false;
         vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
+        vm.showInvSearchBtn = true;
         vm.curTrial.pilot = 'No';
         vm.curTrial.grant_question = 'Yes';
+        vm.otherDocNum = 1;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
+            if (vm.selectedLoArray.length > 0) {
+                vm.curTrial.lead_org_id = vm.selectedLoArray[0].id
+            }
+
             if (vm.selectedPiArray.length > 0) {
                 vm.curTrial.pi_id = vm.selectedPiArray[0].id;
+            }
+
+            if (vm.selectedSponsorArray.length > 0) {
+                vm.curTrial.sponsor_id = vm.selectedSponsorArray[0].id;
             }
 
             if (vm.selectedInvArray.length > 0) {
@@ -73,6 +89,13 @@
                 vm.curTrial.other_ids_attributes = [];
                 _.each(vm.addedOtherIds, function (otherId) {
                     vm.curTrial.other_ids_attributes.push(otherId);
+                });
+            }
+
+            if (vm.addedFses.length > 0) {
+                vm.curTrial.trial_funding_sources_attributes = [];
+                _.each(vm.addedFses, function (fs) {
+                    vm.curTrial.trial_funding_sources_attributes.push(fs);
                 });
             }
 
@@ -104,6 +127,7 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
+                uploadDocuments(response.id);
                 toastr.success('Trial ' + vm.curTrial.name + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
@@ -115,6 +139,10 @@
             if (type == 'other_id') {
                 if (index < vm.addedOtherIds.length) {
                     vm.addedOtherIds[index]._destroy = !vm.addedOtherIds[index]._destroy;
+                }
+            } else if (type == 'funding_source') {
+                if (index < vm.addedFses.length) {
+                    vm.addedFses[index]._destroy = !vm.addedFses[index]._destroy;
                 }
             } else if (type == 'grant') {
                 if (index < vm.addedGrants.length) {
@@ -218,6 +246,29 @@
             vm.addedIndIdes.push(newIndIde);
         };
 
+        // Add Founding Source to a temp array
+        $scope.$watch(function() {
+            return vm.selectedFsArray.length;
+        }, function(newValue, oldValue) {
+            if (newValue == oldValue + 1) {
+                var newFs = {};
+                newFs.organization_id = vm.selectedFsArray[vm.selectedFsArray.length - 1].id;
+                newFs.organization_name = vm.selectedFsArray[vm.selectedFsArray.length - 1].name;
+                newFs._destroy = false;
+                vm.addedFses.push(newFs);
+            }
+        });
+
+        // If the responsible party is PI, the Investigator field changes with PI field
+        $scope.$watch(function() {
+            return vm.selectedPiArray;
+        }, function(newValue, oldValue) {
+            var piOption = vm.responsiblePartyArr.filter(findPiOption);
+            if (piOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.selectedInvArray = vm.selectedPiArray;
+            }
+        });
+
         vm.watchOption = function(type) {
             if (type == 'primary_purpose') {
                 var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
@@ -236,15 +287,20 @@
                     vm.curTrial.secondary_purpose_other = '';
                 }
             } else if (type == 'responsible_party') {
-                var invOptions = vm.responsiblePartyArr.filter(findInvestigatorOption);
-                for (var i = 0; i < invOptions.length; i++) {
-                    if (invOptions[i].id == vm.curTrial.responsible_party_id) {
-                        vm.showInvestigator = true;
-                        break;
-                    } else {
-                        vm.showInvestigator = false;
-                        vm.selectedInvArray = [];
-                    }
+                var piOption = vm.responsiblePartyArr.filter(findPiOption);
+                var siOption = vm.responsiblePartyArr.filter(findSiOption);
+                if (piOption[0].id == vm.curTrial.responsible_party_id) {
+                    vm.showInvestigator = true;
+                    vm.showInvSearchBtn = false;
+                    // Copy the value from Principal Investigator
+                    vm.selectedInvArray = vm.selectedPiArray;
+                } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
+                    vm.showInvestigator = true;
+                    vm.showInvSearchBtn = true;
+                    vm.selectedInvArray = [];
+                } else {
+                    vm.showInvestigator = false;
+                    vm.selectedInvArray = [];
                 }
             } else if (type == 'ind_ide_type') {
                 vm.grantor = '';
@@ -278,6 +334,16 @@
                 vm.curTrial.authority_org = '';
                 vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.curTrial.authority_country);
             }
+        };
+
+        // Transfer a number to an array
+        vm.getNumArr = function(num) {
+            return new Array(num);
+        };
+
+        // Add an other document
+        vm.addOtherDoc = function() {
+            vm.otherDocNum++;
         };
 
         activate();
@@ -329,9 +395,18 @@
             }
         }
 
-        // Return true if the option is "Principal Investigator" or "Sponsor Investigator"
-        function findInvestigatorOption(option) {
-            if (option.code == 'PI' || option.code == 'SI') {
+        // Return true if the option is "Principal Investigator"
+        function findPiOption(option) {
+            if (option.code == 'PI') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Return true if the option is "Sponsor Investigator"
+        function findSiOption(option) {
+            if (option.code == 'SI') {
                 return true;
             } else {
                 return false;
@@ -351,6 +426,24 @@
                 return true;
             } else {
                 return false;
+            }
+        }
+
+        function uploadDocuments(trialId) {
+            if (vm.protocol_document) {
+                TrialService.uploadDocument(trialId, 'Protocol Document', '', vm.protocol_document);
+            }
+            if (vm.irb_approval) {
+                TrialService.uploadDocument(trialId, 'IRB Approval', '', vm.irb_approval);
+            }
+            if (vm.participating_sites) {
+                TrialService.uploadDocument(trialId, 'List of Participating Sites', '', vm.participating_sites);
+            }
+            if (vm.informed_consent) {
+                TrialService.uploadDocument(trialId, 'Informed Consent', '', vm.informed_consent);
+            }
+            for (var key in vm.other_documents) {
+                TrialService.uploadDocument(trialId, 'Other Document', vm.other_document_subtypes[key], vm.other_documents[key]);
             }
         }
     }

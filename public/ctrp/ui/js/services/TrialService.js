@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .factory('TrialService', TrialService);
 
-    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService'];
+    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload'];
 
-    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService) {
+    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload) {
 
         var initTrialSearchParams = {
             lead_protocol_id: "",
@@ -61,6 +61,7 @@
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
+            uploadDocument: uploadDocument,
             deleteTrial: deleteTrial
         };
 
@@ -585,6 +586,34 @@
             }
 
             return authorityOrgArr;
+        }
+
+        /**
+         * Upload a file associated with a given trial
+         *
+         * @param trialId
+         * @param documentType
+         * @param file
+         */
+        function uploadDocument(trialId, documentType, documentSubtype, file) {
+            Upload.upload({
+                url: URL_CONFIGS.TRIAL_DOCUMENT_LIST,
+                method: 'POST',
+                fields: {
+                    'trial_document[document_type]': documentType,
+                    'trial_document[document_subtype]': documentSubtype,
+                    'trial_document[trial_id]': trialId
+                },
+                file: file,
+                fileFormDataName: 'trial_document[file]'
+            }).progress(function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                $log.info('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+            }).success(function (data, status, headers, config) {
+                $log.info('file ' + config.file.name + ' uploaded.');
+            }).error(function (data, status, headers, config) {
+                $log.info('file ' + config.file.name + ' upload error. error status: ' + status);
+            });
         }
 
         /**
