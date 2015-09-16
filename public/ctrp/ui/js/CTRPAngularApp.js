@@ -171,7 +171,7 @@
                     },
                     onEnter: function($state, UserService, toastr) {
                         if (UserService.isLoggedIn()) {
-                            toastr.warning('Redirecting ...', 'You are already signed in')
+                            toastr.warning('Redirected ...', 'You are already signed in')
                             $state.go('main.defaultContent');
                         }
                     },
@@ -180,6 +180,23 @@
                         label: 'Sign in',
                         skip: true
                     }
+                })
+
+                .state('main.userDetail', {
+                    url: '/userDetail/username',
+                    templateUrl: '/ctrp/ui/partials/userDetails.html',
+                    controller: 'userDetailCtrl as userDetailView',
+                    resolve: {
+                        UserService: 'UserService',
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
+                        }
+                    }//, //resolve the promise and pass it to controller
+                    //ncyBreadcrumb: {
+                    //    parent: 'main.people',
+                    //     label: 'Person Detail'
+                    //  }
                 })
 
                 .state('main.families', {
@@ -379,7 +396,8 @@
                         }
                     },
                     ncyBreadcrumb: {
-                        parent: 'main.trials',
+                        //parent: 'main.trials',
+                        parent: 'main.defaultContent',
                         label: 'Register Trial'
                     }
                 });
@@ -397,14 +415,19 @@
 
                     if (!UserService.isLoggedIn()) {
                         UserService.getAppVerFromDMZ().then(function(data) {
-                           // console.log('retrieved data from dmz: ' + JSON.stringify(data));
+                            console.log('retrieved data from dmz: ' + JSON.stringify(data));
                             UserService.setAppVersion(data.app_version);
+                        });
+                        UserService.getAppRelMilestoneFromDMZ().then(function(data) {
+                            console.log('retrieved data from dmz: ' + JSON.stringify(data));
+                            UserService.setAppRelMilestone(data.app_rel_milestone);
                         });
                     }
                 } else {
-                    //do not show appversion on other pages unless authenticated
+                    //do not show app version or release milestone on other pages unless authenticated
                     if (!UserService.isLoggedIn()) {
                         UserService.setAppVersion('');
+                        UserService.setAppRelMilestone('');
                     }
                 }
             });

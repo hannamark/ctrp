@@ -68,7 +68,7 @@
          */
         function clearAllCache() {
             if (isCacheSupported()) {
-                localStorageService.removeAll();
+                localStorageService.clearAll();
             }
         }
 

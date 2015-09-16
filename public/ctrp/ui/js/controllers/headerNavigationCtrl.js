@@ -8,18 +8,21 @@
     angular.module('ctrpApp')
         .controller('headerNavigationCtrl', headerNavigationCtrl);
 
-    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'Keepalive', '$modal', '$timeout', '$state'];
+    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'Keepalive',
+        '$modal', '$timeout', '$state', '_', 'Common', 'MESSAGES', '$rootScope'];
 
-    function headerNavigationCtrl(UserService, $scope, Idle, Keepalive, $modal, $timeout, $state) {
-
-        $scope.uiRouterState = $state;
+    function headerNavigationCtrl(UserService, $scope, Idle, Keepalive,
+                                  $modal, $timeout, $state, _, Common, MESSAGES, $rootScope) {
 
         var vm = this;
-
         vm.signedIn = UserService.isLoggedIn();
         vm.username = UserService.getLoggedInUsername();
+        vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+        vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
+        vm.userPrivilege = UserService.getPrivilege(); //'READONLY'; //default
         vm.warning = null;
         vm.timedout = null;
+        vm.uiRouterState = $state;
 
 
         vm.logOut = function() {
@@ -36,6 +39,7 @@
         function activate() {
             listenToLoginEvent();
             watchForInactivity();
+            watchUserPrivilegeSelection();
         }
 
 
@@ -43,11 +47,15 @@
             $scope.$on('signedIn', function() {
                 vm.signedIn = UserService.isLoggedIn();
                 vm.username = UserService.getLoggedInUsername();
+                vm.userRole = UserService.getUserRole().split("_")[1].toLowerCase();
+                vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
             });
 
             $scope.$on('loggedOut', function() {
                 vm.signedIn = false;
                 vm.username = '';
+                vm.userRole = '';
+                vm.userPrivileges = [];
             });
         } //listenToLoginEvent
 
@@ -118,6 +126,36 @@
 
             });
         } //watchIdleEvents
+
+
+        /**
+         * Process the user privileges array that contains the privileges set to 'true'
+         * @param userPrivilegesArr
+         */
+        function processUserPrivileges(userPrivilegesArr) {
+            var processedPrivilegesArray = [];
+            _.each(userPrivilegesArr, function(privilegeItem) {
+                if (privilegeItem.enabled) {
+                    processedPrivilegesArray.push(privilegeItem.type);
+                }
+            });
+
+            return processedPrivilegesArray;
+        }
+
+
+        /**
+         * Watch user privilege selections and broadcast notifications
+         *
+         */
+        function watchUserPrivilegeSelection() {
+            $scope.$watch(function() {return vm.userPrivilege;}, function(newVal, oldVal) {
+                console.log('userPrivilege value: ' + newVal);
+                UserService.setUserPrivilege(newVal);
+                $rootScope.$broadcast(MESSAGES.PRIVILEGE_CHANGED);
+                $scope.$emit(MESSAGES.PRIVILEGE_CHANGED);
+            }, true);
+        }
 
 
 

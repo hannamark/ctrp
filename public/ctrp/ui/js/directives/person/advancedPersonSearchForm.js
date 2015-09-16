@@ -32,12 +32,12 @@
     angular.module('ctrpApp')
         .directive('ctrpAdvancedPersonSearchForm', ctrpAdvancedPersonSearchForm);
 
-    ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', '$location',
-            'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', 'OrgService', '$compile'];
+    ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', '$location', 'UserService',
+            'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', 'OrgService', '$compile', 'MESSAGES'];
 
 
-    function ctrpAdvancedPersonSearchForm(PersonService, Common, $location, uiGridConstants,
-                                          $timeout,  _, toastr, $anchorScroll, OrgService, $compile) {
+    function ctrpAdvancedPersonSearchForm(PersonService, Common, $location, uiGridConstants, UserService,
+                                          $timeout,  _, toastr, $anchorScroll, OrgService, $compile, MESSAGES) {
 
         var directiveObj = {
             restrict: 'E',
@@ -64,24 +64,19 @@
             // console.log('curationMode enabled: ' + attrs.curationModeEnabled)
             //pass to controller scope, but will require a timeout in controller - inconvenient
             // scope.isInModal = attrs.isInModal; //
+
             $compile(element.contents())(scope);
             
         } //linkFn
         
         
         
-        function advPersonSearchDirectiveController($scope) {
+        function advPersonSearchDirectiveController($scope, uiGridConstants, UserService) {
 
-            console.log('showGrid: ' + $scope.showGrid);
-            console.log('in adv person search form, maxRowSelectable: ' + $scope.maxRowSelectable);
-
-            //if
             $scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? Number.MAX_SAFE_INTEGER : $scope.maxRowSelectable ; //default to 0
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
             $scope.sourceContextArr = []; //sourceContextObj;
-            $scope.sourceContextArr.sort(Common.a2zComparator());
             $scope.sourceStatusArr = []; //sourceStatusObj;
-            $scope.sourceStatusArr.sort(Common.a2zComparator());
             $scope.nullifiedId = '';
             $scope.warningMessage = false;
             $scope.selectedRows = [];
@@ -178,6 +173,8 @@
             }; //commitNullification
 
 
+
+
             activate();
 
             /****************************** implementations **************************/
@@ -187,6 +184,8 @@
                 prepareGidOptions();
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
+                watchUserPrivilegeSelection();
+                watchPrivilegeSubRoutine();
                 // $scope.searchPeople();
 
             } //activate
@@ -363,7 +362,7 @@
 
 
                 //watcher for $scope.curationShown
-                $scope.$watch('curationShown', function(newVal) {
+                $scope.$watch('curationShown', function(newVal, oldVal) {
                     $scope.gridOptions.columnDefs[0].visible = $scope.curationShown;
 
                     if (newVal) {
@@ -377,6 +376,7 @@
                             $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
                         }
                     }
+
                     /*
                     var lastRow = clearSelectedRows();
                     if (!!lastRow) {
@@ -387,7 +387,9 @@
 
 
                     //$scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
-                    $scope.gridApi.grid.refresh();
+                    if (newVal != oldVal) {
+                        $scope.gridApi.grid.refresh();
+                    }
                 }, true);
 
 
@@ -444,6 +446,19 @@
                 }
 
                 return deselectedRow;
+            }
+
+
+            function watchUserPrivilegeSelection() {
+                $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
+                   // console.log('privilege: ' + userPrivilege);
+                    watchPrivilegeSubRoutine();
+                });
+            }
+
+            function watchPrivilegeSubRoutine() {
+                var userPrivilege = UserService.getPrivilege();
+                $scope.curationShown = userPrivilege == 'CURATOR' ? true : false;
             }
 
         } //advPersonSearchDirectiveController
