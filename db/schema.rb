@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909194412) do
+ActiveRecord::Schema.define(version: 20150916180027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -454,8 +454,9 @@ ActiveRecord::Schema.define(version: 20150909194412) do
     t.string   "prs_organization_name"
     t.boolean  "receive_email_notifications"
     t.string   "role_requested"
-    t.integer  "organization_id"
     t.boolean  "approved",                                default: false, null: false
+    t.integer  "organization_id"
+    t.string   "source"
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree

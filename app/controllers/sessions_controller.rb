@@ -11,6 +11,12 @@ class SessionsController < Devise::SessionsController
       #Rails.logger.info "request params = #{request.params.inspect} "
      # Rails.logger.info "user = #{request.params['user']} "
 
+      source = ""
+      # Get the source of the Login, Rails or Angular. It is set on the devise login screen
+      unless request.params.blank? || request.params["source"].blank?
+        source = request.params["source"]
+      end
+      Rails.logger.info "source = #{source.inspect}"
       unless request.params['user'].blank? && request.params['user']["username"].blank?
         username = request.params['user']["username"]
         request.params['user']["username"]= username.downcase
@@ -82,8 +88,11 @@ class SessionsController < Devise::SessionsController
       #self.resource.current_role = self.resource.role
       auth_json = create_authorization_json(self.resource, token)
       Rails.logger.info "authjson= #{auth_json.inspect}"
-      render json: auth_json
-
+      if source == "Rails"
+        redirect_to users_path
+      else
+        render json: auth_json
+      end
     rescue  => e
       Rails.logger.info "In Session Controller, exception handling"
       Rails.logger.info "Unable to Login user"
