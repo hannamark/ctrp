@@ -17,7 +17,7 @@
                              secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
                              holderTypeObj, expandedAccessTypeObj, countryList) {
         var vm = this;
-        vm.curTrial = trialDetailObj || {official_title: ""}; //trialDetailObj.data;
+        vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
         vm.collapsed = false;
