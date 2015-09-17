@@ -1,95 +1,19 @@
 require "rest-client"
 
-## Sign_up ctrpadmin as LocalUser
-ctrpsuper_json_body = {
-    "local_user" => {"username" => "ctrpsuper", "password" => "Welcome01", "email" => "csuper@x.com"},
-    "type" => "LocalUser"
-}
+url = "http://localhost/ctrp/local_users"
 
 
-RestClient.post('http://localhost/ctrp/local_users', ctrpsuper_json_body.to_json, :content_type => :json) do |response, request, result, &block|
-    if [301, 302, 307].include? response.code
-        redirected_url = response.headers[:location]
-    else
-        response.return!(request, result, &block)
-    end
-end
+["ctrpsuper", "ctrpadmin", "ctrpsiteadmin", "ctrpcurator", "testercurator", "ctrpreadonly"].each do |username|
 
+  body =    { "local_user" => {"username" => username, "password" => "Welcome01", "email" => "#{username}@x.com"},
+      "type" => "LocalUser"
+  }
 
-## Sign_up ctrpadmin as LocalUser
-ctrpadmin_json_body = {
-    "local_user" => {"username" => "ctrpadmin", "password" => "Welcome01", "email" => "cadmin@x.com"},
-    "type" => "LocalUser"
-}
-
-
-RestClient.post('http://localhost/ctrp/local_users', ctrpadmin_json_body.to_json, :content_type => :json) do |response, request, result, &block|
-    if [301, 302, 307].include? response.code
-        redirected_url = response.headers[:location]
-    else
-        response.return!(request, result, &block)
-    end
-end
-
-## Sign_up ctrpadmin as LocalUser
-ctrpsiteadmin_json_body = {
-    "local_user" => {"username" => "ctrpsiteadmin", "password" => "Welcome01", "email" => "csiteadmin@x.com"},
-    "type" => "LocalUser"
-}
-
-
-RestClient.post('http://localhost/ctrp/local_users', ctrpsiteadmin_json_body.to_json, :content_type => :json) do |response, request, result, &block|
-    if [301, 302, 307].include? response.code
-        redirected_url = response.headers[:location]
-    else
-        response.return!(request, result, &block)
-    end
-end
-
-
-## Sign_up ctrpcurator as LocalUser
-ctrpcurator_json_body = {
-    "local_user" => {"username" => "ctrpcurator", "password" => "Welcome01", "email" => "ccurator@x.com"},
-    "type" => "LocalUser"
-}
-
-
-RestClient.post('http://localhost/ctrp/local_users', ctrpcurator_json_body.to_json, :content_type => :json) do |response, request, result, &block|
-    if [301, 302, 307].include? response.code
-        redirected_url = response.headers[:location]
-    else
-        response.return!(request, result, &block)
-    end
-end
-
-
-## Sign_up testerctrpcurator as LocalUser
-testercurator_json_body = {
-    "local_user" => {"username" => "testercurator", "password" => "Welcome01", "email" => "testercurator@x.com"},
-    "type" => "LocalUser"
-}
-
-
-RestClient.post('http://localhost/ctrp/local_users', testercurator_json_body.to_json, :content_type => :json) do |response, request, result, &block|
-    if [301, 302, 307].include? response.code
-        redirected_url = response.headers[:location]
-    else
-        response.return!(request, result, &block)
-    end
-end
-
-
-## Sign_up role_readonly as LocalUser
-ctrpreadonly_json_body = {
-    "local_user" => {"username" => "ctrpreadonly", "password" => "Welcome01", "email" => "ctrpreadonly@x.com"},
-    "type" => "LocalUser"
-}
-
-
-RestClient.post('http://localhost/ctrp/local_users', ctrpreadonly_json_body.to_json, :content_type => :json) do |response, request, result, &block|
-    if [301, 302, 307].include? response.code
-        redirected_url = response.headers[:location]
-    else
-        response.return!(request, result, &block)
+  RestClient.post(url, body.to_json, :content_type => :json) do |response, request, result, &block|
+        if [301, 302, 307].include? response.code
+            redirected_url = response.headers[:location]
+        else
+            response.return!(request, result, &block)
+        end
     end
 end

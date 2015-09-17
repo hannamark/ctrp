@@ -4,12 +4,24 @@
             <p><h4 ng-if="trialDetailView.curTrial.new"><mark>Register Trial</mark></h4></p>
             <p><h4 ng-if="!trialDetailView.curTrial.new"><mark>Edit Trial</mark></h4></p>
         </div>
+
+        <div class="row">
+            <p>
+                <button class="btn btn-primary" ng-show="!trialDetailView.collapsed" ng-click="trialDetailView.collapseAccordion()">
+                    <i class="glyphicon glyphicon-minus"></i> Collapse All
+                </button>
+                <button class="btn btn-primary" ng-show="trialDetailView.collapsed" ng-click="trialDetailView.expandAccordion()">
+                    <i class="glyphicon glyphicon-plus"></i> Expand All
+                </button>
+            </p>
+        </div>
+
         <div class="row">
             <form class="form-horizontal" role="form" name="trial_form" novalidate>
                 <accordion close-others="false">
-                    <accordion-group is-open="trialDetailView.accordion1">
+                    <accordion-group is-open="trialDetailView.accordions[0]">
                         <accordion-heading>
-                            Trial Identifiers  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion1, 'glyphicon-chevron-right': !trialDetailView.accordion1}"></i>
+                            Trial Identifiers  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[0], 'glyphicon-chevron-right': !trialDetailView.accordions[0]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -77,15 +89,18 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion2">
+                    <accordion-group is-open="trialDetailView.accordions[1]">
                         <accordion-heading>
-                            Trial Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion2, 'glyphicon-chevron-right': !trialDetailView.accordion2}"></i>
+                            Trial Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[1], 'glyphicon-chevron-right': !trialDetailView.accordions[1]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Official Title:</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control input-xs" id="official_title" ng-model="trialDetailView.curTrial.official_title" />
+                                <textarea class="form-control input-xs" id="official_title" name="official_title" ng-model="trialDetailView.curTrial.official_title" required />
+                                <p ng-show="trial_form.official_title.$error.required && trial_form.official_title.$dirty" class="help-inline text-danger">
+                                    Official title is required
+                                </p>
                             </div>
                         </div>
 
@@ -166,9 +181,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion3">
+                    <accordion-group is-open="trialDetailView.accordions[2]">
                         <accordion-heading>
-                            Lead Organization/Principal Investigator  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion3, 'glyphicon-chevron-right': !trialDetailView.accordion3}"></i>
+                            Lead Organization/Principal Investigator  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[2], 'glyphicon-chevron-right': !trialDetailView.accordions[2]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -200,9 +215,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion4">
+                    <accordion-group is-open="trialDetailView.accordions[3]">
                         <accordion-heading>
-                            Sponsor/Responsible Party  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion4, 'glyphicon-chevron-right': !trialDetailView.accordion4}"></i>
+                            Sponsor/Responsible Party  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[3], 'glyphicon-chevron-right': !trialDetailView.accordions[3]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -239,7 +254,7 @@
                                     <div class="col-xs-12 col-sm-8">
                                         <input type="text" class="form-control input-xs" disabled value="{{trialDetailView.selectedInvArray[0].fname + ' ' + (trialDetailView.selectedInvArray[0].mname ? trialDetailView.selectedInvArray[0].mname + ' ' : '') + trialDetailView.selectedInvArray[0].lname}}"/>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-4" ng-show="trialDetailView.showInvSearchBtn">
                                         <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedInvArray"></ctrp-person-adv-search-modal-button>
                                     </div>
                                 </div>
@@ -247,9 +262,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion5">
+                    <accordion-group is-open="trialDetailView.accordions[4]">
                         <accordion-heading>
-                            Data Table 4 Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion5, 'glyphicon-chevron-right': !trialDetailView.accordion5}"></i>
+                            Data Table 4 Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[4], 'glyphicon-chevron-right': !trialDetailView.accordions[4]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -285,9 +300,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion6">
+                    <accordion-group is-open="trialDetailView.accordions[5]">
                         <accordion-heading>
-                            NIH Grant Information (for NIH funded Trials)  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion6, 'glyphicon-chevron-right': !trialDetailView.accordion6}"></i>
+                            NIH Grant Information (for NIH funded Trials)  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[5], 'glyphicon-chevron-right': !trialDetailView.accordions[5]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -334,7 +349,7 @@
                                         </td>
                                         <td class="col-md-3">
                                             <div>
-                                                <input type="text" class="form-control input-xs" id="serial_number" ng-model="trialDetailView.serial_number" />
+                                                <input type="number" class="form-control input-xs" id="serial_number" ng-model="trialDetailView.serial_number" />
                                             </div>
                                         </td>
                                         <td class="col-md-3">
@@ -383,9 +398,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion7">
+                    <accordion-group is-open="trialDetailView.accordions[6]">
                         <accordion-heading>
-                            Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion7, 'glyphicon-chevron-right': !trialDetailView.accordion7}"></i>
+                            Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[6], 'glyphicon-chevron-right': !trialDetailView.accordions[6]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -460,9 +475,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion8">
+                    <accordion-group is-open="trialDetailView.accordions[7]">
                         <accordion-heading>
-                            Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion8, 'glyphicon-chevron-right': !trialDetailView.accordion8}"></i>
+                            Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[7], 'glyphicon-chevron-right': !trialDetailView.accordions[7]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -529,9 +544,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion9">
+                    <accordion-group is-open="trialDetailView.accordions[8]">
                         <accordion-heading>
-                            FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion9, 'glyphicon-chevron-right': !trialDetailView.accordion9}"></i>
+                            FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[8], 'glyphicon-chevron-right': !trialDetailView.accordions[8]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -558,7 +573,7 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div>
-                                                <input type="text" class="form-control input-xs" id="ind_ide_number" ng-model="trialDetailView.ind_ide_number" />
+                                                <input type="number" class="form-control input-xs" id="ind_ide_number" ng-model="trialDetailView.ind_ide_number" />
                                             </div>
                                         </td>
                                         <td class="col-md-2">
@@ -629,9 +644,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion10">
+                    <accordion-group is-open="trialDetailView.accordions[9]">
                         <accordion-heading>
-                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion10, 'glyphicon-chevron-right': !trialDetailView.accordion10}"></i>
+                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[9], 'glyphicon-chevron-right': !trialDetailView.accordions[9]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -639,7 +654,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control input-xs" id="authority_country" ng-model="trialDetailView.curTrial.authority_country"
                                         ng-change="trialDetailView.watchOption('authority_country')">
-                                    <option value="">Select a country</option>
+                                    <option value="">Select a Country</option>
                                     <option ng-repeat="country in trialDetailView.countryArr track by $index" value="{{country.name}}" ng-selected="trialDetailView.curTrial.authority_country == country.name">{{country.name}}</option>
                                 </select>
                             </div>
@@ -686,9 +701,9 @@
                         </div>
                     </accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordion11">
+                    <accordion-group is-open="trialDetailView.accordions[10]">
                         <accordion-heading>
-                            Trial Related Documents  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordion11, 'glyphicon-chevron-right': !trialDetailView.accordion11}"></i>
+                            Trial Related Documents  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[10], 'glyphicon-chevron-right': !trialDetailView.accordions[10]}"></i>
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
@@ -744,15 +759,15 @@
                             </div>
                         </div>
                     </accordion-group>
-
-                    <div id="buttonBar" class="form-group col-sm-12">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <input type="submit" class="btn btn-success" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" value="Save">
-                            <input type="reset" class="btn btn-warning" id="reset_btn" value="Reset">
-                            <button class="btn btn-default" back-button>Cancel</button>
-                        </div>
-                    </div>
                 </accordion>
+
+                <div id="buttonBar" class="form-group col-sm-12">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <input type="submit" class="btn btn-success" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" value="Save">
+                        <input type="reset" class="btn btn-warning" id="reset_btn" value="Reset">
+                        <button class="btn btn-default" back-button>Cancel</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

@@ -50,14 +50,14 @@ Rails.application.routes.draw do
 
     resources :comments
 
-    resources :users do
+    # All the User routes(non-devise) should be accessed by username
+    # rather that "id" in order to prevent exposing the "id"
+    resources :users, param: :username do
       member do
         post 'approve'
         post 'disapprove'
       end
     end
-
-    resources :after_signup
 
     resources :people do
       collection do
@@ -80,6 +80,7 @@ Rails.application.routes.draw do
     get '/dmzutils/app_version' => 'dmz_utils#get_app_version'
     get '/dmzutils/app_rel_milestone' => 'dmz_utils#get_app_rel_milestone'
     get '/dmzutils/login_bulletin' => 'dmz_utils#get_login_bulletin'
+    get '/dmzutils/git_revision' => 'dmz_utils#get_git_revision'
 
     # Devise related routes
     devise_scope :user do

@@ -1,39 +1,40 @@
 class UsersController < ApplicationController
-  before_action :set_user
-  before_filter :authenticate_user!, :only => :update
+  before_action :set_user, :only => :index
+ # before_filter :authenticate_user!, :only => :update
 
   # GET /users
   # GET /users.json
   def index
     # The Current User logged in
     Rails.logger.info "@user = #{@user.inspect}"
-    if @user.blank?
-      @users = []
-    else
-      @users = @user.get_all_users_by_role
-    end
-  end
-  
-  def show
-    unless params.nil? || params[:id].nil?
-      user_identifier = params[:id]
-      if  user_identifier.to_i > 0
-        @user = User.find(user_identifier)
-      else
-        @user =  User.find_by_username(user_identifier)
+    @users = []
+    unless @user.blank?
+      if @user.role == "ROLE_SUPER"
+        @users = User.all
+      elsif @user.role == "ROLE_SITE_ADMIN" && @user.approved
+        @users = User.find_by_organization_id(@user.organization_id)
       end
+      #Rails.logger.info "@users = #{@users.inspect}"
     end
   end
 
+  def show
+    @user = User.find_by_username(params[:username])
+  end
+
+
   def update
-    @user = current_user
-    @user.update_attributes(params[:user])
-    render :edit
+    @user = User.find_by_username(params[:user][:username])
+    Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
+    @user.update_attributes(user_params)
+    Rails.logger.info "In Users Controller, update after user = #{@user.inspect}"
+    #render :edit
   end
 
   def approve
     # When an ADMIN approves of the user request for privileges, the role is updated
     # if it is not already chosen and the approved field is set to true
+    @user = User.find_by_username(params[:username])
     @user.process_approval
     redirect_to users_path
 
@@ -42,6 +43,7 @@ class UsersController < ApplicationController
   def disapprove
       # When an ADMIN disapproves of the user request for privileges, the role is set to nill
       # and the approved field is set to false
+    @user = User.find_by_username(params[:username])
     @user.process_disapproval
     redirect_to users_path
   end
@@ -59,6 +61,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params[:user]
+      params.require(:user).permit(:username, :email, :zipcode, :first_name, :last_name, :middle_name,  :updated_at, :role, :street_address)
     end
 end

@@ -12,4 +12,8 @@ class DmzUtilsController < ActionController::Base
      @login_bulletin = AppSetting.find_by_code('LOGIN_BULLETIN').big_value()
   end
 
+  def get_git_revision
+    @git_revision = CTRP::GIT_REVISION
+  end
+
 end
