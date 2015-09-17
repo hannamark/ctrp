@@ -4,30 +4,23 @@
 
 (function () {
     'use strict';
-    angular.module('ctrpApp')
-        .controller('trialDetailCtrl', trialDetailCtrl);
-    trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES',
-        '$scope', 'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
+
+    angular.module('ctrpApp').controller('trialDetailCtrl', trialDetailCtrl);
+
+    trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope',
+        'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
         'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
-    function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES,
-                             $scope, Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
+
+    function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope,
+                             Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
                              holderTypeObj, expandedAccessTypeObj, countryList) {
         var vm = this;
-        vm.accordion1 = true;
-        vm.accordion2 = true;
-        vm.accordion3 = true;
-        vm.accordion4 = true;
-        vm.accordion5 = true;
-        vm.accordion6 = true;
-        vm.accordion7 = true;
-        vm.accordion8 = true;
-        vm.accordion9 = true;
-        vm.accordion10 = true;
-        vm.accordion11 = true;
-        vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
+        vm.curTrial = trialDetailObj || {official_title: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
+        vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
+        vm.collapsed = false;
         vm.protocolIdOriginArr = protocolIdOriginObj;
         vm.phaseArr = phaseObj;
         vm.researchCategoryArr = researchCategoryObj;
@@ -134,6 +127,16 @@
             });
         }; // updatePerson
 
+        vm.collapseAccordion = function() {
+            vm.accordions = [false, false, false, false, false, false, false, false, false, false, false];
+            vm.collapsed = true;
+        };
+
+        vm.expandAccordion = function() {
+            vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
+            vm.collapsed = false;
+        };
+
         // Delete the trial status
         vm.toggleSelection = function (index, type) {
             if (type == 'other_id') {
@@ -179,71 +182,87 @@
 
         // Add other ID to a temp array
         vm.addOtherId = function () {
-            var newId = {};
-            newId.protocol_id_origin_id = vm.protocol_id_origin_id;
-            // For displaying other ID origin name in the table
-            _.each(vm.protocolIdOriginArr, function (origin) {
-                if (origin.id == vm.protocol_id_origin_id) {
-                    newId.protocol_id_origin_name = origin.name;
-                }
-            });
-            newId.protocol_id = vm.protocol_id;
-            newId._destroy = false;
-            vm.addedOtherIds.push(newId);
+            if (vm.protocol_id_origin_id && vm.protocol_id) {
+                var newId = {};
+                newId.protocol_id_origin_id = vm.protocol_id_origin_id;
+                // For displaying other ID origin name in the table
+                _.each(vm.protocolIdOriginArr, function (origin) {
+                    if (origin.id == vm.protocol_id_origin_id) {
+                        newId.protocol_id_origin_name = origin.name;
+                    }
+                });
+                newId.protocol_id = vm.protocol_id;
+                newId._destroy = false;
+                vm.addedOtherIds.push(newId);
+            } else {
+                alert('Please select a Protocol ID Origin and enter a Protocol ID');
+            }
         };
 
         // Add grant to a temp array
         vm.addGrant = function () {
-            var newGrant = {};
-            newGrant.funding_mechanism = vm.funding_mechanism;
-            newGrant.institute_code = vm.institute_code;
-            newGrant.serial_number = vm.serial_number;
-            newGrant.nci = vm.nci;
-            newGrant._destroy = false;
-            vm.addedGrants.push(newGrant);
+            if (vm.funding_mechanism && vm.institute_code && vm.serial_number && vm.nci) {
+                var newGrant = {};
+                newGrant.funding_mechanism = vm.funding_mechanism;
+                newGrant.institute_code = vm.institute_code;
+                newGrant.serial_number = vm.serial_number;
+                newGrant.nci = vm.nci;
+                newGrant._destroy = false;
+                vm.addedGrants.push(newGrant);
+            } else {
+                alert('Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code');
+            }
         };
 
         // Add trial status to a temp array
         vm.addStatus = function () {
-            var newStatus = {};
-            newStatus.status_date = vm.status_date ? DateService.convertISODateToLocaleDateStr(vm.status_date) : '';
-            newStatus.trial_status_id = vm.trial_status_id;
-            // For displaying status name in the table
-            _.each(vm.trialStatusArr, function (status) {
-                if (status.id == vm.trial_status_id) {
-                    newStatus.trial_status_name = status.name;
-                }
-            });
-            newStatus.why_stopped = vm.why_stopped;
-            newStatus._destroy = false;
-            vm.addedStatuses.push(newStatus);
+            if (vm.status_date && vm.trial_status_id) {
+                var newStatus = {};
+                newStatus.status_date = vm.status_date ? DateService.convertISODateToLocaleDateStr(vm.status_date) : '';
+                newStatus.trial_status_id = vm.trial_status_id;
+                // For displaying status name in the table
+                _.each(vm.trialStatusArr, function (status) {
+                    if (status.id == vm.trial_status_id) {
+                        newStatus.trial_status_name = status.name;
+                    }
+                });
+                newStatus.why_stopped = vm.why_stopped;
+                newStatus._destroy = false;
+                vm.addedStatuses.push(newStatus);
+            } else {
+                alert('Please provide a Status Date and select a Status');
+            }
         };
 
         // Add IND/IDE to a temp array
         vm.addIndIde = function () {
-            var newIndIde = {};
-            newIndIde.ind_ide_type = vm.ind_ide_type;
-            newIndIde.ind_ide_number = vm.ind_ide_number;
-            newIndIde.grantor = vm.grantor;
-            newIndIde.holder_type_id = vm.holder_type_id;
-            // For displaying name in the table
-            _.each(vm.holderTypeArr, function (holderType) {
-                if (holderType.id == vm.holder_type_id) {
-                    newIndIde.holder_type_name = holderType.name;
-                }
-            });
-            newIndIde.nih_nci = vm.nih_nci;
-            newIndIde.expanded_access = vm.expanded_access;
-            newIndIde.expanded_access_type_id = vm.expanded_access_type_id;
-            // For displaying name in the table
-            _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
-                if (expandedAccessType.id == vm.expanded_access_type_id) {
-                    newIndIde.expanded_access_type_name = expandedAccessType.name;
-                }
-            });
-            newIndIde.exempt = vm.exempt;
-            newIndIde._destroy = false;
-            vm.addedIndIdes.push(newIndIde);
+            if (vm.ind_ide_type && vm.ind_ide_number && vm.grantor && vm.holder_type_id) {
+                var newIndIde = {};
+                newIndIde.ind_ide_type = vm.ind_ide_type;
+                newIndIde.ind_ide_number = vm.ind_ide_number;
+                newIndIde.grantor = vm.grantor;
+                newIndIde.holder_type_id = vm.holder_type_id;
+                // For displaying name in the table
+                _.each(vm.holderTypeArr, function (holderType) {
+                    if (holderType.id == vm.holder_type_id) {
+                        newIndIde.holder_type_name = holderType.name;
+                    }
+                });
+                newIndIde.nih_nci = vm.nih_nci;
+                newIndIde.expanded_access = vm.expanded_access;
+                newIndIde.expanded_access_type_id = vm.expanded_access_type_id;
+                // For displaying name in the table
+                _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
+                    if (expandedAccessType.id == vm.expanded_access_type_id) {
+                        newIndIde.expanded_access_type_name = expandedAccessType.name;
+                    }
+                });
+                newIndIde.exempt = vm.exempt;
+                newIndIde._destroy = false;
+                vm.addedIndIdes.push(newIndIde);
+            } else {
+                alert('Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type');
+            }
         };
 
         // Add Founding Source to a temp array
@@ -351,7 +370,6 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewTrialFlag();
-            prepareModal();
         }
 
         /**
@@ -365,26 +383,6 @@
                 vm.curTrial.new = true;  //
             }
         }
-
-        function prepareModal() {
-            vm.searchOrg = function(size, type) {
-                var modalInstance = $modal.open({
-                    animation: true,
-                    templateUrl: '/ctrp/ui/partials/modals/advanced_org_search_form_modal.html',
-                    controller: 'advancedOrgSearchModalCtrl as orgSearchModalView',
-                    size: size
-                });
-
-                modalInstance.result.then(function (selectedOrg) {
-                    if (type == 'lead') {
-                        vm.selectedLeadOrg = selectedOrg[0];
-                        vm.curTrial.lead_org_id = selectedOrg[0].id;
-                    }
-                }, function () {
-                    console.log("operation canceled");
-                });
-            }
-        } //prepareModal
 
         // Return true if the option is "Other"
         function findOtherOption(option) {
