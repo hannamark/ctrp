@@ -121,7 +121,7 @@
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 uploadDocuments(response.id);
-                toastr.success('Trial ' + vm.curTrial.name + ' has been recorded', 'Operation Successful!');
+                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
