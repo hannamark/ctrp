@@ -64,6 +64,10 @@ class  User < ActiveRecord::Base
 
   attr_accessor :password
 
+  def to_param
+    username
+  end
+
   def self.get_roles
     ROLES
   end
