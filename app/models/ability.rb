@@ -31,14 +31,16 @@ class Ability
 
     user ||= User.new
     Rails.logger.info "In Cancancan's ability.rb's initialize method user = #{user.inspect}"
-    if user.role == 'ROLE_SUPER'
+    if user.role == 'ROLE_SUPER' # && user.approved?
       can :manage, :all
-    elsif user.role == 'ROLE_ADMIN'
-      can :manage, :all
-    elsif user.role == 'ROLE_CURATOR'
+   # elsif user.role == 'ROLE_ADMIN' # && user.approved?
+   #   can :manage, :all
+   # elsif user.role == 'ROLE_SITE_ADMIN'# && user.approved?
+   #   can :manage, :all
+    elsif user.role == 'ROLE_CURATOR'# && user.approved?
       can :manage, :all
       cannot :access_backoffice, :manage_backoffice
-    elsif user.role == "ROLE_RO"
+    elsif user.role == "ROLE_READONLY" # && user.approved?
       can :read, :all
     else
       Rails.logger.info "No permission to access any of the resources in CTRP"
