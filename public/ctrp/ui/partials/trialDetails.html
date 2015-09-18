@@ -442,7 +442,7 @@
                                         </td>
                                         <td class="col-md-4">
                                             <div>
-                                                <select class="form-control" id="trial_status" ng-model="trialDetailView.trial_status_id">
+                                                <select class="form-control" id="trial_status" ng-model="trialDetailView.trial_status_id"  ng-change="trialDetailView.watchOption('trial_status')">
                                                     <option value="">-Select a Trial Status-</option>
                                                     <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" value="{{trialStatus.id}}">
                                                         {{trialStatus.name}}
@@ -452,7 +452,7 @@
                                         </td>
                                         <td class="col-md-4">
                                             <div>
-                                                <textarea style="resize: vertical;" class="form-control input-xs" id="why_stopped" ng-model="trialDetailView.why_stopped" />
+                                                <textarea style="resize: vertical;" class="form-control input-xs" id="why_stopped" ng-model="trialDetailView.why_stopped" ng-disabled="trialDetailView.why_stopped_disabled" />
                                             </div>
                                         </td>
                                         <td class="col-md-1">
