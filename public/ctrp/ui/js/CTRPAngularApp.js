@@ -191,6 +191,9 @@
                         GeoLocationService : 'GeoLocationService',
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
+                        },
+                        userDetailObj : function(UserService) {
+                            return UserService.getUserDetailsByUsername();
                         }
                     }//, //resolve the promise and pass it to controller
                     //ncyBreadcrumb: {

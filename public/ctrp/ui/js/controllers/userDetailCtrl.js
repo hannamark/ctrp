@@ -8,13 +8,14 @@
     angular.module('ctrpApp')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', '$scope','toastr'];
+    userDetailCtrl.$inject = ['UserService', '$scope','toastr','OrgService','userDetailObj'];
 
-    function userDetailCtrl(UserService, $scope,toastr) {
+    function userDetailCtrl(UserService, $scope,toastr,OrgService,userDetailObj) {
         var vm = this;
          console.log("curuser is ");
-        vm.userDetails = '';
+        vm.userDetails = userDetailObj;
         vm.selectedOrgsArray = [];
+        vm.savedSelection = []; //save selected organizations
 
         vm.updateUser = function () {
 
@@ -43,10 +44,11 @@
         }; // updatePerson
 
 
-        UserService.getUserDetailsByUsername().then(function(details) {
+        /*UserService.getUserDetailsByUsername().then(function(details) {
             console.log('user details: ' + JSON.stringify(details));
             vm.userDetails = details;
-        });
+        });*/
+
 
         $scope.$watch(function() {return vm.selectedOrgsArray;}, function(newVal) {
            console.log('selected org:' + JSON.stringify(vm.selectedOrgsArray));
@@ -57,6 +59,15 @@
 
         /****************** implementations below ***************/
         function activate() {
+
+            if(vm.userDetails.organization_id != null) {
+                var org_id= vm.userDetails.organization_id;
+                //var org_name =vm.userDetails.organization_name;
+                var org_name ="Organization_Name";
+                var curOrg = {"id": org_id, "name": org_name};
+                vm.savedSelection.push(curOrg);
+
+            }
 
 
         }
