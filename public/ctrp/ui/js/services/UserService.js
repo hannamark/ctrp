@@ -36,7 +36,7 @@
                     if (data.token) {
                         LocalCacheService.cacheItem("token", data.token);
                         LocalCacheService.cacheItem("username", userObj.user.username);
-                        _setAppVersion(data.application_version);
+                        _setAppVersion(data.app_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
 

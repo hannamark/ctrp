@@ -21,7 +21,7 @@
             alias: true,
             // po_id : "",
             ctrp_id : "",
-            source_context : "",
+            source_context : "CTRP",
             source_id : "",
             source_status : "",
             family_name : "",
@@ -59,7 +59,7 @@
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'id', enableSorting: true, displayName: 'CTRP ID', width: '10%'},
+                {name: 'id', enableSorting: true, displayName: 'ID', width: '10%'},
                 {
                     name: 'name', enableSorting: true, width: '23%',
                     //this does not work for .id
@@ -72,6 +72,7 @@
                 },
                 {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '8%'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '8%'},
+                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '8%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '10%'},

@@ -144,7 +144,7 @@ org11 = Organization.create(id: 36296115, source_id: 'NC274', name: 'Wake Forest
 org12 = Organization.create(id: 36296009, source_id: 'NC272', name: 'Wake Forest University at Mount Airy', source_status: source_act, source_context: ctep, address: '910 Worth St.', city: 'Mt. Airy', state_province:'North Carolina', country:usa)
 org13 = Organization.create(id: 149074, source_id: 'NC002', name: 'Wake Forest University Health Sciences', source_status: source_act, source_context: ctep, address: '1 Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa) #no source id
 org14 = Organization.create(id: 149221, source_id: 'NC008', name: 'Wake Medical Center-Breast Screening and Diagnostic', source_status: source_act, source_context: ctep, address: '3000 New Bern Avenue ', city: 'Raleigh', state_province:'North Carolina', country:usa)
-org15 = Organization.create(id: 23875109, name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctrp, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa) #no source id
+org15 = Organization.create(id: 23875109, name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctrp, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: '23456', ctrp_id: 23456) #no source id
 org16 = Organization.create(id: 24068, source_id: 'ACT', name: 'Actelion Pharmaceuticals Switzerland', source_status: source_act, source_context: ctep, address: 'Gewerbestrasse 16', city: 'Allschwil', state_province:'Basel-Landschaft', country: 'Switzerland')
 if !org16.new_record?
   org16.name_aliases.create(name: 'Actelion')
@@ -154,6 +154,7 @@ org18 = Organization.create(id: 34563051, name: 'UCB, Inc.', source_status: sour
 if !org18.new_record?
   org18.name_aliases.create(name: 'UCB Pharma')
 end
+org19 = Organization.create(name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctep, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: "ACRN", ctrp_id: 23456) #no source id
 
 family1 = Family.create(name: 'Masonic Cancer Center')
 if !family1.new_record?
@@ -188,6 +189,7 @@ person6=Person.find_or_create_by(id:10161459, source_id:'46120', source_context:
 person7=Person.find_or_create_by(id:366649, source_id:'11640', source_context: ctep, fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
 person8=Person.find_or_create_by(id:2026171, source_id:'35504', source_context: ctrp, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
 person9=Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
+  person10 = Person.find_or_create_by(id:1426655, source_id:'15179', source_context: ctrp, fname:'Gisele', lname:'Sarosy', prefix:'Dr.', suffix:'', email:'gsarosy@mail.nih.gov', phone:'800-411-1222')
 end
 
 PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')
@@ -215,15 +217,18 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER" },
 
 test_users.each do |u|
   user = User.find_by_username(u["username"])
-  user.role = u["role"]
-  user.save!
-  puts "Updated role of user = #{user.username}, role = #{user.role}"
+  unless user.blank?
+    user.role = u["role"]
+    user.save!
+    puts "Updated role of user = #{user.username}, role = #{user.role}"
+  end
 end
 
 
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
+<<<<<<< HEAD
 charlie ="shivece@mail.nih.gov"
 mahesh = "yelisettim@mail.nih.gov"
 shilpi = "singhs10@mail.nih.gov"
@@ -233,18 +238,29 @@ tony = "wangg5@mail.nih.gov"
 shenpei = "wus4@mail.nih.gov"
 sarada = "schintal@mail.nih.gov"
 hemant = "undalehv@mail.nih.gov"
+tekumalla = "radhika.tekumalla@nih.gov"
+=======
+charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER" }
+mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER" }
+shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER" }
+shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER" }
+murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER" }
+tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
+shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
+sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
+hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
+>>>>>>> 2bc41298e78f28081e8151d764ade7e0131ba29f
 
-
-ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant]
+ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, tekumalla]
 
 ##Add CTRP Business Analysts
 
-joe = "martuccijj@mail.nih.gov"
-jose = "galvezjj@mail.nih.gov"
-michael = "izbickimj@mail.nih.gov"
-sandy = "lightbodysj@mail.nih.gov"
-kirsten = "larcokl@mail.nih.gov"
-deb = "hopeda@mail.nih.gov"
+joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR" }
+jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_READONLY" }
+michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR" }
+sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_READONLY" }
+kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR" }
+deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR" }
 
 
 ba_users = [joe, jose, michael, sandy, kirsten, deb]
@@ -253,13 +269,13 @@ all_users = ncictrpdev_users + ba_users
 
 ## Save the users by bypassing validation. We want to save the user without the password
 begin
-  all_users.each do |email|
+  all_users.each do |u|
     ldap_user = LdapUser.new
-    ldap_user.email = email
-    ldap_user.username = email.split("@")[0]
-    ldap_user.role = "ROLE_ADMIN"
+    ldap_user.email = u["email"]
+    ldap_user.username = u["email"].split("@")[0]
+    ldap_user.role = u["role"]
     ldap_user.save(validate: false)
-    #Rails.logger.info "Saved user = #{ldap_user.inspect}"
+    puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"
