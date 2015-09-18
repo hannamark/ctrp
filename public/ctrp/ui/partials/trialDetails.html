@@ -25,9 +25,12 @@
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label col-sm-3">Lead Protocol Identifier:</label>
+                            <label class="control-label col-sm-3 required">Lead Protocol Identifier:</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control input-xs" id="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id">
+                                <input type="text" class="form-control input-xs" id="lead_protocol_id" name="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id" required>
+                                <p ng-show="trial_form.lead_protocol_id.$error.required && trial_form.lead_protocol_id.$dirty" class="help-inline text-danger">
+                                    Lead Protocol Identifier is required
+                                </p>
                             </div>
                         </div>
 
@@ -95,30 +98,33 @@
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label col-sm-3">Official Title:</label>
+                            <label class="control-label col-sm-3 required">Official Title:</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control input-xs" id="official_title" name="official_title" ng-model="trialDetailView.curTrial.official_title" required />
                                 <p ng-show="trial_form.official_title.$error.required && trial_form.official_title.$dirty" class="help-inline text-danger">
-                                    Official title is required
+                                    Official Title is required
                                 </p>
                             </div>
                         </div>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label col-sm-3">Phase:</label>
+                            <label class="control-label col-sm-3 required">Phase:</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="phase" ng-model="trialDetailView.curTrial.phase_id">
+                                <select class="form-control" id="phase" name="phase" ng-model="trialDetailView.curTrial.phase_id" required>
                                     <option value="">Select a Phase</option>
                                     <option ng-repeat="phase in trialDetailView.phaseArr"
                                             value="{{phase.id}}" ng-selected="trialDetailView.curTrial.phase_id == phase.id">
                                         {{phase.name}}
                                     </option>
                                 </select>
+                                <p ng-show="trial_form.phase.$error.required && trial_form.phase.$dirty" class="help-inline text-danger">
+                                    Phase is required
+                                </p>
                             </div>
                         </div>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label col-sm-3">Pilot?</label>
+                            <label class="control-label col-sm-3 required">Pilot?</label>
                             <div class="col-sm-1">
                                 <label><input type="radio" ng-model="trialDetailView.curTrial.pilot" value="No"> No</label>
                             </div>
@@ -128,28 +134,34 @@
                         </div>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label col-sm-3">Research Category:</label>
+                            <label class="control-label col-sm-3 required">Research Category:</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="research_category" ng-model="trialDetailView.curTrial.research_category_id">
+                                <select class="form-control" id="research_category" name="research_category" ng-model="trialDetailView.curTrial.research_category_id" required>
                                     <option value="">Select a Research Category</option>
                                     <option ng-repeat="category in trialDetailView.researchCategoryArr"
                                             value="{{category.id}}" ng-selected="trialDetailView.curTrial.research_category_id == category.id">
                                         {{category.name}}
                                     </option>
                                 </select>
+                                <p ng-show="trial_form.research_category.$error.required && trial_form.research_category.$dirty" class="help-inline text-danger">
+                                    Research Category is required
+                                </p>
                             </div>
                         </div>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label col-sm-3">Primary Purpose:</label>
+                            <label class="control-label col-sm-3 required">Primary Purpose:</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id" ng-change="trialDetailView.watchOption('primary_purpose')">
+                                <select class="form-control" id="primary_purpose" name="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id" ng-change="trialDetailView.watchOption('primary_purpose')" required>
                                     <option value="">Select a Primary Purpose</option>
                                     <option ng-repeat="primaryPurpose in trialDetailView.primaryPurposeArr"
                                             value="{{primaryPurpose.id}}" ng-selected="trialDetailView.curTrial.primary_purpose_id == primaryPurpose.id">
                                         {{primaryPurpose.name}}
                                     </option>
                                 </select>
+                                <p ng-show="trial_form.primary_purpose.$error.required && trial_form.primary_purpose.$dirty" class="help-inline text-danger">
+                                    Primary Purpose is required
+                                </p>
                             </div>
                         </div>
 
@@ -235,15 +247,18 @@
                         </div>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label col-sm-3">Responsible Party:</label>
+                            <label class="control-label col-sm-3 required">Responsible Party:</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id" ng-change="trialDetailView.watchOption('responsible_party')">
+                                <select class="form-control" id="responsible_party" name="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id" ng-change="trialDetailView.watchOption('responsible_party')" required>
                                     <option value="">Select a Responsible Party</option>
                                     <option ng-repeat="responsibleParty in trialDetailView.responsiblePartyArr"
                                             value="{{responsibleParty.id}}" ng-selected="trialDetailView.curTrial.responsible_party_id == responsibleParty.id">
                                         {{responsibleParty.name}}
                                     </option>
                                 </select>
+                                <p ng-show="trial_form.responsible_party.$error.required && trial_form.responsible_party.$dirty" class="help-inline text-danger">
+                                    Responsible Party is required
+                                </p>
                             </div>
                         </div>
 
@@ -306,7 +321,7 @@
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label col-sm-3">Is this trial funded by an NCI grant?</label>
+                            <label class="control-label col-sm-3 required">Is this trial funded by an NCI grant?</label>
                             <div class="col-sm-1">
                                 <label><input type="radio" ng-model="trialDetailView.curTrial.grant_question" value="Yes"> Yes</label>
                             </div>
@@ -650,23 +665,29 @@
                         </accordion-heading>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label col-sm-3">Trial Oversight Authority Country:</label>
+                            <label class="control-label col-sm-3 required">Trial Oversight Authority Country:</label>
                             <div class="col-sm-9">
-                                <select class="form-control input-xs" id="authority_country" ng-model="trialDetailView.curTrial.authority_country"
-                                        ng-change="trialDetailView.watchOption('authority_country')">
+                                <select class="form-control input-xs" id="authority_country" name="authority_country" ng-model="trialDetailView.curTrial.authority_country"
+                                        ng-change="trialDetailView.watchOption('authority_country')" required>
                                     <option value="">Select a Country</option>
                                     <option ng-repeat="country in trialDetailView.countryArr track by $index" value="{{country.name}}" ng-selected="trialDetailView.curTrial.authority_country == country.name">{{country.name}}</option>
                                 </select>
+                                <p ng-show="trial_form.authority_country.$error.required && trial_form.authority_country.$dirty" class="help-inline text-danger">
+                                    Trial Oversight Authority Country is required
+                                </p>
                             </div>
                         </div>
 
                         <div class="form-group col-sm-12">
-                            <label class="control-label col-sm-3">Trial Oversight Authority Organization Name:</label>
+                            <label class="control-label col-sm-3 required">Trial Oversight Authority Organization Name:</label>
                             <div class="col-sm-9">
-                                <select class="form-control input-xs" id="authority_org" ng-model="trialDetailView.curTrial.authority_org">
+                                <select class="form-control input-xs" id="authority_org" name="authority_org" ng-model="trialDetailView.curTrial.authority_org" required>
                                     <option value="">Select an Organization Name</option>
                                     <option ng-repeat="org in trialDetailView.authorityOrgArr track by $index" value="{{org}}" ng-selected="trialDetailView.curTrial.authority_org == org">{{org}}</option>
                                 </select>
+                                <p ng-show="trial_form.authority_org.$error.required && trial_form.authority_org.$dirty" class="help-inline text-danger">
+                                    Trial Oversight Authority Organization Name is required
+                                </p>
                             </div>
                         </div>
 

@@ -32,7 +32,6 @@
                     <ul class="list-inline animated-item">
                         <li ng-show="headerView.signedIn">Welcome, <strong>{{headerView.username}}</strong> (Role: {{headerView.userRole}})</li>
                         <li ng-show="headerView.signedIn"><a href=""  ng-click="headerView.logOut()">Sign Out</a></li>
-                        <li ng-show="!headerView.signedIn && headerView.uiRouterState.current.name != 'main.sign_in'"><a ui-sref="main.sign_in">Sign In</a></li>
                     </ul>
                 </div>
                 <div class="row" ng-show="headerView.signedIn && headerView.userPrivileges.length > 0">

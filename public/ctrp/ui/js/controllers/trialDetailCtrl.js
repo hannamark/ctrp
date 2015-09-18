@@ -17,7 +17,7 @@
                              secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
                              holderTypeObj, expandedAccessTypeObj, countryList) {
         var vm = this;
-        vm.curTrial = trialDetailObj || {official_title: ""}; //trialDetailObj.data;
+        vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
         vm.collapsed = false;
@@ -121,7 +121,7 @@
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 uploadDocuments(response.id);
-                toastr.success('Trial ' + vm.curTrial.name + ' has been recorded', 'Operation Successful!');
+                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
