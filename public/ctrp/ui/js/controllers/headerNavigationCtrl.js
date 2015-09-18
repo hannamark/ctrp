@@ -22,7 +22,7 @@
         vm.userPrivilege = UserService.getPrivilege(); //'READONLY'; //default
         vm.warning = null;
         vm.timedout = null;
-        vm.uiRouterState = $state;
+        $scope.uiRouterState = $state;
 
 
         vm.logOut = function() {
