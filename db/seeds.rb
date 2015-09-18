@@ -106,7 +106,7 @@ AppSetting.find_or_create_by(code: 'IC', name: 'Institute Code List', value: 'se
 
 AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List', value: 'see big value', big_value: 'CCR,CCT/CTB,CIP,CDP,CTEP,DCB,DCCPS,DCEG,DCP,DEA,DTP,OD,OSB/SPOREs,TRP,RRP,N/A')
 
-AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', description: 'Message for login page if needed.', value: 'see big value', big_value: '<b>Test login message.</b>')
+AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', description: 'Message for login page if needed.', value: 'see big value', big_value: '')
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
@@ -202,47 +202,24 @@ family5 = Family.find_or_create_by(name: 'NRG Oncology',family_status_id:1,famil
 family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2,family_type_id:1)#Cancer Center
 
 
-##Set Role for Super Admin
-user_admin = User.find_by_username("ctrpsuper")
-unless user_admin.nil?
-  user_admin.role = "ROLE_SUPER"
-  user_admin.save!
+
+test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER" },
+               {"username" => "ctrpadmin", "role" => "ROLE_ADMIN" },
+               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" },
+               {"username" => "testercurator", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator1", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator2", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator3", "role" => "ROLE_CURATOR" },
+               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY" }
+          ]
+
+test_users.each do |u|
+  user = User.find_by_username(u["username"])
+  user.role = u["role"]
+  user.save!
+  puts "Updated role of user = #{user.username}, role = #{user.role}"
 end
 
-##Set Role for Admin
-user_admin = User.find_by_username("ctrpadmin")
-unless user_admin.nil?
-  user_admin.role = "ROLE_ADMIN"
-  user_admin.save!
-end
-
-##Set Role for Site Admin
-user_admin = User.find_by_username("ctrpsiteadmin")
-unless user_admin.nil?
-  user_admin.role = "ROLE_SITE_ADMIN"
-  user_admin.save!
-end
-
-##Set Role for Curator
-user_curator = User.find_by_username("ctrpcurator")
-unless user_curator.nil?
-  user_curator.role = "ROLE_CURATOR"
-  user_curator.save!
-end
-
-##Set Role for Curator
-user_curator = User.find_by_username("testercurator")
-unless user_curator.nil?
-  user_curator.role = "ROLE_CURATOR"
-  user_curator.save!
-end
-
-##Set Role for ReadOnly
-user_readonly = User.find_by_username("ctrpreadonly")
-unless user_readonly.nil?
-  user_readonly.role = "ROLE_RO"
-  user_readonly.save!
-end
 
 ##Add NCICTRPDEV team
 LdapUser.delete_all

@@ -23,11 +23,16 @@
             var newUser = {};
             newUser.new = vm.userDetails.new || '';
             newUser.id = vm.userDetails.id || '';
+            if(vm.selectedOrgsArray.length >0) {
+                vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
+            }
             newUser.user = vm.userDetails;
            //newUser.org_id=watch.org[o];
-            console.log("newFamily is: " + JSON.stringify(newUser));
+
+            console.log("orgs id is " +vm.selectedOrgsArray[0].id);
+            console.log("newUser is: " + JSON.stringify(newUser));
             UserService.upsertUser(newUser).then(function(response) {
-                toastr.success('Family ' + vm.curUser.username + ' has been recorded', 'Operation Successful!');
+                //toastr.success('Family ' + vm.newUser.username + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating family " + JSON.stringify(vm.userDetails));
             });

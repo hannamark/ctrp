@@ -28,7 +28,6 @@ class UsersController < ApplicationController
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
     @user.update_attributes(user_params)
     Rails.logger.info "In Users Controller, update after user = #{@user.inspect}"
-    #render :edit
   end
 
   def approve
@@ -61,6 +60,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :email, :zipcode, :first_name, :last_name, :middle_name,  :updated_at, :role, :street_address)
+      params.require(:user).permit(:username, :email, :zipcode, :first_name, :last_name, :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role, :street_address, :organization_id)
     end
 end
