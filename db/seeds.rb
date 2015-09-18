@@ -205,20 +205,21 @@ family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2
 
 
 
-test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER" },
-               {"username" => "ctrpadmin", "role" => "ROLE_ADMIN" },
-               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" },
-               {"username" => "testercurator", "role" => "ROLE_CURATOR" },
-               {"username" => "po_curator1", "role" => "ROLE_CURATOR" },
-               {"username" => "po_curator2", "role" => "ROLE_CURATOR" },
-               {"username" => "po_curator3", "role" => "ROLE_CURATOR" },
-               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY" }
+test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpadmin", "role" => "ROLE_ADMIN" , "approve" => true},
+               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
+               {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
+               {"username" => "po_curator1", "role" => "ROLE_CURATOR", "approve" => false },
+               {"username" => "po_curator2", "role" => "ROLE_CURATOR" , "approve" => false},
+               {"username" => "po_curator3", "role" => "ROLE_CURATOR" , "approve" => false},
+               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY", "approve" => true }
           ]
 
 test_users.each do |u|
   user = User.find_by_username(u["username"])
   unless user.blank?
     user.role = u["role"]
+    user.approved =  u["approve"]
     user.save!
     puts "Updated role of user = #{user.username}, role = #{user.role}"
   end
@@ -271,6 +272,7 @@ begin
     ldap_user.email = u["email"]
     ldap_user.username = u["email"].split("@")[0]
     ldap_user.role = u["role"]
+    ldap_user.approved = true
     ldap_user.save(validate: false)
     puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
