@@ -26,7 +26,19 @@ class UsersController < ApplicationController
   def update
     @user = User.find_by_username(params[:user][:username])
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
-    @user.update_attributes(user_params)
+
+
+    respond_to do |format|
+      #@person.po_affiliations.destroy
+      if @user.update_attributes(user_params)
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.json { render :show, status: :ok, location: @user}
+      else
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+
     Rails.logger.info "In Users Controller, update after user = #{@user.inspect}"
   end
 

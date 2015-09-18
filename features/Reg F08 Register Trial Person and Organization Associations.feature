@@ -31,18 +31,39 @@ When I select the Responsible Party Type from a list of options as:
 | Sponsor-Investigator |
 Then the selected value will be recorded as the Responsible Party Type
 
-Scenario: #5 I can select an Investigator when the Responsible Party is the Sponsor-Investigator
+Scenario: #5 I can select an Investigator when the Responsible Party is the Sponsor
+Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
+And I am on the Register Trial Sponsor/Responsible Party screen
+When the Responsible Party Type is Sponsor
+Then the Sponsor organization will be recorded as the Responsible Party
+
+Scenario: #6 I can select an Investigator when the Responsible Party is the Principal Investigator
+Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
+And I am on the Register Trial Sponsor/Responsible Party screen
+When the Responsible Party Type is Principal Investigator
+Then the Principal Investigator selected will be recorded as the Responsible Party
+And the Investigator Title will be displayed as "Principal Investigator"
+And the Investigator Title may be edited
+And the Investigator Affiliation will be the Principal Investigator's organization affiliation
+And the Investigator Affiliation can be changed
+
+Scenario: #7 I can select an Investigator when the Responsible Party is the Sponsor-Investigator
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
 And I am on the Register Trial Sponsor/Responsible Party screen
 When the Responsible Party Type is Sponsor-Investigator
 And I have performed a person search
 And I have selected a person and the Investigator
 Then the person selected will be recorded as the Investigator for the Sponsor-Investigator Responsible Party
+And the Investigator Title will be displayed as "Principal Investigator"
+And the Investigator Title may be edited
+And the Investigator Affiliation will be the Sponsor organization
+And the Investigator Affiliation cannot be changed
 
-Scenario: #6 I can associate an organization as the Funding Source on a clinical trial
+Scenario: #8 I can associate one or more organizations as the Funding Source on a clinical trial
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
 And I am on the Register Trial Funding Source screen
 When I have performed an organization look-up
 And I have selected an organization as the trial's Funding Source
 Then the selected organization will be associated the the trial as Funding Source
+And I have the option to associate another organization as the trial Funding Source
 

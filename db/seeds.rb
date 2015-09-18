@@ -228,7 +228,6 @@ end
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
-<<<<<<< HEAD
 charlie ="shivece@mail.nih.gov"
 mahesh = "yelisettim@mail.nih.gov"
 shilpi = "singhs10@mail.nih.gov"
@@ -239,7 +238,6 @@ shenpei = "wus4@mail.nih.gov"
 sarada = "schintal@mail.nih.gov"
 hemant = "undalehv@mail.nih.gov"
 tekumalla = "radhika.tekumalla@nih.gov"
-=======
 charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER" }
 mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER" }
 shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER" }
@@ -249,7 +247,6 @@ tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
 shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
 sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
 hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
->>>>>>> 2bc41298e78f28081e8151d764ade7e0131ba29f
 
 ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, tekumalla]
 
