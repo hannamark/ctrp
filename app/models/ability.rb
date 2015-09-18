@@ -33,8 +33,8 @@ class Ability
     Rails.logger.info "In Cancancan's ability.rb's initialize method user = #{user.inspect}"
     if user.role == 'ROLE_SUPER' # && user.approved?
       can :manage, :all
-   # elsif user.role == 'ROLE_ADMIN' # && user.approved?
-   #   can :manage, :all
+    elsif user.role == 'ROLE_ADMIN' # && user.approved?
+      can :manage, :all
    # elsif user.role == 'ROLE_SITE_ADMIN'# && user.approved?
    #   can :manage, :all
     elsif user.role == 'ROLE_CURATOR'# && user.approved?
