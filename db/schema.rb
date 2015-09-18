@@ -161,13 +161,12 @@ ActiveRecord::Schema.define(version: 20150916180027) do
     t.string   "fax",               limit: 255
     t.integer  "source_status_id"
     t.integer  "source_context_id"
-    t.integer  "source_cluster_id"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.string   "uuid",              limit: 255
+    t.integer  "ctrp_id"
   end
 
-  add_index "organizations", ["source_cluster_id"], name: "index_organizations_on_source_cluster_id", using: :btree
   add_index "organizations", ["source_context_id"], name: "index_organizations_on_source_context_id", using: :btree
   add_index "organizations", ["source_status_id"], name: "index_organizations_on_source_status_id", using: :btree
 
@@ -488,7 +487,6 @@ ActiveRecord::Schema.define(version: 20150916180027) do
   add_foreign_key "ind_ides", "holder_types"
   add_foreign_key "ind_ides", "trials"
   add_foreign_key "name_aliases", "organizations"
-  add_foreign_key "organizations", "source_clusters"
   add_foreign_key "organizations", "source_contexts"
   add_foreign_key "organizations", "source_statuses"
   add_foreign_key "other_ids", "protocol_id_origins"
