@@ -66,9 +66,12 @@
         <li><%= link_to "List Users", users_path %></li>
         <li><%= link_to "Sign In", new_session_path %></li>
         <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
-        <%= link_to "Change your password", edit_local_user_registration_path %>
         <% if local_user_signed_in? %>
             <li><%= link_to 'Edit User ', edit_local_user_registration_path %></li>
+            <li><%= link_to "Change your password", edit_local_user_registration_path %></li>
+            <% if current_local_user.role == "ROLE_SUPER" %>
+              <li><%= link_to "BackOffice", backoffice_path %></li>
+            <% end %>
         <% end %>
       </ul>
     </div>
@@ -76,7 +79,7 @@
       <h1 class="page-header">List CTRP Users</h1>
 
 
-      <h2 class="sub-header"><% if local_user_signed_in? %> <b>Current Local User is <%= current_local_user.username %></b><br/> <% end %></h2>
+      <h2 class="sub-header"><% if local_user_signed_in? %> <b>Current Local User is <%= current_local_user.username %> with Role <%= current_local_user.role %></b><br/> <% end %></h2>
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
