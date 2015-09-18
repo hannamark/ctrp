@@ -61,9 +61,9 @@
 
                 <div class="col-xs-12 col-sm-4">
                     <select class="form-control" id="source_context"
-                            ng-model="searchParams.source_context">
+                            ng-model="searchParams.source_context" ng-init="searchParams.source_context='CTRP'">
                         <option value="">All Contexts</option>
-                        <option ng-repeat="context in sourceContexts" value="{{context.name}}">{{context.name}}</option>
+                        <option ng-repeat="context in sourceContexts" value="{{context.name}}" ng-selected="context.name == 'CTRP'">{{context.name}}</option>
                     </select>
                 </div>
                 <!-- source context ends -->
