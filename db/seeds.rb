@@ -219,8 +219,8 @@ test_users.each do |u|
   unless user.blank?
     user.role = u["role"]
     user.save!
+    puts "Updated role of user = #{user.username}, role = #{user.role}"
   end
-  puts "Updated role of user = #{user.username}, role = #{user.role}"
 end
 
 
