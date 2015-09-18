@@ -15,6 +15,7 @@ Then the CTRP application will check that all required fields have been entered
 |Is this a Pilot?|
 |Trial Type|
 |Primary Purpose|
+|Accrual Disease Terminology|
 |Lead Organization|
 |Principal Investigator|
 |Sponsor|
