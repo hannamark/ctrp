@@ -202,47 +202,24 @@ family5 = Family.find_or_create_by(name: 'NRG Oncology',family_status_id:1,famil
 family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2,family_type_id:1)#Cancer Center
 
 
-##Set Role for Super Admin
-user_admin = User.find_by_username("ctrpsuper")
-unless user_admin.nil?
-  user_admin.role = "ROLE_SUPER"
-  user_admin.save!
+
+test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER" },
+               {"username" => "ctrpadmin", "role" => "ROLE_ADMIN" },
+               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" },
+               {"username" => "testercurator", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator1", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator2", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator3", "role" => "ROLE_CURATOR" },
+               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY" }
+          ]
+
+test_users.each do |u|
+  user = User.find_by_username(u["username"])
+  user.role = u["role"]
+  user.save!
+  puts "Updated role of user = #{user.username}, role = #{user.role}"
 end
 
-##Set Role for Admin
-user_admin = User.find_by_username("ctrpadmin")
-unless user_admin.nil?
-  user_admin.role = "ROLE_ADMIN"
-  user_admin.save!
-end
-
-##Set Role for Site Admin
-user_admin = User.find_by_username("ctrpsiteadmin")
-unless user_admin.nil?
-  user_admin.role = "ROLE_SITE_ADMIN"
-  user_admin.save!
-end
-
-##Set Role for Curator
-user_curator = User.find_by_username("ctrpcurator")
-unless user_curator.nil?
-  user_curator.role = "ROLE_CURATOR"
-  user_curator.save!
-end
-
-##Set Role for Curator
-user_curator = User.find_by_username("testercurator")
-unless user_curator.nil?
-  user_curator.role = "ROLE_CURATOR"
-  user_curator.save!
-end
-
-##Set Role for ReadOnly
-user_readonly = User.find_by_username("ctrpreadonly")
-unless user_readonly.nil?
-  user_readonly.role = "ROLE_RO"
-  user_readonly.save!
-end
 
 ##Add NCICTRPDEV team
 LdapUser.delete_all
