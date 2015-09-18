@@ -188,6 +188,7 @@ person6=Person.find_or_create_by(id:10161459, source_id:'46120', source_context:
 person7=Person.find_or_create_by(id:366649, source_id:'11640', source_context: ctep, fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
 person8=Person.find_or_create_by(id:2026171, source_id:'35504', source_context: ctrp, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
 person9=Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
+  person10 = Person.find_or_create_by(id:1426655, source_id:'15179', source_context: ctrp, fname:'Gisele', lname:'Sarosy', prefix:'Dr.', suffix:'', email:'gsarosy@mail.nih.gov', phone:'800-411-1222')
 end
 
 PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')
