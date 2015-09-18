@@ -202,72 +202,49 @@ family5 = Family.find_or_create_by(name: 'NRG Oncology',family_status_id:1,famil
 family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2,family_type_id:1)#Cancer Center
 
 
-##Set Role for Super Admin
-user_admin = User.find_by_username("ctrpsuper")
-unless user_admin.nil?
-  user_admin.role = "ROLE_SUPER"
-  user_admin.save!
+
+test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER" },
+               {"username" => "ctrpadmin", "role" => "ROLE_ADMIN" },
+               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" },
+               {"username" => "testercurator", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator1", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator2", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator3", "role" => "ROLE_CURATOR" },
+               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY" }
+          ]
+
+test_users.each do |u|
+  user = User.find_by_username(u["username"])
+  user.role = u["role"]
+  user.save!
+  puts "Updated role of user = #{user.username}, role = #{user.role}"
 end
 
-##Set Role for Admin
-user_admin = User.find_by_username("ctrpadmin")
-unless user_admin.nil?
-  user_admin.role = "ROLE_ADMIN"
-  user_admin.save!
-end
-
-##Set Role for Site Admin
-user_admin = User.find_by_username("ctrpsiteadmin")
-unless user_admin.nil?
-  user_admin.role = "ROLE_SITE_ADMIN"
-  user_admin.save!
-end
-
-##Set Role for Curator
-user_curator = User.find_by_username("ctrpcurator")
-unless user_curator.nil?
-  user_curator.role = "ROLE_CURATOR"
-  user_curator.save!
-end
-
-##Set Role for Curator
-user_curator = User.find_by_username("testercurator")
-unless user_curator.nil?
-  user_curator.role = "ROLE_CURATOR"
-  user_curator.save!
-end
-
-##Set Role for ReadOnly
-user_readonly = User.find_by_username("ctrpreadonly")
-unless user_readonly.nil?
-  user_readonly.role = "ROLE_RO"
-  user_readonly.save!
-end
 
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
-charlie ="shivece@mail.nih.gov"
-mahesh = "yelisettim@mail.nih.gov"
-shilpi = "singhs10@mail.nih.gov"
-shamim = "ahmeds6@mail.nih.gov"
-murali = "dullam@mail.nih.gov"
-tony = "wangg5@mail.nih.gov"
-shenpei = "wus4@mail.nih.gov"
-sarada = "schintal@mail.nih.gov"
-hemant = "undalehv@mail.nih.gov"
+charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER" }
+mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER" }
+shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER" }
+shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER" }
+murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER" }
+tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
+shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
+sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
+hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
 
 
 ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant]
 
 ##Add CTRP Business Analysts
 
-joe = "martuccijj@mail.nih.gov"
-jose = "galvezjj@mail.nih.gov"
-michael = "izbickimj@mail.nih.gov"
-sandy = "lightbodysj@mail.nih.gov"
-kirsten = "larcokl@mail.nih.gov"
-deb = "hopeda@mail.nih.gov"
+joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR" }
+jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_READONLY" }
+michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR" }
+sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_READONLY" }
+kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR" }
+deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR" }
 
 
 ba_users = [joe, jose, michael, sandy, kirsten, deb]
@@ -276,13 +253,13 @@ all_users = ncictrpdev_users + ba_users
 
 ## Save the users by bypassing validation. We want to save the user without the password
 begin
-  all_users.each do |email|
+  all_users.each do |u|
     ldap_user = LdapUser.new
-    ldap_user.email = email
-    ldap_user.username = email.split("@")[0]
-    ldap_user.role = "ROLE_ADMIN"
+    ldap_user.email = u["email"]
+    ldap_user.username = u["email"].split("@")[0]
+    ldap_user.role = u["role"]
     ldap_user.save(validate: false)
-    #Rails.logger.info "Saved user = #{ldap_user.inspect}"
+    puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"
