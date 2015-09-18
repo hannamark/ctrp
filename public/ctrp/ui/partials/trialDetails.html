@@ -26,7 +26,7 @@
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Lead Protocol Identifier:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control input-xs" id="lead_protocol_id" name="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id" required>
                                 <p ng-show="trial_form.lead_protocol_id.$error.required && trial_form.lead_protocol_id.$dirty" class="help-inline text-danger">
                                     Lead Protocol Identifier is required
@@ -36,31 +36,31 @@
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Other Trial Identifier:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <table class="table table-striped table-condensed">
                                     <thead>
-                                    <th>Protocol ID Origin</th>
-                                    <th>Protocol ID</th>
-                                    <th></th>
+                                        <th>Protocol ID Origin</th>
+                                        <th>Protocol ID</th>
+                                        <th></th>
                                     </thead>
                                     <tbody>
                                     <tr>
                                         <td class="col-md-4">
                                             <div>
                                                 <select class="form-control" id="protocol_id_origin" ng-model="trialDetailView.protocol_id_origin_id">
-                                                    <option value="">Select a Protocol ID Origin</option>
+                                                    <option value="">-Select an Origin-</option>
                                                     <option ng-repeat="origin in trialDetailView.protocolIdOriginArr" value="{{origin.id}}">
                                                         {{origin.name}}
                                                     </option>
                                                 </select>
                                             </div>
                                         </td>
-                                        <td class="col-md-6">
+                                        <td class="col-md-7">
                                             <div>
                                                 <input type="text" class="form-control input-xs" id="protocol_id" ng-model="trialDetailView.protocol_id" />
                                             </div>
                                         </td>
-                                        <td class="col-md-2">
+                                        <td class="col-md-1">
                                             <div>
                                                 <button class="btn btn-primary" ng-click="trialDetailView.addOtherId()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
@@ -72,19 +72,19 @@
                                 </table>
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedOtherIds.length > 0">
                                     <thead>
-                                    <th></th>
                                     <th>Protocol ID Origin</th>
                                     <th>Protocol ID</th>
+                                    <th></th>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="otherId in trialDetailView.addedOtherIds track by $index" ng-class="otherId._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                        <td class="col-md-4">{{otherId.protocol_id_origin_name}}</td>
+                                        <td class="col-md-7">{{otherId.protocol_id}}</td>
                                         <td class="col-md-1" style="vertical-align: middle">
                                             <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'other_id')">
                                                 <i ng-class="otherId._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>
-                                        <td class="col-md-4">{{otherId.protocol_id_origin_name}}</td>
-                                        <td class="col-md-7">{{otherId.protocol_id}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -99,7 +99,7 @@
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Official Title:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <textarea class="form-control input-xs" id="official_title" name="official_title" ng-model="trialDetailView.curTrial.official_title" required />
                                 <p ng-show="trial_form.official_title.$error.required && trial_form.official_title.$dirty" class="help-inline text-danger">
                                     Official Title is required
@@ -109,9 +109,9 @@
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Phase:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select class="form-control" id="phase" name="phase" ng-model="trialDetailView.curTrial.phase_id" required>
-                                    <option value="">Select a Phase</option>
+                                    <option value="">-Select a Phase-</option>
                                     <option ng-repeat="phase in trialDetailView.phaseArr"
                                             value="{{phase.id}}" ng-selected="trialDetailView.curTrial.phase_id == phase.id">
                                         {{phase.name}}
@@ -135,9 +135,9 @@
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Research Category:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select class="form-control" id="research_category" name="research_category" ng-model="trialDetailView.curTrial.research_category_id" required>
-                                    <option value="">Select a Research Category</option>
+                                    <option value="">-Select a Research Category-</option>
                                     <option ng-repeat="category in trialDetailView.researchCategoryArr"
                                             value="{{category.id}}" ng-selected="trialDetailView.curTrial.research_category_id == category.id">
                                         {{category.name}}
@@ -151,9 +151,9 @@
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Primary Purpose:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select class="form-control" id="primary_purpose" name="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id" ng-change="trialDetailView.watchOption('primary_purpose')" required>
-                                    <option value="">Select a Primary Purpose</option>
+                                    <option value="">-Select a Primary Purpose-</option>
                                     <option ng-repeat="primaryPurpose in trialDetailView.primaryPurposeArr"
                                             value="{{primaryPurpose.id}}" ng-selected="trialDetailView.curTrial.primary_purpose_id == primaryPurpose.id">
                                         {{primaryPurpose.name}}
@@ -167,16 +167,16 @@
 
                         <div ng-show="trialDetailView.showPrimaryPurposeOther" class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Describe "Other" Primary Purpose:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <textarea class="form-control input-xs" id="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other" />
                             </div>
                         </div>
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Secondary Purpose:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select class="form-control" id="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id" ng-change="trialDetailView.watchOption('secondary_purpose')">
-                                    <option value="">Select a Secondary Purpose</option>
+                                    <option value="">-Select a Secondary Purpose-</option>
                                     <option ng-repeat="secondaryPurpose in trialDetailView.secondaryPurposeArr"
                                             value="{{secondaryPurpose.id}}" ng-selected="trialDetailView.curTrial.secondary_purpose_id == secondaryPurpose.id">
                                         {{secondaryPurpose.name}}
@@ -187,7 +187,7 @@
 
                         <div ng-show="trialDetailView.showSecondaryPurposeOther" class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Describe "Other" Secondary Purpose:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <textarea class="form-control input-xs" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other" />
                             </div>
                         </div>
@@ -248,9 +248,9 @@
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Responsible Party:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select class="form-control" id="responsible_party" name="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id" ng-change="trialDetailView.watchOption('responsible_party')" required>
-                                    <option value="">Select a Responsible Party</option>
+                                    <option value="">-Select a Responsible Party-</option>
                                     <option ng-repeat="responsibleParty in trialDetailView.responsiblePartyArr"
                                             value="{{responsibleParty.id}}" ng-selected="trialDetailView.curTrial.responsible_party_id == responsibleParty.id">
                                         {{responsibleParty.name}}
@@ -309,7 +309,7 @@
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Program code:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control input-xs" id="program_code" ng-model="trialDetailView.curTrial.program_code">
                             </div>
                         </div>
@@ -367,7 +367,7 @@
                                                 <input type="number" class="form-control input-xs" id="serial_number" ng-model="trialDetailView.serial_number" />
                                             </div>
                                         </td>
-                                        <td class="col-md-3">
+                                        <td class="col-md-4">
                                             <div>
                                                 <select class="form-control" id="nci" ng-model="trialDetailView.nci">
                                                     <option value="">-Select-</option>
@@ -377,7 +377,7 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td class="col-md-2">
+                                        <td class="col-md-1">
                                             <div>
                                                 <button class="btn btn-primary" ng-click="trialDetailView.addGrant()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
@@ -389,23 +389,23 @@
                                 </table>
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedGrants.length > 0">
                                     <thead>
-                                    <th></th>
-                                    <th>Funding Mechanism</th>
-                                    <th>Institute Code</th>
-                                    <th>Serial Number</th>
-                                    <th>NCI Division/Program Code</th>
+                                        <th>Funding Mechanism</th>
+                                        <th>Institute Code</th>
+                                        <th>Serial Number</th>
+                                        <th>NCI Division/Program Code</th>
+                                        <th></th>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="grant in trialDetailView.addedGrants track by $index" ng-class="grant._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                        <td class="col-md-2">{{grant.funding_mechanism}}</td>
+                                        <td class="col-md-2">{{grant.institute_code}}</td>
+                                        <td class="col-md-3">{{grant.serial_number}}</td>
+                                        <td class="col-md-4">{{grant.nci}}</td>
                                         <td class="col-md-1" style="vertical-align: middle">
                                             <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'grant')">
                                                 <i ng-class="grant._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>
-                                        <td class="col-md-2">{{grant.funding_mechanism}}</td>
-                                        <td class="col-md-2">{{grant.institute_code}}</td>
-                                        <td class="col-md-3">{{grant.serial_number}}</td>
-                                        <td class="col-md-4">{{grant.nci}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -440,10 +440,10 @@
                                                 </span>
                                             </div>
                                         </td>
-                                        <td class="col-md-3">
+                                        <td class="col-md-4">
                                             <div>
-                                                <select class="form-control" id="trial_status" ng-model="trialDetailView.trial_status_id">
-                                                    <option value="">Select a Trial Status</option>
+                                                <select class="form-control" id="trial_status" ng-model="trialDetailView.trial_status_id"  ng-change="trialDetailView.watchOption('trial_status')">
+                                                    <option value="">-Select a Trial Status-</option>
                                                     <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" value="{{trialStatus.id}}">
                                                         {{trialStatus.name}}
                                                     </option>
@@ -452,10 +452,10 @@
                                         </td>
                                         <td class="col-md-4">
                                             <div>
-                                                <textarea style="resize: vertical;" class="form-control input-xs" id="why_stopped" ng-model="trialDetailView.why_stopped" />
+                                                <textarea style="resize: vertical;" class="form-control input-xs" id="why_stopped" ng-model="trialDetailView.why_stopped" ng-disabled="trialDetailView.why_stopped_disabled" />
                                             </div>
                                         </td>
-                                        <td class="col-md-2">
+                                        <td class="col-md-1">
                                             <div>
                                                 <button class="btn btn-primary" ng-click="trialDetailView.addStatus()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
@@ -468,21 +468,21 @@
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedStatuses.length > 0">
                                     <thead>
-                                    <th></th>
-                                    <th>Status Date</th>
-                                    <th>Status</th>
-                                    <th>Why Study Stopped</th>
+                                        <th>Status Date</th>
+                                        <th>Status</th>
+                                        <th>Why Study Stopped</th>
+                                        <th></th>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="status in trialDetailView.addedStatuses track by $index" ng-class="status._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                        <td class="col-md-3">{{status.status_date}}</td>
+                                        <td class="col-md-4">{{status.trial_status_name}}</td>
+                                        <td class="col-md-4">{{status.why_stopped}}</td>
                                         <td class="col-md-1" style="vertical-align: middle">
                                             <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
                                                 <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>
-                                        <td class="col-md-2">{{status.status_date}}</td>
-                                        <td class="col-md-3">{{status.trial_status_name}}</td>
-                                        <td class="col-md-6">{{status.why_stopped}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -633,25 +633,25 @@
                                 </table>
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedIndIdes.length > 0">
                                     <thead>
-                                    <th></th>
-                                    <th>IND/IDE Types</th>
-                                    <th>IND/IDE Number</th>
-                                    <th>IND/IDE Grantor</th>
-                                    <th>IND/IDE Holder Type</th>
-                                    <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
+                                        <th>IND/IDE Types</th>
+                                        <th>IND/IDE Number</th>
+                                        <th>IND/IDE Grantor</th>
+                                        <th>IND/IDE Holder Type</th>
+                                        <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
+                                        <th></th>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="indIde in trialDetailView.addedIndIdes track by $index" ng-class="indIde._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                        <td class="col-md-1" style="vertical-align: middle">
-                                            <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'ind_ide')">
-                                                <i ng-class="indIde._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                                            </label>
-                                        </td>
                                         <td class="col-md-2">{{indIde.ind_ide_type}}</td>
                                         <td class="col-md-2">{{indIde.ind_ide_number}}</td>
                                         <td class="col-md-2">{{indIde.grantor}}</td>
                                         <td class="col-md-2">{{indIde.holder_type_name}}</td>
                                         <td class="col-md-3">{{indIde.nih_nci}}</td>
+                                        <td class="col-md-1" style="vertical-align: middle">
+                                            <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'ind_ide')">
+                                                <i ng-class="indIde._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                            </label>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -666,10 +666,10 @@
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Trial Oversight Authority Country:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select class="form-control input-xs" id="authority_country" name="authority_country" ng-model="trialDetailView.curTrial.authority_country"
                                         ng-change="trialDetailView.watchOption('authority_country')" required>
-                                    <option value="">Select a Country</option>
+                                    <option value="">-Select a Country-</option>
                                     <option ng-repeat="country in trialDetailView.countryArr track by $index" value="{{country.name}}" ng-selected="trialDetailView.curTrial.authority_country == country.name">{{country.name}}</option>
                                 </select>
                                 <p ng-show="trial_form.authority_country.$error.required && trial_form.authority_country.$dirty" class="help-inline text-danger">
@@ -680,9 +680,9 @@
 
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Trial Oversight Authority Organization Name:</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select class="form-control input-xs" id="authority_org" name="authority_org" ng-model="trialDetailView.curTrial.authority_org" required>
-                                    <option value="">Select an Organization Name</option>
+                                    <option value="">-Select an Organization Name-</option>
                                     <option ng-repeat="org in trialDetailView.authorityOrgArr track by $index" value="{{org}}" ng-selected="trialDetailView.curTrial.authority_org == org">{{org}}</option>
                                 </select>
                                 <p ng-show="trial_form.authority_org.$error.required && trial_form.authority_org.$dirty" class="help-inline text-danger">
@@ -765,7 +765,7 @@
 
                             <div class="form-group col-sm-12">
                                 <label class="control-label col-sm-3"></label>
-                                <div class="col-sm-5">
+                                <div class="col-sm-6">
                                     <input type="text" class="form-control input-xs" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Please describe the document">
                                 </div>
                             </div>
