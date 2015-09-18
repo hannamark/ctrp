@@ -55,6 +55,7 @@
         vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
         vm.showInvSearchBtn = true;
+        vm.why_stopped_disabled = true;
         vm.curTrial.pilot = 'No';
         vm.curTrial.grant_question = 'Yes';
         vm.otherDocNum = 1;
@@ -321,6 +322,16 @@
                     vm.showInvestigator = false;
                     vm.selectedInvArray = [];
                 }
+            } else if (type == 'trial_status') {
+                var stopOptions = vm.trialStatusArr.filter(findStopOptions);
+                for (var i = 0; i < stopOptions.length; i++) {
+                    if (stopOptions[i].id == vm.trial_status_id) {
+                        vm.why_stopped_disabled = false;
+                        break;
+                    } else {
+                        vm.why_stopped_disabled = true;
+                    }
+                }
             } else if (type == 'ind_ide_type') {
                 vm.grantor = '';
                 if (vm.ind_ide_type == 'IND') {
@@ -405,6 +416,14 @@
         // Return true if the option is "Sponsor Investigator"
         function findSiOption(option) {
             if (option.code == 'SI') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function findStopOptions(option) {
+            if (option.code == 'TCA' || option.code == 'CAI' || option.code == 'ACO' || option.code == 'WIT') {
                 return true;
             } else {
                 return false;
