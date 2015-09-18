@@ -106,7 +106,7 @@ AppSetting.find_or_create_by(code: 'IC', name: 'Institute Code List', value: 'se
 
 AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List', value: 'see big value', big_value: 'CCR,CCT/CTB,CIP,CDP,CTEP,DCB,DCCPS,DCEG,DCP,DEA,DTP,OD,OSB/SPOREs,TRP,RRP,N/A')
 
-AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', description: 'Message for login page if needed.', value: 'see big value', big_value: '<b>Test login message.</b>')
+AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', description: 'Message for login page if needed.', value: 'see big value', big_value: '')
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
@@ -189,6 +189,7 @@ person6=Person.find_or_create_by(id:10161459, source_id:'46120', source_context:
 person7=Person.find_or_create_by(id:366649, source_id:'11640', source_context: ctep, fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
 person8=Person.find_or_create_by(id:2026171, source_id:'35504', source_context: ctrp, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
 person9=Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
+  person10 = Person.find_or_create_by(id:1426655, source_id:'15179', source_context: ctrp, fname:'Gisele', lname:'Sarosy', prefix:'Dr.', suffix:'', email:'gsarosy@mail.nih.gov', phone:'800-411-1222')
 end
 
 PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')
@@ -203,51 +204,31 @@ family5 = Family.find_or_create_by(name: 'NRG Oncology',family_status_id:1,famil
 family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2,family_type_id:1)#Cancer Center
 
 
-##Set Role for Super Admin
-user_admin = User.find_by_username("ctrpsuper")
-unless user_admin.nil?
-  user_admin.role = "ROLE_SUPER"
-  user_admin.save!
+
+test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER" },
+               {"username" => "ctrpadmin", "role" => "ROLE_ADMIN" },
+               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" },
+               {"username" => "testercurator", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator1", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator2", "role" => "ROLE_CURATOR" },
+               {"username" => "po_curator3", "role" => "ROLE_CURATOR" },
+               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY" }
+          ]
+
+test_users.each do |u|
+  user = User.find_by_username(u["username"])
+  unless user.blank?
+    user.role = u["role"]
+    user.save!
+    puts "Updated role of user = #{user.username}, role = #{user.role}"
+  end
 end
 
-##Set Role for Admin
-user_admin = User.find_by_username("ctrpadmin")
-unless user_admin.nil?
-  user_admin.role = "ROLE_ADMIN"
-  user_admin.save!
-end
-
-##Set Role for Site Admin
-user_admin = User.find_by_username("ctrpsiteadmin")
-unless user_admin.nil?
-  user_admin.role = "ROLE_SITE_ADMIN"
-  user_admin.save!
-end
-
-##Set Role for Curator
-user_curator = User.find_by_username("ctrpcurator")
-unless user_curator.nil?
-  user_curator.role = "ROLE_CURATOR"
-  user_curator.save!
-end
-
-##Set Role for Curator
-user_curator = User.find_by_username("testercurator")
-unless user_curator.nil?
-  user_curator.role = "ROLE_CURATOR"
-  user_curator.save!
-end
-
-##Set Role for ReadOnly
-user_readonly = User.find_by_username("ctrpreadonly")
-unless user_readonly.nil?
-  user_readonly.role = "ROLE_RO"
-  user_readonly.save!
-end
 
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
+<<<<<<< HEAD
 charlie ="shivece@mail.nih.gov"
 mahesh = "yelisettim@mail.nih.gov"
 shilpi = "singhs10@mail.nih.gov"
@@ -258,17 +239,28 @@ shenpei = "wus4@mail.nih.gov"
 sarada = "schintal@mail.nih.gov"
 hemant = "undalehv@mail.nih.gov"
 tekumalla = "radhika.tekumalla@nih.gov"
+=======
+charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER" }
+mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER" }
+shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER" }
+shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER" }
+murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER" }
+tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
+shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
+sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
+hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
+>>>>>>> 2bc41298e78f28081e8151d764ade7e0131ba29f
 
 ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, tekumalla]
 
 ##Add CTRP Business Analysts
 
-joe = "martuccijj@mail.nih.gov"
-jose = "galvezjj@mail.nih.gov"
-michael = "izbickimj@mail.nih.gov"
-sandy = "lightbodysj@mail.nih.gov"
-kirsten = "larcokl@mail.nih.gov"
-deb = "hopeda@mail.nih.gov"
+joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR" }
+jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_READONLY" }
+michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR" }
+sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_READONLY" }
+kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR" }
+deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR" }
 
 
 ba_users = [joe, jose, michael, sandy, kirsten, deb]
@@ -277,13 +269,13 @@ all_users = ncictrpdev_users + ba_users
 
 ## Save the users by bypassing validation. We want to save the user without the password
 begin
-  all_users.each do |email|
+  all_users.each do |u|
     ldap_user = LdapUser.new
-    ldap_user.email = email
-    ldap_user.username = email.split("@")[0]
-    ldap_user.role = "ROLE_ADMIN"
+    ldap_user.email = u["email"]
+    ldap_user.username = u["email"].split("@")[0]
+    ldap_user.role = u["role"]
     ldap_user.save(validate: false)
-    #Rails.logger.info "Saved user = #{ldap_user.inspect}"
+    puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"

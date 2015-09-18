@@ -59,7 +59,9 @@ class  User < ActiveRecord::Base
   scope :approved, -> { where(approved: true) }
   scope :not_approved, -> { where(approved: false) }
 
-  ROLES = %i[ROLE_READONLY ROLE_SITE_ADMIN ROLE_SUPER ROLE_ADMIN ROLE_CURATOR]
+  #ROLES = %i[ROLE_READONLY ROLE_SITE_ADMIN ROLE_SUPER ROLE_ADMIN ROLE_CURATOR]
+  ROLES = %i[ROLE_READONLY ROLE_SUPER ROLE_CURATOR]
+
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
   attr_accessor :password

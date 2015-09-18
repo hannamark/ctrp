@@ -138,10 +138,11 @@ And I want to search with CTEP Person ID <CTEP_Person_ID>
 And I want to search with Person email <Person_email>
 And I want to search with Person phone number <Person_phone_number>
 And I want to search with Person affiliated organization <Person_affiliated_organization>
+And I submit my search request for Person Search
 Then in the search result for first name <first_name>, last name <last_name>, PO Person ID <PO_Person_ID>, CTEP Person ID <CTEP_Person_ID>, Person email <Person_email>, and Person affiliated organization <Person_affiliated _organization> it shall return result <result>
 
 Examples:
-|<first_name>||<last_name>||<PO_Person_ID>||<CTEP_Person_ID>||<Person_email>||<Person_phone_number>||<Person_affiliated_organization>||result|
+|first_name  || last_name || PO_Person_ID || CTEP_Person_ID || Person_email || Person_phone_number || Person_affiliated_organization ||result|
 |Gisele      ||Sarosy     ||              ||                ||              ||                     ||                                ||true|
 |            ||Sarosy     ||              ||                ||              ||                     ||                                ||true|
 |            ||           ||1426655       ||                ||              ||                     ||                                ||true|

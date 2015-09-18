@@ -5,7 +5,7 @@ Given I am logged in to CTRP PO applicationss
 And  I select the option to search Organization Family
 
 Scenario Outline: #5 As a PO Curator, I am able to create a new Family name
-  Give I have entered a new family name <family Name>
+  Given I have entered a new family name <family Name>
   And I have entered a family type <family Type>
   And I have entered a family effective date <family effective date>
   And I click on enter button
