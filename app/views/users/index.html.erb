@@ -94,28 +94,30 @@
           </tr>
           </thead>
           <tbody>
-          <% @users.each do |user| %>
-              <tr>
-                <td colspan="3"><%= user.username %></td>
-                <td colspan="3"><%= user.email %></td>
-                <td colspan="3"><%= user.type %></td>
-                <td colspan="*"><%= user.role %></td>
-                <% if user.approved == false %>
-                  <td colspan="*">
-                    <%= button_to [:approve, user.becomes(User)] do %>
-                        <strong  class="btn btn-sm btn-success">Enable</strong>
+          <% unless @users.blank? %>
+              <% @users.each do |user| %>
+                  <tr>
+                    <td colspan="3"><%= user.username %></td>
+                    <td colspan="3"><%= user.email %></td>
+                    <td colspan="3"><%= user.type %></td>
+                    <td colspan="*"><%= user.role %></td>
+                    <% if user.approved == false %>
+                      <td colspan="*">
+                        <%= button_to [:approve, user.becomes(User)] do %>
+                            <strong  class="btn btn-sm btn-success">Enable</strong>
+                        <% end %>
+                      </td>
                     <% end %>
-                  </td>
-                <% end %>
-                <% if user.approved == true %>
-                    <td colspan="*">
-                      <%= button_to [:disapprove, user.becomes(User)] do %>
-                          <strong class="btn btn-sm btn-danger">Disable</strong>
-                      <% end %>
-                    </td>
-                <% end %>
-              </tr>
-          <% end %>
+                    <% if user.approved == true %>
+                        <td colspan="*">
+                          <%= button_to [:disapprove, user.becomes(User)] do %>
+                              <strong class="btn btn-sm btn-danger">Disable</strong>
+                          <% end %>
+                        </td>
+                    <% end %>
+                  </tr>
+              <% end %>
+           <% end %>
           </tbody>
         </table>
       </div>
