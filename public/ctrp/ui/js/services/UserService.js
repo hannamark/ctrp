@@ -8,12 +8,13 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS'];
 
     function UserService(LocalCacheService, PromiseTimeoutService, $log,
-                         $timeout, $state, toastr, Common, DMZ_UTILS) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS) {
 
         var appVersion = '';
+        var appRelMilestone = '';
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -38,6 +39,9 @@
                         _setAppVersion(data.application_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
+
+                        //var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
+                        LocalCacheService.cacheItem("privileges", data.privileges);
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg("signedIn");
 
@@ -63,10 +67,7 @@
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: "Angular"})
                 .then(function (data) {
                     if (data.success) {
-                        LocalCacheService.removeItemFromCache("token");
-                        LocalCacheService.removeItemFromCache("username");
-                        LocalCacheService.removeItemFromCache("app_version");
-                        LocalCacheService.removeItemFromCache("user_role");
+                        LocalCacheService.clearAllCache();
                         toastr.success('Success', 'Successfully logged out');
 
                         $timeout(function() {
@@ -87,12 +88,27 @@
             return LocalCacheService.getCacheWithKey('username') || '';
         }
 
+        this.getUserDetailsByUsername = function(username) {
+            console.log('123456***** ');
+            var username = LocalCacheService.getCacheWithKey('username');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
+        } //getUserByName
+
         /**
          * Get the user role of the logged in user
          * @returns {*|string}
          */
         this.getUserRole = function() {
             return LocalCacheService.getCacheWithKey('user_role') || '';
+        };
+
+
+        /**
+         * Get the user privileges from localStorage of the browser
+         * @returns {*|Array}
+         */
+        this.getUserPrivileges = function() {
+            return LocalCacheService.getCacheWithKey('privileges') || [];
         };
 
 
@@ -109,19 +125,57 @@
             return PromiseTimeoutService.getData(DMZ_UTILS.APP_VERSION);
         };
 
+        this.getAppRelMilestoneFromDMZ = function() {
+            return PromiseTimeoutService.getData(DMZ_UTILS.APP_REL_MILESTONE);
+        };
 
         this.setAppVersion = function(version) {
             _setAppVersion(version);
         };
 
+        this.setAppRelMilestone = function(milestone) {
+            _setAppRelMilestone(milestone);
+        };
 
         this.getAppVersion = function() {
             return LocalCacheService.getCacheWithKey('app_version'); // || appVersion;
         };
 
+        this.getAppRelMilestone = function() {
+            return LocalCacheService.getCacheWithKey('app_rel_milestone'); // || appRelMilestone;
+        };
+
         this.getLoginBulletin = function() {
             return PromiseTimeoutService.getData(DMZ_UTILS.LOGIN_BULLETIN);
         };
+
+        this.upsertUser=function(userObj) {
+            //update an existing user
+            var configObj = {}; //empty config
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + ".json", userObj, configObj);
+        }; //upsertUser
+
+        /**
+         *
+         * @param privilege
+         */
+        this.setUserPrivilege = function(privilege) {
+            var userCurrentPrivilege = PRIVILEGES.READONLY; //default privilege
+            if (privilege) {
+                userCurrentPrivilege = privilege;
+            }
+            LocalCacheService.cacheItem('current_privilege', userCurrentPrivilege);
+        };
+
+
+        /**
+         * Get the current user's privilege
+         * @returns {*|string}
+         */
+        this.getPrivilege = function() {
+            return LocalCacheService.getCacheWithKey('current_privilege') || PRIVILEGES.READONLY;
+        };
+
 
 
 
@@ -140,6 +194,18 @@
             Common.broadcastMsg('updatedAppVersion');
         }
 
+        function _setAppRelMilestone(milestone) {
+            if (!milestone) {
+                //if null or empty value
+                appRelMilestone = '';
+                LocalCacheService.removeItemFromCache("app_rel_milestone");
+            } else {
+                appRelMilestone = milestone;
+                LocalCacheService.cacheItem("app_rel_milestone", milestone);
+            }
+            //notify listeners
+            Common.broadcastMsg('updatedAppRelMilestone');
+        }
 
     }
 

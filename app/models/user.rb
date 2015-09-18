@@ -33,8 +33,9 @@
 #  prs_organization_name       :string
 #  receive_email_notifications :boolean
 #  role_requested              :string
-#  organization_id             :integer
 #  approved                    :boolean          default(FALSE), not null
+#  organization_id             :integer
+#  source                      :string
 #
 # Indexes
 #
@@ -53,12 +54,86 @@ class  User < ActiveRecord::Base
   #       :recoverable, :trackable, :validatable,
    #      :confirmable, :lockable, :timeoutable, :omniauthable
   devise   :timeoutable,  :validatable
-  has_one :organization
+  belongs_to :organization
 
-  ROLES = %i[ROLE_READONLY ROLE_SITE_ADMIN ROLE_SUPER ROLE_ADMIN ROLE_CURATOR]
+  scope :approved, -> { where(approved: true) }
+  scope :not_approved, -> { where(approved: false) }
+
+  #ROLES = %i[ROLE_READONLY ROLE_SITE_ADMIN ROLE_SUPER ROLE_ADMIN ROLE_CURATOR]
+  ROLES = %i[ROLE_READONLY ROLE_SUPER ROLE_CURATOR]
+
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
   attr_accessor :password
+
+  def to_param
+    username
+  end
+
+  def self.get_roles
+    ROLES
+  end
+
+  def get_all_users_by_role
+    users = []
+    unless self.role.blank?
+      # A Super Admin User can see all the Users and can approve access to the user
+      if self.role == "ROLE_SUPER"
+        users = User.all
+       elsif self.role == "ROLE_SITE_ADMIN"
+        # A Site Admin User can see all the Users in its respective organization and
+        # also can approve the user's site admin privileges
+        unless self.organization_id.nil?
+          users = User.find_all_by_organization_id(self.organization_id)
+        end
+      end
+    end
+    users
+  end
+
+  def process_approval
+    # When an ADMIN approves of the user request for privileges, the role is updated
+    # if it is not already chosen and the approved field is set to true
+    if self.role.blank?
+      if self.organization_id.blank?
+        self.role = "ROLE_READONLY"
+      else
+        self.role = "ROLE_SITE_ADMIN"
+      end
+    end
+
+    self.approved = true
+    self.save!
+
+  end
+
+  def process_disapproval
+    unless self.role.blank?
+      self.approved = false
+      # TODO should role be nullified?
+      self.save!
+    end
+  end
+
+  def get_privileges
+    privileges_json = []
+    if self.role.nil?
+      return []
+    end
+
+    privileges_json = case self.role
+                        when "ROLE_READONLY"
+                          [{type: "READONLY", enabled: true}]
+                        when  "ROLE_SITE_ADMIN"
+                          [{type: "READONLY", enabled: true}, {type: "ADMIN", enabled: true}]
+                        when  "ROLE_SUPER"
+                          [{type: "READONLY", enabled: true}, {type: "CURATOR", enabled: true}, {type: "ADMIN", enabled: true}]
+                        when  "ROLE_ADMIN"
+                          [{type: "READONLY", enabled: true}, {type: "ADMIN", enabled: true}]
+                        when  "ROLE_CURATOR"
+                          [{type: "READONLY", enabled: true}, {type: "CURATOR", enabled: true}]
+                      end
+  end
 
   def ldap_before_save
     Rails.logger.info "In ldap_before_save"
@@ -90,13 +165,3 @@ class  User < ActiveRecord::Base
   end
 
 end
-
-=begin
-class LdapUser < User
-  devise :ldap_authenticatable, :rememberable, :trackable
-end
-
-class LocalUser < User
-  devise :database_authenticatable, :registerable, :confirmable, :recoverable, :trackable
-end
-=end

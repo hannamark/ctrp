@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :trial_documents
+
   scope "/ctrp" do
     devise_for :users
 
@@ -48,13 +50,14 @@ Rails.application.routes.draw do
 
     resources :comments
 
-    resources :users do
-      collection do
-        get 'manage'
+    # All the User routes(non-devise) should be accessed by username
+    # rather that "id" in order to prevent exposing the "id"
+    resources :users, param: :username do
+      member do
+        post 'approve'
+        post 'disapprove'
       end
     end
-
-    resources :after_signup
 
     resources :people do
       collection do
@@ -74,8 +77,10 @@ Rails.application.routes.draw do
     get '/backoffice/static_members'
 
     #DmzUtils routes
-    get '/dmzutils/app_ver' => 'dmz_utils#get_app_ver'
+    get '/dmzutils/app_version' => 'dmz_utils#get_app_version'
+    get '/dmzutils/app_rel_milestone' => 'dmz_utils#get_app_rel_milestone'
     get '/dmzutils/login_bulletin' => 'dmz_utils#get_login_bulletin'
+    get '/dmzutils/git_revision' => 'dmz_utils#get_git_revision'
 
     # Devise related routes
     devise_scope :user do
@@ -85,7 +90,7 @@ Rails.application.routes.draw do
 
     devise_for :ldap_users, :local_users, skip: [ :sessions ]
     devise_for :omniauth_users, :controllers => { :omniauth_callbacks => "omniauth_users/omniauth_callbacks" }
-    devise_for :local_users, :controllers => { :registrations => :registrations }
+    devise_for :users, :controllers =>  { registrations: "registrations" }
     devise_scope :local_user do
       get 'sign_in' => 'sessions#new', :as => :new_session
       post 'sign_in' => 'sessions#create', :as => :create_session
@@ -105,6 +110,7 @@ Rails.application.routes.draw do
       resources :expanded_access_types
       resources :trial_statuses
       resources :research_categories
+      resources :trial_documents
 
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'

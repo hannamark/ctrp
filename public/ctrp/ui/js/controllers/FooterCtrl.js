@@ -19,6 +19,12 @@
             //console.log('updated app version in footer: ' + vm.appVersion);
         });
 
+        $scope.appRelMilestone = UserService.getAppRelMilestone() || '';
+        $scope.$on('updatedAppRelMilestone', function() {
+            $scope.appRelMilestone = UserService.getAppRelMilestone() || '';
+            //console.log('updated app release milestone in footer: ' + vm.appRelMilestone);
+        });
+
     } //FooterCtrl
 
 })();

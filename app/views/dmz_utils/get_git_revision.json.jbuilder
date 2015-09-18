@@ -1,0 +1,1 @@
+json.git_revision @git_revision

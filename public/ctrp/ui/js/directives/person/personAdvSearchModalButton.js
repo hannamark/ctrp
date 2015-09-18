@@ -16,17 +16,18 @@
         .directive('ctrpPersonAdvSearchModalButton', ctrpPersonAdvSearchModalButton);
 
     advancedPersonSearchModalCtrl.$inject = ['$scope', '$modalInstance', 'maxRowSelectable']; //for modal controller
-    ctrpPersonAdvSearchModalButton.$inject = ['$modal', '$compile', '_', '$timeout']; //modal button directive
+    ctrpPersonAdvSearchModalButton.$inject = ['$modal', '$compile', '_', '$timeout', 'Common']; //modal button directive
 
 
-    function ctrpPersonAdvSearchModalButton($modal, $compile, _, $timeout) {
+    function ctrpPersonAdvSearchModalButton($modal, $compile, _, $timeout, Common) {
 
         var directiveObj = {
             restrict: 'E',
             scope: {
                 maxRowSelectable : '=?', //int, required!
                 useBuiltInTemplate: '=?', //boolean
-                selectedPersonsArray: '='
+                selectedPersonsArray: '=',
+                allowOverwrite: '=' //boolean, overwrite previously selected person or not (default to true)
             },
             templateUrl: '/ctrp/ui/js/directives/person/personAdvSearchModalButtonTemplate.html',
             link: linkerFn,
@@ -50,6 +51,7 @@
             $scope.curationMode = false;
             $scope.selectedPersonsArray = [];
             //$scope.useBuiltInTemplate = $scope.useBuiltInTemplate == undefined ? false : $scope.useBuiltInTemplate;
+            $scope.allowOverwrite = $scope.allowOverwrite == undefined ? true : $scope.allowOverwrite;
             var modalOpened = false;
 
             //console.log('maxRow selectable: ' + $scope.maxRowSelectable + ', builtInTemplate: ' + $scope.useBuiltInTemplate);
@@ -69,12 +71,25 @@
                 });
                 modalOpened = true;
 
-                modalInstance.result.then(function (selectedPerson) {
+                modalInstance.result.then(function (selectedPersons) {
 
-                    if (angular.isArray(selectedPerson) && selectedPerson.length > 0) {
-                        $scope.savedSelection = selectedPerson;
-                        $scope.selectedPersonsArray = selectedPerson;
-                        console.log('modal resolved selectedPerson: ' + JSON.stringify(selectedPerson));
+                    if (angular.isArray(selectedPersons) && selectedPersons.length > 0) {
+
+                        if ($scope.allowOverwrite) {
+                            console.log('overwring the previous person');
+                            $scope.savedSelection = selectedPersons;
+                            $scope.selectedPersonsArray = selectedPersons;
+                        } else {
+                            //concatenate
+                            _.each(selectedPersons, function(selectedPerson, index) {
+                                //prevent pushing duplicated org
+                                if (Common.indexOfObjectInJsonArray($scope.savedSelection, "id", selectedPerson.id) == -1) {
+                                    $scope.savedSelection.push(selectedPerson);
+                                }
+                            });
+
+                            $scope.selectedPersonsArray = $scope.savedSelection; //$scope.selectedOrgsArray.concat(selectedOrgs);
+                        }
                     }
 
                     modalOpened = false;
@@ -96,6 +111,13 @@
                     // $scope.savedSelection[index]._destroy = !$scope.savedSelection[index]._destroy;
                 }
             };// toggleSelection
+
+
+            $scope.batchSelect = function(intention) {
+                if (intention == 'removeAll') {
+                    $scope.savedSelection.length = 0;
+                }
+            }
 
 
         } //personAdvSearchModalButtonController

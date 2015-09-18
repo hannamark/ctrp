@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-ui-grid/ui-grid.min.css">
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-toggle-switch/angular-toggle-switch.css">
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-toggle-switch/angular-toggle-switch-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-material/angular-material.min.css">
 
     <script src="ui/third_party_libs/jquery/dist/jquery.min.js"></script>
     <script src="ui/third_party_libs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -39,6 +40,9 @@
     <script src="ui/third_party_libs/angular-toggle-switch/angular-toggle-switch.js"></script>
     <script src="ui/third_party_libs/ng-idle/angular-idle.min.js"></script>
     <script src="ui/third_party_libs/angular-breadcrumb/release/angular-breadcrumb.min.js"></script>
+    <script src="ui/third_party_libs/ng-file-upload-bower-7.0.17/ng-file-upload-shim.min.js"></script> <!-- for no html5 browsers support -->
+    <script src="ui/third_party_libs/ng-file-upload-bower-7.0.17/ng-file-upload.min.js"></script>
+    <script src="ui/third_party_libs/angular-material/angular-material.min.js"></script>
 
     <!-- Angular app main file -->
     <script src="ui/js/CTRPAngularApp.js"></script>
@@ -70,8 +74,10 @@
     <script src="ui/js/directives/organization/advancedOrgSearchForm2.js"></script>
     <script src="ui/js/directives/person/advancedPersonSearchForm.js"></script>
     <script src="ui/js/directives/person/personAdvSearchModalButton.js"></script>
+    <script src="ui/js/directives/organization/advancedOrgSearchModalButton.js"></script>
     <script src="ui/js/directives/autoFocus.js"></script>
     <script src="ui/js/directives/buttons/backButton.js"></script>
+    <script src="ui/js/directives/buttons/mdRadioGroup.js"></script>
     <script src="ui/js/directives/buttons/ctrpClickOnce.js"></script>
     <script src="ui/js/directives/masterDirective.js"></script>
 
@@ -93,7 +99,7 @@
     <script src="ui/js/controllers/organization/advancedOrgSearchModalCtrl.js"></script>
     <script src="ui/js/controllers/family/ModalInstanceFamilyMembersCtrl.js"></script>
     <script src="ui/js/controllers/trialDetailCtrl.js"></script>
-
+    <script src="ui/js/controllers/userDetailCtrl.js"></script>
 
     <!-- interceptors -->
     <script src="ui/js/interceptors/AuthInterceptor.js"></script>

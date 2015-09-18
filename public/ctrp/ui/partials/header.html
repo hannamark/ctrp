@@ -29,23 +29,17 @@
             </div>
             <div class="col-xs-12 col-sm-5">
                 <div class="row">
-                    <div class="col-xs-12 col-md-6 pull-left">
-                        <!--<div class="row">
-                            <strong>Most recent actvity: (place holder)</strong>
-                        </div>
-                        -->
-
-                    </div>
-                    <div>
-                        <ul class="list-inline">
-                            <li class="animated-item" ng-show="headerView.signedIn">Welcome, <strong>{{headerView.username}}</strong>
-                            </li>
-                            <li class="animated-item" ng-show="headerView.signedIn"><a href=""
-                                                                                       ng-click="headerView.logOut()">|
-                                Sign Out</a></li>
-                            <li ng-if="uiRouterState.current.name != 'main.sign_in'" class="animated-item"
-                                ng-show="!headerView.signedIn"><a ui-sref="main.sign_in">Sign In</a></li>
-                        </ul>
+                    <ul class="list-inline animated-item">
+                        <li ng-show="headerView.signedIn">Welcome, <strong>{{headerView.username}}</strong> (Role: {{headerView.userRole}})</li>
+                        <li ng-show="headerView.signedIn"><a href=""  ng-click="headerView.logOut()">Sign Out</a></li>
+                    </ul>
+                </div>
+                <div class="row" ng-show="headerView.signedIn && headerView.userPrivileges.length > 0">
+                    <!--<strong>Privileges: </strong>-->
+                    <div class="btn-group">
+                        <label class="btn btn-primary" ng-model="headerView.userPrivilege" ng-repeat="privilege in headerView.userPrivileges" btn-radio="'{{privilege}}'">
+                            {{privilege}}
+                        </label>
                     </div>
                 </div>
             </div>
@@ -114,7 +108,15 @@
                                     <li><a ui-sref="main.addTrial">Register Trial</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/ctrp/backoffice">Backoffice</a></li>
+                            <li class="dropdown">
+                                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-expanded="false">User Management<span
+                                        class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a ui-sref="main.userDetail">Edit User Profile</a></li>
+                                    <li><a href="/ctrp/users">Rails Portal</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>

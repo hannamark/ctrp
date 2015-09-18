@@ -1,1 +1,0 @@
-json.app_ver @app_ver

@@ -74,3 +74,5 @@ gem 'wicked'
 
 # Add Bootstrap
 gem 'bootstrap-sass', '~> 3.3.5'
+
+gem 'carrierwave'

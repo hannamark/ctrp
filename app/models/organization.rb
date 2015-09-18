@@ -16,14 +16,13 @@
 #  fax               :string(255)
 #  source_status_id  :integer
 #  source_context_id :integer
-#  source_cluster_id :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
+#  ctrp_id           :integer
 #
 # Indexes
 #
-#  index_organizations_on_source_cluster_id  (source_cluster_id)
 #  index_organizations_on_source_context_id  (source_context_id)
 #  index_organizations_on_source_status_id   (source_status_id)
 #
@@ -36,6 +35,7 @@ class Organization < ActiveRecord::Base
   has_many :families, through: :family_memberships
   has_many :po_affiliations
   has_many :people, through: :po_affiliations
+  has_many :users
   belongs_to :source_status
   belongs_to :source_context
   belongs_to :source_cluster

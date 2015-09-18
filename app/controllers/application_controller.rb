@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   respond_to :html, :xml, :json
   #before_filter :wrapper_authenticate_user unless Rails.env.test?
- # check_authorization :unless => :devise_controller?
+  #check_authorization :unless => :devise_controller?
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
     render :text => exception, :status => 500
   end
@@ -147,9 +147,10 @@ class ApplicationController < ActionController::Base
 
       app_version = Rails.configuration.application_version
       auth_json = {
-          application_version: app_version,
+          app_version: app_version,
           token: token,
           role: user.role,
+          privileges: user.get_privileges,
           env: Rails.env
                     }
 

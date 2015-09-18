@@ -43,8 +43,9 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
+
         <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Settings</a></li>
+        <% if local_user_signed_in? %><li>Current Local User is <%= current_local_user.username %><li/> <% end %>
         <li><a href="#">Profile</a></li>
         <% if local_user_signed_in? %>
             <li><%= link_to 'Sign out', destroy_session_path, method: :delete %></li>
@@ -62,11 +63,20 @@
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
         <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-        <li><a href="/ctrp/users">List Users</a></li>
-        <li><a href="/ctrp/sign_in">Sign In</a></li>
+        <li><%= link_to "List Users", users_path %></li>
+        <li><%= link_to "Sign In", new_session_path %></li>
         <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
         <% if local_user_signed_in? %>
             <li><%= link_to 'Edit User ', edit_local_user_registration_path %></li>
+            <li><%= link_to "Change your password", edit_local_user_registration_path %></li>
+            <% if current_local_user.role == "ROLE_SUPER" %>
+              <li><%= link_to "BackOffice", backoffice_path %></li>
+            <% end %>
+        <% end %>
+        <% if ldap_user_signed_in? %>
+            <% if current_ldap_user.role == "ROLE_SUPER" %>
+                <li><%= link_to "BackOffice", backoffice_path %></li>
+            <% end %>
         <% end %>
       </ul>
     </div>
@@ -74,7 +84,7 @@
       <h1 class="page-header">List CTRP Users</h1>
 
 
-      <h2 class="sub-header"><% if local_user_signed_in? %> <b>Current Local User is <%= current_local_user.username %></b><br/> <% end %></h2>
+      <h2 class="sub-header"><% if local_user_signed_in? %> <b>Current Local User is <%= current_local_user.username %> with Role <%= current_local_user.role %></b><br/> <% end %></h2>
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
@@ -83,20 +93,36 @@
             <th colspan="3">Username</th>
             <th colspan="3">Email</th>
             <th colspan="3">Type</th>
-            <th colspan="*">Role</th>
+            <th colspan="3">Role</th>
+            <th colspan="*">Approval</th>
           </tr>
           </tr>
           </thead>
           <tbody>
-          <% @users.each do |user| %>
-              <tr>
-                <td colspan="3"><%= user.username %></td>
-                <td colspan="3"><%= user.email %></td>
-                <td colspan="3"><%= user.type %></td>
-                <td colspan="*"><%= user.role %></td>
-
-              </tr>
-          <% end %>
+          <% unless @users.blank? %>
+              <% @users.each do |user| %>
+                  <tr>
+                    <td colspan="3"><%= user.username %></td>
+                    <td colspan="3"><%= user.email %></td>
+                    <td colspan="3"><%= user.type %></td>
+                    <td colspan="*"><%= user.role %></td>
+                    <% if user.approved == false %>
+                      <td colspan="*">
+                        <%= button_to [:approve, user.becomes(User)] do %>
+                            <strong  class="btn btn-sm btn-success">Enable</strong>
+                        <% end %>
+                      </td>
+                    <% end %>
+                    <% if user.approved == true %>
+                        <td colspan="*">
+                          <%= button_to [:disapprove, user.becomes(User)] do %>
+                              <strong class="btn btn-sm btn-danger">Disable</strong>
+                          <% end %>
+                        </td>
+                    <% end %>
+                  </tr>
+              <% end %>
+           <% end %>
           </tbody>
         </table>
       </div>
@@ -109,10 +135,9 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-<script src="../../dist/js/bootstrap.min.js"></script>
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 <script src="../../assets/js/vendor/holder.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+<!--script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
