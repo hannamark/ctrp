@@ -216,8 +216,10 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER" },
 
 test_users.each do |u|
   user = User.find_by_username(u["username"])
-  user.role = u["role"]
-  user.save!
+  unless user.blank?
+    user.role = u["role"]
+    user.save!
+  end
   puts "Updated role of user = #{user.username}, role = #{user.role}"
 end
 
