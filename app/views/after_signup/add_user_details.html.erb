@@ -1,7 +1,30 @@
 <h2>Thanks for signing up </h2>
+
+<h3> User Details </h3>
 <%= form_for(@user, :url => wizard_path, :method => :put) do |f| %>
-    <%= f.text_field :zipcode, :placeholder => 'zip code' %>
-    <%= f.submit 'Next', :class => 'btn btn-primary' %>
+    <div class="field">
+        <%= label_tag(:first_name, "First Name:") %>
+        <%= f.text_field :first_name, :placeholder => 'first_name' %>
+    </div>
+    <div class="field">
+      <%= label_tag(:last_name, "Last Name:") %>
+      <%= f.text_field :last_name, :placeholder => 'Last name' %>
+    </div>
+    <div class="field">
+       <%= label_tag(:middle_name, "Middle Name:") %>
+       <%= f.text_field :middle_name, :placeholder => 'Middle name' %>
+    </div>
+    <div class="field">
+      <%= label_tag(:street_address, "Street Address:") %>
+      <%= f.text_field :street_address, :placeholder => 'street address' %>
+    </div>
+    <div class="field">
+      <%= label_tag(:zipcode, "zipcode:") %>
+      <%= f.text_field :zipcode, :placeholder => 'zip code' %>
+    </div>
+    <div class="field">
+      <%= f.submit 'Next', :class => 'btn btn-primary' %>
+    </div>
 <% end %>
 
 
