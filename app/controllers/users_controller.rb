@@ -9,12 +9,8 @@ class UsersController < ApplicationController
     Rails.logger.info "@user = #{@user.inspect}"
     @users = []
     unless @user.blank?
-      if @user.role == "ROLE_SUPER"
-        @users = User.all
-      elsif @user.role == "ROLE_SITE_ADMIN" && @user.approved
-        @users = User.find_by_organization_id(@user.organization_id)
-      end
-      #Rails.logger.info "@users = #{@users.inspect}"
+      @users = @user.get_all_users_by_role
+      Rails.logger.info "UserController,index @users = #{@users.inspect}"
     end
   end
 

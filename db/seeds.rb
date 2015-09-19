@@ -226,6 +226,27 @@ test_users.each do |u|
 end
 
 
+boston_users = [ {"username" => "ctrpsuperboston", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "b1", "role" => "ROLE_SUPER" , "approve" => false},
+               {"username" => "b2", "role" => "ROLE_SUPER" , "approve" => false},
+               {"username" => "b3", "role" => "ROLE_SUPER" , "approve" => false},
+               {"username" => "b4", "role" => "ROLE_SUPER", "approve" => false }
+]
+
+
+boston_users.each do |u|
+  user = User.find_by_username(u["username"])
+  unless user.blank?
+    user.role = u["role"]
+    user.approved =  u["approve"]
+    # Set the Organization to 'Boston University School Of Public Health'
+    boston_univ = Organization.find_by_id(8352734)
+    user.organization = boston_univ
+    user.save!
+    puts "Updated role of user = #{user.username}, role = #{user.role}"
+  end
+end
+
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
