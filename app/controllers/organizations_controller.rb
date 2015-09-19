@@ -88,12 +88,21 @@ class OrganizationsController < ApplicationController
     Rails.logger.info "In Organization Controller, params = #{params.select}"
 
     Rails.logger.info "In Organization Controller, current_local_user = #{current_local_user.inspect}"
-
     if local_user_signed_in?
-      if !params.blank? && !params["selected_org_id"].blank?
-        current_local_user.organization_id = params["selected_org_id"]
-        current_local_user.save!
+      user = current_local_user
+    end
+    if ldap_user_signed_in?
+      user = current_ldap_user
+    end
+    if !params.blank? && !params["selected_org_id"].blank?
+      org_id = params["selected_org_id"]
+      Rails.logger.info "ORG_ID ==" + org_id
+      if org_id == "0"
+        user.organization_id = nil
+      else
+        user.organization_id = org_id
       end
+      user.save!
     end
     respond_to do |format|
         format.html { redirect_to users_path }

@@ -81,7 +81,10 @@
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 
-      <h2 class="sub-header"><% if local_user_signed_in? %> <b>Current Local User is <%= current_local_user.username %> with Role <%= current_local_user.role %></b><br/> <% end %></h2>
+      <h2 class="sub-header">
+        <% if local_user_signed_in? %> <b>Current Local User is <%= current_local_user.username %> with Role <%= current_local_user.role %></b><br/> <% end %>
+        <% if ldap_user_signed_in? %> <b>Current LDAP User is <%= current_ldap_user.username %> with Role <%= current_ldap_user.role %></b><br/> <% end %>
+      </h2>
       <h2 class="sub-header">
         <% if local_user_signed_in? %>
             <% unless current_local_user.organization_id.blank? %>
@@ -89,6 +92,11 @@
             <% end %>
         <% end %>
        </h2>
+      <% if ldap_user_signed_in? %>
+          <% unless current_ldap_user.organization_id.blank? %>
+              Organization: <%= current_ldap_user.organization.name %>
+          <% end %>
+      <% end %>
 
       <% unless @users.blank? %>
               <h2 class="page-header">List CTRP Users</h2>

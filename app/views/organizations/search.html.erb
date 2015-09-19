@@ -1,5 +1,18 @@
 <p id="notice"><%= notice %></p>
 
+<% if local_user_signed_in? %>
+    <% unless current_local_user.organization_id.blank? %>
+        Current Organization: <%= current_local_user.organization.name %>
+    <% end %>
+<% end %>
+
+<% if ldap_user_signed_in? %>
+    <% unless current_ldap_user.organization_id.blank? %>
+       Current Organization: <%= current_ldap_user.organization.name %>
+    <% end %>
+<% end %>
+
+
 <%= form_tag("/ctrp/organizations/search", method: "get") do %>
     <div class="field">
       <%= label_tag(:name, "Name:") %>
@@ -26,7 +39,7 @@
     </div>
 <% end %>
 
-<h1>Search result</h1>
+<h1>Search results</h1>
 
 <table>
   <thead>
@@ -42,11 +55,15 @@
   <tbody>
 
   <%= form_tag("/ctrp/organizations/select", method: "post") do %>
-    <% @organizations.each do |organization| %>
-      <tr>
-        <td><%= radio_button_tag("selected_org_id", organization.id) %></td>
-        <td><%= organization.name %></td>
-      </tr>
+      <% unless @organizations.blank? %>
+          <td><%= radio_button_tag("selected_org_id", 0) %></td>
+        <td>No Organization</td>
+        <% @organizations.each do |organization| %>
+        <tr>
+          <td><%= radio_button_tag("selected_org_id", organization.id) %></td>
+          <td><%= organization.name %></td>
+        </tr>
+        <% end %>
     <% end %>
       <div class="actions">
         <%= submit_tag("Select") %>
