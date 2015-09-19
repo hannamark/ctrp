@@ -81,10 +81,28 @@ class OrganizationsController < ApplicationController
 
   end
 
+  def select
+
+    Rails.logger.info "In Organization Controller, select"
+    Rails.logger.info "In Organization Controller, params = #{params.select}"
+
+    Rails.logger.info "In Organization Controller, current_local_user = #{current_local_user.inspect}"
+
+    if local_user_signed_in?
+      if !params.blank? && !params["selected_org_id"].blank?
+        current_local_user.organization_id = params["selected_org_id"]
+        current_local_user.save!
+      end
+    end
+    respond_to do |format|
+        format.html { redirect_to users_path }
+    end
+
+  end
 
   def search
     # Pagination/sorting params initialization
-    Rails.logger.info "IN SEARCH"
+    Rails.logger.info "In Organization Controller, search"
     params[:start] = 1 if params[:start].blank?
     params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'name' if params[:sort].blank?

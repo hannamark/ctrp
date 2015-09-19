@@ -75,13 +75,22 @@
                 <li><%= link_to "BackOffice", backoffice_path %></li>
             <% end %>
         <% end %>
+        <li><%= link_to "Assign Organization", search_organizations_path %></li>
       </ul>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 
       <h2 class="sub-header"><% if local_user_signed_in? %> <b>Current Local User is <%= current_local_user.username %> with Role <%= current_local_user.role %></b><br/> <% end %></h2>
-          <% unless @users.blank? %>
+      <h2 class="sub-header">
+        <% if local_user_signed_in? %>
+            <% unless current_local_user.organization_id.blank? %>
+                Organization: <%= current_local_user.organization.name %>
+            <% end %>
+        <% end %>
+       </h2>
+
+      <% unless @users.blank? %>
               <h2 class="page-header">List CTRP Users</h2>
           <div class="table-responsive">
             <table class="table table-striped">
