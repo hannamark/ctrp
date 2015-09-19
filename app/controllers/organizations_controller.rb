@@ -3,6 +3,7 @@ class OrganizationsController < ApplicationController
   ## Please comment the next two lines if you donot want the Authorization checks
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
+  skip_authorize_resource :only => [:search, :select]
 
   respond_to :html, :json
 
