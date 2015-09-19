@@ -81,7 +81,6 @@
       </ul>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      <h1 class="page-header">List CTRP Users</h1>
 
 
       <h2 class="sub-header"><% if local_user_signed_in? %> <b>Current Local User is <%= current_local_user.username %> with Role <%= current_local_user.role %></b><br/> <% end %></h2>
@@ -100,20 +99,23 @@
           </thead>
           <tbody>
           <% unless @users.blank? %>
+              <h2 class="page-header">List CTRP Users</h2>
               <% @users.each do |user| %>
                   <tr>
                     <td colspan="3"><%= user.username %></td>
                     <td colspan="3"><%= user.email %></td>
                     <td colspan="3"><%= user.type %></td>
-                    <td colspan="*"><%= user.role %></td>
+                    <td colspan="3"><%= user.role %></td>
                     <% if user.approved == false %>
+                        <td colspan="3">NOT APPROVED</td>
                       <td colspan="*">
                         <%= button_to [:approve, user.becomes(User)] do %>
-                            <strong  class="btn btn-sm btn-success">Enable</strong>
+                            <strong  class="btn btn-sm btn-primary">Approve</strong>
                         <% end %>
                       </td>
                     <% end %>
                     <% if user.approved == true %>
+                        <td colspan="3">APPROVED</td>
                         <td colspan="*">
                           <%= button_to [:disapprove, user.becomes(User)] do %>
                               <strong class="btn btn-sm btn-danger">Disable</strong>
