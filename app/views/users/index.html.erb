@@ -101,9 +101,9 @@
               <tr>
               <tr>
                 <th colspan="3">Username</th>
-                <th colspan="3">Email</th>
                 <th colspan="3">Type</th>
                 <th colspan="3">Role</th>
+                <th colspan="3">Privileges</th>
                 <th colspan="3">Organization</th>
                 <th colspan="*">Approval</th>
               </tr>
@@ -114,9 +114,11 @@
               <% @users.each do |user| %>
                   <tr>
                     <td colspan="3"><%= user.username %></td>
-                    <td colspan="3"><%= user.email %></td>
                     <td colspan="3"><%= user.type %></td>
                     <td colspan="3"><%= user.role %></td>
+                    <td colspan="3" class="success">
+                      <% unless user.role.blank? %> <%= user.get_privileges.collect{|x| x[:type]} %> <% end %>&nbsp;
+                    </td>
                     <td><% unless user.organization_id.blank? %>
                         <%= user.organization.name %>
                         <% end %>&nbsp;
