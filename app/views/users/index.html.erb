@@ -9,7 +9,7 @@
   <meta name="author" content="">
   <link rel="icon" href="../../favicon.ico">
 
-  <title>Dashboard Template for Bootstrap</title>
+  <title>CTRP User Portal</title>
 
   <!-- Bootstrap core CSS -->
   <!--link href="../..//css/bootstrap.min.css" rel="stylesheet"-->
@@ -44,9 +44,8 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
 
-        <li><a href="#">Dashboard</a></li>
-        <% if local_user_signed_in? %><li>Current Local User is <%= current_local_user.username %><li/> <% end %>
-        <li><a href="#">Profile</a></li>
+
+        <% if local_user_signed_in? %><li><a class="navbar-brand" href="#">Current Local User is <%= current_local_user.username %></a><li/> <% end %>
         <% if local_user_signed_in? %>
             <li><%= link_to 'Sign out', destroy_session_path, method: :delete %></li>
         <% end %>
@@ -60,43 +59,39 @@
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
         <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-        <li><%= link_to "List Users", users_path %></li>
-        <li><%= link_to "Sign In", new_session_path %></li>
-        <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
-        <% if local_user_signed_in? %>
-            <li><%= link_to 'Edit User ', edit_local_user_registration_path %></li>
-            <li><%= link_to "Change your password", edit_local_user_registration_path %></li>
+        <br/><br/>
+        <% if local_user_signed_in? ||  ldap_user_signed_in? %>
+            <li><%= link_to "List Users", users_path %></li>
+            <li><%= link_to "Assign Organization", search_organizations_path %></li>
             <% if current_local_user.role == "ROLE_SUPER" %>
-              <li><%= link_to "BackOffice", backoffice_path %></li>
-            <% end %>
-        <% end %>
-        <% if ldap_user_signed_in? %>
-            <% if current_ldap_user.role == "ROLE_SUPER" %>
                 <li><%= link_to "BackOffice", backoffice_path %></li>
             <% end %>
+            <!--li><!--%= link_to 'Edit User ', edit_user_path(current_local_user.username) %></li-->
         <% end %>
-        <li><%= link_to "Assign Organization", search_organizations_path %></li>
+        <% if !local_user_signed_in? &&  !ldap_user_signed_in? %>
+            <li><%= link_to "Sign In", new_session_path %></li>
+        <% end %>
+        <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
+        <% if local_user_signed_in? %>
+            <!--li><!--%= link_to "Change your password", edit_local_user_registration_path %></li-->
+        <% end %>
       </ul>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 
-      <h2 class="sub-header">
-        <% if local_user_signed_in? %> <b>Current Local User is <%= current_local_user.username %> with Role <%= current_local_user.role %></b><br/> <% end %>
-        <% if ldap_user_signed_in? %> <b>Current LDAP User is <%= current_ldap_user.username %> with Role <%= current_ldap_user.role %></b><br/> <% end %>
-      </h2>
-      <h2 class="sub-header">
-        <% if local_user_signed_in? %>
+      <h3 class="header">
+        <% if local_user_signed_in? || ldap_user_signed_in? %>
+
+            <b>Current User: <%= current_local_user.username %> </b>
+            , Role: <%= current_local_user.role %>
             <% unless current_local_user.organization_id.blank? %>
-                Organization: <%= current_local_user.organization.name %>
+                , Organization: <%= current_local_user.organization.name %>
             <% end %>
+            <br/>
         <% end %>
-       </h2>
-      <% if ldap_user_signed_in? %>
-          <% unless current_ldap_user.organization_id.blank? %>
-              Organization: <%= current_ldap_user.organization.name %>
-          <% end %>
-      <% end %>
+        <% if ldap_user_signed_in? %> <b>Current LDAP User is <%= current_ldap_user.username %> with Role <%= current_ldap_user.role %></b><br/> <% end %>
+      </h3>
 
       <% unless @users.blank? %>
               <h2 class="page-header">List CTRP Users</h2>
