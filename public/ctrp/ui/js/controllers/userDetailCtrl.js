@@ -30,7 +30,9 @@
             newUser.user = vm.userDetails;
            //newUser.org_id=watch.org[o];
 
-            console.log("orgs id is " +vm.selectedOrgsArray[0].id);
+            if (vm.selectedOrgsArray[0] != null){
+                console.log("orgs id is " + vm.selectedOrgsArray[0].id);
+            }
             console.log("newUser is: " + JSON.stringify(newUser));
             UserService.upsertUser(newUser).then(function(response) {
                 //toastr.success('Family ' + vm.newUser.username + ' has been recorded', 'Operation Successful!');
