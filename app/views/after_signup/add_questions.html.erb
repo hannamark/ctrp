@@ -1,14 +1,19 @@
 <h2>Thanks for signing up </h2>
 
-<h3> User Details </h3>
+<h3> Receive Email Notifications </h3>
+
 <%= form_for(@user, :url => wizard_path, :method => :put) do |f| %>
-    <%= f.text_field :first_name, :placeholder => 'first_name' %>
-    <%= f.text_field :last_name, :placeholder => 'last name' %>
-    <%= f.text_field :middle_name, :placeholder => 'middle name' %>
-    <%= f.text_field :street_address, :placeholder => 'street address' %>
-    <%= f.text_field :zipcode, :placeholder => 'zip code' %>
-    <%= f.submit 'Next', :class => 'btn btn-primary' %>
+    <div class="field">
+      <%= f.label :receive_email_notifications %><br />
+      <%= f.label :receive_email_notifications, "Yes", :value => "true"  %>
+      <%= f.radio_button :receive_email_notifications, true %>
+      <%= f.label :receive_email_notifications, "No", :value => "false" %>
+      <%= f.radio_button :receive_email_notifications, false, :checked => true %>
+    </div>
+    <div class="field">
+      <%= f.submit 'Save', :class => 'btn btn-primary' %>
+    </div>
+
 <% end %>
 
-
-<%= link_to 'skip', users_path %>
+<%= link_to 'Back to User Portal', users_path %>

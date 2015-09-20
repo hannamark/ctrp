@@ -21,9 +21,13 @@ class AfterSignupController < ApplicationController
     render_wizard @user
   end
 
+  def finish_wizard_path
+    users_path
+  end
+
 private
   def local_user_params
-    params.require(:user).permit(:first_name, :last_name, :middle_name, :street_address, :zipcode)
+    params.require(:local_user).permit(:first_name, :last_name, :middle_name, :street_address, :zipcode)
   end
 
 end
