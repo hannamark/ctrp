@@ -84,23 +84,28 @@ class OrganizationsController < ApplicationController
 
   def select
 
-    Rails.logger.info "In Organization Controller, select"
-    Rails.logger.info "In Organization Controller, params = #{params.select}"
+    Rails.logger.debug "In Organization Controller, select"
+    Rails.logger.debug "In Organization Controller, params = #{params.select}"
 
-    Rails.logger.info "In Organization Controller, current_local_user = #{current_local_user.inspect}"
     if local_user_signed_in?
       user = current_local_user
+      Rails.logger.debug "In Organization Controller, current_local_user = #{current_local_user.inspect}"
     end
     if ldap_user_signed_in?
       user = current_ldap_user
+      Rails.logger.debug "In Organization Controller, current_ldap_user = #{current_ldap_user.inspect}"
     end
     if !params.blank? && !params["selected_org_id"].blank?
       org_id = params["selected_org_id"]
-      Rails.logger.info "ORG_ID ==" + org_id
+      old_org_id = user.organization_id
       if org_id == "0"
         user.organization_id = nil
       else
         user.organization_id = org_id
+        # When a User changes his organization, he must be reapproved
+        if !old_org_id.nil?
+          user.approved = false
+        end
       end
       user.save!
     end
