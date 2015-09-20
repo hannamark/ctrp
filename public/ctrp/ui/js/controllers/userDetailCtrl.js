@@ -63,14 +63,17 @@
             if(vm.userDetails.organization_id != null) {
                 var org_id= vm.userDetails.organization_id;
                 //var org_name =vm.userDetails.organization_name;
-                var org_name ="Organization_Name";
-                var curOrg = {"id": org_id, "name": org_name};
-                vm.savedSelection.push(curOrg);
+                OrgService.getOrgById(vm.userDetails.organization_id).then(function(organization) {
+                    var curOrg = {"id" : vm.userDetails.organization_id, "name": organization.name};
+                    //var org_name = organization.name;
+                    //var org_name = vm.userDetails.organization_name;
+                    vm.savedSelection.push(curOrg);
+                });
 
             }
-
-
         }
+
+        
 
 
 
