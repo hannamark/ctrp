@@ -42,9 +42,11 @@ class Ability
       cannot :access_backoffice, :manage_backoffice
     elsif user.role == "ROLE_READONLY"  && user.approved?
       can :read, :all
+      can [:create, :update], User
     elsif user.role == "ROLE_RO"  && user.approved?
-      can :read, :all
+      can [:create, :update], :read, :all
     else
+      can [:create, :update], User
       Rails.logger.info "No permission to access any of the resources in CTRP"
     end
   end
