@@ -60,13 +60,24 @@
       <ul class="nav nav-sidebar">
         <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
         <br/><br/>
-        <% if local_user_signed_in? ||  ldap_user_signed_in? %>
-            <li><%= link_to "List Users", users_path %></li>
-            <li><%= link_to "Assign Organization", search_organizations_path %></li>
-            <% if current_local_user.role == "ROLE_SUPER" %>
-                <li><%= link_to "BackOffice", backoffice_path %></li>
+        <li><a href="/ctrp/ui#/main/welcome">CTRP Main</a></li>
+        <% if local_user_signed_in? %>
+            <% if current_local_user.approved? %>
+                <li><%= link_to "List Users", users_path %></li>
+                <% if current_local_user.role == "ROLE_SUPER"  && current_local_user.organization_id.nil? %>
+                    <li><%= link_to "BackOffice", backoffice_path %></li>
+                <% end %>
             <% end %>
-            <!--li><!--%= link_to 'Edit User ', edit_user_path(current_local_user.username) %></li-->
+            <li><%= link_to "Assign Organization", search_organizations_path %></li>
+        <% end %>
+        <% if ldap_user_signed_in? %>
+            <% if current_ldap_user.approved? %>
+                <li><%= link_to "List Users", users_path %></li>
+                <% if current_ldap_user.role == "ROLE_SUPER" && current_local_user.organization_id.nil? %>
+                    <li><%= link_to "BackOffice", backoffice_path %></li>
+                <% end %>
+            <% end %>
+            <li><%= link_to "Assign Organization", search_organizations_path %></li>
         <% end %>
         <% if !local_user_signed_in? &&  !ldap_user_signed_in? %>
             <li><%= link_to "Sign In", new_session_path %></li>
@@ -81,7 +92,7 @@
 
 
       <h3 class="header">
-        <% if local_user_signed_in? || ldap_user_signed_in? %>
+        <% if local_user_signed_in?  %>
 
             <b>Current User: <%= current_local_user.username %> </b>
             , Role: <%= current_local_user.role %>
@@ -90,7 +101,15 @@
             <% end %>
             <br/>
         <% end %>
-        <% if ldap_user_signed_in? %> <b>Current LDAP User is <%= current_ldap_user.username %> with Role <%= current_ldap_user.role %></b><br/> <% end %>
+        <% if  ldap_user_signed_in? %>
+
+            <b>Current User: <%= current_ldap_user.username %> </b>
+            , Role: <%= current_ldap_user.role %>
+            <% unless current_ldap_user.organization_id.blank? %>
+                , Organization: <%= current_ldap_user.organization.name %>
+            <% end %>
+            <br/>
+        <% end %>
       </h3>
 
       <% unless @users.blank? %>
