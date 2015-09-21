@@ -23,13 +23,8 @@ module.exports = function() {
     });
 
     this.Given(/^I am logged in to CTRP$/, function (callback) {
-        browser.get('angular#/main/sign_in');
-        //  browser.get('http://localhost/ctrp/ui#/main/sign_in');
-        //  browser.sleep(5000);
-        Login.setUsername();
-        Login.setPassword();
-        Login.login();
-        // callback();
+        browser.get('ui#/main/sign_in');
+        Login.login('ctrpadmin', 'Welcome01');
         setTimeout(callback, 5000);
     });
 

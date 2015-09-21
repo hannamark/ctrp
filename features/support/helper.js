@@ -6,6 +6,7 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
+var util = require('util');
 
 /**
  * Usage: wait(element, label)
@@ -13,6 +14,11 @@ var expect = require('chai').expect;
  * label : just used for the error message
  */
 var helper = function() {
+
+    this.verifyLoginName = element(by.binding('headerView.username'));
+
+    var header_Page_Text = '              Clinical Trials Reporting Program';
+    this.header_Page = element(by.css('span[style="font-size:large;font-weight:bold;"]'));
 
     this.wait = function (element, label) {
         browser.wait(function () {
@@ -32,24 +38,74 @@ var helper = function() {
     this.setValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.clear();
-        fieldName.sendKeys(fieldValue);
+        fieldName.sendKeys(fieldValue);//.then(
+         console.log(errorMessage + ' ' + fieldValue + " Value entered");
         expect(fieldName.getAttribute('value')).to.eventually.equal(fieldValue);
     };
-
+/*
     this.selectValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.$('[value="' + fieldValue + '"]').click();
+        console.log(errorMessage + ' ' + fieldValue + " Value selected");
         expect(fieldName.getAttribute('value')).to.eventually.equal(fieldValue);
+      //  element(by.model('orgDetailView.curOrg.country')).$('option:checked').getText()
+     //   expect(fieldName.$('option:checked').getText()).to.eventually.equal(fieldValue);
+
+    }; */
+/*
+    this.selectValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+       // element(by.cssContainingText('option', fieldValue)).click();  //or use this
+       fieldName.sendKeys(fieldValue);
+        console.log(errorMessage + ' ' + fieldValue + " Value selected");
+        expect(fieldName.$('option:checked').getText()).to.eventually.equal(fieldValue);
+    }; */
+
+    this.selectValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        fieldName.click();
+        console.log(errorMessage + ' ' + fieldValue + " Value selected");
+        expect(fieldName.getText()).to.eventually.equal(fieldValue);
     };
 
     this.clickLink = function (link, errorMessage){
         this.wait(link, errorMessage);
         link.click();
+        console.log(errorMessage + " was clicked");
+        expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
     };
 
     this.clickButton = function (button, errorMessage){
         this.wait(button, errorMessage);
         button.click();
+        console.log(errorMessage + " was clicked");
+        expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
+     //   expect(this.verifyLoginName.getText()).to.eventually.equal(browser.params.login.user_admin);
     };
+
+    this.getValue = function (fieldName, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        fieldName.getAttribute('value');
+        console.log(errorMessage + " - Got value");
+    };
+
+    this.getVerifyValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        expect(fieldName.getAttribute('value')).to.eventually.equal(fieldValue);
+        console.log(errorMessage + " - Got value");
+    };
+
+    this.getVerifyListValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        expect(fieldName.$('option:checked').getText()).to.eventually.equal(fieldValue);
+        console.log(errorMessage + " - Got value");
+    };
+
+    this.getVerifyheader = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        expect(fieldName.getText()).to.eventually.equal(fieldValue);
+        console.log(errorMessage + " - header value");
+    };
+
 };
 module.exports = helper;

@@ -24,6 +24,8 @@
     "selenium"
   ],
   "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-protractor-cucumber-html-report": "0.0.8",
     "protractor-cucumber-junit": "^1.1.3"
   }
 }
