@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       collection do
         get 'search'
         post 'search'
+        post 'select'
         post 'curate'
       end
     end
@@ -58,6 +59,8 @@ Rails.application.routes.draw do
         post 'disapprove'
       end
     end
+
+    resources :after_signup
 
     resources :people do
       collection do

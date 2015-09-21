@@ -3,6 +3,7 @@ class OrganizationsController < ApplicationController
   ## Please comment the next two lines if you donot want the Authorization checks
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
+  skip_authorize_resource :only => [:search, :select]
 
   respond_to :html, :json
 
@@ -81,10 +82,42 @@ class OrganizationsController < ApplicationController
 
   end
 
+  def select
+
+    Rails.logger.debug "In Organization Controller, select"
+    Rails.logger.debug "In Organization Controller, params = #{params.select}"
+
+    if local_user_signed_in?
+      user = current_local_user
+      Rails.logger.debug "In Organization Controller, current_local_user = #{current_local_user.inspect}"
+    end
+    if ldap_user_signed_in?
+      user = current_ldap_user
+      Rails.logger.debug "In Organization Controller, current_ldap_user = #{current_ldap_user.inspect}"
+    end
+    if !params.blank? && !params["selected_org_id"].blank?
+      org_id = params["selected_org_id"]
+      old_org_id = user.organization_id
+      if org_id == "0"
+        user.organization_id = nil
+      else
+        user.organization_id = org_id
+        # When a User changes his organization, he must be reapproved
+        if !old_org_id.nil?
+          user.approved = false
+        end
+      end
+      user.save!
+    end
+    respond_to do |format|
+        format.html { redirect_to users_path }
+    end
+
+  end
 
   def search
     # Pagination/sorting params initialization
-    Rails.logger.info "IN SEARCH"
+    Rails.logger.info "In Organization Controller, search"
     params[:start] = 1 if params[:start].blank?
     params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'name' if params[:sort].blank?

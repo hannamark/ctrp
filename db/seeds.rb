@@ -110,7 +110,7 @@ AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', des
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
-AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'M1', big_value: '')
+AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'M2', big_value: '')
 
 
 
@@ -205,25 +205,47 @@ family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2
 
 
 
-test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER" },
-               {"username" => "ctrpadmin", "role" => "ROLE_ADMIN" },
-               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" },
-               {"username" => "testercurator", "role" => "ROLE_CURATOR" },
-               {"username" => "po_curator1", "role" => "ROLE_CURATOR" },
-               {"username" => "po_curator2", "role" => "ROLE_CURATOR" },
-               {"username" => "po_curator3", "role" => "ROLE_CURATOR" },
-               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY" }
+test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
+               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
+               {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
+               {"username" => "po_curator1", "role" => "ROLE_CURATOR", "approve" => false },
+               {"username" => "po_curator2", "role" => "ROLE_CURATOR" , "approve" => false},
+               {"username" => "po_curator3", "role" => "ROLE_CURATOR" , "approve" => false},
+               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY", "approve" => true }
           ]
 
 test_users.each do |u|
   user = User.find_by_username(u["username"])
   unless user.blank?
     user.role = u["role"]
+    user.approved =  u["approve"]
     user.save!
     puts "Updated role of user = #{user.username}, role = #{user.role}"
   end
 end
 
+
+boston_users = [ {"username" => "ctrpsuperboston", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "b1", "role" => "ROLE_SUPER" , "approve" => false},
+               {"username" => "b2", "role" => "ROLE_SUPER" , "approve" => false},
+               {"username" => "b3", "role" => "ROLE_SUPER" , "approve" => false},
+               {"username" => "b4", "role" => "ROLE_SUPER", "approve" => false }
+]
+
+
+boston_users.each do |u|
+  user = User.find_by_username(u["username"])
+  unless user.blank?
+    user.role = u["role"]
+    user.approved =  u["approve"]
+    # Set the Organization to 'Boston University School Of Public Health'
+    boston_univ = Organization.find_by_id(8352734)
+    user.organization = boston_univ
+    user.save!
+    puts "Updated role of user = #{user.username}, role = #{user.role}"
+  end
+end
 
 ##Add NCICTRPDEV team
 LdapUser.delete_all
@@ -271,6 +293,7 @@ begin
     ldap_user.email = u["email"]
     ldap_user.username = u["email"].split("@")[0]
     ldap_user.role = u["role"]
+    ldap_user.approved = true
     ldap_user.save(validate: false)
     puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end

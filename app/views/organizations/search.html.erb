@@ -1,0 +1,76 @@
+<p id="notice"><%= notice %></p>
+
+<% if local_user_signed_in? %>
+    <% unless current_local_user.organization_id.blank? %>
+        Current Organization: <%= current_local_user.organization.name %>
+    <% end %>
+<% end %>
+
+<% if ldap_user_signed_in? %>
+    <% unless current_ldap_user.organization_id.blank? %>
+       Current Organization: <%= current_ldap_user.organization.name %>
+    <% end %>
+<% end %>
+
+
+<%= form_tag("/ctrp/organizations/search", method: "get") do %>
+    <div class="field">
+      <%= label_tag(:name, "Name:") %>
+      <%= text_field_tag :name, params[:name] %>
+    </div>
+    <div class="field">
+      <%= label_tag(:ctep_id, "CTEP ID:") %>
+      <%= text_field_tag :ctep_id, params[:ctep_id] %>
+    </div>
+    <div class="field">
+      <%= label_tag(:source_context, "Source Context ID:") %>
+      <%= select_tag :source_context, options_for_select({"All Contexts" => ""}.merge!(SourceContext.all.map{ |x| [x.name, x.name]}.to_h)), :onchange => "this.form.submit();" %>
+    </div>
+    <div class="field">
+      <%= label_tag(:source_id, "SOURCE ID:") %>
+      <%= text_field_tag :source_id, params[:source_id] %>
+    </div>
+    <div class="field">
+      <%= label_tag(:source_status, "Source Status:") %>
+      <%= select_tag :source_status, options_for_select(SourceStatus.all.map{ |x| [x.name, x.name]}), :onchange => "this.form.submit();" %>
+    </div>
+    <div class="actions">
+      <%= submit_tag("Search") %>
+    </div>
+<% end %>
+
+<h1>Search results</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Identifier</th>
+    <th>Organization Type</th>
+    <th>Organization Status</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+
+  <%= form_tag("/ctrp/organizations/select", method: "post") do %>
+      <% unless @organizations.blank? %>
+          <td><%= radio_button_tag("selected_org_id", 0) %></td>
+        <td>No Organization</td>
+        <% @organizations.each do |organization| %>
+        <tr>
+          <td><%= radio_button_tag("selected_org_id", organization.id) %></td>
+          <td><%= organization.name %></td>
+        </tr>
+        <% end %>
+    <% end %>
+      <div class="actions">
+        <%= submit_tag("Select") %>
+      </div>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
