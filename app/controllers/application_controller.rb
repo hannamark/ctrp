@@ -194,8 +194,8 @@ class ApplicationController < ActionController::Base
  # end
 
 
-  def current_user
-    current_local_user || current_ldap_user
-  end
+ # def current_user
+ #   current_local_user || current_ldap_user
+ # end
 
 end
