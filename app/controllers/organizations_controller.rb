@@ -133,7 +133,7 @@ class OrganizationsController < ApplicationController
       else
         @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
       end
-      @organizations = @organizations.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
+      @organizations = @organizations.matches('ctrp_id', params[:ctrp_id]) if params[:ctrp_id].present?
       @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
       @organizations = @organizations.matches_wc('source_id', params[:source_id]) if params[:source_id].present?
       @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
