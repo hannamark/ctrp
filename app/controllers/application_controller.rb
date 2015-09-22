@@ -188,4 +188,14 @@ class ApplicationController < ActionController::Base
     request.referrer
   end
 
+ # def after_sign_up_path_for(resource)
+ #   Rails.logger.info "In after_sign_up_path_for"
+ #   redirect_to users_path
+ # end
+
+
+  def current_user
+    current_local_user || current_ldap_user
+  end
+
 end

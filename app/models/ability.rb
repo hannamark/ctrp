@@ -56,10 +56,12 @@ class Ability
       can [:create, :update], :read, :all
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
+      cannot :access_backoffice, :manage_backoffice
     else
       can [:create, :update], User
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
+      cannot :access_backoffice, :manage_backoffice
       Rails.logger.info "No permission to access any of the resources in CTRP"
     end
   end
