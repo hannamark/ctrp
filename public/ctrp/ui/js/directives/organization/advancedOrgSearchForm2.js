@@ -73,8 +73,7 @@
 
             $scope.typeAheadNameSearch = function() {
                 var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
-                //search context: 'CTRP', to avoid duplicate names
-                return OrgService.searchOrgs({name: wildcardOrgName, source_context: "CTRP"}).then(function(res) {
+                return OrgService.searchOrgs({name: wildcardOrgName}).then(function(res) {
                    return res.orgs.map(function(org) {
                        return org.name;
                    });
@@ -203,7 +202,6 @@
                 OrgService.getSourceContexts().then(function (contexts) {
                     //console.log("received contexts: " + JSON.stringify(contexts));
                     contexts.sort(Common.a2zComparator());
-                    console.log('contexts are: ' + JSON.stringify(contexts));
                     $scope.sourceContexts = contexts;
                 });
 
