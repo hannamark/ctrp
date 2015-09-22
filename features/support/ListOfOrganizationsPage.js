@@ -25,7 +25,7 @@ ListOfOrganizationsPage = function () {
      this.state = element(by.model('searchParams.state_province'));
      this.city = element(by.model('searchParams.city'));
      this.postalCode = element(by.model('searchParams.postal_code'));
-     this.searchButton = element(by.css('button[ng-click="searchOrgs()"]'));
+     this.searchButton = element(by.css('button[type="submit"]'));
      this.clearButton = element(by.buttonText('Clear'));
 
     this.searchResult = element.all(by.binding('grid.getCellValue(row, col) '));
