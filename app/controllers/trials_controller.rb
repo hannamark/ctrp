@@ -70,17 +70,18 @@ class TrialsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def trial_params
       params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id,
-                                    :primary_purpose_other, :secondary_purpose_other, :program_code, :grant_question,
+                                    :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
                                     :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual,
-                                    :comp_date, :comp_date_qual, :ind_ide_question, :authority_country, :authority_org,
+                                    :comp_date, :comp_date_qual, :ind_ide_question,
                                     :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
-                                    :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id,
+                                    :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
                                     trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id, :_destroy],
                                     ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
-                                                          :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy])
+                                                          :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
+                                    oversight_authorities_attributes: [:id, :country, :organization, :_destroy])
     end
 end
