@@ -61,18 +61,28 @@
         <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
         <br/><br/>
         <li><a href="/ctrp/ui#/main/sign_in">CTRP Main</a></li>
-        <% if local_user_signed_in? ||  ldap_user_signed_in? %>
-            <li><%= link_to "List Users", users_path %></li>
-            <li><%= link_to "Assign Organization", search_organizations_path %></li>
-            <% if current_local_user.role == "ROLE_SUPER" %>
-                <li><%= link_to "BackOffice", backoffice_path %></li>
+        <% if local_user_signed_in? %>
+            <% if current_local_user.approved? %>
+                <li><%= link_to "List Users", users_path %></li>
+                <% if current_local_user.role == "ROLE_SUPER"  && current_local_user.organization_id.nil? %>
+                    <li><%= link_to "BackOffice", backoffice_path %></li>
+                <% end %>
             <% end %>
-            <!--li><!--%= link_to 'Edit User ', edit_user_path(current_local_user.username) %></li-->
+            <li><%= link_to "Assign Organization", search_organizations_path %></li>
+        <% end %>
+        <% if ldap_user_signed_in? %>
+            <% if current_ldap_user.approved? %>
+                <li><%= link_to "List Users", users_path %></li>
+                <% if current_ldap_user.role == "ROLE_SUPER" && current_ldap_user.organization_id.nil? %>
+                    <li><%= link_to "BackOffice", backoffice_path %></li>
+                <% end %>
+            <% end %>
+            <li><%= link_to "Assign Organization", search_organizations_path %></li>
         <% end %>
         <% if !local_user_signed_in? &&  !ldap_user_signed_in? %>
             <li><%= link_to "Sign In", new_session_path %></li>
+            <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
         <% end %>
-        <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
         <% if local_user_signed_in? %>
             <!--li><!--%= link_to "Change your password", edit_local_user_registration_path %></li-->
         <% end %>
