@@ -18,8 +18,6 @@
 #  comp_date               :date
 #  comp_date_qual          :string(255)
 #  ind_ide_question        :string(255)
-#  authority_country       :string(255)
-#  authority_org           :string(255)
 #  intervention_indicator  :string(255)
 #  sec801_indicator        :string(255)
 #  data_monitor_indicator  :string(255)
@@ -37,9 +35,12 @@
 #  updated_at              :datetime         not null
 #  uuid                    :string(255)
 #  research_category_id    :integer
+#  investigator_title      :string(255)
+#  investigator_aff_id     :integer
 #
 # Indexes
 #
+#  index_trials_on_investigator_aff_id   (investigator_aff_id)
 #  index_trials_on_investigator_id       (investigator_id)
 #  index_trials_on_lead_org_id           (lead_org_id)
 #  index_trials_on_phase_id              (phase_id)
@@ -65,6 +66,7 @@ class Trial < ActiveRecord::Base
   belongs_to :pi, class_name: "Person"
   belongs_to :sponsor, class_name: "Organization"
   belongs_to :investigator, class_name: "Person"
+  belongs_to :investigator_aff, class_name: "Organization"
   has_many :other_ids
   has_many :ind_ides
   has_many :grants
@@ -75,6 +77,7 @@ class Trial < ActiveRecord::Base
   has_many :co_lead_orgs, through: :trial_co_lead_orgs, source: :organization
   has_many :trial_co_pis
   has_many :co_pis, through: :trial_co_pis, source: :person
+  has_many :oversight_authorities
   has_many :trial_documents
 
   accepts_nested_attributes_for :other_ids, allow_destroy: true
