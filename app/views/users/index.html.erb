@@ -46,9 +46,9 @@
 
 
         <% if local_user_signed_in? %><li><a class="navbar-brand" href="#">Current Local User is <%= current_local_user.username %></a><li/> <% end %>
-        <% if local_user_signed_in? %>
+
             <li><%= link_to 'Sign out', destroy_session_path, method: :delete %></li>
-        <% end %>
+
       </ul>
     </div>
   </div>
