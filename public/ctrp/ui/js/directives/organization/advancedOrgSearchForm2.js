@@ -73,7 +73,8 @@
 
             $scope.typeAheadNameSearch = function() {
                 var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
-                return OrgService.searchOrgs({name: wildcardOrgName}).then(function(res) {
+                //search context: 'CTRP', to avoid duplicate names
+                return OrgService.searchOrgs({name: wildcardOrgName, source_context: "CTRP"}).then(function(res) {
                    return res.orgs.map(function(org) {
                        return org.name;
                    });
