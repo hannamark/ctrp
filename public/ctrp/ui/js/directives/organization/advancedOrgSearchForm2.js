@@ -74,10 +74,31 @@
             $scope.typeAheadNameSearch = function() {
                 var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
                 //search context: 'CTRP', to avoid duplicate names
-                return OrgService.searchOrgs({name: wildcardOrgName,source_context: "CTRP"}).then(function(res) {
-                   return res.orgs.map(function(org) {
-                       return org.name;
+                return OrgService.searchOrgs({name: wildcardOrgName}).then(function(res) {
+                    //remove duplicates
+                    var uniqueNames = [];
+                    return uniqueNames = res.orgs.map(function(org) {
+                        if (uniqueNames.indexOf(org.name) == -1) {
+                            return org.name;
+                        }
                    });
+                    //console.log('orgNames: ' + orgNames);
+
+                    /*
+                    orgNames.forEach(function(name, idex) {
+                       if (uniqueNames.indexOf(name) == -1) {
+                           uniqueNames.push(name);
+                       }
+                    });
+                    */
+
+                    /*
+                    return uniqueNames = orgNames.map(function(name) {
+                        if (uniqueNames.indexOf(name) == -1) {
+                            return name;
+                        }
+                    });
+                    */
                 });
             }; //typeAheadNameSearch
 
