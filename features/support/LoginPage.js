@@ -44,11 +44,11 @@ var LoginPage = function(){
                 element(by.css('a[ng-click="headerView.logOut()"]')).click();
                 element(by.model('userView.userObj.user.username')).sendKeys(userName);
                 element(by.model('userView.userObj.user.password')).sendKeys(password);
-                element(by.css('.glyphicon.glyphicon-log-in')).click();
+                element(by.css('button[ng-click="userView.authenticate()"]')).click();
             } else {
                 element(by.model('userView.userObj.user.username')).sendKeys(userName);
                 element(by.model('userView.userObj.user.password')).sendKeys(password);
-                element(by.css('.glyphicon.glyphicon-log-in')).click();
+                element(by.css('button[ng-click="userView.authenticate()"]')).click();
             }
         });
     };
