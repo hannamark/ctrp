@@ -6,43 +6,45 @@
                 <p ng-bind-html="userView.loginBulletin"></p>
             </div>
             <div class="row">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="panel-title text-center">Please sign in to continue.</div>
-                </div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" name="signin_form" novalidate>
-                        <div class="form-group col-md-12">
-                            <div class="input-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title text-center">Please sign in to continue.</div>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form" name="signin_form" novalidate>
+                            <div class="form-group col-md-12">
+                                <div class="input-group">
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-user"></i>
                     </span>
-                                <input class="form-control" type="text" ng-model="userView.userObj.user.username"
-                                       placeholder="Username" required>
+                                    <input class="form-control" type="text" ng-model="userView.userObj.user.username"
+                                           placeholder="Username" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <div class="input-group">
+                            <div class="form-group col-md-12">
+                                <div class="input-group">
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
-                                <input type="password" class="form-control" ng-model="userView.userObj.user.password"
-                                       placeholder="Password" required>
+                                    <input type="password" class="form-control"
+                                           ng-model="userView.userObj.user.password"
+                                           placeholder="Password" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-4 col-sm-8 controls">
-                        <span class="btn-toolbar">
-                        <button class="btn btn-default" ng-click="userView.authenticate()" ng-disabled="signin_form.$invalid">
-                            <i class="glyphicon glyphicon-log-in"></i>
-                        </button>
-                        <button class="btn btn-danger" type="reset"><i class="glyphicon glyphicon-remove"></i></button>
-                        </span>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-8 controls">
+
+                                    <button class="btn btn-default" ng-click="userView.authenticate()"
+                                            ng-disabled="signin_form.$invalid" ctrp-click-once>
+                                        Log In
+                                    </button>
+                                    <button class="btn btn-danger" type="reset">Reset</button>
+
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
         <div class="col-sm-3"></div>
