@@ -203,7 +203,6 @@
                 OrgService.getSourceContexts().then(function (contexts) {
                     //console.log("received contexts: " + JSON.stringify(contexts));
                     contexts.sort(Common.a2zComparator());
-                    console.log('contexts are: ' + JSON.stringify(contexts));
                     $scope.sourceContexts = contexts;
                 });
 
