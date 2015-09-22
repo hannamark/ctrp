@@ -194,8 +194,10 @@ class ApplicationController < ActionController::Base
  # end
 
 
- # def current_user
- #   current_local_user || current_ldap_user
- # end
+  def current_ctrp_user
+    unless current_local_user.blank? && current_ldap_user.blank?
+       current_local_user || current_ldap_user
+    end
+  end
 
 end
