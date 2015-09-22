@@ -18,23 +18,27 @@ module.exports = function() {
     this.Given(/^I know the name of the person I wish to search for$/, function (callback) {
         fName = 'Daniel';
         lName = 'Jonson';
-        setTimeout(callback,2000);
+        callback();
+      //  setTimeout(callback,2000);
     });
 
     this.Given(/^I have selected the option to search for a person$/, function (callback) {
         MenuItemList.clickPeople();
         MenuItemList.clickListPeople();
-        setTimeout(callback,2000);
+      //  setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.When(/^I provide the full or partial first name of the person I wish to search for$/, function (callback) {
         Search.setPersonFirstName(fName);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
+      //  Search.setPersonFirstName(fName).then(function(){callback();});
+     //   setTimeout(callback,2000);
     });
 
     this.When(/^I submit my search request for Person Search$/, function (callback) {
         Search.clickSearch();
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Then(/^the system should display all persons that contain the first name$/, function (callback) {
@@ -51,7 +55,7 @@ module.exports = function() {
         expect(MenuItemList.inResultsHeader('Phone')).to.become('true');
         expect(MenuItemList.inResultsHeader('Affiliated Orgs')).to.become('true');
         expect(MenuItemList.inResultsHeader('Source Status')).to.become('true');
-        setTimeout(callback,7000);
+        browser.sleep(250).then(callback);
     });
 
     this.When(/^I provide the full or partial last name of the person I wish to search for$/, function (callback) {
@@ -186,7 +190,7 @@ module.exports = function() {
     });
 
     this.Given(/^I want to search with Person affiliated organization (.*)$/, function (PersonAffiliatedOrganization, callback) {
-        setTimeout(callback,2000);
+        callback.pending();
     });
 
     this.Then(/^in the search result for first name (.*), last name (.*), PO Person ID (.*), CTEP Person ID (.*), Person email (.*), and Person affiliated organization (.*) it shall return result (.*)$/, function (firstName, lastName, POPersonID, CTEPPersonID, PersonEmail, PersonAffiliatedOrganization, result, callback) {
@@ -195,7 +199,7 @@ module.exports = function() {
         expect(MenuItemList.inResults(POPersonID)).to.become(result);
         expect(MenuItemList.inResults(CTEPPersonID)).to.become(result);
         expect(MenuItemList.inResults(PersonEmail)).to.become(result);
-    //    expect(MenuItemList.inResults(PersonAffiliatedOrganization)).to.become(result);
+        expect(MenuItemList.inResults(PersonAffiliatedOrganization)).to.become(result);
         setTimeout(callback,5000);
     });
 
