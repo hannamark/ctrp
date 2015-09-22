@@ -43,7 +43,7 @@ module.exports = function() {
         MenuItemList.clickListOrganizations();
         Search.setOrgName(Organization_to_search);
         Search.clickSearchButton();
-        setTimeout(callback,5000);
+        browser.sleep(5000).then(callback);
     });
 
     this.Given(/^I have selected the function Edit Organization$/, function (callback) {

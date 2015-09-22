@@ -25,7 +25,8 @@ module.exports = function() {
     this.Given(/^I am logged in to CTRP$/, function (callback) {
         browser.get('ui#/main/sign_in');
         Login.login('ctrpadmin', 'Welcome01');
-        setTimeout(callback, 5000);
+      //  setTimeout(callback, 5000);
+        browser.sleep(5000).then(callback);
     });
 
     this.Given(/^I have selected the option to search for an organization$/, function (callback) {
@@ -264,8 +265,10 @@ module.exports = function() {
     });
 
     this.Given(/^I am logged in to CTRP PO application$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        browser.get('ui#/main/sign_in');
+        Login.login('ctrpcurator', 'Welcome01');
+        //  setTimeout(callback, 5000);
+        browser.sleep(5000).then(callback);
     });
 
     this.When(/^I provide the curator date of the organization I wish to search for$/, function (callback) {
