@@ -60,7 +60,7 @@ module.exports = function() {
 
     this.When(/^I provide the full or partial last name of the person I wish to search for$/, function (callback) {
         Search.setPersonLastName(lName);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Then(/^the system should display all persons that contain the last name$/, function (callback) {
@@ -69,12 +69,12 @@ module.exports = function() {
 
     this.Given(/^I know the CTEP ID of the person I wish to search for$/, function (callback) {
         CTEPID = '35504';
-        setTimeout(callback,2000);
+        callback();
     });
 
     this.When(/^I provide the CTEP Person ID of the person I wish to search for$/, function (callback) {
         Search.setPersonSourceId(CTEPID);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Then(/^the system should display all persons that contain the CTEP Person ID$/, function (callback) {
@@ -83,12 +83,12 @@ module.exports = function() {
 
     this.Given(/^I know the PO Person ID of the person I wish to search for$/, function (callback) {
         CTRPID = '2026171';
-        setTimeout(callback,2000);
+        callback();
     });
 
     this.When(/^I provide the PO Person ID of the person I wish to search for$/, function (callback) {
         Search.setPersonPoId(CTRPID);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Then(/^the system should display all persons that contain the PO Person ID$/, function (callback) {
@@ -97,12 +97,12 @@ module.exports = function() {
 
     this.Given(/^I know the email of the person I am searching$/, function (callback) {
         email = 'depner@mdanderson.org';
-        setTimeout(callback,2000);
+        callback();
     });
 
     this.When(/^I provide the email of the person I wish to search for$/, function (callback) {
         Search.setPersonEmail(email);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Then(/^the system should display all persons that have that email address$/, function (callback) {
@@ -111,18 +111,18 @@ module.exports = function() {
 
     this.Given(/^I know the phone number of the person$/, function (callback) {
         phone = '713-792-3245';
-        setTimeout(callback,2000);
+        callback();
     });
 
     this.Given(/^I have selected the option to search for an person$/, function (callback) {
         MenuItemList.clickPeople();
         MenuItemList.clickListPeople();
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.When(/^I provide the full or partial phone number of the person I wish to search for$/, function (callback) {
         Search.setPersonPhone(phone);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Then(/^the system should display all persons with matching phone number$/, function (callback) {
@@ -131,7 +131,7 @@ module.exports = function() {
 
     this.Given(/^I know the name of the organization I want to use in the search$/, function (callback) {
         aff_Org = 'Coastal Carolina Radiation Oncology';
-        setTimeout(callback,2000);
+        callback();
     });
 
     this.Given(/^I have performed an organization search$/, function (callback) {
@@ -150,43 +150,43 @@ module.exports = function() {
     });
 
     this.Given(/^I know multiple parameters of the person I wish to search for$/, function (callback) {
-        setTimeout(callback,2000);
+        callback();
     });
 
     this.Given(/^I am on the search persons screen$/, function (callback) {
         MenuItemList.clickPeople();
         MenuItemList.clickListPeople();
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.When(/^I want to search with first name (.*)$/, function (firstName, callback) {
         Search.setPersonFirstName(firstName);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Given(/^I want to search with last name (.*)$/, function (lastName, callback) {
         Search.setPersonLastName(lastName);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Given(/^I want to search with PO Person ID (.*)$/, function (POPersonID, callback) {
         Search.setPersonPoId(POPersonID);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Given(/^I want to search with CTEP Person ID (.*)$/, function (CTEPPersonID, callback) {
         Search.setPersonSourceId(CTEPPersonID);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Given(/^I want to search with Person email (.*)$/, function (PersonEmail, callback) {
         Search.setPersonEmail(PersonEmail);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Given(/^I want to search with Person phone number (.*)$/, function (PersonPhoneNumber, callback) {
         Search.setPersonPhone(PersonPhoneNumber);
-        setTimeout(callback,2000);
+        browser.sleep(250).then(callback);
     });
 
     this.Given(/^I want to search with Person affiliated organization (.*)$/, function (PersonAffiliatedOrganization, callback) {
@@ -200,12 +200,12 @@ module.exports = function() {
         expect(MenuItemList.inResults(CTEPPersonID)).to.become(result);
         expect(MenuItemList.inResults(PersonEmail)).to.become(result);
         expect(MenuItemList.inResults(PersonAffiliatedOrganization)).to.become(result);
-        setTimeout(callback,5000);
+        browser.sleep(250).then(callback);
     });
 
     this.When(/^I provide the curator date of the person I wish to search for$/, function (callback) {
         aff_Org = 'Coastal Carolina Radiation Oncology';
-        setTimeout(callback,2000);
+        callback();
     });
 
     this.Then(/^the system should display all persons that contain the curator date$/, function (callback) {
@@ -214,8 +214,7 @@ module.exports = function() {
     });
 
     this.When(/^I provide the curator name of the person I wish to search for$/, function (callback) {
-        aff_Org = 'Coastal Carolina Radiation Oncology';
-        setTimeout(callback,2000);
+        callback.pending();
     });
 
     this.Then(/^the system should display all persons that contain the curator name$/, function (callback) {
