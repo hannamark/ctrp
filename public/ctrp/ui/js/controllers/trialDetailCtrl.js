@@ -46,6 +46,7 @@
         vm.addedGrants = [];
         vm.addedStatuses = [];
         vm.addedIndIdes = [];
+        vm.addedAuthorities = [];
         vm.selectedLoArray = [];
         vm.selectedPiArray = [];
         vm.selectedSponsorArray = [];
@@ -114,6 +115,13 @@
                 });
             }
 
+            if (vm.addedAuthorities.length > 0) {
+                vm.curTrial.oversight_authorities_attributes = [];
+                _.each(vm.addedAuthorities, function (authority) {
+                    vm.curTrial.oversight_authorities_attributes.push(authority);
+                });
+            }
+
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -159,6 +167,10 @@
             } else if (type == 'ind_ide') {
                 if (index < vm.addedIndIdes.length) {
                     vm.addedIndIdes[index]._destroy = !vm.addedIndIdes[index]._destroy;
+                }
+            } else if (type == 'authority') {
+                if (index < vm.addedAuthorities.length) {
+                    vm.addedAuthorities[index]._destroy = !vm.addedAuthorities[index]._destroy;
                 }
             }
         };// toggleSelection
@@ -266,6 +278,19 @@
             }
         };
 
+        // Add Oversight Authority to a temp array
+        vm.addAuthority = function () {
+            if (vm.authority_country && vm.authority_org) {
+                var newAuthority = {};
+                newAuthority.country = vm.authority_country;
+                newAuthority.organization = vm.authority_org;
+                newAuthority._destroy = false;
+                vm.addedAuthorities.push(newAuthority);
+            } else {
+                alert('Please select a Country and Organization');
+            }
+        };
+
         // Add Founding Source to a temp array
         $scope.$watch(function() {
             return vm.selectedFsArray.length;
@@ -361,8 +386,8 @@
                     vm.nihNciArr = [];
                 }
             } else if (type == 'authority_country') {
-                vm.curTrial.authority_org = '';
-                vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.curTrial.authority_country);
+                vm.authority_org = '';
+                vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.authority_country);
             }
         };
 

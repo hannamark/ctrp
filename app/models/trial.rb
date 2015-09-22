@@ -85,6 +85,7 @@ class Trial < ActiveRecord::Base
   accepts_nested_attributes_for :grants, allow_destroy: true
   accepts_nested_attributes_for :trial_status_wrappers, allow_destroy: true
   accepts_nested_attributes_for :ind_ides, allow_destroy:  true
+  accepts_nested_attributes_for :oversight_authorities, allow_destroy: true
   accepts_nested_attributes_for :trial_documents, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
