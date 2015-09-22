@@ -46,9 +46,9 @@
 
 
         <% if local_user_signed_in? %><li><a class="navbar-brand" href="#">Current Local User is <%= current_local_user.username %></a><li/> <% end %>
-        <% if local_user_signed_in? %>
+
             <li><%= link_to 'Sign out', destroy_session_path, method: :delete %></li>
-        <% end %>
+
       </ul>
     </div>
   </div>
@@ -73,7 +73,7 @@
         <% if ldap_user_signed_in? %>
             <% if current_ldap_user.approved? %>
                 <li><%= link_to "List Users", users_path %></li>
-                <% if current_ldap_user.role == "ROLE_SUPER" && current_local_user.organization_id.nil? %>
+                <% if current_ldap_user.role == "ROLE_SUPER" && current_ldap_user.organization_id.nil? %>
                     <li><%= link_to "BackOffice", backoffice_path %></li>
                 <% end %>
             <% end %>
