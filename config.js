@@ -46,11 +46,11 @@ baseUrl: 'http://ctrp-qa.ncifcrf.gov/ctrp/',
      //   'features/PO\ F2\ Search\ for\ Organizations.feature'
     //    'features/PO\ F3\ Create\ an\ Organization.feature'
      //   'features/PO\ F4\ Edit\ Organization\ Information.feature'
-        'features/PO\ F9\ Search\ for\ Persons.feature'
+     //   'features/PO\ F9\ Search\ for\ Persons.feature'
     //   'features/PO\ F9\ Search\ for\ Persons.feature'
       //  'features/PO\ F10\ Create\ a\ Person\ Record.feature'
 //  'features/*.feature'
-  //      'features/test.feature'
+        'features/test.feature'
     ],
 
     jasmineNodeOpts: {
@@ -60,8 +60,8 @@ baseUrl: 'http://ctrp-qa.ncifcrf.gov/ctrp/',
     cucumberOpts: {
      //   require: ['features/step_definitions/*.js', 'features/support/*.js'],
        // format: 'json',
-        format: 'pretty'
-    //   tags: '@runthis'
+        format: 'pretty',
+       tags: '@runthis'
        /*     "@runThat",
             "~@ignoreThis"]*/// or summary
     },
