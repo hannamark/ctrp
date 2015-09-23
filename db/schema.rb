@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917192924) do
+ActiveRecord::Schema.define(version: 20150923195145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20150917192924) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.string   "uuid",             limit: 255
+    t.integer  "ctrp_id"
   end
 
   add_index "families", ["family_status_id"], name: "index_families_on_family_status_id", using: :btree
@@ -190,16 +191,15 @@ ActiveRecord::Schema.define(version: 20150917192924) do
     t.string   "phone",             limit: 255
     t.integer  "source_status_id"
     t.integer  "source_context_id"
-    t.integer  "source_cluster_id"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.string   "uuid",              limit: 255
     t.string   "fname",             limit: 255
     t.string   "mname",             limit: 255
     t.string   "lname",             limit: 255
+    t.integer  "ctrp_id"
   end
 
-  add_index "people", ["source_cluster_id"], name: "index_people_on_source_cluster_id", using: :btree
   add_index "people", ["source_context_id"], name: "index_people_on_source_context_id", using: :btree
   add_index "people", ["source_status_id"], name: "index_people_on_source_status_id", using: :btree
 
@@ -491,7 +491,6 @@ ActiveRecord::Schema.define(version: 20150917192924) do
   add_foreign_key "organizations", "source_statuses"
   add_foreign_key "other_ids", "protocol_id_origins"
   add_foreign_key "other_ids", "trials"
-  add_foreign_key "people", "source_clusters"
   add_foreign_key "people", "source_contexts"
   add_foreign_key "people", "source_statuses"
   add_foreign_key "po_affiliations", "organizations"
