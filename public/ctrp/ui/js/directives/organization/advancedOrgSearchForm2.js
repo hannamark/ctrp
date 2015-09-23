@@ -275,13 +275,14 @@
 
             function watchCountryAndGetStates() {
                 $scope.$watch('searchParams.country', function(newVal, oldVal) {
+                    $scope.states = [];
 
                     if (!!newVal && newVal != oldVal) {
                         GeoLocationService.getStateListInCountry(newVal)
                             .then(function (response) {
                                 $scope.states = response;
                             }).catch(function (err) {
-                                $scope.states.length = 0; //no states or provinces found
+                                // $scope.states.length = 0; //no states or provinces found
                             });
                     }
 
