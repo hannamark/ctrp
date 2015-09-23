@@ -27,7 +27,7 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Lead Protocol Identifier:</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control input-xs" id="lead_protocol_id" name="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id" required>
+                                <input type="text" class="form-control input-xs" id="lead_protocol_id" name="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id" required autofocus>
                                 <p ng-show="trial_form.lead_protocol_id.$error.required && trial_form.lead_protocol_id.$dirty" class="help-inline text-danger">
                                     Lead Protocol Identifier is required
                                 </p>
