@@ -6,44 +6,35 @@ class SessionsController < Devise::SessionsController
     begin
       user_class = nil
       error_string = 'Login failed'
-      Rails.logger.info "In SessionController's create method"
-      #Rails.logger.info "#{request.inspect}"
-      #Rails.logger.info "request params = #{request.params.inspect} "
-     # Rails.logger.info "user = #{request.params['user']} "
+      Rails.logger.debug "In SessionController's create method"
+      #Rails.logger.debug "#{request.inspect}"
+      #Rails.logger.debug "request params = #{request.params.inspect} "
+      #Rails.logger.debug "user = #{request.params['user']} "
 
       source = ""
       # Get the source of the Login, Rails or Angular. It is set on the devise login screen
       unless request.params.blank? || request.params["source"].blank?
         source = request.params["source"]
+        Rails.logger.debug "source = #{source.inspect}"
       end
-      Rails.logger.info "source = #{source.inspect}"
-      unless request.params['user'].blank? && request.params['user']["username"].blank?
-        username = request.params['user']["username"]
-        request.params['user']["username"]= username.downcase
-        Rails.logger.info "username = #{request.params['user']["username"].inspect} "
-      end
+
       # Copy user data to ldap_user and local_user
       request.params['ldap_user'] = request.params['local_user'] = request.params['user']
 
       user = nil
-      unless username.nil?
-        user = User.find_by_username(request.params['user']["username"].downcase)
+      if request.params['user'].blank? || request.params['user']["username"].blank?
+        self.raise_login_failed(error_text)
       end
 
+      user = User.custom_find_by_username(request.params['user']["username"])
       if user.blank?
         error_text = "The User does not exist in the database as an LdapUser or a LocalUser"
-        Rails.logger.error error_text
-        raise error_text
-      else
-        ## Print informational login messages
-        if user.is_a?(LocalUser)
-          Rails.logger.info "LocalUser #{user.inspect} " unless user.blank?
-        elsif user.is_a?(LdapUser)
-          Rails.logger.info "LdapUser #{user.inspect} " unless user.blank?
-        else
-          Rails.logger.info "OmniauthUser #{user.inspect} " unless user.blank?
-        end
+        self.raise_login_failed(error_text)
       end
+
+      ## Print informational login messages
+      user.log_debug
+
       if user.is_a?(LdapUser)
         # First try logging in as an LDAP user
         user_class = :ldap_user
@@ -115,21 +106,13 @@ class SessionsController < Devise::SessionsController
 
   def destroy
     Rails.logger.info "In Session Controller, destroy method"
-    #Rails.logger.info "session = #{session.inspect}"
     Rails.logger.info "params = #{request.params} "
 
 
-    user = User.find_by_username(request.params["username"]) || User.find_by_username(request.params['user']["username"])
+    user = User.custom_find_by_username(request.params["username"]) || User.custom_find_by_username(request.params['user']["username"])
     Rails.logger.info "user = #{user.inspect} "
     source = request.params["source"] || ""
-    #sign_in user, :bypass => true
-    #Rails.logger.info "after sign_in user = #{user.inspect} "
     sign_out(user)
-    #Rails.logger.info "after sign_out user = #{user.inspect} "
-
-    ## Reset the token in the DB
-    #user.token = nil
-    #user.save!
 
     reset_current_user
     current_user = nil
@@ -153,4 +136,9 @@ class SessionsController < Devise::SessionsController
     self.resource = User.new
   end
 
+  def raise_login_failed(error_text)
+    error_string = error_text || 'Login failed'
+    Rails.logger.error error_text
+    raise error_text
+  end
 end
