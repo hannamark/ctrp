@@ -14,10 +14,10 @@
                            placeholder="Organization Name" ng-model="searchParams.name" auto-focus
                             typeahead="org for org in typeAheadNameSearch($viewValue)" typeahead-loading="loadingOrganizations"
                             typeahead-no-results="noResults"/>
-                    <i ng-show="loadingOrganizations" class="glyphicon glyphicon-refresh"></i>
+                    <!--<i ng-show="loadingOrganizations" class="glyphicon glyphicon-refresh"></i>
                     <div ng-show="noResults">
                         <i class="glyphicon glyphicon-remove has-error">No organizations name matched</i>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <div ng-class="searchParams.alias == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
