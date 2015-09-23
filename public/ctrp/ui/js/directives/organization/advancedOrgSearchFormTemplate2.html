@@ -60,10 +60,9 @@
                 <label for="source_id" class="control-label col-xs-12 col-sm-2">Source Context: </label>
 
                 <div class="col-xs-12 col-sm-4">
-                    <select class="form-control" id="source_context"
-                            ng-model="searchParams.source_context" ng-init="searchParams.source_context='CTRP'">
-                        <option value="">All Contexts</option>
-                        <option ng-repeat="context in sourceContexts" value="{{context.name}}" ng-selected="context.name == 'CTRP'">{{context.name}}</option>
+                    <select class="form-control" id="source_context" ng-model="searchParams.source_context">
+                        <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
+                        <option ng-repeat="context in sourceContexts" value="{{context.name}}" ng-selected="context.name == searchParams.source_context">{{context.name}}</option>
                     </select>
                 </div>
                 <!-- source context ends -->
@@ -179,7 +178,7 @@
     <!-- sixth row -->
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group" ng-hide="states.length == 0">
+            <div class="form-group">
                 <label for="state" class="control-label col-xs-12 col-sm-2">State:</label>
 
                 <div class="col-xs-12 col-sm-10">
@@ -249,9 +248,10 @@
                 <strong>Please click the above Commit button to nullify the selected person</strong>
             </div>-->
         </div> <br />
-        <div class="row animated-item"  ng-if="gridOptions.totalItems > 0">
-            <div  ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
-                 ui-grid-auto-resize></div>
+        <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
+            <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
+            <!--<div  ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
+                 ui-grid-auto-resize></div> -->
 
             <!--<div ng-if="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize-->
             <!--style="height: {{gridHeight}}"></div>-->

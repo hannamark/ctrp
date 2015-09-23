@@ -48,6 +48,8 @@
         function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
             $log.info('in ctrpAdvancedOrgSearchController');
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
+            // console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
+            //console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows=[];
             $scope.sourceContextArr = [];
@@ -151,6 +153,7 @@
                 });
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
+                $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
 
                 if (angular.isDefined($scope.$parent.orgSearchResults)) {
@@ -273,13 +276,14 @@
 
             function watchCountryAndGetStates() {
                 $scope.$watch('searchParams.country', function(newVal, oldVal) {
+                    $scope.states = [];
 
                     if (!!newVal && newVal != oldVal) {
                         GeoLocationService.getStateListInCountry(newVal)
                             .then(function (response) {
                                 $scope.states = response;
                             }).catch(function (err) {
-                                $scope.states.length = 0; //no states or provinces found
+                                // $scope.states.length = 0; //no states or provinces found
                             });
                     }
 
@@ -404,7 +408,6 @@
             /* prepare grid layout and data options */
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions();
-                $scope.gridOptions.data = [];
                 $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
