@@ -48,6 +48,8 @@
         function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
             $log.info('in ctrpAdvancedOrgSearchController');
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
+            // console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
+            //console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows=[];
             $scope.sourceContextArr = [];
@@ -153,6 +155,7 @@
                 });
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
+                $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
 
                 if (angular.isDefined($scope.$parent.orgSearchResults)) {
@@ -407,7 +410,6 @@
             /* prepare grid layout and data options */
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions();
-                $scope.gridOptions.data = [];
                 $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
