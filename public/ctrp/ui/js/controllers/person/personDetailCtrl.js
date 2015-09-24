@@ -52,14 +52,25 @@
             newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
 
-            console.log("newPerson is: " + JSON.stringify(newPerson));
+            // console.log("newPerson is: " + JSON.stringify(newPerson));
 
             PersonService.upsertPerson(newPerson).then(function (response) {
+                vm.resetForm();
                 toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
             });
         }; // updatePerson
+
+
+        vm.resetForm = function() {
+            Object.keys(vm.curPerson).forEach(function(key) {
+                if (key != 'new' && key != 'po_affiliations' && key != 'source_status_id') {
+                    vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
+                    $scope.person_form.$setPristine();
+                }
+            });
+        };
 
 
         //delete the affiliated organization from table view
@@ -183,12 +194,6 @@
             };
 
         }; //prepareModal
-
-        vm.reset = function() {
-            vm.batchSelect('removeAll');
-            vm.curPerson.source_status_id = '';
-            vm.savedSelection.length = 0;
-        }; //reset
 
 
         /**

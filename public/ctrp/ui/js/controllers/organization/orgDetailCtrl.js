@@ -34,11 +34,24 @@
         //update organization (vm.curOrg)
         vm.updateOrg = function() {
             OrgService.upsertOrg(vm.curOrg).then(function(response) {
+                vm.resetForm();
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
             });
         }; // updateOrg
+
+
+        vm.resetForm = function() {
+            // console.log('resetting form');
+          Object.keys(vm.curOrg).forEach(function(key) {
+              if (key != 'new' && key != 'id' && key != 'state'
+                  && key != 'country' && key != 'source_status_id') {
+                  vm.curOrg[key] = angular.isArray(vm.curOrg[key]) ? [] : '';
+                  $scope.organization_form.$setPristine();
+              }
+          });
+        };
 
 
 
