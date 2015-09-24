@@ -45,7 +45,7 @@
         vm.resetForm = function() {
             // console.log('resetting form');
           Object.keys(vm.curOrg).forEach(function(key) {
-              if (key != 'new' && key != 'id'
+              if (key != 'new' && key != 'id' && key != 'state'
                   && key != 'country' && key != 'source_status_id') {
                   vm.curOrg[key] = angular.isArray(vm.curOrg[key]) ? [] : '';
                   $scope.organization_form.$setPristine();
