@@ -1,2 +1,3 @@
 json.git_branch @git_branch
-json.git_revision @git_revision
+json.git_full_revision @git_full_revision
+json.git_short_revision @git_short_revision
