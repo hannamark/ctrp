@@ -53,3 +53,6 @@ bower.json
 
 # Ignore node modules
 /node_modules
+
+# Robots.txt We want this set to disallow on EC2 server. This file is set to disallow out there.
+robots.txt
