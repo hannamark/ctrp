@@ -32,31 +32,7 @@
         <div class="col-md-6">
             <!-- PO ID -->
             <div class="form-group">
-                <!-- ID used as ctrp_id here -->
-                <label for="ctrp_id" class="control-label col-xs-12 col-sm-2"><nobr>CTRP ID:</nobr></label>
-
-                <div class="col-xs-12 col-sm-4">
-                    <input type="text" id="ctrp_id" class="form-control" placeholder="CTRP ID"
-                           ng-model="searchParams.ctrp_id"/>
-                </div>
-
-                <label for="phone" class="control-label col-xs-12 col-sm-2">Phone:</label>
-
-                <div class="col-xs-12 col-sm-4 pull-right">
-                    <input type="text" id="phone" class="form-control" placeholder="Phone"
-                           ng-model="searchParams.phone"/>
-                </div>
-            </div>
-            <!-- PO ID ends -->
-        </div>
-    </div>
-    <!-- first row ends -->
-
-    <!-- second row -->
-    <div class="row">
-        <div class="col-md-6">
-            <!--source context-->
-            <div class="form-group">
+                <!--source context-->
                 <label for="source_id" class="control-label col-xs-12 col-sm-2">Source Context: </label>
 
                 <div class="col-xs-12 col-sm-4">
@@ -66,6 +42,34 @@
                     </select>
                 </div>
                 <!-- source context ends -->
+
+                <!-- ID used as ctrp_id here -->
+                <label for="ctrp_id" class="control-label col-xs-12 col-sm-2"><nobr>CTRP ID:</nobr></label>
+
+                <div class="col-xs-12 col-sm-4">
+                    <input type="text" id="ctrp_id" class="form-control" placeholder="CTRP ID"
+                           ng-model="searchParams.ctrp_id"/>
+                </div>
+
+            </div>
+            <!-- PO ID ends -->
+        </div>
+    </div>
+    <!-- first row ends -->
+
+    <!-- second row -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="source_status" class="control-label col-xs-12 col-sm-2">Source Status: </label>
+
+                <div class="col-xs-12 col-sm-4">
+                    <select class="form-control" id="source_status"
+                            ng-model="searchParams.source_status">
+                        <option value="">Select a Status</option>
+                        <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
+                    </select>
+                </div>
                 <!--source id-->
                 <label for="source_id" class="control-label col-xs-12 col-sm-2">Source ID: </label>
 
@@ -73,20 +77,18 @@
                     <input type="text" id="source_id" class="form-control" placeholder="Source ID"
                            ng-model="searchParams.source_id"/>
                 </div>
+
             </div>
             <!-- source id ends -->
         </div>
         <div class="col-md-6">
             <!--source status-->
             <div class="form-group">
-                <label for="source_status" class="control-label col-xs-12 col-sm-2">Source Status: </label>
+                <label for="family_name" class="control-label col-xs-12 col-sm-2">Family Name:</label>
 
                 <div class="col-xs-12 col-sm-10">
-                    <select class="form-control" id="source_status"
-                            ng-model="searchParams.source_status">
-                        <option value="">Select a Status</option>
-                        <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
-                    </select>
+                    <input type="text" id="family_name" class="form-control" placeholder="Family Name"
+                           ng-model="searchParams.family_name"/>
                 </div>
             </div>
             <!-- source status ends -->
@@ -125,22 +127,25 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="family_name" class="control-label col-xs-12 col-sm-2">Family Name:</label>
+                <label for="city" class="control-label col-xs-12 col-sm-2">City:</label>
 
                 <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="family_name" class="form-control" placeholder="Family Name"
-                           ng-model="searchParams.family_name"/>
+                    <input type="text" id="city" class="form-control" placeholder="City"
+                           ng-model="searchParams.city"/>
                 </div>
+
+
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="email" class="control-label col-xs-12 col-sm-2">Email:</label>
+                <label for="postal_code" class="control-label col-xs-12 col-sm-2">Postal Code:</label>
 
                 <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="email" class="form-control" placeholder="Email"
-                           ng-model="searchParams.email"/>
+                    <input type="text" id="postal_code" class="form-control" placeholder="Postal Code"
+                           ng-model="searchParams.postal_code"/>
                 </div>
+
             </div>
         </div>
     </div>
@@ -164,12 +169,13 @@
 
         <div class="col-md-6">
             <div class="form-group">
-                <label for="city" class="control-label col-xs-12 col-sm-2">City:</label>
+                <label for="phone" class="control-label col-xs-12 col-sm-2">Phone:</label>
 
-                <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="city" class="form-control" placeholder="City"
-                           ng-model="searchParams.city"/>
+                <div class="col-xs-12 col-sm-10 pull-right">
+                    <input type="text" id="phone" class="form-control" placeholder="Phone"
+                           ng-model="searchParams.phone"/>
                 </div>
+
             </div>
         </div>
     </div>
@@ -191,12 +197,13 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="postal_code" class="control-label col-xs-12 col-sm-2">Postal Code:</label>
+                <label for="email" class="control-label col-xs-12 col-sm-2">Email:</label>
 
                 <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="postal_code" class="form-control" placeholder="Postal Code"
-                           ng-model="searchParams.postal_code"/>
+                    <input type="text" id="email" class="form-control" placeholder="Email"
+                           ng-model="searchParams.email"/>
                 </div>
+
             </div>
         </div>
     </div>
