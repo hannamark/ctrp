@@ -51,7 +51,7 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1
   # PATCH/PUT /people/1.json
   def update
-
+    #TODO: do not update created_by if received in the data
     respond_to do |format|
       #@person.po_affiliations.destroy
       if @person.update(person_params)
