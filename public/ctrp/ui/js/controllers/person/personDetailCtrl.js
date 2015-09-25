@@ -8,10 +8,10 @@
     angular.module('ctrpApp')
         .controller('personDetailCtrl', personDetailCtrl);
 
-    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService',
+    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService',
         '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
 
-    function personDetailCtrl(personDetailObj, PersonService, toastr, DateService,
+    function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService,
                               $scope, Common, sourceStatusObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
         console.log("in person detail controller now");
@@ -53,6 +53,11 @@
             newPerson.person = vm.curPerson;
 
             // console.log("newPerson is: " + JSON.stringify(newPerson));
+            if (newPerson.new) {
+                newPerson.created_by = UserService.getLoggedInUsername();
+            } else {
+                newPerson.updated_by = UserService.getLoggedInUsername();
+            }
 
             PersonService.upsertPerson(newPerson).then(function (response) {
                 vm.resetForm();
