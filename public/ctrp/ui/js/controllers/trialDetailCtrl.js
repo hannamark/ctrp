@@ -428,6 +428,9 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewTrialFlag();
+            if (!vm.curTrial.new) {
+                appendOtherIds();
+            }
         }
 
         /**
@@ -439,6 +442,23 @@
         function appendNewTrialFlag() {
             if ($state.$current.name.indexOf('add') > -1) {
                 vm.curTrial.new = true;  //
+            }
+        }
+
+        function appendOtherIds() {
+            for (var i = 0; i < vm.curTrial.other_ids.length; i++) {
+                var otherId = {};
+                otherId.id = vm.curTrial.other_ids[i].id;
+                otherId.protocol_id_origin_id = vm.curTrial.other_ids[i].protocol_id_origin_id;
+                // For displaying other ID origin name in the table
+                _.each(vm.protocolIdOriginArr, function (origin) {
+                    if (origin.id == vm.curTrial.other_ids[i].protocol_id_origin_id) {
+                        otherId.protocol_id_origin_name = origin.name;
+                    }
+                });
+                otherId.protocol_id = vm.curTrial.other_ids[i].protocol_id;
+                otherId._destroy = false;
+                vm.addedOtherIds.push(otherId);
             }
         }
 

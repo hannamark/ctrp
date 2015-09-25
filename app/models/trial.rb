@@ -67,7 +67,7 @@ class Trial < ActiveRecord::Base
   belongs_to :sponsor, class_name: "Organization"
   belongs_to :investigator, class_name: "Person"
   belongs_to :investigator_aff, class_name: "Organization"
-  has_many :other_ids
+  has_many :other_ids, -> { order 'other_ids.id' }
   has_many :ind_ides
   has_many :grants
   has_many :trial_status_wrappers
