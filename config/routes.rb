@@ -107,7 +107,12 @@ Rails.application.routes.draw do
       resources :primary_purposes
       resources :secondary_purposes
       resources :responsible_parties
-      resources :trials
+      resources :trials do
+        collection do
+          get 'search'
+          post 'search'
+        end
+      end
       resources :protocol_id_origins
       resources :holder_types
       resources :expanded_access_types

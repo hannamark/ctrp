@@ -89,4 +89,28 @@ class Trial < ActiveRecord::Base
   accepts_nested_attributes_for :trial_documents, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
+
+  #scopes for search API
+  scope :matches, -> (column, value) { where("trials.#{column} = ?", "#{value}") }
+
+  scope :matches_wc, -> (column, value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      where("trials.#{column} ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      where("trials.#{column} ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      where("trials.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      where("trials.#{column} ilike ?", "#{value}")
+    end
+  }
+
+  scope :sort_by_col, -> (column, order) {
+    if column == 'id'
+      order("#{column} #{order}")
+    else
+      order("LOWER(trials.#{column}) #{order}")
+    end
+  }
 end

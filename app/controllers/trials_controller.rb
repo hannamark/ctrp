@@ -61,6 +61,23 @@ class TrialsController < ApplicationController
     end
   end
 
+  def search
+    # Pagination/sorting params initialization
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 10 if params[:rows].blank?
+    params[:sort] = 'lead_protocol_id' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+
+    if params[:lead_protocol_id].present? || params[:official_title].present?
+      @trials = Trial.all
+      @trials = @trials.matches('lead_protocol_id', params[:lead_protocol_id]) if params[:lead_protocol_id].present?
+      @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
+      @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
+    else
+      @trials = []
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_trial

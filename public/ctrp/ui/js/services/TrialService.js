@@ -21,7 +21,7 @@
             order: "",
             rows: 10,
             start: 1
-            }; //initial Trial Search Parameters
+        }; //initial Trial Search Parameters
 
         var gridOptions = {
             enableColumnResizing: true,
@@ -36,7 +36,10 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'lead_protocol_id', enableSorting: true, displayName: 'Lead Protocol ID', width: '100%'}
+                {name: 'lead_protocol_id', enableSorting: true, displayName: 'Lead Protocol ID', width: '50%'},
+                {name: 'official_title', enableSorting: true, width: '50%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                }
             ]
         };
 
