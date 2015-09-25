@@ -434,6 +434,19 @@
                     }
                 }
             });
+
+
+            /*
+            $rootScope.$on('$stateChangeStart', function(event, next, current) {
+                if (next && current) {
+                    var answer = confirm("Are you sure you want to navigate away from this page");
+                    if (!answer) {
+                        event.preventDefault();
+                    }
+                }
+
+            });
+            */
         });
 
 
