@@ -1,5 +1,5 @@
 <div class="row">
-    <button class="btn btn-primary" ng-click="searchPerson('lg')"><i class="glyphicon glyphicon-search"></i> Search Persons</button>
+    <button class="btn btn-primary" id="person_search_modal" ng-click="searchPerson('lg')"><i class="glyphicon glyphicon-search"></i> Search Persons</button>
 
     <button ng-if="useBuiltInTemplate" class="btn btn-danger" ng-click="batchSelect('removeAll')" ng-show="savedSelection.length > 0">
         <i class="glyphicon glyphicon-remove"></i> Remove All Person(s)
