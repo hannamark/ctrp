@@ -1,4 +1,4 @@
-@PA @global
+@PA @global @test
 Feature: As any CTRP PA User, I can search CTRP clinical trials by various criteria and trial ownership
 
 Scenario: #1 I can search for clinical trials registered in CTRP
