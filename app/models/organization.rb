@@ -20,6 +20,8 @@
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
 #  ctrp_id           :integer
+#  created_by        :string
+#  updated_by        :string
 #
 # Indexes
 #
