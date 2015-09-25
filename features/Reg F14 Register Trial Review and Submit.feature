@@ -74,3 +74,4 @@ And I have performed the Review Trial action without errors
 When I have selected Register Trial
 Then all registration information will be entered in CTRP
 And the trial status will be Submitted
+And the trial milestone Submission Received Date will be created with the current date and time
