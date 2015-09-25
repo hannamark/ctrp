@@ -8,10 +8,10 @@
     angular.module('ctrpApp')
         .controller('orgDetailCtrl', orgDetailCtrl);
 
-    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES',
+    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService',
         '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$modal'];
 
-    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
+    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
         var vm = this;
         vm.name = "tony";
@@ -33,6 +33,11 @@
 
         //update organization (vm.curOrg)
         vm.updateOrg = function() {
+            if (vm.curOrg.new) {
+                vm.curOrg.created_by = UserService.getLoggedInUsername();
+            } else {
+                vm.curOrg.updated_by = UserService.getLoggedInUsername();
+            }
             OrgService.upsertOrg(vm.curOrg).then(function(response) {
                 vm.resetForm();
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
