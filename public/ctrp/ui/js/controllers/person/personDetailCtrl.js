@@ -54,9 +54,9 @@
 
             // console.log("newPerson is: " + JSON.stringify(newPerson));
             if (newPerson.new) {
-                newPerson.created_by = UserService.getLoggedInUsername();
+                newPerson.person.created_by = UserService.getLoggedInUsername();
             } else {
-                newPerson.updated_by = UserService.getLoggedInUsername();
+                newPerson.person.updated_by = UserService.getLoggedInUsername();
             }
 
             PersonService.upsertPerson(newPerson).then(function (response) {
