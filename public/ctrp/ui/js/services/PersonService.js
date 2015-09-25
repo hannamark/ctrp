@@ -121,7 +121,7 @@
         function upsertPerson(personObj) {
             if (personObj.new) {
                 //create a new person
-                $log.info('creating an person: ' + JSON.stringify(personObj));
+                $log.info('creating n person: ' + JSON.stringify(personObj));
                 return PromiseService.postDataExpectObj(URL_CONFIGS.PERSON_LIST, personObj);
             }
 
