@@ -53,7 +53,7 @@
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows=[];
             $scope.sourceContextArr = [];
-            $scope.sourceStatusArr = [];
+            $scope.sourceStatuses = [];
             $scope.nullifiedId = '';
             $scope.warningMessage = false;
             $scope.curationShown = false;
@@ -231,8 +231,10 @@
                 //get source statuses
                 OrgService.getSourceStatuses().then(function (statuses) {
                     //console.log("received statuses: " + JSON.stringify(statuses));
-                    statuses.sort(Common.a2zComparator());
-                    $scope.sourceStatuses = statuses;
+                    if (statuses && angular.isArray(statuses)) {
+                        statuses.sort(Common.a2zComparator());
+                        $scope.sourceStatuses = statuses;
+                    }
                 });
 
                 //get countries
