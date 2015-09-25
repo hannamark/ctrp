@@ -33,7 +33,7 @@ class PeopleController < ApplicationController
   def create
 
     @person = Person.new(person_params)
-    @person.updated_by = @user.created_by
+    @person.updated_by = @person.created_by
 
     respond_to do |format|
       if @person.save
