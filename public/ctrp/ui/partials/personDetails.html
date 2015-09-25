@@ -206,7 +206,7 @@
                     <div class="col-sm-offset-3 col-sm-9">
                         <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()"
                                value="Save" ng-disabled="person_form.$invalid" ctrp-click-once>
-                        <input type="reset" class="btn btn-warning" value="Reset" ng-click="personDetailView.reset()">
+                        <button class="btn btn-warning" ng-click="personDetailView.resetForm()">Reset</button>
                         <button class="btn btn-default" back-button>Cancel</button>
                         <button ng-hide="personDetailView.curPerson.new" class="btn btn-danger"
                                 ng-click="personDetailView.confirmDelete('sm')">

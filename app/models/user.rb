@@ -162,4 +162,30 @@ class  User < ActiveRecord::Base
     end
   end
 
+  def self.custom_find_by_username(username_value)
+    user = nil
+    unless username_value.blank?
+      user = User.find_by_username(username_value.downcase)
+    end
+    Rails.logger.debug "User, custom_find_by_username user = #{user.inspect}"
+    user
+  end
+
+  def log_debug
+    if self.is_a?(LocalUser)
+      Rails.logger.debug "\nIn User, log_debug, LocalUser #{self.inspect} " unless self.blank?
+    elsif self.is_a?(LdapUser)
+      Rails.logger.debug "In User, log_debug, LdapUser #{self.inspect} " unless self.blank?
+    else
+      Rails.logger.debug "In User, log_debug,OmniauthUser #{self.inspect} " unless self.blank?
+    end
+  end
+
+  private
+
+  def compare_username(username_value)
+    self.username.downcase == username_value.downcase
+  end
+
+
 end
