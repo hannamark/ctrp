@@ -84,7 +84,7 @@
             <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
         <% end %>
         <% if local_user_signed_in? %>
-            <!--li><!--%= link_to "Change your password", edit_local_user_registration_path %></li-->
+            <li><%= link_to "Change your password", edit_registration_path %></li>
         <% end %>
       </ul>
     </div>
