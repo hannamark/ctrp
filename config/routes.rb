@@ -99,6 +99,7 @@ Rails.application.routes.draw do
       post 'sign_out' => 'sessions#destroy', :as => :destroy_session
       post 'sign_up' => 'registrations#create', :as => :create_registration
       get 'change_password' => 'registrations#edit', :as => :edit_registration
+      post 'change_password' => 'registrations#update', :as => :update_registration
     end
 
     scope '/registry' do

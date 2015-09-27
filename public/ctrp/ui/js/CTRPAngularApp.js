@@ -191,6 +191,18 @@
                     }
                 })
 
+                .state('main.changePassword', {
+                    url: '/change_password',
+                    templateUrl: '/ctrp/ui/partials/changePassword.html',
+                    controller: 'userChangePasswordCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    },
+                    userDetailObj : function(UserService) {
+                        return UserService.getUserDetailsByUsername();
+                    }
+                })
+
                 .state('main.userDetail', {
                     url: '/userDetail/username',
                     templateUrl: '/ctrp/ui/partials/userDetails.html',
@@ -201,8 +213,8 @@
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
                         },
-                        userDetailObj : function(UserService) {
-                            return UserService.getUserDetailsByUsername();
+                        username : function(UserService) {
+                            return UserService.getLoggedInUsername();
                         }
                     }//, //resolve the promise and pass it to controller
                     //ncyBreadcrumb: {

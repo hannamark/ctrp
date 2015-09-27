@@ -31,9 +31,9 @@
         vm.updateUser = function () {
             //
             UserService.upsertUserSignup(vm.userObj).then(function (response) {
-                //toastr.success('Family ' + vm.newUser.username + ' has been recorded', 'Operation Successful!');
+                //toastr.success('User ' + vm.userObj + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
-                console.log("Error in updating inserting new User " + JSON.stringify(vm.userDetails));
+                console.log("Error in updating inserting new User " + JSON.stringify(vm.userObj));
             });
         }
     }

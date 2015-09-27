@@ -93,6 +93,7 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         } //getUserByName
 
+
         /**
          * Get the user role of the logged in user
          * @returns {*|string}
@@ -160,6 +161,13 @@
             console.log("userObj = " + JSON.stringify(userObj));
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj, configObj);
         }; //upsertUserSignup
+
+        this.upsertUserChangePassword=function(userObj) {
+            //update an existing user
+            var configObj = {}; //empty config
+            console.log("upsertUserChangePassword userObj = " + JSON.stringify(userObj));
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
+        }; //upsertUserChangePassword
 
         /**
          *
