@@ -182,6 +182,15 @@
                     }
                 })
 
+                .state('main.signup', {
+                    url: '/sign_up',
+                    templateUrl: '/ctrp/ui/partials/sign_up.html',
+                    controller: 'userSignupCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    }
+                })
+
                 .state('main.userDetail', {
                     url: '/userDetail/username',
                     templateUrl: '/ctrp/ui/partials/userDetails.html',
@@ -414,7 +423,7 @@
                 event.preventDefault();
                 //get appversion from DMZ if unauthenticated
                 //var tempUserService = $injector.get('UserService'); //reference to UserService
-                if (toState.name == 'main.sign_in') {
+                if (toState.name == 'main.sign_in' || toState.name == 'main.sign_up') {
 
                     if (!UserService.isLoggedIn()) {
                         UserService.getAppVerFromDMZ().then(function(data) {

@@ -61,7 +61,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :after_signup
+    #resources :after_signup
 
     resources :people do
       collection do

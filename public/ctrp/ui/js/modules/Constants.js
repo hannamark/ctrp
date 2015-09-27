@@ -18,6 +18,7 @@
             'SOURCE_CONTEXTS' : '/ctrp/source_contexts.json',
             'SOURCE_STATUSES' : '/ctrp/source_statuses.json',
             'A_USER': '/ctrp/users/',
+            'A_USER_SIGNUP': '/ctrp/sign_up',
             'USER_LIST': '/ctrp/users.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
