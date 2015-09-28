@@ -430,6 +430,7 @@
             appendNewTrialFlag();
             if (!vm.curTrial.new) {
                 appendOtherIds();
+                appendFses();
                 appendGrants();
                 appendStatuses();
                 appendIndIdes();
@@ -464,6 +465,21 @@
                 otherId.protocol_id = vm.curTrial.other_ids[i].protocol_id;
                 otherId._destroy = false;
                 vm.addedOtherIds.push(otherId);
+            }
+        }
+
+        function appendFses() {
+            for (var i = 0; i < vm.curTrial.trial_funding_sources.length; i++) {
+                var tfs = {};
+                tfs.id = vm.curTrial.trial_funding_sources[i].id;
+                tfs.organization_id = vm.curTrial.trial_funding_sources[i].organization_id;
+                _.each(vm.curTrial.funding_sources, function (fs) {
+                    if (tfs.organization_id == fs.id) {
+                        tfs.organization_name = fs.name;
+                    }
+                });
+                tfs._destroy = false;
+                vm.addedFses.push(tfs);
             }
         }
 
