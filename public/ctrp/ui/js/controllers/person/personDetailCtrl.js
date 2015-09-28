@@ -14,7 +14,6 @@
     function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService,
                               $scope, Common, sourceStatusObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
-        console.log("in person detail controller now");
         vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
@@ -28,7 +27,7 @@
         vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
         vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
 
-        console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
+        //console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -113,7 +112,7 @@
                    vm.savedSelection[index]._destroy = true; //mark it for destroy
                 });
             }
-            console.log("vm.savedSelection.length = " + vm.savedSelection.length);
+            // console.log("vm.savedSelection.length = " + vm.savedSelection.length);
         }; //batchSelect
 
 
@@ -165,7 +164,7 @@
                 _.each(selectedOrgs, function(anOrg, index) {
                     //prevent pushing duplicated org
                     if (Common.indexOfObjectInJsonArray(vm.savedSelection, "id", anOrg.id) == -1) {
-                        vm.savedSelection.unshift(anOrg);
+                        vm.savedSelection.unshift(OrgService.initSelectedOrg(anOrg));
                     }
                 });
 
