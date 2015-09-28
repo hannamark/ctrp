@@ -20,6 +20,7 @@
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.savedSelection = [];
+        vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
 
         //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
@@ -135,10 +136,7 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewPersonFlag();
-
-            //prepare the modal window for existing people
-            prepareModal();
-
+            watchOrgReceiver();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
             }
@@ -158,53 +156,22 @@
         }
 
 
-        function prepareModal() {
-            vm.confirmDelete = function (size) {
-                var modalInstance = $modal.open({
-                    animation: true,
-                    templateUrl: 'delete_confirm_template.html',
-                    controller: 'ModalInstancePersonCtrl as vm',
-                    size: size,
-                    resolve: {
-                        personId: function () {
-                            return vm.curPerson.id;
-                        }
+
+        /**
+         * watch organizations selected from the modal
+         */
+        function watchOrgReceiver() {
+            $scope.$watchCollection(function() {return vm.orgsArrayReceiver;}, function(selectedOrgs, oldVal) {
+                _.each(selectedOrgs, function(anOrg, index) {
+                    //prevent pushing duplicated org
+                    if (Common.indexOfObjectInJsonArray(vm.savedSelection, "id", anOrg.id) == -1) {
+                        vm.savedSelection.unshift(anOrg);
                     }
                 });
 
-                modalInstance.result.then(function (selectedItem) {
-                    console.log("about to delete the personDetail " + vm.curPerson.id);
-                    $state.go('main.people');
-                }, function () {
-                    console.log("operation canceled")
-                    // $state.go('main.personDetail', {personId: vm.curPerson.id});
-                });
+            }, true);
+        } //watchOrgReceiver
 
-            }; //confirmDelete
-
-
-            vm.searchOrgsForAffiliation = function(size) {
-                var modalInstance2 = $modal.open({
-                    animation: true,
-                    templateUrl: '/ctrp/ui/partials/modals/advanced_org_search_form_modal.html',
-                    controller: 'advancedOrgSearchModalCtrl as orgSearchModalView',
-                    size: size,
-                    //resolve: {
-                    //    personId: function () {
-                    //        return vm.curPerson.id;
-                    //    }
-                    //}
-                });
-
-                modalInstance2.result.then(function (selectedOrgs) {
-                   // console.log("received selected items: " + JSON.stringify(selectedOrgs));
-                    vm.batchSelect('selectAll', selectedOrgs);
-                }, function () {
-                    console.log("operation canceled");
-                });
-            };
-
-        }; //prepareModal
 
 
         /**
@@ -224,7 +191,7 @@
                     curOrg._destroy = poAff._destroy || false;
                     vm.savedSelection.push(curOrg);
                 }).catch(function(err) {
-                    console.log("error in retrieving organization name with id: " + poAff.organization_id);
+                    console.error("error in retrieving organization name with id: " + poAff.organization_id);
                 });
                 cb();
             };
