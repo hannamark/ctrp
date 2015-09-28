@@ -28,8 +28,7 @@
         vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
         vm.curOrg.source_status_id = vm.curOrg.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
         vm.curationReady = false;
-        console.log('received source status arra: ' + JSON.stringify(vm.sourceStatusArr));
-        console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
+        //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
         //update organization (vm.curOrg)
         vm.updateOrg = function() {

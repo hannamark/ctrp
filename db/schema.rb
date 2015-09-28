@@ -436,14 +436,6 @@ ActiveRecord::Schema.define(version: 20150928142827) do
   add_index "trials", ["sponsor_id"], name: "index_trials_on_sponsor_id", using: :btree
   add_index "trials", ["study_source_id"], name: "index_trials_on_study_source_id", using: :btree
 
-  create_table "universities", force: :cascade do |t|
-    t.string   "name"
-    t.string   "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "rank"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string   "email",                       limit: 255, default: "",    null: false
     t.string   "username",                    limit: 255, default: "",    null: false
