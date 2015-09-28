@@ -61,6 +61,7 @@
 
             PersonService.upsertPerson(newPerson).then(function (response) {
                 //console.log('response: ' + JSON.stringify(response));
+                vm.savedSelection = [];
                 if (newPerson.new) {
                     vm.resetForm();
                 } else {
