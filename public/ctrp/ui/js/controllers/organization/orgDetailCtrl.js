@@ -39,7 +39,12 @@
                 vm.curOrg.updated_by = UserService.getLoggedInUsername();
             }
             OrgService.upsertOrg(vm.curOrg).then(function(response) {
-                vm.resetForm();
+                if (vm.curOrg.new) {
+                    vm.resetForm();
+                } else {
+                    vm.curOrg.updated_by = response.updated_by;
+                    $state.go('main.organizations', {}, {reload: true});
+                }
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
