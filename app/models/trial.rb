@@ -68,23 +68,23 @@ class Trial < ActiveRecord::Base
   belongs_to :investigator, class_name: "Person"
   belongs_to :investigator_aff, class_name: "Organization"
   has_many :other_ids, -> { order 'other_ids.id' }
-  has_many :ind_ides
-  has_many :grants
-  has_many :trial_status_wrappers
+  has_many :ind_ides, -> { order 'ind_ides.id' }
+  has_many :grants, -> { order 'grants.id' }
+  has_many :trial_status_wrappers, -> { order 'trial_status_wrappers.id' }
   has_many :trial_funding_sources
   has_many :funding_sources, through: :trial_funding_sources, source: :organization
   has_many :trial_co_lead_orgs
   has_many :co_lead_orgs, through: :trial_co_lead_orgs, source: :organization
   has_many :trial_co_pis
   has_many :co_pis, through: :trial_co_pis, source: :person
-  has_many :oversight_authorities
+  has_many :oversight_authorities, -> { order 'oversight_authorities.id' }
   has_many :trial_documents
 
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
   accepts_nested_attributes_for :grants, allow_destroy: true
   accepts_nested_attributes_for :trial_status_wrappers, allow_destroy: true
-  accepts_nested_attributes_for :ind_ides, allow_destroy:  true
+  accepts_nested_attributes_for :ind_ides, allow_destroy: true
   accepts_nested_attributes_for :oversight_authorities, allow_destroy: true
   accepts_nested_attributes_for :trial_documents, allow_destroy: true
 

@@ -430,6 +430,10 @@
             appendNewTrialFlag();
             if (!vm.curTrial.new) {
                 appendOtherIds();
+                appendGrants();
+                appendStatuses();
+                appendIndIdes();
+                appendAuthorities();
             }
         }
 
@@ -445,6 +449,7 @@
             }
         }
 
+        // Append associations for existing Trial
         function appendOtherIds() {
             for (var i = 0; i < vm.curTrial.other_ids.length; i++) {
                 var otherId = {};
@@ -459,6 +464,77 @@
                 otherId.protocol_id = vm.curTrial.other_ids[i].protocol_id;
                 otherId._destroy = false;
                 vm.addedOtherIds.push(otherId);
+            }
+        }
+
+        function appendGrants() {
+            for (var i = 0; i < vm.curTrial.grants.length; i++) {
+                var grant = {};
+                grant.id = vm.curTrial.grants[i].id;
+                grant.funding_mechanism = vm.curTrial.grants[i].funding_mechanism;
+                grant.institute_code = vm.curTrial.grants[i].institute_code;
+                grant.serial_number = vm.curTrial.grants[i].serial_number;
+                grant.nci = vm.curTrial.grants[i].nci;
+                grant._destroy = false;
+                vm.addedGrants.push(grant);
+            }
+        }
+
+        function appendStatuses() {
+            for (var i = 0; i < vm.curTrial.trial_status_wrappers.length; i++) {
+                var statusWrapper = {};
+                statusWrapper.id = vm.curTrial.trial_status_wrappers[i].id;
+                statusWrapper.status_date = vm.curTrial.trial_status_wrappers[i].status_date ? DateService.convertISODateToLocaleDateStr(vm.curTrial.trial_status_wrappers[i].status_date) : '';
+                statusWrapper.trial_status_id = vm.curTrial.trial_status_wrappers[i].trial_status_id;
+                // For displaying status name in the table
+                _.each(vm.trialStatusArr, function (status) {
+                    if (status.id == vm.curTrial.trial_status_wrappers[i].trial_status_id) {
+                        statusWrapper.trial_status_name = status.name;
+                    }
+                });
+                statusWrapper.why_stopped = vm.curTrial.trial_status_wrappers[i].why_stopped;
+                statusWrapper._destroy = false;
+                vm.addedStatuses.push(statusWrapper);
+            }
+        }
+
+        function appendIndIdes() {
+            for (var i = 0; i < vm.curTrial.ind_ides.length; i++) {
+                var indIde = {};
+                indIde.id = vm.curTrial.ind_ides[i].id;
+                indIde.ind_ide_type = vm.curTrial.ind_ides[i].ind_ide_type;
+                indIde.ind_ide_number = vm.curTrial.ind_ides[i].ind_ide_number;
+                indIde.grantor = vm.curTrial.ind_ides[i].grantor;
+                indIde.holder_type_id = vm.curTrial.ind_ides[i].holder_type_id;
+                // For displaying name in the table
+                _.each(vm.holderTypeArr, function (holderType) {
+                    if (holderType.id == vm.curTrial.ind_ides[i].holder_type_id) {
+                        indIde.holder_type_name = holderType.name;
+                    }
+                });
+                indIde.nih_nci = vm.curTrial.ind_ides[i].id.nih_nci;
+                indIde.expanded_access = vm.curTrial.ind_ides[i].expanded_access;
+                indIde.expanded_access_type_id = vm.curTrial.ind_ides[i].expanded_access_type_id;
+                // For displaying name in the table
+                _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
+                    if (expandedAccessType.id == vm.curTrial.ind_ides[i].expanded_access_type_id) {
+                        indIde.expanded_access_type_name = expandedAccessType.name;
+                    }
+                });
+                indIde.exempt = vm.curTrial.ind_ides[i].exempt;
+                indIde._destroy = false;
+                vm.addedIndIdes.push(indIde);
+            }
+        }
+
+        function appendAuthorities() {
+            for (var i = 0; i < vm.curTrial.oversight_authorities.length; i++) {
+                var authority = {};
+                authority.id = vm.curTrial.oversight_authorities[i].id;
+                authority.country = vm.curTrial.oversight_authorities[i].country;
+                authority.organization = vm.curTrial.oversight_authorities[i].organization;
+                authority._destroy = false;
+                vm.addedAuthorities.push(authority);
             }
         }
 
