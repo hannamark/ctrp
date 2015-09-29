@@ -429,6 +429,7 @@
         function activate() {
             appendNewTrialFlag();
             if (!vm.curTrial.new) {
+                displayPOs();
                 appendOtherIds();
                 appendFses();
                 appendGrants();
@@ -447,6 +448,28 @@
         function appendNewTrialFlag() {
             if ($state.$current.name.indexOf('add') > -1) {
                 vm.curTrial.new = true;  //
+            }
+        }
+
+        function displayPOs() {
+            if (vm.curTrial.lead_org_id) {
+                $timeout( function(){ vm.selectedLoArray.push(vm.curTrial.lead_org); }, 1500);
+            }
+
+            if (vm.curTrial.pi_id) {
+                $timeout( function(){ vm.selectedPiArray.push(vm.curTrial.pi); }, 1500);
+            }
+
+            if (vm.curTrial.sponsor_id) {
+                $timeout( function(){ vm.selectedSponsorArray.push(vm.curTrial.sponsor); }, 1500);
+            }
+
+            if (vm.curTrial.investigator_id) {
+                $timeout( function(){ vm.selectedInvArray.push(vm.curTrial.investigator); }, 1500);
+            }
+
+            if (vm.curTrial.investigator_aff_id) {
+                $timeout( function(){ vm.selectedIaArray.push(vm.curTrial.investigator_aff); }, 1500);
             }
         }
 
