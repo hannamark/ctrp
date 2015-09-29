@@ -31,13 +31,13 @@
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
         //update organization (vm.curOrg)
-        vm.updateOrg = function() {
+        vm.updateOrg = function () {
             if (vm.curOrg.new) {
                 vm.curOrg.created_by = UserService.getLoggedInUsername();
             } else {
                 vm.curOrg.updated_by = UserService.getLoggedInUsername();
             }
-            OrgService.upsertOrg(vm.curOrg).then(function(response) {
+            OrgService.upsertOrg(vm.curOrg).then(function (response) {
                 if (vm.curOrg.new) {
                     vm.resetForm();
                 } else {
@@ -45,25 +45,24 @@
                     $state.go('main.organizations', {}, {reload: true});
                 }
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
-            }).catch(function(err) {
+            }).catch(function (err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
             });
         }; // updateOrg
 
 
-        vm.resetForm = function() {
+        vm.resetForm = function () {
             // console.log('resetting form');
             var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id'];
-          Object.keys(vm.curOrg).forEach(function(key) {
-              if (excludedKeys.indexOf(key) == -1) {
-                  vm.curOrg[key] = angular.isArray(vm.curOrg[key]) ? [] : '';
-                  $scope.organization_form.$setPristine();
-              }
-              //default context to ctrp
-              vm.curOrg.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
-          });
+            Object.keys(vm.curOrg).forEach(function (key) {
+                if (excludedKeys.indexOf(key) == -1) {
+                    vm.curOrg[key] = angular.isArray(vm.curOrg[key]) ? [] : '';
+                    $scope.organization_form.$setPristine();
+                }
+                //default context to ctrp
+                vm.curOrg.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
+            });
         };
-
 
 
         activate();
@@ -84,7 +83,6 @@
         }
 
 
-
         /**
          * Listen to the message for availability of states or provinces
          * for the selected country
@@ -97,11 +95,11 @@
                 vm.watchCountrySelection(vm.curOrg.country);
             }
 
-            $scope.$on(MESSAGES.STATES_AVAIL, function() {
+            $scope.$on(MESSAGES.STATES_AVAIL, function () {
                 vm.states = OrgService.getStatesOrProvinces();
             });
 
-            $scope.$on(MESSAGES.STATES_UNAVAIL, function() {
+            $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
                 vm.states = [];
             })
         } //listenToStatesProvinces
@@ -128,7 +126,7 @@
                     controller: 'ModalInstanceCtrl as vm',
                     size: size,
                     resolve: {
-                        orgId: function() {
+                        orgId: function () {
                             return vm.curOrg.id;
                         }
                     }
@@ -139,12 +137,11 @@
                     $state.go('main.organizations');
                 }, function () {
                     console.log("operation canceled")
-                   // $state.go('main.orgDetail', {orgId: vm.curOrg.id});
+                    // $state.go('main.orgDetail', {orgId: vm.curOrg.id});
                 });
 
             } //prepareModal
         }; //confirmDelete
-
 
 
     }
