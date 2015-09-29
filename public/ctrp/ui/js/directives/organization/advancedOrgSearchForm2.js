@@ -141,13 +141,10 @@
 
 
             /* resetSearch */
-            var resetCounts = 0;
             $scope.resetSearch = function () {
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
                 //first reset to CTRP, then to All Context
-                $scope.searchParams.source_context = resetCounts % 2 == 0 ? 'CTRP' : '';
-                resetCounts++;
-
+                $scope.searchParams.source_context = 'CTRP';
                 var excludedKeys = ['source_context', 'alias'];
                 Object.keys($scope.searchParams).forEach(function (key) {
 
