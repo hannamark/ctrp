@@ -339,11 +339,44 @@
 
         vm.watchOption = function(type) {
             if (type == 'primary_purpose') {
-                ppFieldChange();
+                var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
+                if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
+                    vm.showPrimaryPurposeOther = true;
+                } else {
+                    vm.showPrimaryPurposeOther = false;
+                    vm.curTrial.primary_purpose_other = '';
+                }
             } else if (type == 'secondary_purpose') {
-                spFieldChange();
+                var otherObj = vm.secondaryPurposeArr.filter(findOtherOption);
+                if (otherObj[0].id == vm.curTrial.secondary_purpose_id) {
+                    vm.showSecondaryPurposeOther = true;
+                } else {
+                    vm.showSecondaryPurposeOther = false;
+                    vm.curTrial.secondary_purpose_other = '';
+                }
             } else if (type == 'responsible_party') {
-                rpFieldChange();
+                var piOption = vm.responsiblePartyArr.filter(findPiOption);
+                var siOption = vm.responsiblePartyArr.filter(findSiOption);
+                if (piOption[0].id == vm.curTrial.responsible_party_id) {
+                    vm.showInvestigator = true;
+                    vm.showInvSearchBtn = false;
+                    vm.curTrial.investigator_title = 'Principal Investigator';
+                    // Copy the value from PI and Sponsor
+                    vm.selectedInvArray = vm.selectedPiArray;
+                    vm.selectedIaArray = vm.selectedSponsorArray;
+                } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
+                    vm.showInvestigator = true;
+                    vm.showInvSearchBtn = true;
+                    vm.curTrial.investigator_title = 'Principal Investigator';
+                    // Copy the value from PI and Sponsor
+                    vm.selectedInvArray = vm.selectedPiArray;
+                    vm.selectedIaArray = vm.selectedSponsorArray;
+                } else {
+                    vm.showInvestigator = false;
+                    vm.curTrial.investigator_title = '';
+                    vm.selectedInvArray = [];
+                    vm.selectedIaArray = [];
+                }
             } else if (type == 'trial_status') {
                 var stopOptions = vm.trialStatusArr.filter(findStopOptions);
                 for (var i = 0; i < stopOptions.length; i++) {
@@ -459,9 +492,6 @@
             var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
             if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
                 vm.showPrimaryPurposeOther = true;
-            } else {
-                vm.showPrimaryPurposeOther = false;
-                vm.curTrial.primary_purpose_other = '';
             }
         }
 
@@ -469,9 +499,6 @@
             var otherObj = vm.secondaryPurposeArr.filter(findOtherOption);
             if (otherObj[0].id == vm.curTrial.secondary_purpose_id) {
                 vm.showSecondaryPurposeOther = true;
-            } else {
-                vm.showSecondaryPurposeOther = false;
-                vm.curTrial.secondary_purpose_other = '';
             }
         }
 
@@ -481,22 +508,8 @@
             if (piOption[0].id == vm.curTrial.responsible_party_id) {
                 vm.showInvestigator = true;
                 vm.showInvSearchBtn = false;
-                vm.curTrial.investigator_title = 'Principal Investigator';
-                // Copy the value from PI and Sponsor
-                vm.selectedInvArray = vm.selectedPiArray;
-                vm.selectedIaArray = vm.selectedSponsorArray;
             } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
                 vm.showInvestigator = true;
-                vm.showInvSearchBtn = true;
-                vm.curTrial.investigator_title = 'Principal Investigator';
-                // Copy the value from PI and Sponsor
-                vm.selectedInvArray = vm.selectedPiArray;
-                vm.selectedIaArray = vm.selectedSponsorArray;
-            } else {
-                vm.showInvestigator = false;
-                vm.curTrial.investigator_title = '';
-                vm.selectedInvArray = [];
-                vm.selectedIaArray = [];
             }
         }
 
