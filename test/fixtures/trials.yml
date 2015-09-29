@@ -37,6 +37,9 @@
 #  research_category_id    :integer
 #  investigator_title      :string(255)
 #  investigator_aff_id     :integer
+#  created_by              :string(255)
+#  updated_by              :string(255)
+#  is_draft                :boolean
 #
 # Indexes
 #

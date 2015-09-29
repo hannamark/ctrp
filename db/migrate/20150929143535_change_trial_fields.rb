@@ -11,5 +11,9 @@ class ChangeTrialFields < ActiveRecord::Migration
 
     remove_column :trials, :authority_country, :string
     remove_column :trials, :authority_org, :string
+
+    add_column :trials, :created_by, :string, :limit => 255
+    add_column :trials, :updated_by, :string, :limit => 255
+    add_column :trials, :is_draft, :boolean
   end
 end

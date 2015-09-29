@@ -434,6 +434,9 @@ ActiveRecord::Schema.define(version: 20150929144934) do
     t.integer  "research_category_id"
     t.string   "investigator_title",      limit: 255
     t.integer  "investigator_aff_id"
+    t.string   "created_by",              limit: 255
+    t.string   "updated_by",              limit: 255
+    t.boolean  "is_draft"
   end
 
   add_index "trials", ["investigator_aff_id"], name: "index_trials_on_investigator_aff_id", using: :btree
