@@ -13,7 +13,7 @@
         'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', '$log', '$compile'];
 
     function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $log,
-                                       MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile) {
+                                        MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile) {
 
         var directiveObj = {
             restrict: 'E',
@@ -37,22 +37,21 @@
         function linkFn(scope, element, attrs) {
             //console.log('showGrid: ' + attrs.showGrid);
             //console.log('maxRowSelectable: ' + attrs.maxRowSelectable);
-            scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
+            scope.$on(MESSAGES.PRIVILEGE_CHANGED, function () {
                 console.log('received notification in search org forms');
             });
 
-             // $compile(element.contents())(scope);
+            // $compile(element.contents())(scope);
         } //linkFn
 
 
         function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
 
-            console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             // console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
             //console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
-            $scope.selectedRows=[];
+            $scope.selectedRows = [];
             $scope.sourceContextArr = [];
             $scope.sourceStatuses = [];
             $scope.nullifiedId = '';
@@ -74,27 +73,27 @@
             $scope.showGrid = $scope.showGrid == undefined ? false : $scope.showGrid;
 
 
-            $scope.typeAheadNameSearch = function() {
+            $scope.typeAheadNameSearch = function () {
                 var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
                 //search context: 'CTRP', to avoid duplicate names
-                return OrgService.searchOrgs({name: wildcardOrgName, source_context : "CTRP"}).then(function(res) {
+                return OrgService.searchOrgs({name: wildcardOrgName, source_context: "CTRP"}).then(function (res) {
                     //remove duplicates
                     var uniqueNames = [];
                     var orgNames = [];
-                    orgNames = res.orgs.map(function(org) {
+                    orgNames = res.orgs.map(function (org) {
                         return org.name;
                     });
                     //console.log('orgNames: ' + orgNames);
 
                     /*
-                    orgNames.forEach(function(name, idex) {
-                       if (uniqueNames.indexOf(name) == -1) {
-                           uniqueNames.push(name);
-                       }
-                    });
-                    */
+                     orgNames.forEach(function(name, idex) {
+                     if (uniqueNames.indexOf(name) == -1) {
+                     uniqueNames.push(name);
+                     }
+                     });
+                     */
 
-                    return uniqueNames = orgNames.map(function(name) {
+                    return uniqueNames = orgNames.map(function (name) {
                         if (uniqueNames.indexOf(name) == -1) {
                             // console.log("not containing: " + name);
                             return name;
@@ -112,13 +111,13 @@
                 }
 
                 OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                     // console.log("received data for org search: " + JSON.stringify(data));
+                    // console.log("received data for org search: " + JSON.stringify(data));
                     if ($scope.showGrid && data.orgs) {
                         $scope.gridOptions.data = data.orgs;
                         $scope.gridOptions.totalItems = data.total;
 
                         //pin the selected rows, if any, at the top of the results
-                        _.each($scope.selectedRows, function(curRow, idx) {
+                        _.each($scope.selectedRows, function (curRow, idx) {
                             var ctrpId = curRow.entity.id;
                             var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
                             if (indexOfCurRowInGridData > -1) {
@@ -142,15 +141,21 @@
 
 
             /* resetSearch */
+            var resetCounts = 0;
             $scope.resetSearch = function () {
-                // $scope.states.length = 0;
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
-                Object.keys($scope.searchParams).forEach(function(key) {
-                    if (key != 'alias') {
+                //first reset to CTRP, then to All Context
+                $scope.searchParams.source_context = resetCounts % 2 == 0 ? 'CTRP' : '';
+                resetCounts++;
+
+                var excludedKeys = ['source_context', 'alias'];
+                Object.keys($scope.searchParams).forEach(function (key) {
+
+                    if (excludedKeys.indexOf(key) == -1) {
                         $scope.searchParams[key] = '';
-                    } else {
-                        $scope.searchParams['alias'] = true;
                     }
+                    $scope.searchParams['alias'] = true;
+
                 });
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
@@ -174,13 +179,13 @@
                 if (isNullified || isActive) {
                     //warning to user for nullifying active entity
 
-                    if(isActive)
+                    if (isActive)
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
                     else
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
                     $scope.nullifiedId = '';
                     $scope.nullifiedOrgName = '';
-                   //  console.log('cannot nullify this row, because it is active');
+                    //  console.log('cannot nullify this row, because it is active');
                 } else {
                     $scope.warningMessage = '';
                     $scope.nullifiedId = rowEntity.id || '';
@@ -190,23 +195,20 @@
 
 
             /* commit nullification */
-            $scope.commitNullification = function() {
+            $scope.commitNullification = function () {
 
-                OrgService.curateOrg($scope.toBeCurated).then(function(res) {
+                OrgService.curateOrg($scope.toBeCurated).then(function (res) {
                     // console.log('successful in curation: res is: ' + JSON.stringify(res));
                     initCurationObj();
                     clearSelectedRows();
                     $scope.searchOrgs();
                     toastr.success('Curation was successful', 'Curated!');
-                }).catch(function(err) {
+                }).catch(function (err) {
                     toastr.error('There was an error in curation', 'Curation error');
                     console.log('error in curation, err is: ' + JSON.stringify(err));
                 });
 
             }; //commitNullification
-
-
-
 
 
             activate();
@@ -248,39 +250,38 @@
             } //getPromisedData
 
 
-
             /**
              * Listen to the message for availability of states or provinces
              * for the selected country
              */
             /*
-            function listenToStatesProvinces() {
+             function listenToStatesProvinces() {
 
-                $scope.watchCountrySelection($scope.searchParams.country);
+             $scope.watchCountrySelection($scope.searchParams.country);
 
-                //country change triggers searchOrgs() function
-                $scope.$watch('searchParams.country', function (newVal, oldVal) {
-                    if (oldVal != newVal) {
-                        $scope.searchOrgs();
-                    }
-                }, true);
+             //country change triggers searchOrgs() function
+             $scope.$watch('searchParams.country', function (newVal, oldVal) {
+             if (oldVal != newVal) {
+             $scope.searchOrgs();
+             }
+             }, true);
 
 
-                $scope.$on(MESSAGES.STATES_AVAIL, function () {
-                    console.log("states available for country: " + $scope.searchParams.country);
-                    $scope.states = OrgService.getStatesOrProvinces();
-                });
+             $scope.$on(MESSAGES.STATES_AVAIL, function () {
+             console.log("states available for country: " + $scope.searchParams.country);
+             $scope.states = OrgService.getStatesOrProvinces();
+             });
 
-                $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
-                    $scope.states = [];
-                });
-            }  //listenToStatesProvinces
+             $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
+             $scope.states = [];
+             });
+             }  //listenToStatesProvinces
 
-            */
+             */
 
 
             function watchCountryAndGetStates() {
-                $scope.$watch('searchParams.country', function(newVal, oldVal) {
+                $scope.$watch('searchParams.country', function (newVal, oldVal) {
                     $scope.states = [];
 
                     if (!!newVal && newVal != oldVal) {
@@ -294,8 +295,6 @@
 
                 }, true);
             } //watchCountryAndGetStates
-
-
 
 
             /**
@@ -327,7 +326,6 @@
                 //do the search with the updated sorting
                 $scope.searchOrgs();
             }; //sortChangedCallBack
-
 
 
             /**
@@ -435,12 +433,12 @@
                 /**
                  * Toggle curation on and off
                  */
-                $scope.toggleCurationMode = function() {
+                $scope.toggleCurationMode = function () {
                     $scope.curationShown = !$scope.curationShown;
                 };
 
 
-                $scope.$watch('curationShown', function(newVal, oldVal) {
+                $scope.$watch('curationShown', function (newVal, oldVal) {
 
                     $scope.gridOptions.columnDefs[0].visible = newVal;
                     if (newVal) {
@@ -466,13 +464,11 @@
             } //prepareGridOptions
 
 
-
-
             /**
              * watch the readiness of curation submission
              */
             function watchReadinessOfCuration() {
-                $scope.$watch('nullifiedId', function(curVal, preVal) {
+                $scope.$watch('nullifiedId', function (curVal, preVal) {
                     initCurationObj();
                     $scope.toBeCurated.id_to_be_nullified = $scope.nullifiedId;
                     if ($scope.selectedRows.length == $scope.maxRowSelectable && $scope.nullifiedId) {
@@ -489,7 +485,6 @@
                     }
                 }, true);
             } //watchReadinessOfCuration
-
 
 
             /**
@@ -520,7 +515,6 @@
             }
 
 
-
             function hideHyperLinkInModal() {
                 $scope.$watch('usedInModal', function (newVal, oldVal) {
                     // $scope.resetSearch();
@@ -544,13 +538,13 @@
 
 
             function watchUserPrivilegeChange() {
-                $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
-                   $scope.curationShown = true;
+                $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function () {
+                    $scope.curationShown = true;
                     console.log('toggling curation mode')
                     //toggleCurationMode();
                 });
             }
         } //ctrpAdvancedOrgSearchController
     }
-    
+
 })();
