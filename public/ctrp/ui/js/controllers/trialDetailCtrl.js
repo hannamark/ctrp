@@ -66,22 +66,32 @@
         vm.updateTrial = function() {
             if (vm.selectedLoArray.length > 0) {
                 vm.curTrial.lead_org_id = vm.selectedLoArray[0].id
+            } else {
+                vm.curTrial.lead_org_id = null;
             }
 
             if (vm.selectedPiArray.length > 0) {
                 vm.curTrial.pi_id = vm.selectedPiArray[0].id;
+            } else {
+                vm.curTrial.pi_id = null;
             }
 
             if (vm.selectedSponsorArray.length > 0) {
                 vm.curTrial.sponsor_id = vm.selectedSponsorArray[0].id;
+            } else {
+                vm.curTrial.sponsor_id = null;
             }
 
             if (vm.selectedInvArray.length > 0) {
                 vm.curTrial.investigator_id = vm.selectedInvArray[0].id;
+            } else {
+                vm.curTrial.investigator_id = null;
             }
 
             if (vm.selectedIaArray.length > 0) {
                 vm.curTrial.investigator_aff_id = vm.selectedIaArray[0].id;
+            } else {
+                vm.curTrial.investigator_aff_id = null;
             }
 
             // Construct nested attributes
@@ -331,44 +341,11 @@
 
         vm.watchOption = function(type) {
             if (type == 'primary_purpose') {
-                var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
-                if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
-                    vm.showPrimaryPurposeOther = true;
-                } else {
-                    vm.showPrimaryPurposeOther = false;
-                    vm.curTrial.primary_purpose_other = '';
-                }
+                ppFieldChange();
             } else if (type == 'secondary_purpose') {
-                var otherObj = vm.secondaryPurposeArr.filter(findOtherOption);
-                if (otherObj[0].id == vm.curTrial.secondary_purpose_id) {
-                    vm.showSecondaryPurposeOther = true;
-                } else {
-                    vm.showSecondaryPurposeOther = false;
-                    vm.curTrial.secondary_purpose_other = '';
-                }
+                spFieldChange();
             } else if (type == 'responsible_party') {
-                var piOption = vm.responsiblePartyArr.filter(findPiOption);
-                var siOption = vm.responsiblePartyArr.filter(findSiOption);
-                if (piOption[0].id == vm.curTrial.responsible_party_id) {
-                    vm.showInvestigator = true;
-                    vm.showInvSearchBtn = false;
-                    vm.curTrial.investigator_title = 'Principal Investigator';
-                    // Copy the value from PI and Sponsor
-                    vm.selectedInvArray = vm.selectedPiArray;
-                    vm.selectedIaArray = vm.selectedSponsorArray;
-                } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
-                    vm.showInvestigator = true;
-                    vm.showInvSearchBtn = true;
-                    vm.curTrial.investigator_title = 'Principal Investigator';
-                    // Copy the value from PI and Sponsor
-                    vm.selectedInvArray = vm.selectedPiArray;
-                    vm.selectedIaArray = vm.selectedSponsorArray;
-                } else {
-                    vm.showInvestigator = false;
-                    vm.curTrial.investigator_title = '';
-                    vm.selectedInvArray = [];
-                    vm.selectedIaArray = [];
-                }
+                rpFieldChange();
             } else if (type == 'trial_status') {
                 var stopOptions = vm.trialStatusArr.filter(findStopOptions);
                 for (var i = 0; i < stopOptions.length; i++) {
@@ -430,6 +407,9 @@
             appendNewTrialFlag();
             if (!vm.curTrial.new) {
                 displayPOs();
+                ppFieldChange();
+                spFieldChange();
+                rpFieldChange();
                 appendOtherIds();
                 appendFses();
                 appendGrants();
@@ -470,6 +450,52 @@
 
             if (vm.curTrial.investigator_aff_id) {
                 $timeout( function(){ vm.selectedIaArray.push(vm.curTrial.investigator_aff); }, 1500);
+            }
+        }
+
+        // Display/hide dynamic fields
+        function ppFieldChange() {
+            var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
+            if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
+                vm.showPrimaryPurposeOther = true;
+            } else {
+                vm.showPrimaryPurposeOther = false;
+                vm.curTrial.primary_purpose_other = '';
+            }
+        }
+
+        function spFieldChange() {
+            var otherObj = vm.secondaryPurposeArr.filter(findOtherOption);
+            if (otherObj[0].id == vm.curTrial.secondary_purpose_id) {
+                vm.showSecondaryPurposeOther = true;
+            } else {
+                vm.showSecondaryPurposeOther = false;
+                vm.curTrial.secondary_purpose_other = '';
+            }
+        }
+
+        function rpFieldChange() {
+            var piOption = vm.responsiblePartyArr.filter(findPiOption);
+            var siOption = vm.responsiblePartyArr.filter(findSiOption);
+            if (piOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.showInvestigator = true;
+                vm.showInvSearchBtn = false;
+                vm.curTrial.investigator_title = 'Principal Investigator';
+                // Copy the value from PI and Sponsor
+                vm.selectedInvArray = vm.selectedPiArray;
+                vm.selectedIaArray = vm.selectedSponsorArray;
+            } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.showInvestigator = true;
+                vm.showInvSearchBtn = true;
+                vm.curTrial.investigator_title = 'Principal Investigator';
+                // Copy the value from PI and Sponsor
+                vm.selectedInvArray = vm.selectedPiArray;
+                vm.selectedIaArray = vm.selectedSponsorArray;
+            } else {
+                vm.showInvestigator = false;
+                vm.curTrial.investigator_title = '';
+                vm.selectedInvArray = [];
+                vm.selectedIaArray = [];
             }
         }
 
