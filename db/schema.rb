@@ -517,13 +517,7 @@ ActiveRecord::Schema.define(version: 20150929144934) do
   add_foreign_key "organizations", "source_statuses"
   add_foreign_key "other_ids", "protocol_id_origins"
   add_foreign_key "other_ids", "trials"
-<<<<<<< HEAD
   add_foreign_key "oversight_authorities", "trials"
-  add_foreign_key "people", "source_clusters"
-||||||| merged common ancestors
-  add_foreign_key "people", "source_clusters"
-=======
->>>>>>> develop
   add_foreign_key "people", "source_contexts"
   add_foreign_key "people", "source_statuses"
   add_foreign_key "po_affiliations", "organizations"
