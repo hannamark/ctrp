@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   scope "/ctrp" do
     devise_for :users
+    root 'ctrp#index'
 
     mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
@@ -60,7 +61,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :after_signup
+    #resources :after_signup
 
     resources :people do
       collection do
@@ -88,17 +89,17 @@ Rails.application.routes.draw do
     # Devise related routes
     devise_scope :user do
       delete "sign_out" => "sessions#destroyrailslogin", :as => :destroyrailslogin_session
-      #get "sign_up" => "registrations#new"
     end
 
     devise_for :ldap_users, :local_users, skip: [ :sessions ]
     devise_for :omniauth_users, :controllers => { :omniauth_callbacks => "omniauth_users/omniauth_callbacks" }
-    devise_for :users, :controllers =>  { registrations: "registrations" }
     devise_scope :local_user do
       get 'sign_in' => 'sessions#new', :as => :new_session
       post 'sign_in' => 'sessions#create', :as => :create_session
       post 'sign_out' => 'sessions#destroy', :as => :destroy_session
       post 'sign_up' => 'registrations#create', :as => :create_registration
+      get 'change_password' => 'registrations#edit', :as => :edit_registration
+      post 'change_password' => 'registrations#update', :as => :update_registration
     end
 
     scope '/registry' do

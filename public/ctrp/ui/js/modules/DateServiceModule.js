@@ -58,6 +58,8 @@
             var dateStr = '';
             if (!!isoDate) {
                 var date = new Date(isoDate);
+                //adjust timezone offset * 600000 ms
+                date = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
                 var day = date.getDate();
                 var year = date.getFullYear();
                 var monthNum = date.getMonth() + 1;

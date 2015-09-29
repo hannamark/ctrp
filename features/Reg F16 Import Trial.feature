@@ -26,6 +26,11 @@ And the Search Studies feature indicates that the trial has not been registered 
 And the trial NCT ID, Status, and Study Title, Conditions, and Interventions are displayed
 Then I can import the trial information from ClinicalTrials.gov into CTRP
 And the trial Study Souce will be listed as Expanded Access
+And the trial status will match the trial status in ClinicalTrials.gov as:
+|Available|
+|No Longer Available|
+|Temporarily not Available|
+|Approved for Marketing|
 @PO-6482
 
 Scenario: #4 I can import a trial with Study Source 'Other' by NCT ID from ClinicalTrials.gov

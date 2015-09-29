@@ -81,10 +81,10 @@
                             $scope.selectedPersonsArray = selectedPersons;
                         } else {
                             //concatenate
-                            _.each(selectedPersons, function(selectedPerson, index) {
+                            _.each(selectedPersons, function(aPerson, index) {
                                 //prevent pushing duplicated org
-                                if (Common.indexOfObjectInJsonArray($scope.savedSelection, "id", selectedPerson.id) == -1) {
-                                    $scope.savedSelection.push(selectedPerson);
+                                if (Common.indexOfObjectInJsonArray($scope.savedSelection, "id", aPerson.id) == -1) {
+                                    $scope.savedSelection.push(aPerson);
                                 }
                             });
 

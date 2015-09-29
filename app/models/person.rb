@@ -17,6 +17,8 @@
 #  mname             :string(255)
 #  lname             :string(255)
 #  ctrp_id           :integer
+#  created_by        :string
+#  updated_by        :string
 #
 # Indexes
 #

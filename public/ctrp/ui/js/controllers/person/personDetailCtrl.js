@@ -8,18 +8,18 @@
     angular.module('ctrpApp')
         .controller('personDetailCtrl', personDetailCtrl);
 
-    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService',
+    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService',
         '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
 
-    function personDetailCtrl(personDetailObj, PersonService, toastr, DateService,
+    function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService,
                               $scope, Common, sourceStatusObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
-        console.log("in person detail controller now");
         vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.savedSelection = [];
+        vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
 
         //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
@@ -27,7 +27,7 @@
         vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
         vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
 
-        console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
+        //console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -53,9 +53,21 @@
             newPerson.person = vm.curPerson;
 
             // console.log("newPerson is: " + JSON.stringify(newPerson));
+            if (newPerson.new) {
+                newPerson.person.created_by = UserService.getLoggedInUsername();
+            } else {
+                newPerson.person.updated_by = UserService.getLoggedInUsername();
+            }
 
             PersonService.upsertPerson(newPerson).then(function (response) {
-                vm.resetForm();
+                //console.log('response: ' + JSON.stringify(response));
+                vm.savedSelection = [];
+                if (newPerson.new) {
+                    vm.resetForm();
+                } else {
+                    vm.curPerson.updated_by = response.data.updated_by;
+                    $state.go('main.people', {}, {reload: true});
+                }
                 toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
@@ -64,8 +76,9 @@
 
 
         vm.resetForm = function() {
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
             Object.keys(vm.curPerson).forEach(function(key) {
-                if (key != 'new' && key != 'po_affiliations' && key != 'source_status_id') {
+                if (excludedKeys.indexOf(key) == -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
                     $scope.person_form.$setPristine();
                 }
@@ -101,7 +114,7 @@
                    vm.savedSelection[index]._destroy = true; //mark it for destroy
                 });
             }
-            console.log("vm.savedSelection.length = " + vm.savedSelection.length);
+            // console.log("vm.savedSelection.length = " + vm.savedSelection.length);
         }; //batchSelect
 
 
@@ -124,10 +137,7 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewPersonFlag();
-
-            //prepare the modal window for existing people
-            prepareModal();
-
+            watchOrgReceiver();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
             }
@@ -147,53 +157,22 @@
         }
 
 
-        function prepareModal() {
-            vm.confirmDelete = function (size) {
-                var modalInstance = $modal.open({
-                    animation: true,
-                    templateUrl: 'delete_confirm_template.html',
-                    controller: 'ModalInstancePersonCtrl as vm',
-                    size: size,
-                    resolve: {
-                        personId: function () {
-                            return vm.curPerson.id;
-                        }
+
+        /**
+         * watch organizations selected from the modal
+         */
+        function watchOrgReceiver() {
+            $scope.$watchCollection(function() {return vm.orgsArrayReceiver;}, function(selectedOrgs, oldVal) {
+                _.each(selectedOrgs, function(anOrg, index) {
+                    //prevent pushing duplicated org
+                    if (Common.indexOfObjectInJsonArray(vm.savedSelection, "id", anOrg.id) == -1) {
+                        vm.savedSelection.unshift(OrgService.initSelectedOrg(anOrg));
                     }
                 });
 
-                modalInstance.result.then(function (selectedItem) {
-                    console.log("about to delete the personDetail " + vm.curPerson.id);
-                    $state.go('main.people');
-                }, function () {
-                    console.log("operation canceled")
-                    // $state.go('main.personDetail', {personId: vm.curPerson.id});
-                });
+            }, true);
+        } //watchOrgReceiver
 
-            }; //confirmDelete
-
-
-            vm.searchOrgsForAffiliation = function(size) {
-                var modalInstance2 = $modal.open({
-                    animation: true,
-                    templateUrl: '/ctrp/ui/partials/modals/advanced_org_search_form_modal.html',
-                    controller: 'advancedOrgSearchModalCtrl as orgSearchModalView',
-                    size: size,
-                    //resolve: {
-                    //    personId: function () {
-                    //        return vm.curPerson.id;
-                    //    }
-                    //}
-                });
-
-                modalInstance2.result.then(function (selectedOrgs) {
-                   // console.log("received selected items: " + JSON.stringify(selectedOrgs));
-                    vm.batchSelect('selectAll', selectedOrgs);
-                }, function () {
-                    console.log("operation canceled");
-                });
-            };
-
-        }; //prepareModal
 
 
         /**
@@ -213,7 +192,7 @@
                     curOrg._destroy = poAff._destroy || false;
                     vm.savedSelection.push(curOrg);
                 }).catch(function(err) {
-                    console.log("error in retrieving organization name with id: " + poAff.organization_id);
+                    console.error("error in retrieving organization name with id: " + poAff.organization_id);
                 });
                 cb();
             };

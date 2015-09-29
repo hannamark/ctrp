@@ -245,15 +245,11 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="alert alert-danger fade in" ng-show="warningMessage != false">
+        <div class="row" ng-hide="warningMessage==''" ng-cloak>
+            <div class="alert alert-danger fade in">
                 <a href="" class="close" data-dismiss="alert">&times;</a>
                 <strong>{{warningMessage}}</strong>
             </div>
-            <!--<div class="alert alert-info fade in" ng-show="personView.curationReady">
-                <a href="" class="close" data-dismiss="alert">&times;</a>
-                <strong>Please click the above Commit button to nullify the selected person</strong>
-            </div>-->
         </div> <br />
         <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
             <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>

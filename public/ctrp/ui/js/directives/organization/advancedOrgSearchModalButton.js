@@ -37,7 +37,7 @@
 
         function linkerFn(scope, element, attrs) {
             $compile(element.contents())(scope);
-            console.log('in linkerFn for orgAdvSearchModal Button');
+            //console.log('in linkerFn for orgAdvSearchModal Button');
             //  scope.useBuiltInTemplate = attrs.useBuiltInTemplate == undefined ? false : true;
         } //linkerFn
 
@@ -51,6 +51,7 @@
             $scope.allowOverwrite = $scope.allowOverwrite == undefined ? true : $scope.allowOverwrite;
             //$scope.useBuiltInTemplate = $scope.useBuiltInTemplate == undefined ? false : $scope.useBuiltInTemplate;
             var modalOpened = false;
+            console.log('in button controller, use built-in template: ' + $scope.useBuiltInTemplate + ', maxRowSelectable:' + $scope.maxRowSelectable);
 
 
             //console.log('maxRow selectable: ' + $scope.maxRowSelectable + ', builtInTemplate: ' + $scope.useBuiltInTemplate);
@@ -64,7 +65,7 @@
                     size: size,
                     resolve: {
                         maxRowSelectable: function () {
-                            return $scope.maxRowSelectable;
+                            return $scope.maxRowSelectable || 'undefined';
                         }
                     }
                 });
@@ -129,9 +130,8 @@
      */
     function advancedOrgSearchForm2ModalCtrl($scope, $modalInstance, maxRowSelectable) {
         var vm = this;
-        vm.maxRowSelectable = maxRowSelectable || undefined; //to be passed to the adv org search form
-
-        console.log('in Modal, received promise maxRowSelectable: ' + vm.maxRowSelectable);
+        vm.maxRowSelectable = maxRowSelectable || 'undefined'; //to be passed to the adv org search form
+        //console.log('in Modal, received promise maxRowSelectable: ' + vm.maxRowSelectable);
         $scope.orgSearchResults = {orgs: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
         $scope.selectedOrgsArray = [];  // orgs selected in the modal
 

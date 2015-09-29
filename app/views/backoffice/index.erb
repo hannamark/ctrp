@@ -7,6 +7,7 @@
 <div>
   <img src="/ctrp/static/images/NIH-red-logo.png"/> <b>National Cancer Institute | Clinical Trials Reporting Program</b>
 </div>
+<div style="margin-left:10px;">
 <h3>CTRP Backoffice</h3>
 <a href="/ctrp/ui#/main/welcome">Back to Angular</a>
 
@@ -23,21 +24,21 @@
 <h4>App Debugging</h4>
 <div>
   <ul>
-    <li>Rails Environment: <%= Rails.env%></li>
+    <li><%= link_to 'Download Rails application log', backoffice_download_log_url %></li>
+    <li>Rails environment: <%= Rails.env%></li>
     <li>Git information:
       <ul>
         <li>Branch: <%=CTRP::GIT_BRANCH %></li>
-        <li>Short Revision: <%=CTRP::GIT_SHORT_REVISION %></li>
-        <li>Full Revision: <%=CTRP::GIT_FULL_REVISION %></li>
+        <li>Short revision: <%=CTRP::GIT_SHORT_REVISION %></li>
+        <li>Full revision: <a target="_blank" href="https://github.com/cbiit/ctrp/commit/<%=CTRP::GIT_FULL_REVISION %>"><%=CTRP::GIT_FULL_REVISION %></a></li>
       </ul>
     </li>
-    <li><%= link_to 'Download Rails Application Log', backoffice_download_log_url %></li>
-    <li>Rails ENV Dump: <br />
+    <li>Rails ENV dump: <br />
       <%= debug ENV.to_h.to_yaml %></li>
   </ul>
 
 </div>
-
+</div>
 
 </body>
 </html>
