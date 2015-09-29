@@ -35,8 +35,8 @@
         /************************* implementations below *******************************/
 
         function linkFn(scope, element, attrs) {
-            console.log('showGrid: ' + attrs.showGrid);
-            console.log('maxRowSelectable: ' + attrs.maxRowSelectable);
+            //console.log('showGrid: ' + attrs.showGrid);
+            //console.log('maxRowSelectable: ' + attrs.maxRowSelectable);
             scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
                 console.log('received notification in search org forms');
             });
@@ -60,8 +60,8 @@
             $scope.curationModeEnabled = false;
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
-            $scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? Number.MAX_SAFE_INTEGER : $scope.maxRowSelectable ; //default to MAX
-            //default to curationMode eanbled to true if max row selectable is > 0
+            $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
+            //console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
             } else {
@@ -344,7 +344,7 @@
                             $scope.$parent.selectedOrgsArray.push(row.entity);
                         } else {
                             var deselectedRow = $scope.selectedRows.pop();
-                            deselectedRow.isSelected = false;
+                            //deselectedRow.isSelected = false;
                             $scope.nullifiedId = deselectedRow.entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
                             $scope.selectedRows.unshift(row);
                             $scope.gridApi.grid.refresh(); //refresh grid
@@ -368,7 +368,7 @@
 
                         if (needleIndex > -1) {
                             var deselectedRowArr = $scope.selectedRows.splice(needleIndex, 1);
-                            deselectedRowArr[0].isSelected = false;
+                            //deselectedRowArr[0].isSelected = false;
                             //reset the nullifiedId if the row is de-selected
                             $scope.nullifiedId = deselectedRowArr[0].entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
                             $scope.curationReady = false;
