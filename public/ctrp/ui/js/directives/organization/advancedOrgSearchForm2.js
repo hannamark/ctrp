@@ -46,7 +46,8 @@
 
 
         function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
-            $log.info('in ctrpAdvancedOrgSearchController');
+
+            console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             // console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
             //console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
@@ -55,7 +56,7 @@
             $scope.sourceContextArr = [];
             $scope.sourceStatuses = [];
             $scope.nullifiedId = '';
-            $scope.warningMessage = false;
+            $scope.warningMessage = '';
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
 
@@ -171,17 +172,19 @@
                 var isActive = rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1;
                 var isNullified = rowEntity.source_status && rowEntity.source_status.indexOf('Nul') > -1;
                 if (isNullified || isActive) {
-                    //TODO: warning to user for nullifying active entity
+                    //warning to user for nullifying active entity
 
                     if(isActive)
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
                     else
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
                     $scope.nullifiedId = '';
-                    console.log('cannot nullify this row, because it is active');
+                    $scope.nullifiedOrgName = '';
+                   //  console.log('cannot nullify this row, because it is active');
                 } else {
-                    $scope.warningMessage = false;
+                    $scope.warningMessage = '';
                     $scope.nullifiedId = rowEntity.id || '';
+                    $scope.nullifiedOrgName = rowEntity.name;
                 }
             }; //nullifyEntity
 
@@ -340,19 +343,19 @@
                         //console.log('row is selected: ' + JSON.stringify(row.entity));
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {
                             $scope.selectedRows.unshift(row);
-                            //pushToParentScope(row.entity);
+                            pushToParentScope(row.entity);
                             $scope.$parent.selectedOrgsArray.push(row.entity);
                         } else {
                             var deselectedRow = $scope.selectedRows.pop();
-                            //deselectedRow.isSelected = false;
+                            deselectedRow.isSelected = false;
                             $scope.nullifiedId = deselectedRow.entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
                             $scope.selectedRows.unshift(row);
                             $scope.gridApi.grid.refresh(); //refresh grid
 
                             var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedOrgsArray, deselectedRow.entity);
-                            //$scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
+                            $scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
                             spliceInParentScope(curRowSavedIndex);
-                            //pushToParentScope(row.entity);
+                            pushToParentScope(row.entity);
                             $scope.$parent.selectedOrgsArray.push(row.entity);
                         }
                     } else {
@@ -368,20 +371,20 @@
 
                         if (needleIndex > -1) {
                             var deselectedRowArr = $scope.selectedRows.splice(needleIndex, 1);
-                            //deselectedRowArr[0].isSelected = false;
+                            deselectedRowArr[0].isSelected = false;
                             //reset the nullifiedId if the row is de-selected
                             $scope.nullifiedId = deselectedRowArr[0].entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
                             $scope.curationReady = false;
 
                         }
                         var curRowSavedIndex = OrgService.indexOfOrganization($scope.$parent.selectedOrgsArray, row.entity);
-                        //$scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
+                        $scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
                         spliceInParentScope(curRowSavedIndex);
                     }
                 } else {
                     row.isSelected = false; //do not show selection visually
                 }
-                
+
             } //rowSelectionCallBack
 
 
@@ -391,7 +394,7 @@
              */
             function pushToParentScope(entity) {
                 if (angular.isDefined($scope.$parent.selectedOrgsArray)) {
-                    $scope.$parent.selectedOrgsArray.push(row.entity);
+                    $scope.$parent.selectedOrgsArray.push(entity);
                 }
             }
 
@@ -453,16 +456,13 @@
                         // initializations for curation
                         $scope.selectedRows = [];
                         $scope.nullifiedId = '';
-                        $scope.warningMessage = false;
+                        $scope.warningMessage = '';
                     }
 
                     if (newVal != oldVal) {
                         $scope.gridApi.grid.refresh();
                     }
                 });
-
-
-
             } //prepareGridOptions
 
 
@@ -475,7 +475,7 @@
                 $scope.$watch('nullifiedId', function(curVal, preVal) {
                     initCurationObj();
                     $scope.toBeCurated.id_to_be_nullified = $scope.nullifiedId;
-                    if ($scope.selectedRows.length == 2 && $scope.nullifiedId) {
+                    if ($scope.selectedRows.length == $scope.maxRowSelectable && $scope.nullifiedId) {
                         _.each($scope.selectedRows, function (curRow) {
                             if (curRow.entity.id != $scope.nullifiedId) {
                                 $scope.toBeCurated['id_to_be_retained'] = curRow.entity.id;
@@ -487,8 +487,6 @@
                     if ($scope.toBeCurated.id_to_be_nullified && $scope.toBeCurated.id_to_be_retained) {
                         $scope.curationReady = true;
                     }
-                    // console.log('nullified object: ' + JSON.stringify(vm.toBeCurated));
-                    // console.log('curationReady: ' + vm.curationReady);
                 }, true);
             } //watchReadinessOfCuration
 
@@ -552,8 +550,6 @@
                     //toggleCurationMode();
                 });
             }
-
-
         } //ctrpAdvancedOrgSearchController
     }
     
