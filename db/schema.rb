@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20150929144934) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.string   "uuid",             limit: 255
+    t.integer  "ctrp_id"
   end
 
   add_index "families", ["family_status_id"], name: "index_families_on_family_status_id", using: :btree
@@ -165,6 +166,8 @@ ActiveRecord::Schema.define(version: 20150929144934) do
     t.datetime "updated_at",                    null: false
     t.string   "uuid",              limit: 255
     t.integer  "ctrp_id"
+    t.string   "created_by"
+    t.string   "updated_by"
   end
 
   add_index "organizations", ["source_context_id"], name: "index_organizations_on_source_context_id", using: :btree
@@ -201,16 +204,17 @@ ActiveRecord::Schema.define(version: 20150929144934) do
     t.string   "phone",             limit: 255
     t.integer  "source_status_id"
     t.integer  "source_context_id"
-    t.integer  "source_cluster_id"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.string   "uuid",              limit: 255
     t.string   "fname",             limit: 255
     t.string   "mname",             limit: 255
     t.string   "lname",             limit: 255
+    t.integer  "ctrp_id"
+    t.string   "created_by"
+    t.string   "updated_by"
   end
 
-  add_index "people", ["source_cluster_id"], name: "index_people_on_source_cluster_id", using: :btree
   add_index "people", ["source_context_id"], name: "index_people_on_source_context_id", using: :btree
   add_index "people", ["source_status_id"], name: "index_people_on_source_status_id", using: :btree
 
@@ -284,6 +288,16 @@ ActiveRecord::Schema.define(version: 20150929144934) do
     t.datetime "updated_at",             null: false
     t.string   "uuid",       limit: 255
   end
+
+  create_table "sessions", force: :cascade do |t|
+    t.string   "session_id", null: false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
+  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
   create_table "source_clusters", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -503,8 +517,13 @@ ActiveRecord::Schema.define(version: 20150929144934) do
   add_foreign_key "organizations", "source_statuses"
   add_foreign_key "other_ids", "protocol_id_origins"
   add_foreign_key "other_ids", "trials"
+<<<<<<< HEAD
   add_foreign_key "oversight_authorities", "trials"
   add_foreign_key "people", "source_clusters"
+||||||| merged common ancestors
+  add_foreign_key "people", "source_clusters"
+=======
+>>>>>>> develop
   add_foreign_key "people", "source_contexts"
   add_foreign_key "people", "source_statuses"
   add_foreign_key "po_affiliations", "organizations"

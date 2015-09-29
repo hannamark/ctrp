@@ -59,9 +59,9 @@
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'id', enableSorting: true, displayName: 'ID', width: '10%'},
+                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '8%'},
                 {
-                    name: 'name', enableSorting: true, width: '23%',
+                    name: 'name', enableSorting: true, width: '30%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                  //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -70,17 +70,16 @@
                     '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
-                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '8%'},
+                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '8%'},
-                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '8%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
                 {name: 'city', enableSorting: true, width: '10%'},
-                {name: 'state_province', displayName: 'State', enableSorting: true, width: '10%'},
+                {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
                 {name: 'email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phone', enableSorting: true, width: '10%'}
+                {name: 'phone', enableSorting: true, width: '8%'}
 
             ]
         };

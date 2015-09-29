@@ -8,10 +8,10 @@
     angular.module('ctrpApp')
         .controller('orgDetailCtrl', orgDetailCtrl);
 
-    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES',
+    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService',
         '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$modal'];
 
-    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES,
+    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
         var vm = this;
         vm.name = "tony";
@@ -28,17 +28,39 @@
         vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
         vm.curOrg.source_status_id = vm.curOrg.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
         vm.curationReady = false;
-        console.log('received source status arra: ' + JSON.stringify(vm.sourceStatusArr));
-        console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
+        //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
         //update organization (vm.curOrg)
         vm.updateOrg = function() {
+            if (vm.curOrg.new) {
+                vm.curOrg.created_by = UserService.getLoggedInUsername();
+            } else {
+                vm.curOrg.updated_by = UserService.getLoggedInUsername();
+            }
             OrgService.upsertOrg(vm.curOrg).then(function(response) {
+                if (vm.curOrg.new) {
+                    vm.resetForm();
+                } else {
+                    vm.curOrg.updated_by = response.updated_by;
+                    $state.go('main.organizations', {}, {reload: true});
+                }
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
             });
         }; // updateOrg
+
+
+        vm.resetForm = function() {
+            // console.log('resetting form');
+          Object.keys(vm.curOrg).forEach(function(key) {
+              if (key != 'new' && key != 'id' && key != 'state'
+                  && key != 'country' && key != 'source_status_id') {
+                  vm.curOrg[key] = angular.isArray(vm.curOrg[key]) ? [] : '';
+                  $scope.organization_form.$setPristine();
+              }
+          });
+        };
 
 
 

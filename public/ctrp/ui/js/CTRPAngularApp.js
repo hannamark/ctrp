@@ -182,6 +182,27 @@
                     }
                 })
 
+                .state('main.signup', {
+                    url: '/sign_up',
+                    templateUrl: '/ctrp/ui/partials/sign_up.html',
+                    controller: 'userSignupCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    }
+                })
+
+                .state('main.changePassword', {
+                    url: '/change_password',
+                    templateUrl: '/ctrp/ui/partials/changePassword.html',
+                    controller: 'userChangePasswordCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    },
+                    userDetailObj : function(UserService) {
+                        return UserService.getUserDetailsByUsername();
+                    }
+                })
+
                 .state('main.userDetail', {
                     url: '/userDetail/username',
                     templateUrl: '/ctrp/ui/partials/userDetails.html',
@@ -192,8 +213,8 @@
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
                         },
-                        userDetailObj : function(UserService) {
-                            return UserService.getUserDetailsByUsername();
+                        username : function(UserService) {
+                            return UserService.getLoggedInUsername();
                         }
                     }//, //resolve the promise and pass it to controller
                     //ncyBreadcrumb: {
@@ -472,7 +493,7 @@
                 event.preventDefault();
                 //get appversion from DMZ if unauthenticated
                 //var tempUserService = $injector.get('UserService'); //reference to UserService
-                if (toState.name == 'main.sign_in') {
+                if (toState.name == 'main.sign_in' || toState.name == 'main.sign_up') {
 
                     if (!UserService.isLoggedIn()) {
                         UserService.getAppVerFromDMZ().then(function(data) {
@@ -492,6 +513,19 @@
                     }
                 }
             });
+
+
+            /*
+            $rootScope.$on('$stateChangeStart', function(event, next, current) {
+                if (next && current) {
+                    var answer = confirm("Are you sure you want to navigate away from this page");
+                    if (!answer) {
+                        event.preventDefault();
+                    }
+                }
+
+            });
+            */
         });
 
 

@@ -178,18 +178,18 @@ if !family2.new_record?
 end
 end
 
-####People
-if Person.count == 0
-person1=Person.find_or_create_by(id:1699192, source_id:'33303', source_context: ctep, fname:'Ajeet', lname:'Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
-person2=Person.find_or_create_by(id:7857011, source_id:'518786', source_context: ctrp, fname:'Alicia', lname:'Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
-person3=Person.find_or_create_by(id:3567738, source_id:'515762', source_context: ctep, fname:'Amy', mname:'M.', lname:'Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
-person4=Person.find_or_create_by(id:2944806, source_id:'41379', source_context: ctrp, fname:'Amy', mname:'L.', lname:'Jonson', prefix:'Dr.', suffix:'', email:'jonso001@umn.edu', phone:'612-624-2620')
-person5=Person.find_or_create_by(id:1832268, source_id:'34482', source_context: ctep, fname:'Badrinath', mname:'R.', lname:'Konety', prefix:'Dr.', suffix:'', email:'brkonety@umn.edu', phone:'612-624-2620')
-person6=Person.find_or_create_by(id:10161459, source_id:'46120', source_context: ctrp, fname:'Christine', lname:'Holmberg', prefix:'Dr.', suffix:'', email:'christine.holmberg@charite.de', phone:'-1152')
-person7=Person.find_or_create_by(id:366649, source_id:'11640', source_context: ctep, fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
-person8=Person.find_or_create_by(id:2026171, source_id:'35504', source_context: ctrp, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
-person9=Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
-  person10 = Person.find_or_create_by(id:1426655, source_id:'15179', source_context: ctrp, fname:'Gisele', lname:'Sarosy', prefix:'Dr.', suffix:'', email:'gsarosy@mail.nih.gov', phone:'800-411-1222')
+
+if Person.count  == 0
+person1 = Person.find_or_create_by(id:1699192, source_id:'33303', source_context: ctep, fname:'Ajeet', lname:'Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
+person2 = Person.find_or_create_by(id:7857011, source_id:'518786', source_context: ctrp, fname:'Alicia', lname:'Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
+person3 = Person.find_or_create_by(id:3567738, source_id:'515762', source_context: ctep, fname:'Amy', mname:'M.', lname:'Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
+person4 = Person.find_or_create_by(id:2944806, source_id:'41379', source_context: ctrp, fname:'Amy', mname:'L.', lname:'Jonson', prefix:'Dr.', suffix:'', email:'jonso001@umn.edu', phone:'612-624-2620')
+person5 = Person.find_or_create_by(id:1832268, source_id:'34482', source_context: ctep, fname:'Badrinath', mname:'R.', lname:'Konety', prefix:'Dr.', suffix:'', email:'brkonety@umn.edu', phone:'612-624-2620')
+person6 = Person.find_or_create_by(id:10161459, source_id:'46120', source_context: ctrp, fname:'Christine', lname:'Holmberg', prefix:'Dr.', suffix:'', email:'christine.holmberg@charite.de', phone:'-1152')
+person7 = Person.find_or_create_by(id:366649, source_id:'11640', source_context: ctep, fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
+person8 = Person.find_or_create_by(id:2026171, source_id:'35504', source_context: ctrp, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
+person9 = Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
+person10 = Person.find_or_create_by(id:1426655, source_id:'15179', source_context: ctrp, fname:'Gisele', lname:'Sarosy', prefix:'Dr.', suffix:'', email:'gsarosy@mail.nih.gov', phone:'800-411-1222')
 end
 
 PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')
@@ -250,16 +250,6 @@ end
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
-charlie ="shivece@mail.nih.gov"
-mahesh = "yelisettim@mail.nih.gov"
-shilpi = "singhs10@mail.nih.gov"
-shamim = "ahmeds6@mail.nih.gov"
-murali = "dullam@mail.nih.gov"
-tony = "wangg5@mail.nih.gov"
-shenpei = "wus4@mail.nih.gov"
-sarada = "schintal@mail.nih.gov"
-hemant = "undalehv@mail.nih.gov"
-tekumalla = "radhika.tekumalla@nih.gov"
 charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER" }
 mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER" }
 shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER" }
@@ -269,8 +259,9 @@ tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
 shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
 sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
 hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
+radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_CURATOR" }
 
-ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, tekumalla]
+ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika]
 
 ##Add CTRP Business Analysts
 

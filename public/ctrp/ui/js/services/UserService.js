@@ -89,10 +89,10 @@
         }
 
         this.getUserDetailsByUsername = function(username) {
-            console.log('123456***** ');
             var username = LocalCacheService.getCacheWithKey('username');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         } //getUserByName
+
 
         /**
          * Get the user role of the logged in user
@@ -154,6 +154,20 @@
             var configObj = {}; //empty config
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + ".json", userObj, configObj);
         }; //upsertUser
+
+        this.upsertUserSignup=function(userObj) {
+            //update an existing user
+            var configObj = {}; //empty config
+            console.log("userObj = " + JSON.stringify(userObj));
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj, configObj);
+        }; //upsertUserSignup
+
+        this.upsertUserChangePassword=function(userObj) {
+            //update an existing user
+            var configObj = {}; //empty config
+            console.log("upsertUserChangePassword userObj = " + JSON.stringify(userObj));
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
+        }; //upsertUserChangePassword
 
         /**
          *

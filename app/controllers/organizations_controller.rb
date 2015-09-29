@@ -32,6 +32,7 @@ class OrganizationsController < ApplicationController
   # POST /organizations.json
   def create
     @organization = Organization.new(organization_params)
+    @organization.updated_by = @organization.created_by
 
     respond_to do |format|
       if @organization.save
@@ -47,6 +48,7 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1
   # PATCH/PUT /organizations/1.json
   def update
+    params[:organization].delete :created_by
     respond_to do |format|
       if @organization.update(organization_params)
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
@@ -133,7 +135,7 @@ class OrganizationsController < ApplicationController
       else
         @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
       end
-      @organizations = @organizations.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
+      @organizations = @organizations.matches('ctrp_id', params[:ctrp_id]) if params[:ctrp_id].present?
       @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
       @organizations = @organizations.matches_wc('source_id', params[:source_id]) if params[:source_id].present?
       @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
@@ -160,6 +162,6 @@ class OrganizationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def organization_params
-      params.require(:organization).permit(:source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :source_status_id, :source_context_id)
+      params.require(:organization).permit(:source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :source_status_id, :source_context_id, :created_by, :updated_by)
     end
 end

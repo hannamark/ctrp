@@ -48,10 +48,12 @@
         function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
             $log.info('in ctrpAdvancedOrgSearchController');
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
+            // console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
+            //console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows=[];
             $scope.sourceContextArr = [];
-            $scope.sourceStatusArr = [];
+            $scope.sourceStatuses = [];
             $scope.nullifiedId = '';
             $scope.warningMessage = false;
             $scope.curationShown = false;
@@ -73,10 +75,30 @@
 
             $scope.typeAheadNameSearch = function() {
                 var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
-                return OrgService.searchOrgs({name: wildcardOrgName}).then(function(res) {
-                   return res.orgs.map(function(org) {
-                       return org.name;
-                   });
+                //search context: 'CTRP', to avoid duplicate names
+                return OrgService.searchOrgs({name: wildcardOrgName, source_context : "CTRP"}).then(function(res) {
+                    //remove duplicates
+                    var uniqueNames = [];
+                    var orgNames = [];
+                    orgNames = res.orgs.map(function(org) {
+                        return org.name;
+                    });
+                    //console.log('orgNames: ' + orgNames);
+
+                    /*
+                    orgNames.forEach(function(name, idex) {
+                       if (uniqueNames.indexOf(name) == -1) {
+                           uniqueNames.push(name);
+                       }
+                    });
+                    */
+
+                    return uniqueNames = orgNames.map(function(name) {
+                        if (uniqueNames.indexOf(name) == -1) {
+                            // console.log("not containing: " + name);
+                            return name;
+                        }
+                    });
                 });
             }; //typeAheadNameSearch
 
@@ -131,6 +153,7 @@
                 });
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
+                $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
 
                 if (angular.isDefined($scope.$parent.orgSearchResults)) {
@@ -208,8 +231,10 @@
                 //get source statuses
                 OrgService.getSourceStatuses().then(function (statuses) {
                     //console.log("received statuses: " + JSON.stringify(statuses));
-                    statuses.sort(Common.a2zComparator());
-                    $scope.sourceStatuses = statuses;
+                    if (statuses && angular.isArray(statuses)) {
+                        statuses.sort(Common.a2zComparator());
+                        $scope.sourceStatuses = statuses;
+                    }
                 });
 
                 //get countries
@@ -253,13 +278,14 @@
 
             function watchCountryAndGetStates() {
                 $scope.$watch('searchParams.country', function(newVal, oldVal) {
+                    $scope.states = [];
 
                     if (!!newVal && newVal != oldVal) {
                         GeoLocationService.getStateListInCountry(newVal)
                             .then(function (response) {
                                 $scope.states = response;
                             }).catch(function (err) {
-                                $scope.states.length = 0; //no states or provinces found
+                                // $scope.states.length = 0; //no states or provinces found
                             });
                     }
 
@@ -384,7 +410,6 @@
             /* prepare grid layout and data options */
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions();
-                $scope.gridOptions.data = [];
                 $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
