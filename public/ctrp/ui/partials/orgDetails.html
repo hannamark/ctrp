@@ -142,7 +142,7 @@
             <label class="control-label col-sm-3">Created By:</label>
             <div class="col-sm-9">
                 <!--<input type="text" class="form-control input-xs" id="fax"  ng-model="orgDetailView.curOrg.fax" type="text" placeholder="Fax">-->
-                {{orgDetailView.curOrg.created_by}}
+                {{orgDetailView.curOrg.created_by}} ({{orgDetailView.curOrg.created_at | date: 'dd-MMM-yyyy'}})
             </div>
         </div>
         <div class="form-group col-sm-12" ng-hide="orgDetailView.curOrg.new || !orgDetailView.curOrg.updated_by">
