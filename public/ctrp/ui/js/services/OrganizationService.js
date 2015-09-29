@@ -85,21 +85,22 @@
         };
 
         var services = {
-            getAllOrgs : getAllOrgs,
-            getOrgById : getOrgById,
-            upsertOrg : upsertOrg,
-            searchOrgs : searchOrgs,
-            getInitialOrgSearchParams : getInitialOrgSearchParams,
-            getGridOptions : getGridOptions,
-            watchCountrySelection : watchCountrySelection,
-            getStatesOrProvinces : getStatesOrProvinces,
-            getSourceContexts : getSourceContexts,
-            getSourceStatuses : getSourceStatuses,
-            deleteOrg : deleteOrg,
-            indexOfOrganization : indexOfOrganization,
-            preparePOAffiliationArr : preparePOAffiliationArr,
-            initSelectedOrg : initSelectedOrg,
-            curateOrg : curateOrg
+            getAllOrgs: getAllOrgs,
+            getOrgById: getOrgById,
+            upsertOrg: upsertOrg,
+            searchOrgs: searchOrgs,
+            getInitialOrgSearchParams: getInitialOrgSearchParams,
+            getGridOptions: getGridOptions,
+            watchCountrySelection: watchCountrySelection,
+            getStatesOrProvinces: getStatesOrProvinces,
+            getSourceContexts: getSourceContexts,
+            getSourceStatuses: getSourceStatuses,
+            deleteOrg: deleteOrg,
+            indexOfOrganization: indexOfOrganization,
+            preparePOAffiliationArr: preparePOAffiliationArr,
+            initSelectedOrg: initSelectedOrg,
+            curateOrg: curateOrg,
+            findContextId: findContextId
         };
 
         return services;
@@ -327,6 +328,24 @@
          */
         function curateOrg(curationObject) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CURATE_ORG, curationObject);
+        }
+
+
+        /**
+         * From the array of context (array of JSON objects), locate the context id for the contextName
+         *
+         * @param ctrpContextArr
+         * @param key, String
+         * @param contextName, String (e.g. 'CTRP')
+         * @returns {number}
+         */
+        function findContextId(ctrpContextArr, key, contextName) {
+            var ctrpContextId = -1; //not found
+            var needleIndex = Common.indexOfObjectInJsonArray(ctrpContextArr, key, contextName);
+            if (needleIndex > -1) {
+                ctrpContextId = ctrpContextArr[needleIndex].id || -1;
+            }
+            return ctrpContextId;
         }
 
 

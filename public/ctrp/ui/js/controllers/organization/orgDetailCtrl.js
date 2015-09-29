@@ -53,12 +53,14 @@
 
         vm.resetForm = function() {
             // console.log('resetting form');
+            var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id'];
           Object.keys(vm.curOrg).forEach(function(key) {
-              if (key != 'new' && key != 'id' && key != 'state'
-                  && key != 'country' && key != 'source_status_id') {
+              if (excludedKeys.indexOf(key) == -1) {
                   vm.curOrg[key] = angular.isArray(vm.curOrg[key]) ? [] : '';
                   $scope.organization_form.$setPristine();
               }
+              //default context to ctrp
+              vm.curOrg.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
           });
         };
 
@@ -69,9 +71,12 @@
 
         /****************** implementations below ***************/
         function activate() {
+            //default context to ctrp, if not set
+            vm.curOrg.source_context_id = !vm.curOrg.source_context_id ?
+                OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curOrg.source_context_id;
+
             listenToStatesProvinces();
             appendNewOrgFlag();
-
             //prepare the modal window for existing organizations
             if (!vm.curOrg.new) {
                 prepareModal();
