@@ -58,8 +58,6 @@
         vm.showInvestigator = false;
         vm.showInvSearchBtn = true;
         vm.why_stopped_disabled = true;
-        vm.curTrial.pilot = 'No';
-        vm.curTrial.grant_question = 'Yes';
         vm.otherDocNum = 1;
 
         //update trial (vm.curTrial)
@@ -405,7 +403,10 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewTrialFlag();
-            if (!vm.curTrial.new) {
+            if (vm.curTrial.new) {
+                vm.curTrial.pilot = 'No';
+                vm.curTrial.grant_question = 'Yes';
+            } else {
                 displayPOs();
                 ppFieldChange();
                 spFieldChange();
