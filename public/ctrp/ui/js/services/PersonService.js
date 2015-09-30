@@ -25,9 +25,10 @@
             suffix: "",
             email: "",
             phone: "",
+            updated_at: "",
 
             //for pagination and sorting
-            sort: "",
+            sort: "updated_at",
             order: "",
             rows: 10,
             start: 1
@@ -78,7 +79,9 @@
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs',cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0"><master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5"></master-directive></div>' +
-                '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'}
+                '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'},
+                {name: 'updated_at', displayName: 'Last Updated', type: 'date', cellFilter: 'date: dd-MMM-yyyy', enableSorting: true, width: '6%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>'}
             ]
         };
 
