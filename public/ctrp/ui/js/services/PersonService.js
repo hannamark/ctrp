@@ -27,8 +27,8 @@
             phone: "",
 
             //for pagination and sorting
-            sort: "",
-            order: "",
+            sort: "updated_at",
+            order: "DESC",
             rows: 10,
             start: 1
             }; //initial Person Search Parameters
