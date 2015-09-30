@@ -100,7 +100,7 @@
             $scope.searchPeople = function () {
                 PersonService.searchPeople($scope.searchParams).then(function (data) {
                     if ($scope.showGrid && data.data.people) {
-                        //console.log("received person search results: " + JSON.stringify(data.data));
+                       // console.log("received person search results: " + JSON.stringify(data.data.people));
                         $scope.gridOptions.data = data.data.people;
                         $scope.gridOptions.totalItems = data.data.total;
                         //pin the selected rows, if any, at the top of the results
