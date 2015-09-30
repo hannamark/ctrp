@@ -25,10 +25,10 @@
 <div>
   <ul>
     <li><%= link_to 'Download Rails application log', backoffice_download_log_url %></li>
-    <li>Rails Environment: <%= Rails.env%></li>
+    <li>Rails environment: <%= Rails.env%></li>
     <li>Git information:
       <ul>
-        <li>Branch: <%=CTRP::GIT_BRANCH %> (if you see HEAD, click link below on full revision to find branch name)</li>
+        <li>Branch: <%=CTRP::GIT_BRANCH %></li>
         <li>Short revision: <%=CTRP::GIT_SHORT_REVISION %></li>
         <li>Full revision: <a target="_blank" href="https://github.com/cbiit/ctrp/commit/<%=CTRP::GIT_FULL_REVISION %>"><%=CTRP::GIT_FULL_REVISION %></a></li>
       </ul>

@@ -37,19 +37,13 @@
                 </p>
             </div>
         </div>
-        <!--<div class="form-group col-sm-12" ng-hide="orgDetailView.curOrg.new">-->
-            <!--<label class="control-label col-sm-3">PO ID:</label>-->
-            <!--<div class="col-sm-9">-->
-                <!--<input type="text" class="form-control input-xs" id="organization_id" ng-model="orgDetailView.curOrg.id"-->
-                       <!--ng-disabled="!orgDetailView.curOrg.new" required>-->
-            <!--</div>-->
-        <!--</div>-->
+        
         <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source Context:</label>
             <div class="col-sm-9">
                 <select class="form-control" id="source_context" ng-model="orgDetailView.curOrg.source_context_id">
                     <option value="">Select a context</option>
-                    <option ng-repeat="context in orgDetailView.sourceContextArr" value="{{context.id}}" ng-selected="orgDetailView.curOrg.source_context_id == context.id">{{context.name}}</option>
+                    <option ng-repeat="context in orgDetailView.sourceContextArr" value="{{context.name}}" ng-selected="orgDetailView.curOrg.source_context_id == context.id">{{context.name}}</option>
                 </select>
             </div>
         </div>
@@ -138,18 +132,18 @@
                 <input type="text" class="form-control input-xs" id="fax"  ng-model="orgDetailView.curOrg.fax" type="text" placeholder="Fax">
             </div>
         </div>
-        <div class="form-group col-sm-12" ng-hide="orgDetailView.curOrg.new">
+        <div class="form-group col-sm-12" ng-hide="orgDetailView.curOrg.new || !orgDetailView.curOrg.created_by">
             <label class="control-label col-sm-3">Created By:</label>
             <div class="col-sm-9">
                 <!--<input type="text" class="form-control input-xs" id="fax"  ng-model="orgDetailView.curOrg.fax" type="text" placeholder="Fax">-->
-                {{orgDetailView.curOrg.created_by}}
+                {{orgDetailView.curOrg.created_by}} ({{orgDetailView.curOrg.created_at | date: 'dd-MMM-yyyy'}})
             </div>
         </div>
-        <div class="form-group col-sm-12" ng-hide="orgDetailView.curOrg.new">
+        <div class="form-group col-sm-12" ng-hide="orgDetailView.curOrg.new || !orgDetailView.curOrg.updated_by">
             <label class="control-label col-sm-3">Updated By:</label>
             <div class="col-sm-9">
                 <!--<input type="text" class="form-control input-xs" id="fax"  ng-model="orgDetailView.curOrg.fax" type="text" placeholder="Fax">-->
-                {{orgDetailView.curOrg.updated_by}}
+                {{orgDetailView.curOrg.updated_by}} ({{orgDetailView.curOrg.updated_at | date: 'dd-MMM-yyyy'}})
             </div>
         </div>
 

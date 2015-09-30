@@ -59,6 +59,7 @@ gem 'omniauth-google-oauth2'
 gem "devise_ldap_authenticatable"
 gem 'cancancan'
 gem 'jwt'
+gem 'activerecord-session_store'
 
 # Add http client
 gem 'rest-client'

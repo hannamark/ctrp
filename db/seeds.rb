@@ -250,16 +250,6 @@ end
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
-charlie ="shivece@mail.nih.gov"
-mahesh = "yelisettim@mail.nih.gov"
-shilpi = "singhs10@mail.nih.gov"
-shamim = "ahmeds6@mail.nih.gov"
-murali = "dullam@mail.nih.gov"
-tony = "wangg5@mail.nih.gov"
-shenpei = "wus4@mail.nih.gov"
-sarada = "schintal@mail.nih.gov"
-hemant = "undalehv@mail.nih.gov"
-tekumalla = "radhika.tekumalla@nih.gov"
 charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER" }
 mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER" }
 shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER" }
@@ -269,8 +259,9 @@ tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
 shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
 sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
 hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
+radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_CURATOR" }
 
-ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, tekumalla]
+ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika]
 
 ##Add CTRP Business Analysts
 

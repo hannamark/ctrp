@@ -14,18 +14,18 @@
                         <form class="form-horizontal" role="form" name="signin_form" novalidate>
                             <div class="form-group col-md-12">
                                 <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-user"></i>
-                    </span>
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                    </span>
                                     <input class="form-control" type="text" ng-model="userView.userObj.user.username"
                                            placeholder="Username" required>
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
                                 <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-lock"></i>
-                    </span>
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-lock"></i>
+                                    </span>
                                     <input type="password" class="form-control"
                                            ng-model="userView.userObj.user.password"
                                            placeholder="Password" required>
@@ -44,6 +44,7 @@
                             </div>
                         </form>
                     </div>
+                    <div>New User? <a ui-sref="main.signup">Sign Up</a></div>
                 </div>
             </div>
         </div>

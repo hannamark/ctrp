@@ -73,12 +73,12 @@
         
         function advPersonSearchDirectiveController($scope, uiGridConstants, UserService) {
 
-            $scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? Number.MAX_SAFE_INTEGER : $scope.maxRowSelectable ; //default to 0
+            $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
             $scope.sourceContextArr = []; //sourceContextObj;
             $scope.sourceStatusArr = []; //sourceStatusObj;
             $scope.nullifiedId = '';
-            $scope.warningMessage = false;
+            $scope.warningMessage = '';
             $scope.selectedRows = [];
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
@@ -147,13 +147,12 @@
             $scope.nullifyEntity = function (rowEntity) {
                 // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
                 if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
-                    //TODO: warning to user for nullifying active entity
-                    //cannot nullify Active entity (e.g. person)
+                    // warning to user for nullifying active entity
                     $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is not allowed';
                     $scope.nullifiedId = '';
                     console.log('cannot nullify this row, because it is active');
                 } else {
-                    $scope.warningMessage = false;
+                    $scope.warningMessage = '';
                     $scope.nullifiedId = rowEntity.id || '';
                 }
             }; //nullifyEntity
@@ -369,21 +368,13 @@
                         // $scope.selectedRows = [];
                         //clearSelectedRows();
                         $scope.nullifiedId = '';
-                        $scope.warningMessage = false;
+                        $scope.warningMessage = '';
                     } else {
                         var lastRow = clearSelectedRows();
                         if (!!lastRow) {
                             $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
                         }
                     }
-
-                    /*
-                    var lastRow = clearSelectedRows();
-                    if (!!lastRow) {
-                        $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
-                    }
-                    $scope.warningMessage = false;
-                    */
 
 
                     //$scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
