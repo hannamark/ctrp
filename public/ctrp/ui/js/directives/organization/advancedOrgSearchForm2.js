@@ -48,8 +48,8 @@
         function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
 
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
-            // console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
-            //console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
+            console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
+            console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows = [];
             $scope.sourceContextArr = [];
@@ -58,6 +58,7 @@
             $scope.warningMessage = '';
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
+            $scope.searchWarningMessage = '';
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
@@ -109,9 +110,28 @@
                 if (newSearchFlag == 'fromStart') {
                     $scope.searchParams.start = 1;
                 }
+                console.log("In searchOrgs " + JSON.stringify($scope.searchParams));
+
+                //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
+                // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
+                var isEmptySearch = true;
+                var excludedKeys = ['rows', 'alias', 'start'];
+
+                Object.keys($scope.searchParams).forEach(function (key) {
+
+                if(excludedKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
+                    isEmptySearch = false;
+
+                });
+                if(isEmptySearch)
+                    $scope.searchWarningMessage = "Atleast one selection value must be entered prior to running the search";
+                else
+                    $scope.searchWarningMessage = "";
+
+                console.log("isEmptySearch is " + isEmptySearch);
 
                 OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                    // console.log("received data for org search: " + JSON.stringify(data));
+                   //  console.log("received data for org search: " + JSON.stringify(data));
                     if ($scope.showGrid && data.orgs) {
                         $scope.gridOptions.data = data.orgs;
                         $scope.gridOptions.totalItems = data.total;
@@ -144,8 +164,8 @@
             $scope.resetSearch = function () {
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
                 //first reset to CTRP, then to All Context
-                $scope.searchParams.source_context = 'CTRP';
-                var excludedKeys = ['source_context', 'alias'];
+                //$scope.searchParams.source_context = 'CTRP';
+                var excludedKeys = ['alias'];
                 Object.keys($scope.searchParams).forEach(function (key) {
 
                     if (excludedKeys.indexOf(key) == -1) {
