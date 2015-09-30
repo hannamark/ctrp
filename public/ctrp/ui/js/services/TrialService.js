@@ -50,6 +50,7 @@
             searchTrials: searchTrials,
             getInitialTrialSearchParams: getInitialTrialSearchParams,
             getGridOptions: getGridOptions,
+            getStudySources: getStudySources,
             getProtocolIdOrigins: getProtocolIdOrigins,
             getPhases: getPhases,
             getResearchCategories: getResearchCategories,
@@ -137,6 +138,10 @@
         function broadcastMsg(msgCode, msgContent) {
             $rootScope.$broadcast(msgCode, {content: msgContent});
         } //broadcastMsg
+
+        function getStudySources() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.STUDY_SOURCES);
+        }
 
         function getProtocolIdOrigins() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PROTOCOL_ID_ORIGINS);

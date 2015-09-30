@@ -371,7 +371,7 @@
                 })
 
                 .state('main.addTrial', {
-                    url: '/new_trial',
+                    url: '/new_trial/:studySourceCode',
                     templateUrl: '/ctrp/ui/partials/trialDetails.html',
                     controller: 'trialDetailCtrl as trialDetailView',
                     resolve: {
@@ -380,6 +380,12 @@
                             var deferred = $q.defer();
                             deferred.resolve(null);
                             return deferred.promise;
+                        },
+                        studySourceCode: function($stateParams) {
+                            return $stateParams.studySourceCode;
+                        },
+                        studySourceObj: function(TrialService) {
+                            return TrialService.getStudySources();
                         },
                         protocolIdOriginObj: function(TrialService) {
                             return TrialService.getProtocolIdOrigins();
@@ -437,6 +443,12 @@
                     TrialService: 'TrialService',
                     trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    studySourceCode: function() {
+                        return '';
+                    },
+                    studySourceObj: function(TrialService) {
+                        return TrialService.getStudySources();
                     },
                     protocolIdOriginObj: function(TrialService) {
                         return TrialService.getProtocolIdOrigins();

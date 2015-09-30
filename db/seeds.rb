@@ -37,6 +37,7 @@ FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center'
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
 StudySource.find_or_create_by(code: 'INS', name: 'Institutional')
+StudySource.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 StudySource.find_or_create_by(code: 'IND', name: 'Industrial')
 StudySource.find_or_create_by(code: 'OTH', name: 'Other')
 
@@ -91,6 +92,10 @@ TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Interven
 TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
 TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+TrialStatus.find_or_create_by(code: 'AVA', name: 'Available')
+TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available')
+TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available')
+TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
 
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')

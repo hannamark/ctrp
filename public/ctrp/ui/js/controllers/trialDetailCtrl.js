@@ -8,12 +8,12 @@
     angular.module('ctrpApp').controller('trialDetailCtrl', trialDetailCtrl);
 
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope',
-        'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
+        'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
         'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
 
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope,
-                             Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
+                             Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
                              holderTypeObj, expandedAccessTypeObj, countryList) {
         var vm = this;
@@ -21,6 +21,9 @@
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
         vm.collapsed = false;
+        vm.studySourceCode = studySourceCode;
+        vm.isExp = false;
+        vm.studySourceArr = studySourceObj;
         vm.protocolIdOriginArr = protocolIdOriginObj;
         vm.phaseArr = phaseObj;
         vm.researchCategoryArr = researchCategoryObj;
@@ -436,9 +439,12 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewTrialFlag();
+            getExpFlag();
+
             if (vm.curTrial.new) {
                 vm.curTrial.pilot = 'No';
                 vm.curTrial.grant_question = 'Yes';
+                populateStudySource();
             } else {
                 displayPOs();
                 ppFieldChange();
@@ -463,6 +469,27 @@
             if ($state.$current.name.indexOf('add') > -1) {
                 vm.curTrial.new = true;  //
             }
+        }
+
+        function getExpFlag() {
+            if (vm.curTrial.new) {
+                if (vm.studySourceCode == 'EXP') {
+                    vm.isExp = true;
+                }
+            } else {
+                if (vm.curTrial.study_source && vm.curTrial.study_source.code == 'EXP') {
+                    vm.isExp = true;
+                }
+            }
+        }
+
+        // Populate Study Source field based on the param studySourceCode
+        function populateStudySource() {
+            _.each(vm.studySourceArr, function (studySource) {
+                if (studySource.code == vm.studySourceCode) {
+                    vm.curTrial.study_source_id = studySource.id;
+                }
+            });
         }
 
         function displayPOs() {

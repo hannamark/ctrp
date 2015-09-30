@@ -35,6 +35,7 @@
             'TRIAL_LIST': '/ctrp/registry/trials.json',
             'A_TRIAL': '/ctrp/registry/trials/',
             'SEARCH_TRIAL': '/ctrp/registry/trials/search.json',
+            'STUDY_SOURCES': '/ctrp/registry/study_sources.json',
             'PROTOCOL_ID_ORIGINS': '/ctrp/registry/protocol_id_origins.json',
             'PHASES': '/ctrp/registry/phases.json',
             'RESEARCH_CATEGORIES': '/ctrp/registry/research_categories.json',

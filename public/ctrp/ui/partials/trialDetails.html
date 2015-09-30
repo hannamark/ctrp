@@ -465,7 +465,7 @@
                                             <div>
                                                 <select class="form-control" id="trial_status" ng-model="trialDetailView.trial_status_id"  ng-change="trialDetailView.watchOption('trial_status')">
                                                     <option value="">-Select a Trial Status-</option>
-                                                    <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" value="{{trialStatus.id}}">
+                                                    <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" ng-hide="!trialDetailView.isExp && (trialStatus.code == 'AVA' || trialStatus.code == 'NLA' || trialStatus.code == 'TNA' || trialStatus.code == 'AFM')" value="{{trialStatus.id}}">
                                                         {{trialStatus.name}}
                                                     </option>
                                                 </select>
