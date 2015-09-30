@@ -76,8 +76,9 @@
 
 
         vm.resetForm = function() {
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
             Object.keys(vm.curPerson).forEach(function(key) {
-                if (key != 'new' && key != 'po_affiliations' && key != 'source_status_id') {
+                if (excludedKeys.indexOf(key) == -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
                     $scope.person_form.$setPristine();
                 }
