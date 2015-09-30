@@ -112,7 +112,7 @@ class Person < ActiveRecord::Base
   }
 
   scope :sort_by_col, -> (column, order) {
-    if column == 'id'
+    if column == 'id' || column == 'updated_at'
       order("#{column} #{order}")
     elsif column == 'source_context'
       joins("LEFT JOIN source_contexts ON source_contexts.id = people.source_context_id").order("source_contexts.name #{order}").group(:'source_contexts.name')
