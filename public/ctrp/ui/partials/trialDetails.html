@@ -786,10 +786,24 @@
                             </div>
                         </div>
 
+                        <div ng-repeat="document in trialDetailView.curTrial.trial_documents" ng-if="document.document_type == 'Protocol Document'" class="form-group col-sm-12">
+                            <label class="control-label col-sm-3"></label>
+                            <div class="col-sm-9">
+                                <a href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                            </div>
+                        </div>
+
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">IRB Approval:</label>
                             <div class="col-sm-9">
                                 <input type="file" ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB">
+                            </div>
+                        </div>
+
+                        <div ng-repeat="document in trialDetailView.curTrial.trial_documents" ng-if="document.document_type == 'IRB Approval'" class="form-group col-sm-12">
+                            <label class="control-label col-sm-3"></label>
+                            <div class="col-sm-9">
+                                <a href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
                             </div>
                         </div>
 
@@ -800,10 +814,24 @@
                             </div>
                         </div>
 
+                        <div ng-repeat="document in trialDetailView.curTrial.trial_documents" ng-if="document.document_type == 'List of Participating Sites'" class="form-group col-sm-12">
+                            <label class="control-label col-sm-3"></label>
+                            <div class="col-sm-9">
+                                <a href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                            </div>
+                        </div>
+
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Informed Consent Document:</label>
                             <div class="col-sm-9">
                                 <input type="file" ngf-select ng-model="trialDetailView.informed_consent" name="informed_consent" ngf-max-size="10MB">
+                            </div>
+                        </div>
+
+                        <div ng-repeat="document in trialDetailView.curTrial.trial_documents" ng-if="document.document_type == 'Informed Consent'" class="form-group col-sm-12">
+                            <label class="control-label col-sm-3"></label>
+                            <div class="col-sm-9">
+                                <a href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
                             </div>
                         </div>
 
@@ -829,6 +857,13 @@
                                 <button class="btn btn-primary" ng-click="trialDetailView.addOtherDoc()">
                                     <i class="glyphicon glyphicon-plus"></i> Add More ...
                                 </button>
+                            </div>
+                        </div>
+
+                        <div ng-repeat="document in trialDetailView.curTrial.trial_documents" ng-if="document.document_type == 'Other Document'" class="form-group col-sm-12">
+                            <label class="control-label col-sm-3"></label>
+                            <div class="col-sm-9">
+                                <a href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a><br>{{document.document_subtype}}
                             </div>
                         </div>
                     </accordion-group>

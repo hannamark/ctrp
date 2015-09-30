@@ -119,7 +119,11 @@ Rails.application.routes.draw do
       resources :expanded_access_types
       resources :trial_statuses
       resources :research_categories
-      resources :trial_documents
+      resources :trial_documents do
+        collection do
+          get 'download/:id' => 'trial_documents#download'
+        end
+      end
 
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'

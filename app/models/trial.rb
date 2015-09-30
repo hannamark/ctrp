@@ -81,7 +81,7 @@ class Trial < ActiveRecord::Base
   has_many :trial_co_pis
   has_many :co_pis, through: :trial_co_pis, source: :person
   has_many :oversight_authorities, -> { order 'oversight_authorities.id' }
-  has_many :trial_documents
+  has_many :trial_documents, -> { order 'trial_documents.id' }
 
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
