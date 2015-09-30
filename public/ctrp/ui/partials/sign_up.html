@@ -8,7 +8,7 @@
                         <div class="panel-title text-center">SignUp Form</div>
                     </div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" name="signup_form" novalidate>
+                        <form class="form-horizontal" role="form" name="signup_form" autocomplete="off" novalidate>
                             <div class="form-group col-md-12">
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -34,7 +34,7 @@
                                         <i class="glyphicon glyphicon-lock"></i>
                                     </span>
                                     <input type="password" class="form-control"
-                                           ng-model="userView.userObj.local_user.password"
+                                           ng-model="userView.userObj.local_user.password" autocomplete="off"
                                            placeholder="Password" required>
                                 </div>
                             </div>
