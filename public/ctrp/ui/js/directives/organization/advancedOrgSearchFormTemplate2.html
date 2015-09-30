@@ -1,5 +1,12 @@
 <form class="form-horizontal" role="form">
-    <!-- first row -->
+     <!-- first row -->
+    <div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
+        <div class="alert alert-danger fade in">
+            <a href="" class="close" data-dismiss="alert">&times;</a>
+            <strong>{{searchWarningMessage}}</strong>
+        </div>
+    </div> <br />
+
     <div class="row">
         <div class="col-md-6">
             <!-- organization name -->
@@ -233,7 +240,9 @@
         <div class="row" ng-if="gridOptions.totalItems != null">
             <div class="col-sm-11">
                 <a href="" id="org_search_results"></a>
-                <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
+                <div ng-if="searchWarningMessage.length === 0">
+                    <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
+                </div>
                 <div  ng-if="usedinmodal !=1 ">
                     <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true"">
                         <mark>Curation Mode: </mark>
