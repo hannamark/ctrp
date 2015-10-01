@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.0-master-afc0963
+ * v0.11.1-master-c47acca
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -198,7 +198,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
                 return {
                   element: angular.element(tiles[i]),
                   style: getTileStyle(ps.position, ps.spans,
-                      props.colCount, props.rowCount,
+                      props.colCount, rowCount,
                       props.gutter, props.rowMode, props.rowHeight)
                 }
               })
