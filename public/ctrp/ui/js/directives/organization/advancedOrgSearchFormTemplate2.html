@@ -50,12 +50,20 @@
                 </div>
                 <!-- source context ends -->
 
-                <!-- ID used as ctrp_id here -->
+                <!-- ID used as ctrp_id here
                 <label for="ctrp_id" class="control-label col-xs-12 col-sm-2"><nobr>CTRP ID:</nobr></label>
 
                 <div class="col-xs-12 col-sm-4">
                     <input type="text" id="ctrp_id" class="form-control" placeholder="CTRP ID"
                            ng-model="searchParams.ctrp_id"/>
+                </div>
+                -->
+                <!--source id-->
+                <label for="source_id" class="control-label col-xs-12 col-sm-2">Source ID: </label>
+
+                <div class="col-xs-12 col-sm-4">
+                    <input type="text" id="source_id" class="form-control" placeholder="Source ID"
+                           ng-model="searchParams.source_id"/>
                 </div>
 
             </div>
@@ -77,13 +85,6 @@
                         <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
                     </select>
                 </div>
-                <!--source id-->
-                <label for="source_id" class="control-label col-xs-12 col-sm-2">Source ID: </label>
-
-                <div class="col-xs-12 col-sm-4">
-                    <input type="text" id="source_id" class="form-control" placeholder="Source ID"
-                           ng-model="searchParams.source_id"/>
-                </div>
 
             </div>
             <!-- source id ends -->
@@ -103,7 +104,7 @@
     </div>
     <!--second row ends -->
 
-    <!-- third row -->
+    <!-- third row
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
