@@ -55,26 +55,20 @@ And I enter the Affiliate organization effective date
 And I submit my edit request
 Then the system should add the Affiliated Organization with the effective date in the Person Record
 
-Scenario Outline: As a PO Curator, I can edit Person records with multiple parameters
+Scenario: As a PO Curator, I can edit Person records with multiple parameters
 Given I know which Person record I want to edit
 And I am logged in to CTRP PO application
 And I have searched for a Person and found the one I wish to edit
 And I have selected the function Edit Person
 And I am on the edit person information screen
-And I change the Person <Prefix>
-And I change the Person <First Name>
-And I change the Person <Middle Name>
-And I change the Person <Last Name>
-And I change the Person <Suffix>
-And I change the Person <Email>
-And I change the Person <Phone>
-And I add an <Affiliated Organization> and <Effective Date> and <Expiration Date>
-And I select the Save option
+When I change the Person Prefix
+And I change the Person First Name
+And I change the Person Middle Name
+And I change the Person Last Name
+And I change the Person Suffix
+And I change the Person Email
+And I change the Person Phone
+And I change an Affiliated Organization and Effective Date and Expiration Date
 Then the system should update the Person record with the edited information
-
-Example:
-|Prefix||First Name||Middle Name||Last Name||Suffix||Email               ||Phone||Affiliated Organization  ||Effective Date||Expiration Date||Result|
-|Dr.   ||Gisele    ||A.         ||Sarosy   ||      ||gsarosy@mail.nih.gov||     ||National Cancer Institute||2009/01/01    ||               ||True  |
-
 
 
