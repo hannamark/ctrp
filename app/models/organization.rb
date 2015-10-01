@@ -140,6 +140,23 @@ class Organization < ActiveRecord::Base
 
   scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
 
+  scope :matches_ctrp_id, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i > 0
+        q += " OR organizations.ctrp_id = ?"
+      else
+        q += "organizations.ctrp_id = ?"
+      end
+      conditions.push(e)
+    }
+    conditions.insert(0, q)
+
+    where(conditions)
+  }
+
   scope :matches_wc, -> (column, value) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
