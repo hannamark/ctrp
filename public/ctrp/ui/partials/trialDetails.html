@@ -885,7 +885,7 @@
                 <div id="buttonBar" class="form-group col-sm-12">
                     <div class="col-sm-offset-3 col-sm-9">
                         <input type="submit" class="btn btn-success" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" value="Save">
-                        <input type="reset" class="btn btn-warning" id="reset_btn" value="Reset">
+                        <button class="btn btn-warning" ng-click="trialDetailView.reload()">Reset</button>
                         <button class="btn btn-default" back-button>Cancel</button>
                     </div>
                 </div>

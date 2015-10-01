@@ -162,7 +162,11 @@
             vm.collapsed = false;
         };
 
-        // Delete the trial status
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        }
+
+        // Delete the associations
         vm.toggleSelection = function (index, type) {
             if (type == 'other_id') {
                 if (index < vm.addedOtherIds.length) {
