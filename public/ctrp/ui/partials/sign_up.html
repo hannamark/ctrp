@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <div class="panel-title text-center">SignUp Form</div>
+                        <div class="panel-title">SignUp Form</div>
                     </div>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" name="signup_form" novalidate>
@@ -58,15 +58,13 @@
                                            placeholder="Role" required>
                                 </div>
                             </div>
-                            <div id="buttonBar" class="form-group col-sm-12">
-                                <div class="col-sm-offset-3 col-sm-9">
-                                    <input type="submit" class="btn btn-success" ng-click="userView.updateUser()"
-                                           value="Save" ng-disabled="signup_form.$invalid" ctrp-click-once>
-                                    <input type="reset" class="btn btn-warning" value="Reset" ng-click="userView.reset()">
-                                    <button class="btn btn-default" back-button>Cancel</button>
+                            <div id="buttonBar" class="form-group col-md-12">
+                                <div class="btn-toolbar">
+                                    <input type="submit" class="btn btn-success pull-right" ng-click="userView.updateUser()" value="Save" ng-disabled="signup_form.$invalid" ctrp-click-once>
+                                    <input type="reset" class="btn btn-warning pull-right" value="Reset" ng-click="userView.reset()">
+                                    <button class="btn btn-default pull-right" back-button>Cancel</button>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
