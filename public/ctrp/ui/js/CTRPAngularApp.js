@@ -26,7 +26,8 @@
         'CTRPUnderscoreModule',
         'toggle-switch',
         'TimeoutModule',
-        'ngFileUpload'
+        'ngFileUpload',
+        'angularMoment'
     ])
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there

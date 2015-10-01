@@ -11,7 +11,7 @@
                         <div class="panel-title text-center">Please sign in to continue.</div>
                     </div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" name="signin_form" novalidate>
+                        <form class="form-horizontal" role="form" name="signin_form" autocomplete="off" novalidate>
                             <div class="form-group col-md-12">
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -27,7 +27,7 @@
                                         <i class="glyphicon glyphicon-lock"></i>
                                     </span>
                                     <input type="password" class="form-control"
-                                           ng-model="userView.userObj.user.password"
+                                           ng-model="userView.userObj.user.password" autocomplete="off"
                                            placeholder="Password" required>
                                 </div>
                             </div>
