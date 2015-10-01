@@ -204,6 +204,22 @@
                                 <textarea class="form-control input-xs" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other" />
                             </div>
                         </div>
+
+                        <div class="form-group col-sm-12">
+                            <label class="control-label col-sm-3 required">Accrual Disease Terminology:</label>
+                            <div class="col-sm-6">
+                                <select class="form-control" id="accrual_disease_term" name="accrual_disease_term" ng-model="trialDetailView.curTrial.accrual_disease_term_id" required>
+                                    <option value="">-Select an Accrual Disease Terminology-</option>
+                                    <option ng-repeat="term in trialDetailView.accrualDiseaseTermArr"
+                                            value="{{term.id}}" ng-selected="trialDetailView.curTrial.accrual_disease_term_id == term.id">
+                                        {{term.name}}
+                                    </option>
+                                </select>
+                                <p ng-show="trial_form.accrual_disease_term.$error.required && trial_form.accrual_disease_term.$dirty" class="help-inline text-danger">
+                                    Accrual Disease Terminology is required
+                                </p>
+                            </div>
+                        </div>
                     </accordion-group>
 
                     <accordion-group is-open="trialDetailView.accordions[2]">

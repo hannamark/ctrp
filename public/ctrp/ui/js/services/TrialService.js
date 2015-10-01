@@ -56,6 +56,7 @@
             getResearchCategories: getResearchCategories,
             getPrimaryPurposes: getPrimaryPurposes,
             getSecondaryPurposes: getSecondaryPurposes,
+            getAccrualDiseaseTerms: getAccrualDiseaseTerms,
             getResponsibleParties: getResponsibleParties,
             getFundingMechanisms: getFundingMechanisms,
             getInstituteCodes: getInstituteCodes,
@@ -161,6 +162,10 @@
 
         function getSecondaryPurposes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.SECONDARY_PURPOSES);
+        }
+
+        function getAccrualDiseaseTerms() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCRUAL_DISEASE_TERMS);
         }
 
         function getResponsibleParties() {

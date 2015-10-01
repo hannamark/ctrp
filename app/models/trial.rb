@@ -35,6 +35,7 @@
 #  updated_at              :datetime         not null
 #  uuid                    :string(255)
 #  research_category_id    :integer
+#  accrual_disease_term_id :integer
 #  investigator_title      :string(255)
 #  investigator_aff_id     :integer
 #  created_by              :string(255)
@@ -43,17 +44,18 @@
 #
 # Indexes
 #
-#  index_trials_on_investigator_aff_id   (investigator_aff_id)
-#  index_trials_on_investigator_id       (investigator_id)
-#  index_trials_on_lead_org_id           (lead_org_id)
-#  index_trials_on_phase_id              (phase_id)
-#  index_trials_on_pi_id                 (pi_id)
-#  index_trials_on_primary_purpose_id    (primary_purpose_id)
-#  index_trials_on_research_category_id  (research_category_id)
-#  index_trials_on_responsible_party_id  (responsible_party_id)
-#  index_trials_on_secondary_purpose_id  (secondary_purpose_id)
-#  index_trials_on_sponsor_id            (sponsor_id)
-#  index_trials_on_study_source_id       (study_source_id)
+#  index_trials_on_accrual_disease_term_id  (accrual_disease_term_id)
+#  index_trials_on_investigator_aff_id      (investigator_aff_id)
+#  index_trials_on_investigator_id          (investigator_id)
+#  index_trials_on_lead_org_id              (lead_org_id)
+#  index_trials_on_phase_id                 (phase_id)
+#  index_trials_on_pi_id                    (pi_id)
+#  index_trials_on_primary_purpose_id       (primary_purpose_id)
+#  index_trials_on_research_category_id     (research_category_id)
+#  index_trials_on_responsible_party_id     (responsible_party_id)
+#  index_trials_on_secondary_purpose_id     (secondary_purpose_id)
+#  index_trials_on_sponsor_id               (sponsor_id)
+#  index_trials_on_study_source_id          (study_source_id)
 #
 
 class Trial < ActiveRecord::Base
@@ -64,6 +66,7 @@ class Trial < ActiveRecord::Base
   belongs_to :research_category
   belongs_to :primary_purpose
   belongs_to :secondary_purpose
+  belongs_to :accrual_disease_term
   belongs_to :responsible_party
   belongs_to :lead_org, class_name: "Organization"
   belongs_to :pi, class_name: "Person"

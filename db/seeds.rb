@@ -62,6 +62,11 @@ PrimaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
+AccrualDiseaseTerm.find_or_create_by(code: 'SDC', name: 'SDC')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD9', name: 'ICD9')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD10', name: 'ICD10')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD-O-3', name: 'ICD-O-3')
+
 ResponsibleParty.find_or_create_by(code: 'SP', name: 'Sponsor')
 ResponsibleParty.find_or_create_by(code: 'PI', name: 'Principal Investigator')
 ResponsibleParty.find_or_create_by(code: 'SI', name: 'Sponsor Investigator')

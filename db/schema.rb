@@ -16,6 +16,14 @@ ActiveRecord::Schema.define(version: 20150929144934) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "accrual_disease_terms", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
+
   create_table "app_settings", force: :cascade do |t|
     t.string   "code",        limit: 255
     t.string   "name",        limit: 255
@@ -432,6 +440,7 @@ ActiveRecord::Schema.define(version: 20150929144934) do
     t.datetime "updated_at",                          null: false
     t.string   "uuid",                    limit: 255
     t.integer  "research_category_id"
+    t.integer  "accrual_disease_term_id"
     t.string   "investigator_title",      limit: 255
     t.integer  "investigator_aff_id"
     t.string   "created_by",              limit: 255
@@ -439,6 +448,7 @@ ActiveRecord::Schema.define(version: 20150929144934) do
     t.boolean  "is_draft"
   end
 
+  add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
   add_index "trials", ["investigator_aff_id"], name: "index_trials_on_investigator_aff_id", using: :btree
   add_index "trials", ["investigator_id"], name: "index_trials_on_investigator_id", using: :btree
   add_index "trials", ["lead_org_id"], name: "index_trials_on_lead_org_id", using: :btree
@@ -536,6 +546,7 @@ ActiveRecord::Schema.define(version: 20150929144934) do
   add_foreign_key "trial_funding_sources", "trials"
   add_foreign_key "trial_status_wrappers", "trial_statuses"
   add_foreign_key "trial_status_wrappers", "trials"
+  add_foreign_key "trials", "accrual_disease_terms"
   add_foreign_key "trials", "organizations", column: "investigator_aff_id"
   add_foreign_key "trials", "organizations", column: "lead_org_id"
   add_foreign_key "trials", "organizations", column: "sponsor_id"

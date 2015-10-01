@@ -403,6 +403,9 @@
                         secondaryPurposeObj: function(TrialService) {
                             return TrialService.getSecondaryPurposes();
                         },
+                        accrualDiseaseTermObj: function(TrialService) {
+                            return TrialService.getAccrualDiseaseTerms();
+                        },
                         responsiblePartyObj: function(TrialService) {
                             return TrialService.getResponsibleParties();
                         },
@@ -465,6 +468,9 @@
                     },
                     secondaryPurposeObj: function(TrialService) {
                         return TrialService.getSecondaryPurposes();
+                    },
+                    accrualDiseaseTermObj: function(TrialService) {
+                        return TrialService.getAccrualDiseaseTerms();
                     },
                     responsiblePartyObj: function(TrialService) {
                         return TrialService.getResponsibleParties();

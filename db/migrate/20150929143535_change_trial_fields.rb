@@ -1,5 +1,8 @@
 class ChangeTrialFields < ActiveRecord::Migration
   def change
+    add_reference :trials, :accrual_disease_term, index: true
+    add_foreign_key :trials, :accrual_disease_terms
+
     add_column :trials, :investigator_title, :string, :limit => 255
     add_reference :trials, :investigator_aff, references: :organizations, index: true
     add_foreign_key :trials, :organizations, column: :investigator_aff_id

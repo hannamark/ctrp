@@ -41,6 +41,7 @@
             'RESEARCH_CATEGORIES': '/ctrp/registry/research_categories.json',
             'PRIMARY_PURPOSES': '/ctrp/registry/primary_purposes.json',
             'SECONDARY_PURPOSES': '/ctrp/registry/secondary_purposes.json',
+            'ACCRUAL_DISEASE_TERMS': '/ctrp/registry/accrual_disease_terms.json',
             'RESPONSIBLE_PARTIES': '/ctrp/registry/responsible_parties.json',
             'FUNDING_MECHANISMS': '/ctrp/registry/funding_mechanisms.json',
             'INSTITUTE_CODES': '/ctrp/registry/institute_codes.json',

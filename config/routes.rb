@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :accrual_disease_terms
+
   resources :trial_documents
 
   scope "/ctrp" do
@@ -107,6 +109,7 @@ Rails.application.routes.draw do
       resources :phases
       resources :primary_purposes
       resources :secondary_purposes
+      resources :accrual_disease_terms
       resources :responsible_parties
       resources :trials do
         collection do
