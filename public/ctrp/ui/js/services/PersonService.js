@@ -69,7 +69,7 @@
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '5%'},
                 {name: 'prefix', enableSorting: true, width: '6%'},
                 {name: 'suffix', enableSorting: true, width: '4%'},
-                {name: 'email', enableSorting: true, width: '15%',
+                {name: 'email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -79,7 +79,7 @@
                 },
                 {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs',cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0"><master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5"></master-directive></div>' +
                 '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'},
-                {name: 'updated_at', displayName: 'Last Updated', type: 'date', cellFilter: 'date: "dd-MMM-yyyy"', enableSorting: true, width: '12%'}
+                {name: 'updated_at', displayName: 'Last Updated', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'}
             ]
         };
 
