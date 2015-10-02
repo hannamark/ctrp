@@ -82,7 +82,8 @@
             $scope.selectedRows = [];
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
-            $scope.dateFormat = DateService.getFormats()[0];; // January 20, 2015
+            $scope.dateFormat = DateService.getFormats()[1];
+            // console.log('dateFormat: ' + $scope.dateFormat);
             $scope.dateOptions = DateService.getDateOptions();
             $scope.startDateOpened = ''; //false;
             $scope.endDateOpened = ''; // false;
@@ -102,6 +103,11 @@
 
 
             $scope.searchPeople = function () {
+                $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
+                if ($scope.searchParams.date_range_arr.length == 0) {
+                    delete $scope.searchParams.date_range_arr;
+                }
+
                 PersonService.searchPeople($scope.searchParams).then(function (data) {
                     if ($scope.showGrid && data.data.people) {
                        // console.log("received person search results: " + JSON.stringify(data.data.people));
@@ -127,6 +133,7 @@
                 }).catch(function (err) {
                     console.log('search people failed');
                 });
+
             }; //searchPeople
 
 
@@ -397,15 +404,25 @@
              * @param type
              */
             $scope.openCalendar = function ($event, type) {
-                $event.preventDefault();
-                $event.stopPropagation();
+               // $event.preventDefault();
+                //$event.stopPropagation();
 
                 if (type == "end") {
-                    $scope.endDateOpened = !$scope.endDateOpened;
+                    $scope.endDateOpened = true;// !$scope.endDateOpened;
                 } else {
-                    $scope.startDateOpened = !$scope.startDateOpened;
+                    $scope.startDateOpened = true;// !$scope.startDateOpened;
                 }
             }; //openCalendar
+
+            /*
+            $scope.$watch('searchParams.endDate', function(newVal, oldVal) {
+                console.log(JSON.stringify($scope.searchParams.endDate));
+                console.log($scope.searchParams.endDate.getMonth());
+                console.log(moment(newVal).format("YYYY-MM-DD HH:mm:ss"));
+//                console.log($scope.searchParams.endDate.isBefore($scope.searchParams.startDate));
+                console.log(DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate));
+            }, true);
+            */
 
 
 

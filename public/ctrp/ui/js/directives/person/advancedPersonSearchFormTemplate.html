@@ -6,6 +6,7 @@
             <!-- person name -->
             <div class="form-group">
                 <label for="person_fname" class="control-label col-sm-2">First Name: </label>
+
                 <div class="col-sm-4">
                     <input type="text" id="person_fname" class="form-control"
                            placeholder="First Name"
@@ -48,7 +49,9 @@
                     <select class="form-control" id="source_context"
                             ng-model="searchParams.source_context">
                         <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
-                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}" ng-selected="context.name == searchParams.source_context">{{context.name}}</option>
+                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}"
+                                ng-selected="context.name == searchParams.source_context">{{context.name}}
+                        </option>
                     </select>
                 </div>
                 <!--source context ends-->
@@ -137,13 +140,15 @@
         <div class="col-md-6">
             <div class="form-group">
                 <!-- start date -->
-                <label for="person_fname" class="control-label col-sm-2">Start Date: </label>
+                <label for="person_fname" class="control-label col-sm-2">Start: </label>
+
                 <div class="col-sm-4">
                     <div class="input-group add-on col-sm-12 date datepicker"
                          date-date-format="yyyy-mm-dd">
                         <input type="text" class="form-control input-normal"
-                               datepicker-popup="{{dateFormat}}"
-                               ng-model="searchParams.startDate" is-open="startDateOpened" is-open="opened" datepicker-options="dateOptions"
+                               datepicker-popup="{{dateFormat}}" show-weeks="false"
+                               ng-model="searchParams.startDate" is-open="startDateOpened" is-open="opened"
+                               datepicker-options="dateOptions"
                                ng-required="false" close-text="Close"/>
                                   <span class="input-group-btn">
                                         <button type="button" class="btn btn-default"
@@ -151,19 +156,18 @@
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                   </span>
-
                     </div>
                 </div>
 
 
-
                 <!-- end date -->
-                <label for="person_fname" class="control-label col-sm-2">End Date: </label>
+                <label for="person_fname" class="control-label col-sm-2">End: </label>
+
                 <div class="col-sm-4">
                     <div class="input-group add-on col-sm-12 date datepicker"
                          date-date-format="yyyy-mm-dd">
                         <input type="text" class="form-control input-normal"
-                               datepicker-popup="{{dateFormat}}"
+                               datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" is-open="opened"
                                datepicker-options="dateOptions"
                                ng-required="false" close-text="Close"/>
@@ -216,9 +220,10 @@
             <div class="col-sm-6">
                 <!-- information section -->
                 <a href="" id="people_search_results"></a>
+
                 <p><h4>People Search Results: {{gridOptions.totalItems}} found</h4></p>
                 <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true">
-                    <mark>Curation Mode: </mark>
+                    <mark>Curation Mode:</mark>
                     <toggle-switch ng-model="curationShown" ng-change="toggleCurationMode()"></toggle-switch>
 
                     <button class="btn" ng-click="commitNullification()" ng-show="curationShown"
@@ -242,7 +247,9 @@
                 <a href="" class="close" data-dismiss="alert">&times;</a>
                 <strong>{{warningMessage}}</strong>
             </div>
-        </div> <br />
+        </div>
+        <br/>
+
         <div class="row animated-item" ng-if="gridOptions.data.length > 0">
             <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
         </div>

@@ -27,6 +27,7 @@
             phone: "",
             startDate: "",  //updated_at
             endDate: "",   //updated_at
+            date_range_arr: [],
 
             //for pagination and sorting
             sort: "updated_at",
