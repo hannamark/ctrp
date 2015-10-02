@@ -12,7 +12,7 @@ And I provide the <City> of the organization
 And I provide the <State> of the organization
 And I submit my search request
 Then the system should display the organization with that PO Organization ID
-And the <Organization Search Results> will display:
+And the <Organization Search Results> will display sorted by Organization Name:
 |PO Organization ID|
 |CTEP Organization ID|
 |Organization Name|
