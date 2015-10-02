@@ -56,7 +56,7 @@
         <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source Status:</label>
             <div class="col-sm-9">
-                <div ng-if="orgDetailView.curOrg.new">{{orgDetailView.pendingStatusName}}</div>
+                <div ng-if="orgDetailView.curOrg.new">{{orgDetailView.activeStatusName}}</div>
                 <div ng-if="!orgDetailView.curOrg.new" class="animated-item">
                     <select class="form-control" id="source_status" ng-model="orgDetailView.curOrg.source_status_id">
                         <option value="">Select a status</option>
