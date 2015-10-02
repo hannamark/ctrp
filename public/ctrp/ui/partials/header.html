@@ -105,7 +105,15 @@
                                         class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a ui-sref="main.trials">Search Trials</a></li>
-                                    <li><a ui-sref="main.addTrial">Register Trial</a></li>
+                                    <li class="dropdown-submenu">
+                                        <a ui-sref="#">Register Trial</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a ui-sref="main.addTrial({studySourceCode: 'NAT'})">National</a></li>
+                                            <li><a ui-sref="main.addTrial({studySourceCode: 'EPR'})">Externally Peer-Reviewed</a></li>
+                                            <li><a ui-sref="main.addTrial({studySourceCode: 'INS'})">Institutional</a></li>
+                                            <li><a ui-sref="main.addTrial({studySourceCode: 'EXP'})">Expanded Access</a></li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -114,7 +122,7 @@
                                         class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a ui-sref="main.userDetail">Edit User Profile</a></li>
-                                    <li><a href="/ctrp/users">Rails Portal</a></li>
+                                    <li><a href="/ctrp/users">User Portal</a></li>
                                 </ul>
                             </li>
                         </ul>

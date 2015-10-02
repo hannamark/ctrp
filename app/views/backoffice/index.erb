@@ -1,41 +1,44 @@
-<head lang="en" ng-app="ctrpApp">
+<html>
+<head>
   <meta charset="UTF-8">
-  <title>CTRP</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/ctrp/ui/css/override.css">
-
-  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-resource.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-animate.min.js"></script>
-
-
-  <!-- angular modules/dependencies from third parties -->
-  <script src="third_party_libs/angular-local-storage.js"></script>
-
+  <title>CTRP Backoffice</title>
 </head>
 <body>
 <div>
   <img src="/ctrp/static/images/NIH-red-logo.png"/> <b>National Cancer Institute | Clinical Trials Reporting Program</b>
 </div>
+<div style="margin-left:10px;">
 <h3>CTRP Backoffice</h3>
+<a href="/ctrp/ui#/main/welcome">Back to Angular</a>
 
+<h4>CTRP App Administration</h4>
 <div>
   <ul>
-    <li><a href="/ctrp/ui#/main/welcome">Main</a></li>
-    <li><a href="/ctrp/admin">Rails Admin</a></li>
-    <li><%= link_to 'Download Log', backoffice_download_log_url %></li>
-    <li><a href="/ctrp/admin/app_setting">App Setting</a></li>
+    <li><a href="/ctrp/admin">Rails Admin Plugin</a></li>
+    <li><a href="/ctrp/admin/app_setting">App Settings</a></li>
     <li><a href="/ctrp/backoffice/static_members">Static Members</a></li>
-    <li><a href="/ctrp/users">Rails Portal</a></li>
+    <li><a href="/ctrp/users">Rails User Portal</a></li>
 
   </ul>
 </div>
+<h4>App Debugging</h4>
+<div>
+  <ul>
+    <li><%= link_to 'Download Rails application log', backoffice_download_log_url %></li>
+    <li>Rails environment: <%= Rails.env%></li>
+    <li>Git information:
+      <ul>
+        <li>Branch: <%=CTRP::GIT_BRANCH %></li>
+        <li>Short revision: <%=CTRP::GIT_SHORT_REVISION %></li>
+        <li>Full revision: <a target="_blank" href="https://github.com/cbiit/ctrp/commit/<%=CTRP::GIT_FULL_REVISION %>"><%=CTRP::GIT_FULL_REVISION %></a></li>
+      </ul>
+    </li>
+    <li>Rails ENV dump: <br />
+      <%= debug ENV.to_h.to_yaml %></li>
+  </ul>
 
-
+</div>
+</div>
 
 </body>
 </html>

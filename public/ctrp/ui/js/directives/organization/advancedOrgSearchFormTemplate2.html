@@ -1,5 +1,12 @@
 <form class="form-horizontal" role="form">
-    <!-- first row -->
+     <!-- first row -->
+    <div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
+        <div class="alert alert-danger fade in">
+            <a href="" class="close" data-dismiss="alert">&times;</a>
+            <strong>{{searchWarningMessage}}</strong>
+        </div>
+    </div> <br />
+
     <div class="row">
         <div class="col-md-6">
             <!-- organization name -->
@@ -11,13 +18,13 @@
                            placeholder="Organization Name" ng-model="searchParams.name" auto-focus/>-->
 
                     <input type="text" id="organization_name" class="form-control"
-                           placeholder="Organization Name" ng-model="searchParams.name" auto-focus
+                            autocomplete="off" placeholder="Organization Name" ng-model="searchParams.name" auto-focus
                             typeahead="org for org in typeAheadNameSearch($viewValue)" typeahead-loading="loadingOrganizations"
-                            typeahead-no-results="noResults"/>
-                    <i ng-show="loadingOrganizations" class="glyphicon glyphicon-refresh"></i>
+                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" autocomplete="off"/>
+                    <!--<i ng-show="loadingOrganizations" class="glyphicon glyphicon-refresh"></i>
                     <div ng-show="noResults">
                         <i class="glyphicon glyphicon-remove has-error">No organizations name matched</i>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <div ng-class="searchParams.alias == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
@@ -32,20 +39,33 @@
         <div class="col-md-6">
             <!-- PO ID -->
             <div class="form-group">
-                <!-- ID used as ctrp_id here -->
+                <!--source context-->
+                <label for="source_id" class="control-label col-xs-12 col-sm-2">Source Context: </label>
+
+                <div class="col-xs-12 col-sm-4">
+                    <select class="form-control" id="source_context" ng-model="searchParams.source_context">
+                        <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
+                        <option ng-repeat="context in sourceContexts" value="{{context.name}}">{{context.name}}</option>
+                    </select>
+                </div>
+                <!-- source context ends -->
+
+                <!-- ID used as ctrp_id here
                 <label for="ctrp_id" class="control-label col-xs-12 col-sm-2"><nobr>CTRP ID:</nobr></label>
 
                 <div class="col-xs-12 col-sm-4">
                     <input type="text" id="ctrp_id" class="form-control" placeholder="CTRP ID"
                            ng-model="searchParams.ctrp_id"/>
                 </div>
+                -->
+                <!--source id-->
+                <label for="source_id" class="control-label col-xs-12 col-sm-2">Source ID: </label>
 
-                <label for="phone" class="control-label col-xs-12 col-sm-2">Phone:</label>
-
-                <div class="col-xs-12 col-sm-4 pull-right">
-                    <input type="text" id="phone" class="form-control" placeholder="Phone"
-                           ng-model="searchParams.phone"/>
+                <div class="col-xs-12 col-sm-4">
+                    <input type="text" id="source_id" class="form-control" placeholder="Source ID"
+                           ng-model="searchParams.source_id"/>
                 </div>
+
             </div>
             <!-- PO ID ends -->
         </div>
@@ -55,39 +75,28 @@
     <!-- second row -->
     <div class="row">
         <div class="col-md-6">
-            <!--source context-->
             <div class="form-group">
-                <label for="source_id" class="control-label col-xs-12 col-sm-2">Source Context: </label>
+                <label for="source_status" class="control-label col-xs-12 col-sm-2">Source Status: </label>
 
                 <div class="col-xs-12 col-sm-4">
-                    <select class="form-control" id="source_context"
-                            ng-model="searchParams.source_context">
-                        <option value="">All Contexts</option>
-                        <option ng-repeat="context in sourceContexts" value="{{context.name}}">{{context.name}}</option>
+                    <select class="form-control" id="source_status"
+                            ng-model="searchParams.source_status">
+                        <option value="">Select a Status</option>
+                        <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
                     </select>
                 </div>
-                <!-- source context ends -->
-                <!--source id-->
-                <label for="source_id" class="control-label col-xs-12 col-sm-2">Source ID: </label>
 
-                <div class="col-xs-12 col-sm-4">
-                    <input type="text" id="source_id" class="form-control" placeholder="Source ID"
-                           ng-model="searchParams.source_id"/>
-                </div>
             </div>
             <!-- source id ends -->
         </div>
         <div class="col-md-6">
             <!--source status-->
             <div class="form-group">
-                <label for="source_status" class="control-label col-xs-12 col-sm-2">Source Status: </label>
+                <label for="family_name" class="control-label col-xs-12 col-sm-2">Family Name:</label>
 
                 <div class="col-xs-12 col-sm-10">
-                    <select class="form-control" id="source_status"
-                            ng-model="searchParams.source_status">
-                        <option value="">Select a Status</option>
-                        <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
-                    </select>
+                    <input type="text" id="family_name" class="form-control" placeholder="Family Name"
+                           ng-model="searchParams.family_name"/>
                 </div>
             </div>
             <!-- source status ends -->
@@ -95,7 +104,7 @@
     </div>
     <!--second row ends -->
 
-    <!-- third row -->
+    <!-- third row
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -126,22 +135,25 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="family_name" class="control-label col-xs-12 col-sm-2">Family Name:</label>
+                <label for="city" class="control-label col-xs-12 col-sm-2">City:</label>
 
                 <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="family_name" class="form-control" placeholder="Family Name"
-                           ng-model="searchParams.family_name"/>
+                    <input type="text" id="city" class="form-control" placeholder="City"
+                           ng-model="searchParams.city"/>
                 </div>
+
+
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="email" class="control-label col-xs-12 col-sm-2">Email:</label>
+                <label for="postal_code" class="control-label col-xs-12 col-sm-2">Postal Code:</label>
 
                 <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="email" class="form-control" placeholder="Email"
-                           ng-model="searchParams.email"/>
+                    <input type="text" id="postal_code" class="form-control" placeholder="Postal Code"
+                           ng-model="searchParams.postal_code"/>
                 </div>
+
             </div>
         </div>
     </div>
@@ -165,12 +177,13 @@
 
         <div class="col-md-6">
             <div class="form-group">
-                <label for="city" class="control-label col-xs-12 col-sm-2">City:</label>
+                <label for="phone" class="control-label col-xs-12 col-sm-2">Phone:</label>
 
-                <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="city" class="form-control" placeholder="City"
-                           ng-model="searchParams.city"/>
+                <div class="col-xs-12 col-sm-10 pull-right">
+                    <input type="text" id="phone" class="form-control" placeholder="Phone"
+                           ng-model="searchParams.phone"/>
                 </div>
+
             </div>
         </div>
     </div>
@@ -179,7 +192,7 @@
     <!-- sixth row -->
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group" ng-hide="states.length == 0">
+            <div class="form-group">
                 <label for="state" class="control-label col-xs-12 col-sm-2">State:</label>
 
                 <div class="col-xs-12 col-sm-10">
@@ -192,12 +205,13 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="postal_code" class="control-label col-xs-12 col-sm-2">Postal Code:</label>
+                <label for="email" class="control-label col-xs-12 col-sm-2">Email:</label>
 
                 <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="postal_code" class="form-control" placeholder="Postal Code"
-                           ng-model="searchParams.postal_code"/>
+                    <input type="text" id="email" class="form-control" placeholder="Email"
+                           ng-model="searchParams.email"/>
                 </div>
+
             </div>
         </div>
     </div>
@@ -227,7 +241,9 @@
         <div class="row" ng-if="gridOptions.totalItems != null">
             <div class="col-sm-11">
                 <a href="" id="org_search_results"></a>
-                <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
+                <div ng-if="searchWarningMessage.length === 0">
+                    <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
+                </div>
                 <div  ng-if="usedinmodal !=1 ">
                     <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true"">
                         <mark>Curation Mode: </mark>
@@ -239,19 +255,16 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="alert alert-danger fade in" ng-show="warningMessage != false">
+        <div class="row" ng-hide="warningMessage==''" ng-cloak>
+            <div class="alert alert-danger fade in">
                 <a href="" class="close" data-dismiss="alert">&times;</a>
                 <strong>{{warningMessage}}</strong>
             </div>
-            <!--<div class="alert alert-info fade in" ng-show="personView.curationReady">
-                <a href="" class="close" data-dismiss="alert">&times;</a>
-                <strong>Please click the above Commit button to nullify the selected person</strong>
-            </div>-->
         </div> <br />
-        <div class="row animated-item"  ng-if="gridOptions.totalItems > 0">
-            <div  ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
-                 ui-grid-auto-resize></div>
+        <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
+            <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
+            <!--<div  ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
+                 ui-grid-auto-resize></div> -->
 
             <!--<div ng-if="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize-->
             <!--style="height: {{gridHeight}}"></div>-->

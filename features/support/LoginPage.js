@@ -13,6 +13,7 @@ var LoginPage = function(){
     this.password = element(by.model('userView.userObj.user.password'));
     this.loginButton = element(by.css('button[ng-click="userView.authenticate()"]'));
     this.cancelButton = element(by.css('input[value="Reset"]'));
+    this.logoutButton = element(by.css('a[ng-click="headerView.logOut()"]'));
     var params = browser.params;
     var login = new helper();
 
@@ -24,7 +25,7 @@ var LoginPage = function(){
         login.setValue(this.password,params.login.password,"Password field");
     };
 
-    this.login = function(){
+    this.login_button = function(){
         login.wait(this.loginButton,"Login button");
         this.loginButton.click();
       //  expect(browser.getCurrentUrl()).to.eventually.equal('http://localhost/ctrp/ui#/main/organizations');
@@ -34,6 +35,22 @@ var LoginPage = function(){
     this.cancel = function(){
         login.wait(this.cancelButton,"Cancel button");
         this.cancelButton.click();
+    };
+
+    this.login = function (userName, password){
+        this.logoutButton.isDisplayed().then(function(result) {
+            if (result) {
+                //Whatever if it is true (displayed)
+                element(by.css('a[ng-click="headerView.logOut()"]')).click();
+                element(by.model('userView.userObj.user.username')).sendKeys(userName);
+                element(by.model('userView.userObj.user.password')).sendKeys(password);
+                element(by.css('button[ng-click="userView.authenticate()"]')).click();
+            } else {
+                element(by.model('userView.userObj.user.username')).sendKeys(userName);
+                element(by.model('userView.userObj.user.password')).sendKeys(password);
+                element(by.css('button[ng-click="userView.authenticate()"]')).click();
+            }
+        });
     };
 
 };

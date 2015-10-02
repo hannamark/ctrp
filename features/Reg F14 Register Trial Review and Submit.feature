@@ -15,6 +15,7 @@ Then the CTRP application will check that all required fields have been entered
 |Is this a Pilot?|
 |Trial Type|
 |Primary Purpose|
+|Accrual Disease Terminology|
 |Lead Organization|
 |Principal Investigator|
 |Sponsor|
@@ -39,7 +40,8 @@ Then the CTRP application will check that all required fields have been entered
 |IRB Approval Document|
 And the CTRP application will check that all conditional fields have been entered
 |Condition : Conditional Field|
-|Sponsor-Investigator as Responsible Party : Investigator|
+|Principal Investigator as Responsible Party : Principal Investigator, Investigator Title, Investigator Affiliation|
+|Sponsor-Investigator as Responsible Party : Investigator, Investigator Title, Investigator Affiliation|
 |Funded by NCI Grant : Funding Mechanism, Institute Code, Serial Number, NCI Division/Program Code|
 |IND/IDE : IND/IDE Type, IND/IDE Number, IND/IDE Grantor, IND/IDE Holder Type, NIH Institution or NCI Division|
 |Interventional Trial : Informed Consent Document|
@@ -72,3 +74,4 @@ And I have performed the Review Trial action without errors
 When I have selected Register Trial
 Then all registration information will be entered in CTRP
 And the trial status will be Submitted
+And the trial milestone Submission Received Date will be created with the current date and time

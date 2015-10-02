@@ -76,15 +76,15 @@ class  User < ActiveRecord::Base
 
   def get_all_users_by_role
     users = []
-    unless self.role.blank?
+    if !self.role.blank? && self.approved
       # A Super Admin User can see all the Users and can approve access to the user
-      if self.role == "ROLE_SUPER"
+      if self.role == "ROLE_SUPER" && self.organization_id.blank?
         users = User.all
-       elsif self.role == "ROLE_SITE_ADMIN"
+       elsif self.role == "ROLE_SUPER"   && !self.organization_id.blank? #self.role == "ROLE_SITE_ADMIN"
         # A Site Admin User can see all the Users in its respective organization and
         # also can approve the user's site admin privileges
         unless self.organization_id.nil?
-          users = User.find_all_by_organization_id(self.organization_id)
+          users = User.all.select{|x| x.organization_id==self.organization_id}
         end
       end
     end
@@ -163,5 +163,31 @@ class  User < ActiveRecord::Base
       end
     end
   end
+
+  def self.custom_find_by_username(username_value)
+    user = nil
+    unless username_value.blank?
+      user = User.find_by_username(username_value.downcase)
+    end
+    Rails.logger.debug "User, custom_find_by_username user = #{user.inspect}"
+    user
+  end
+
+  def log_debug
+    if self.is_a?(LocalUser)
+      Rails.logger.debug "\nIn User, log_debug, LocalUser #{self.inspect} " unless self.blank?
+    elsif self.is_a?(LdapUser)
+      Rails.logger.debug "In User, log_debug, LdapUser #{self.inspect} " unless self.blank?
+    else
+      Rails.logger.debug "In User, log_debug,OmniauthUser #{self.inspect} " unless self.blank?
+    end
+  end
+
+  private
+
+  def compare_username(username_value)
+    self.username.downcase == username_value.downcase
+  end
+
 
 end

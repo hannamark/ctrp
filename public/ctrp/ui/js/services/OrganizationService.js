@@ -59,9 +59,9 @@
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'id', enableSorting: true, displayName: 'CTRP ID', width: '10%'},
+                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '8%'},
                 {
-                    name: 'name', enableSorting: true, width: '23%',
+                    name: 'name', enableSorting: true, width: '30%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                  //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -70,36 +70,39 @@
                     '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
-                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '8%'},
+                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '8%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
                 {name: 'city', enableSorting: true, width: '10%'},
-                {name: 'state_province', displayName: 'State', enableSorting: true, width: '10%'},
+                {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
+                {name: 'country', displayName: 'Country', enableSorting: true, width:'9%'},
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'6%'},
+                {name: 'phone', enableSorting: true, width: '8%'},
                 {name: 'email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'phone', enableSorting: true, width: '10%'}
+                }
 
             ]
         };
 
         var services = {
-            getAllOrgs : getAllOrgs,
-            getOrgById : getOrgById,
-            upsertOrg : upsertOrg,
-            searchOrgs : searchOrgs,
-            getInitialOrgSearchParams : getInitialOrgSearchParams,
-            getGridOptions : getGridOptions,
-            watchCountrySelection : watchCountrySelection,
-            getStatesOrProvinces : getStatesOrProvinces,
-            getSourceContexts : getSourceContexts,
-            getSourceStatuses : getSourceStatuses,
-            deleteOrg : deleteOrg,
-            indexOfOrganization : indexOfOrganization,
-            preparePOAffiliationArr : preparePOAffiliationArr,
-            initSelectedOrg : initSelectedOrg,
-            curateOrg : curateOrg
+            getAllOrgs: getAllOrgs,
+            getOrgById: getOrgById,
+            upsertOrg: upsertOrg,
+            searchOrgs: searchOrgs,
+            getInitialOrgSearchParams: getInitialOrgSearchParams,
+            getGridOptions: getGridOptions,
+            watchCountrySelection: watchCountrySelection,
+            getStatesOrProvinces: getStatesOrProvinces,
+            getSourceContexts: getSourceContexts,
+            getSourceStatuses: getSourceStatuses,
+            deleteOrg: deleteOrg,
+            indexOfOrganization: indexOfOrganization,
+            preparePOAffiliationArr: preparePOAffiliationArr,
+            initSelectedOrg: initSelectedOrg,
+            curateOrg: curateOrg,
+            findContextId: findContextId
         };
 
         return services;
@@ -327,6 +330,24 @@
          */
         function curateOrg(curationObject) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CURATE_ORG, curationObject);
+        }
+
+
+        /**
+         * From the array of context (array of JSON objects), locate the context id for the contextName
+         *
+         * @param ctrpContextArr
+         * @param key, String
+         * @param contextName, String (e.g. 'CTRP')
+         * @returns {number}
+         */
+        function findContextId(ctrpContextArr, key, contextName) {
+            var ctrpContextId = -1; //not found
+            var needleIndex = Common.indexOfObjectInJsonArray(ctrpContextArr, key, contextName);
+            if (needleIndex > -1) {
+                ctrpContextId = ctrpContextArr[needleIndex].id || -1;
+            }
+            return ctrpContextId;
         }
 
 

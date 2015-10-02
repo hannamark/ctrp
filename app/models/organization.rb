@@ -20,6 +20,8 @@
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
 #  ctrp_id           :integer
+#  created_by        :string
+#  updated_by        :string
 #
 # Indexes
 #
@@ -45,6 +47,7 @@ class Organization < ActiveRecord::Base
   has_many :colo_trials, through: :trial_co_lead_orgs, source: :trial
   has_many :lo_trials, foreign_key: :lead_org_id, class_name: "Trial"
   has_many :sponsor_trials, foreign_key: :sponsor_id, class_name: "Trial"
+  has_many :inv_aff_trials, foreign_key: :investigator_aff_id, class_name: "Trial"
 
   validates :name, presence: true
 
@@ -137,6 +140,23 @@ class Organization < ActiveRecord::Base
   scope :contains, -> (column, value) { where("organizations.#{column} ilike ?", "%#{value}%") }
 
   scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
+
+  scope :matches_ctrp_id, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i > 0
+        q += " OR organizations.ctrp_id = ?"
+      else
+        q += "organizations.ctrp_id = ?"
+      end
+      conditions.push(e)
+    }
+    conditions.insert(0, q)
+
+    where(conditions)
+  }
 
   scope :matches_wc, -> (column, value) {
     str_len = value.length

@@ -1,8 +1,131 @@
-<h2>Thanks for signing up </h2>
-<%= form_for(@user, :url => wizard_path, :method => :put) do |f| %>
-    <%= f.text_field :zipcode, :placeholder => 'zip code' %>
-    <%= f.submit 'Next', :class => 'btn btn-primary' %>
-<% end %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <title>CTRP User Portal</title>
+
+  <!-- Bootstrap core CSS -->
+  <!--link href="../..//css/bootstrap.min.css" rel="stylesheet"-->
+
+  <!-- Custom styles for this template -->
+  <link href="../../assets/stylesheets/dashboard.scss" rel="stylesheet">
+
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">CTRP User Portal</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
 
 
-<%= link_to 'skip', next_wizard_path %>
+        <% if local_user_signed_in? %><li><a class="navbar-brand" href="#">Current Local User is <%= current_local_user.username %></a><li/> <% end %>
+        <% if local_user_signed_in? %>
+            <li><%= link_to 'Sign out', destroy_session_path, method: :delete %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+        <br/><br/>
+        <li><a href="/ctrp/ui#/main/sign_in">CTRP Main</a></li>
+        <% if local_user_signed_in? ||  ldap_user_signed_in? %>
+            <li><%= link_to "List Users", users_path %></li>
+            <li><%= link_to "Assign Organization", search_organizations_path %></li>
+            <% if current_local_user.role == "ROLE_SUPER" %>
+                <li><%= link_to "BackOffice", backoffice_path %></li>
+            <% end %>
+            <!--li><!--%= link_to 'Edit User ', edit_user_path(current_local_user.username) %></li-->
+        <% end %>
+        <% if !local_user_signed_in? &&  !ldap_user_signed_in? %>
+            <li><%= link_to "Sign In", new_session_path %></li>
+        <% end %>
+        <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
+        <% if local_user_signed_in? %>
+            <!--li><!--%= link_to "Change your password", edit_local_user_registration_path %></li-->
+        <% end %>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+      <div class="table-responsive"> 
+        <h2>Thanks for signing up </h2>
+
+        <h3> User Details </h3>
+        <%= form_for(@user, :url => wizard_path, :method => :put) do |f| %>
+            <div class="field">
+              <%= label_tag(:first_name, "First Name:") %>
+              <%= f.text_field :first_name, :placeholder => 'first_name' %>
+            </div>
+            <div class="field">
+              <%= label_tag(:last_name, "Last Name:") %>
+              <%= f.text_field :last_name, :placeholder => 'Last name' %>
+            </div>
+            <div class="field">
+              <%= label_tag(:middle_name, "Middle Name:") %>
+              <%= f.text_field :middle_name, :placeholder => 'Middle name' %>
+            </div>
+            <div class="field">
+              <%= label_tag(:street_address, "Street Address:") %>
+              <%= f.text_field :street_address, :placeholder => 'street address' %>
+            </div>
+            <div class="field">
+              <%= label_tag(:zipcode, "zipcode:") %>
+              <%= f.text_field :zipcode, :placeholder => 'zip code' %>
+            </div>
+            <div class="field">
+              <%= f.submit 'Next', :class => 'btn btn-primary' %>
+            </div>
+        <% end %>
+
+        <%= link_to 'Skip this page', next_wizard_path %>
+
+      </div>  
+
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+<script src="../../assets/js/vendor/holder.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>

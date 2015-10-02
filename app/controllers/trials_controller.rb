@@ -61,6 +61,23 @@ class TrialsController < ApplicationController
     end
   end
 
+  def search
+    # Pagination/sorting params initialization
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 10 if params[:rows].blank?
+    params[:sort] = 'lead_protocol_id' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+
+    if params[:lead_protocol_id].present? || params[:official_title].present?
+      @trials = Trial.all
+      @trials = @trials.matches('lead_protocol_id', params[:lead_protocol_id]) if params[:lead_protocol_id].present?
+      @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
+      @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
+    else
+      @trials = []
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_trial
@@ -70,17 +87,18 @@ class TrialsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def trial_params
       params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id,
-                                    :primary_purpose_other, :secondary_purpose_other, :program_code, :grant_question,
+                                    :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
                                     :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual,
-                                    :comp_date, :comp_date_qual, :ind_ide_question, :authority_country, :authority_org,
+                                    :comp_date, :comp_date_qual, :ind_ide_question,
                                     :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
-                                    :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
-                                    :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id,
+                                    :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :accrual_disease_term_id,
+                                    :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
                                     trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id, :_destroy],
                                     ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
-                                                          :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy])
+                                                          :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
+                                    oversight_authorities_attributes: [:id, :country, :organization, :_destroy])
     end
 end

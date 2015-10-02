@@ -9,12 +9,8 @@ class UsersController < ApplicationController
     Rails.logger.info "@user = #{@user.inspect}"
     @users = []
     unless @user.blank?
-      if @user.role == "ROLE_SUPER"
-        @users = User.all
-      elsif @user.role == "ROLE_SITE_ADMIN" && @user.approved
-        @users = User.find_by_organization_id(@user.organization_id)
-      end
-      #Rails.logger.info "@users = #{@users.inspect}"
+      @users = @user.get_all_users_by_role
+      Rails.logger.info "UserController,index @users = #{@users.inspect}"
     end
   end
 
@@ -26,7 +22,19 @@ class UsersController < ApplicationController
   def update
     @user = User.find_by_username(params[:user][:username])
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
-    @user.update_attributes(user_params)
+
+
+    respond_to do |format|
+      #@person.po_affiliations.destroy
+      if @user.update_attributes(user_params)
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.json { render json: @user}
+      else
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+
     Rails.logger.info "In Users Controller, update after user = #{@user.inspect}"
   end
 

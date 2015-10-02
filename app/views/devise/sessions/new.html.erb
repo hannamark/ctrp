@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -9,7 +9,7 @@
   <meta name="author" content="">
   <link rel="icon" href="../../favicon.ico">
 
-  <title>Dashboard Template for Bootstrap</title>
+  <title>CTRP User Portal</title>
 
   <!-- Bootstrap core CSS -->
   <!--link href="../..//css/bootstrap.min.css" rel="stylesheet"-->
@@ -39,21 +39,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">CTRP RailApp test</a>
+      <a class="navbar-brand" href="#">CTRP User Portal</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
 
-        <li><a href="#">Dashboard</a></li>
-        <% if local_user_signed_in? %><li>Current Local User is <%= current_local_user.username %><li/> <% end %>
-        <li><a href="#">Profile</a></li>
+
+        <% if local_user_signed_in? %><li><a class="navbar-brand" href="#">Current Local User is <%= current_local_user.username %></a><li/> <% end %>
         <% if local_user_signed_in? %>
             <li><%= link_to 'Sign out', destroy_session_path, method: :delete %></li>
         <% end %>
       </ul>
-      <form class="navbar-form navbar-right">
-        <input type="text" class="form-control" placeholder="Search...">
-      </form>
     </div>
   </div>
 </nav>
@@ -63,47 +59,47 @@
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
         <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-        <li><%= link_to "List Users", users_path %></li>
-        <li><%= link_to "Sign In", new_session_path %></li>
+        <br/><br/>
+        <li><a href="/ctrp/ui#/main/sign_in">CTRP Main</a></li>
+        <% if local_user_signed_in? ||  ldap_user_signed_in? %>
+            <li><%= link_to "List Users", users_path %></li>
+            <li><%= link_to "Assign Organization", search_organizations_path %></li>
+            <% if current_local_user.role == "ROLE_SUPER" %>
+                <li><%= link_to "BackOffice", backoffice_path %></li>
+            <% end %>
+            <!--li><!--%= link_to 'Edit User ', edit_user_path(current_local_user.username) %></li-->
+        <% end %>
+        <% if !local_user_signed_in? &&  !ldap_user_signed_in? %>
+            <li><%= link_to "Sign In", new_session_path %></li>
+        <% end %>
         <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
-        <%= link_to "Change your password", edit_local_user_registration_path %>
         <% if local_user_signed_in? %>
-            <li><%= link_to 'Edit User ', edit_local_user_registration_path %></li>
+            <!--li><!--%= link_to "Change your password", edit_local_user_registration_path %></li-->
         <% end %>
       </ul>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-
-      <div class="table-responsive">
-        <%= form_for(resource, :as => 'user', url: create_session_path) do %>
-            <%= hidden_field_tag :source, "Rails" %>
+      <div class="table-responsive"> 
+        <%= form_for(resource, :as => 'user', url: create_session_path) do %> 
+            <%= hidden_field_tag :source, "Rails" %> 
             <fieldset>
-              <legend>Log In</legend>
-              <table>
-                <tr>
-                  <td>
-                    <label>Username </label>
-                    <input type="text" placeholder="Username or Email" name="user[username]" />
-                  </td>
-                  <td>
-                    <label>Password</label>
-                    <input type="password" placeholder="Password" name="user[password]" />
-                    <input type="submit" class="button" value="Log In" />
-                  </td>
-                </tr>
-              </table></fieldset>
-        <% end %>
-      </div>
-
-
-
-
-      <h1 class="page-header">List CTRP Users</h1>
-
-
-      <h2 class="sub-header"><% if local_user_signed_in? %> <b>Current Local User is <%= current_local_user.username %></b><br/> <% end %></h2>
-
+                       <legend>Log In</legend> 
+                        <table>
+                             <tr> 
+                                <td>  <label>Username </label> 
+                                   <input type="text" placeholder="Username or Email" name="user[username]" /> 
+                                </td> 
+                                <td> 
+                                   <label>Password</label> 
+                                   <input type="password" placeholder="Password" name="user[password]" autocomplete="off"/> 
+                                   <input type="submit" class="button" value="Log In" /> 
+                                </td> 
+                             </tr>
+                           </table>
+            </fieldset> 
+        <% end %> 
+      </div>  
 
     </div>
   </div>

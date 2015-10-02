@@ -3,6 +3,7 @@ class OrganizationsController < ApplicationController
   ## Please comment the next two lines if you donot want the Authorization checks
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
+  skip_authorize_resource :only => [:search, :select]
 
   respond_to :html, :json
 
@@ -31,6 +32,7 @@ class OrganizationsController < ApplicationController
   # POST /organizations.json
   def create
     @organization = Organization.new(organization_params)
+    @organization.updated_by = @organization.created_by
 
     respond_to do |format|
       if @organization.save
@@ -46,6 +48,7 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1
   # PATCH/PUT /organizations/1.json
   def update
+    params[:organization].delete :created_by
     respond_to do |format|
       if @organization.update(organization_params)
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
@@ -60,12 +63,17 @@ class OrganizationsController < ApplicationController
   # DELETE /organizations/1
   # DELETE /organizations/1.json
   def destroy
-    @organization.destroy
     respond_to do |format|
-      format.html { redirect_to organizations_url, notice: 'Organization was successfully destroyed.' }
-      format.json { head :no_content }
+      if @organization.destroy
+        format.html { redirect_to organizations_url, notice: 'Organization was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to people_url, alert: @person.errors }
+        format.json { render json: @organization.errors, status: :unprocessable_entity  }
+      end
     end
   end
+
 
 
   def curate
@@ -81,10 +89,42 @@ class OrganizationsController < ApplicationController
 
   end
 
+  def select
+
+    Rails.logger.debug "In Organization Controller, select"
+    Rails.logger.debug "In Organization Controller, params = #{params.select}"
+
+    if local_user_signed_in?
+      user = current_local_user
+      Rails.logger.debug "In Organization Controller, current_local_user = #{current_local_user.inspect}"
+    end
+    if ldap_user_signed_in?
+      user = current_ldap_user
+      Rails.logger.debug "In Organization Controller, current_ldap_user = #{current_ldap_user.inspect}"
+    end
+    if !params.blank? && !params["selected_org_id"].blank?
+      org_id = params["selected_org_id"]
+      old_org_id = user.organization_id
+      if org_id == "0"
+        user.organization_id = nil
+      else
+        user.organization_id = org_id
+        # When a User changes his organization, he must be reapproved
+        if !old_org_id.nil?
+          user.approved = false
+        end
+      end
+      user.save!
+    end
+    respond_to do |format|
+        format.html { redirect_to users_path }
+    end
+
+  end
 
   def search
     # Pagination/sorting params initialization
-    Rails.logger.info "IN SEARCH"
+    Rails.logger.info "In Organization Controller, search"
     params[:start] = 1 if params[:start].blank?
     params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'name' if params[:sort].blank?
@@ -94,26 +134,36 @@ class OrganizationsController < ApplicationController
 
     # Scope chaining, reuse the scope definition
     if params[:name].present? || params[:ctrp_id].present? || params[:source_context].present? || params[:source_id].present? || params[:source_status].present? || params[:family_name].present? || params[:address].present? || params[:address2].present? || params[:city].present? || params[:state_province].present? || params[:country].present? || params[:postal_code].present? || params[:email].present? || params[:phone].present?
-      @organizations = Organization.all
-      if params[:alias]
-        @organizations = @organizations.matches_name_wc(params[:name]) if params[:name].present?
-      else
-        @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
+      ctrp_ids = []
+      if params[:source_id].present?
+        ctrp_ids = Organization.where(source_id: params[:source_id]).pluck(:ctrp_id)
       end
-      @organizations = @organizations.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
-      @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
-      @organizations = @organizations.matches_wc('source_id', params[:source_id]) if params[:source_id].present?
-      @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
-      @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
-      @organizations = @organizations.matches_wc('address', params[:address]) if params[:address].present?
-      @organizations = @organizations.matches_wc('address2', params[:address2]) if params[:address2].present?
-      @organizations = @organizations.matches_wc('city', params[:city]) if params[:city].present?
-      @organizations = @organizations.matches_wc('state_province', params[:state_province]) if params[:state_province].present?
-      @organizations = @organizations.matches('country', params[:country]) if params[:country].present?
-      @organizations = @organizations.matches_wc('postal_code', params[:postal_code]) if params[:postal_code].present?
-      @organizations = @organizations.matches_wc('email', params[:email]) if params[:email].present?
-      @organizations = @organizations.matches_wc('phone', params[:phone]) if params[:phone].present?
-      @organizations = @organizations.sort_by_col(params[:sort], params[:order]).group(:'organizations.id').page(params[:start]).per(params[:rows])
+
+      if params[:source_id].present? && ctrp_ids.size == 0
+        @organizations = []
+      else
+        @organizations = Organization.all
+        if params[:alias]
+          @organizations = @organizations.matches_name_wc(params[:name]) if params[:name].present?
+        else
+          @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
+        end
+        #@organizations = @organizations.matches('ctrp_id', params[:ctrp_id]) if params[:ctrp_id].present?
+        @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
+        #@organizations = @organizations.matches_wc('source_id', params[:source_id]) if params[:source_id].present?
+        @organizations = @organizations.matches_ctrp_id(ctrp_ids) if ctrp_ids.size > 0
+        @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
+        @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
+        @organizations = @organizations.matches_wc('address', params[:address]) if params[:address].present?
+        @organizations = @organizations.matches_wc('address2', params[:address2]) if params[:address2].present?
+        @organizations = @organizations.matches_wc('city', params[:city]) if params[:city].present?
+        @organizations = @organizations.matches_wc('state_province', params[:state_province]) if params[:state_province].present?
+        @organizations = @organizations.matches('country', params[:country]) if params[:country].present?
+        @organizations = @organizations.matches_wc('postal_code', params[:postal_code]) if params[:postal_code].present?
+        @organizations = @organizations.matches_wc('email', params[:email]) if params[:email].present?
+        @organizations = @organizations.matches_wc('phone', params[:phone]) if params[:phone].present?
+        @organizations = @organizations.sort_by_col(params[:sort], params[:order]).group(:'organizations.id').page(params[:start]).per(params[:rows])
+      end
     else
       @organizations = []
     end
@@ -127,6 +177,6 @@ class OrganizationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def organization_params
-      params.require(:organization).permit(:source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :source_status_id, :source_context_id)
+      params.require(:organization).permit(:source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :source_status_id, :source_context_id, :created_by, :updated_by)
     end
 end

@@ -10,8 +10,6 @@
     "node": ">= 0.8.0"
   },
   "dependencies": {
-    "chai": "3.0.x",
-    "chai-as-promised": "5.1.x"
   },
   "keywords": [
     "protractor",
@@ -24,6 +22,7 @@
     "selenium"
   ],
   "devDependencies": {
-    "protractor-cucumber-junit": "^1.1.3"
+    "chai": "*",
+    "chai-as-promised": "*"
   }
 }

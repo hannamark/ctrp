@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-md-12 col-border">
+        <div class="row">
+            <h4>Search Trial
+                <small>
+                    <mark>* for wild card</mark>
+                </small>
+            </h4>
+        </div>
+        <div class="row">
+            <form class="form-horizontal" role="form">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lead_protocol_id" class="control-label col-sm-3">Lead Protocol ID: </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="lead_protocol_id" class="form-control" placeholder="Lead Protocol ID" ng-model="trialView.searchParams.lead_protocol_id" auto-focus/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="official_title" class="control-label col-sm-3">Official Title: </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="official_title" class="form-control" placeholder="Official Title" ng-model="trialView.searchParams.official_title" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-12 text-center">
+                            <button type="submit" class="btn btn-primary" ng-click="trialView.searchTrials()">
+                               <i class="glyphicon glyphicon-search"></i> Search
+                            </button>
+                            <button type="reset" class="btn btn-default btn-danger" ng-click="trialView.resetSearch()">
+                               <i class="glyphicon glyphicon-remove"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row" ng-if="trialView.gridOptions.totalItems != null">
+            <a href="" id="trial_search_results"></a>
+            <p><h4>Family Search Results: {{trialView.gridOptions.totalItems}} found</h4></p>
+        </div>
+        <div class="row animated-item" ng-if="trialView.gridOptions.data.length > 0">
+            <div ui-grid="trialView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+        </div>
+    </div>
+</div>

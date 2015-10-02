@@ -37,6 +37,7 @@ FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center'
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
 StudySource.find_or_create_by(code: 'INS', name: 'Institutional')
+StudySource.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 StudySource.find_or_create_by(code: 'IND', name: 'Industrial')
 StudySource.find_or_create_by(code: 'OTH', name: 'Other')
 
@@ -60,6 +61,11 @@ PrimaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
 SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
+
+AccrualDiseaseTerm.find_or_create_by(code: 'SDC', name: 'SDC')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD9', name: 'ICD9')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD10', name: 'ICD10')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD-O-3', name: 'ICD-O-3')
 
 ResponsibleParty.find_or_create_by(code: 'SP', name: 'Sponsor')
 ResponsibleParty.find_or_create_by(code: 'PI', name: 'Principal Investigator')
@@ -91,6 +97,10 @@ TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Interven
 TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
 TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+TrialStatus.find_or_create_by(code: 'AVA', name: 'Available')
+TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available')
+TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available')
+TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
 
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
@@ -110,7 +120,7 @@ AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', des
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
-AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'M1', big_value: '')
+AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'M2', big_value: '')
 
 
 
@@ -144,7 +154,7 @@ org11 = Organization.create(id: 36296115, source_id: 'NC274', name: 'Wake Forest
 org12 = Organization.create(id: 36296009, source_id: 'NC272', name: 'Wake Forest University at Mount Airy', source_status: source_act, source_context: ctep, address: '910 Worth St.', city: 'Mt. Airy', state_province:'North Carolina', country:usa)
 org13 = Organization.create(id: 149074, source_id: 'NC002', name: 'Wake Forest University Health Sciences', source_status: source_act, source_context: ctep, address: '1 Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa) #no source id
 org14 = Organization.create(id: 149221, source_id: 'NC008', name: 'Wake Medical Center-Breast Screening and Diagnostic', source_status: source_act, source_context: ctep, address: '3000 New Bern Avenue ', city: 'Raleigh', state_province:'North Carolina', country:usa)
-org15 = Organization.create(id: 23875109, name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctrp, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa) #no source id
+org15 = Organization.create(id: 23875109, name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctrp, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: '23456', ctrp_id: 23456) #no source id
 org16 = Organization.create(id: 24068, source_id: 'ACT', name: 'Actelion Pharmaceuticals Switzerland', source_status: source_act, source_context: ctep, address: 'Gewerbestrasse 16', city: 'Allschwil', state_province:'Basel-Landschaft', country: 'Switzerland')
 if !org16.new_record?
   org16.name_aliases.create(name: 'Actelion')
@@ -154,6 +164,7 @@ org18 = Organization.create(id: 34563051, name: 'UCB, Inc.', source_status: sour
 if !org18.new_record?
   org18.name_aliases.create(name: 'UCB Pharma')
 end
+org19 = Organization.create(name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctep, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: "ACRN", ctrp_id: 23456) #no source id
 
 family1 = Family.create(name: 'Masonic Cancer Center')
 if !family1.new_record?
@@ -177,17 +188,18 @@ if !family2.new_record?
 end
 end
 
-####People
-if Person.count == 0
-person1=Person.find_or_create_by(id:1699192, source_id:'33303', source_context: ctep, fname:'Ajeet', lname:'Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
-person2=Person.find_or_create_by(id:7857011, source_id:'518786', source_context: ctrp, fname:'Alicia', lname:'Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
-person3=Person.find_or_create_by(id:3567738, source_id:'515762', source_context: ctep, fname:'Amy', mname:'M.', lname:'Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
-person4=Person.find_or_create_by(id:2944806, source_id:'41379', source_context: ctrp, fname:'Amy', mname:'L.', lname:'Jonson', prefix:'Dr.', suffix:'', email:'jonso001@umn.edu', phone:'612-624-2620')
-person5=Person.find_or_create_by(id:1832268, source_id:'34482', source_context: ctep, fname:'Badrinath', mname:'R.', lname:'Konety', prefix:'Dr.', suffix:'', email:'brkonety@umn.edu', phone:'612-624-2620')
-person6=Person.find_or_create_by(id:10161459, source_id:'46120', source_context: ctrp, fname:'Christine', lname:'Holmberg', prefix:'Dr.', suffix:'', email:'christine.holmberg@charite.de', phone:'-1152')
-person7=Person.find_or_create_by(id:366649, source_id:'11640', source_context: ctep, fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
-person8=Person.find_or_create_by(id:2026171, source_id:'35504', source_context: ctrp, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
-person9=Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
+
+if Person.count  == 0
+person1 = Person.find_or_create_by(id:1699192, source_id:'33303', source_context: ctep, fname:'Ajeet', lname:'Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
+person2 = Person.find_or_create_by(id:7857011, source_id:'518786', source_context: ctrp, fname:'Alicia', lname:'Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
+person3 = Person.find_or_create_by(id:3567738, source_id:'515762', source_context: ctep, fname:'Amy', mname:'M.', lname:'Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
+person4 = Person.find_or_create_by(id:2944806, source_id:'41379', source_context: ctrp, fname:'Amy', mname:'L.', lname:'Jonson', prefix:'Dr.', suffix:'', email:'jonso001@umn.edu', phone:'612-624-2620')
+person5 = Person.find_or_create_by(id:1832268, source_id:'34482', source_context: ctep, fname:'Badrinath', mname:'R.', lname:'Konety', prefix:'Dr.', suffix:'', email:'brkonety@umn.edu', phone:'612-624-2620')
+person6 = Person.find_or_create_by(id:10161459, source_id:'46120', source_context: ctrp, fname:'Christine', lname:'Holmberg', prefix:'Dr.', suffix:'', email:'christine.holmberg@charite.de', phone:'-1152')
+person7 = Person.find_or_create_by(id:366649, source_id:'11640', source_context: ctep, fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
+person8 = Person.find_or_create_by(id:2026171, source_id:'35504', source_context: ctrp, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
+person9 = Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
+person10 = Person.find_or_create_by(id:1426655, source_id:'15179', source_context: ctrp, fname:'Gisele', lname:'Sarosy', prefix:'Dr.', suffix:'', email:'gsarosy@mail.nih.gov', phone:'800-411-1222')
 end
 
 PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')
@@ -203,48 +215,72 @@ family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2
 
 
 
-test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER" },
-               {"username" => "ctrpadmin", "role" => "ROLE_ADMIN" },
-               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" },
-               {"username" => "testercurator", "role" => "ROLE_CURATOR" },
-               {"username" => "po_curator1", "role" => "ROLE_CURATOR" },
-               {"username" => "po_curator2", "role" => "ROLE_CURATOR" },
-               {"username" => "po_curator3", "role" => "ROLE_CURATOR" },
-               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY" }
+test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
+               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
+               {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
+               {"username" => "po_curator1", "role" => "ROLE_CURATOR", "approve" => false },
+               {"username" => "po_curator2", "role" => "ROLE_CURATOR" , "approve" => false},
+               {"username" => "po_curator3", "role" => "ROLE_CURATOR" , "approve" => false},
+               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY", "approve" => true }
           ]
 
 test_users.each do |u|
   user = User.find_by_username(u["username"])
-  user.role = u["role"]
-  user.save!
-  puts "Updated role of user = #{user.username}, role = #{user.role}"
+  unless user.blank?
+    user.role = u["role"]
+    user.approved =  u["approve"]
+    user.save!
+    puts "Updated role of user = #{user.username}, role = #{user.role}"
+  end
 end
 
+
+boston_users = [ {"username" => "ctrpsuperboston", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "b1", "role" => "ROLE_SUPER" , "approve" => false},
+               {"username" => "b2", "role" => "ROLE_SUPER" , "approve" => false},
+               {"username" => "b3", "role" => "ROLE_SUPER" , "approve" => false},
+               {"username" => "b4", "role" => "ROLE_SUPER", "approve" => false }
+]
+
+
+boston_users.each do |u|
+  user = User.find_by_username(u["username"])
+  unless user.blank?
+    user.role = u["role"]
+    user.approved =  u["approve"]
+    # Set the Organization to 'Boston University School Of Public Health'
+    boston_univ = Organization.find_by_id(8352734)
+    user.organization = boston_univ
+    user.save!
+    puts "Updated role of user = #{user.username}, role = #{user.role}"
+  end
+end
 
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
-charlie ="shivece@mail.nih.gov"
-mahesh = "yelisettim@mail.nih.gov"
-shilpi = "singhs10@mail.nih.gov"
-shamim = "ahmeds6@mail.nih.gov"
-murali = "dullam@mail.nih.gov"
-tony = "wangg5@mail.nih.gov"
-shenpei = "wus4@mail.nih.gov"
-sarada = "schintal@mail.nih.gov"
-hemant = "undalehv@mail.nih.gov"
+charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER" }
+mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER" }
+shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER" }
+shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER" }
+murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER" }
+tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
+shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
+sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
+hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
+radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_CURATOR" }
 
-
-ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant]
+ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika]
 
 ##Add CTRP Business Analysts
 
-joe = "martuccijj@mail.nih.gov"
-jose = "galvezjj@mail.nih.gov"
-michael = "izbickimj@mail.nih.gov"
-sandy = "lightbodysj@mail.nih.gov"
-kirsten = "larcokl@mail.nih.gov"
-deb = "hopeda@mail.nih.gov"
+joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR" }
+jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_READONLY" }
+michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR" }
+sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_READONLY" }
+kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR" }
+deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR" }
 
 
 ba_users = [joe, jose, michael, sandy, kirsten, deb]
@@ -253,13 +289,14 @@ all_users = ncictrpdev_users + ba_users
 
 ## Save the users by bypassing validation. We want to save the user without the password
 begin
-  all_users.each do |email|
+  all_users.each do |u|
     ldap_user = LdapUser.new
-    ldap_user.email = email
-    ldap_user.username = email.split("@")[0]
-    ldap_user.role = "ROLE_ADMIN"
+    ldap_user.email = u["email"]
+    ldap_user.username = u["email"].split("@")[0]
+    ldap_user.role = u["role"]
+    ldap_user.approved = true
     ldap_user.save(validate: false)
-    #Rails.logger.info "Saved user = #{ldap_user.inspect}"
+    puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"

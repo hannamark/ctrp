@@ -116,12 +116,21 @@
                                placeholder="Phone">
                     </div>
                 </div>
-                <div class="form-group col-sm-12 animated-item" ng-show="personDetailView.advancedFormShown">
-                    <button class="btn btn-default" ng-click="personDetailView.toggleAdvancedSearchForm()">Use simple
-                        search
-                    </button>
-                    <ctrp-advanced-org-search-form showgrid=false></ctrp-advanced-org-search-form>
+                <div class="form-group col-sm-12" ng-hide="personDetailView.curPerson.new || !personDetailView.curPerson.created_by">
+                    <label class="control-label col-sm-3">Created By:</label>
+                    <div class="col-sm-9">
+                        <!--<input type="text" class="form-control input-xs" id="fax"  ng-model="personDetailView.curPerson.fax" type="text" placeholder="Fax">-->
+                        {{personDetailView.curPerson.created_by}} ({{personDetailView.curPerson.created_at | date: 'dd-MMM-yyyy H:mm'}})
+                    </div>
                 </div>
+                <div class="form-group col-sm-12" ng-hide="personDetailView.curPerson.new || !personDetailView.curPerson.updated_by">
+                    <label class="control-label col-sm-3">Updated By:</label>
+                    <div class="col-sm-9">
+                        <!--<input type="text" class="form-control input-xs" id="fax"  ng-model="personDetailView.curPerson.fax" type="text" placeholder="Fax">-->
+                        {{personDetailView.curPerson.updated_by}} ({{personDetailView.curPerson.updated_at | date: 'dd-MMM-yyyy H:mm'}})
+                    </div>
+                </div>
+                
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">
                         Add Affiliated Organization:
@@ -134,7 +143,7 @@
                             <button class="btn btn-danger" ng-click="personDetailView.batchSelect('removeAll')" ng-show="personDetailView.savedSelection.length > 0">
                                 <i class="glyphicon glyphicon-remove"></i> Remove All Affiliated Organizations
                             </button>-->
-                        <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.savedSelection"></ctrp-org-adv-search-modal-button>
+                        <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
                         <div class="row animated-item" ng-show="personDetailView.savedSelection.length > 0">
 
                             <br /><input type="text" ng-model="personDetailView.selectedOrgFilter" class="form-control" placeholder="Filter selected organizations"/>
@@ -206,7 +215,7 @@
                     <div class="col-sm-offset-3 col-sm-9">
                         <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()"
                                value="Save" ng-disabled="person_form.$invalid" ctrp-click-once>
-                        <input type="reset" class="btn btn-warning" value="Reset" ng-click="personDetailView.reset()">
+                        <button class="btn btn-warning" ng-click="personDetailView.resetForm()">Reset</button>
                         <button class="btn btn-default" back-button>Cancel</button>
                         <button ng-hide="personDetailView.curPerson.new" class="btn btn-danger"
                                 ng-click="personDetailView.confirmDelete('sm')">

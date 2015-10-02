@@ -8,13 +8,14 @@
     angular.module('ctrpApp')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', '$scope','toastr'];
+    userDetailCtrl.$inject = ['UserService', '$scope','toastr','OrgService','userDetailObj'];
 
-    function userDetailCtrl(UserService, $scope,toastr) {
+    function userDetailCtrl(UserService, $scope, toastr, OrgService, userDetailObj) {
         var vm = this;
          console.log("curuser is ");
-        vm.userDetails = '';
+        vm.userDetails = userDetailObj;
         vm.selectedOrgsArray = [];
+        vm.savedSelection = []; //save selected organizations
 
         vm.updateUser = function () {
 
@@ -29,7 +30,9 @@
             newUser.user = vm.userDetails;
            //newUser.org_id=watch.org[o];
 
-            console.log("orgs id is " +vm.selectedOrgsArray[0].id);
+            if (vm.selectedOrgsArray[0] != null){
+                console.log("orgs id is " + vm.selectedOrgsArray[0].id);
+            }
             console.log("newUser is: " + JSON.stringify(newUser));
             UserService.upsertUser(newUser).then(function(response) {
                 //toastr.success('Family ' + vm.newUser.username + ' has been recorded', 'Operation Successful!');
@@ -43,10 +46,11 @@
         }; // updatePerson
 
 
-        UserService.getUserDetailsByUsername().then(function(details) {
+        /*UserService.getUserDetailsByUsername().then(function(details) {
             console.log('user details: ' + JSON.stringify(details));
             vm.userDetails = details;
-        });
+        });*/
+
 
         $scope.$watch(function() {return vm.selectedOrgsArray;}, function(newVal) {
            console.log('selected org:' + JSON.stringify(vm.selectedOrgsArray));
@@ -58,8 +62,20 @@
         /****************** implementations below ***************/
         function activate() {
 
+            if(vm.userDetails.organization_id != null) {
+                var org_id= vm.userDetails.organization_id;
+                //var org_name =vm.userDetails.organization_name;
+                OrgService.getOrgById(vm.userDetails.organization_id).then(function(organization) {
+                    var curOrg = {"id" : vm.userDetails.organization_id, "name": organization.name};
+                    //var org_name = organization.name;
+                    //var org_name = vm.userDetails.organization_name;
+                    vm.savedSelection.push(curOrg);
+                });
 
+            }
         }
+
+        
 
 
 

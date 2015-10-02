@@ -62,11 +62,7 @@
                         <select class="form-control" id="family_type"
                                 ng-model="familyDetailView.curFamily.family_type_id">
                             <option value="">Select a status</option>
-                            <option ng-repeat="type in familyDetailView.familyTypeArr"
-                                    value="{{type.id}}"
-                                    ng-selected="familyDetailView.curFamily.family_type_id == type.id">
-                                {{type.name}}
-                            </option>
+                            <option ng-repeat="type in familyDetailView.familyTypeArr" value="{{type.id}}" ng-selected="familyDetailView.curFamily.family_type_id == type.id">{{type.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -83,7 +79,7 @@
                             <button class="btn btn-danger" ng-click="familyDetailView.batchSelect('removeAll')" ng-show="familyDetailView.savedSelection.length > 0">
                                 <i class="glyphicon glyphicon-remove"></i> Remove All Family Members
                             </button> -->
-                        <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="familyDetailView.savedSelection"></ctrp-org-adv-search-modal-button>
+                        <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="familyDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
                         <div class="row animated-item" ng-show="familyDetailView.savedSelection.length > 0">
                             <br /><input type="text" ng-model="familyDetailView.selectedOrgFilter" class="form-control" placeholder="Filter selected organizations"/>
                             <table class="table table-bordered table-striped table-condensed">
