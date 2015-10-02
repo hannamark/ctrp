@@ -96,6 +96,15 @@ class Trial < ActiveRecord::Base
 
   validates :lead_protocol_id, presence: true
 
+  before_create :save_history
+
+  private
+
+  def save_history
+    history = {lead_org: self.lead_org, pi: self.pi}
+    self.history = history.to_json
+  end
+
   #scopes for search API
   scope :matches, -> (column, value) { where("trials.#{column} = ?", "#{value}") }
 
