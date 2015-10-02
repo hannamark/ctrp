@@ -30,7 +30,16 @@ class Family < ActiveRecord::Base
 
   before_destroy :check_for_organization
 
+  after_create   :save_id_to_ctrp_id
+
   private
+
+  def save_id_to_ctrp_id
+    if self.source_context.code="CTRP"
+      self.ctrp_id = self.id
+      self.save!
+    end
+  end
 
   def check_for_organization
     unless family_memberships.size == 0
