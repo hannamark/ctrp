@@ -41,10 +41,11 @@
         <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source Context:</label>
             <div class="col-sm-9">
-                <select class="form-control" id="source_context" ng-model="orgDetailView.curOrg.source_context_id">
-                    <option value="">Select a context</option>
-                    <option ng-repeat="context in orgDetailView.sourceContextArr" value="{{context.name}}" ng-selected="orgDetailView.curOrg.source_context_id == context.id">{{context.name}}</option>
-                </select>
+                <!--<select class="form-control" id="source_context" ng-model="orgDetailView.curOrg.source_context_id">-->
+                    <!--<option value="">Select a context</option>-->
+                    <!--<option ng-repeat="context in orgDetailView.sourceContextArr" value="{{context.id}}" ng-selected="orgDetailView.curOrg.source_context_id == context.id">{{context.name}}</option>-->
+                <!--</select>-->
+                <select ng-init="orgDetailView.curOrg.source_context_id" class="form-control" id="source_context" ng-model="orgDetailView.curOrg.source_context_id" ng-options="context.id as context.name for context in orgDetailView.sourceContextArr"></select>
             </div>
         </div>
         <div class="form-group col-sm-12">
@@ -58,10 +59,12 @@
             <div class="col-sm-9">
                 <div ng-if="orgDetailView.curOrg.new">{{orgDetailView.pendingStatusName}}</div>
                 <div ng-if="!orgDetailView.curOrg.new" class="animated-item">
-                    <select class="form-control" id="source_status" ng-model="orgDetailView.curOrg.source_status_id">
-                        <option value="">Select a status</option>
-                        <option ng-repeat="status in orgDetailView.sourceStatusArr" value="{{status.id}}" ng-selected="orgDetailView.curOrg.source_status_id == status.id">{{status.name}}</option>
-                    </select>
+                    <!--<select class="form-control" id="source_status" ng-model="orgDetailView.curOrg.source_status_id">-->
+                        <!--<option value="">Select a status</option>-->
+                        <!--<option ng-repeat="status in orgDetailView.sourceStatusArr" value="{{status.id}}" ng-selected="orgDetailView.curOrg.source_status_id == status.id">{{status.name}}</option>-->
+                    <!--</select>-->
+
+                    <select ng-init="orgDetailView.curOrg.source_status_id" class="form-control" id="source_status" ng-model="orgDetailView.curOrg.source_status_id" ng-options="status.id as status.name for status in orgDetailView.sourceStatusArr"></select>
                 </div>
             </div>
         </div>
