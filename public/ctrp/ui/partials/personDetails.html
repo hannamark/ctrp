@@ -91,11 +91,14 @@
                     <div class="col-sm-9">
                         <div ng-if="personDetailView.curPerson.new">{{personDetailView.pendingStatusName}}</div>
                         <div ng-if="!personDetailView.curPerson.new" class="animated-item">
-                            <select class="form-control" id="source_status"
-                                    ng-model="personDetailView.curPerson.source_status_id">
-                                <option value="">Select a status</option>
-                                <option ng-repeat="status in personDetailView.sourceStatusArr" value="{{status.id}}" ng-selected="personDetailView.curPerson.source_status_id == status.id">{{status.name}}</option>
-                            </select>
+                            <!--<select class="form-control" id="source_status"-->
+                                    <!--ng-model="personDetailView.curPerson.source_status_id">-->
+                                <!--<option value="">Select a status</option>-->
+                                <!--<option ng-repeat="status in personDetailView.sourceStatusArr" value="{{status.id}}" ng-selected="personDetailView.curPerson.source_status_id == status.id">{{status.name}}</option>-->
+                            <!--</select>-->
+
+                            <select ng-init="personDetailView.curPerson.source_status_id" class="form-control" id="source_status" ng-model="personDetailView.curPerson.source_status_id" ng-options="status.id as status.name for status in personDetailView.sourceStatusArr"></select>
+                            
                         </div>
                     </div>
                 </div>
