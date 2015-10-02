@@ -59,8 +59,8 @@ module.exports = function() {
             expect(menuItemList.inResults(value2)).to.become(result);
             element(by.linkText(value2)).click();
             addFamily.familyVerifyAddName(value2);
-        //    addFamily.familyVerifyAddStatus(familyStatus);
-        //    addFamily.familyVerifyAddType(familyType);
+            addFamily.familyVerifyAddStatus(familyStatus);
+            addFamily.familyVerifyAddType(familyType);
         });
         browser.sleep(250).then(callback);
     });

@@ -46,10 +46,10 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
      //   'features/PO\ F2\ Search\ for\ Organizations.feature'
     //    'features/PO\ F3\ Create\ an\ Organization.feature'
      //   'features/PO\ F4\ Edit\ Organization\ Information.feature'
-    //   'features/PO\ F9\ Search\ for\ Persons.feature'
+       'features/PO\ F9\ Search\ for\ Persons.feature'
     //    'features/PO\ F10\ Create\ a\ Person\ Record.feature'
    //     'features/PO\ F11\ Edit\ Person\ Information.feature'
-        'features/PO\ F7\ Create\ Organization\ Family \Name.feature'
+     //   'features/PO\ F7\ Create\ Organization\ Family \Name.feature'
 //  'features/*.feature'
      //   'features/test.feature'
     ],
