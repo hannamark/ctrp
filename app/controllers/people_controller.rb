@@ -104,23 +104,7 @@ class PeopleController < ApplicationController
         params[:suffix].present? || params[:email].present? || params[:phone].present? ||
         params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present?
 
-      Rails.logger.info(params[:date_range_arr])
-
-
-
-
       @people = Person.all
-      @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
-      @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
-      @people = @people.matches_wc('fname', params[:fname]) if params[:fname].present?
-      @people = @people.matches_wc('lname', params[:lname]) if params[:lname].present?
-      @people = @people.matches_wc('prefix', params[:prefix]) if params[:prefix].present?
-      @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
-      @people = @people.matches_wc('email', params[:email]) if params[:email].present?
-      @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
-      @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
-      @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
-
       #search by time range for the updated_at field
       if params[:date_range_arr].present? and params[:date_range_arr].count == 2
         start_date = DateTime.parse(params[:date_range_arr][0])
@@ -132,6 +116,17 @@ class PeopleController < ApplicationController
         )
       end
 
+      @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
+      @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
+      @people = @people.matches_wc('fname', params[:fname]) if params[:fname].present?
+      @people = @people.matches_wc('lname', params[:lname]) if params[:lname].present?
+      @people = @people.matches_wc('prefix', params[:prefix]) if params[:prefix].present?
+      @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
+      @people = @people.matches_wc('email', params[:email]) if params[:email].present?
+      @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
+      @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
+      @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
+      @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
     else
       @people = []
@@ -146,7 +141,7 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :source_status_id, :created_by, :updated_by, :updated_at, :date_range_arr, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
+      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :source_status_id, :created_by, :updated_by, :updated_at, :date_range_arr, :affiliated_org_name, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
 
     end
 
