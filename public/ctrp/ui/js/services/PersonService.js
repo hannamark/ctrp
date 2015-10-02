@@ -25,6 +25,8 @@
             suffix: "",
             email: "",
             phone: "",
+            startDate: "",  //updated_at
+            endDate: "",   //updated_at
 
             //for pagination and sorting
             sort: "updated_at",

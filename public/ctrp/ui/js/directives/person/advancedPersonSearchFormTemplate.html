@@ -132,6 +132,68 @@
     </div>
     <!--fourth row ends -->
 
+    <!-- fifth row -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <!-- start date -->
+                <label for="person_fname" class="control-label col-sm-2">Start Date: </label>
+                <div class="col-sm-4">
+                    <div class="input-group add-on col-sm-12 date datepicker"
+                         date-date-format="yyyy-mm-dd">
+                        <input type="text" class="form-control input-normal"
+                               datepicker-popup="{{dateFormat}}"
+                               ng-model="searchParams.startDate" is-open="startDateOpened" datepicker-options="dateOptions"
+                               ng-required="false" close-text="Close"/>
+                                  <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default"
+                                                ng-click="openCalendar($event, 'start')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                  </span>
+
+                    </div>
+                </div>
+
+
+
+                <!-- end date -->
+                <label for="person_fname" class="control-label col-sm-2">End Date: </label>
+                <div class="col-sm-4">
+                    <div class="input-group add-on col-sm-12 date datepicker"
+                         date-date-format="yyyy-mm-dd">
+                        <input type="text" class="form-control input-normal"
+                               datepicker-popup="{{dateFormat}}"
+                               ng-model="searchParams.endDate" is-open="endDateOpened"
+                               datepicker-options="dateOptions"
+                               ng-required="false" close-text="Close"/>
+                                  <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default"
+                                                ng-click="openCalendar($event, 'end')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                  </span>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="affiliation" class="control-label col-sm-2">Affiliation:</label>
+
+                <div class="col-sm-10">
+                    <input type="text" id="affiliation" class="form-control" placeholder="Organization Name"
+                           ng-model="searchParams.orgName"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--fifth row ends -->
+
+
     <div class="row">
         <div class="form-group">
             <div class="col-sm-12 text-center">

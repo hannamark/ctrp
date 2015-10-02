@@ -32,11 +32,11 @@
     angular.module('ctrpApp')
         .directive('ctrpAdvancedPersonSearchForm', ctrpAdvancedPersonSearchForm);
 
-    ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', '$location', 'UserService',
+    ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', '$location', 'UserService', 'DateService',
             'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', 'OrgService', '$compile', 'MESSAGES'];
 
 
-    function ctrpAdvancedPersonSearchForm(PersonService, Common, $location, uiGridConstants, UserService,
+    function ctrpAdvancedPersonSearchForm(PersonService, Common, $location, uiGridConstants, UserService, DateService,
                                           $timeout,  _, toastr, $anchorScroll, OrgService, $compile, MESSAGES) {
 
         var directiveObj = {
@@ -71,7 +71,7 @@
         
         
         
-        function advPersonSearchDirectiveController($scope, uiGridConstants, UserService) {
+        function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService) {
 
             $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
@@ -82,6 +82,10 @@
             $scope.selectedRows = [];
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
+            $scope.dateFormat = DateService.getFormats()[0];; // January 20, 2015
+            $scope.dateOptions = DateService.getDateOptions();
+            $scope.startDateOpened = ''; //false;
+            $scope.endDateOpened = ''; // false;
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             //default to curationMode eanbled to true if max row selectable is > 0
@@ -385,6 +389,23 @@
 
 
             } //prepareGridOptions
+
+
+            /**
+             * Open calendar
+             * @param $event
+             * @param type
+             */
+            $scope.openCalendar = function ($event, type) {
+                $event.preventDefault();
+                $event.stopPropagation();
+
+                if (type == "end") {
+                    $scope.endDateOpened = !$scope.endDateOpened;
+                } else {
+                    $scope.startDateOpened = !$scope.startDateOpened;
+                }
+            }; //openCalendar
 
 
 
