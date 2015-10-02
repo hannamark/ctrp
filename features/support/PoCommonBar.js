@@ -8,13 +8,14 @@ var expect = require('chai').expect;
 
 var helper = require('../support/helper');
 
+
 var PoCommonBar = function(){
     this.home = element(by.css('a[href="#/main/welcome"]'));
     this.organizations = element(by.linkText('Organizations & Families'));
     this.listOrganizations = element(by.css('a[ui-sref="main.organizations"]')); //element(by.css('a[href="#/main/organizations"]'));
     this.addOrganizations = element(by.css('a[href="#/main/new_organization"]'));
     this.people = element(by.linkText('Persons'));
-    this.listPeople = element(by.css('a[href="#/main/people"]'));
+    this.listPeople = element(by.linkText('Search Persons'));// element(by.css('a[href="#/main/people"]'));
     this.addPerson = element(by.css('a[href="#/main/new_person"]'));
     this.family = element(by.linkText('Families'));
     this.listFamily = element(by.css('a[href="#/main/families"]'));
@@ -29,6 +30,7 @@ var PoCommonBar = function(){
     this.edit_Family_Page = element(by.css('h4[ng-if="!familyDetailView.curFamily.new"]'));
     this.add_Person_Page = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.edit_Person_Page = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
+
 
     this.searchResult = element.all(by.binding('grid.getCellValue(row, col) '));
     this.searchHeader = element.all(by.binding(' col.displayName '));

@@ -8,6 +8,7 @@ chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 var util = require('util');
 
+
 /**
  * Usage: wait(element, label)
  * element : It will wait for this element to come into view
@@ -79,7 +80,7 @@ var helper = function() {
         this.wait(button, errorMessage);
         button.click();
         console.log(errorMessage + " was clicked");
-        expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
+    //    expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
      //   expect(this.verifyLoginName.getText()).to.eventually.equal(browser.params.login.user_admin);
     };
 

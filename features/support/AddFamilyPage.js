@@ -67,5 +67,16 @@ AddFamilyPage = function () {
         addFamily.clickButton(this.addFamilyDeleteButton,"Add Family by Delete button");
     };
 
+    this.familyVerifyAddName = function(familyName){
+        addFamily.getVerifyValue(this.addFamilyName,familyName,"Get family by Name field");
+    };
+
+    this.familyVerifyAddType = function(familyType){
+        addFamily.getVerifyListValue(this.addFamilyType,familyType,"Get family by Type field");
+    };
+
+    this.familyVerifyAddStatus = function(familyStatus){
+        addFamily.getVerifyListValue(this.addFamilyStatus,familyStatus,"Get family by Status field");
+    };
 };
 module.exports = AddFamilyPage;
