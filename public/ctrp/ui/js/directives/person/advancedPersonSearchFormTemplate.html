@@ -140,16 +140,16 @@
         <div class="col-md-6">
             <div class="form-group">
                 <!-- start date -->
-                <label for="person_fname" class="control-label col-sm-2">Start: </label>
+                <label for="person_fname" class="control-label col-sm-2">Last Updated: </label>
 
-                <div class="col-sm-4">
+                <div class="col-sm-5">
                     <div class="input-group add-on col-sm-12 date datepicker"
                          date-date-format="yyyy-mm-dd">
                         <input type="text" class="form-control input-normal"
                                datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.startDate" is-open="startDateOpened" is-open="opened"
                                datepicker-options="dateOptions"
-                               ng-required="false" close-text="Close"/>
+                               ng-required="false" close-text="Close" placeholder="Start Date"/>
                                   <span class="input-group-btn">
                                         <button type="button" class="btn btn-default"
                                                 ng-click="openCalendar($event, 'start')">
@@ -161,16 +161,16 @@
 
 
                 <!-- end date -->
-                <label for="person_fname" class="control-label col-sm-2">End: </label>
+                <!--<label for="person_fname" class="control-label col-sm-2"></label>-->
 
-                <div class="col-sm-4">
+                <div class="col-sm-5">
                     <div class="input-group add-on col-sm-12 date datepicker"
                          date-date-format="yyyy-mm-dd">
                         <input type="text" class="form-control input-normal"
                                datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" is-open="opened"
                                datepicker-options="dateOptions"
-                               ng-required="false" close-text="Close"/>
+                               ng-required="false" close-text="Close" placeholder="End Date"/>
                                   <span class="input-group-btn">
                                         <button type="button" class="btn btn-default"
                                                 ng-click="openCalendar($event, 'end')">
@@ -179,8 +179,6 @@
                                   </span>
                     </div>
                 </div>
-
-
             </div>
         </div>
         <div class="col-md-6">
