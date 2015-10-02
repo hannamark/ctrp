@@ -270,7 +270,7 @@ header img {
 /* New UI Overrides */
 body {
     font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11px;
+    font-size: 12px;
     color: #444;
 }
 
@@ -284,8 +284,7 @@ form {
 }
 
 .form-control  {
-    height: 20px;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .col-lg-1, .col-lg-10,
@@ -316,23 +315,32 @@ form {
     padding-left: 10px;
 }
 
-h4 {
+h4, .panel-title {
     font-size: 16px;
-    color: #336699;
+    color: #2A71A5;
 }
 
 .glyphicon {
-    font-size: 11px;
+    font-size: 12px;
+}
+
+.form-horizontal .form-group {
+    margin-right: -5px;
+    margin-left: -5px;
 }
 
 .input-group-addon {
-    line-height: 0;
-    padding: 3px 6px;
+    line-height: 1;
+    padding: 3px 3px 3px 4px;
+}
+
+.input-sm {
+    height: 22px;
 }
 
 .btn {
     padding: 3px 6px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: bold;
 }
 
@@ -346,5 +354,5 @@ h4 {
 
 .btn-toolbar span {
     line-height: 2.5em;
-    font-size: 10px;
+    font-size: 11px;
 }
