@@ -62,11 +62,7 @@
                         <select class="form-control" id="family_type"
                                 ng-model="familyDetailView.curFamily.family_type_id">
                             <option value="">Select a status</option>
-                            <option ng-repeat="type in familyDetailView.familyTypeArr"
-                                    value="{{type.id}}"
-                                    ng-selected="familyDetailView.curFamily.family_type_id == type.id">
-                                {{type.name}}
-                            </option>
+                            <option ng-repeat="type in familyDetailView.familyTypeArr" value="{{type.id}}" ng-selected="familyDetailView.curFamily.family_type_id == type.id">{{type.name}}</option>
                         </select>
                     </div>
                 </div>
