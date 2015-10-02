@@ -32,11 +32,11 @@
     angular.module('ctrpApp')
         .directive('ctrpAdvancedPersonSearchForm', ctrpAdvancedPersonSearchForm);
 
-    ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', '$location', 'UserService',
+    ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', '$location', 'UserService', 'DateService',
             'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', 'OrgService', '$compile', 'MESSAGES'];
 
 
-    function ctrpAdvancedPersonSearchForm(PersonService, Common, $location, uiGridConstants, UserService,
+    function ctrpAdvancedPersonSearchForm(PersonService, Common, $location, uiGridConstants, UserService, DateService,
                                           $timeout,  _, toastr, $anchorScroll, OrgService, $compile, MESSAGES) {
 
         var directiveObj = {
@@ -71,7 +71,7 @@
         
         
         
-        function advPersonSearchDirectiveController($scope, uiGridConstants, UserService) {
+        function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService) {
 
             $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
@@ -82,6 +82,11 @@
             $scope.selectedRows = [];
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
+            $scope.dateFormat = DateService.getFormats()[1];
+            // console.log('dateFormat: ' + $scope.dateFormat);
+            $scope.dateOptions = DateService.getDateOptions();
+            $scope.startDateOpened = ''; //false;
+            $scope.endDateOpened = ''; // false;
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             //default to curationMode eanbled to true if max row selectable is > 0
@@ -98,6 +103,11 @@
 
 
             $scope.searchPeople = function () {
+                $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
+                if ($scope.searchParams.date_range_arr.length == 0) {
+                    delete $scope.searchParams.date_range_arr;
+                }
+
                 PersonService.searchPeople($scope.searchParams).then(function (data) {
                     if ($scope.showGrid && data.data.people) {
                        // console.log("received person search results: " + JSON.stringify(data.data.people));
@@ -123,6 +133,7 @@
                 }).catch(function (err) {
                     console.log('search people failed');
                 });
+
             }; //searchPeople
 
 
@@ -385,6 +396,33 @@
 
 
             } //prepareGridOptions
+
+
+            /**
+             * Open calendar
+             * @param $event
+             * @param type
+             */
+            $scope.openCalendar = function ($event, type) {
+               // $event.preventDefault();
+                //$event.stopPropagation();
+
+                if (type == "end") {
+                    $scope.endDateOpened = true;// !$scope.endDateOpened;
+                } else {
+                    $scope.startDateOpened = true;// !$scope.startDateOpened;
+                }
+            }; //openCalendar
+
+            /*
+            $scope.$watch('searchParams.endDate', function(newVal, oldVal) {
+                console.log(JSON.stringify($scope.searchParams.endDate));
+                console.log($scope.searchParams.endDate.getMonth());
+                console.log(moment(newVal).format("YYYY-MM-DD HH:mm:ss"));
+//                console.log($scope.searchParams.endDate.isBefore($scope.searchParams.startDate));
+                console.log(DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate));
+            }, true);
+            */
 
 
 

@@ -199,8 +199,8 @@
                     resolve: {
                         UserService: 'UserService'
                     },
-                    userDetailObj : function(UserService) {
-                        return UserService.getUserDetailsByUsername();
+                    username : function(UserService) {
+                        return UserService.getLoggedInUsername();
                     }
                 })
 
@@ -214,8 +214,8 @@
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
                         },
-                        username : function(UserService) {
-                            return UserService.getLoggedInUsername();
+                        userDetailObj : function(UserService) {
+                            return UserService.getUserDetailsByUsername();
                         }
                     }//, //resolve the promise and pass it to controller
                     //ncyBreadcrumb: {

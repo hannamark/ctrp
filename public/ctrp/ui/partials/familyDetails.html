@@ -62,7 +62,7 @@
                         <select class="form-control" id="family_type"
                                 ng-model="familyDetailView.curFamily.family_type_id">
                             <option value="">Select a status</option>
-                            <option ng-repeat="type in familyDetailView.familyTypeArr" value="{{type.id}}" ng-selected="familyDetailView.curFamily.family_type_id == type.id"> {{type.name}}</option>
+                            <option ng-repeat="type in familyDetailView.familyTypeArr" value="{{type.id}}" ng-selected="familyDetailView.curFamily.family_type_id == type.id">{{type.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                                         <div class="input-group add-on col-sm-12 date datepicker"
                                              date-date-format="yyyy-mm-dd">
                                             <input type="text" class="form-control"
-                                                   datepicker-popup="{{familyDetailView.dateFormat}}"
+                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.effective_date" is-open="org.opened_effective"
                                                    is-open="opened" datepicker-options="familyDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
@@ -134,7 +134,7 @@
                                         <div class="input-group add-on col-sm-12 date datepicker"
                                              date-date-format="yyyy-mm-dd">
                                             <input type="text" class="form-control"
-                                                   datepicker-popup="{{familyDetailView.dateFormat}}"
+                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                    is-open="opened" datepicker-options="familyDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
