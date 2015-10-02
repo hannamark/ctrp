@@ -1,7 +1,7 @@
 Feature: Create Organization Family Name
 
 Background:
-Given I am logged in to CTRP PO applicationss
+Given I am logged in to CTRP PO application
 And  I select the option to add Organization Family
 
 Scenario Outline: #1 As a PO Curator, I am able to create a new Family name
