@@ -48,10 +48,8 @@
                     <label class="control-label col-sm-3">Family Status:</label>
 
                     <div class="col-sm-9">
-                        <select class="form-control" id="family_status"
-                                ng-model="familyDetailView.curFamily.family_status_id">
+                        <select ng-init="familyDetailView.curFamily.family_status_id" class="form-control" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr">
                             <option value="">Select a status</option>
-                            <option ng-repeat="status in familyDetailView.familyStatusArr" value="{{status.id}}" ng-selected="familyDetailView.curFamily.family_status_id == status.id">{{status.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -59,17 +57,16 @@
                     <label class="control-label col-sm-3">Family Type:</label>
 
                     <div class="col-sm-9">
-                        <select class="form-control" id="family_type"
-                                ng-model="familyDetailView.curFamily.family_type_id">
+                        <select ng-init="familyDetailView.curFamily.family_type_id" class="form-control" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr">
                             <option value="">Select a status</option>
-                            <option ng-repeat="type in familyDetailView.familyTypeArr" value="{{type.id}}" ng-selected="familyDetailView.curFamily.family_type_id == type.id">{{type.name}}</option>
                         </select>
+
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
                      <label class="control-label col-sm-3">Membership Size:</label>
 
-                    <div class="col-sm-9">
+                    <div class="col-sm-9"><!--TODO fix line height display-->
                         {{familyDetailView.savedSelection.length}}
                     </div>
                 </div>
