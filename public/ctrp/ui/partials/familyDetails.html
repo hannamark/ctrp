@@ -31,7 +31,7 @@
             </p>
         </div>
         <div class="row">
-            <form class="form-horizontal" name="family_form" role="form" novalidate>
+            <div class="form-horizontal" name="family_form" role="form" novalidate>
                 <div class="form-group col-sm-12"
                      ng-class="{'has-error' : family_form.name.$error.required && family_form.name.$dirty }">
                     <label class="control-label col-sm-3">Family Name:</label>
@@ -66,6 +66,14 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group col-sm-12">
+                     <label class="control-label col-sm-3">Membership Size:</label>
+
+                    <div class="col-sm-9">
+                        {{familyDetailView.savedSelection.length}}
+                    </div>
+                </div>
+
 
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">
@@ -80,6 +88,7 @@
                                 <i class="glyphicon glyphicon-remove"></i> Remove All Family Members
                             </button> -->
                         <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="familyDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
+
                         <div class="row animated-item" ng-show="familyDetailView.savedSelection.length > 0">
                             <br /><input type="text" ng-model="familyDetailView.selectedOrgFilter" class="form-control" placeholder="Filter selected organizations"/>
                             <table class="table table-bordered table-striped table-condensed">
