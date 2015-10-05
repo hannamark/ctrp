@@ -21,7 +21,7 @@
             order: "",
             rows: 10,
             start: 1
-            }; //initial Trial Search Parameters
+        }; //initial Trial Search Parameters
 
         var gridOptions = {
             enableColumnResizing: true,
@@ -36,7 +36,10 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'lead_protocol_id', enableSorting: true, displayName: 'Lead Protocol ID', width: '100%'}
+                {name: 'lead_protocol_id', enableSorting: true, displayName: 'Lead Protocol ID', width: '50%'},
+                {name: 'official_title', enableSorting: true, width: '50%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                }
             ]
         };
 
@@ -47,11 +50,13 @@
             searchTrials: searchTrials,
             getInitialTrialSearchParams: getInitialTrialSearchParams,
             getGridOptions: getGridOptions,
+            getStudySources: getStudySources,
             getProtocolIdOrigins: getProtocolIdOrigins,
             getPhases: getPhases,
             getResearchCategories: getResearchCategories,
             getPrimaryPurposes: getPrimaryPurposes,
             getSecondaryPurposes: getSecondaryPurposes,
+            getAccrualDiseaseTerms: getAccrualDiseaseTerms,
             getResponsibleParties: getResponsibleParties,
             getFundingMechanisms: getFundingMechanisms,
             getInstituteCodes: getInstituteCodes,
@@ -135,6 +140,10 @@
             $rootScope.$broadcast(msgCode, {content: msgContent});
         } //broadcastMsg
 
+        function getStudySources() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.STUDY_SOURCES);
+        }
+
         function getProtocolIdOrigins() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PROTOCOL_ID_ORIGINS);
         }
@@ -153,6 +162,10 @@
 
         function getSecondaryPurposes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.SECONDARY_PURPOSES);
+        }
+
+        function getAccrualDiseaseTerms() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCRUAL_DISEASE_TERMS);
         }
 
         function getResponsibleParties() {

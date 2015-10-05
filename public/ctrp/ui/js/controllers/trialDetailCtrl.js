@@ -8,24 +8,28 @@
     angular.module('ctrpApp').controller('trialDetailCtrl', trialDetailCtrl);
 
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope',
-        'Common', '$state', '$modal', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
-        'secondaryPurposeObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
+        'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
+        'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
         'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
 
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope,
-                             Common, $state, $modal, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
-                             secondaryPurposeObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
+                             Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
+                             secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
                              holderTypeObj, expandedAccessTypeObj, countryList) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
         vm.collapsed = false;
+        vm.studySourceCode = studySourceCode;
+        vm.isExp = false;
+        vm.studySourceArr = studySourceObj;
         vm.protocolIdOriginArr = protocolIdOriginObj;
         vm.phaseArr = phaseObj;
         vm.researchCategoryArr = researchCategoryObj;
         vm.primaryPurposeArr = primaryPurposeObj;
         vm.secondaryPurposeArr = secondaryPurposeObj;
+        vm.accrualDiseaseTermArr = accrualDiseaseTermObj;
         vm.responsiblePartyArr = responsiblePartyObj;
         vm.fundingMechanismArr = fundingMechanismObj;
         vm.instituteCodeArr = instituteCodeObj;
@@ -46,36 +50,50 @@
         vm.addedGrants = [];
         vm.addedStatuses = [];
         vm.addedIndIdes = [];
+        vm.addedAuthorities = [];
         vm.selectedLoArray = [];
         vm.selectedPiArray = [];
         vm.selectedSponsorArray = [];
         vm.selectedInvArray = [];
+        vm.selectedIaArray = [];
         vm.selectedFsArray = [];
         vm.showPrimaryPurposeOther = false;
         vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
         vm.showInvSearchBtn = true;
         vm.why_stopped_disabled = true;
-        vm.curTrial.pilot = 'No';
-        vm.curTrial.grant_question = 'Yes';
         vm.otherDocNum = 1;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
             if (vm.selectedLoArray.length > 0) {
                 vm.curTrial.lead_org_id = vm.selectedLoArray[0].id
+            } else {
+                vm.curTrial.lead_org_id = null;
             }
 
             if (vm.selectedPiArray.length > 0) {
                 vm.curTrial.pi_id = vm.selectedPiArray[0].id;
+            } else {
+                vm.curTrial.pi_id = null;
             }
 
             if (vm.selectedSponsorArray.length > 0) {
                 vm.curTrial.sponsor_id = vm.selectedSponsorArray[0].id;
+            } else {
+                vm.curTrial.sponsor_id = null;
             }
 
             if (vm.selectedInvArray.length > 0) {
                 vm.curTrial.investigator_id = vm.selectedInvArray[0].id;
+            } else {
+                vm.curTrial.investigator_id = null;
+            }
+
+            if (vm.selectedIaArray.length > 0) {
+                vm.curTrial.investigator_aff_id = vm.selectedIaArray[0].id;
+            } else {
+                vm.curTrial.investigator_aff_id = null;
             }
 
             // Construct nested attributes
@@ -114,6 +132,13 @@
                 });
             }
 
+            if (vm.addedAuthorities.length > 0) {
+                vm.curTrial.oversight_authorities_attributes = [];
+                _.each(vm.addedAuthorities, function (authority) {
+                    vm.curTrial.oversight_authorities_attributes.push(authority);
+                });
+            }
+
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -122,6 +147,7 @@
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 uploadDocuments(response.id);
+                $state.go('main.trials', null, { reload: true });
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
@@ -138,7 +164,11 @@
             vm.collapsed = false;
         };
 
-        // Delete the trial status
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
+
+        // Delete the associations
         vm.toggleSelection = function (index, type) {
             if (type == 'other_id') {
                 if (index < vm.addedOtherIds.length) {
@@ -159,6 +189,10 @@
             } else if (type == 'ind_ide') {
                 if (index < vm.addedIndIdes.length) {
                     vm.addedIndIdes[index]._destroy = !vm.addedIndIdes[index]._destroy;
+                }
+            } else if (type == 'authority') {
+                if (index < vm.addedAuthorities.length) {
+                    vm.addedAuthorities[index]._destroy = !vm.addedAuthorities[index]._destroy;
                 }
             }
         };// toggleSelection
@@ -266,6 +300,19 @@
             }
         };
 
+        // Add Oversight Authority to a temp array
+        vm.addAuthority = function () {
+            if (vm.authority_country && vm.authority_org) {
+                var newAuthority = {};
+                newAuthority.country = vm.authority_country;
+                newAuthority.organization = vm.authority_org;
+                newAuthority._destroy = false;
+                vm.addedAuthorities.push(newAuthority);
+            } else {
+                alert('Please select a Country and Organization');
+            }
+        };
+
         // Add Founding Source to a temp array
         $scope.$watch(function() {
             return vm.selectedFsArray.length;
@@ -286,6 +333,16 @@
             var piOption = vm.responsiblePartyArr.filter(findPiOption);
             if (piOption[0].id == vm.curTrial.responsible_party_id) {
                 vm.selectedInvArray = vm.selectedPiArray;
+            }
+        });
+
+        // If the responsible party is Sponsor Investigator, the Investigator Affiliation field changes with Sponsor field
+        $scope.$watch(function() {
+            return vm.selectedSponsorArray;
+        }, function(newValue, oldValue) {
+            var siOption = vm.responsiblePartyArr.filter(findSiOption);
+            if (siOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.selectedIaArray = vm.selectedSponsorArray;
             }
         });
 
@@ -312,15 +369,22 @@
                 if (piOption[0].id == vm.curTrial.responsible_party_id) {
                     vm.showInvestigator = true;
                     vm.showInvSearchBtn = false;
-                    // Copy the value from Principal Investigator
+                    vm.curTrial.investigator_title = 'Principal Investigator';
+                    // Copy the value from PI and Sponsor
                     vm.selectedInvArray = vm.selectedPiArray;
+                    vm.selectedIaArray = vm.selectedSponsorArray;
                 } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
                     vm.showInvestigator = true;
                     vm.showInvSearchBtn = true;
-                    vm.selectedInvArray = [];
+                    vm.curTrial.investigator_title = 'Principal Investigator';
+                    // Copy the value from PI and Sponsor
+                    vm.selectedInvArray = vm.selectedPiArray;
+                    vm.selectedIaArray = vm.selectedSponsorArray;
                 } else {
                     vm.showInvestigator = false;
+                    vm.curTrial.investigator_title = '';
                     vm.selectedInvArray = [];
+                    vm.selectedIaArray = [];
                 }
             } else if (type == 'trial_status') {
                 var stopOptions = vm.trialStatusArr.filter(findStopOptions);
@@ -361,8 +425,8 @@
                     vm.nihNciArr = [];
                 }
             } else if (type == 'authority_country') {
-                vm.curTrial.authority_org = '';
-                vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.curTrial.authority_country);
+                vm.authority_org = '';
+                vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.authority_country);
             }
         };
 
@@ -381,6 +445,24 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewTrialFlag();
+            getExpFlag();
+
+            if (vm.curTrial.new) {
+                vm.curTrial.pilot = 'No';
+                vm.curTrial.grant_question = 'Yes';
+                populateStudySource();
+            } else {
+                displayPOs();
+                ppFieldChange();
+                spFieldChange();
+                rpFieldChange();
+                appendOtherIds();
+                appendFses();
+                appendGrants();
+                appendStatuses();
+                appendIndIdes();
+                appendAuthorities();
+            }
         }
 
         /**
@@ -392,6 +474,179 @@
         function appendNewTrialFlag() {
             if ($state.$current.name.indexOf('add') > -1) {
                 vm.curTrial.new = true;  //
+            }
+        }
+
+        function getExpFlag() {
+            if (vm.curTrial.new) {
+                if (vm.studySourceCode == 'EXP') {
+                    vm.isExp = true;
+                }
+            } else {
+                if (vm.curTrial.study_source && vm.curTrial.study_source.code == 'EXP') {
+                    vm.isExp = true;
+                }
+            }
+        }
+
+        // Populate Study Source field based on the param studySourceCode
+        function populateStudySource() {
+            _.each(vm.studySourceArr, function (studySource) {
+                if (studySource.code == vm.studySourceCode) {
+                    vm.curTrial.study_source_id = studySource.id;
+                }
+            });
+        }
+
+        function displayPOs() {
+            if (vm.curTrial.lead_org_id) {
+                $timeout( function(){ vm.selectedLoArray.push(vm.curTrial.lead_org); }, 1500);
+            }
+
+            if (vm.curTrial.pi_id) {
+                $timeout( function(){ vm.selectedPiArray.push(vm.curTrial.pi); }, 1500);
+            }
+
+            if (vm.curTrial.sponsor_id) {
+                $timeout( function(){ vm.selectedSponsorArray.push(vm.curTrial.sponsor); }, 1500);
+            }
+
+            if (vm.curTrial.investigator_id) {
+                $timeout( function(){ vm.selectedInvArray.push(vm.curTrial.investigator); }, 1500);
+            }
+
+            if (vm.curTrial.investigator_aff_id) {
+                $timeout( function(){ vm.selectedIaArray.push(vm.curTrial.investigator_aff); }, 1500);
+            }
+        }
+
+        // Display/hide dynamic fields
+        function ppFieldChange() {
+            var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
+            if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
+                vm.showPrimaryPurposeOther = true;
+            }
+        }
+
+        function spFieldChange() {
+            var otherObj = vm.secondaryPurposeArr.filter(findOtherOption);
+            if (otherObj[0].id == vm.curTrial.secondary_purpose_id) {
+                vm.showSecondaryPurposeOther = true;
+            }
+        }
+
+        function rpFieldChange() {
+            var piOption = vm.responsiblePartyArr.filter(findPiOption);
+            var siOption = vm.responsiblePartyArr.filter(findSiOption);
+            if (piOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.showInvestigator = true;
+                vm.showInvSearchBtn = false;
+            } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.showInvestigator = true;
+            }
+        }
+
+        // Append associations for existing Trial
+        function appendOtherIds() {
+            for (var i = 0; i < vm.curTrial.other_ids.length; i++) {
+                var otherId = {};
+                otherId.id = vm.curTrial.other_ids[i].id;
+                otherId.protocol_id_origin_id = vm.curTrial.other_ids[i].protocol_id_origin_id;
+                // For displaying other ID origin name in the table
+                _.each(vm.protocolIdOriginArr, function (origin) {
+                    if (origin.id == vm.curTrial.other_ids[i].protocol_id_origin_id) {
+                        otherId.protocol_id_origin_name = origin.name;
+                    }
+                });
+                otherId.protocol_id = vm.curTrial.other_ids[i].protocol_id;
+                otherId._destroy = false;
+                vm.addedOtherIds.push(otherId);
+            }
+        }
+
+        function appendFses() {
+            for (var i = 0; i < vm.curTrial.trial_funding_sources.length; i++) {
+                var tfs = {};
+                tfs.id = vm.curTrial.trial_funding_sources[i].id;
+                tfs.organization_id = vm.curTrial.trial_funding_sources[i].organization_id;
+                _.each(vm.curTrial.funding_sources, function (fs) {
+                    if (tfs.organization_id == fs.id) {
+                        tfs.organization_name = fs.name;
+                    }
+                });
+                tfs._destroy = false;
+                vm.addedFses.push(tfs);
+            }
+        }
+
+        function appendGrants() {
+            for (var i = 0; i < vm.curTrial.grants.length; i++) {
+                var grant = {};
+                grant.id = vm.curTrial.grants[i].id;
+                grant.funding_mechanism = vm.curTrial.grants[i].funding_mechanism;
+                grant.institute_code = vm.curTrial.grants[i].institute_code;
+                grant.serial_number = vm.curTrial.grants[i].serial_number;
+                grant.nci = vm.curTrial.grants[i].nci;
+                grant._destroy = false;
+                vm.addedGrants.push(grant);
+            }
+        }
+
+        function appendStatuses() {
+            for (var i = 0; i < vm.curTrial.trial_status_wrappers.length; i++) {
+                var statusWrapper = {};
+                statusWrapper.id = vm.curTrial.trial_status_wrappers[i].id;
+                statusWrapper.status_date = vm.curTrial.trial_status_wrappers[i].status_date ? DateService.convertISODateToLocaleDateStr(vm.curTrial.trial_status_wrappers[i].status_date) : '';
+                statusWrapper.trial_status_id = vm.curTrial.trial_status_wrappers[i].trial_status_id;
+                // For displaying status name in the table
+                _.each(vm.trialStatusArr, function (status) {
+                    if (status.id == vm.curTrial.trial_status_wrappers[i].trial_status_id) {
+                        statusWrapper.trial_status_name = status.name;
+                    }
+                });
+                statusWrapper.why_stopped = vm.curTrial.trial_status_wrappers[i].why_stopped;
+                statusWrapper._destroy = false;
+                vm.addedStatuses.push(statusWrapper);
+            }
+        }
+
+        function appendIndIdes() {
+            for (var i = 0; i < vm.curTrial.ind_ides.length; i++) {
+                var indIde = {};
+                indIde.id = vm.curTrial.ind_ides[i].id;
+                indIde.ind_ide_type = vm.curTrial.ind_ides[i].ind_ide_type;
+                indIde.ind_ide_number = vm.curTrial.ind_ides[i].ind_ide_number;
+                indIde.grantor = vm.curTrial.ind_ides[i].grantor;
+                indIde.holder_type_id = vm.curTrial.ind_ides[i].holder_type_id;
+                // For displaying name in the table
+                _.each(vm.holderTypeArr, function (holderType) {
+                    if (holderType.id == vm.curTrial.ind_ides[i].holder_type_id) {
+                        indIde.holder_type_name = holderType.name;
+                    }
+                });
+                indIde.nih_nci = vm.curTrial.ind_ides[i].id.nih_nci;
+                indIde.expanded_access = vm.curTrial.ind_ides[i].expanded_access;
+                indIde.expanded_access_type_id = vm.curTrial.ind_ides[i].expanded_access_type_id;
+                // For displaying name in the table
+                _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
+                    if (expandedAccessType.id == vm.curTrial.ind_ides[i].expanded_access_type_id) {
+                        indIde.expanded_access_type_name = expandedAccessType.name;
+                    }
+                });
+                indIde.exempt = vm.curTrial.ind_ides[i].exempt;
+                indIde._destroy = false;
+                vm.addedIndIdes.push(indIde);
+            }
+        }
+
+        function appendAuthorities() {
+            for (var i = 0; i < vm.curTrial.oversight_authorities.length; i++) {
+                var authority = {};
+                authority.id = vm.curTrial.oversight_authorities[i].id;
+                authority.country = vm.curTrial.oversight_authorities[i].country;
+                authority.organization = vm.curTrial.oversight_authorities[i].organization;
+                authority._destroy = false;
+                vm.addedAuthorities.push(authority);
             }
         }
 

@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928142827) do
+ActiveRecord::Schema.define(version: 20150929144934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accrual_disease_terms", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "uuid",       limit: 255
+  end
 
   create_table "app_settings", force: :cascade do |t|
     t.string   "code",        limit: 255
@@ -101,12 +109,12 @@ ActiveRecord::Schema.define(version: 20150928142827) do
   create_table "grants", force: :cascade do |t|
     t.string   "funding_mechanism", limit: 255
     t.string   "institute_code",    limit: 255
-    t.integer  "serial_number"
     t.string   "nci",               limit: 255
     t.integer  "trial_id"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.string   "uuid",              limit: 255
+    t.string   "serial_number",     limit: 255
   end
 
   add_index "grants", ["trial_id"], name: "index_grants_on_trial_id", using: :btree
@@ -121,7 +129,6 @@ ActiveRecord::Schema.define(version: 20150928142827) do
 
   create_table "ind_ides", force: :cascade do |t|
     t.string   "ind_ide_type",            limit: 255
-    t.integer  "ind_ide_number"
     t.string   "grantor",                 limit: 255
     t.string   "nih_nci",                 limit: 255
     t.integer  "holder_type_id"
@@ -132,6 +139,7 @@ ActiveRecord::Schema.define(version: 20150928142827) do
     t.string   "uuid",                    limit: 255
     t.boolean  "expanded_access"
     t.boolean  "exempt"
+    t.string   "ind_ide_number",          limit: 255
   end
 
   add_index "ind_ides", ["expanded_access_type_id"], name: "index_ind_ides_on_expanded_access_type_id", using: :btree
@@ -184,6 +192,17 @@ ActiveRecord::Schema.define(version: 20150928142827) do
 
   add_index "other_ids", ["protocol_id_origin_id"], name: "index_other_ids_on_protocol_id_origin_id", using: :btree
   add_index "other_ids", ["trial_id"], name: "index_other_ids_on_trial_id", using: :btree
+
+  create_table "oversight_authorities", force: :cascade do |t|
+    t.string   "country",      limit: 255
+    t.string   "organization", limit: 255
+    t.integer  "trial_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "uuid",         limit: 255
+  end
+
+  add_index "oversight_authorities", ["trial_id"], name: "index_oversight_authorities_on_trial_id", using: :btree
 
   create_table "people", force: :cascade do |t|
     t.string   "source_id",         limit: 255
@@ -404,8 +423,6 @@ ActiveRecord::Schema.define(version: 20150928142827) do
     t.date     "comp_date"
     t.string   "comp_date_qual",          limit: 255
     t.string   "ind_ide_question",        limit: 255
-    t.string   "authority_country",       limit: 255
-    t.string   "authority_org",           limit: 255
     t.string   "intervention_indicator",  limit: 255
     t.string   "sec801_indicator",        limit: 255
     t.string   "data_monitor_indicator",  limit: 255
@@ -423,8 +440,16 @@ ActiveRecord::Schema.define(version: 20150928142827) do
     t.datetime "updated_at",                          null: false
     t.string   "uuid",                    limit: 255
     t.integer  "research_category_id"
+    t.integer  "accrual_disease_term_id"
+    t.string   "investigator_title",      limit: 255
+    t.integer  "investigator_aff_id"
+    t.string   "created_by",              limit: 255
+    t.string   "updated_by",              limit: 255
+    t.boolean  "is_draft"
   end
 
+  add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
+  add_index "trials", ["investigator_aff_id"], name: "index_trials_on_investigator_aff_id", using: :btree
   add_index "trials", ["investigator_id"], name: "index_trials_on_investigator_id", using: :btree
   add_index "trials", ["lead_org_id"], name: "index_trials_on_lead_org_id", using: :btree
   add_index "trials", ["phase_id"], name: "index_trials_on_phase_id", using: :btree
@@ -505,6 +530,7 @@ ActiveRecord::Schema.define(version: 20150928142827) do
   add_foreign_key "organizations", "source_statuses"
   add_foreign_key "other_ids", "protocol_id_origins"
   add_foreign_key "other_ids", "trials"
+  add_foreign_key "oversight_authorities", "trials"
   add_foreign_key "people", "source_contexts"
   add_foreign_key "people", "source_statuses"
   add_foreign_key "po_affiliations", "organizations"
@@ -520,6 +546,8 @@ ActiveRecord::Schema.define(version: 20150928142827) do
   add_foreign_key "trial_funding_sources", "trials"
   add_foreign_key "trial_status_wrappers", "trial_statuses"
   add_foreign_key "trial_status_wrappers", "trials"
+  add_foreign_key "trials", "accrual_disease_terms"
+  add_foreign_key "trials", "organizations", column: "investigator_aff_id"
   add_foreign_key "trials", "organizations", column: "lead_org_id"
   add_foreign_key "trials", "organizations", column: "sponsor_id"
   add_foreign_key "trials", "people", column: "investigator_id"

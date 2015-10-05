@@ -1,5 +1,5 @@
 class TrialDocumentsController < ApplicationController
-  before_action :set_trial_document, only: [:show, :edit, :update, :destroy]
+  before_action :set_trial_document, only: [:show, :edit, :update, :destroy, :download]
 
   # GET /trial_documents
   # GET /trial_documents.json
@@ -59,6 +59,10 @@ class TrialDocumentsController < ApplicationController
       format.html { redirect_to trial_documents_url, notice: 'Trial document was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def download
+    send_file @trial_document.file.url, filename: @trial_document.file_name
   end
 
   private
