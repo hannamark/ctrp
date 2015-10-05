@@ -17,8 +17,8 @@
             mname: "",
             lname: "",
             //po_id: "",
-            ctrp_id: "",
-            source_context: "CTRP", //default
+            //ctrp_id: "",
+            source_context: "", //default
             source_id: "",
             source_status: "",
             prefix: "",
@@ -29,10 +29,11 @@
             endDate: "",   //updated_at
             date_range_arr: [],
             affiliated_org_name: "",
+            updated_by: "",
 
             //for pagination and sorting
-            sort: "updated_at",
-            order: "DESC",
+            sort: "lname",
+            order: "ASC",
             rows: 10,
             start: 1
             }; //initial Person Search Parameters
@@ -56,6 +57,7 @@
                     visible: false
                 },
                 {name: 'id', enableSorting: true, displayName: 'CTRP ID', width: '7%'},
+                {name: 'prefix', enableSorting: true, width: '6%'},
                 {name: 'fname', displayName: 'First', enableSorting: true, width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
@@ -68,11 +70,10 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
+                {name: 'suffix', enableSorting: true, width: '4%'},
                 {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '5%'},
-                {name: 'prefix', enableSorting: true, width: '6%'},
-                {name: 'suffix', enableSorting: true, width: '4%'},
                 {name: 'email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'

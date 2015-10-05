@@ -125,7 +125,6 @@ class Person < ActiveRecord::Base
     end
   }
 
-  #scope :affiliated_with_organization, -> (value) { joins(:organizations).where("organizations.name ilike ?", "#{value}") }
   scope :affiliated_with_organization, -> (value) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
@@ -137,6 +136,12 @@ class Person < ActiveRecord::Base
     else
       joins(:organizations).where("organizations.name ilike ?", "#{value}")
     end
+  }
+
+  scope :updated_date_range, -> (dates) {
+    start_date = DateTime.parse(dates[0])
+    end_date = DateTime.parse(dates[1])
+    where("people.updated_at BETWEEN ? and ?", start_date, end_date)
   }
 
 end

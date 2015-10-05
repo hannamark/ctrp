@@ -47,6 +47,7 @@ class Organization < ActiveRecord::Base
   has_many :colo_trials, through: :trial_co_lead_orgs, source: :trial
   has_many :lo_trials, foreign_key: :lead_org_id, class_name: "Trial"
   has_many :sponsor_trials, foreign_key: :sponsor_id, class_name: "Trial"
+  has_many :inv_aff_trials, foreign_key: :investigator_aff_id, class_name: "Trial"
 
   validates :name, presence: true
 

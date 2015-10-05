@@ -77,19 +77,20 @@
                         <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.suffix">
                     </div>
                 </div>
-                <div class="form-group col-sm-12">
+              <!--  Removed Source ID from person add/update versions of the screen. Will be set automatically in Rails.
+                    <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Source ID:</label>
 
                     <div class="col-sm-9">
                         <input type="text" class="form-control input-xs"
                                ng-model="personDetailView.curPerson.source_id">
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Source Status:</label>
 
                     <div class="col-sm-9">
-                        <div ng-if="personDetailView.curPerson.new">{{personDetailView.pendingStatusName}}</div>
+                        <div ng-if="personDetailView.curPerson.new">{{personDetailView.activeStatusName}}</div>
                         <div ng-if="!personDetailView.curPerson.new" class="animated-item">
                             <!--<select class="form-control" id="source_status"-->
                                     <!--ng-model="personDetailView.curPerson.source_status_id">-->

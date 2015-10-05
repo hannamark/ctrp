@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :accrual_disease_terms
+
   resources :trial_documents
 
   scope "/ctrp" do
@@ -107,14 +109,24 @@ Rails.application.routes.draw do
       resources :phases
       resources :primary_purposes
       resources :secondary_purposes
+      resources :accrual_disease_terms
       resources :responsible_parties
-      resources :trials
+      resources :trials do
+        collection do
+          get 'search'
+          post 'search'
+        end
+      end
       resources :protocol_id_origins
       resources :holder_types
       resources :expanded_access_types
       resources :trial_statuses
       resources :research_categories
-      resources :trial_documents
+      resources :trial_documents do
+        collection do
+          get 'download/:id' => 'trial_documents#download'
+        end
+      end
 
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'
