@@ -22,12 +22,15 @@
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
 
-        //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-        var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
-        vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
-        vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
 
-        console.log('active status index: ' + activeStatusIndex + ', name is: ' + vm.activeStatusName);
+        if(!angular.isObject(personDetailObj))
+        {
+            //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
+            var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
+            vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
+            vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
+        }
+
         //update person (vm.curPerson)
         vm.updatePerson = function () {
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
