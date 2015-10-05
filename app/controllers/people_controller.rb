@@ -105,18 +105,10 @@ class PeopleController < ApplicationController
         params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present?
 
       @people = Person.all
-      #search by time range for the updated_at field
-      if params[:date_range_arr].present? and params[:date_range_arr].count == 2
-        start_date = DateTime.parse(params[:date_range_arr][0])
-        end_date = DateTime.parse(params[:date_range_arr][1])
-        @people = @people.where(
-            'people.updated_at BETWEEN ? AND ?',
-            start_date,
-            end_date
-        )
-      end
 
+      @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
+      @people = @people.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
       @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
       @people = @people.matches_wc('fname', params[:fname]) if params[:fname].present?
       @people = @people.matches_wc('lname', params[:lname]) if params[:lname].present?
