@@ -28,7 +28,6 @@
         vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
 
         console.log('active status index: ' + activeStatusIndex + ', name is: ' + vm.activeStatusName);
-
         //update person (vm.curPerson)
         vm.updatePerson = function () {
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
