@@ -35,10 +35,12 @@ class Family < ActiveRecord::Base
   private
 
   def save_id_to_ctrp_id
-    if self.source_context.code="CTRP"
+    #if
+      #self.source_context_id == SourceContext.find_by_code("CTRP").id
       self.ctrp_id = self.id
+      #self.source_id = self.id
       self.save!
-    end
+    #end
   end
 
   def check_for_organization

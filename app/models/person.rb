@@ -50,9 +50,10 @@ class Person < ActiveRecord::Base
   private
 
   def save_id_to_ctrp_id
-    if self.source_context.code="CTRP"
-    self.ctrp_id = self.id
-    self.save!
+    if self.source_context && self.source_context.code == "CTRP"
+      self.ctrp_id = self.id
+      self.source_id =self.id
+      self.save!
     end
   end
 
