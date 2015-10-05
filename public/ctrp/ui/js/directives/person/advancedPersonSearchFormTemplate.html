@@ -25,13 +25,19 @@
         <div class="col-md-6">
             <!-- PO ID -->
             <div class="form-group">
-                <!-- ID used as ctrp_id here -->
-                <label for="ctrp_id" class="control-label col-sm-2">CTRP ID: </label>
+                <!-- affiliated with organization name -->
+                <label for="affiliation" class="control-label col-sm-2">Affiliation:</label>
 
                 <div class="col-sm-10">
-                    <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
-                           ng-model="searchParams.ctrp_id"/>
+                    <input type="text" id="affiliation" class="form-control" placeholder="Organization Name"
+                           ng-model="searchParams.affiliated_org_name"/>
+
+                    <!-- <input type="text" id="affiliation" class="form-control"
+                            autocomplete="off" placeholder="Organization Name" ng-model="searchParams.affiliated_org_name"
+                            typeahead="org for org in typeAheadNameSearch($viewValue)" typeahead-loading="loadingOrganizations"
+                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults"/>-->
                 </div>
+                <!-- end of affiliation -->
             </div>
             <!-- PO ID ends -->
         </div>
@@ -66,51 +72,36 @@
             </div>
         </div>
         <div class="col-md-6">
-            <!--source status-->
+
             <div class="form-group">
+                <!--source status-->
                 <label for="source_status" class="control-label col-sm-2">Source Status: </label>
 
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                     <select class="form-control" id="source_status"
                             ng-model="searchParams.source_status">
                         <option value="">Select a status</option>
                         <option ng-repeat="status in sourceStatusArr" value="{{status.name}}">{{status.name}}</option>
                     </select>
                 </div>
+                <!-- source status ends -->
+
+
+                <!-- ID used as ctrp_id here -->
+                <label for="ctrp_id" class="control-label col-sm-2">CTRP ID: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
+                           ng-model="searchParams.ctrp_id"/>
+                </div>
+                <!-- ctrp id -->
             </div>
-            <!-- source status ends -->
+
         </div>
     </div>
     <!--second row ends -->
 
     <!-- third row -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="prefix" class="control-label col-sm-2">Prefix:</label>
-
-                <div class="col-sm-10">
-                    <input type="text" id="prefix" class="form-control" placeholder="Prefix"
-                           ng-model="searchParams.prefix"/>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="suffix" class="control-label col-sm-2">Suffix:</label>
-
-                <div class="col-sm-10">
-                    <input type="text" id="suffix" class="form-control" placeholder="Suffix"
-                           ng-model="searchParams.suffix"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--third row ends -->
-
-
-    <!-- fourth row -->
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -133,19 +124,34 @@
             </div>
         </div>
     </div>
-    <!--fourth row ends -->
+    <!-- third row ends -->
 
     <!-- fifth row -->
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
                 <!-- start date -->
-                <label for="person_fname" class="control-label col-sm-2">Last Updated: </label>
+                <label for="start_date" class="control-label col-sm-2">
+                    <div class="dropdown">
+                        <a href="" data-toggle="dropdown" class="dropdown-toggle">Last Updated<b class="caret"></b></a>
+
+                        <ul class="dropdown-menu">
+                            <li><a href="" ng-click="getDateRange('today')">Today</a></li>
+                            <li><a href="" ng-click="getDateRange('yesterday')">Yesterday</a></li>
+                            <li><a href="" ng-click="getDateRange('last7')">Last 7 Days</a></li>
+                            <li><a href="" ng-click="getDateRange('last30')">Last 30 Days</a></li>
+                            <li><a href="" ng-click="getDateRange('thisMonth')">This Month</a></li>
+                            <li><a href="" ng-click="getDateRange('lastMonth')">Last Month</a></li>
+                            <li><a href="" ng-click="getDateRange('clear')">Clear</a></li>
+                        </ul>
+
+                    </div>
+                </label>
 
                 <div class="col-sm-5">
                     <div class="input-group add-on col-sm-12 date datepicker"
                          date-date-format="yyyy-mm-dd">
-                        <input type="text" class="form-control input-normal"
+                        <input type="text" class="form-control input-normal" id="start_date"
                                datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.startDate" is-open="startDateOpened" is-open="opened"
                                datepicker-options="dateOptions"
@@ -166,7 +172,7 @@
                 <div class="col-sm-5">
                     <div class="input-group add-on col-sm-12 date datepicker"
                          date-date-format="yyyy-mm-dd">
-                        <input type="text" class="form-control input-normal"
+                        <input type="text" class="form-control input-normal" id="end_date"
                                datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" is-open="opened"
                                datepicker-options="dateOptions"
@@ -183,12 +189,12 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="affiliation" class="control-label col-sm-2">Affiliation:</label>
-
+                <!-- last updated by -->
+                <label for="updated_by" class="control-label col-sm-2">Updated by: </label>
                 <div class="col-sm-10">
-                    <input type="text" id="affiliation" class="form-control" placeholder="Organization Name"
-                           ng-model="searchParams.affiliated_org_name"/>
+                    <input type="text" class="form-control" id="updated_by" ng-model="searchParams.updated_by" placeholder="Username" />
                 </div>
+                <!-- end of last updated by -->
             </div>
         </div>
     </div>

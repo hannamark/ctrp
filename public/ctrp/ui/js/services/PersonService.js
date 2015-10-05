@@ -29,6 +29,7 @@
             endDate: "",   //updated_at
             date_range_arr: [],
             affiliated_org_name: "",
+            updated_by: "",
 
             //for pagination and sorting
             sort: "updated_at",

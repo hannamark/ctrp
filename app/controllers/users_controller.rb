@@ -55,6 +55,29 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  def search
+    Rails.logger.info "In User controller"
+    # Pagination/sorting params initialization
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 10 if params[:rows].blank?
+    params[:sort] = 'username' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+    @users = User.all
+
+    if params[:username].present? || params[:first_name].present? || params[:last_name].present?
+      @users = User.all
+      #@families = @families.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
+      #@families = @families.matches_wc('name', params[:name]) if params[:name].present?
+      ##@families = @families.with_family_status(params[:family_status]) if params[:family_status].present?
+      #@families = @families.with_family_type(params[:family_type]) if params[:family_type].present?
+      #@families = @families.sort_by_col(params[:sort], params[:order]).group(:'families.id').page(params[:start]).per(params[:rows])
+    else
+      @users = []
+    end
+    Rails.logger.info "In User controller, search @users = #{@users.inspect}"
+    @users
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

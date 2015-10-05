@@ -249,13 +249,10 @@ header img {
         margin-left: 5px;
         overflow: auto;
     }
+}
 
-    /*.modal-footer,*/
-    /*.modal-header {*/
-        /*max-width: 900px;*/
-        /*overflow: hidden;*/
-    /*}*/
-
+form label {
+    font-size: 12px;
 }
 
 /*#adv-org-search-modal .modal-dialog  {width:75%;}*/

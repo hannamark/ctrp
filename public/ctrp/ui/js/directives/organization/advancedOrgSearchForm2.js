@@ -94,7 +94,7 @@
                      });
                      */
 
-                    return uniqueNames = orgNames.map(function (name) {
+                    return uniqueNames = orgNames.filter(function (name) {
                         if (uniqueNames.indexOf(name) == -1) {
                             // console.log("not containing: " + name);
                             return name;

@@ -71,7 +71,7 @@
         
         
         
-        function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService) {
+        function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService) {
 
             $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
@@ -135,6 +135,64 @@
                 });
 
             }; //searchPeople
+
+
+            $scope.getDateRange = function(range) {
+                var today = new Date();
+                switch (range) {
+                    case 'today':
+                        $scope.searchParams.startDate = today;
+                        $scope.searchParams.endDate = today;;
+                        break;
+                    case 'yesterday':
+                        $scope.searchParams.startDate = moment().add(-1, 'days').toDate();
+                        $scope.searchParams.endDate = moment().add(-1, 'days').toDate();
+                        break;
+                    case 'last7':
+                        $scope.searchParams.startDate = moment().add(-7, 'days').toDate();
+                        $scope.searchParams.endDate = moment().add(0, 'days').toDate();
+                        break;
+                    case 'last30':
+                        $scope.searchParams.startDate = moment().add(-30, 'days').toDate();
+                        $scope.searchParams.endDate = moment().add(0, 'days').toDate();
+                        break;
+                    case 'thisMonth':
+                        $scope.searchParams.startDate = moment([today.getFullYear(), today.getMonth()]).toDate();
+                        $scope.searchParams.endDate = today;
+                        break;
+                    case 'lastMonth':
+                        $scope.searchParams.startDate = moment([today.getFullYear(), today.getMonth()-1]).toDate();
+                        $scope.searchParams.endDate = moment(today).subtract(1, 'months').endOf('month').toDate();
+                        break;
+                    default:
+                        $scope.searchParams.startDate = '';
+                        $scope.searchParams.endDate = '';
+                }
+            };
+
+
+
+
+
+            $scope.typeAheadNameSearch = function () {
+                var wildcardOrgName = $scope.searchParams.affiliated_org_name.indexOf('*') > -1 ? $scope.searchParams.affiliated_org_name : '*' + $scope.searchParams.affiliated_org_name + '*';
+
+                return OrgService.searchOrgs({name: wildcardOrgName, source_context: "CTRP"}).then(function (res) {
+                    var uniqueNames = [];
+                    var orgNames = [];
+                    orgNames = res.orgs.map(function (org) {
+                        return org.name;
+                    });
+
+                    return uniqueNames = orgNames.filter(function (name) {
+                        if (uniqueNames.indexOf(name) == -1) {
+                            // console.log("not containing: " + name);
+                            return name;
+                        }
+                    });
+                });
+            }; //typeAheadOrgNameSearch
+
 
 
             $scope.resetSearch = function () {
