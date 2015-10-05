@@ -27,8 +27,11 @@ And I have selected "Yes" for the question "Is this trial funded by a NCI Grant?
 When I have selected the Funding Mechanism from a list
 And I have selected the Institute Code from a list
 And I have selected the NCI Division/Program Code from a list
-And I have entered a partial Grant Serial Number and selected a Grant Serial Number from the list
-Then the FDAAA required Grant Information for the trial will be complete
+And I have entered a partial Grant Serial Number
+Then CTRP will search the IMPACII database view of Grant Information for serial numbers that contain the institute code and partial Grant Serial Number
+And CTRP will display Grant Serial Number, Organization, Project Title, and Contact Principal Investigator that match the partial Grant Serial Number
+And I can select from the Grant Serial Numbers displayed or I can enter a different Grant Serial Number
+And the FDAAA required Grant Information for the trial will be complete
 
 Scenario: #4 I can delete one or more grants that are associated with trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -52,16 +55,16 @@ And I am on the Trial Grant Screen
 Then a comment appears below the Why Grant Deleted Comments field to display the number of characters available to enter into the field.  
 |160 characters left|
 
-
 Scenario: #7 Grant Information not null
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Funding screen
 When I select save
-And the Funding Mechanism is Null
-Or the Institute Code is Null
-Or the NCI Division/Program Code is null
-Or the Grant Serial Number
-Then a warning message will appear for the null values with the message “Please enter the “Missing Grant Information”
+And any of the following are Null
+|Funding Mechanism|
+|Institute Code|
+|NCI Division/Program Code|
+|Grant Serial Number|
+Then a warning message will appear for the null values with the message “Please enter the Missing Grant Information”
 
 Scenario: #8 Is this trial funded by a NCI Grant? Update
 Given I am logged into the CTRP Protocol Abstraction application
