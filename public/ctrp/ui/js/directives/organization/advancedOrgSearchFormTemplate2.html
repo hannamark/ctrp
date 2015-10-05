@@ -4,13 +4,12 @@
         <div class="col-md-6">
             <!-- organization name -->
             <div class="form-group">
-                <label for="organization_name" class="col-xs-12 col-sm-2 control-label">Name: </label>
-
-                <div class="col-xs-12 col-sm-7">
+                <label for="organization_name" class="col-xs-12 col-sm-3 control-label">Name:</label>
+                <div class="col-xs-12 col-sm-5">
                     <!--<input type="text" id="organization_name" class="form-control"
                            placeholder="Organization Name" ng-model="searchParams.name" auto-focus/>-->
 
-                    <input type="text" id="organization_name" class="form-control"
+                    <input type="text" id="organization_name" class="form-control input-sm"
                             autocomplete="off" placeholder="Organization Name" ng-model="searchParams.name" auto-focus
                             typeahead="org for org in typeAheadNameSearch($viewValue)" typeahead-loading="loadingOrganizations"
                             typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" autocomplete="off"/>
@@ -28,15 +27,64 @@
                 </div>
             </div>
             <!-- organization name ends -->
+
+            <div class="form-group">
+                <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status: </label>
+                <div class="col-xs-12 col-sm-3">
+                    <select class="form-control input-sm" id="source_status" ng-model="searchParams.source_status">
+                        <option value="">Select a Status</option>
+                        <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
+                    </select>
+                </div>
+                <!--source id-->
+                <label for="source_id" class="control-label col-xs-12 col-sm-2">Source ID: </label>
+                <div class="col-xs-12 col-sm-4">
+                    <input type="text" id="source_id" class="form-control input-sm" placeholder="Source ID" ng-model="searchParams.source_id"/>
+                </div>
+            </div>
+            <!-- source id ends -->
+
+            <div class="form-group">
+                <label for="address" class="control-label col-xs-12 col-sm-3">Address:</label>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" id="address" class="form-control input-sm" placeholder="Address" ng-model="searchParams.address"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="city" class="control-label col-xs-12 col-sm-3">City:</label>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" id="city" class="form-control input-sm" placeholder="City" ng-model="searchParams.city"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="country" class="control-label col-xs-12 col-sm-3">Country:</label>
+                <div class="col-xs-12 col-sm-9">
+                    <select class="form-control input-sm" id="country" ng-model="searchParams.country" ng-change="watchCountrySelection(searchParams.country)">
+                        <option value="" selected>All Countries</option>
+                        <option ng-repeat="country in countries" value="{{country.name}}">{{country.name}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="state" class="control-label col-xs-12 col-sm-3">State:</label>
+                <div class="col-xs-12 col-sm-9">
+                    <select class="form-control input-sm" id="state" ng-model="searchParams.state_province">
+                        <option value="">All States/Provinces</option>
+                        <option ng-repeat="state in states track by state.name" value="{{state.name}}">{{state.name}}</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="col-md-6">
             <!-- PO ID -->
             <div class="form-group">
                 <!--source context-->
-                <label for="source_id" class="control-label col-xs-12 col-sm-2">Source Context: </label>
-
-                <div class="col-xs-12 col-sm-4">
-                    <select class="form-control" id="source_context" ng-model="searchParams.source_context">
+                <label for="source_id" class="control-label col-xs-12 col-sm-3">Source Context: </label>
+                <div class="col-xs-12 col-sm-2">
+                    <select class="form-control input-sm" id="source_context" ng-model="searchParams.source_context">
                         <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
                         <option ng-repeat="context in sourceContexts" value="{{context.name}}" ng-selected="context.name == searchParams.source_context">{{context.name}}</option>
                     </select>
@@ -45,179 +93,57 @@
 
                 <!-- ID used as ctrp_id here -->
                 <label for="ctrp_id" class="control-label col-xs-12 col-sm-2"><nobr>CTRP ID:</nobr></label>
-
-                <div class="col-xs-12 col-sm-4">
-                    <input type="text" id="ctrp_id" class="form-control" placeholder="CTRP ID"
-                           ng-model="searchParams.ctrp_id"/>
+                <div class="col-xs-12 col-sm-5">
+                    <input type="text" id="ctrp_id" class="form-control input-sm" placeholder="CTRP ID" ng-model="searchParams.ctrp_id"/>
                 </div>
-
             </div>
             <!-- PO ID ends -->
-        </div>
-    </div>
-    <!-- first row ends -->
 
-    <!-- second row -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="source_status" class="control-label col-xs-12 col-sm-2">Source Status: </label>
-
-                <div class="col-xs-12 col-sm-4">
-                    <select class="form-control" id="source_status"
-                            ng-model="searchParams.source_status">
-                        <option value="">Select a Status</option>
-                        <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
-                    </select>
-                </div>
-                <!--source id-->
-                <label for="source_id" class="control-label col-xs-12 col-sm-2">Source ID: </label>
-
-                <div class="col-xs-12 col-sm-4">
-                    <input type="text" id="source_id" class="form-control" placeholder="Source ID"
-                           ng-model="searchParams.source_id"/>
-                </div>
-
-            </div>
-            <!-- source id ends -->
-        </div>
-        <div class="col-md-6">
             <!--source status-->
             <div class="form-group">
-                <label for="family_name" class="control-label col-xs-12 col-sm-2">Family Name:</label>
-
-                <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="family_name" class="form-control" placeholder="Family Name"
-                           ng-model="searchParams.family_name"/>
+                <label for="family_name" class="control-label col-xs-12 col-sm-3">Family Name:</label>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" id="family_name" class="form-control input-sm" placeholder="Family Name" ng-model="searchParams.family_name"/>
                 </div>
             </div>
             <!-- source status ends -->
-        </div>
-    </div>
-    <!--second row ends -->
 
-    <!-- third row -->
-    <div class="row">
-        <div class="col-md-6">
             <div class="form-group">
-                <label for="address" class="control-label col-xs-12 col-sm-2">Address:</label>
-
-                <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="address" class="form-control" placeholder="Address"
-                           ng-model="searchParams.address"/>
+                <label for="address2" class="control-label col-xs-12 col-sm-3"><nobr>Address 2:</nobr></label>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" id="address2" class="form-control input-sm" placeholder="Address 2" ng-model="searchParams.address2"/>
                 </div>
             </div>
 
-        </div>
-        <div class="col-md-6">
             <div class="form-group">
-                <label for="address2" class="control-label col-xs-12 col-sm-2"><nobr>Address 2:</nobr></label>
-
-                <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="address2" class="form-control" placeholder="Address 2"
-                           ng-model="searchParams.address2"/>
+                <label for="postal_code" class="control-label col-xs-12 col-sm-3">Postal Code:</label>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" id="postal_code" class="form-control input-sm" placeholder="Postal Code" ng-model="searchParams.postal_code"/>
                 </div>
             </div>
-        </div>
-    </div>
-    <!--third row ends -->
 
-
-    <!-- fourth row -->
-    <div class="row">
-        <div class="col-md-6">
             <div class="form-group">
-                <label for="city" class="control-label col-xs-12 col-sm-2">City:</label>
-
-                <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="city" class="form-control" placeholder="City"
-                           ng-model="searchParams.city"/>
+                <label for="phone" class="control-label col-xs-12 col-sm-3">Phone:</label>
+                <div class="col-xs-12 col-sm-9 pull-right">
+                    <input type="text" id="phone" class="form-control input-sm" placeholder="Phone" ng-model="searchParams.phone"/>
                 </div>
-
-
             </div>
-        </div>
-        <div class="col-md-6">
+
             <div class="form-group">
-                <label for="postal_code" class="control-label col-xs-12 col-sm-2">Postal Code:</label>
-
-                <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="postal_code" class="form-control" placeholder="Postal Code"
-                           ng-model="searchParams.postal_code"/>
+                <label for="email" class="control-label col-xs-12 col-sm-3">Email:</label>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" id="email" class="form-control input-sm" placeholder="Email" ng-model="searchParams.email"/>
                 </div>
-
             </div>
         </div>
     </div>
-    <!--fourth row ends -->
-
-    <!-- fifth row -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="country" class="control-label col-xs-12 col-sm-2">Country:</label>
-
-                <div class="col-xs-12 col-sm-10">
-                    <select class="form-control" id="country" ng-model="searchParams.country"
-                            ng-change="watchCountrySelection(searchParams.country)">
-                        <option value="" selected>All Countries</option>
-                        <option ng-repeat="country in countries" value="{{country.name}}">{{country.name}}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="phone" class="control-label col-xs-12 col-sm-2">Phone:</label>
-
-                <div class="col-xs-12 col-sm-10 pull-right">
-                    <input type="text" id="phone" class="form-control" placeholder="Phone"
-                           ng-model="searchParams.phone"/>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!--fifth row ends -->
-
-    <!-- sixth row -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="state" class="control-label col-xs-12 col-sm-2">State:</label>
-
-                <div class="col-xs-12 col-sm-10">
-                    <select class="form-control" id="state" ng-model="searchParams.state_province">
-                        <option value="">All States/Provinces</option>
-                        <option ng-repeat="state in states track by state.name" value="{{state.name}}">{{state.name}}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="email" class="control-label col-xs-12 col-sm-2">Email:</label>
-
-                <div class="col-xs-12 col-sm-10">
-                    <input type="text" id="email" class="form-control" placeholder="Email"
-                           ng-model="searchParams.email"/>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!-- sixth row ends -->
-
     <div class="row">
         <div class="form-group">
-            <div class="col-sm-12 text-center">
-                <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="searchOrgs('fromStart')">
+            <div class="btn-toolbar">
+                <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchOrgs('fromStart')">
                     <i class="glyphicon glyphicon-search"></i> Search
                 </button>
-
-                <button class="btn btn-danger" id="reset_btn"
-                        ng-click="resetSearch()">
+                <button class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()">
                     <i class="glyphicon glyphicon-remove"></i> Clear
                 </button>
             </div>
@@ -226,7 +152,6 @@
 </form>
 <!--<strong>Search Parameters:</strong> {{searchParams}}-->
 
-
 <!-- use the ui-grid to present the organization search results, if showgrid is set to 'true' -->
 <div class="row">
     <div class="col-sm-12">
@@ -234,13 +159,11 @@
             <div class="col-sm-11">
                 <a href="" id="org_search_results"></a>
                 <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
-                <div  ng-if="usedinmodal !=1 ">
-                    <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true"">
+                <div ng-if="usedinmodal !=1">
+                    <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true">
                         <mark>Curation Mode: </mark>
                         <toggle-switch ng-change="toggleCurationMode()" ng-model="curationShown"></toggle-switch>
-                        <button class="btn" ng-click="commitNullification()" ng-show="curationShown"
-                                ng-disabled="!curationReady"
-                                ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>
+                        <button class="btn" ng-click="commitNullification()" ng-show="curationShown" ng-disabled="!curationReady" ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>
                     </h5>
                 </div>
             </div>
