@@ -1,4 +1,4 @@
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form" name="search_person_form" novalidate>
 
     <!-- first row -->
     <div class="row">
@@ -176,9 +176,8 @@
                 </label>
 
                 <div class="col-sm-5">
-                    <div class="input-group add-on col-sm-12 date datepicker"
-                         date-date-format="yyyy-mm-dd">
-                        <input type="text" class="form-control input-normal" id="start_date"
+                    <div class="input-group add-on col-sm-12 date datepicker">
+                        <input type="text" class="form-control" id="start_date" name="startDate"
                                datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.startDate" is-open="startDateOpened" is-open="opened"
                                datepicker-options="dateOptions"
@@ -197,12 +196,11 @@
                 <!--<label for="person_fname" class="control-label col-sm-2"></label>-->
 
                 <div class="col-sm-5">
-                    <div class="input-group add-on col-sm-12 date datepicker"
-                         date-date-format="yyyy-mm-dd">
-                        <input type="text" class="form-control input-normal" id="end_date"
+                    <div class="input-group add-on col-sm-12 date datepicker" ng-class="{'has-error': search_person_form.endDate.dateLaterThan && search_person_form.endDate.$dirty}">
+                        <input type="text" class="form-control" id="end_date" name="endDate"
                                datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" is-open="opened"
-                               datepicker-options="dateOptions"
+                               datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
                                ng-required="false" close-text="Close" placeholder="End Date"/>
                                   <span class="input-group-btn">
                                         <button type="button" class="btn btn-default"
@@ -211,6 +209,9 @@
                                         </button>
                                   </span>
                     </div>
+                    <span ng-show="search_person_form.endDate.$error.dateLaterThan" class="help-inline warning">
+                        End date should be no earlier than start date
+                    </span>
                 </div>
             </div>
         </div>
