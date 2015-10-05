@@ -1,6 +1,7 @@
 /**
  * Created by singhs10 on 9/17/15.
- */
+ **/
+
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);

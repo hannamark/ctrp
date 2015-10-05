@@ -43,13 +43,14 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
    framework: 'cucumber',
 
     specs: [
-     //   'features/PO\ F2\ Search\ for\ Organizations.feature'
+    //    'features/PO\ F2\ Search\ for\ Organizations.feature'
     //    'features/PO\ F3\ Create\ an\ Organization.feature'
-     //   'features/PO\ F4\ Edit\ Organization\ Information.feature'
-       'features/PO\ F9\ Search\ for\ Persons.feature'
+    //    'features/PO\ F4\ Edit\ Organization\ Information.feature'
+        'features/PO\ F5\ Delete\ Organization.feature'
+    //    'features/PO\ F9\ Search\ for\ Persons.feature'
     //    'features/PO\ F10\ Create\ a\ Person\ Record.feature'
-//  'features/*.feature'
-     //   'features/test.feature'
+    //    'features/*.feature'
+    // ¬  'features/test.feature'
     ],
 
     jasmineNodeOpts: {
