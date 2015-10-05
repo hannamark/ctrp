@@ -164,9 +164,9 @@
                         $scope.searchParams.startDate = moment([today.getFullYear(), today.getMonth()-1]).toDate();
                         $scope.searchParams.endDate = moment(today).subtract(1, 'months').endOf('month').toDate();
                         break;
-
                     default:
-                        break;
+                        $scope.searchParams.startDate = '';
+                        $scope.searchParams.endDate = '';
                 }
             };
 
