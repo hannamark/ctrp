@@ -23,11 +23,11 @@
         vm.selectedOrgFilter = '';
 
         //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-        var pendingStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'PEND');
-        vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
-        vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
+        var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
+        vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
+        vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
 
-        //console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
+        console.log('active status index: ' + activeStatusIndex + ', name is: ' + vm.activeStatusName);
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -118,7 +118,7 @@
         }; //batchSelect
 
 
-        vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
+        vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
         vm.openCalendar = function ($event, index, type) {

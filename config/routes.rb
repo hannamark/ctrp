@@ -60,8 +60,8 @@ Rails.application.routes.draw do
         post 'disapprove'
       end
     end
-
-    #resources :after_signup
+    get '/users/search' => 'users#search'
+    post '/users/search' => 'users#search'
 
     resources :people do
       collection do

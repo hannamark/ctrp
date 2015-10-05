@@ -20,6 +20,7 @@
             'A_USER': '/ctrp/users/',
             'A_USER_SIGNUP': '/ctrp/sign_up',
             'A_USER_CHANGEPASSWORD': '/ctrp/change_password',
+            'SEARCH_USER': '/ctrp/users/search.json',
             'USER_LIST': '/ctrp/users.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',

@@ -6,7 +6,7 @@ Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
 When I select the option to search "My Trials"
 Then CTRP will display all trials where I am listed as a Trial Owner and the trials match the trial search criteria
-And the Clinical Trials Search Results will display:
+And the Clinical Trials Search Results will display the following sorted by NCI Trial Identifier:
 |NCI Trial Identifier|
 |Title|
 |Lead Organization|
@@ -40,7 +40,7 @@ Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
 When I select the option to search "All Trials"
 Then CTRP will display all trials that match the trial search criteria
-And the Clinical Trials Search Results will display:
+And the Clinical Trials Search Results will display the following sorted by NCI Trial Identifier:
 |NCI Trial Identifier|
 |Title|
 |Current Trial Status|
@@ -58,7 +58,7 @@ Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
 When I select the option to search "Saved Drafts"
 Then CTRP will display all of my draft registrations that match the trial search criteria
-And the Clinical Trials Search Results will display:
+And the Clinical Trials Search Results will display the following sorted by NCI Trial Identifier:
 |Temp Trial Identifier|
 |Title|
 |Lead Organization|

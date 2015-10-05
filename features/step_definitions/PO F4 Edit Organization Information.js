@@ -43,7 +43,7 @@ module.exports = function() {
         MenuItemList.clickListOrganizations();
         Search.setOrgName(Organization_to_search);
         Search.clickSearchButton();
-        browser.sleep(5000).then(callback);
+        browser.sleep(250).then(callback);
     });
 
     this.Given(/^I have selected the function Edit Organization$/, function (callback) {
@@ -58,8 +58,6 @@ module.exports = function() {
     });
 
     this.Given(/^I change the name of the organization I wish to edit$/, function (callback) {
-     //   element(by.model('orgDetailView.curOrg.name')).clear();
-     //   element(by.model('orgDetailView.curOrg.name')).sendKeys('abc');
         Organization.setAddOrgName(Organization_edit_to);
         setTimeout(callback,2000);
     });

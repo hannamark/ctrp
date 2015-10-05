@@ -12,7 +12,7 @@ And I provide the <City> of the organization
 And I provide the <State> of the organization
 And I submit my search request
 Then the system should display the organization with that PO Organization ID
-And the <Organization Search Results> will display:
+And the <Organization Search Results> will display sorted by Organization Name:
 |PO Organization ID|
 |CTEP Organization ID|
 |Organization Name|
@@ -33,7 +33,13 @@ Example:
 |		||		||			||		||CA		||		||False		|
 
 
-
+Scenario: #2 I can request the creation of a new organization
+Given I am logged into the CTRP Registration application
+And I have selected the option "Search Organizations"
+And I searched for the desired organization
+When I do not find the organization that I need for registration
+Then I can request the creation of a new organization by providing the Organization Name, Street Address, City, State, Country, phone, and email
+And requesting that a new organization be created
 
 
 

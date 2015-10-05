@@ -9,9 +9,9 @@
 
         .service('DateService', DateService);
 
-        DateService.$inject = [];
+        DateService.$inject = ['$log'];
 
-    function DateService() {
+    function DateService($log) {
 
         var dateOptions = {
             formatYear: 'yyyy',
@@ -25,7 +25,7 @@
         };
 
         //'MMMM dd, yyyy',
-        var formats = ['MMMM dd, yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        var formats = ['MMMM dd, yyyy', 'dd-MMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
 
         this.getDateOptions = function() {
             return dateOptions;
@@ -68,6 +68,35 @@
             }
             return dateStr;
         }; //convertISODateToLocale
+
+
+        /**
+         *
+         * Get the date range between two given dates of Date type
+         *
+         * @param startDate, Date
+         * @param endDate, Date
+         * @returns {Array}, String
+         */
+        this.getDateRange = function(startDate, endDate) {
+            var dateRangeArray = []; //
+            if (startDate && endDate &&
+                typeof startDate.getMonth === 'function' &&
+                    typeof endDate.getMonth === 'function') {
+                //initialize the hours, minutes and seconds
+                startDate.setHours(0);
+                endDate.setHours(23);
+                endDate.setMinutes(59);
+                endDate.setSeconds(59);
+
+                var startDateStr = moment(startDate).format("YYYY-MM-DD HH:mm:ss");
+                var endDateStr = moment(endDate).format("YYYY-MM-DD HH:mm:ss");
+                dateRangeArray[0] = startDateStr;
+                dateRangeArray[1] = endDateStr;
+            }
+
+            return dateRangeArray;
+        }; //getDateRange
 
     }
 

@@ -124,4 +124,24 @@ class Person < ActiveRecord::Base
       order("LOWER(people.#{column}) #{order}")
     end
   }
+
+  scope :affiliated_with_organization, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:organizations).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:organizations).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:organizations).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:organizations).where("organizations.name ilike ?", "#{value}")
+    end
+  }
+
+  scope :updated_date_range, -> (dates) {
+    start_date = DateTime.parse(dates[0])
+    end_date = DateTime.parse(dates[1])
+    where("people.updated_at BETWEEN ? and ?", start_date, end_date)
+  }
+
 end

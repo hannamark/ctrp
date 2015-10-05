@@ -79,7 +79,7 @@
         }; //batchSelect
 
 
-        vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
+        vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
         vm.openCalendar = function ($event, index, type) {
