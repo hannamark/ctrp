@@ -78,6 +78,30 @@
                 </div>
 
                 <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="pilot" class="control-label col-sm-3">Organization Type? </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="org_type" ng-model="trialView.searchParams.org_type">
+                                    <option value="">-Select an Organizatin Type-</option>
+                                    <option value="Lead Organization">Lead Organization</option>
+                                    <option value="Sponsor">Sponsor</option>
+                                    <!--<option value="Participating Site">Participating Site</option>-->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="official_title" class="control-label col-sm-3">Organization: </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="org" class="form-control" placeholder="Organization" ng-model="trialView.searchParams.org" ng-disabled="!trialView.searchParams.org_type" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="form-group">
                         <div class="col-sm-12 text-center">
                             <button type="submit" class="btn btn-primary" ng-click="trialView.searchTrials()">

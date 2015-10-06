@@ -151,6 +151,32 @@ class Trial < ActiveRecord::Base
     end
   }
 
+  scope :with_lead_org, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:lead_org).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:lead_org).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:lead_org).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:lead_org).where("organizations.name ilike ?", "#{value}")
+    end
+  }
+
+  scope :with_sponsor, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:sponsor).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:sponsor).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:sponsor).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:sponsor).where("organizations.name ilike ?", "#{value}")
+    end
+  }
+
   scope :sort_by_col, -> (column, order) {
     if column == 'id'
       order("#{column} #{order}")

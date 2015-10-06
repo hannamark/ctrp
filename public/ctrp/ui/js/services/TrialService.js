@@ -43,7 +43,9 @@
                 {name: 'phase', enableSorting: true, width: '6%'},
                 {name: 'purpose', enableSorting: true, width: '10%'},
                 {name: 'pilot', enableSorting: true, width: '5%'},
-                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, width: '17%'}
+                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, width: '17%'},
+                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, width: '10%'},
+                {name: 'sponsor', enableSorting: true, width: '10%'}
             ]
         };
 
