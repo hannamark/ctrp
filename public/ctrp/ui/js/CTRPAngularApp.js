@@ -192,6 +192,15 @@
                     }
                 })
 
+                .state('main.users', {
+                    url: '/users',
+                    templateUrl: '/ctrp/ui/partials/user_list.html',
+                    controller: 'userListCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    }
+                })
+
                 .state('main.changePassword', {
                     url: '/change_password',
                     templateUrl: '/ctrp/ui/partials/changePassword.html',

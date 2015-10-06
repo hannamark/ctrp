@@ -140,6 +140,23 @@
 
 
         /**
+         *
+         * @param searchParams, JSON object whose keys can include:
+         * username, po_id, source_id, source_status, family_name, address, address2, city, state_province, country,
+         * postal_code, and email
+         *
+         * @returns Array of JSON objects
+         */
+        function searchUsers(searchParams) {
+            toastr.success('Success', 'Successfull in searchUsers');
+             console.log('User searchparams: ' + JSON.stringify(searchParams));
+            if (!!searchParams) {
+                return PromiseService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+            }
+        } //searchUsers
+
+
+        /**
          * Get the logged in username from browser cache
          */
         this.getLoggedInUsername = function() {
