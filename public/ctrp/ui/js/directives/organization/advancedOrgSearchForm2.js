@@ -130,33 +130,35 @@
 
                 console.log("isEmptySearch is " + isEmptySearch);
 
-                OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                   //  console.log("received data for org search: " + JSON.stringify(data));
-                    if ($scope.showGrid && data.orgs) {
-                        $scope.gridOptions.data = data.orgs;
-                        $scope.gridOptions.totalItems = data.total;
+                if(!isEmptySearch) { //skip searching if empty search
+                    OrgService.searchOrgs($scope.searchParams).then(function (data) {
+                        //  console.log("received data for org search: " + JSON.stringify(data));
+                        if ($scope.showGrid && data.orgs) {
+                            $scope.gridOptions.data = data.orgs;
+                            $scope.gridOptions.totalItems = data.total;
 
-                        //pin the selected rows, if any, at the top of the results
-                        _.each($scope.selectedRows, function (curRow, idx) {
-                            var ctrpId = curRow.entity.id;
-                            var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
-                            if (indexOfCurRowInGridData > -1) {
-                                $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
-                                $scope.gridOptions.totalItems--;
-                            }
-                            $scope.gridOptions.data.unshift(curRow.entity);
-                            $scope.gridOptions.totalItems++;
-                        });
+                            //pin the selected rows, if any, at the top of the results
+                            _.each($scope.selectedRows, function (curRow, idx) {
+                                var ctrpId = curRow.entity.id;
+                                var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                                if (indexOfCurRowInGridData > -1) {
+                                    $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
+                                    $scope.gridOptions.totalItems--;
+                                }
+                                $scope.gridOptions.data.unshift(curRow.entity);
+                                $scope.gridOptions.totalItems++;
+                            });
 
-                        $location.hash('org_search_results');
-                        $anchorScroll();
-                    }
-                    $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
-                    // console.log($scope.$parent);
+                            $location.hash('org_search_results');
+                            $anchorScroll();
+                        }
+                        $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
+                        // console.log($scope.$parent);
 
-                }).catch(function (error) {
-                    console.log("error in retrieving orgs: " + JSON.stringify(error));
-                });
+                    }).catch(function (error) {
+                        console.log("error in retrieving orgs: " + JSON.stringify(error));
+                    });
+                }
             }; //searchOrgs
 
 
@@ -178,6 +180,7 @@
                 $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
+                $scope.searchWarningMessage = '';
 
                 if (angular.isDefined($scope.$parent.orgSearchResults)) {
                     $scope.$parent.orgSearchResults = {};
