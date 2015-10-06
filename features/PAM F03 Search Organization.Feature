@@ -24,6 +24,7 @@ And the Organization Search Results will display:
 |State|
 |Country|
 |Zip|
+And the system will display the list of organizations ordered assending alphanumeric by organization name
 
 Scenario: #2 I am able to view organizations details
 Given I am logged into the CTRP PA user

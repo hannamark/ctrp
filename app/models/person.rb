@@ -45,8 +45,17 @@ class Person < ActiveRecord::Base
   validates :lname, presence: true
 
   before_destroy :check_for_organization
+  after_create   :save_id_to_ctrp_id
 
   private
+
+  def save_id_to_ctrp_id
+    if self.source_context && self.source_context.code == "CTRP"
+      self.ctrp_id = self.id
+      self.source_id =self.id
+      self.save!
+    end
+  end
 
   def check_for_organization
     unless po_affiliations.size == 0
@@ -124,4 +133,24 @@ class Person < ActiveRecord::Base
       order("LOWER(people.#{column}) #{order}")
     end
   }
+
+  scope :affiliated_with_organization, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:organizations).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:organizations).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:organizations).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:organizations).where("organizations.name ilike ?", "#{value}")
+    end
+  }
+
+  scope :updated_date_range, -> (dates) {
+    start_date = DateTime.parse(dates[0])
+    end_date = DateTime.parse(dates[1])
+    where("people.updated_at BETWEEN ? and ?", start_date, end_date)
+  }
+
 end

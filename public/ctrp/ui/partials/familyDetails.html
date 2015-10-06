@@ -31,7 +31,7 @@
             </p>
         </div>
         <div class="row">
-            <form class="form-horizontal" name="family_form" role="form" novalidate>
+            <div class="form-horizontal" name="family_form" role="form" novalidate>
                 <div class="form-group col-sm-12"
                      ng-class="{'has-error' : family_form.name.$error.required && family_form.name.$dirty }">
                     <label class="control-label col-sm-3">Family Name:</label>
@@ -48,10 +48,8 @@
                     <label class="control-label col-sm-3">Family Status:</label>
 
                     <div class="col-sm-9">
-                        <select class="form-control" id="family_status"
-                                ng-model="familyDetailView.curFamily.family_status_id">
+                        <select ng-init="familyDetailView.curFamily.family_status_id" class="form-control" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr">
                             <option value="">Select a status</option>
-                            <option ng-repeat="status in familyDetailView.familyStatusArr" value="{{status.id}}" ng-selected="familyDetailView.curFamily.family_status_id == status.id">{{status.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -59,13 +57,20 @@
                     <label class="control-label col-sm-3">Family Type:</label>
 
                     <div class="col-sm-9">
-                        <select class="form-control" id="family_type"
-                                ng-model="familyDetailView.curFamily.family_type_id">
-                            <option value="">Select a status</option>
-                            <option ng-repeat="type in familyDetailView.familyTypeArr" value="{{type.id}}" ng-selected="familyDetailView.curFamily.family_type_id == type.id">{{type.name}}</option>
+                        <select ng-init="familyDetailView.curFamily.family_type_id" class="form-control" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr">
+                            <option value="">Select a type</option>
                         </select>
+
                     </div>
                 </div>
+                <div class="form-group col-sm-12">
+                     <label class="control-label col-sm-3">Membership Size:</label>
+
+                    <div class="col-sm-9"><!--TODO fix line height display-->
+                        {{familyDetailView.savedSelection.length}}
+                    </div>
+                </div>
+
 
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">
@@ -80,34 +85,33 @@
                                 <i class="glyphicon glyphicon-remove"></i> Remove All Family Members
                             </button> -->
                         <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="familyDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
+
                         <div class="row animated-item" ng-show="familyDetailView.savedSelection.length > 0">
                             <br /><input type="text" ng-model="familyDetailView.selectedOrgFilter" class="form-control" placeholder="Filter selected organizations"/>
                             <table class="table table-bordered table-striped table-condensed">
                                 <thead>
-                                <th>Remove</th>
-                                <th>CTRP ID</th>
-                                <th>Organization</th>
-                                <th>Family Relationship</th>
+                                <th><nobr>CTRP ID</nobr></th>
+                                <th width="35%">Organization</th>
+                                <th width="18%">Relationship</th>
                                 <th>Effective Date</th>
                                 <th>Expiration Date</th>
+                                <th></th>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="org in familyDetailView.savedSelection | filter: {'name': familyDetailView.selectedOrgFilter} track by $index"
                                     ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                    <td style="vertical-align: middle">
-                                        <label class="btn btn-default"
-                                               ng-click="familyDetailView.toggleSelection($index)">
-                                            <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                                        </label>
-                                    </td>
                                     <td>{{org.id}}</td>
-                                    <td>{{org.name}}</td>
+                                    <td><a ng-href="/ctrp/ui#main/organizations/{{org.id}}">{{org.name}}</a></td>
                                     <td>
+                                        <!--
                                         <select class="form-control" id="family_relationship"
                                                 ng-model="org.family_relationship_id">
                                             <option value="">Select Relationship</option>
-                                            <!-- such a stinky long line only satisfies QA :D -->
+
                                             <option ng-repeat="relation in familyDetailView.familyRelationshipArr" value="{{relation.id}}" ng-selected="org.family_relationship_id == relation.id">{{relation.name}}</option>
+                                        </select>-->
+                                        <select ng-init="org.family_relationship_id" class="form-control" id="org.family_relationship" ng-model="org.family_relationship_id" ng-options="relation.id as relation.name for relation in familyDetailView.familyRelationshipArr">
+                                            <option value="">Select a relationship</option>
                                         </select>
                                     </td>
 
@@ -116,7 +120,7 @@
                                         <div class="input-group add-on col-sm-12 date datepicker"
                                              date-date-format="yyyy-mm-dd">
                                             <input type="text" class="form-control"
-                                                   datepicker-popup="{{familyDetailView.dateFormat}}"
+                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.effective_date" is-open="org.opened_effective"
                                                    is-open="opened" datepicker-options="familyDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
@@ -134,7 +138,7 @@
                                         <div class="input-group add-on col-sm-12 date datepicker"
                                              date-date-format="yyyy-mm-dd">
                                             <input type="text" class="form-control"
-                                                   datepicker-popup="{{familyDetailView.dateFormat}}"
+                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                    is-open="opened" datepicker-options="familyDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
@@ -148,7 +152,12 @@
 
                                         </div>
                                     </td>
-
+                                    <td style="vertical-align: middle">
+                                        <label class="btn btn-default"
+                                               ng-click="familyDetailView.toggleSelection($index)">
+                                            <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                        </label>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

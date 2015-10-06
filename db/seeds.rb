@@ -37,6 +37,7 @@ FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center'
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
 StudySource.find_or_create_by(code: 'INS', name: 'Institutional')
+StudySource.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 StudySource.find_or_create_by(code: 'IND', name: 'Industrial')
 StudySource.find_or_create_by(code: 'OTH', name: 'Other')
 
@@ -60,6 +61,11 @@ PrimaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
 SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
+
+AccrualDiseaseTerm.find_or_create_by(code: 'SDC', name: 'SDC')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD9', name: 'ICD9')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD10', name: 'ICD10')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD-O-3', name: 'ICD-O-3')
 
 ResponsibleParty.find_or_create_by(code: 'SP', name: 'Sponsor')
 ResponsibleParty.find_or_create_by(code: 'PI', name: 'Principal Investigator')
@@ -91,6 +97,10 @@ TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Interven
 TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
 TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+TrialStatus.find_or_create_by(code: 'AVA', name: 'Available')
+TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available')
+TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available')
+TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
 
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
@@ -259,7 +269,7 @@ tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
 shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
 sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
 hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
-radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_CURATOR" }
+radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_SUPER" }
 
 ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika]
 
@@ -271,9 +281,9 @@ michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR" }
 sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_READONLY" }
 kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR" }
 deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR" }
+susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_READONLY" }
 
-
-ba_users = [joe, jose, michael, sandy, kirsten, deb]
+ba_users = [joe, jose, michael, sandy, kirsten, deb, susan]
 
 all_users = ncictrpdev_users + ba_users
 

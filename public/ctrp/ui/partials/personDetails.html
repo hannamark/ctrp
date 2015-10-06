@@ -78,24 +78,36 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-3">Source Context:</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="source_context" ng-model="personDetailView.curPerson.source_context_id" ng-options="context.id as context.name for context in personDetailView.sourceContextArr">
+                            <option value="">Select context</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Source ID:</label>
 
                     <div class="col-sm-9">
                         <input type="text" class="form-control input-xs"
                                ng-model="personDetailView.curPerson.source_id">
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Source Status:</label>
 
                     <div class="col-sm-9">
-                        <div ng-if="personDetailView.curPerson.new">{{personDetailView.pendingStatusName}}</div>
+                        <div ng-if="personDetailView.curPerson.new">{{personDetailView.activeStatusName}}</div>
                         <div ng-if="!personDetailView.curPerson.new" class="animated-item">
-                            <select class="form-control" id="source_status"
-                                    ng-model="personDetailView.curPerson.source_status_id">
-                                <option value="">Select a status</option>
-                                <option ng-repeat="status in personDetailView.sourceStatusArr" value="{{status.id}}" ng-selected="personDetailView.curPerson.source_status_id == status.id">{{status.name}}</option>
-                            </select>
+                            <!--<select class="form-control" id="source_status"-->
+                                    <!--ng-model="personDetailView.curPerson.source_status_id">-->
+                                <!--<option value="">Select a status</option>-->
+                                <!--<option ng-repeat="status in personDetailView.sourceStatusArr" value="{{status.id}}" ng-selected="personDetailView.curPerson.source_status_id == status.id">{{status.name}}</option>-->
+                            <!--</select>-->
+
+                            <select ng-init="personDetailView.curPerson.source_status_id" class="form-control" id="source_status" ng-model="personDetailView.curPerson.source_status_id" ng-options="status.id as status.name for status in personDetailView.sourceStatusArr"></select>
+                            
                         </div>
                     </div>
                 </div>
@@ -170,7 +182,7 @@
                                         <div class="input-group add-on col-sm-12 date datepicker"
                                              date-date-format="yyyy-mm-dd">
                                             <input type="text" class="form-control input-normal"
-                                                   datepicker-popup="{{personDetailView.dateFormat}}"
+                                                   datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.effective_date" is-open="org.opened_effective"
                                                    is-open="opened" datepicker-options="personDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
@@ -188,7 +200,7 @@
                                         <div class="input-group add-on col-sm-12 date datepicker"
                                              date-date-format="yyyy-mm-dd">
                                             <input type="text" class="form-control"
-                                                   datepicker-popup="{{personDetailView.dateFormat}}"
+                                                   datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                    is-open="opened" datepicker-options="personDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>

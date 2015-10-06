@@ -1,7 +1,7 @@
 <form class="form-horizontal" role="form">
      <!-- first row -->
     <div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
-        <div class="alert alert-danger fade in">
+        <div class="alert alert-warning fade in">
             <a href="" class="close" data-dismiss="alert">&times;</a>
             <strong>{{searchWarningMessage}}</strong>
         </div>
@@ -20,7 +20,7 @@
                     <input type="text" id="organization_name" class="form-control"
                             autocomplete="off" placeholder="Organization Name" ng-model="searchParams.name" auto-focus
                             typeahead="org for org in typeAheadNameSearch($viewValue)" typeahead-loading="loadingOrganizations"
-                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" autocomplete="off"/>
+                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults"/>
                     <!--<i ng-show="loadingOrganizations" class="glyphicon glyphicon-refresh"></i>
                     <div ng-show="noResults">
                         <i class="glyphicon glyphicon-remove has-error">No organizations name matched</i>

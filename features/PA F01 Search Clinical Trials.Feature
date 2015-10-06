@@ -25,9 +25,6 @@ When I select one or more of the values to search all trials
 |Submission Method|
 |NIH/NCI Division/Department Identifier|
 |NIH/NCI Program Identifier|
-
-
-
 Then CTRP will then display the results for all the Clinical Trials Search Results:
 |NCI Trial Identifier|
 |Processing Priority|
@@ -137,14 +134,14 @@ And I am on the Search Clinical Trials Screen
 When I select one or more current Trial Status
 |In Review|
 |Approved|
-| Active|
+|Active|
 |Temporarily Closed to Accrual|
 |Temporarily Closed to Accrual and Intervention|
-| Closed to Accrual|
-| Closed to Accrual and Intervention|
-| Complete|
+|Closed to Accrual|
+|Closed to Accrual and Intervention|
+|Complete|
 |Administratively Complete|
-| Withdrawn|
+|Withdrawn|
 And select search 
 Then the search results will display trials that have the Current Trial Status
 
@@ -154,14 +151,14 @@ And I am on the Search Clinical Trials Screen
 When I select one or more Processing Status
 |In Review|
 |Approved|
-| Active|
+|Active|
 |Temporarily Closed to Accrual|
 |Temporarily Closed to Accrual and Intervention|
-| Closed to Accrual|
-| Closed to Accrual and Intervention|
-| Complete|
+|Closed to Accrual|
+|Closed to Accrual and Intervention|
+|Complete|
 |Administratively Complete|
-| Withdrawn|
+|Withdrawn|
 And select search 
 Then the search results will display trials that have that Processing Status
 
@@ -169,7 +166,7 @@ Scenario: #12 I can search trials by Milestone
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
 When I select one or more Milestones
-| Submission Acceptance Date|
+|Submission Acceptance Date|
 |Submission Rejection Date|
 |Submission Terminated Date|
 |Submission Reactivated Date|
@@ -186,9 +183,9 @@ When I select one or more Milestones
 |Trial Summary Report Date|
 |Submitter Trial Summary Report Feedback Date|
 |Initial Abstraction Verified Date|
- |On-going|
- |Abstraction Verified Date|
- |Late Rejection Date |
+|On-going|
+|Abstraction Verified Date|
+|Late Rejection Date |
 And select search 
 Then the search results will display trials that have that Milestone
 
@@ -258,7 +255,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
 When I select one or more NIH/NCI Division/Department Identifiers
 |CTEP|
-| DCP|
+|DCP|
 |CCR|
 |NHLBI| 
 |DEA|

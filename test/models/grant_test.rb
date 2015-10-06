@@ -5,12 +5,12 @@
 #  id                :integer          not null, primary key
 #  funding_mechanism :string(255)
 #  institute_code    :string(255)
-#  serial_number     :integer
 #  nci               :string(255)
 #  trial_id          :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
+#  serial_number     :string(255)
 #
 # Indexes
 #

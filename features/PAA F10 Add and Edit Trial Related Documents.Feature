@@ -44,19 +44,19 @@ And the users name that added the document will be listed with the document
 Scenario: #3 I can Delete Trial Related Documents 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Related Documents screen
-When I select one or more document to delete
+When I select one or more documents to delete
 Then the Trial Related Document will be Unassociated with the trail
 
 Scenario: #4 Save Trial Related Documents
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Related Documents screen
-When select save 
+When select save documents
 Then the information entered or edited on the Trial Related Documents screen will be saved to the trial record
 
 Scenario: #6 Cancel Regulatory Information
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Register Trial Related Documents screen
-When select Cancel
+When select Cancel documents
 Then the information entered or edited on the Trial Related Documents screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
