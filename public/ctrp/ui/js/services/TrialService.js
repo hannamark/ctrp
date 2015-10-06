@@ -39,14 +39,25 @@
                 {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, width: '12%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'official_title', enableSorting: true, width: '16%'},
+                {name: 'official_title', enableSorting: true, width: '16%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
                 {name: 'phase', enableSorting: true, width: '6%'},
-                {name: 'purpose', enableSorting: true, width: '10%'},
+                {name: 'purpose', enableSorting: true, width: '10%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
                 {name: 'pilot', enableSorting: true, width: '5%'},
-                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, width: '12%'},
-                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, width: '14%'},
-                {name: 'sponsor', enableSorting: true, width: '14%'},
-                {name: 'study_source', enableSorting: true, width: '11%'}
+                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, width: '12%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, width: '14%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'sponsor', enableSorting: true, width: '14%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'study_source', enableSorting: true, width: '11%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                }
             ]
         };
 
