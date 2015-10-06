@@ -192,6 +192,15 @@
                     }
                 })
 
+                .state('main.users', {
+                    url: '/users',
+                    templateUrl: '/ctrp/ui/partials/user_list.html',
+                    controller: 'userListCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    }
+                })
+
                 .state('main.changePassword', {
                     url: '/change_password',
                     templateUrl: '/ctrp/ui/partials/changePassword.html',
@@ -315,6 +324,9 @@
                     resolve: {
                         OrgService: 'OrgService',
                         PersonService: 'PersonService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj: function(OrgService) {
                             return OrgService.getSourceStatuses();
                         },
@@ -337,6 +349,10 @@
                     controller: 'personDetailCtrl as personDetailView',
                     resolve: {
                         OrgService: 'OrgService',
+                        PersonService: 'PersonService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj: function(OrgService) {
                             return OrgService.getSourceStatuses();
                         },

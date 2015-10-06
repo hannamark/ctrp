@@ -16,6 +16,64 @@
         var appVersion = '';
         var appRelMilestone = '';
 
+        // Initial User Search Parameters
+        var initUserSearchParams = {
+            username: "",
+            first_name: "",
+            middle_name: "",
+            last_name: "",
+            email: "",
+            phone: "",
+            affiliated_org_name: "",
+
+            //for pagination and sorting
+            sort: "updated_at",
+            order: "DESC",
+            rows: 10,
+            start: 1
+        }; //initial User Search Parameters
+
+
+        var gridOptions = {
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 50,
+            // enableFullRowSelection: true,
+            enableSelectAll: false,
+            //enableRowSelection: false,
+            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSize: 10,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            columnDefs: [
+                {name: 'username', enableSorting: true, displayName: 'Username', width: '7%'},
+                {name: 'first_name', displayName: 'First', enableSorting: true, width: '8%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {name: 'middle_name', displayName: 'Middle', enableSorting: true, width: '5%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {name: 'last_name', displayName: 'Last', enableSorting: true, width: '6%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {name: 'email', enableSorting: true, width: '10%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'phone', enableSorting: true, width: '6%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'affiliated_org', displayName:'Affiliated Org', enableSorting: true, width: '6%'}
+            ]
+        };
+
+
         /**
          * Check if the the user/viewer is logged in by checking the
          * local cache for existence of both token and username
@@ -79,6 +137,23 @@
                     $log.error("error in logging out: " + JSON.stringify(err));
                 });
         }; //logout
+
+
+        /**
+         *
+         * @param searchParams, JSON object whose keys can include:
+         * username, po_id, source_id, source_status, family_name, address, address2, city, state_province, country,
+         * postal_code, and email
+         *
+         * @returns Array of JSON objects
+         */
+        function searchUsers(searchParams) {
+            toastr.success('Success', 'Successfull in searchUsers');
+             console.log('User searchparams: ' + JSON.stringify(searchParams));
+            if (!!searchParams) {
+                return PromiseService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+            }
+        } //searchUsers
 
 
         /**

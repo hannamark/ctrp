@@ -87,6 +87,7 @@
             $scope.dateOptions = DateService.getDateOptions();
             $scope.startDateOpened = ''; //false;
             $scope.endDateOpened = ''; // false;
+            $scope.searchWarningMessage = '';
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             //default to curationMode eanbled to true if max row selectable is > 0
@@ -108,32 +109,50 @@
                     delete $scope.searchParams.date_range_arr;
                 }
 
-                PersonService.searchPeople($scope.searchParams).then(function (data) {
-                    if ($scope.showGrid && data.data.people) {
-                       // console.log("received person search results: " + JSON.stringify(data.data.people));
-                        $scope.gridOptions.data = data.data.people;
-                        $scope.gridOptions.totalItems = data.data.total;
-                        //pin the selected rows, if any, at the top of the results
-                        _.each($scope.selectedRows, function (curRow, idx) {
-                            var ctrpId = curRow.entity.id;
-                            var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
-                            if (indexOfCurRowInGridData > -1) {
-                                $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
-                                $scope.gridOptions.totalItems--;
-                            }
-                            $scope.gridOptions.data.unshift(curRow.entity);
-                            $scope.gridOptions.totalItems++;
-
-                        });
-                        // $scope.gridApi.grid.refresh();
-                        $location.hash('people_search_results');
-                        $anchorScroll();
-                    }
-                    $scope.$parent.personSearchResults = data.data; //{people: [], total, }
-                }).catch(function (err) {
-                    console.log('search people failed');
+                //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
+                // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
+                var isEmptySearch = true;
+                var excludedKeys = ['sort', 'order','rows','start'];
+                Object.keys($scope.searchParams).forEach(function (key) {
+                    if(excludedKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
+                        isEmptySearch = false;
                 });
+                if(isEmptySearch) {
+                    $scope.searchWarningMessage = "Atleast one selection value must be entered prior to running the search";
+                    $scope.warningMessage = ''; //hide the 0 rows message if no search parameter was supplied
+                }else
+                    $scope.searchWarningMessage = "";
 
+                console.log("searchParams are " + JSON.stringify($scope.searchParams));
+                console.log("isEmptySearch is " + isEmptySearch);
+
+                if(!isEmptySearch) { //skip searching if empty search
+                    PersonService.searchPeople($scope.searchParams).then(function (data) {
+                        if ($scope.showGrid && data.data.people) {
+                            // console.log("received person search results: " + JSON.stringify(data.data.people));
+                            $scope.gridOptions.data = data.data.people;
+                            $scope.gridOptions.totalItems = data.data.total;
+                            //pin the selected rows, if any, at the top of the results
+                            _.each($scope.selectedRows, function (curRow, idx) {
+                                var ctrpId = curRow.entity.id;
+                                var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                                if (indexOfCurRowInGridData > -1) {
+                                    $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
+                                    $scope.gridOptions.totalItems--;
+                                }
+                                $scope.gridOptions.data.unshift(curRow.entity);
+                                $scope.gridOptions.totalItems++;
+
+                            });
+                            // $scope.gridApi.grid.refresh();
+                            $location.hash('people_search_results');
+                            $anchorScroll();
+                        }
+                        $scope.$parent.personSearchResults = data.data; //{people: [], total, }
+                    }).catch(function (err) {
+                        console.log('search people failed');
+                    });
+                }
             }; //searchPeople
 
 
@@ -204,6 +223,7 @@
                     $scope.searchParams[key] = '';
                 });
 
+                $scope.searchWarningMessage = '';
                 if (angular.isDefined($scope.$parent.personSearchResults)) {
                     $scope.$parent.personSearchResults = {};
                 }

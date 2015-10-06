@@ -102,10 +102,10 @@ class PeopleController < ApplicationController
     if params[:ctrp_id].present? || params[:source_id].present? ||
         params[:fname].present? || params[:lname].present? || params[:prefix].present? ||
         params[:suffix].present? || params[:email].present? || params[:phone].present? ||
-        params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present?
+        params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present? ||
+        params[:updated_by].present?
 
       @people = Person.all
-
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
@@ -133,7 +133,7 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :source_status_id, :created_by, :updated_by, :updated_at, :date_range_arr, :affiliated_org_name, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
+      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :source_status_id,:source_context_id, :created_by, :updated_by, :updated_at, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
 
     end
 

@@ -269,7 +269,7 @@ tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
 shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
 sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
 hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
-radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_CURATOR" }
+radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_SUPER" }
 
 ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika]
 
@@ -281,9 +281,9 @@ michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR" }
 sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_READONLY" }
 kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR" }
 deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR" }
+susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_READONLY" }
 
-
-ba_users = [joe, jose, michael, sandy, kirsten, deb]
+ba_users = [joe, jose, michael, sandy, kirsten, deb, susan]
 
 all_users = ncictrpdev_users + ba_users
 
