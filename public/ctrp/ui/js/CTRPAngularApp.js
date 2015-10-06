@@ -446,7 +446,7 @@
                     },
                     ncyBreadcrumb: {
                         //parent: 'main.trials',
-                        parent: 'main.defaultContent',
+                        parent: 'main.trials',
                         label: 'Register Trial'
                     }
                 })
@@ -512,8 +512,8 @@
                 },
                 ncyBreadcrumb: {
                     //parent: 'main.trials',
-                    parent: 'main.defaultContent',
-                    label: 'Register Trial'
+                    parent: 'main.trials',
+                    label: 'Trial Detail'
                 }
             });
         }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService) {
