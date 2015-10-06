@@ -1,5 +1,10 @@
 <form class="form-horizontal" role="form" name="search_person_form" novalidate>
 
+    <div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
+        <div class="alert alert-warning fade in">
+            <strong>{{searchWarningMessage}}</strong>
+        </div>
+    </div>
     <!-- first row -->
     <div class="row">
         <div class="col-md-6">
@@ -212,8 +217,9 @@
             <div class="col-sm-6">
                 <!-- information section -->
                 <a href="" id="people_search_results"></a>
-
-                <p><h4>People Search Results: {{gridOptions.totalItems}} found</h4></p>
+                <div ng-if="searchWarningMessage.length === 0">
+                   <p><h4>People Search Results: {{gridOptions.totalItems}} found</h4></p>
+                </div>
                 <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true">
                     <mark>Curation Mode:</mark>
                     <toggle-switch ng-model="curationShown" ng-change="toggleCurationMode()"></toggle-switch>
