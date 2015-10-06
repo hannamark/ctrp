@@ -102,6 +102,20 @@
                 </div>
 
                 <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phase" class="control-label col-sm-3">Study Source: </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="study_source" ng-model="trialView.searchParams.study_source">
+                                    <option value="">-Select a Study Source-</option>
+                                    <option ng-repeat="studySource in trialView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="form-group">
                         <div class="col-sm-12 text-center">
                             <button type="submit" class="btn btn-primary" ng-click="trialView.searchTrials()">

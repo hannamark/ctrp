@@ -125,6 +125,8 @@ class Trial < ActiveRecord::Base
 
   scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
 
+  scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
+
   scope :with_pi_lname, -> (value) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
