@@ -55,9 +55,7 @@
                     <select class="form-control" id="source_context"
                             ng-model="searchParams.source_context">
                         <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
-                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}"
-                                ng-selected="context.name == searchParams.source_context">{{context.name}}
-                        </option>
+                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}">{{context.name}}</option>
                     </select>
                 </div>
                 <!--source context ends-->
@@ -85,16 +83,6 @@
                     </select>
                 </div>
                 <!-- source status ends -->
-
-
-                <!-- ID used as ctrp_id here -->
-                <label for="ctrp_id" class="control-label col-sm-2">CTRP ID: </label>
-
-                <div class="col-sm-4">
-                    <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
-                           ng-model="searchParams.ctrp_id"/>
-                </div>
-                <!-- ctrp id -->
             </div>
 
         </div>
