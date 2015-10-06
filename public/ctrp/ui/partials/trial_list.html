@@ -67,6 +67,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="official_title" class="control-label col-sm-3">Principal Investigator: </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="pi" class="form-control" placeholder="Principal Investigator" ng-model="trialView.searchParams.pi" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -90,7 +98,7 @@
     <div class="col-sm-12">
         <div class="row" ng-if="trialView.gridOptions.totalItems != null">
             <a href="" id="trial_search_results"></a>
-            <p><h4>Family Search Results: {{trialView.gridOptions.totalItems}} found</h4></p>
+            <p><h4>Trial Search Results: {{trialView.gridOptions.totalItems}} found</h4></p>
         </div>
         <div class="row animated-item" ng-if="trialView.gridOptions.data.length > 0">
             <div ui-grid="trialView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>

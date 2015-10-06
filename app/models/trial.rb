@@ -125,6 +125,32 @@ class Trial < ActiveRecord::Base
 
   scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
 
+  scope :with_pi_lname, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:pi).where("people.lname ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:pi).where("people.lname ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:pi).where("people.lname ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:pi).where("people.lname ilike ?", "#{value}")
+    end
+  }
+
+  scope :with_pi_fname, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:pi).where("people.fname ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:pi).where("people.fname ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:pi).where("people.fname ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:pi).where("people.fname ilike ?", "#{value}")
+    end
+  }
+
   scope :sort_by_col, -> (column, order) {
     if column == 'id'
       order("#{column} #{order}")
