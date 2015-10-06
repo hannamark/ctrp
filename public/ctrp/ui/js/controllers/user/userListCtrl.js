@@ -8,13 +8,14 @@
     angular.module('ctrpApp')
         .controller('userListCtrl', userListCtrl);
 
-    userCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$sce',
-        '$state', '$timeout', 'LocalCacheService', 'UserService', 'loginBulletin'];
+    userListCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$sce',
+        '$state', '$timeout', 'LocalCacheService', 'UserService'];
 
-    function userCtrl($scope, $http, $window, toastr, $state, $sce,
-                      $timeout, LocalCacheService, UserService, loginBulletin) {
+    function userListCtrl($scope, $http, $window, toastr, $state, $sce,
+                      $timeout, LocalCacheService, UserService) {
         var vm = this;
 
+        toastr.success('Success', 'In userListCtrl');
         vm.searchParams = UserService.getInitialUserSearchParams();
         vm.gridScope = vm;
 
@@ -33,6 +34,7 @@
         }; //gridOptions
 
         vm.searchUsers = function () {
+            toastr.success('Success', 'In userListCtrl, searchUsers');
             // vm.searchParams.name = vm.searchParams.name || "*";
             //console.log("searching params: " + JSON.stringify(vm.searchParams));
             UserService.searchUsers(vm.searchParams).then(function (data) {
