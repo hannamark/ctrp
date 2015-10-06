@@ -381,6 +381,18 @@
                     url: '/trials',
                     templateUrl: '/ctrp/ui/partials/trial_list.html',
                     controller: 'trialCtrl as trialView',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        studySourceObj: function(TrialService) {
+                            return TrialService.getStudySources();
+                        },
+                        phaseObj: function(TrialService) {
+                            return TrialService.getPhases();
+                        },
+                        primaryPurposeObj: function(TrialService) {
+                            return TrialService.getPrimaryPurposes();
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Trials'
@@ -450,7 +462,7 @@
                     },
                     ncyBreadcrumb: {
                         //parent: 'main.trials',
-                        parent: 'main.defaultContent',
+                        parent: 'main.trials',
                         label: 'Register Trial'
                     }
                 })
@@ -516,8 +528,8 @@
                 },
                 ncyBreadcrumb: {
                     //parent: 'main.trials',
-                    parent: 'main.defaultContent',
-                    label: 'Register Trial'
+                    parent: 'main.trials',
+                    label: 'Trial Detail'
                 }
             });
         }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService) {

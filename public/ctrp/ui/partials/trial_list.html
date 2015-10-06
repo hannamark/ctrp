@@ -30,6 +30,92 @@
                 </div>
 
                 <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phase" class="control-label col-sm-3">Phase: </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="phase" ng-model="trialView.searchParams.phase">
+                                    <option value="">-Select a Phase-</option>
+                                    <option ng-repeat="phase in trialView.phaseArr" value="{{phase.code}}">{{phase.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-sm-3">Purpose: </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="purpose" ng-model="trialView.searchParams.purpose">
+                                    <option value="">-Select a Purpose-</option>
+                                    <option ng-repeat="purpose in trialView.primaryPurposeArr" value="{{purpose.code}}">{{purpose.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="pilot" class="control-label col-sm-3">Pilot Trial? </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="pilot" ng-model="trialView.searchParams.pilot">
+                                    <option value="">-Select-</option>
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="official_title" class="control-label col-sm-3">Principal Investigator: </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="pi" class="form-control" placeholder="Principal Investigator" ng-model="trialView.searchParams.pi" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="pilot" class="control-label col-sm-3">Organization Type? </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="org_type" ng-model="trialView.searchParams.org_type">
+                                    <option value="">-Select an Organization Type-</option>
+                                    <option value="Lead Organization">Lead Organization</option>
+                                    <option value="Sponsor">Sponsor</option>
+                                    <!--<option value="Participating Site">Participating Site</option>-->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="official_title" class="control-label col-sm-3">Organization: </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="org" class="form-control" placeholder="Organization" ng-model="trialView.searchParams.org" ng-disabled="!trialView.searchParams.org_type" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phase" class="control-label col-sm-3">Study Source: </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="study_source" ng-model="trialView.searchParams.study_source">
+                                    <option value="">-Select a Study Source-</option>
+                                    <option ng-repeat="studySource in trialView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="form-group">
                         <div class="col-sm-12 text-center">
                             <button type="submit" class="btn btn-primary" ng-click="trialView.searchTrials()">
@@ -50,7 +136,7 @@
     <div class="col-sm-12">
         <div class="row" ng-if="trialView.gridOptions.totalItems != null">
             <a href="" id="trial_search_results"></a>
-            <p><h4>Family Search Results: {{trialView.gridOptions.totalItems}} found</h4></p>
+            <p><h4>Trial Search Results: {{trialView.gridOptions.totalItems}} found</h4></p>
         </div>
         <div class="row animated-item" ng-if="trialView.gridOptions.data.length > 0">
             <div ui-grid="trialView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
