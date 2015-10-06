@@ -149,3 +149,52 @@ When I provide the status of the organization I wish to search for
 And I submit my search request
 Then the system should display all organizations that have a matching organization status
 And the result should be sorted by Organization Name
+
+Scenario Outline: As a Curator, I am able to search for organizations by name including aliases
+Given I know the name of the organization I wish to search for
+And I am logged in to CTRP
+And I have selected the option to search for an organization
+When I provide the full or partial name with wild card '*' of the <Organization Name> I wish to search for
+And I indicate to include or not include a <Search Aliases>
+And I enter the <CTRP Organization ID>
+And I enter the <Source Context>
+And I enter the <Source ID>
+And I enter the <Source Status>
+And I enter the <Family Name>
+And I enter the <Address>
+And I enter the <City>
+And I enter the <State>
+And I enter the <Country>
+And I enter the <Phone Number>
+And I enter the <Email>
+And I enter the <Curator Name>
+And I enter the <Curator Date>
+And I submit my search request
+Then the system should display <Result> with organizations that match the search criteria
+And the following fields should be displayed:
+|CTRP ID|
+|Organization Name|
+|Family Name|
+|Source Context|
+|Source ID|
+|Source Status|
+|City|
+|State|
+|Email|
+|Phone|
+|Curator Name|
+|Curator Date|
+And the result should be sorted by Organization Name
+
+Examples:
+|Organization Name	||Search Alias	||CTRP Organization ID	||Source Context	||Source ID	||Source Status	||Family Name	||Address	||City	||State	||Country	||Phone Nuber	||Email	||Curator Name	||Curator Date	||Result|
+|                 	||No           	||                    	||              	||         	||             	||           	||       	||    	||     	||       	||           	||     	||            	||            	||True - 0 Found|
+|*                	||No		||		      	||              	||		||             	||           	||       	||    	||     	||       	||           	||     	||            	||            	||True|
+|Wake Forest*	  	||No	  	||			||			||		||		||		||		||	||	||		||		||	||		||		||True|
+|Wake*			||Yes		||			||			||		||		||		||		||	||	||		||		||	||		||		||True|
+|			||No		||			||CTEP			||TX035		||		||		||		||	||	||		||		||	||		||		||True|
+|			||No		||			||			||		||		||Dana-Farber*	||		||	||	||		||		||	||		||		||True|
+|			||No		||			||			||		||		||		||		||	||MD	||		||		||	||		||		||True|
+|			||No		||			||			||		||		||		||		||	||	||		||		||	||*Larco	||		||True|
+		
+

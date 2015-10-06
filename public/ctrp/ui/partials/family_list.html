@@ -1,3 +1,8 @@
+<div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
+    <div class="alert alert-warning fade in">
+        <strong>{{searchWarningMessage}}</strong>
+    </div>
+</div>
 <div class="row">
     <script type="text/ng-template" id="display_aff_orgs.html">
         <div class="modal-header">
@@ -97,7 +102,7 @@
 <!-- list of families -->
 <div class="row">
     <div class="col-sm-12">
-        <div class="row" ng-if="familyView.gridOptions.totalItems != null">
+        <div class="row" ng-if="searchWarningMessage.length === 0 && familyView.gridOptions.totalItems != null">
             <a href="" id="family_search_results"></a>
             <p><h4>Family Search Results: {{familyView.gridOptions.totalItems}} found</h4></p>
         </div>
