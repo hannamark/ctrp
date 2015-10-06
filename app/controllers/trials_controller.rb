@@ -68,10 +68,13 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:lead_protocol_id].present? || params[:official_title].present?
+    if params[:lead_protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present?
       @trials = Trial.all
-      @trials = @trials.matches('lead_protocol_id', params[:lead_protocol_id]) if params[:lead_protocol_id].present?
+      @trials = @trials.matches_wc('lead_protocol_id', params[:lead_protocol_id]) if params[:lead_protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
+      @trials = @trials.with_phase(params[:phase]) if params[:phase].present?
+      @trials = @trials.with_purpose(params[:purpose]) if params[:purpose].present?
+      @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
       @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
     else
       @trials = []

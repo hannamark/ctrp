@@ -365,6 +365,18 @@
                     url: '/trials',
                     templateUrl: '/ctrp/ui/partials/trial_list.html',
                     controller: 'trialCtrl as trialView',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        studySourceObj: function(TrialService) {
+                            return TrialService.getStudySources();
+                        },
+                        phaseObj: function(TrialService) {
+                            return TrialService.getPhases();
+                        },
+                        primaryPurposeObj: function(TrialService) {
+                            return TrialService.getPrimaryPurposes();
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Trials'

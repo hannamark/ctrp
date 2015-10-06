@@ -36,10 +36,13 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'lead_protocol_id', enableSorting: true, displayName: 'Lead Protocol ID', width: '50%'},
-                {name: 'official_title', enableSorting: true, width: '50%',
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, width: '20%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                }
+                },
+                {name: 'official_title', enableSorting: true, width: '20%'},
+                {name: 'phase', enableSorting: true, width: '20%'},
+                {name: 'purpose', enableSorting: true, width: '20%'},
+                {name: 'pilot', enableSorting: true, width: '20%'}
             ]
         };
 

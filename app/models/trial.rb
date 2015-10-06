@@ -121,6 +121,10 @@ class Trial < ActiveRecord::Base
     end
   }
 
+  scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
+
+  scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
+
   scope :sort_by_col, -> (column, order) {
     if column == 'id'
       order("#{column} #{order}")

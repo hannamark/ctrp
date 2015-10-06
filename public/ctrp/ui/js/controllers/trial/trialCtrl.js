@@ -7,11 +7,16 @@
 
     angular.module('ctrpApp').controller('trialCtrl', trialCtrl);
 
-    trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal', '$location', '$anchorScroll'];
+    trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal', '$location', '$anchorScroll',
+                         'studySourceObj', 'phaseObj', 'primaryPurposeObj'];
 
-    function trialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal, $location, $anchorScroll) {
+    function trialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal, $location, $anchorScroll,
+                       studySourceObj, phaseObj, primaryPurposeObj) {
         var vm = this;
         vm.searchParams = TrialService.getInitialTrialSearchParams();
+        vm.studySourceArr = studySourceObj;
+        vm.phaseArr = phaseObj;
+        vm.primaryPurposeArr = primaryPurposeObj;
         vm.gridScope=vm;
 
         //ui-grid plugin options
