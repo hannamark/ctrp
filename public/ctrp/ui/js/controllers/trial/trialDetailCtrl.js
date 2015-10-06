@@ -450,6 +450,7 @@
         function activate() {
             appendNewTrialFlag();
             getExpFlag();
+            adjustTrialStatusArr();
 
             if (vm.curTrial.new) {
                 vm.curTrial.pilot = 'No';
@@ -490,6 +491,16 @@
             } else {
                 if (vm.curTrial.study_source && vm.curTrial.study_source.code == 'EXP') {
                     vm.isExp = true;
+                }
+            }
+        }
+
+        function adjustTrialStatusArr() {
+            if (!vm.isExp) {
+                for (var i = vm.trialStatusArr.length - 1; i >= 0; i--) {
+                    if (vm.trialStatusArr[i].code == 'AVA' || vm.trialStatusArr[i].code == 'NLA' || vm.trialStatusArr[i].code == 'TNA' || vm.trialStatusArr[i].code == 'AFM') {
+                        vm.trialStatusArr.splice(i, 1);
+                    }
                 }
             }
         }
