@@ -12,8 +12,15 @@ var should = chai.should();
 // var   param = chaiParam.param;
 var ListOfOrganizationPage = require('../support/ListOfOrganizationsPage');
 var LoginPage = require('../support/LoginPage.js');
+var MenuItem = require('../support/PoCommonBar');
+var familyPage = require('../support/AddFamilyPage');
+var listFamilyPage = require('../support/ListOfFamiliesPage');
+var helper = require('../support/helper');
+var selectList = require('../support/CommonSelectList');
 
 module.exports = function() {
+    var menuItemList = new MenuItem();
+    var searchFamily = new listFamilyPage();
     var Search = new ListOfOrganizationPage();
     var Login = new LoginPage();
 /*
@@ -94,7 +101,7 @@ module.exports = function() {
         callback.pending();
     });*/
 
-    this.Given(/^I am logged in to CTRP PO applicationss$/, function (callback) {
+ /*   this.Given(/^I am logged in to CTRP PO applicationss$/, function (callback) {
         browser.get('ui#/main/sign_in');
         Login.login('ctrpadmin', 'Welcome01');
         /*
@@ -110,7 +117,7 @@ module.exports = function() {
                 element(by.model('userView.userObj.user.password')).sendKeys('Welcome01');
                 element(by.css('.glyphicon.glyphicon-log-in')).click();
             }
-        });*/
+        });
        // element(by.model('userView.userObj.user.username')).sendKeys('ctrpadmin');
        // element(by.model('userView.userObj.user.password')).sendKeys('Welcome01');
       //  element(by.css('.glyphicon.glyphicon-log-in')).click();
@@ -167,7 +174,7 @@ module.exports = function() {
             //  setTimeout(callback,4000);
         });
 
-/*
+
     this.Given(/^I want to search with family type (.*)$/, function (familyType, callback) {
         // Write code here that turns the phrase above into concrete actions
         setTimeout(callback,4000);
@@ -177,12 +184,39 @@ module.exports = function() {
         // Write code here that turns the phrase above into concrete actions
         setTimeout(callback,4000);
     });
-*/
+
 
     this.Given(/^logout$/, function (callback) {
         element(by.css('a[ng-click="headerView.logOut()"]')).click();
         setTimeout(callback,4000);
+    });*/
+
+    this.Given(/^I have selected the option to search for a family shilpi$/, function (callback) {
+        menuItemList.clickOrganizations();
+        menuItemList.clickListFamily();
+        browser.sleep(250).then(callback);
     });
 
+    this.When(/^I provide search item$/, function (callback) {
+        searchFamily.setFamilyName('*');
+        searchFamily.clickSearchButton();
+        var getTableValues = function(tableSelector, columnSelector, colNames) {
+            return element.all(by.css(tableSelector)).map(function(row, index) {
+                var columns = row.all(by.css(columnSelector));console.log('row here' + columns) ;
+                return columns.then(function(cols){
+                    var result = {};
+                    cols.forEach(function(col, idx) {
+                        result[colNames[idx]] = col.getText();
+                        result.rowElm = row;
+                    });
+                    return result;
+                });
+            });
+        };
+        var tableDataPromise = getTableValues('.ui-grid-render-container.ui-grid-render-container-body', '.ngCellText .ng-binding', ["Family Name", "balance", "creditLimit"]);
+        tableDataPromise.then(function(){console.log('This is the table value' + tableDataPromise);});
+        browser.sleep(250).then(callback);
+    });
+//element.all(by.css('.ui-grid-viewport'))
 }
 

@@ -103,7 +103,7 @@ var PoCommonBar = function(){
     this.inResults = function(searchString) {
         return this.searchResult.filter(function(name) {
             return name.getText().then(function(text) {
-                return text === searchString;
+                return text === searchString ;
             });
         }).then(function(filteredElements) {
             // Only the elements that passed the filter will be here. This is an array.
