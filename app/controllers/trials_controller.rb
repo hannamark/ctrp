@@ -68,10 +68,23 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:lead_protocol_id].present? || params[:official_title].present?
+    if params[:lead_protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org] || params[:study_source]
       @trials = Trial.all
-      @trials = @trials.matches('lead_protocol_id', params[:lead_protocol_id]) if params[:lead_protocol_id].present?
+      @trials = @trials.matches_wc('lead_protocol_id', params[:lead_protocol_id]) if params[:lead_protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
+      @trials = @trials.with_phase(params[:phase]) if params[:phase].present?
+      @trials = @trials.with_purpose(params[:purpose]) if params[:purpose].present?
+      @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
+      if params[:pi].present?
+        splits = params[:pi].split(',').map(&:strip)
+        @trials = @trials.with_pi_lname(splits[0])
+        @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
+      end
+      if params[:org].present?
+        @trials = @trials.with_lead_org(params[:org]) if params[:org_type] == 'Lead Organization'
+        @trials = @trials.with_sponsor(params[:org]) if params[:org_type] == 'Sponsor'
+      end
+      @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
       @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
     else
       @trials = []

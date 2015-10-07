@@ -192,6 +192,15 @@
                     }
                 })
 
+                .state('main.users', {
+                    url: '/users',
+                    templateUrl: '/ctrp/ui/partials/user_list.html',
+                    controller: 'userListCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    }
+                })
+
                 .state('main.changePassword', {
                     url: '/change_password',
                     templateUrl: '/ctrp/ui/partials/changePassword.html',
@@ -315,6 +324,9 @@
                     resolve: {
                         OrgService: 'OrgService',
                         PersonService: 'PersonService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj: function(OrgService) {
                             return OrgService.getSourceStatuses();
                         },
@@ -337,6 +349,7 @@
                     controller: 'personDetailCtrl as personDetailView',
                     resolve: {
                         OrgService: 'OrgService',
+                        PersonService: 'PersonService',
                         sourceContextObj: function(OrgService) {
                             return OrgService.getSourceContexts();
                         },
@@ -368,6 +381,18 @@
                     url: '/trials',
                     templateUrl: '/ctrp/ui/partials/trial_list.html',
                     controller: 'trialCtrl as trialView',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        studySourceObj: function(TrialService) {
+                            return TrialService.getStudySources();
+                        },
+                        phaseObj: function(TrialService) {
+                            return TrialService.getPhases();
+                        },
+                        primaryPurposeObj: function(TrialService) {
+                            return TrialService.getPrimaryPurposes();
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Trials'
@@ -437,7 +462,7 @@
                     },
                     ncyBreadcrumb: {
                         //parent: 'main.trials',
-                        parent: 'main.defaultContent',
+                        parent: 'main.trials',
                         label: 'Register Trial'
                     }
                 })
@@ -503,8 +528,8 @@
                 },
                 ncyBreadcrumb: {
                     //parent: 'main.trials',
-                    parent: 'main.defaultContent',
-                    label: 'Register Trial'
+                    parent: 'main.trials',
+                    label: 'Trial Detail'
                 }
             });
         }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService) {
