@@ -35,7 +35,7 @@
                     <label class="control-label col-sm-3">Prefix:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.prefix">
+                        <input type="text" curation-field class="form-control input-xs" ng-model="personDetailView.curPerson.prefix">
                     </div>
                 </div>
                 <div class="form-group col-sm-12"
@@ -43,7 +43,7 @@
                     <label class="control-label col-sm-3">First Name:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus/>
+                        <input type="text" curation-field name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus/>
                         <p ng-show="person_form.fname.$error.required && person_form.fname.$dirty" class="help-inline">
                             First Name is required
                         </p>
@@ -53,7 +53,7 @@
                     <label class="control-label col-sm-3">Middle Name:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" name="mname" class="form-control input-sm"
+                        <input type="text" curation-field name="mname" class="form-control input-sm"
                                ng-model="personDetailView.curPerson.mname">
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                     <label class="control-label col-sm-3">Last Name:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" name="lname" class="form-control input-sm"
+                        <input type="text" curation-field name="lname" class="form-control input-sm"
                                ng-model="personDetailView.curPerson.lname" required>
 
                         <p ng-show="person_form.lname.$error.required && person_form.lname.$dirty" class="help-inline">
@@ -74,27 +74,25 @@
                     <label class="control-label col-sm-3">Suffix:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.suffix">
+                        <input type="text" curation-field class="form-control input-xs" ng-model="personDetailView.curPerson.suffix">
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Source Context:</label>
                     <div class="col-sm-9">
-                        <select class="form-control" id="source_context" ng-model="personDetailView.curPerson.source_context_id" ng-options="context.id as context.name for context in personDetailView.sourceContextArr">
+                        <select curation-field class="form-control" id="source_context" ng-model="personDetailView.curPerson.source_context_id" ng-options="context.id as context.name for context in personDetailView.sourceContextArr">
                             <option value="">Select context</option>
                         </select>
 
                     </div>
                 </div>
-                <!--  Removed Source ID from person add/update versions of the screen. Will be set automatically in Rails.
-+                    <div class="form-group col-sm-12">
+                <!-- Source ID will be R/O on Person screen -->
+                 <div class="form-group col-sm-12">
                      <label class="control-label col-sm-3">Source ID:</label>
-
                      <div class="col-sm-9">
-                         <input type="text" class="form-control input-xs"
-                                ng-model="personDetailView.curPerson.source_id">
+                         {{personDetailView.curPerson.source_id}}
                      </div>
-+                </div> -->
+               </div>
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">Source Status:</label>
 
@@ -107,8 +105,8 @@
                                 <!--<option ng-repeat="status in personDetailView.sourceStatusArr" value="{{status.id}}" ng-selected="personDetailView.curPerson.source_status_id == status.id">{{status.name}}</option>-->
                             <!--</select>-->
 
-                            <select ng-init="personDetailView.curPerson.source_status_id" class="form-control" id="source_status" ng-model="personDetailView.curPerson.source_status_id" ng-options="status.id as status.name for status in personDetailView.sourceStatusArr"></select>
-                            
+                            <select ng-init="personDetailView.curPerson.source_status_id" curation-field class="form-control" id="source_status" ng-model="personDetailView.curPerson.source_status_id" ng-options="status.id as status.name for status in personDetailView.sourceStatusArr"></select>
+
                         </div>
                     </div>
                 </div>
@@ -116,7 +114,7 @@
                     <label class="control-label col-sm-3">Email:</label>
 
                     <div class="col-sm-9">
-                        <input type="email" class="form-control input-xs" ng-model="personDetailView.curPerson.email"
+                        <input type="email" curation-field class="form-control input-xs" ng-model="personDetailView.curPerson.email"
                                type="email" placeholder="Email">
                     </div>
                 </div>
@@ -124,7 +122,7 @@
                     <label class="control-label col-sm-3">Phone:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" class="form-control input-xs" ng-model="personDetailView.curPerson.phone"
+                        <input type="text" curation-field class="form-control input-xs" ng-model="personDetailView.curPerson.phone"
                                type="text"
                                placeholder="Phone">
                     </div>
@@ -143,7 +141,7 @@
                         {{personDetailView.curPerson.updated_by}} ({{personDetailView.curPerson.updated_at | date: 'dd-MMM-yyyy H:mm'}})
                     </div>
                 </div>
-                
+
                 <div class="form-group col-sm-12">
                     <label class="control-label col-sm-3">
                         Add Affiliated Organization:
@@ -172,7 +170,7 @@
                                 <tr ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index"
                                     ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                     <td style="vertical-align: middle">
-                                        <label class="btn btn-default"
+                                        <label curation-field class="btn btn-default"
                                                ng-click="personDetailView.toggleSelection($index)">
                                             <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                         </label>
@@ -180,15 +178,14 @@
                                     <td>{{org.id}}</td>
                                     <td>{{org.name}}</td>
                                     <td>
-                                        <div class="input-group add-on col-sm-12 date datepicker"
-                                             date-date-format="yyyy-mm-dd">
+                                        <div class="input-group add-on col-sm-12 date datepicker">
                                             <input type="text" class="form-control input-normal"
                                                    datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.effective_date" is-open="org.opened_effective"
-                                                   is-open="opened" datepicker-options="personDetailView.dateOptions"
+                                                   datepicker-options="personDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                   <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"
+                                        <button type="button" curation-field class="btn btn-default"
                                                 ng-click="personDetailView.openCalendar($event, $index, 'effective')"
                                                 ng-disabled="org._destroy">
                                             <i class="glyphicon glyphicon-calendar"></i>
@@ -198,15 +195,14 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="input-group add-on col-sm-12 date datepicker"
-                                             date-date-format="yyyy-mm-dd">
+                                        <div class="input-group add-on col-sm-12 date datepicker">
                                             <input type="text" class="form-control"
                                                    datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.expiration_date" is-open="org.opened_expiration"
-                                                   is-open="opened" datepicker-options="personDetailView.dateOptions"
+                                                   datepicker-options="personDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                   <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"
+                                        <button type="button" curation-field class="btn btn-default"
                                                 ng-click="personDetailView.openCalendar($event, $index, 'expiration')"
                                                 ng-disabled="org._destroy">
                                             <i class="glyphicon glyphicon-calendar"></i>
@@ -226,11 +222,11 @@
 
                 <div id="buttonBar" class="form-group col-sm-12">
                     <div class="col-sm-offset-3 col-sm-9">
-                        <input type="submit" class="btn btn-success" ng-click="personDetailView.updatePerson()"
+                        <input type="submit" curation-field class="btn btn-success" ng-click="personDetailView.updatePerson()"
                                value="Save" ng-disabled="person_form.$invalid" ctrp-click-once>
-                        <button class="btn btn-warning" ng-click="personDetailView.resetForm()">Reset</button>
-                        <button class="btn btn-default" back-button>Cancel</button>
-                        <button ng-hide="personDetailView.curPerson.new" class="btn btn-danger"
+                        <button class="btn btn-warning" curation-field ng-click="personDetailView.resetForm()">Reset</button>
+                        <button class="btn btn-default" curation-field back-button>Cancel</button>
+                        <button ng-hide="personDetailView.curPerson.new" class="btn btn-danger" curation-field
                                 ng-click="personDetailView.confirmDelete('sm')">
                             Delete This Person
                         </button>

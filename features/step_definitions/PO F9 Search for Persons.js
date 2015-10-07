@@ -69,7 +69,7 @@ module.exports = function() {
     });
 
     this.Given(/^I know the CTEP ID of the person I wish to search for$/, function (callback) {
-        CTEPID = '35504';
+        CTEPID = '33303';
         callback();
     });
 
@@ -171,7 +171,8 @@ module.exports = function() {
     });
 
     this.Given(/^I want to search with PO Person ID (.*)$/, function (POPersonID, callback) {
-        Search.setPersonPoId(POPersonID);
+        Search.setPersonSourceId(POPersonID);
+       // Search.setPersonPoId(POPersonID);
         browser.sleep(250).then(callback);
     });
 
