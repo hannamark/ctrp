@@ -211,7 +211,7 @@
 </form>
 
 <!-- list of people -->
-<div class="row">
+<div class="row" ng-if="searchWarningMessage.length === 0">
     <div class="col-sm-12">
         <div class="row" ng-if="gridOptions.totalItems != null">
             <div class="col-sm-6">
