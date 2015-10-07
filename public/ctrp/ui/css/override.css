@@ -15,7 +15,9 @@
 }
 
 .ui-grid-header-cell .ui-grid-cell-contents {
-    height: 48px;
+    line-height: 1em;
+    padding: 6px 5px;
+    height: 32px;
     white-space: normal;
     -ms-text-overflow: clip;
     -o-text-overflow: clip;
@@ -23,9 +25,12 @@
     overflow: visible;
 }
 
+.ui-grid-row, .ui-grid-cell {
+    line-height: 1em;
+    height: 22px !important;
+}
+
 .tooltip-uigrid {
-    overflow: visible;
-    white-space: normal;
     word-wrap: normal;
 }
 
@@ -67,6 +72,10 @@
     text-decoration:line-through;
 }
 
+.nav {
+    font-size: 14px;
+}
+
 .nav-search-bar {
     background: #363636;
     /* fallback */
@@ -97,7 +106,7 @@
 
 .nav.navbar-nav li ul li a{
     text-decoration: none;
-    color: #000000;
+    color: #444;
 }
 
 .nav.navbar-nav li ul li a:hover{
@@ -153,6 +162,11 @@ header img {
 }
 .top-offset-lg {
 	margin-top: 185px;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
 }
 
 .row-blue {
@@ -223,13 +237,7 @@ header img {
     margin-top: -0.4em;
 }
 
-.checkbox-info {
-
-}
-
-.checkbox-circle {
-
-}
+.checkbox-info, .checkbox-circle {}
 
 .footer-fixed {
     margin-top: 5%;
@@ -275,7 +283,7 @@ body {
 }
 
 form {
-    line-height: 0.75em;
+    line-height: 1em;
     padding: 0 5px;
 }
 
