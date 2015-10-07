@@ -62,7 +62,7 @@ module.exports = function() {
         browser.sleep(250).then(callback);
     });
 
-    this.When(/^I change the name of the person I wish to edit$/, function (callback) {
+    this.When(/^I change the name of the Person I wish to edit$/, function (callback) {
         person.setAddPersonFirstName(fNameEditTo);
         person.setAddPersonLastName(lNameEditTo);
         browser.sleep(250).then(callback);

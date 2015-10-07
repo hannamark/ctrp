@@ -26,7 +26,7 @@ module.exports = function() {
         browser.get('ui#/main/sign_in');
         Login.login('ctrpadmin', 'Welcome01');
       //  setTimeout(callback, 5000);
-        browser.sleep(5000).then(callback);
+        browser.sleep(250).then(callback);
     });
 
     this.Given(/^I have selected the option to search for an organization$/, function (callback) {
@@ -268,7 +268,7 @@ module.exports = function() {
         browser.get('ui#/main/sign_in');
         Login.login('ctrpcurator', 'Welcome01');
         //  setTimeout(callback, 5000);
-        browser.sleep(5000).then(callback);
+        browser.sleep(250).then(callback);
     });
 
     this.When(/^I provide the curator date of the organization I wish to search for$/, function (callback) {
