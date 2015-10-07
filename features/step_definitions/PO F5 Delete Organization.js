@@ -89,19 +89,23 @@ module.exports = function() {
     });
 
     this.Given(/^I have searched for an organization$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        MenuItemList.clickOrganizations();
+        MenuItemList.clickListOrganizations();
+        Search.setOrgName(Organization_to_search);
+        Search.clickSearchButton();
+        browser.sleep(250).then(callback);
     });
 
     this.Given(/^the organization is referenced as a lead organization on a trial or participating site on a trial or Person record Affiliated Organization or CTRP User Affiliated Organization or part of a Family Organization$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        // need to add organization affiliation verification
+        browser.sleep(300).then(callback);
     });
 
     this.Then(/^the Delete function will be disabled$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        // need to add delete button is disabled
+        browser.sleep(300).then(callback);
     });
+
 
 
 }
