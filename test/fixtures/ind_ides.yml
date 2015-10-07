@@ -4,7 +4,6 @@
 #
 #  id                      :integer          not null, primary key
 #  ind_ide_type            :string(255)
-#  ind_ide_number          :integer
 #  grantor                 :string(255)
 #  nih_nci                 :string(255)
 #  holder_type_id          :integer
@@ -15,6 +14,7 @@
 #  uuid                    :string(255)
 #  expanded_access         :boolean
 #  exempt                  :boolean
+#  ind_ide_number          :string(255)
 #
 # Indexes
 #

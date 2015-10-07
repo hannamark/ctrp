@@ -25,6 +25,10 @@ module Ctrp
     # Application version to display site-wide. Increment after every production deployment.
     # Use 5.x for minor point releases such as for new features or upgrades. Use 5.0.x for patch/bugfix point releases.
     config.application_version = "5.0"
+    config.organizations_id_sequence_start_with = 65000000
+    config.persons_id_sequence_start_with = 65000000
+    config.families_id_sequence_start_with = 65000000
+
 
     config.active_record.raise_in_transactional_callbacks = true
 

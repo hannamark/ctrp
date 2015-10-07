@@ -1,5 +1,10 @@
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form" name="search_person_form" novalidate>
 
+    <div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
+        <div class="alert alert-warning fade in">
+            <strong>{{searchWarningMessage}}</strong>
+        </div>
+    </div>
     <!-- first row -->
     <div class="row">
         <div class="col-md-6">
@@ -55,9 +60,7 @@
                     <select class="form-control" id="source_context"
                             ng-model="searchParams.source_context">
                         <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
-                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}"
-                                ng-selected="context.name == searchParams.source_context">{{context.name}}
-                        </option>
+                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}">{{context.name}}</option>
                     </select>
                 </div>
                 <!--source context ends-->
@@ -85,16 +88,6 @@
                     </select>
                 </div>
                 <!-- source status ends -->
-
-
-                <!-- ID used as ctrp_id here -->
-                <label for="ctrp_id" class="control-label col-sm-2">CTRP ID: </label>
-
-                <div class="col-sm-4">
-                    <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
-                           ng-model="searchParams.ctrp_id"/>
-                </div>
-                <!-- ctrp id -->
             </div>
 
         </div>
@@ -149,9 +142,8 @@
                 </label>
 
                 <div class="col-sm-5">
-                    <div class="input-group add-on col-sm-12 date datepicker"
-                         date-date-format="yyyy-mm-dd">
-                        <input type="text" class="form-control input-normal" id="start_date"
+                    <div class="input-group add-on col-sm-12 date datepicker">
+                        <input type="text" class="form-control" id="start_date" name="startDate"
                                datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.startDate" is-open="startDateOpened" is-open="opened"
                                datepicker-options="dateOptions"
@@ -170,12 +162,11 @@
                 <!--<label for="person_fname" class="control-label col-sm-2"></label>-->
 
                 <div class="col-sm-5">
-                    <div class="input-group add-on col-sm-12 date datepicker"
-                         date-date-format="yyyy-mm-dd">
-                        <input type="text" class="form-control input-normal" id="end_date"
+                    <div class="input-group add-on col-sm-12 date datepicker" ng-class="{'has-error': search_person_form.endDate.dateLaterThan && search_person_form.endDate.$dirty}">
+                        <input type="text" class="form-control" id="end_date" name="endDate"
                                datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" is-open="opened"
-                               datepicker-options="dateOptions"
+                               datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
                                ng-required="false" close-text="Close" placeholder="End Date"/>
                                   <span class="input-group-btn">
                                         <button type="button" class="btn btn-default"
@@ -184,6 +175,9 @@
                                         </button>
                                   </span>
                     </div>
+                    <span ng-show="search_person_form.endDate.$error.dateLaterThan" class="help-inline warning">
+                        End date should be no earlier than start date
+                    </span>
                 </div>
             </div>
         </div>
@@ -223,8 +217,9 @@
             <div class="col-sm-6">
                 <!-- information section -->
                 <a href="" id="people_search_results"></a>
-
-                <p><h4>People Search Results: {{gridOptions.totalItems}} found</h4></p>
+                <div ng-if="searchWarningMessage.length === 0">
+                   <p><h4>People Search Results: {{gridOptions.totalItems}} found</h4></p>
+                </div>
                 <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true">
                     <mark>Curation Mode:</mark>
                     <toggle-switch ng-model="curationShown" ng-change="toggleCurationMode()"></toggle-switch>

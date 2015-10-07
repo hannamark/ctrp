@@ -77,3 +77,7 @@ gem 'wicked'
 gem 'bootstrap-sass', '~> 3.3.5'
 
 gem 'carrierwave'
+
+#gem for pg_sequencer
+gem 'pg_sequencer'
+
