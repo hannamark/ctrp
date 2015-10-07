@@ -33,11 +33,11 @@
         .directive('ctrpAdvancedPersonSearchForm', ctrpAdvancedPersonSearchForm);
 
     ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', '$location', 'UserService', 'DateService',
-            'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', 'OrgService', '$compile', 'MESSAGES'];
+            'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', 'OrgService', '$compile', 'MESSAGES', '$state'];
 
 
     function ctrpAdvancedPersonSearchForm(PersonService, Common, $location, uiGridConstants, UserService, DateService,
-                                          $timeout,  _, toastr, $anchorScroll, OrgService, $compile, MESSAGES) {
+                                          $timeout,  _, toastr, $anchorScroll, OrgService, $compile, MESSAGES, $state) {
 
         var directiveObj = {
             restrict: 'E',
@@ -71,8 +71,9 @@
         
         
         
-        function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService) {
+        function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService, $state) {
 
+            var fromStateName = $state.fromState.name || '';
             $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
             $scope.sourceContextArr = []; //sourceContextObj;
@@ -88,6 +89,8 @@
             $scope.startDateOpened = ''; //false;
             $scope.endDateOpened = ''; // false;
             $scope.searchWarningMessage = '';
+
+
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             //default to curationMode eanbled to true if max row selectable is > 0
@@ -217,7 +220,7 @@
             $scope.resetSearch = function () {
                 // $scope.states.length = 0;
                 $scope.searchParams = PersonService.getInitialPersonSearchParams();
-                $scope.gridOptions.data.length = 0;
+                $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
                 Object.keys($scope.searchParams).forEach(function (key) {
                     $scope.searchParams[key] = '';
@@ -270,6 +273,11 @@
             function activate() {
                 getPromisedData();
                 prepareGidOptions();
+
+                if (fromStateName != 'main.personDetail') {
+                    $scope.resetSearch();
+                }
+
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
                 watchUserPrivilegeSelection();

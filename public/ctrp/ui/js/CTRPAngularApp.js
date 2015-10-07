@@ -29,6 +29,15 @@
         'ngFileUpload',
         'angularMoment'
     ])
+        .config(function($provide) {
+            $provide.decorator('$state', function($delegate, $rootScope) {
+               $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+                   $delegate.next = toState;
+                   $delegate.fromState = fromState;
+               });
+                return $delegate;
+            });
+        })
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
             if (!$httpProvider.defaults.headers.get) {
