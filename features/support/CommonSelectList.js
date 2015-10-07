@@ -39,9 +39,9 @@ CommonSelectList = function(){
 
     this.selectFamilyType = function(type){
         var  familyType =  element(by.xpath('//*[@id="family_type"]/option[.="' + type + '"]'));
-        var  familyTypeDefault = element(by.xpath('//*[@id="family_type"]/option[.="Select a status"]'));
+        var  familyTypeDefault = element(by.xpath('//*[@id="family_type"]/option[.="Select a type"]'));
         if(type == '') {
-            select.selectValue(familyTypeDefault,'Select a status',"Family type field");
+            select.selectValue(familyTypeDefault,'Select a type',"Family type field");
         }
         else{
             select.selectValue(familyType,type,"Family type field");

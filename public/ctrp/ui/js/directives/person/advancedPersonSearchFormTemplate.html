@@ -145,7 +145,7 @@
                     <div class="input-group add-on col-sm-12 date datepicker">
                         <input type="text" class="form-control" id="start_date" name="startDate"
                                datepicker-popup="{{dateFormat}}" show-weeks="false"
-                               ng-model="searchParams.startDate" is-open="startDateOpened" is-open="opened"
+                               ng-model="searchParams.startDate" is-open="startDateOpened"
                                datepicker-options="dateOptions"
                                ng-required="false" close-text="Close" placeholder="Start Date"/>
                                   <span class="input-group-btn">
@@ -165,7 +165,7 @@
                     <div class="input-group add-on col-sm-12 date datepicker" ng-class="{'has-error': search_person_form.endDate.dateLaterThan && search_person_form.endDate.$dirty}">
                         <input type="text" class="form-control" id="end_date" name="endDate"
                                datepicker-popup="{{dateFormat}}" show-weeks="false"
-                               ng-model="searchParams.endDate" is-open="endDateOpened" is-open="opened"
+                               ng-model="searchParams.endDate" is-open="endDateOpened"
                                datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
                                ng-required="false" close-text="Close" placeholder="End Date"/>
                                   <span class="input-group-btn">
@@ -211,7 +211,7 @@
 </form>
 
 <!-- list of people -->
-<div class="row">
+<div class="row" ng-if="searchWarningMessage.length === 0">
     <div class="col-sm-12">
         <div class="row" ng-if="gridOptions.totalItems != null">
             <div class="col-sm-6">
