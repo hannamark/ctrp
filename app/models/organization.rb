@@ -49,6 +49,8 @@ class Organization < ActiveRecord::Base
   has_many :sponsor_trials, foreign_key: :sponsor_id, class_name: "Trial"
   has_many :inv_aff_trials, foreign_key: :investigator_aff_id, class_name: "Trial"
 
+  accepts_nested_attributes_for :name_aliases, allow_destroy: true
+
   validates :name, presence: true
 
   before_destroy :check_for_family
