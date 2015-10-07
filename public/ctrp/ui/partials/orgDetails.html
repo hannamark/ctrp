@@ -50,11 +50,11 @@
         </div>
         <div class="form-group col-sm-12">
 
-<!--  Removed the ability to add/update Source ID
-    <label class="control-label col-sm-3">Source ID:</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" id="source_id" ng-model="orgDetailView.curOrg.source_id">
-            </div> -->
+       <!--  Make source ID a R/O field -->
+        <label class="control-label col-sm-3">Source ID:</label>
+           <div class="col-sm-9">
+               {{orgDetailView.curOrg.source_id}}
+            </div>
         </div>
         <div class="form-group col-sm-12">
             <label class="control-label col-sm-3">Source Status:</label>
