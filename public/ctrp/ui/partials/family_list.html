@@ -100,7 +100,7 @@
 </div>
 
 <!-- list of families -->
-<div class="row">
+<div class="row" ng-if="searchWarningMessage.length === 0">
     <div class="col-sm-12">
         <div class="row" ng-if="searchWarningMessage.length === 0 && familyView.gridOptions.totalItems != null">
             <a href="" id="family_search_results"></a>
