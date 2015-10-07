@@ -27,6 +27,9 @@ ListOfOrganizationsPage = function () {
      this.postalCode = element(by.model('searchParams.postal_code'));
      this.searchButton = element(by.css('button[type="submit"]'));
      this.clearButton = element(by.buttonText('Clear'));
+    this.orgModelSearch = element(by.id('org_search_modal'));
+    this.orgModelSelectItem = element(by.css('div[ng-click="selectButtonClick(row, $event)"]'));
+    this.orgModelConfirm = element(by.buttonText('Confirm Selection'));
 
     this.searchResult = element.all(by.binding('grid.getCellValue(row, col) '));
     this.pageResult = element.all(by.css('div.row'));
@@ -159,49 +162,18 @@ ListOfOrganizationsPage = function () {
         });
     };
 
-    this.LocationsPage = function(name){
-        var locations  = this.searchResult;
-        expect(locations.count()).toNotBe(0);
-        return protractor.promise.createFlow(function(flow){
-            var found;
-            var locations  = element.all(by.repeater('l in location'));
-            var searchPromise = protractor.promise.defer();
-            flow.execute(function(){
-                var idx = 0, found = -1;
-                locations.each(function(item){
-                    var _idx = idx;
-                    if(found >= 0){
-                        console.log("skipping")
-                        return;
-                    }
-                    item.getText().then(function(text){
-                        if(text == name){
-                            console.log("setting found.")
-                            found = _idx;
-                        }
-                        if(found >= 0 || _idx === locations.count()-1){
-                            searchPromise.fulfill(found);
-                        }
-                    });
-                    idx++;
-                });
-                return searchPromise.promise;
-            })
-            flow.execute(function(){
-                var promise = protractor.promise.defer();
-                searchPromise.then(function(idx){
-                    locations.get(idx).click().then(function(){
-                        promise.fulfill(true);
-                    });
+    this.clickOrgSearchModel = function(){
+        search.clickButton(this.orgModelSearch,"Organization Model Search button");
+    };
 
-                })
 
-                return promise.promise;
-            });
-        });
+    this.selectOrgModelItem = function(){
+        search.clickButton(this.orgModelSelectItem,"Organization Model list Item selection");
+    };
 
-    }
-
+    this.clickOrgModelConfirm = function(){
+        search.clickButton(this.orgModelConfirm,"Organization Model Confirm button");
+    };
 
 };
 module.exports = ListOfOrganizationsPage;

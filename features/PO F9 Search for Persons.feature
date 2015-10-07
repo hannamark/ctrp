@@ -8,7 +8,7 @@ And I have selected the option to search for a person
 When I provide the full or partial first name of the person I wish to search for
 And I submit my search request for Person Search
 Then the system should display all persons that contain the first name
-And the search results should display:
+And the search results should display the following sorted by Last Name:
 |CTRP Person ID|
 |CTEP Person ID|
 |First Name|
@@ -26,7 +26,7 @@ And I have selected the option to search for a person
 When I provide the full or partial last name of the person I wish to search for
 And I submit my search request for Person Search
 Then the system should display all persons that contain the last name
-And the search results should display:
+And the search results should display the following sorted by Last Name:
 |CTRP Person ID|
 |CTEP Person ID|
 |First Name|
@@ -44,7 +44,7 @@ And I have selected the option to search for a person
 When I provide the CTEP Person ID of the person I wish to search for
 And I submit my search request for Person Search
 Then the system should display all persons that contain the CTEP Person ID
-And the search results should display:
+And the search results should display the following sorted by Last Name:
 |CTRP Person ID|
 |CTEP Person ID|
 |First Name|
@@ -62,7 +62,7 @@ And I have selected the option to search for a person
 When I provide the PO Person ID of the person I wish to search for
 And I submit my search request for Person Search
 Then the system should display all persons that contain the PO Person ID
-And the search results should display:
+And the search results should display the following sorted by Last Name:
 |CTRP Person ID|
 |CTEP Person ID|
 |First Name|
@@ -80,7 +80,7 @@ And I have selected the option to search for a person
 When I provide the email of the person I wish to search for
 And I submit my search request for Person Search
 Then the system should display all persons that have that email address
-And the search results should display:
+And the search results should display the following sorted by Last Name:
 |CTRP Person ID|
 |CTEP Person ID|
 |First Name|
@@ -98,7 +98,7 @@ And I have selected the option to search for an person
 When I provide the full or partial phone number of the person I wish to search for
 And I submit my search request for Person Search
 Then the system should display all persons with matching phone number
-And the search results should display:
+And the search results should display the following sorted by Last Name:
 |CTRP Person ID|
 |CTEP Person ID|
 |First Name|
@@ -116,7 +116,7 @@ And I have performed an organization search
 When I select an organization for the affiliated organization search
 And I submit my search request for Person Search
 Then the system should display all persons who are affiliated with the selected organization
-And the search results should display:
+And the search results should display the following sorted by Last Name:
 |CTRP Person ID|
 |CTEP Person ID|
 |First Name|
@@ -140,6 +140,7 @@ And I want to search with Person phone number <Person_phone_number>
 And I want to search with Person affiliated organization <Person_affiliated_organization>
 And I submit my search request for Person Search
 Then in the search result for first name <first_name>, last name <last_name>, PO Person ID <PO_Person_ID>, CTEP Person ID <CTEP_Person_ID>, Person email <Person_email>, and Person affiliated organization <Person_affiliated _organization> it shall return result <result>
+And the results should be sorted by Last Name
 
 Examples:
 |first_name  || last_name || PO_Person_ID || CTEP_Person_ID || Person_email || Person_phone_number || Person_affiliated_organization ||result|
@@ -158,7 +159,7 @@ And I am logged in to CTRP PO application
 And I am on the search persons screen
 When I provide the curator date of the person I wish to search for
 And I submit my search request for Person Search
-Then the system should display all persons that contain the curator date
+Then the system should display all persons that contain the curator date sorted by Last Name
 
 @PO
 Scenario: As a PO Curator, Search for persons by curator name
@@ -167,5 +168,5 @@ And I am logged in to CTRP PO application
 And I am on the search persons screen
 When I provide the curator name of the person I wish to search for
 And I submit my search request for Person Search
-Then the system should display all persons that contain the curator name
+Then the system should display all persons that contain the curator name sorted by Last Name
 

@@ -25,14 +25,16 @@
          * @returns {*}
          */
         this.getData = function (url) {
-           // $log.info("getData called in PromiseWithTimeoutService.js");
             var deferred = $q.defer();
 
-            $http.get(url).success(function (data) {
-                deferred.resolve(data);
-            }).error(function (error) {
+            $http.get(url).success(function (data, status, headers, config) {
+                // $log.info('status: ' + status);
+                var packagedData = packageDataWithResponse(data, status, headers, config);
+                deferred.resolve(packagedData);
+            }).error(function (error, status, headers, config) {
+                var packagedError = packageDataWithResponse(error, status, headers, config);
                 raiseErrorMessage(error);
-                deferred.reject(error);
+                deferred.reject(packagedError);
             });
 
             return deferred.promise;
@@ -46,11 +48,13 @@
          */
         this.postDataExpectObj = function (url, params) {
             var deferred = $q.defer();
-            $http.post(url, params).success(function (data) {
-                deferred.resolve(data);
-            }).error(function (error) {
+            $http.post(url, params).success(function (data, status, headers, config) {
+                var packagedData = packageDataWithResponse(data, status, headers, config);
+                deferred.resolve(packagedData);
+            }).error(function (error, status, headers, config) {
+                var packagedError = packageDataWithResponse(error, status, headers, config);
                 raiseErrorMessage(error);
-                deferred.reject(error);
+                deferred.reject(packagedError);
             });
             return deferred.promise;
         };
@@ -67,11 +71,13 @@
         this.updateObj = function (url, params, configObj) {
 
             var deferred = $q.defer();
-            $http.put(url, params, configObj).success(function (data) {
-                deferred.resolve(data);
-            }).error(function (error) {
+            $http.put(url, params, configObj).success(function (data, status, headers, config) {
+                var packagedData = packageDataWithResponse(data, status, headers, config);
+                deferred.resolve(packagedData);
+            }).error(function (error, status, headers, config) {
+                var packagedError = packageDataWithResponse(error, status, headers, config);
                 raiseErrorMessage(error);
-                deferred.reject(error);
+                deferred.reject(packagedError);
             });
             return deferred.promise;
         }; //updateObj
@@ -100,6 +106,26 @@
             toastr.error(errorMsg, 'Error');
             console.log("request has timed out");
         } //raiseErrorMessage
+
+
+        /**
+         * Package status code (e.g. 200), headers, and config in the response field
+         * of the data, leaving the original data untouched
+         *
+         * @param data
+         * @param status
+         * @param headers
+         * @param config
+         * @returns {*}
+         */
+        function packageDataWithResponse(data, status, headers, config) {
+            data.server_response = {};
+            data.server_response.status = status;
+            data.server_response.headers = headers;
+            data.server_response.config = config;
+
+            return data;
+        }
 
 
     } //PromiseTimeoutService

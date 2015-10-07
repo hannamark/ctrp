@@ -21,7 +21,7 @@
             alias: true,
             // po_id : "",
             ctrp_id : "",
-            source_context : "CTRP",
+            source_context : "",
             source_id : "",
             source_status : "",
             family_name : "",
@@ -75,11 +75,13 @@
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
+                {name: 'country', displayName: 'Country', enableSorting: true, width:'9%'},
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'6%'},
+                {name: 'phone', enableSorting: true, width: '8%'},
                 {name: 'email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'phone', enableSorting: true, width: '8%'}
+                }
 
             ]
         };

@@ -24,10 +24,17 @@
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-        var pendingStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'PEND');
-        vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
-        vm.curOrg.source_status_id = vm.curOrg.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
+        var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
+        vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
+        vm.curOrg.source_status_id = vm.curOrg.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
+
+        var ctrpSourceContextIndex = Common.indexOfObjectInJsonArray(vm.sourceContextArr, 'code', 'CTRP');
+        vm.ctrpSourceContextIndex = ctrpSourceContextIndex;
+
         vm.curationReady = false;
+        console.log("vm.ctrpSourceContextIndex is " + vm.ctrpSourceContextIndex);
+        console.log("context array is " + JSON.stringify(vm.sourceContextArr));
+
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
         //update organization (vm.curOrg)

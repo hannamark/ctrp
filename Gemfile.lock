@@ -163,6 +163,8 @@ GEM
       activesupport (>= 3.0, < 5.0)
     pg (0.18.2)
     pg (0.18.2-x86-mingw32)
+    pg_sequencer (0.0.2)
+      activerecord (>= 3.0.0)
     rack (1.6.1)
     rack-pjax (0.8.0)
       nokogiri (~> 1.5)
@@ -290,6 +292,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   paper_trail
   pg
+  pg_sequencer
   rails (= 4.2.0)
   rails_admin
   rest-client

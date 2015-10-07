@@ -99,9 +99,16 @@ class PeopleController < ApplicationController
     params[:sort] = 'lname' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:ctrp_id].present? || params[:source_id].present? || params[:fname].present? || params[:lname].present? || params[:prefix].present? || params[:suffix].present? || params[:email].present? || params[:phone].present? || params[:source_context].present? || params[:source_status].present?
+    if params[:ctrp_id].present? || params[:source_id].present? ||
+        params[:fname].present? || params[:lname].present? || params[:prefix].present? ||
+        params[:suffix].present? || params[:email].present? || params[:phone].present? ||
+        params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present? ||
+        params[:updated_by].present?
+
       @people = Person.all
+      @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
+      @people = @people.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
       @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
       @people = @people.matches_wc('fname', params[:fname]) if params[:fname].present?
       @people = @people.matches_wc('lname', params[:lname]) if params[:lname].present?
@@ -111,6 +118,7 @@ class PeopleController < ApplicationController
       @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
       @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
       @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
+      @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
     else
       @people = []
@@ -125,7 +133,7 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :source_status_id, :created_by, :updated_by, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
+      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :source_status_id,:source_context_id, :created_by, :updated_by, :updated_at, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
 
     end
 

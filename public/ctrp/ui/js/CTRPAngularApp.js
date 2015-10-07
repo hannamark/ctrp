@@ -26,8 +26,18 @@
         'CTRPUnderscoreModule',
         'toggle-switch',
         'TimeoutModule',
-        'ngFileUpload'
+        'ngFileUpload',
+        'angularMoment'
     ])
+        .config(function($provide) {
+            $provide.decorator('$state', function($delegate, $rootScope) {
+               $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+                   $delegate.next = toState;
+                   $delegate.fromState = fromState;
+               });
+                return $delegate;
+            });
+        })
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
             if (!$httpProvider.defaults.headers.get) {
@@ -191,6 +201,15 @@
                     }
                 })
 
+                .state('main.users', {
+                    url: '/users',
+                    templateUrl: '/ctrp/ui/partials/user_list.html',
+                    controller: 'userListCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    }
+                })
+
                 .state('main.changePassword', {
                     url: '/change_password',
                     templateUrl: '/ctrp/ui/partials/changePassword.html',
@@ -198,8 +217,8 @@
                     resolve: {
                         UserService: 'UserService'
                     },
-                    userDetailObj : function(UserService) {
-                        return UserService.getUserDetailsByUsername();
+                    username : function(UserService) {
+                        return UserService.getLoggedInUsername();
                     }
                 })
 
@@ -213,8 +232,8 @@
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
                         },
-                        username : function(UserService) {
-                            return UserService.getLoggedInUsername();
+                        userDetailObj : function(UserService) {
+                            return UserService.getUserDetailsByUsername();
                         }
                     }//, //resolve the promise and pass it to controller
                     //ncyBreadcrumb: {
@@ -295,8 +314,6 @@
                         label: 'Add Family'
                     }
                 })
-
-
                 .state('main.people', {
                     url: '/people',
                     templateUrl: '/ctrp/ui/partials/person_list.html',
@@ -314,6 +331,9 @@
                     resolve: {
                         OrgService: 'OrgService',
                         PersonService: 'PersonService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj: function(OrgService) {
                             return OrgService.getSourceStatuses();
                         },
@@ -336,6 +356,10 @@
                     controller: 'personDetailCtrl as personDetailView',
                     resolve: {
                         OrgService: 'OrgService',
+                        PersonService: 'PersonService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj: function(OrgService) {
                             return OrgService.getSourceStatuses();
                         },
@@ -359,8 +383,23 @@
                     templateUrl: '/ctrp/ui/partials/person_search.html',
                     controller: 'personSearchCtrl as personSearchView'
                 })
+
                 .state('main.trials', {
-                    url: '',
+                    url: '/trials',
+                    templateUrl: '/ctrp/ui/partials/trial_list.html',
+                    controller: 'trialCtrl as trialView',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        studySourceObj: function(TrialService) {
+                            return TrialService.getStudySources();
+                        },
+                        phaseObj: function(TrialService) {
+                            return TrialService.getPhases();
+                        },
+                        primaryPurposeObj: function(TrialService) {
+                            return TrialService.getPrimaryPurposes();
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Trials'
@@ -368,7 +407,7 @@
                 })
 
                 .state('main.addTrial', {
-                    url: '/new_trial',
+                    url: '/new_trial/:studySourceCode',
                     templateUrl: '/ctrp/ui/partials/trialDetails.html',
                     controller: 'trialDetailCtrl as trialDetailView',
                     resolve: {
@@ -377,6 +416,12 @@
                             var deferred = $q.defer();
                             deferred.resolve(null);
                             return deferred.promise;
+                        },
+                        studySourceCode: function($stateParams) {
+                            return $stateParams.studySourceCode;
+                        },
+                        studySourceObj: function(TrialService) {
+                            return TrialService.getStudySources();
                         },
                         protocolIdOriginObj: function(TrialService) {
                             return TrialService.getProtocolIdOrigins();
@@ -392,6 +437,9 @@
                         },
                         secondaryPurposeObj: function(TrialService) {
                             return TrialService.getSecondaryPurposes();
+                        },
+                        accrualDiseaseTermObj: function(TrialService) {
+                            return TrialService.getAccrualDiseaseTerms();
                         },
                         responsiblePartyObj: function(TrialService) {
                             return TrialService.getResponsibleParties();
@@ -421,12 +469,76 @@
                     },
                     ncyBreadcrumb: {
                         //parent: 'main.trials',
-                        parent: 'main.defaultContent',
+                        parent: 'main.trials',
                         label: 'Register Trial'
                     }
-                });
+                })
 
-
+            .state('main.trialDetail', {
+                url: '/trials/:trialId',
+                templateUrl: '/ctrp/ui/partials/trialDetails.html',
+                controller: 'trialDetailCtrl as trialDetailView',
+                resolve: {
+                    TrialService: 'TrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    studySourceCode: function() {
+                        return '';
+                    },
+                    studySourceObj: function(TrialService) {
+                        return TrialService.getStudySources();
+                    },
+                    protocolIdOriginObj: function(TrialService) {
+                        return TrialService.getProtocolIdOrigins();
+                    },
+                    phaseObj: function(TrialService) {
+                        return TrialService.getPhases();
+                    },
+                    researchCategoryObj: function(TrialService) {
+                        return TrialService.getResearchCategories();
+                    },
+                    primaryPurposeObj: function(TrialService) {
+                        return TrialService.getPrimaryPurposes();
+                    },
+                    secondaryPurposeObj: function(TrialService) {
+                        return TrialService.getSecondaryPurposes();
+                    },
+                    accrualDiseaseTermObj: function(TrialService) {
+                        return TrialService.getAccrualDiseaseTerms();
+                    },
+                    responsiblePartyObj: function(TrialService) {
+                        return TrialService.getResponsibleParties();
+                    },
+                    fundingMechanismObj: function(TrialService) {
+                        return TrialService.getFundingMechanisms();
+                    },
+                    instituteCodeObj: function(TrialService) {
+                        return TrialService.getInstituteCodes();
+                    },
+                    nciObj: function(TrialService) {
+                        return TrialService.getNci();
+                    },
+                    trialStatusObj: function(TrialService) {
+                        return TrialService.getTrialStatuses();
+                    },
+                    holderTypeObj: function(TrialService) {
+                        return TrialService.getHolderTypes();
+                    },
+                    expandedAccessTypeObj: function(TrialService) {
+                        return TrialService.getExpandedAccessTypes();
+                    },
+                    GeoLocationService : 'GeoLocationService',
+                    countryList: function(GeoLocationService) {
+                        return GeoLocationService.getCountryList();
+                    }
+                },
+                ncyBreadcrumb: {
+                    //parent: 'main.trials',
+                    parent: 'main.trials',
+                    label: 'Trial Detail'
+                }
+            });
         }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService) {
             console.log('running ctrp angular app');
 

@@ -14,7 +14,7 @@ Then the required Regulatory Information for the trial will be associated with t
 Scenario: #2 I can add and edit Regulatory Information for a non-Regulated Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Register Trial Regulatory Information screen
-When I have selected the Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
+When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
 And I have selected one or more of the Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
 And I have selected either "No" for FDA Regulated Intervention Indicator
 And I have selected either "Yes" or "No" for Data Monitoring Committee Appointed Indicator

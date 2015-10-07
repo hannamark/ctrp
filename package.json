@@ -23,6 +23,7 @@
   ],
   "devDependencies": {
     "chai": "*",
-    "chai-as-promised": "*"
+    "chai-as-promised": "*",
+    "moment": "^2.10.6"
   }
 }
