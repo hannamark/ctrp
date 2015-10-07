@@ -116,16 +116,16 @@
                 //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
                 // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
                 var isEmptySearch = true;
-                var excludedKeys = ['rows', 'alias', 'start'];
+                var ignoreKeys = ['rows', 'alias', 'start'];
 
                 Object.keys($scope.searchParams).forEach(function (key) {
 
-                if(excludedKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
+                if(ignoreKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
                     isEmptySearch = false;
 
                 });
                 if(isEmptySearch)
-                    $scope.searchWarningMessage = "Atleast one selection value must be entered prior to running the search";
+                    $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                 else
                     $scope.searchWarningMessage = "";
 
