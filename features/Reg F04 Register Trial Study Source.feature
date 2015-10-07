@@ -7,10 +7,10 @@ And I am on the Register Trial screen
 When I select the option to register a National, Externally Peer-Reviewed, or Institutional trial
 Then CTRP will display the required registration elements for a complete protocol registration
 
-Scenario: #2 I can select the option to import trial information for an Industrial or Other trial
+Scenario: #2 I can select the option to import trial information for an Industrial, Other, or Expanded Access trial
 Given I am logged into the CTRP Registration application
 And I am on the Register Trial screen
-When I select the option to register an Industrial or Other trial
+When I select the option to register an Industrial, Other, or Expanded Access trial
 Then CTRP will display the required information fields to import the trial from ClinicalTrials.gov
 
 
