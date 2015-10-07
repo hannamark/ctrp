@@ -24,7 +24,7 @@
             last_name: "",
             email: "",
             phone: "",
-            affiliated_org_name: "",
+           // affiliated_org_name: "",
 
             //for pagination and sorting
             sort: "updated_at",
@@ -68,8 +68,8 @@
                 {name: 'phone', enableSorting: true, width: '6%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'affiliated_org', displayName:'Affiliated Org', enableSorting: true, width: '6%'}
+                }//,
+                //{name: 'affiliated_org', displayName:'Affiliated Org', enableSorting: true, width: '6%'}
             ]
         };
 
@@ -147,13 +147,30 @@
          *
          * @returns Array of JSON objects
          */
-        function searchUsers(searchParams) {
-            toastr.success('Success', 'Successfull in searchUsers');
+        this.searchUsers = function (searchParams) {
+            toastr.success('Success', 'Successful in UserService, searchUsers');
              console.log('User searchparams: ' + JSON.stringify(searchParams));
             if (!!searchParams) {
                 return PromiseService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
             }
         } //searchUsers
+
+        /**
+         * get initial paramater object for people search
+         * @return initUserSearchParams
+         */
+        this.getInitialUserSearchParams = function () {
+            toastr.success('Success', 'Successful in UserService, getInitialUserSearchParams');
+            return initUserSearchParams;
+        } //getInitialUserSearchParams
+
+
+
+        this.getGridOptions = function () {
+            toastr.success('Success', 'Successful in UserService, getGridOptions');
+            return gridOptions;
+        }
+
 
 
         /**
