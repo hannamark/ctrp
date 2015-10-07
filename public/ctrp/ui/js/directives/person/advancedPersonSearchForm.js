@@ -273,6 +273,8 @@
 
                 if (fromStateName != 'main.personDetail') {
                     $scope.resetSearch();
+                } else {
+                    $scope.searchPeople(); //refresh the search results
                 }
 
                 watchReadinessOfCuration();

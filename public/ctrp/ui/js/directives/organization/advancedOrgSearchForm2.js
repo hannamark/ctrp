@@ -240,6 +240,8 @@
                 prepareGidOptions();
                 if (fromStateName != 'main.orgDetail') {
                     $scope.resetSearch();
+                } else {
+                    $scope.searchOrgs();
                 }
                 watchCountryAndGetStates();
                 //listenToStatesProvinces();
@@ -272,36 +274,6 @@
                     $scope.countries = countries;
                 });
             } //getPromisedData
-
-
-            /**
-             * Listen to the message for availability of states or provinces
-             * for the selected country
-             */
-            /*
-             function listenToStatesProvinces() {
-
-             $scope.watchCountrySelection($scope.searchParams.country);
-
-             //country change triggers searchOrgs() function
-             $scope.$watch('searchParams.country', function (newVal, oldVal) {
-             if (oldVal != newVal) {
-             $scope.searchOrgs();
-             }
-             }, true);
-
-
-             $scope.$on(MESSAGES.STATES_AVAIL, function () {
-             console.log("states available for country: " + $scope.searchParams.country);
-             $scope.states = OrgService.getStatesOrProvinces();
-             });
-
-             $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
-             $scope.states = [];
-             });
-             }  //listenToStatesProvinces
-
-             */
 
 
             function watchCountryAndGetStates() {
