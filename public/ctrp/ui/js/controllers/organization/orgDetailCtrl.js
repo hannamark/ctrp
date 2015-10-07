@@ -116,10 +116,10 @@
 
             listenToStatesProvinces();
             appendNewOrgFlag();
-            appendNameAliases();
             //prepare the modal window for existing organizations
             if (!vm.curOrg.new) {
                 prepareModal();
+                appendNameAliases();
             }
         }
         // Append associations for existing Trial
