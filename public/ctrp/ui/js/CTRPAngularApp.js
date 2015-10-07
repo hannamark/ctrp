@@ -314,8 +314,6 @@
                         label: 'Add Family'
                     }
                 })
-
-
                 .state('main.people', {
                     url: '/people',
                     templateUrl: '/ctrp/ui/partials/person_list.html',

@@ -9,10 +9,10 @@
     angular.module('ctrpApp')
         .directive('ctrpAdvancedOrgSearchForm2', ctrpAdvancedOrgSearchForm2);
 
-    ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location',
+    ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location', '$state',
         'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', '$log', '$compile'];
 
-    function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $log,
+    function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $log, $state,
                                         MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile) {
 
         var directiveObj = {
@@ -45,8 +45,9 @@
         } //linkFn
 
 
-        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
+        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout, $state) {
 
+            var fromStateName = $state.fromState.name || '';
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
             console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
@@ -237,6 +238,9 @@
                 watchUserPrivilegeChange(); //for switching to curation mode, etc
                 getPromisedData();
                 prepareGidOptions();
+                if (fromStateName != 'main.orgDetail') {
+                    $scope.resetSearch();
+                }
                 watchCountryAndGetStates();
                 //listenToStatesProvinces();
                 watchReadinessOfCuration();

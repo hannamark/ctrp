@@ -126,9 +126,6 @@
                 }else
                     $scope.searchWarningMessage = "";
 
-                console.log("searchParams are " + JSON.stringify($scope.searchParams));
-                console.log("isEmptySearch is " + isEmptySearch);
-
                 if(!isEmptySearch) { //skip searching if empty search
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
                         if ($scope.showGrid && data.data.people) {
