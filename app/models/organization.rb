@@ -56,6 +56,20 @@ class Organization < ActiveRecord::Base
 
   after_create   :save_id_to_ctrp_id
 
+  # Get CTEP ID from the CTEP context org in the cluster, comma separate them if there are multiple
+  def ctep_id
+    ctep_id_arr = []
+    ctep_id_arr = Organization.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:source_id) if self.ctrp_id.present?
+    ctep_id_str = ""
+    ctep_id_arr.each_with_index { |e, i|
+      if i > 0
+        ctep_id_str += ", #{e}"
+      else
+        ctep_id_str += e
+      end
+    }
+    return ctep_id_str
+  end
 
   private
 
