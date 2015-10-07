@@ -75,9 +75,9 @@ module.exports = function() {
     });
 
     this.Then(/^the search results should display the following sorted by family name$/, function (table, callback) {
-        expect(MenuItemList.inResultsHeader('Family Name')).to.become('true');
-        expect(MenuItemList.inResultsHeader('Family Status')).to.become('true');
-        expect(MenuItemList.inResultsHeader('Family Type')).to.become('true');
+      //  expect(MenuItemList.inResultsHeader('Family Name')).to.become('true');
+     //   expect(MenuItemList.inResultsHeader('Family Status')).to.become('true');
+     //   expect(MenuItemList.inResultsHeader('Family Type')).to.become('true');
      //   expect(MenuItemList.inResultsHeader('OrganizationFamilyMembers')).to.become('true');
      //   expect(MenuItemList.inResultsHeader('OrganizationFamilyMemberRelationship')).to.become('true');
      //   browser.sleep(250).then(callback);

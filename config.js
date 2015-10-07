@@ -5,7 +5,7 @@ exports.config = {
     capabilities: {
         'browserName' : 'firefox',
         shardTestFiles: true,
-        maxInstances: 2
+        maxInstances: 3
     },
 
 
@@ -66,7 +66,7 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
      //   require: ['features/step_definitions/*.js', 'features/support/*.js'],
       //  format: 'json'
         format: 'pretty'
-    //   tags: '@runthis'
+   //    tags: '@runthis'
        /*     "@runThat",
             "~@ignoreThis"]*/// or summary
     },
