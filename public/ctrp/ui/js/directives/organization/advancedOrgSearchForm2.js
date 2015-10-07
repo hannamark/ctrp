@@ -241,7 +241,7 @@
                 if (fromStateName != 'main.orgDetail') {
                     $scope.resetSearch();
                 } else {
-                    $scope.searchOrgs();
+                   // $scope.searchOrgs();
                 }
                 watchCountryAndGetStates();
                 //listenToStatesProvinces();
