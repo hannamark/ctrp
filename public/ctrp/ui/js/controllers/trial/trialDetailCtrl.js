@@ -66,6 +66,10 @@
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
+            if (vm.curTrial.new) {
+                convertDate();
+            }
+
             if (vm.selectedLoArray.length > 0) {
                 vm.curTrial.lead_org_id = vm.selectedLoArray[0].id
             } else {
@@ -253,7 +257,7 @@
         vm.addStatus = function () {
             if (vm.status_date && vm.trial_status_id) {
                 var newStatus = {};
-                newStatus.status_date = vm.status_date ? DateService.convertISODateToLocaleDateStr(vm.status_date) : '';
+                newStatus.status_date = DateService.convertISODateToLocaleDateStr(vm.status_date);
                 newStatus.trial_status_id = vm.trial_status_id;
                 // For displaying status name in the table
                 _.each(vm.trialStatusArr, function (status) {
@@ -446,12 +450,14 @@
         function activate() {
             appendNewTrialFlag();
             getExpFlag();
+            adjustTrialStatusArr();
 
             if (vm.curTrial.new) {
                 vm.curTrial.pilot = 'No';
                 vm.curTrial.grant_question = 'Yes';
                 populateStudySource();
             } else {
+                convertDate();
                 displayPOs();
                 ppFieldChange();
                 spFieldChange();
@@ -487,6 +493,22 @@
                     vm.isExp = true;
                 }
             }
+        }
+
+        function adjustTrialStatusArr() {
+            if (!vm.isExp) {
+                for (var i = vm.trialStatusArr.length - 1; i >= 0; i--) {
+                    if (vm.trialStatusArr[i].code == 'AVA' || vm.trialStatusArr[i].code == 'NLA' || vm.trialStatusArr[i].code == 'TNA' || vm.trialStatusArr[i].code == 'AFM') {
+                        vm.trialStatusArr.splice(i, 1);
+                    }
+                }
+            }
+        }
+
+        function convertDate() {
+            vm.curTrial.start_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.start_date);
+            vm.curTrial.primary_comp_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.primary_comp_date);
+            vm.curTrial.comp_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.comp_date);
         }
 
         // Populate Study Source field based on the param studySourceCode
@@ -596,7 +618,7 @@
             for (var i = 0; i < vm.curTrial.trial_status_wrappers.length; i++) {
                 var statusWrapper = {};
                 statusWrapper.id = vm.curTrial.trial_status_wrappers[i].id;
-                statusWrapper.status_date = vm.curTrial.trial_status_wrappers[i].status_date ? DateService.convertISODateToLocaleDateStr(vm.curTrial.trial_status_wrappers[i].status_date) : '';
+                statusWrapper.status_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.trial_status_wrappers[i].status_date);
                 statusWrapper.trial_status_id = vm.curTrial.trial_status_wrappers[i].trial_status_id;
                 // For displaying status name in the table
                 _.each(vm.trialStatusArr, function (status) {

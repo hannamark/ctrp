@@ -20,6 +20,8 @@ AddFamilyPage = function () {
     this.addFamilySaveButton = element(by.css('input[ng-click="familyDetailView.updateFamily()"]'));
     this.addFamilyResetButton = element(by.css('input[value="Reset"]'));
     this.addFamilyDeleteButton = element(by.css('button[ng-hide="familyDetailView.curFamily.new"]'));
+    this.familyEditPage = element(by.css('h4[ng-if="!familyDetailView.curFamily.new"]'));
+    var familyEditPageText = 'Edit Family';
 
     var addFamily = new helper();
 
@@ -77,6 +79,10 @@ AddFamilyPage = function () {
 
     this.familyVerifyAddStatus = function(familyStatus){
         addFamily.getVerifyListValue(this.addFamilyStatus,familyStatus,"Get family by Status field");
+    };
+
+    this.familyVerifyEditHeader = function(){
+        addFamily.getVerifyheader(this.familyEditPage,familyEditPageText,"Family by Edit header field");
     };
 };
 module.exports = AddFamilyPage;

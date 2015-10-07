@@ -29,6 +29,15 @@
         'ngFileUpload',
         'angularMoment'
     ])
+        .config(function($provide) {
+            $provide.decorator('$state', function($delegate, $rootScope) {
+               $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+                   $delegate.next = toState;
+                   $delegate.fromState = fromState;
+               });
+                return $delegate;
+            });
+        })
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
             if (!$httpProvider.defaults.headers.get) {
@@ -192,6 +201,15 @@
                     }
                 })
 
+                .state('main.users', {
+                    url: '/users',
+                    templateUrl: '/ctrp/ui/partials/user_list.html',
+                    controller: 'userListCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    }
+                })
+
                 .state('main.changePassword', {
                     url: '/change_password',
                     templateUrl: '/ctrp/ui/partials/changePassword.html',
@@ -296,8 +314,6 @@
                         label: 'Add Family'
                     }
                 })
-
-
                 .state('main.people', {
                     url: '/people',
                     templateUrl: '/ctrp/ui/partials/person_list.html',
@@ -372,6 +388,18 @@
                     url: '/trials',
                     templateUrl: '/ctrp/ui/partials/trial_list.html',
                     controller: 'trialCtrl as trialView',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        studySourceObj: function(TrialService) {
+                            return TrialService.getStudySources();
+                        },
+                        phaseObj: function(TrialService) {
+                            return TrialService.getPhases();
+                        },
+                        primaryPurposeObj: function(TrialService) {
+                            return TrialService.getPrimaryPurposes();
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Trials'
@@ -441,7 +469,7 @@
                     },
                     ncyBreadcrumb: {
                         //parent: 'main.trials',
-                        parent: 'main.defaultContent',
+                        parent: 'main.trials',
                         label: 'Register Trial'
                     }
                 })
@@ -507,8 +535,8 @@
                 },
                 ncyBreadcrumb: {
                     //parent: 'main.trials',
-                    parent: 'main.defaultContent',
-                    label: 'Register Trial'
+                    parent: 'main.trials',
+                    label: 'Trial Detail'
                 }
             });
         }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService) {

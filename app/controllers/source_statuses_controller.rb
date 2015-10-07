@@ -1,13 +1,18 @@
 class SourceStatusesController < ApplicationController
   before_action :set_source_status, only: [:show, :edit, :update, :destroy]
-  ## Please comment the next two lines if you donot want the Authorization checks
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
 
   # GET /source_statuses
   # GET /source_statuses.json
   def index
-    @source_statuses = SourceStatus.all
+    Rails.logger.debug " HTTP_CURRENT_PRIVILEGE = #{request.env["HTTP_CURRENT_PRIVILEGE"]}"
+    current_privilege = request.env["HTTP_CURRENT_PRIVILEGE"]
+    #TODO need to use constant for CURATOR
+    if current_privilege == "CURATOR"
+      @source_statuses = SourceStatus.all
+    else
+      #TODO need to use constant for Active
+      @source_statuses = [SourceStatus.find_by_name("Active")]
+    end
   end
 
   # GET /source_statuses/1

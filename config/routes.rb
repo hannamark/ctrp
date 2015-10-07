@@ -54,6 +54,8 @@ Rails.application.routes.draw do
 
     resources :comments
 
+    get '/users/search' => 'users#search'
+    post '/users/search' => 'users#search'
     # All the User routes(non-devise) should be accessed by username
     # rather that "id" in order to prevent exposing the "id"
     resources :users, param: :username do
@@ -62,8 +64,6 @@ Rails.application.routes.draw do
         post 'disapprove'
       end
     end
-    get '/users/search' => 'users#search'
-    post '/users/search' => 'users#search'
 
     resources :people do
       collection do

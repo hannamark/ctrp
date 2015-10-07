@@ -1,0 +1,90 @@
+<div class="row">
+    <script type="text/ng-template" id="display_aff_orgs.html">
+        <div class="modal-header">
+            <h3 class="modal-title">{{vm.modalTitle}}</h3>
+        </div>
+        <div class="modal-body">
+            <div ng-repeat="org in vm.aff_orgs">
+                <strong>{{org.name}}</strong>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" id="delete_btn" ng-click="vm.close()">Close</button>
+        </div>
+    </script>
+
+    <div class="col-md-12 col-border">
+        <div class="row">
+            <h4>Search User
+                <small>
+                    <mark>* for wild card (e.g. Doe* for Last name starting with Doe)</mark>
+                </small>
+            </h4>
+        </div>
+        <div class="row">
+            <form class="form-horizontal" role="form">
+
+                <!-- first row -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- name -->
+                        <div class="form-group">
+                            <label for="username" class="control-label col-sm-2">Username </label>
+
+                            <div class="col-sm-10">
+                                <input type="text" id="username" class="form-control"
+                                       placeholder="Username"
+                                       ng-model="userView.searchParams.username" auto-focus/>
+                            </div>
+                        </div>
+                        <!-- family name ends -->
+                    </div>
+                    <div class="col-md-6">
+                        <!--family type-->
+                        <div class="form-group">
+                            <label for="first_name" class="control-label col-sm-2">Name: </label>
+
+                            <div class="col-sm-10">
+                                <input type="text" id="first_name" class="form-control"
+                                       placeholder="First Name"
+                                       ng-model="userView.searchParams.first_name" auto-focus/>
+                            </div>
+                        </div>
+                        <!-- family type ends -->
+                    </div>
+                </div><!-- first row ends -->
+
+
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-12 text-center">
+                            <button type="submit" class="btn btn-primary" ng-click="userView.searchUsers()">
+                               <i class="glyphicon glyphicon-search"></i> Search
+                            </button>
+
+                            <button type="reset" class="btn btn-default btn-danger" ng-click="userView.resetSearch()">
+                               <i class="glyphicon glyphicon-remove"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- list of Users -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row" ng-if="userView.gridOptions.totalItems != null">
+            <a href="" id="user_search_results"></a>
+            <p><h4>User Search Results: {{userView.gridOptions.totalItems}} found</h4></p>
+        </div>
+        <div class="row animated-item" ng-if="userView.gridOptions.data.length > 0">
+            <div ui-grid="userView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+        </div>
+    </div>
+
+
+</div>

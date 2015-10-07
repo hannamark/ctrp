@@ -2,11 +2,11 @@
 Feature: Edit Person Information
 
 Scenario: As a Po Curator, I can Edit Person record name information
-Given I know which person record I want to edit
+Given I know which Person record I want to edit
 And I am logged in to CTRP PO application
-And I have searched for a person and found the one I wish to edit
+And I have searched for a Person record and found the one I wish to edit
 And I have selected the function Edit Person
-And I am on the edit person information screen
+And I am on the edit Person information screen
 When I change the name of the Person I wish to edit
 And I set the Person status to either Pending or Active
 And I submit my edit request

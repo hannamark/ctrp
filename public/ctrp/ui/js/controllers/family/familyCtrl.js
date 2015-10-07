@@ -82,7 +82,7 @@
             });
 
             if (isEmptySearch)
-                $scope.searchWarningMessage = "Atleast one selection value must be entered prior to running the search";
+                $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
             else
                 $scope.searchWarningMessage = "";
 
