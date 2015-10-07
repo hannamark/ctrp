@@ -37,7 +37,7 @@
                     <label class="control-label col-sm-3">Family Name:</label>
 
                     <div class="col-sm-9">
-                        <input type="text" name="name" class="form-control input-xs" ng-model="familyDetailView.curFamily.name" required auto-focus/>
+                        <input type="text" name="name" curation-field class="form-control input-xs" ng-model="familyDetailView.curFamily.name" required auto-focus/>
 
                         <p ng-show="family_form.name.$error.required && family_form.name.$dirty" class="help-inline">
                             Family name is required
@@ -48,7 +48,7 @@
                     <label class="control-label col-sm-3">Family Status:</label>
 
                     <div class="col-sm-9">
-                        <select ng-init="familyDetailView.curFamily.family_status_id" class="form-control" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr">
+                        <select curation-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr">
                             <option value="">Select a status</option>
                         </select>
                     </div>
@@ -57,7 +57,7 @@
                     <label class="control-label col-sm-3">Family Type:</label>
 
                     <div class="col-sm-9">
-                        <select ng-init="familyDetailView.curFamily.family_type_id" class="form-control" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr">
+                        <select curation-field ng-init="familyDetailView.curFamily.family_type_id" class="form-control" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr">
                             <option value="">Select a type</option>
                         </select>
 
@@ -167,11 +167,11 @@
                 </div>
                 <div id="buttonBar" class="form-group">
                     <div class="col-sm-offset-3 col-sm-9">
-                        <input type="submit" class="btn btn-success" ng-click="familyDetailView.updateFamily()"
+                        <input type="submit" curation-field class="btn btn-success" ng-click="familyDetailView.updateFamily()"
                                ng-disabled="family_form.$invalid" value="Save" ctrp-click-once>
-                        <input type="reset" class="btn btn-warning" ng-click="familyDetailView.reset()" value="Reset">
-                        <button class="btn btn-default" back-button>Cancel</button>
-                        <button ng-hide="familyDetailView.curFamily.new" class="btn btn-danger"
+                        <input type="reset" curation-field class="btn btn-warning" ng-click="familyDetailView.reset()" value="Reset">
+                        <button curation-field class="btn btn-default" back-button>Cancel</button>
+                        <button ng-hide="familyDetailView.curFamily.new" curation-field class="btn btn-danger"
                                 ng-click="familyDetailView.confirmDelete('sm')">
                             Delete This Family
                         </button>
