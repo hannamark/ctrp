@@ -121,7 +121,7 @@
                         isEmptySearch = false;
                 });
                 if(isEmptySearch) {
-                    $scope.searchWarningMessage = "Atleast one selection value must be entered prior to running the search";
+                    $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                     $scope.warningMessage = ''; //hide the 0 rows message if no search parameter was supplied
                 }else
                     $scope.searchWarningMessage = "";
