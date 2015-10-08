@@ -51,6 +51,7 @@
         vm.addedStatuses = [];
         vm.addedIndIdes = [];
         vm.addedAuthorities = [];
+        vm.addedDocuments = [];
         vm.selectedLoArray = [];
         vm.selectedPiArray = [];
         vm.selectedSponsorArray = [];
@@ -143,6 +144,15 @@
                 });
             }
 
+            if (vm.addedDocuments.length > 0) {
+                vm.curTrial.trial_documents_attributes = [];
+                _.each(vm.addedDocuments, function (document) {
+                    if (document._destroy) {
+                        vm.curTrial.trial_documents_attributes.push(document);
+                    }
+                });
+            }
+
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -197,6 +207,10 @@
             } else if (type == 'authority') {
                 if (index < vm.addedAuthorities.length) {
                     vm.addedAuthorities[index]._destroy = !vm.addedAuthorities[index]._destroy;
+                }
+            } else if (type == 'document') {
+                if (index < vm.addedDocuments.length) {
+                    vm.addedDocuments[index]._destroy = !vm.addedDocuments[index]._destroy;
                 }
             }
         };// toggleSelection
@@ -468,6 +482,7 @@
                 appendStatuses();
                 appendIndIdes();
                 appendAuthorities();
+                appendDocuments();
             }
         }
 
@@ -672,6 +687,18 @@
             }
         }
 
+        function appendDocuments() {
+            for (var i = 0; i < vm.curTrial.trial_documents.length; i++) {
+                var document = {};
+                document.id = vm.curTrial.trial_documents[i].id;
+                document.file_name = vm.curTrial.trial_documents[i].file_name;
+                document.document_type = vm.curTrial.trial_documents[i].document_type;
+                document.document_subtype = vm.curTrial.trial_documents[i].document_subtype;
+                document._destroy = vm.curTrial.trial_documents[i]._destroy;
+                vm.addedDocuments.push(document);
+            }
+        }
+
         // Return true if the option is "Other"
         function findOtherOption(option) {
             if (option.code == 'OTH') {
@@ -737,7 +764,8 @@
                 TrialService.uploadDocument(trialId, 'Informed Consent', '', vm.informed_consent);
             }
             for (var key in vm.other_documents) {
-                TrialService.uploadDocument(trialId, 'Other Document', vm.other_document_subtypes[key], vm.other_documents[key]);
+                var subtype = key in vm.other_document_subtypes ? vm.other_document_subtypes[key] : '';
+                TrialService.uploadDocument(trialId, 'Other Document', subtype, vm.other_documents[key]);
             }
         }
     }
