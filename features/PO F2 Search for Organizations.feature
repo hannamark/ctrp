@@ -187,14 +187,36 @@ And the following fields should be displayed:
 And the result should be sorted by Organization Name
 
 Examples:
-|Organization Name	||Search Alias	||CTRP Organization ID	||Source Context	||Source ID	||Source Status	||Family Name	||Address	||City	||State	||Country	||Phone Nuber	||Email	||Curator Name	||Curator Date	||Result|
-|                 	||No           	||                    	||              	||         	||             	||           	||       	||    	||     	||       	||           	||     	||            	||            	||True - 0 Found|
-|*                	||No		||		      	||              	||		||             	||           	||       	||    	||     	||       	||           	||     	||            	||            	||True|
-|Wake Forest*	  	||No	  	||			||			||		||		||		||		||	||	||		||		||	||		||		||True|
-|Wake*			||Yes		||			||			||		||		||		||		||	||	||		||		||	||		||		||True|
-|			||No		||			||CTEP			||TX035		||		||		||		||	||	||		||		||	||		||		||True|
-|			||No		||			||			||		||		||Dana-Farber*	||		||	||	||		||		||	||		||		||True|
-|			||No		||			||			||		||		||		||		||	||MD	||		||		||	||		||		||True|
-|			||No		||			||			||		||		||		||		||	||	||		||		||	||*Larco	||		||True|
+|Organization Name	||Search Alias	||Source Context	||Source ID	||Source Status	||Family Name	||Address	||City	||State	||Country	||Phone Nuber	||Email	||Curator Name	||Curator Date	||Result|
+|                 	||No           	||              	||         	||             	||           	||       	||    	||     	||       	||           	||     	||            	||            	||At least one selection value must be entered prior to running the search|
+|*                	||No		||              	||		||             	||           	||       	||    	||     	||       	||           	||     	||            	||            	||True|
+|Wake Forest*	  	||No	  	||			||		||		||		||		||	||	||		||		||	||		||		||True|
+|Wake*			||Yes		||			||		||		||		||		||	||	||		||		||	||		||		||True|
+|			||No		||CTEP			||TX035		||		||		||		||	||	||		||		||	||		||		||True|
+|			||No		||			||		||		||Dana-Farber*	||		||	||	||		||		||	||		||		||True|
+|			||No		||			||		||		||		||		||	||MD	||		||		||	||		||		||True|
+|			||No		||			||		||		||		||		||	||	||		||		||	||*Larco	||		||True|
 		
 
+Scenario: As a CTRP Curator, I can select any organization in a search result and display the detailed organization information
+Given I am a CTRP Curator
+And I have performed an organization search
+When I select an organization name in the search results
+Then the complete organization information will be displayed including:
+|CTRP Organization ID|
+|Organization Name|
+|Source Context|
+|Source ID|
+|Source Status|
+|Address 1|
+|Address 2|
+|City|
+|State or Province|
+|Country|
+|Postal Code|
+|Email|
+|Phone Number|
+|Fax Number|
+|Family|
+|Aliases|
+|Merged Organization History: CTRP Organization ID, CTEP Organization ID, Curator Comment, Date|

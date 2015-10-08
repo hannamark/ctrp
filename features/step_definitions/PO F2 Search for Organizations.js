@@ -267,6 +267,7 @@ module.exports = function() {
     this.Given(/^I am logged in to CTRP PO application$/, function (callback) {
         browser.get('ui#/main/sign_in');
         Login.login('ctrpcurator', 'Welcome01');
+        MenuItemList.clickRole('CURATOR');
         //  setTimeout(callback, 5000);
         browser.sleep(250).then(callback);
     });

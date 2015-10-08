@@ -15,6 +15,7 @@
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
         var vm = this;
         vm.name = "tony";
+        vm.addedNameAliases = [];
         vm.numbers = [1, 2, 3];
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
@@ -44,7 +45,19 @@
             } else {
                 vm.curOrg.updated_by = UserService.getLoggedInUsername();
             }
-            OrgService.upsertOrg(vm.curOrg).then(function (response) {
+            // Construct nested attributes
+            if (vm.addedNameAliases.length > 0) {
+                vm.curOrg.name_aliases_attributes = [];
+                _.each(vm.addedNameAliases, function (otherId) {
+                    vm.curOrg.name_aliases_attributes.push(otherId);
+                });
+            }
+            // An outer param wrapper is needed for nested attributes to work
+            var outerOrg = {};
+            outerOrg.new = vm.curOrg.new;
+            outerOrg.id = vm.curOrg.id;
+            outerOrg.organization = vm.curOrg;
+            OrgService.upsertOrg(outerOrg).then(function (response) {
                 if (vm.curOrg.new) {
                     vm.resetForm();
                 } else {
@@ -70,6 +83,26 @@
                 vm.curOrg.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
             });
         };
+      // Add other ID to a temp array
+        vm.addNameAlias= function () {
+            if (vm.alias) {
+                var newId = {};
+                newId.name = vm.alias;
+                newId._destroy = false;
+                vm.addedNameAliases.push(newId);
+                vm.alias=null;
+            } else {
+                alert('Please enter alias');
+            }
+        };
+        // Delete the associations
+        vm.toggleSelection = function (index, type) {
+            if (type == 'other_id') {
+                if (index < vm.addedNameAliases.length) {
+                    vm.addedNameAliases[index]._destroy = !vm.addedNameAliases[index]._destroy;
+                }
+            }
+        };// toggleSelection
 
 
         activate();
@@ -86,9 +119,19 @@
             //prepare the modal window for existing organizations
             if (!vm.curOrg.new) {
                 prepareModal();
+                appendNameAliases();
             }
         }
-
+        // Append associations for existing Trial
+        function appendNameAliases() {
+            for (var i = 0; i < vm.curOrg.name_aliases.length; i++) {
+                var name_alias = {};
+                name_alias.id = vm.curOrg.name_aliases[i].id;
+                name_alias.name = vm.curOrg.name_aliases[i].name;
+                name_alias._destroy = false;
+                vm.addedNameAliases.push(name_alias);
+            }
+        }
 
         /**
          * Listen to the message for availability of states or provinces

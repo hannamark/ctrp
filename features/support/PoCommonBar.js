@@ -126,6 +126,11 @@ var PoCommonBar = function(){
         });
     };
 
+    this.clickRole = function(role){
+       var role =  element(by.css('label[btn-radio="\\\''+ role +'\\\'"]'));
+        menuItem.clickButton(role,"Role");
+    };
+
 };
 
 module.exports = PoCommonBar;

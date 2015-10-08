@@ -1,8 +1,8 @@
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
   ## Please comment the next two lines if you donot want the Authorization checks
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+  #load_and_authorize_resource unless Rails.env.test?
   skip_authorize_resource :only => [:search, :select]
 
   respond_to :html, :json
@@ -169,6 +169,6 @@ class OrganizationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def organization_params
-      params.require(:organization).permit(:source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :source_status_id, :source_context_id, :created_by, :updated_by)
+      params.require(:organization).permit(:source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :source_status_id, :source_context_id, :created_by, :updated_by,name_aliases_attributes: [:id,:organization_id,:name,:_destroy])
     end
 end
