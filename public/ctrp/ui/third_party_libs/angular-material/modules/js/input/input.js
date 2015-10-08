@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.11.2-master-7b91b60
+ * v0.11.2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -420,9 +420,7 @@ function mdMaxlengthDirective($animate) {
     };
 
     function renderCharCount(value) {
-      // Force the value into a string since it may be a number,
-      // which does not have a length property.
-      charCountEl.text(String(element.val() || value || '').length + '/' + maxlength);
+      charCountEl.text(( element.val() || value || '' ).length + '/' + maxlength);
       return value;
     }
   }
