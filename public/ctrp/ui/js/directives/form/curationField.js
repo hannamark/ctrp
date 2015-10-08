@@ -42,22 +42,55 @@
             });
 
             function watchPrivilegeSubRoutine() {
-                var curationEnabled = UserService.getPrivilege() == 'CURATOR' ? true : false;
+                var allowedRoles = attrs.curationField || 'CURATOR'; //default to CURATOR if not set
+                var curPrivilege = UserService.getPrivilege() || '';
+                var curationEnabled = curPrivilege != '' && allowedRoles.indexOf(curPrivilege) > -1;
 
-                if ('date-disabled' in attrs) {
-                    attrs.$set('date_disabled', !curationEnabled);
-                    return;
+                //TODO: handle date picker
+                if (attrs.hasOwnProperty('isOpens')) {
+                    $log.info('found a date picker');
+                    attrs.$set('ng-disabled', curationEnabled);
                 }
 
-                if (curationEnabled == true) {
-                    element.removeAttr('disabled');
+
+                if (curationEnabled === true) {
+                   // if (attrs.hasOwnProperty('ngDisabled') && isButton(element)) {
+                    if (isButton(element)) {
+                        element.show();
+                    } else {
+                        element.removeAttr('disabled');
+                    }
                 } else {
-                    attrs.$set('disabled', 'disabled');
+                    if (isButton(element)) {
+                        element.hide();
+                    } else {
+                        attrs.$set('disabled', 'disabled');
+                    }
                 }
                // $compile(element.contents())(scope);
             }
 
         } //link
+
+
+        /**
+         * check if the element is a button
+         * @param ele
+         * @returns {boolean}
+         */
+        function isButton(ele) {
+            if (ele && ele[0].outerHTML) {
+                var buttonProperties = ['button', 'btn', 'submit', 'reset'];
+
+                for (var i = 0; i < buttonProperties.length; i++) {
+                    if (ele[0].outerHTML.indexOf(buttonProperties[i]) > -1) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
 
 
 
