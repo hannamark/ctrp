@@ -4,6 +4,7 @@ class SourceStatusesController < ApplicationController
   # GET /source_statuses
   # GET /source_statuses.json
   def index
+    Rails.logger.debug " request = #{request.env.pretty_print_inspect}"
     Rails.logger.debug " HTTP_CURRENT_PRIVILEGE = #{request.env["HTTP_CURRENT_PRIVILEGE"]}"
     current_privilege = request.env["HTTP_CURRENT_PRIVILEGE"]
     #TODO need to use constant for CURATOR
