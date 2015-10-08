@@ -80,12 +80,12 @@
 
                         <td class="col-md-7">
                             <div>
-                                <input type="text" class="form-control input-xs" id="alias" ng-model="orgDetailView.alias" />
+                                <input type="text" curation-field class="form-control input-xs" id="alias" ng-model="orgDetailView.alias" />
                             </div>
                         </td>
                         <td class="col-md-1">
                             <div>
-                                <button class="btn btn-primary" ng-click="orgDetailView.addNameAlias()">
+                                <button class="btn btn-primary" curation-field  ng-click="orgDetailView.addNameAlias()">
                                     <i class="glyphicon glyphicon-plus"></i> Add
                                 </button>
                             </div>
@@ -102,7 +102,7 @@
                     <tr ng-repeat="nameAlias in orgDetailView.addedNameAliases track by $index" ng-class="nameAlias._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                         <td class="col-md-7">{{nameAlias.name}}</td>
                         <td class="col-md-1" style="vertical-align: middle">
-                            <label class="btn btn-default" ng-click="orgDetailView.toggleSelection($index, 'other_id')">
+                            <label class="btn btn-default" curation-field ng-click="orgDetailView.toggleSelection($index, 'other_id')">
                                 <i ng-class="nameAlias._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                             </label>
                         </td>
