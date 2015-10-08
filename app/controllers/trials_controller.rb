@@ -114,6 +114,7 @@ class TrialsController < ApplicationController
                                     trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id, :_destroy],
                                     ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
                                                           :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
-                                    oversight_authorities_attributes: [:id, :country, :organization, :_destroy])
+                                    oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
+                                    trial_documents_attributes: [:id, :_destroy])
     end
 end

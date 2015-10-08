@@ -113,12 +113,13 @@
         function upsertTrial(trialObj) {
             if (trialObj.new) {
                 //create a new trial
-                $log.info('creating an trial: ' + JSON.stringify(trialObj));
+                $log.info('creating a trial: ' + JSON.stringify(trialObj));
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_LIST, trialObj);
             }
 
             //update an existing trial
             var configObj = {}; //empty config
+            $log.info('updating a trial: ' + JSON.stringify(trialObj));
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_TRIAL + trialObj.id + ".json", trialObj, configObj);
         } //upsertTrial
 
