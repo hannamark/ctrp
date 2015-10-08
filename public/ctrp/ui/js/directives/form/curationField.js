@@ -2,6 +2,13 @@
  * ***********************************************************************
  * For annotating fields in a form for curation.                         *
  * This directive listens to the privilege changes sent from $rootScope* *
+ *                                                                       *
+ * You can configure what user role can curate the field by setting the  *
+ * user roles/privileges at the directive. For example:                  *
+ *                                                                       *
+ * curation-field=" 'CURATOR1, CURATOR2, ADMIN' "                        *
+ * (if not set, default to 'CURATOR')                                    *
+ *                                                                       *
  * ***********************************************************************
  *
  * Created by wangg5 on 10/7/15.
@@ -47,7 +54,7 @@
                 var curationEnabled = curPrivilege != '' && allowedRoles.indexOf(curPrivilege) > -1;
 
                 //TODO: handle date picker
-                if (attrs.hasOwnProperty('isOpens')) {
+                if (attrs.hasOwnProperty('isOpen')) {
                     $log.info('found a date picker');
                     attrs.$set('ng-disabled', curationEnabled);
                 }
