@@ -13,9 +13,6 @@
     function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload) {
 
         var initTrialSearchParams = {
-            lead_protocol_id: "",
-            official_title: "",
-
             //for pagination and sorting
             sort: "",
             order: "",
