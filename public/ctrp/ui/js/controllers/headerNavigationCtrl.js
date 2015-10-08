@@ -27,6 +27,10 @@
 
         vm.logOut = function() {
             vm.signedIn = false;
+            vm.username = '';
+            vm.userRole = '';
+            vm.userPrivileges = [];
+            vm.userPrivilege = '';
             UserService.logout();
         }; //logOut
 
@@ -53,11 +57,7 @@
             });
 
             $scope.$on('loggedOut', function() {
-                vm.signedIn = false;
-                vm.username = '';
-                vm.userRole = '';
-                vm.userPrivileges = [];
-                vm.userPrivilege = '';
+
             });
         } //listenToLoginEvent
 
