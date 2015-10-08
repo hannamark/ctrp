@@ -27,7 +27,8 @@
         'toggle-switch',
         'TimeoutModule',
         'ngFileUpload',
-        'angularMoment'
+        'angularMoment',
+        'ngMaterial'
     ])
         .config(function($provide) {
             $provide.decorator('$state', function($delegate, $rootScope) {
