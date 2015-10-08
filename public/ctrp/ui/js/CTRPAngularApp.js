@@ -303,10 +303,8 @@
                             deferred.resolve(null);
                             return deferred.promise;
                         },
-                        familyRelationshipObj : function($q) {
-                            var deferred = $q.defer();
-                            deferred.resolve(null);
-                            return deferred.promise;
+                        familyRelationshipObj : function(FamilyService) {
+                            return FamilyService.getFamilyRelationships();
                         }
                     },
                     ncyBreadcrumb: {
