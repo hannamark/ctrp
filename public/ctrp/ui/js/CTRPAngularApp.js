@@ -9,6 +9,7 @@
         'ui.router',
         'ngTouch',
         'ngSanitize',
+        'ngMaterial',
         'Constants',
         'CommonTools',
         'PromiseTimeoutModule',
@@ -27,8 +28,7 @@
         'toggle-switch',
         'TimeoutModule',
         'ngFileUpload',
-        'angularMoment',
-        'ngMaterial'
+        'angularMoment'
     ])
         .config(function($provide) {
             $provide.decorator('$state', function($delegate, $rootScope) {
