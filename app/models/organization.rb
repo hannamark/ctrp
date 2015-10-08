@@ -238,7 +238,7 @@ class Organization < ActiveRecord::Base
   }
 
   scope :sort_by_col, -> (column, order) {
-    if column == 'id'
+    if Organization.columns_hash[column] && Organization.columns_hash[column].type == :integer
       order("#{column} #{order}")
     elsif column == 'source_context'
       joins("LEFT JOIN source_contexts ON source_contexts.id = organizations.source_context_id").order("source_contexts.name #{order}").group(:'source_contexts.name')
