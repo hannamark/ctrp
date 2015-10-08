@@ -27,6 +27,10 @@
 
         vm.logOut = function() {
             vm.signedIn = false;
+            vm.username = '';
+            vm.userRole = '';
+            vm.userPrivileges = [];
+            vm.userPrivilege = '';
             UserService.logout();
         }; //logOut
 
@@ -49,13 +53,11 @@
                 vm.username = UserService.getLoggedInUsername();
                 vm.userRole = UserService.getUserRole().split("_")[1].toLowerCase();
                 vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
+                vm.userPrivilege = UserService.getPrivilege();
             });
 
             $scope.$on('loggedOut', function() {
-                vm.signedIn = false;
-                vm.username = '';
-                vm.userRole = '';
-                vm.userPrivileges = [];
+
             });
         } //listenToLoginEvent
 

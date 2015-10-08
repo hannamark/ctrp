@@ -22,10 +22,16 @@
             config.timeout = 15000; //15 seconds timeout
             //var token = AuthTokenService.getToken();
             var token = LocalCacheService.getCacheWithKey("token"); //$window.localStorage.token;
-           // console.log("Printing token")
-           // console.log(token)
+            //console.log("Printing token");
+            //console.log(token);
+            var current_privilege = LocalCacheService.getCacheWithKey("current_privilege"); //$window.localStorage.current_privilege;
+            //console.log("Printing current_privilege");
+            //console.log(current_privilege);
             if (token) {
                 config.headers.Authorization = token;
+            }
+            if (current_privilege) {
+                config.headers["current_privilege"] = current_privilege;
             }
             return config;
         } //request
