@@ -70,9 +70,9 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:lead_protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org] || params[:study_source]
+    if params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org] || params[:study_source]
       @trials = Trial.all
-      @trials = @trials.matches_wc('lead_protocol_id', params[:lead_protocol_id]) if params[:lead_protocol_id].present?
+      @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
       @trials = @trials.with_phase(params[:phase]) if params[:phase].present?
       @trials = @trials.with_purpose(params[:purpose]) if params[:purpose].present?
