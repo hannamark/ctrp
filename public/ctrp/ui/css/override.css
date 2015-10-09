@@ -426,3 +426,21 @@ h4, .panel-title {
     border-top: 1px solid #d4d4d4;
     background: #f4f4f4;
 }
+
+.ui-grid-row .ui-grid-cell, .ui-grid-row:last-child .ui-grid-cell {
+    border-bottom: 1px solid #EEE;
+    border-bottom-width: 1px !important; /* Remove '!important' once known CSS bug in angulur ui grid is fixed */
+}
+
+.ui-grid-row:nth-child(odd):hover .ui-grid-cell, .ui-grid-row:nth-child(even):hover .ui-grid-cell {
+    background:#2A71A5;
+    color: #FFF;
+}
+
+.ui-grid-row:nth-child(odd):hover .ui-grid-cell .ui-grid-cell-contents a, .ui-grid-row:nth-child(even):hover .ui-grid-cell .ui-grid-cell-contents a {
+    color: #FFF;
+}
+
+.form-text {
+    padding-top: 7px;
+}

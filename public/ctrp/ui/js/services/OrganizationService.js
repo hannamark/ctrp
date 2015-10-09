@@ -54,7 +54,6 @@
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
-            enableHorizontalScrollbar: 2,
             columnDefs: [
                 {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '6%',
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
@@ -77,7 +76,7 @@
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
                 {name: 'country', displayName: 'Country', enableSorting: true, width:'9%'},
-                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'6%'},
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'8%'},
                 {name: 'phone', enableSorting: true, width: '10%'},
                 {name: 'email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
