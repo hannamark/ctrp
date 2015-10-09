@@ -9,6 +9,7 @@
         'ui.router',
         'ngTouch',
         'ngSanitize',
+        'ngMaterial',
         'Constants',
         'CommonTools',
         'PromiseTimeoutModule',

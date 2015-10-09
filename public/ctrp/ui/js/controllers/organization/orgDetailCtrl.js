@@ -14,7 +14,7 @@
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
         var vm = this;
-        vm.name = "tony";
+        vm.selectedContextIndex = 0; //for tab-view
         vm.addedNameAliases = [];
         vm.numbers = [1, 2, 3];
         vm.states = [];
