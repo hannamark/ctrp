@@ -33,8 +33,9 @@
         .config(function($provide) {
             $provide.decorator('$state', function($delegate, $rootScope) {
                $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-                   $delegate.next = toState;
+                   $delegate.fromParams = fromParams;
                    $delegate.fromState = fromState;
+                   //$delegate.current = toState;
                });
                 return $delegate;
             });
