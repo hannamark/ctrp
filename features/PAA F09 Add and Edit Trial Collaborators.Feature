@@ -7,26 +7,23 @@ And I am on the Trial Collaborators screen
 And I have selected organization look-up
 When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, Org, IRB) are displayed
 Then I can select an organization from the list or search for an organization
-And the selected organization will be associated to the trail as a Trial Collaborators
+And the selected organization will be associated to the trail as a Trial Collaborator
 And the system will list 
 |CTRP Organization ID|
 |Collaborator Name|
-|Funding Source| 
 And the organizations will be displyed orderd assending alphanumeric by Collaborator Name
 
-Scenario: #2 I can Edit a Collaborator for a Trial
+
+Scenario: #2 I can edit a Collaborator for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Collaborators screen
-When I have selected a collaborator 
-Then I can select a functional role for the collaborator from the list:
-|Funding Source|
-|Agent Source| 
-|Laboratory|
-Then the collaborator and the functional role will be associated with the trial along with the collaborator status and CTRP Organization ID
+And the list of collaborators is displayed
+Then I can edit the name of a collaborator that does not have a CTRP organization ID
 And the system will list 
 |CTRP Organization ID|
 |Collaborator Name|
-|Funding Source| 
+And the organizations will be displyed orderd assending alphanumeric by Collaborator Name
+
 
 Scenario: #3 I can Delete one or more Collaborator for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
