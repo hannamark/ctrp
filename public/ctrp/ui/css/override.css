@@ -444,3 +444,9 @@ h4, .panel-title {
 .form-text {
     padding-top: 7px;
 }
+
+/* For datepicker widget */
+.btn-calendar {
+    padding-top: .12em;
+    padding-bottom: .12em;
+}
