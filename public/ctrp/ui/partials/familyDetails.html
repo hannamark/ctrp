@@ -71,7 +71,8 @@
                         <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="familyDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
 
                         <div class="row animated-item" ng-show="familyDetailView.savedSelection.length > 0">
-                            <br /><input type="text" ng-model="familyDetailView.selectedOrgFilter" class="form-control input-sm" placeholder="Filter selected organizations"/>
+                            <br /><input type="text" ng-model="familyDetailView.selectedOrgFilter" curation-field class="form-control input-sm" placeholder="Filter selected organizations"/>
+
                             <table class="table table-bordered table-striped table-condensed">
                                 <thead>
                                 <th><nobr>CTRP ID</nobr></th>
@@ -82,8 +83,7 @@
                                 <th></th>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="org in familyDetailView.savedSelection | filter: {'name': familyDetailView.selectedOrgFilter} track by $index"
-                                    ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                <tr ng-repeat="org in familyDetailView.savedSelection | filter: {'name': familyDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                     <td>{{org.id}}</td>
                                     <td><a ng-href="/ctrp/ui#main/organizations/{{org.id}}">{{org.name}}</a></td>
                                     <td>
@@ -94,13 +94,13 @@
 
                                             <option ng-repeat="relation in familyDetailView.familyRelationshipArr" value="{{relation.id}}" ng-selected="org.family_relationship_id == relation.id">{{relation.name}}</option>
                                         </select>-->
-                                        <select ng-init="org.family_relationship_id" class="form-control" id="org.family_relationship" ng-model="org.family_relationship_id" ng-options="relation.id as relation.name for relation in familyDetailView.familyRelationshipArr">
+                                        <select ng-init="org.family_relationship_id" class="form-control input-sm" id="org.family_relationship" ng-model="org.family_relationship_id" ng-options="relation.id as relation.name for relation in familyDetailView.familyRelationshipArr">
                                             <option value="">Select a relationship</option>
                                         </select>
                                     </td>
                                     <td>
                                         <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                            <input type="text" class="form-control"
+                                            <input type="text" class="form-control input-sm"
                                                    datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.effective_date" is-open="org.opened_effective"
                                                    is-open="opened" datepicker-options="familyDetailView.dateOptions"
@@ -114,7 +114,7 @@
                                     </td>
                                     <td>
                                         <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                            <input type="text" class="form-control"
+                                            <input type="text" class="form-control input-sm"
                                                    datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                    is-open="opened" datepicker-options="familyDetailView.dateOptions"
@@ -134,7 +134,6 @@
                                 </tr>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>

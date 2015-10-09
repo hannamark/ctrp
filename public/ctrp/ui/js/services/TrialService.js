@@ -13,9 +13,6 @@
     function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload) {
 
         var initTrialSearchParams = {
-            lead_protocol_id: "",
-            official_title: "",
-
             //for pagination and sorting
             sort: "",
             order: "",
@@ -113,12 +110,13 @@
         function upsertTrial(trialObj) {
             if (trialObj.new) {
                 //create a new trial
-                $log.info('creating an trial: ' + JSON.stringify(trialObj));
+                $log.info('creating a trial: ' + JSON.stringify(trialObj));
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_LIST, trialObj);
             }
 
             //update an existing trial
             var configObj = {}; //empty config
+            $log.info('updating a trial: ' + JSON.stringify(trialObj));
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_TRIAL + trialObj.id + ".json", trialObj, configObj);
         } //upsertTrial
 

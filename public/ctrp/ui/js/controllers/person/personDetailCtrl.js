@@ -150,6 +150,9 @@
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
             }
+            if(!vm.curPerson.new) {
+                prepareModal();
+            }
         }
 
 
@@ -214,7 +217,29 @@
             async.eachSeries(vm.curPerson.po_affiliations, findOrgName, retOrgs);
         } //populatePoAffiliations
 
+        function prepareModal() {
+            vm.confirmDelete = function (size) {
+                var modalInstance = $modal.open({
+                    animation: true,
+                    templateUrl: 'delete_confirm_template.html',
+                    controller: 'ModalInstancePersonCtrl as vm',
+                    size: size,
+                    resolve: {
+                        personId: function () {
+                            return vm.curPerson.id;
+                        }
+                    }
+                });
 
+                modalInstance.result.then(function (selectedItem) {
+                    console.log("about to delete the personDetail " + vm.curPerson.id);
+                    $state.go('main.people');
+                }, function () {
+                    console.log("operation canceled")
+                });
+
+            } //prepareModal
+        }; //confirmDelete
 
     }
 

@@ -1,4 +1,4 @@
-<form class="form-horizontal" role="form">
+<form class="form form-horizontal" role="form">
     <div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
         <div class="alert alert-warning fade in">
             <a href="" class="close" data-dismiss="alert">&times;</a>
@@ -185,14 +185,13 @@
                 <strong>{{warningMessage}}</strong>
             </div>
         </div> <br />
-            <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
+        <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
             <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
             <!--<div  ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
                  ui-grid-auto-resize></div> -->
 
             <!--<div ng-if="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize-->
             <!--style="height: {{gridHeight}}"></div>-->
-            </div>
         </div>
     </div>
 </div>

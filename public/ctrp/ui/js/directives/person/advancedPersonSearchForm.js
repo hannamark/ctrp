@@ -567,6 +567,7 @@
                 $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
                    // console.log('privilege: ' + userPrivilege);
                     watchPrivilegeSubRoutine();
+                    getPromisedData();
                 });
             }
 

@@ -49,6 +49,8 @@ class Organization < ActiveRecord::Base
   has_many :sponsor_trials, foreign_key: :sponsor_id, class_name: "Trial"
   has_many :inv_aff_trials, foreign_key: :investigator_aff_id, class_name: "Trial"
 
+  accepts_nested_attributes_for :name_aliases, allow_destroy: true
+
   validates :name, presence: true
 
   before_destroy :check_for_family
@@ -236,7 +238,7 @@ class Organization < ActiveRecord::Base
   }
 
   scope :sort_by_col, -> (column, order) {
-    if column == 'id'
+    if Organization.columns_hash[column] && Organization.columns_hash[column].type == :integer
       order("#{column} #{order}")
     elsif column == 'source_context'
       joins("LEFT JOIN source_contexts ON source_contexts.id = organizations.source_context_id").order("source_contexts.name #{order}").group(:'source_contexts.name')
