@@ -22,7 +22,10 @@
         vm.userPrivilege = UserService.getPrivilege(); //'READONLY'; //default
         vm.warning = null;
         vm.timedout = null;
-        $scope.uiRouterState = $state;
+        //vm.uiRouterState = $state;
+        vm.currrentState = $state;
+        vm.navbarIsActive = navbarIsActive;
+
 
 
         vm.logOut = function() {
@@ -44,6 +47,7 @@
             listenToLoginEvent();
             watchForInactivity();
             watchUserPrivilegeSelection();
+            watchStateName();
         }
 
 
@@ -156,6 +160,29 @@
                 UserService.setUserPrivilege(newVal);
                 $rootScope.$broadcast(MESSAGES.PRIVILEGE_CHANGED);
                 $scope.$emit(MESSAGES.PRIVILEGE_CHANGED);
+            }, true);
+        }
+
+
+        /**
+         * Highlight the navbar according to the current state name
+         * @param stateNames
+         * @returns {boolean}
+         */
+        function navbarIsActive(stateNames) {
+            return stateNames.indexOf(vm.currrentState.current.name) > -1;
+        }
+
+
+        /**
+         * watch current state name
+         */
+        function watchStateName() {
+            $scope.$watch(function() {return vm.currrentState.current.name;},
+                function(newVal, oldVal) {
+                if (newVal !== oldVal) {
+                  //  console.log('current state name: ' + vm.currrentState.current.name);
+                }
             }, true);
         }
 
