@@ -70,9 +70,14 @@
                     '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
+                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, width: '8%'},
                 {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '8%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
+                {name: 'aff_families_count', displayName: 'Family', enableSorting: true, width: '8%'},
+                  {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
+                    cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" class="btn btn-default">Family</button>',
+                },
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
                 {name: 'country', displayName: 'Country', enableSorting: true, width:'9%'},
