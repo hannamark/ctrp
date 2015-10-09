@@ -148,11 +148,12 @@
          * @returns Array of JSON objects
          */
         this.searchUsers = function (searchParams) {
-            toastr.success('Success', 'Successful in UserService, searchUsers');
+            //toastr.success('Success', 'Successful in UserService, searchUsers');
              console.log('User searchparams: ' + JSON.stringify(searchParams));
-            if (!!searchParams) {
-                return PromiseService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
-            }
+           // if (!!searchParams) {
+               // toastr.success('Success', 'Successful in UserService, searchUsers');
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+           // }
         } //searchUsers
 
         /**
@@ -160,14 +161,12 @@
          * @return initUserSearchParams
          */
         this.getInitialUserSearchParams = function () {
-            toastr.success('Success', 'Successful in UserService, getInitialUserSearchParams');
             return initUserSearchParams;
         } //getInitialUserSearchParams
 
 
 
         this.getGridOptions = function () {
-            toastr.success('Success', 'Successful in UserService, getGridOptions');
             return gridOptions;
         }
 
