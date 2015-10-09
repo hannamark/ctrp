@@ -166,14 +166,11 @@
 
         /**
          * Highlight the navbar according to the current state name
-         * @param stateNamesArr
+         * @param stateNames
          * @returns {boolean}
          */
-        function navbarIsActive(stateNamesArr) {
-            if (stateNamesArr.indexOf(vm.currrentState.current.name) > -1) {
-                return true;
-            }
-            return false;
+        function navbarIsActive(stateNames) {
+            return stateNames.indexOf(vm.currrentState.current.name) > -1;
         }
 
 
