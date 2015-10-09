@@ -32,12 +32,6 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
         browser.ignoreSynchronization = true;
     },*/
 
-    jasmineNodeOpts: {
-        onComplete: null,
-        isVerbose: true,
-        showColors: true,
-        includeStackTrace: true
-    },
 
     allScriptsTimeout: 50000,
     getPageTimeout: 50000,
@@ -47,7 +41,6 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
     specs: [
     //    'features/PO\ F2\ Search\ for\ Organizations.feature'
     //    'features/PO\ F3\ Create\ an\ Organization.feature'
-<<<<<<< HEAD
     //    'features/PO\ F4\ Edit\ Organization\ Information.feature'
           'features/PO\ F5\ Delete\ Organization.feature'
     //    'features/PO\ F6\ Curator\ review\ of\ a\ Pending\ Organization.feature'
@@ -60,18 +53,15 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
     //    'features/PO\ F7\ Edit\ Organization\ Family \Name.feature'
     //  'features/*.feature'
     //   'features/test.feature'
-
-=======
      //   'features/PO\ F4\ Edit\ Organization\ Information.feature'
-    //   'features/PO\ F9\ Search\ for\ Persons.feature'
-    //    'features/PO\ F10\ Create\ a\ Person\ Record.feature'
-   //     'features/PO\ F11\ Edit\ Person\ Information.feature'
-        'features/PO\ F7\ Create\ Organization\ Family \Name.feature',
-        'features/PO\ F7\ Edit\ Organization\ Family \Name.feature',
-        'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
-//  'features/*.feature'
+     //   'features/PO\ F9\ Search\ for\ Persons.feature'
+     //    'features/PO\ F10\ Create\ a\ Person\ Record.feature'
+     //     'features/PO\ F11\ Edit\ Person\ Information.feature'
+     //   'features/PO\ F7\ Create\ Organization\ Family \Name.feature',
+     // 'features/PO\ F7\ Edit\ Organization\ Family \Name.feature',
+     //  'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
+     //  'features/*.feature'
      //   'features/test.feature'
->>>>>>> 4af9fe062938e3e7ffd367b40ff95683ab59d0b4
     ],
 
     jasmineNodeOpts: {
@@ -79,17 +69,15 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
     },
 
     cucumberOpts: {
-     //   require: ['features/step_definitions/*.js', 'features/support/*.js'],
-      //  format: 'json'
-<<<<<<< HEAD
+
+        require: ['features/step_definitions/*.js', 'features/support/*.js'],
+        format: 'json',
         format: 'pretty',
-       // tags: '@runthis'
-=======
-        format: 'pretty'
-   //    tags: '@runthis'
->>>>>>> 4af9fe062938e3e7ffd367b40ff95683ab59d0b4
+      //  tags: '@runthis'
+      //    format: 'pretty'
+      //    tags: '@runthis'
        /*     "@runThat",
-            "~@ignoreThis"]*/// or summary
+              "~@ignoreThis"]*/// or summary
     },
 
     resultJsonOutputFile: 'test/reports/cuke-report.json'
