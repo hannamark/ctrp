@@ -148,14 +148,8 @@
                                         <select curation-field class="form-control input-sm" id="country"
                                                 ng-model="orgDetailView.curOrg.country"
                                                 ng-change="orgDetailView.watchCountrySelection(orgDetailView.curOrg.country)">
-                                            <option value="" ng-selected="orgDetailView.curOrg.country == ''">Select a
-                                                country
-                                            </option>
-                                            <option ng-repeat="country in orgDetailView.countriesArr track by $index"
-                                                    value="{{country.name}}"
-                                                    ng-selected="orgDetailView.curOrg.country == country.name">
-                                                {{country.name}}
-                                            </option>
+                                            <option value="" ng-selected="orgDetailView.curOrg.country == ''">Select a country</option>
+                                            <option ng-repeat="country in orgDetailView.countriesArr track by $index" value="{{country.name}}" ng-selected="orgDetailView.curOrg.country == country.name">{{country.name}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -164,14 +158,8 @@
                                     <label class="control-label col-xs-12 col-sm-3">State:</label>
                                     <div class="col-sm-6">
                                         <select curation-field class="form-control input-sm" id="state" ng-model="orgDetailView.curOrg.state_province">
-                                            <option value="" ng-selected="orgDetailView.curOrg.state_province == ''">
-                                                Select a state or province
-                                            </option>
-                                            <option ng-repeat="state in orgDetailView.states track by $index"
-                                                    value="{{state.name}}"
-                                                    ng-selected="state.name==orgDetailView.curOrg.state_province">
-                                                {{state.name}}
-                                            </option>
+                                            <option value="" ng-selected="orgDetailView.curOrg.state_province == ''">Select a state or province</option>
+                                            <option ng-repeat="state in orgDetailView.states track by $index" value="{{state.name}}" ng-selected="state.name==orgDetailView.curOrg.state_province">{{state.name}}</option>
                                         </select>
                                     </div>
                                 </div>
