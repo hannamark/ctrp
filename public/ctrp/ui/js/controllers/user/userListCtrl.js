@@ -9,13 +9,13 @@
         .controller('userListCtrl', userListCtrl);
 
     userListCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$sce',
-        '$state', '$timeout', 'LocalCacheService', 'UserService'];
+        '$state', '$timeout', 'LocalCacheService', 'UserService', 'uiGridConstants', '$location'];
 
     function userListCtrl($scope, $http, $window, toastr, $state, $sce,
-                      $timeout, LocalCacheService, UserService) {
+                      $timeout, LocalCacheService, UserService, uiGridConstants, $location) {
         var vm = this;
 
-        toastr.success('Success', 'In userListCtrl');
+        //toastr.success('Success', 'In userListCtrl');
         vm.searchParams = UserService.getInitialUserSearchParams();
         vm.gridScope = vm;
 
@@ -34,16 +34,17 @@
         }; //gridOptions
 
         vm.searchUsers = function () {
-            toastr.success('Success', 'In userListCtrl, searchUsers');
+            //toastr.success('Success', 'In userListCtrl, searchUsers');
             // vm.searchParams.name = vm.searchParams.name || "*";
             //console.log("searching params: " + JSON.stringify(vm.searchParams));
             UserService.searchUsers(vm.searchParams).then(function (data) {
-                console.log("received search results: " + JSON.stringify(data.data));
-                vm.gridOptions.data = data.data.users; //prepareGridData(data.data.orgs); //data.data.orgs;
+                //toastr.success('Success', 'In userListCtrl, UserService.searchUsers');
+                console.log("received search results data: " + JSON.stringify(data));
+                vm.gridOptions.data = data["users"]; //prepareGridData(data.data.orgs); //data.data.orgs;
 
                 //console.log("vm grid: " + JSON.stringify(vm.gridOptions.data));
                 //console.log("received search results: " + JSON.stringify(data.data));
-                vm.gridOptions.totalItems = data.data.total;
+                vm.gridOptions.totalItems =  data["users"].total;
 
                 $location.hash('users_search_results');
                 $anchorScroll();

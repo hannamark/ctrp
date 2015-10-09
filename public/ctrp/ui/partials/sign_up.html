@@ -1,77 +1,69 @@
 <div class="container">
     <div class="row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-6">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <div class="panel-title text-center">SignUp Form</div>
+                        <div class="panel-title">SignUp Form</div>
                     </div>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" name="signup_form" autocomplete="off" novalidate>
-                            <div class="form-group col-md-12">
+                            <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="glyphicon glyphicon-user"></i>
                                     </span>
-                                    <input class="form-control" type="text" ng-model="userView.userObj.local_user.username"
-                                           placeholder="Username" required>
+                                    <input class="form-control input-sm" type="text" ng-model="userView.userObj.local_user.username" placeholder="Username" required>
                                 </div>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="glyphicon glyphicon-lock"></i>
                                     </span>
-                                    <input type="email" class="form-control"
-                                           ng-model="userView.userObj.local_user.email"
-                                           placeholder="Email" required>
+                                    <input type="password" class="form-control input-sm" ng-model="userView.userObj.local_user.password" autocomplete="off" placeholder="Password" required>
                                 </div>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="glyphicon glyphicon-lock"></i>
                                     </span>
-                                    <input type="password" class="form-control"
-                                           ng-model="userView.userObj.local_user.password" autocomplete="off"
-                                           placeholder="Password" required>
+                                    <input type="password" class="form-control input-sm" ng-model="userView.userObj.local_user.password_confirmation" placeholder="Password Confirmation" required>
                                 </div>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="glyphicon glyphicon-lock"></i>
                                     </span>
-                                    <input type="password" class="form-control"
-                                           ng-model="userView.userObj.local_user.password_confirmation"
-                                           placeholder="Password Confirmation" required>
+                                    <input type="role" class="form-control input-sm" ng-model="userView.userObj.local_user.role" placeholder="Role" required>
                                 </div>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-lock"></i>
+                                        <i class="glyphicon glyphicon-envelope"></i>
                                     </span>
-                                    <input type="role" class="form-control"
-                                           ng-model="userView.userObj.local_user.role"
-                                           placeholder="Role" required>
+                                    <input type="email" class="form-control input-sm" ng-model="userView.userObj.local_user.email" placeholder="Email" required>
                                 </div>
                             </div>
-                            <div id="buttonBar" class="form-group col-sm-12">
-                                <div class="col-sm-offset-3 col-sm-9">
-                                    <input type="submit" class="btn btn-success" ng-click="userView.updateUser()"
-                                           value="Save" ng-disabled="signup_form.$invalid" ctrp-click-once>
-                                    <input type="reset" class="btn btn-warning" value="Reset" ng-click="userView.reset()">
-                                    <button class="btn btn-default" back-button>Cancel</button>
+                            <div id="buttonBar" class="form-group">
+                                <div class="btn-toolbar">
+                                    <button class="btn btn-primary pull-right" ng-click="userView.updateUser()" ng-disabled="signup_form.$invalid" ctrp-click-once>
+                                        Save
+                                    </button>
+                                    <button class="btn btn-warning pull-right" ng-click="userView.reset()">
+                                        <i class="glyphicon glyphicon-remove"></i> Clear
+                                    </button>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-3"></div>
+        <div class="col-xs-4"></div>
     </div>
 </div>

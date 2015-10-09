@@ -44,7 +44,7 @@
         var gridOptions = {
             enableColumnResizing: true,
             totalItems: null,
-            rowHeight: 50,
+            rowHeight: 22,
             // enableFullRowSelection: true,
             enableSelectAll: false,
             //enableRowSelection: false,
@@ -61,7 +61,7 @@
                 },
                 {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '8%'},
                 {
-                    name: 'name', enableSorting: true, width: '30%',
+                    name: 'name', enableSorting: true, width: '25%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                  //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -72,7 +72,7 @@
                 },
                 {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, width: '8%'},
                 {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '8%'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
                 {name: 'aff_families_count', displayName: 'Family', enableSorting: true, width: '8%'},
                   {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
@@ -81,8 +81,8 @@
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
                 {name: 'country', displayName: 'Country', enableSorting: true, width:'9%'},
-                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'6%'},
-                {name: 'phone', enableSorting: true, width: '8%'},
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'8%'},
+                {name: 'phone', enableSorting: true, width: '10%'},
                 {name: 'email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
