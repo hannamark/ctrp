@@ -390,7 +390,7 @@
                     vm.curTrial.investigator_title = 'Principal Investigator';
                     // Copy the value from PI and Sponsor
                     vm.selectedInvArray = vm.selectedPiArray;
-                    vm.selectedIaArray = vm.selectedSponsorArray;
+                    vm.selectedIaArray = vm.selectedLoArray;
                 } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
                     vm.showInvestigator = true;
                     vm.showInvSearchBtn = true;
