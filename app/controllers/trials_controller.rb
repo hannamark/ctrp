@@ -70,9 +70,9 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:lead_protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org] || params[:study_source]
+    if params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org] || params[:study_source]
       @trials = Trial.all
-      @trials = @trials.matches_wc('lead_protocol_id', params[:lead_protocol_id]) if params[:lead_protocol_id].present?
+      @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
       @trials = @trials.with_phase(params[:phase]) if params[:phase].present?
       @trials = @trials.with_purpose(params[:purpose]) if params[:purpose].present?
@@ -114,6 +114,7 @@ class TrialsController < ApplicationController
                                     trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id, :_destroy],
                                     ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
                                                           :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
-                                    oversight_authorities_attributes: [:id, :country, :organization, :_destroy])
+                                    oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
+                                    trial_documents_attributes: [:id, :_destroy])
     end
 end

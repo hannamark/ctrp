@@ -193,12 +193,20 @@ module.exports = function() {
 
     this.Given(/^I have selected the option to search for a family shilpi$/, function (callback) {
         menuItemList.clickOrganizations();
-        menuItemList.clickListFamily();
-        browser.sleep(250).then(callback);
+    //    menuItemList.clickListFamily();
+        menuItemList.clickAddFamily();
+   //     clickRole = function(role) {
+     //       element(by.css('label[btn-radio="\\\''+ role +'\\\'"]')).click();
+       // }
+        //clickRole('CURATOR');
+        menuItemList.clickRole('CURATOR');
+    //    By.cssSelector("label[btn-radio=\"\\' CURATOR \\'\"]")
+      //  element(by.css('label[btn-radio="\\\'CURATOR\\\'"]')).click();
+        browser.sleep(5000).then(callback);
     });
 
     this.When(/^I provide search item$/, function (callback) {
-        searchFamily.setFamilyName('*');
+      /*  searchFamily.setFamilyName('*');
         searchFamily.clickSearchButton();
         var getTableValues = function(tableSelector, columnSelector, colNames) {
             return element.all(by.css(tableSelector)).map(function(row, index) {
@@ -214,7 +222,7 @@ module.exports = function() {
             });
         };
         var tableDataPromise = getTableValues('.ui-grid-render-container.ui-grid-render-container-body', '.ngCellText .ng-binding', ["Family Name", "balance", "creditLimit"]);
-        tableDataPromise.then(function(){console.log('This is the table value' + tableDataPromise);});
+        tableDataPromise.then(function(){console.log('This is the table value' + tableDataPromise);});*/
         browser.sleep(250).then(callback);
     });
 //element.all(by.css('.ui-grid-viewport'))

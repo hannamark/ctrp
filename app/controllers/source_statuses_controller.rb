@@ -4,15 +4,16 @@ class SourceStatusesController < ApplicationController
   # GET /source_statuses
   # GET /source_statuses.json
   def index
+    #Rails.logger.debug " request = #{request.env.pretty_print_inspect}"
     Rails.logger.debug " HTTP_CURRENT_PRIVILEGE = #{request.env["HTTP_CURRENT_PRIVILEGE"]}"
-    current_privilege = request.env["HTTP_CURRENT_PRIVILEGE"]
+   # current_privilege = request.env["HTTP_CURRENT_PRIVILEGE"]
     #TODO need to use constant for CURATOR
-    if current_privilege == "CURATOR"
+   # if current_privilege == "CURATOR"
       @source_statuses = SourceStatus.all
-    else
+   # else
       #TODO need to use constant for Active
-      @source_statuses = [SourceStatus.find_by_name("Active")]
-    end
+   #   @source_statuses = [SourceStatus.find_by_name("Active")]
+   # end
   end
 
   # GET /source_statuses/1

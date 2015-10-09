@@ -46,6 +46,7 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
     //    'features/PO\ F6\ Curator\ review\ of\ a\ Pending\ Organization.feature'
     //    'features/PO\ F9\ Search\ for\ Persons.feature'
     //    'features/PO\ F10\ Create\ a\ Person\ Record.feature'
+<<<<<<< HEAD
     //    'features/*.feature'
     // ¬  'features/test.feature'
     //    'features/PO\ F11\ Edit\ Person\ Information.feature'
@@ -62,6 +63,14 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
      //  'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
      //  'features/*.feature'
      //   'features/test.feature'
+=======
+   //     'features/PO\ F11\ Edit\ Person\ Information.feature'
+        'features/PO\ F7\ Create\ Organization\ Family \Name.feature',
+        'features/PO\ F7\ Edit\ Organization\ Family \Name.feature',
+        'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
+//  'features/*.feature'
+    //    'features/test.feature'
+>>>>>>> 7d267fff11475d54e7e39e1871b22b5314685961
     ],
 
     jasmineNodeOpts: {

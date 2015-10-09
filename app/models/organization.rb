@@ -49,6 +49,8 @@ class Organization < ActiveRecord::Base
   has_many :sponsor_trials, foreign_key: :sponsor_id, class_name: "Trial"
   has_many :inv_aff_trials, foreign_key: :investigator_aff_id, class_name: "Trial"
 
+  accepts_nested_attributes_for :name_aliases, allow_destroy: true
+
   validates :name, presence: true
 
   before_destroy :check_for_family
@@ -151,6 +153,22 @@ class Organization < ActiveRecord::Base
       ##
       NameAlias.create(organization_id:@toBeRetainedOrg.id,name:@toBeNullifiedOrg.name);
 
+      ## Aliases of nullified organizations will be moved to aliases of the retained organization
+      ##
+        aliasesOfNullifiedOrganization = NameAlias.where(organization_id: @toBeNullifiedOrg.id);
+        aliasesOfRetainedOrganization = NameAlias.where(organization_id: @toBeRetainedOrg.id);
+        aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name}
+
+        aliasesOfNullifiedOrganization.each do |al|
+        if(!aliasesNamesOfRetainedOrganization.include?al.name)
+          al.organization_id=@toBeRetainedOrg.id;
+          al.save!
+        else
+          al.destroy!
+        end
+
+      end
+
       #If both organizations had CTEP IDs only the retained organization CTEP ID will be associated with the retained organization
 
 
@@ -236,7 +254,7 @@ class Organization < ActiveRecord::Base
   }
 
   scope :sort_by_col, -> (column, order) {
-    if column == 'id'
+    if Organization.columns_hash[column] && Organization.columns_hash[column].type == :integer
       order("#{column} #{order}")
     elsif column == 'source_context'
       joins("LEFT JOIN source_contexts ON source_contexts.id = organizations.source_context_id").order("source_contexts.name #{order}").group(:'source_contexts.name')
