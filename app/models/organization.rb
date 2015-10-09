@@ -157,10 +157,10 @@ class Organization < ActiveRecord::Base
       ##
         aliasesOfNullifiedOrganization = NameAlias.where(organization_id: @toBeNullifiedOrg.id);
         aliasesOfRetainedOrganization = NameAlias.where(organization_id: @toBeRetainedOrg.id);
-        aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name}
+        aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name.upcase}
 
         aliasesOfNullifiedOrganization.each do |al|
-        if(!aliasesNamesOfRetainedOrganization.include?al.name)
+        if(!aliasesNamesOfRetainedOrganization.include?al.name.upcase)
           al.organization_id=@toBeRetainedOrg.id;
           al.save!
         else

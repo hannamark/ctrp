@@ -86,10 +86,18 @@
       // Add other ID to a temp array
         vm.addNameAlias= function () {
             if (vm.alias) {
+                for (var i = 0; i < vm.addedNameAliases.length; i++) {
+
+                    if(vm.alias.toUpperCase() == vm.addedNameAliases[i].name.toUpperCase() && vm.addedNameAliases[i]._destroy == false ) {
+                        alert('Alias already exists, please enter other alias');
+                        exit;
+                    }
+                }
                 var newId = {};
                 newId.name = vm.alias;
                 newId._destroy = false;
                 vm.addedNameAliases.push(newId);
+                console.log()
                 vm.alias=null;
             } else {
                 alert('Please enter alias');
