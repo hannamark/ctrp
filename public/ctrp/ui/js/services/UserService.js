@@ -104,7 +104,7 @@
                         Common.broadcastMsg("signedIn");
 
                         $timeout(function () {
-                            $state.go('main.defaultContent')
+                            $state.go('main.defaultContent');
                         }, 1000);
                     } else {
                         toastr.error('Login failed', 'Login error');

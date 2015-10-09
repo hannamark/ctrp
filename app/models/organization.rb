@@ -153,6 +153,22 @@ class Organization < ActiveRecord::Base
       ##
       NameAlias.create(organization_id:@toBeRetainedOrg.id,name:@toBeNullifiedOrg.name);
 
+      ## Aliases of nullified organizations will be moved to aliases of the retained organization
+      ##
+        aliasesOfNullifiedOrganization = NameAlias.where(organization_id: @toBeNullifiedOrg.id);
+        aliasesOfRetainedOrganization = NameAlias.where(organization_id: @toBeRetainedOrg.id);
+        aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name}
+
+        aliasesOfNullifiedOrganization.each do |al|
+        if(!aliasesNamesOfRetainedOrganization.include?al.name)
+          al.organization_id=@toBeRetainedOrg.id;
+          al.save!
+        else
+          al.destroy!
+        end
+
+      end
+
       #If both organizations had CTEP IDs only the retained organization CTEP ID will be associated with the retained organization
 
 
