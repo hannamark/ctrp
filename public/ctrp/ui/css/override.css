@@ -450,3 +450,7 @@ h4, .panel-title {
     padding-top: .12em;
     padding-bottom: .12em;
 }
+
+.popover {
+    color: #444;
+}

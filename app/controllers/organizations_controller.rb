@@ -32,6 +32,7 @@ class OrganizationsController < ApplicationController
   # POST /organizations.json
   def create
     @organization = Organization.new(organization_params)
+    @organization.created_by = @current_user.username unless @current_user.nil?
     @organization.updated_by = @organization.created_by
 
     respond_to do |format|
@@ -49,6 +50,8 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1.json
   def update
     params[:organization].delete :created_by
+    @organization.updated_by = @current_user.username unless @current_user.nil?
+
     respond_to do |format|
       if @organization.update(organization_params)
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }

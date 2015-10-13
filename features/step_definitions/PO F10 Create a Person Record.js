@@ -76,7 +76,7 @@ module.exports = function() {
                 searchOrg.clickSearchButton();
                 searchOrg.selectOrgModelItem();
                 searchOrg.clickOrgModelConfirm();
-                person.setPersonAffiliatedOrgEffectiveDate('September 09, 2015');
+                searchOrg.setPersonAffiliatedOrgEffectiveDate('September 09, 2015');
             //    person.clickSave();
             });
         });

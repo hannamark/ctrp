@@ -158,7 +158,8 @@
             $scope.$watch(function() {return vm.userPrivilege;}, function(newVal, oldVal) {
                 console.log('userPrivilege value: ' + newVal);
                 UserService.setUserPrivilege(newVal);
-                $rootScope.$broadcast(MESSAGES.PRIVILEGE_CHANGED);
+                Common.broadcastMsg(MESSAGES.PRIVILEGE_CHANGED);
+                //$rootScope.$broadcast(MESSAGES.PRIVILEGE_CHANGED);
                 $scope.$emit(MESSAGES.PRIVILEGE_CHANGED);
             }, true);
         }
