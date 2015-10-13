@@ -201,7 +201,7 @@
             //find the organization name with the given id
             var findOrgName = function(familyAff, cb) {
                 OrgService.getOrgById(familyAff.organization_id).then(function(organization) {
-                    var curOrg = {"id" : familyAff.organization_id, "name": organization.name};
+                    var curOrg = {"id" : familyAff.organization_id, "name": organization.name, "ctep_id": organization.ctep_id};
                     curOrg.effective_date = DateService.convertISODateToLocaleDateStr(familyAff.effective_date);
                     curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(familyAff.expiration_date);
                     curOrg.family_membership_id = familyAff.id; //family affiliation id
