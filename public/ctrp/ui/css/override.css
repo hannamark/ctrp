@@ -389,6 +389,7 @@ h4, .panel-title {
 
 .input-sm, select.input-sm {
     height: 22px;
+    padding: 2px 10px;
 }
 
 .btn {
