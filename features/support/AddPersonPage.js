@@ -27,7 +27,6 @@ AddPersonPage = function () {
     this.addPersonRemoveAllAffiliatedOrg = element(by.css('button[title="Remove all"]'));
     this.personSaveButton = element(by.css('input[value="Save"]'));
     this.personResetButton = element(by.css('input[value="Reset"]'));
-    this.personAffiliatedOrgEffectiveDate = element(by.model('org.effective_date'));
     this.addPersonHeader = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.editPersonHeader = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
     var personLastUpdatedBy = element(by.binding('personDetailView.curPerson.updated_by'));
@@ -90,11 +89,6 @@ AddPersonPage = function () {
 
     this.clickRemoveAllAffiliatedOrg = function(){
         addPerson.clickButton(this.addPersonRemoveAllAffiliatedOrg,"Add Person Remove All Affiliated Org button");
-    };
-
-
-    this.setPersonAffiliatedOrgEffectiveDate = function(orgEffectiveDate){
-        addPerson.setValue(this.personAffiliatedOrgEffectiveDate,orgEffectiveDate,"Add Person by Organization Effective Date field");
     };
 
 
