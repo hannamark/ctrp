@@ -40,11 +40,7 @@
 
         //update organization (vm.curOrg)
         vm.updateOrg = function () {
-            if (vm.curOrg.new) {
-                vm.curOrg.created_by = UserService.getLoggedInUsername();
-            } else {
-                vm.curOrg.updated_by = UserService.getLoggedInUsername();
-            }
+
             // Construct nested attributes
             if (vm.addedNameAliases.length > 0) {
                 vm.curOrg.name_aliases_attributes = [];
