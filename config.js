@@ -10,7 +10,7 @@ exports.config = {
 
 
 baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
-  //  baseUrl: 'http://localhost/ctrp/',
+ //   baseUrl: 'http://localhost/ctrp/',
 
     params: {
         login: {
@@ -51,9 +51,10 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
     //   'features/PO\ F9\ Search\ for\ Persons.feature'
     //    'features/PO\ F10\ Create\ a\ Person\ Record.feature'
    //     'features/PO\ F11\ Edit\ Person\ Information.feature'
-        'features/PO\ F7\ Create\ Organization\ Family \Name.feature',
-        'features/PO\ F7\ Edit\ Organization\ Family \Name.feature',
-        'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
+   //     'features/PO\ F7\ Create\ Organization\ Family \Name.feature',
+    //    'features/PO\ F7\ Edit\ Organization\ Family \Name.feature',
+    //    'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
+        'features/PO\ F8\ Associate\ an\ Organization\ with\ a\ Family.feature'
 //  'features/*.feature'
     //    'features/test.feature'
     ],

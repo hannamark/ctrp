@@ -7,12 +7,17 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
+var menuItemList = require('../support/PoCommonBar');
+var selectList = require('../support/CommonSelectList');
+var moment = require('moment');
 
 AddOrganizationsPage = function(){
     this.addOrgName = element(by.model('orgDetailView.curOrg.name'));
     this.addSourceContext = element(by.model('orgDetailView.curOrg.source_context_id'));
     this.addSourceId = element(by.model('orgDetailView.curOrg.source_id'));
     this.addSourceStatus = element(by.model('orgDetailView.curOrg.source_status_id'));
+    this.addAlias = element(by.model('orgDetailView.alias'));
+    this.addAliasButton = element(by.css('button[ng-click="orgDetailView.addNameAlias()"]'));
     this.addAddress = element(by.model('orgDetailView.curOrg.address'));
     this.addAddress2 = element(by.model('orgDetailView.curOrg.address2'));
     this.addCountry = element(by.model('orgDetailView.curOrg.country'));
@@ -22,7 +27,7 @@ AddOrganizationsPage = function(){
     this.addEmail = element(by.model('orgDetailView.curOrg.email'));
     this.addPhone = element(by.model('orgDetailView.curOrg.phone'));
     this.addFax = element(by.model('orgDetailView.curOrg.fax'));
-    this.saveButton = element(by.css('input[value="Save"]'));
+    this.saveButton = element(by.id('save_btn')); //element(by.css('input[value="Save"]'));
     this.resetButton = element(by.css('input[value="Reset"]'));
     this.addVerifyAddHeader = element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
     this.addVerifyEditHeader = element(by.css('h4[ng-if="!orgDetailView.curOrg.new"]'));
@@ -30,27 +35,27 @@ AddOrganizationsPage = function(){
     var editHeader = 'Edit Organization';
 
     var addOrg = new helper();
+    var selectItem =new selectList();
+    var menuItem = new menuItemList();
 
     this.setAddOrgName = function(orgName){
         addOrg.setValue(this.addOrgName,orgName,"Organization by Name field");
     };
 
- /*   this.selectAddSourceContext = function(sourceContext){
-        var  addSourceContext =  element(by.xpath('//*[@id="source_context"]/option[.="' + sourceContext + '"]'));
-        addOrg.selectValue(addSourceContext,sourceContext,"Organization by Source Context field");
-     //   addOrg.selectValue(this.addSourceContext,sourceContext,"Organization by Source Context field");
-    };*/
 
     this.setAddSourceId = function(sourceId){
         addOrg.setValue(this.addSourceId,sourceId,"Organization by Source ID field");
     };
 
- /*   this.selectAddSourceStatus = function(sourceStatus){
-        var  addSourceStatus =  element(by.xpath('//*[@id="source_status"]/option[.="' + sourceStatus + '"]'));
-        addOrg.selectValue(addSourceStatus,sourceStatus,"Organization by Source Status field");
-      //  addOrg.selectValue(this.addSourceStatus,sourceStatus,"Organization by Source Status field");
+
+    this.setAddAlias = function(alias){
+        addOrg.setValue(this.addAlias,alias,"Organization by Alias field");
     };
-*/
+
+    this.clickSaveAlias = function(){
+        addOrg.clickButton(this.addAliasButton,"Add Alias button on Organization page");
+    };
+
     this.setAddAddress = function(address){
         addOrg.setValue(this.addAddress,address,"Organization by Address field");
     };
@@ -59,17 +64,6 @@ AddOrganizationsPage = function(){
         addOrg.setValue(this.addAddress2,address2,"Organization by Address2 field");
     };
 
-  /*  this.selectAddCountry = function(country){
-      var  addCountry =  element(by.xpath('//*[@id="country"]/option[.="' + country + '"]'));
-        addOrg.selectValue(addCountry,country,"Organization by Country field");
-    };*/
-
- /*   this.selectAddState = function(state){
-        var  addState =  element(by.xpath('//*[@id="state"]/option[.="' + state + '"]'));
-        addOrg.selectValue(addState,state,"Organization by State field");
-     //   addOrg.selectValue(this.addState,state,"Organization by State field");
-    };
-*/
     this.setAddCity = function(city){
         addOrg.setValue(this.addCity,city,"Organization by City field");
     };
@@ -152,6 +146,26 @@ AddOrganizationsPage = function(){
 
     this.getVerifyEditHeader = function(){
         addOrg.getVerifyheader(this.addVerifyEditHeader,editHeader,"Organization by Edit header field");
+    };
+
+    this.orgDefaultCreate = function(orgName, status, alias,address1, address2, country, state, city, postalCode, email, phone, fax){
+        menuItem.clickOrganizations();
+        menuItem.clickAddOrganizations();
+        this.setAddOrgName(orgName + moment().format('MMMDoYY hmmss'));
+        org4 = this.addOrgName.getAttribute('value');
+        org4.then(function(value2){
+            console.log('print value'+ value2)});
+        if(alias !== ''){this.setAddAlias(alias);this.clickSaveAlias();}
+        this.setAddAddress(address1);
+        this.setAddAddress2(address2);
+     //   selectItem.selectCountry(country);
+     //   selectItem.selectState(state);
+        this.setAddCity(city);
+        this.setAddPostalCode(postalCode);
+        this.setAddEmail(email);
+        this.setAddPhone(phone);
+        this.setAddFax(fax);
+        this.clickSave();
     };
 
 };
