@@ -55,13 +55,6 @@
             newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
 
-            // console.log("newPerson is: " + JSON.stringify(newPerson));
-            if (newPerson.new) {
-                newPerson.person.created_by = UserService.getLoggedInUsername();
-            } else {
-                newPerson.person.updated_by = UserService.getLoggedInUsername();
-            }
-
             PersonService.upsertPerson(newPerson).then(function (response) {
                 //console.log('response: ' + JSON.stringify(response));
                 vm.savedSelection = [];

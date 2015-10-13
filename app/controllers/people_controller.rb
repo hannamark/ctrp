@@ -32,6 +32,7 @@ class PeopleController < ApplicationController
   # POST /people.json
   def create
     @person = Person.new(person_params)
+    @person.created_by = @current_user.username unless @current_user.nil?
     @person.updated_by = @person.created_by
 
     respond_to do |format|
@@ -51,6 +52,8 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1.json
   def update
     params[:person].delete :created_by
+    @person.updated_by = @current_user.username unless @current_user.nil?
+
     respond_to do |format|
       #@person.po_affiliations.destroy
       if @person.update(person_params)
