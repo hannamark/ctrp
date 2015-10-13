@@ -29,6 +29,9 @@ AddOrganizationsPage = function(){
     this.addFax = element(by.model('orgDetailView.curOrg.fax'));
     this.saveButton = element(by.id('save_btn')); //element(by.css('input[value="Save"]'));
     this.resetButton = element(by.css('input[value="Reset"]'));
+    this.cancelButton = element(by.css('.btn.btn-default'));
+    this.deleteButton = element(by.css('.btn.btn-danger'));
+
     this.addVerifyAddHeader = element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
     this.addVerifyEditHeader = element(by.css('h4[ng-if="!orgDetailView.curOrg.new"]'));
     var addHeader = 'Add Organization';
@@ -86,6 +89,10 @@ AddOrganizationsPage = function(){
 
     this.clickSave = function(){
         addOrg.clickButton(this.saveButton,"Save button on Organization page");
+    };
+
+    this.clickDelete = function(){
+        addOrg.clickButton(this.deleteButton,"Delete button on Organization page");
     };
 
     this.clickReset = function(){

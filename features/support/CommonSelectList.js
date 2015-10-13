@@ -65,8 +65,7 @@ CommonSelectList = function(){
         var  familyStatusDefault =  element(by.xpath('//*[@id="family_status"]/option[.="Select a status"]'));
         if(status == '') {
             select.selectValue(familyStatusDefault,'Select a status',"Family status field");
-        }
-        else{
+        } else{
             select.selectValue(familyStatus,status,"Family status field");
         }
     };
