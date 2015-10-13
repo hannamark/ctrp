@@ -76,8 +76,9 @@
                             <table class="table table-bordered table-striped table-condensed">
                                 <thead>
                                 <th><nobr>CTRP ID</nobr></th>
+                                <th><nobr>CTEP ID</nobr></th>
                                 <th width="35%">Organization</th>
-                                <th width="18%">Relationship</th>
+                                <th width="40%">Relationship</th>
                                 <th>Effective Date</th>
                                 <th>Expiration Date</th>
                                 <th></th>
@@ -85,6 +86,7 @@
                                 <tbody>
                                 <tr ng-repeat="org in familyDetailView.savedSelection | filter: {'name': familyDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                     <td>{{org.id}}</td>
+                                    <td>{{org.ctep_id}}</td>
                                     <td><a ng-href="/ctrp/ui#main/organizations/{{org.id}}">{{org.name}}</a></td>
                                     <td>
                                         <!--
