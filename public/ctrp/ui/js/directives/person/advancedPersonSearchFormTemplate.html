@@ -65,7 +65,7 @@
                 <div class="col-xs-12 col-sm-5">
                     <div class="input-group add-on col-sm-12 date datepicker">
                         <input type="text" class="form-control input-sm" id="start_date" name="startDate"
-                               datepicker-popup="{{dateFormat}}" show-weeks="false"
+                               uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.startDate" is-open="startDateOpened"
                                datepicker-options="dateOptions" ng-click="openCalendar($event, 'start')"
                                ng-required="false" close-text="Close" placeholder="Start Date"/>
@@ -82,7 +82,7 @@
                 <div class="col-xs-12 col-sm-4">
                     <div class="input-group add-on col-sm-12 date datepicker" ng-class="{'has-error': search_person_form.endDate.dateLaterThan && search_person_form.endDate.$dirty}">
                         <input type="text" class="form-control input-sm" id="end_date" name="endDate"
-                               datepicker-popup="{{dateFormat}}" show-weeks="false"
+                               uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" ng-click="openCalendar($event, 'end')"
                                datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
                                ng-required="false" close-text="Close" placeholder="End Date"/>
