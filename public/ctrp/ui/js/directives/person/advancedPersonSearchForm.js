@@ -55,22 +55,14 @@
         };
 
         return directiveObj;
-        
-        
+
+
         function linkFn(scope, element, attrs) {
-
-            //element.text('hello replaced text!');
-            // console.log('isUsedInModal: ' + attrs.isInModal);
-            // console.log('curationMode enabled: ' + attrs.curationModeEnabled)
-            //pass to controller scope, but will require a timeout in controller - inconvenient
-            // scope.isInModal = attrs.isInModal; //
-
-            $compile(element.contents())(scope);
-            
+            //actions
         } //linkFn
-        
-        
-        
+
+
+
         function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService, $state) {
 
             var fromStateName = $state.fromState.name || '';
@@ -190,9 +182,6 @@
             };
 
 
-
-
-
             $scope.typeAheadNameSearch = function () {
                 var wildcardOrgName = $scope.searchParams.affiliated_org_name.indexOf('*') > -1 ? $scope.searchParams.affiliated_org_name : '*' + $scope.searchParams.affiliated_org_name + '*';
 
@@ -239,7 +228,7 @@
                     // warning to user for nullifying active entity
                     $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is not allowed';
                     $scope.nullifiedId = '';
-                    console.log('cannot nullify this row, because it is active');
+                    //console.log('cannot nullify this row, because it is active');
                 } else {
                     $scope.warningMessage = '';
                     $scope.nullifiedId = rowEntity.id || '';
@@ -256,7 +245,6 @@
                     toastr.success('Curation was successful', 'Curated!');
                 }).catch(function(err) {
                     toastr.error('There was an error in curation', 'Curation error');
-                    console.log('error in curation, err is: ' + JSON.stringify(err));
                 });
             }; //commitNullification
 
@@ -276,7 +264,6 @@
                 } else {
                    // $scope.searchPeople(); //refresh the search results
                 }
-
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
                 watchUserPrivilegeSelection();

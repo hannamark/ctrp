@@ -10,10 +10,10 @@
         .directive('ctrpAdvancedOrgSearchForm2', ctrpAdvancedOrgSearchForm2);
 
     ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location', '$state',
-        'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', '$log', '$compile'];
+        'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', '$log', '$compile', 'UserService'];
 
     function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $log, $state,
-                                        MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile) {
+                                        MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile, UserService) {
 
         var directiveObj = {
             restrict: 'E',
@@ -45,12 +45,10 @@
         } //linkFn
 
 
-        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout, $state) {
+        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout, $state, UserService, OrgService) {
 
             var fromStateName = $state.fromState.name || '';
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
-            console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
-            console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows = [];
             $scope.sourceContextArr = [];
@@ -85,21 +83,9 @@
                     orgNames = res.orgs.map(function (org) {
                         return org.name;
                     });
-                    //console.log('orgNames: ' + orgNames);
-
-                    /*
-                     orgNames.forEach(function(name, idex) {
-                     if (uniqueNames.indexOf(name) == -1) {
-                     uniqueNames.push(name);
-                     }
-                     });
-                     */
 
                     return uniqueNames = orgNames.filter(function (name) {
-                        if (uniqueNames.indexOf(name) == -1) {
-                            // console.log("not containing: " + name);
-                            return name;
-                        }
+                        return uniqueNames.indexOf(name) == -1;
                     });
                 });
             }; //typeAheadNameSearch
@@ -226,7 +212,6 @@
                     toastr.success('Curation was successful', 'Curated!');
                 }).catch(function (err) {
                     toastr.error('There was an error in curation', 'Curation error');
-                    console.log('error in curation, err is: ' + JSON.stringify(err));
                 });
 
             }; //commitNullification
@@ -235,9 +220,9 @@
             activate();
 
             function activate() {
-                watchUserPrivilegeChange(); //for switching to curation mode, etc
                 getPromisedData();
                 prepareGidOptions();
+
                 if (fromStateName != 'main.orgDetail') {
                     $scope.resetSearch();
                 } else {
@@ -247,6 +232,8 @@
                 //listenToStatesProvinces();
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
+                watchUserPrivilegeChange(); //for switching to curation mode, etc
+                watchPrivilegeSubRoutine();
             }
 
 
@@ -535,11 +522,17 @@
 
             function watchUserPrivilegeChange() {
                 $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function () {
-                    $scope.curationShown = true;
-                    console.log('toggling curation mode')
+                    watchPrivilegeSubRoutine();
+                    getPromisedData();
+                    console.log('toggling curation mode');
                     //toggleCurationMode();
                 });
             }
+
+            function watchPrivilegeSubRoutine() {
+              $scope.curationShown = UserService.getPrivilege() == 'CURATOR' ? true : false;
+            }
+
         } //ctrpAdvancedOrgSearchController
     }
 

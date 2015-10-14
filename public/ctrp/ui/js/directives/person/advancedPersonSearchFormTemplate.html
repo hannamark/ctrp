@@ -107,11 +107,11 @@
                 <label for="affiliation" class="control-label col-sm-12 col-sm-3">Affiliation:</label>
 
                 <div class="col-sm-12 col-sm-9">
-                    <input type="text" id="affiliation" class="form-control input-sm" placeholder="Organization Name" ng-model="searchParams.affiliated_org_name"/>
-                    <!-- <input type="text" id="affiliation" class="form-control input-sm"
+                    <!-- <input type="text" id="affiliation" class="form-control input-sm" placeholder="Organization Name" ng-model="searchParams.affiliated_org_name"/> -->
+                    <input type="text" id="affiliation" class="form-control input-sm"
                             autocomplete="off" placeholder="Organization Name" ng-model="searchParams.affiliated_org_name"
-                            typeahead="org for org in typeAheadNameSearch($viewValue)" typeahead-loading="loadingOrganizations"
-                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults"/>-->
+                            uib-typeahead="org for org in typeAheadNameSearch($viewValue)" typeahead-loading="loadingOrganizations"
+                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults"/>
                 </div>
                 <!-- end of affiliation -->
             </div>
