@@ -10,10 +10,10 @@
         .directive('ctrpAdvancedOrgSearchForm2', ctrpAdvancedOrgSearchForm2);
 
     ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location', '$state',
-        'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', '$log', '$compile', 'UserService'];
+        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$log', '$compile', 'UserService'];
 
     function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $log, $state,
-                                        MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile, UserService) {
+                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService) {
 
         var directiveObj = {
             restrict: 'E',
@@ -35,17 +35,11 @@
         /************************* implementations below *******************************/
 
         function linkFn(scope, element, attrs) {
-            //console.log('showGrid: ' + attrs.showGrid);
-            //console.log('maxRowSelectable: ' + attrs.maxRowSelectable);
-            scope.$on(MESSAGES.PRIVILEGE_CHANGED, function () {
-                console.log('received notification in search org forms');
-            });
-
             // $compile(element.contents())(scope);
         } //linkFn
 
 
-        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout, $state, UserService, OrgService) {
+        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $state, UserService, OrgService) {
 
             var fromStateName = $state.fromState.name || '';
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
@@ -68,9 +62,9 @@
                 $scope.curationModeEnabled = false;
             }
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
-            $scope.curationModeEnabled = $scope.curationMode == undefined ? $scope.curationModeEnabled : $scope.curationMode;
-            $scope.usedInModal = $scope.usedInModal == undefined ? false : $scope.usedInModal;
-            $scope.showGrid = $scope.showGrid == undefined ? false : $scope.showGrid;
+            $scope.curationModeEnabled = $scope.curationMode === 'undefined' ? $scope.curationModeEnabled : $scope.curationMode;
+            $scope.usedInModal = $scope.usedInModal === 'undefined' ? false : $scope.usedInModal;
+            $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
 
             $scope.typeAheadNameSearch = function () {
@@ -114,8 +108,6 @@
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                 else
                     $scope.searchWarningMessage = "";
-
-                console.log("isEmptySearch is " + isEmptySearch);
 
                 if(!isEmptySearch) { //skip searching if empty search
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
@@ -288,7 +280,7 @@
             function sortChangedCallBack(grid, sortColumns) {
 
                 if (sortColumns.length == 0) {
-                    console.log("removing sorting");
+                    //console.log("removing sorting");
                     //remove sorting
                     $scope.searchParams.sort = '';
                     $scope.searchParams.order = '';
@@ -301,14 +293,14 @@
                         case uiGridConstants.DESC:
                             $scope.searchParams.order = 'DESC';
                             break;
-                        case undefined:
+                        case 'undefined':
                             break;
                     }
                 }
 
                 //do the search with the updated sorting
                 $scope.searchOrgs();
-            }; //sortChangedCallBack
+            } //sortChangedCallBack
 
 
             /**
@@ -365,7 +357,6 @@
                 } else {
                     row.isSelected = false; //do not show selection visually
                 }
-
             } //rowSelectionCallBack
 
 

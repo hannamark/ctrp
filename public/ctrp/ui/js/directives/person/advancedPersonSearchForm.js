@@ -93,9 +93,9 @@
             }
 
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
-            $scope.curationModeEnabled = $scope.curationMode == undefined ? $scope.curationModeEnabled : $scope.curationMode;
-            $scope.usedInModal = $scope.usedInModal == undefined ? false : $scope.usedInModal;
-            $scope.showGrid = $scope.showGrid == undefined ? false : $scope.showGrid;
+            $scope.curationModeEnabled = $scope.curationMode === 'undefined' ? $scope.curationModeEnabled : $scope.curationMode;
+            $scope.usedInModal = $scope.usedInModal === 'undefined' ? false : $scope.usedInModal;
+            $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
 
             $scope.searchPeople = function () {
@@ -193,10 +193,7 @@
                     });
 
                     return uniqueNames = orgNames.filter(function (name) {
-                        if (uniqueNames.indexOf(name) == -1) {
-                            // console.log("not containing: " + name);
-                            return name;
-                        }
+                        return uniqueNames.indexOf(name) == -1;
                     });
                 });
             }; //typeAheadOrgNameSearch
@@ -330,14 +327,14 @@
                         case uiGridConstants.DESC:
                             $scope.searchParams.order = 'DESC';
                             break;
-                        case undefined:
+                        case 'undefined':
                             break;
                     }
                 }
 
                 //do the search with the updated sorting
                 $scope.searchPeople();
-            }; //sortChangedCallBack
+            } //sortChangedCallBack
 
 
             /**
@@ -388,7 +385,6 @@
                 } else {
                     row.isSelected = false; //do not show selection visually
                 }
-
             } //rowSelectionCallBack
 
 
