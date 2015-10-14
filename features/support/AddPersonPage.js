@@ -7,7 +7,7 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-var poCommonBar = require('../support/PoCommonBar');
+var menuItemList = require('../support/PoCommonBar');
 var moment = require('moment');
 
 AddPersonPage = function () {
@@ -25,7 +25,7 @@ AddPersonPage = function () {
     this.addPersonAffiliatedOrg = element(by.css('select[ng-model="personDetailView.selectedOrgs"]'));
     this.addPersonSelectAllAffiliatedOrg = element(by.css('button[title="Select all"]'));
     this.addPersonRemoveAllAffiliatedOrg = element(by.css('button[title="Remove all"]'));
-    this.personSaveButton = element(by.css('input[value="Save"]'));
+    this.personSaveButton = element(by.css('button[type="submit"]')); //element(by.css('input[value="Save"]'));
     this.personResetButton = element(by.css('input[value="Reset"]'));
     this.addPersonHeader = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.editPersonHeader = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
@@ -35,6 +35,7 @@ AddPersonPage = function () {
 
     var personVerifyAddHeader = 'Add Person';
     var personVerifyEditHeader = 'Edit Person';
+    var menuItem = new menuItemList();
 
 
     var addPerson = new helper();
@@ -154,14 +155,28 @@ AddPersonPage = function () {
         });
     };
 
-    this.personVerifyLastUpdatedNameDate = function() {
-        var datenow = moment().format('DD-MMM-YYYY');
+    this.personVerifyLastUpdatedNameDate = function(dateTime) {
+     //   var datenow = moment().format('DD-MMM-YYYY');
         var userLoggedIn = this.loginName.getText();
         userLoggedIn.then(function (value2) {
-            var userUpdatedDate = value2 + ' (' + datenow + ')';
+            var userUpdatedDate = value2 + ' (' + dateTime + ')';
             console.log('user-date last updated value is: ' + userUpdatedDate);
             (personLastUpdatedBy.getText()).should.eventually.equal(userUpdatedDate);
         });
+    };
+
+    this.personDefaultCreate = function(prefix, fName, mName, lName, suffix, email, phone){
+        menuItem.clickPeople();
+        menuItem.clickAddPerson();
+        this.setAddPersonPrefix(prefix);
+        this.setAddPersonFirstName(fName + moment().format('MMMDoYY hmmss'));
+        per4 = this.addPersonFirstName.getAttribute('value');
+        this.setAddPersonSecondName(mName);
+        this.setAddPersonLastName(lName);
+        this.setAddPersonSuffix(suffix);
+        this.setAddPersonEmail(email);
+        this.setAddPersonPhone(phone);
+        this.clickSave();
     };
 
 };

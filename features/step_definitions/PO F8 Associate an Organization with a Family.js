@@ -26,26 +26,22 @@ module.exports = function() {
     var addOrg = new addOrgPage();
     var searchOrg = new searchOrgPage();
     var selectItem =new selectList();
-    var familyNameId = element(by.model('familyDetailView.curFamily.name'));
 
-    this.Before (function (callback){
+
+    this.Given(/^I know which organization I wish to assign to an Organization Family$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         menuItemList.clickRole('CURATOR');
-        addFamily.familyDefaultCreate('SSFamilyCuke', 'Active', 'NIH');
-        browser.sleep(250).then(callback);
-    });
-
-    this.Given(/^I know which organization I wish to assign to an Organization Family$/, function (callback) {
-        fam4.then(function(value2)
-        {console.log('Added family Name - ' + value2);
-            addOrg.orgDefaultCreate('SSOrgCuke','','','','','','','','','','','');
-            org4.then(function(value4)
-            {console.log('Added Organization Name - ' + value4);});});
+        addOrg.orgDefaultCreate('SSOrgCuke','','','','','','','','','','','');
         browser.sleep(250).then(callback);
     });
 
     this.Given(/^I am have selected the option to search Families$/, function (callback) {
+        org4.then(function(value2)
+        {console.log('Added Org Name - ' + value2);
+            addFamily.familyDefaultCreate('SSFamilyCuke', 'Active', 'NIH');
+            fam4.then(function(value4)
+            {console.log('Added Family Name - ' + value4);});});
         menuItemList.clickOrganizations();
         menuItemList.clickListFamily();
         browser.sleep(250).then(callback);
@@ -107,12 +103,9 @@ module.exports = function() {
     });
 
     this.Given(/^I know which Family I want to update$/, function (callback) {
-        fam4.then(function(value2)
-        {console.log('Added family Name - ' + value2);
-            addOrg.orgDefaultCreate('SSOrgCuke','','','','','','','','','','','');
-            org4.then(function(value4)
-            {console.log('Added Organization Name - ' + value4);});
-        });
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        menuItemList.clickRole('CURATOR');
         browser.sleep(250).then(callback);
     });
 

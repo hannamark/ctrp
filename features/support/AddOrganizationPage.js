@@ -160,8 +160,8 @@ AddOrganizationsPage = function(){
         menuItem.clickAddOrganizations();
         this.setAddOrgName(orgName + moment().format('MMMDoYY hmmss'));
         org4 = this.addOrgName.getAttribute('value');
-        org4.then(function(value2){
-            console.log('print value'+ value2)});
+      //  org4.then(function(value2){
+        //    console.log('print value'+ value2)});
         if(alias !== ''){this.setAddAlias(alias);this.clickSaveAlias();}
         this.setAddAddress(address1);
         this.setAddAddress2(address2);

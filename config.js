@@ -46,7 +46,7 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
     //    'features/PO\ F6\ Curator\ review\ of\ a\ Pending\ Organization.feature'
     //    'features/PO\ F9\ Search\ for\ Persons.feature'
     //    'features/PO\ F10\ Create\ a\ Person\ Record.feature'
-   //     'features/PO\ F11\ Edit\ Person\ Information.feature'
+    //    'features/PO\ F11\ Edit\ Person\ Information.feature'
    //     'features/PO\ F7\ Create\ Organization\ Family \Name.feature',
     //    'features/PO\ F7\ Edit\ Organization\ Family \Name.feature',
     //    'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
@@ -64,7 +64,7 @@ baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
         require: ['features/step_definitions/*.js', 'features/support/*.js'],
         format: 'json',
         format: 'pretty',
-      //  tags: '@runthis'
+        tags: '@runthis',
          format: 'pretty'
       //    tags: '@runthis'
        /*     "@runThat",
