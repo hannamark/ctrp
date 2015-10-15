@@ -13,7 +13,7 @@ class CommentsControllerTest < ActionController::TestCase
 
   test "should create comment" do
     assert_difference('Comment.count') do
-      post :create, comment: { instance_uuid: @comment.instance_uuid, content: @comment.content, username: @comment.username, fullname: @comment.fullname, org: @comment.org }, format: "json"
+      post :create, comment: { instance_uuid: @comment.instance_uuid, content: @comment.content, username: @comment.username, fullname: @comment.fullname, model: @comment.model }, format: "json"
     end
 
     #assert_redirected_to comment_path(assigns(:comment))
@@ -27,7 +27,7 @@ class CommentsControllerTest < ActionController::TestCase
   end
 
   test "should update comment" do
-    patch :update, id: @comment, comment: { instance_uuid: @comment.instance_uuid, content: @comment.content, username: @comment.username, fullname: @comment.fullname, org: @comment.org }, format: "json"
+    patch :update, id: @comment, comment: { instance_uuid: @comment.instance_uuid, content: @comment.content, username: @comment.username, fullname: @comment.fullname, model: @comment.model }, format: "json"
     #assert_redirected_to comment_path(assigns(:comment))
     assert_template :show
     assert_response :ok
