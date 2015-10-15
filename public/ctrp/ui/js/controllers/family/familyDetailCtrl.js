@@ -40,7 +40,17 @@
 
             // console.log("newFamily is: " + JSON.stringify(newFamily));
             FamilyService.upsertFamily(newFamily).then(function(response) {
-                toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!');
+                //var resObj= JSON.stringify(response).data;
+                //console.log('resObj' +resObj);
+                //vm.arrErrors=response.name;
+                if(response.status == 422) {
+                    toastr.error('Problem in saving family', 'Family name has already been taken');
+                    vm.curFamily.name="";
+
+                }
+                else {
+                    toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!');
+                }
             }).catch(function(err) {
                 console.log("error in updating family " + JSON.stringify(vm.curFamily));
             });
