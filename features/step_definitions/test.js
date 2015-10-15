@@ -17,12 +17,14 @@ var familyPage = require('../support/AddFamilyPage');
 var listFamilyPage = require('../support/ListOfFamiliesPage');
 var helper = require('../support/helper');
 var selectList = require('../support/CommonSelectList');
+var personPage = require('../support/AddPersonPage');
 
 module.exports = function() {
     var menuItemList = new MenuItem();
     var searchFamily = new listFamilyPage();
     var Search = new ListOfOrganizationPage();
     var Login = new LoginPage();
+    var addPerson = new personPage();
 /*
     this.Given(/^I want to test the Login page$/, function (callback) {
         browser.get('angular#/main/sign_in').then(function(){callback();});
@@ -225,6 +227,21 @@ module.exports = function() {
         tableDataPromise.then(function(){console.log('This is the table value' + tableDataPromise);});*/
         browser.sleep(250).then(callback);
     });
+
+    this.Given(/^Login in CTRP$/, function (callback) {
+        browser.get('ui#/main/sign_in');
+        Login.login('ctrpcurator', 'Welcome01');
+        menuItemList.clickRole('CURATOR');
+        //  setTimeout(callback, 5000);
+        browser.sleep(250).then(callback);
+    });
+
+    this.Given(/^Creaye person with Organization$/, function (callback) {
+        addPerson.personDefaultCreate('','fname','','lnmae','','','','tt');
+        browser.sleep(250).then(callback);
+    });
+
+
 //element.all(by.css('.ui-grid-viewport'))
 }
 
