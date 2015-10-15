@@ -22,11 +22,13 @@ one:
   content: MyText
   username: MyString
   fullname: MyString
-  org: MyString
+  model: MyString
+  field: MyString
 
 two:
   instance_uuid: MyString
   content: MyText
   username: MyString
   fullname: MyString
-  org: MyString
+  model: MyString
+  field: MyString
