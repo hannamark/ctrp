@@ -92,7 +92,8 @@ exports.config = {
         //    'features/test.feature'
     //    'features/PO\ F2\ Search\ for\ Organizations.feature'
     //    'features/PO\ F3\ Create\ an\ Organization.feature'
-    //    'features/PO\ F4\ Edit\ Organization\ Information.feature'
+
+     //   'features/PO\ F4\ Edit\ Organization\ Information.feature'
           'features/PO\ F5\ Delete\ Organization.feature'
     //    'features/PO\ F6\ Curator\ review\ of\ a\ Pending\ Organization.feature'
     //    'features/PO\ F9\ Search\ for\ Persons.feature'
@@ -109,7 +110,7 @@ exports.config = {
 
     cucumberOpts: {
         require: ['features/step_definitions/*.js', 'features/support/*.js'],
-        format: "json:test/reports/cuke-report.json",
+        format: 'json:tests/features/output/cuke-report-test.json',
         format: 'pretty',
         resultJsonOutputFile: 'true',
        tags: '@runthis'
@@ -121,5 +122,5 @@ exports.config = {
         "~@ignoreThis"]*/// or summary
     },
 
-    resultJsonOutputFile: 'test/reports/cuke-report.json'
+    resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
 };
