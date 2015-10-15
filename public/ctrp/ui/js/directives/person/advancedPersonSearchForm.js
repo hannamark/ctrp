@@ -55,22 +55,14 @@
         };
 
         return directiveObj;
-        
-        
+
+
         function linkFn(scope, element, attrs) {
-
-            //element.text('hello replaced text!');
-            // console.log('isUsedInModal: ' + attrs.isInModal);
-            // console.log('curationMode enabled: ' + attrs.curationModeEnabled)
-            //pass to controller scope, but will require a timeout in controller - inconvenient
-            // scope.isInModal = attrs.isInModal; //
-
-            $compile(element.contents())(scope);
-            
+            //actions
         } //linkFn
-        
-        
-        
+
+
+
         function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService, $state) {
 
             var fromStateName = $state.fromState.name || '';
@@ -101,9 +93,9 @@
             }
 
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
-            $scope.curationModeEnabled = $scope.curationMode == undefined ? $scope.curationModeEnabled : $scope.curationMode;
-            $scope.usedInModal = $scope.usedInModal == undefined ? false : $scope.usedInModal;
-            $scope.showGrid = $scope.showGrid == undefined ? false : $scope.showGrid;
+            $scope.curationModeEnabled = $scope.curationMode === 'undefined' ? $scope.curationModeEnabled : $scope.curationMode;
+            $scope.usedInModal = $scope.usedInModal === 'undefined' ? false : $scope.usedInModal;
+            $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
 
             $scope.searchPeople = function () {
@@ -190,9 +182,6 @@
             };
 
 
-
-
-
             $scope.typeAheadNameSearch = function () {
                 var wildcardOrgName = $scope.searchParams.affiliated_org_name.indexOf('*') > -1 ? $scope.searchParams.affiliated_org_name : '*' + $scope.searchParams.affiliated_org_name + '*';
 
@@ -204,10 +193,7 @@
                     });
 
                     return uniqueNames = orgNames.filter(function (name) {
-                        if (uniqueNames.indexOf(name) == -1) {
-                            // console.log("not containing: " + name);
-                            return name;
-                        }
+                        return uniqueNames.indexOf(name) == -1;
                     });
                 });
             }; //typeAheadOrgNameSearch
@@ -239,7 +225,7 @@
                     // warning to user for nullifying active entity
                     $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is not allowed';
                     $scope.nullifiedId = '';
-                    console.log('cannot nullify this row, because it is active');
+                    //console.log('cannot nullify this row, because it is active');
                 } else {
                     $scope.warningMessage = '';
                     $scope.nullifiedId = rowEntity.id || '';
@@ -256,7 +242,6 @@
                     toastr.success('Curation was successful', 'Curated!');
                 }).catch(function(err) {
                     toastr.error('There was an error in curation', 'Curation error');
-                    console.log('error in curation, err is: ' + JSON.stringify(err));
                 });
             }; //commitNullification
 
@@ -276,7 +261,6 @@
                 } else {
                    // $scope.searchPeople(); //refresh the search results
                 }
-
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
                 watchUserPrivilegeSelection();
@@ -343,14 +327,14 @@
                         case uiGridConstants.DESC:
                             $scope.searchParams.order = 'DESC';
                             break;
-                        case undefined:
+                        case 'undefined':
                             break;
                     }
                 }
 
                 //do the search with the updated sorting
                 $scope.searchPeople();
-            }; //sortChangedCallBack
+            } //sortChangedCallBack
 
 
             /**
@@ -401,7 +385,6 @@
                 } else {
                     row.isSelected = false; //do not show selection visually
                 }
-
             } //rowSelectionCallBack
 
 

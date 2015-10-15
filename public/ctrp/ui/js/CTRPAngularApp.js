@@ -8,6 +8,7 @@
     angular.module('ctrpApp', [
         'ui.router',
         'ngTouch',
+        'ngAnimate',
         'ngSanitize',
         'ngMaterial',
         'Constants',
@@ -15,7 +16,6 @@
         'PromiseTimeoutModule',
         'PromiseServiceModule',
         'LocalCacheModule',
-        'ngAnimate',
         'toastr',
         'ui.bootstrap',
         'ncy-angular-breadcrumb',
@@ -28,7 +28,8 @@
         'toggle-switch',
         'TimeoutModule',
         'ngFileUpload',
-        'angularMoment'
+        'angularMoment',
+        'ctrpApp.widgets'
     ])
         .config(function($provide) {
             $provide.decorator('$state', function($delegate, $rootScope) {
