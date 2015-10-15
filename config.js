@@ -80,7 +80,6 @@ exports.config = {
 
         //   'features/PO\ F2\ Search\ for\ Organizations.feature'
         //    'features/PO\ F3\ Create\ an\ Organization.feature'
-        'features/PO\ F5\ Delete\ Organization.feature'
         //   'features/PO\ F4\ Edit\ Organization\ Information.feature'
         //   'features/PO\ F9\ Search\ for\ Persons.feature'
         //    'features/PO\ F10\ Create\ a\ Person\ Record.feature'
@@ -112,14 +111,14 @@ exports.config = {
         require: ['features/step_definitions/*.js', 'features/support/*.js'],
         format: "json:test/reports/cuke-report.json",
         format: 'pretty',
-        resultJsonOutputFile: 'true'
-        //tags: '@runthis'
-        /*     "@runThat",
+        resultJsonOutputFile: 'true',
+       tags: '@runthis'
+       /*     "@runThat",
          "~@ignoreThis"]*/// or summary
        // tags: '@runthis'
-      //    tags: '@runthis'
+       //    tags: '@runthis'
        /*     "@runThat",
-              "~@ignoreThis"]*/// or summary
+        "~@ignoreThis"]*/// or summary
     },
 
     resultJsonOutputFile: 'test/reports/cuke-report.json'
