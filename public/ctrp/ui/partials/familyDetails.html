@@ -58,29 +58,29 @@
                     </div>
                 </div>
 
-
-                <div class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Add Family Membership:</label>
-                    <div class="col-xs-12 col-sm-6">
-                            <!--<button class="btn btn-primary" ng-click="familyDetailView.searchOrgsForAffiliation('lg')">
-                                <i class="glyphicon glyphicon-search"></i> Search Organizations
-                            </button>
-                            <button class="btn btn-danger" ng-click="familyDetailView.batchSelect('removeAll')" ng-show="familyDetailView.savedSelection.length > 0">
-                                <i class="glyphicon glyphicon-remove"></i> Remove All Family Members
-                            </button> -->
+                <div class="col-xs-12">
+                    <div class="row">
+                        <h4>Add Family Membership:</h4>
+                    </div>
+                    <div class="row">
+                        <!--<button class="btn btn-primary" ng-click="familyDetailView.searchOrgsForAffiliation('lg')">
+                            <i class="glyphicon glyphicon-search"></i> Search Organizations
+                        </button>
+                        <button class="btn btn-danger" ng-click="familyDetailView.batchSelect('removeAll')" ng-show="familyDetailView.savedSelection.length > 0">
+                            <i class="glyphicon glyphicon-remove"></i> Remove All Family Members
+                        </button> -->
                         <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="familyDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
-
                         <div class="row animated-item" ng-show="familyDetailView.savedSelection.length > 0">
                             <br /><input type="text" ng-model="familyDetailView.selectedOrgFilter" curation-field class="form-control input-sm" placeholder="Filter selected organizations"/>
 
                             <table class="table table-bordered table-striped table-condensed">
                                 <thead>
-                                <th><nobr>CTRP ID</nobr></th>
-                                <th width="35%">Organization</th>
-                                <th width="18%">Relationship</th>
-                                <th>Effective Date</th>
-                                <th>Expiration Date</th>
-                                <th></th>
+                                <th width="6%"><nobr>CTRP ID</nobr></th>
+                                <th width="54%">Organization</th>
+                                <th width="13%">Relationship</th>
+                                <th width="13%">Effective Date</th>
+                                <th width="13%">Expiration Date</th>
+                                <th width="1%"></th>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="org in familyDetailView.savedSelection | filter: {'name': familyDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
