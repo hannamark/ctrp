@@ -19,6 +19,7 @@
 #  ctrp_id           :integer
 #  created_by        :string
 #  updated_by        :string
+#  lock_version      :integer          default(0)
 #
 # Indexes
 #

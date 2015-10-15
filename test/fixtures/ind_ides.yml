@@ -15,6 +15,7 @@
 #  expanded_access         :boolean
 #  exempt                  :boolean
 #  ind_ide_number          :string(255)
+#  lock_version            :integer          default(0)
 #
 # Indexes
 #

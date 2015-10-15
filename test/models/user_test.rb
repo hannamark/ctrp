@@ -36,6 +36,7 @@
 #  approved                    :boolean          default(FALSE), not null
 #  organization_id             :integer
 #  source                      :string
+#  lock_version                :integer          default(0)
 #
 # Indexes
 #
