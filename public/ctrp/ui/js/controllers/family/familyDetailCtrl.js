@@ -40,7 +40,17 @@
 
             // console.log("newFamily is: " + JSON.stringify(newFamily));
             FamilyService.upsertFamily(newFamily).then(function(response) {
-                toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!');
+                //var resObj= JSON.stringify(response).data;
+                //console.log('resObj' +resObj);
+                //vm.arrErrors=response.name;
+                if(response.status == 422) {
+                    toastr.error('Problem in saving family', 'Family name has already been taken');
+                    vm.curFamily.name="";
+
+                }
+                else {
+                    toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!');
+                }
             }).catch(function(err) {
                 console.log("error in updating family " + JSON.stringify(vm.curFamily));
             });
@@ -201,7 +211,7 @@
             //find the organization name with the given id
             var findOrgName = function(familyAff, cb) {
                 OrgService.getOrgById(familyAff.organization_id).then(function(organization) {
-                    var curOrg = {"id" : familyAff.organization_id, "name": organization.name};
+                    var curOrg = {"id" : familyAff.organization_id, "name": organization.name, "ctep_id": organization.ctep_id};
                     curOrg.effective_date = DateService.convertISODateToLocaleDateStr(familyAff.effective_date);
                     curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(familyAff.expiration_date);
                     curOrg.family_membership_id = familyAff.id; //family affiliation id

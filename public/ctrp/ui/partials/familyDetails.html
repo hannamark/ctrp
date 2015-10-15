@@ -17,67 +17,51 @@
         </div>
     </script>
 
-    <div class="col-xs-12 col-border">
+    <div class="col-xs-12">
         <div class="row">
             <p>
-            <h4 ng-if="familyDetailView.curFamily.new">
-                <mark>Add Family</mark>
-            </h4>
-            </p>
-            <p>
-            <h4 ng-if="!familyDetailView.curFamily.new">
-                <mark>Edit Family</mark>
-            </h4>
+                <h4 ng-if="familyDetailView.curFamily.new">Add Family</h4>
+                <h4 ng-if="!familyDetailView.curFamily.new">Edit Family</h4>
             </p>
         </div>
         <div class="row">
-            <div class="form-horizontal" name="family_form" role="form" novalidate>
-                <div class="form-group col-sm-12"
-                     ng-class="{'has-error' : family_form.name.$error.required && family_form.name.$dirty }">
-                    <label class="control-label col-sm-3">Family Name:</label>
-
-                    <div class="col-sm-9">
-                        <input type="text" name="name" curation-field class="form-control input-xs" ng-model="familyDetailView.curFamily.name" required auto-focus/>
-
+            <form class="form form-horizontal" name="family_form" role="form" novalidate>
+                <div class="form-group" ng-class="{'has-error' : family_form.name.$error.required && family_form.name.$dirty }">
+                    <label class="control-label col-xs-12 col-sm-3">Family Name:</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" name="name" curation-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus/>
                         <p ng-show="family_form.name.$error.required && family_form.name.$dirty" class="help-inline">
                             Family name is required
                         </p>
                     </div>
                 </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Family Status:</label>
-
-                    <div class="col-sm-9">
-                        <select curation-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Family Status:</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <select curation-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control input-sm" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr">
                             <option value="">Select a status</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">Family Type:</label>
-
-                    <div class="col-sm-9">
-                        <select curation-field ng-init="familyDetailView.curFamily.family_type_id" class="form-control" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Family Type:</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <select curation-field ng-init="familyDetailView.curFamily.family_type_id" class="form-control input-sm" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr">
                             <option value="">Select a type</option>
                         </select>
-
                     </div>
                 </div>
-                <div class="form-group col-sm-12">
-                     <label class="control-label col-sm-3">Membership Size:</label>
-
-                    <div class="col-sm-9"><!--TODO fix line height display-->
+                <div class="form-group">
+                     <label class="control-label col-xs-12 col-sm-3">Membership Size:</label>
+                    <div class="col-xs-12 col-sm-6 form-text"><!--TODO fix line height display-->
                         {{familyDetailView.savedSelection.length}}
                     </div>
                 </div>
 
 
-                <div class="form-group col-sm-12">
-                    <label class="control-label col-sm-3">
-                        Add Family Membership:
-                    </label>
-
-                    <div class="col-sm-9">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Add Family Membership:</label>
+                    <div class="col-xs-12 col-sm-6">
                             <!--<button class="btn btn-primary" ng-click="familyDetailView.searchOrgsForAffiliation('lg')">
                                 <i class="glyphicon glyphicon-search"></i> Search Organizations
                             </button>
@@ -87,20 +71,22 @@
                         <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="familyDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
 
                         <div class="row animated-item" ng-show="familyDetailView.savedSelection.length > 0">
-                            <br /><input type="text" ng-model="familyDetailView.selectedOrgFilter" curation-field class="form-control" placeholder="Filter selected organizations"/>
+                            <br /><input type="text" ng-model="familyDetailView.selectedOrgFilter" curation-field class="form-control input-sm" placeholder="Filter selected organizations"/>
+
                             <table class="table table-bordered table-striped table-condensed">
                                 <thead>
                                 <th><nobr>CTRP ID</nobr></th>
+                                <th><nobr>CTEP ID</nobr></th>
                                 <th width="35%">Organization</th>
-                                <th width="18%">Relationship</th>
+                                <th width="40%">Relationship</th>
                                 <th>Effective Date</th>
                                 <th>Expiration Date</th>
                                 <th></th>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="org in familyDetailView.savedSelection | filter: {'name': familyDetailView.selectedOrgFilter} track by $index"
-                                    ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                <tr ng-repeat="org in familyDetailView.savedSelection | filter: {'name': familyDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                     <td>{{org.id}}</td>
+                                    <td>{{org.ctep_id}}</td>
                                     <td><a ng-href="/ctrp/ui#main/organizations/{{org.id}}">{{org.name}}</a></td>
                                     <td>
                                         <!--
@@ -110,69 +96,59 @@
 
                                             <option ng-repeat="relation in familyDetailView.familyRelationshipArr" value="{{relation.id}}" ng-selected="org.family_relationship_id == relation.id">{{relation.name}}</option>
                                         </select>-->
-                                        <select ng-init="org.family_relationship_id" class="form-control" id="org.family_relationship" ng-model="org.family_relationship_id" ng-options="relation.id as relation.name for relation in familyDetailView.familyRelationshipArr">
+                                        <select ng-init="org.family_relationship_id" class="form-control input-sm" id="org.family_relationship" ng-model="org.family_relationship_id" ng-options="relation.id as relation.name for relation in familyDetailView.familyRelationshipArr">
                                             <option value="">Select a relationship</option>
                                         </select>
                                     </td>
-
-
                                     <td>
-                                        <div class="input-group add-on col-sm-12 date datepicker"
-                                             date-date-format="yyyy-mm-dd">
-                                            <input type="text" class="form-control"
+                                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                            <input type="text" class="form-control input-sm"
                                                    datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.effective_date" is-open="org.opened_effective"
                                                    is-open="opened" datepicker-options="familyDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
-                                  <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"
-                                                ng-click="familyDetailView.openCalendar($event, $index, 'effective')"
-                                                ng-disabled="org._destroy">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                        </button>
-                                  </span>
-
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </button>
+                                            </span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="input-group add-on col-sm-12 date datepicker"
-                                             date-date-format="yyyy-mm-dd">
-                                            <input type="text" class="form-control"
+                                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                            <input type="text" class="form-control input-sm"
                                                    datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                    is-open="opened" datepicker-options="familyDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
-                                  <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"
-                                                ng-click="familyDetailView.openCalendar($event, $index, 'expiration')"
-                                                ng-disabled="org._destroy">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                        </button>
-                                  </span>
-
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </button>
+                                            </span>
                                         </div>
                                     </td>
                                     <td style="vertical-align: middle">
-                                        <label class="btn btn-default"
-                                               ng-click="familyDetailView.toggleSelection($index)">
+                                        <label class="btn btn-default" ng-click="familyDetailView.toggleSelection($index)">
                                             <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                         </label>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
-                <div id="buttonBar" class="form-group">
-                    <div class="col-sm-offset-3 col-sm-9">
-                        <input type="submit" curation-field class="btn btn-success" ng-click="familyDetailView.updateFamily()"
-                               ng-disabled="family_form.$invalid" value="Save" ctrp-click-once>
-                        <input type="reset" curation-field class="btn btn-warning" ng-click="familyDetailView.reset()" value="Reset">
-                        <button curation-field class="btn btn-default" back-button>Cancel</button>
-                        <button ng-hide="familyDetailView.curFamily.new" curation-field class="btn btn-danger"
-                                ng-click="familyDetailView.confirmDelete('sm')">
+
+                <div class="form-group">
+                    <div class="btn-toolbar col-xs-12 col-sm-9">
+                        <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-click="familyDetailView.updateFamily()" ng-disabled="family_form.$invalid" ctrp-click-once>
+                            Save
+                        </button>
+                        <button curation-field class="btn btn-warning pull-right" ng-click="familyDetailView.reset()">
+                            <i class="glyphicon glyphicon-remove"></i> Clear
+                        </button>
+                        <button ng-hide="familyDetailView.curFamily.new" curation-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="familyDetailView.confirmDelete('sm')">
                             Delete This Family
                         </button>
                     </div>

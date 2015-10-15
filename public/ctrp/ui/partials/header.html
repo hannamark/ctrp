@@ -38,7 +38,7 @@
                 <div class="row" ng-show="headerView.signedIn && headerView.userPrivileges.length > 0">
                     <!--<strong>Privileges: </strong>-->
                     <div class="btn-group">
-                        <label class="btn btn-primary" ng-model="headerView.userPrivilege" ng-repeat="privilege in headerView.userPrivileges" btn-radio="'{{privilege}}'">
+                        <label class="btn btn-primary" ng-model="headerView.userPrivilege" ng-repeat="privilege in headerView.userPrivileges" uib-btn-radio="'{{privilege}}'">
                             {{privilege}}
                         </label>
                     </div>
