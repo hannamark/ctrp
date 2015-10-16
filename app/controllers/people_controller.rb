@@ -2,6 +2,7 @@ class PeopleController < ApplicationController
   before_action :set_person, only: [:show, :edit, :update, :destroy]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
+  skip_authorize_resource :only => [:search]
 
   # GET /people
   # GET /people.json
@@ -51,7 +52,6 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1
   # PATCH/PUT /people/1.json
   def update
-    params[:person].delete :created_by
     @person.updated_by = @current_user.username unless @current_user.nil?
 
     respond_to do |format|
@@ -119,8 +119,18 @@ class PeopleController < ApplicationController
       @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
       @people = @people.matches_wc('email', params[:email]) if params[:email].present?
       @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
-      @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
-      @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
+      if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
+        @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
+      else
+        # TODO need constant for CTRP
+        @people = @people.with_source_context("CTRP")
+      end
+      if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
+        @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
+      else
+        # TODO need constant for Active
+        @people = @people.with_source_status("Active")
+      end
       @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
     else
@@ -136,7 +146,7 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :source_status_id,:source_context_id, :created_by, :updated_by, :updated_at, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
+      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :source_status_id,:source_context_id, :updated_by, :updated_at, po_affiliations_attributes: [:id,:organization_id,:effective_date,:expiration_date,:po_affiliation_status_id,:_destroy])
 
     end
 
