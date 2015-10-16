@@ -119,7 +119,12 @@ class PeopleController < ApplicationController
       @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
       @people = @people.matches_wc('email', params[:email]) if params[:email].present?
       @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
-      @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
+      if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
+        @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
+      else
+        # TODO need constant for CTRP
+        @people = @people.with_source_context("CTRP")
+      end
       if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
         @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
       else
