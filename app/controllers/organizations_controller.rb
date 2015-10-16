@@ -145,6 +145,12 @@ class OrganizationsController < ApplicationController
       else
         @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
       end
+      if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
+        @organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
+      else
+        # TODO need constant for CTRP
+        @organizations = @organizations.with_source_context("CTRP")
+      end
       @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
       @organizations = @organizations.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present?
       if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
