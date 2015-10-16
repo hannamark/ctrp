@@ -204,6 +204,15 @@
                     }
                 })
 
+                .state('main.gsa', {
+                    url: '/gsa',
+                    templateUrl: '/ctrp/ui/partials/gsa.html',
+                    controller: 'gsaCtrl as gsaView',
+                    resolve: {
+                        UserService: 'UserService'
+                    }
+                })
+
                 .state('main.users', {
                     url: '/users',
                     templateUrl: '/ctrp/ui/partials/user_list.html',
