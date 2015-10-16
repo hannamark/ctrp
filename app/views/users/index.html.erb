@@ -84,7 +84,7 @@
             <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
         <% end %>
         <% if local_user_signed_in? %>
-            <!--li><!--%= link_to "Change your password", edit_local_user_registration_path %></li-->
+            <li><%= link_to "Change your password", edit_registration_path %></li>
         <% end %>
       </ul>
     </div>
@@ -137,7 +137,9 @@
                     <td colspan="3"><%= user.role %></td>
                     <% unless user.role.blank? %>
                         <td colspan="3" class="success">
-                          <%= user.get_privileges.collect{|x| x[:type]} %> &nbsp;
+                          <% unless user.get_privileges.blank? %>
+                            <%= user.get_privileges.collect{|x| x[:type]} %> &nbsp;
+                          <% end %>
                         </td>
                      <% else %>
                         <td colspan="3"> &nbsp; </td>

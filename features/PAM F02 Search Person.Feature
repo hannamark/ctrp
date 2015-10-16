@@ -25,6 +25,7 @@ And the Person Search Results will display:
 |Phone Number|
 |Email Address|
 |Organization Affiliations|
+And the system will display the list of Persons ordered assending alphanumeric by Last Name and then assending alphanumeric by First Name and then assending alphanumeric by Middle name
 
 Scenario: #2 I am able to view Person details
 Given I am logged into the CTRP PA user

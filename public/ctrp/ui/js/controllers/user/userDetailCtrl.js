@@ -10,7 +10,7 @@
 
     userDetailCtrl.$inject = ['UserService', '$scope','toastr','OrgService','userDetailObj'];
 
-    function userDetailCtrl(UserService, $scope,toastr,OrgService,userDetailObj) {
+    function userDetailCtrl(UserService, $scope, toastr, OrgService, userDetailObj) {
         var vm = this;
          console.log("curuser is ");
         vm.userDetails = userDetailObj;

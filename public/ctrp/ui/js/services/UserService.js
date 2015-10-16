@@ -16,6 +16,64 @@
         var appVersion = '';
         var appRelMilestone = '';
 
+        // Initial User Search Parameters
+        var initUserSearchParams = {
+            username: "",
+            first_name: "",
+            middle_name: "",
+            last_name: "",
+            email: "",
+            phone: "",
+           // affiliated_org_name: "",
+
+            //for pagination and sorting
+            sort: "updated_at",
+            order: "DESC",
+            rows: 10,
+            start: 1
+        }; //initial User Search Parameters
+
+
+        var gridOptions = {
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 50,
+            // enableFullRowSelection: true,
+            enableSelectAll: false,
+            //enableRowSelection: false,
+            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSize: 10,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            columnDefs: [
+                {name: 'username', enableSorting: true, displayName: 'Username', width: '7%'},
+                {name: 'first_name', displayName: 'First', enableSorting: true, width: '8%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {name: 'middle_name', displayName: 'Middle', enableSorting: true, width: '5%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {name: 'last_name', displayName: 'Last', enableSorting: true, width: '6%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {name: 'email', enableSorting: true, width: '10%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'phone', enableSorting: true, width: '6%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                }//,
+                //{name: 'affiliated_org', displayName:'Affiliated Org', enableSorting: true, width: '6%'}
+            ]
+        };
+
+
         /**
          * Check if the the user/viewer is logged in by checking the
          * local cache for existence of both token and username
@@ -29,16 +87,22 @@
         }; //isLoggedIn
 
 
+        this.getUserType = function() {
+            return  LocalCacheService.getCacheWithKey("user_type");
+        }
+
+
         this.login = function (userObj) {
             PromiseTimeoutService.postDataExpectObj('sign_in', userObj)
                 .then(function (data) {
-                   // console.log('successful login, data returned: ' + JSON.stringify(data));
+                    console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
                         LocalCacheService.cacheItem("token", data.token);
                         LocalCacheService.cacheItem("username", userObj.user.username);
                         _setAppVersion(data.app_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
+                        LocalCacheService.cacheItem("user_type", data.user_type);
 
                         //var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
                         LocalCacheService.cacheItem("privileges", data.privileges);
@@ -46,7 +110,7 @@
                         Common.broadcastMsg("signedIn");
 
                         $timeout(function () {
-                            $state.go('main.defaultContent')
+                            $state.go('main.defaultContent');
                         }, 1000);
                     } else {
                         toastr.error('Login failed', 'Login error');
@@ -82,6 +146,39 @@
 
 
         /**
+         *
+         * @param searchParams, JSON object whose keys can include:
+         * username, po_id, source_id, source_status, family_name, address, address2, city, state_province, country,
+         * postal_code, and email
+         *
+         * @returns Array of JSON objects
+         */
+        this.searchUsers = function (searchParams) {
+            //toastr.success('Success', 'Successful in UserService, searchUsers');
+             console.log('User searchparams: ' + JSON.stringify(searchParams));
+           // if (!!searchParams) {
+               // toastr.success('Success', 'Successful in UserService, searchUsers');
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+           // }
+        } //searchUsers
+
+        /**
+         * get initial paramater object for people search
+         * @return initUserSearchParams
+         */
+        this.getInitialUserSearchParams = function () {
+            return initUserSearchParams;
+        } //getInitialUserSearchParams
+
+
+
+        this.getGridOptions = function () {
+            return gridOptions;
+        }
+
+
+
+        /**
          * Get the logged in username from browser cache
          */
         this.getLoggedInUsername = function() {
@@ -89,10 +186,10 @@
         }
 
         this.getUserDetailsByUsername = function(username) {
-            console.log('123456***** ');
             var username = LocalCacheService.getCacheWithKey('username');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         } //getUserByName
+
 
         /**
          * Get the user role of the logged in user
@@ -154,6 +251,20 @@
             var configObj = {}; //empty config
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + ".json", userObj, configObj);
         }; //upsertUser
+
+        this.upsertUserSignup=function(userObj) {
+            //update an existing user
+            var configObj = {}; //empty config
+            console.log("userObj = " + JSON.stringify(userObj));
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj, configObj);
+        }; //upsertUserSignup
+
+        this.upsertUserChangePassword=function(userObj) {
+            //update an existing user
+            var configObj = {}; //empty config
+            console.log("upsertUserChangePassword userObj = " + JSON.stringify(userObj));
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
+        }; //upsertUserChangePassword
 
         /**
          *

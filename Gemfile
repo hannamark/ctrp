@@ -59,6 +59,7 @@ gem 'omniauth-google-oauth2'
 gem "devise_ldap_authenticatable"
 gem 'cancancan'
 gem 'jwt'
+gem 'activerecord-session_store'
 
 # Add http client
 gem 'rest-client'
@@ -76,3 +77,7 @@ gem 'wicked'
 gem 'bootstrap-sass', '~> 3.3.5'
 
 gem 'carrierwave'
+
+#gem for pg_sequencer
+gem 'pg_sequencer'
+

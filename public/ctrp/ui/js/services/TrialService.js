@@ -13,15 +13,12 @@
     function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload) {
 
         var initTrialSearchParams = {
-            lead_protocol_id: "",
-            official_title: "",
-
             //for pagination and sorting
             sort: "",
             order: "",
             rows: 10,
             start: 1
-            }; //initial Trial Search Parameters
+        }; //initial Trial Search Parameters
 
         var gridOptions = {
             enableColumnResizing: true,
@@ -36,7 +33,28 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'lead_protocol_id', enableSorting: true, displayName: 'Lead Protocol ID', width: '100%'}
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, width: '12%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {name: 'official_title', enableSorting: true, width: '16%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'phase', enableSorting: true, width: '6%'},
+                {name: 'purpose', enableSorting: true, width: '10%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
+                {name: 'pilot', enableSorting: true, width: '5%'},
+                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, width: '12%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, width: '14%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'sponsor', enableSorting: true, width: '14%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'study_source', enableSorting: true, width: '11%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                }
             ]
         };
 
@@ -47,11 +65,13 @@
             searchTrials: searchTrials,
             getInitialTrialSearchParams: getInitialTrialSearchParams,
             getGridOptions: getGridOptions,
+            getStudySources: getStudySources,
             getProtocolIdOrigins: getProtocolIdOrigins,
             getPhases: getPhases,
             getResearchCategories: getResearchCategories,
             getPrimaryPurposes: getPrimaryPurposes,
             getSecondaryPurposes: getSecondaryPurposes,
+            getAccrualDiseaseTerms: getAccrualDiseaseTerms,
             getResponsibleParties: getResponsibleParties,
             getFundingMechanisms: getFundingMechanisms,
             getInstituteCodes: getInstituteCodes,
@@ -90,12 +110,13 @@
         function upsertTrial(trialObj) {
             if (trialObj.new) {
                 //create a new trial
-                $log.info('creating an trial: ' + JSON.stringify(trialObj));
+                $log.info('creating a trial: ' + JSON.stringify(trialObj));
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_LIST, trialObj);
             }
 
             //update an existing trial
             var configObj = {}; //empty config
+            $log.info('updating a trial: ' + JSON.stringify(trialObj));
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_TRIAL + trialObj.id + ".json", trialObj, configObj);
         } //upsertTrial
 
@@ -135,6 +156,10 @@
             $rootScope.$broadcast(msgCode, {content: msgContent});
         } //broadcastMsg
 
+        function getStudySources() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.STUDY_SOURCES);
+        }
+
         function getProtocolIdOrigins() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PROTOCOL_ID_ORIGINS);
         }
@@ -153,6 +178,10 @@
 
         function getSecondaryPurposes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.SECONDARY_PURPOSES);
+        }
+
+        function getAccrualDiseaseTerms() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCRUAL_DISEASE_TERMS);
         }
 
         function getResponsibleParties() {

@@ -9,25 +9,28 @@
         .controller('personDetailCtrl', personDetailCtrl);
 
     personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService',
-        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
+        '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
 
     function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService,
-                              $scope, Common, sourceStatusObj, $state, $modal, OrgService, poAffStatuses, _) {
+                              $scope, Common, sourceStatusObj,sourceContextObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
-        console.log("in person detail controller now");
         vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
+        vm.sourceContextArr = sourceContextObj;
         vm.savedSelection = [];
+        vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
 
-        //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-        var pendingStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'PEND');
-        vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
-        vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
 
-        console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
+        if(!angular.isObject(personDetailObj))
+        {
+            //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
+            var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
+            vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
+            vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
+        }
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -52,15 +55,15 @@
             newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
 
-            // console.log("newPerson is: " + JSON.stringify(newPerson));
-            if (newPerson.new) {
-                newPerson.created_by = UserService.getLoggedInUsername();
-            } else {
-                newPerson.updated_by = UserService.getLoggedInUsername();
-            }
-
             PersonService.upsertPerson(newPerson).then(function (response) {
-                vm.resetForm();
+                //console.log('response: ' + JSON.stringify(response));
+                vm.savedSelection = [];
+                if (newPerson.new) {
+                    vm.resetForm();
+                } else {
+                    vm.curPerson.updated_by = response.data.updated_by;
+                    $state.go('main.people', {}, {reload: true});
+                }
                 toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
@@ -69,12 +72,15 @@
 
 
         vm.resetForm = function() {
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
             Object.keys(vm.curPerson).forEach(function(key) {
-                if (key != 'new' && key != 'po_affiliations' && key != 'source_status_id') {
+                if (excludedKeys.indexOf(key) == -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
                     $scope.person_form.$setPristine();
                 }
             });
+            //default context to ctrp
+            vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
         };
 
 
@@ -106,11 +112,11 @@
                    vm.savedSelection[index]._destroy = true; //mark it for destroy
                 });
             }
-            console.log("vm.savedSelection.length = " + vm.savedSelection.length);
+            // console.log("vm.savedSelection.length = " + vm.savedSelection.length);
         }; //batchSelect
 
 
-        vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
+        vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
         vm.openCalendar = function ($event, index, type) {
@@ -128,13 +134,17 @@
 
         /****************** implementations below ***************/
         function activate() {
+            //default context to ctrp, if not set
+            vm.curPerson.source_context_id = !vm.curPerson.source_context_id ?
+                OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curPerson.source_context_id;
+
             appendNewPersonFlag();
-
-            //prepare the modal window for existing people
-            prepareModal();
-
+            watchOrgReceiver();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
+            }
+            if(!vm.curPerson.new) {
+                prepareModal();
             }
         }
 
@@ -151,6 +161,54 @@
             }
         }
 
+
+
+        /**
+         * watch organizations selected from the modal
+         */
+        function watchOrgReceiver() {
+            $scope.$watchCollection(function() {return vm.orgsArrayReceiver;}, function(selectedOrgs, oldVal) {
+                _.each(selectedOrgs, function(anOrg, index) {
+                    //prevent pushing duplicated org
+                    if (Common.indexOfObjectInJsonArray(vm.savedSelection, "id", anOrg.id) == -1) {
+                        vm.savedSelection.unshift(OrgService.initSelectedOrg(anOrg));
+                    }
+                });
+
+            }, true);
+        } //watchOrgReceiver
+
+
+
+        /**
+         * Asynchronously populate the vm.savedSelection array for presenting
+         * the existing po_affiliation with the person being presented
+         *
+         */
+        function populatePoAffiliations() {
+            //find the organization name with the given id
+            var findOrgName = function(poAff, cb) {
+                OrgService.getOrgById(poAff.organization_id).then(function(organization) {
+                    var curOrg = {"id" : poAff.organization_id, "name": organization.name};
+                    curOrg.effective_date = DateService.convertISODateToLocaleDateStr(poAff.effective_date);
+                    curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
+                    curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
+                    curOrg.po_affiliation_id = poAff.id; //po affiliation id
+                    curOrg._destroy = poAff._destroy || false;
+                    vm.savedSelection.push(curOrg);
+                }).catch(function(err) {
+                    console.error("error in retrieving organization name with id: " + poAff.organization_id);
+                });
+                cb();
+            };
+
+            //return the organizations
+            var retOrgs = function() {
+                return vm.savedSelection;
+            };
+
+            async.eachSeries(vm.curPerson.po_affiliations, findOrgName, retOrgs);
+        } //populatePoAffiliations
 
         function prepareModal() {
             vm.confirmDelete = function (size) {
@@ -171,67 +229,10 @@
                     $state.go('main.people');
                 }, function () {
                     console.log("operation canceled")
-                    // $state.go('main.personDetail', {personId: vm.curPerson.id});
                 });
 
-            }; //confirmDelete
-
-
-            vm.searchOrgsForAffiliation = function(size) {
-                var modalInstance2 = $modal.open({
-                    animation: true,
-                    templateUrl: '/ctrp/ui/partials/modals/advanced_org_search_form_modal.html',
-                    controller: 'advancedOrgSearchModalCtrl as orgSearchModalView',
-                    size: size,
-                    //resolve: {
-                    //    personId: function () {
-                    //        return vm.curPerson.id;
-                    //    }
-                    //}
-                });
-
-                modalInstance2.result.then(function (selectedOrgs) {
-                   // console.log("received selected items: " + JSON.stringify(selectedOrgs));
-                    vm.batchSelect('selectAll', selectedOrgs);
-                }, function () {
-                    console.log("operation canceled");
-                });
-            };
-
-        }; //prepareModal
-
-
-        /**
-         * Asynchronously populate the vm.savedSelection array for presenting
-         * the existing po_affiliation with the person being presented
-         *
-         */
-        function populatePoAffiliations() {
-            //find the organization name with the given id
-            var findOrgName = function(poAff, cb) {
-                OrgService.getOrgById(poAff.organization_id).then(function(organization) {
-                    var curOrg = {"id" : poAff.organization_id, "name": organization.name};
-                    curOrg.effective_date = DateService.convertISODateToLocaleDateStr(poAff.effective_date);
-                    curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
-                    curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
-                    curOrg.po_affiliation_id = poAff.id; //po affiliation id
-                    curOrg._destroy = poAff._destroy || false;
-                    vm.savedSelection.push(curOrg);
-                }).catch(function(err) {
-                    console.log("error in retrieving organization name with id: " + poAff.organization_id);
-                });
-                cb();
-            };
-
-            //return the organizations
-            var retOrgs = function() {
-                return vm.savedSelection;
-            };
-
-            async.eachSeries(vm.curPerson.po_affiliations, findOrgName, retOrgs);
-        } //populatePoAffiliations
-
-
+            } //prepareModal
+        }; //confirmDelete
 
     }
 

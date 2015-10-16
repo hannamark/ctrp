@@ -46,7 +46,7 @@ module.exports = function() {
         MenuItemList.clickOrganizations();
         MenuItemList.clickListOrganizations();
         Search.setPersonFirstName(organization_search_create + Date.now());
-        person4 = SearchOrgName.getAttribute('value');
+        org4 = SearchOrgName.getAttribute('value');
         Search.clickSearchButton();
         setTimeout(callback,5000);
     });

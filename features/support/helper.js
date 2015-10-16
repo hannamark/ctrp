@@ -8,6 +8,7 @@ chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 var util = require('util');
 
+
 /**
  * Usage: wait(element, label)
  * element : It will wait for this element to come into view
@@ -17,6 +18,7 @@ var helper = function() {
 
     this.verifyLoginName = element(by.binding('headerView.username'));
 
+    var exp_del_bttn_pg_hdr = 'Delete button on Organization page';
     var header_Page_Text = '              Clinical Trials Reporting Program';
     this.header_Page = element(by.css('span[style="font-size:large;font-weight:bold;"]'));
 
@@ -79,8 +81,12 @@ var helper = function() {
         this.wait(button, errorMessage);
         button.click();
         console.log(errorMessage + " was clicked");
-        expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
-     //   expect(this.verifyLoginName.getText()).to.eventually.equal(browser.params.login.user_admin);
+        if (errorMessage == exp_del_bttn_pg_hdr){
+            console.log("Page header does not exists on the popup dialog box");
+        } else {
+            expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
+            //expect(this.verifyLoginName.getText()).to.eventually.equal(browser.params.login.user_admin);
+        }
     };
 
     this.getValue = function (fieldName, errorMessage) {
@@ -105,6 +111,22 @@ var helper = function() {
         this.wait(fieldName, errorMessage);
         expect(fieldName.getText()).to.eventually.equal(fieldValue);
         console.log(errorMessage + " - header value");
+    };
+
+    function objToStringAll (obj) {
+        var str = '';
+        for (var p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                str += p + '::' + obj[p] + '\n';
+            }
+        }
+        return str;
+    };
+
+    function objToString (obj) {
+        var j=''+obj+'';
+        JSON.stringify(j);
+        return j;
     };
 
 };

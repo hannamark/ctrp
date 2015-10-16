@@ -7,6 +7,7 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
+var moment = require('moment');
 
 ListOfOrganizationsPage = function () {
 
@@ -25,8 +26,15 @@ ListOfOrganizationsPage = function () {
      this.state = element(by.model('searchParams.state_province'));
      this.city = element(by.model('searchParams.city'));
      this.postalCode = element(by.model('searchParams.postal_code'));
-     this.searchButton = element(by.css('button[type="submit"]'));
+     this.searchButton = element(by.css('#submission_btn'));//element(by.css('button[type="submit"]'));
      this.clearButton = element(by.buttonText('Clear'));
+    this.orgModelSearch = element(by.id('org_search_modal'));
+    this.orgModelSelectItem = element(by.css('div[ng-click="selectButtonClick(row, $event)"]'));
+    this.orgModelConfirm = element(by.buttonText('Confirm Selection'));
+    this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
+    this.orgAffiliatedExpirationDate = element(by.model('org.expiration_date'));
+    this.orgFamilyRelationship = element(by.model('org.family_relationship_id'));
+    this.orgAffiliatedRemoveButton = element(by.css('.glyphicon.glyphicon-remove-circle'));
 
     this.searchResult = element.all(by.binding('grid.getCellValue(row, col) '));
     this.pageResult = element.all(by.css('div.row'));
@@ -159,49 +167,41 @@ ListOfOrganizationsPage = function () {
         });
     };
 
-    this.LocationsPage = function(name){
-        var locations  = this.searchResult;
-        expect(locations.count()).toNotBe(0);
-        return protractor.promise.createFlow(function(flow){
-            var found;
-            var locations  = element.all(by.repeater('l in location'));
-            var searchPromise = protractor.promise.defer();
-            flow.execute(function(){
-                var idx = 0, found = -1;
-                locations.each(function(item){
-                    var _idx = idx;
-                    if(found >= 0){
-                        console.log("skipping")
-                        return;
-                    }
-                    item.getText().then(function(text){
-                        if(text == name){
-                            console.log("setting found.")
-                            found = _idx;
-                        }
-                        if(found >= 0 || _idx === locations.count()-1){
-                            searchPromise.fulfill(found);
-                        }
-                    });
-                    idx++;
-                });
-                return searchPromise.promise;
-            })
-            flow.execute(function(){
-                var promise = protractor.promise.defer();
-                searchPromise.then(function(idx){
-                    locations.get(idx).click().then(function(){
-                        promise.fulfill(true);
-                    });
+    this.clickOrgSearchModel = function(){
+        search.clickButton(this.orgModelSearch,"Organization Model Search button");
+    };
 
-                })
 
-                return promise.promise;
-            });
-        });
+    this.selectOrgModelItem = function(){
+        search.clickButton(this.orgModelSelectItem,"Organization Model list Item selection");
+    };
 
-    }
+    this.clickOrgModelConfirm = function(){
+        search.clickButton(this.orgModelConfirm,"Organization Model Confirm button");
+    };
 
+
+    this.setAffiliatedOrgEffectiveDate = function(orgEffectiveDate){
+        search.setValue(this.affiliatedOrgEffectiveDate,orgEffectiveDate,"Add Organization Effective Date field");
+    };
+
+    this.verifyDefaultAffiliatedOrgEffectiveDate = function() {
+        var datenow = moment().format('DD-MMM-YYYY');
+        console.log('date=' + datenow);
+            (this.orgAffiliatedEffectiveDate.getAttribute('value')).should.eventually.equal(datenow);
+    };
+
+    this.verifyDefaultAffiliatedOrgExpirationDate = function() {
+        (this.orgAffiliatedExpirationDate.getAttribute('value')).should.eventually.equal('');
+    };
+
+    this.verifyOrgFamilyRelationship = function(orgFamilyRelationshipType){
+        search.getVerifyValue(this.orgFamilyRelationship,orgFamilyRelationshipType,"Get and verify Org family relationship field");
+    };
+
+    this.clickOrgAffiliatedRemove = function(){
+        search.clickButton(this.orgAffiliatedRemoveButton,"Organization Model Remove Affiliated Organization button");
+    };
 
 };
 module.exports = ListOfOrganizationsPage;

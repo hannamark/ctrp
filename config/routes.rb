@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
 
+  resources :accrual_disease_terms
+
   resources :trial_documents
 
   scope "/ctrp" do
     devise_for :users
+    root 'ctrp#index'
 
     mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
@@ -51,6 +54,8 @@ Rails.application.routes.draw do
 
     resources :comments
 
+    get '/users/search' => 'users#search'
+    post '/users/search' => 'users#search'
     # All the User routes(non-devise) should be accessed by username
     # rather that "id" in order to prevent exposing the "id"
     resources :users, param: :username do
@@ -59,8 +64,6 @@ Rails.application.routes.draw do
         post 'disapprove'
       end
     end
-
-    resources :after_signup
 
     resources :people do
       collection do
@@ -88,17 +91,17 @@ Rails.application.routes.draw do
     # Devise related routes
     devise_scope :user do
       delete "sign_out" => "sessions#destroyrailslogin", :as => :destroyrailslogin_session
-      #get "sign_up" => "registrations#new"
     end
 
     devise_for :ldap_users, :local_users, skip: [ :sessions ]
     devise_for :omniauth_users, :controllers => { :omniauth_callbacks => "omniauth_users/omniauth_callbacks" }
-    devise_for :users, :controllers =>  { registrations: "registrations" }
     devise_scope :local_user do
       get 'sign_in' => 'sessions#new', :as => :new_session
       post 'sign_in' => 'sessions#create', :as => :create_session
       post 'sign_out' => 'sessions#destroy', :as => :destroy_session
       post 'sign_up' => 'registrations#create', :as => :create_registration
+      get 'change_password' => 'registrations#edit', :as => :edit_registration
+      post 'change_password' => 'registrations#update', :as => :update_registration
     end
 
     scope '/registry' do
@@ -106,14 +109,24 @@ Rails.application.routes.draw do
       resources :phases
       resources :primary_purposes
       resources :secondary_purposes
+      resources :accrual_disease_terms
       resources :responsible_parties
-      resources :trials
+      resources :trials do
+        collection do
+          get 'search'
+          post 'search'
+        end
+      end
       resources :protocol_id_origins
       resources :holder_types
       resources :expanded_access_types
       resources :trial_statuses
       resources :research_categories
-      resources :trial_documents
+      resources :trial_documents do
+        collection do
+          get 'download/:id' => 'trial_documents#download'
+        end
+      end
 
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'

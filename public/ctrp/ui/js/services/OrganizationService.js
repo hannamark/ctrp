@@ -21,7 +21,7 @@
             alias: true,
             // po_id : "",
             ctrp_id : "",
-            source_context : "CTRP",
+            source_context : "",
             source_id : "",
             source_status : "",
             family_name : "",
@@ -44,7 +44,7 @@
         var gridOptions = {
             enableColumnResizing: true,
             totalItems: null,
-            rowHeight: 50,
+            rowHeight: 22,
             // enableFullRowSelection: true,
             enableSelectAll: false,
             //enableRowSelection: false,
@@ -61,7 +61,7 @@
                 },
                 {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '8%'},
                 {
-                    name: 'name', enableSorting: true, width: '30%',
+                    name: 'name', enableSorting: true, width: '25%',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                  //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -70,36 +70,44 @@
                     '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
+                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, width: '8%'},
                 {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '8%'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
+                {name: 'aff_families_count', displayName: 'Family', enableSorting: true, width: '8%'},
+                  {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
+                    cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" popover-trigger="mouseenter" class="btn btn-default">Family</button>',
+                },
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
+                {name: 'country', displayName: 'Country', enableSorting: true, width:'9%'},
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'8%'},
+                {name: 'phone', enableSorting: true, width: '10%'},
                 {name: 'email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'phone', enableSorting: true, width: '8%'}
+                }
 
             ]
         };
 
         var services = {
-            getAllOrgs : getAllOrgs,
-            getOrgById : getOrgById,
-            upsertOrg : upsertOrg,
-            searchOrgs : searchOrgs,
-            getInitialOrgSearchParams : getInitialOrgSearchParams,
-            getGridOptions : getGridOptions,
-            watchCountrySelection : watchCountrySelection,
-            getStatesOrProvinces : getStatesOrProvinces,
-            getSourceContexts : getSourceContexts,
-            getSourceStatuses : getSourceStatuses,
-            deleteOrg : deleteOrg,
-            indexOfOrganization : indexOfOrganization,
-            preparePOAffiliationArr : preparePOAffiliationArr,
-            initSelectedOrg : initSelectedOrg,
-            curateOrg : curateOrg
+            getAllOrgs: getAllOrgs,
+            getOrgById: getOrgById,
+            upsertOrg: upsertOrg,
+            searchOrgs: searchOrgs,
+            getInitialOrgSearchParams: getInitialOrgSearchParams,
+            getGridOptions: getGridOptions,
+            watchCountrySelection: watchCountrySelection,
+            getStatesOrProvinces: getStatesOrProvinces,
+            getSourceContexts: getSourceContexts,
+            getSourceStatuses: getSourceStatuses,
+            deleteOrg: deleteOrg,
+            indexOfOrganization: indexOfOrganization,
+            preparePOAffiliationArr: preparePOAffiliationArr,
+            initSelectedOrg: initSelectedOrg,
+            curateOrg: curateOrg,
+            findContextId: findContextId
         };
 
         return services;
@@ -327,6 +335,24 @@
          */
         function curateOrg(curationObject) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CURATE_ORG, curationObject);
+        }
+
+
+        /**
+         * From the array of context (array of JSON objects), locate the context id for the contextName
+         *
+         * @param ctrpContextArr
+         * @param key, String
+         * @param contextName, String (e.g. 'CTRP')
+         * @returns {number}
+         */
+        function findContextId(ctrpContextArr, key, contextName) {
+            var ctrpContextId = -1; //not found
+            var needleIndex = Common.indexOfObjectInJsonArray(ctrpContextArr, key, contextName);
+            if (needleIndex > -1) {
+                ctrpContextId = ctrpContextArr[needleIndex].id || -1;
+            }
+            return ctrpContextId;
         }
 
 

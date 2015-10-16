@@ -37,6 +37,7 @@ FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center'
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
 StudySource.find_or_create_by(code: 'INS', name: 'Institutional')
+StudySource.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 StudySource.find_or_create_by(code: 'IND', name: 'Industrial')
 StudySource.find_or_create_by(code: 'OTH', name: 'Other')
 
@@ -60,6 +61,11 @@ PrimaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
 SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
+
+AccrualDiseaseTerm.find_or_create_by(code: 'SDC', name: 'SDC')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD9', name: 'ICD9')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD10', name: 'ICD10')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD-O-3', name: 'ICD-O-3')
 
 ResponsibleParty.find_or_create_by(code: 'SP', name: 'Sponsor')
 ResponsibleParty.find_or_create_by(code: 'PI', name: 'Principal Investigator')
@@ -91,10 +97,13 @@ TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Interven
 TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
 TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+TrialStatus.find_or_create_by(code: 'AVA', name: 'Available')
+TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available')
+TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available')
+TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
 
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
-ResearchCategory.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 ResearchCategory.find_or_create_by(code: 'ANC', name: 'Ancillary Correlative')
 ########### SEEDING STATIC DATA ENDS #######################
 
@@ -110,7 +119,7 @@ AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', des
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
-AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'M2', big_value: '')
+AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'S5', big_value: '')
 
 
 
@@ -144,7 +153,7 @@ org11 = Organization.create(id: 36296115, source_id: 'NC274', name: 'Wake Forest
 org12 = Organization.create(id: 36296009, source_id: 'NC272', name: 'Wake Forest University at Mount Airy', source_status: source_act, source_context: ctep, address: '910 Worth St.', city: 'Mt. Airy', state_province:'North Carolina', country:usa)
 org13 = Organization.create(id: 149074, source_id: 'NC002', name: 'Wake Forest University Health Sciences', source_status: source_act, source_context: ctep, address: '1 Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa) #no source id
 org14 = Organization.create(id: 149221, source_id: 'NC008', name: 'Wake Medical Center-Breast Screening and Diagnostic', source_status: source_act, source_context: ctep, address: '3000 New Bern Avenue ', city: 'Raleigh', state_province:'North Carolina', country:usa)
-org15 = Organization.create(id: 23875109, name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctrp, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: '23456', ctrp_id: 23456) #no source id
+org15 = Organization.create(id: 23875109, name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctrp, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: '23456') #no source id
 org16 = Organization.create(id: 24068, source_id: 'ACT', name: 'Actelion Pharmaceuticals Switzerland', source_status: source_act, source_context: ctep, address: 'Gewerbestrasse 16', city: 'Allschwil', state_province:'Basel-Landschaft', country: 'Switzerland')
 if !org16.new_record?
   org16.name_aliases.create(name: 'Actelion')
@@ -154,7 +163,7 @@ org18 = Organization.create(id: 34563051, name: 'UCB, Inc.', source_status: sour
 if !org18.new_record?
   org18.name_aliases.create(name: 'UCB Pharma')
 end
-org19 = Organization.create(name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctep, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: "ACRN", ctrp_id: 23456) #no source id
+org19 = Organization.create(name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctep, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: "ACRN", ctrp_id: org15.id) #no source id
 
 family1 = Family.create(name: 'Masonic Cancer Center')
 if !family1.new_record?
@@ -250,16 +259,6 @@ end
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
-charlie ="shivece@mail.nih.gov"
-mahesh = "yelisettim@mail.nih.gov"
-shilpi = "singhs10@mail.nih.gov"
-shamim = "ahmeds6@mail.nih.gov"
-murali = "dullam@mail.nih.gov"
-tony = "wangg5@mail.nih.gov"
-shenpei = "wus4@mail.nih.gov"
-sarada = "schintal@mail.nih.gov"
-hemant = "undalehv@mail.nih.gov"
-tekumalla = "radhika.tekumalla@nih.gov"
 charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER" }
 mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER" }
 shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER" }
@@ -269,8 +268,9 @@ tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
 shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
 sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
 hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
+radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_SUPER" }
 
-ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, tekumalla]
+ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika]
 
 ##Add CTRP Business Analysts
 
@@ -280,9 +280,9 @@ michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR" }
 sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_READONLY" }
 kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR" }
 deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR" }
+susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_READONLY" }
 
-
-ba_users = [joe, jose, michael, sandy, kirsten, deb]
+ba_users = [joe, jose, michael, sandy, kirsten, deb, susan]
 
 all_users = ncictrpdev_users + ba_users
 
