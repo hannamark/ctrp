@@ -87,19 +87,10 @@
         }; //isLoggedIn
 
 
-        this.gsa = function (gsaObj) {
-            console.log('In service, gsa_data: ' + JSON.stringify(gsaObj));
-            toastr.success('In GSA');
-            var user_type = LocalCacheService.getCacheWithKey("user_type");
-            if (user_type == "LocalUser") {
-                gasObj.gsa_text ="XYZ"
-            } else {
-                gasObj.gsa_text = "ABC"
-            }
+        this.getUserType = function() {
+            return  LocalCacheService.getCacheWithKey("user_type");
+        }
 
-            $state.go('main.gsa');
-
-        }; //gsa
 
         this.login = function (userObj) {
             PromiseTimeoutService.postDataExpectObj('sign_in', userObj)
