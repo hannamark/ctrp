@@ -5,7 +5,7 @@ class SourceStatusesController < ApplicationController
   # GET /source_statuses
   # GET /source_statuses.json
   def index
-    #TODO need to use constant for ROLE_CURATOR
+    #TODO need to use constant for ROLE_CURATOR and ROLE_SUPER
     if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
       @source_statuses = SourceStatus.all
     else
