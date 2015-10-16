@@ -121,15 +121,10 @@
                 <!--source status-->
                 <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status:</label>
                 <div class="col-xs-12 col-sm-4">
-                    <div ng-if="sourceStatusArr.length > 1">
-                        <select class="form-control input-sm" id="source_status" ng-model="searchParams.source_status">
-                            <option value="">Select a status</option>
-                            <option ng-repeat="status in sourceStatusArr" value="{{status.name}}">{{status.name}}</option>
-                        </select>
-                    </div>
-                    <div ng-if="sourceStatusArr.length == 1" class="form-text">
-                       {{sourceStatusArr[0].name}}
-                    </div>
+                    <select class="form-control input-sm" id="source_status" ng-model="searchParams.source_status"
+                            ng-options="status.name for status in sourceStatusArr" >
+                        <option value="">Select a status</option>
+                    </select>
                 </div>
                 <!-- source status ends -->
             </div>

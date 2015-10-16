@@ -147,7 +147,12 @@ class OrganizationsController < ApplicationController
       end
       @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
       @organizations = @organizations.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present?
-      @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
+      if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
+        @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
+      else
+        # TODO need constant for Active
+        @organizations = @organizations.with_source_status("Active")
+      end
       @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
       @organizations = @organizations.matches_wc('address', params[:address]) if params[:address].present?
       @organizations = @organizations.matches_wc('address2', params[:address2]) if params[:address2].present?
