@@ -1,4 +1,4 @@
-var HtmlReporter = require('protractor-html-screenshot-reporter'); 
+var HtmlReporter = require('protractor-html-screenshot-reporter');
 var path = require('path');
 
 exports.config = {

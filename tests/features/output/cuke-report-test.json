@@ -1,0 +1,23 @@
+[
+  {
+    "description": "As a PO Curator, I can Delete an Organization with no Trial Records",
+    "assertions": [
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      }
+    ],
+    "duration": 15251266076
+  }
+]

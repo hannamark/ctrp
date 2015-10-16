@@ -4,7 +4,7 @@
 var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
 var reportDir = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/features/output';
-var reportFilePath = reportDir + '/cucumber-test-results.xml';
+var reportFilePath = reportDir + '/cucumber-test-results.json';
 var testResult = [];
 
 var reporterHooks = function() {
@@ -103,9 +103,48 @@ var reporterHooks = function() {
     this.registerHandler('AfterFeatures', function(event, callback) {
         var xml = junit(JSON.stringify(testResult), { indent: '    ' });
         var file = fs.openSync(reportFilePath, 'w+');
-        fs.writeSync(file, xml);
+        fs.writeSync(file, JSON.stringify(testResult));
+
+        /*
+        if (xml.nodeType == 1) { // element
+            // do attributes
+            if (xml.attributes.length > 0) {
+                obj["@attributes"] = {};
+                for (var j = 0; j < xml.attributes.length; j++) {
+                    var attribute = xml.attributes.item(j);
+                    obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                }
+            }
+        } else if (xml.nodeType == 3) { // text
+            obj = xml.nodeValue;
+        }
+
+        // do children
+        if (xml.hasChildNodes()) {
+            for(var i = 0; i < xml.childNodes.length; i++) {
+                var item = xml.childNodes.item(i);
+                var nodeName = item.nodeName;
+                if (typeof(obj[nodeName]) == 'undefined') {
+                    obj[nodeName] = xmlToJson(item);
+                } else {
+                    if (typeof(obj[nodeName].push) == 'undefined') {
+                        var old = obj[nodeName];
+                        obj[nodeName] = [];
+                        obj[nodeName].push(old);
+                    }
+                    obj[nodeName].push(xmlToJson(item));
+                }
+            }
+        }
+        //return obj;   */
+
+
+
         callback();
     });
+
+
+
 };
 
 module.exports = reporterHooks;
