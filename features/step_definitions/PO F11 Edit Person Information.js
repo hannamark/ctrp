@@ -27,14 +27,9 @@ module.exports = function() {
     var person = new personPage();
     var searchOrg = new orgPage();
     var selectItem =new selectList();
-    var searchPersonName = element(by.model('searchParams.fname'));
     var sourceStatus = 'Pending';
-    var fNameEditTo = 'Alicia_PR_test';
-    var lNameEditTo = 'Kunin-Batson_PRTest';
-    var phoneToEdit = '612-624-6931';
-    var phoneEditTo = '444-555-6666';
-    var emailtoEdit = 'kunin003@umn.edu';
-    var emailEditTo = 'ssingh@nih.gov';
+    var phoneEditTo = '422-522-6622';
+    var emailEditTo = 'ssingh@cuke.test';
 
 
 
@@ -42,8 +37,8 @@ module.exports = function() {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         menuItemList.clickRole('CURATOR');
-        person.personDefaultCreate('','SSCukePerson','','PRlName','','','');
-        browser.sleep(250).then(callback);
+        person.personDefaultCreate('','SSCukePerson','','PRlName','','singh@test.com','444-555-6666');
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have searched for a Person record and found the one I wish to edit$/, function (callback) {
@@ -53,7 +48,7 @@ module.exports = function() {
         search.clickSearch();
         expect(menuItemList.inResults(value1)).to.become('true');
             element(by.linkText(value1)).click();});
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected the function Edit Person$/, function (callback) {
@@ -62,31 +57,28 @@ module.exports = function() {
 
     this.Given(/^I am on the edit Person information screen$/, function (callback) {
       person.verifyPersonEditHeader();
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I change the name of the Person I wish to edit$/, function (callback) {
-        per4.then(function(value1){console.log('first Name' + value1); person.setAddPersonFirstName(value1 + 'Edited');
-            //search.clickSearch();
-           // expect(menuItemList.inResults(value1)).to.become('true');
-          //  element(by.linkText(value1)).click();
+        per4.then(function(value1){
+            console.log('first Name' + value1);
+            person.setAddPersonFirstName(value1 + 'Edited');
         });
-       // person.setAddPersonFirstName(fNameEditTo);
-      //  person.setAddPersonLastName(lNameEditTo);
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
 
     this.When(/^I set the Person status to either Pending or Active$/, function (callback) {
         selectItem.selectSourceStatus(sourceStatus);
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I submit my edit request for Person$/, function (callback) {
         person.clickSave();
-     //   dateTimeNow = moment().format('DD-MMM-YYYY hh:mm');
-     //   Console.log('Date time when Save is : ' + dateTimeNow);
-        browser.sleep(250).then(callback);
+        dateTimeNow = moment().format('DD-MMM-YYYY HH:mm');
+        console.log('Date time when Save is : ' + dateTimeNow);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system should change the Person name in the Person record to the new name$/, function (callback) {
@@ -95,71 +87,61 @@ module.exports = function() {
             expect(menuItemList.inResults(value1 + 'Edited')).to.become('true');
             element(by.linkText(value1 + 'Edited')).click();
             person.getVerifyAddPerFName(value1 + 'Edited');});
-        browser.sleep(250).then(callback);
+      //  person.personVerifyLastUpdatedNameDate(dateTimeNow);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^my name should be listed as last update with the current date and time for Person$/, function (callback) {
-     //   person.personVerifyLastUpdatedNameDate(dateTimeNow);
-        browser.sleep(250).then(callback);
+        person.personVerifyLastUpdatedNameDate(dateTimeNow);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the person status should be Pending or Active as indicated$/, function (callback) {
         person.getVerifyAddPerSourceStatus(sourceStatus);
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
 
     this.When(/^I change the phone number of the Person I wish to edit$/, function (callback) {
-        person.setAddPersonPhone(phoneEditTo);
-        browser.sleep(250).then(callback);
+            person.setAddPersonPhone(phoneEditTo);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system should change the phone number in the Person record to the new phone number$/, function (callback) {
-        search.setPersonFirstName(fName);
-        search.setPersonLastName(lName);
-        search.setPersonPhone(phoneEditTo);
-        search.clickSearch();
-        expect(menuItemList.inResults(fName)).to.become('true');
-        expect(menuItemList.inResults(lName)).to.become('true');
-        expect(menuItemList.inResults(phoneEditTo)).to.become('true');
-        element(by.linkText(fName)).click();
-        person.getVerifyAddPerFName(fName);
-        person.getVerifyAddPerPhone(phoneEditTo);
-        person.setAddPersonPhone(phoneToEdit);
-        person.clickSave();
-        search.setPersonFirstName(fName);
-        search.setPersonLastName(lName);
-        search.setPersonPhone(phoneToEdit);
-        search.clickSearch();
-        element(by.linkText(fName)).click();
-        browser.sleep(250).then(callback);
+        per4.then(function(value1){
+            console.log('set first Name' + value1);
+            search.setPersonFirstName(value1);
+            search.setPersonPhone(phoneEditTo);
+            search.clickSearch();
+            expect(menuItemList.inResults(value1)).to.become('true');
+            element(by.linkText(value1)).click();
+            person.getVerifyAddPerFName(value1);
+            person.getVerifyAddPerPhone(phoneEditTo);
+        });
+       // person.personVerifyLastUpdatedNameDate(dateTimeNow);
+        browser.sleep(25).then(callback);
     });
 
 
     this.When(/^I change the email of the Person I wish to edit$/, function (callback) {
         person.setAddPersonEmail(emailEditTo);
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system should change the email address in the Person record to the new email address$/, function (callback) {
-        search.setPersonFirstName(fName);
-        search.setPersonLastName(lName);
-        search.setPersonEmail(emailEditTo);
-        search.clickSearch();
-        expect(menuItemList.inResults(fName)).to.become('true');
-        expect(menuItemList.inResults(lName)).to.become('true');
-        expect(menuItemList.inResults(emailEditTo)).to.become('true');
-        element(by.linkText(fName)).click();
-        person.getVerifyAddPerFName(fName);
-        person.getVerifyAddPerEmail(emailEditTo);
-        person.setAddPersonEmail(emailtoEdit);
-        person.clickSave();
-        search.setPersonFirstName(fName);
-        search.setPersonLastName(lName);
-        search.setPersonEmail(emailtoEdit);
-        search.clickSearch();
-        element(by.linkText(fName)).click();
-        browser.sleep(250).then(callback);
+        per4.then(function(value1){
+            console.log('set first Name' + value1);
+            search.setPersonFirstName(value1);
+            search.setPersonEmail(emailEditTo);
+            search.clickSearch();
+            expect(menuItemList.inResults(value1)).to.become('true');
+            expect(menuItemList.inResults(emailEditTo)).to.become('true');
+            element(by.linkText(value1)).click();
+            person.getVerifyAddPerFName(value1);
+            person.getVerifyAddPerEmail(emailEditTo);
+        });
+        // person.personVerifyLastUpdatedNameDate(dateTimeNow);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I select an Affiliated Organization$/, function (callback) {

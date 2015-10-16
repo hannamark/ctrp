@@ -1,17 +1,11 @@
-/*module.exports = function JsonOutputHook() {
-    var Cucumber = require('cucumber');
-    var JsonFormatter = Cucumber.Listener.JsonFormatter();
-    var fs = require('fs');
-    JsonFormatter.log = function (json) {
-        fs.writeFile('cucumber.json', json, function (err) {
-            if (err) throw err;
-        });
-    };
-    this.registerListener(JsonFormatter);
-};*/
 
+/**
+ * Author: Shamim Ahmed
+ * Author: Shilpi Singh
+ * Date: 10/14/2015
+ * Desc: Project related methods
+ */
 
-// Changes XML to JSON
 function xmlToJson(xml) {
 
     // Create the return object

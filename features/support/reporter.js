@@ -1,3 +1,10 @@
+/**
+ * Author: Shamim Ahmed
+ * Author: Shilpi Singh
+ * Date: 10/14/2015
+ * Desc: Project related methods
+ */
+
 // Customized reporter for cucumber-js
 // Copy this file to your cucumber support file path. E.g. features/support/reporter.js
 // Json result and report will save to features/output/
@@ -104,7 +111,6 @@ var reporterHooks = function() {
         var xml = junit(JSON.stringify(testResult), { indent: '    ' });
         var file = fs.openSync(reportFilePath, 'w+');
         fs.writeSync(file, JSON.stringify(testResult));
-
         /*
         if (xml.nodeType == 1) { // element
             // do attributes
@@ -118,7 +124,6 @@ var reporterHooks = function() {
         } else if (xml.nodeType == 3) { // text
             obj = xml.nodeValue;
         }
-
         // do children
         if (xml.hasChildNodes()) {
             for(var i = 0; i < xml.childNodes.length; i++) {
@@ -137,14 +142,8 @@ var reporterHooks = function() {
             }
         }
         //return obj;   */
-
-
-
         callback();
     });
-
-
-
 };
 
 module.exports = reporterHooks;

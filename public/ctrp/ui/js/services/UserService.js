@@ -87,16 +87,22 @@
         }; //isLoggedIn
 
 
+        this.getUserType = function() {
+            return  LocalCacheService.getCacheWithKey("user_type");
+        }
+
+
         this.login = function (userObj) {
             PromiseTimeoutService.postDataExpectObj('sign_in', userObj)
                 .then(function (data) {
-                   // console.log('successful login, data returned: ' + JSON.stringify(data));
+                    console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
                         LocalCacheService.cacheItem("token", data.token);
                         LocalCacheService.cacheItem("username", userObj.user.username);
                         _setAppVersion(data.app_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
+                        LocalCacheService.cacheItem("user_type", data.user_type);
 
                         //var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
                         LocalCacheService.cacheItem("privileges", data.privileges);

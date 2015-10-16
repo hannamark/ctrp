@@ -8,6 +8,9 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 var menuItemList = require('../support/PoCommonBar');
+var addOrgPage = require('../support/AddOrganizationPage');
+var searchOrgPage = require('../support/ListOfOrganizationsPage');
+var listOfPeoplePage = require('../support/ListOfPeoplePage');
 var moment = require('moment');
 
 AddPersonPage = function () {
@@ -36,7 +39,9 @@ AddPersonPage = function () {
     var personVerifyAddHeader = 'Add Person';
     var personVerifyEditHeader = 'Edit Person';
     var menuItem = new menuItemList();
-
+    var addOrg = new addOrgPage();
+    var searchOrg = new searchOrgPage();
+    var searchPeople = new listOfPeoplePage();
 
     var addPerson = new helper();
 
@@ -165,17 +170,70 @@ AddPersonPage = function () {
         });
     };
 
-    this.personDefaultCreate = function(prefix, fName, mName, lName, suffix, email, phone){
+    var hasNotNullValue = function(elementFinder) {
+        return function() {
+            return elementFinder.getAttribute("value").then(function(value) {
+                return !!value;  // is not null
+            });
+        };
+    };
+
+    this.personDefaultCreate = function(prefix, fName, mName, lName, suffix, email, phone, affOrgName){
         menuItem.clickPeople();
         menuItem.clickAddPerson();
         this.setAddPersonPrefix(prefix);
         this.setAddPersonFirstName(fName + moment().format('MMMDoYY hmmss'));
+        broswer.wait(hasNotNullValue(this.addPersonFirstName),10000);
         per4 = this.addPersonFirstName.getAttribute('value');
-        this.setAddPersonSecondName(mName);
-        this.setAddPersonLastName(lName);
-        this.setAddPersonSuffix(suffix);
-        this.setAddPersonEmail(email);
-        this.setAddPersonPhone(phone);
+        per4.then(function(value4) {
+            console.log('Added family name is' + value4);
+            element(by.model('personDetailView.curPerson.lname')).sendKeys(lName);
+            element(by.css('button[type="submit"]')).click();
+           // this.setAddPersonSecondName(mName);
+          //  this.setAddPersonLastName(lName);
+          //  this.setAddPersonSuffix(suffix);
+          //  this.setAddPersonEmail(email);
+          //  this.setAddPersonPhone(phone);
+            if (affOrgName !== '') {
+                addOrg.orgDefaultCreate(affOrgName, '', '', '', '', '', '', '', '', '', '', '');
+                org4.then(function (value5) {
+                    console.log('search Organization - ' + value5);
+                    searchOrg.setOrgName(value5);
+                    searchOrg.clickSearchButton();
+                    searchOrg.selectOrgModelItem();
+                    searchOrg.clickOrgModelConfirm();
+                });
+                menuItem.clickPeople();
+                menuItem.clickListPeople();
+                searchPeople.setPersonFirstName(value4);
+                searchPeople.clickSearch();
+                expect(menuItem.inResults(value4)).to.become('true');
+                element(by.linkText(value4)).click();
+                searchOrg.clickOrgSearchModel();
+            }
+        });
+      //      searchOrg.clickOrgSearchModel();
+      //      org4.then(function(value4){
+      //          console.log('search Organization - ' + value4);
+      //          searchOrg.setOrgName(value4);
+      //          searchOrg.clickSearchButton();
+      //          searchOrg.selectOrgModelItem();
+      //          searchOrg.clickOrgModelConfirm();
+      //      });
+      //      this.clickSave();})
+        //this.setAddPersonSecondName(mName);
+        //this.setAddPersonLastName(lName);
+        //this.setAddPersonSuffix(suffix);
+        //this.setAddPersonEmail(email);
+        //this.setAddPersonPhone(phone);
+        //searchOrg.clickOrgSearchModel();
+        //org4.then(function(value4){
+        //    console.log('search Organization - ' + value4);
+        //    searchOrg.setOrgName(value4);
+        //    searchOrg.clickSearchButton();
+        //    searchOrg.selectOrgModelItem();
+        //    searchOrg.clickOrgModelConfirm();
+        //});
         this.clickSave();
     };
 
