@@ -64,11 +64,11 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'email', enableSorting: true, width: '10%',
+                {name: 'email',  displayName: 'Email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phone', enableSorting: true, width: '6%',
+                {name: 'phone', displayName: 'Phone', enableSorting: true, width: '6%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }//,
