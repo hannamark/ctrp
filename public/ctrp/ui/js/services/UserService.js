@@ -48,7 +48,10 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'username', enableSorting: true, displayName: 'Username', width: '7%'},
+                {name: 'username', enableSorting: true, displayName: 'Username', width: '10%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
                 {name: 'first_name', displayName: 'First', enableSorting: true, width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
@@ -158,7 +161,9 @@
              console.log('User searchparams: ' + JSON.stringify(searchParams));
            // if (!!searchParams) {
                // toastr.success('Success', 'Successful in UserService, searchUsers');
-                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+                var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+            console.log('User List: ' + JSON.stringify(user_list));
+              return user_list
            // }
         } //searchUsers
 
