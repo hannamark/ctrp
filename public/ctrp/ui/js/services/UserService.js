@@ -113,7 +113,7 @@
                         Common.broadcastMsg("signedIn");
 
                         $timeout(function () {
-                            $state.go('main.defaultContent');
+                            $state.go('main.gsa');
                         }, 1000);
                     } else {
                         toastr.error('Login failed', 'Login error');
@@ -249,6 +249,17 @@
 
         this.getLoginBulletin = function() {
             return PromiseTimeoutService.getData(DMZ_UTILS.LOGIN_BULLETIN);
+        };
+
+        this.getGsa = function() {
+            var gsaObj = {};
+           PromiseTimeoutService.getData(URL_CONFIGS.USER_GSA).then(function(data) {
+               console.log('getGSA successful , data returned: ' + JSON.stringify(data));
+               gsaObj = data;
+           }).catch(function (err){
+               $log.error("error in log in: " + JSON.stringify(err));
+           });
+           return gsaObj
         };
 
         this.upsertUser=function(userObj) {

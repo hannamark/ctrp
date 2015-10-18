@@ -70,24 +70,8 @@ class UsersController < ApplicationController
       gsa_text = yml_content['en']['non_nih_user_gsa_msg']
     end
 
-    respond_to do |format|
-      format.json { render :status => 200, :json => { :success => true, :gsa => "#{gsa_text}", :info => "GSA Msg"} }
-    end
-=begin
-    respond_to do |format|
-      #@person.po_affiliations.destroy
-      if @user.update_attributes(user_params)
-        Rails.logger.info "@user = #{@user.inspect}"
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render json: @user}
-      else
-        #format.html { render :edit }
-        Rails.logger.info "@user= #{@user.inspect}"
-        Rails.logger.info "@user.errors = #{@user.errors.inspect}"
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-=end
+    render :status => 200, :json => { :success => true, :gsa => "#{gsa_text}", :info => "GSA Msg"}
+
 end
 
 

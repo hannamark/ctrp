@@ -16,17 +16,12 @@
         var vm = this;
         //console.log('received loginBulletin: ' + JSON.stringify(loginBulletin));
 
-        vm.gsaData = "Hi";
 
-        console.log('received gsa_data: ' + JSON.stringify(vm.gsaData));
+        //vm.gsa = gsaObj.data;
+        vm.userType = UserService.getUserType();
+        console.log('userType: ' + JSON.stringify(vm.userType));
 
-        var userType = UserService.getUserType();
-        console.log('userType: ' + JSON.stringify(userType));
-        if (userType == "LocalUser") {
-            vm.gsaData ="XYZ"
-        } else {
-            vm.gsaData = "ABC"
-        }
+
 
         vm.accept = function() {
             console.log('ACCEPT');
