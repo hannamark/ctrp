@@ -204,6 +204,11 @@
                     }
                 })
 
+                .state('main.welcome_signup', {
+                    url: '/welcome_signup',
+                    templateUrl: '/ctrp/ui/partials/welcome_signup.html'
+                })
+
                 .state('main.gsa', {
                     url: '/gsa',
                     templateUrl: '/ctrp/ui/partials/gsa.html',

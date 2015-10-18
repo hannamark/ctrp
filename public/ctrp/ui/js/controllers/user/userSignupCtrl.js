@@ -8,8 +8,8 @@
     angular.module('ctrpApp')
         .controller('userSignupCtrl', userSignupCtrl);
 
-    userSignupCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$sce',
-        '$state', '$timeout', 'UserService'];
+    userSignupCtrl.$inject = ['$scope', '$http', '$window', 'toastr',
+        '$sce', '$state', '$timeout', 'UserService'];
 
     function userSignupCtrl($scope, $http, $window, toastr, $state, $sce,
                       $timeout,  UserService) {
@@ -30,12 +30,20 @@
 
         vm.updateUser = function () {
             //
+            UserService.upsertUserSignup(vm.userObj);
+
+            /**
             UserService.upsertUserSignup(vm.userObj).then(function (response) {
-                //toastr.success('User ' + vm.userObj + ' has been recorded', 'Operation Successful!');
+                toastr.success('User ' +JSON.stringify(vm.userObj) + ' has been recorded', 'Operation Successful!');
+                console.log("Added User" + JSON.stringify(vm.userObj));
+
             }).catch(function (err) {
                 console.log("Error in updating inserting new User " + JSON.stringify(vm.userObj));
             });
+
+**/
         }
+
     }
 
 })();

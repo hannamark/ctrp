@@ -261,7 +261,15 @@
             //update an existing user
             var configObj = {}; //empty config
             console.log("userObj = " + JSON.stringify(userObj));
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj, configObj);
+
+            PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
+                .then(function (data) {
+                    console.log('successful login, data returned: ' + JSON.stringify(data));
+                    $state.go('main.welcome_signup');
+                }).catch(function (err) {
+                    $log.error("error in log in: " + JSON.stringify(err));
+                });
+
         }; //upsertUserSignup
 
         this.upsertUserChangePassword=function(userObj) {
