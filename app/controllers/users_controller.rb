@@ -58,20 +58,20 @@ class UsersController < ApplicationController
   end
 
   def gsa
-    yml_content = YAML.load_file('config/locales/en.yml')
+
+    yml_content = YAML.load_file(Rails.root.join('config', 'locales').to_s + '/en.yml')
+    #Rails.logger.debug "yml_content = #{yml_content.inspect}"
 
     if local_user_signed_in?
-      Rails.logger.info "GSA for localUser"
-      @user.gsa_text = "abc"
+      gsa_text = yml_content['en']['non_nih_user_gsa_msg']
     elsif ldap_user_signed_in?
-      Rails.logger.info "GSA for ldapUser"
-      @user.gsa_text = "xyz"
+      gsa_text = yml_content['en']['nih_user_gsa_msg']
     else
-      Rails.logger.info "GSA for Unknown user"
+      gsa_text = yml_content['en']['non_nih_user_gsa_msg']
     end
 
     respond_to do |format|
-      format.html { redirect_to @user, notice: 'User was successfully updated.' }
+      format.json { render :status => 200, :json => { :success => true, :gsa => "#{gsa_text}", :info => "GSA Msg"} }
     end
 =begin
     respond_to do |format|

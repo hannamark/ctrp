@@ -4,10 +4,7 @@ class RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     respond_to do |format|
       if resource.save
-        format.json { render :status => 200,
-                             :json => { :success => true,
-                                        :info => "Logged out"
-                             } }
+        format.json { render :status => 200, :json => { :success => true, :info => "Sign Up"} }
       else
         Rails.logger.debug resource.errors.full_messages
         format.json { render json: resource.errors, status: :unprocessable_entity }
