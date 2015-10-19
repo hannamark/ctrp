@@ -11,6 +11,7 @@
 #  uuid                     :string(255)
 #  effective_date           :datetime
 #  expiration_date          :datetime
+#  lock_version             :integer          default(0)
 #
 # Indexes
 #
