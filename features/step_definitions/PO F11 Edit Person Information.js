@@ -15,7 +15,7 @@ var helper = require('../support/helper');
 var selectList = require('../support/CommonSelectList');
 var moment = require('moment');
 var loginPage = require('../support/LoginPage');
-var projectFunctionsPage= require('../support/projectFunctions');
+var projectFunctionsPage= require('../support/projectMethod');
 
 
 module.exports = function() {

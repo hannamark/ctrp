@@ -9,8 +9,8 @@ exports.config = {
 
     capabilities: {
         'browserName' : 'firefox',
-        shardTestFiles: true,
-        maxInstances: 1
+        shardTestFiles: true
+    //    maxInstances: 3
     },
 
     baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
@@ -90,6 +90,7 @@ exports.config = {
     //    'features/PO\ F7\ Edit\ Organization\ Family \Name.feature',
     //    'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
         'features/PO\ F8\ Associate\ an\ Organization\ with\ a\ Family.feature'
+   //     'features/PO\ F15\ Add\ Organization\ Alias.feature'
     //  'features/*.feature'
     //  'features/test.feature'
 

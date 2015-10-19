@@ -1,7 +1,7 @@
 /**
  * Created by singhs10 on 10/15/15.
  */
-
+/*
 
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -226,3 +226,4 @@ projectFunctions = function () {
 
 };
 module.exports = projectFunctions;
+*/
