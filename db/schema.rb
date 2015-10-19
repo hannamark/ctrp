@@ -67,8 +67,8 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
     t.string   "uuid",             limit: 255
-    t.integer  "ctrp_id"
     t.integer  "lock_version",                 default: 0
+    t.integer  "ctrp_id"
   end
 
   add_index "families", ["family_status_id"], name: "index_families_on_family_status_id", using: :btree
@@ -125,8 +125,8 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.string   "uuid",              limit: 255
-    t.string   "serial_number",     limit: 255
     t.integer  "lock_version",                  default: 0
+    t.string   "serial_number",     limit: 255
   end
 
   add_index "grants", ["trial_id"], name: "index_grants_on_trial_id", using: :btree
@@ -150,10 +150,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
     t.string   "uuid",                    limit: 255
+    t.integer  "lock_version",                        default: 0
     t.boolean  "expanded_access"
     t.boolean  "exempt"
     t.string   "ind_ide_number",          limit: 255
-    t.integer  "lock_version",                        default: 0
   end
 
   add_index "ind_ides", ["expanded_access_type_id"], name: "index_ind_ides_on_expanded_access_type_id", using: :btree
@@ -188,10 +188,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                  default: 0
     t.integer  "ctrp_id"
     t.string   "created_by"
     t.string   "updated_by"
-    t.integer  "lock_version",                  default: 0
   end
 
   add_index "organizations", ["source_context_id"], name: "index_organizations_on_source_context_id", using: :btree
@@ -233,13 +233,13 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                  default: 0
     t.string   "fname",             limit: 255
     t.string   "mname",             limit: 255
     t.string   "lname",             limit: 255
     t.integer  "ctrp_id"
     t.string   "created_by"
     t.string   "updated_by"
-    t.integer  "lock_version",                  default: 0
   end
 
   add_index "people", ["source_context_id"], name: "index_people_on_source_context_id", using: :btree
@@ -270,9 +270,9 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
     t.string   "uuid",                     limit: 255
+    t.integer  "lock_version",                         default: 0
     t.datetime "effective_date"
     t.datetime "expiration_date"
-    t.integer  "lock_version",                         default: 0
   end
 
   add_index "po_affiliations", ["organization_id"], name: "index_po_affiliations_on_organization_id", using: :btree
@@ -476,6 +476,7 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
     t.string   "uuid",                    limit: 255
+    t.integer  "lock_version",                        default: 0
     t.integer  "research_category_id"
     t.integer  "accrual_disease_term_id"
     t.string   "investigator_title",      limit: 255
@@ -483,7 +484,6 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.string   "created_by",              limit: 255
     t.string   "updated_by",              limit: 255
     t.boolean  "is_draft"
-    t.integer  "lock_version",                        default: 0
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
@@ -533,7 +533,6 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.boolean  "approved",                                default: false, null: false
     t.integer  "organization_id"
     t.string   "source"
-    t.integer  "lock_version",                            default: 0
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree
