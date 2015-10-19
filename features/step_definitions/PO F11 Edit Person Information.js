@@ -15,7 +15,7 @@ var helper = require('../support/helper');
 var selectList = require('../support/CommonSelectList');
 var moment = require('moment');
 var loginPage = require('../support/LoginPage');
-var projectFunctionsPage= require('../support/projectMethod');
+var projectFunctionsPage= require('../support/projectMethods');
 
 
 module.exports = function() {
@@ -252,7 +252,7 @@ module.exports = function() {
     });
 
     this.When(/^I change an Affiliated Organization and Effective Date and Expiration Date$/, function (callback) {
-        cukeOrganization.then(function(value){projectFunctions.setOrgAffiliatedEffectiveDate(value,orgEffectiveDate); projectFunctions.setOrgAffiliatedExpirationDate(value,orgExpirationDate)});
+        cukeOrganization.then(function(value){projectFunctions.setOrgAffiliatedEffectiveDate(value,orgEffectiveDate); projectFunctions.setOrgAffiliatedExpirationDate(value,orgExpirationDate);});
         person.clickSave();
         browser.sleep(25).then(callback);
     });

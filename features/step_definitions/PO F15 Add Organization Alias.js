@@ -13,7 +13,7 @@ var personPage = require('../support/AddPersonPage');
 var helper = require('../support/helper');
 var moment = require('moment');
 var loginPage = require('../support/LoginPage');
-var projectFunctionsPage= require('../support/projectMethod');
+var projectFunctionsPage= require('../support/projectMethods');
 
 
 module.exports = function() {
