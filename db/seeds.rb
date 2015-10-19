@@ -259,28 +259,28 @@ end
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
-charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER" }
-mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER" }
-shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER" }
-shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER" }
-murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER" }
-tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER" }
-shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER" }
-sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER" }
-hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR" }
-radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_SUPER" }
+charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Charlie", "last_name" => "Shive" }
+mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Mahesh", "last_name" => "Yelisetti" }
+shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shilpi", "last_name" => "Singh" }
+shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shamim", "last_name" => "Ahmed" }
+murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Murali", "last_name" => "Dulla" }
+tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Tony", "last_name" => "Wang" }
+shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shenpei", "last_name" => "Wu" }
+sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sarada", "last_name" => "Chintala" }
+hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Hemant", "last_name" => "Undale" }
+radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
 
 ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika]
 
 ##Add CTRP Business Analysts
 
-joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR" }
-jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_READONLY" }
-michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR" }
-sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_READONLY" }
-kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR" }
-deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR" }
-susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_READONLY" }
+joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Joe", "last_name" => "Martucci" }
+jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_READONLY", "first_name" => "Jose", "last_name" => "Galvez" }
+michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Michael", "last_name" => "Izbicki"}
+sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_READONLY", "first_name" => "Sandy", "last_name" => "Lightbody" }
+kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
+deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Deb", "last_name" => "Hope"  }
+susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_READONLY", "first_name" => "Susan", "last_name" => "Nonemaker"  }
 
 ba_users = [joe, jose, michael, sandy, kirsten, deb, susan]
 
@@ -293,6 +293,8 @@ begin
     ldap_user.email = u["email"]
     ldap_user.username = u["email"].split("@")[0]
     ldap_user.role = u["role"]
+    ldap_user.first_name = u["first_name"]
+    ldap_user.last_name = u["last_name"]
     ldap_user.approved = true
     ldap_user.save(validate: false)
     puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"

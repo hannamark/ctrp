@@ -1,4 +1,4 @@
-var HtmlReporter = require('protractor-html-screenshot-reporter'); 
+var HtmlReporter = require('protractor-html-screenshot-reporter');
 var path = require('path');
 
 exports.config = {
@@ -77,11 +77,10 @@ exports.config = {
     getPageTimeout: 50000,
 
     specs: [
-
-    //    'features/PO\ F2\ Search\ for\ Organizations.feature'
+       //    'features/PO\ F2\ Search\ for\ Organizations.feature'
     //    'features/PO\ F3\ Create\ an\ Organization.feature'
     //    'features/PO\ F4\ Edit\ Organization\ Information.feature'
-    //      'features/PO\ F5\ Delete\ Organization.feature'
+          'features/PO\ F5\ Delete\ Organization.feature',
     //    'features/PO\ F6\ Curator\ review\ of\ a\ Pending\ Organization.feature'
     //    'features/PO\ F9\ Search\ for\ Persons.feature'
     //    'features/PO\ F10\ Create\ a\ Person\ Record.feature'
@@ -98,17 +97,22 @@ exports.config = {
 
     cucumberOpts: {
         require: ['features/step_definitions/*.js', 'features/support/*.js'],
-        format: "json:test/reports/cuke-report.json",
+        format: 'json:tests/features/output/cuke-report-test.json',
         format: 'pretty',
         resultJsonOutputFile: 'true'
     //    tags: '@runthis'
         /*     "@runThat",
+=======
+        resultJsonOutputFile: 'true',
+       tags: '@runthis'
+       /*     "@runThat",
+>>>>>>> 23d5896fe83f3a149446681dee13cfc9925fa8f8
          "~@ignoreThis"]*/// or summary
        // tags: '@runthis'
-      //    tags: '@runthis'
+       //    tags: '@runthis'
        /*     "@runThat",
-              "~@ignoreThis"]*/// or summary
+        "~@ignoreThis"]*/// or summary
     },
 
-    resultJsonOutputFile: 'test/reports/cuke-report.json'
+    resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
 };
