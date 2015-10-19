@@ -31,9 +31,9 @@ And I am on the edit Person information screen
 When I change the email of the Person I wish to edit
 And I submit my edit request for Person
 Then the system should change the email address in the Person record to the new email address
-@runthis
+
 Scenario: As a PO Curator, I can Edit a Person record Affiliated Organization effective and expiration dates
-Given I know which Person record I want to edit
+Given I know which Person with affiliated Organization record I want to edit
 And I am logged in to CTRP PO application
 And I have searched for a Person record and found the one I wish to edit
 And I have selected the function Edit Person
@@ -44,7 +44,7 @@ And I submit my edit request for Person
 Then the system should change the effective date or expiration date of the Affiliated Organization in the Person Record
 
 Scenario: As a PO Curator, I can Edit a Person record and add an Affiliated Organization
-Given I know which Person record I want to edit
+Given I know which Person with affiliated Organization record I want to edit
 And I am logged in to CTRP PO application
 And I have searched for a Person record and found the one I wish to edit
 And I have selected the function Edit Person
@@ -56,11 +56,11 @@ And I submit my edit request for Person
 Then the system should add the Affiliated Organization with the effective date in the Person Record
 
 Scenario: As a PO Curator, I can edit Person records with multiple parameters
-Given I know which Person record I want to edit
+Given I know which Person with affiliated Organization record I want to edit
 And I am logged in to CTRP PO application
-And I have searched for a Person and found the one I wish to edit
+And I have searched for a Person record and found the one I wish to edit
 And I have selected the function Edit Person
-And I am on the edit person information screen
+And I am on the edit Person information screen
 When I change the Person Prefix
 And I change the Person First Name
 And I change the Person Middle Name

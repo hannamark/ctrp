@@ -30,6 +30,7 @@ var PoCommonBar = function(){
     this.edit_Family_Page = element(by.css('h4[ng-if="!familyDetailView.curFamily.new"]'));
     this.add_Person_Page = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.edit_Person_Page = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
+    this.loginName = element(by.binding('headerView.username'));
 
 
     this.searchResult = element.all(by.binding('grid.getCellValue(row, col) '));
