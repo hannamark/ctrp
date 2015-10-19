@@ -10,6 +10,7 @@
 #  updated_at       :datetime         not null
 #  uuid             :string(255)
 #  ctrp_id          :integer
+#  lock_version     :integer          default(0)
 #
 # Indexes
 #
