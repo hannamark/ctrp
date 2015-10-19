@@ -9,8 +9,8 @@ exports.config = {
 
     capabilities: {
         'browserName' : 'firefox',
-        shardTestFiles: true
-     //   maxInstances: 3
+        shardTestFiles: true,
+        maxInstances: 3
     },
 
     baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
@@ -101,7 +101,7 @@ exports.config = {
         format: 'json:tests/features/output/cuke-report-test.json',
         format: 'pretty',
         resultJsonOutputFile: 'true'
-    //    tags: '@runthis'
+   //     tags: '@runthis'
         /*     "@runThat",
 =======
         resultJsonOutputFile: 'true',

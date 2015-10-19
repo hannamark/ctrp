@@ -1,7 +1,35 @@
 [
   {
-    "description": "As a Po Curator, I can add an organization name alias",
-    "assertions": [],
-    "duration": 0
+    "description": "As a Po Curator, I can Edit organization name",
+    "assertions": [
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      }
+    ],
+    "duration": 64355471143
   }
 ]

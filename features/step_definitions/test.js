@@ -19,7 +19,7 @@ var helper = require('../support/helper');
 var selectList = require('../support/CommonSelectList');
 var personPage = require('../support/AddPersonPage');
 var searchPersonPage = require('../support/ListOfPeoplePage');
-var projectFunctionsPage = require('../support/projectFunctions');
+var projectFunctionsPage = require('../support/projectMethods');
 
 module.exports = function() {
     var menuItemList = new MenuItem();
