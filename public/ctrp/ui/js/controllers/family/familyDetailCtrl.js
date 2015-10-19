@@ -174,6 +174,7 @@
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date,
                     "id" : org.family_membership_id || '',
+                    "lock_version": org.lock_version,
                     "_destroy" : org._destroy
                 };
                 results.push(cleanedOrg);
@@ -216,6 +217,7 @@
                     curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(familyAff.expiration_date);
                     curOrg.family_membership_id = familyAff.id; //family affiliation id
                     curOrg.family_relationship_id=familyAff.family_relationship_id;
+                    curOrg.lock_version = familyAff.lock_version;
                     curOrg._destroy = familyAff._destroy || false;
                     vm.savedSelection.push(curOrg);
                     // console.log("@@@@@@ "+JSON.stringify(curOrg));

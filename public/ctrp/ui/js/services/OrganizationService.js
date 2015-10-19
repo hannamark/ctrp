@@ -301,6 +301,7 @@
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date,
                     "id" : org.po_affiliation_id || '',
+                    "lock_version": org.lock_version,
                     "_destroy" : org._destroy
                 };
                 results.push(cleanedOrg);

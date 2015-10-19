@@ -109,7 +109,8 @@ class FamiliesController < ApplicationController
     def family_params
       print @params;
       params.require(:family).permit(:name, :family_status_id, :family_type_id, :lock_version,
-                                     family_memberships_attributes: [:id, :_destroy,:organization_id,
-                                                                     :family_relationship_id, :effective_date, :expiration_date])
+                                     family_memberships_attributes: [:id, :_destroy, :organization_id,
+                                                                     :family_relationship_id, :effective_date,
+                                                                     :expiration_date, :lock_version])
     end
 end
