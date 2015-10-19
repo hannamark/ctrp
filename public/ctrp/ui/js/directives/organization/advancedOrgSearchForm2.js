@@ -313,11 +313,12 @@
 
                 if ($scope.maxRowSelectable > 0 && $scope.curationShown || $scope.usedInModal) {
                     if (row.isSelected) {
+
                         //console.log('row is selected: ' + JSON.stringify(row.entity));
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {
                             $scope.selectedRows.unshift(row);
                             pushToParentScope(row.entity);
-                            $scope.$parent.selectedOrgsArray.push(row.entity);
+                           // $scope.$parent.selectedOrgsArray.push(row.entity);
                         } else {
                             var deselectedRow = $scope.selectedRows.pop();
                             deselectedRow.isSelected = false;
@@ -329,9 +330,10 @@
                             $scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
                             spliceInParentScope(curRowSavedIndex);
                             pushToParentScope(row.entity);
-                            $scope.$parent.selectedOrgsArray.push(row.entity);
+                           // $scope.$parent.selectedOrgsArray.push(row.entity);
                         }
-                    } else {
+                    }
+                    else {
                         //de-select the row
                         //remove it from the $scope.selectedRows, if exists
                         var needleIndex = -1;
@@ -367,6 +369,7 @@
             function pushToParentScope(entity) {
                 if (angular.isDefined($scope.$parent.selectedOrgsArray)) {
                     $scope.$parent.selectedOrgsArray.push(entity);
+
                 }
             }
 
