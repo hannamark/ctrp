@@ -144,10 +144,10 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::StaleObjectError do |exception|
     respond_to do |format|
       format.html {
-        flash.now[:error] = "Another user has made a change to the record since you accessed it"
+        flash.now[:error] = "Another user has updated this record while you were editing"
         render :edit, status: :conflict
       }
-      format.json { render json: { "error": "Another user has made a change to the record since you accessed it" }, status: :conflict }
+      format.json { render json: { "error": "Another user has updated this record while you were editing" }, status: :conflict }
     end
   end
 
