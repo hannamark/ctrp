@@ -53,6 +53,8 @@ Rails.application.routes.draw do
     resources :family_memberships
 
     resources :comments
+    get '/:instance_uuid/comments/count', to: 'comments#count'
+    get '/:instance_uuid/comments', to: 'comments#comments_for_instance'
 
     get '/users/search' => 'users#search'
     get '/users/gsa' => 'users#gsa'
@@ -148,7 +150,7 @@ Rails.application.routes.draw do
   #   post 'sign_in' => 'sessions#create', :as => :create_session
   #   delete 'sign_out' => 'sessions#destroy', :as => :destroy_session
   #end
- 
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
