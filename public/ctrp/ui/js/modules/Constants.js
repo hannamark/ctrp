@@ -55,10 +55,10 @@
 
             //for comments
             'COMMENTS' : {
-              'COMMENTS_COUNT_FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments.json',
-              'COMMENTS_FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments.json',
-              'COMMENTS_WITH_ID': '/ctrp/comments/{:id}.json',  //GET, DELETE, and PATCH or PUT
-              'CREATE_COMMENT': '/ctrp/comments.json'
+              'COUNTS_FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments/count.json',
+              'FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments.json',
+              'WITH_ID': '/ctrp/comments/{:id}.json',  //GET, DELETE, and PATCH or PUT
+              'CEATE': '/ctrp/comments.json'
             },
         })
         .constant('MESSAGES', {
