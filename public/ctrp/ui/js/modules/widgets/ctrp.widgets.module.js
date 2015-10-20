@@ -7,6 +7,7 @@
     'ngAnimate',
     'ngSanitize',
     'ngMaterial',
+    'ngMdIcons',
 
     //ctrp modules
     'ctrpApp',

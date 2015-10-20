@@ -19,6 +19,9 @@
     <script type="text/ng-template" id="ctrp">CTRP Context</script>
     <script type="text/ng-template" id="nlm">NLM Context</script>
     <script type="text/ng-template" id="ctep">CTEP Context</script>
+    <div ng-hide="orgDetailView.curOrg.new">
+      <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="icon" field=""></ctrp-comment>
+    </div>
     <div class="col-xs-12">
         <div class="row">
             <p>
@@ -232,6 +235,7 @@
                                         <button ng-hide="orgDetailView.curOrg.new" curation-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
                                             <i class="glyphicon glyphicon-remove"></i> Delete This Organization
                                         </button>
+                                            <button class="btn btn-default" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">Open dialog from directive</button>
                                     </div>
                                 </div>
                             </form>
