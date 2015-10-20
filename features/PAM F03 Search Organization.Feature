@@ -13,7 +13,7 @@ When I selected one or more of the values to search all trials
 |State|
 |Country|
 |Zip|
-And I submit my search request
+And I submit my search request by selecting search
 Then the system should display the organizations that have those parameters
 And the Organization Search Results will display:
 |PO Organization ID|
