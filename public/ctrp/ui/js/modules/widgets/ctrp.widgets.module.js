@@ -11,8 +11,8 @@
 
     //ctrp modules
     'ctrpApp',
-    'CommonTools',
-    'Constants'
+    'ctrp.commonTools',
+    'ctrp.constants'
   ]);
 
 })();

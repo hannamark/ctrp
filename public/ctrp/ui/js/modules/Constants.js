@@ -5,7 +5,7 @@
 (function() {
     'use strict';
 
-    angular.module('Constants', [])
+    angular.module('ctrp.constants', [])
         .constant('HOST', 'http://localhost/')
         .constant('URL_CONFIGS', {
             //relative urls to the host
@@ -51,7 +51,15 @@
             'HOLDER_TYPES': '/ctrp/registry/holder_types.json',
             'NIH': '/ctrp/registry/nih.json',
             'EXPANDED_ACCESS_TYPES': '/ctrp/registry/expanded_access_types.json',
-            'TRIAL_DOCUMENT_LIST': '/ctrp/registry/trial_documents.json'
+            'TRIAL_DOCUMENT_LIST': '/ctrp/registry/trial_documents.json',
+
+            //for comments
+            'COMMENTS' : {
+              'COMMENTS_COUNT_FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments.json',
+              'COMMENTS_FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments.json',
+              'COMMENTS_WITH_ID': '/ctrp/comments/{:id}.json',  //GET, DELETE, and PATCH or PUT
+              'CREATE_COMMENT': '/ctrp/comments.json'
+            },
         })
         .constant('MESSAGES', {
             'STATES_AVAIL': 'states_or_provinces_available',
