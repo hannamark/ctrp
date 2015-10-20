@@ -14,6 +14,7 @@ var LoginPage = function(){
     this.loginButton = element(by.css('button[ng-click="userView.authenticate()"]'));
     this.cancelButton = element(by.css('input[value="Reset"]'));
     this.logoutButton = element(by.css('a[ng-click="headerView.logOut()"]'));
+    var loginPageVerifyText = element(by.css('.panel-title'));
     var params = browser.params;
     var login = new helper();
 
@@ -52,6 +53,12 @@ var LoginPage = function(){
             }
         });
     };
+
+    this.logout = function(){
+        login.wait(this.logoutButton,"logout Button");
+        this.logoutButton.click();
+       expect(browser.getCurrentUrl()).to.eventually.equal('http://ctrp-ci.nci.nih.gov/ctrp/ui#/main/sign_in');
+    }
 
 };
 module.exports = LoginPage;

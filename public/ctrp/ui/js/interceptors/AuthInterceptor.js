@@ -24,14 +24,8 @@
             var token = LocalCacheService.getCacheWithKey("token"); //$window.localStorage.token;
             //console.log("Printing token");
             //console.log(token);
-            var current_privilege = LocalCacheService.getCacheWithKey("current_privilege"); //$window.localStorage.current_privilege;
-            //console.log("Printing current_privilege");
-            //console.log(current_privilege);
             if (token) {
                 config.headers.Authorization = token;
-            }
-            if (current_privilege) {
-                config.headers["current_privilege"] = current_privilege;
             }
             return config;
         } //request
@@ -50,7 +44,11 @@
 
         function responseError(rejection) {
             console.log("bad response status: " + rejection.status);
-            if (rejection.status > 226 && errorCount < 2) {
+            if(rejection.status == 422) {
+                console.log('Error code is 422');
+
+            }
+            else if (rejection.status > 226 && errorCount < 2) {
                 $injector.get('toastr').clear();
                 $injector.get('toastr').error('Access to the resources is not authorized', 'Error Code: ' + rejection.status);
                 // $injector.get('UserService').logout();
@@ -58,7 +56,7 @@
                 //redirect to login page
                 errorCount++;
             }
-            $injector.get('$state').go('main.sign_in');
+            //$injector.get('$state').go('main.sign_in');
 
 
             return rejection;

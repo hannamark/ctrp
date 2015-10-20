@@ -389,6 +389,7 @@ h4, .panel-title {
 
 .input-sm, select.input-sm {
     height: 22px;
+    padding: 2px 10px;
 }
 
 .btn {
@@ -449,4 +450,8 @@ h4, .panel-title {
 .btn-calendar {
     padding-top: .12em;
     padding-bottom: .12em;
+}
+
+.popover {
+    color: #444;
 }

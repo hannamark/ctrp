@@ -76,7 +76,7 @@
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
                 {name: 'aff_families_count', displayName: 'Family', enableSorting: true, width: '8%'},
                   {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
-                    cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" class="btn btn-default">Family</button>',
+                    cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" popover-trigger="mouseenter" class="btn btn-default">Family</button>',
                 },
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
@@ -301,6 +301,7 @@
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date,
                     "id" : org.po_affiliation_id || '',
+                    "lock_version": org.lock_version,
                     "_destroy" : org._destroy
                 };
                 results.push(cleanedOrg);

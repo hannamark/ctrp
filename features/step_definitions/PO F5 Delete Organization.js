@@ -36,6 +36,21 @@ module.exports = function() {
     var Postal_edit_to = '20008';
 
 
+    /*
+     Given I know which organization I want to delete
+     And I am logged in to CTRP PO application
+     And I have searched for an organization and found the one I wish to delete
+     When I have selected the function Delete Organization
+     And I submit my delete request
+     And the organization is not referenced as a lead organization on a trial
+     And the organization is not referenced as a participating site on a trial
+     And the organization is not referenced as a Person record Affiliated Organization
+     And the organization is not referenced as a CTRP User Affiliated Organization
+     And the organization is not part of a Family Organization
+     Then the system will delete the organization record
+     */
+
+
     this.Given(/^I know which organization I want to delete$/, function (callback) {
         browser.sleep(300).then(callback);
     });

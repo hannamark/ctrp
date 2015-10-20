@@ -48,7 +48,10 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'username', enableSorting: true, displayName: 'Username', width: '7%'},
+                {name: 'username', enableSorting: true, displayName: 'Username', width: '10%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
                 {name: 'first_name', displayName: 'First', enableSorting: true, width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
@@ -61,11 +64,11 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'email', enableSorting: true, width: '10%',
+                {name: 'email',  displayName: 'Email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phone', enableSorting: true, width: '6%',
+                {name: 'phone', displayName: 'Phone', enableSorting: true, width: '6%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }//,
@@ -87,16 +90,22 @@
         }; //isLoggedIn
 
 
+        this.getUserType = function() {
+            return  LocalCacheService.getCacheWithKey("user_type");
+        }
+
+
         this.login = function (userObj) {
             PromiseTimeoutService.postDataExpectObj('sign_in', userObj)
                 .then(function (data) {
-                   // console.log('successful login, data returned: ' + JSON.stringify(data));
+                    console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
                         LocalCacheService.cacheItem("token", data.token);
                         LocalCacheService.cacheItem("username", userObj.user.username);
                         _setAppVersion(data.app_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role);
+                        LocalCacheService.cacheItem("user_type", data.user_type);
 
                         //var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
                         LocalCacheService.cacheItem("privileges", data.privileges);
@@ -104,7 +113,7 @@
                         Common.broadcastMsg("signedIn");
 
                         $timeout(function () {
-                            $state.go('main.defaultContent');
+                            $state.go('main.gsa');
                         }, 1000);
                     } else {
                         toastr.error('Login failed', 'Login error');
@@ -152,7 +161,9 @@
              console.log('User searchparams: ' + JSON.stringify(searchParams));
            // if (!!searchParams) {
                // toastr.success('Success', 'Successful in UserService, searchUsers');
-                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+                var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+            console.log('User List: ' + JSON.stringify(user_list));
+              return user_list
            // }
         } //searchUsers
 
@@ -240,6 +251,17 @@
             return PromiseTimeoutService.getData(DMZ_UTILS.LOGIN_BULLETIN);
         };
 
+        this.getGsa = function() {
+            var gsaObj = {};
+           PromiseTimeoutService.getData(URL_CONFIGS.USER_GSA).then(function(data) {
+               console.log('getGSA successful , data returned: ' + JSON.stringify(data));
+               gsaObj = data;
+           }).catch(function (err){
+               $log.error("error in log in: " + JSON.stringify(err));
+           });
+           return gsaObj
+        };
+
         this.upsertUser=function(userObj) {
             //update an existing user
             var configObj = {}; //empty config
@@ -250,7 +272,15 @@
             //update an existing user
             var configObj = {}; //empty config
             console.log("userObj = " + JSON.stringify(userObj));
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj, configObj);
+
+            PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
+                .then(function (data) {
+                    console.log('successful login, data returned: ' + JSON.stringify(data));
+                    $state.go('main.welcome_signup');
+                }).catch(function (err) {
+                    $log.error("error in log in: " + JSON.stringify(err));
+                });
+
         }; //upsertUserSignup
 
         this.upsertUserChangePassword=function(userObj) {

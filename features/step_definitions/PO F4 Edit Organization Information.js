@@ -6,83 +6,97 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-var LoginPage = require('../support/LoginPage');
-var ListOfOrganizationPage = require('../support/ListOfOrganizationsPage');
-var MenuItem = require('../support/PoCommonBar');
-var AddOrganization = require('../support/AddOrganizationPage');
-var main_SelectItem = require('../support/CommonSelectList.js');
+var loginPage = require('../support/LoginPage');
+var listOfOrganizationPage = require('../support/ListOfOrganizationsPage');
+var menuItemList = require('../support/PoCommonBar');
+var addOrganizationPage = require('../support/AddOrganizationPage');
+var mainSelectItemPage = require('../support/CommonSelectList.js');
+var projectFunctionsPage= require('../support/projectMethods');
 
 module.exports = function() {
-    var MenuItemList = new MenuItem();
-    var Search = new ListOfOrganizationPage();
-    var Organization = new AddOrganization();
-    var Organization_to_search = 'Coastal Carolina Radiation Oncology*';
-    var Organization_to_edit = 'Coastal Carolina Radiation Oncology';
-    var Organization_edit_to = 'Coastal Carolina Radiation Oncology PR cuke';
-    var SelectItem = new main_SelectItem();
-    var Source_Status = 'Pending';
-    var Address_to_edit = '1988 S 16th St';
-    var Address_edit_to = '1988 S 16th St PR cuke';
-    var Phone_edit_to = '444-5555-666';
-    var Email_edit_to = 'test_SS@PR.cuke';
-    var City_to_edit = 'Wilmington';
-    var City_edit_to = 'Rockville';
-    var Country_to_edit = 'United States';
-    var Country_edit_to = 'Nepal';
-    var State_to_edit = 'North Carolina';
-    var State_edit_to = 'Bagmati';
-    var Postal_edit_to = '20008';
+    var login = new loginPage();
+    var menuItem = new menuItemList();
+    var addOrg = new addOrganizationPage();
+    var searchOrg = new listOfOrganizationPage();
+    var selectItem =new mainSelectItemPage;
+    var projectFunctions = new projectFunctionsPage();
+ //   var Organization_to_search = 'Coastal Carolina Radiation Oncology*';
+ //   var Organization_to_edit = 'Coastal Carolina Radiation Oncology';
+ //   var Organization_edit_to = 'Coastal Carolina Radiation Oncology PR cuke';
+  //  var Source_Status = 'Pending';
+  //  var Address_to_edit = '1988 S 16th St';
+    var addressEdited = '1988 S 16th Edited';
+    var phoneEdited = '444-5555-666';
+    var emailEdited = 'test_SS@PR.cuke';
+    var cityEdited = 'Wilmington Edited';
+   // var City_edit_to = 'Rockville';
+  //  var Country_to_edit = 'United States';
+    var countryEdited = 'Nepal';
+    var stateEdited = 'Seti';
+    var postalEdited = '20008';
 
 
     this.Given(/^I know which organization I want to edit$/, function (callback) {
-        setTimeout(callback,2000);
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function(){
+                menuItem.clickRole('CURATOR');
+            projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
+            });
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have searched for an organization and found the one I wish to edit$/, function (callback) {
-        MenuItemList.clickOrganizations();
-        MenuItemList.clickListOrganizations();
-        Search.setOrgName(Organization_to_search);
-        Search.clickSearchButton();
-        browser.sleep(250).then(callback);
+        cukeOrganization.then(function(value){
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.setOrgName(value);
+            searchOrg.clickSearchButton();
+            expect(projectFunctions.inSearchResults(value)).to.become('true');
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected the function Edit Organization$/, function (callback) {
-    //    expect(Search.inResults(Organization_to_edit)).to.become(true);
-        element(by.linkText(Organization_to_edit)).click();
-        setTimeout(callback,2000);
+        cukeOrganization.then(function(value){
+            element(by.linkText(value)).click();
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I am on the edit organization information screen$/, function (callback) {
-        Organization.getVerifyEditHeader();
-        setTimeout(callback,2000);
+        addOrg.getVerifyEditHeader();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I change the name of the organization I wish to edit$/, function (callback) {
-        Organization.setAddOrgName(Organization_edit_to);
-        setTimeout(callback,2000);
+        cukeOrganization.then(function(value){addOrg.setAddOrgName(value + 'Edited'); });
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I set the organization status to either Pending or Active$/, function (callback) {
-        SelectItem.selectSourceStatus(Source_Status);
-        setTimeout(callback,2000);
+        callback();
     });
 
     this.Given(/^I submit my edit request$/, function (callback) {
-        Organization.clickSave();
-        setTimeout(callback,2000);
+        addOrg.clickSave();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system should change the organization name in the organization record to the new name$/, function (callback) {
-        MenuItemList.clickOrganizations();
-        MenuItemList.clickListOrganizations();
-        Search.setOrgName(Organization_edit_to);
-        Search.clickSearchButton();
-        expect(Search.inResults(Organization_edit_to)).to.become(true);
-        element(by.linkText(Organization_edit_to)).click().then(function(){Organization.setAddOrgName(Organization_to_edit);Organization.clickSave();});
-      //  Organization.getVerifyAddOrgName(Organization_edit_to);
-      //  Organization.setAddOrgName(Organization_to_edit);
-     //   Organization.clickSave();
-        setTimeout(callback,4000);
+        menuItem.clickOrganizations();
+        menuItem.clickListOrganizations();
+        cukeOrganization.then(function(value){
+            searchOrg.setOrgName(value + 'Edited');
+            searchOrg.clickSearchButton();
+            expect(projectFunctions.inSearchResults(value + 'Edited')).to.become('true');
+            element(by.linkText(value + 'Edited')).click();
+            addOrg.getVerifyAddOrgName(value + 'Edited');
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^my name should be listed as last update with the current date and time$/, function (callback) {

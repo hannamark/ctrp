@@ -8,6 +8,7 @@
     angular.module('ctrpApp', [
         'ui.router',
         'ngTouch',
+        'ngAnimate',
         'ngSanitize',
         'ngMaterial',
         'Constants',
@@ -15,7 +16,6 @@
         'PromiseTimeoutModule',
         'PromiseServiceModule',
         'LocalCacheModule',
-        'ngAnimate',
         'toastr',
         'ui.bootstrap',
         'ncy-angular-breadcrumb',
@@ -28,7 +28,8 @@
         'toggle-switch',
         'TimeoutModule',
         'ngFileUpload',
-        'angularMoment'
+        'angularMoment',
+        'ctrpApp.widgets'
     ])
         .config(function($provide) {
             $provide.decorator('$state', function($delegate, $rootScope) {
@@ -198,6 +199,20 @@
                     url: '/sign_up',
                     templateUrl: '/ctrp/ui/partials/sign_up.html',
                     controller: 'userSignupCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    }
+                })
+
+                .state('main.welcome_signup', {
+                    url: '/welcome_signup',
+                    templateUrl: '/ctrp/ui/partials/welcome_signup.html'
+                })
+
+                .state('main.gsa', {
+                    url: '/gsa',
+                    templateUrl: '/ctrp/ui/partials/gsa.html',
+                    controller: 'gsaCtrl as gsaView',
                     resolve: {
                         UserService: 'UserService'
                     }

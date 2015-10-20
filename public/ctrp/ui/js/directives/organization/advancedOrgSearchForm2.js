@@ -10,10 +10,10 @@
         .directive('ctrpAdvancedOrgSearchForm2', ctrpAdvancedOrgSearchForm2);
 
     ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location', '$state',
-        'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', '$log', '$compile'];
+        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$log', '$compile', 'UserService'];
 
     function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $log, $state,
-                                        MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile) {
+                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService) {
 
         var directiveObj = {
             restrict: 'E',
@@ -35,22 +35,14 @@
         /************************* implementations below *******************************/
 
         function linkFn(scope, element, attrs) {
-            //console.log('showGrid: ' + attrs.showGrid);
-            //console.log('maxRowSelectable: ' + attrs.maxRowSelectable);
-            scope.$on(MESSAGES.PRIVILEGE_CHANGED, function () {
-                console.log('received notification in search org forms');
-            });
-
             // $compile(element.contents())(scope);
         } //linkFn
 
 
-        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout, $state) {
+        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $state, UserService, OrgService) {
 
             var fromStateName = $state.fromState.name || '';
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
-            console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
-            console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows = [];
             $scope.sourceContextArr = [];
@@ -70,9 +62,9 @@
                 $scope.curationModeEnabled = false;
             }
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
-            $scope.curationModeEnabled = $scope.curationMode == undefined ? $scope.curationModeEnabled : $scope.curationMode;
-            $scope.usedInModal = $scope.usedInModal == undefined ? false : $scope.usedInModal;
-            $scope.showGrid = $scope.showGrid == undefined ? false : $scope.showGrid;
+            $scope.curationModeEnabled = $scope.curationMode === 'undefined' ? $scope.curationModeEnabled : $scope.curationMode;
+            $scope.usedInModal = $scope.usedInModal === 'undefined' ? false : $scope.usedInModal;
+            $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
 
             $scope.typeAheadNameSearch = function () {
@@ -85,21 +77,9 @@
                     orgNames = res.orgs.map(function (org) {
                         return org.name;
                     });
-                    //console.log('orgNames: ' + orgNames);
-
-                    /*
-                     orgNames.forEach(function(name, idex) {
-                     if (uniqueNames.indexOf(name) == -1) {
-                     uniqueNames.push(name);
-                     }
-                     });
-                     */
 
                     return uniqueNames = orgNames.filter(function (name) {
-                        if (uniqueNames.indexOf(name) == -1) {
-                            // console.log("not containing: " + name);
-                            return name;
-                        }
+                        return uniqueNames.indexOf(name) == -1;
                     });
                 });
             }; //typeAheadNameSearch
@@ -128,8 +108,6 @@
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                 else
                     $scope.searchWarningMessage = "";
-
-                console.log("isEmptySearch is " + isEmptySearch);
 
                 if(!isEmptySearch) { //skip searching if empty search
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
@@ -226,7 +204,6 @@
                     toastr.success('Curation was successful', 'Curated!');
                 }).catch(function (err) {
                     toastr.error('There was an error in curation', 'Curation error');
-                    console.log('error in curation, err is: ' + JSON.stringify(err));
                 });
 
             }; //commitNullification
@@ -235,9 +212,9 @@
             activate();
 
             function activate() {
-                watchUserPrivilegeChange(); //for switching to curation mode, etc
                 getPromisedData();
                 prepareGidOptions();
+
                 if (fromStateName != 'main.orgDetail') {
                     $scope.resetSearch();
                 } else {
@@ -247,6 +224,8 @@
                 //listenToStatesProvinces();
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
+                watchUserPrivilegeChange(); //for switching to curation mode, etc
+                watchPrivilegeSubRoutine();
             }
 
 
@@ -301,7 +280,7 @@
             function sortChangedCallBack(grid, sortColumns) {
 
                 if (sortColumns.length == 0) {
-                    console.log("removing sorting");
+                    //console.log("removing sorting");
                     //remove sorting
                     $scope.searchParams.sort = '';
                     $scope.searchParams.order = '';
@@ -314,14 +293,14 @@
                         case uiGridConstants.DESC:
                             $scope.searchParams.order = 'DESC';
                             break;
-                        case undefined:
+                        case 'undefined':
                             break;
                     }
                 }
 
                 //do the search with the updated sorting
                 $scope.searchOrgs();
-            }; //sortChangedCallBack
+            } //sortChangedCallBack
 
 
             /**
@@ -334,11 +313,12 @@
 
                 if ($scope.maxRowSelectable > 0 && $scope.curationShown || $scope.usedInModal) {
                     if (row.isSelected) {
+
                         //console.log('row is selected: ' + JSON.stringify(row.entity));
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {
                             $scope.selectedRows.unshift(row);
                             pushToParentScope(row.entity);
-                            $scope.$parent.selectedOrgsArray.push(row.entity);
+                           // $scope.$parent.selectedOrgsArray.push(row.entity);
                         } else {
                             var deselectedRow = $scope.selectedRows.pop();
                             deselectedRow.isSelected = false;
@@ -350,9 +330,10 @@
                             $scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
                             spliceInParentScope(curRowSavedIndex);
                             pushToParentScope(row.entity);
-                            $scope.$parent.selectedOrgsArray.push(row.entity);
+                           // $scope.$parent.selectedOrgsArray.push(row.entity);
                         }
-                    } else {
+                    }
+                    else {
                         //de-select the row
                         //remove it from the $scope.selectedRows, if exists
                         var needleIndex = -1;
@@ -378,7 +359,6 @@
                 } else {
                     row.isSelected = false; //do not show selection visually
                 }
-
             } //rowSelectionCallBack
 
 
@@ -389,6 +369,7 @@
             function pushToParentScope(entity) {
                 if (angular.isDefined($scope.$parent.selectedOrgsArray)) {
                     $scope.$parent.selectedOrgsArray.push(entity);
+
                 }
             }
 
@@ -535,11 +516,17 @@
 
             function watchUserPrivilegeChange() {
                 $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function () {
-                    $scope.curationShown = true;
-                    console.log('toggling curation mode')
+                    watchPrivilegeSubRoutine();
+                    getPromisedData();
+                    console.log('toggling curation mode');
                     //toggleCurationMode();
                 });
             }
+
+            function watchPrivilegeSubRoutine() {
+              $scope.curationShown = UserService.getPrivilege() == 'CURATOR' ? true : false;
+            }
+
         } //ctrpAdvancedOrgSearchController
     }
 
