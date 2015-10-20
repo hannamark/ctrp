@@ -34,6 +34,7 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  uuid                    :string(255)
+#  lock_version            :integer          default(0)
 #  research_category_id    :integer
 #  accrual_disease_term_id :integer
 #  investigator_title      :string(255)
@@ -41,7 +42,6 @@
 #  created_by              :string(255)
 #  updated_by              :string(255)
 #  is_draft                :boolean
-#  lock_version            :integer          default(0)
 #
 # Indexes
 #
