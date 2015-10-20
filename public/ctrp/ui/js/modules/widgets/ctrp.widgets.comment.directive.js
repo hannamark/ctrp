@@ -4,9 +4,9 @@
   angular.module('ctrpApp.widgets')
   .directive('ctrpCommentModal', ctrpCommentModal);
 
-  ctrpCommentModal.$inject = ['$compile', '$log', '$mdDialog', 'UserService'];
+  ctrpCommentModal.$inject = ['$compile', '$log', 'CommentService', '$mdDialog', 'UserService'];
 
-  function ctrpCommentModal($compile, $log, $mdDialog) {
+  function ctrpCommentModal($compile, $log, CommentService, $mdDialog) {
 
     return {
       restrict: 'A',
@@ -19,13 +19,12 @@
         if (newVal) {
           scope.uuid = newVal;
           element.show();
-          //TODO: get comment counts and change butotn label
+          getCommentCounts();
         } else {
           scope.uuid = '';
           element.hide();
         }
       }, true);
-
 
       element.bind('click', function(e) {
         $mdDialog.show({
@@ -38,21 +37,38 @@
           clickOutsideToClose: true,
           scope: scope.$new(), //create a child scope
           controller: commentPanelCtrl
-        }); //$mdDialog.show
-      }); //bind
+        }).then(getCommentCounts);
+      }); //bind click event
+
+
+      function getCommentCounts() {
+        CommentService.getCommentCounts(scope.uuid).then(function(data) {
+          scope.numComments = data.count;
+          if (scope.numComments > 0) {
+            element.text(scope.numComments);
+          }
+        });
+      } //getCommentCounts
 
     } //link
 
 
 
 
-    function commentPanelCtrl($scope, $mdDialog, instanceUuid, field, UserService) {
+
+
+
+    function commentPanelCtrl($scope, $mdDialog, instanceUuid, field, UserService, CommentService) {
       $scope.showCommentForm = false;
       $scope.postComment = postComment;
+      $scope.commentList = []; //container of comments
+
       $scope.comment = {
       content: "",
-      username: UserService.getLoggedInUsername(), //TODO: get from UserService
-      field: field,
+      fullname: "", //TODO: get user full name from UserService
+      model: "", //TODO: get model name
+      username: UserService.getLoggedInUsername(),
+      field: field || '',
       instance_uuid: instanceUuid,
       parent_id: ''
       };
@@ -68,27 +84,37 @@
         $mdDialog.hide();
       };
 
-      /*
-      dataservices.getCommentsByParentUUID(instanceUuid).then(function(data) {
-        //vm.commentList = data;
-        var numComments = data.length;
-        $scope.commentList = data;
-
-      });
-      */
+      activate();
 
 
+      function activate() {
+        fetchComments();
+      }
+
+      function fetchComments() {
+        CommentService.getComments(instanceUuid).then(function(data) {
+          console.log('received comments data: ' + JSON.stringify(data));
+          $scope.commentList = data.comments;
+        }).catch(function(error) {
+          $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);
+        });
+      } //fetchComments
 
       function postComment() {
-        /*
-        dataservices.postComment($scope.comment).then(function(newCommentList) {
-          $scope.commentList = newCommentList;
+        CommentService.createComment($scope.comment).then(function(response) {
           $scope.comment.content = '';
+          if (response.server_response.status == 201) {
+            fetchComments(); //fetch the latest comments
+          }
+          // console.log('created comment response: ' + JSON.stringify(response));
         }).catch(function(err) {
-          console.log('new list of comments error!!');
+          $log.error('error in creating comments: ' + JSON.stringify($scope.comment));
         });
-        */
       } //postComment
+
+      //TODO: edit and delete comment
+
+
 
     } //commentPanelCtrl
 

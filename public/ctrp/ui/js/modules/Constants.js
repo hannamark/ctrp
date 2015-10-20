@@ -58,7 +58,7 @@
               'COUNTS_FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments/count.json',
               'FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments.json',
               'WITH_ID': '/ctrp/comments/{:id}.json',  //GET, DELETE, and PATCH or PUT
-              'CEATE': '/ctrp/comments.json'
+              'CREATE': '/ctrp/comments.json'
             },
         })
         .constant('MESSAGES', {

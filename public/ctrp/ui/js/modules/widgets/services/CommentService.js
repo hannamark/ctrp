@@ -4,12 +4,10 @@
     angular.module('ctrpApp')
         .factory('CommentService', CommentService);
 
-    CommentService.$inject = ['URL_CONFIGS', '$log', '_', 'Common', 'PromiseTimeoutService', '$q'];
+    CommentService.$inject = ['URL_CONFIGS', '$http', '$log', '_', 'Common', 'PromiseTimeoutService', '$q'];
 
-    function CommentService(URL_CONFIGS, $log, _, Common, PromiseTimeoutService, $q) {
+    function CommentService(URL_CONFIGS, $http, $log, _, Common, PromiseTimeoutService, $q) {
       //TODO: data services for comments
-
-      var httpConfigObj = {}; //to be customized, if necessary
 
       return {
         getCommentCounts: getCommentCounts,
@@ -32,8 +30,13 @@
         return deferred.promise; //failed promise
       } //getCommentCounts
 
+      /**
+      * POST commentObj to API
+      */
       function createComment(commentObj) {
-        return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.COMMENTS.CREATE, commentObj, httpConfigObj);
+        $log.info('posting comment: ' + JSON.stringify(commentObj));
+        $log.info('url: ' + URL_CONFIGS.COMMENTS.CREATE);
+        return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.COMMENTS.CREATE, commentObj);
       } //createComment
 
 

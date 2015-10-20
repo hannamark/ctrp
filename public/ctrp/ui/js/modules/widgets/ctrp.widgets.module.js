@@ -9,10 +9,14 @@
     'ngMaterial',
     'ngMdIcons',
 
+    //third-party modules
+    'angularMoment',
+
     //ctrp modules
     'ctrpApp',
     'ctrp.commonTools',
-    'ctrp.constants'
+    'ctrp.constants',
+    'PromiseTimeoutModule'
   ]);
 
 })();

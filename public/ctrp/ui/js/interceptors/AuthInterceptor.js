@@ -58,7 +58,7 @@
                 //redirect to login page
                 errorCount++;
             }
-            $injector.get('$state').go('main.sign_in');
+            // $injector.get('$state').go('main.sign_in');
 
 
             return rejection;
