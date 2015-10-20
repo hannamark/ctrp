@@ -74,6 +74,16 @@ class Organization < ActiveRecord::Base
     return ctep_id_str
   end
 
+  def cluster
+    tmp_arr = []
+    tmp_arr = Organization.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).pluck(:id, :"source_contexts.name") if self.ctrp_id.present?
+    cluster_arr = []
+    tmp_arr.each do |org|
+      cluster_arr.push({"id": org[0], "context": org[1]})
+    end
+    return cluster_arr
+  end
+
   private
 
   def save_id_to_ctrp_id
