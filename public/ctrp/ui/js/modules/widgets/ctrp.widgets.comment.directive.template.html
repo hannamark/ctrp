@@ -17,9 +17,9 @@
         <div layout layout-sm="column">
           <md-input-container flex>
             <label>Username</label>
-            <input ng-model="comment.username" type="text">
+            <input ng-model="comment.username" type="text" disabled>
           </md-input-container>
-          <md-input-container flex>
+          <md-input-container flex ng-show="comment.field !=''">
             <label>Category</label>
             <input ng-model="comment.field" type="text">
           </md-input-container>
@@ -34,14 +34,18 @@
         <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
           <md-button class="md-raised md-primary" ng-click="postComment()">Submit</md-button>
         </section>
-
       </form>
     </div>
 
-
-    <strong>List of comments</strong>
+    <div ng-show="commentList.length > 0">
+      <strong>List of comments</strong>
+    </div>
+    <div ng-show="commentList.length == 0">
+      <strong>No comments yet</strong>
+    </div>
 
     <md-list>
+      <!--TODO: list by reverse chronological order -->
       <md-list-item class="md-3-line" ng-repeat="comment in commentList | reverse track by $index">
         <div class="md-list-item-text">
           <h3>{{comment.username}} commented: </h3>
@@ -54,8 +58,14 @@
   </md-dialog-content>
 <md-content flex>
   <md-button ng-click="toggleCommentFormShown()">
-    <span flex ng-show="showCommentForm">Close comment form</span>
-    <span flex ng-show="!showCommentForm">Write a comment</span>
+    <span flex ng-show="showCommentForm">
+      <ng-md-icon icon="unfold_less" style="fill: blue" size="20" ng-click="close()"></ng-md-icon>
+      Close form
+    </span>
+    <span flex ng-show="!showCommentForm">
+      <ng-md-icon icon="edit" style="fill: blue" size="20" ng-click="close()"></ng-md-icon>
+      Write a comment
+    </span>
   </md-button>
 
 </md-content>

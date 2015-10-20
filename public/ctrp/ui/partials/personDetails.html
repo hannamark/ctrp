@@ -16,9 +16,14 @@
             <button class="btn btn-primary" ng-click="vm.cancel()">Cancel</button>
         </div>
     </script>
-    <div ng-hide="personDetailView.curPerson.new">
+    <!-- <div ng-hide="personDetailView.curPerson.new">
       <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field=""></ctrp-comment>
-    </div>
+    </div> -->
+    <!-- comment button -->
+    <md-button class="md-fab md-fab-bottom-right" aria-label="Comment" ctrp-comment-modal uuid="{{personDetailView.curPerson.uuid}}">
+      <ng-md-icon icon="comment" style="fill: wheat"></ng-md-icon>
+    </md-button>
+    <!-- end of comment button -->
     <div class="col-xs-12">
         <div class="row">
             <p>
