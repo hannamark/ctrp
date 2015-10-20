@@ -459,5 +459,9 @@ h4, .panel-title {
 .comment-modal {
   float: right;
   width: 400px;
-  max-height: 750px;
+  min-height: inherit;
+}
+
+.glyphicon.glyphicon-comment {
+    font-size: 22px;
 }

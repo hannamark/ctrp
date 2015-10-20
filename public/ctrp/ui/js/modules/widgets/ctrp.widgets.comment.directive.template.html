@@ -32,6 +32,12 @@
         </md-input-container>
 
         <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+          <md-button class="md-raised md-warn" ng-click="toggleCommentFormShown()">
+            <span flex ng-show="showCommentForm">
+              <!-- <ng-md-icon icon="unfold_less" style="fill: blue" size="20" ng-click="toggleCommentFormShown()"></ng-md-icon> -->
+              Close form
+            </span>
+          </md-button>
           <md-button class="md-raised md-primary" ng-click="postComment()">Submit</md-button>
         </section>
       </form>
@@ -47,7 +53,7 @@
     <md-list>
       <md-list-item class="md-3-line" ng-repeat="comment in commentList | reverse track by $index">
         <div class="md-list-item-text">
-          <h3>{{comment.username}} commented <span am-time-ago="comment.created_at"></span>: </h3>
+          <h3><strong>{{comment.username}}</strong> commented <span am-time-ago="comment.created_at"></span>: </h3>
           <h4>{{comment.content}}</h4>
           <!-- <h4>{{comment.created_at | date}}</h4> -->
         </div>
@@ -57,10 +63,6 @@
   </md-dialog-content>
 <md-content flex>
   <md-button ng-click="toggleCommentFormShown()">
-    <span flex ng-show="showCommentForm">
-      <ng-md-icon icon="unfold_less" style="fill: blue" size="20" ng-click="close()"></ng-md-icon>
-      Close form
-    </span>
     <span flex ng-show="!showCommentForm">
       <ng-md-icon icon="edit" style="fill: blue" size="20" ng-click="close()"></ng-md-icon>
       Write a comment

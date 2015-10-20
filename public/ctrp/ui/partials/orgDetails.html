@@ -23,8 +23,9 @@
       <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="icon" field=""></ctrp-comment>
     </div> -->
     <!-- comment button -->
-    <md-button class="md-fab md-fab-bottom-right" aria-label="Comment" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
-      <ng-md-icon icon="comment" style="fill: wheat"></ng-md-icon>
+    <md-button class="md-fab md-primary md-fab-top-right" aria-label="Comment" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
+      <!-- <ng-md-icon icon="comment"></ng-md-icon> -->
+      <i class="glyphicon glyphicon-comment"></i>
     </md-button>
     <!-- end of comment button -->
     <div class="col-xs-12">
@@ -231,6 +232,9 @@
 
                                 <div class="form-group">
                                     <div class="btn-toolbar col-xs-12 col-sm-9">
+                                        <button class="btn btn-primary pull-right" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
+                                          <span>Comment</span><i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>
+                                        </button>
                                         <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-click="orgDetailView.updateOrg()" ng-disabled="organization_form.$invalid" ctrp-click-once>
                                             Save
                                         </button>

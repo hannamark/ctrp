@@ -45,7 +45,8 @@
         CommentService.getCommentCounts(scope.uuid).then(function(data) {
           scope.numComments = data.count;
           if (scope.numComments > 0) {
-            element.text(scope.numComments);
+            // element.text(scope.numComments);
+            element.html('<span><strong>' + scope.numComments + '</strong></span> <i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>');
           }
         });
       } //getCommentCounts
