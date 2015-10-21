@@ -263,8 +263,8 @@
                 }
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
-                watchUserPrivilegeSelection();
-                watchPrivilegeSubRoutine();
+                watchCurationMode();
+                watchCurationModeSubRoutine();
                 // $scope.searchPeople();
 
             } //activate
@@ -482,16 +482,6 @@
                 }
             }; //openCalendar
 
-            /*
-            $scope.$watch('searchParams.endDate', function(newVal, oldVal) {
-                console.log(JSON.stringify($scope.searchParams.endDate));
-                console.log($scope.searchParams.endDate.getMonth());
-                console.log(moment(newVal).format("YYYY-MM-DD HH:mm:ss"));
-//                console.log($scope.searchParams.endDate.isBefore($scope.searchParams.startDate));
-                console.log(DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate));
-            }, true);
-            */
-
 
 
             /**
@@ -546,17 +536,14 @@
             }
 
 
-            function watchUserPrivilegeSelection() {
-                $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
-                   // console.log('privilege: ' + userPrivilege);
-                    watchPrivilegeSubRoutine();
-                    getPromisedData();
+            function watchCurationMode() {
+                $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                   watchCurationModeSubRoutine();
                 });
             }
 
-            function watchPrivilegeSubRoutine() {
-                var userPrivilege = UserService.getPrivilege();
-                $scope.curationShown = userPrivilege == 'CURATOR' ? true : false;
+            function watchCurationModeSubRoutine() {
+                $scope.curationShown = UserService.isCurationModeEnabled() || false;
             }
 
         } //advPersonSearchDirectiveController

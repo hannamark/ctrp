@@ -127,6 +127,7 @@ class ApplicationController < ActionController::Base
           app_version: app_version,
           token: token,
           role: user.role,
+          privileges: user.get_privileges,
           user_type: user.type,
           env: Rails.env
                     }
