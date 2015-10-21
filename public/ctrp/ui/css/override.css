@@ -455,3 +455,13 @@ h4, .panel-title {
 .popover {
     color: #444;
 }
+
+.comment-modal {
+  float: right;
+  width: 480px;
+  min-height: inherit;
+}
+
+.glyphicon.glyphicon-comment {
+    font-size: 22px;
+}

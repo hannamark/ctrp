@@ -103,15 +103,13 @@ exports.config = {
         resultJsonOutputFile: 'true'
      //   tags: '@runthis'
         /*     "@runThat",
-=======
         resultJsonOutputFile: 'true',
-       tags: '@runthis'
-       /*     "@runThat",
->>>>>>> 23d5896fe83f3a149446681dee13cfc9925fa8f8
+        tags: '@runthis'
+        /*     "@runThat",
          "~@ignoreThis"]*/// or summary
-       // tags: '@runthis'
-       //    tags: '@runthis'
-       /*     "@runThat",
+        // tags: '@runthis'
+        //    tags: '@runthis'
+        /*     "@runThat",
         "~@ignoreThis"]*/// or summary
     },
 

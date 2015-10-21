@@ -7,11 +7,16 @@
     'ngAnimate',
     'ngSanitize',
     'ngMaterial',
+    'ngMdIcons',
+
+    //third-party modules
+    'angularMoment',
 
     //ctrp modules
     'ctrpApp',
-    'CommonTools',
-    'Constants'
+    'ctrp.commonTools',
+    'ctrp.constants',
+    'PromiseTimeoutModule'
   ]);
 
 })();

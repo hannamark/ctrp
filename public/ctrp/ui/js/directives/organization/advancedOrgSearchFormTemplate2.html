@@ -17,7 +17,7 @@
 
                     <input type="text" id="organization_name" class="form-control input-sm"
                             autocomplete="off" placeholder="Organization Name" ng-model="searchParams.name" auto-focus
-                            uib-typeahead="org for org in typeAheadNameSearch($viewValue)" uib-typeahead-loading="loadingOrganizations"
+                            uib-typeahead="org for org in typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
                             typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" autocomplete="off"/>
                     <!--<i ng-show="loadingOrganizations" class="glyphicon glyphicon-refresh"></i>
                     <div ng-show="noResults">
@@ -171,16 +171,17 @@
 <div class="row" ng-if="searchWarningMessage.length === 0">
     <div class="col-sm-12">
         <div class="row" ng-if="gridOptions.totalItems != null">
-            <div class="col-xs-12 col-sm-11">
+            <div class="col-xs-12 col-sm-6">
                 <a href="" id="org_search_results"></a>
                 <div ng-if="searchWarningMessage.length === 0">
                     <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
                 </div>
-                <div ng-if="usedinmodal !=1 ">
+                <div ng-if="!usedinmodal">
                     <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true">
-                        <mark>Curation Mode: </mark>
-                        <toggle-switch ng-change="toggleCurationMode()" ng-model="curationShown"></toggle-switch>
-                        <button class="btn" ng-click="commitNullification()" ng-show="curationShown" ng-disabled="!curationReady" ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>
+                      <div class="alert alert-danger fade in" ng-show="curationReady">
+                          <strong>Please confirm: {{nullifiedOrgName}} will be nullified </strong>
+                      </div>
+                      <button class="btn" ng-click="commitNullification()" ng-show="curationShown" ng-disabled="!curationReady" ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification</button>
                     </h5>
                 </div>
             </div>

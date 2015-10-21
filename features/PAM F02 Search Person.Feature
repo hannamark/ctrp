@@ -12,7 +12,7 @@ When I select one or more of the following
 |Phone Number|
 |Email Address|
 |Organization Affiliations|
-And I submit my search request
+And I submit my search request by selecting search
 Then the system should display all persons that meet that criteria 
 And the Person Search Results will display:
 |PO Person ID|

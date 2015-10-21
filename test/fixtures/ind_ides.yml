@@ -12,10 +12,10 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  uuid                    :string(255)
+#  lock_version            :integer          default(0)
 #  expanded_access         :boolean
 #  exempt                  :boolean
 #  ind_ide_number          :string(255)
-#  lock_version            :integer          default(0)
 #
 # Indexes
 #
