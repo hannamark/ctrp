@@ -106,11 +106,8 @@
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role); //e.g. ROLE_SUPER
                         LocalCacheService.cacheItem("user_type", data.user_type); //e.g. LocalUser
-                        console.log('in userservice llgin, data.role is: ' + data.role);
-                        console.log('in userservice llgin, data.user_type is: ' + data.user_type);
-                        console.log('in userservice llgin, data.privileges are: ' + JSON.stringify(data.privileges));
-                        //var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
-                        LocalCacheService.cacheItem("privileges", data.privileges);
+                        LocalCacheService.cacheItem("curation_supported", data.privileges.curation_supported || false);
+                        LocalCacheService.cacheItem("curation_enabled", false); //default: curation mode is off/false
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg("signedIn");
 
@@ -120,7 +117,6 @@
                     } else {
                         toastr.error('Login failed', 'Login error');
                     }
-
                 }).catch(function (err) {
                     $log.error("error in log in: " + JSON.stringify(err));
                 });
@@ -207,15 +203,6 @@
         };
 
 
-        /**
-         * Get the user privileges from localStorage of the browser
-         * @returns {*|Array}
-         */
-        this.getUserPrivileges = function() {
-            return LocalCacheService.getCacheWithKey('privileges') || [];
-        };
-
-
         this.getAppVersion = function() {
             return LocalCacheService.getCacheWithKey('app_version') || '';
         };
@@ -292,27 +279,34 @@
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
         }; //upsertUserChangePassword
 
+
+
         /**
+         * Check if the curation mode is supported for the user role
          *
-         * @param privilege
          */
-        this.setUserPrivilege = function(privilege) {
-            var userCurrentPrivilege = PRIVILEGES.READONLY; //default privilege
-            if (privilege) {
-                userCurrentPrivilege = privilege;
-            }
-            LocalCacheService.cacheItem('current_privilege', userCurrentPrivilege);
+        this.isCurationSupported = function() {
+            return LocalCacheService.getCacheWithKey("curation_supported"); //TODO: change true to data.curation_supported
         };
 
 
         /**
-         * Get the current user's privilege
-         * @returns {*|string}
+         * Getter for curation_enabled
+         *
+         * @returns {*|boolean}
          */
-        this.getPrivilege = function() {
-            return LocalCacheService.getCacheWithKey('current_privilege') || PRIVILEGES.READONLY;
+        this.isCurationModeEnabled = function() {
+            return LocalCacheService.getCacheWithKey("curation_enabled") || false;
         };
 
+
+        /**
+         * Set curation_enabled to true
+         * @params curationMode, boolean
+         */
+        this.saveCurationMode = function(curationMode) {
+            LocalCacheService.cacheItem("curation_enabled", curationMode);
+        };
 
 
 

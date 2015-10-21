@@ -65,7 +65,8 @@
         .constant('MESSAGES', {
             'STATES_AVAIL': 'states_or_provinces_available',
             'STATES_UNAVAIL': 'states_or_provinces_not_available',
-            'PRIVILEGE_CHANGED': 'user_privilege_changed'
+            'PRIVILEGE_CHANGED': 'user_privilege_changed',
+            'CURATION_MODE_CHANGED': 'curation_mode_changed'
         })
         .constant('DMZ_UTILS', {
             'APP_VERSION' : '/ctrp/dmzutils/app_version.json',
