@@ -74,6 +74,7 @@ class Organization < ActiveRecord::Base
     return ctep_id_str
   end
 
+  # Get an array of maps of the orgs with the same ctrp_id
   def cluster
     tmp_arr = []
     if self.ctrp_id.present?
