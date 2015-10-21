@@ -521,10 +521,15 @@
                 //     watchCurationModeSubRoutine();
                 // });
                 if (UserService.isCurationSupported()) {
-                    $interval(function() {
+                    var intervalPromise = $interval(function() {
                       //keep polling
                       $scope.curationShown = UserService.isCurationModeEnabled();
                     }, 200);
+
+                    //on $destroy, cancel the $interval
+                    $scope.$on('$destroy', function () {
+                      $interval.cancel(intervalPromise);
+                    });
                 }
             } //watchCurationMode
 
