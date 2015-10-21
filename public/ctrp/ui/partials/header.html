@@ -36,9 +36,13 @@
                     </ul>
                 </div>
                 <div class="row" ng-show="headerView.signedIn && headerView.isCurationModeSupported">
+                    <!-- ng-true-value="On" ng-false-value="Off" -->
                     <md-switch class="md-warn" md-no-ink aria-label="Curation mode" ng-change="headerView.toggleCurationMode()"
                                ng-model="headerView.isCurationEnabled">
-                        Curation mode: {{headerView.isCurationEnabled}}
+                        Write Mode:
+                        <span flex ng-if="headerView.isCurationEnabled">On</span>
+                        <span flex ng-if="!headerView.isCurationEnabled">Off</span>
+                        <!--{{headerView.isCurationEnabled}}-->
                     </md-switch>
                 </div>
             </div>
