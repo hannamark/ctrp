@@ -17,22 +17,24 @@ ActiveRecord::Schema.define(version: 20151014200704) do
   enable_extension "plpgsql"
 
   create_table "accrual_disease_terms", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "app_settings", force: :cascade do |t|
-    t.string   "code",        limit: 255
-    t.string   "name",        limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
     t.text     "description"
-    t.string   "value",       limit: 255
+    t.string   "value",        limit: 255
     t.text     "big_value"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "uuid",        limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "comments", force: :cascade do |t|
@@ -40,29 +42,32 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.text     "content"
     t.string   "username",      limit: 255
     t.string   "fullname",      limit: 255
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "uuid",          limit: 255
+    t.integer  "lock_version",              default: 0
     t.string   "model"
     t.string   "field"
     t.integer  "parent_id"
   end
 
   create_table "expanded_access_types", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "families", force: :cascade do |t|
     t.string   "name",             limit: 255
     t.integer  "family_status_id"
     t.integer  "family_type_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.string   "uuid",             limit: 255
+    t.integer  "lock_version",                 default: 0
     t.integer  "ctrp_id"
   end
 
@@ -75,9 +80,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.integer  "family_relationship_id"
     t.datetime "effective_date"
     t.datetime "expiration_date"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
     t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                       default: 0
   end
 
   add_index "family_memberships", ["family_id"], name: "index_family_memberships_on_family_id", using: :btree
@@ -85,27 +91,30 @@ ActiveRecord::Schema.define(version: 20151014200704) do
   add_index "family_memberships", ["organization_id"], name: "index_family_memberships_on_organization_id", using: :btree
 
   create_table "family_relationships", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "family_statuses", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "family_types", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "grants", force: :cascade do |t|
@@ -113,20 +122,22 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.string   "institute_code",    limit: 255
     t.string   "nci",               limit: 255
     t.integer  "trial_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                  default: 0
     t.string   "serial_number",     limit: 255
   end
 
   add_index "grants", ["trial_id"], name: "index_grants_on_trial_id", using: :btree
 
   create_table "holder_types", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "ind_ides", force: :cascade do |t|
@@ -136,9 +147,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.integer  "holder_type_id"
     t.integer  "expanded_access_type_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.string   "uuid",                    limit: 255
+    t.integer  "lock_version",                        default: 0
     t.boolean  "expanded_access"
     t.boolean  "exempt"
     t.string   "ind_ide_number",          limit: 255
@@ -151,9 +163,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
   create_table "name_aliases", force: :cascade do |t|
     t.string   "name",            limit: 255
     t.integer  "organization_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "uuid",            limit: 255
+    t.integer  "lock_version",                default: 0
   end
 
   add_index "name_aliases", ["organization_id"], name: "index_name_aliases_on_organization_id", using: :btree
@@ -172,9 +185,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.string   "fax",               limit: 255
     t.integer  "source_status_id"
     t.integer  "source_context_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                  default: 0
     t.integer  "ctrp_id"
     t.string   "created_by"
     t.string   "updated_by"
@@ -187,9 +201,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.string   "protocol_id",           limit: 255
     t.integer  "protocol_id_origin_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.string   "uuid",                  limit: 255
+    t.integer  "lock_version",                      default: 0
   end
 
   add_index "other_ids", ["protocol_id_origin_id"], name: "index_other_ids_on_protocol_id_origin_id", using: :btree
@@ -199,9 +214,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.string   "country",      limit: 255
     t.string   "organization", limit: 255
     t.integer  "trial_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   add_index "oversight_authorities", ["trial_id"], name: "index_oversight_authorities_on_trial_id", using: :btree
@@ -214,9 +230,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.string   "phone",             limit: 255
     t.integer  "source_status_id"
     t.integer  "source_context_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                  default: 0
     t.string   "fname",             limit: 255
     t.string   "mname",             limit: 255
     t.string   "lname",             limit: 255
@@ -229,28 +246,31 @@ ActiveRecord::Schema.define(version: 20151014200704) do
   add_index "people", ["source_status_id"], name: "index_people_on_source_status_id", using: :btree
 
   create_table "phases", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "po_affiliation_statuses", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "po_affiliations", force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "organization_id"
     t.integer  "po_affiliation_status_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.string   "uuid",                     limit: 255
+    t.integer  "lock_version",                         default: 0
     t.datetime "effective_date"
     t.datetime "expiration_date"
   end
@@ -260,43 +280,48 @@ ActiveRecord::Schema.define(version: 20151014200704) do
   add_index "po_affiliations", ["po_affiliation_status_id"], name: "index_po_affiliations_on_po_affiliation_status_id", using: :btree
 
   create_table "primary_purposes", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "protocol_id_origins", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "research_categories", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "responsible_parties", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "secondary_purposes", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -310,42 +335,47 @@ ActiveRecord::Schema.define(version: 20151014200704) do
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
   create_table "source_clusters", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "source_contexts", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "source_statuses", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "study_sources", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "trial_co_lead_orgs", force: :cascade do |t|
     t.integer  "trial_id"
     t.integer  "organization_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "uuid",            limit: 255
+    t.integer  "lock_version",                default: 0
   end
 
   add_index "trial_co_lead_orgs", ["organization_id"], name: "index_trial_co_lead_orgs_on_organization_id", using: :btree
@@ -354,9 +384,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
   create_table "trial_co_pis", force: :cascade do |t|
     t.integer  "trial_id"
     t.integer  "person_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   add_index "trial_co_pis", ["person_id"], name: "index_trial_co_pis_on_person_id", using: :btree
@@ -369,9 +400,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.string   "document_subtype", limit: 255
     t.integer  "added_by_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.string   "uuid",             limit: 255
+    t.integer  "lock_version",                 default: 0
   end
 
   add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree
@@ -380,9 +412,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
   create_table "trial_funding_sources", force: :cascade do |t|
     t.integer  "trial_id"
     t.integer  "organization_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "uuid",            limit: 255
+    t.integer  "lock_version",                default: 0
   end
 
   add_index "trial_funding_sources", ["organization_id"], name: "index_trial_funding_sources_on_organization_id", using: :btree
@@ -393,20 +426,22 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.text     "why_stopped"
     t.integer  "trial_status_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "uuid",            limit: 255
+    t.integer  "lock_version",                default: 0
   end
 
   add_index "trial_status_wrappers", ["trial_id"], name: "index_trial_status_wrappers_on_trial_id", using: :btree
   add_index "trial_status_wrappers", ["trial_status_id"], name: "index_trial_status_wrappers_on_trial_status_id", using: :btree
 
   create_table "trial_statuses", force: :cascade do |t|
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.string   "uuid",       limit: 255
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "trials", force: :cascade do |t|
@@ -438,9 +473,10 @@ ActiveRecord::Schema.define(version: 20151014200704) do
     t.integer  "pi_id"
     t.integer  "sponsor_id"
     t.integer  "investigator_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.string   "uuid",                    limit: 255
+    t.integer  "lock_version",                        default: 0
     t.integer  "research_category_id"
     t.integer  "accrual_disease_term_id"
     t.string   "investigator_title",      limit: 255

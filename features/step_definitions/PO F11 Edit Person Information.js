@@ -2,9 +2,6 @@
  * Created by singhs10 on 9/29/15.
  */
 
-/**
- * Created by singhs10 on 9/21/15.
- */
 
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -18,6 +15,7 @@ var helper = require('../support/helper');
 var selectList = require('../support/CommonSelectList');
 var moment = require('moment');
 var loginPage = require('../support/LoginPage');
+var projectFunctionsPage= require('../support/projectMethods');
 
 
 module.exports = function() {
@@ -27,32 +25,38 @@ module.exports = function() {
     var person = new personPage();
     var searchOrg = new orgPage();
     var selectItem =new selectList();
+    var projectFunctions = new projectFunctionsPage();
     var sourceStatus = 'Pending';
     var phoneEditTo = '422-522-6622';
-    var emailEditTo = 'ssingh@cuke.test';
-
+    var emailEditTo = 'ssingh@cukeEdited.test';
+    var prefixEditTo = 'Mr Edited';
+    var middleNameEditTo = 'Shia Edited';
+    var lastNameEditTo = 'Singh Edited';
+    var suffixEditTo = 'Kt Edited';
+    var orgEffectiveDate = '08-Oct-2015';
+    var orgExpirationDate = '25-Oct-2020';
 
 
     this.Given(/^I know which Person record I want to edit$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         menuItemList.clickRole('CURATOR');
-        person.personDefaultCreate('','SSCukePerson','','PRlName','','singh@test.com','444-555-6666');
+        projectFunctions.createPerson('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555');
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have searched for a Person record and found the one I wish to edit$/, function (callback) {
         menuItemList.clickPeople();
         menuItemList.clickListPeople();
-        per4.then(function(value1){console.log('set first Name' + value1); search.setPersonFirstName(value1);
+        search.setPersonFirstName(cukePerson);
         search.clickSearch();
-        expect(menuItemList.inResults(value1)).to.become('true');
-            element(by.linkText(value1)).click();});
+        cukePerson.then(function(value){expect(projectFunctions.inSearchResults(value)).to.become('true'); });
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected the function Edit Person$/, function (callback) {
-        callback();
+        element(by.linkText(cukePerson)).click();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I am on the edit Person information screen$/, function (callback) {
@@ -61,10 +65,7 @@ module.exports = function() {
     });
 
     this.When(/^I change the name of the Person I wish to edit$/, function (callback) {
-        per4.then(function(value1){
-            console.log('first Name' + value1);
-            person.setAddPersonFirstName(value1 + 'Edited');
-        });
+        cukePerson.then(function(value){person.setAddPersonFirstName(value + 'Edited');});
         browser.sleep(25).then(callback);
     });
 
@@ -76,28 +77,27 @@ module.exports = function() {
 
     this.When(/^I submit my edit request for Person$/, function (callback) {
         person.clickSave();
-        dateTimeNow = moment().format('DD-MMM-YYYY HH:mm');
-        console.log('Date time when Save is : ' + dateTimeNow);
+        personEditedDateTime = moment().format('DD-MMM-YYYY HH:mm');
+        console.log('Date time when Save is : ' + personEditedDateTime);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system should change the Person name in the Person record to the new name$/, function (callback) {
-        per4.then(function(value1){console.log('set first Name' + value1); search.setPersonFirstName(value1 + 'Edited');
-            search.clickSearch();
-            expect(menuItemList.inResults(value1 + 'Edited')).to.become('true');
-            element(by.linkText(value1 + 'Edited')).click();
-            person.getVerifyAddPerFName(value1 + 'Edited');});
-      //  person.personVerifyLastUpdatedNameDate(dateTimeNow);
+        cukePerson.then(function(value){search.setPersonFirstName(value + 'Edited');
+            search.clickSearch();expect(projectFunctions.inSearchResults(value + 'Edited')).to.become('true');
+            element(by.linkText(value + 'Edited')).click();
+        });
+        projectFunctions.personVerifyLastUpdatedNameDate(personEditedDateTime);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^my name should be listed as last update with the current date and time for Person$/, function (callback) {
-        person.personVerifyLastUpdatedNameDate(dateTimeNow);
+     //   person.personVerifyLastUpdatedNameDate(dateTimeNow);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the person status should be Pending or Active as indicated$/, function (callback) {
-        person.getVerifyAddPerSourceStatus(sourceStatus);
+     //   person.getVerifyAddPerSourceStatus(sourceStatus);
         browser.sleep(25).then(callback);
     });
 
@@ -108,17 +108,17 @@ module.exports = function() {
     });
 
     this.Then(/^the system should change the phone number in the Person record to the new phone number$/, function (callback) {
-        per4.then(function(value1){
+        cukePerson.then(function(value1){
             console.log('set first Name' + value1);
             search.setPersonFirstName(value1);
             search.setPersonPhone(phoneEditTo);
             search.clickSearch();
-            expect(menuItemList.inResults(value1)).to.become('true');
+            expect(projectFunctions.inSearchResults(value1)).to.become('true');
             element(by.linkText(value1)).click();
             person.getVerifyAddPerFName(value1);
             person.getVerifyAddPerPhone(phoneEditTo);
         });
-       // person.personVerifyLastUpdatedNameDate(dateTimeNow);
+        projectFunctions.personVerifyLastUpdatedNameDate(personEditedDateTime);
         browser.sleep(25).then(callback);
     });
 
@@ -129,69 +129,150 @@ module.exports = function() {
     });
 
     this.Then(/^the system should change the email address in the Person record to the new email address$/, function (callback) {
-        per4.then(function(value1){
+        cukePerson.then(function(value1){
             console.log('set first Name' + value1);
             search.setPersonFirstName(value1);
             search.setPersonEmail(emailEditTo);
             search.clickSearch();
-            expect(menuItemList.inResults(value1)).to.become('true');
-            expect(menuItemList.inResults(emailEditTo)).to.become('true');
+            expect(projectFunctions.inSearchResults(value1)).to.become('true');
+            expect(projectFunctions.inSearchResults(emailEditTo)).to.become('true');
             element(by.linkText(value1)).click();
             person.getVerifyAddPerFName(value1);
             person.getVerifyAddPerEmail(emailEditTo);
         });
-        // person.personVerifyLastUpdatedNameDate(dateTimeNow);
+        projectFunctions.personVerifyLastUpdatedNameDate(personEditedDateTime);
         browser.sleep(25).then(callback);
     });
 
+    this.Given(/^I know which Person with affiliated Organization record I want to edit$/, function (callback) {
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000)
+            .then(function(){
+                menuItemList.clickRole('CURATOR');
+                projectFunctions.createPersonWithAffiliatedOrg('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555','ShiOrg','','');
+            });
+        browser.sleep(25).then(callback);
+    });
+
+
     this.Given(/^I select an Affiliated Organization$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        cukeOrganization.then(function(value){console.log('Affiliated Organization: '+ value);});
+        browser.sleep(25).then(callback);
     });
 
-    this.When(/^I change the status of the Affiliated Organization I wish to edit$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.When(/^I change the effective date or expiration date of the Affiliated Organization I wish to edit$/, function (callback) {
+        searchOrg.setAffiliatedOrgEffectiveDate(orgEffectiveDate);
+        searchOrg.setAffiliatedOrgExpirationDate(orgExpirationDate);
+        person.clickSave();
+        browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the system should change the status of the Affiliated Organization in the Person Record$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^the system should change the effective date or expiration date of the Affiliated Organization in the Person Record$/, function (callback) {
+        cukePerson.then(function(value){search.setPersonFirstName(value);
+        search.clickSearch();
+        expect(projectFunctions.inSearchResults(value)).to.become('true');
+        element(by.linkText(value)).click();});
+        searchOrg.verifyAffiliatedOrgEffectiveDate(moment(new Date(orgEffectiveDate)).format('MMMM D, YYYY'));
+        searchOrg.verifyAffiliatedOrgExpirationDate(moment(new Date(orgExpirationDate)).format('MMMM D, YYYY'));
+        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have have performed a search of organizations and selected an organization$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^I select the function to add an Affiliated Organization$/, function (callback) {
+        projectFunctions.createOrganization('aff_Org','alias','add1','add2','Nepal','Bagmati','Kathmandu','24567','s@s.com','222-4444-555','444-6666-555');
+        menuItemList.clickPeople();
+        menuItemList.clickListPeople();
+        cukePerson.then(function(value){search.setPersonFirstName(value);
+            search.clickSearch();
+            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            element(by.linkText(value)).click();});
+        searchOrg.clickOrgSearchModel();
+        browser.sleep(25).then(callback);
     });
 
-    this.When(/^I select an organization to affiliate with the Person record$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+    this.When(/^I select an additional Affiliated organization$/, function (callback) {
+        searchOrg.setOrgName(cukeOrganization);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the system should add the Affiliated Organization in the Person Record$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^I enter the Affiliate organization effective date$/, function (callback) {
+        cukeOrganization.then(function(value){projectFunctions.setOrgAffiliatedEffectiveDate(value,orgEffectiveDate);});
+        browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the current Affiliated Organization status should be Active and the Status Date should be the current date and time$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^the system should add the Affiliated Organization with the effective date in the Person Record$/, function (callback) {
+        cukePerson.then(function(value){search.setPersonFirstName(value);
+            search.clickSearch();
+            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            element(by.linkText(value)).click();});
+        cukeOrganization.then(function(value){projectFunctions.verifyOrgAffiliated(value); projectFunctions.verifyOrgAffiliatedEffectiveDate(value,moment(new Date(orgEffectiveDate)).format('MMMM D, YYYY'));});
+        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have searched for a Person and found the one I wish to edit$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.When(/^I change the Person Prefix$/, function (callback) {
+        person.setAddPersonPrefix(prefixEditTo);
+        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I change multiple parameters of the Person I wish to edit$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.When(/^I change the Person First Name$/, function (callback) {
+        cukePerson.then(function(value){person.setAddPersonFirstName(value + 'Edited');});
+        browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the system should change all the updated parameters in the Person record$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.When(/^I change the Person Middle Name$/, function (callback) {
+        person.setAddPersonSecondName(middleNameEditTo);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I change the Person Last Name$/, function (callback) {
+        person.setAddPersonLastName(lastNameEditTo);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I change the Person Suffix$/, function (callback) {
+        person.setAddPersonSuffix(suffixEditTo);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I change the Person Email$/, function (callback) {
+        person.setAddPersonEmail(emailEditTo);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I change the Person Phone$/, function (callback) {
+        person.setAddPersonPhone(phoneEditTo);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I change an Affiliated Organization and Effective Date and Expiration Date$/, function (callback) {
+        cukeOrganization.then(function(value){projectFunctions.setOrgAffiliatedEffectiveDate(value,orgEffectiveDate); projectFunctions.setOrgAffiliatedExpirationDate(value,orgExpirationDate);});
+        person.clickSave();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the system should update the Person record with the edited information$/, function (callback) {
+        cukePerson.then(function(value){search.setPersonFirstName(value + 'Edited');
+            search.clickSearch();
+            expect(projectFunctions.inSearchResults(value + 'Edited')).to.become('true');
+            element(by.linkText(value + 'Edited')).click();
+            person.getVerifyAddPerFName(value + 'Edited');
+        });
+        person.getVerifyAddPerPrefix(prefixEditTo);
+        person.getVerifyAddPerMName(middleNameEditTo);
+        person.getVerifyAddPerLName(lastNameEditTo);
+        person.getVerifyAddPerSuffix(suffixEditTo);
+        person.getVerifyAddPerEmail(emailEditTo);
+        person.getVerifyAddPerPhone(phoneEditTo);
+        cukeOrganization.then(function(value){projectFunctions.verifyOrgAffiliated(value); projectFunctions.verifyOrgAffiliatedEffectiveDate(value,moment(new Date(orgEffectiveDate)).format('MMMM D, YYYY'));
+            projectFunctions.verifyOrgAffiliatedExpirationDate(value,moment(new Date(orgExpirationDate)).format('MMMM D, YYYY'));});
+        browser.sleep(25).then(callback);
     });
 
 }

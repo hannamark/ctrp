@@ -32,9 +32,9 @@ AddPersonPage = function () {
     this.personResetButton = element(by.css('input[value="Reset"]'));
     this.addPersonHeader = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.editPersonHeader = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
-    var personLastUpdatedBy = element(by.binding('personDetailView.curPerson.updated_by'));
-    var personCreatedBy = element(by.binding('personDetailView.curPerson.created_by'));
-    this.loginName = element(by.binding('headerView.username'));
+    this.personLastUpdatedBy = element(by.binding('personDetailView.curPerson.updated_by'));
+    this.personCreatedBy = element(by.binding('personDetailView.curPerson.created_by'));
+
 
     var personVerifyAddHeader = 'Add Person';
     var personVerifyEditHeader = 'Edit Person';
@@ -148,93 +148,6 @@ AddPersonPage = function () {
 
     this.verifyPersonEditHeader = function(){
         addPerson.getVerifyheader(this.editPersonHeader,personVerifyEditHeader,"Person by Edit header field");
-    };
-
-    this.personVerifyCreatedNameDate = function() {
-        var datenow = moment().format('DD-MMM-YYYY');
-        var userLoggedIn = this.loginName.getText();
-        userLoggedIn.then(function (value2) {
-            var userCreatedDate = value2 + ' (' + datenow + ')';
-            console.log('user-date created value is: ' + userCreatedDate);
-            (personCreatedBy.getText()).should.eventually.equal(userCreatedDate);
-        });
-    };
-
-    this.personVerifyLastUpdatedNameDate = function(dateTime) {
-     //   var datenow = moment().format('DD-MMM-YYYY');
-        var userLoggedIn = this.loginName.getText();
-        userLoggedIn.then(function (value2) {
-            var userUpdatedDate = value2 + ' (' + dateTime + ')';
-            console.log('user-date last updated value is: ' + userUpdatedDate);
-            (personLastUpdatedBy.getText()).should.eventually.equal(userUpdatedDate);
-        });
-    };
-
-    var hasNotNullValue = function(elementFinder) {
-        return function() {
-            return elementFinder.getAttribute("value").then(function(value) {
-                return !!value;  // is not null
-            });
-        };
-    };
-
-    this.personDefaultCreate = function(prefix, fName, mName, lName, suffix, email, phone, affOrgName){
-        menuItem.clickPeople();
-        menuItem.clickAddPerson();
-        this.setAddPersonPrefix(prefix);
-        this.setAddPersonFirstName(fName + moment().format('MMMDoYY hmmss'));
-        broswer.wait(hasNotNullValue(this.addPersonFirstName),10000);
-        per4 = this.addPersonFirstName.getAttribute('value');
-        per4.then(function(value4) {
-            console.log('Added family name is' + value4);
-            element(by.model('personDetailView.curPerson.lname')).sendKeys(lName);
-            element(by.css('button[type="submit"]')).click();
-           // this.setAddPersonSecondName(mName);
-          //  this.setAddPersonLastName(lName);
-          //  this.setAddPersonSuffix(suffix);
-          //  this.setAddPersonEmail(email);
-          //  this.setAddPersonPhone(phone);
-            if (affOrgName !== '') {
-                addOrg.orgDefaultCreate(affOrgName, '', '', '', '', '', '', '', '', '', '', '');
-                org4.then(function (value5) {
-                    console.log('search Organization - ' + value5);
-                    searchOrg.setOrgName(value5);
-                    searchOrg.clickSearchButton();
-                    searchOrg.selectOrgModelItem();
-                    searchOrg.clickOrgModelConfirm();
-                });
-                menuItem.clickPeople();
-                menuItem.clickListPeople();
-                searchPeople.setPersonFirstName(value4);
-                searchPeople.clickSearch();
-                expect(menuItem.inResults(value4)).to.become('true');
-                element(by.linkText(value4)).click();
-                searchOrg.clickOrgSearchModel();
-            }
-        });
-      //      searchOrg.clickOrgSearchModel();
-      //      org4.then(function(value4){
-      //          console.log('search Organization - ' + value4);
-      //          searchOrg.setOrgName(value4);
-      //          searchOrg.clickSearchButton();
-      //          searchOrg.selectOrgModelItem();
-      //          searchOrg.clickOrgModelConfirm();
-      //      });
-      //      this.clickSave();})
-        //this.setAddPersonSecondName(mName);
-        //this.setAddPersonLastName(lName);
-        //this.setAddPersonSuffix(suffix);
-        //this.setAddPersonEmail(email);
-        //this.setAddPersonPhone(phone);
-        //searchOrg.clickOrgSearchModel();
-        //org4.then(function(value4){
-        //    console.log('search Organization - ' + value4);
-        //    searchOrg.setOrgName(value4);
-        //    searchOrg.clickSearchButton();
-        //    searchOrg.selectOrgModelItem();
-        //    searchOrg.clickOrgModelConfirm();
-        //});
-        this.clickSave();
     };
 
 };

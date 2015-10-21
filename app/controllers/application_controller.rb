@@ -127,7 +127,6 @@ class ApplicationController < ActionController::Base
           app_version: app_version,
           token: token,
           role: user.role,
-          privileges: user.get_privileges,
           user_type: user.type,
           env: Rails.env
                     }
@@ -141,6 +140,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from ActiveRecord::StaleObjectError do |exception|
+    respond_to do |format|
+      format.html {
+        flash.now[:error] = "Another user has updated this record while you were editing"
+        render :edit, status: :conflict
+      }
+      format.json { render json: { "error": "Another user has updated this record while you were editing" }, status: :conflict }
+    end
+  end
 
   protected
 

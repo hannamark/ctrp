@@ -9,10 +9,10 @@
         .controller('userListCtrl', userListCtrl);
 
     userListCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$sce',
-        '$state', '$timeout', 'LocalCacheService', 'UserService', 'uiGridConstants', '$location'];
+        '$state', '$timeout', 'LocalCacheService', 'UserService', 'uiGridConstants', '$location', '$anchorScroll'];
 
     function userListCtrl($scope, $http, $window, toastr, $state, $sce,
-                      $timeout, LocalCacheService, UserService, uiGridConstants, $location) {
+                      $timeout, LocalCacheService, UserService, uiGridConstants, $location, $anchorScroll) {
         var vm = this;
 
         //toastr.success('Success', 'In userListCtrl');

@@ -1,7 +1,7 @@
 @Global
 Feature: Search for organizations
 
-Scenario: As any CTRP User, I am able to search for organizations by name including aliases
+Scenario: As any Curator, I am able to search for organizations by name including aliases
 Given I know the name of the organization I wish to search for
 And I am logged in to CTRP
 And I have selected the option to search for an organization

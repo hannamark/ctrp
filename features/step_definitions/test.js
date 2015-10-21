@@ -18,6 +18,8 @@ var listFamilyPage = require('../support/ListOfFamiliesPage');
 var helper = require('../support/helper');
 var selectList = require('../support/CommonSelectList');
 var personPage = require('../support/AddPersonPage');
+var searchPersonPage = require('../support/ListOfPeoplePage');
+var projectFunctionsPage = require('../support/projectMethods');
 
 module.exports = function() {
     var menuItemList = new MenuItem();
@@ -25,6 +27,8 @@ module.exports = function() {
     var Search = new ListOfOrganizationPage();
     var Login = new LoginPage();
     var addPerson = new personPage();
+    var projectFunctions = new projectFunctionsPage();
+    var searchPerson = new searchPersonPage();
 /*
     this.Given(/^I want to test the Login page$/, function (callback) {
         browser.get('angular#/main/sign_in').then(function(){callback();});
@@ -236,8 +240,41 @@ module.exports = function() {
         browser.sleep(250).then(callback);
     });
 
+
+
+
     this.Given(/^Creaye person with Organization$/, function (callback) {
-        addPerson.personDefaultCreate('','fname','','lnmae','','','','tt');
+        menuItemList.clickPeople();
+           menuItemList.clickListPeople();
+        searchPerson.setPersonFirstName('Christopher');
+        searchPerson.clickSearch();
+        element(by.linkText('Christopher')).click();
+        projectFunctions.setOrgAffiliatedEffectiveDate('ACORN Research, LLC', '06-Oct-2015' );
+   /*     var name = 'ACORN Research, LLC';
+        return element.all(by.repeater('org in personDetailView.savedSelection')).getText().filter(function(row) {
+            // Get the second column's text.
+            return row.$$('td').get(2).getText().then(function(rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === name;
+            });
+        }).then(function(rows) {
+            // This is an array. Find the button in the row and click on it.
+            console.log('value of row' + rows);
+            rows[0].element(by.model('org.effective_date')).clear();
+            rows[0].element(by.model('org.effective_date')).sendKeys('01-Oct-2015');//element(by.css('input[ng-model="org.effective_date"]')
+         //   addPerson.clickSave();
+            element(by.css('#save_btn')).click();
+            browser.sleep(2000);
+        }); */
+        element(by.css('#save_btn')).click();
+       // addPerson.clickSave();
+    browser.sleep(20000).then(callback);
+    });
+
+    this.Then(/^verify person$/, function (callback) {
+       //   element(by.model('searchParams.fname')).sendKeys(per4);
+               //   per4.then(function(vv){console.log('value'+vv);searchPerson.setPersonFirstName(vv);searchPerson.clickSearch();expect(menuItemList.inResults(vv)).to.become('true');});
         browser.sleep(250).then(callback);
     });
 
@@ -245,3 +282,13 @@ module.exports = function() {
 //element.all(by.css('.ui-grid-viewport'))
 }
 
+//     projectFunctions.createFamilyWithMembers('ssingh','Active','NIH','orgmem','Organizational','08-Oct-2015','25-Oct-2020');
+//  projectFunctions.createFamily('singh','Active','NIH');
+//   projectFunctions.createPersonWithAffiliatedOrg('pp','fnm','mnam','lnam','suff','eml@link.com','222-4444-555','afforg','08-Oct-2015','25-Oct-2020');
+// projectFunctions.personDefaultCreate('Jr','Shilpi','mName','lName','jk','s@s.com','444-5555-666');
+//.personCreateWithAffiliatedOrg('tp','fname','','lnmae','','','','tt');
+//    menuItemList.clickPeople();
+//   menuItemList.clickListPeople();
+//   searchPerson.setPersonFirstName(per4);
+//  element(by.model('searchParams.fname')).sendKeys(per4);
+//  per4.then(function(vv){console.log('value'+vv);searchPerson.setPersonFirstName(vv);searchPerson.clickSearch();expect(menuItemList.inResults(vv)).to.become('true');});

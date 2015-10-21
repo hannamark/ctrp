@@ -1,6 +1,6 @@
 @PO @Global
 Feature: Edit Organization Information
-
+@runthis
 Scenario: As a Po Curator, I can Edit organization name
 Given I know which organization I want to edit
 And I am logged in to CTRP PO application

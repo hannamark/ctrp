@@ -11,8 +11,8 @@
         'ngAnimate',
         'ngSanitize',
         'ngMaterial',
-        'Constants',
-        'CommonTools',
+        'ctrp.constants',
+        'ctrp.commonTools',
         'PromiseTimeoutModule',
         'PromiseServiceModule',
         'LocalCacheModule',
@@ -202,6 +202,11 @@
                     resolve: {
                         UserService: 'UserService'
                     }
+                })
+
+                .state('main.welcome_signup', {
+                    url: '/welcome_signup',
+                    templateUrl: '/ctrp/ui/partials/welcome_signup.html'
                 })
 
                 .state('main.gsa', {
