@@ -106,9 +106,7 @@
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role); //e.g. ROLE_SUPER
                         LocalCacheService.cacheItem("user_type", data.user_type); //e.g. LocalUser
-
-                        console.log('after login, curation supported? ' + data.curation_supported);
-                        LocalCacheService.cacheItem("curation_supported", data.curation_supported || false);
+                        LocalCacheService.cacheItem("curation_supported", data.privileges.curation_supported || false);
                         LocalCacheService.cacheItem("curation_enabled", false); //default: curation mode is off/false
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg("signedIn");
