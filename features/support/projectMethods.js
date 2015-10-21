@@ -339,5 +339,44 @@ var projectMethods = function() {
         return j;
     };
 
+    /********************************
+     * Method: Returns random number
+     * @param min
+     * @param max
+     * @returns {*}
+     ********************************/
+    function getRandomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    /********************************
+     * Method: Returns random integer
+     * @param min
+     * @param max
+     * @returns {*}
+     ********************************/
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    /********************************
+     * Method: Random alpha numeric string based on
+     *         the string size(2 - 64) & the pattern (aA, #aA, #A!)
+     * @param length
+     * @param chars
+     * @returns {string}
+     ********************************/
+    function randomAlphaNumericString(sizeOfTheStrng, pattern) {
+        var alpNumStr = '';
+        if (pattern.indexOf('a') > -1) alpNumStr += 'abcdefghijklmnopqrstuvwxyz';
+        if (pattern.indexOf('A') > -1) alpNumStr += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        if (pattern.indexOf('#') > -1) alpNumStr += '0123456789';
+        if (pattern.indexOf('!') > -1) alpNumStr += '~`!@#$%^&*()_+-={}[]:";\'<>?,./|\\';
+        var randAlpNmVal = '';
+        for (var i = sizeOfTheStrng; i > 0; --i) randAlpNmVal += alpNumStr[Math.round(Math.random() * (alpNumStr.sizeOfTheStrng - 1))];
+        return randAlpNmVal;
+    }
+
+
 };
 module.exports = projectMethods;
