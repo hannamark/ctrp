@@ -123,11 +123,11 @@ class  User < ActiveRecord::Base
 
     privileges_json = case self.role
                         when "ROLE_READONLY"
-                          [{curation_supported: true}]
+                          {curation_supported: true}
                         when  "ROLE_SUPER"
-                          [{curation_supported: true}]
+                          {curation_supported: true}
                         when  "ROLE_CURATOR"
-                          [{curation_supported: true }]
+                          {curation_supported: true }
                       end
   end
 
