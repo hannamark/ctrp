@@ -205,7 +205,7 @@ module.exports = function() {
      //       element(by.css('label[btn-radio="\\\''+ role +'\\\'"]')).click();
        // }
         //clickRole('CURATOR');
-        menuItemList.clickRole('CURATOR');
+        menuItemList.clickWriteMode();
     //    By.cssSelector("label[btn-radio=\"\\' CURATOR \\'\"]")
       //  element(by.css('label[btn-radio="\\\'CURATOR\\\'"]')).click();
         browser.sleep(5000).then(callback);
@@ -235,7 +235,7 @@ module.exports = function() {
     this.Given(/^Login in CTRP$/, function (callback) {
         browser.get('ui#/main/sign_in');
         Login.login('ctrpcurator', 'Welcome01');
-        menuItemList.clickRole('CURATOR');
+        menuItemList.clickWriteMode();
         //  setTimeout(callback, 5000);
         browser.sleep(250).then(callback);
     });
@@ -244,12 +244,13 @@ module.exports = function() {
 
 
     this.Given(/^Creaye person with Organization$/, function (callback) {
-        menuItemList.clickPeople();
-           menuItemList.clickListPeople();
-        searchPerson.setPersonFirstName('Christopher');
-        searchPerson.clickSearch();
-        element(by.linkText('Christopher')).click();
-        projectFunctions.setOrgAffiliatedEffectiveDate('ACORN Research, LLC', '06-Oct-2015' );
+        menuItemList.clickOrganizations();
+           menuItemList.clickListOrganizations();
+        Search.checkAlias(false);
+    //    searchPerson.setPersonFirstName('Christopher');
+    //    searchPerson.clickSearch();
+    //    element(by.linkText('Christopher')).click();
+    //    projectFunctions.setOrgAffiliatedEffectiveDate('ACORN Research, LLC', '06-Oct-2015' );
    /*     var name = 'ACORN Research, LLC';
         return element.all(by.repeater('org in personDetailView.savedSelection')).getText().filter(function(row) {
             // Get the second column's text.
@@ -267,9 +268,9 @@ module.exports = function() {
             element(by.css('#save_btn')).click();
             browser.sleep(2000);
         }); */
-        element(by.css('#save_btn')).click();
+      //  element(by.css('#save_btn')).click();
        // addPerson.clickSave();
-    browser.sleep(20000).then(callback);
+    browser.sleep(5000).then(callback);
     });
 
     this.Then(/^verify person$/, function (callback) {

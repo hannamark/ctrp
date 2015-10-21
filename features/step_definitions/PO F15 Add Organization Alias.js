@@ -7,52 +7,65 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-var listOfPeoplePage = require('../support/ListOfPeoplePage');
-var menuItem = require('../support/PoCommonBar');
-var personPage = require('../support/AddPersonPage');
+var menuItemList = require('../support/PoCommonBar');
 var helper = require('../support/helper');
 var moment = require('moment');
 var loginPage = require('../support/LoginPage');
 var projectFunctionsPage= require('../support/projectMethods');
+var addOrganizationPage = require('../support/AddOrganizationPage');
+var listOfOrganizationPage = require('../support/ListOfOrganizationsPage');
 
 
 module.exports = function() {
     var login = new loginPage();
-    var menuItemList = new menuItem();
-    var search = new listOfPeoplePage();
-    var person = new personPage();
+    var menuItem = new menuItemList();
+    var searchOrg = new listOfOrganizationPage();
+    var addOrg = new addOrganizationPage();
     var projectFunctions = new projectFunctionsPage();
-    var orgEffectiveDate = '19-Oct-2015';
-    var orgExpirationDate = '19-Oct-2020';
+    var aliasToAdd = 'shiAlias';
+
 
     this.Given(/^I know the name of the alias I wish to add for an organization$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function(){
+            menuItem.clickWriteMode();
+            projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected the function Add Alias$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        projectFunctions.createUniqueOrgAlias(aliasToAdd);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I am on the Add Alias information screen$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I enter the alias name of the organization I wish to add for the selected organization$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I submit my request$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        addOrg.clickSave();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system should add the alias name to the list of alias names for the selected organization$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        cukeAlias.then(function(value){
+            searchOrg.setOrgName(value);
+            searchOrg.clickSearchButton();});
+        cukeOrganization.then(function(value){
+            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            element(by.linkText(value)).click();
+        });
+        cukeAlias.then(function(value){expect(projectFunctions.verifyOrgAlias(value)).to.become('true');});
+        browser.sleep(25).then(callback);
     });
 
 }

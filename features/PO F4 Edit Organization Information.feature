@@ -1,7 +1,7 @@
 @PO @Global
 Feature: Edit Organization Information
-@runthis
-Scenario: As a Po Curator, I can Edit organization name
+
+Scenario: As a Curator, I can Edit organization name
 Given I know which organization I want to edit
 And I am logged in to CTRP PO application
 And I have searched for an organization and found the one I wish to edit
@@ -14,7 +14,7 @@ Then the system should change the organization name in the organization record t
 And my name should be listed as last update with the current date and time
 And the organization status should be Pending or Active as indicated
 
-Scenario: As a PO Curator, I can Edit organization address
+Scenario: As a Curator, I can Edit organization address
 Given I know which organization I want to edit
 And I am logged in to CTRP PO application
 And I have searched for an organization and found the one I wish to edit
@@ -27,7 +27,7 @@ Then the system should change the organization address in the organization recor
 And my name should be listed as last update with the current date and time
 And the organization status should be Pending or Active as indicated
 
-Scenario: As PO Curator, I can Edit organization phone number
+Scenario: As Curator, I can Edit organization phone number
 Given I know which organization I want to edit
 And I am logged in to CTRP PO application
 And I have searched for an organization and found the one I wish to edit
@@ -40,7 +40,7 @@ Then the system should change the organization phone number in the organization 
 And my name should be listed as last update with the current date and time
 And the organization status should be Pending or Active as indicated
 
-Scenario: As a PO Curator, I can Edit organization email
+Scenario: As a Curator, I can Edit organization email
 Given I know which organization I want to edit
 And I am logged in to CTRP PO application
 And I have searched for an organization and found the one I wish to edit
@@ -53,7 +53,7 @@ Then the system should change the organization email in the organization record 
 And my name should be listed as last update with the current date and time
 And the organization status should be Pending or Active as indicated
 
-Scenario: As a PO Curator, I can Edit organization city
+Scenario: As a Curator, I can Edit organization city
 Given I know which organization I want to edit
 And I am logged in to CTRP PO application
 And I have searched for an organization and found the one I wish to edit
@@ -66,7 +66,7 @@ Then the system should change the city in the organization record to the new cit
 And my name should be listed as last update with the current date and time
 And the organization status should be Pending or Active as indicated
 
-Scenario: As a PO Curator, I can Edit organization state
+Scenario: As a Curator, I can Edit organization state
 Given I know which organization I want to edit
 And I am logged in to CTRP PO application
 And I have searched for an organization and found the one I wish to edit
@@ -79,7 +79,7 @@ Then the system should change the state in the organization record to the new st
 And my name should be listed as last update with the current date and time
 And the organization status should be Pending or Active as indicated
 
-Scenario: As a PO Curator, I can Edit organization country
+Scenario: As a Curator, I can Edit organization country
 Given I know which organization I want to edit
 And I am logged in to CTRP PO application
 And I have searched for an organization and found the one I wish to edit
@@ -92,7 +92,7 @@ Then the system should change the country in the organization record to the new 
 And my name should be listed as last update with the current date and time
 And the organization status should be Pending or Active as indicated
 
-Scenario: As a PO Curator, I can Edit organization zip code
+Scenario: As a Curator, I can Edit organization zip code
 Given I know which organization I want to edit
 And I am logged in to CTRP PO application
 And I have searched for an organization and found the one I wish to edit
@@ -105,7 +105,7 @@ Then the system should change the zip code in the organization record to the new
 And my name should be listed as last update with the current date and time
 And the organization status should be Pending or Active as indicated
 
-Scenario: As a PO Curator, I can Edit organizations with multiple parameters
+Scenario: As a Curator, I can Edit organizations with multiple parameters
 Given I know which organization I want to edit
 And I am logged in to CTRP PO application
 And I have searched for an organization and found the one I wish to edit
@@ -117,4 +117,10 @@ And I submit my edit request
 Then the system should change all the parameters in the organization record
 And my name should be listed as last update with the current date and time
 And the organization status should be Pending or Active as indicated
+
+Scenario: As a Curator, I can reset the edit values during the edit process
+Given I am in the Edit Organization feature
+And I want to cancel my changes
+When I select the Reset function
+Then edit form will be refreshed with the last committed values for the selected organization
 
