@@ -457,7 +457,8 @@ h4, .panel-title {
 }
 
 .comment-modal {
-  float: right;
+  z-index: 1;
+  position: relative;
   width: 480px;
   min-height: inherit;
 }
