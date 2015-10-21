@@ -20,5 +20,5 @@
     And I am logged in to CTRP PO application
     And I have searched for an organization
     And the organization is referenced as a lead organization on a trial or participating site on a trial or Person record Affiliated Organization or CTRP User Affiliated Organization or part of a Family Organization
-    Then the Delete function will be disabled
+    Then the Delete operation will stop and the error message "This organization cannot be deleted" will be displayed
 
