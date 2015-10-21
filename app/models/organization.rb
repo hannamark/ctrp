@@ -76,11 +76,17 @@ class Organization < ActiveRecord::Base
 
   def cluster
     tmp_arr = []
-    tmp_arr = Organization.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).pluck(:id, :"source_contexts.name") if self.ctrp_id.present?
+    if self.ctrp_id.present?
+      tmp_arr = Organization.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).pluck(:id, :"source_contexts.name")
+    else
+      tmp_arr.push([self.id, self.source_context.name])
+    end
+
     cluster_arr = []
     tmp_arr.each do |org|
       cluster_arr.push({"id": org[0], "context": org[1]})
     end
+
     return cluster_arr
   end
 
