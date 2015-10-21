@@ -4,3 +4,4 @@ languages:
 exclude_paths:
 - "test/*"
 - "public/ctrp/ui/third_party_libs/*"
+- "config.js"
