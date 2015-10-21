@@ -65,6 +65,15 @@ var projectMethods = function() {
         addOrg.setAddFax(fax);
         addOrg.clickSave();
     };
+    /***********************************************
+     * Method:This will create a unique alias in Organization page
+     * @param alias
+     **************************************************/
+    this.createUniqueOrgAlias = function(alias){
+        addOrg.setAddAlias(alias + moment().format('MMMDoYY hmmss'));
+        cukeAlias = addOrg.addAlias.getAttribute('value');
+        addOrg.clickSaveAlias();
+    };
 
     /**********************************
      * Method: Create Person
@@ -184,6 +193,46 @@ var projectMethods = function() {
     };
 
     /*****************************************************************
+     * Method: Verify the organization Created Name Date in Edit Organization page
+     * @param dateTimeSaved
+     *****************************************************************/
+    this.orgVerifyCreatedNameDate = function(dateTimeSaved) {
+        var userLoggedIn = menuItem.loginName.getText();
+        userLoggedIn.then(function (value2) {
+            var userCreatedDate = value2 + ' (' + dateTimeSaved + ')';
+            console.log('user-date created value is: ' + userCreatedDate);
+            (addOrg.orgCreatedBy.getText()).should.eventually.equal(userCreatedDate);
+        });
+    };
+
+    /*****************************************************************
+     * Method: Verify the organization Last Updated Name Date in Edit Organization page
+     * @param module
+     * @param dateTimeEdited
+     *****************************************************************/
+    this.verifyLastUpdatedNameDate = function(module, dateTimeEdited) {
+            if (module == 'organization') {
+                var userLoggedIn = menuItem.loginName.getText();
+                userLoggedIn.then(function (value2) {
+                    var userUpdatedDate = value2 + ' (' + dateTimeEdited + ')';
+                    console.log('user-date last updated value is: ' + userUpdatedDate);
+                    (addOrg.orgLastUpdatedBy.getText()).should.eventually.equal(userUpdatedDate);
+                });
+            } else if (module == 'person') {
+            var userLoggedIn = menuItem.loginName.getText();
+            userLoggedIn.then(function (value2) {
+                var userUpdatedDate = value2 + ' (' + dateTimeEdited + ')';
+                console.log('user-date last updated value is: ' + userUpdatedDate);
+                (addPeople.personLastUpdatedBy.getText()).should.eventually.equal(userUpdatedDate);
+            });
+        } else {
+                return false;
+                console.log('Select a proper module');
+            }
+
+    };
+
+    /*****************************************************************
      * Method: Verify the person Created Name Date in Edit Person page
      * @param dateTimeSaved
      *****************************************************************/
@@ -269,6 +318,22 @@ var projectMethods = function() {
         });
     };
 
+    /*****************************************************************
+     * Method: Verify the alias in Org page
+     * @param affiliatedOrg
+     *****************************************************************/
+    this.verifyOrgAlias = function(orgAlias) {
+        return addOrg.verifyAddedOrgAlias.filter(function(name) {
+            return name.getText().then(function(text) {
+                return text === orgAlias ;
+            });
+        }).then(function(filteredElements) {
+            // Only the elements that passed the filter will be here. This is an array.
+            if(filteredElements.length > 0) {
+                return 'true';}
+            else {return 'false';}
+        });
+    };
 
     /*****************************************************************
      * Method: Verify the affiliated Organization Effective Date
