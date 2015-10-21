@@ -1,34 +1,7 @@
 @Global
+@PO
 Feature: Create an organization
 
-Scenario: #1 As any CTRP User, I can request the creation of a new Organization in CTRP
-Given I am logged in to CTRP
-And I have completed a Search for Organization
-And I am have selected the Add Organization function
-And I know the information for the organization I wish to create
-When I provide the full name of the organization
-And I provide the address of the organization
-And I select the country of the organization
-And I select the state or province of the organization based on the country
-And I provide the city of the organization
-And I provide the zip code of the organization if the country is "United States"
-And I provide either the Phone or email of the organization
-And I optionally provide the Fax number of the organization
-And I submit my create request
-Then the system should create an organization record that contains:
-|unique PO ID|
-|organization name|
-|address|
-|country|
-|State or Province|
-|City|
-|Zip Code if United States|
-|Phone number (or eMail)|
-|eMail (or phone number)|
-|Fax number (optional)|
-And the organization status should be Pending
-
-@PO
 Scenario: #2 As a PO Curator, I can request the creation of a new Organization in CTRP
 Given I am logged in to CTRP
 And I have complete a Search for Organization
