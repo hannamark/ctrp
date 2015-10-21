@@ -104,9 +104,11 @@
                         LocalCacheService.cacheItem("username", userObj.user.username);
                         _setAppVersion(data.app_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
-                        LocalCacheService.cacheItem("user_role", data.role);
-                        LocalCacheService.cacheItem("user_type", data.user_type);
-
+                        LocalCacheService.cacheItem("user_role", data.role); //e.g. ROLE_SUPER
+                        LocalCacheService.cacheItem("user_type", data.user_type); //e.g. LocalUser
+                        console.log('in userservice llgin, data.role is: ' + data.role);
+                        console.log('in userservice llgin, data.user_type is: ' + data.user_type);
+                        console.log('in userservice llgin, data.privileges are: ' + JSON.stringify(data.privileges));
                         //var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
                         LocalCacheService.cacheItem("privileges", data.privileges);
                         toastr.success('Login is successful', 'Logged In!');
@@ -114,7 +116,7 @@
 
                         $timeout(function () {
                             $state.go('main.gsa');
-                        }, 1000);
+                        }, 500);
                     } else {
                         toastr.error('Login failed', 'Login error');
                     }

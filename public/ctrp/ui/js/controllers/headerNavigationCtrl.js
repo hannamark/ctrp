@@ -55,13 +55,14 @@
             $scope.$on('signedIn', function() {
                 vm.signedIn = UserService.isLoggedIn();
                 vm.username = UserService.getLoggedInUsername();
-                vm.userRole = UserService.getUserRole().split("_")[1].toLowerCase();
+                vm.userRole = UserService.getUserRole().split("_")[1].toLowerCase(); //e.g. super
+                // console.log('in header, vm.userRole is: ' + vm.userRole);
                 vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
                 vm.userPrivilege = UserService.getPrivilege();
             });
 
             $scope.$on('loggedOut', function() {
-
+              //do something if necessary on log out
             });
         } //listenToLoginEvent
 
