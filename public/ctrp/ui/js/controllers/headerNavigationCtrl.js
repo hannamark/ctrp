@@ -27,7 +27,6 @@
         vm.navbarIsActive = navbarIsActive;
 
         // Role based Dashboard
-        console.log()
         if (vm.userRole == "curator" || vm.userRole == "super") {
             vm.dashboardOrganization = {"Search Organizations": "main.organizations", "Add Organization": "main.addOrganization"}
             vm.dashboardFamily = {"Search Families": "main.families", "Add Family": "main.family"}
