@@ -57,7 +57,7 @@
     vertical-align: middle;
 }
 
-.table .btn {
+.table .btn, .input-group-btn .btn {
     line-height: 1em;
 }
 
@@ -437,6 +437,10 @@ h4, .panel-title {
 .btn-toolbar span {
     line-height: 2.5em;
     font-size: 11px;
+}
+
+.btn-toolbar > .btn-no-left-margin {
+    margin-left: 0;
 }
 
 .checkbox.checkbox-info, .checkbox.checkbox-circle {
