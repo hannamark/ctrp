@@ -26,6 +26,19 @@
         vm.currrentState = $state;
         vm.navbarIsActive = navbarIsActive;
 
+        // Role based Dashboard
+        console.log()
+        if (vm.userRole == "curator" || vm.userRole == "super") {
+            vm.dashboardOrganization = {"Search Organizations": "main.organizations", "Add Organization": "main.addOrganization"}
+            vm.dashboardFamily = {"Search Families": "main.families", "Add Family": "main.family"}
+            vm.dashboardPerson = {"Search Persons": "main.people", "Add Person": "main.addPerson"}
+        }
+        if (vm.userRole == "readonly") {
+            vm.dashboardOrganization = {"Search Organizations": "main.organizations"}
+            vm.dashboardFamily = {"Search Families": "main.families"}
+            vm.dashboardPerson = {"Search Persons": "main.people"}
+        }
+
         vm.toggleCurationMode = function() {
             console.log('toggling curation mode: ' + vm.isCurationEnabled);
             // vm.isCurationEnabled = !vm.isCurationEnabled;
