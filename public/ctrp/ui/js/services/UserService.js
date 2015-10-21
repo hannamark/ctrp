@@ -107,15 +107,9 @@
                         LocalCacheService.cacheItem("user_role", data.role); //e.g. ROLE_SUPER
                         LocalCacheService.cacheItem("user_type", data.user_type); //e.g. LocalUser
 
-                        //UserService.getUserRole().split("_")[1].toLowerCase() : ''
-                        LocalCacheService.cacheItem("curation_supported", true); //TODO: change true to data.curation_supported from backend
+                        console.log('after login, curation supported? ' + data.curation_supported);
+                        LocalCacheService.cacheItem("curation_supported", data.curation_supported || false);
                         LocalCacheService.cacheItem("curation_enabled", false); //default: curation mode is off/false
-
-                        console.log('in userservice llgin, data.role is: ' + data.role);
-                        console.log('in userservice llgin, data.user_type is: ' + data.user_type);
-                        //console.log('in userservice llgin, data.privileges are: ' + JSON.stringify(data.privileges));
-                        //var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
-                        //LocalCacheService.cacheItem("privileges", data.privileges);
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg("signedIn");
 
@@ -211,15 +205,6 @@
         };
 
 
-        /**
-         * Get the user privileges from localStorage of the browser
-         * @returns {*|Array}
-         */
-        this.getUserPrivileges = function() {
-            return LocalCacheService.getCacheWithKey('privileges') || [];
-        };
-
-
         this.getAppVersion = function() {
             return LocalCacheService.getCacheWithKey('app_version') || '';
         };
@@ -296,26 +281,6 @@
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
         }; //upsertUserChangePassword
 
-        /**
-         *
-         * @param privilege
-         */
-        this.setUserPrivilege = function(privilege) {
-            var userCurrentPrivilege = PRIVILEGES.READONLY; //default privilege
-            if (privilege) {
-                userCurrentPrivilege = privilege;
-            }
-            LocalCacheService.cacheItem('current_privilege', userCurrentPrivilege);
-        };
-
-
-        /**
-         * Get the current user's privilege
-         * @returns {*|string}
-         */
-        this.getPrivilege = function() {
-            return LocalCacheService.getCacheWithKey('current_privilege') || PRIVILEGES.READONLY;
-        };
 
 
         /**
