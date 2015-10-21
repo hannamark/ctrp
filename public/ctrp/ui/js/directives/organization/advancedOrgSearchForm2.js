@@ -10,10 +10,10 @@
         .directive('ctrpAdvancedOrgSearchForm2', ctrpAdvancedOrgSearchForm2);
 
     ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location', '$state',
-        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$log', '$compile', 'UserService'];
+        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$compile', 'UserService', '$interval'];
 
-    function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $log, $state,
-                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService) {
+    function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $state,
+                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService, $interval) {
 
         var directiveObj = {
             restrict: 'E',
@@ -38,8 +38,8 @@
             // $compile(element.contents())(scope);
         } //linkFn
 
-
-        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $state, UserService, OrgService) {
+        //_, $anchorScroll,
+        function ctrpAdvancedOrgSearchController($scope, uiGridConstants, UserService, OrgService, $state) {
 
             var fromStateName = $state.fromState.name || '';
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
@@ -224,8 +224,7 @@
                 //listenToStatesProvinces();
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
-                watchUserPrivilegeChange(); //for switching to curation mode, etc
-                watchPrivilegeSubRoutine();
+                watchCurationMode();
             }
 
 
@@ -508,24 +507,27 @@
                         $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                             '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
                         //make visible if it is not in modal and curator mode is off.
-
                     }
                 });
             } //hideHyperLinkInModal
 
 
-            function watchUserPrivilegeChange() {
-                $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function () {
-                    watchPrivilegeSubRoutine();
-                    getPromisedData();
-                    console.log('toggling curation mode');
-                    //toggleCurationMode();
-                });
-            }
+            /**
+            * watcher for curation mode using polling
+            */
+            function watchCurationMode() {
+                // $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                //     console.log('curation mode changed!');
+                //     watchCurationModeSubRoutine();
+                // });
+                if (UserService.isCurationSupported()) {
+                    $interval(function() {
+                      //keep polling
+                      $scope.curationShown = UserService.isCurationModeEnabled();
+                    }, 200);
+                }
+            } //watchCurationMode
 
-            function watchPrivilegeSubRoutine() {
-              $scope.curationShown = UserService.getPrivilege() == 'CURATOR' ? true : false;
-            }
 
         } //ctrpAdvancedOrgSearchController
     }

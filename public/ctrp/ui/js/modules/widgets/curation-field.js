@@ -22,11 +22,9 @@
 
       function link(scope, element, attrs, ngModelCtrl) {
 
-          // watchPrivilegeSubRoutine();
           watchCurationMode();
 
           scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-             // watchPrivilegeSubRoutine();
               watchCurationMode();
           });
 
@@ -49,37 +47,6 @@
                   }
               }
           }
-
-          /*
-          function watchPrivilegeSubRoutine() {
-              var allowedRoles = attrs.curationField || 'CURATOR'; //default to CURATOR if not set
-              var curPrivilege = UserService.getPrivilege() || '';
-              var curationEnabled = curPrivilege != '' && allowedRoles.indexOf(curPrivilege) > -1;
-
-              //TODO: handle date picker
-              if (attrs.hasOwnProperty('isOpen')) {
-                  $log.info('found a date picker');
-                  attrs.$set('ng-disabled', curationEnabled);
-              }
-
-
-              if (curationEnabled === true) {
-                 // if (attrs.hasOwnProperty('ngDisabled') && isButton(element)) {
-                  if (isButton(element)) {
-                      element.show();
-                  } else {
-                      element.removeAttr('disabled');
-                  }
-              } else {
-                  if (isButton(element)) {
-                      element.hide();
-                  } else {
-                      attrs.$set('disabled', 'disabled');
-                  }
-              }
-             // $compile(element.contents())(scope);
-          }
-          */
 
       } //link
 
