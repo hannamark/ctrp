@@ -20,12 +20,21 @@
         vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
         vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
         vm.userPrivilege = UserService.getPrivilege(); //'READONLY'; //default
+
+        vm.isCurationEnabled = UserService.isCurationModeEnabled() || false;
+        vm.isCurationModeSupported = UserService.isCurationSupported();
         vm.warning = null;
         vm.timedout = null;
         //vm.uiRouterState = $state;
         vm.currrentState = $state;
         vm.navbarIsActive = navbarIsActive;
 
+        vm.toggleCurationMode = function() {
+            console.log('toggling curation mode: ' + vm.isCurationEnabled);
+            // vm.isCurationEnabled = !vm.isCurationEnabled;
+            UserService.saveCurationMode(vm.isCurationEnabled);
+            Common.broadcastMsg(MESSAGES.CURATION_MODE_CHANGED);
+        };
 
 
         vm.logOut = function() {
@@ -46,7 +55,7 @@
         function activate() {
             listenToLoginEvent();
             watchForInactivity();
-            watchUserPrivilegeSelection();
+            //watchUserPrivilegeSelection();
             watchStateName();
         }
 

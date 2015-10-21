@@ -22,12 +22,35 @@
 
       function link(scope, element, attrs, ngModelCtrl) {
 
-          watchPrivilegeSubRoutine();
+          // watchPrivilegeSubRoutine();
+          watchCurationMode();
 
-          scope.$on(MESSAGES.PRIVILEGE_CHANGED, function() {
-              watchPrivilegeSubRoutine();
+          scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+             // watchPrivilegeSubRoutine();
+              watchCurationMode();
           });
 
+          /**
+           * watch for the curation mode to enable/hide or disable/show the element
+           */
+          function watchCurationMode() {
+              var isCurationEnabled = UserService.isCurationModeEnabled() || false;
+              if (isCurationEnabled) {
+                  if (isButton(element)) {
+                      element.show();
+                  } else {
+                      element.removeAttr('disabled');
+                  }
+              } else {
+                  if (isButton(element)) {
+                      element.hide();
+                  } else {
+                      attrs.$set('disabled', 'disabled');
+                  }
+              }
+          }
+
+          /*
           function watchPrivilegeSubRoutine() {
               var allowedRoles = attrs.curationField || 'CURATOR'; //default to CURATOR if not set
               var curPrivilege = UserService.getPrivilege() || '';
@@ -56,6 +79,7 @@
               }
              // $compile(element.contents())(scope);
           }
+          */
 
       } //link
 
