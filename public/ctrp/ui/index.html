@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-toggle-switch/angular-toggle-switch.css">
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-toggle-switch/angular-toggle-switch-bootstrap.css">
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-material/angular-material.min.css">
+    <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-material-icons/angular-material-icons.css">
     <link rel="stylesheet" href="ui/css/override.css">
 
     <script src="ui/third_party_libs/jquery/dist/jquery.min.js"></script>
@@ -33,6 +34,7 @@
     <script src="ui/third_party_libs/moment/moment.js"></script>
     <script src="ui/third_party_libs/angular-moment/angular-moment.js"></script>
     <script src="ui/third_party_libs/angular-material/angular-material.js"></script>
+    <script src="ui/third_party_libs/angular-material-icons/angular-material-icons.min.js"></script>
 
 
     <!-- angular modules/dependencies from third parties -->
@@ -74,6 +76,7 @@
     <script src="ui/js/services/FamilyService.js"></script>
     <script src="ui/js/services/UserService.js"></script>
     <script src="ui/js/services/TrialService.js"></script>
+    <script src="ui/js/modules/widgets/services/CommentService.js"></script>
 
     <!-- directives -->
     <script src="ui/js/directives/organization/advancedOrgSearchForm2.js"></script>
@@ -82,12 +85,13 @@
     <script src="ui/js/directives/organization/advancedOrgSearchModalButton.js"></script>
     <script src="ui/js/directives/autoFocus.js"></script>
     <script src="ui/js/directives/buttons/backButton.js"></script>
-    <script src="ui/js/directives/buttons/mdRadioGroup.js"></script>
     <script src="ui/js/directives/buttons/ctrpClickOnce.js"></script>
     <script src="ui/js/directives/masterDirective.js"></script>
     <script src="ui/js/directives/validators/dateValidators.js"></script>
     <!-- <script src="ui/js/directives/form/curationField.js"></script> -->
     <script src="ui/js/modules/widgets/curation-field.js"></script>
+    <script src="ui/js/modules/widgets/ctrp-comment.js"></script>
+    <script src="ui/js/modules/widgets/ctrp.widgets.comment.directive.js"></script>
 
 
     <!-- controllers -->
@@ -117,7 +121,8 @@
     <!-- interceptors -->
     <script src="ui/js/interceptors/AuthInterceptor.js"></script>
 
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.0.js"></script>
+    <!-- filters -->
+    <script src="ui/js/modules/widgets/filters/ctrp.widgets.filter.reverseList.js"></script>
 
 
 

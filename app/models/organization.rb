@@ -19,10 +19,10 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
+#  lock_version      :integer          default(0)
 #  ctrp_id           :integer
 #  created_by        :string
 #  updated_by        :string
-#  lock_version      :integer          default(0)
 #
 # Indexes
 #
