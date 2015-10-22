@@ -1,4 +1,4 @@
-<button class="btn btn-primary" ng-click="commentView.toggleRight()" ng-show="buttonType !='icon'">
+<button class="btn btn-primary pull-right" ng-click="commentView.toggleRight()" ng-show="buttonType !='icon'">
   <ng-md-icon icon="comment" style="fill: white"></ng-md-icon>
   <span ng-if="commentView.commentList.length > 0">
       {{commentView.commentList.length}} Comments
@@ -8,9 +8,9 @@
 <div class="sideNavBar">
 
   <div layout="column" class="relative" layout-fill role="main">
-    <md-button class="md-fab md-fab-top-right" aria-label="Comment"
+    <md-button class="md-fab md-primary md-fab-top-right" aria-label="Comment"
     ng-click="commentView.toggleRight()" ng-show="buttonType=='icon'">
-      <ng-md-icon icon="comment" style="fill: wheat"></ng-md-icon>
+      <ng-md-icon icon="comment"></ng-md-icon>
       <span flex ng-show="commentView.commentList.length > 0">
           {{commentView.commentList.length}}
       </span>
