@@ -10,10 +10,10 @@
         .directive('ctrpAdvancedOrgSearchForm2', ctrpAdvancedOrgSearchForm2);
 
     ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location', '$state',
-        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$compile', 'UserService', '$interval'];
+        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$compile', 'UserService'];
 
     function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $state,
-                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService, $interval) {
+                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService) {
 
         var directiveObj = {
             restrict: 'E',
@@ -39,7 +39,7 @@
         } //linkFn
 
         //_, $anchorScroll,
-        function ctrpAdvancedOrgSearchController($scope, uiGridConstants, UserService, OrgService, $state) {
+        function ctrpAdvancedOrgSearchController($scope) {
 
             var fromStateName = $state.fromState.name || '';
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
@@ -225,6 +225,7 @@
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
                 watchCurationMode();
+                watchCurationModeSubRoutine();
             }
 
 
@@ -512,26 +513,15 @@
             } //hideHyperLinkInModal
 
 
-            /**
-            * watcher for curation mode using polling
-            */
             function watchCurationMode() {
-                // $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-                //     console.log('curation mode changed!');
-                //     watchCurationModeSubRoutine();
-                // });
-                if (UserService.isCurationSupported()) {
-                    var intervalPromise = $interval(function() {
-                      //keep polling
-                      $scope.curationShown = UserService.isCurationModeEnabled();
-                    }, 200);
+                $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                   watchCurationModeSubRoutine();
+                });
+            }
 
-                    //on $destroy, cancel the $interval
-                    $scope.$on('$destroy', function () {
-                      $interval.cancel(intervalPromise);
-                    });
-                }
-            } //watchCurationMode
+            function watchCurationModeSubRoutine() {
+                $scope.curationShown = UserService.isCurationModeEnabled() || false;
+            }
 
 
         } //ctrpAdvancedOrgSearchController
