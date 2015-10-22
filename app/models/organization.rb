@@ -80,7 +80,7 @@ class Organization < ActiveRecord::Base
     if self.ctrp_id.present?
       tmp_arr = Organization.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).order(:id).pluck(:id, :"source_contexts.name")
     else
-      tmp_arr.push([self.id, self.source_context.name])
+      tmp_arr.push([self.id, self.source_context ? self.source_context.name : ''])
     end
 
     cluster_arr = []
