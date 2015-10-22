@@ -54,5 +54,8 @@ bower.json
 # Ignore node modules
 /node_modules
 
+# Ignore cucumber tests dir
+/tests
+
 # Robots.txt We want this set to disallow on EC2 server. This file is set to disallow out there.
 robots.txt
