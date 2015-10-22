@@ -24,6 +24,7 @@
             last_name: "",
             email: "",
             phone: "",
+            approved: "",
            // affiliated_org_name: "",
 
             //for pagination and sorting
@@ -69,6 +70,10 @@
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'phone', displayName: 'Phone', enableSorting: true, width: '6%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'approved', displayName: 'Approval', enableSorting: true, width: '6%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }//,
@@ -241,14 +246,7 @@
         };
 
         this.getGsa = function() {
-            var gsaObj = {};
-           PromiseTimeoutService.getData(URL_CONFIGS.USER_GSA).then(function(data) {
-               console.log('getGSA successful , data returned: ' + JSON.stringify(data));
-               gsaObj = data;
-           }).catch(function (err){
-               $log.error("error in log in: " + JSON.stringify(err));
-           });
-           return gsaObj
+           return PromiseTimeoutService.getData(URL_CONFIGS.USER_GSA);
         };
 
         this.upsertUser=function(userObj) {

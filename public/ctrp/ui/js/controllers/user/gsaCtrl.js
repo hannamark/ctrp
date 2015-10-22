@@ -9,19 +9,17 @@
         .controller('gsaCtrl', gsaCtrl);
 
     gsaCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$state','$sce',
-         '$timeout', 'LocalCacheService', 'UserService'];
+         '$timeout', 'LocalCacheService', 'UserService', 'gsaObj'];
 
     function gsaCtrl($scope, $http, $window, toastr, $state, $sce,
-                      $timeout, LocalCacheService, UserService) {
+                      $timeout, LocalCacheService, UserService, gsaObj) {
         var vm = this;
         //console.log('received loginBulletin: ' + JSON.stringify(loginBulletin));
 
 
-        //vm.gsa = gsaObj.data;
+        vm.gsa = gsaObj.gsa;
         vm.userType = UserService.getUserType();
         console.log('userType: ' + JSON.stringify(vm.userType));
-
-
 
         vm.accept = function() {
             console.log('ACCEPT');
