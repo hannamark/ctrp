@@ -51,7 +51,7 @@ exports.config = {
     //    'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
     //    'features/PO\ F8\ Associate\ an\ Organization\ with\ a\ Family.feature'
     //   'features/PO\ F15\ Add\ Organization\ Alias.feature'
-     'features/*.feature'
+      'features/PO*.feature'
      // 'features/test.feature'
 
     ],
