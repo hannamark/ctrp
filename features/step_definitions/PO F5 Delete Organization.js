@@ -24,10 +24,10 @@ module.exports = function() {
     var selectItem =new mainSelectItemPage;
     var projectFunctions = new projectFunctionsPage();
     var sourceStatus = 'Pending';
-    var addressEdited = '1988 S 16th Edited';
+    var addressEdited = '9605 Medical Center Drive';
     var address2Edited = '1988 S 16th add2 Edited';
-    var phoneEdited = '444-5555-666';
-    var emailEdited = 'test_SS@PR.cuke';
+    var phoneEdited = '240-276-6978';
+    var emailEdited = 'test@test.com';
     var cityEdited = 'Wilmington Edited';
     var countryEdited = 'Nepal';
     var stateEdited = 'Bagmati';
@@ -53,6 +53,7 @@ module.exports = function() {
     this.Given(/^I know which organization I want to delete$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
@@ -64,16 +65,21 @@ module.exports = function() {
     });
 
     this.Given(/^I have searched for an organization and found the one I wish to delete$/, function (callback) {
-        MenuItemList.clickOrganizations();
-        MenuItemList.clickListOrganizations();
-        Search.setOrgName(Organization_to_search);
-        Search.clickSearchButton();
-        browser.sleep(250).then(callback);
+        cukeOrganization.then(function(value){
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.setOrgName(value);
+            searchOrg.clickSearchButton();
+            expect(projectFunctions.inSearchResults(value)).to.become('true');
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected the function Delete Organization$/, function (callback) {
-        element(by.linkText(Organization_to_edit)).click();
-        browser.sleep(250).then(callback);
+        cukeOrganization.then(function(value){
+            element(by.linkText(value)).click();
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I submit my delete request$/, function (callback) {
