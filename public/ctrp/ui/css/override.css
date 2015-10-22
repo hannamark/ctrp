@@ -469,5 +469,5 @@ h4, .panel-title {
 
 .md-sidenav-right {
     z-index: 9999;
-
+    min-width: 400px;
 }

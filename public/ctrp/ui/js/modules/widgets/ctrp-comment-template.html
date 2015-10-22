@@ -32,14 +32,13 @@
 
   </md-toolbar>
   <md-content layout="column" layout-padding>
-    <strong>List of comments</strong>
-
     <md-list>
-      <md-list-item class="md-3-line" ng-repeat="comment in commentView.commentList track by $index">
+      <md-list-item class="md-3-line" ng-repeat="comment in commentView.commentList | reverse track by $index">
         <div class="md-list-item-text">
-          <h3>{{comment.username}} commented: </h3>
-          <h4>{{comment.content}}</h4>
-          <h4>{{comment.created_at | date}}</h4>
+          <div class="md-list-item-text">
+            <h3><strong>{{comment.username}}</strong> commented <span am-time-ago="comment.created_at"></span>: </h3>
+            <h4>{{comment.content}}</h4>
+          </div>
         </div>
         <md-divider ng-if="!$last"></md-divider>
       </md-list-item>
