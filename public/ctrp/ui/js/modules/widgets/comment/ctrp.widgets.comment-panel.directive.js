@@ -4,9 +4,9 @@
   angular.module('ctrpApp.widgets')
   .directive('ctrpCommentPanel', ctrpCommentPanel);
 
-  ctrpCommentPanel.$inject = ['$compile', '$log', '$mdSidenav', '$mdUtil'];
+  ctrpCommentPanel.$inject = ['$compile', '$log', '$mdSidenav', '$mdUtil', 'UserService'];
 
-  function ctrpCommentPanel($compile, $log, $mdSidenav, $mdUtil) {
+  function ctrpCommentPanel($compile, $log, $mdSidenav, $mdUtil, UserService) {
     var directiveObj = {
       restrict: 'EA',
       transclude: true,
@@ -28,6 +28,16 @@
       $scope.closeSideNav = closeSideNav;
       $scope.showCommentForm = false;
 
+      $scope.comment = {
+      content: "",
+      fullname: "", //TODO: get user full name from UserService
+      model: "", //TODO: get model name
+      username: UserService.getLoggedInUsername(),
+      field: '',
+      instance_uuid: '',
+      parent_id: ''
+      };
+
 
       /**
       * empty the commentList
@@ -41,7 +51,15 @@
       */
       this.pushComments = function(commentList) {
         $scope.commentList = commentList;
-      }
+      };
+
+      this.setInstanceUuid = function(uuid) {
+        $scope.comment.instance_uuid = uuid;
+      };
+
+      this.setField = function(fieldName) {
+        $scope.comment.field = fieldName;
+      };
 
       //TODO: show, create comments...
 

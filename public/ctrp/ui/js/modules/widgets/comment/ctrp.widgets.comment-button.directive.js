@@ -33,14 +33,17 @@
 
           element.bind('click', function() {
             $log.info('openning the slide-in panel for comments');
+            ctrpCommentPanelCtrl.setInstanceUuid(scope.uuid);
+            ctrpCommentPanelCtrl.setField(attrs.field || '');
             ctrpCommentPanelCtrl.toggleRight();
+            // element.hide();
           });
+
 
           //show the counts on the element label
           getCommentCounts();
           //fetch comments and push them to comment panel scope
           fetchComments(scope.uuid);
-
         } else {
           scope.uuid = '';
           scope.numComments = 0;
