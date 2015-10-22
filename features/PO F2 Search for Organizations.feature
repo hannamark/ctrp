@@ -94,19 +94,6 @@ And I submit my search request
 Then the system should display all organizations with matching phone numbers
 And the result should be sorted by Organization Name
 
-Scenario: As any Curator, search for organizations by organization_trial_relationship
-Given I know the name of the organization_trial_relationship I wish to search for
-And I am logged in to CTRP
-And I have selected the option to search for an organization
-When I select the organization_trial_relationship of the organization I wish to search for
-And I submit my search request
-Then the system should display all organizations that have the organization_trial_relationship
-And the result should be sorted by Organization Name
-|Example: organization_trial_relationship| 
-|lead organization| 
-|sponsor organization| 
-|participating site|
-
 Scenario: As any Curator, search for organizations with multiple parameters
 Given I know multiple parameters of the organization I wish to search for
 And I am logged in to CTRP
@@ -172,16 +159,19 @@ Then the system should display <Result> with organizations that match the search
 And the following fields should be displayed:
 |CTRP ID|
 |Organization Name|
-|Family Name as a pop-up with the first 5 family names displayed|
+|Family Name - display first 5|
+|CTEP ID|
 |Source Context|
 |Source ID|
 |Source Status|
 |City|
-|State 2 character ISO code|
+|State|
+|Country|
+|Zip Code|
 |Email|
 |Phone|
-|Curator Name|
-|Curator Date|
+|Created By|
+|Created Date|
 And the result should be sorted by Organization Name
 
 Examples:
@@ -192,7 +182,7 @@ Examples:
 |Wake*			||Yes		||			||		||		||		||		||	||	||		||		||	||		||		||True|
 |			||No		||CTEP			||TX035		||		||		||		||	||	||		||		||	||		||		||True|
 |			||No		||			||		||		||Dana-Farber*	||		||	||	||		||		||	||		||		||True|
-|			||No		||			||		||		||		||		||	||MD	||		||		||	||		||		||True|
+|			||No		||			||		||		||		||		||	||Maryland||		||		||	||		||		||True|
 |			||No		||			||		||		||		||		||	||	||		||		||	||*Larco	||		||True|
 		
 
@@ -224,4 +214,9 @@ Given I am a Curator
 And I am on a Organization search screen
 When I enter "*" in a search field
 Then the search will perform a wild card search
+
+Scenario: As a Curator, I can clear all my search selections
+Given I am on the search organization feature
+When I select the Clear option
+Then all values in all fields will be cleared
 
