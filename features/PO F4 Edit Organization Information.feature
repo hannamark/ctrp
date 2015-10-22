@@ -5,7 +5,7 @@ Feature: Edit Organization Information
   Scenario: As a Curator, I can Edit organization name
   Given I know which organization I want to edit
   And I am logged in to CTRP PO application
-  And I have searched for an organization and found the one I wish to edit
+  And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
   And I am on the edit organization information screen
   And I change the name of the organization I wish to edit
@@ -18,7 +18,7 @@ Feature: Edit Organization Information
   Scenario: As a Curator, I can Edit organization address
   Given I know which organization I want to edit
   And I am logged in to CTRP PO application
-  And I have searched for an organization and found the one I wish to edit
+  And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
   And I am on the edit organization information screen
   And I change the address of the organization I wish to edit
@@ -31,7 +31,7 @@ Feature: Edit Organization Information
   Scenario: As Curator, I can Edit organization phone number
   Given I know which organization I want to edit
   And I am logged in to CTRP PO application
-  And I have searched for an organization and found the one I wish to edit
+  And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
   And I am on the edit organization information screen
   And I change the phone number of the organization I wish to edit
@@ -44,7 +44,7 @@ Feature: Edit Organization Information
   Scenario: As a Curator, I can Edit organization email
   Given I know which organization I want to edit
   And I am logged in to CTRP PO application
-  And I have searched for an organization and found the one I wish to edit
+  And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
   And I am on the edit organization information screen
   And I change the email of the organization I wish to edit
@@ -57,7 +57,7 @@ Feature: Edit Organization Information
   Scenario: As a Curator, I can Edit organization city
   Given I know which organization I want to edit
   And I am logged in to CTRP PO application
-  And I have searched for an organization and found the one I wish to edit
+  And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
   And I am on the edit organization information screen
   And I change the city of the organization I wish to edit
@@ -70,7 +70,7 @@ Feature: Edit Organization Information
   Scenario: As a Curator, I can Edit organization state
   Given I know which organization I want to edit
   And I am logged in to CTRP PO application
-  And I have searched for an organization and found the one I wish to edit
+  And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
   And I am on the edit organization information screen
   And I change the state of the organization I wish to edit
@@ -83,7 +83,7 @@ Feature: Edit Organization Information
   Scenario: As a Curator, I can Edit organization country
   Given I know which organization I want to edit
   And I am logged in to CTRP PO application
-  And I have searched for an organization and found the one I wish to edit
+  And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
   And I am on the edit organization information screen
   And I change the country of the organization I wish to edit
@@ -94,9 +94,9 @@ Feature: Edit Organization Information
   And the organization status should be Pending or Active as indicated
 
   Scenario: As a Curator, I can Edit organization zip code
-  Given I know which organization I want to edit
+  Given I know which CTRP organization I want to edit
   And I am logged in to CTRP PO application
-  And I have searched for an organization and found the one I wish to edit
+  And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
   And I am on the edit organization information screen
   And I change the zip code of the organization I wish to edit
@@ -107,9 +107,9 @@ Feature: Edit Organization Information
   And the organization status should be Pending or Active as indicated
 
   Scenario: As a Curator, I can Edit organizations with multiple parameters
-  Given I know which organization I want to edit
+  Given I know which CTRP organization I want to edit
   And I am logged in to CTRP PO application
-  And I have searched for an organization and found the one I wish to edit
+  And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
   And I am on the edit organization information screen
   And I change multiple parameters of the organization I wish to edit
