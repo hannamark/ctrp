@@ -9,10 +9,9 @@
   function ctrpComment($compile, $log, $mdSidenav, $mdUtil) {
     var directive = {
       link: link,
-      restrict: 'E',
+      restrict: 'EA',
       scope: {
         instanceUuid: '@',
-        buttonType: '@', //icon or btn
         field: '@'
       },
       controller: commentCtrl,
@@ -23,15 +22,27 @@
     return directive;
 
     function link(scope, element, attrs) {
-      //element.text('hello world from comment directive');
+
+      attrs.$observe('instanceUuid', function(newVal) {
+        if (!newVal) {
+          element.hide();
+        } else {
+          element.show();
+          element.text('Comment');
+          element.bind('click', function() {
+            buildToggler('right')();
+          }); //bind
+        }
+      }, true); //$observe
+
     } //link
 
-    function commentCtrl($scope, $log) {
+    function commentCtrl($scope, $element, $attrs) {
       $log.info('in the comment directive!!');
       var vm = this;
       vm.commentList = [];
       vm.showCommentForm = false;
-      vm.comment = {content: "", username: "", field: "", instance_uuid: $scope.instanceUuid, parent_id: ""};
+      vm.comment = {content: "", username: "", field: "", model: "", instance_uuid: $scope.instanceUuid, parent_id: ""};
 
       //functions:
       vm.toggleRight = buildToggler('right');
