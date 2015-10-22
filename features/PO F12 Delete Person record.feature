@@ -15,5 +15,5 @@ Given I know which Person Record I want to delete
 And I am logged in to CTRP PO application
 And I have searched for a Person Record 
 And there are occurrences of the Person Record in use in CTRP
-Then the Delete function will be disabled
+Then the Delete operation will fail and the message "This person cannot be deleted" will be displayed
 

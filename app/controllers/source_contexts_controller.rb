@@ -1,10 +1,17 @@
 class SourceContextsController < ApplicationController
   before_action :set_source_context, only: [:show, :edit, :update, :destroy]
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
 
   # GET /source_contexts
   # GET /source_contexts.json
   def index
-    @source_contexts = SourceContext.all
+    #TODO need to use constant for ROLE_CURATOR and ROLE_SUPER
+    if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
+       @source_contexts = SourceContext.all
+    else
+      #TODO need to use constant for 'CTRP'
+      @source_contexts = [SourceContext.find_by_name("CTRP")]
+    end
   end
 
   # GET /source_contexts/1

@@ -48,7 +48,10 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'username', enableSorting: true, displayName: 'Username', width: '7%'},
+                {name: 'username', enableSorting: true, displayName: 'Username', width: '10%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
                 {name: 'first_name', displayName: 'First', enableSorting: true, width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
@@ -61,11 +64,11 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'email', enableSorting: true, width: '10%',
+                {name: 'email',  displayName: 'Email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phone', enableSorting: true, width: '6%',
+                {name: 'phone', displayName: 'Phone', enableSorting: true, width: '6%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }//,
@@ -87,29 +90,33 @@
         }; //isLoggedIn
 
 
+        this.getUserType = function() {
+            return  LocalCacheService.getCacheWithKey("user_type");
+        }
+
+
         this.login = function (userObj) {
             PromiseTimeoutService.postDataExpectObj('sign_in', userObj)
                 .then(function (data) {
-                   // console.log('successful login, data returned: ' + JSON.stringify(data));
+                    console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
                         LocalCacheService.cacheItem("token", data.token);
                         LocalCacheService.cacheItem("username", userObj.user.username);
                         _setAppVersion(data.app_version);
                         // LocalCacheService.cacheItem("app_version", data.application_version);
-                        LocalCacheService.cacheItem("user_role", data.role);
-
-                        //var dummyPrivileges = [{type: "READONLY", enabled: true}, {type: "SITE_ADMIN", enabled: true}];
-                        LocalCacheService.cacheItem("privileges", data.privileges);
+                        LocalCacheService.cacheItem("user_role", data.role); //e.g. ROLE_SUPER
+                        LocalCacheService.cacheItem("user_type", data.user_type); //e.g. LocalUser
+                        LocalCacheService.cacheItem("curation_supported", data.privileges.curation_supported || false);
+                        LocalCacheService.cacheItem("curation_enabled", false); //default: curation mode is off/false
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg("signedIn");
 
                         $timeout(function () {
-                            $state.go('main.defaultContent');
-                        }, 1000);
+                            $state.go('main.gsa');
+                        }, 500);
                     } else {
                         toastr.error('Login failed', 'Login error');
                     }
-
                 }).catch(function (err) {
                     $log.error("error in log in: " + JSON.stringify(err));
                 });
@@ -152,7 +159,9 @@
              console.log('User searchparams: ' + JSON.stringify(searchParams));
            // if (!!searchParams) {
                // toastr.success('Success', 'Successful in UserService, searchUsers');
-                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+                var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+            console.log('User List: ' + JSON.stringify(user_list));
+              return user_list
            // }
         } //searchUsers
 
@@ -194,15 +203,6 @@
         };
 
 
-        /**
-         * Get the user privileges from localStorage of the browser
-         * @returns {*|Array}
-         */
-        this.getUserPrivileges = function() {
-            return LocalCacheService.getCacheWithKey('privileges') || [];
-        };
-
-
         this.getAppVersion = function() {
             return LocalCacheService.getCacheWithKey('app_version') || '';
         };
@@ -240,6 +240,17 @@
             return PromiseTimeoutService.getData(DMZ_UTILS.LOGIN_BULLETIN);
         };
 
+        this.getGsa = function() {
+            var gsaObj = {};
+           PromiseTimeoutService.getData(URL_CONFIGS.USER_GSA).then(function(data) {
+               console.log('getGSA successful , data returned: ' + JSON.stringify(data));
+               gsaObj = data;
+           }).catch(function (err){
+               $log.error("error in log in: " + JSON.stringify(err));
+           });
+           return gsaObj
+        };
+
         this.upsertUser=function(userObj) {
             //update an existing user
             var configObj = {}; //empty config
@@ -250,7 +261,15 @@
             //update an existing user
             var configObj = {}; //empty config
             console.log("userObj = " + JSON.stringify(userObj));
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj, configObj);
+
+            PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
+                .then(function (data) {
+                    console.log('successful login, data returned: ' + JSON.stringify(data));
+                    $state.go('main.welcome_signup');
+                }).catch(function (err) {
+                    $log.error("error in log in: " + JSON.stringify(err));
+                });
+
         }; //upsertUserSignup
 
         this.upsertUserChangePassword=function(userObj) {
@@ -260,27 +279,34 @@
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
         }; //upsertUserChangePassword
 
+
+
         /**
+         * Check if the curation mode is supported for the user role
          *
-         * @param privilege
          */
-        this.setUserPrivilege = function(privilege) {
-            var userCurrentPrivilege = PRIVILEGES.READONLY; //default privilege
-            if (privilege) {
-                userCurrentPrivilege = privilege;
-            }
-            LocalCacheService.cacheItem('current_privilege', userCurrentPrivilege);
+        this.isCurationSupported = function() {
+            return LocalCacheService.getCacheWithKey("curation_supported"); //TODO: change true to data.curation_supported
         };
 
 
         /**
-         * Get the current user's privilege
-         * @returns {*|string}
+         * Getter for curation_enabled
+         *
+         * @returns {*|boolean}
          */
-        this.getPrivilege = function() {
-            return LocalCacheService.getCacheWithKey('current_privilege') || PRIVILEGES.READONLY;
+        this.isCurationModeEnabled = function() {
+            return LocalCacheService.getCacheWithKey("curation_enabled") || false;
         };
 
+
+        /**
+         * Set curation_enabled to true
+         * @params curationMode, boolean
+         */
+        this.saveCurationMode = function(curationMode) {
+            LocalCacheService.cacheItem("curation_enabled", curationMode);
+        };
 
 
 

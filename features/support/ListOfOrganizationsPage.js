@@ -31,6 +31,8 @@ ListOfOrganizationsPage = function () {
     this.orgModelSearch = element(by.id('org_search_modal'));
     this.orgModelSelectItem = element(by.css('div[ng-click="selectButtonClick(row, $event)"]'));
     this.orgModelConfirm = element(by.buttonText('Confirm Selection'));
+      this.orgPersonAffiliatedTable = element.all(by.repeater('org in personDetailView.savedSelection'));
+    //  this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
     this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
     this.orgAffiliatedExpirationDate = element(by.model('org.expiration_date'));
     this.orgFamilyRelationship = element(by.model('org.family_relationship_id'));
@@ -168,7 +170,7 @@ ListOfOrganizationsPage = function () {
     };
 
     this.clickOrgSearchModel = function(){
-        search.clickButton(this.orgModelSearch,"Organization Model Search button");
+        search.clickButtonNoHeader(this.orgModelSearch,"Organization Model Search button");
     };
 
 
@@ -182,7 +184,19 @@ ListOfOrganizationsPage = function () {
 
 
     this.setAffiliatedOrgEffectiveDate = function(orgEffectiveDate){
-        search.setValue(this.affiliatedOrgEffectiveDate,orgEffectiveDate,"Add Organization Effective Date field");
+        search.setValue(this.orgAffiliatedEffectiveDate,orgEffectiveDate,"Add Organization Effective Date field");
+    };
+
+    this.setAffiliatedOrgExpirationDate = function(orgExpirationDate){
+        search.setValue(this.orgAffiliatedExpirationDate,orgExpirationDate,"Add Organization Expiration Date field");
+    };
+
+    this.verifyAffiliatedOrgEffectiveDate = function(orgEffectiveDate){
+        search.getVerifyValue(this.orgAffiliatedEffectiveDate,orgEffectiveDate,"Add Organization Effective Date field");
+    };
+
+    this.verifyAffiliatedOrgExpirationDate = function(orgExpirationDate){
+        search.getVerifyValue(this.orgAffiliatedExpirationDate,orgExpirationDate,"Add Organization Expiration Date field");
     };
 
     this.verifyDefaultAffiliatedOrgEffectiveDate = function() {

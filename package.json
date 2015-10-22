@@ -23,8 +23,10 @@
   "devDependencies": {
     "chai": "*",
     "chai-as-promised": "*",
-    "cucumberjs-junitxml": "latest",
+    "cucumberjs-junitxml": "0.0.12",
     "jasmine-reporters": "^2.0.7",
-    "moment": "^2.10.6"
+    "moment": "^2.10.6",
+    "protractor-cucumber-junit": "^1.1.3",
+    "protractor-html-screenshot-reporter": "0.0.21"
   }
 }

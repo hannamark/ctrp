@@ -26,7 +26,7 @@
             "type": vm.type
         };
 
-
+        console.log("vm="+JSON.stringify(vm));
         //
         vm.authenticate = function() {
             return UserService.login(vm.userObj);

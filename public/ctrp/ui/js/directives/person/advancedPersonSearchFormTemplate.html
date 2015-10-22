@@ -24,11 +24,18 @@
             <div class="form-group">
                 <!--source context-->
                 <label for="source_context" class="control-label col-xs-12 col-sm-3">Source Context:</label>
-                <div class="col-xs-12 col-sm-3">
-                    <select class="form-control input-sm" id="source_context" ng-model="searchParams.source_context">
-                        <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
-                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}">{{context.name}}</option>
-                    </select>
+                <div  ng-if="sourceContextArr.length > 1">
+                    <div class="col-xs-12 col-sm-3">
+                        <select class="form-control input-sm" id="source_context" ng-model="searchParams.source_context">
+                            <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
+                            <option ng-repeat="context in sourceContextArr" value="{{context.name}}">{{context.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div  ng-if="sourceContextArr.length == 1">
+                    <div class="col-xs-12 col-sm-3">
+                       {{sourceContextArr[0].name}}
+                    </div>
                 </div>
                 <!--source context ends-->
                 <!--source id-->
@@ -65,7 +72,7 @@
                 <div class="col-xs-12 col-sm-5">
                     <div class="input-group add-on col-sm-12 date datepicker">
                         <input type="text" class="form-control input-sm" id="start_date" name="startDate"
-                               datepicker-popup="{{dateFormat}}" show-weeks="false"
+                               uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.startDate" is-open="startDateOpened"
                                datepicker-options="dateOptions" ng-click="openCalendar($event, 'start')"
                                ng-required="false" close-text="Close" placeholder="Start Date"/>
@@ -82,7 +89,7 @@
                 <div class="col-xs-12 col-sm-4">
                     <div class="input-group add-on col-sm-12 date datepicker" ng-class="{'has-error': search_person_form.endDate.dateLaterThan && search_person_form.endDate.$dirty}">
                         <input type="text" class="form-control input-sm" id="end_date" name="endDate"
-                               datepicker-popup="{{dateFormat}}" show-weeks="false"
+                               uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" ng-click="openCalendar($event, 'end')"
                                datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
                                ng-required="false" close-text="Close" placeholder="End Date"/>
@@ -107,11 +114,11 @@
                 <label for="affiliation" class="control-label col-sm-12 col-sm-3">Affiliation:</label>
 
                 <div class="col-sm-12 col-sm-9">
-                    <input type="text" id="affiliation" class="form-control input-sm" placeholder="Organization Name" ng-model="searchParams.affiliated_org_name"/>
-                    <!-- <input type="text" id="affiliation" class="form-control input-sm"
+                    <!-- <input type="text" id="affiliation" class="form-control input-sm" placeholder="Organization Name" ng-model="searchParams.affiliated_org_name"/> -->
+                    <input type="text" id="affiliation" class="form-control input-sm"
                             autocomplete="off" placeholder="Organization Name" ng-model="searchParams.affiliated_org_name"
-                            typeahead="org for org in typeAheadNameSearch($viewValue)" typeahead-loading="loadingOrganizations"
-                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults"/>-->
+                            uib-typeahead="org for org in typeAheadNameSearch($viewValue)" typeahead-loading="loadingOrganizations"
+                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults"/>
                 </div>
                 <!-- end of affiliation -->
             </div>
@@ -120,15 +127,17 @@
             <div class="form-group">
                 <!--source status-->
                 <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status:</label>
-                <div class="col-xs-12 col-sm-4">
-                    <div ng-if="sourceStatusArr.length > 1">
-                        <select class="form-control input-sm" id="source_status" ng-model="searchParams.source_status">
+                <div  ng-if="sourceStatusArr.length > 1">
+                    <div class="col-xs-12 col-sm-4">
+                        <select class="form-control input-sm" id="source_status" ng-model="searchParams.source_status"
+                                ng-options="status.name for status in sourceStatusArr" >
                             <option value="">Select a status</option>
-                            <option ng-repeat="status in sourceStatusArr" value="{{status.name}}">{{status.name}}</option>
                         </select>
                     </div>
-                    <div ng-if="sourceStatusArr.length == 1" class="form-text">
-                       {{sourceStatusArr[0].name}}
+                </div>
+                <div  ng-if="sourceStatusArr.length == 1">
+                    <div class="col-xs-12 col-sm-4">
+                        {{sourceStatusArr[0].name}}
                     </div>
                 </div>
                 <!-- source status ends -->
@@ -178,16 +187,13 @@
                    <p><h4>People Search Results: {{gridOptions.totalItems}} found</h4></p>
                 </div>
                 <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true">
-                    <mark>Curation Mode:</mark>
-                    <toggle-switch ng-model="curationShown" ng-change="toggleCurationMode()"></toggle-switch>
-                    <button class="btn" ng-click="commitNullification()" ng-show="curationShown" ng-disabled="!curationReady" ng-class="curationReady ? 'btn-danger' : 'btn-warning'">
-                        Commit Nullification
-                    </button>
                     <div class="alert alert-danger fade in" ng-show="curationReady">
                         <strong>Please confirm: {{nullifiedPerson}} will be nullified </strong>
                     </div>
+                    <button class="btn" ng-click="commitNullification()" ng-show="curationShown" ng-disabled="!curationReady" ng-class="curationReady ? 'btn-danger' : 'btn-warning'">
+                        Commit Nullification
+                    </button>
                 </h5>
-
             </div>
             <div class="col-xs-12 col-sm-6">
                 <div class="row"></div>

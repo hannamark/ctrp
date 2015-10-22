@@ -61,6 +61,32 @@ class CommentsController < ApplicationController
     end
   end
 
+  #GET a count of the comments for the given instance_uuid in url
+  def count
+    print params[:instance_uuid]
+    if !params.has_key?(:instance_uuid)
+      num_comments = 0
+    else
+      num_comments = Comment.where("instance_uuid = ?", params[:instance_uuid]).size
+    end
+    respond_to do |format|
+      format.json { render :json => {:count => num_comments} }
+    end
+  end
+
+  #GET the comments for the given instance_uuid in url
+  def comments_for_instance
+    print params[:instance_uuid]
+    comments = []
+    if params.has_key?(:instance_uuid)
+      comments = Comment.where("instance_uuid = ?", params[:instance_uuid])
+    end
+    
+    respond_to do |format|
+      format.json {render :json => {:comments => comments}}
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
@@ -69,6 +95,6 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:content)
+      params.require(:comment).permit(:content, :instance_uuid, :username, :fullname, :model, :field, :parent_id)
     end
 end

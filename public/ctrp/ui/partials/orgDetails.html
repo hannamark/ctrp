@@ -19,6 +19,15 @@
     <script type="text/ng-template" id="ctrp">CTRP Context</script>
     <script type="text/ng-template" id="nlm">NLM Context</script>
     <script type="text/ng-template" id="ctep">CTEP Context</script>
+    <!-- <div ng-hide="orgDetailView.curOrg.new">
+      <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="icon" field=""></ctrp-comment>
+    </div> -->
+    <!-- comment button -->
+    <md-button class="md-fab md-primary md-fab-top-right" curation-field aria-label="Comment" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
+      <!-- <ng-md-icon icon="comment"></ng-md-icon> -->
+      <i class="glyphicon glyphicon-comment"></i>
+    </md-button>
+    <!-- end of comment button -->
     <div class="col-xs-12">
         <div class="row">
             <p>
@@ -230,6 +239,10 @@
                                         <button ng-hide="orgDetailView.curOrg.new" curation-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
                                             <i class="glyphicon glyphicon-remove"></i> Delete This Organization
                                         </button>
+                                        <button class="btn btn-primary pull-left" ng-class="{'btn-no-left-margin': orgDetailView.curOrg.new}" curation-field ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
+                                          <i class="glyphicon glyphicon-comment"></i> Comment
+                                        </button>
+                                        <!-- <button class="btn btn-default" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">Open dialog from directive</button> -->
                                     </div>
                                 </div>
                             </form>

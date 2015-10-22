@@ -194,6 +194,7 @@
                     curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
                     curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
                     curOrg.po_affiliation_id = poAff.id; //po affiliation id
+                    curOrg.lock_version = poAff.lock_version;
                     curOrg._destroy = poAff._destroy || false;
                     vm.savedSelection.push(curOrg);
                 }).catch(function(err) {

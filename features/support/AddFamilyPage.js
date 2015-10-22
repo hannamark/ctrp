@@ -100,8 +100,8 @@ AddFamilyPage = function () {
         menuItem.clickAddFamily();
         this.setAddFamilyName(familyName + moment().format('MMMDoYY hmmss'));
         fam4 = this.addFamilyName.getAttribute('value');
-        selectItem.selectFamilyType(familyType);
         selectItem.selectFamilyStatus(familyStatus);
+        selectItem.selectFamilyType(familyType);
         this.clickSave();
     };
 

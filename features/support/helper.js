@@ -40,10 +40,19 @@ var helper = function() {
     this.setValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.clear();
-        fieldName.sendKeys(fieldValue);//.then(
-         console.log(errorMessage + ' ' + fieldValue + " Value entered");
-        expect(fieldName.getAttribute('value')).to.eventually.equal(fieldValue);
+        fieldName.sendKeys(fieldValue);
+        if(fieldValue == '[object Object]'){    //Shilpi: This has been added here to resolve the promise return by dynamic creation of value
+        var store = fieldName.getAttribute('value');
+        fieldValue.then(function(value){
+            console.log(errorMessage + ' ' + value + " Value entered");
+            expect(store).to.eventually.equal(value);});
+        }
+        else {
+            console.log(errorMessage + ' ' + fieldValue + " Value entered");
+            expect(fieldName.getAttribute('value')).to.eventually.equal((fieldValue));
+        }
     };
+
 /*
     this.selectValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
@@ -84,9 +93,15 @@ var helper = function() {
         if (errorMessage == exp_del_bttn_pg_hdr){
             console.log("Page header does not exists on the popup dialog box");
         } else {
-            expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
+          //  expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
             //expect(this.verifyLoginName.getText()).to.eventually.equal(browser.params.login.user_admin);
         }
+    };
+
+    this.clickButtonNoHeader = function (button, errorMessage){
+        this.wait(button, errorMessage);
+        button.click();
+        console.log(errorMessage + " was clicked");
     };
 
     this.getValue = function (fieldName, errorMessage) {
