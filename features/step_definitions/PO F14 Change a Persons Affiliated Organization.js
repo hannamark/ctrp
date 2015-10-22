@@ -33,7 +33,7 @@ module.exports = function() {
             return true;
         }, 4000)
             .then(function(){
-                menuItemList.clickRole('CURATOR');
+                menuItemList.clickWriteMode();
                 projectFunctions.createPersonWithAffiliatedOrg('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555','ShiOrg','08-Oct-2015','25-Oct-2020');
             });
         browser.sleep(25).then(callback);
