@@ -12,8 +12,8 @@ And I provide the address2 of the organization
 And I select the country of the organization
 And I select the state or province of the organization based on the country
 And I provide the city of the organization
-And I provide the zip code of the organization
 And I provide the country as "United States"
+And I provide the zip code of the organization
 And I provide the Phone number of the organization
 And I provide the email of the organization
 And I provide the Fax number of the organization
@@ -42,7 +42,6 @@ And I provide the address2 of the organization
 And I select the country of the organization
 And I select the state or province of the organization based on the country
 And I provide the city of the organization
-And I provide the zip code of the organization
 And I provide the country other than the "United States"
 And I provide the Phone number of the organization
 And I provide the email of the organization
