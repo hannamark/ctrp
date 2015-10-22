@@ -24,6 +24,7 @@
             last_name: "",
             email: "",
             phone: "",
+            approved: "",
            // affiliated_org_name: "",
 
             //for pagination and sorting
@@ -69,6 +70,10 @@
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'phone', displayName: 'Phone', enableSorting: true, width: '6%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'approved', displayName: 'Approval', enableSorting: true, width: '6%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }//,
