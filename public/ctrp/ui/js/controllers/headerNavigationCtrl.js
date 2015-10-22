@@ -18,22 +18,40 @@
         vm.signedIn = UserService.isLoggedIn();
         vm.username = UserService.getLoggedInUsername();
         vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
-        vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
-        vm.userPrivilege = UserService.getPrivilege(); //'READONLY'; //default
+        vm.isCurationEnabled = UserService.isCurationModeEnabled();
+        vm.isCurationModeSupported = UserService.isCurationSupported();
         vm.warning = null;
         vm.timedout = null;
         //vm.uiRouterState = $state;
         vm.currrentState = $state;
         vm.navbarIsActive = navbarIsActive;
 
+        // Role based Dashboard
+        if (vm.userRole == "curator" || vm.userRole == "super") {
+            vm.dashboardOrganization = {"Search Organizations": "main.organizations", "Add Organization": "main.addOrganization"}
+            vm.dashboardFamily = {"Search Families": "main.families", "Add Family": "main.family"}
+            vm.dashboardPerson = {"Search Persons": "main.people", "Add Person": "main.addPerson"}
+        }
+        if (vm.userRole == "readonly") {
+            vm.dashboardOrganization = {"Search Organizations": "main.organizations"}
+            vm.dashboardFamily = {"Search Families": "main.families"}
+            vm.dashboardPerson = {"Search Persons": "main.people"}
+        }
+
+        vm.toggleCurationMode = function() {
+            console.log('toggling curation mode: ' + vm.isCurationEnabled);
+            // vm.isCurationEnabled = !vm.isCurationEnabled;
+            UserService.saveCurationMode(vm.isCurationEnabled);
+            Common.broadcastMsg(MESSAGES.CURATION_MODE_CHANGED);
+        };
 
 
         vm.logOut = function() {
             vm.signedIn = false;
             vm.username = '';
             vm.userRole = '';
-            vm.userPrivileges = [];
-            vm.userPrivilege = '';
+            vm.isCurationEnabled = false;
+            vm.isCurationModeSupported = false;
             UserService.logout();
         }; //logOut
 
@@ -46,7 +64,6 @@
         function activate() {
             listenToLoginEvent();
             watchForInactivity();
-            watchUserPrivilegeSelection();
             watchStateName();
         }
 
@@ -55,13 +72,13 @@
             $scope.$on('signedIn', function() {
                 vm.signedIn = UserService.isLoggedIn();
                 vm.username = UserService.getLoggedInUsername();
-                vm.userRole = UserService.getUserRole().split("_")[1].toLowerCase();
-                vm.userPrivileges = processUserPrivileges(UserService.getUserPrivileges());
-                vm.userPrivilege = UserService.getPrivilege();
+                vm.userRole = UserService.getUserRole().split("_")[1].toLowerCase(); //e.g. super
+                vm.isCurationEnabled = UserService.isCurationModeEnabled();
+                vm.isCurationModeSupported = UserService.isCurationSupported();
             });
 
             $scope.$on('loggedOut', function() {
-
+              //do something if necessary on log out
             });
         } //listenToLoginEvent
 
@@ -133,36 +150,6 @@
             });
         } //watchIdleEvents
 
-
-        /**
-         * Process the user privileges array that contains the privileges set to 'true'
-         * @param userPrivilegesArr
-         */
-        function processUserPrivileges(userPrivilegesArr) {
-            var processedPrivilegesArray = [];
-            _.each(userPrivilegesArr, function(privilegeItem) {
-                if (privilegeItem.enabled) {
-                    processedPrivilegesArray.push(privilegeItem.type);
-                }
-            });
-
-            return processedPrivilegesArray;
-        }
-
-
-        /**
-         * Watch user privilege selections and broadcast notifications
-         *
-         */
-        function watchUserPrivilegeSelection() {
-            $scope.$watch(function() {return vm.userPrivilege;}, function(newVal, oldVal) {
-                console.log('userPrivilege value: ' + newVal);
-                UserService.setUserPrivilege(newVal);
-                Common.broadcastMsg(MESSAGES.PRIVILEGE_CHANGED);
-                //$rootScope.$broadcast(MESSAGES.PRIVILEGE_CHANGED);
-                $scope.$emit(MESSAGES.PRIVILEGE_CHANGED);
-            }, true);
-        }
 
 
         /**

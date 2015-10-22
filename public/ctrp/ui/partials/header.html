@@ -35,13 +35,15 @@
                         <li ng-show="headerView.signedIn"><a href=""  ng-click="headerView.logOut()">Sign Out</a></li>
                     </ul>
                 </div>
-                <div class="row" ng-show="headerView.signedIn && headerView.userPrivileges.length > 0">
-                    <!--<strong>Privileges: </strong>-->
-                    <div class="btn-group">
-                        <label class="btn btn-primary" ng-model="headerView.userPrivilege" ng-repeat="privilege in headerView.userPrivileges" uib-btn-radio="'{{privilege}}'">
-                            {{privilege}}
-                        </label>
-                    </div>
+                <div class="row" ng-show="headerView.signedIn && headerView.isCurationModeSupported">
+                    <!-- ng-true-value="On" ng-false-value="Off" -->
+                    <md-switch class="md-warn" md-no-ink aria-label="Curation mode" ng-change="headerView.toggleCurationMode()"
+                               ng-model="headerView.isCurationEnabled">
+                        Write Mode:
+                        <span flex ng-if="headerView.isCurationEnabled">On</span>
+                        <span flex ng-if="!headerView.isCurationEnabled">Off</span>
+                        <!--{{headerView.isCurationEnabled}}-->
+                    </md-switch>
                 </div>
             </div>
         </div>
@@ -84,11 +86,9 @@
                                    aria-expanded="false">Organizations & Families
                                     <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a ui-sref="main.organizations">Search Organizations</a></li>
-                                    <li><a ui-sref="main.addOrganization">Add Organization</a></li>
+                                    <li ng-repeat="(display_name,link) in headerView.dashboardOrganization"><a ui-sref={{link}}> {{display_name}}</a> </li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a ui-sref="main.families">Search Families</a></li>
-                                    <li><a ui-sref="main.addFamily">Add Family</a></li>
+                                    <li ng-repeat="(display_name,link) in headerView.dashboardFamily"><a ui-sref={{link}}> {{display_name}}</a> </li>
                                 </ul>
                             </li>
                             <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.people, main.addPerson') }">
@@ -96,8 +96,7 @@
                                    aria-expanded="false">Persons<span
                                         class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a ui-sref="main.people">Search Persons</a></li>
-                                    <li><a ui-sref="main.addPerson">Add Person</a></li>
+                                    <li ng-repeat="(display_name,link) in headerView.dashboardPerson"><a ui-sref={{link}}> {{display_name}}</a> </li>
                                 </ul>
                             </li>
                             <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.trials, main.addTrial') }">
