@@ -52,6 +52,7 @@
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
             $scope.searchWarningMessage = '';
+            $scope.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
@@ -115,6 +116,8 @@
                         if ($scope.showGrid && data.orgs) {
                             $scope.gridOptions.data = data.orgs;
                             $scope.gridOptions.totalItems = data.total;
+
+                            console.log("data ..... "+JSON.stringify(data));
 
                             //pin the selected rows, if any, at the top of the results
                             _.each($scope.selectedRows, function (curRow, idx) {
@@ -388,6 +391,14 @@
             /* prepare grid layout and data options */
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions();
+                //console.log("*******cur user role is "+ $scope.userRole);
+                //console.log("*******index of ctep_id is "+ OrgService.findContextId($scope.gridOptions.columnDefs,'name','ctep_id'));
+                var cur="curator";
+                if(!($scope.userRole.toUpperCase() == cur.toUpperCase())) {
+                    $scope.gridOptions.columnDefs.splice(14,2);
+                }
+                //var needleIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, "ctep_id", contextName);
+
                 $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {

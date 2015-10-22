@@ -24,47 +24,7 @@ exports.config = {
         }
     },
 
-    /*
-    onPrepare: function() { 
-               jasmine.getEnv().addReporter(new HtmlReporter({
-                   baseDirectory: 'screenshots', 
-                   takeScreenShotsOnlyForFailedSpecs: true, 
-                   pathBuilder: function pathBuilder(spec, descriptions, results, capabilities) {            
-                   var monthMap = { 
-                           "1": "Jan", 
-                           "2": "Feb", 
-                           "3": "Mar", 
-                           "4": "Apr", 
-                           "5": "May", 
-                           "6": "Jun", 
-                           "7": "Jul", 
-                           "8": "Aug", 
-                           "9": "Sep", 
-                           "10": "Oct", 
-                           "11": "Nov", 
-                           "12": "Dec" 
-                       };  
-                   var currentDate = new Date(), 
-                       currentHoursIn24Hour = currentDate.getHours(), 
-                       currentTimeInHours = currentHoursIn24Hour>12? currentHoursIn24Hour-12: currentHoursIn24Hour, 
-                       totalDateString = currentDate.getDate()+'-'+ monthMap[currentDate.getMonth()+1]+ '-'+(currentDate.getYear()+1900) +  
-                           '-'+ currentTimeInHours+'h-' + currentDate.getMinutes()+'m';  
-                       return path.join(totalDateString,capabilities.caps_.browserName, descriptions.join('-'));          }       })); 
-    }, 
-    */
 
-    //  restartBrowserBetweenTests: true,
-    /*    onPrepare: function() {
-     var width = 1024;
-     var height = 600;
-     browser.driver.manage().window().setSize(width, height);
-     // implicit and page load timeouts
-     browser.manage().timeouts().pageLoadTimeout(40000);
-     browser.manage().timeouts().implicitlyWait(25000);
-
-     // for non-angular page
-     browser.ignoreSynchronization = true;
-     },*/
 
     jasmineNodeOpts: {
         onComplete: null,
@@ -90,8 +50,8 @@ exports.config = {
     //    'features/PO\ F7\ Edit\ Organization\ Family \Name.feature' //Done updated - has pending scenarios
     //    'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
     //    'features/PO\ F8\ Associate\ an\ Organization\ with\ a\ Family.feature'
-        'features/PO\ F15\ Add\ Organization\ Alias.feature'
-    //  'features/*.feature'
+    //   'features/PO\ F15\ Add\ Organization\ Alias.feature'
+      'features/PO*.feature'
      // 'features/test.feature'
 
     ],
@@ -113,5 +73,5 @@ exports.config = {
         "~@ignoreThis"]*/// or summary
     },
 
-    resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
+    //resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
 };

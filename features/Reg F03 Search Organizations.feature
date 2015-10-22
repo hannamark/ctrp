@@ -1,5 +1,5 @@
 @Global @Reg
-Feature: As any CTRP User, I am able to Search Organizations by various criteria
+Feature: As a CTRP User, I am able to Search Organizations by various criteria
 
 Scenario outline: #1 I am able to search for organizations in CTRP
 Given I am logged into the CTRP Registration application
@@ -18,18 +18,19 @@ And the <Organization Search Results> will display sorted by Organization Name:
 |Organization Name|
 |Family Name|
 |City|
-|State|
+|State - two character ISO code|
 |Country|
 |Zip|
 
 Example:
 |CTRP Org ID	||CTEP Org ID	||Organization Name	||Family Name	||City		||State		||Result	|
+|		||		||			||		||		||		||At least one selection value must be entered prior to running the search|
 |129345		||		||			||		||		||		||True		|
-|		||		||Dana-Farber*		||		||		||		||True		|
-|		||MDA		||Dana-Farber*		||		||		||		||False		|
+|		||		||Dana-Farber		||		||		||		||True		|
+|		||MDA		||Dana-Farber		||		||		||		||False		|
 |		||		||@123			||		||		||		||False		|
 |		||		||			||Dana-Farber/Harvard Cancer Center||	||	||True		|
-|		||		||			||		||		||CA		||True		|
+|		||		||			||		||		||California	||True		|
 |		||		||			||		||CA		||		||False		|
 
 

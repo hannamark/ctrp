@@ -12,7 +12,7 @@ And I Search Organizations and select an Organization
 And I select an effective date which is defaulted to the current date
 And I select an expiration date which is defaulted to null
 And I select either Organization or Affiliate Family Relationship 
-Then the Family is updated with the CTRP ID, Organization Name, Family Relationship, effective date, and expiration date
+Then the Family is updated with the CTRP ID, CTEP ID, Organization Name, Family Relationship, effective date, and expiration date
 
 
 Scenario: As a PO Curator, I can remove an organization From a Family
