@@ -36,8 +36,6 @@
             ctrpCommentPanelCtrl.toggleRight();
           });
 
-          // element.text('New Comment');
-
           //show the counts on the element label
           getCommentCounts();
           //fetch comments and push them to comment panel scope
@@ -59,13 +57,14 @@
       */
       function getCommentCounts() {
         //TODO: include model and field in getting the counts (from the backend)
+        var btnTemplate = '<span><strong> Comment </strong></span>&nbsp; <i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>'
         CommentService.getCommentCounts(scope.uuid).then(function(data) {
           scope.numComments = data.count;
-          if (scope.numComments >= 0) {
-            var newHtml = '<span><strong>' + scope.numComments + '</strong></span> <i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>';
-            element.append($compile(newHtml)(scope));
+          if (scope.numComments > 0) {
+            btnTemplate.replace('Comment', scope.numComments);
             // element.html('<span><strong>' + scope.numComments + '</strong></span> <i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>');
           }
+          element.append($compile(btnTemplate)(scope));
         });
       } //getCommentCounts
 
