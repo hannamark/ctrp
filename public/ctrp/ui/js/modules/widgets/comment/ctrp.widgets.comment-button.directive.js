@@ -61,10 +61,9 @@
         //TODO: include model and field in getting the counts (from the backend)
         CommentService.getCommentCounts(scope.uuid).then(function(data) {
           scope.numComments = data.count;
-          if (scope.numComments > 0) {
-            // element.text(scope.numComments);
+          if (scope.numComments >= 0) {
             var newHtml = '<span><strong>' + scope.numComments + '</strong></span> <i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>';
-            element.append($compile(newHtml));
+            element.append($compile(newHtml)(scope));
             // element.html('<span><strong>' + scope.numComments + '</strong></span> <i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>');
           }
         });
