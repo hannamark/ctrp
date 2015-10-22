@@ -214,7 +214,10 @@
                     templateUrl: '/ctrp/ui/partials/gsa.html',
                     controller: 'gsaCtrl as gsaView',
                     resolve: {
-                        UserService: 'UserService'
+                        UserService: 'UserService',
+                        gsaObj : function(UserService) {
+                            return UserService.getGsa();
+                        },
                     }
                 })
 
