@@ -466,3 +466,8 @@ h4, .panel-title {
 .glyphicon.glyphicon-comment {
     font-size: 22px;
 }
+
+.md-sidenav-right {
+    z-index: 9999;
+
+}
