@@ -75,6 +75,26 @@ ListOfOrganizationsPage = function () {
         if (useSslInput.isSelected() != aliass && aliass) {
             useSslInput.isSelected().then(function (selected) {
                 if (selected) {
+                    console.log('if true then check it')
+                    useSslInput.click();
+                }
+            });
+        } else {
+            useSslInput.isSelected().then(function (selected) {
+                if (!selected) {
+                    console.log('if false then uncheck it')
+                    useSslInput.click();
+                }
+            });
+        }
+    };
+
+/* originl check
+    this.checkAlias = function(aliass) {
+        var useSslInput = this.alias;
+        if (useSslInput.isSelected() != aliass && aliass) {
+            useSslInput.isSelected().then(function (selected) {
+                if (selected) {
                     useSslInput.click();
                 }
             });
@@ -85,7 +105,7 @@ ListOfOrganizationsPage = function () {
                 }
             });
         }
-    };
+    }; */
 
      this.setPoId = function(poId){
          search.setValue(this.poId,poId,"Organization Search by PO ID field");
