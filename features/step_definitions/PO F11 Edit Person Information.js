@@ -8,7 +8,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 var listOfPeoplePage = require('../support/ListOfPeoplePage');
-var menuItem = require('../support/PoCommonBar');
+var menuItemList = require('../support/PoCommonBar');
 var personPage = require('../support/AddPersonPage');
 var orgPage = require('../support/ListOfOrganizationsPage');
 var helper = require('../support/helper');
@@ -20,7 +20,7 @@ var projectFunctionsPage= require('../support/projectMethods');
 
 module.exports = function() {
     var login = new loginPage();
-    var menuItemList = new menuItem();
+    var menuItem = new menuItemList();
     var search = new listOfPeoplePage();
     var person = new personPage();
     var searchOrg = new orgPage();
@@ -40,14 +40,14 @@ module.exports = function() {
     this.Given(/^I know which Person record I want to edit$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
-        menuItemList.clickRole('CURATOR');
+        menuItem.clickWriteMode();
         projectFunctions.createPerson('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555');
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have searched for a Person record and found the one I wish to edit$/, function (callback) {
-        menuItemList.clickPeople();
-        menuItemList.clickListPeople();
+        menuItem.clickPeople();
+        menuItem.clickListPeople();
         search.setPersonFirstName(cukePerson);
         search.clickSearch();
         cukePerson.then(function(value){expect(projectFunctions.inSearchResults(value)).to.become('true'); });
@@ -87,7 +87,7 @@ module.exports = function() {
             search.clickSearch();expect(projectFunctions.inSearchResults(value + 'Edited')).to.become('true');
             element(by.linkText(value + 'Edited')).click();
         });
-        projectFunctions.personVerifyLastUpdatedNameDate(personEditedDateTime);
+        projectFunctions.verifyLastUpdatedNameDate('person',personEditedDateTime);
         browser.sleep(25).then(callback);
     });
 
@@ -118,7 +118,7 @@ module.exports = function() {
             person.getVerifyAddPerFName(value1);
             person.getVerifyAddPerPhone(phoneEditTo);
         });
-        projectFunctions.personVerifyLastUpdatedNameDate(personEditedDateTime);
+        projectFunctions.verifyLastUpdatedNameDate('person',personEditedDateTime);
         browser.sleep(25).then(callback);
     });
 
@@ -140,7 +140,7 @@ module.exports = function() {
             person.getVerifyAddPerFName(value1);
             person.getVerifyAddPerEmail(emailEditTo);
         });
-        projectFunctions.personVerifyLastUpdatedNameDate(personEditedDateTime);
+        projectFunctions.verifyLastUpdatedNameDate('person',personEditedDateTime);
         browser.sleep(25).then(callback);
     });
 
@@ -152,7 +152,7 @@ module.exports = function() {
             return true;
         }, 4000)
             .then(function(){
-                menuItemList.clickRole('CURATOR');
+                menuItem.clickWriteMode();
                 projectFunctions.createPersonWithAffiliatedOrg('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555','ShiOrg','','');
             });
         browser.sleep(25).then(callback);
@@ -183,8 +183,8 @@ module.exports = function() {
 
     this.Then(/^I select the function to add an Affiliated Organization$/, function (callback) {
         projectFunctions.createOrganization('aff_Org','alias','add1','add2','Nepal','Bagmati','Kathmandu','24567','s@s.com','222-4444-555','444-6666-555');
-        menuItemList.clickPeople();
-        menuItemList.clickListPeople();
+        menuItem.clickPeople();
+        menuItem.clickListPeople();
         cukePerson.then(function(value){search.setPersonFirstName(value);
             search.clickSearch();
             expect(projectFunctions.inSearchResults(value)).to.become('true');

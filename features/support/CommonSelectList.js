@@ -41,9 +41,11 @@ CommonSelectList = function(){
         var  state =  element(by.xpath('//*[@id="state"]/option[.="' + stateName + '"]'));
         var stateDefault = element(by.xpath('//*[@id="state"]/option[.="Select a state or province"]'));
         if(stateName == '') {
+            console.log('When no state is Provided');
             select.selectValue(stateDefault,'Select a state or province',"State field");
         }
         else{
+            console.log('When State is selected');
             select.selectValue(state,stateName,"State field");
         }
     };

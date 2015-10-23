@@ -6,7 +6,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 
-var helper = require('../support/helper');
+var helperFunctions = require('../support/helper');
 
 
 var PoCommonBar = function(){
@@ -20,9 +20,15 @@ var PoCommonBar = function(){
     this.family = element(by.linkText('Families'));
     this.listFamily = element(by.css('a[href="#/main/families"]'));
     this.addFamily = element(by.css('a[href="#/main/new_family"]'));
+    this.trials = element(by.linkText('Trials'));
+    this.searchTrials = element(by.linkText('Search Trials')) ;
+    this.registerTrials = element(by.linkText('Register Trial')) ;
+    this.registerNationalTrial = element();
+    this.registerExternallyPeerReviewedTrial = element();
+    this.registerInstitutional = element();
     this.signIn = element(by.css('a[href="#/main/sign_in"]'));
     this.signOut = element(by.css('a[ng-click="headerView.logOut()"]'));
-    var menuItem = new helper();
+    var helper = new helperFunctions();
     this.search_Page = element(by.css('div.row > h4'));
     this.add_Org_Page = element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
     this.edit_Org_page = element(by.css('h4[ng-if="!orgDetailView.curOrg.new"]'));
@@ -31,6 +37,7 @@ var PoCommonBar = function(){
     this.add_Person_Page = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.edit_Person_Page = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
     this.loginName = element(by.binding('headerView.username'));
+    this.writeMode =  element(by.css('.md-thumb'));
 
 
     this.searchResult = element.all(by.binding('grid.getCellValue(row, col) '));
@@ -51,57 +58,57 @@ var PoCommonBar = function(){
 
 
     this.clickHome = function(){
-        menuItem.clickLink(this.home, "Home link");
+        helper.clickLink(this.home, "Home link");
     };
 
     this.clickOrganizations = function(){
-        menuItem.clickLink(this.organizations, "Organization link");
+        helper.clickLink(this.organizations, "Organization link");
     };
 
     this.clickListOrganizations = function(){
-        menuItem.clickLink(this.listOrganizations, "List of Organization link");
+        helper.clickLink(this.listOrganizations, "List of Organization link");
         expect(this.search_Page.getText()).to.eventually.equal(search_Org_Page_Text);
     };
 
     this.clickAddOrganizations = function(){
-        menuItem.clickLink(this.addOrganizations, "Add Organization link");
+        helper.clickLink(this.addOrganizations, "Add Organization link");
         expect(this.add_Org_Page.getText()).to.eventually.equal(add_Org_Page_Text);
     };
 
     this.clickPeople = function(){
-        menuItem.clickLink(this.people, "People link");
+        helper.clickLink(this.people, "People link");
     };
 
     this.clickListPeople = function(){
-        menuItem.clickLink(this.listPeople, "List of People link");
+        helper.clickLink(this.listPeople, "List of People link");
         expect(this.search_Page.getText()).to.eventually.equal(search_Person_Page_Text);
     };
 
     this.clickAddPerson = function(){
-        menuItem.clickLink(this.addPerson, "Add Person link");
+        helper.clickLink(this.addPerson, "Add Person link");
         expect(this.add_Person_Page.getText()).to.eventually.equal(add_Person_Page_Text);
     };
 
 
     this.clickListFamily = function(){
-        menuItem.clickLink(this.listFamily, "List of Family link");
+        helper.clickLink(this.listFamily, "List of Family link");
         expect(this.search_Page.getText()).to.eventually.equal(search_Family_Page_Text);
     };
 
     this.clickAddFamily = function(){
-        menuItem.clickLink(this.addFamily, "Add Family link");
+        helper.clickLink(this.addFamily, "Add Family link");
         expect(this.add_Family_Page.getText()).to.eventually.equal(add_Family_Page_Text);
     };
 
     this.clickSignIn = function(){
-        menuItem.clickLink(this.signIn, "Sign in link");
+        helper.clickLink(this.signIn, "Sign in link");
     };
 
     this.clickSignOut = function(){
-        menuItem.clickLink(this.signOut, "Sign Out link");
+        helper.clickLink(this.signOut, "Sign Out link");
     };
 
-    this.inResults = function(searchString) {
+  /*  this.inResults = function(searchString) {
         return this.searchResult.filter(function(name) {
             return name.getText().then(function(text) {
                 return text === searchString ;
@@ -113,7 +120,7 @@ var PoCommonBar = function(){
             else {return 'false';}
         });
     };
-
+*/
     this.inResultsHeader = function(searchString) {
         return this.searchHeader.filter(function(name) {
             return name.getText().then(function(text) {
@@ -127,9 +134,8 @@ var PoCommonBar = function(){
         });
     };
 
-    this.clickRole = function(role){
-       var role =  element(by.css('label[uib-btn-radio="\\\''+ role +'\\\'"]')); //element(by.css('label[btn-radio="\\\''+ role +'\\\'"]'));
-        menuItem.clickButton(role,"Role");
+    this.clickWriteMode = function(){
+        helper.clickButton(this.writeMode,"Role");
     };
 
 };

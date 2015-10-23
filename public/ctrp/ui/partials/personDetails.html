@@ -16,14 +16,13 @@
             <button class="btn btn-primary" ng-click="vm.cancel()">Cancel</button>
         </div>
     </script>
-    <!-- <div ng-hide="personDetailView.curPerson.new">
-      <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field=""></ctrp-comment>
-    </div> -->
+
+    <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field=""></ctrp-comment>
+
     <!-- comment button -->
-    <md-button class="md-fab md-primary md-fab-top-right" curation-field aria-label="Comment" ctrp-comment-modal uuid="{{personDetailView.curPerson.uuid}}">
-      <!-- <ng-md-icon icon="comment"></ng-md-icon> -->
+    <!-- <md-button class="md-fab md-primary md-fab-top-right" curation-field aria-label="Comment" ctrp-comment-modal uuid="{{personDetailView.curPerson.uuid}}">
       <i class="glyphicon glyphicon-comment"></i>
-    </md-button>
+    </md-button> -->
     <!-- end of comment button -->
     <div class="col-xs-12">
         <div class="row">
@@ -200,9 +199,10 @@
 
                 <div class="form-group">
                     <div class="btn-toolbar col-xs-12 col-sm-9">
-                      <button class="btn btn-primary pull-right" curation-field ctrp-comment-modal uuid="{{personDetailView.curPerson.uuid}}">
+                      <!-- <button class="btn btn-primary pull-right" curation-field ctrp-comment-modal uuid="{{personDetailView.curPerson.uuid}}">
                         <span>Comment</span><i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>
-                      </button>
+                      </button> -->
+                        <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="btn" field=""></ctrp-comment>
                         <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-click="personDetailView.updatePerson()" ng-disabled="person_form.$invalid" ctrp-click-once>
                             Save
                         </button>
