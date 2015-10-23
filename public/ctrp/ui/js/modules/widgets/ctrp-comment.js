@@ -13,7 +13,8 @@
       scope: {
         instanceUuid: '@',
         buttonType: '@', //icon or btn
-        field: '@'
+        field: '@',
+        model: '=?'  //optional
       },
       controller: commentCtrl,
       controllerAs: 'commentView',
@@ -40,7 +41,7 @@
           //show the counts on the element label
           getCommentCounts();
           //fetch comments and push them to comment panel scope
-          fetchComments(scope.uuid);
+          //fetchComments(scope.uuid);
         } else {
           scope.uuid = '';
           scope.numComments = 0;
@@ -73,14 +74,16 @@
       * fetch comments for the instanceUuid
       //TODO: include field and model in fetching comments (?)
       */
+      /*
       function fetchComments(instanceUuid) {
         CommentService.getComments(instanceUuid).then(function(data) {
-          console.log('received comments data: ' + JSON.stringify(data));
+          // console.log('received comments data: ' + JSON.stringify(data));
           scope.commentList = data.comments;
         }).catch(function(error) {
           $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);
         });
       } //fetchComments
+      */
 
 
     } //link
@@ -90,7 +93,12 @@
       var vm = this;
       vm.commentList = [];
       vm.showCommentForm = false;
-      vm.comment = {content: "", username: UserService.getLoggedInUsername(), field: "", model: "", instance_uuid: $scope.instanceUuid, parent_id: ""};
+      vm.comment = {
+        content: "", username: UserService.getLoggedInUsername(),
+        field: "", model: $scope.model || "",
+        instance_uuid: $scope.instanceUuid,
+        parent_id: ""
+      };
 
       //functions:
       vm.toggleRight = buildToggler('right');
@@ -118,7 +126,7 @@
 
       function fetchComments() {
         CommentService.getComments($scope.instanceUuid).then(function(data) {
-          console.log('received comments data: ' + JSON.stringify(data));
+          // console.log('received comments data: ' + JSON.stringify(data));
           vm.commentList = data.comments;
         }).catch(function(error) {
           $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);
