@@ -55,7 +55,6 @@
             listenToLoginEvent();
             watchForInactivity();
             watchStateName();
-            showMenus();
         }
 
 
