@@ -9,7 +9,6 @@
   <span ng-if="commentView.commentList.length == 0">Comment</span>
 </button>
 <div class="sideNavBar">
-
   <div layout="column" class="relative" layout-fill role="main">
     <md-button class="md-fab md-fab-top-right" style="background-color: #007299" aria-label="Comment"
     ng-click="commentView.toggleRight()" ng-show="buttonType=='icon'">
@@ -67,10 +66,10 @@
         </md-button>
         <md-button class="md-raised md-primary" ng-click="commentView.postComment()">Submit</md-button> -->
         <button type="submit" class="btn btn-primary pull-right" ng-disabled="commentView.comment.content==''" id="comment_submit_btn" ng-click="commentView.postComment()">
-          Submit
+         <i class="glyphicon glyphicon-plus"></i> Submit
         </button>
         <button class="btn btn-warning pull-right" id="comment_reset_btn" ng-show="commentView.showCommentForm" ng-click="commentView.toggleCommentFormShown()">
-          Close Form
+          <i class="glyphicon glyphicon-arrow-up"></i> Close Form
         </button>
         </div>
       </div>
