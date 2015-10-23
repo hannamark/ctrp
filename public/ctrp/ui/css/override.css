@@ -25,13 +25,40 @@
     overflow: visible;
 }
 
-.ui-grid-row, .ui-grid-cell {
-    line-height: 1em;
-    height: 22px !important;
-}
-
 .tooltip-uigrid {
     word-wrap: normal;
+}
+
+/* Overriding default table classes */
+.table-bordered > thead >tr > td, .table-bordered > thead > tr > th {
+    border-bottom-width: 1px;
+}
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+    line-height: 1em;
+    padding: 3px 5px;
+    height: 22px;
+    white-space: normal;
+    -ms-text-overflow: clip;
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    overflow: visible;
+    border: 1px solid #D4D4D4;
+}
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td,
+.table-bordered > thead > tr > td {
+    vertical-align: middle;
+}
+
+.table .btn, .input-group-btn .btn {
+    line-height: 1em;
 }
 
 .animated-item {
@@ -312,6 +339,12 @@ form label {
 
 
 /* New UI Overrides */
+header .sub-title {
+    font-size: large;
+    font-weight: bold;
+    margin-left: 69px;
+}
+
 body {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 12px;
@@ -369,8 +402,16 @@ form {
 }
 
 h4, .panel-title {
-    font-size: 16px;
     color: #2A71A5;
+}
+h4 {
+    font-size: 16px;
+}
+.panel-title {
+    font-size: 14px;
+}
+.panel-heading {
+    padding: 6px 15px;
 }
 
 .glyphicon {
@@ -389,7 +430,8 @@ h4, .panel-title {
 
 .input-sm, select.input-sm {
     height: 22px;
-    padding: 2px 10px;
+    padding: 2px 8px;
+    border-radius: 6px;
 }
 
 .btn {
@@ -406,9 +448,17 @@ h4, .panel-title {
     margin-left: 0px;
 }
 
-.btn-toolbar span {
+.btn-toolbar span.pad-height {
     line-height: 2.5em;
     font-size: 11px;
+}
+
+.btn-toolbar > .btn-no-left-margin {
+    margin-left: 0;
+}
+
+.btn-left-margin {
+    margin-left: 5px;
 }
 
 .checkbox.checkbox-info, .checkbox.checkbox-circle {
@@ -442,14 +492,22 @@ h4, .panel-title {
     color: #FFF;
 }
 
+.ui-grid-cell {
+    line-height: 1em;
+    height: 22px !important;
+}
+
+.ui-grid-cell .btn {
+    margin: 0 auto;
+    padding: 0 6px;
+}
+
 .form-text {
     padding-top: 7px;
 }
 
-/* For datepicker widget */
-.btn-calendar {
-    padding-top: .12em;
-    padding-bottom: .12em;
+.form-file-upload {
+    padding-top: 5px;
 }
 
 .popover {
@@ -463,12 +521,17 @@ h4, .panel-title {
   min-height: inherit;
 }
 
-.glyphicon.glyphicon-comment {
-    font-size: 22px;
-}
-
 .md-sidenav-right {
     z-index: 9999;
     width: 350px;
     word-wrap: break-word;
+}
+
+.btn-toolbar ng-md-icon {
+    height: 13px;
+    width: 12px;
+}
+
+input[type=radio] {
+    margin: 0;
 }

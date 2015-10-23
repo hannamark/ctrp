@@ -44,7 +44,7 @@
         var gridOptions = {
             enableColumnResizing: true,
             totalItems: null,
-            rowHeight: 60,
+            rowHeight: 22,
             // enableFullRowSelection: true,
             enableSelectAll: false,
             //enableRowSelection: false,
@@ -55,7 +55,7 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '6%',
+                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '7%',
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
