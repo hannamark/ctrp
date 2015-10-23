@@ -41,11 +41,6 @@ class Ability
       cannot :access_backoffice, :manage_backoffice
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
-    elsif user.role == "ROLE_READONLY"  && user.approved?
-      can :read, :all
-      can [:create, :update], User
-      cannot :access, :rails_admin   # grant access to rails_admin
-      cannot :dashboard              # grant access to the dashboard
     elsif user.role == "ROLE_RO"  && user.approved?
       can :read, :all
       can [:create, :update], User

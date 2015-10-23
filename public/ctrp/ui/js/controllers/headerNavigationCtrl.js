@@ -173,7 +173,7 @@
               vm.dashboardFamily = {"Search Families": "main.families", "Add Family": "main.family"};
               vm.dashboardPerson = {"Search Persons": "main.people", "Add Person": "main.addPerson"};
           }
-          if (vm.userRole == "readonly") {
+          if (vm.userRole == "ro") {
               vm.dashboardOrganization = {"Search Organizations": "main.organizations"};
               vm.dashboardFamily = {"Search Families": "main.families"};
               vm.dashboardPerson = {"Search Persons": "main.people"};

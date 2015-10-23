@@ -14,7 +14,6 @@
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
         var vm = this;
-        vm.selectedContextIndex = 0; //for tab-view
         vm.addedNameAliases = [];
         vm.numbers = [1, 2, 3];
         vm.states = [];
@@ -108,6 +107,21 @@
             }
         };// toggleSelection
 
+        // Swap context when different tab is selected
+        $scope.$watch(function() {
+            return vm.tabIndex;
+        }, function(newValue, oldValue) {
+            if (!vm.curOrg.new) {
+                OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function (response) {
+                    vm.curOrg = response;
+                    listenToStatesProvinces();
+                    vm.addedNameAliases = [];
+                    appendNameAliases();
+                }).catch(function (err) {
+                    console.log("Error in retrieving organization during tab change.");
+                });
+            }
+        });
 
         activate();
 
@@ -120,6 +134,7 @@
 
             listenToStatesProvinces();
             appendNewOrgFlag();
+            setTabIndex();
             //prepare the modal window for existing organizations
             if (!vm.curOrg.new) {
                 prepareModal();
@@ -171,6 +186,17 @@
             }
         }
 
+        function setTabIndex() {
+            if (vm.curOrg.new) {
+                vm.curOrg.cluster = [{"context": "CTRP"}];
+            } else {
+                for (var i = 0; i < vm.curOrg.cluster.length; i++) {
+                    if (vm.curOrg.cluster[i].id == vm.curOrg.id) {
+                        vm.tabIndex = i;
+                    }
+                }
+            }
+        }
 
         function prepareModal() {
             vm.confirmDelete = function (size) {
