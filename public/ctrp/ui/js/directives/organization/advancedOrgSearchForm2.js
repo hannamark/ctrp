@@ -391,14 +391,6 @@
             /* prepare grid layout and data options */
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions();
-                //console.log("*******cur user role is "+ $scope.userRole);
-                //console.log("*******index of ctep_id is "+ OrgService.findContextId($scope.gridOptions.columnDefs,'name','ctep_id'));
-                var cur="curator";
-                if(!($scope.userRole.toUpperCase() == cur.toUpperCase())) {
-                    $scope.gridOptions.columnDefs.splice(14,2);
-                }
-                //var needleIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, "ctep_id", contextName);
-
                 $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {

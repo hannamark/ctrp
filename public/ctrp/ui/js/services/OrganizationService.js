@@ -9,11 +9,11 @@
         .factory('OrgService', OrgService);
 
     OrgService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
-        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService'];
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService'];
 
     function OrgService(URL_CONFIGS, MESSAGES, $log, _,
                         GeoLocationService, Common, $rootScope,
-                        PromiseTimeoutService) {
+                        PromiseTimeoutService,UserService) {
 
         var statesOrProvinces = [];
         var initOrgSearchParams = {
@@ -90,9 +90,9 @@
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
 
-                {name: 'created_by', displayName: 'Curator Name', enableSorting: true, width: '10%'},
+                {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, width: '10%'},
 
-                {name: 'created_at', displayName: 'Curator Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'}
+                {name: 'updated_at', displayName: 'Last Updated At', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'}
 
 
             ]
@@ -184,6 +184,14 @@
 
 
         function getGridOptions() {
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
+            var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
+            var curator_role = "curator";
+            if(!(user_role.toUpperCase() == curator_role.toUpperCase())) {
+                gridOptions.columnDefs.splice(updated_at_index,1);
+                gridOptions.columnDefs.splice(updated_by_index,1);
+            }
             return gridOptions;
         }
 
