@@ -34,6 +34,7 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  uuid                    :string(255)
+#  lock_version            :integer          default(0)
 #  research_category_id    :integer
 #  accrual_disease_term_id :integer
 #  investigator_title      :string(255)
@@ -74,8 +75,6 @@ one:
   comp_date: 2015-07-16
   comp_date_qual: MyString
   ind_ide_question: MyString
-  authority_country: MyString
-  authority_org: MyString
   intervention_indicator: MyString
   sec801_indicator: MyString
   data_monitor_indicator: MyString
@@ -95,8 +94,6 @@ two:
   comp_date: 2015-07-16
   comp_date_qual: MyString
   ind_ide_question: MyString
-  authority_country: MyString
-  authority_org: MyString
   intervention_indicator: MyString
   sec801_indicator: MyString
   data_monitor_indicator: MyString

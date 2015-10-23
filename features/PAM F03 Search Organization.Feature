@@ -13,7 +13,7 @@ When I selected one or more of the values to search all trials
 |State|
 |Country|
 |Zip|
-And I submit my search request
+And I submit my search request by selecting search
 Then the system should display the organizations that have those parameters
 And the Organization Search Results will display:
 |PO Organization ID|
@@ -24,6 +24,7 @@ And the Organization Search Results will display:
 |State|
 |Country|
 |Zip|
+And the system will display the list of organizations ordered assending alphanumeric by organization name
 
 Scenario: #2 I am able to view organizations details
 Given I am logged into the CTRP PA user

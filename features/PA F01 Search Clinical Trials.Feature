@@ -25,10 +25,7 @@ When I select one or more of the values to search all trials
 |Submission Method|
 |NIH/NCI Division/Department Identifier|
 |NIH/NCI Program Identifier|
-
-
-
-Then CTRP will then display the results for all the Clinical Trials Search Results:
+Then CTRP will then display the results for all the Clinical Trials Search Results
 |NCI Trial Identifier|
 |Processing Priority|
 |Other ID Source and Other ID|
@@ -42,7 +39,7 @@ Then CTRP will then display the results for all the Clinical Trials Search Resul
 |Current Trial Status|
 |Milestone (current) and Milestone Date|
 |Admin Milestone (current) and Admin Milestone Date|
-| Scientific Milestone (current) and Scientific Milestone Date|
+|Scientific Milestone (current) and Scientific Milestone Date|
 |Processing Status|
 |Processing Status Date|
 |Record Verification Date|
@@ -67,9 +64,10 @@ And the alternative title text
 Scenario: #3 I can search for clinical trials by Organization
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more Organizations
+When I select an Organization
 And select the search option
-Then the search results will display trials that match the Organizations selected for the trial from |Sponsor|
+Then the search results will display trials that match the Organization selected for the trial from 
+|Sponsor|
 |Lead Organization|
 |Collaborator|
 |Participating Site|
@@ -78,7 +76,7 @@ Then the search results will display trials that match the Organizations selecte
 Scenario: #4 I can search for clinical trials by Identifier Type  
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I enter select one or more Identifier Types 
+When I enter select an Identifier Type 
 |NCI |
 |CTEP|
 |DCP|
@@ -98,14 +96,14 @@ Then the search results will display trials that contain the identifier
 Scenario: #6 I can search for clinical trials by Principal Investigator
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more persons from a person name search
+When I select a persons from the person name search
 And select search
-Then the search results will display trials where the persons selected are principal investigator
+Then the search results will display trials where the person selected is the principal investigator
 
 Scenario: #7 I can search for clinical trials by primary purpose
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more trial primary purposes
+When I select a trial primary purpose
 |Treatment|
 |Prevention|
 |Supportive Care|
@@ -115,14 +113,14 @@ When I select one or more trial primary purposes
 |Basic Science|
 |Other|
 And select search
-Then the search results will display trials that match the primary purposes selected
+Then the search results will display trials that match the primary purpose selected
 
 Scenario: #8 I can search for Phase
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more Phase (0, I, I/II, II, II/III, III, IV, NA)
+When I select a Phase (0, I, I/II, II, II/III, III, IV, NA)
 And select search 
-Then the search results will display trials that have the selected Phases
+Then the search results will display trials that have the selected Phase
 
 Scenario: #9 I can search for pilot clinical trials
 Given I am logged into the CTRP Protocol Abstraction application
@@ -134,42 +132,42 @@ Then the search results will display trials that have the Pilot criteria equal t
 Scenario: #10 I can search trials by current Trial Status
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more current Trial Status
+When I select the current Trial Status
 |In Review|
 |Approved|
-| Active|
+|Active|
 |Temporarily Closed to Accrual|
 |Temporarily Closed to Accrual and Intervention|
-| Closed to Accrual|
-| Closed to Accrual and Intervention|
-| Complete|
+|Closed to Accrual|
+|Closed to Accrual and Intervention|
+|Complete|
 |Administratively Complete|
-| Withdrawn|
+|Withdrawn|
 And select search 
 Then the search results will display trials that have the Current Trial Status
 
 Scenario: #11 I can search trials by Processing Status
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more Processing Status
+When I select a Processing Status
 |In Review|
 |Approved|
-| Active|
+|Active|
 |Temporarily Closed to Accrual|
 |Temporarily Closed to Accrual and Intervention|
-| Closed to Accrual|
-| Closed to Accrual and Intervention|
-| Complete|
+|Closed to Accrual|
+|Closed to Accrual and Intervention|
+|Complete|
 |Administratively Complete|
-| Withdrawn|
+|Withdrawn|
 And select search 
 Then the search results will display trials that have that Processing Status
 
 Scenario: #12 I can search trials by Milestone
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more Milestones
-| Submission Acceptance Date|
+When I select a Milestone
+|Submission Acceptance Date|
 |Submission Rejection Date|
 |Submission Terminated Date|
 |Submission Reactivated Date|
@@ -186,9 +184,9 @@ When I select one or more Milestones
 |Trial Summary Report Date|
 |Submitter Trial Summary Report Feedback Date|
 |Initial Abstraction Verified Date|
- |On-going|
- |Abstraction Verified Date|
- |Late Rejection Date |
+|On-going|
+|Abstraction Verified Date|
+|Late Rejection Date |
 And select search 
 Then the search results will display trials that have that Milestone
 
@@ -200,17 +198,18 @@ When I select the On Hold Status
 |Not On-Hold|
 And select search 
 Then the search results will display trials that have that On Hold Status
+
 Scenario: #14 I can search trials by Trials I have checked out
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select o Trials I have checked out 
+When I select Trials I have checked out 
 And select search 
-Then the search results will display trials that have that On Hold Status
+Then the search results will display trials that have Trials I have checked out 
 
 Scenario: #15 I can search trials by Submission Type
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more Submission Type
+When I select Submission Type
 |Original|
 |Update|
 |Amendment|
@@ -220,7 +219,7 @@ Then the search results will display trials that have that Submission Type
 Scenario: #16 I can search trials by Submission Method
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more Submission Method
+When I select a Submission Method
 |Batch|
 |Registry|
 |ClinicalTrials.gov|
@@ -233,7 +232,7 @@ Then the search results will display trials that have that Submission Method
 Scenario: #17 I can search for clinical trials by Study Source
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more Study Sources
+When I select a Study Source
 |National|
 |Externally Peer-Reviewed|
 |Institutional|
@@ -245,7 +244,7 @@ Then the search results will display trials with matching Study Sources
 Scenario: #18 I can search for clinical trials by Clinical Research Category
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more Clinical Research Categories
+When I select a Clinical Research Categories
 |Interventional|
 |Observational|
 |Expanded Access|
@@ -256,9 +255,9 @@ Then the search results will display trials with matching Clinical Research Cate
 Scenario: #19 I can search for clinical trials by NIH/NCI Division/Department Identifier
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more NIH/NCI Division/Department Identifiers
+When I select an NIH/NCI Division/Department Identifiers
 |CTEP|
-| DCP|
+|DCP|
 |CCR|
 |NHLBI| 
 |DEA|
@@ -269,7 +268,7 @@ Then the search results will display trials with matching NIH/NCI Division/Depar
 Scenario: #20 I can search for clinical trials by NIH/NCI Program Identifier
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I select one or more NIH/NCI Program Identifiers
+When I select an NIH/NCI Program Identifiers
 |BIQSFP|
 |SPORE |
 And select a search option
@@ -278,15 +277,13 @@ Then the search results will display trials with matching NIH/NCI Program Identi
 Scenario: #21 I can search for clinical trials by Identifier Type NCI
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I enter select one or more Identifier Types 
-|NCI |
+When I enter select an Identifier Type "NCI"
 And select search 
 Then the search results will display trials that contain that Identifier type NCI and Duplicate NCI ID
 
 Scenario: #22 I can search for clinical trials by Identifier Type ClinicalTrials.Gov (NCT)
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
-When I enter select one or more Identifier Types 
-|ClinicalTrails.gov (NCT) |
+When I enter select a Identifier Type "ClinicalTrails.gov (NCT)"
 And select search 
 Then the search results will display trials that contain that Identifier type ClinicalTrails.gov (NCT) and Obsolete ClinicalTrails.gov (NCT) ID

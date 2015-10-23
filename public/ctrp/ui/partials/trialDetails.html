@@ -27,12 +27,9 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Study Source:</label>
                             <div class="col-sm-6">
-                                <select class="form-control" id="study_source" name="phase" ng-model="trialDetailView.curTrial.study_source_id" disabled>
+                                <select class="form-control" id="study_source" ng-model="trialDetailView.curTrial.study_source_id"
+                                        ng-options="studySource.id as studySource.name for studySource in trialDetailView.studySourceArr" disabled>
                                     <option value="">--</option>
-                                    <option ng-repeat="studySource in trialDetailView.studySourceArr"
-                                            value="{{studySource.id}}" ng-selected="trialDetailView.curTrial.study_source_id == studySource.id">
-                                        {{studySource.name}}
-                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -103,6 +100,7 @@
                                 </table>
                             </div>
                         </div>
+
                     </accordion-group>
 
                     <accordion-group is-open="trialDetailView.accordions[1]">
@@ -123,12 +121,9 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Phase:</label>
                             <div class="col-sm-6">
-                                <select class="form-control" id="phase" name="phase" ng-model="trialDetailView.curTrial.phase_id" required>
+                                <select class="form-control" id="phase" name="phase" ng-model="trialDetailView.curTrial.phase_id"
+                                        ng-options="phase.id as phase.name for phase in trialDetailView.phaseArr" required>
                                     <option value="">-Select a Phase-</option>
-                                    <option ng-repeat="phase in trialDetailView.phaseArr"
-                                            value="{{phase.id}}" ng-selected="trialDetailView.curTrial.phase_id == phase.id">
-                                        {{phase.name}}
-                                    </option>
                                 </select>
                                 <p ng-show="trial_form.phase.$error.required && trial_form.phase.$dirty" class="help-inline text-danger">
                                     Phase is required
@@ -149,12 +144,9 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Research Category:</label>
                             <div class="col-sm-6">
-                                <select class="form-control" id="research_category" name="research_category" ng-model="trialDetailView.curTrial.research_category_id" required>
+                                <select class="form-control" id="research_category" name="research_category" ng-model="trialDetailView.curTrial.research_category_id"
+                                        ng-options="category.id as category.name for category in trialDetailView.researchCategoryArr" required>
                                     <option value="">-Select a Research Category-</option>
-                                    <option ng-repeat="category in trialDetailView.researchCategoryArr"
-                                            value="{{category.id}}" ng-selected="trialDetailView.curTrial.research_category_id == category.id">
-                                        {{category.name}}
-                                    </option>
                                 </select>
                                 <p ng-show="trial_form.research_category.$error.required && trial_form.research_category.$dirty" class="help-inline text-danger">
                                     Research Category is required
@@ -165,12 +157,10 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Primary Purpose:</label>
                             <div class="col-sm-6">
-                                <select class="form-control" id="primary_purpose" name="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id" ng-change="trialDetailView.watchOption('primary_purpose')" required>
+                                <select class="form-control" id="primary_purpose" name="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id"
+                                        ng-options="primaryPurpose.id as primaryPurpose.name for primaryPurpose in trialDetailView.primaryPurposeArr"
+                                        ng-change="trialDetailView.watchOption('primary_purpose')" required>
                                     <option value="">-Select a Primary Purpose-</option>
-                                    <option ng-repeat="primaryPurpose in trialDetailView.primaryPurposeArr"
-                                            value="{{primaryPurpose.id}}" ng-selected="trialDetailView.curTrial.primary_purpose_id == primaryPurpose.id">
-                                        {{primaryPurpose.name}}
-                                    </option>
                                 </select>
                                 <p ng-show="trial_form.primary_purpose.$error.required && trial_form.primary_purpose.$dirty" class="help-inline text-danger">
                                     Primary Purpose is required
@@ -188,12 +178,10 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3">Secondary Purpose:</label>
                             <div class="col-sm-6">
-                                <select class="form-control" id="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id" ng-change="trialDetailView.watchOption('secondary_purpose')">
+                                <select class="form-control" id="secondary_purpose" name="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id"
+                                        ng-options="secondaryPurpose.id as secondaryPurpose.name for secondaryPurpose in trialDetailView.secondaryPurposeArr"
+                                        ng-change="trialDetailView.watchOption('secondary_purpose')">
                                     <option value="">-Select a Secondary Purpose-</option>
-                                    <option ng-repeat="secondaryPurpose in trialDetailView.secondaryPurposeArr"
-                                            value="{{secondaryPurpose.id}}" ng-selected="trialDetailView.curTrial.secondary_purpose_id == secondaryPurpose.id">
-                                        {{secondaryPurpose.name}}
-                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -208,12 +196,9 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Accrual Disease Terminology:</label>
                             <div class="col-sm-6">
-                                <select class="form-control" id="accrual_disease_term" name="accrual_disease_term" ng-model="trialDetailView.curTrial.accrual_disease_term_id" required>
+                                <select class="form-control" id="accrual_disease_term" name="accrual_disease_term" ng-model="trialDetailView.curTrial.accrual_disease_term_id"
+                                        ng-options="term.id as term.name for term in trialDetailView.accrualDiseaseTermArr" required>
                                     <option value="">-Select an Accrual Disease Terminology-</option>
-                                    <option ng-repeat="term in trialDetailView.accrualDiseaseTermArr"
-                                            value="{{term.id}}" ng-selected="trialDetailView.curTrial.accrual_disease_term_id == term.id">
-                                        {{term.name}}
-                                    </option>
                                 </select>
                                 <p ng-show="trial_form.accrual_disease_term.$error.required && trial_form.accrual_disease_term.$dirty" class="help-inline text-danger">
                                     Accrual Disease Terminology is required
@@ -278,12 +263,10 @@
                         <div class="form-group col-sm-12">
                             <label class="control-label col-sm-3 required">Responsible Party:</label>
                             <div class="col-sm-6">
-                                <select class="form-control" id="responsible_party" name="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id" ng-change="trialDetailView.watchOption('responsible_party')" required>
+                                <select class="form-control" id="responsible_party" name="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id"
+                                        ng-options="responsibleParty.id as responsibleParty.name for responsibleParty in trialDetailView.responsiblePartyArr"
+                                        ng-change="trialDetailView.watchOption('responsible_party')" required>
                                     <option value="">-Select a Responsible Party-</option>
-                                    <option ng-repeat="responsibleParty in trialDetailView.responsiblePartyArr"
-                                            value="{{responsibleParty.id}}" ng-selected="trialDetailView.curTrial.responsible_party_id == responsibleParty.id">
-                                        {{responsibleParty.name}}
-                                    </option>
                                 </select>
                                 <p ng-show="trial_form.responsible_party.$error.required && trial_form.responsible_party.$dirty" class="help-inline text-danger">
                                     Responsible Party is required
@@ -494,7 +477,7 @@
                                             <div>
                                                 <select class="form-control" id="trial_status" ng-model="trialDetailView.trial_status_id"  ng-change="trialDetailView.watchOption('trial_status')">
                                                     <option value="">-Select a Trial Status-</option>
-                                                    <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" ng-hide="!trialDetailView.isExp && (trialStatus.code == 'AVA' || trialStatus.code == 'NLA' || trialStatus.code == 'TNA' || trialStatus.code == 'AFM')" value="{{trialStatus.id}}">
+                                                    <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" value="{{trialStatus.id}}">
                                                         {{trialStatus.name}}
                                                     </option>
                                                 </select>
@@ -815,10 +798,11 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.curTrial.trial_documents" ng-if="document.document_type == 'Protocol Document'" class="form-group col-sm-12">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Document'" class="form-group col-sm-12">
                             <label class="control-label col-sm-3"></label>
                             <div class="col-sm-9">
-                                <a href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
@@ -829,10 +813,11 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.curTrial.trial_documents" ng-if="document.document_type == 'IRB Approval'" class="form-group col-sm-12">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'IRB Approval'" class="form-group col-sm-12">
                             <label class="control-label col-sm-3"></label>
                             <div class="col-sm-9">
-                                <a href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
@@ -843,10 +828,11 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.curTrial.trial_documents" ng-if="document.document_type == 'List of Participating Sites'" class="form-group col-sm-12">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'List of Participating Sites'" class="form-group col-sm-12">
                             <label class="control-label col-sm-3"></label>
                             <div class="col-sm-9">
-                                <a href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
@@ -857,10 +843,11 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.curTrial.trial_documents" ng-if="document.document_type == 'Informed Consent'" class="form-group col-sm-12">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Informed Consent'" class="form-group col-sm-12">
                             <label class="control-label col-sm-3"></label>
                             <div class="col-sm-9">
-                                <a href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
@@ -875,7 +862,7 @@
                             <div class="form-group col-sm-12">
                                 <label class="control-label col-sm-3"></label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control input-xs" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Please describe the document">
+                                    <input type="text" class="form-control input-xs" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Please describe other document">
                                 </div>
                             </div>
                         </div>
@@ -889,10 +876,12 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.curTrial.trial_documents" ng-if="document.document_type == 'Other Document'" class="form-group col-sm-12">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Other Document'" class="form-group col-sm-12">
                             <label class="control-label col-sm-3"></label>
                             <div class="col-sm-9">
-                                <a href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a><br>{{document.document_subtype}}
+                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <br>{{document.document_subtype}}
                             </div>
                         </div>
                     </accordion-group>

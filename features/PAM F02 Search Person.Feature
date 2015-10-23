@@ -12,7 +12,7 @@ When I select one or more of the following
 |Phone Number|
 |Email Address|
 |Organization Affiliations|
-And I submit my search request
+And I submit my search request by selecting search
 Then the system should display all persons that meet that criteria 
 And the Person Search Results will display:
 |PO Person ID|
@@ -25,6 +25,7 @@ And the Person Search Results will display:
 |Phone Number|
 |Email Address|
 |Organization Affiliations|
+And the system will display the list of Persons ordered assending alphanumeric by Last Name and then assending alphanumeric by First Name and then assending alphanumeric by Middle name
 
 Scenario: #2 I am able to view Person details
 Given I am logged into the CTRP PA user

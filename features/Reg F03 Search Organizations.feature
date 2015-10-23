@@ -1,5 +1,5 @@
 @Global @Reg
-Feature: As any CTRP User, I am able to Search Organizations by various criteria
+Feature: As a CTRP User, I am able to Search Organizations by various criteria
 
 Scenario outline: #1 I am able to search for organizations in CTRP
 Given I am logged into the CTRP Registration application
@@ -18,22 +18,29 @@ And the <Organization Search Results> will display sorted by Organization Name:
 |Organization Name|
 |Family Name|
 |City|
-|State|
+|State - two character ISO code|
 |Country|
 |Zip|
 
 Example:
 |CTRP Org ID	||CTEP Org ID	||Organization Name	||Family Name	||City		||State		||Result	|
+|		||		||			||		||		||		||At least one selection value must be entered prior to running the search|
 |129345		||		||			||		||		||		||True		|
-|		||		||Dana-Farber*		||		||		||		||True		|
-|		||MDA		||Dana-Farber*		||		||		||		||False		|
+|		||		||Dana-Farber		||		||		||		||True		|
+|		||MDA		||Dana-Farber		||		||		||		||False		|
 |		||		||@123			||		||		||		||False		|
 |		||		||			||Dana-Farber/Harvard Cancer Center||	||	||True		|
-|		||		||			||		||		||CA		||True		|
+|		||		||			||		||		||California	||True		|
 |		||		||			||		||CA		||		||False		|
 
 
-
+Scenario: #2 I can request the creation of a new organization
+Given I am logged into the CTRP Registration application
+And I have selected the option "Search Organizations"
+And I searched for the desired organization
+When I do not find the organization that I need for registration
+Then I can request the creation of a new organization by providing the Organization Name, Street Address, City, State, Country, phone, and email
+And requesting that a new organization be created
 
 
 

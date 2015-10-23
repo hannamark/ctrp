@@ -1,5 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -68,10 +70,23 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:lead_protocol_id].present? || params[:official_title].present?
+    if params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org] || params[:study_source]
       @trials = Trial.all
-      @trials = @trials.matches('lead_protocol_id', params[:lead_protocol_id]) if params[:lead_protocol_id].present?
+      @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
+      @trials = @trials.with_phase(params[:phase]) if params[:phase].present?
+      @trials = @trials.with_purpose(params[:purpose]) if params[:purpose].present?
+      @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
+      if params[:pi].present?
+        splits = params[:pi].split(',').map(&:strip)
+        @trials = @trials.with_pi_lname(splits[0])
+        @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
+      end
+      if params[:org].present?
+        @trials = @trials.with_lead_org(params[:org]) if params[:org_type] == 'Lead Organization'
+        @trials = @trials.with_sponsor(params[:org]) if params[:org_type] == 'Sponsor'
+      end
+      @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
       @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
     else
       @trials = []
@@ -92,13 +107,14 @@ class TrialsController < ApplicationController
                                     :comp_date, :comp_date_qual, :ind_ide_question,
                                     :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :accrual_disease_term_id,
-                                    :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id,
+                                    :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id, :lock_version,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
                                     trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id, :_destroy],
                                     ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
                                                           :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
-                                    oversight_authorities_attributes: [:id, :country, :organization, :_destroy])
+                                    oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
+                                    trial_documents_attributes: [:id, :_destroy])
     end
 end

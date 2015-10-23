@@ -40,7 +40,17 @@
 
             // console.log("newFamily is: " + JSON.stringify(newFamily));
             FamilyService.upsertFamily(newFamily).then(function(response) {
-                toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!');
+                //var resObj= JSON.stringify(response).data;
+                //console.log('resObj' +resObj);
+                //vm.arrErrors=response.name;
+                if(response.status == 422) {
+                    toastr.error('Problem in saving family', 'Family name has already been taken');
+                    vm.curFamily.name="";
+
+                }
+                else {
+                    toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!');
+                }
             }).catch(function(err) {
                 console.log("error in updating family " + JSON.stringify(vm.curFamily));
             });
@@ -79,7 +89,7 @@
         }; //batchSelect
 
 
-        vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
+        vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
         vm.openCalendar = function ($event, index, type) {
@@ -164,6 +174,7 @@
                     "effective_date": org.effective_date,
                     "expiration_date": org.expiration_date,
                     "id" : org.family_membership_id || '',
+                    "lock_version": org.lock_version,
                     "_destroy" : org._destroy
                 };
                 results.push(cleanedOrg);
@@ -201,11 +212,12 @@
             //find the organization name with the given id
             var findOrgName = function(familyAff, cb) {
                 OrgService.getOrgById(familyAff.organization_id).then(function(organization) {
-                    var curOrg = {"id" : familyAff.organization_id, "name": organization.name};
+                    var curOrg = {"id" : familyAff.organization_id, "name": organization.name, "ctep_id": organization.ctep_id};
                     curOrg.effective_date = DateService.convertISODateToLocaleDateStr(familyAff.effective_date);
                     curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(familyAff.expiration_date);
                     curOrg.family_membership_id = familyAff.id; //family affiliation id
                     curOrg.family_relationship_id=familyAff.family_relationship_id;
+                    curOrg.lock_version = familyAff.lock_version;
                     curOrg._destroy = familyAff._destroy || false;
                     vm.savedSelection.push(curOrg);
                     // console.log("@@@@@@ "+JSON.stringify(curOrg));

@@ -23,6 +23,7 @@
         vm.familyTypeArr = familyTypeObj.data;
         vm.familyTypeArr.sort(Common.a2zComparator());
         vm.gridScope=vm;
+        $scope.searchWarningMessage = '';
 
         $scope.dynamicPopover = {
             content: 'Hello, World!',
@@ -69,21 +70,42 @@
 
 
         vm.searchFamilies = function() {
+
+
+            //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
+            // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
+            var isEmptySearch = true;
+            var excludedKeys = ['sort', 'order', 'rows', 'start'];
+            Object.keys(vm.searchParams).forEach(function (key) {
+                if (excludedKeys.indexOf(key) == -1 && vm.searchParams[key] != '')
+                    isEmptySearch = false;
+            });
+
+            if (isEmptySearch)
+                $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
+            else
+                $scope.searchWarningMessage = "";
+
+            console.log("search params are  " + JSON.stringify(vm.searchParams));
+            console.log("isEmptySearch is " + isEmptySearch);
+
             // vm.searchParams.name = vm.searchParams.name || "*";
             //console.log("searching params: " + JSON.stringify(vm.searchParams));
-            FamilyService.searchFamilies(vm.searchParams).then(function (data) {
-                console.log("received search results: " + JSON.stringify(data.data));
-                vm.gridOptions.data = data.data.families; //prepareGridData(data.data.orgs); //data.data.orgs;
+            if (!isEmptySearch) { //skip searching if no search parameters supplied by user
+                FamilyService.searchFamilies(vm.searchParams).then(function (data) {
+                    console.log("received search results: " + JSON.stringify(data.data));
+                    vm.gridOptions.data = data.data.families; //prepareGridData(data.data.orgs); //data.data.orgs;
 
-                //console.log("vm grid: " + JSON.stringify(vm.gridOptions.data));
-                //console.log("received search results: " + JSON.stringify(data.data));
-                vm.gridOptions.totalItems = data.data.total;
+                    //console.log("vm grid: " + JSON.stringify(vm.gridOptions.data));
+                    //console.log("received search results: " + JSON.stringify(data.data));
+                    vm.gridOptions.totalItems = data.data.total;
 
-                $location.hash('family_search_results');
-                $anchorScroll();
-            }).catch(function (err) {
-                console.log('search people failed');
-            });
+                    $location.hash('family_search_results');
+                    $anchorScroll();
+                }).catch(function (err) {
+                    console.log('search people failed');
+                });
+            }
         }; //searchPeople
 
 
@@ -92,6 +114,7 @@
             vm.searchParams = FamilyService.getInitialFamilySearchParams();
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
+            $scope.searchWarningMessage = '';
 
             Object.keys(vm.searchParams).forEach(function(key, index) {
                 vm.searchParams[key] = '';

@@ -9,6 +9,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  uuid             :string(255)
+#  lock_version     :integer          default(0)
 #  ctrp_id          :integer
 #
 # Indexes
@@ -30,7 +31,18 @@ class Family < ActiveRecord::Base
 
   before_destroy :check_for_organization
 
+  after_create   :save_id_to_ctrp_id
+
   private
+
+  def save_id_to_ctrp_id
+    #if
+      #self.source_context_id == SourceContext.find_by_code("CTRP").id
+      self.ctrp_id = self.id
+      #self.source_id = self.id
+      self.save!
+    #end
+  end
 
   def check_for_organization
     unless family_memberships.size == 0

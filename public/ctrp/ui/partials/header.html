@@ -30,17 +30,20 @@
             <div class="col-xs-12 col-sm-5">
                 <div class="row">
                     <ul class="list-inline animated-item">
-                        <li ng-show="headerView.signedIn">Welcome, <strong>{{headerView.username}}</strong> (Role: {{headerView.userRole}})</li>
+                        <li></li>
+                        <li ng-show="headerView.signedIn">Welcome, <strong><a ui-sref="main.userDetail">{{headerView.username}}</a></strong> (Role: {{headerView.userRole}})</li>
                         <li ng-show="headerView.signedIn"><a href=""  ng-click="headerView.logOut()">Sign Out</a></li>
                     </ul>
                 </div>
-                <div class="row" ng-show="headerView.signedIn && headerView.userPrivileges.length > 0">
-                    <!--<strong>Privileges: </strong>-->
-                    <div class="btn-group">
-                        <label class="btn btn-primary" ng-model="headerView.userPrivilege" ng-repeat="privilege in headerView.userPrivileges" btn-radio="'{{privilege}}'">
-                            {{privilege}}
-                        </label>
-                    </div>
+                <div class="row" ng-show="headerView.signedIn && headerView.isCurationModeSupported">
+                    <!-- ng-true-value="On" ng-false-value="Off" -->
+                    <md-switch class="md-warn" md-no-ink aria-label="Curation mode" ng-change="headerView.toggleCurationMode()"
+                               ng-model="headerView.isCurationEnabled">
+                        Write Mode:
+                        <span flex ng-if="headerView.isCurationEnabled">On</span>
+                        <span flex ng-if="!headerView.isCurationEnabled">Off</span>
+                        <!--{{headerView.isCurationEnabled}}-->
+                    </md-switch>
                 </div>
             </div>
         </div>
@@ -71,14 +74,14 @@
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <div ng-if="uiRouterState.current.name != 'main.sign_in'">
+                <div ng-if="headerView.currrentState.current.name != 'main.sign_in'">
                     <div class="collapse navbar-collapse" id="collapse-1">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a ui-sref="main.defaultContent">Home<span
+                            <li ng-class="{ active: headerView.navbarIsActive('main.defaultContent') }"><a ui-sref="main.defaultContent">Home<span
                                     class="sr-only">(current)</span></a>
                             </li>
                             <!--<li><a ui-sref="main.organizations">Organizations</a></li>-->
-                            <li class="dropdown">
+                            <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.organizations, main.addOrganization, main.families, main.addFamily') }">
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false">Organizations & Families
                                     <span class="caret"></span></a>
@@ -90,7 +93,7 @@
                                     <li><a ui-sref="main.addFamily">Add Family</a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.people, main.addPerson') }">
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false">Persons<span
                                         class="caret"></span></a>
@@ -99,7 +102,7 @@
                                     <li><a ui-sref="main.addPerson">Add Person</a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.trials, main.addTrial') }">
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false">Trials<span
                                         class="caret"></span></a>
@@ -111,12 +114,11 @@
                                             <li><a ui-sref="main.addTrial({studySourceCode: 'NAT'})">National</a></li>
                                             <li><a ui-sref="main.addTrial({studySourceCode: 'EPR'})">Externally Peer-Reviewed</a></li>
                                             <li><a ui-sref="main.addTrial({studySourceCode: 'INS'})">Institutional</a></li>
-                                            <li><a ui-sref="main.addTrial({studySourceCode: 'EXP'})">Expanded Access</a></li>
                                         </ul>
                                     </li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.userDetail') }">
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false">User Management<span
                                         class="caret"></span></a>

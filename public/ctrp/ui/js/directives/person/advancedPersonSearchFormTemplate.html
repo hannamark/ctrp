@@ -1,145 +1,174 @@
-<form class="form-horizontal" role="form">
+<form class="form form-horizontal" role="form" name="search_person_form" novalidate>
+    <div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
+        <div class="alert alert-warning fade in">
+            <strong>{{searchWarningMessage}}</strong>
+        </div>
+    </div>
 
     <!-- first row -->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-xs-12 col-sm-12 col-md-6">
             <!-- person name -->
             <div class="form-group">
-                <label for="person_fname" class="control-label col-sm-2">First Name: </label>
-                <div class="col-sm-4">
-                    <input type="text" id="person_fname" class="form-control"
-                           placeholder="First Name"
-                           ng-model="searchParams.fname" auto-focus/>
+                <label for="person_fname" class="control-label col-xs-12 col-sm-3">First Name:</label>
+                <div class=" col-xs-12 col-sm-3">
+                    <input type="text" id="person_fname" class="form-control input-sm" placeholder="First Name" ng-model="searchParams.fname" auto-focus/>
                 </div>
-                <label for="person_lname" class="control-label col-sm-2">Last Name: </label>
-
-                <div class="col-sm-4">
-                    <input type="text" id="person_lname" class="form-control"
-                           placeholder="Last Name"
-                           ng-model="searchParams.lname"/>
+                <label for="person_lname" class="control-label col-xs-12 col-sm-3">Last Name:</label>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="text" id="person_lname" class="form-control input-sm" placeholder="Last Name" ng-model="searchParams.lname"/>
                 </div>
             </div>
             <!-- person name ends -->
-        </div>
-        <div class="col-md-6">
-            <!-- PO ID -->
-            <div class="form-group">
-                <!-- ID used as ctrp_id here -->
-                <label for="ctrp_id" class="control-label col-sm-2">CTRP ID: </label>
 
-                <div class="col-sm-10">
-                    <input type="text" id="ctrp_id" class="form-control" placeholder="PO ID"
-                           ng-model="searchParams.ctrp_id"/>
+            <div class="form-group">
+                <!--source context-->
+                <label for="source_context" class="control-label col-xs-12 col-sm-3">Source Context:</label>
+                <div  ng-if="sourceContextArr.length > 1">
+                    <div class="col-xs-12 col-sm-3">
+                        <select class="form-control input-sm" id="source_context" ng-model="searchParams.source_context">
+                            <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
+                            <option ng-repeat="context in sourceContextArr" value="{{context.name}}">{{context.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div  ng-if="sourceContextArr.length == 1">
+                    <div class="col-xs-12 col-sm-3">
+                       {{sourceContextArr[0].name}}
+                    </div>
+                </div>
+                <!--source context ends-->
+                <!--source id-->
+                <label for="source_id" class="control-label col-xs-12 col-sm-3">Source ID:</label>
+                <div class="col-xs-12 col-sm-3">
+                    <input type="text" id="source_id" class="form-control input-sm" placeholder="Source ID" ng-model="searchParams.source_id"/>
+                </div>
+                <!-- source id ends -->
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="control-label col-xs-12 col-sm-3">Email:</label>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" id="email" class="form-control input-sm" placeholder="Email" ng-model="searchParams.email"/>
                 </div>
             </div>
+
+            <div class="form-group">
+                <!-- start date -->
+                <label for="start_date" class="control-label col-xs-12 col-sm-3">
+                    <div class="dropdown">
+                        <a href="" data-toggle="dropdown" class="dropdown-toggle">Last Updated<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="" ng-click="getDateRange('today')">Today</a></li>
+                            <li><a href="" ng-click="getDateRange('yesterday')">Yesterday</a></li>
+                            <li><a href="" ng-click="getDateRange('last7')">Last 7 Days</a></li>
+                            <li><a href="" ng-click="getDateRange('last30')">Last 30 Days</a></li>
+                            <li><a href="" ng-click="getDateRange('thisMonth')">This Month</a></li>
+                            <li><a href="" ng-click="getDateRange('lastMonth')">Last Month</a></li>
+                            <li><a href="" ng-click="getDateRange('clear')">Clear</a></li>
+                        </ul>
+                    </div>
+                </label>
+                <div class="col-xs-12 col-sm-5">
+                    <div class="input-group add-on col-sm-12 date datepicker">
+                        <input type="text" class="form-control input-sm" id="start_date" name="startDate"
+                               uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
+                               ng-model="searchParams.startDate" is-open="startDateOpened"
+                               datepicker-options="dateOptions" ng-click="openCalendar($event, 'start')"
+                               ng-required="false" close-text="Close" placeholder="Start Date"/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </button>
+                                </span>
+                    </div>
+                </div>
+
+                <!-- end date -->
+                <!--<label for="person_fname" class="control-label col-sm-2"></label>-->
+                <div class="col-xs-12 col-sm-4">
+                    <div class="input-group add-on col-sm-12 date datepicker" ng-class="{'has-error': search_person_form.endDate.dateLaterThan && search_person_form.endDate.$dirty}">
+                        <input type="text" class="form-control input-sm" id="end_date" name="endDate"
+                               uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
+                               ng-model="searchParams.endDate" is-open="endDateOpened" ng-click="openCalendar($event, 'end')"
+                               datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
+                               ng-required="false" close-text="Close" placeholder="End Date"/>
+                                  <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                  </span>
+                    </div>
+                    <span ng-show="search_person_form.endDate.$error.dateLaterThan" class="help-inline warning">
+                        End date should be no earlier than start date
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <!-- PO ID -->
+            <div class="form-group">
+                <!-- affiliated with organization name -->
+                <label for="affiliation" class="control-label col-sm-12 col-sm-3">Affiliation:</label>
+
+                <div class="col-sm-12 col-sm-9">
+                    <!-- <input type="text" id="affiliation" class="form-control input-sm" placeholder="Organization Name" ng-model="searchParams.affiliated_org_name"/> -->
+                    <input type="text" id="affiliation" class="form-control input-sm"
+                            autocomplete="off" placeholder="Organization Name" ng-model="searchParams.affiliated_org_name"
+                            uib-typeahead="org for org in typeAheadNameSearch($viewValue)" typeahead-loading="loadingOrganizations"
+                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults"/>
+                </div>
+                <!-- end of affiliation -->
+            </div>
             <!-- PO ID ends -->
+
+            <div class="form-group">
+                <!--source status-->
+                <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status:</label>
+                <div  ng-if="sourceStatusArr.length > 1">
+                    <div class="col-xs-12 col-sm-4">
+                        <select class="form-control input-sm" id="source_status" ng-model="searchParams.source_status"
+                                ng-options="status.name for status in sourceStatusArr" >
+                            <option value="">Select a status</option>
+                        </select>
+                    </div>
+                </div>
+                <div  ng-if="sourceStatusArr.length == 1">
+                    <div class="col-xs-12 col-sm-4">
+                        {{sourceStatusArr[0].name}}
+                    </div>
+                </div>
+                <!-- source status ends -->
+            </div>
+
+            <div class="form-group">
+                <label for="phone" class="control-label col-xs-12 col-sm-3">Phone:</label>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" id="phone" class="form-control input-sm" placeholder="Phone" ng-model="searchParams.phone"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- last updated by -->
+                <label for="updated_by" class="control-label col-xs-12 col-sm-3">Updated by: </label>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" class="form-control input-sm" id="updated_by" ng-model="searchParams.updated_by" placeholder="Username" />
+                </div>
+                <!-- end of last updated by -->
+            </div>
         </div>
     </div>
     <!-- first row ends -->
 
-    <!-- second row -->
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <!--source context-->
-                <label for="source_context" class="control-label col-sm-2">Source Context: </label>
-
-                <div class="col-sm-4">
-                    <select class="form-control" id="source_context"
-                            ng-model="searchParams.source_context">
-                        <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
-                        <option ng-repeat="context in sourceContextArr" value="{{context.name}}" ng-selected="context.name == searchParams.source_context">{{context.name}}</option>
-                    </select>
-                </div>
-                <!--source context ends-->
-                <!--source id-->
-                <label for="source_id" class="control-label col-sm-2">Source ID: </label>
-
-                <div class="col-sm-4">
-                    <input type="text" id="source_id" class="form-control" placeholder="Source ID"
-                           ng-model="searchParams.source_id"/>
-                </div>
-                <!-- source id ends -->
-            </div>
-        </div>
-        <div class="col-md-6">
-            <!--source status-->
-            <div class="form-group">
-                <label for="source_status" class="control-label col-sm-2">Source Status: </label>
-
-                <div class="col-sm-10">
-                    <select class="form-control" id="source_status"
-                            ng-model="searchParams.source_status">
-                        <option value="">Select a status</option>
-                        <option ng-repeat="status in sourceStatusArr" value="{{status.name}}">{{status.name}}</option>
-                    </select>
-                </div>
-            </div>
-            <!-- source status ends -->
-        </div>
-    </div>
-    <!--second row ends -->
-
-    <!-- third row -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="prefix" class="control-label col-sm-2">Prefix:</label>
-
-                <div class="col-sm-10">
-                    <input type="text" id="prefix" class="form-control" placeholder="Prefix"
-                           ng-model="searchParams.prefix"/>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="suffix" class="control-label col-sm-2">Suffix:</label>
-
-                <div class="col-sm-10">
-                    <input type="text" id="suffix" class="form-control" placeholder="Suffix"
-                           ng-model="searchParams.suffix"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--third row ends -->
-
-
-    <!-- fourth row -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="email" class="control-label col-sm-2">Email:</label>
-
-                <div class="col-sm-10">
-                    <input type="text" id="email" class="form-control" placeholder="Email"
-                           ng-model="searchParams.email"/>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="phone" class="control-label col-sm-2">Phone:</label>
-
-                <div class="col-sm-10">
-                    <input type="text" id="phone" class="form-control" placeholder="Phone"
-                           ng-model="searchParams.phone"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--fourth row ends -->
-
-    <div class="row">
-        <div class="form-group">
-            <div class="col-sm-12 text-center">
-                <button type="submit" class="btn btn-primary" ng-click="searchPeople()">
+        <div class="col-xs-12">
+            <div class="btn-toolbar">
+                <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchPeople()">
                     <i class="glyphicon glyphicon-search"></i> Search
                 </button>
-
-                <button type="reset" class="btn btn-default btn-danger" ng-click="resetSearch()">
+                <button class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()">
                     <i class="glyphicon glyphicon-remove"></i> Clear
                 </button>
             </div>
@@ -148,31 +177,26 @@
 </form>
 
 <!-- list of people -->
-<div class="row">
-    <div class="col-sm-12">
+<div class="row" ng-if="searchWarningMessage.length === 0">
+    <div class="col-xs-12">
         <div class="row" ng-if="gridOptions.totalItems != null">
-            <div class="col-sm-6">
+            <div class="col-xs-12 col-sm-6">
                 <!-- information section -->
                 <a href="" id="people_search_results"></a>
-                <p><h4>People Search Results: {{gridOptions.totalItems}} found</h4></p>
+                <div ng-if="searchWarningMessage.length === 0">
+                   <p><h4>People Search Results: {{gridOptions.totalItems}} found</h4></p>
+                </div>
                 <h5 ng-show="gridOptions.totalItems > 0 && curationModeEnabled == true">
-                    <mark>Curation Mode: </mark>
-                    <toggle-switch ng-model="curationShown" ng-change="toggleCurationMode()"></toggle-switch>
-
-                    <button class="btn" ng-click="commitNullification()" ng-show="curationShown"
-                            ng-disabled="!curationReady"
-                            ng-class="curationReady ? 'btn-danger' : 'btn-warning'">Commit Nullification
-                    </button>
                     <div class="alert alert-danger fade in" ng-show="curationReady">
                         <strong>Please confirm: {{nullifiedPerson}} will be nullified </strong>
                     </div>
+                    <button class="btn" ng-click="commitNullification()" ng-show="curationShown" ng-disabled="!curationReady" ng-class="curationReady ? 'btn-danger' : 'btn-warning'">
+                        Commit Nullification
+                    </button>
                 </h5>
-
             </div>
-            <div class="col-sm-6">
-                <div class="row">
-
-                </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="row"></div>
             </div>
         </div>
         <div class="row" ng-hide="warningMessage==''" ng-cloak>
@@ -180,10 +204,10 @@
                 <a href="" class="close" data-dismiss="alert">&times;</a>
                 <strong>{{warningMessage}}</strong>
             </div>
-        </div> <br />
+        </div>
+        <br/>
         <div class="row animated-item" ng-if="gridOptions.data.length > 0">
             <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
         </div>
     </div>
-
 </div>

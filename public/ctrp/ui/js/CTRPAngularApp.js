@@ -8,13 +8,14 @@
     angular.module('ctrpApp', [
         'ui.router',
         'ngTouch',
+        'ngAnimate',
         'ngSanitize',
-        'Constants',
-        'CommonTools',
+        'ngMaterial',
+        'ctrp.constants',
+        'ctrp.commonTools',
         'PromiseTimeoutModule',
         'PromiseServiceModule',
         'LocalCacheModule',
-        'ngAnimate',
         'toastr',
         'ui.bootstrap',
         'ncy-angular-breadcrumb',
@@ -27,8 +28,19 @@
         'toggle-switch',
         'TimeoutModule',
         'ngFileUpload',
-        'angularMoment'
+        'angularMoment',
+        'ctrpApp.widgets'
     ])
+        .config(function($provide) {
+            $provide.decorator('$state', function($delegate, $rootScope) {
+               $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+                   $delegate.fromParams = fromParams;
+                   $delegate.fromState = fromState;
+                   //$delegate.current = toState;
+               });
+                return $delegate;
+            });
+        })
         .config(['$httpProvider', function($httpProvider) {
             //initialize get if not there
             if (!$httpProvider.defaults.headers.get) {
@@ -192,6 +204,32 @@
                     }
                 })
 
+                .state('main.welcome_signup', {
+                    url: '/welcome_signup',
+                    templateUrl: '/ctrp/ui/partials/welcome_signup.html'
+                })
+
+                .state('main.gsa', {
+                    url: '/gsa',
+                    templateUrl: '/ctrp/ui/partials/gsa.html',
+                    controller: 'gsaCtrl as gsaView',
+                    resolve: {
+                        UserService: 'UserService',
+                        gsaObj : function(UserService) {
+                            return UserService.getGsa();
+                        },
+                    }
+                })
+
+                .state('main.users', {
+                    url: '/users',
+                    templateUrl: '/ctrp/ui/partials/user_list.html',
+                    controller: 'userListCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService'
+                    }
+                })
+
                 .state('main.changePassword', {
                     url: '/change_password',
                     templateUrl: '/ctrp/ui/partials/changePassword.html',
@@ -285,10 +323,8 @@
                             deferred.resolve(null);
                             return deferred.promise;
                         },
-                        familyRelationshipObj : function($q) {
-                            var deferred = $q.defer();
-                            deferred.resolve(null);
-                            return deferred.promise;
+                        familyRelationshipObj : function(FamilyService) {
+                            return FamilyService.getFamilyRelationships();
                         }
                     },
                     ncyBreadcrumb: {
@@ -296,8 +332,6 @@
                         label: 'Add Family'
                     }
                 })
-
-
                 .state('main.people', {
                     url: '/people',
                     templateUrl: '/ctrp/ui/partials/person_list.html',
@@ -315,6 +349,9 @@
                     resolve: {
                         OrgService: 'OrgService',
                         PersonService: 'PersonService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj: function(OrgService) {
                             return OrgService.getSourceStatuses();
                         },
@@ -337,6 +374,10 @@
                     controller: 'personDetailCtrl as personDetailView',
                     resolve: {
                         OrgService: 'OrgService',
+                        PersonService: 'PersonService',
+                        sourceContextObj: function(OrgService) {
+                            return OrgService.getSourceContexts();
+                        },
                         sourceStatusObj: function(OrgService) {
                             return OrgService.getSourceStatuses();
                         },
@@ -365,6 +406,18 @@
                     url: '/trials',
                     templateUrl: '/ctrp/ui/partials/trial_list.html',
                     controller: 'trialCtrl as trialView',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        studySourceObj: function(TrialService) {
+                            return TrialService.getStudySources();
+                        },
+                        phaseObj: function(TrialService) {
+                            return TrialService.getPhases();
+                        },
+                        primaryPurposeObj: function(TrialService) {
+                            return TrialService.getPrimaryPurposes();
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Trials'
@@ -434,7 +487,7 @@
                     },
                     ncyBreadcrumb: {
                         //parent: 'main.trials',
-                        parent: 'main.defaultContent',
+                        parent: 'main.trials',
                         label: 'Register Trial'
                     }
                 })
@@ -500,8 +553,8 @@
                 },
                 ncyBreadcrumb: {
                     //parent: 'main.trials',
-                    parent: 'main.defaultContent',
-                    label: 'Register Trial'
+                    parent: 'main.trials',
+                    label: 'Trial Detail'
                 }
             });
         }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService) {

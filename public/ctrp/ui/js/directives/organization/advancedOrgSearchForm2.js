@@ -9,11 +9,11 @@
     angular.module('ctrpApp')
         .directive('ctrpAdvancedOrgSearchForm2', ctrpAdvancedOrgSearchForm2);
 
-    ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location',
-        'MESSAGES', 'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', '$log', '$compile'];
+    ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location', '$state',
+        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$compile', 'UserService'];
 
-    function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $log,
-                                        MESSAGES, uiGridConstants, $timeout, _, toastr, $anchorScroll, $compile) {
+    function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $state,
+                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService) {
 
         var directiveObj = {
             restrict: 'E',
@@ -35,21 +35,14 @@
         /************************* implementations below *******************************/
 
         function linkFn(scope, element, attrs) {
-            //console.log('showGrid: ' + attrs.showGrid);
-            //console.log('maxRowSelectable: ' + attrs.maxRowSelectable);
-            scope.$on(MESSAGES.PRIVILEGE_CHANGED, function () {
-                console.log('received notification in search org forms');
-            });
-
             // $compile(element.contents())(scope);
         } //linkFn
 
+        //_, $anchorScroll,
+        function ctrpAdvancedOrgSearchController($scope) {
 
-        function ctrpAdvancedOrgSearchController($scope, $log, _, $anchorScroll, uiGridConstants, $timeout) {
-
+            var fromStateName = $state.fromState.name || '';
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
-            console.log('searchParams are: ' + JSON.stringify($scope.searchParams));
-            console.log('gridOptions are: ' + JSON.stringify($scope.gridOptions));
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows = [];
             $scope.sourceContextArr = [];
@@ -59,6 +52,7 @@
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
             $scope.searchWarningMessage = '';
+            $scope.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
@@ -69,9 +63,9 @@
                 $scope.curationModeEnabled = false;
             }
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
-            $scope.curationModeEnabled = $scope.curationMode == undefined ? $scope.curationModeEnabled : $scope.curationMode;
-            $scope.usedInModal = $scope.usedInModal == undefined ? false : $scope.usedInModal;
-            $scope.showGrid = $scope.showGrid == undefined ? false : $scope.showGrid;
+            $scope.curationModeEnabled = $scope.curationMode === 'undefined' ? $scope.curationModeEnabled : $scope.curationMode;
+            $scope.usedInModal = $scope.usedInModal === 'undefined' ? false : $scope.usedInModal;
+            $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
 
             $scope.typeAheadNameSearch = function () {
@@ -84,21 +78,9 @@
                     orgNames = res.orgs.map(function (org) {
                         return org.name;
                     });
-                    //console.log('orgNames: ' + orgNames);
 
-                    /*
-                     orgNames.forEach(function(name, idex) {
-                     if (uniqueNames.indexOf(name) == -1) {
-                     uniqueNames.push(name);
-                     }
-                     });
-                     */
-
-                    return uniqueNames = orgNames.map(function (name) {
-                        if (uniqueNames.indexOf(name) == -1) {
-                            // console.log("not containing: " + name);
-                            return name;
-                        }
+                    return uniqueNames = orgNames.filter(function (name) {
+                        return uniqueNames.indexOf(name) == -1;
                     });
                 });
             }; //typeAheadNameSearch
@@ -115,48 +97,50 @@
                 //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
                 // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
                 var isEmptySearch = true;
-                var excludedKeys = ['rows', 'alias', 'start'];
+                var ignoreKeys = ['rows', 'alias', 'start'];
 
                 Object.keys($scope.searchParams).forEach(function (key) {
 
-                if(excludedKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
+                if(ignoreKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
                     isEmptySearch = false;
 
                 });
                 if(isEmptySearch)
-                    $scope.searchWarningMessage = "Atleast one selection value must be entered prior to running the search";
+                    $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                 else
                     $scope.searchWarningMessage = "";
 
-                console.log("isEmptySearch is " + isEmptySearch);
+                if(!isEmptySearch) { //skip searching if empty search
+                    OrgService.searchOrgs($scope.searchParams).then(function (data) {
+                        //  console.log("received data for org search: " + JSON.stringify(data));
+                        if ($scope.showGrid && data.orgs) {
+                            $scope.gridOptions.data = data.orgs;
+                            $scope.gridOptions.totalItems = data.total;
 
-                OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                   //  console.log("received data for org search: " + JSON.stringify(data));
-                    if ($scope.showGrid && data.orgs) {
-                        $scope.gridOptions.data = data.orgs;
-                        $scope.gridOptions.totalItems = data.total;
+                            console.log("data ..... "+JSON.stringify(data));
 
-                        //pin the selected rows, if any, at the top of the results
-                        _.each($scope.selectedRows, function (curRow, idx) {
-                            var ctrpId = curRow.entity.id;
-                            var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
-                            if (indexOfCurRowInGridData > -1) {
-                                $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
-                                $scope.gridOptions.totalItems--;
-                            }
-                            $scope.gridOptions.data.unshift(curRow.entity);
-                            $scope.gridOptions.totalItems++;
-                        });
+                            //pin the selected rows, if any, at the top of the results
+                            _.each($scope.selectedRows, function (curRow, idx) {
+                                var ctrpId = curRow.entity.id;
+                                var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                                if (indexOfCurRowInGridData > -1) {
+                                    $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
+                                    $scope.gridOptions.totalItems--;
+                                }
+                                $scope.gridOptions.data.unshift(curRow.entity);
+                                $scope.gridOptions.totalItems++;
+                            });
 
-                        $location.hash('org_search_results');
-                        $anchorScroll();
-                    }
-                    $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
-                    // console.log($scope.$parent);
+                            $location.hash('org_search_results');
+                            $anchorScroll();
+                        }
+                        $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
+                        // console.log($scope.$parent);
 
-                }).catch(function (error) {
-                    console.log("error in retrieving orgs: " + JSON.stringify(error));
-                });
+                    }).catch(function (error) {
+                        console.log("error in retrieving orgs: " + JSON.stringify(error));
+                    });
+                }
             }; //searchOrgs
 
 
@@ -178,6 +162,7 @@
                 $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
+                $scope.searchWarningMessage = '';
 
                 if (angular.isDefined($scope.$parent.orgSearchResults)) {
                     $scope.$parent.orgSearchResults = {};
@@ -222,7 +207,6 @@
                     toastr.success('Curation was successful', 'Curated!');
                 }).catch(function (err) {
                     toastr.error('There was an error in curation', 'Curation error');
-                    console.log('error in curation, err is: ' + JSON.stringify(err));
                 });
 
             }; //commitNullification
@@ -231,13 +215,20 @@
             activate();
 
             function activate() {
-                watchUserPrivilegeChange(); //for switching to curation mode, etc
                 getPromisedData();
                 prepareGidOptions();
+
+                if (fromStateName != 'main.orgDetail') {
+                    $scope.resetSearch();
+                } else {
+                   // $scope.searchOrgs();
+                }
                 watchCountryAndGetStates();
                 //listenToStatesProvinces();
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
+                watchCurationMode();
+                watchCurationModeSubRoutine();
             }
 
 
@@ -267,36 +258,6 @@
             } //getPromisedData
 
 
-            /**
-             * Listen to the message for availability of states or provinces
-             * for the selected country
-             */
-            /*
-             function listenToStatesProvinces() {
-
-             $scope.watchCountrySelection($scope.searchParams.country);
-
-             //country change triggers searchOrgs() function
-             $scope.$watch('searchParams.country', function (newVal, oldVal) {
-             if (oldVal != newVal) {
-             $scope.searchOrgs();
-             }
-             }, true);
-
-
-             $scope.$on(MESSAGES.STATES_AVAIL, function () {
-             console.log("states available for country: " + $scope.searchParams.country);
-             $scope.states = OrgService.getStatesOrProvinces();
-             });
-
-             $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
-             $scope.states = [];
-             });
-             }  //listenToStatesProvinces
-
-             */
-
-
             function watchCountryAndGetStates() {
                 $scope.$watch('searchParams.country', function (newVal, oldVal) {
                     $scope.states = [];
@@ -322,7 +283,7 @@
             function sortChangedCallBack(grid, sortColumns) {
 
                 if (sortColumns.length == 0) {
-                    console.log("removing sorting");
+                    //console.log("removing sorting");
                     //remove sorting
                     $scope.searchParams.sort = '';
                     $scope.searchParams.order = '';
@@ -335,14 +296,14 @@
                         case uiGridConstants.DESC:
                             $scope.searchParams.order = 'DESC';
                             break;
-                        case undefined:
+                        case 'undefined':
                             break;
                     }
                 }
 
                 //do the search with the updated sorting
                 $scope.searchOrgs();
-            }; //sortChangedCallBack
+            } //sortChangedCallBack
 
 
             /**
@@ -355,11 +316,12 @@
 
                 if ($scope.maxRowSelectable > 0 && $scope.curationShown || $scope.usedInModal) {
                     if (row.isSelected) {
+
                         //console.log('row is selected: ' + JSON.stringify(row.entity));
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {
                             $scope.selectedRows.unshift(row);
                             pushToParentScope(row.entity);
-                            $scope.$parent.selectedOrgsArray.push(row.entity);
+                           // $scope.$parent.selectedOrgsArray.push(row.entity);
                         } else {
                             var deselectedRow = $scope.selectedRows.pop();
                             deselectedRow.isSelected = false;
@@ -371,9 +333,10 @@
                             $scope.$parent.selectedOrgsArray.splice(curRowSavedIndex, 1);
                             spliceInParentScope(curRowSavedIndex);
                             pushToParentScope(row.entity);
-                            $scope.$parent.selectedOrgsArray.push(row.entity);
+                           // $scope.$parent.selectedOrgsArray.push(row.entity);
                         }
-                    } else {
+                    }
+                    else {
                         //de-select the row
                         //remove it from the $scope.selectedRows, if exists
                         var needleIndex = -1;
@@ -399,7 +362,6 @@
                 } else {
                     row.isSelected = false; //do not show selection visually
                 }
-
             } //rowSelectionCallBack
 
 
@@ -410,6 +372,7 @@
             function pushToParentScope(entity) {
                 if (angular.isDefined($scope.$parent.selectedOrgsArray)) {
                     $scope.$parent.selectedOrgsArray.push(entity);
+
                 }
             }
 
@@ -428,6 +391,14 @@
             /* prepare grid layout and data options */
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions();
+                //console.log("*******cur user role is "+ $scope.userRole);
+                //console.log("*******index of ctep_id is "+ OrgService.findContextId($scope.gridOptions.columnDefs,'name','ctep_id'));
+                var cur="curator";
+                if(!($scope.userRole.toUpperCase() == cur.toUpperCase())) {
+                    $scope.gridOptions.columnDefs.splice(14,2);
+                }
+                //var needleIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, "ctep_id", contextName);
+
                 $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
@@ -548,19 +519,22 @@
                         $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                             '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
                         //make visible if it is not in modal and curator mode is off.
-
                     }
                 });
             } //hideHyperLinkInModal
 
 
-            function watchUserPrivilegeChange() {
-                $scope.$on(MESSAGES.PRIVILEGE_CHANGED, function () {
-                    $scope.curationShown = true;
-                    console.log('toggling curation mode')
-                    //toggleCurationMode();
+            function watchCurationMode() {
+                $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                   watchCurationModeSubRoutine();
                 });
             }
+
+            function watchCurationModeSubRoutine() {
+                $scope.curationShown = UserService.isCurationModeEnabled() || false;
+            }
+
+
         } //ctrpAdvancedOrgSearchController
     }
 

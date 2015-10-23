@@ -9,25 +9,28 @@
         .controller('personDetailCtrl', personDetailCtrl);
 
     personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService',
-        '$scope', 'Common', 'sourceStatusObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
+        '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
 
     function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService,
-                              $scope, Common, sourceStatusObj, $state, $modal, OrgService, poAffStatuses, _) {
+                              $scope, Common, sourceStatusObj,sourceContextObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
         vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
+        vm.sourceContextArr = sourceContextObj;
         vm.savedSelection = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
 
-        //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-        var pendingStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'PEND');
-        vm.pendingStatusName = vm.sourceStatusArr[pendingStatusIndex].name || '';
-        vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[pendingStatusIndex].id;
 
-        //console.log('pending status index: ' + pendingStatusIndex + ', name is: ' + vm.pendingStatusName);
+        if(!angular.isObject(personDetailObj))
+        {
+            //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
+            var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
+            vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
+            vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
+        }
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -51,13 +54,6 @@
             newPerson.new = vm.curPerson.new || '';
             newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
-
-            // console.log("newPerson is: " + JSON.stringify(newPerson));
-            if (newPerson.new) {
-                newPerson.person.created_by = UserService.getLoggedInUsername();
-            } else {
-                newPerson.person.updated_by = UserService.getLoggedInUsername();
-            }
 
             PersonService.upsertPerson(newPerson).then(function (response) {
                 //console.log('response: ' + JSON.stringify(response));
@@ -83,6 +79,8 @@
                     $scope.person_form.$setPristine();
                 }
             });
+            //default context to ctrp
+            vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
         };
 
 
@@ -118,7 +116,7 @@
         }; //batchSelect
 
 
-        vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
+        vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
         vm.openCalendar = function ($event, index, type) {
@@ -136,10 +134,17 @@
 
         /****************** implementations below ***************/
         function activate() {
+            //default context to ctrp, if not set
+            vm.curPerson.source_context_id = !vm.curPerson.source_context_id ?
+                OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curPerson.source_context_id;
+
             appendNewPersonFlag();
             watchOrgReceiver();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
+            }
+            if(!vm.curPerson.new) {
+                prepareModal();
             }
         }
 
@@ -189,6 +194,7 @@
                     curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
                     curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
                     curOrg.po_affiliation_id = poAff.id; //po affiliation id
+                    curOrg.lock_version = poAff.lock_version;
                     curOrg._destroy = poAff._destroy || false;
                     vm.savedSelection.push(curOrg);
                 }).catch(function(err) {
@@ -205,7 +211,29 @@
             async.eachSeries(vm.curPerson.po_affiliations, findOrgName, retOrgs);
         } //populatePoAffiliations
 
+        function prepareModal() {
+            vm.confirmDelete = function (size) {
+                var modalInstance = $modal.open({
+                    animation: true,
+                    templateUrl: 'delete_confirm_template.html',
+                    controller: 'ModalInstancePersonCtrl as vm',
+                    size: size,
+                    resolve: {
+                        personId: function () {
+                            return vm.curPerson.id;
+                        }
+                    }
+                });
 
+                modalInstance.result.then(function (selectedItem) {
+                    console.log("about to delete the personDetail " + vm.curPerson.id);
+                    $state.go('main.people');
+                }, function () {
+                    console.log("operation canceled")
+                });
+
+            } //prepareModal
+        }; //confirmDelete
 
     }
 

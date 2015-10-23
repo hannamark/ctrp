@@ -34,6 +34,7 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  uuid                    :string(255)
+#  lock_version            :integer          default(0)
 #  research_category_id    :integer
 #  accrual_disease_term_id :integer
 #  investigator_title      :string(255)
@@ -96,6 +97,15 @@ class Trial < ActiveRecord::Base
 
   validates :lead_protocol_id, presence: true
 
+  before_create :save_history
+
+  private
+
+  def save_history
+    history = {lead_org: self.lead_org, pi: self.pi}
+    self.history = history.to_json
+  end
+
   #scopes for search API
   scope :matches, -> (column, value) { where("trials.#{column} = ?", "#{value}") }
 
@@ -112,9 +122,92 @@ class Trial < ActiveRecord::Base
     end
   }
 
+  scope :with_protocol_id, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "#{value[0..str_len - 2]}%", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
+    else
+      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "#{value}", "#{value}")
+    end
+  }
+
+  scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
+
+  scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
+
+  scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
+
+  scope :with_pi_lname, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:pi).where("people.lname ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:pi).where("people.lname ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:pi).where("people.lname ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:pi).where("people.lname ilike ?", "#{value}")
+    end
+  }
+
+  scope :with_pi_fname, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:pi).where("people.fname ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:pi).where("people.fname ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:pi).where("people.fname ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:pi).where("people.fname ilike ?", "#{value}")
+    end
+  }
+
+  scope :with_lead_org, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:lead_org).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:lead_org).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:lead_org).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:lead_org).where("organizations.name ilike ?", "#{value}")
+    end
+  }
+
+  scope :with_sponsor, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:sponsor).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:sponsor).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:sponsor).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:sponsor).where("organizations.name ilike ?", "#{value}")
+    end
+  }
+
   scope :sort_by_col, -> (column, order) {
     if column == 'id'
       order("#{column} #{order}")
+    elsif column == 'phase'
+      joins("LEFT JOIN phases ON phases.id = trials.phase_id").order("phases.name #{order}").group(:'phases.name')
+    elsif column == 'purpose'
+      joins("LEFT JOIN primary_purposes ON primary_purposes.id = trials.primary_purpose_id").order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+    elsif column == 'study_source'
+      joins("LEFT JOIN study_sources ON study_sources.id = trials.study_source_id").order("study_sources.name #{order}").group(:'study_sources.name')
+    elsif column == 'pi'
+      joins("LEFT JOIN people ON people.id = trials.pi_id").order("people.lname #{order}").group(:'people.lname')
+    elsif column == 'lead_org'
+      joins("LEFT JOIN organizations ON organizations.id = trials.lead_org_id").order("organizations.name #{order}").group(:'organizations.name')
+    elsif column == 'sponsor'
+      joins("LEFT JOIN organizations ON organizations.id = trials.sponsor_id").order("organizations.name #{order}").group(:'organizations.name')
     else
       order("LOWER(trials.#{column}) #{order}")
     end

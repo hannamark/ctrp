@@ -19,6 +19,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
+#  lock_version      :integer          default(0)
 #  ctrp_id           :integer
 #  created_by        :string
 #  updated_by        :string
@@ -49,12 +50,57 @@ class Organization < ActiveRecord::Base
   has_many :sponsor_trials, foreign_key: :sponsor_id, class_name: "Trial"
   has_many :inv_aff_trials, foreign_key: :investigator_aff_id, class_name: "Trial"
 
+  accepts_nested_attributes_for :name_aliases, allow_destroy: true
+
   validates :name, presence: true
 
   before_destroy :check_for_family
   before_destroy :check_for_person
 
+  after_create   :save_id_to_ctrp_id
+
+  # Get CTEP ID from the CTEP context org in the cluster, comma separate them if there are multiple
+  def ctep_id
+    ctep_id_arr = []
+    ctep_id_arr = Organization.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:source_id) if self.ctrp_id.present?
+    ctep_id_str = ""
+    ctep_id_arr.each_with_index { |e, i|
+      if i > 0
+        ctep_id_str += ", #{e}"
+      else
+        ctep_id_str += e
+      end
+    }
+    return ctep_id_str
+  end
+
+  # Get an array of maps of the orgs with the same ctrp_id
+  def cluster
+    tmp_arr = []
+    if self.ctrp_id.present?
+      tmp_arr = Organization.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).order(:id).pluck(:id, :"source_contexts.name")
+    else
+      tmp_arr.push([self.id, self.source_context ? self.source_context.name : ''])
+    end
+
+    cluster_arr = []
+    tmp_arr.each do |org|
+      cluster_arr.push({"id": org[0], "context": org[1]})
+    end
+
+    return cluster_arr
+  end
+
   private
+
+  def save_id_to_ctrp_id
+    if self.source_context && self.source_context.code == "CTRP"
+      self.ctrp_id = self.id
+      self.source_id =self.id
+      self.save!
+    end
+  end
+
 
   def check_for_family
     unless family_memberships.size == 0
@@ -125,6 +171,22 @@ class Organization < ActiveRecord::Base
       ##
       NameAlias.create(organization_id:@toBeRetainedOrg.id,name:@toBeNullifiedOrg.name);
 
+      ## Aliases of nullified organizations will be moved to aliases of the retained organization
+      ##
+        aliasesOfNullifiedOrganization = NameAlias.where(organization_id: @toBeNullifiedOrg.id);
+        aliasesOfRetainedOrganization = NameAlias.where(organization_id: @toBeRetainedOrg.id);
+        aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name.upcase}
+
+        aliasesOfNullifiedOrganization.each do |al|
+        if(!aliasesNamesOfRetainedOrganization.include?al.name.upcase)
+          al.organization_id=@toBeRetainedOrg.id;
+          al.save!
+        else
+          al.destroy!
+        end
+
+      end
+
       #If both organizations had CTEP IDs only the retained organization CTEP ID will be associated with the retained organization
 
 
@@ -140,23 +202,6 @@ class Organization < ActiveRecord::Base
   scope :contains, -> (column, value) { where("organizations.#{column} ilike ?", "%#{value}%") }
 
   scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
-
-  scope :matches_ctrp_id, -> (value) {
-    conditions = []
-    q = ""
-
-    value.each_with_index { |e, i|
-      if i > 0
-        q += " OR organizations.ctrp_id = ?"
-      else
-        q += "organizations.ctrp_id = ?"
-      end
-      conditions.push(e)
-    }
-    conditions.insert(0, q)
-
-    where(conditions)
-  }
 
   scope :matches_wc, -> (column, value) {
     str_len = value.length
@@ -184,6 +229,31 @@ class Organization < ActiveRecord::Base
     end
   }
 
+  scope :with_source_id, -> (value, ctrp_ids) {
+    q = "organizations.source_id ilike ?"
+
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      conditions = ["%#{value[1..str_len - 1]}"]
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      conditions = ["#{value[0..str_len - 2]}%"]
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      conditions = ["%#{value[1..str_len - 2]}%"]
+    else
+      conditions = ["#{value}"]
+    end
+
+    ctrp_ids.each_with_index { |e, i|
+      if e != nil
+        q += " OR organizations.ctrp_id = ?"
+        conditions.push(e)
+      end
+    }
+    conditions.insert(0, q)
+
+    where(conditions)
+  }
+
   scope :with_source_context, -> (value) { joins(:source_context).where("source_contexts.name = ?", "#{value}") }
 
   scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
@@ -202,7 +272,7 @@ class Organization < ActiveRecord::Base
   }
 
   scope :sort_by_col, -> (column, order) {
-    if column == 'id'
+    if Organization.columns_hash[column] && Organization.columns_hash[column].type == :integer
       order("#{column} #{order}")
     elsif column == 'source_context'
       joins("LEFT JOIN source_contexts ON source_contexts.id = organizations.source_context_id").order("source_contexts.name #{order}").group(:'source_contexts.name')

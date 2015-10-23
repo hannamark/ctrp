@@ -7,6 +7,9 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
+var menuItemList = require('../support/PoCommonBar');
+var selectList = require('../support/CommonSelectList');
+var moment = require('moment');
 
 AddFamilyPage = function () {
     this.addFamilyName = element(by.model('familyDetailView.curFamily.name'));
@@ -17,9 +20,14 @@ AddFamilyPage = function () {
     this.addFamilyMembership = element(by.model('familyDetailView.selectedOrgs'));
     this.addFamilySelectAllMembership = element(by.css('.glyphicon.glyphicon-arrow-right'));
     this.addFamilyRemoveAllMembership = element(by.css('.glyphicon.glyphicon-arrow-left'));
-    this.addFamilySaveButton = element(by.css('input[ng-click="familyDetailView.updateFamily()"]'));
+    this.addFamilySaveButton = element(by.css('button[ng-click="familyDetailView.updateFamily()"]')); //element(by.css('input[ng-click="familyDetailView.updateFamily()"]'));
     this.addFamilyResetButton = element(by.css('input[value="Reset"]'));
     this.addFamilyDeleteButton = element(by.css('button[ng-hide="familyDetailView.curFamily.new"]'));
+    this.familyEditPage = element(by.css('h4[ng-if="!familyDetailView.curFamily.new"]'));
+    this.familyMembershipSize = element(by.binding('familyDetailView.savedSelection.length'));
+    var familyEditPageText = 'Edit Family';
+    var selectItem =new selectList();
+    var menuItem = new menuItemList();
 
     var addFamily = new helper();
 
@@ -66,6 +74,37 @@ AddFamilyPage = function () {
     this.clickDelete = function(){
         addFamily.clickButton(this.addFamilyDeleteButton,"Add Family by Delete button");
     };
+
+    this.familyVerifyAddName = function(familyName){
+        addFamily.getVerifyValue(this.addFamilyName,familyName,"Get family by Name field");
+    };
+
+    this.familyVerifyAddType = function(familyType){
+        addFamily.getVerifyListValue(this.addFamilyType,familyType,"Get family by Type field");
+    };
+
+    this.familyVerifyAddStatus = function(familyStatus){
+        addFamily.getVerifyListValue(this.addFamilyStatus,familyStatus,"Get family by Status field");
+    };
+
+    this.familyVerifyEditHeader = function(){
+        addFamily.getVerifyheader(this.familyEditPage,familyEditPageText,"Family by Edit header field");
+    };
+
+    this.familyVerifyMembershipSize = function(sizeToVerify){
+        (this.familyMembershipSize.getText()).should.eventually.equal(sizeToVerify);
+    }
+
+    this.familyDefaultCreate = function(familyName, familyStatus, familyType){
+        menuItem.clickOrganizations();
+        menuItem.clickAddFamily();
+        this.setAddFamilyName(familyName + moment().format('MMMDoYY hmmss'));
+        fam4 = this.addFamilyName.getAttribute('value');
+        selectItem.selectFamilyStatus(familyStatus);
+        selectItem.selectFamilyType(familyType);
+        this.clickSave();
+    };
+
 
 };
 module.exports = AddFamilyPage;

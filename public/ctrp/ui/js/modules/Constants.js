@@ -5,7 +5,7 @@
 (function() {
     'use strict';
 
-    angular.module('Constants', [])
+    angular.module('ctrp.constants', [])
         .constant('HOST', 'http://localhost/')
         .constant('URL_CONFIGS', {
             //relative urls to the host
@@ -20,6 +20,8 @@
             'A_USER': '/ctrp/users/',
             'A_USER_SIGNUP': '/ctrp/sign_up',
             'A_USER_CHANGEPASSWORD': '/ctrp/change_password',
+            'USER_GSA': '/ctrp/users/gsa',
+            'SEARCH_USER': '/ctrp/users/search.json',
             'USER_LIST': '/ctrp/users.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
@@ -50,12 +52,21 @@
             'HOLDER_TYPES': '/ctrp/registry/holder_types.json',
             'NIH': '/ctrp/registry/nih.json',
             'EXPANDED_ACCESS_TYPES': '/ctrp/registry/expanded_access_types.json',
-            'TRIAL_DOCUMENT_LIST': '/ctrp/registry/trial_documents.json'
+            'TRIAL_DOCUMENT_LIST': '/ctrp/registry/trial_documents.json',
+
+            //for comments
+            'COMMENTS' : {
+              'COUNTS_FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments/count.json',
+              'FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments.json',
+              'WITH_ID': '/ctrp/comments/{:id}.json',  //GET, DELETE, and PATCH or PUT
+              'CREATE': '/ctrp/comments.json'
+            },
         })
         .constant('MESSAGES', {
             'STATES_AVAIL': 'states_or_provinces_available',
             'STATES_UNAVAIL': 'states_or_provinces_not_available',
-            'PRIVILEGE_CHANGED': 'user_privilege_changed'
+            'PRIVILEGE_CHANGED': 'user_privilege_changed',
+            'CURATION_MODE_CHANGED': 'curation_mode_changed'
         })
         .constant('DMZ_UTILS', {
             'APP_VERSION' : '/ctrp/dmzutils/app_version.json',
