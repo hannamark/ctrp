@@ -282,8 +282,9 @@ sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_RO", "first_name
 kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
 deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Deb", "last_name" => "Hope"  }
 susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Susan", "last_name" => "Nonemaker"  }
+sophia = {"email" => "rarhais@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Sophia", "last_name" => "Rarhai"  }
 
-ba_users = [joe, jose, michael, sandy, kirsten, deb, susan]
+ba_users = [joe, jose, michael, sandy, kirsten, deb, susan, sophia]
 
 all_users = ncictrpdev_users + ba_users
 
