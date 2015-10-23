@@ -3,7 +3,7 @@ require "rest-client"
 url = "http://localhost:3000/ctrp/local_users"
 
 
-["ctrpsuper", "ctrpadmin", "ctrpcurator", "testercurator", "ctrpreadonly"].each do |username|
+["ctrpsuper", "ctrpadmin", "ctrpcurator", "testercurator", "ctrpreadonly", "ctrpro"].each do |username|
 
   body =    { "local_user" => {"username" => username, "password" => "Welcome01", "email" => "#{username}@x.com"},
       "type" => "LocalUser"

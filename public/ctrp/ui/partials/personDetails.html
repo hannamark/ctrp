@@ -17,13 +17,7 @@
         </div>
     </script>
 
-    <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field=""></ctrp-comment>
-
-    <!-- comment button -->
-    <!-- <md-button class="md-fab md-primary md-fab-top-right" curation-field aria-label="Comment" ctrp-comment-modal uuid="{{personDetailView.curPerson.uuid}}">
-      <i class="glyphicon glyphicon-comment"></i>
-    </md-button> -->
-    <!-- end of comment button -->
+    <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person"></ctrp-comment>
     <div class="col-xs-12">
         <div class="row">
             <p>
@@ -203,7 +197,7 @@
                         <button ng-hide="personDetailView.curPerson.new" curation-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
                             <i class="glyphicon glyphicon-remove"></i> Delete This Person
                         </button>
-                        <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="btn" field=""></ctrp-comment>
+                        <!-- <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="btn" field="" model="person"></ctrp-comment> -->
                     </div>
                 </div>
             </form>

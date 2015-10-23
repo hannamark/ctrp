@@ -35,22 +35,19 @@
         </div>
         <div class="row">
             <!-- tab views -->
-            <md-tabs md-dynamic-height md-border-bottom md-selected="orgDetailView.selectedContextIndex">
-                <md-tab>
-                    <md-tab-label>CTRP</md-tab-label>
+            <md-tabs md-dynamic-height md-border-bottom md-selected="orgDetailView.tabIndex">
+                <md-tab ng-repeat="clusterOrg in orgDetailView.curOrg.cluster track by $index">
+                    <md-tab-label>{{clusterOrg.context}}</md-tab-label>
                     <md-tab-body>
                         <!-- <button class="btn btn-primary pull-right" ctrp-comment-button ctrp-comment-panel uuid="{{orgDetailView.curOrg.uuid}}" field="mock_field">New Comment</button> -->
                         <!--CTRP content -->
                         <div class="row">
-                          <div ng-hide="orgDetailView.curOrg.new">
-                            <!-- <button class="btn btn-default pull-left" ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" field="">Comment</button> -->
-                            <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="icon" field=""></ctrp-comment>
-                          </div>
+                          <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="icon" field="" model="organization"></ctrp-comment>
 
                             <form class="form form-horizontal" role="form" name="organization_form" novalidate>
                                 <div ng-if="!orgDetailView.curOrg.new" class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">CTRP ID:</label>
-                                    <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curOrg.id}}</div>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curOrg.ctrp_id}}</div>
                                 </div>
                                 <div class="form-group" ng-class="{'has-error' : organization_form.name.$error.required && organization_form.name.$dirty }">
                                     <label class="control-label col-xs-12 col-sm-3">Name:</label>
@@ -246,7 +243,7 @@
                                         <button ng-hide="orgDetailView.curOrg.new" curation-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
                                             <i class="glyphicon glyphicon-remove"></i> Delete This Organization
                                         </button>
-                                        <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="btn" field=""></ctrp-comment>
+                                        <!-- <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="btn" field="" model="organization"></ctrp-comment> -->
                                         <!-- <button class="btn btn-default" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">Open dialog from directive</button> -->
                                     </div>
                                 </div>
@@ -254,14 +251,6 @@
                         </div>
                         <!-- end of CTRP content -->
                     </md-tab-body>
-                </md-tab>
-                <md-tab>
-                    <md-tab-label>CTEP</md-tab-label>
-                    <md-tab-body>Placeholder for CTEP Context</md-tab-body>
-                </md-tab>
-                <md-tab>
-                    <md-tab-label>NLM</md-tab-label>
-                    <md-tab-body>Placeholder for NLM Context</md-tab-body>
                 </md-tab>
             </md-tabs>
             <!-- end of tab views -->

@@ -523,7 +523,8 @@ h4 {
 
 .md-sidenav-right {
     z-index: 9999;
-    min-width: 400px;
+    width: 350px;
+    word-wrap: break-word;
 }
 
 .btn-toolbar ng-md-icon {

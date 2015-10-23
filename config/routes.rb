@@ -53,8 +53,8 @@ Rails.application.routes.draw do
     resources :family_memberships
 
     resources :comments
-    get '/:instance_uuid/comments/count', to: 'comments#count'
-    get '/:instance_uuid/comments', to: 'comments#comments_for_instance'
+    get '/instance/:uuid/comments/count(/:field)', to: 'comments#count'
+    get '/instance/:uuid/comments(/:field)', to: 'comments#comments_for_instance'
 
     get '/users/search' => 'users#search'
     get '/users/gsa' => 'users#gsa'
