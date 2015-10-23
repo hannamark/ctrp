@@ -1,4 +1,4 @@
-<button class="btn btn-primary pull-right" ng-click="commentView.toggleRight()" ng-show="buttonType !='icon'">
+<button class="btn btn-primary pull-right" curation-field ng-click="commentView.toggleRight()" ng-show="buttonType !='icon'">
   <ng-md-icon icon="comment" style="fill: white"></ng-md-icon>
   <span ng-if="commentView.commentList.length == 1">
       {{commentView.commentList.length}} Comment
@@ -10,7 +10,7 @@
 </button>
 <div class="sideNavBar">
   <div layout="column" class="relative" layout-fill role="main">
-    <md-button class="md-fab md-fab-top-right" style="background-color: #007299" aria-label="Comment"
+    <md-button class="md-fab md-fab-top-right" curation-field style="background-color: #007299" aria-label="Comment"
     ng-click="commentView.toggleRight()" ng-show="buttonType=='icon'">
       <ng-md-icon icon="comment"></ng-md-icon>
       <span flex ng-show="commentView.commentList.length > 0">

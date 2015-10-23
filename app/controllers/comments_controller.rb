@@ -1,5 +1,8 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  load_and_authorize_resource unless Rails.env.test?
+  skip_authorize_resource :only => [:count]
 
   # GET /comments
   # GET /comments.json
@@ -25,9 +28,6 @@ class CommentsController < ApplicationController
   # POST /comments.json
   def create
     @comment = Comment.new(comment_params)
-
-    print "in creating comment"
-    Rails.logger.info(comment_params)
 
     respond_to do |format|
       if @comment.save
