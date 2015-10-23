@@ -170,8 +170,8 @@ And the following fields should be displayed:
 |Zip Code|
 |Email|
 |Phone|
-|Created By|
-|Created Date|
+|Last Updated By|
+|Last Updated Date|
 And the result should be sorted by Organization Name
 
 Examples:
