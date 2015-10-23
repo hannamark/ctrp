@@ -42,9 +42,7 @@
                         <!-- <button class="btn btn-primary pull-right" ctrp-comment-button ctrp-comment-panel uuid="{{orgDetailView.curOrg.uuid}}" field="mock_field">New Comment</button> -->
                         <!--CTRP content -->
                         <div class="row">
-                            <!-- <button class="btn btn-default pull-left" ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" field="">Comment</button> -->
                           <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="icon" field="" model="organization"></ctrp-comment>
-
 
                             <form class="form form-horizontal" role="form" name="organization_form" novalidate>
                                 <div ng-if="!orgDetailView.curOrg.new" class="form-group">

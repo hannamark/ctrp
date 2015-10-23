@@ -14,7 +14,7 @@
         instanceUuid: '@',
         buttonType: '@', //icon or btn
         field: '@',
-        model: '=?'  //optional
+        model: '@' 
       },
       controller: commentCtrl,
       controllerAs: 'commentView',
@@ -30,18 +30,8 @@
         if (newVal) {
           scope.uuid = newVal;
           element.show();
-          /*
-          element.bind('click', function() {
-            $log.info('openning the slide-in panel for comments');
-            // element.hide();
-          });
-          */
-
-
           //show the counts on the element label
           getCommentCounts();
-          //fetch comments and push them to comment panel scope
-          //fetchComments(scope.uuid);
         } else {
           scope.uuid = '';
           scope.numComments = 0;
@@ -51,39 +41,22 @@
       }, true);
 
 
+
       /**
       * Get the number of comments for the given uuid
       */
       function getCommentCounts() {
-        //TODO: include model and field in getting the counts (from the backend)
-        var btnTemplate = '<span>Comment</span>'
-        CommentService.getCommentCounts(scope.uuid).then(function(data) {
+        //include field in the url in getting the counts (from the backend)
+        var btnTemplate = '<span>Comment</span>';
+        CommentService.getCommentCounts(scope.uuid, attrs.field).then(function(data) {
           scope.numComments = data.count;
           if (scope.numComments > 0) {
             btnTemplate.replace('Comment', scope.numComments);
             // element.html('<span><strong>' + scope.numComments + '</strong></span> <i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>');
-          } else {
-            btnTemplate.replace('Comment', '0');
           }
           // element.append($compile(btnTemplate)(scope));
         });
       } //getCommentCounts
-
-
-      /**
-      * fetch comments for the instanceUuid
-      //TODO: include field and model in fetching comments (?)
-      */
-      /*
-      function fetchComments(instanceUuid) {
-        CommentService.getComments(instanceUuid).then(function(data) {
-          // console.log('received comments data: ' + JSON.stringify(data));
-          scope.commentList = data.comments;
-        }).catch(function(error) {
-          $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);
-        });
-      } //fetchComments
-      */
 
 
     } //link
@@ -95,7 +68,7 @@
       vm.showCommentForm = false;
       vm.comment = {
         content: "", username: UserService.getLoggedInUsername(),
-        field: "", model: $scope.model || "",
+        field: $scope.field, model: $scope.model || "",
         instance_uuid: $scope.instanceUuid,
         parent_id: ""
       };
@@ -125,8 +98,8 @@
       } //watchInstanceUuid
 
       function fetchComments() {
-        CommentService.getComments($scope.instanceUuid).then(function(data) {
-          // console.log('received comments data: ' + JSON.stringify(data));
+        //include the field in the url in fetching comments
+        CommentService.getComments($scope.instanceUuid, $scope.field).then(function(data) {
           vm.commentList = data.comments;
         }).catch(function(error) {
           $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);

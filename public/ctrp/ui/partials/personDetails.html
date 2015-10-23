@@ -18,12 +18,6 @@
     </script>
 
     <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person"></ctrp-comment>
-
-    <!-- comment button -->
-    <!-- <md-button class="md-fab md-primary md-fab-top-right" curation-field aria-label="Comment" ctrp-comment-modal uuid="{{personDetailView.curPerson.uuid}}">
-      <i class="glyphicon glyphicon-comment"></i>
-    </md-button> -->
-    <!-- end of comment button -->
     <div class="col-xs-12">
         <div class="row">
             <p>
@@ -199,9 +193,6 @@
 
                 <div class="form-group">
                     <div class="btn-toolbar col-xs-12 col-sm-9">
-                      <!-- <button class="btn btn-primary pull-right" curation-field ctrp-comment-modal uuid="{{personDetailView.curPerson.uuid}}">
-                        <span>Comment</span><i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>
-                      </button> -->
                         <!-- <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="btn" field="" model="person"></ctrp-comment> -->
                         <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-click="personDetailView.updatePerson()" ng-disabled="person_form.$invalid" ctrp-click-once>
                             Save
