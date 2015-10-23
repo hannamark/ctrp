@@ -1,7 +1,7 @@
 require "rest-client"
 
+#url = "http://localhost:3000/ctrp/local_users"
 url = "http://localhost/ctrp/local_users"
-
 
 ["ctrpsuper", "ctrpadmin", "ctrpcurator", "testercurator", "ctrpreadonly", "ctrpro"].each do |username|
 

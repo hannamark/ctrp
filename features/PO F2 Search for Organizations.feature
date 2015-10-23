@@ -199,7 +199,7 @@ Then the complete organization information will be displayed including:
 |Address 1|
 |Address 2|
 |City|
-|State or Province 2 character ISO code|
+|State|
 |Country|
 |Postal Code|
 |Email|
