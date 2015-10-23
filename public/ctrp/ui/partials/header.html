@@ -86,9 +86,11 @@
                                    aria-expanded="false">Organizations & Families
                                     <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li ng-repeat="(display_name,link) in headerView.dashboardOrganization"><a ui-sref={{link}}> {{display_name}}</a> </li>
+                                    <li><a ui-sref="main.organizations">Search Organizations</a></li>
+                                    <li><a ui-sref="main.addOrganization">Add Organization</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li ng-repeat="(display_name,link) in headerView.dashboardFamily"><a ui-sref={{link}}> {{display_name}}</a> </li>
+                                    <li><a ui-sref="main.families">Search Families</a></li>
+                                    <li><a ui-sref="main.addFamily">Add Family</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.people, main.addPerson') }">
@@ -96,7 +98,8 @@
                                    aria-expanded="false">Persons<span
                                         class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li ng-repeat="(display_name,link) in headerView.dashboardPerson"><a ui-sref={{link}}> {{display_name}}</a> </li>
+                                    <li><a ui-sref="main.people">Search Persons</a></li>
+                                    <li><a ui-sref="main.addPerson">Add Person</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.trials, main.addTrial') }">
