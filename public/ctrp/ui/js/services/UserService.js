@@ -7,10 +7,10 @@
     angular.module('ctrpApp')
         .service('UserService', UserService);
 
-    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log',
+    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
         '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS'];
 
-    function UserService(LocalCacheService, PromiseTimeoutService, $log,
+    function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
                          $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS) {
 
         var appVersion = '';
@@ -25,7 +25,7 @@
             email: "",
             phone: "",
             approved: "",
-           // affiliated_org_name: "",
+            // affiliated_org_name: "",
 
             //for pagination and sorting
             sort: "updated_at",
@@ -49,31 +49,38 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'username', enableSorting: true, displayName: 'Username', width: '10%',
+                {
+                    name: 'username', enableSorting: true, displayName: 'Username', width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'first_name', displayName: 'First', enableSorting: true, width: '8%',
+                {
+                    name: 'first_name', displayName: 'First', enableSorting: true, width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'middle_name', displayName: 'Middle', enableSorting: true, width: '5%',
+                {
+                    name: 'middle_name', displayName: 'Middle', enableSorting: true, width: '5%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'last_name', displayName: 'Last', enableSorting: true, width: '6%',
+                {
+                    name: 'last_name', displayName: 'Last', enableSorting: true, width: '6%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'email',  displayName: 'Email', enableSorting: true, width: '10%',
+                {
+                    name: 'email', displayName: 'Email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phone', displayName: 'Phone', enableSorting: true, width: '6%',
+                {
+                    name: 'phone', displayName: 'Phone', enableSorting: true, width: '6%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'approved', displayName: 'Approval', enableSorting: true, width: '6%',
+                {
+                    name: 'approved', displayName: 'Approval', enableSorting: true, width: '6%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }//,
@@ -95,8 +102,8 @@
         }; //isLoggedIn
 
 
-        this.getUserType = function() {
-            return  LocalCacheService.getCacheWithKey("user_type");
+        this.getUserType = function () {
+            return LocalCacheService.getCacheWithKey("user_type");
         }
 
 
@@ -117,7 +124,8 @@
                         Common.broadcastMsg("signedIn");
 
                         $timeout(function () {
-                            $state.go('main.gsa');
+                            openGsaModal();
+                           // $state.go('main.gsa');
                         }, 500);
                     } else {
                         toastr.error('Login failed', 'Login error');
@@ -140,7 +148,7 @@
                         LocalCacheService.clearAllCache();
                         toastr.success('Success', 'Successfully logged out');
 
-                        $timeout(function() {
+                        $timeout(function () {
                             $state.go('main.sign_in');
                         }, 200);
                     }
@@ -161,13 +169,13 @@
          */
         this.searchUsers = function (searchParams) {
             //toastr.success('Success', 'Successful in UserService, searchUsers');
-             console.log('User searchparams: ' + JSON.stringify(searchParams));
-           // if (!!searchParams) {
-               // toastr.success('Success', 'Successful in UserService, searchUsers');
-                var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
+            console.log('User searchparams: ' + JSON.stringify(searchParams));
+            // if (!!searchParams) {
+            // toastr.success('Success', 'Successful in UserService, searchUsers');
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
             console.log('User List: ' + JSON.stringify(user_list));
-              return user_list
-           // }
+            return user_list
+            // }
         } //searchUsers
 
         /**
@@ -179,21 +187,19 @@
         } //getInitialUserSearchParams
 
 
-
         this.getGridOptions = function () {
             return gridOptions;
         }
 
 
-
         /**
          * Get the logged in username from browser cache
          */
-        this.getLoggedInUsername = function() {
+        this.getLoggedInUsername = function () {
             return LocalCacheService.getCacheWithKey('username') || '';
         }
 
-        this.getUserDetailsByUsername = function(username) {
+        this.getUserDetailsByUsername = function (username) {
             var username = LocalCacheService.getCacheWithKey('username');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         } //getUserByName
@@ -203,12 +209,12 @@
          * Get the user role of the logged in user
          * @returns {*|string}
          */
-        this.getUserRole = function() {
+        this.getUserRole = function () {
             return LocalCacheService.getCacheWithKey('user_role') || '';
         };
 
 
-        this.getAppVersion = function() {
+        this.getAppVersion = function () {
             return LocalCacheService.getCacheWithKey('app_version') || '';
         };
 
@@ -217,45 +223,45 @@
          * Get the app version from DMZ utils when the user has not been authenticated
          * @returns {*} Promise
          */
-        this.getAppVerFromDMZ = function() {
+        this.getAppVerFromDMZ = function () {
             return PromiseTimeoutService.getData(DMZ_UTILS.APP_VERSION);
         };
 
-        this.getAppRelMilestoneFromDMZ = function() {
+        this.getAppRelMilestoneFromDMZ = function () {
             return PromiseTimeoutService.getData(DMZ_UTILS.APP_REL_MILESTONE);
         };
 
-        this.setAppVersion = function(version) {
+        this.setAppVersion = function (version) {
             _setAppVersion(version);
         };
 
-        this.setAppRelMilestone = function(milestone) {
+        this.setAppRelMilestone = function (milestone) {
             _setAppRelMilestone(milestone);
         };
 
-        this.getAppVersion = function() {
+        this.getAppVersion = function () {
             return LocalCacheService.getCacheWithKey('app_version'); // || appVersion;
         };
 
-        this.getAppRelMilestone = function() {
+        this.getAppRelMilestone = function () {
             return LocalCacheService.getCacheWithKey('app_rel_milestone'); // || appRelMilestone;
         };
 
-        this.getLoginBulletin = function() {
+        this.getLoginBulletin = function () {
             return PromiseTimeoutService.getData(DMZ_UTILS.LOGIN_BULLETIN);
         };
 
-        this.getGsa = function() {
-           return PromiseTimeoutService.getData(URL_CONFIGS.USER_GSA);
+        this.getGsa = function () {
+            return PromiseTimeoutService.getData(URL_CONFIGS.USER_GSA);
         };
 
-        this.upsertUser=function(userObj) {
+        this.upsertUser = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + ".json", userObj, configObj);
         }; //upsertUser
 
-        this.upsertUserSignup=function(userObj) {
+        this.upsertUserSignup = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
             console.log("userObj = " + JSON.stringify(userObj));
@@ -270,7 +276,7 @@
 
         }; //upsertUserSignup
 
-        this.upsertUserChangePassword=function(userObj) {
+        this.upsertUserChangePassword = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
             console.log("upsertUserChangePassword userObj = " + JSON.stringify(userObj));
@@ -278,12 +284,11 @@
         }; //upsertUserChangePassword
 
 
-
         /**
          * Check if the curation mode is supported for the user role
          *
          */
-        this.isCurationSupported = function() {
+        this.isCurationSupported = function () {
             return LocalCacheService.getCacheWithKey("curation_supported"); //TODO: change true to data.curation_supported
         };
 
@@ -293,7 +298,7 @@
          *
          * @returns {*|boolean}
          */
-        this.isCurationModeEnabled = function() {
+        this.isCurationModeEnabled = function () {
             return LocalCacheService.getCacheWithKey("curation_enabled") || false;
         };
 
@@ -302,10 +307,9 @@
          * Set curation_enabled to true
          * @params curationMode, boolean
          */
-        this.saveCurationMode = function(curationMode) {
+        this.saveCurationMode = function (curationMode) {
             LocalCacheService.cacheItem("curation_enabled", curationMode);
         };
-
 
 
         /******* helper functions *********/
@@ -336,6 +340,31 @@
             Common.broadcastMsg('updatedAppRelMilestone');
         }
 
+        function openGsaModal() {
+            console.log('1 st openning modal instance???');
+
+            (function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/ctrp/ui/partials/modals/gsa.html',
+                    controller: 'gsaModalCtrl as gsaView',
+                    size: 'lg',
+                    resolve: {
+                        UserService: 'UserService',
+                        gsaObj: function (UserService) {
+                            return UserService.getGsa();
+                        },
+                    }
+
+                });
+
+
+                modalInstance.result.then(function () {
+                    console.log('modal closed, TODO redirect');
+                });
+            })();
+
+
+        }
     }
 
 
