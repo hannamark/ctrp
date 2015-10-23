@@ -31,9 +31,44 @@
     </div>
 
   </md-toolbar>
+  <md-button ng-show="!commentView.showCommentForm" ng-click="commentView.toggleCommentFormShown()">
+    <span flex>
+      <ng-md-icon icon="edit" style="fill: blue" size="20"></ng-md-icon>
+      Write a comment
+    </span>
+  </md-button>
   <md-content layout="column" layout-padding>
-    <md-list>
-      <md-list-item class="md-3-line" ng-repeat="comment in commentView.commentList | reverse track by $index">
+    <form name="commentForm" ng-show="commentView.showCommentForm">
+
+      <div layout layout-sm="column">
+        <md-input-container flex>
+          <label>Username</label>
+          <input ng-model="commentView.comment.username" type="text" disabled>
+        </md-input-container>
+        <!-- <md-input-container md-no-float>
+          <label>Category</label>
+          <input ng-model="commentView.comment.field" type="text">
+        </md-input-container> -->
+      </div>
+      <md-input-container flex>
+        <label>Comment:</label>
+        <!-- <input ng-model="commentView.comment.content"> -->
+        <textarea columns="1" ng-model="commentView.comment.content"></textarea>
+      </md-input-container>
+
+      <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+        <md-button class="md-raised md-warn" ng-show="commentView.showCommentForm" ng-click="commentView.toggleCommentFormShown()">
+              <!-- <ng-md-icon icon="unfold_less" style="fill: blue" size="20" ng-click="toggleCommentFormShown()"></ng-md-icon> -->
+            Close form
+        </md-button>
+        <md-button class="md-raised md-primary" ng-click="commentView.postComment()">Submit</md-button>
+      </section>
+
+    </form>
+  <!-- </md-content> -->
+  <!-- <md-content layout="column" layout-wrap layout-padding> -->
+    <!-- <md-list>
+      <md-list-item class="md-2-line" ng-repeat="comment in commentView.commentList | reverse track by $index">
         <div class="md-list-item-text">
           <div class="md-list-item-text">
             <h3><strong>{{comment.username}}</strong> commented <span am-time-ago="comment.created_at"></span>: </h3>
@@ -42,34 +77,19 @@
         </div>
         <md-divider ng-if="!$last"></md-divider>
       </md-list-item>
-    </md-list>
-
-    <p><a href="" ng-click="commentView.toggleCommentFormShown()">Write a comment</a></p>
-  </md-content>
-  <md-content layout-padding ng-show="commentView.showCommentForm">
-    <form name="commentForm">
-
-      <div layout layout-sm="column">
-        <md-input-container md-no-float>
-          <label>Username</label>
-          <input ng-model="commentView.comment.username" type="text" placeholder="username">
-        </md-input-container>
-        <md-input-container md-no-float>
-          <label>Category</label>
-          <input ng-model="commentView.comment.field" type="text" placeholder="category">
-        </md-input-container>
+    </md-list> -->
+    <div ng-show="commentView.commentList.length == 0">
+      <strong>No comments yet</strong>
+    </div>
+    <div flex="33" class="md-3-line" ng-repeat="comment in commentView.commentList | reverse track by $index">
+      <div class="md-list-item-text">
+          <div class="md-list-item-text">
+            <p class="md-caption"><strong>{{comment.username}}</strong> commented <span am-time-ago="comment.created_at"></span>: </p>
+            <h5 class="md-body-1">{{comment.content}}</h5>
+          </div>
+        <md-divider ng-if="!$last"></md-divider>
       </div>
-
-      <md-input-container md-no-float>
-        <label>Comment:</label>
-        <!-- <input ng-model="commentView.comment.content"> -->
-        <textarea rows="3" cols="40" ng-model="commentView.comment.content"></textarea>
-      </md-input-container>
-
-      <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-        <md-button class="md-raised md-primary" ng-click="commentView.postComment()">Submit</md-button>
-      </section>
-
-    </form>
+    </div>
   </md-content>
+
 </md-sidenav>
