@@ -37,7 +37,6 @@ var PoCommonBar = function(){
     this.add_Person_Page = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.edit_Person_Page = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
     this.loginName = element(by.binding('headerView.username'));
-    this.writeMode =  element(by.css('.md-thumb'));
 
 
     this.searchResult = element.all(by.binding('grid.getCellValue(row, col) '));
@@ -134,9 +133,7 @@ var PoCommonBar = function(){
         });
     };
 
-    this.clickWriteMode = function(){
-        helper.clickButton(this.writeMode,"Role");
-    };
+
 
 };
 

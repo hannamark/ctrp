@@ -36,6 +36,7 @@ AddOrganizationsPage = function(){
     this.addVerifyAddHeader = element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
     this.addVerifyEditHeader = element(by.css('h4[ng-if="!orgDetailView.curOrg.new"]'));
     this.verifyAddedOrgAlias = element.all(by.binding('nameAlias.name'));
+    this.addOrgCTRPID = element(by.binding('orgDetailView.curOrg.ctrp_id'));
     var addHeader = 'Add Organization';
     var editHeader = 'Edit Organization';
 

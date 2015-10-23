@@ -30,7 +30,7 @@ When I provide the CTEP ID of the organization I wish to search for
 And I submit my search request
 Then the system should display all organizations that contain the CTEP ID
 And the result should be sorted by Organization Name
-
+  @runthis
 Scenario: As any Curator, I am able to search for organizations by PO Organization ID
 Given I know the PO Organization ID of the organization I wish to search for
 And I am logged in to CTRP
