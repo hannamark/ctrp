@@ -28,7 +28,7 @@
 
       element.bind('click', function(e) {
         $mdDialog.show({
-          templateUrl: '/ctrp/ui/js/modules/widgets/ctrp.widgets.comment.directive.template.html',
+          templateUrl: '/ctrp/ui/js/modules/widgets/comment/ctrp.widgets.comment-modal-template.html',
           targetEvent: e,
           locals: {
             instanceUuid: attrs.uuid,
