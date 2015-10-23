@@ -56,8 +56,8 @@
 
             //for comments
             'COMMENTS' : {
-              'COUNTS_FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments/count.json',
-              'FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments.json',
+              'COUNTS_FOR_INSTANCE': '/ctrp/instance/{:instance_uuid}/comments/count.json', //can have optional :field
+              'FOR_INSTANCE': '/ctrp/instance/{:instance_uuid}/comments.json', //can have optional :field
               'WITH_ID': '/ctrp/comments/{:id}.json',  //GET, DELETE, and PATCH or PUT
               'CREATE': '/ctrp/comments.json'
             },
