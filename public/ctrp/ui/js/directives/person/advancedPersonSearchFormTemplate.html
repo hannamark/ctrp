@@ -129,8 +129,7 @@
                 <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status:</label>
                 <div  ng-if="sourceStatusArr.length > 1">
                     <div class="col-xs-12 col-sm-4">
-                        <select class="form-control input-sm" id="source_status" ng-model="searchParams.source_status"
-                                ng-options="status.name for status in sourceStatusArr" >
+                        <select class="form-control input-sm" id="source_status" ng-model="searchParams.source_status" ng-options="status.name for status in sourceStatusArr">
                             <option value="">Select a status</option>
                         </select>
                     </div>
@@ -169,7 +168,7 @@
                     <i class="glyphicon glyphicon-search"></i> Search
                 </button>
                 <button class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()">
-                    <i class="glyphicon glyphicon-remove"></i> Reset
+                    <i class="glyphicon glyphicon-remove"></i> Clear
                 </button>
             </div>
         </div>

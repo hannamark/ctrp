@@ -27,18 +27,17 @@
                         </accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Study Source:</label>
-                            <div class="col-sm-6">
-                                <select class="form-control input-sm" id="study_source" ng-model="trialDetailView.curTrial.study_source_id"
-                                        ng-options="studySource.id as studySource.name for studySource in trialDetailView.studySourceArr" disabled>
+                            <label class="control-label col-xs-12 col-sm-3">Study Source:</label>
+                            <div class=" col-xs-12 col-sm-6">
+                                <select class="form-control input-sm" id="study_source" ng-model="trialDetailView.curTrial.study_source_id" ng-options="studySource.id as studySource.name for studySource in trialDetailView.studySourceArr" disabled>
                                     <option value="">--</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3 required">Lead Protocol Identifier:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3 required">Lead Protocol Identifier:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <input type="text" class="form-control input-sm" id="lead_protocol_id" name="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id" required autofocus>
                                 <p ng-show="trial_form.lead_protocol_id.$error.required && trial_form.lead_protocol_id.$dirty" class="help-inline text-danger">
                                     Lead Protocol Identifier is required
@@ -47,8 +46,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Other Trial Identifier:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3">Other Trial Identifier:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <table class="table table-striped table-condensed">
                                     <thead>
                                         <th>Protocol ID Origin</th>
@@ -111,8 +110,8 @@
                         </accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3 required">Official Title:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3 required">Official Title:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <textarea class="form-control input-sm" id="official_title" name="official_title" ng-model="trialDetailView.curTrial.official_title" required />
                                 <p ng-show="trial_form.official_title.$error.required && trial_form.official_title.$dirty" class="help-inline text-danger">
                                     Official Title is required
@@ -121,8 +120,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3 required">Phase:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3 required">Phase:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <select class="form-control input-sm" id="phase" name="phase" ng-model="trialDetailView.curTrial.phase_id"
                                         ng-options="phase.id as phase.name for phase in trialDetailView.phaseArr" required>
                                     <option value="">-Select a Phase-</option>
@@ -134,18 +133,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3 required">Pilot?</label>
-                            <div class="col-sm-1">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.pilot" value="No"> No</label>
-                            </div>
-                            <div class="col-sm-2">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.pilot" value="Yes"> Yes</label>
+                            <label class="control-label col-xs-12 col-sm-3 required">Pilot?</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.pilot" value="No"> No</label>
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.pilot" value="Yes"> Yes</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3 required">Research Category:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3 required">Research Category:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <select class="form-control input-sm" id="research_category" name="research_category" ng-model="trialDetailView.curTrial.research_category_id"
                                         ng-options="category.id as category.name for category in trialDetailView.researchCategoryArr" required>
                                     <option value="">-Select a Research Category-</option>
@@ -157,8 +154,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3 required">Primary Purpose:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3 required">Primary Purpose:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <select class="form-control input-sm" id="primary_purpose" name="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id"
                                         ng-options="primaryPurpose.id as primaryPurpose.name for primaryPurpose in trialDetailView.primaryPurposeArr"
                                         ng-change="trialDetailView.watchOption('primary_purpose')" required>
@@ -171,15 +168,15 @@
                         </div>
 
                         <div ng-show="trialDetailView.showPrimaryPurposeOther" class="form-group">
-                            <label class="control-label col-sm-3">Describe "Other" Primary Purpose:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3">Describe "Other" Primary Purpose:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <textarea class="form-control input-sm" id="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Secondary Purpose:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3">Secondary Purpose:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <select class="form-control input-sm" id="secondary_purpose" name="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id"
                                         ng-options="secondaryPurpose.id as secondaryPurpose.name for secondaryPurpose in trialDetailView.secondaryPurposeArr"
                                         ng-change="trialDetailView.watchOption('secondary_purpose')">
@@ -189,15 +186,15 @@
                         </div>
 
                         <div ng-show="trialDetailView.showSecondaryPurposeOther" class="form-group">
-                            <label class="control-label col-sm-3">Describe "Other" Secondary Purpose:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3">Describe "Other" Secondary Purpose:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <textarea class="form-control input-sm" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3 required">Accrual Disease Terminology:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3 required">Accrual Disease Terminology:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <select class="form-control input-sm" id="accrual_disease_term" name="accrual_disease_term" ng-model="trialDetailView.curTrial.accrual_disease_term_id"
                                         ng-options="term.id as term.name for term in trialDetailView.accrualDiseaseTermArr" required>
                                     <option value="">-Select an Accrual Disease Terminology-</option>
@@ -215,7 +212,7 @@
                         </accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Lead Organization:</label>
+                            <label class="control-label col-xs-12 col-sm-3">Lead Organization:</label>
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
@@ -229,7 +226,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Principal Investigator:</label>
+                            <label class="control-label col-xs-12 col-sm-3">Principal Investigator:</label>
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
@@ -249,7 +246,7 @@
                         </accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Sponsor:</label>
+                            <label class="control-label col-xs-12 col-sm-3">Sponsor:</label>
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
@@ -263,8 +260,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3 required">Responsible Party:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3 required">Responsible Party:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <select class="form-control input-sm" id="responsible_party" name="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id"
                                         ng-options="responsibleParty.id as responsibleParty.name for responsibleParty in trialDetailView.responsiblePartyArr"
                                         ng-change="trialDetailView.watchOption('responsible_party')" required>
@@ -277,7 +274,7 @@
                         </div>
 
                         <div ng-show="trialDetailView.showInvestigator" class="form-group">
-                            <label class="control-label col-sm-3">Investigator:</label>
+                            <label class="control-label col-xs-12 col-sm-3">Investigator:</label>
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
@@ -291,14 +288,14 @@
                         </div>
 
                         <div ng-show="trialDetailView.showInvestigator" class="form-group">
-                            <label class="control-label col-sm-3">Investigator Title:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3">Investigator Title:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <input type="text" class="form-control input-sm" id="investigator_title" ng-model="trialDetailView.curTrial.investigator_title">
                             </div>
                         </div>
 
                         <div ng-show="trialDetailView.showInvestigator" class="form-group">
-                            <label class="control-label col-sm-3">Investigator Affiliation:</label>
+                            <label class="control-label col-xs-12 col-sm-3">Investigator Affiliation:</label>
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
@@ -318,7 +315,7 @@
                         </accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Data Table 4 Funding Source:</label>
+                            <label class="control-label col-xs-12 col-sm-3">Data Table 4 Funding Source:</label>
                             <div class="col-sm-9">
                                 <div class="col-xs-12 col-sm-4">
                                     <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
@@ -327,7 +324,7 @@
                         </div>
 
                         <div ng-repeat="fs in trialDetailView.addedFses track by $index" class="form-group">
-                            <label class="control-label col-sm-3"></label>
+                            <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
@@ -343,8 +340,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Program code:</label>
-                            <div class="col-sm-6">
+                            <label class="control-label col-xs-12 col-sm-3">Program code:</label>
+                            <div class=" col-xs-12 col-sm-6">
                                 <input type="text" class="form-control input-sm" id="program_code" ng-model="trialDetailView.curTrial.program_code">
                             </div>
                         </div>
@@ -356,12 +353,10 @@
                         </accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3 required">Is this trial funded by an NCI grant?</label>
-                            <div class="col-sm-1">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.grant_question" value="Yes"> Yes</label>
-                            </div>
-                            <div class="col-sm-2">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.grant_question" value="No"> No</label>
+                            <label class="control-label col-xs-12 col-sm-3 required">Is this trial funded by an NCI grant?</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <label class="checkbox-inline"><input type="radio" ng-model="trialDetailView.curTrial.grant_question" value="Yes"> Yes</label>
+                                <label class="checkbox-inline"><input type="radio" ng-model="trialDetailView.curTrial.grant_question" value="No"> No</label>
                             </div>
                         </div>
 
@@ -531,8 +526,8 @@
                         </accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Trial Start Date:</label>
-                            <div class="col-sm-3">
+                            <label class="control-label col-xs-12 col-sm-3">Trial Start Date:</label>
+                            <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.start_date"
                                            is-open="trialDetailView.start_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
@@ -543,17 +538,15 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-sm-1">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Actual"> Actual</label>
-                            </div>
-                            <div class="col-sm-2">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Anticipated"> Anticipated</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Actual"> Actual</label>
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Anticipated"> Anticipated</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Primary Completion Date:</label>
-                            <div class="col-sm-3">
+                            <label class="control-label col-xs-12 col-sm-3">Primary Completion Date:</label>
+                            <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.primary_comp_date"
                                            is-open="trialDetailView.primary_comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
@@ -564,17 +557,15 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-sm-1">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Actual"> Actual</label>
-                            </div>
-                            <div class="col-sm-2">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Anticipated"> Anticipated</label>
+                            <div class="col-sm-6">
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Actual"> Actual</label>
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Anticipated"> Anticipated</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Completion Date:</label>
-                            <div class="col-sm-3">
+                            <label class="control-label col-xs-12 col-sm-3">Completion Date:</label>
+                            <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.comp_date"
                                            is-open="trialDetailView.comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
@@ -585,11 +576,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-sm-1">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Actual"> Actual</label>
-                            </div>
-                            <div class="col-sm-2">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Anticipated"> Anticipated</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Actual"> Actual</label>
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Anticipated"> Anticipated</label>
                             </div>
                         </div>
                     </accordion-group>
@@ -700,7 +689,7 @@
                         </accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Trial Oversight Authority:</label>
+                            <label class="control-label col-xs-12 col-sm-3">Trial Oversight Authority:</label>
                             <div class="col-sm-9">
                                 <table class="table table-striped table-condensed">
                                     <thead>
@@ -758,32 +747,26 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">FDA Regulated Intervention Indicator:</label>
-                            <div class="col-sm-1">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.intervention_indicator" value="No"> No</label>
-                            </div>
-                            <div class="col-sm-2">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.intervention_indicator" value="Yes"> Yes</label>
+                            <label class="control-label col-xs-12 col-sm-3">FDA Regulated Intervention Indicator:</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.intervention_indicator" value="No"> No</label>
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.intervention_indicator" value="Yes"> Yes</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Section 801 Indicator:</label>
-                            <div class="col-sm-1">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.sec801_indicator" value="No"> No</label>
-                            </div>
-                            <div class="col-sm-2">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.sec801_indicator" value="Yes"> Yes</label>
+                            <label class="control-label col-xs-12 col-sm-3">Section 801 Indicator:</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.sec801_indicator" value="No"> No</label>
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.sec801_indicator" value="Yes"> Yes</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Data Monitoring Committee Appointed Indicator:</label>
-                            <div class="col-sm-1">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="No"> No</label>
-                            </div>
-                            <div class="col-sm-2">
-                                <label><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="Yes"> Yes</label>
+                            <label class="control-label col-xs-12 col-sm-3">Data Monitoring Committee Appointed Indicator:</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="No"> No</label>
+                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="Yes"> Yes</label>
                             </div>
                         </div>
                     </accordion-group>
@@ -794,14 +777,14 @@
                         </accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Protocol Document:</label>
+                            <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
                             <div class="col-sm-9 form-file-upload">
                                 <input type="file" ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB">
                             </div>
                         </div>
 
                         <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Document'" class="form-group">
-                            <label class="control-label col-sm-3"></label>
+                            <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
                                 <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
@@ -809,14 +792,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">IRB Approval:</label>
+                            <label class="control-label col-xs-12 col-sm-3">IRB Approval:</label>
                             <div class="col-sm-9 form-file-upload">
                                 <input type="file" ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB">
                             </div>
                         </div>
 
                         <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'IRB Approval'" class="form-group">
-                            <label class="control-label col-sm-3"></label>
+                            <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
                                 <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
@@ -824,14 +807,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">List of Participating Sites:</label>
+                            <label class="control-label col-xs-12 col-sm-3">List of Participating Sites:</label>
                             <div class="col-sm-9 form-file-upload">
                                 <input type="file" ngf-select ng-model="trialDetailView.participating_sites" name="participating_sites" ngf-max-size="10MB">
                             </div>
                         </div>
 
                         <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'List of Participating Sites'" class="form-group">
-                            <label class="control-label col-sm-3"></label>
+                            <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
                                 <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
@@ -839,14 +822,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3">Informed Consent Document:</label>
+                            <label class="control-label col-xs-12 col-sm-3">Informed Consent Document:</label>
                             <div class="col-sm-9 form-file-upload">
                                 <input type="file" ngf-select ng-model="trialDetailView.informed_consent" name="informed_consent" ngf-max-size="10MB">
                             </div>
                         </div>
 
                         <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Informed Consent'" class="form-group">
-                            <label class="control-label col-sm-3"></label>
+                            <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
                                 <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
@@ -855,22 +838,22 @@
 
                         <div ng-repeat="i in trialDetailView.getNumArr(trialDetailView.otherDocNum) track by $index">
                             <div class="form-group">
-                                <label class="control-label col-sm-3">Other:</label>
+                                <label class="control-label col-xs-12 col-sm-3">Other:</label>
                                 <div class="col-sm-3 form-file-upload">
                                     <input type="file" ngf-select ng-model="trialDetailView.other_documents[$index]" name="other_documents" ngf-max-size="10MB">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-sm-3"></label>
-                                <div class="col-sm-6">
+                                <label class="control-label col-xs-12 col-sm-3"></label>
+                                <div class=" col-xs-12 col-sm-6">
                                     <input type="text" class="form-control input-sm" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Please describe other document">
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-3"></label>
+                            <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-sm-9">
                                 <button class="btn btn-primary" ng-click="trialDetailView.addOtherDoc()">
                                     <i class="glyphicon glyphicon-plus"></i> Add More ...
@@ -879,7 +862,7 @@
                         </div>
 
                         <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Other Document'" class="form-group">
-                            <label class="control-label col-sm-3"></label>
+                            <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
                                 <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
