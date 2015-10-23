@@ -19,14 +19,12 @@
     <script type="text/ng-template" id="ctrp">CTRP Context</script>
     <script type="text/ng-template" id="nlm">NLM Context</script>
     <script type="text/ng-template" id="ctep">CTEP Context</script>
-    <!-- <div ng-hide="orgDetailView.curOrg.new">
-      <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="icon" field=""></ctrp-comment>
-    </div> -->
+
     <!-- comment button -->
-    <md-button class="md-fab md-primary md-fab-top-right" curation-field aria-label="Comment" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
-      <!-- <ng-md-icon icon="comment"></ng-md-icon> -->
+    <!-- <md-button class="md-fab md-primary md-fab-top-right" curation-field aria-label="Comment" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
+      <ng-md-icon icon="comment"></ng-md-icon>
       <i class="glyphicon glyphicon-comment"></i>
-    </md-button>
+    </md-button> -->
     <!-- end of comment button -->
     <div class="col-xs-12">
         <div class="row">
@@ -41,8 +39,14 @@
                 <md-tab>
                     <md-tab-label>CTRP</md-tab-label>
                     <md-tab-body>
+                        <!-- <button class="btn btn-primary pull-right" ctrp-comment-button ctrp-comment-panel uuid="{{orgDetailView.curOrg.uuid}}" field="mock_field">New Comment</button> -->
                         <!--CTRP content -->
                         <div class="row">
+                          <div ng-hide="orgDetailView.curOrg.new">
+                            <!-- <button class="btn btn-default pull-left" ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" field="">Comment</button> -->
+                            <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="icon" field=""></ctrp-comment>
+                          </div>
+
                             <form class="form form-horizontal" role="form" name="organization_form" novalidate>
                                 <div ng-if="!orgDetailView.curOrg.new" class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">CTRP ID:</label>
@@ -230,6 +234,9 @@
                                 <div class="form-group">
                                     <div class="col-xs-12 col-sm-3"></div>
                                     <div class="btn-toolbar col-xs-12 col-sm-6">
+                                        <!-- <button class="btn btn-primary pull-right" curation-field ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
+                                          <span>Comment</span><i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>
+                                        </button> -->
                                         <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-click="orgDetailView.updateOrg()" ng-disabled="organization_form.$invalid" ctrp-click-once>
                                             Save
                                         </button>
@@ -239,9 +246,7 @@
                                         <button ng-hide="orgDetailView.curOrg.new" curation-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
                                             <i class="glyphicon glyphicon-remove"></i> Delete This Organization
                                         </button>
-                                        <button class="btn btn-primary pull-left" ng-class="{'btn-no-left-margin': orgDetailView.curOrg.new}" curation-field ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
-                                          <i class="glyphicon glyphicon-comment"></i> Comment
-                                        </button>
+                                        <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="btn" field=""></ctrp-comment>
                                         <!-- <button class="btn btn-default" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">Open dialog from directive</button> -->
                                     </div>
                                 </div>

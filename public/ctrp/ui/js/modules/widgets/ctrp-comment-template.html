@@ -1,4 +1,4 @@
-<button class="btn btn-primary" ng-click="commentView.toggleRight()" ng-show="buttonType !='icon'">
+<button class="btn btn-left-margin btn-primary pull-left" ng-click="commentView.toggleRight()" ng-show="buttonType !='icon'">
   <ng-md-icon icon="comment" style="fill: white"></ng-md-icon>
   <span ng-if="commentView.commentList.length > 0">
       {{commentView.commentList.length}} Comments
@@ -8,9 +8,9 @@
 <div class="sideNavBar">
 
   <div layout="column" class="relative" layout-fill role="main">
-    <md-button class="md-fab md-fab-top-right" aria-label="Comment"
+    <md-button class="md-fab md-primary md-fab-top-right" aria-label="Comment"
     ng-click="commentView.toggleRight()" ng-show="buttonType=='icon'">
-      <ng-md-icon icon="comment" style="fill: wheat"></ng-md-icon>
+      <ng-md-icon icon="comment"></ng-md-icon>
       <span flex ng-show="commentView.commentList.length > 0">
           {{commentView.commentList.length}}
       </span>
@@ -32,14 +32,13 @@
 
   </md-toolbar>
   <md-content layout="column" layout-padding>
-    <strong>List of comments</strong>
-
     <md-list>
-      <md-list-item class="md-3-line" ng-repeat="comment in commentView.commentList track by $index">
+      <md-list-item class="md-3-line" ng-repeat="comment in commentView.commentList | reverse track by $index">
         <div class="md-list-item-text">
-          <h3>{{comment.username}} commented: </h3>
-          <h4>{{comment.content}}</h4>
-          <h4>{{comment.created_at | date}}</h4>
+          <div class="md-list-item-text">
+            <h3><strong>{{comment.username}}</strong> commented <span am-time-ago="comment.created_at"></span>: </h3>
+            <h4>{{comment.content}}</h4>
+          </div>
         </div>
         <md-divider ng-if="!$last"></md-divider>
       </md-list-item>

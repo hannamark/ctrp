@@ -28,8 +28,10 @@ And the Person Search Results will display the follwing sorted by Person Last Na
 
 Example:
 |CTRP Person ID	||CTEP Person ID||First Name	||Last Name	||Email         ||City		||State		||Organization Affiliation||Result	|
+|       	||		||		||		||		||		||		||			  ||At least one selection value must be entered prior to running the search|
 |23880989	||		||		||		||		||		||		||			  ||True	|
 |		||		||Jose		||Galvez	||		||		||		||			  ||True	|
+|		||		||Jos		||Gal    	||		||		||		||			  ||True	|
 |		||		||		||		||		||Rockville	||MD		||			  ||True	|
 |		||		||		||		||galvezjj@mail.nih.gov||	||		||			  ||True	|
 |		||		||		||		||		||		||CT		||			  ||True	|
