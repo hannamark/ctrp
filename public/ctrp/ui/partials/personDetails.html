@@ -33,7 +33,7 @@
                         <input type="text" curation-field class="form-control input-sm" ng-model="personDetailView.curPerson.prefix">
                     </div>
                 </div>
-                <div class="form-group"  ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.fname)}">
+                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.fname)}">
                     <label class="control-label col-xs-12 col-sm-3">First Name:</label>
                     <div class="col-xs-12 col-sm-6">
                         <input type="text" curation-field name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus />
@@ -47,7 +47,7 @@
                         <input type="text" curation-field name="mname" class="form-control input-sm" ng-model="personDetailView.curPerson.mname">
                     </div>
                 </div>
-                <div class="form-group" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.lname)}">
+                <div class="form-group required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.lname)}">
                     <label class="control-label col-xs-12 col-sm-3">Last Name:</label>
                     <div class="col-xs-12 col-sm-6">
                         <input type="text" curation-field name="lname" class="form-control input-sm has-success" ng-model="personDetailView.curPerson.lname" required>
@@ -63,12 +63,13 @@
                         <input type="text" curation-field class="form-control input-sm" ng-model="personDetailView.curPerson.suffix">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.source_context)}">
                     <label class="control-label col-xs-12 col-sm-3">Source Context:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <select curation-field class="form-control input-sm" id="source_context" ng-model="personDetailView.curPerson.source_context_id" ng-options="context.id as context.name for context in personDetailView.sourceContextArr">
+                        <select curation-field class="form-control input-sm" id="source_context" ng-model="personDetailView.curPerson.source_context_id" ng-options="context.id as context.name for context in personDetailView.sourceContextArr" name="source_context" required>
                             <option value="">Select context</option>
                         </select>
+                        <span class="help-block" ng-show="person_form.source_context.$invalid">Source context is Required</span>
                     </div>
                 </div>
                 <!-- Source ID will be R/O on Person screen -->

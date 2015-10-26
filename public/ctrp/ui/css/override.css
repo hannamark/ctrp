@@ -555,3 +555,10 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 .md-sidenav-push-in.md-sidenav-right-open .md-sidenav-push-in-target {
     transform: translate(-55px);
 }
+
+.form-group.required .control-label:before{
+    color: red;
+    content: "*";
+    position: absolute;
+    margin-left: -15px;
+}
