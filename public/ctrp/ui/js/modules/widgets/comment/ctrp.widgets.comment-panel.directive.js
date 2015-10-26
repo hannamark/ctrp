@@ -112,7 +112,8 @@
         });
       } //fetchComments
 
-      function postComment() {
+      function postComment(form) {
+        form.$setUntouched();
         CommentService.createComment(vm.comment).then(function(response) {
           vm.comment.content = '';
           if (response.server_response.status == 201) {
