@@ -73,6 +73,7 @@ Rails.application.routes.draw do
         get 'search'
         post 'search'
         post 'curate'
+        post 'unique'
       end
     end
 

@@ -533,13 +533,13 @@ h4 {
 
 /* override the md-backdrop grey overlay/backdrop to make the content visible */
 md-backdrop.md-opaque {
-    opacity: 0; }
+    opacity: .18; }
 md-backdrop.md-opaque.ng-enter {
     opacity: 0; }
 md-backdrop.md-opaque.ng-enter.md-opaque.ng-enter-active {
-    opacity: 0; }
+    opacity: .18; }
 md-backdrop.md-opaque.ng-leave {
-    opacity: 0;
+    opacity: .18;
     transition: opacity 400ms; }
 md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     opacity: 0; }

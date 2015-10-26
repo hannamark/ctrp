@@ -11,6 +11,7 @@
 
     //third-party modules
     'angularMoment',
+    'angularUtils.directives.dirPagination',
 
     //ctrp modules
     'ctrpApp',
