@@ -67,10 +67,6 @@
 
         //update trial (vm.curTrial)
         vm.updateTrial = function() {
-            if (vm.curTrial.new) {
-                convertDate();
-            }
-
             if (vm.selectedLoArray.length > 0) {
                 vm.curTrial.lead_org_id = vm.selectedLoArray[0].id
             } else {
@@ -215,7 +211,7 @@
             }
         };// toggleSelection
 
-        vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
+        vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
         vm.openCalendar = function ($event, type) {

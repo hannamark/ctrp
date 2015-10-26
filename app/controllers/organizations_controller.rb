@@ -159,7 +159,8 @@ class OrganizationsController < ApplicationController
         @organizations = @organizations.with_source_status("Active")
         @organizations = @organizations.with_source_context("CTRP")
       end
-
+      @organizations = @organizations.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
+      @organizations = @organizations.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
       @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
       @organizations = @organizations.matches_wc('address', params[:address]) if params[:address].present?
       @organizations = @organizations.matches_wc('address2', params[:address2]) if params[:address2].present?
@@ -185,7 +186,7 @@ class OrganizationsController < ApplicationController
     def organization_params
       params.require(:organization).permit(:source_id, :name, :address, :address2, :city, :state_province, :postal_code,
                                            :country, :email, :phone, :fax, :source_status_id, :source_context_id,
-                                           :updated_by, :lock_version,
+                                           :updated_by,:updated_at, :lock_version,
                                            name_aliases_attributes: [:id,:organization_id,:name,:_destroy])
     end
 end

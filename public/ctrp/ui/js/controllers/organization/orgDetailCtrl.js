@@ -14,6 +14,7 @@
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
         var vm = this;
+        $scope.organization_form = {};
         vm.addedNameAliases = [];
         vm.numbers = [1, 2, 3];
         vm.states = [];
@@ -65,14 +66,15 @@
             });
         }; // updateOrg
 
-
         vm.resetForm = function () {
-            // console.log('resetting form');
+            $scope.organization_form.$setPristine();
+
             var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id'];
             Object.keys(vm.curOrg).forEach(function (key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curOrg[key] = angular.isArray(vm.curOrg[key]) ? [] : '';
-                    $scope.organization_form.$setPristine();
+                    /* the following line should be removed */
+                   // $scope.organization_form.$setPristine(); //should not setPristine the form multiple times
                 }
                 //default context to ctrp
                 vm.curOrg.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
