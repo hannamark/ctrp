@@ -1,6 +1,6 @@
 @Global
 @PO
-Feature: Search for organizations
+Feature: Search for organization
 
 Scenario: As any Curator, I am able to search for organizations by name including aliases
 Given I know the name of the organization I wish to search for
