@@ -193,6 +193,23 @@ class Trial < ActiveRecord::Base
     end
   }
 
+  scope :with_any_org, -> (value) {
+    #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
+    #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id"
+    where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(join_clause).where(where_clause, "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(join_clause).where(where_clause, "#{value[0..str_len - 2]}%", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(join_clause).where(where_clause, "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
+    else
+      joins(join_clause).where(where_clause, "#{value}", "#{value}")
+    end
+  }
+
   scope :sort_by_col, -> (column, order) {
     if column == 'id'
       order("#{column} #{order}")
