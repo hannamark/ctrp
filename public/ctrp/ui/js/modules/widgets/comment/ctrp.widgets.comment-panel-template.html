@@ -101,7 +101,7 @@
       <div class="md-list-item-text">
           <div class="md-list-item-text">
             <!-- <span am-time-ago="comment.created_at"></span> -->
-            <p class="md-caption"><strong>{{comment.username}}</strong> commented on ({{comment.created_at | date: "dd-MMM-yyyy H:mm"}}): </p>
+            <p class="md-caption"><strong>{{comment.username}}</strong> commented on {{comment.created_at | date: "dd-MMM-yyyy H:mm"}} : </p>
             <h5 class="md-body-1">{{comment.content}}</h5>
           </div>
         <!-- <md-divider ng-if="!$last"></md-divider> -->
