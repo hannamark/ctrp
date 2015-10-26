@@ -101,7 +101,8 @@
             getSourceStatuses : getSourceStatuses,
             deletePerson : deletePerson,
             getPoAffStatuses : getPoAffStatuses,
-            curatePerson : curatePerson
+            curatePerson : curatePerson,
+            checkUniquePerson : checkUniquePerson
         };
 
         return services;
@@ -236,6 +237,15 @@
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CURATE_PERSON, curationObject);
         }
 
+
+        /**
+         * Check if a person name is unique - based on First & last names only. No middle name.
+         *
+         * @param curationObject, JSON object: {'person_fname': '', 'person_lname': ''}
+         */
+        function checkUniquePerson(name) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.UNIQUE_PERSON, name);
+        }
 
 
 

@@ -1,3 +1,7 @@
+/**
+ * Created by wangg5 on 10/26/15.
+ */
+
 (function() {
   'use strict';
 
@@ -79,7 +83,9 @@
       vm.postComment = postComment;
       vm.fetchComments = fetchComments;
       vm.toggleCommentFormShown = toggleCommentFormShown;
-
+      vm.changePage = changePage;
+      //pagination options for comments
+      vm.pagingOptions = {currentPage: 1, pageSize: 10};
 
       activate();
 
@@ -106,7 +112,8 @@
         });
       } //fetchComments
 
-      function postComment() {
+      function postComment(form) {
+        form.$setUntouched();
         CommentService.createComment(vm.comment).then(function(response) {
           vm.comment.content = '';
           if (response.server_response.status == 201) {
@@ -140,6 +147,10 @@
         $log.info('closed RIGHT side nav');
       });
     }
+
+     function changePage(newPageNum) {
+         console.log('received new page num: ' + newPageNum);
+     }
 
   } //ctrpComment
 

@@ -521,17 +521,44 @@ h4 {
   min-height: inherit;
 }
 
+.glyphicon.glyphicon-comment {
+    font-size: 22px;
+}
+
 .md-sidenav-right {
     z-index: 9999;
     width: 350px;
     word-wrap: break-word;
 }
 
-.btn-toolbar ng-md-icon {
-    height: 13px;
-    width: 12px;
+/* override the md-backdrop grey overlay/backdrop to make the content visible */
+md-backdrop.md-opaque {
+    opacity: .18; }
+md-backdrop.md-opaque.ng-enter {
+    opacity: 0; }
+md-backdrop.md-opaque.ng-enter.md-opaque.ng-enter-active {
+    opacity: .18; }
+md-backdrop.md-opaque.ng-leave {
+    opacity: .18;
+    transition: opacity 400ms; }
+md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
+    opacity: 0; }
+
+/* for the comment push-in panel */
+.md-sidenav-push-in .md-sidenav-push-in-target {
+    transform: translate(0px);
+    transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.md-sidenav-push-in.md-sidenav-left-open .md-sidenav-push-in-target {
+    transform: translate(55px);
+}
+.md-sidenav-push-in.md-sidenav-right-open .md-sidenav-push-in-target {
+    transform: translate(-55px);
 }
 
-input[type=radio] {
-    margin: 0;
+.form-group.required .control-label:before{
+    color: red;
+    content: "*";
+    position: absolute;
+    margin-left: -15px;
 }

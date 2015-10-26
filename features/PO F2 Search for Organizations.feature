@@ -1,6 +1,6 @@
 @Global
 @PO
-Feature: Search for organizations
+Feature: Search for organization
 
 Scenario: As any Curator, I am able to search for organizations by name including aliases
 Given I know the name of the organization I wish to search for
@@ -22,22 +22,13 @@ And I submit my search request
 Then the system should display all organizations that contain the name
 And the result should be sorted by Organization Name
 
-Scenario: As any Curator, I am able to search for organizations by CTEP ID
-Given I know the CTEP ID of the organization I wish to search for
+Scenario: As any Curator, I am able to search for organizations by Source Context and Source ID
+Given I know the Source Contact and Source ID of the organization I wish to search for
 And I am logged in to CTRP
 And I have selected the option to search for an organization
-When I provide the CTEP ID of the organization I wish to search for
+When I provide the Source Context and Source ID of the organization I wish to search for
 And I submit my search request
-Then the system should display all organizations that contain the CTEP ID
-And the result should be sorted by Organization Name
-
-Scenario: As any Curator, I am able to search for organizations by PO Organization ID
-Given I know the PO Organization ID of the organization I wish to search for
-And I am logged in to CTRP
-And I have selected the option to search for an organization
-When I provide the PO Organization ID of the organization I wish to search for
-And I submit my search request
-Then the system should display all organizations that contain the PO Organization ID
+Then the system should display all organizations that contain the Source ID for the Source Context
 And the result should be sorted by Organization Name
 
 Scenario: As any Curator, I am able to search for organizations by Family Name
@@ -94,15 +85,6 @@ And I submit my search request
 Then the system should display all organizations with matching phone numbers
 And the result should be sorted by Organization Name
 
-Scenario: As any Curator, search for organizations with multiple parameters
-Given I know multiple parameters of the organization I wish to search for
-And I am logged in to CTRP
-And I am on the search organizations screen
-When I provide the parameters of the organization I wish to search for
-And I submit my search request
-Then the system should display all organizations that contain all of the entered parameters
-And the result should be sorted by Organization Name
-
 Scenario: As a Curator, Search for organizations by curator date
 Given I know the name of the curator date I wish to search for
 And I am logged in to CTRP PO application
@@ -146,10 +128,9 @@ And I enter the <Source Context>
 And I enter the <Source ID>
 And I enter the <Source Status>
 And I enter the <Family Name>
-And I enter the <Address>
 And I enter the <City>
 And I select the <State> from a list of state names
-And I enter the <Country>
+And I enter the <Country> where the default will be "All Countries"
 And I enter the <Phone Number>
 And I enter the <Email>
 And I enter the <Curator Name>
@@ -175,15 +156,15 @@ And the following fields should be displayed:
 And the result should be sorted by Organization Name
 
 Examples:
-|Organization Name	||Search Alias	||Source Context	||Source ID	||Source Status	||Family Name	||Address	||City	||State	||Country	||Phone Nuber	||Email	||Curator Name	||Curator Date	||Result|
-|                 	||No           	||              	||         	||             	||           	||       	||    	||     	||       	||           	||     	||            	||            	||At least one selection value must be entered prior to running the search|
-|*                	||No		||              	||		||             	||           	||       	||    	||     	||       	||           	||     	||            	||            	||True|
-|Wake Forest*	  	||No	  	||			||		||		||		||		||	||	||		||		||	||		||		||True|
-|Wake*			||Yes		||			||		||		||		||		||	||	||		||		||	||		||		||True|
-|			||No		||CTEP			||TX035		||		||		||		||	||	||		||		||	||		||		||True|
-|			||No		||			||		||		||Dana-Farber*	||		||	||	||		||		||	||		||		||True|
-|			||No		||			||		||		||		||		||	||Maryland||		||		||	||		||		||True|
-|			||No		||			||		||		||		||		||	||	||		||		||	||*Larco	||		||True|
+|Organization Name	||Search Alias	||Source Context	||Source ID	||Source Status	||Family Name	||City	||State	||Country	||Phone Nuber	||Email	||Curator Name	||Curator Date	||Result|
+|                 	||No           	||              	||         	||             	||           	||    	||     	||       	||           	||     	||            	||            	||At least one selection value must be entered prior to running the search|
+|*                	||No		||              	||		||             	||           	||    	||     	||       	||           	||     	||            	||            	||True|
+|Wake Forest*	  	||No	  	||			||		||		||		||	||	||		||		||	||		||		||True|
+|Wake*			||Yes		||			||		||		||		||	||	||		||		||	||		||		||True|
+|			||No		||CTEP			||TX035		||		||		||	||	||		||		||	||		||		||True|
+|			||No		||			||		||		||Dana-Farber*	||	||	||		||		||	||		||		||True|
+|			||No		||			||		||		||		||	||Maryland||		||		||	||		||		||True|
+|			||No		||			||		||		||		||	||	||		||		||	||*Larco	||		||True|
 		
 
 Scenario: As a Curator, I can select any organization in a search result and display the detailed organization information
@@ -207,16 +188,4 @@ Then the complete organization information will be displayed including:
 |Fax Number|
 |Family|
 |Aliases|
-
-
-Scenario: As a Curator, when I search I will enter "*" as a wild card 
-Given I am a Curator
-And I am on a Organization search screen
-When I enter "*" in a search field
-Then the search will perform a wild card search
-
-Scenario: As a Curator, I can clear all my search selections
-Given I am on the search organization feature
-When I select the Clear option
-Then all values in all fields will be cleared
 
