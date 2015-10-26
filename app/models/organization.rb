@@ -19,6 +19,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
+#  lock_version      :integer          default(0)
 #  ctrp_id           :integer
 #  created_by        :string
 #  updated_by        :string
@@ -71,6 +72,23 @@ class Organization < ActiveRecord::Base
       end
     }
     return ctep_id_str
+  end
+
+  # Get an array of maps of the orgs with the same ctrp_id
+  def cluster
+    tmp_arr = []
+    if self.ctrp_id.present?
+      tmp_arr = Organization.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).order(:id).pluck(:id, :"source_contexts.name")
+    else
+      tmp_arr.push([self.id, self.source_context ? self.source_context.name : ''])
+    end
+
+    cluster_arr = []
+    tmp_arr.each do |org|
+      cluster_arr.push({"id": org[0], "context": org[1]})
+    end
+
+    return cluster_arr
   end
 
   private
@@ -157,10 +175,10 @@ class Organization < ActiveRecord::Base
       ##
         aliasesOfNullifiedOrganization = NameAlias.where(organization_id: @toBeNullifiedOrg.id);
         aliasesOfRetainedOrganization = NameAlias.where(organization_id: @toBeRetainedOrg.id);
-        aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name}
+        aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name.upcase}
 
         aliasesOfNullifiedOrganization.each do |al|
-        if(!aliasesNamesOfRetainedOrganization.include?al.name)
+        if(!aliasesNamesOfRetainedOrganization.include?al.name.upcase)
           al.organization_id=@toBeRetainedOrg.id;
           al.save!
         else

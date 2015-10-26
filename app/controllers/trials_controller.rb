@@ -28,6 +28,9 @@ class TrialsController < ApplicationController
   def create
     @trial = Trial.new(trial_params)
 
+    @trial.created_by = @current_user.username unless @current_user.nil?
+    @trial.updated_by = @trial.created_by
+
     respond_to do |format|
       if @trial.save
         format.html { redirect_to @trial, notice: 'Trial was successfully created.' }
@@ -42,6 +45,8 @@ class TrialsController < ApplicationController
   # PATCH/PUT /trials/1
   # PATCH/PUT /trials/1.json
   def update
+    @trial.updated_by = @current_user.username unless @current_user.nil?
+
     respond_to do |format|
       if @trial.update(trial_params)
         format.html { redirect_to @trial, notice: 'Trial was successfully updated.' }
@@ -107,7 +112,7 @@ class TrialsController < ApplicationController
                                     :comp_date, :comp_date_qual, :ind_ide_question,
                                     :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :accrual_disease_term_id,
-                                    :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id,
+                                    :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id, :lock_version,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],

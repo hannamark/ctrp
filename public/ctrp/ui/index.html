@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="ui/third_party_libs/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="ui/third_party_libs/bootstrap/dist/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="ui/css/override.css">
+
     <!--<link rel="stylesheet" href="ui/css/app.css">-->
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-toastr/dist/angular-toastr.min.css">
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-bootstrap/ui-bootstrap-csp.css">
@@ -15,6 +15,8 @@
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-toggle-switch/angular-toggle-switch.css">
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-toggle-switch/angular-toggle-switch-bootstrap.css">
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-material/angular-material.min.css">
+    <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-material-icons/angular-material-icons.css">
+    <link rel="stylesheet" href="ui/css/override.css">
 
     <script src="ui/third_party_libs/jquery/dist/jquery.min.js"></script>
     <script src="ui/third_party_libs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -27,11 +29,13 @@
     <script src="ui/third_party_libs/angular-touch/angular-touch.min.js"></script>
     <script src="ui/third_party_libs/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="ui/third_party_libs/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.2/ui-bootstrap-tpls.js"></script> -->
     <script src="ui/third_party_libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="ui/third_party_libs/angular-ui-scrollpoint/dist/scrollpoint.min.js"></script>
     <script src="ui/third_party_libs/moment/moment.js"></script>
     <script src="ui/third_party_libs/angular-moment/angular-moment.js"></script>
     <script src="ui/third_party_libs/angular-material/angular-material.js"></script>
+    <script src="ui/third_party_libs/angular-material-icons/angular-material-icons.min.js"></script>
 
 
     <!-- angular modules/dependencies from third parties -->
@@ -62,6 +66,7 @@
     <script src="ui/js/modules/DateServiceModule.js"></script>
     <script src="ui/js/modules/CTRPUnderscoreModule.js"></script>
     <script src="ui/js/modules/TimeoutModule.js"></script>
+    <script src="ui/js/modules/widgets/ctrp.widgets.module.js"></script>
 
 
     <!-- services -->
@@ -72,6 +77,7 @@
     <script src="ui/js/services/FamilyService.js"></script>
     <script src="ui/js/services/UserService.js"></script>
     <script src="ui/js/services/TrialService.js"></script>
+    <script src="ui/js/modules/widgets/comment/CommentService.js"></script>
 
     <!-- directives -->
     <script src="ui/js/directives/organization/advancedOrgSearchForm2.js"></script>
@@ -80,11 +86,14 @@
     <script src="ui/js/directives/organization/advancedOrgSearchModalButton.js"></script>
     <script src="ui/js/directives/autoFocus.js"></script>
     <script src="ui/js/directives/buttons/backButton.js"></script>
-    <script src="ui/js/directives/buttons/mdRadioGroup.js"></script>
     <script src="ui/js/directives/buttons/ctrpClickOnce.js"></script>
     <script src="ui/js/directives/masterDirective.js"></script>
     <script src="ui/js/directives/validators/dateValidators.js"></script>
-    <script src="ui/js/directives/form/curationField.js"></script>
+    <!-- <script src="ui/js/directives/form/curationField.js"></script> -->
+    <script src="ui/js/modules/widgets/curation-field.js"></script>
+    <script src="ui/js/modules/widgets/comment/ctrp.widgets.comment-panel.directive.js"></script>
+    <script src="ui/js/modules/widgets/comment/ctrp.widgets.comment-modal.directive.js"></script>
+    <script src="ui/js/modules/widgets/comment/ctrp.widgets.comment-push-in-panel.directive.js"></script>
 
 
     <!-- controllers -->
@@ -109,10 +118,16 @@
     <script src="ui/js/controllers/user/userSignupCtrl.js"></script>
     <script src="ui/js/controllers/user/userChangePasswordCtrl.js"></script>
     <script src="ui/js/controllers/user/userListCtrl.js"></script>
+    <script src="ui/js/controllers/user/gsaCtrl.js"></script>
+    <script src="ui/js/controllers/user/gsaModalCtrl.js"></script>
 
     <!-- interceptors -->
     <script src="ui/js/interceptors/AuthInterceptor.js"></script>
 
+    <!-- filters -->
+    <script src="ui/js/modules/widgets/filters/ctrp.widgets.filter.reverseList.js"></script>
+    <script src="ui/js/directives/buttons/validateOnSubmit.js"></script>
+    <script src="ui/js/modules/buttonModule.js"></script>
 
 
 

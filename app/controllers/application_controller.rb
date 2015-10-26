@@ -104,29 +104,6 @@ class ApplicationController < ActionController::Base
     Rails.logger.info "End of wrapper_authenticate_user"
   end
 
-  # This method is used by the non-Angular login
-  def get_user
-    Rails.logger.info "In get_user"
-   # Rails.logger.info "In get_user USER_ID  = #{session.inspect}"
-    unless session.nil? || session["warden.user.user.key"].nil? || session["warden.user.user.key"][0].nil? || session["warden.user.user.key"][0][0].nil?
-      @user_id  = session["warden.user.user.key"][0][0]
-      return @current_user = User.find_by_id(@user_id)
-    end
-
-    if current_local_user
-      @user_id = current_local_user.id
-      @current_user = current_local_user
-    elsif current_ldap_user
-      @user_id = current_ldap_user.id
-      @current_user = current_ldap_user
-    else
-      Rails.logger.info "#{current_omniauth_user.inspect}" unless current_omniauth_user.nil?
-      Rails.logger.info "#{current_user.inspect}" unless current_user.nil?
-      @user_id = current_user.id  unless current_user.nil?
-      @current_user = User.find_by_id(@user_id)  unless @user_id.nil?
-    end
-  end
-
   ## TODO secret must be an environmental variable
   def create_token(token_data)
     secret = "secret" # must be an environment variable
@@ -151,6 +128,7 @@ class ApplicationController < ActionController::Base
           token: token,
           role: user.role,
           privileges: user.get_privileges,
+          user_type: user.type,
           env: Rails.env
                     }
 
@@ -163,6 +141,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from ActiveRecord::StaleObjectError do |exception|
+    respond_to do |format|
+      format.html {
+        flash.now[:error] = "Another user has updated this record while you were editing"
+        render :edit, status: :conflict
+      }
+      format.json { render json: { "error": "Another user has updated this record while you were editing" }, status: :conflict }
+    end
+  end
 
   protected
 

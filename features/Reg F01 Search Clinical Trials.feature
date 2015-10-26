@@ -77,9 +77,9 @@ Then the search results will display trials that contain the title search text
 Scenario: #5 I can search for clinical trials by Phase
 Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
-When I select one or more trial Phases
+When I select a trial Phase
 And select a search option
-Then the search results will display trials that match the Phases selected
+Then the search results will display trials that match the Phase selected
 
 Scenario: #6 I can search for pilot clinical trials
 Given I am logged into the CTRP Registration application
@@ -91,9 +91,9 @@ Then the search results will display trials that have the Pilot criteria equal t
 Scenario: #7 I can search for clinical trials by primary purpose
 Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
-When I select one or more trial primary purposes
+When I select a trial primary purpose
 And select a search option
-Then the search results will display trials that match the primary purposes selected
+Then the search results will display trials that match the primary purpose selected
 
 Scenario: #8 I can search for clinical trials by protocol identifier
 Given I am logged into the CTRP Registration application
@@ -105,31 +105,31 @@ Then the search results will display trials that contain the protocol identifier
 Scenario: #9 I can search for clinical trials by associated organization
 Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
-When I select one or more organizations from an organization name search
+When I select an organization from the organization name search look-ahead
 And select a search option
-Then the search results will display trials where the organizations selected are either lead organizations, sponsors, or participating sites
+Then the search results will display trials where the organization selected is either lead organization, sponsor, or participating site
 
 Scenario: #10 I can search for clinical trials by associated organization role
 Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
-When I select one or more organizations from an organization name search
-And I select one or more role as Lead Organization, Sponsor, or Participating Site
+When I select an organizations from an organization name search look-ahead
+And I select a role as Lead Organization, Sponsor, or Participating Site
 And select a search option
-Then the search results will display trials where the organizations selected have the organization role selected
+Then the search results will display trials where the organization selected has the organization role selected
 
 Scenario: #11 I can search for clinical trials by Principal Investigator
 Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
-When I select one or more persons from a person name search
+When I select a person from a person name search
 And select a search option
-Then the search results will display trials where the persons selected are principal investigator
+Then the search results will display trials where the person selected is principal investigator
 
 Scenario: #12 I can search for clinical trials by Study Source
 Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
-When I select one or more Study Source from a list that contains National, Externally Peer-Reviewed, Institutional, Industrial, Other
+When I select a Study Source from a list that contains National, Externally Peer-Reviewed, Institutional, Industrial, Other, Expanded Access
 And select a search option
-Then the search results will display trials with matching Study Sources
+Then the search results will display trials with a matching Study Source
 
 Scenario: #13 I can search for clinical trials by multiple criteria
 Given I am logged into the CTRP Registration application

@@ -2,6 +2,8 @@ class UsersController < ApplicationController
   before_action :set_user, :only => :index
  # before_filter :authenticate_user!, :only => :update
 
+  attr_accessor :gsa_text
+
   # GET /users
   # GET /users.json
   def index
@@ -55,8 +57,26 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  def gsa
+
+    yml_content = YAML.load_file(Rails.root.join('config', 'locales').to_s + '/en.yml')
+    #Rails.logger.debug "yml_content = #{yml_content.inspect}"
+
+    if local_user_signed_in?
+      gsa_text = yml_content['en']['non_nih_user_gsa_msg']
+    elsif ldap_user_signed_in?
+      gsa_text = yml_content['en']['nih_user_gsa_msg']
+    else
+      gsa_text = yml_content['en']['non_nih_user_gsa_msg']
+    end
+
+    render :status => 200, :json => { :success => true, :gsa => "#{gsa_text}", :info => "GSA Msg"}
+
+end
+
+
   def search
-    Rails.logger.info "In User controller"
+    Rails.logger.info "In User controller params = #{params.inspect}"
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
     params[:rows] = 10 if params[:rows].blank?
@@ -64,15 +84,11 @@ class UsersController < ApplicationController
     params[:order] = 'asc' if params[:order].blank?
     @users = User.all
 
-    if params[:username].present? || params[:first_name].present? || params[:last_name].present?
-      @users = User.all
-      #@families = @families.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
-      #@families = @families.matches_wc('name', params[:name]) if params[:name].present?
-      ##@families = @families.with_family_status(params[:family_status]) if params[:family_status].present?
-      #@families = @families.with_family_type(params[:family_type]) if params[:family_type].present?
-      #@families = @families.sort_by_col(params[:sort], params[:order]).group(:'families.id').page(params[:start]).per(params[:rows])
-    else
-      @users = []
+    if params[:username].present? || params[:first_name].present? || params[:last_name].present? || params[:email].present?
+      @users = @users.select{|x| x.username && x.username.include?(params[:username])} if params[:username].present?
+      @users = @users.select{|x| x.first_name && x.first_name.include?(params[:first_name])} if params[:first_name].present?
+      @users = @users.select{|x| x.last_name && x.last_name.include?(params[:last_name])} if params[:last_name].present?
+      @users = @users.select{|x| x.email && x.email.include?(params[:email])} if params[:email].present?
     end
     Rails.logger.info "In User controller, search @users = #{@users.inspect}"
     @users

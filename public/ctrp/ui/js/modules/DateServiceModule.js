@@ -19,9 +19,9 @@
         };
 
         var monthsDict = {
-          1 : 'January', 2 : 'February', 3 : 'March', 4 : 'April',
-          5 : 'May', 6 : 'June', 7 : 'July', 8 : 'August', 9 : 'September',
-          10 : 'October', 11 : 'November', 12 : 'December'
+          1 : 'Jan', 2 : 'Feb', 3 : 'Mar', 4 : 'Apr',
+          5 : 'May', 6 : 'Jun', 7 : 'Jul', 8 : 'Aug', 9 : 'Sep',
+          10 : 'Oct', 11 : 'Nov', 12 : 'Dec'
         };
 
         //'MMMM dd, yyyy',
@@ -60,11 +60,12 @@
                 var date = new Date(isoDate);
                 //adjust timezone offset * 600000 ms
                 date = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+                //dateStr = date.format("dd-MMM-yyyy");
                 var day = date.getDate();
                 var year = date.getFullYear();
                 var monthNum = date.getMonth() + 1;
                 var month = monthsDict[monthNum];
-                dateStr = month + " " + day + ", " + year;
+                dateStr = day + "-" + month + "-" + year;
             }
             return dateStr;
         }; //convertISODateToLocale

@@ -4,10 +4,11 @@
 #
 #  id              :integer          not null, primary key
 #  name            :string(255)
+#  organization_id :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  uuid            :string(255)
-#  organization_id :integer
+#  lock_version    :integer          default(0)
 #
 # Indexes
 #

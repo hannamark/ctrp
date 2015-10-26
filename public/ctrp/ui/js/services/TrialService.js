@@ -23,7 +23,7 @@
         var gridOptions = {
             enableColumnResizing: true,
             totalItems: null,
-            rowHeight: 50,
+            rowHeight: 22,
             enableRowSelection: true,
             enableRowHeaderSelection: true,
             paginationPageSizes: [10, 25, 50, 100],
