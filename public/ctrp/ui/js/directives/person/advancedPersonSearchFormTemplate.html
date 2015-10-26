@@ -76,11 +76,11 @@
                                ng-model="searchParams.startDate" is-open="startDateOpened"
                                datepicker-options="dateOptions" ng-click="openCalendar($event, 'start')"
                                ng-required="false" close-text="Close" placeholder="Start Date"/>
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
-                                        <i class="glyphicon glyphicon-calendar"></i>
-                                    </button>
-                                </span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
                     </div>
                 </div>
 
@@ -93,11 +93,11 @@
                                ng-model="searchParams.endDate" is-open="endDateOpened" ng-click="openCalendar($event, 'end')"
                                datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
                                ng-required="false" close-text="Close" placeholder="End Date"/>
-                                  <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                        </button>
-                                  </span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
                     </div>
                     <span ng-show="search_person_form.endDate.$error.dateLaterThan" class="help-inline warning">
                         End date should be no earlier than start date

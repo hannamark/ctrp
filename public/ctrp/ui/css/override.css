@@ -10,7 +10,7 @@
 
 .grid {
     width: 100%;
-    min-height: 250px;
+    min-height: 550px;
     margin-left: 10px;
 }
 
@@ -534,4 +534,16 @@ h4 {
 
 input[type=radio] {
     margin: 0;
+}
+
+.ngCellText {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-wrap: normal;
+    white-space: nowrap;
+    padding:5px;
+}
+
+.modal-header .close {
+    margin-top: -10px;
 }

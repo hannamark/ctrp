@@ -75,7 +75,7 @@
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
                 {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '15%',height: '50%',
-                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names">{{fam.Name}}</div>'
+                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names" title="{{fam.Name}}">{{fam.Name}}</div>'
                 },
                 /* {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
                    cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" popover-trigger="mouseenter" class="btn btn-default">Family</button>',
