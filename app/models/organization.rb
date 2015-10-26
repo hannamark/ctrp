@@ -282,4 +282,9 @@ class Organization < ActiveRecord::Base
       order("LOWER(organizations.#{column}) #{order}")
     end
   }
+  scope :updated_date_range, -> (dates) {
+    start_date = DateTime.parse(dates[0])
+    end_date = DateTime.parse(dates[1])
+    where("organizations.updated_at BETWEEN ? and ?", start_date, end_date)
+  }
 end
