@@ -140,6 +140,35 @@ class PeopleController < ApplicationController
     end
   end
 
+  #Method to check for Uniqueness while creating persons - check on First & Last name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
+  def unique
+    print params[:person_fname]
+    print params[:person_mname]
+
+#    exists = false
+    is_unique = true
+    count = 0
+
+    if params.has_key?(:person_fname) && params.has_key?(:person_lname)
+#     exists =  Person.exists?(fname: params[:person_fname], lname: params[:person_lname]);
+      count = Person.where("lower(fname)=?", params[:person_fname].downcase).where("lower(lname)=?",params[:person_lname].downcase).count
+    end
+
+#    is_unique = !exists
+    if count > 0
+      is_unique = false
+    end
+
+    p "is unique?"
+    p is_unique
+
+    respond_to do |format|
+#        format.json {render :json => {:name_unique => !exists}}
+      format.json {render :json => {:name_unique => is_unique}}
+    end
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_person
