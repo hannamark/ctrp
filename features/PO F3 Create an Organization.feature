@@ -2,6 +2,12 @@
 @PO
 Feature: Create an organization
 
+Scenario: 1 As a Curator, the Add Organization screen will have default values
+Given I am a Curator and on the Add Organization screen
+When I look at the default values
+Then I will see "United States" as the default for Country
+And I will see "Active" as the default for Source Status
+
 Scenario: #2a As a Curator, I can request the creation of a new Organization in CTRP
 Given I am logged in to CTRP
 And I have complete a Search for Organization
