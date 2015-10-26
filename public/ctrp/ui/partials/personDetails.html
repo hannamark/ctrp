@@ -36,7 +36,7 @@
                 <div class="form-group required"  ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.fname)}">
                     <label class="control-label col-xs-12 col-sm-3">First Name:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" curation-field name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus />
+                        <input type="text" curation-field name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus ng-change="checkForNameUniqueness()" />
                         <span class="help-block"
                               ng-show="person_form.fname.$error.required">First name is Required</span>
                     </div>
@@ -50,12 +50,15 @@
                 <div class="form-group required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.lname)}">
                     <label class="control-label col-xs-12 col-sm-3">Last Name:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" curation-field name="lname" class="form-control input-sm has-success" ng-model="personDetailView.curPerson.lname" required>
-<!--                        <i ng-show="personDetailView.curPerson.lname.length > 0 && person_form.lname.$dirty" ng-class="(personDetailView.name_unqiue === true) ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-warning-sign'"></i> -->
+                        <input type="text" curation-field name="lname" class="form-control input-sm has-success" ng-model="personDetailView.curPerson.lname" required ng-change="checkForNameUniqueness()">
                         <span class="help-block"
                               ng-show="person_form.lname.$error.required">Last name is Required</span>
-<!--                        <div ng-class='has-error' ng-show="personDetailView.showUniqueWarning">Person exists in the database.</div> -->
+                        <i ng-show="personDetailView.curPerson.lname.length > 0 && person_form.lname.$dirty" ng-class="(personDetailView.name_unqiue === true) ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-warning-sign'"></i>
+                        <span ng-class='has-error' ng-show="personDetailView.showUniqueWarning">Warning: Person exists in the database. Please verify and create a new Person record.</span>
                     </div>
+                </div>
+                <div >
+
                 </div>
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Suffix:</label>

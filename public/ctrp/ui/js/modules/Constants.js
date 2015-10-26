@@ -28,6 +28,7 @@
             'CURATE_PERSON' : '/ctrp/people/curate',
             'PO_AFF_STATUSES' : '/ctrp/po_affiliation_statuses.json',
             'SEARCH_PERSON': '/ctrp/people/search.json',
+            'UNIQUE_PERSON' : '/ctrp/people/unique',
             'A_FAMILY': '/ctrp/families/',
             'FAMILY_LIST': '/ctrp/families.json',
             'SEARCH_FAMILY': '/ctrp/families/search.json',
