@@ -28,6 +28,9 @@ class TrialsController < ApplicationController
   def create
     @trial = Trial.new(trial_params)
 
+    @trial.created_by = @current_user.username unless @current_user.nil?
+    @trial.updated_by = @trial.created_by
+
     respond_to do |format|
       if @trial.save
         format.html { redirect_to @trial, notice: 'Trial was successfully created.' }
@@ -42,6 +45,8 @@ class TrialsController < ApplicationController
   # PATCH/PUT /trials/1
   # PATCH/PUT /trials/1.json
   def update
+    @trial.updated_by = @current_user.username unless @current_user.nil?
+
     respond_to do |format|
       if @trial.update(trial_params)
         format.html { redirect_to @trial, notice: 'Trial was successfully updated.' }
