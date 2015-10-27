@@ -128,6 +128,8 @@ class  User < ActiveRecord::Base
                           {curation_supported: true}
                         when  "ROLE_CURATOR"
                           {curation_supported: true }
+                        when  "ROLE_SUBMITTER"
+                          {curation_supported: true }
                       end
   end
 

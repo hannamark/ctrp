@@ -218,11 +218,9 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "po_curator1", "role" => "ROLE_CURATOR", "approve" => false },
-               {"username" => "po_curator2", "role" => "ROLE_CURATOR" , "approve" => false},
-               {"username" => "po_curator3", "role" => "ROLE_CURATOR" , "approve" => false},
                {"username" => "ctrpreadonly", "role" => "ROLE_RO", "approve" => true },
-               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true }
+               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true },
+               {"username" => "ctrpsubmitter", "role" => "ROLE_SUBMITTER", "approve" => true }
           ]
 
 test_users.each do |u|

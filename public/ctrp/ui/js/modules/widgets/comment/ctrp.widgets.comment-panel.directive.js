@@ -8,9 +8,12 @@
   angular.module('ctrpApp.widgets')
   .directive('ctrpComment', ctrpComment);
 
-  ctrpComment.$inject = ['$compile', '$log', 'CommentService', 'UserService', '$mdSidenav', '$mdUtil'];
+  ctrpComment.$inject = ['$compile', '$log', 'CommentService',
+      'UserService', '$mdSidenav', '$mdUtil', '$mdToast', '$document'];
 
-  function ctrpComment($compile, $log, CommentService, UserService, $mdSidenav, $mdUtil) {
+  function ctrpComment($compile, $log, CommentService, UserService,
+      $mdSidenav, $mdUtil, $mdToast, $document) {
+
     var directive = {
       link: link,
       restrict: 'E',
@@ -83,6 +86,7 @@
       vm.postComment = postComment;
       vm.fetchComments = fetchComments;
       vm.toggleCommentFormShown = toggleCommentFormShown;
+      vm.updateComment = updateComment;
       //pagination options for comments
       vm.pagingOptions = {currentPage: 1, pageSize: 10};
 
@@ -117,6 +121,7 @@
           vm.comment.content = '';
           if (response.server_response.status == 201) {
             fetchComments(); //fetch the latest comments
+            showToastr('Comment created', 'right');
           }
           // console.log('created comment response: ' + JSON.stringify(response));
         }).catch(function(err) {
@@ -124,7 +129,24 @@
         });
       } //postComment
 
-      //TODO: edit and delete comment
+      //update
+      function updateComment(newContent, commentObjIndex) {
+        if (commentObjIndex > -1) {
+          var editedComment = angular.copy(vm.commentList[commentObjIndex]);
+          editedComment.content = newContent;
+          CommentService.updateComment(editedComment).then(function(response) {
+            if (response.server_response.status == 200) {
+              // fetchComments();
+              showToastr('Comment updated', 'right');
+            }
+          }).catch(function(err) {
+            //TODO: throw a toastr
+            $log.error('error in updating comment: ' + newContent);
+          });
+        }
+      } //updateComment
+
+
 
       function toggleCommentFormShown() {
         vm.showCommentForm = !vm.showCommentForm;
@@ -145,6 +167,24 @@
       $mdSidenav('right').close().then(function() {
         $log.info('closed RIGHT side nav');
       });
+    }
+
+    function showToastr(message, position) {
+      /*
+      $mdToast.show(
+          $mdToast.simple()
+          .content(message || 'Success')
+          .position(position || 'right')
+          .hideDelay(3000)
+      );
+      */
+      $mdToast.show({
+        template: '<md-toast style="background-color: #6200EA"><span flex>' + message + '</span></md-toast>',
+        parent: $document[0].querySelector('#toastr_message'),
+        hideDelay: 1000,
+        position: 'right'
+      });
+
     }
 
   } //ctrpComment
