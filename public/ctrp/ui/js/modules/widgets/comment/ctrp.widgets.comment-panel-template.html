@@ -90,7 +90,8 @@
       <div class="md-list-item-text">
         <div class="md-list-item-text">
           <p class="md-caption"><strong>{{comment.username}}</strong> commented ({{comment.created_at | date: "dd-MMM-yyyy H:mm"}}): </p>
-          <h5 class="md-body-1">{{comment.content}}</h5>
+          <h5 class="md-body-1" in-place-edit="comment.content" on-save="commentView.updateComment($index)"
+          template="/ctrp/ui/js/modules/widgets/ctrp.widgets.in-place-edit.default_template.html">{{comment.content}}</h5>
         </div>
       </div>
       </div>

@@ -83,6 +83,7 @@
       vm.postComment = postComment;
       vm.fetchComments = fetchComments;
       vm.toggleCommentFormShown = toggleCommentFormShown;
+      vm.updateComment = updateComment;
       //pagination options for comments
       vm.pagingOptions = {currentPage: 1, pageSize: 10};
 
@@ -124,7 +125,11 @@
         });
       } //postComment
 
-      //TODO: edit and delete comment
+      //update
+      function updateComment(commentObjIndex) {
+        console.log('updating comment index: ' + commentObjIndex);
+      } //updateComment
+
 
       function toggleCommentFormShown() {
         vm.showCommentForm = !vm.showCommentForm;
