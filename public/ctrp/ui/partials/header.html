@@ -85,6 +85,9 @@
                         <div ng-if="headerView.userRole == 'super' || headerView.userRole == 'admin'">
                             <div ng-include src="'ui/partials/navbar/navbarSuper.html'"></div>
                         </div>
+                        <div ng-if="headerView.userRole == 'submitter'">
+                            <div ng-include src="'ui/partials/navbar/navbarSubmitter.html'"></div>
+                        </div>
                     </div>
                 </div>
                 <!-- /.navbar-collapse -->

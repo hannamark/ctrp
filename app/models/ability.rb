@@ -51,6 +51,12 @@ class Ability
       can [:create, :update], User
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
+    elsif user.role == 'ROLE_SUBMITTER' && user.approved?
+      can :manage, :all
+      #cannot :manage, :organization, :person
+      cannot :access_backoffice, :manage_backoffice
+      cannot :access, :rails_admin   # grant access to rails_admin
+      cannot :dashboard              # grant access to the dashboard
     else
       can [:create, :update], User
       cannot :access, :rails_admin   # grant access to rails_admin
