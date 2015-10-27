@@ -12,7 +12,7 @@ And I provide the <State> of the organization
 And I provide the <Country> of the organization where the default is "All Countries"
 And I submit my search request
 Then the system should display the organization with that PO Organization ID
-And the <Organization Search Results> will display Organizations with an Active status sorted by Organization Name:
+And the <Organization Search Results> will display Organizations with an Active status in the CTRP Context sorted by Organization Name:
 |PO Organization ID|
 |CTEP Organization ID|
 |Organization Name|

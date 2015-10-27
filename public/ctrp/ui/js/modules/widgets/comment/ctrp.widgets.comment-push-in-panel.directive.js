@@ -22,7 +22,6 @@
 
         function link(scope, element, attrs, sidenavCtrl) {
             var parent = angular.element(document.body); // document.getElementById('pushable_panel')
-            console.log('parent is: ' + parent);
             parent.addClass('md-sidenav-push-in');
             var cssClass = (element.hasClass('md-sidenav-left') ? 'md-sidenav-left' : 'md-sidenav-right') + '-open';
             var stateChanged = function (state) {
