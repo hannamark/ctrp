@@ -34,8 +34,8 @@ And I have select a Accrual Disease Terminology as:
 |ICD9|
 |ICD10|
 |ICD-O-3|
-Then the Trial Registration Category and Primary Purpose section display the error "Clinical Research Category and Primary Purpose are required"
-when I click on the Review Trial button
+When I click on the Review Trial button Then the Trial Registration Category and Primary Purpose section display the error "Clinical Research Category and Primary Purpose are required"
+
 
 Scenario: #3 I must enter the Clinical Research Category and Primary Purpose for a trial
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
@@ -52,8 +52,8 @@ And I have select a Accrual Disease Terminology as:
 |ICD9|
 |ICD10|
 |ICD-O-3|
-Then the Trial Registration Category and Primary Purpose section display the error "Clinical Research Category and Primary Purpose are required"
-when I click on the Review Trial button
+When I click on the Review Trial button then the Trial Registration Category and Primary Purpose section display the error "Clinical Research Category and Primary Purpose are required"
+
 
 Scenario: #4 I can enter the Clinical Research Category and Primary Purpose and the Optional Secondary Purpose for a trial
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
