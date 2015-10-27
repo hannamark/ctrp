@@ -126,9 +126,22 @@
       } //postComment
 
       //update
-      function updateComment(commentObjIndex) {
-        console.log('updating comment index: ' + commentObjIndex);
+      function updateComment(newContent, commentObjIndex) {
+        if (commentObjIndex > -1) {
+          var editedComment = angular.copy(vm.commentList[commentObjIndex]);
+          editedComment.content = newContent;
+          CommentService.updateComment(editedComment).then(function(response) {
+            if (response.server_response.status == 200) {
+              // fetchComments();
+              //TODO: throw a toastr
+            }
+          }).catch(function(err) {
+            //TODO: throw a toastr
+            $log.error('error in updating comment: ' + newContent);
+          });
+        }
       } //updateComment
+
 
 
       function toggleCommentFormShown() {
