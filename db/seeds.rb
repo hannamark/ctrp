@@ -220,7 +220,7 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "ctrpreadonly", "role" => "ROLE_RO", "approve" => true },
                {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true },
-               {"username" => "ctrpsubmitter", "role" => "ROLE_SUBMITTER", "approve" => true }
+               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true }
           ]
 
 test_users.each do |u|
