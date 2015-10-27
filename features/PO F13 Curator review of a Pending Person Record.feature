@@ -34,9 +34,10 @@ And the Person Record will be available for use in CTRP
 Scenario: As a PO Curator, I can Nullify an Person Record
 Given I am logged in to the CTRP PO Application
 And I am on the CTRP PO Curator Review screen
-And I have identified two Person Records that are duplicates
+And I have identified two Person Records in the CTRP Context that are duplicates
 When I select one of the Person Records to be retained
 And I select the other Person Record to be nullified
+And the Person Record to be nullified does not have an Active Status
 Then all references in CTRP to the nullified Person Record will reference the retained Person Record 
 And any unique Person Organization Affiliations on the nullified Person Record will be added to the retained Person Record
 And the status of the Person Record to be nullified will be "Nullified"
