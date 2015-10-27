@@ -30,7 +30,7 @@
         'ngFileUpload',
         'angularMoment',
         'ctrpApp.widgets',
-        'ctrpForm'
+        'ctrpApp.module.Validators'
     ])
         .config(function($provide) {
             $provide.decorator('$state', function($delegate, $rootScope) {

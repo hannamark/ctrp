@@ -5,7 +5,7 @@
 (function() {
     'use strict';
 
-        angular.module('ctrpApp')
+        angular.module('ctrpApp.module.Validators')
             .directive('dateLaterThan', dateLaterThan)
             .directive('dateEarlierThan', dateEarlierThan);
 

@@ -14,6 +14,7 @@
     function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService,
                               $scope, Common, sourceStatusObj,sourceContextObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
+        vm.clonedPerson = null; //init to null
         vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.sourceStatusArr = sourceStatusObj;
@@ -79,7 +80,11 @@
                     $scope.person_form.$setPristine();
                 }
             });
-            //default context to ctrp
+
+            if (vm.clonedPerson != null) {
+              vm.curPerson = angular.copy(vm.clonedPerson);
+              //default context to ctrp
+            }
             vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
         };
 
@@ -145,6 +150,7 @@
             }
             if(!vm.curPerson.new) {
                 prepareModal();
+                vm.clonedPerson = angular.copy(vm.curPerson);
             }
         }
 

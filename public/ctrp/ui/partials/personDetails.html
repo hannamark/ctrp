@@ -26,19 +26,18 @@
             </p>
         </div>
         <div class="row md-sidenav-push-in-target"">
-            <form class="form-horizontal" role="form" name="person_form" novalidate ctrp-submit="personDetailView.updatePerson()">
+            <form class="form-horizontal" role="form" name="person_form" novalidate>
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Prefix:</label>
                     <div class="col-xs-12 col-sm-6">
                         <input type="text" curation-field class="form-control input-sm" ng-model="personDetailView.curPerson.prefix">
                     </div>
                 </div>
-                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.fname)}">
+                <div class="form-group"  ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.fname)}">
                     <label class="control-label col-xs-12 col-sm-3">First Name:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" curation-field name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus ng-change="checkForNameUniqueness()" />
-                        <span class="help-block"
-                              ng-show="person_form.fname.$error.required">First name is Required</span>
+                        <input type="text" curation-field name="fname" validation-field-required="true" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus ng-change="checkForNameUniqueness()" />
+
                     </div>
                 </div>
                 <div class="form-group">
@@ -196,7 +195,7 @@
                 <div class="form-group">
                     <div class="col-xs-12 col-sm-3"></div>
                     <div class="btn-toolbar col-xs-12 col-sm-9">
-                        <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn">
+                        <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-disabled="!person_form.$valid" ng-click="personDetailView.updatePerson()">
                             Save
                         </button>
                         <button curation-field class="btn btn-warning pull-right" id="reset_btn" ng-click="personDetailView.resetForm()">
