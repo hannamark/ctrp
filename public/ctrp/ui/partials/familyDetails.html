@@ -26,30 +26,33 @@
             </p>
         </div>
         <div class="row md-sidenav-push-in-target">
-            <form class="form form-horizontal" name="family_form" role="form" novalidate>
-                <div class="form-group" ng-class="{'has-error' : family_form.name.$error.required && family_form.name.$dirty }">
+            <form class="form form-horizontal" name="family_form" role="form" novalidate ctrp-submit="familyDetailView.updateFamily()">
+                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.name)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Name:</label>
                     <div class="col-xs-12 col-sm-6">
                         <input type="text" name="name" curation-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus/>
-                        <p ng-show="family_form.name.$error.required && family_form.name.$dirty" class="help-inline">
-                            Family name is required
-                        </p>
+                        <span class="help-block"
+                              ng-show="family_form.name.$error.required">Family name is Required</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_status)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Status:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <select curation-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control input-sm" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr">
+                        <select curation-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control input-sm" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr" name="family_status" required>
                             <option value="">Select a status</option>
                         </select>
+                        <span class="help-block"
+                              ng-show="family_form.family_status.$invalid">Family status is Required</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_type)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Type:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <select curation-field ng-init="familyDetailView.curFamily.family_type_id" class="form-control input-sm" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr">
+                        <select curation-field ng-init="familyDetailView.curFamily.family_type_id" class="form-control input-sm" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr" name="family_type" required>
                             <option value="">Select a type</option>
                         </select>
+                        <span class="help-block"
+                              ng-show="family_form.family_type.$invalid">Family type is Required</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -142,7 +145,7 @@
                 <div class="form-group">
                     <div class="col-xs-12 col-sm-3"></div>
                     <div class="btn-toolbar col-xs-12 col-sm-9">
-                        <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-click="familyDetailView.updateFamily()" ng-disabled="family_form.$invalid" ctrp-click-once>
+                        <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn">
                             Save
                         </button>
                         <button curation-field class="btn btn-warning pull-right" ng-click="familyDetailView.reset()">

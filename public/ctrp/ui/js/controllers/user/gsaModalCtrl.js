@@ -26,6 +26,7 @@
 
         vm.accept = function() {
             console.log('ACCEPT');
+            LocalCacheService.cacheItem("gsaFlag", "Accept");
             $modalInstance.close();
             $state.go('main.defaultContent');
 
@@ -33,6 +34,7 @@
 
         vm.reject = function() {
             console.log('REJECT');
+            LocalCacheService.cacheItem("gsaFlag", "Reject");
             $modalInstance.dismiss('cancel');
             UserService.logout();
         };
