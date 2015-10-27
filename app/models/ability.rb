@@ -30,12 +30,16 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
     user ||= User.new
-    Rails.logger.info "In Cancanca n's ability.rb's initialize method user = #{user.inspect}"
+    Rails.logger.info "In Cancancan's ability.rb's initialize method user = #{user.inspect}"
     #Rails.logger.info "In Cancancan's ability.rb's initialize method user = #{current_user.inspect}"
     if user.role == 'ROLE_SUPER'  && user.approved?
       can :manage, :all
       can :access, :rails_admin   # grant access to rails_admin
       can :dashboard              # grant access to the dashboard
+    elsif user.role == 'ROLE_ADMIN'  && user.approved?
+        can :manage, :all
+        can :access, :rails_admin   # grant access to rails_admin
+        can :dashboard              # grant access to the dashboard
     elsif user.role == 'ROLE_CURATOR' && user.approved?
       can :manage, :all
       cannot :access_backoffice, :manage_backoffice
@@ -43,6 +47,7 @@ class Ability
       cannot :dashboard              # grant access to the dashboard
     elsif user.role == "ROLE_RO"  && user.approved?
       can :read, :all
+      can :search, :all
       can [:create, :update], User
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
@@ -51,7 +56,7 @@ class Ability
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
       cannot :access_backoffice, :manage_backoffice
-      Rails.logger.info "No permission to access any of the resources in CTRP"
+      Rails.logger.info "No permission to access any resources in CTRP."
     end
   end
 end

@@ -25,7 +25,8 @@
             //console.log("Printing token");
             //console.log(token);
             if (token) {
-                config.headers.Authorization = token;
+                var gsaFlag =  (LocalCacheService.getCacheWithKey("gsaFlag") + " " )|| "Reject "
+                config.headers.Authorization = gsaFlag + token;
             }
             return config;
         } //request
