@@ -85,13 +85,13 @@
     </div>
 
     <div flex="33" class="md-3-line">
-      <div dir-paginate="comment in commentView.commentList | reverse | itemsPerPage: commentView.pagingOptions.pageSize" current-page="commentView.pagingOptions.currentPage" pagination-id="comment">
+      <div dir-paginate="comment in commentView.commentList | itemsPerPage: commentView.pagingOptions.pageSize" current-page="commentView.pagingOptions.currentPage" pagination-id="comment">
       <md-divider></md-divider>
       <div class="md-list-item-text">
         <div class="md-list-item-text">
           <p class="md-caption"><strong>{{comment.username}}</strong> commented ({{comment.created_at | date: "dd-MMM-yyyy H:mm"}}): </p>
-          <h5 class="md-body-1" in-place-edit="comment.content" on-save="commentView.updateComment($index)"
-          template="/ctrp/ui/js/modules/widgets/ctrp.widgets.in-place-edit.default_template.html">{{comment.content}}</h5>
+          <h5 class="md-body-1" in-place-edit="comment.content" on-save="commentView.updateComment(comment.content, $index)"
+          template="/ctrp/ui/js/modules/widgets/comment/comment-in-place-edit.html">{{comment.content}}</h5>
         </div>
       </div>
       </div>
