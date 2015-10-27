@@ -84,6 +84,7 @@ class CommentsController < ApplicationController
     if params.has_key?(:uuid) #instance_uuid
       comments = Comment.where("instance_uuid = ?", params[:uuid])
       comments = comments.matches('field', params[:field]) if params.has_key?(:field)
+      comments = comments.order('updated_at desc')
     end
 
     respond_to do |format|
