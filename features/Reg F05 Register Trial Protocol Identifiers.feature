@@ -18,3 +18,4 @@ and I have optionally entered the clinicaltrials.gov trial identifier
 and I have optionally entered one or more Other Trial Identifiers
 And I have submitted the trial identifier section
 Then the TRegister Trial Protocol Identifiers section will indicate an error "Lead Organization Trial Identifier is Required"
+when the user clicks on the Review Trial button
