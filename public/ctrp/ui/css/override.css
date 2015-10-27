@@ -173,6 +173,9 @@ header img {
     color: #FFF;
 }
 
+.top-offset-tiny {
+    margin-top: 5px;
+}
 .top-offset-xs {
 	margin-top: 25px;
 }
@@ -545,6 +548,7 @@ input[type=radio] {
     word-wrap: normal;
     white-space: nowrap;
     padding:5px;
+    width:99%;
 }
 
 .modal-header .close {
@@ -558,6 +562,10 @@ input[type=radio] {
 
 .no-bottom-margin {
     margin-bottom: 0;
+}
+
+.no-padding {
+    padding: 0;
 }
 
 /* override the md-backdrop grey overlay/backdrop to make the content visible */
