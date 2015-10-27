@@ -18,7 +18,7 @@
     </script>
 
     <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person"></ctrp-comment>
-    <div class="col-xs-12">
+    <div class="col-xs-12 drop-shadow">
         <div class="row">
             <p>
                 <h4 ng-if="personDetailView.curPerson.new">Add Person</h4>
@@ -185,7 +185,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group no-bottom-margin">
                     <div class="col-xs-12 col-sm-3"></div>
                     <div class="btn-toolbar col-xs-12 col-sm-9">
                         <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-click="personDetailView.updatePerson()" ng-disabled="person_form.$invalid" ctrp-click-once>
@@ -202,5 +202,6 @@
                 </div>
             </form>
         </div>
+        <div class="row top-offset-xs"></div>
     </div>
 </div>

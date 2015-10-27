@@ -176,10 +176,10 @@
 </form>
 
 <!-- list of people -->
-<div class="row" ng-if="searchWarningMessage.length === 0">
+<div class="row" ng-class="{'top-offset-xs': gridOptions.totalItems != null }" ng-if="searchWarningMessage.length === 0">
     <div class="col-xs-12">
         <div class="row" ng-if="gridOptions.totalItems != null">
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12">
                 <!-- information section -->
                 <a href="" id="people_search_results"></a>
                 <div ng-if="searchWarningMessage.length === 0">
@@ -194,9 +194,6 @@
                     </button>
                 </h5>
             </div>
-            <div class="col-xs-12 col-sm-6">
-                <div class="row"></div>
-            </div>
         </div>
         <div class="row" ng-hide="warningMessage==''" ng-cloak>
             <div class="alert alert-danger fade in">
@@ -204,9 +201,11 @@
                 <strong>{{warningMessage}}</strong>
             </div>
         </div>
-        <br/>
         <div class="row animated-item" ng-if="gridOptions.data.length > 0">
-            <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
+            <div class="col-xs-12">
+                <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
+            </div>
         </div>
     </div>
 </div>
+<div class="row top-offset-xs"></div>
