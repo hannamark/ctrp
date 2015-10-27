@@ -128,7 +128,7 @@ class  User < ActiveRecord::Base
                           {curation_supported: true}
                         when  "ROLE_CURATOR"
                           {curation_supported: true }
-                        when  "ROLE_SUBMITTER"
+                        when  "ROLE_TRIAL-SUBMITTER"
                           {curation_supported: true }
                       end
   end
