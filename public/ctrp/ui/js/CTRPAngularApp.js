@@ -29,7 +29,8 @@
         'TimeoutModule',
         'ngFileUpload',
         'angularMoment',
-        'ctrpApp.widgets'
+        'ctrpApp.widgets',
+        'ctrpForm'
     ])
         .config(function($provide) {
             $provide.decorator('$state', function($delegate, $rootScope) {

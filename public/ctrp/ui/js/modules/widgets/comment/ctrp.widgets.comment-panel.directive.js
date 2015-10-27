@@ -1,3 +1,7 @@
+/**
+ * Created by wangg5 on 10/26/15.
+ */
+
 (function() {
   'use strict';
 
@@ -79,7 +83,9 @@
       vm.postComment = postComment;
       vm.fetchComments = fetchComments;
       vm.toggleCommentFormShown = toggleCommentFormShown;
-
+      vm.updateComment = updateComment;
+      //pagination options for comments
+      vm.pagingOptions = {currentPage: 1, pageSize: 10};
 
       activate();
 
@@ -106,7 +112,8 @@
         });
       } //fetchComments
 
-      function postComment() {
+      function postComment(form) {
+        form.$setUntouched();
         CommentService.createComment(vm.comment).then(function(response) {
           vm.comment.content = '';
           if (response.server_response.status == 201) {
@@ -118,7 +125,24 @@
         });
       } //postComment
 
-      //TODO: edit and delete comment
+      //update
+      function updateComment(newContent, commentObjIndex) {
+        if (commentObjIndex > -1) {
+          var editedComment = angular.copy(vm.commentList[commentObjIndex]);
+          editedComment.content = newContent;
+          CommentService.updateComment(editedComment).then(function(response) {
+            if (response.server_response.status == 200) {
+              // fetchComments();
+              //TODO: throw a toastr
+            }
+          }).catch(function(err) {
+            //TODO: throw a toastr
+            $log.error('error in updating comment: ' + newContent);
+          });
+        }
+      } //updateComment
+
+
 
       function toggleCommentFormShown() {
         vm.showCommentForm = !vm.showCommentForm;

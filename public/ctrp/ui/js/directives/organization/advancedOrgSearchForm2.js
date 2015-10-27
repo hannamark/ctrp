@@ -10,10 +10,10 @@
         .directive('ctrpAdvancedOrgSearchForm2', ctrpAdvancedOrgSearchForm2);
 
     ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location', '$state',
-        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$compile', 'UserService'];
+        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$compile', 'UserService','DateService'];
 
     function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $state,
-                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService) {
+                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService,DateService) {
 
         var directiveObj = {
             restrict: 'E',
@@ -109,6 +109,11 @@
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                 else
                     $scope.searchWarningMessage = "";
+
+                $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
+                if ($scope.searchParams.date_range_arr.length == 0) {
+                    delete $scope.searchParams.date_range_arr;
+                }
 
                 if(!isEmptySearch) { //skip searching if empty search
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
@@ -210,6 +215,56 @@
                 });
 
             }; //commitNullification
+
+            /**
+             * Open calendar
+             * @param $event
+             * @param type
+             */
+            $scope.openCalendar = function ($event, type) {
+                // $event.preventDefault();
+                //$event.stopPropagation();
+
+                if (type == "end") {
+                    $scope.endDateOpened = true;// !$scope.endDateOpened;
+                } else {
+                    $scope.startDateOpened = true;// !$scope.startDateOpened;
+                }
+            }; //openCalendar
+
+
+            $scope.getDateRange = function(range) {
+                var today = new Date();
+                switch (range) {
+                    case 'today':
+                        $scope.searchParams.startDate = today;
+                        $scope.searchParams.endDate = today;;
+                        break;
+                    case 'yesterday':
+                        $scope.searchParams.startDate = moment().add(-1, 'days').toDate();
+                        $scope.searchParams.endDate = moment().add(-1, 'days').toDate();
+                        break;
+                    case 'last7':
+                        $scope.searchParams.startDate = moment().add(-7, 'days').toDate();
+                        $scope.searchParams.endDate = moment().add(0, 'days').toDate();
+                        break;
+                    case 'last30':
+                        $scope.searchParams.startDate = moment().add(-30, 'days').toDate();
+                        $scope.searchParams.endDate = moment().add(0, 'days').toDate();
+                        break;
+                    case 'thisMonth':
+                        $scope.searchParams.startDate = moment([today.getFullYear(), today.getMonth()]).toDate();
+                        $scope.searchParams.endDate = today;
+                        break;
+                    case 'lastMonth':
+                        $scope.searchParams.startDate = moment([today.getFullYear(), today.getMonth()-1]).toDate();
+                        $scope.searchParams.endDate = moment(today).subtract(1, 'months').endOf('month').toDate();
+                        break;
+                    default:
+                        $scope.searchParams.startDate = '';
+                        $scope.searchParams.endDate = '';
+                }
+            };
 
 
             activate();
@@ -391,14 +446,8 @@
             /* prepare grid layout and data options */
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions();
-                //console.log("*******cur user role is "+ $scope.userRole);
-                //console.log("*******index of ctep_id is "+ OrgService.findContextId($scope.gridOptions.columnDefs,'name','ctep_id'));
-                var cur="curator";
-                if(!($scope.userRole.toUpperCase() == cur.toUpperCase())) {
-                    $scope.gridOptions.columnDefs.splice(14,2);
-                }
-                //var needleIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, "ctep_id", contextName);
-
+                $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
+                $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableVerticalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {

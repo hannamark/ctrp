@@ -45,13 +45,12 @@
         };
 
         vm.resetSearch = function() {
-            vm.searchParams = TrialService.getInitialTrialSearchParams();
-            vm.gridOptions.data.length = 0;
-            vm.gridOptions.totalItems = null;
-
             Object.keys(vm.searchParams).forEach(function(key, index) {
                 vm.searchParams[key] = '';
             });
+
+            vm.gridOptions.data.length = 0;
+            vm.gridOptions.totalItems = null;
         };
 
         activate();

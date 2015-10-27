@@ -844,6 +844,19 @@
                     </accordion-group>
                 </accordion>
 
+                <div class="form-group" ng-hide="trialDetailView.curTrial.new || !trialDetailView.curTrial.created_by">
+                    <label class="control-label col-xs-12 col-sm-3">Created By:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{trialDetailView.curTrial.created_by}} ({{trialDetailView.curTrial.created_at | date: 'dd-MMM-yyyy H:mm'}})
+                    </div>
+                </div>
+
+                <div class="form-group" ng-hide="trialDetailView.curTrial.new || !trialDetailView.curTrial.updated_by">
+                    <label class="control-label col-xs-12 col-sm-3">Updated By:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{trialDetailView.curTrial.updated_by}} ({{trialDetailView.curTrial.updated_at | date: 'dd-MMM-yyyy H:mm'}})
+                    </div>
+                </div>
 
                 <div class="form-group no-bottom-margin">
                     <div class="btn-toolbar col-xs-12">
