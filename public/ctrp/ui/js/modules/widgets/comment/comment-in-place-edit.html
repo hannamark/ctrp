@@ -1,8 +1,6 @@
-<div>
-  <md-input-container md-no-float>
+  <md-input-container md-no-float ng-show="editMode">
     <label ng-show="editMode">Comment:</label>
-    <!-- <input ng-model="comment.content"> -->
-  <textarea rows="1" cols="40" ng-model="model" ng-show="editMode"></textarea>
+    <textarea rows="1" cols="40" ng-model="model"></textarea>
   </md-input-container>
   <button ng-click="cancelEdit()" ng-show="editMode">cancel</button>
   <button ng-click="saveEdit()" ng-show="editMode">save</button>
@@ -10,4 +8,3 @@
     <span ng-hide="editMode" ng-click="edit()">{{model}}</span>
     <a ng-show="showEdit" ng-click="edit()">edit</a>
   </span>
-</div>
