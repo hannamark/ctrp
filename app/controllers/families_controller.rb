@@ -99,6 +99,52 @@ class FamiliesController < ApplicationController
     end
   end
 
+  #Method to check for Uniqueness while creating families - check on name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
+  def unique
+    print params[:family_name]
+    print params[:family_exists]
+    print "Family ID "
+    print params[:family_id]
+
+    is_unique = true
+    count = 0
+
+    if params.has_key?(:family_name)
+      count = Family.where("lower(name)=?", params[:family_name].downcase).count;
+    end
+
+    print "count "
+    print count
+
+    if params[:family_exists] == true
+      @dbFamily = Family.find(params[:family_id]);
+      if @dbFamily != nil
+        print " db family "
+        print @dbFamily.name
+
+        if params[:family_name] == @dbFamily.name
+          print " both are equal. Must not warn "
+          is_unique = true;
+        else
+          if count > 0
+            print " both are different. Must warn. "
+            is_unique = false
+          end
+        end
+      end
+    elsif params[:family_exists] == false && count > 0
+      is_unique = false
+    end
+
+    p " is unique? "
+    p is_unique
+
+    respond_to do |format|
+#        format.json {render :json => {:name_unique => !exists}}
+      format.json {render :json => {:name_unique => is_unique}}
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_family
