@@ -593,9 +593,11 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     transform: translate(-55px);
 }
 
-.form-group.required .control-label:before{
+.form-group.required .control-label:after{
     color: red;
     content: "*";
     position: absolute;
-    margin-left: -15px;
+    margin-right: -13px;
 }
+
+
