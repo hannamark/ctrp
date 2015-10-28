@@ -12,9 +12,9 @@
     angular.module('ctrpApp.widgets')
     .directive('inPlaceEdit', inPlaceEdit);
 
-    inPlaceEdit.$inject = ['$timeout', '$compile'];
+    inPlaceEdit.$inject = ['$timeout', '$compile', 'MESSAGES', 'UserService'];
 
-    function inPlaceEdit($timeout, $compile) {
+    function inPlaceEdit($timeout, $compile, MESSAGES, UserService) {
       var defaultTemplateUrl = '/ctrp/ui/js/modules/widgets/ctrp.widgets.in-place-edit.default_template.html';
       var directiveObj = {
         restrict: 'A',
@@ -31,6 +31,7 @@
 
       function linkerFn(scope, element, attrs) {
         scope.editMode = false;
+        scope.writeModeEnabled = UserService.isCurationModeEnabled() || false;
         //if not set, isEditable is considered to be false
         scope.isEditable = attrs.hasOwnProperty('isEditable') ? scope.$eval(attrs.isEditable) : false;
         scope.edit = edit;
@@ -49,6 +50,7 @@
         });
 
         //functions below
+        checkWriteMode();
         function edit() {
           scope.editMode = true;
           prevValue = scope.model;
@@ -66,6 +68,16 @@
         function cancelEdit() {
           scope.editMode = false;
           scope.model = prevValue;
+        }
+
+        //Listen to the write-mode switch
+        scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+          checkWriteMode();
+        });
+
+        /* check for the global write mode */
+        function checkWriteMode() {
+          scope.writeModeEnabled = UserService.isCurationModeEnabled() || false;
         }
 
       } //linkerFn
