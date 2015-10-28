@@ -19,9 +19,12 @@
 
       ///// implementations
 
-      function getCommentCounts(instanceUuid) {
+      function getCommentCounts(instanceUuid, optionalField) {
         if (instanceUuid) {
           var url = URL_CONFIGS.COMMENTS.COUNTS_FOR_INSTANCE.replace(/\s*\{.*?\}\s*/g, instanceUuid);
+          if (optionalField) {
+            url = url.replace('.json', '/' + optionalField + '.json');
+          }
           $log.info('get comment counts with url: ' + url);
           return PromiseTimeoutService.getData(url);
         }
@@ -40,9 +43,12 @@
       } //createComment
 
 
-      function getComments(instanceUuid) {
+      function getComments(instanceUuid, optionalField) {
         if (instanceUuid) {
           var url = URL_CONFIGS.COMMENTS.FOR_INSTANCE.replace(/\s*\{.*?\}\s*/g, instanceUuid);
+          if (optionalField) {
+            url = url.replace('.json', '/' + optionalField + '.json');
+          }
           $log.info('get comment list with url: ' + url);
           return PromiseTimeoutService.getData(url);
         }

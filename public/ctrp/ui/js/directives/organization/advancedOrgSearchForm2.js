@@ -10,10 +10,10 @@
         .directive('ctrpAdvancedOrgSearchForm2', ctrpAdvancedOrgSearchForm2);
 
     ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location', '$state',
-        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$compile', 'UserService', '$interval'];
+        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$compile', 'UserService'];
 
     function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $state,
-                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService, $interval) {
+                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService) {
 
         var directiveObj = {
             restrict: 'E',
@@ -39,7 +39,7 @@
         } //linkFn
 
         //_, $anchorScroll,
-        function ctrpAdvancedOrgSearchController($scope, uiGridConstants, UserService, OrgService, $state) {
+        function ctrpAdvancedOrgSearchController($scope) {
 
             var fromStateName = $state.fromState.name || '';
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
@@ -52,6 +52,7 @@
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
             $scope.searchWarningMessage = '';
+            $scope.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
@@ -115,6 +116,8 @@
                         if ($scope.showGrid && data.orgs) {
                             $scope.gridOptions.data = data.orgs;
                             $scope.gridOptions.totalItems = data.total;
+
+                            console.log("data ..... "+JSON.stringify(data));
 
                             //pin the selected rows, if any, at the top of the results
                             _.each($scope.selectedRows, function (curRow, idx) {
@@ -225,6 +228,7 @@
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
                 watchCurationMode();
+                watchCurationModeSubRoutine();
             }
 
 
@@ -387,8 +391,16 @@
             /* prepare grid layout and data options */
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions();
-                $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-                $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+                //console.log("*******cur user role is "+ $scope.userRole);
+                //console.log("*******index of ctep_id is "+ OrgService.findContextId($scope.gridOptions.columnDefs,'name','ctep_id'));
+                var cur="curator";
+                if(!($scope.userRole.toUpperCase() == cur.toUpperCase())) {
+                    $scope.gridOptions.columnDefs.splice(14,2);
+                }
+                //var needleIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, "ctep_id", contextName);
+
+                $scope.gridOptions.enableVerticalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
+                $scope.gridOptions.enableHorizontalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
                     $scope.gridApi = gridApi;
                     $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
@@ -512,21 +524,15 @@
             } //hideHyperLinkInModal
 
 
-            /**
-            * watcher for curation mode using polling
-            */
             function watchCurationMode() {
-                // $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-                //     console.log('curation mode changed!');
-                //     watchCurationModeSubRoutine();
-                // });
-                if (UserService.isCurationSupported()) {
-                    $interval(function() {
-                      //keep polling
-                      $scope.curationShown = UserService.isCurationModeEnabled();
-                    }, 200);
-                }
-            } //watchCurationMode
+                $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                   watchCurationModeSubRoutine();
+                });
+            }
+
+            function watchCurationModeSubRoutine() {
+                $scope.curationShown = UserService.isCurationModeEnabled() || false;
+            }
 
 
         } //ctrpAdvancedOrgSearchController

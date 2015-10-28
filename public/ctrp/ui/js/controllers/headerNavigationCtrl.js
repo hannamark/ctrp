@@ -26,6 +26,8 @@
         vm.currrentState = $state;
         vm.navbarIsActive = navbarIsActive;
 
+
+
         vm.toggleCurationMode = function() {
             console.log('toggling curation mode: ' + vm.isCurationEnabled);
             // vm.isCurationEnabled = !vm.isCurationEnabled;
@@ -161,8 +163,7 @@
                 }
             }, true);
         }
-
-
+        
 
     };
 

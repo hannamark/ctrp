@@ -235,7 +235,8 @@ module.exports = function() {
     this.Given(/^Login in CTRP$/, function (callback) {
         browser.get('ui#/main/sign_in');
         Login.login('ctrpcurator', 'Welcome01');
-        menuItemList.clickWriteMode();
+        Login.accept();
+        Login.clickWriteMode();
         //  setTimeout(callback, 5000);
         browser.sleep(250).then(callback);
     });
@@ -246,7 +247,9 @@ module.exports = function() {
     this.Given(/^Creaye person with Organization$/, function (callback) {
         menuItemList.clickOrganizations();
            menuItemList.clickListOrganizations();
-        Search.checkAlias(false);
+        Search.setOrgName('shi*');
+        Search.clickSearchButton();
+        projectFunctions.verifyOrgSearchResult('shi*');
     //    searchPerson.setPersonFirstName('Christopher');
     //    searchPerson.clickSearch();
     //    element(by.linkText('Christopher')).click();

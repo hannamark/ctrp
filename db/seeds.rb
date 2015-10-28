@@ -221,7 +221,8 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "po_curator1", "role" => "ROLE_CURATOR", "approve" => false },
                {"username" => "po_curator2", "role" => "ROLE_CURATOR" , "approve" => false},
                {"username" => "po_curator3", "role" => "ROLE_CURATOR" , "approve" => false},
-               {"username" => "ctrpreadonly", "role" => "ROLE_READONLY", "approve" => true }
+               {"username" => "ctrpreadonly", "role" => "ROLE_RO", "approve" => true },
+               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true }
           ]
 
 test_users.each do |u|
@@ -275,14 +276,15 @@ ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sara
 ##Add CTRP Business Analysts
 
 joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Joe", "last_name" => "Martucci" }
-jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_READONLY", "first_name" => "Jose", "last_name" => "Galvez" }
+jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Jose", "last_name" => "Galvez" }
 michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Michael", "last_name" => "Izbicki"}
-sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_READONLY", "first_name" => "Sandy", "last_name" => "Lightbody" }
+sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Sandy", "last_name" => "Lightbody" }
 kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
 deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Deb", "last_name" => "Hope"  }
-susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_READONLY", "first_name" => "Susan", "last_name" => "Nonemaker"  }
+susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Susan", "last_name" => "Nonemaker"  }
+sophia = {"email" => "rarhais@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Sophia", "last_name" => "Rarhai"  }
 
-ba_users = [joe, jose, michael, sandy, kirsten, deb, susan]
+ba_users = [joe, jose, michael, sandy, kirsten, deb, susan, sophia]
 
 all_users = ncictrpdev_users + ba_users
 

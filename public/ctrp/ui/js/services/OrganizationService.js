@@ -55,7 +55,7 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '6%',
+                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '7%',
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
@@ -74,10 +74,12 @@
                 {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
-                {name: 'aff_families_count', displayName: 'Family', enableSorting: true, width: '8%'},
-                  {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
-                    cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" popover-trigger="mouseenter" class="btn btn-default">Family</button>',
+                {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '15%',height: '50%',
+                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names">{{fam.Name}}</div>'
                 },
+                /* {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
+                   cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" popover-trigger="mouseenter" class="btn btn-default">Family</button>',
+               },*/
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
                 {name: 'country', displayName: 'Country', enableSorting: true, width:'9%'},
@@ -86,7 +88,12 @@
                 {name: 'email', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                }
+                },
+
+                {name: 'created_by', displayName: 'Curator Name', enableSorting: true, width: '10%'},
+
+                {name: 'created_at', displayName: 'Curator Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'}
+
 
             ]
         };

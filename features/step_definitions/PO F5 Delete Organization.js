@@ -8,32 +8,31 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-var LoginPage = require('../support/LoginPage');
-var ListOfOrganizationPage = require('../support/ListOfOrganizationsPage');
-var MenuItem = require('../support/PoCommonBar');
-var AddOrganization = require('../support/AddOrganizationPage');
-var main_SelectItem = require('../support/CommonSelectList.js');
+var loginPage = require('../support/LoginPage');
+var listOfOrganizationPage = require('../support/ListOfOrganizationsPage');
+var menuItemList = require('../support/PoCommonBar');
+var addOrganizationPage = require('../support/AddOrganizationPage');
+var mainSelectItemPage = require('../support/CommonSelectList.js');
+var projectFunctionsPage= require('../support/projectMethods');
+var moment = require('moment');
 
 module.exports = function() {
-    var MenuItemList = new MenuItem();
-    var Search = new ListOfOrganizationPage();
-    var Organization = new AddOrganization();
-    var Organization_to_search = 'Coastal Carolina Radiation Oncology*';
-    var Organization_to_edit = 'Coastal Carolina Radiation Oncology';
-    var Organization_edit_to = 'Coastal Carolina Radiation Oncology PR cuke';
-    var SelectItem = new main_SelectItem();
-    var Source_Status = 'Pending';
-    var Address_to_edit = '1988 S 16th St';
-    var Address_edit_to = '1988 S 16th St PR cuke';
-    var Phone_edit_to = '444-5555-666';
-    var Email_edit_to = 'test_SS@PR.cuke';
-    var City_to_edit = 'Wilmington';
-    var City_edit_to = 'Rockville';
-    var Country_to_edit = 'United States';
-    var Country_edit_to = 'Nepal';
-    var State_to_edit = 'North Carolina';
-    var State_edit_to = 'Bagmati';
-    var Postal_edit_to = '20008';
+    var login = new loginPage();
+    var menuItem = new menuItemList();
+    var addOrg = new addOrganizationPage();
+    var searchOrg = new listOfOrganizationPage();
+    var selectItem =new mainSelectItemPage;
+    var projectFunctions = new projectFunctionsPage();
+    var sourceStatus = 'Pending';
+    var addressEdited = '9605 Medical Center Drive';
+    var address2Edited = '1988 S 16th add2 Edited';
+    var phoneEdited = '240-276-6978';
+    var emailEdited = 'test@test.com';
+    var cityEdited = 'Wilmington Edited';
+    var countryEdited = 'Nepal';
+    var stateEdited = 'Bagmati';
+    var stateEditedforUS = 'Maryland';
+    var postalEdited = '20008';
 
 
     /*
@@ -52,20 +51,35 @@ module.exports = function() {
 
 
     this.Given(/^I know which organization I want to delete$/, function (callback) {
-        browser.sleep(300).then(callback);
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function(){
+            menuItem.clickWriteMode();
+            projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have searched for an organization and found the one I wish to delete$/, function (callback) {
-        MenuItemList.clickOrganizations();
-        MenuItemList.clickListOrganizations();
-        Search.setOrgName(Organization_to_search);
-        Search.clickSearchButton();
-        browser.sleep(250).then(callback);
+        cukeOrganization.then(function(value){
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.setOrgName(value);
+            searchOrg.clickSearchButton();
+            expect(projectFunctions.inSearchResults(value)).to.become('true');
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected the function Delete Organization$/, function (callback) {
-        element(by.linkText(Organization_to_edit)).click();
-        browser.sleep(250).then(callback);
+        cukeOrganization.then(function(value){
+            element(by.linkText(value)).click();
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I submit my delete request$/, function (callback) {

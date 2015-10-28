@@ -135,15 +135,6 @@
                     <td colspan="2"><%= user.username %></td>
                     <td colspan="3"><%= user.type %></td>
                     <td colspan="3"><%= user.role %></td>
-                    <% unless user.role.blank? %>
-                        <td colspan="3" class="success">
-                          <% unless user.get_privileges.blank? %>
-                            <%= user.get_privileges.collect{|x| x[:type]} %> &nbsp;
-                          <% end %>
-                        </td>
-                     <% else %>
-                        <td colspan="3"> &nbsp; </td>
-                     <% end %>
                     <% unless user.organization_id.blank? %>
                         <td colspan="3" class="info"><%= user.organization.name %>&nbsp; </td>
                     <% else %>

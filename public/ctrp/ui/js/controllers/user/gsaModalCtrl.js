@@ -6,31 +6,37 @@
     'use strict';
 
     angular.module('ctrpApp')
-        .controller('gsaCtrl', gsaCtrl);
+        .controller('gsaModalCtrl', gsaModalCtrl);
 
-    gsaCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$state','$sce',
-         '$timeout', 'LocalCacheService', 'UserService', 'gsaObj'];
+    gsaModalCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$state','$sce',
+         '$timeout', 'LocalCacheService', 'UserService', 'gsaObj', '$modalInstance'];
 
-    function gsaCtrl($scope, $http, $window, toastr, $state, $sce,
-                      $timeout, LocalCacheService, UserService, gsaObj) {
+    function gsaModalCtrl($scope, $http, $window, toastr, $state, $sce,
+                      $timeout, LocalCacheService, UserService, gsaObj, $modalInstance) {
         var vm = this;
         //console.log('received loginBulletin: ' + JSON.stringify(loginBulletin));
 
+        console.log("In Child Modal");
 
         vm.gsa = gsaObj.gsa;
         vm.userType = UserService.getUserType();
         console.log('userType: ' + JSON.stringify(vm.userType));
 
+        console.log('gsa: ' + JSON.stringify(vm.gsa));
+
         vm.accept = function() {
             console.log('ACCEPT');
+            $modalInstance.close();
             $state.go('main.defaultContent');
+
         };
 
         vm.reject = function() {
             console.log('REJECT');
+            $modalInstance.dismiss('cancel');
             UserService.logout();
         };
-
+        
     }
 
 

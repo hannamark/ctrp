@@ -36,6 +36,7 @@ module.exports = function() {
     this.Given(/^I know which organization I want to edit$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
@@ -46,7 +47,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have searched for an organization and found the one I wish to edit$/, function (callback) {
+    this.Given(/^I have searched for a CTRP organization and found the one I wish to edit$/, function (callback) {
         cukeOrganization.then(function(value){
             menuItem.clickOrganizations();
             menuItem.clickListOrganizations();

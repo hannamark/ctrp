@@ -1,13 +1,23 @@
 [
   {
-    "description": "As any Curator, I am able to search for organizations by PO Organization ID",
+    "description": "As a Curator, I can select any organization in a search result and display the detailed organization information",
     "assertions": [
       {
-        "passed": false,
-        "errorMsg": "Organization link did not appear\nWait timed out after 10050ms",
-        "stackTrace": "Error: Organization link did not appear\nWait timed out after 10050ms\n  at /Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:1630:20\n  at [object Object].promise.ControlFlow.runInFrame_ (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:1877:20)\n  at [object Object].promise.Callback_.goog.defineClass.notify (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:2464:25)\n  at [object Object].promise.Promise.notify_ (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:563:12)\n  at Array.forEach (native)\n  at Object.goog.array.forEach (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/goog/array/array.js:203:43)\n  at [object Object].promise.Promise.notifyAll_ (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:552:16)\n  at goog.async.run.processWorkQueue (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/goog/async/run.js:125:21)\n  at runMicrotasksCallback (node.js:337:7)\n  at process._tickDomainCallback (node.js:381:11)\n\nFrom: Task: Organization link did not appear\n  at [object Object].promise.ControlFlow.wait (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:1617:15)\n  at [object Object].webdriver.WebDriver.wait (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/webdriver.js:714:21)\n  at [object Object].to.(anonymous function) [as wait] (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/lib/protractor.js:64:25)\n  at [object Object].wait (/local/content/ctrp/apps/ctrp/features/support/helper.js:26:17)\n  at [object Object].clickLink (/local/content/ctrp/apps/ctrp/features/support/helper.js:83:14)\n  at [object Object].clickOrganizations (/local/content/ctrp/apps/ctrp/features/support/PoCommonBar.js:64:16)\n  at [object Object].createOrganization (/local/content/ctrp/apps/ctrp/features/support/projectMethods.js:52:18)\n  at /local/content/ctrp/apps/ctrp/features/step_definitions/PO F2 Search for Organizations.js:151:30\n  at [object Object].promise.ControlFlow.runInFrame_ (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:1877:20)\n  at [object Object].promise.Callback_.goog.defineClass.notify (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:2464:25)\n  at [object Object].promise.Promise.notify_ (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:563:12)\n  at Array.forEach (native)\n  at Object.goog.array.forEach (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/goog/array/array.js:203:43)\n  at [object Object].promise.Promise.notifyAll_ (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/webdriver/promise.js:552:16)\n  at goog.async.run.processWorkQueue (/Users/singhs10/.nvm/versions/node/v0.12.7/lib/node_modules/protractor/node_modules/selenium-webdriver/lib/goog/async/run.js:125:21)\n  at runMicrotasksCallback (node.js:337:7)\n  at process._tickDomainCallback (node.js:381:11)\n"
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
       }
     ],
-    "duration": 15879116558
+    "duration": 60456030433
   }
 ]

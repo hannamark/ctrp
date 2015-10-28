@@ -37,6 +37,9 @@ AddOrganizationsPage = function(){
     this.addVerifyEditHeader = element(by.css('h4[ng-if="!orgDetailView.curOrg.new"]'));
     this.verifyAddedOrgAlias = element.all(by.binding('nameAlias.name'));
     this.addOrgCTRPID = element(by.binding('orgDetailView.curOrg.ctrp_id'));
+    this.addOrgFieldLabel = element.all(by.css('.control-label.col-xs-12.col-sm-3'));
+    this.addOrgFieldLabelPostalCode = element(by.css('.control-label.col-xs-12.col-sm-2'));
+    this.addOrgFieldLabelFax = element(by.css('.control-label.col-xs-12.col-sm-1'));
     var addHeader = 'Add Organization';
     var editHeader = 'Edit Organization';
 
@@ -176,6 +179,31 @@ AddOrganizationsPage = function(){
         this.setAddPhone(phone);
         this.setAddFax(fax);
         this.clickSave();
+    };
+
+    /**********************************
+     * Method: Verify the labels in Add Org
+     * @param labels
+     ***********************************/
+    this.verifyAddOrgLabels = function(labels) {
+        return this.addOrgFieldLabel.filter(function(name) {
+            return name.getText().then(function(text) {
+                return text === labels ;
+            });
+        }).then(function(filteredElements) {
+            // Only the elements that passed the filter will be here. This is an array.
+            if(filteredElements.length > 0) {
+                return 'true';}
+            else {return 'false';}
+        });
+    };
+
+    this.verifyAddOrgPostalCodeLabel = function() {
+        expect(this.addOrgFieldLabelPostalCode.getText()).to.eventually.equal('Postal Code:');
+    };
+
+    this.verifyAddOrgFaxLabel = function() {
+        expect(this.addOrgFieldLabelFax.getText()).to.eventually.equal('Fax:');
     };
 
 };

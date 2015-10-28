@@ -28,6 +28,7 @@ module.exports = function() {
     this.Given(/^I know the name of the alias I wish to add for an organization$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         browser.driver.wait(function(){
             console.log('wait here');
             return true;

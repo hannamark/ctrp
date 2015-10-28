@@ -4,8 +4,7 @@ Feature: As any CTRP User, I am able to Search for Persons by various criteria
 Scenario outline: #1 I am able to search for organizations in CTRP
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Persons"
-When I provide the <CTRP Person ID> of the Person
-And I provide the <CTEP Person ID> of the Person
+When I provide the <Source ID> of the Person
 And I provide the <First Name> of the Person
 And I provide the <Last Name> of the Person
 And I provide the <Email> of the Person
@@ -14,7 +13,7 @@ And I provide the <State> of the Person
 And I provide the <Organization Affiliation> of the Person
 And I submit my search request
 Then the system should display the organization with that PO Organization ID
-And the Person Search Results will display the follwing sorted by Person Last Name:
+And the Person Search Results will display the following active Person records sorted by Person Last Name:
 |PO PersonID|
 |CTEP Person ID|
 |First Name|
@@ -27,22 +26,15 @@ And the Person Search Results will display the follwing sorted by Person Last Na
 |Organization Affiliation|
 
 Example:
-|CTRP Person ID	||CTEP Person ID||First Name	||Last Name	||Email         ||City		||State		||Organization Affiliation||Result	|
-|23880989	||		||		||		||		||		||		||			  ||True	|
-|		||		||Jose		||Galvez	||		||		||		||			  ||True	|
-|		||		||		||		||		||Rockville	||MD		||			  ||True	|
-|		||		||		||		||galvezjj@mail.nih.gov||	||		||			  ||True	|
-|		||		||		||		||		||		||CT		||			  ||True	|
-|		||		||		||		||		||		||		||National Cancer Institute||True	|
-
-Scenario: #2 I can request the creation of a new Person record
-Given I am logged into the CTRP Registration application
-And I have selected the option "Search Person"
-And I searched for the desired Person
-When I do not find the Person that I need for registration
-Then I can request the creation of a new Person record by providing the First Name, Last Name, Email, City, State/Province, Country and Organization Affiliation of the Person
-And requesting that a new Person record be created
-
+|Source ID	||First Name	||Last Name	||Email         ||City		||State		||Organization Affiliation||Result	|
+|		||		||		||		||		||		||			  ||At least one selection value must be entered prior to running the search|
+|23880989	||		||		||		||		||		||			  ||True	|
+|		||Jose		||Galvez	||		||		||		||			  ||True	|
+|		||Jos		||Gal    	||		||		||		||			  ||True	|
+|		||		||		||		||Rockville	||Maryland	||			  ||True	|
+|		||		||		||galvezjj@mail.nih.gov||	||		||			  ||True	|
+|		||		||		||		||		||CT		||			  ||True	|
+|		||		||		||		||		||		||National Cancer Institute||True	|
 
 
 
