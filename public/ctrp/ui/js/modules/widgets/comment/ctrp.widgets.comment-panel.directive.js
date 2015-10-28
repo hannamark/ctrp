@@ -8,10 +8,10 @@
   angular.module('ctrpApp.widgets')
   .directive('ctrpComment', ctrpComment);
 
-  ctrpComment.$inject = ['$compile', '$log', 'CommentService',
+  ctrpComment.$inject = ['$compile', '$log', 'CommentService', '$timeout',
       'UserService', '$mdSidenav', '$mdUtil', '$mdToast', '$document'];
 
-  function ctrpComment($compile, $log, CommentService, UserService,
+  function ctrpComment($compile, $log, CommentService, $timeout, UserService,
       $mdSidenav, $mdUtil, $mdToast, $document) {
 
     var directive = {
@@ -121,6 +121,7 @@
           vm.comment.content = '';
           if (response.server_response.status == 201) {
             fetchComments(); //fetch the latest comments
+            toggleCommentFormShown(); //wait half second
             showToastr('Comment created', 'right');
           }
           // console.log('created comment response: ' + JSON.stringify(response));
@@ -148,9 +149,12 @@
 
 
 
-      function toggleCommentFormShown() {
-        vm.showCommentForm = !vm.showCommentForm;
-      }
+      function toggleCommentFormShown(timeToWait) {
+        var time = timeToWait && timeToWait > 0 ? timeToWait : 0;
+        $timeout(function() {
+            vm.showCommentForm = !vm.showCommentForm;
+        }, time);
+      } //toggleCommentFormShown
 
     } //commentCtrl
 
@@ -207,9 +211,12 @@
             return comment;
           });
       }
-      console.log('after annotation: ' + JSON.stringify(annotatedComments));
+    //  console.log('after annotation: ' + JSON.stringify(annotatedComments));
       return annotatedComments;
-    }
+    } //annotateCommentIsEditable
+
+
+
 
   } //ctrpComment
 
