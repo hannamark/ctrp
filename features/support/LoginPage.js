@@ -14,7 +14,8 @@ var LoginPage = function(){
     this.loginButton = element(by.css('button[ng-click="userView.authenticate()"]'));
     this.cancelButton = element(by.css('input[value="Reset"]'));
     this.logoutButton = element(by.css('a[ng-click="headerView.logOut()"]'));
-    this.acceptButton = element(by.css('.container.ng-scope>button:nth-child(2)'));
+    this.acceptButton = element(by.css('.btn.btn-primary'));
+    this.rejectButton = element(by.css('.btn.btn-warning'));
     var loginPageVerifyText = element(by.css('.panel-title'));
     var params = browser.params;
     var login = new helper();
@@ -61,6 +62,10 @@ var LoginPage = function(){
                 element(by.css('.container.ng-scope>button:nth-child(2)')).click();
             }
         });
+    };
+
+    this.pageRefresh = function() {
+        browser.refresh();
     };
 
     this.logout = function(){

@@ -25,7 +25,6 @@ exports.config = {
     },
 
 
-
     jasmineNodeOpts: {
         onComplete: null,
         isVerbose: true,
