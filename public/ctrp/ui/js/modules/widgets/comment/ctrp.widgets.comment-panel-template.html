@@ -1,4 +1,4 @@
-<button class="btn btn-primary pull-right" curation-field ng-click="commentView.toggleRight()" ng-show="buttonType !='icon'">
+<button class="btn btn-primary pull-right" ng-click="commentView.toggleRight()" ng-show="buttonType !='icon'">
   <ng-md-icon icon="comment" style="fill: white"></ng-md-icon>
   <span ng-if="commentView.commentList.length == 1">
       {{commentView.commentList.length}} Comment
@@ -10,7 +10,7 @@
 </button>
 <div class="sideNavBar">
   <div layout="column" class="relative" layout-fill role="main">
-    <md-button class="md-fab md-fab-top-right" curation-field style="background-color: #007299" aria-label="Comment"
+    <md-button class="md-fab md-fab-top-right" style="background-color: #007299" aria-label="Comment"
     ng-click="commentView.toggleRight()" ng-show="buttonType=='icon'">
       <ng-md-icon icon="comment"></ng-md-icon>
       <span flex ng-show="commentView.commentList.length > 0">
@@ -32,7 +32,7 @@
     </div>
   </md-toolbar>
   <div id="toastr_message"></div>
-  <md-button ng-show="!commentView.showCommentForm" ng-click="commentView.toggleCommentFormShown()">
+  <md-button curation-field ng-show="!commentView.showCommentForm" ng-click="commentView.toggleCommentFormShown()">
     <span flex>
       <ng-md-icon icon="edit" style="fill: blue" size="20"></ng-md-icon>
       Write a comment
@@ -91,7 +91,7 @@
         <div class="md-list-item-text">
           <p class="md-caption"><strong>{{comment.username}}</strong> commented ({{comment.created_at | date: "dd-MMM-yyyy H:mm"}}): </p>
           <h5 class="md-body-1" in-place-edit="comment.content" on-save="commentView.updateComment(comment.content, $index)"
-          template="/ctrp/ui/js/modules/widgets/comment/comment-in-place-edit.html">{{comment.content}}</h5>
+          template="/ctrp/ui/js/modules/widgets/comment/comment-in-place-edit.html" is-editable="comment.isEditable">{{comment.content}}</h5>
         </div>
       </div>
       </div>
