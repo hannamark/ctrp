@@ -11,6 +11,7 @@ var helperFunctions = require('../support/helper');
 
 var PoCommonBar = function(){
     this.home = element(by.css('a[href="#/main/welcome"]'));
+    this.homeEnterOrganizations = element(by.css('a[href="/ctrp/ui#/main/organizations"]'));
     this.organizations = element(by.linkText('Organizations & Families'));
     this.listOrganizations = element(by.css('a[ui-sref="main.organizations"]')); //element(by.css('a[href="#/main/organizations"]'));
     this.addOrganizations = element(by.css('a[href="#/main/new_organization"]'));
@@ -60,6 +61,12 @@ var PoCommonBar = function(){
     this.clickHome = function(){
         helper.clickLink(this.home, "Home link");
     };
+
+
+    this.clickHomeEnterOrganizations = function(){
+        helper.clickLink(this.homeEnterOrganizations, "Home link");
+    };
+
 
     this.clickOrganizations = function(){
         helper.clickLink(this.organizations, "Organization link");

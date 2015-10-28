@@ -33,6 +33,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrg1', 'alias', 'add1', 'add2', 'United States', 'Florida', 'avenue', '24567', 's@s.com', '222-4444-555', '444-6666-555');
             storeOrg1 = cukeOrganization.then(function(value) {
@@ -72,6 +73,7 @@ module.exports = function() {
         browser.get('ui#/main/sign_in');
         login.login('ctrpadmin', 'Welcome01');
         login.accept();
+        menuItem.clickHomeEnterOrganizations();
         login.clickWriteMode();
         browser.sleep(25).then(callback);
     });
@@ -152,6 +154,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrgPOID', 'alias', 'add1', 'add2', 'United States', 'Florida', 'avenue', '24567', 's@s.com', '222-4444-555', '444-6666-555');
             browser.driver.wait(function() {
@@ -197,6 +200,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createFamilyWithMembers('shiFam','Active','NIH','shiFamOrg','','','');
         });
@@ -226,6 +230,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrgCity','alias','add1','add2','United States','Florida','cityAvenue','24567','s@s.com','222-4444-555','444-6666-555');
         });
@@ -250,6 +255,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrgState','alias','add1','add2','Andorra','Canillo','cityAvenue','24567','s@s.com','222-4444-555','444-6666-555');
         });
@@ -275,6 +281,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrgCountry','alias','add1','add2','Malta','Isla','cityAvenue','24567','s@s.com','222-4444-555','444-6666-555');
         });
@@ -299,6 +306,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrgZip','alias','add1','add2','Malta','Isla','cityAvenue','99999','s@s.com','222-4444-555','444-6666-555');
         });
@@ -323,6 +331,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrgPhone','alias','add1','add2','Malta','Isla','cityAvenue','99999','s@s.com','007-7777-777','444-6666-555');
         });
@@ -347,6 +356,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrgMulti','alias','add1','add2','Palau','Airai','cityAvenueM','88888','sem@s.com','008-8888-888','444-6666-555');
         });
@@ -393,6 +403,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrgCuDate','alias','add1','add2','Palau','Airai','cityAvenueM','88888','sem@s.com','008-8888-888','444-6666-555');
         });
@@ -403,6 +414,7 @@ module.exports = function() {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
+        menuItem.clickHomeEnterOrganizations();
         login.clickWriteMode();
         browser.sleep(25).then(callback);
     });
@@ -429,6 +441,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrgCuName','alias','add1','add2','Palau','Airai','cityAvenueM','88888','sem@s.com','008-8888-888','444-6666-555');
         });
@@ -611,6 +624,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createFamilyWithMembers('shiFam','Active','NIH','shiFamOrg','','','');
         });
@@ -655,6 +669,7 @@ module.exports = function() {
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
             projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
         });
