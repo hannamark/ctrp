@@ -35,6 +35,7 @@
             'FAMILY_STATUSES':'/ctrp/family_statuses.json',
             'FAMILY_TYPES':'/ctrp/family_types.json',
             'FAMILY_RELATIONSHIPS' :'/ctrp/family_relationships.json',
+            'UNIQUE_FAMILY' : '/ctrp/families/unique',
             'TRIAL_LIST': '/ctrp/registry/trials.json',
             'A_TRIAL': '/ctrp/registry/trials/',
             'SEARCH_TRIAL': '/ctrp/registry/trials/search.json',

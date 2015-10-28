@@ -8,12 +8,12 @@ chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 var LoginPage = require('../support/LoginPage');
 var ListOfPeoplePage = require('../support/ListOfPeoplePage');
-var MenuItem = require('../support/PoCommonBar');
+var MenuItemList = require('../support/PoCommonBar');
 
 
 module.exports = function() {
     var Login = new LoginPage();
-    var MenuItemList = new MenuItem();
+    var menuItem = new MenuItemList();
     var Search = new ListOfPeoplePage();
 
     this.Given(/^I know the name of the person I wish to search for$/, function (callback) {
@@ -24,8 +24,8 @@ module.exports = function() {
     });
 
     this.Given(/^I have selected the option to search for a person$/, function (callback) {
-        MenuItemList.clickPeople();
-        MenuItemList.clickListPeople();
+        menuItem.clickPeople();
+        menuItem.clickListPeople();
       //  setTimeout(callback,2000);
         browser.sleep(250).then(callback);
     });
@@ -43,19 +43,19 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all persons that contain the first name$/, function (callback) {
-        expect(MenuItemList.inResults(fName)).to.become('true').then(function(){callback();});
+        expect(menuItem.inResults(fName)).to.become('true').then(function(){callback();});
     });
 
     this.Then(/^the search results should display:$/, function (table, callback) {
-        expect(MenuItemList.inResultsHeader('CTRP ID')).to.become('true');
-        expect(MenuItemList.inResultsHeader('Source ID')).to.become('true');
-        expect(MenuItemList.inResultsHeader('First')).to.become('true');
-        expect(MenuItemList.inResultsHeader('Last')).to.become('true');
-        expect(MenuItemList.inResultsHeader('Middle')).to.become('true');
-        expect(MenuItemList.inResultsHeader('Email')).to.become('true');
-        expect(MenuItemList.inResultsHeader('Phone')).to.become('true');
-        expect(MenuItemList.inResultsHeader('Affiliated Orgs')).to.become('true');
-        expect(MenuItemList.inResultsHeader('Source Status')).to.become('true');
+        expect(menuItem.inResultsHeader('CTRP ID')).to.become('true');
+        expect(menuItem.inResultsHeader('Source ID')).to.become('true');
+        expect(menuItem.inResultsHeader('First')).to.become('true');
+        expect(menuItem.inResultsHeader('Last')).to.become('true');
+        expect(menuItem.inResultsHeader('Middle')).to.become('true');
+        expect(menuItem.inResultsHeader('Email')).to.become('true');
+        expect(menuItem.inResultsHeader('Phone')).to.become('true');
+        expect(menuItem.inResultsHeader('Affiliated Orgs')).to.become('true');
+        expect(menuItem.inResultsHeader('Source Status')).to.become('true');
         browser.sleep(250).then(callback);
     });
 
@@ -65,7 +65,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all persons that contain the last name$/, function (callback) {
-        expect(MenuItemList.inResults(lName)).to.become('true').then(function(){callback();});
+        expect(menuItem.inResults(lName)).to.become('true').then(function(){callback();});
     });
 
     this.Given(/^I know the CTEP ID of the person I wish to search for$/, function (callback) {
@@ -79,7 +79,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all persons that contain the CTEP Person ID$/, function (callback) {
-        expect(MenuItemList.inResults(CTEPID)).to.become('true').then(function(){callback();});
+        expect(menuItem.inResults(CTEPID)).to.become('true').then(function(){callback();});
     });
 
     this.Given(/^I know the PO Person ID of the person I wish to search for$/, function (callback) {
@@ -93,7 +93,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all persons that contain the PO Person ID$/, function (callback) {
-        expect(MenuItemList.inResults(CTRPID)).to.become('true').then(function(){callback();});
+        expect(menuItem.inResults(CTRPID)).to.become('true').then(function(){callback();});
     });
 
     this.Given(/^I know the email of the person I am searching$/, function (callback) {
@@ -107,7 +107,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all persons that have that email address$/, function (callback) {
-        expect(MenuItemList.inResults(email)).to.become('true').then(function(){callback();});
+        expect(menuItem.inResults(email)).to.become('true').then(function(){callback();});
     });
 
     this.Given(/^I know the phone number of the person$/, function (callback) {
@@ -116,8 +116,8 @@ module.exports = function() {
     });
 
     this.Given(/^I have selected the option to search for an person$/, function (callback) {
-        MenuItemList.clickPeople();
-        MenuItemList.clickListPeople();
+        menuItem.clickPeople();
+        menuItem.clickListPeople();
         browser.sleep(250).then(callback);
     });
 
@@ -127,7 +127,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all persons with matching phone number$/, function (callback) {
-        expect(MenuItemList.inResults(phone)).to.become('true').then(function(){callback();});
+        expect(menuItem.inResults(phone)).to.become('true').then(function(){callback();});
     });
 
     this.Given(/^I know the name of the organization I want to use in the search$/, function (callback) {
@@ -155,8 +155,8 @@ module.exports = function() {
     });
 
     this.Given(/^I am on the search persons screen$/, function (callback) {
-        MenuItemList.clickPeople();
-        MenuItemList.clickListPeople();
+        menuItem.clickPeople();
+        menuItem.clickListPeople();
         browser.sleep(250).then(callback);
     });
 
@@ -196,12 +196,12 @@ module.exports = function() {
     });
 
     this.Then(/^in the search result for first name (.*), last name (.*), PO Person ID (.*), CTEP Person ID (.*), Person email (.*), and Person affiliated organization (.*) it shall return result (.*)$/, function (firstName, lastName, POPersonID, CTEPPersonID, PersonEmail, PersonAffiliatedOrganization, result, callback) {
-        expect(MenuItemList.inResults(firstName)).to.become(result);
-        expect(MenuItemList.inResults(lastName)).to.become(result);
-        expect(MenuItemList.inResults(POPersonID)).to.become(result);
-        expect(MenuItemList.inResults(CTEPPersonID)).to.become(result);
-        expect(MenuItemList.inResults(PersonEmail)).to.become(result);
-        expect(MenuItemList.inResults(PersonAffiliatedOrganization)).to.become(result);
+        expect(menuItem.inResults(firstName)).to.become(result);
+        expect(menuItem.inResults(lastName)).to.become(result);
+        expect(menuItem.inResults(POPersonID)).to.become(result);
+        expect(menuItem.inResults(CTEPPersonID)).to.become(result);
+        expect(menuItem.inResults(PersonEmail)).to.become(result);
+        expect(menuItem.inResults(PersonAffiliatedOrganization)).to.become(result);
         browser.sleep(250).then(callback);
     });
 

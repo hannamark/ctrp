@@ -118,7 +118,7 @@
                         // LocalCacheService.cacheItem("app_version", data.application_version);
                         LocalCacheService.cacheItem("user_role", data.role); //e.g. ROLE_SUPER
                         LocalCacheService.cacheItem("user_type", data.user_type); //e.g. LocalUser
-                        LocalCacheService.cacheItem("curation_supported", data.privileges.curation_supported || false);
+                        LocalCacheService.cacheItem("write_mode", data.privileges.write_mode || false);
                         LocalCacheService.cacheItem("curation_enabled", false); //default: curation mode is off/false
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg("signedIn");
@@ -176,7 +176,7 @@
             console.log('User List: ' + JSON.stringify(user_list));
             return user_list
             // }
-        } //searchUsers
+        }; //searchUsers
 
         /**
          * get initial paramater object for people search
@@ -184,12 +184,12 @@
          */
         this.getInitialUserSearchParams = function () {
             return initUserSearchParams;
-        } //getInitialUserSearchParams
+        }; //getInitialUserSearchParams
 
 
         this.getGridOptions = function () {
             return gridOptions;
-        }
+        };
 
 
         /**
@@ -197,12 +197,12 @@
          */
         this.getLoggedInUsername = function () {
             return LocalCacheService.getCacheWithKey('username') || '';
-        }
+        };
 
         this.getUserDetailsByUsername = function (username) {
             var username = LocalCacheService.getCacheWithKey('username');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
-        } //getUserByName
+        }; //getUserByName
 
 
         /**
@@ -289,7 +289,7 @@
          *
          */
         this.isCurationSupported = function () {
-            return LocalCacheService.getCacheWithKey("curation_supported"); //TODO: change true to data.curation_supported
+            return LocalCacheService.getCacheWithKey("write_mode"); //TODO: change true to data.write_mode
         };
 
 

@@ -40,6 +40,8 @@ module.exports = function() {
     this.Given(/^I know which Person record I want to edit$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        menuItem.clickHomeEnterOrganizations();
         menuItem.clickWriteMode();
         projectFunctions.createPerson('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555');
         browser.sleep(25).then(callback);
@@ -147,11 +149,13 @@ module.exports = function() {
     this.Given(/^I know which Person with affiliated Organization record I want to edit$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
         }, 4000)
             .then(function(){
+                menuItem.clickHomeEnterOrganizations();
                 menuItem.clickWriteMode();
                 projectFunctions.createPersonWithAffiliatedOrg('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555','ShiOrg','','');
             });
