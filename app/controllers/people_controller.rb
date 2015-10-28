@@ -143,21 +143,28 @@ class PeopleController < ApplicationController
   #Method to check for Uniqueness while creating persons - check on First & Last name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
   def unique
     print params[:person_fname]
-    print params[:person_mname]
+    print params[:person_lname]
+    print params[:source_context_id]
+    print params[:person_exists]
 
 #    exists = false
     is_unique = true
     count = 0
 
-    if params.has_key?(:person_fname) && params.has_key?(:person_lname)
-#     exists =  Person.exists?(fname: params[:person_fname], lname: params[:person_lname]);
-      count = Person.where("lower(fname)=?", params[:person_fname].downcase).where("lower(lname)=?",params[:person_lname].downcase).count
-    end
+      if params.has_key?(:person_fname) && params.has_key?(:person_lname) && params.has_key?(:source_context_id)
+  #     exists =  Person.exists?(fname: params[:person_fname], lname: params[:person_lname]);
+        count = Person.where("lower(fname)=?", params[:person_fname].downcase).where("lower(lname)=?",params[:person_lname].downcase).where("source_context_id=?", params[:source_context_id]).count;
+      end
 
-#    is_unique = !exists
-    if count > 0
-      is_unique = false
-    end
+      print "count"
+      print count
+
+      # For an existing person, the number of people with the same name should be 2 or more to qualify as duplicate
+      if params[:person_exists] == true && count > 1
+        is_unique = false
+      elsif params[:person_exists] == false && count > 0
+        is_unique = false
+      end
 
     p "is unique?"
     p is_unique
