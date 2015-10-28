@@ -77,15 +77,15 @@
                 url: '/main',
                 views: {
                     '': {
-                        templateUrl: '/ctrp/ui/partials/main_content_frame.html'
+                        templateUrl: '/ctrp/ui/partials/mainContentFrame.html'
                     },
 
-                    'right_panel@main': {
-                        templateUrl: '/ctrp/ui/partials/right_panel.html'
+                    'rightPanel@main': {
+                        templateUrl: '/ctrp/ui/partials/rightPanel.html'
                     },
 
-                    'main_content@main': {
-                        templateUrl: '/ctrp/ui/partials/main_content.html'
+                    'mainContent@main': {
+                        templateUrl: '/ctrp/ui/partials/mainContent.html'
                     }
                 },
                 ncyBreadcrumb: {
@@ -193,6 +193,7 @@
                     ncyBreadcrumb: {
                         parent: '',
                         label: 'CTRP Sign In',
+                        skip: true,
 
                     }
                 })
