@@ -77,15 +77,15 @@
                 url: '/main',
                 views: {
                     '': {
-                        templateUrl: '/ctrp/ui/partials/main_content_frame.html'
+                        templateUrl: '/ctrp/ui/partials/mainContentFrame.html'
                     },
 
-                    'right_panel@main': {
-                        templateUrl: '/ctrp/ui/partials/right_panel.html'
+                    'rightPanel@main': {
+                        templateUrl: '/ctrp/ui/partials/rightPanel.html'
                     },
 
-                    'main_content@main': {
-                        templateUrl: '/ctrp/ui/partials/main_content.html'
+                    'mainContent@main': {
+                        templateUrl: '/ctrp/ui/partials/mainContent.html'
                     }
                 },
                 ncyBreadcrumb: {
@@ -96,7 +96,8 @@
 
                 .state('main.defaultContent', {
                     url: '/welcome',
-                    templateUrl: '/ctrp/ui/partials/welcome_content.html',
+                    templateUrl: '/ctrp/ui/partials/welcome/welcomeContent.html',
+                    controller: 'headerNavigationCtrl as headerView',
                     ncyBreadcrumb: {
                         label: 'Home'
                     }
@@ -191,8 +192,9 @@
                     },
                     ncyBreadcrumb: {
                         parent: '',
-                        label: 'Sign in',
-                        skip: true
+                        label: 'CTRP Sign In',
+                        skip: true,
+
                     }
                 })
 
@@ -256,11 +258,12 @@
                         userDetailObj : function(UserService) {
                             return UserService.getUserDetailsByUsername();
                         }
-                    }//, //resolve the promise and pass it to controller
-                    //ncyBreadcrumb: {
-                    //    parent: 'main.people',
-                    //     label: 'Person Detail'
-                    //  }
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        label: 'User Profile',
+
+                    }
+
                 })
 
                 .state('main.families', {

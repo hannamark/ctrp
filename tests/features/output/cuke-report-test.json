@@ -1,0 +1,23 @@
+[
+  {
+    "description": "As a Curator, I can select any organization in a search result and display the detailed organization information",
+    "assertions": [
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      }
+    ],
+    "duration": 65192238597
+  }
+]

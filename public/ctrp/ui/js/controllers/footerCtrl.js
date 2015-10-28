@@ -6,11 +6,11 @@
     'use strict';
 
     angular.module('ctrpApp')
-        .controller('FooterCtrl', FooterCtrl);
+        .controller('footerCtrl', footerCtrl);
 
-    FooterCtrl.$inject = ['UserService', '$scope'];
+    footerCtrl.$inject = ['UserService', '$scope'];
 
-    function FooterCtrl(UserService, $scope) {
+    function footerCtrl(UserService, $scope) {
 
         var vm = this;
         $scope.appVersion = UserService.getAppVersion() || '';
@@ -25,6 +25,6 @@
             //console.log('updated app release milestone in footer: ' + vm.appRelMilestone);
         });
 
-    } //FooterCtrl
+    } //footerCtrl
 
 })();
