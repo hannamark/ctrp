@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         post 'search'
         post 'select'
         post 'curate'
+        post 'unique', defaults: {format: 'json'}
       end
     end
 

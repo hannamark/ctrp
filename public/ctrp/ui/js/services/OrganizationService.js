@@ -119,7 +119,8 @@
             preparePOAffiliationArr: preparePOAffiliationArr,
             initSelectedOrg: initSelectedOrg,
             curateOrg: curateOrg,
-            findContextId: findContextId
+            findContextId: findContextId,
+            checkUniqueOrganization: checkUniqueOrganization
         };
 
         return services;
@@ -374,6 +375,16 @@
                 ctrpContextId = ctrpContextArr[needleIndex].id || -1;
             }
             return ctrpContextId;
+        }
+
+
+        /**
+         * Check if an Organization name is unique - based on Name & Source context
+         *
+         * @param curationObject, JSON object: {'org_name': '', 'source_context_id': ''}
+         */
+        function checkUniqueOrganization(name) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.UNIQUE_ORG, name);
         }
 
 
