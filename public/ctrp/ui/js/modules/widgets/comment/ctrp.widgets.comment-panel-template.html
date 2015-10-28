@@ -39,7 +39,8 @@
     </span>
   </md-button>
   <md-content layout="column" layout-padding>
-    <form name="commentForm" class="animated-item" ng-show="commentView.showCommentForm" novalidate>
+    <section ng-show="commentView.showCommentForm">
+    <form name="commentForm" class="animated-item" novalidate>
 
       <div layout layout-sm="column">
         <!-- <md-input-container flex>
@@ -76,6 +77,7 @@
       <!-- </section> -->
 
     </form>
+  </section>
     <section layout="row">
       <br />
     </section>

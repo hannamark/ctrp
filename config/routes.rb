@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       collection do
             get 'search'
             post 'search'
-            post 'unique'
+            post 'unique', defaults: {format: 'json'}
           end
     end
 
@@ -74,7 +74,7 @@ Rails.application.routes.draw do
         get 'search'
         post 'search'
         post 'curate'
-        post 'unique'
+        post 'unique', defaults: {format: 'json'}
       end
     end
 
