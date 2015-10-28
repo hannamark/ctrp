@@ -562,3 +562,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     position: absolute;
     margin-left: -15px;
 }
+.nonselectable-row-css-class {
+    color: orangered;
+    background-color: red !important;
+}

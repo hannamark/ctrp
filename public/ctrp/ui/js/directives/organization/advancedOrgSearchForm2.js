@@ -183,10 +183,11 @@
                 // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
                 var isActive = rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1;
                 var isNullified = rowEntity.source_status && rowEntity.source_status.indexOf('Nul') > -1;
-                if (isNullified || isActive) {
+                if (isNullified || isActive || !rowEntity.nullifiable) {
                     //warning to user for nullifying active entity
-
-                    if (isActive)
+                    if (!rowEntity.nullifiable)
+                        $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
+                    else if (isActive)
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
                     else
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
@@ -215,6 +216,11 @@
                 });
 
             }; //commitNullification
+
+            $scope.rowFormatter = function( row ) {
+                var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                return isCTEPContext;
+            };
 
             /**
              * Open calendar
@@ -369,6 +375,7 @@
              */
             function rowSelectionCallBack(row) {
 
+
                 if ($scope.maxRowSelectable > 0 && $scope.curationShown || $scope.usedInModal) {
                     if (row.isSelected) {
 
@@ -446,6 +453,14 @@
             /* prepare grid layout and data options */
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions();
+                $scope.gridOptions.isRowSelectable = function (row) {
+                    var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                    if (isCTEPContext) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                };
                 $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableVerticalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
