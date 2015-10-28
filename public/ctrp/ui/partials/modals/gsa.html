@@ -6,10 +6,8 @@
         <p>{{gsaView.gsa}}</p>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="gsaView.accept()">Accept</button>
-
-        <button class="btn btn-warning" type="button" ng-click="gsaView.reject()">Reject</button>
-
+        <div class="btn-toolbar">
+            <button class="btn btn-primary pull-right" type="button" ng-click="gsaView.accept()">Accept</button>
+            <button class="btn btn-danger pull-right" type="button" ng-click="gsaView.reject()">Reject</button>
+        </div>
     </div>
-
-
