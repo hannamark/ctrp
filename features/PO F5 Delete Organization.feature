@@ -1,6 +1,7 @@
   @PO @Global
   Feature: Delete Organization
 
+  @runthis
   Scenario: As a PO Curator, I can Delete an Organization with no Trial Records
     Given I know which organization I want to delete
     And I am logged in to CTRP PO application

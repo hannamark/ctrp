@@ -19,8 +19,8 @@ var helper = function() {
     this.verifyLoginName = element(by.binding('headerView.username'));
 
     var exp_del_bttn_pg_hdr = 'Delete button on Organization page';
-    var header_Page_Text = '              Clinical Trials Reporting Program';
-    this.header_Page = element(by.css('span[style="font-size:large;font-weight:bold;"]'));
+    var header_Page_Text = 'Clinical Trials Reporting Program';
+    this.header_Page = element(by.css('.sub-title')); //element(by.css('span[style="font-size:large;font-weight:bold;"]'));
 
     this.wait = function (element, label) {
         browser.wait(function () {
@@ -126,6 +126,10 @@ var helper = function() {
         this.wait(fieldName, errorMessage);
         expect(fieldName.getText()).to.eventually.equal(fieldValue);
         console.log(errorMessage + " - header value");
+    };
+
+    this.pageRefresh = function() {
+        browser.refresh();
     };
 
     function objToStringAll (obj) {
