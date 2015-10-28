@@ -146,6 +146,8 @@ class PeopleController < ApplicationController
     print params[:person_lname]
     print params[:source_context_id]
     print params[:person_exists]
+    print "Person ID "
+    print params[:person_id]
 
 #    exists = false
     is_unique = true
@@ -156,17 +158,32 @@ class PeopleController < ApplicationController
         count = Person.where("lower(fname)=?", params[:person_fname].downcase).where("lower(lname)=?",params[:person_lname].downcase).where("source_context_id=?", params[:source_context_id]).count;
       end
 
-      print "count"
+      print "count "
       print count
 
       # For an existing person, the number of people with the same name should be 2 or more to qualify as duplicate
-      if params[:person_exists] == true && count > 1
-        is_unique = false
+      if params[:person_exists] == true
+        @dbPerson = Person.find(params[:person_id]);
+        if @dbPerson != nil
+          print " db person "
+          print @dbPerson.fname
+          print @dbPerson.lname
+
+          if params[:person_fname] == @dbPerson.fname && params[:person_lname] == @dbPerson.lname
+            print " both are equal. Must not warn "
+            is_unique = true;
+          else
+             if count > 0
+              print " both are different. Must warn. "
+              is_unique = false
+             end
+          end
+        end
       elsif params[:person_exists] == false && count > 0
         is_unique = false
       end
 
-    p "is unique?"
+    p " is unique? "
     p is_unique
 
     respond_to do |format|
