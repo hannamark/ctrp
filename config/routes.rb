@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       collection do
             get 'search'
             post 'search'
+            post 'unique'
           end
     end
 

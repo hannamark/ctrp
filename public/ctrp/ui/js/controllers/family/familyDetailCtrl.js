@@ -236,6 +236,34 @@
         } //populateFamilyMemberships
 
 
+        //Function that checks if a Family name is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the families/unique Rails end point.
+        $scope.checkForNameUniqueness = function(){
+
+            var ID = 0;
+            if(angular.isObject(familyDetailObj))
+                ID = vm.curFamily.id;
+
+            var searchParams = {"family_name": vm.curFamily.name,"family_exists": angular.isObject(familyDetailObj), "family_id": ID};
+            console.log('Family name is ' + vm.curFamily.name);
+            console.log('Family exists? ' + angular.isObject(familyDetailObj));
+            console.log('Family ID ' + ID);
+
+            vm.showUniqueWarning = false
+
+            var result = FamilyService.checkUniqueFamily(searchParams).then(function (response) {
+                vm.name_unqiue = response.name_unique;
+
+                if(!response.name_unique && vm.curFamily.name.length > 0)
+                    vm.showUniqueWarning = true
+
+                console.log("Is Famiily name unique: " +  vm.name_unqiue);
+                console.log(JSON.stringify(response));
+            }).catch(function (err) {
+                console.log("error in checking for duplicate family name " + JSON.stringify(err));
+            });
+        };
+
+
 
     }
 

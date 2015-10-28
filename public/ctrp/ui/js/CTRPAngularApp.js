@@ -192,7 +192,7 @@
                     },
                     ncyBreadcrumb: {
                         parent: '',
-                        label: 'Sign in',
+                        label: 'CTRP Sign In',
 
                     }
                 })
@@ -257,11 +257,12 @@
                         userDetailObj : function(UserService) {
                             return UserService.getUserDetailsByUsername();
                         }
-                    }//, //resolve the promise and pass it to controller
-                    //ncyBreadcrumb: {
-                    //    parent: 'main.people',
-                    //     label: 'Person Detail'
-                    //  }
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        label: 'User Profile',
+
+                    }
+
                 })
 
                 .state('main.families', {

@@ -118,10 +118,8 @@
             right: 0em;
             width: 100%;
             padding: 0.4em;
-            font-weight: 300;
             text-transform: uppercase;
             font-size: small;
-            opacity: 0.6;
         }
 
         .pdsa-summary-block .summary-footer a {
@@ -141,7 +139,7 @@
                         <div ng-include src="'ui/partials/welcome/allHome.html'"></div>
                     </div>
                     <div ng-if="headerView.userRole == 'ro'">
-                        <div ng-include src="'ui/partials/welcome/allHome.html'"></div>
+                        <div ng-include src="'ui/partials/welcome/roHome.html'"></div>
                     </div>
                     <div ng-if="headerView.userRole == 'super' || headerView.userRole == 'admin'">
                         <div ng-include src="'ui/partials/welcome/allHome.html'"></div>
