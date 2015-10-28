@@ -6,6 +6,8 @@
  * For example, to make an input field show only to ROLE_SUPER and ROLE_CURATOR:
  * <input name="first_name" available-to="ROLE_SUPER, ROLE_CURATOR" />
  *
+ * NOTE: be explicit on the user roles. The element won't be available to user roles not explicitly specified 
+ *
  */
 
 (function() {
