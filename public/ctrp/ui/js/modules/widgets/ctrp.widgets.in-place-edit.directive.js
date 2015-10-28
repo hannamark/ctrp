@@ -18,6 +18,7 @@
       var defaultTemplateUrl = '/ctrp/ui/js/modules/widgets/ctrp.widgets.in-place-edit.default_template.html';
       var directiveObj = {
         restrict: 'A',
+        transclude: true,
         scope: {
           model: '=inPlaceEdit',
           saveHandler: '&onSave'
@@ -73,11 +74,13 @@
         //Listen to the write-mode switch
         scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
           checkWriteMode();
+          // $compile(element.contents())(scope);
         });
 
         /* check for the global write mode */
         function checkWriteMode() {
           scope.writeModeEnabled = UserService.isCurationModeEnabled() || false;
+          scope.editMode = scope.writeModeEnabled == false ? false : scope.editMode;
         }
 
       } //linkerFn
