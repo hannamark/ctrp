@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .factory('FamilyService', FamilyService);
 
-    FamilyService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope'];
+    FamilyService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope','PromiseTimeoutService'];
 
-    function FamilyService(PromiseService, URL_CONFIGS, $log, $rootScope) {
+    function FamilyService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService) {
 
         var initFamilySearchParams = {
             name: "",
@@ -63,7 +63,8 @@
             getFamilyStatuses : getFamilyStatuses,
             getFamilyTypes : getFamilyTypes,
             getFamilyRelationships :getFamilyRelationships,
-            getAffiliatedOrgsByFamilyId :getAffiliatedOrgsByFamilyId
+            getAffiliatedOrgsByFamilyId :getAffiliatedOrgsByFamilyId,
+            checkUniqueFamily : checkUniqueFamily
         };
 
         return services;
@@ -194,6 +195,14 @@
             return PromiseService.deleteObjFromBackend(URL_CONFIGS.A_FAMILY + familyId + ".json");
         }
 
+        /**
+         * Check if a family name is unique
+         *
+         * @param curationObject, JSON object: {'family_name': ''}
+         */
+        function checkUniqueFamily(name) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.UNIQUE_FAMILY, name);
+        }
 
 
 
