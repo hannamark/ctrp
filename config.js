@@ -37,7 +37,7 @@ exports.config = {
     getPageTimeout: 50000,
 
     specs: [
-       //    'features/PO\ F2\ Search\ for\ Organizations.feature'
+    //       'features/PO\ F2\ Search\ for\ Organizations.feature'
     //    'features/PO\ F3\ Create\ an\ Organization.feature'
     //    'features/PO\ F4\ Edit\ Organization\ Information.feature' //Done updated
      //     'features/PO\ F5\ Delete\ Organization.feature',
@@ -50,8 +50,8 @@ exports.config = {
     //    'features/PO\ F7\ Edit\ Organization\ Family \Name.feature' //Done updated - has pending scenarios
     //    'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
     //    'features/PO\ F8\ Associate\ an\ Organization\ with\ a\ Family.feature'
-    //   'features/PO\ F15\ Add\ Organization\ Alias.feature'
-      'features/PO*.feature'
+  //      'features/PO\ F15\ Add\ Organization\ Alias.feature'
+      'features/*.feature'
      // 'features/test.feature'
 
     ],
@@ -61,7 +61,7 @@ exports.config = {
         format: 'json:tests/features/output/cuke-report-test.json',
         format: 'pretty',
         resultJsonOutputFile: 'true'
-     //   tags: '@runthis'
+      //  tags: '@runthis'
         /*     "@runThat",
         resultJsonOutputFile: 'true',
         tags: '@runthis'
@@ -73,5 +73,5 @@ exports.config = {
         "~@ignoreThis"]*/// or summary
     },
 
-    //resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
+    resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
 };
