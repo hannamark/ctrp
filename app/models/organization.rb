@@ -74,6 +74,19 @@ class Organization < ActiveRecord::Base
     return ctep_id_str
   end
 
+
+  def nullifiable
+    isNullifiable =true;
+    source_status_arr = []
+    source_status_arr = Organization.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:"source_status_id") if self.ctrp_id.present?
+    source_status_arr.each_with_index { |e, i|
+      if SourceStatus.find_by_id(e).code == "ACT"
+        isNullifiable = false;
+      end
+    }
+    return isNullifiable
+  end
+
   # Get an array of maps of the orgs with the same ctrp_id
   def cluster
     tmp_arr = []
@@ -233,7 +246,9 @@ class Organization < ActiveRecord::Base
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
     else
         if user_role != "ROLE_CURATOR"
-          value=value.gsub! /\s+/, '%'
+          if !value.match(/\s/).nil?
+            value=value.gsub! /\s+/, '%'
+          end
           joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value}%", "%#{value}%")
         else
           joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{value}", "#{value}")
