@@ -226,6 +226,34 @@
         }; //confirmDelete
 
 
+        //Function that checks if an Organization - based on Name & source context is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the organization/unique Rails end point.
+        $scope.checkUniqueOrganization = function(){
+
+            var ID = 0;
+            if(angular.isObject(orgDetailObj))
+                ID = vm.curOrg.id;
+
+            var searchParams = {"org_name": vm.curOrg.name, "source_context_id": vm.curOrg.source_context_id, "org_exists": angular.isObject(orgDetailObj), "org_id": ID};
+            console.log('Org name is ' + vm.curOrg.name);
+            console.log('Source context is ' + vm.curOrg.source_context_id);
+            console.log('Org exists? ' + angular.isObject(orgDetailObj));
+            console.log('Org ID ' + vm.curOrg.id);
+
+            vm.showUniqueWarning = false
+
+            var result = OrgService.checkUniqueOrganization(searchParams).then(function (response) {
+                vm.name_unqiue = response.name_unique;
+
+                if(!response.name_unique && vm.curOrg.name.length > 0)
+                    vm.showUniqueWarning = true
+
+                console.log("Is org name unique: " +  vm.name_unqiue);
+                console.log(JSON.stringify(response));
+            }).catch(function (err) {
+                console.log("error in checking for duplicate org name " + JSON.stringify(err));
+            });
+        };
+
     }
 
 
