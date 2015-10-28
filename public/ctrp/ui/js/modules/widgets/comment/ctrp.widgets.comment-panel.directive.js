@@ -73,12 +73,6 @@
       var vm = this;
       vm.commentList = [];
       vm.showCommentForm = false;
-      vm.comment = {
-        content: "", username: UserService.getLoggedInUsername(),
-        field: $scope.field, model: $scope.model || "",
-        instance_uuid: $scope.instanceUuid,
-        parent_id: ""
-      };
 
       //functions:
       vm.toggleRight = buildToggler('right');
@@ -98,11 +92,25 @@
 
 
       //implementations below
+
+      /** watch instanceUuid, fetch comments and initialize
+      * the comment object (to be posted)
+      * whenever the instanceUuid changes in the scope
+      */
       function watchInstanceUuid() {
         $scope.$watch(function() {return $scope.instanceUuid;}, function(newVal, oldVal) {
           if (newVal) {
             fetchComments();
           }
+          //initialize the vm.comment object
+          vm.comment = {
+            content: "",
+            username: UserService.getLoggedInUsername(),
+            field: $scope.field,
+            model: $scope.model || "",
+            instance_uuid: $scope.instanceUuid,
+            parent_id: ""
+          };
         }, true);
       } //watchInstanceUuid
 
