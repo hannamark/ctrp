@@ -69,7 +69,7 @@
         vm.resetForm = function () {
             $scope.organization_form.$setPristine();
 
-            var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id'];
+            var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id', 'cluster'];
             Object.keys(vm.curOrg).forEach(function (key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curOrg[key] = angular.isArray(vm.curOrg[key]) ? [] : '';
