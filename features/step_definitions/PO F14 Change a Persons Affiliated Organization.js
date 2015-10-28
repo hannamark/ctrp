@@ -28,6 +28,7 @@ module.exports = function() {
     this.Given(/^I know which person's organizational affiliation I want to change$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         browser.driver.wait(function(){
             console.log('wait here');
             return true;

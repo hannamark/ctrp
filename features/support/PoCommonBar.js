@@ -37,10 +37,10 @@ var PoCommonBar = function(){
     this.add_Person_Page = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.edit_Person_Page = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
     this.loginName = element(by.binding('headerView.username'));
-    this.writeMode =  element(by.css('.md-thumb'));
+    this.searchEmptyCriteria = element(by.binding('searchWarningMessage'));
 
 
-    this.searchResult = element.all(by.binding('grid.getCellValue(row, col) '));
+    this.searchResult = element.all(by.css('div[ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid"]'));//element.all(by.css('.ui-grid-row'));//element.all(by.binding('grid.getCellValue(row, col) '));
     this.searchHeader = element.all(by.binding(' col.displayName '));
 
     /*List parameters*/
@@ -134,9 +134,10 @@ var PoCommonBar = function(){
         });
     };
 
-    this.clickWriteMode = function(){
-        helper.clickButton(this.writeMode,"Role");
-    };
+    this.verifyEmptySearchCriteria = function(done){
+        expect(this.searchEmptyCriteria.getText()).to.eventually.equal('At least one selection value must be entered prior to running the search').and.notify(done);
+    }
+
 
 };
 

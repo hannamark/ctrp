@@ -31,6 +31,7 @@ module.exports = function() {
     this.Given(/^I know which organization I wish to assign to an Organization Family$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         menuItemList.clickWriteMode();
         addOrg.orgDefaultCreate('SSOrgCuke','','','','','','','','','','','');
         browser.sleep(250).then(callback);
@@ -105,6 +106,7 @@ module.exports = function() {
     this.Given(/^I know which Family I want to update$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         menuItemList.clickWriteMode();
         browser.sleep(250).then(callback);
     });

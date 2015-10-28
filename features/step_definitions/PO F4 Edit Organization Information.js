@@ -19,7 +19,7 @@ module.exports = function() {
     var menuItem = new menuItemList();
     var addOrg = new addOrganizationPage();
     var searchOrg = new listOfOrganizationPage();
-    var selectItem =new mainSelectItemPage;
+    var selectItem =new mainSelectItemPage();
     var projectFunctions = new projectFunctionsPage();
     var sourceStatus = 'Pending';
     var addressEdited = '1988 S 16th Edited';
@@ -36,17 +36,18 @@ module.exports = function() {
     this.Given(/^I know which organization I want to edit$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
         }, 4000).then(function(){
-                menuItem.clickWriteMode();
+                login.clickWriteMode();
             projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
             });
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have searched for an organization and found the one I wish to edit$/, function (callback) {
+    this.Given(/^I have searched for a CTRP organization and found the one I wish to edit$/, function (callback) {
         cukeOrganization.then(function(value){
             menuItem.clickOrganizations();
             menuItem.clickListOrganizations();

@@ -26,6 +26,9 @@ ListOfOrganizationsPage = function () {
      this.state = element(by.model('searchParams.state_province'));
      this.city = element(by.model('searchParams.city'));
      this.postalCode = element(by.model('searchParams.postal_code'));
+    this.orgUpdatedStartDate = element(by.model('searchParams.startDate'));
+    this.orgUpdatedEndDate = element(by.model('searchParams.endDate'));
+    this.orgUpdatedByName = element(by.model('searchParams.updated_by'));
      this.searchButton = element(by.css('#submission_btn'));//element(by.css('button[type="submit"]'));
      this.clearButton = element(by.buttonText('Clear'));
     this.orgModelSearch = element(by.id('org_search_modal'));
@@ -37,8 +40,9 @@ ListOfOrganizationsPage = function () {
     this.orgAffiliatedExpirationDate = element(by.model('org.expiration_date'));
     this.orgFamilyRelationship = element(by.model('org.family_relationship_id'));
     this.orgAffiliatedRemoveButton = element(by.css('.glyphicon.glyphicon-remove-circle'));
+    this.orgSearchResultsPage = element.all(by.css('div.ui-grid-viewport'));
 
-    this.searchResult = element.all(by.binding('grid.getCellValue(row, col) '));
+   // this.searchResult = element.all(by.css('div[ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid"]'));//element.all(by.css('.ui-grid-row'));//element.all(by.binding('grid.getCellValue(row, col) '));
     this.pageResult = element.all(by.css('div.row'));
 
 
@@ -144,6 +148,18 @@ ListOfOrganizationsPage = function () {
      this.setEmail = function(email){
          search.setValue(this.email,email,"Organization Search by Email field");
      };
+
+    this.setOrgLastUpdatedStartDate = function(startDate){
+        search.setValue(this.orgUpdatedStartDate,startDate,"Organization Search by Start Date field");
+    };
+
+    this.setOrgLastUpdatedEndDate = function(endDate){
+        search.setValue(this.orgUpdatedEndDate,endDate,"Organization Search by End Date field");
+    };
+
+    this.setOrgLastUpdatedName = function(updatedByName){
+        search.setValue(this.orgUpdatedByName,updatedByName,"Organization Search by Updated Name field");
+    };
 /*
      this.selectCountry = function(country){
          search.selectValue(this.country,country,"Organization Search by Country field");
