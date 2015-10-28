@@ -140,7 +140,6 @@ class FamiliesController < ApplicationController
     p is_unique
 
     respond_to do |format|
-#        format.json {render :json => {:name_unique => !exists}}
       format.json {render :json => {:name_unique => is_unique}}
     end
   end
