@@ -207,6 +207,7 @@
             return comment;
           });
       }
+      console.log('after annotation: ' + JSON.stringify(annotatedComments));
       return annotatedComments;
     }
 
