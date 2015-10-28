@@ -1,3 +1,8 @@
+/**
+ * @author wangg5 created 10/01/2015
+ *
+ */
+
 (function() {
   'use strict';
   angular.module('ctrpApp.widgets')

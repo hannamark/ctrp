@@ -17,35 +17,28 @@
         </div>
     </script>
 
-    <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field=""></ctrp-comment>
-
-    <!-- comment button -->
-    <!-- <md-button class="md-fab md-primary md-fab-top-right" curation-field aria-label="Comment" ctrp-comment-modal uuid="{{personDetailView.curPerson.uuid}}">
-      <i class="glyphicon glyphicon-comment"></i>
-    </md-button> -->
-    <!-- end of comment button -->
-    <div class="col-xs-12">
+    <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person"></ctrp-comment>
+    <div class="col-xs-12 drop-shadow">
         <div class="row">
             <p>
                 <h4 ng-if="personDetailView.curPerson.new">Add Person</h4>
                 <h4 ng-if="!personDetailView.curPerson.new">Edit Person</h4>
             </p>
         </div>
-        <div class="row">
-            <form class="form-horizontal" role="form" name="person_form" novalidate>
+        <div class="row md-sidenav-push-in-target"">
+            <form class="form-horizontal" role="form" name="person_form" novalidate ctrp-submit="personDetailView.updatePerson()">
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Prefix:</label>
                     <div class="col-xs-12 col-sm-6">
                         <input type="text" curation-field class="form-control input-sm" ng-model="personDetailView.curPerson.prefix">
                     </div>
                 </div>
-                <div class="form-group" ng-class="{'has-error' : person_form.fname.$error.required && person_form.fname.$dirty }">
+                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.fname)}">
                     <label class="control-label col-xs-12 col-sm-3">First Name:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" curation-field name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus/>
-                        <p ng-show="person_form.fname.$error.required && person_form.fname.$dirty" class="help-inline">
-                            First Name is required
-                        </p>
+                        <input type="text" curation-field name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus ng-change="checkForNameUniqueness()" />
+                        <span class="help-block"
+                              ng-show="person_form.fname.$error.required">First name is Required</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -54,14 +47,18 @@
                         <input type="text" curation-field name="mname" class="form-control input-sm" ng-model="personDetailView.curPerson.mname">
                     </div>
                 </div>
-                <div class="form-group" ng-class="{'has-error' : person_form.lname.$error.required && person_form.lname.$dirty }">
+                <div class="form-group required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.lname)}">
                     <label class="control-label col-xs-12 col-sm-3">Last Name:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" curation-field name="lname" class="form-control input-sm" ng-model="personDetailView.curPerson.lname" required>
-                        <p ng-show="person_form.lname.$error.required && person_form.lname.$dirty" class="help-inline">
-                            Last Name is required
-                        </p>
+                        <input type="text" curation-field name="lname" class="form-control input-sm has-success" ng-model="personDetailView.curPerson.lname" required ng-change="checkForNameUniqueness()">
+                        <span class="help-block"
+                              ng-show="person_form.lname.$error.required">Last name is Required</span>
+                        <i ng-show="personDetailView.curPerson.lname.length > 0 && person_form.lname.$dirty" ng-class="(personDetailView.name_unqiue === true) ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-warning-sign'"></i>
+                        <span ng-class='has-error' ng-show="personDetailView.showUniqueWarning">Warning: Person exists in the database. Please verify and create a new Person record.</span>
                     </div>
+                </div>
+                <div >
+
                 </div>
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Suffix:</label>
@@ -69,12 +66,13 @@
                         <input type="text" curation-field class="form-control input-sm" ng-model="personDetailView.curPerson.suffix">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.source_context)}">
                     <label class="control-label col-xs-12 col-sm-3">Source Context:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <select curation-field class="form-control input-sm" id="source_context" ng-model="personDetailView.curPerson.source_context_id" ng-options="context.id as context.name for context in personDetailView.sourceContextArr">
+                        <select curation-field class="form-control input-sm" id="source_context" ng-model="personDetailView.curPerson.source_context_id" ng-options="context.id as context.name for context in personDetailView.sourceContextArr" name="source_context" required>
                             <option value="">Select context</option>
                         </select>
+                        <span class="help-block" ng-show="person_form.source_context.$invalid">Source context is Required</span>
                     </div>
                 </div>
                 <!-- Source ID will be R/O on Person screen -->
@@ -98,16 +96,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-class="{'has-error': (person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email))}">
                     <label class="control-label col-xs-12 col-sm-3">Email:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="email" curation-field class="form-control input-sm" ng-model="personDetailView.curPerson.email" type="email" placeholder="Email">
+                        <input curation-field class="form-control input-sm" name="email" ng-model="personDetailView.curPerson.email" type="email" ng-required="!personDetailView.curPerson.phone">
+                       <span class="help-block"
+                             ng-show="person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email)">Either Phone or Email is Required</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-class="{'has-error': (person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone))}">
                     <label class="control-label col-xs-12 col-sm-3">Phone:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" curation-field class="form-control input-sm" ng-model="personDetailView.curPerson.phone" type="text" placeholder="Phone">
+                        <input type="text" curation-field class="form-control input-sm" name="phone" ng-model="personDetailView.curPerson.phone" type="text" ng-required="!personDetailView.curPerson.email">
+                       <span class="help-block"
+                             ng-show="person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone)">Either Phone or Email is Required</span>
                     </div>
                 </div>
                 <div class="form-group" ng-hide="personDetailView.curPerson.new || !personDetailView.curPerson.created_by">
@@ -127,7 +129,7 @@
 
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-xs-12 col-sm-9">
                             <!--<button class="btn btn-primary" ng-click="personDetailView.searchOrgsForAffiliation('lg')">
                                 <i class="glyphicon glyphicon-search"></i> Search Organizations
                             </button>
@@ -135,38 +137,29 @@
                                 <i class="glyphicon glyphicon-remove"></i> Remove All Affiliated Organizations
                             </button>-->
                         <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
-                        <div class="row animated-item" ng-show="personDetailView.savedSelection.length > 0">
-                            <br /><input type="text" ng-model="personDetailView.selectedOrgFilter" curation-field class="form-control input-sm" placeholder="Filter selected organizations"/>
+                        <div class="row animated-item top-offset-tiny" ng-show="personDetailView.savedSelection.length > 0">
+                            <input type="text" ng-model="personDetailView.selectedOrgFilter" curation-field class="form-control input-sm" placeholder="Filter selected organizations"/>
                             <table class="table table-bordered table-striped table-condensed">
                                 <thead>
-                                <th>Remove</th>
-                                <th>CTRP ID</th>
-                                <th>Organization</th>
-                                <th>Effective Date</th>
-                                <th>Expiration Date</th>
+                                    <th width="6%">CTRP ID</th>
+                                    <th width="57%">Organization</th>
+                                    <th width="18%">Effective Date</th>
+                                    <th width="18%">Expiration Date</th>
+                                    <th width="1%"></th>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index"
-                                    ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                    <td style="vertical-align: middle">
-                                        <label curation-field class="btn btn-default"
-                                               ng-click="personDetailView.toggleSelection($index)">
-                                            <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                                        </label>
-                                    </td>
+                                <tr ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                     <td>{{org.id}}</td>
                                     <td>{{org.name}}</td>
                                     <td>
                                         <div class="input-group add-on col-sm-12 date datepicker">
-                                            <input type="text" class="form-control input-normal"
+                                            <input type="text" class="form-control input-sm"
                                                    datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                    ng-model="org.effective_date" is-open="org.opened_effective"
                                                    datepicker-options="personDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                               <span class="input-group-btn">
-                                                    <button type="button" curation-field class="btn btn-default"
-                                                            ng-click="personDetailView.openCalendar($event, $index, 'effective')"
-                                                            ng-disabled="org._destroy">
+                                                    <button type="button" curation-field class="btn btn-default" ng-click="personDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                               </span>
@@ -180,13 +173,16 @@
                                                    datepicker-options="personDetailView.dateOptions"
                                                    ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                               <span class="input-group-btn">
-                                                    <button type="button" curation-field class="btn btn-default"
-                                                            ng-click="personDetailView.openCalendar($event, $index, 'expiration')"
-                                                            ng-disabled="org._destroy">
+                                                    <button type="button" curation-field class="btn btn-default" ng-click="personDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                               </span>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <label curation-field class="btn btn-default" ng-click="personDetailView.toggleSelection($index)">
+                                            <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                        </label>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -197,24 +193,22 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group no-bottom-margin">
+                    <div class="col-xs-12 col-sm-3"></div>
                     <div class="btn-toolbar col-xs-12 col-sm-9">
-                      <!-- <button class="btn btn-primary pull-right" curation-field ctrp-comment-modal uuid="{{personDetailView.curPerson.uuid}}">
-                        <span>Comment</span><i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>
-                      </button> -->
-                        <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="btn" field=""></ctrp-comment>
-                        <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-click="personDetailView.updatePerson()" ng-disabled="person_form.$invalid" ctrp-click-once>
+                        <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn">
                             Save
                         </button>
-                        <button curation-field class="btn btn-warning pull-right" id="reset_btn" ng-click="personDetailView.resetForm()">
-                            Clear
+                        <button type="button" curation-field class="btn btn-warning pull-right" id="reset_btn" ng-click="personDetailView.resetForm()">
+                            <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
-                        <button ng-hide="personDetailView.curPerson.new" curation-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
+                        <button type="button" ng-hide="personDetailView.curPerson.new" curation-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
                             <i class="glyphicon glyphicon-remove"></i> Delete This Person
                         </button>
                     </div>
                 </div>
             </form>
         </div>
+        <div class="row top-offset-xs"></div>
     </div>
 </div>

@@ -28,6 +28,7 @@
             'CURATE_PERSON' : '/ctrp/people/curate',
             'PO_AFF_STATUSES' : '/ctrp/po_affiliation_statuses.json',
             'SEARCH_PERSON': '/ctrp/people/search.json',
+            'UNIQUE_PERSON' : '/ctrp/people/unique',
             'A_FAMILY': '/ctrp/families/',
             'FAMILY_LIST': '/ctrp/families.json',
             'SEARCH_FAMILY': '/ctrp/families/search.json',
@@ -56,8 +57,8 @@
 
             //for comments
             'COMMENTS' : {
-              'COUNTS_FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments/count.json',
-              'FOR_INSTANCE': '/ctrp/{:instance_uuid}/comments.json',
+              'COUNTS_FOR_INSTANCE': '/ctrp/instance/{:instance_uuid}/comments/count.json', //can have optional :field
+              'FOR_INSTANCE': '/ctrp/instance/{:instance_uuid}/comments.json', //can have optional :field
               'WITH_ID': '/ctrp/comments/{:id}.json',  //GET, DELETE, and PATCH or PUT
               'CREATE': '/ctrp/comments.json'
             },

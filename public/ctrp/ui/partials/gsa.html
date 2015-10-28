@@ -1,10 +1,15 @@
-<div class="container">
-    <p>{{gsaView.gsa}}</p>
-
-        <button ng-click="gsaView.accept()">Accept</button>
-
-
-        <button ng-click="gsaView.reject()">Reject</button>
-
+<div class="container drop-shadow">
+    <div class="row top-offset-xs"></div>
+    <div class="row">
+        <p>{{gsaView.gsa}}</p>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="btn-toolbar">
+                <button class="btn btn-primary pull-right" ng-click="gsaView.accept()">Accept</button>
+                <button class="btn btn-danger pull-right" ng-click="gsaView.reject()">Reject</button>
+            </div>
+        </div>
    </div>
+   <div class="row top-offset-xs"></div>
 </div>

@@ -28,6 +28,9 @@ class TrialsController < ApplicationController
   def create
     @trial = Trial.new(trial_params)
 
+    @trial.created_by = @current_user.username unless @current_user.nil?
+    @trial.updated_by = @trial.created_by
+
     respond_to do |format|
       if @trial.save
         format.html { redirect_to @trial, notice: 'Trial was successfully created.' }
@@ -42,6 +45,8 @@ class TrialsController < ApplicationController
   # PATCH/PUT /trials/1
   # PATCH/PUT /trials/1.json
   def update
+    @trial.updated_by = @current_user.username unless @current_user.nil?
+
     respond_to do |format|
       if @trial.update(trial_params)
         format.html { redirect_to @trial, notice: 'Trial was successfully updated.' }
@@ -70,7 +75,7 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org] || params[:study_source]
+    if params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_source].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
@@ -83,8 +88,13 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
       if params[:org].present?
-        @trials = @trials.with_lead_org(params[:org]) if params[:org_type] == 'Lead Organization'
-        @trials = @trials.with_sponsor(params[:org]) if params[:org_type] == 'Sponsor'
+        if params[:org_type] == 'Lead Organization'
+          @trials = @trials.with_lead_org(params[:org])
+        elsif params[:org_type] == 'Sponsor'
+          @trials = @trials.with_sponsor(params[:org])
+        else
+          @trials = @trials.with_any_org(params[:org])
+        end
       end
       @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
       @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])

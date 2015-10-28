@@ -27,19 +27,21 @@
         var gridOptions = {
             enableColumnResizing: true,
             totalItems: null,
-            rowHeight: 50,
+            rowHeight: 22,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
+            enableHorizontalScrollbar: 2,
+            enableVerticalScrollbar: 2,
             columnDefs: [
-                {name: 'name', enableSorting: true, displayName: 'Family Name', width: '50%%',
+                {name: 'name', enableSorting: true, displayName: 'Family Name', width: '48%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'family_status', displayName: 'Family Status', enableSorting: true, width: '10%'},
+                {name: 'family_status', displayName: 'Family Status', enableSorting: true, width: '12%'},
                 {name: 'family_type', displayName: 'Family Type', enableSorting: true, width: '20%'},
                 /*{name: 'family_members', enableSorting:false, displayName:'Family Members', width: '25%',
                 cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +

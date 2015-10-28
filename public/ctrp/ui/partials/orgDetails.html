@@ -26,7 +26,7 @@
       <i class="glyphicon glyphicon-comment"></i>
     </md-button> -->
     <!-- end of comment button -->
-    <div class="col-xs-12">
+    <div class="col-xs-12 drop-shadow">
         <div class="row">
             <p>
                 <h4 ng-if="orgDetailView.curOrg.new">Add Organization</h4>
@@ -34,20 +34,17 @@
             </p>
         </div>
         <div class="row">
+            <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="icon" field="" model="organization"></ctrp-comment>
             <!-- tab views -->
+            <form class="form form-horizontal" role="form" name="organization_form" novalidate>
             <md-tabs md-dynamic-height md-border-bottom md-selected="orgDetailView.tabIndex">
                 <md-tab ng-repeat="clusterOrg in orgDetailView.curOrg.cluster track by $index">
                     <md-tab-label>{{clusterOrg.context}}</md-tab-label>
                     <md-tab-body>
                         <!-- <button class="btn btn-primary pull-right" ctrp-comment-button ctrp-comment-panel uuid="{{orgDetailView.curOrg.uuid}}" field="mock_field">New Comment</button> -->
                         <!--CTRP content -->
-                        <div class="row">
-                          <div ng-hide="orgDetailView.curOrg.new">
-                            <!-- <button class="btn btn-default pull-left" ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" field="">Comment</button> -->
-                            <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="icon" field=""></ctrp-comment>
-                          </div>
+                        <div class="row md-sidenav-push-in-target">
 
-                            <form class="form form-horizontal" role="form" name="organization_form" novalidate>
                                 <div ng-if="!orgDetailView.curOrg.new" class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">CTRP ID:</label>
                                     <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curOrg.ctrp_id}}</div>
@@ -179,14 +176,12 @@
 
                                 <div class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">City:</label>
-                                    <div class="col-xs-12 col-sm-6">
+                                    <div class="col-xs-12 col-sm-2">
                                         <input type="text" curation-field class="form-control input-sm" id="city" ng-model="orgDetailView.curOrg.city">
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label class="control-label col-xs-12 col-sm-3">Postal Code:</label>
-                                    <div class="col-xs-12 col-sm-6">
+                                    <label class="control-label col-xs-12 col-sm-2">Postal Code:</label>
+                                    <div class="col-xs-12 col-sm-2">
                                         <input type="text" curation-field class="form-control input-sm" id="postal_code" ng-model="orgDetailView.curOrg.postal_code" placeholder="Postal Code">
                                     </div>
                                 </div>
@@ -198,13 +193,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">Phone:</label>
-                                    <div class="col-xs-12 col-sm-6">
+                                    <div class="col-xs-12 col-sm-2">
                                         <input type="text" curation-field class="form-control input-sm" id="phone" ng-model="orgDetailView.curOrg.phone" type="text" placeholder="Phone">
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-xs-12 col-sm-3">Fax:</label>
-                                    <div class="col-xs-12 col-sm-6">
+
+                                    <label class="control-label col-xs-12 col-sm-1">Fax:</label>
+                                    <div class="col-xs-12 col-sm-3">
                                         <input type="text" curation-field class="form-control input-sm" id="fax" ng-model="orgDetailView.curOrg.fax" type="text" placeholder="Fax">
                                     </div>
                                 </div>
@@ -234,32 +228,34 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group no-bottom-margin">
+                                    <div class="col-xs-12 col-sm-3"></div>
                                     <div class="btn-toolbar col-xs-12 col-sm-9">
-
                                         <!-- <button class="btn btn-primary pull-right" curation-field ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
                                           <span>Comment</span><i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>
                                         </button> -->
-                                        <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="btn" field=""></ctrp-comment>
                                         <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-click="orgDetailView.updateOrg()" ng-disabled="organization_form.$invalid" ctrp-click-once>
                                             Save
                                         </button>
                                         <button curation-field class="btn btn-warning pull-right" id="reset_btn" ng-click="orgDetailView.resetForm()">
-                                            Clear
+                                            <i class="glyphicon glyphicon-remove"></i>  Reset
                                         </button>
-                                        <button ng-hide="orgDetailView.curOrg.new" curation-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
+                                        <button ng-hide="orgDetailView.curOrg.new" curation-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
                                             <i class="glyphicon glyphicon-remove"></i> Delete This Organization
                                         </button>
+                                        <!-- <ctrp-comment instance-uuid="{{orgDetailView.curOrg.uuid}}" button-type="btn" field="" model="organization"></ctrp-comment> -->
                                         <!-- <button class="btn btn-default" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">Open dialog from directive</button> -->
                                     </div>
                                 </div>
-                            </form>
+
                         </div>
                         <!-- end of CTRP content -->
                     </md-tab-body>
                 </md-tab>
             </md-tabs>
             <!-- end of tab views -->
+            </form>
         </div>
+        <div class="row top-offset-xs"></div>
     </div>
 </div>

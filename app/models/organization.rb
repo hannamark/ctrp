@@ -203,7 +203,7 @@ class Organization < ActiveRecord::Base
 
   scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value) {
+  scope :matches_wc, -> (column, value,user_role) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       where("organizations.#{column} ilike ?", "%#{value[1..str_len - 1]}")
@@ -212,11 +212,18 @@ class Organization < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       where("organizations.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      where("organizations.#{column} ilike ?", "#{value}")
+      if user_role != "ROLE_CURATOR"
+        if !value.match(/\s/).nil?
+          value=value.gsub! /\s+/, '%'
+        end
+        where("organizations.#{column} ilike ?", "%#{value}%")
+      else
+        where("organizations.#{column} ilike ?", "#{value}")
+      end
     end
   }
 
-  scope :matches_name_wc, -> (value) {
+  scope :matches_name_wc, -> (value,user_role) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
@@ -225,7 +232,12 @@ class Organization < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
     else
-      joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{value}", "#{value}")
+        if user_role != "ROLE_CURATOR"
+          value=value.gsub! /\s+/, '%'
+          joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value}%", "%#{value}%")
+        else
+          joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{value}", "#{value}")
+      end
     end
   }
 
@@ -281,5 +293,10 @@ class Organization < ActiveRecord::Base
     else
       order("LOWER(organizations.#{column}) #{order}")
     end
+  }
+  scope :updated_date_range, -> (dates) {
+    start_date = DateTime.parse(dates[0])
+    end_date = DateTime.parse(dates[1])
+    where("organizations.updated_at BETWEEN ? and ?", start_date, end_date)
   }
 end

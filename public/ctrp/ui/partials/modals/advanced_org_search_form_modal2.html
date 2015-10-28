@@ -9,13 +9,16 @@
                     <ctrp-advanced-org-search-form2 show-grid="true" max-row-selectable="advOrgSearchForm2ModalView.maxRowSelectable" curation-mode="false" used-in-modal="true"></ctrp-advanced-org-search-form2>
                 </div>
             </div>
-            <div class="modal-footer" style="align-content: center">
-                <button class="btn btn-success" ng-click="advOrgSearchForm2ModalView.confirmSelection()"
-                        ng-disabled="selectedOrgsArray.length == 0">Confirm Selection</button>
-                <button class="btn btn-danger" ng-click="advOrgSearchForm2ModalView.cancel()">Close</button>
+            <div class="modal-footer">
+                <div class="col-xs-12">
+                    <div class="btn-toolbar">
+                        <button class="btn btn-primary pull-right" ng-click="advOrgSearchForm2ModalView.confirmSelection()" ng-disabled="selectedOrgsArray.length == 0">Confirm Selection</button>
+                        <button class="btn btn-danger pull-right" ng-click="advOrgSearchForm2ModalView.cancel()">
+                            <i class="glyphicon glyphicon-remove"></i> Close
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-

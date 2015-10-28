@@ -13,15 +13,18 @@
         getCommentCounts: getCommentCounts,
         createComment: createComment,
         getComments: getComments,
-        editComment: editComment,
+        updateComment: updateComment,
         deleteComment: deleteComment
       };
 
       ///// implementations
 
-      function getCommentCounts(instanceUuid) {
+      function getCommentCounts(instanceUuid, optionalField) {
         if (instanceUuid) {
           var url = URL_CONFIGS.COMMENTS.COUNTS_FOR_INSTANCE.replace(/\s*\{.*?\}\s*/g, instanceUuid);
+          if (optionalField) {
+            url = url.replace('.json', '/' + optionalField + '.json');
+          }
           $log.info('get comment counts with url: ' + url);
           return PromiseTimeoutService.getData(url);
         }
@@ -40,9 +43,12 @@
       } //createComment
 
 
-      function getComments(instanceUuid) {
+      function getComments(instanceUuid, optionalField) {
         if (instanceUuid) {
           var url = URL_CONFIGS.COMMENTS.FOR_INSTANCE.replace(/\s*\{.*?\}\s*/g, instanceUuid);
+          if (optionalField) {
+            url = url.replace('.json', '/' + optionalField + '.json');
+          }
           $log.info('get comment list with url: ' + url);
           return PromiseTimeoutService.getData(url);
         }
@@ -51,12 +57,23 @@
         return deferred.promise; //failed promise
       } //getComments
 
-      function editComment(editedCommentObj) {
-        //TODO: check commentId
+      //update
+      function updateComment(editedCommentObj) {
+        //check commentId
+        console.log('editedCommentObj: ' + JSON.stringify(editedCommentObj));
+        if (editedCommentObj.id) {
+          // 'WITH_ID': '/ctrp/comments/{:id}.json'
+          var url = URL_CONFIGS.COMMENTS.WITH_ID.replace(/\s*\{.*?\}\s*/g, editedCommentObj.id);
+          return PromiseTimeoutService.updateObj(url, editedCommentObj, {});
+        }
+        var deferred = $q.defer();
+        deferred.reject(null);
+        return deferred.promise; //failed promise
       } //editComment
 
-      function deleteComment(commentId) {
 
+      function deleteComment(commentId) {
+        //TODO: delete a comment
       } //deleteComment
 
     }

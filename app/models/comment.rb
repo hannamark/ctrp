@@ -18,4 +18,6 @@
 
 class Comment < ActiveRecord::Base
   include BasicConcerns
+  
+  scope :matches, -> (column, value) { where("comments.#{column} = ?", "#{value}") }
 end

@@ -152,12 +152,13 @@
                 var today = new Date();
                 switch (range) {
                     case 'today':
-                        $scope.searchParams.startDate = today;
-                        $scope.searchParams.endDate = today;;
+                        var tempToday = new Date();
+                        $scope.searchParams.startDate = moment().subtract(0, 'days').startOf('day').toDate();
+                        $scope.searchParams.endDate = moment().subtract(0, 'days').endOf('day').toDate();
                         break;
                     case 'yesterday':
-                        $scope.searchParams.startDate = moment().add(-1, 'days').toDate();
-                        $scope.searchParams.endDate = moment().add(-1, 'days').toDate();
+                        $scope.searchParams.startDate = moment().subtract(1, 'days').startOf('day').toDate();
+                        $scope.searchParams.endDate = moment().subtract(1, 'days').endOf('day').toDate();
                         break;
                     case 'last7':
                         $scope.searchParams.startDate = moment().add(-7, 'days').toDate();

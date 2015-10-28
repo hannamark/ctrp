@@ -9,11 +9,11 @@
         .factory('OrgService', OrgService);
 
     OrgService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
-        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService'];
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService'];
 
     function OrgService(URL_CONFIGS, MESSAGES, $log, _,
                         GeoLocationService, Common, $rootScope,
-                        PromiseTimeoutService) {
+                        PromiseTimeoutService,UserService) {
 
         var statesOrProvinces = [];
         var initOrgSearchParams = {
@@ -44,7 +44,7 @@
         var gridOptions = {
             enableColumnResizing: true,
             totalItems: null,
-            rowHeight: 60,
+            rowHeight: 22,
             // enableFullRowSelection: true,
             enableSelectAll: false,
             //enableRowSelection: false,
@@ -55,11 +55,11 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '6%',
+                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '10%',
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '8%'},
+                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '11%'},
                 {
                     name: 'name', enableSorting: true, width: '25%',
                     //this does not work for .id
@@ -70,29 +70,29 @@
                     '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
-                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, width: '8%'},
-                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
+                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, width: '11%'},
+                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '10%'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '13%'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '14%'},
                 {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '15%',height: '50%',
-                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names">{{fam.Name}}</div>'
+                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names" title="{{fam.Name}}">{{fam.Name}}</div>'
                 },
                 /* {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
                    cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" popover-trigger="mouseenter" class="btn btn-default">Family</button>',
                },*/
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
-                {name: 'country', displayName: 'Country', enableSorting: true, width:'9%'},
-                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'8%'},
-                {name: 'phone', enableSorting: true, width: '10%'},
-                {name: 'email', enableSorting: true, width: '10%',
+                {name: 'country', displayName: 'Country', enableSorting: true, width:'12%'},
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'14%'},
+                {name: 'phone', enableSorting: true, width: '13%'},
+                {name: 'email', enableSorting: true, width: '13%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
 
-                {name: 'created_by', displayName: 'Curator Name', enableSorting: true, width: '10%'},
+                {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, width: '10%'},
 
-                {name: 'created_at', displayName: 'Curator Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'}
+                {name: 'updated_at', displayName: 'Last Updated At', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'}
 
 
             ]
@@ -184,6 +184,14 @@
 
 
         function getGridOptions() {
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
+            var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
+            var curator_role = "curator";
+            if(!(user_role.toUpperCase() == curator_role.toUpperCase())) {
+                gridOptions.columnDefs.splice(updated_at_index,1);
+                gridOptions.columnDefs.splice(updated_by_index,1);
+            }
             return gridOptions;
         }
 

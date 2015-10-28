@@ -110,15 +110,13 @@
 
 
         vm.resetSearch = function() {
-            // vm.states.length = 0;
-            vm.searchParams = FamilyService.getInitialFamilySearchParams();
-            vm.gridOptions.data.length = 0;
-            vm.gridOptions.totalItems = null;
-            $scope.searchWarningMessage = '';
-
             Object.keys(vm.searchParams).forEach(function(key, index) {
                 vm.searchParams[key] = '';
             });
+
+            vm.gridOptions.data.length = 0;
+            vm.gridOptions.totalItems = null;
+            $scope.searchWarningMessage = '';
         }; //resetSearch
 
         activate();
