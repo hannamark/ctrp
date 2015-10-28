@@ -16,4 +16,7 @@ Given I have selected the option to register a National, Externally Peer-Reviewe
 and I am on the Register Trial title and Phase screen
 When I have not entered the trial title or trial phase
 And I have submitted the Register Trial Title and Phase section
-Then the Register Trial Title and Phase section will indicate an error "Trial Title and Phase are Required"
+hen I click on the Review Trial Button
+hen I click on the Review Trial Button
+When I click on the Review Trial Button then the Register Trial Title and Phase section will indicate an error "Trial Title and Phase are Required" 
+

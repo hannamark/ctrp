@@ -1,7 +1,7 @@
 #Clean out logs in development mode.
 
 if Rails.env.development?
-  MAX_LOG_SIZE = 10.megabytes
+  MAX_LOG_SIZE = 5.megabytes
 
   #logs = [ File.join(Rails.root, 'log', 'development.log'), File.join(Rails.root, 'log', 'test.log') ]
 

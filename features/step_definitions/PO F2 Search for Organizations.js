@@ -129,11 +129,12 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I know the CTEP ID of the organization I wish to search for$/, function (callback) {
+    this.Given(/^I know the Source Context and Source ID of the organization I wish to search for$/, function (callback) {
        callback();
     });
 
-    this.When(/^I provide the CTEP ID of the organization I wish to search for$/, function (callback) {
+    this.When(/^I provide the Source Context and Source ID of the organization I wish to search for$/, function (callback) {
+        selectItem.selectSourceContext('CTEP');
         searchOrg.setSourceId(CTEPID);
         browser.sleep(25).then(callback);
     });
@@ -180,7 +181,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the system should display all organizations that contain the PO Organization ID$/, function (callback) {
+    this.Then(/^the system should display all organizations that contain the Source ID for the Source Context$/, function (callback) {
         ctrpID.then(function(value) {
             console.log('This is the CTRP ID of added Org' + value);
             expect(projectFunctions.inSearchResults(value)).to.become('true');

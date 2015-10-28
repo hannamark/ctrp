@@ -114,13 +114,13 @@ class PeopleController < ApplicationController
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
-      @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
-      @people = @people.matches_wc('fname', params[:fname]) if params[:fname].present?
-      @people = @people.matches_wc('lname', params[:lname]) if params[:lname].present?
-      @people = @people.matches_wc('prefix', params[:prefix]) if params[:prefix].present?
-      @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
-      @people = @people.matches_wc('email', params[:email]) if params[:email].present?
-      @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
+      @people = @people.matches_wc('source_id',params[:source_id],@current_user.role) if params[:source_id].present?
+      @people = @people.matches_wc('fname', params[:fname],@current_user.role) if params[:fname].present?
+      @people = @people.matches_wc('lname', params[:lname],@current_user.role) if params[:lname].present?
+      @people = @people.matches_wc('prefix', params[:prefix],@current_user.role) if params[:prefix].present?
+      @people = @people.matches_wc('suffix', params[:suffix],@current_user.role) if params[:suffix].present?
+      @people = @people.matches_wc('email', params[:email],@current_user.role) if params[:email].present?
+      @people = @people.matches_wc('phone', params[:phone],@current_user.role) if params[:phone].present?
       if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
         @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
       else
@@ -139,6 +139,59 @@ class PeopleController < ApplicationController
       @people = []
     end
   end
+
+  #Method to check for Uniqueness while creating persons - check on First & Last name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
+  def unique
+    print params[:person_fname]
+    print params[:person_lname]
+    print params[:source_context_id]
+    print params[:person_exists]
+    print "Person ID "
+    print params[:person_id]
+
+#    exists = false
+    is_unique = true
+    count = 0
+
+      if params.has_key?(:person_fname) && params.has_key?(:person_lname) && params.has_key?(:source_context_id)
+  #     exists =  Person.exists?(fname: params[:person_fname], lname: params[:person_lname]);
+        count = Person.where("lower(fname)=?", params[:person_fname].downcase).where("lower(lname)=?",params[:person_lname].downcase).where("source_context_id=?", params[:source_context_id]).count;
+      end
+
+      print "count "
+      print count
+
+      # For an existing person, the number of people with the same name should be 2 or more to qualify as duplicate
+      if params[:person_exists] == true
+        @dbPerson = Person.find(params[:person_id]);
+        if @dbPerson != nil
+          print " db person "
+          print @dbPerson.fname
+          print @dbPerson.lname
+
+          if params[:person_fname] == @dbPerson.fname && params[:person_lname] == @dbPerson.lname
+            print " both are equal. Must not warn "
+            is_unique = true;
+          else
+             if count > 0
+              print " both are different. Must warn. "
+              is_unique = false
+             end
+          end
+        end
+      elsif params[:person_exists] == false && count > 0
+        is_unique = false
+      end
+
+    p " is unique? "
+    p is_unique
+
+    respond_to do |format|
+#        format.json {render :json => {:name_unique => !exists}}
+      format.json {render :json => {:name_unique => is_unique}}
+    end
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

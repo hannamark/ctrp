@@ -235,6 +235,35 @@
             } //prepareModal
         }; //confirmDelete
 
+
+        //Function that checks if a user name - based on First & Last names is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the person/unique Rails end point.
+        $scope.checkForNameUniqueness = function(){
+
+            var ID = 0;
+            if(angular.isObject(personDetailObj))
+                ID = vm.curPerson.id;
+
+            var searchParams = {"person_fname": vm.curPerson.fname, "person_lname": vm.curPerson.lname, "source_context_id": vm.curPerson.source_context_id, "person_exists": angular.isObject(personDetailObj), "person_id": ID};
+            console.log('First name is ' + vm.curPerson.fname);
+            console.log('Last name is ' + vm.curPerson.lname);
+            console.log('Source context is ' + vm.curPerson.source_context_id);
+            console.log('Person exists? ' + angular.isObject(personDetailObj));
+            console.log('Person ID ' + vm.curPerson.id);
+
+            vm.showUniqueWarning = false
+
+            var result = PersonService.checkUniquePerson(searchParams).then(function (response) {
+                vm.name_unqiue = response.name_unique;
+
+                if(!response.name_unique && vm.curPerson.lname.length > 0 && vm.curPerson.fname.length > 0)
+                    vm.showUniqueWarning = true
+
+                console.log("Is person name unique: " +  vm.name_unqiue);
+                console.log(JSON.stringify(response));
+            }).catch(function (err) {
+                console.log("error in checking for duplicate person name " + JSON.stringify(err));
+            });
+        };
     }
 
 

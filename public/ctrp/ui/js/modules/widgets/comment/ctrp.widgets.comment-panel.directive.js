@@ -1,12 +1,19 @@
+/**
+ * Created by wangg5 on 10/26/15.
+ */
+
 (function() {
   'use strict';
 
   angular.module('ctrpApp.widgets')
   .directive('ctrpComment', ctrpComment);
 
-  ctrpComment.$inject = ['$compile', '$log', 'CommentService', 'UserService', '$mdSidenav', '$mdUtil'];
+  ctrpComment.$inject = ['$compile', '$log', 'CommentService', '$timeout',
+      'UserService', '$mdSidenav', '$mdUtil', '$mdToast', '$document'];
 
-  function ctrpComment($compile, $log, CommentService, UserService, $mdSidenav, $mdUtil) {
+  function ctrpComment($compile, $log, CommentService, $timeout, UserService,
+      $mdSidenav, $mdUtil, $mdToast, $document) {
+
     var directive = {
       link: link,
       restrict: 'E',
@@ -66,12 +73,6 @@
       var vm = this;
       vm.commentList = [];
       vm.showCommentForm = false;
-      vm.comment = {
-        content: "", username: UserService.getLoggedInUsername(),
-        field: $scope.field, model: $scope.model || "",
-        instance_uuid: $scope.instanceUuid,
-        parent_id: ""
-      };
 
       //functions:
       vm.toggleRight = buildToggler('right');
@@ -79,7 +80,9 @@
       vm.postComment = postComment;
       vm.fetchComments = fetchComments;
       vm.toggleCommentFormShown = toggleCommentFormShown;
-
+      vm.updateComment = updateComment;
+      //pagination options for comments
+      vm.pagingOptions = {currentPage: 1, pageSize: 10};
 
       activate();
 
@@ -89,28 +92,45 @@
 
 
       //implementations below
+
+      /** watch instanceUuid, fetch comments and initialize
+      * the comment object (to be posted)
+      * whenever the instanceUuid changes in the scope
+      */
       function watchInstanceUuid() {
         $scope.$watch(function() {return $scope.instanceUuid;}, function(newVal, oldVal) {
           if (newVal) {
             fetchComments();
           }
+          //initialize the vm.comment object
+          vm.comment = {
+            content: "",
+            username: UserService.getLoggedInUsername(),
+            field: $scope.field,
+            model: $scope.model || "",
+            instance_uuid: $scope.instanceUuid,
+            parent_id: ""
+          };
         }, true);
       } //watchInstanceUuid
 
       function fetchComments() {
         //include the field in the url in fetching comments
         CommentService.getComments($scope.instanceUuid, $scope.field).then(function(data) {
-          vm.commentList = data.comments;
+          vm.commentList = annotateCommentIsEditable(data.comments);
         }).catch(function(error) {
           $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);
         });
       } //fetchComments
 
-      function postComment() {
+      function postComment(form) {
+        form.$setUntouched();
         CommentService.createComment(vm.comment).then(function(response) {
           vm.comment.content = '';
           if (response.server_response.status == 201) {
             fetchComments(); //fetch the latest comments
+            toggleCommentFormShown(); //wait half second
+            showToastr('Comment created', 'right');
           }
           // console.log('created comment response: ' + JSON.stringify(response));
         }).catch(function(err) {
@@ -118,11 +138,31 @@
         });
       } //postComment
 
-      //TODO: edit and delete comment
+      //update
+      function updateComment(newContent, commentObjIndex) {
+        if (commentObjIndex > -1) {
+          var editedComment = angular.copy(vm.commentList[commentObjIndex]);
+          editedComment.content = newContent;
+          CommentService.updateComment(editedComment).then(function(response) {
+            if (response.server_response.status == 200) {
+              // fetchComments();
+              showToastr('Comment updated', 'right');
+            }
+          }).catch(function(err) {
+            //TODO: throw a toastr
+            $log.error('error in updating comment: ' + newContent);
+          });
+        }
+      } //updateComment
 
-      function toggleCommentFormShown() {
-        vm.showCommentForm = !vm.showCommentForm;
-      }
+
+
+      function toggleCommentFormShown(timeToWait) {
+        var time = timeToWait && timeToWait > 0 ? timeToWait : 0;
+        $timeout(function() {
+            vm.showCommentForm = !vm.showCommentForm;
+        }, time);
+      } //toggleCommentFormShown
 
     } //commentCtrl
 
@@ -140,6 +180,51 @@
         $log.info('closed RIGHT side nav');
       });
     }
+
+    function showToastr(message, position) {
+      /*
+      $mdToast.show(
+          $mdToast.simple()
+          .content(message || 'Success')
+          .position(position || 'right')
+          .hideDelay(3000)
+      );
+      */
+      $mdToast.show({
+        template: '<md-toast style="background-color: #6200EA"><span flex>' + message + '</span></md-toast>',
+        parent: $document[0].querySelector('#toastr_message'),
+        hideDelay: 1000,
+        position: 'right'
+      });
+    }
+
+
+    /**
+    * Based on the user role or the username, annotate if the comment is editable
+    * to the currently logged in user
+    */
+    function annotateCommentIsEditable(comments) {
+      var annotatedComments = [];
+      //TODO: this should be placed in a Service component
+      var userRolesAllowedToEdit = ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_CURATOR'];
+
+      if (angular.isArray(comments)) {
+          var isEditable = userRolesAllowedToEdit.indexOf(UserService.getUserRole()) > -1;
+          annotatedComments = comments.map(function(comment) {
+            if (isEditable || comment.username == UserService.getLoggedInUsername()) {
+              comment.isEditable = true;
+            } else {
+              comment.isEditable = false;
+            }
+            return comment;
+          });
+      }
+    //  console.log('after annotation: ' + JSON.stringify(annotatedComments));
+      return annotatedComments;
+    } //annotateCommentIsEditable
+
+
+
 
   } //ctrpComment
 

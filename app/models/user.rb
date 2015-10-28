@@ -115,19 +115,21 @@ class  User < ActiveRecord::Base
     end
   end
 
-  def get_privileges
+  def get_write_mode
     privileges_json = []
     if self.role.nil?
       return []
     end
 
-    privileges_json = case self.role
+    write_mode_json = case self.role
                         when "ROLE_RO"
-                          {curation_supported: false}
+                          {write_mode: false}
                         when  "ROLE_SUPER"
-                          {curation_supported: true}
+                          {write_mode: true}
                         when  "ROLE_CURATOR"
-                          {curation_supported: true }
+                          {write_mode: true }
+                        when  "ROLE_TRIAL-SUBMITTER"
+                          {write_mode: true }
                       end
   end
 

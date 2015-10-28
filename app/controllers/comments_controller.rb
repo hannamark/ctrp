@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
-  skip_authorize_resource :only => [:count]
+  skip_authorize_resource :only => [:count, :comments_for_instance]
 
   # GET /comments
   # GET /comments.json
@@ -84,6 +84,7 @@ class CommentsController < ApplicationController
     if params.has_key?(:uuid) #instance_uuid
       comments = Comment.where("instance_uuid = ?", params[:uuid])
       comments = comments.matches('field', params[:field]) if params.has_key?(:field)
+      comments = comments.order('updated_at DESC').all
     end
 
     respond_to do |format|
