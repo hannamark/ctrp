@@ -96,7 +96,8 @@
 
                 .state('main.defaultContent', {
                     url: '/welcome',
-                    templateUrl: '/ctrp/ui/partials/welcome_content.html',
+                    templateUrl: '/ctrp/ui/partials/welcome/welcomeContent.html',
+                    controller: 'headerNavigationCtrl as headerView',
                     ncyBreadcrumb: {
                         label: 'Home'
                     }
@@ -192,7 +193,7 @@
                     ncyBreadcrumb: {
                         parent: '',
                         label: 'Sign in',
-                        skip: true
+
                     }
                 })
 
