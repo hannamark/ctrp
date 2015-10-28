@@ -41,6 +41,7 @@ module.exports = function() {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
+        menuItem.clickHomeEnterOrganizations();
         menuItem.clickWriteMode();
         projectFunctions.createPerson('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555');
         browser.sleep(25).then(callback);
@@ -154,6 +155,7 @@ module.exports = function() {
             return true;
         }, 4000)
             .then(function(){
+                menuItem.clickHomeEnterOrganizations();
                 menuItem.clickWriteMode();
                 projectFunctions.createPersonWithAffiliatedOrg('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555','ShiOrg','','');
             });
