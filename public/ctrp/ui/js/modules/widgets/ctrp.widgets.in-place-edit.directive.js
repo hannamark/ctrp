@@ -39,9 +39,7 @@
         var prevValue;
 
         //cancel edit on blur
-        element.bind('blur', function(event) {
-          cancelEdit(event.target, event);
-        });
+        element.bind('blur', cancelEdit);
 
         //Esc for canceling edit
         element.bind('keydown', function(event) {
