@@ -31,7 +31,7 @@
 
       function linkerFn(scope, element, attrs) {
         scope.editMode = false;
-        //if not set, isEditable is considered to be false 
+        //if not set, isEditable is considered to be false
         scope.isEditable = attrs.hasOwnProperty('isEditable') ? scope.$eval(attrs.isEditable) : false;
         scope.edit = edit;
         scope.saveEdit = saveEdit;

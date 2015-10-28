@@ -39,7 +39,7 @@
     </span>
   </md-button>
   <md-content layout="column" layout-padding>
-    <form name="commentForm" ng-show="commentView.showCommentForm">
+    <form name="commentForm" class="animated-item" ng-show="commentView.showCommentForm">
 
       <div layout layout-sm="column">
         <!-- <md-input-container flex>
@@ -67,7 +67,7 @@
         <button type="submit" class="btn btn-primary pull-right" ng-disabled="!commentForm.$valid" id="comment_submit_btn" ng-click="commentView.postComment(commentForm)">
          <i class="glyphicon glyphicon-plus"></i> Submit
         </button>
-        <button class="btn btn-warning pull-right" id="comment_reset_btn" ng-show="commentView.showCommentForm" ng-click="commentView.toggleCommentFormShown()">
+        <button class="btn btn-warning pull-right" id="comment_reset_btn" ng-click="commentView.toggleCommentFormShown()">
           <i class="glyphicon glyphicon-arrow-up"></i> Close Form
         </button>
         </div>
@@ -91,7 +91,7 @@
         <div class="md-list-item-text">
           <p class="md-caption"><strong>{{comment.username}}</strong> commented ({{comment.created_at | date: "dd-MMM-yyyy H:mm"}}): </p>
           <h5 class="md-body-1" in-place-edit="comment.content" on-save="commentView.updateComment(comment.content, $index)"
-          template="/ctrp/ui/js/modules/widgets/comment/comment-in-place-edit.html" is-editable="comment.isEditable">{{comment.content}}</h5>
+          template="/ctrp/ui/js/modules/widgets/comment/comment-in-place-edit.html" is-editable="{{comment.isEditable}}">{{comment.content}}, {{comment.isEditable}}</h5>
         </div>
       </div>
       </div>
