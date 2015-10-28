@@ -109,7 +109,7 @@
       function fetchComments() {
         //include the field in the url in fetching comments
         CommentService.getComments($scope.instanceUuid, $scope.field).then(function(data) {
-          vm.commentList = data.comments;
+          vm.commentList = annotateCommentIsEditable(data.comments);
         }).catch(function(error) {
           $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);
         });
@@ -184,7 +184,30 @@
         hideDelay: 1000,
         position: 'right'
       });
+    }
 
+
+    /**
+    * Based on the user role or the username, annotate if the comment is editable
+    * to the currently logged in user
+    */
+    function annotateCommentIsEditable(comments) {
+      var annotatedComments = [];
+      //TODO: this should be placed in a Service component
+      var userRolesAllowedToEdit = ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_CURATOR'];
+
+      if (angular.isArray(comments)) {
+          var isEditable = userRolesAllowedToEdit.indexOf(UserService.getUserRole()) > -1;
+          annotatedComments = comments.map(function(comment) {
+            if (isEditable || comment.username == UserService.getLoggedInUsername()) {
+              comment.isEditable = true;
+            } else {
+              comment.isEditable = false;
+            }
+            return comment;
+          });
+      }
+      return annotatedComments;
     }
 
   } //ctrpComment

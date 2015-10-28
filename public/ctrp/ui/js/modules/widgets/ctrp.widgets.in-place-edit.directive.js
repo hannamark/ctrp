@@ -31,10 +31,16 @@
 
       function linkerFn(scope, element, attrs) {
         scope.editMode = false;
+        scope.isEditable = attrs.isEditable;
         scope.edit = edit;
         scope.saveEdit = saveEdit;
         scope.cancelEdit = cancelEdit;
         var prevValue;
+
+        //cancel edit on blur
+        element.bind('blur', function(event) {
+          cancelEdit(event.target, event);
+        });
 
         //Esc for canceling edit
         element.bind('keydown', function(event) {

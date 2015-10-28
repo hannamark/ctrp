@@ -10,7 +10,14 @@
   </md-content>
   <!-- <button ng-click="cancelEdit()" ng-show="editMode">cancel</button>
   <button ng-click="saveEdit()" ng-show="editMode">save</button> -->
-  <span ng-mouseenter="showEdit = true" ng-mouseleave="showEdit = false">
+  <div ng-if="isEditable">
+    <span ng-mouseenter="showEdit = true" ng-mouseleave="showEdit = false">
+      <span ng-hide="editMode" ng-click="edit()">{{model}}</span>
+      <a ng-show="showEdit" ng-click="edit()">Edit</a>
+    </span>
+  </div>
+<!-- <div ng-if="!isEditable">
+  <span ng-mouseenter="showEdit = false" ng-mouseleave="showEdit = false">
     <span ng-hide="editMode" ng-click="edit()">{{model}}</span>
-    <a ng-show="showEdit" ng-click="edit()">Edit</a>
   </span>
+</div> -->
