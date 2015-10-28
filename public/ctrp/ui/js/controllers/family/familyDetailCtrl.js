@@ -257,7 +257,7 @@
                     vm.showUniqueWarning = true
 
                 console.log("Is Famiily name unique: " +  vm.name_unqiue);
-                console.log(JSON.stringify(response));
+                console.log("Response is " + JSON.stringify(response));
             }).catch(function (err) {
                 console.log("error in checking for duplicate family name " + JSON.stringify(err));
             });
