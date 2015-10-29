@@ -60,7 +60,6 @@
                     vm.resetForm();
                     $state.go('main.orgDetail', {orgId: response.id});
                 } else {
-                    vm.curOrg.updated_by = response.updated_by;
                     //$state.go('main.organizations', {}, {reload: true});
                 }
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');

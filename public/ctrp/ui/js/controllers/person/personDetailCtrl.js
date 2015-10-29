@@ -62,7 +62,6 @@
                 if (newPerson.new) {
                     vm.resetForm();
                 } else {
-                    vm.curPerson.updated_by = response.data.updated_by;
                     $state.go('main.people', {}, {reload: true});
                 }
                 toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
