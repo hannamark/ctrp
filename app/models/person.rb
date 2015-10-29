@@ -48,6 +48,23 @@ class Person < ActiveRecord::Base
   before_destroy :check_for_organization
   after_create   :save_id_to_ctrp_id
 
+  # Get an array of maps of the people with the same ctrp_id
+  def cluster
+    tmp_arr = []
+    if self.ctrp_id.present?
+      tmp_arr = Person.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).order(:id).pluck(:id, :"source_contexts.name")
+    else
+      tmp_arr.push([self.id, self.source_context ? self.source_context.name : ''])
+    end
+
+    cluster_arr = []
+    tmp_arr.each do |person|
+      cluster_arr.push({"id": person[0], "context": person[1]})
+    end
+
+    return cluster_arr
+  end
+
   def nullifiable
     isNullifiable =true;
     source_status_arr = []
@@ -59,7 +76,6 @@ class Person < ActiveRecord::Base
     }
     return isNullifiable
   end
-
 
   private
 
