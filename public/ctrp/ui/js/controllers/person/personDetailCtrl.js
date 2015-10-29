@@ -72,11 +72,12 @@
 
 
         vm.resetForm = function() {
-            var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
+            $scope.person_form.$setPristine();
+
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'cluster'];
             Object.keys(vm.curPerson).forEach(function(key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
-                    $scope.person_form.$setPristine();
                 }
             });
             //default context to ctrp
