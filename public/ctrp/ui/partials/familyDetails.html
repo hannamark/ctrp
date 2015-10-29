@@ -31,10 +31,12 @@
                     <label class="control-label col-xs-12 col-sm-3">Family Name:</label>
                     <div class="col-xs-12 col-sm-6">
                         <input type="text" name="name" restriction-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus ng-change="checkForNameUniqueness()"/>
-                        <span class="help-block"
-                              ng-show="family_form.name.$error.required">Family name is Required</span>
-                        <i ng-show="familyDetailView.curFamily.name.length > 0 && family_form.name.$dirty" ng-class="(familyDetailView.name_unqiue === true) ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-warning-sign'"></i>
-                        <span ng-class='has-error' ng-show="familyDetailView.showUniqueWarning">Warning: Family exists in the database. Please verify and create a new Family record.</span>
+                        <span class="help-block" ng-show="family_form.name.$error.required">Family name is Required</span>
+                        <div class="has-error" ng-show="familyDetailView.curFamily.name.length > 0 && family_form.name.$dirty && familyDetailView.showUniqueWarning">
+                            <span class="help-block">
+                                <i ng-class="(familyDetailView.name_unqiue === true) ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-exclamation-sign'"></i> Warning: Family exists in the database. Please verify and create a new Family record.
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_status)}">
@@ -43,8 +45,7 @@
                         <select restriction-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control input-sm" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr" name="family_status" required>
                             <option value="">Select a status</option>
                         </select>
-                        <span class="help-block"
-                              ng-show="family_form.family_status.$invalid">Family status is Required</span>
+                        <span class="help-block" ng-show="family_form.family_status.$invalid">Family status is Required</span>
                     </div>
                 </div>
                 <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_type)}">
