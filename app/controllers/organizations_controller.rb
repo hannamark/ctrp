@@ -135,7 +135,7 @@ class OrganizationsController < ApplicationController
     params[:alias] = true if !params.has_key?(:alias)
 
     # Scope chaining, reuse the scope definition
-    if params[:name].present? || params[:source_context].present? || params[:source_id].present? || params[:source_status].present? || params[:family_name].present? || params[:address].present? || params[:address2].present? || params[:city].present? || params[:state_province].present? || params[:country].present? || params[:postal_code].present? || params[:email].present? || params[:phone].present?
+    if params[:name].present? || params[:source_context].present? || params[:source_id].present? || params[:source_status].present? || params[:family_name].present? || params[:address].present? || params[:address2].present? || params[:city].present? || params[:state_province].present? || params[:country].present? || params[:postal_code].present? || params[:email].present? || params[:phone].present? || params[:updated_by].present? || params[:date_range_arr].present?
       # ctrp_ids is used for retrieving the cluster of orgs when searching by source_id
       ctrp_ids = Organization.matches_wc('source_id', params[:source_id],@current_user.role).pluck(:ctrp_id) if params[:source_id].present?
 
