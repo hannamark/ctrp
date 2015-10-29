@@ -140,8 +140,7 @@
                                     <label class="control-label col-xs-12 col-xs-12 col-sm-3">Address 1:</label>
                                     <div class="col-xs-12 col-sm-6">
                                         <input type="text" curation-field class="form-control input-sm" id="address" ng-model="orgDetailView.curOrg.address" name="address" required>
-                                       <span class="help-block"
-                                             ng-show="organization_form.address.$error.required">Address is Required</span>
+                                       <span class="help-block" ng-show="organization_form.address.$error.required">Address is Required</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -176,35 +175,34 @@
                                     <label class="control-label col-xs-12 col-sm-3">City:</label>
                                     <div class="col-xs-12 col-sm-2">
                                         <input type="text" curation-field class="form-control input-sm" id="city" ng-model="orgDetailView.curOrg.city" required name="city">
-                                       <span class="help-block"
-                                             ng-show="organization_form.city.$error.required">City is Required</span>
+                                        <span class="help-block" ng-show="organization_form.city.$error.required">City is Required</span>
                                     </div>
 
                                     <label class="control-label col-xs-12 col-sm-2">Postal Code:</label>
                                     <div class="col-xs-12 col-sm-2">
                                         <input type="text" curation-field class="form-control input-sm" id="postal_code" ng-model="orgDetailView.curOrg.postal_code" placeholder="Postal Code" name="postal_code" ng-required="orgDetailView.curOrg.country==='United States'">
-                                           <span class="help-block"
-                                                 ng-show="organization_form.postal_code.$error && ctrpbtn.organization_form.needsAttention(organization_form.postal_code)">US Local Postal Code is Required</span>
+                                        <span class="help-block" ng-show="organization_form.postal_code.$error && ctrpbtn.organization_form.needsAttention(organization_form.postal_code)">US Local Postal Code is Required</span>
                                     </div>
                                 </div>
-                            <div class="form-group required" ng-class="{'has-error': (organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email))}">
+                                <div class="form-group required" ng-class="{'has-error': (organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) && organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone))}">
                                     <label class="control-label col-xs-12 col-sm-3">Email:</label>
-                                    <div class="col-xs-12 col-sm-6">
+                                    <div class="col-xs-12 col-sm-3">
                                         <input type="email" curation-field class="form-control input-sm" id="email" ng-model="orgDetailView.curOrg.email" type="email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
-                                           <span class="help-block"
-                                                 ng-show="organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)">Either Phone or Email is Required</span>
                                     </div>
-                                </div>
-                             <div class="form-group required" ng-class="{'has-error': (organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone))}">
-                                    <label class="control-label col-xs-12 col-sm-3">Phone:</label>
+                                    <label class="control-label col-xs-12 col-sm-1">Phone:</label>
                                     <div class="col-xs-12 col-sm-2">
                                         <input type="text" curation-field class="form-control input-sm" id="phone" name="phone" ng-model="orgDetailView.curOrg.phone" type="text" placeholder="Phone" ng-required="!orgDetailView.curOrg.email">
-                                           <span class="help-block"
-                                                 ng-show="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)">Either Phone or Email is Required</span>
                                     </div>
-
-                                    <label class="control-label col-xs-12 col-sm-1">Fax:</label>
-                                    <div class="col-xs-12 col-sm-3">
+                                </div>
+                                <div class="form-group" ng-show="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone) && organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) && organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)" ng-class="{'has-error': (organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) && organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone))}">
+                                    <div class="col-xs-12 col-sm-3"></div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <span class="help-block">Either Phone or Email is Required</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-xs-12 col-sm-3">Fax:</label>
+                                    <div class="col-xs-12 col-sm-6">
                                         <input type="text" curation-field class="form-control input-sm" id="fax" ng-model="orgDetailView.curOrg.fax" type="text" placeholder="Fax">
                                     </div>
                                 </div>
