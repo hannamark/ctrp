@@ -21,10 +21,10 @@ var ctrpSubmitDirective = {
                     if (!formController) return false;
 
                     if (fieldModelController) {
-                        console.log("inside field level. Invalid? " + fieldModelController.$invalid && (fieldModelController.$dirty || this.attempted))
+                        // console.log("inside field level. Invalid? " + fieldModelController.$invalid && (fieldModelController.$dirty || this.attempted))
                         return fieldModelController.$invalid && (fieldModelController.$dirty || this.attempted);
                     } else {
-                        console.log("inside form's logic. Invalid? " + formController && formController.$invalid && (formController.$dirty || this.attempted));
+                        //console.log("inside form's logic. Invalid? " + formController && formController.$invalid && (formController.$dirty || this.attempted));
                         return formController && formController.$invalid && (formController.$dirty || this.attempted);
                     }
                 };

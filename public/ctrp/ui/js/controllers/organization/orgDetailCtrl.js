@@ -56,10 +56,12 @@
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
                 if (vm.curOrg.new) {
+                  console.log('successfully saved the new org with id: ' + JSON.stringify(response));
                     vm.resetForm();
+                    $state.go('main.orgDetail', {orgId: response.id});
                 } else {
                     vm.curOrg.updated_by = response.updated_by;
-                    $state.go('main.organizations', {}, {reload: true});
+                    //$state.go('main.organizations', {}, {reload: true});
                 }
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
