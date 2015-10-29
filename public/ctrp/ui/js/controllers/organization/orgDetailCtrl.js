@@ -58,9 +58,11 @@
                 if (vm.curOrg.new) {
                   console.log('successfully saved the new org with id: ' + JSON.stringify(response));
                     vm.resetForm();
+                    vm.curOrg.new = false;
                     $state.go('main.orgDetail', {orgId: response.id});
                 } else {
                     vm.curOrg.updated_by = response.updated_by;
+                    vm.curOrg.updated_at = response.updated_at;
                     //$state.go('main.organizations', {}, {reload: true});
                 }
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
