@@ -16,6 +16,7 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
+        vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.sourceContextArr = sourceContextObj;
@@ -72,6 +73,10 @@
 
 
         vm.resetForm = function() {
+            angular.copy(vm.masterCopy,vm.curPerson);
+        };
+
+        vm.clearForm = function() {
             $scope.person_form.$setPristine();
 
             var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'cluster'];
@@ -83,7 +88,6 @@
             //default context to ctrp
             vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
         };
-
 
         //delete the affiliated organization from table view
         vm.toggleSelection = function (index) {

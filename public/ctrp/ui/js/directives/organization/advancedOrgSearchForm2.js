@@ -218,8 +218,12 @@
             }; //commitNullification
 
             $scope.rowFormatter = function( row ) {
-                var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
-                return isCTEPContext;
+                if (!$scope.usedInModal) {
+                    var isCTEPContext = row.entity.source_context && row.entity.source_context.indexOf('CTEP') > -1;
+                    return isCTEPContext;
+                } else {
+                    return false;
+                }
             };
 
             /**
@@ -455,7 +459,10 @@
                 $scope.gridOptions = OrgService.getGridOptions();
                 $scope.gridOptions.isRowSelectable = function (row) {
                     var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
-                    if (isCTEPContext) {
+                    if ($scope.usedInModal) {
+                        return true;
+                    }
+                    else if (isCTEPContext) {
                         return false;
                     } else {
                         return true;
