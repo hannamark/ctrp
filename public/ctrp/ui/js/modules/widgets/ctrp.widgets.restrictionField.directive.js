@@ -1,16 +1,36 @@
 /**
- * @author wangg5 created 10/01/2015
+ * wangg5 created 10/01/2015
+ *
+ * This directive watches for user roles and the global write mode to hide/show or disable/enable fields (or divs)
+ *
+ * Usage:
+ *
+ * To make a field visibly available to certain user_roles, the user roles should be delimited
+ * by any delimiter of your choice. (e.g. restriction-field="ROLE_CURATOR")
+ *
+ * Example 1:
+ * make the following input field visible to ROLE_ADMIN and ROLE_SUPER, other user roles cannot see the field
+ *
+ * <input name="TestField1" restriction-field="ROLE_ADMIN, ROLE_SUPER" />
+ *
+ *
+ *
+ * Example 2:
+ * if no user role is specified (in the below example), the input field only disable/enable by listening to the
+ * global write mode
+ *
+ * <input name="TestField2" restriction-field />
  *
  */
 
 (function() {
   'use strict';
   angular.module('ctrpApp.widgets')
-  .directive('curationField', curationField);
+  .directive('restrictionField', restrictionField);
 
-  curationField.$inject = ['$log', '$compile', '$timeout', 'MESSAGES', 'UserService'];
+  restrictionField.$inject = ['$log', '$compile', '$timeout', 'MESSAGES', 'UserService'];
 
-  function curationField($log, $compile, $timeout, MESSAGES, UserService) {
+  function restrictionField($log, $compile, $timeout, MESSAGES, UserService) {
 
       var directiveObj = {
           link: link,
@@ -29,7 +49,7 @@
           });
 
           function watchRestrictionRules() {
-            var allowedUserRoles = attrs.curationField.trim().toLowerCase() || '';
+            var allowedUserRoles = attrs.restrictionField.trim().toLowerCase() || '';
             var curUserRole = UserService.getUserRole().toLowerCase() || '';
             var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
             var isShownToCurrentUser = !allowedUserRoles ? true : allowedUserRoles.indexOf(curUserRole) > -1; //boolean
@@ -73,7 +93,7 @@
 
 
 
-  } //curationField
+  } //restrictionField
 
 
 
