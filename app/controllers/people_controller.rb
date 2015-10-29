@@ -52,8 +52,6 @@ class PeopleController < ApplicationController
     respond_to do |format|
       #@person.po_affiliations.destroy
       if @person.update(person_params)
-        @person.updated_at = Time.now
-        @person.save
         format.html { redirect_to @person, notice: 'Person was successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
       else
