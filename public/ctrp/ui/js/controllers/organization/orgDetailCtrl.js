@@ -56,7 +56,7 @@
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
                 if (vm.curOrg.new) {
-                    vm.resetForm();
+                    vm.clearForm();
                 } else {
                     vm.curOrg.updated_by = response.updated_by;
                     $state.go('main.organizations', {}, {reload: true});
@@ -69,6 +69,8 @@
 
         vm.resetForm = function() {
             angular.copy(vm.masterCopy,vm.curOrg);
+            vm.addedNameAliases = [];
+            appendNameAliases();
         };
 
         vm.clearForm = function () {
@@ -123,6 +125,7 @@
                 OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function (response) {
                     vm.curOrg = response;
                     listenToStatesProvinces();
+                    vm.masterCopy= angular.copy(vm.curOrg);
                     vm.addedNameAliases = [];
                     appendNameAliases();
                 }).catch(function (err) {

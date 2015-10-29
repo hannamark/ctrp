@@ -60,7 +60,7 @@
                 //console.log('response: ' + JSON.stringify(response));
                 vm.savedSelection = [];
                 if (newPerson.new) {
-                    vm.resetForm();
+                    vm.clearForm();
                 } else {
                     vm.curPerson.updated_by = response.data.updated_by;
                     $state.go('main.people', {}, {reload: true});
@@ -74,6 +74,8 @@
 
         vm.resetForm = function() {
             angular.copy(vm.masterCopy,vm.curPerson);
+            vm.savedSelection = [];
+            populatePoAffiliations();
         };
 
         vm.clearForm = function() {
