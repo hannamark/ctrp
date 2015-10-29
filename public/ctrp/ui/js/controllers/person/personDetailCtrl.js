@@ -25,8 +25,7 @@
         vm.selectedOrgFilter = '';
 
 
-        if(!angular.isObject(personDetailObj))
-        {
+        if(!angular.isObject(personDetailObj)) {
             //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
             var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
             vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
@@ -57,12 +56,13 @@
             newPerson.person = vm.curPerson;
 
             PersonService.upsertPerson(newPerson).then(function (response) {
-                //console.log('response: ' + JSON.stringify(response));
+                console.log('response: ' + JSON.stringify(response));
                 vm.savedSelection = [];
                 if (newPerson.new) {
                     vm.resetForm();
+                    vm.curPerson.new = false;
+                    $state.go('main.personDetail', {personId: response.data.id});
                 } else {
-                    $state.go('main.people', {}, {reload: true});
                 }
                 toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
@@ -72,7 +72,7 @@
 
 
         vm.resetForm = function() {
-            angular.copy(vm.masterCopy,vm.curPerson);
+            angular.copy(vm.masterCopy, vm.curPerson);
         };
 
         vm.clearForm = function() {
