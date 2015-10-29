@@ -42,6 +42,11 @@
             }; //initial Organization Search Parameters
 
         var gridOptions = {
+            rowTemplate: '<div ng-class="{ \'nonselectable-row-css-class\': grid.appScope.rowFormatter( row ) }">'+
+                '<div>' +
+                '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell></div>' +
+                '</div>',
+
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
@@ -114,7 +119,8 @@
             preparePOAffiliationArr: preparePOAffiliationArr,
             initSelectedOrg: initSelectedOrg,
             curateOrg: curateOrg,
-            findContextId: findContextId
+            findContextId: findContextId,
+            checkUniqueOrganization: checkUniqueOrganization
         };
 
         return services;
@@ -369,6 +375,16 @@
                 ctrpContextId = ctrpContextArr[needleIndex].id || -1;
             }
             return ctrpContextId;
+        }
+
+
+        /**
+         * Check if an Organization name is unique - based on Name & Source context
+         *
+         * @param curationObject, JSON object: {'org_name': '', 'source_context_id': ''}
+         */
+        function checkUniqueOrganization(name) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.UNIQUE_ORG, name);
         }
 
 

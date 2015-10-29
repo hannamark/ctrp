@@ -21,6 +21,7 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
+        vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
@@ -66,7 +67,11 @@
             });
         }; // updateOrg
 
-        vm.resetForm = function () {
+        vm.resetForm = function() {
+            angular.copy(vm.masterCopy,vm.curOrg);
+        };
+
+        vm.clearForm = function () {
             $scope.organization_form.$setPristine();
 
             var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id', 'cluster'];
@@ -80,6 +85,7 @@
                 vm.curOrg.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
             });
         };
+
       // Add other ID to a temp array
         vm.addNameAlias= function () {
             if (vm.alias) {
@@ -225,6 +231,34 @@
             } //prepareModal
         }; //confirmDelete
 
+
+        //Function that checks if an Organization - based on Name & source context is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the organization/unique Rails end point.
+        $scope.checkUniqueOrganization = function(){
+
+            var ID = 0;
+            if(angular.isObject(orgDetailObj))
+                ID = vm.curOrg.id;
+
+            var searchParams = {"org_name": vm.curOrg.name, "source_context_id": vm.curOrg.source_context_id, "org_exists": angular.isObject(orgDetailObj), "org_id": ID};
+            console.log('Org name is ' + vm.curOrg.name);
+            console.log('Source context is ' + vm.curOrg.source_context_id);
+            console.log('Org exists? ' + angular.isObject(orgDetailObj));
+            console.log('Org ID ' + vm.curOrg.id);
+
+            vm.showUniqueWarning = false
+
+            var result = OrgService.checkUniqueOrganization(searchParams).then(function (response) {
+                vm.name_unqiue = response.name_unique;
+
+                if(!response.name_unique && vm.curOrg.name.length > 0)
+                    vm.showUniqueWarning = true
+
+                console.log("Is org name unique: " +  vm.name_unqiue);
+                console.log(JSON.stringify(response));
+            }).catch(function (err) {
+                console.log("error in checking for duplicate org name " + JSON.stringify(err));
+            });
+        };
 
     }
 

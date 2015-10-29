@@ -137,7 +137,7 @@ class OrganizationsController < ApplicationController
     # Scope chaining, reuse the scope definition
     if params[:name].present? || params[:source_context].present? || params[:source_id].present? || params[:source_status].present? || params[:family_name].present? || params[:address].present? || params[:address2].present? || params[:city].present? || params[:state_province].present? || params[:country].present? || params[:postal_code].present? || params[:email].present? || params[:phone].present?
       # ctrp_ids is used for retrieving the cluster of orgs when searching by source_id
-      ctrp_ids = Organization.matches_wc('source_id', params[:source_id]).pluck(:ctrp_id) if params[:source_id].present?
+      ctrp_ids = Organization.matches_wc('source_id', params[:source_id],@current_user.role).pluck(:ctrp_id) if params[:source_id].present?
 
       @organizations = Organization.all
 
@@ -162,7 +162,7 @@ class OrganizationsController < ApplicationController
         @organizations = @organizations.with_source_context("CTRP")
       end
       @organizations = @organizations.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
-      @organizations = @organizations.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
+      @organizations = @organizations.matches_wc('updated_by', params[:updated_by],@current_user.role) if params[:updated_by].present?
       @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
       @organizations = @organizations.matches_wc('address', params[:address],@current_user.role) if params[:address].present?
       @organizations = @organizations.matches_wc('address2', params[:address2],@current_user.role) if params[:address2].present?
@@ -175,6 +175,58 @@ class OrganizationsController < ApplicationController
       @organizations = @organizations.sort_by_col(params[:sort], params[:order]).group(:'organizations.id').page(params[:start]).per(params[:rows])
     else
       @organizations = []
+    end
+  end
+
+
+  #Method to check for Uniqueness while creating organizations - check on name & source context. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
+  def unique
+    print params[:org_name]
+    print params[:source_context_id]
+    print params[:org_exists]
+    print "Org ID "
+    print params[:org_id]
+
+#    exists = false
+    is_unique = true
+    count = 0
+
+   #Get count of organization record with the same name - can be the existing record (if the user is on the edit screen)
+    if params.has_key?(:org_name) && params.has_key?(:source_context_id)
+      count = Organization.where("lower(name)=?", params[:org_name].downcase).where("source_context_id=?", params[:source_context_id]).count;
+    end
+
+    print "count "
+    print count
+
+    if params[:org_exists] == true
+      @dbOrg = Organization.find(params[:org_id]);
+      if @dbOrg != nil
+        print " db organization "
+        print @dbOrg.name
+
+        #if on the Edit screen, then check for name changes and ignore if database & screen names are the same.
+        if params[:org_name] == @dbOrg.name
+          print " both are equal. Must not warn "
+          is_unique = true;
+        else
+          #However if on the edit screen and the user types in a name that is the same as another org, then complain
+          if count > 0
+            print " both are different. Must warn. "
+            is_unique = false
+          end
+        end
+      end
+    elsif params[:org_exists] == false && count > 0
+      is_unique = false
+    end
+
+    p " is unique? "
+    p is_unique
+
+    respond_to do |format|
+#        format.json {render :json => {:name_unique => !exists}}
+      format.json {render :json => {:name_unique => is_unique}}
     end
   end
 

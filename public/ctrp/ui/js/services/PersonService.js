@@ -39,6 +39,10 @@
             }; //initial Person Search Parameters
 
         var gridOptions = {
+            rowTemplate: '<div ng-class="{ \'nonselectable-row-css-class\': grid.appScope.rowFormatter( row ) }">'+
+            '<div>' +
+            '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell></div>' +
+            '</div>',
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
@@ -58,7 +62,7 @@
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'id', enableSorting: true, displayName: 'CTRP ID', width: '8%'},
+                {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', width: '8%'},
                 {name: 'prefix', enableSorting: true, width: '8%'},
                 {name: 'fname', displayName: 'First', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
