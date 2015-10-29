@@ -13,11 +13,6 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.json
   def show
-    @export_data = Person.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json { render :json => @export_data.to_json(:include => :po_affiliations) }
-    end
   end
 
   # GET /people/new

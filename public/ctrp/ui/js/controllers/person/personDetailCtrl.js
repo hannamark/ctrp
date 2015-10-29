@@ -77,11 +77,12 @@
         };
 
         vm.clearForm = function() {
-            var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
+            $scope.person_form.$setPristine();
+
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'cluster'];
             Object.keys(vm.curPerson).forEach(function(key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
-                    $scope.person_form.$setPristine();
                 }
             });
             //default context to ctrp
@@ -134,6 +135,21 @@
             }
         }; //openCalendar
 
+        // Swap context when different tab is selected
+        $scope.$watch(function() {
+            return vm.tabIndex;
+        }, function(newValue, oldValue) {
+            if (!vm.curPerson.new) {
+                PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
+                    vm.curPerson = response.data;
+                    vm.savedSelection = [];
+                    populatePoAffiliations();
+                }).catch(function (err) {
+                    console.log("Error in retrieving person during tab change.");
+                });
+            }
+        });
+
         activate();
 
         /****************** implementations below ***************/
@@ -143,6 +159,7 @@
                 OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curPerson.source_context_id;
 
             appendNewPersonFlag();
+            setTabIndex();
             watchOrgReceiver();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
@@ -165,7 +182,17 @@
             }
         }
 
-
+        function setTabIndex() {
+            if (vm.curPerson.new) {
+                vm.curPerson.cluster = [{"context": "CTRP"}];
+            } else {
+                for (var i = 0; i < vm.curPerson.cluster.length; i++) {
+                    if (vm.curPerson.cluster[i].id == vm.curPerson.id) {
+                        vm.tabIndex = i;
+                    }
+                }
+            }
+        }
 
         /**
          * watch organizations selected from the modal
