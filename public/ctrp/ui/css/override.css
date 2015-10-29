@@ -594,13 +594,13 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 }
 
 .form-group.required .control-label:after{
-    color: red;
+    color: #C53531;
     content: "*";
     position: absolute;
     margin-right: -13px;
 }
 
-.nonselectable-row-css-class {
-    color: orangered;
-    background-color: red !important;
+.nonselectable-row {
+    background-color: rgba(255, 69, 0, 0.4) !important;
+    cursor: default;
 }

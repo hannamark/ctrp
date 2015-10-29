@@ -42,9 +42,9 @@
             }; //initial Organization Search Parameters
 
         var gridOptions = {
-            rowTemplate: '<div ng-class="{ \'nonselectable-row-css-class\': grid.appScope.rowFormatter( row ) }">'+
+            rowTemplate: '<div>'+
                 '<div>' +
-                '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell></div>' +
+                '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader, \'nonselectable-row\': grid.appScope.rowFormatter( row )}"  ui-grid-cell></div>' +
                 '</div>',
 
             enableColumnResizing: true,
