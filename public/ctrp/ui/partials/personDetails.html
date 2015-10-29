@@ -62,9 +62,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div >
-
-                        </div>
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Suffix:</label>
                             <div class="col-xs-12 col-sm-6">
@@ -102,19 +99,21 @@
                             </div>
                         </div>
                         <div class="form-group required" ng-class="{'has-error': (person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email) && person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone))}">
-                            <label class="control-label col-xs-12 col-sm-3">Email:</label>
-                            <div class="col-xs-12 col-sm-3">
-                                <input tabindex="8" restriction-field class="form-control input-sm" name="email" ng-model="personDetailView.curPerson.email" type="email" ng-required="!personDetailView.curPerson.phone">
+                            <div class="row">
+                                <label class="control-label col-xs-12 col-sm-3">Email:</label>
+                                <div class="col-xs-12 col-sm-3">
+                                    <input tabindex="8" restriction-field class="form-control input-sm" name="email" ng-model="personDetailView.curPerson.email" type="email" ng-required="!personDetailView.curPerson.phone">
+                                </div>
+                                <label class="control-label col-xs-12 col-sm-1">Phone:</label>
+                                <div class="col-xs-12 col-sm-2">
+                                    <input tabindex="9" type="text" restriction-field class="form-control input-sm" name="phone" ng-model="personDetailView.curPerson.phone" type="text" ng-required="!personDetailView.curPerson.email">
+                                </div>
                             </div>
-                            <label class="control-label col-xs-12 col-sm-1">Phone:</label>
-                            <div class="col-xs-12 col-sm-2">
-                                <input tabindex="9" type="text" restriction-field class="form-control input-sm" name="phone" ng-model="personDetailView.curPerson.phone" type="text" ng-required="!personDetailView.curPerson.email">
-                            </div>
-                        </div>
-                        <div class="form-group" ng-show="person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone) && person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email)" ng-class="{'has-error': (person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email) && person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone))}">
-                            <div class="col-xs-12 col-sm-3"></div>
-                            <div class="col-xs-12 col-sm-6">
-                                <span class="help-block">Either Phone or Email is Required</span>
+                            <div class="row" ng-show="person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone) && person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email)" ng-class="{'has-error': (person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email) && person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone))}">
+                                <div class="col-xs-12 col-sm-3"></div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <span class="help-block">Either Phone or Email is Required</span>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group" ng-hide="personDetailView.curPerson.new || !personDetailView.curPerson.created_by">
