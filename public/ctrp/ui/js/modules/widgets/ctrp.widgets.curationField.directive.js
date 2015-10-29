@@ -16,42 +16,37 @@
           link: link,
           require: '?ngModel',
           restrict: 'A',
-          replace: true,
-          scope: {
-              ngModel: '=ngModel'
-          }
-      }
+          replace: true
+      };
 
       return directiveObj;
 
 
       function link(scope, element, attrs, ngModelCtrl) {
-
-          watchCurationMode();
-
+          watchRestrictionRules();
           scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-              watchCurationMode();
+              watchRestrictionRules();
           });
 
-          /**
-           * watch for the curation mode to enable/hide or disable/show the element
-           */
-          function watchCurationMode() {
-              var isCurationEnabled = UserService.isCurationModeEnabled() || false;
-              if (isCurationEnabled) {
-                  if (isButton(element)) {
-                      element.show();
-                  } else {
-                      element.removeAttr('disabled');
-                  }
+          function watchRestrictionRules() {
+            var allowedUserRoles = attrs.curationField.trim().toLowerCase() || '';
+            var curUserRole = UserService.getUserRole().toLowerCase() || '';
+            var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
+            var isShownToCurrentUser = !allowedUserRoles ? true : allowedUserRoles.indexOf(curUserRole) > -1; //boolean
+
+            if (isShownToCurrentUser && globalWriteModeEnabled) {
+              element.show();
+              element.removeAttr('disabled');
+            } else if (!isShownToCurrentUser) {
+              element.hide();
+            } else if (isShownToCurrentUser && !globalWriteModeEnabled) {
+              if (isButton(element)) {
+                element.hide(); //hide button if globalWriteModeEnabled is false
               } else {
-                  if (isButton(element)) {
-                      element.hide();
-                  } else {
-                      attrs.$set('disabled', 'disabled');
-                  }
+                attrs.$set('disabled', 'disabled');
               }
-          }
+            }
+          } //watchRestrictionRules
 
       } //link
 
