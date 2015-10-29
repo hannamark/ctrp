@@ -260,6 +260,19 @@
             });
         };
 
+        $scope.IsValidPhoneNumber = function(){
+
+            //var selectedCountryCode = countryToCountryCode('United States');
+
+            //console.log("country code is " + selectedCountryCode);
+
+            $scope.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
+
+            console.log('Is phone valid: ' + $scope.IsPhoneValid);
+
+
+        }
+
     }
 
 
