@@ -36,6 +36,7 @@
         vm.curationReady = false;
         console.log("vm.ctrpSourceContextIndex is " + vm.ctrpSourceContextIndex);
         console.log("context array is " + JSON.stringify(vm.sourceContextArr));
+        $scope.showPhoneWarning = false;
 
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
@@ -56,10 +57,11 @@
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
                 if (vm.curOrg.new) {
-                    vm.resetForm();
+                  console.log('successfully saved the new org with id: ' + JSON.stringify(response));
+                    vm.clearForm();
+                    vm.curOrg.new = false;
+                    $state.go('main.orgDetail', {orgId: response.id});
                 } else {
-                    vm.curOrg.updated_by = response.updated_by;
-                    $state.go('main.organizations', {}, {reload: true});
                 }
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
@@ -69,6 +71,8 @@
 
         vm.resetForm = function() {
             angular.copy(vm.masterCopy,vm.curOrg);
+            vm.addedNameAliases = [];
+            appendNameAliases();
         };
 
         vm.clearForm = function () {
@@ -123,6 +127,7 @@
                 OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function (response) {
                     vm.curOrg = response;
                     listenToStatesProvinces();
+                    vm.masterCopy= angular.copy(vm.curOrg);
                     vm.addedNameAliases = [];
                     appendNameAliases();
                 }).catch(function (err) {
@@ -267,7 +272,7 @@
             //console.log("country code is " + selectedCountryCode);
 
             $scope.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
-
+            $scope.showPhoneWarning = true;
             console.log('Is phone valid: ' + $scope.IsPhoneValid);
 
 

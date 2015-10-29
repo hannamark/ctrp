@@ -187,20 +187,26 @@
                                     </div>
                                 </div>
                                 <div class="form-group required" ng-class="{'has-error': (organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) && organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone))}">
-                                    <label class="control-label col-xs-12 col-sm-3">Email:</label>
-                                    <div class="col-xs-12 col-sm-3">
-                                        <input type="email" restriction-field class="form-control input-sm" id="email" ng-model="orgDetailView.curOrg.email" type="email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
+                                    <div class="row">
+                                        <label class="control-label col-xs-12 col-sm-3">Email:</label>
+                                        <div class="col-xs-12 col-sm-3">
+                                            <input type="email" restriction-field class="form-control input-sm" id="email" ng-model="orgDetailView.curOrg.email" type="email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
+                                        </div>
+                                        <label class="control-label col-xs-12 col-sm-1">Phone:</label>
+                                        <div class="col-xs-12 col-sm-2">
+                                            <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" ng-model="orgDetailView.curOrg.phone" type="text" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="IsValidPhoneNumber()">
+                                            <div class="has-error" ng-show="orgDetailView.curOrg.phone.length > 0 && showPhoneWarning == true && IsPhoneValid == false">
+                                                <span class="help-block">
+                                                    <i ng-class="'glyphicon glyphicon-exclamation-sign'"></i> Warning: Phone number invalid for the selected Country.
+                                                 </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <label class="control-label col-xs-12 col-sm-1">Phone:</label>
-                                    <div class="col-xs-12 col-sm-2">
-                                        <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" ng-model="orgDetailView.curOrg.phone" type="text" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="IsValidPhoneNumber()">
-                                        {{ IsPhoneValid }}
-                                    </div>
-                                </div>
-                                <div class="form-group" ng-show="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone) && organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) && organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)" ng-class="{'has-error': (organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) && organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone))}">
-                                    <div class="col-xs-12 col-sm-3"></div>
-                                    <div class="col-xs-12 col-sm-6">
-                                        <span class="help-block">Either Phone or Email is Required</span>
+                                    <div class="row" ng-show="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone) && organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) && organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)" ng-class="{'has-error': (organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) && organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone))}">
+                                        <div class="col-xs-12 col-sm-3"></div>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <span class="help-block">Either Phone or Email is Required</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
