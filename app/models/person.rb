@@ -45,6 +45,7 @@ class Person < ActiveRecord::Base
   validates :fname, presence: true
   validates :lname, presence: true
 
+  before_validation :check_phone_or_email
   before_destroy :check_for_organization
   after_create   :save_id_to_ctrp_id
 
@@ -62,6 +63,14 @@ class Person < ActiveRecord::Base
 
 
   private
+
+  # Method to check for the presence of phone or email. If both are empty, then return false
+  def check_phone_or_email
+    if (self.phone.nil? || self.phone.empty?) && (self.email.nil? || self.email.empty?)
+      return false
+    end
+  end
+
 
   def save_id_to_ctrp_id
     if self.source_context && self.source_context.code == "CTRP"
