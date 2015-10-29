@@ -77,7 +77,6 @@ class SessionsController < Devise::SessionsController
       #user.save!
       Rails.logger.info "Result of warden authenticate JWT token = #{token.inspect}"
       #self.resource.current_role = self.resource.role
-      set_current_user(self.resource)
       auth_json = create_authorization_json(self.resource, token)
       Rails.logger.info "authjson= #{auth_json.inspect}"
       if source == "Rails"

@@ -62,7 +62,7 @@
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'id', enableSorting: true, displayName: 'CTRP ID', width: '8%'},
+                {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', width: '8%'},
                 {name: 'prefix', enableSorting: true, width: '8%'},
                 {name: 'fname', displayName: 'First', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
