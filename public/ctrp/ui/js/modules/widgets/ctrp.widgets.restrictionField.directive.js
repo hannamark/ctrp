@@ -6,11 +6,11 @@
 (function() {
   'use strict';
   angular.module('ctrpApp.widgets')
-  .directive('curationField', curationField);
+  .directive('restrictionField', restrictionField);
 
-  curationField.$inject = ['$log', '$compile', '$timeout', 'MESSAGES', 'UserService'];
+  restrictionField.$inject = ['$log', '$compile', '$timeout', 'MESSAGES', 'UserService'];
 
-  function curationField($log, $compile, $timeout, MESSAGES, UserService) {
+  function restrictionField($log, $compile, $timeout, MESSAGES, UserService) {
 
       var directiveObj = {
           link: link,
@@ -29,7 +29,7 @@
           });
 
           function watchRestrictionRules() {
-            var allowedUserRoles = attrs.curationField.trim().toLowerCase() || '';
+            var allowedUserRoles = attrs.restrictionField.trim().toLowerCase() || '';
             var curUserRole = UserService.getUserRole().toLowerCase() || '';
             var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
             var isShownToCurrentUser = !allowedUserRoles ? true : allowedUserRoles.indexOf(curUserRole) > -1; //boolean
@@ -73,7 +73,7 @@
 
 
 
-  } //curationField
+  } //restrictionField
 
 
 

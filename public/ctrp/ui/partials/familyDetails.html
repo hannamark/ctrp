@@ -30,7 +30,7 @@
                 <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.name)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Name:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" name="name" curation-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus ng-change="checkForNameUniqueness()"/>
+                        <input type="text" name="name" restriction-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus ng-change="checkForNameUniqueness()"/>
                         <span class="help-block"
                               ng-show="family_form.name.$error.required">Family name is Required</span>
                         <i ng-show="familyDetailView.curFamily.name.length > 0 && family_form.name.$dirty" ng-class="(familyDetailView.name_unqiue === true) ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-warning-sign'"></i>
@@ -40,7 +40,7 @@
                 <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_status)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Status:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <select curation-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control input-sm" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr" name="family_status" required>
+                        <select restriction-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control input-sm" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr" name="family_status" required>
                             <option value="">Select a status</option>
                         </select>
                         <span class="help-block"
@@ -50,7 +50,7 @@
                 <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_type)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Type:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <select curation-field ng-init="familyDetailView.curFamily.family_type_id" class="form-control input-sm" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr" name="family_type" required>
+                        <select restriction-field ng-init="familyDetailView.curFamily.family_type_id" class="form-control input-sm" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr" name="family_type" required>
                             <option value="">Select a type</option>
                         </select>
                         <span class="help-block"
@@ -76,7 +76,7 @@
                            <i class="glyphicon glyphicon-remove"></i> Remove All Family Members
                        </button> -->
                        <div class="row animated-item top-offset-tiny" ng-show="familyDetailView.savedSelection.length > 0">
-                           <input type="text" ng-model="familyDetailView.selectedOrgFilter" curation-field class="form-control input-sm" placeholder="Filter selected organizations"/>
+                           <input type="text" ng-model="familyDetailView.selectedOrgFilter" restriction-field class="form-control input-sm" placeholder="Filter selected organizations"/>
                            <table class="table table-bordered table-striped table-condensed">
                                <thead>
                                    <th width="6%"><nobr>CTRP ID</nobr></th>
@@ -146,13 +146,13 @@
                 <div class="form-group no-bottom-margin">
                     <div class="col-xs-12 col-sm-3"></div>
                     <div class="btn-toolbar col-xs-12 col-sm-9">
-                        <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn">
+                        <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
                             Save
                         </button>
-                        <button type="button" curation-field class="btn btn-warning pull-right" ng-click="familyDetailView.reset()">
+                        <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="familyDetailView.reset()">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
-                        <button type="button" ng-hide="familyDetailView.curFamily.new" curation-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="familyDetailView.confirmDelete('sm')">
+                        <button type="button" ng-hide="familyDetailView.curFamily.new" restriction-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="familyDetailView.confirmDelete('sm')">
                             Delete This Family
                         </button>
                     </div>
