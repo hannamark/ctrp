@@ -61,11 +61,22 @@ class UsersController < ApplicationController
 
     yml_content = YAML.load_file(Rails.root.join('config', 'locales').to_s + '/en.yml')
     #Rails.logger.debug "yml_content = #{yml_content.inspect}"
-
-    if local_user_signed_in?
-      gsa_text = yml_content['en']['non_nih_user_gsa_msg']
-    elsif ldap_user_signed_in?
-      gsa_text = yml_content['en']['nih_user_gsa_msg']
+    # It is critical to make sure that we dont loose the current_user when going through
+    # the GSA Acceptance
+    if @current_user.nil?
+      @current_user = get_user
+    end
+    user = @current_user
+    Rails.logger.debug "IN GSA @current_user = #{@current_user}"
+    unless user.nil?
+      set_current_user(user)
+      if user.is_a?(LocalUser)
+        gsa_text = yml_content['en']['non_nih_user_gsa_msg']
+      elsif user.is_a?(LdapUser)
+        gsa_text = yml_content['en']['nih_user_gsa_msg']
+      else
+        gsa_text = yml_content['en']['non_nih_user_gsa_msg']
+      end
     else
       gsa_text = yml_content['en']['non_nih_user_gsa_msg']
     end

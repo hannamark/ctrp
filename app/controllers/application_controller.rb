@@ -44,20 +44,15 @@ class ApplicationController < ActionController::Base
     if auth_string.blank?
       return nil
     end
-    Rails.logger.debug "auth_string = #{auth_string.inspect}"
+    #Rails.logger.debug "\n, In Application controller, parse_request_header, auth_string = #{auth_string.inspect}"
     accept_flag = auth_string.split(" ")[0]
-    Rails.logger.debug "accept_flag = #{accept_flag.inspect}"
+    #Rails.logger.debug "In Application controller, parse_request_header, accept_flag = #{accept_flag.inspect}"
     if accept_flag != "Accept"
       Rails.logger.error "The User didnot Accept the GSA"
       Rails.logger.debug "Accept flag is not true"
       raise CanCan::AccessDenied.new("Not authorized!")
     end
     token = auth_string.split(" ")[1]
-    unless token.nil?
-      Rails.logger.debug "token = #{token.inspect}"
-    else
-      Rails.logger.debug "Token is Nil"
-    end
     return token
   end
 
@@ -74,17 +69,7 @@ class ApplicationController < ActionController::Base
       user = @current_user || get_user
       Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, user = #{user.inspect} "
       unless user.nil?
-        begin
-          # All options given to sign_in is passed forward to the set_user method in warden.
-          # The only exception is the :bypass option, which bypass warden callbacks and stores
-          # the user straight in session. This option is useful in cases the user is already
-          # signed in, but we want to refresh the credentials in session.
-          sign_in user, :bypass => true
-        rescue => e
-          e.backtrace
-          Rails.logger.debug "Unable to authenticate user exception #{e.backtrace}"
-          raise "Unable to authenticate User. The Authentication of the user cannot be performed"
-        end
+        login_user(user)
       end
     else
       # The App was signed in using Angular
@@ -98,40 +83,31 @@ class ApplicationController < ActionController::Base
         raise "Unable to decode token. The Authentication of the user cannot be performed"
       end
       user = User.find_by_id(user_id)
-      begin
-        # All options given to sign_in is passed forward to the set_user method in warden.
-        # The only exception is the :bypass option, which bypass warden callbacks and stores
-        # the user straight in session. This option is useful in cases the user is already
-        # signed in, but we want to refresh the credentials in session.
-        sign_in user, :bypass => true
-      rescue => e
-        e.backtrace
-        Rails.logger.debug "Unable to authenticate user exception #{e.backtrace}"
-        raise "Unable to authenticate User. The Authentication of the user cannot be performed"
-      end
-      @current_user = user
-      current_user = user
-      if user.is_a?(LdapUser)
-        current_ldap_user = user
-      elsif user.is_a?(LocalUser)
-        current_local_user = user
-      else
-        current_user = user
-      end
+      login_user(user)
+      set_current_user(user)
     end
     Rails.logger.info "End of wrapper_authenticate_user"
   end
 
+  def login_user(user)
+    begin
+      # All options given to sign_in is passed forward to the set_user method in warden.
+      # The only exception is the :bypass option, which bypass warden callbacks and stores
+      # the user straight in session. This option is useful in cases the user is already
+      # signed in, but we want to refresh the credentials in session.
+      sign_in user, :bypass => true
+    rescue => e
+      e.backtrace
+      Rails.logger.debug "Unable to authenticate user exception #{e.backtrace}"
+      raise "Unable to authenticate User. The Authentication of the user cannot be performed"
+    end
+  end
+
+
   def set_current_user(user)
     Rails.logger.info "\n\nIN set_current_user Setting current user to #{user.inspect}"
     @current_user = user
-    if user.is_a?(LdapUser)
-      current_ldap_user = user
-    elsif user.is_a?(LocalUser)
-      current_local_user = user
-    else
-      current_user = user
-    end
+    set_devise_methods(user)
   end
 
   def set_devise_methods(user)
