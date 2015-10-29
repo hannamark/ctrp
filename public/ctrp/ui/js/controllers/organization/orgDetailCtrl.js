@@ -21,6 +21,7 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
+        vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
@@ -66,7 +67,11 @@
             });
         }; // updateOrg
 
-        vm.resetForm = function () {
+        vm.resetForm = function() {
+            angular.copy(vm.masterCopy,vm.curOrg);
+        };
+
+        vm.clearForm = function () {
             $scope.organization_form.$setPristine();
 
             var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id', 'cluster'];
@@ -80,6 +85,7 @@
                 vm.curOrg.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
             });
         };
+
       // Add other ID to a temp array
         vm.addNameAlias= function () {
             if (vm.alias) {
