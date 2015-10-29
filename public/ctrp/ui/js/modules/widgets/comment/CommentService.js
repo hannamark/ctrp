@@ -4,9 +4,11 @@
     angular.module('ctrpApp')
         .factory('CommentService', CommentService);
 
-    CommentService.$inject = ['URL_CONFIGS', '$http', '$log', '_', 'Common', 'PromiseTimeoutService', '$q'];
+    CommentService.$inject = ['URL_CONFIGS', '$http', '$log', '_', 'Common',
+      'UserService', 'PromiseTimeoutService', '$q'];
 
-    function CommentService(URL_CONFIGS, $http, $log, _, Common, PromiseTimeoutService, $q) {
+    function CommentService(URL_CONFIGS, $http, $log, _, Common,
+      UserService, PromiseTimeoutService, $q) {
       //TODO: data services for comments
 
       return {
@@ -14,7 +16,8 @@
         createComment: createComment,
         getComments: getComments,
         updateComment: updateComment,
-        deleteComment: deleteComment
+        deleteComment: deleteComment,
+        annotateCommentIsEditable: annotateCommentIsEditable
       };
 
       ///// implementations
@@ -75,6 +78,31 @@
       function deleteComment(commentId) {
         //TODO: delete a comment
       } //deleteComment
+
+
+      /**
+      * Based on the user role or the username, annotate if the comment is editable
+      * to the currently logged in user
+      */
+      function annotateCommentIsEditable(comments) {
+        var annotatedComments = [];
+        //TODO: this should be placed in a Service component
+        var userRolesAllowedToEdit = ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_CURATOR'];
+
+        if (angular.isArray(comments)) {
+            var isEditable = userRolesAllowedToEdit.indexOf(UserService.getUserRole()) > -1;
+            annotatedComments = comments.map(function(comment) {
+              if (isEditable || comment.username == UserService.getLoggedInUsername()) {
+                comment.isEditable = true;
+              } else {
+                comment.isEditable = false;
+              }
+              return comment;
+            });
+        }
+      //  console.log('after annotation: ' + JSON.stringify(annotatedComments));
+        return annotatedComments;
+      } //annotateCommentIsEditable
 
     }
 

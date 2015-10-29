@@ -8,9 +8,10 @@
   angular.module('ctrpApp.widgets')
   .directive('ctrpCommentModal', ctrpCommentModal);
 
-  ctrpCommentModal.$inject = ['$compile', '$log', 'CommentService', '$mdDialog', 'UserService'];
+  ctrpCommentModal.$inject = ['$compile', '$log', 'CommentService', '$mdDialog',
+  '$mdToast', '$document', 'UserService'];
 
-  function ctrpCommentModal($compile, $log, CommentService, $mdDialog) {
+  function ctrpCommentModal($compile, $log, CommentService, $mdDialog, $mdToast, $document, UserService) {
 
     return {
       restrict: 'A',
@@ -22,10 +23,11 @@
       attrs.$observe('uuid', function(newVal) {
         if (newVal) {
           scope.uuid = newVal;
+          scope.field = attrs.field || '';
+          scope.model = attrs.model || '';
           element.show();
           getCommentCounts();
         } else {
-          scope.uuid = '';
           element.hide();
         }
       }, true);
@@ -36,7 +38,8 @@
           targetEvent: e,
           locals: {
             instanceUuid: attrs.uuid,
-            field: attrs.field || ''
+            field: scope.field,
+            model: scope.model
           },
           clickOutsideToClose: true,
           scope: scope.$new(), //create a child scope
@@ -46,12 +49,13 @@
 
 
       function getCommentCounts() {
-        CommentService.getCommentCounts(scope.uuid).then(function(data) {
-          scope.numComments = data.count;
-          if (scope.numComments > 0) {
-            // element.text(scope.numComments);
-            element.html('<span><strong>' + scope.numComments + '</strong></span> <i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>');
-          }
+        CommentService.getCommentCounts(scope.uuid, scope.field)
+          .then(function(data) {
+              scope.numComments = data.count;
+              if (scope.numComments > 0) {
+                // element.text(scope.numComments);
+                element.html('<span><strong>' + scope.numComments + '</strong></span> <i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>');
+              }
         });
       } //getCommentCounts
 
@@ -63,24 +67,23 @@
 
 
 
-    function commentPanelCtrl($scope, $mdDialog, instanceUuid, field, UserService, CommentService) {
+    function commentPanelCtrl($scope, $mdDialog, instanceUuid,
+      field, model, UserService, CommentService) {
       $scope.showCommentForm = false;
       $scope.postComment = postComment;
       $scope.commentList = []; //container of comments
+      $scope.pagingOptions = {currentPage: 1, pageSize: 10};
+      $scope.updateComment = updateComment;
 
       $scope.comment = {
       content: "",
       fullname: "", //TODO: get user full name from UserService
-      model: "", //TODO: get model name
+      model: model,
       username: UserService.getLoggedInUsername(),
       field: field || '',
       instance_uuid: instanceUuid,
       parent_id: ''
       };
-
-      console.log('dialog received instance uuid: ' + instanceUuid);
-      console.log('dialog received field name: ' + field);
-      console.log('accessing the parent scope for the uuid: ' + $scope.$parent.uuid);
 
       $scope.toggleCommentFormShown = function() {
         $scope.showCommentForm = !$scope.showCommentForm;
@@ -97,11 +100,12 @@
       }
 
       function fetchComments() {
-        CommentService.getComments(instanceUuid).then(function(data) {
-          console.log('received comments data: ' + JSON.stringify(data));
-          $scope.commentList = data.comments;
+        CommentService.getComments(instanceUuid, field)
+        .then(function(data) {
+            //console.log('received comments data: ' + JSON.stringify(data));
+            $scope.commentList = CommentService.annotateCommentIsEditable(data.comments);
         }).catch(function(error) {
-          $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);
+            $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);
         });
       } //fetchComments
 
@@ -110,6 +114,8 @@
           $scope.comment.content = '';
           if (response.server_response.status == 201) {
             fetchComments(); //fetch the latest comments
+            $scope.toggleCommentFormShown();
+            showToastr('Comment created', 'right');
           }
           // console.log('created comment response: ' + JSON.stringify(response));
         }).catch(function(err) {
@@ -117,7 +123,36 @@
         });
       } //postComment
 
-      //TODO: edit and delete comment
+
+      //update
+      function updateComment(newContent, commentObjIndex) {
+        if (commentObjIndex > -1) {
+          var editedComment = angular.copy($scope.commentList[commentObjIndex]);
+          editedComment.content = newContent;
+          CommentService.updateComment(editedComment).then(function(response) {
+            console.log('response status: ' + response.server_response.status);
+            if (response.server_response.status == 200) {
+              // fetchComments();
+              showToastr('Comment updated', 'right');
+            }
+          }).catch(function(err) {
+            //TODO: throw a toastr
+            $log.error('error in updating comment: ' + newContent);
+          });
+        }
+      } //updateComment
+
+
+      function showToastr(message, position) {
+        $mdToast.show({
+          template: '<md-toast style="background-color: #6200EA"><span flex>' + message + '</span></md-toast>',
+          parent: $document[0].querySelector('#toastr_message'),
+          hideDelay: 1000,
+          position: 'right'
+        });
+      } //showToastr
+
+
 
 
 
