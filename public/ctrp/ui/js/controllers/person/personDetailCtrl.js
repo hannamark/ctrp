@@ -72,6 +72,25 @@
 
 
         vm.resetForm = function() {
+           /*
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
+
+            Object.keys(vm.curPerson).forEach(function(key) {
+                if (excludedKeys.indexOf(key) == -1) {
+                    vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
+                    $scope.person_form.$setPristine();
+                }
+            });
+
+              //default context to ctrp
+//            vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
+            */
+            //vm.curPerson = vm.curPerson.data || vm.curPerson;
+
+
+        };
+
+        vm.clearForm = function() {
             var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
             Object.keys(vm.curPerson).forEach(function(key) {
                 if (excludedKeys.indexOf(key) == -1) {
@@ -82,7 +101,6 @@
             //default context to ctrp
             vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
         };
-
 
         //delete the affiliated organization from table view
         vm.toggleSelection = function (index) {
