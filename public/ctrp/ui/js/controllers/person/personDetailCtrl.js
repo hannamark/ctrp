@@ -63,9 +63,6 @@
                     vm.curPerson.new = false;
                     $state.go('main.personDetail', {personId: response.data.id});
                 } else {
-                    vm.curPerson.updated_by = response.data.updated_by;
-                    vm.curPerson.updated_at = response.data.updated_at;
-                    //$state.go('main.people', {}, {reload: true});
                 }
                 toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
