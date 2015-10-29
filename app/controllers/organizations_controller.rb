@@ -50,8 +50,7 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1.json
   def update
     @organization.updated_by = @current_user.username unless @current_user.nil?
-p '>>>>'
-    p @organization.updated_by
+
     respond_to do |format|
       if @organization.update(organization_params)
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
