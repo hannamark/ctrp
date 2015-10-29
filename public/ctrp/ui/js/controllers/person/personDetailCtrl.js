@@ -144,6 +144,7 @@
                     vm.curPerson = response.data;
                     vm.savedSelection = [];
                     populatePoAffiliations();
+                    vm.masterCopy= angular.copy(vm.curPerson);
                 }).catch(function (err) {
                     console.log("Error in retrieving person during tab change.");
                 });
