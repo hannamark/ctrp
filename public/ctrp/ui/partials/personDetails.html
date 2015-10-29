@@ -17,7 +17,7 @@
         </div>
     </script>
 
-    <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person"></ctrp-comment>
+
     <div class="col-xs-12 drop-shadow">
         <div class="row">
             <p>
@@ -25,12 +25,14 @@
             <h4 ng-if="!personDetailView.curPerson.new">Edit Person</h4>
             </p>
         </div>
-        <div class="row md-sidenav-push-in-target">
-        <form class="form-horizontal" role="form" name="person_form" novalidate ctrp-submit="personDetailView.updatePerson()">
+        <div class="row">
+          <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person"></ctrp-comment>
+          <form class="form-horizontal" role="form" name="person_form" novalidate ctrp-submit="personDetailView.updatePerson()">
             <md-tabs md-dynamic-height md-border-bottom md-selected="personDetailView.tabIndex">
                 <md-tab ng-repeat="clusterPerson in personDetailView.curPerson.cluster track by $index">
                     <md-tab-label>{{clusterPerson.context}}</md-tab-label>
                     <md-tab-body>
+                      <div class="row md-sidenav-push-in-target">
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Prefix:</label>
                             <div class="col-xs-12 col-sm-6">
@@ -213,6 +215,7 @@
                                 </div>
                             </div>
                         </div>
+                      </div> <!-- end of push-in-target -->
                     </md-tab-body>
                 </md-tab>
             </md-tabs>

@@ -57,11 +57,10 @@
             OrgService.upsertOrg(outerOrg).then(function (response) {
                 if (vm.curOrg.new) {
                   console.log('successfully saved the new org with id: ' + JSON.stringify(response));
-                    vm.resetForm();
+                    vm.clearForm();
+                    vm.curOrg.new = false;
                     $state.go('main.orgDetail', {orgId: response.id});
                 } else {
-                    vm.curOrg.updated_by = response.updated_by;
-                    //$state.go('main.organizations', {}, {reload: true});
                 }
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
@@ -71,6 +70,8 @@
 
         vm.resetForm = function() {
             angular.copy(vm.masterCopy,vm.curOrg);
+            vm.addedNameAliases = [];
+            appendNameAliases();
         };
 
         vm.clearForm = function () {
@@ -125,6 +126,7 @@
                 OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function (response) {
                     vm.curOrg = response;
                     listenToStatesProvinces();
+                    vm.masterCopy= angular.copy(vm.curOrg);
                     vm.addedNameAliases = [];
                     appendNameAliases();
                 }).catch(function (err) {
