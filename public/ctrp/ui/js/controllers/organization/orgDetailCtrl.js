@@ -36,6 +36,7 @@
         vm.curationReady = false;
         console.log("vm.ctrpSourceContextIndex is " + vm.ctrpSourceContextIndex);
         console.log("context array is " + JSON.stringify(vm.sourceContextArr));
+        $scope.showPhoneWarning = false;
 
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
@@ -263,6 +264,19 @@
                 console.log("error in checking for duplicate org name " + JSON.stringify(err));
             });
         };
+
+        $scope.IsValidPhoneNumber = function(){
+
+            //var selectedCountryCode = countryToCountryCode('United States');
+
+            //console.log("country code is " + selectedCountryCode);
+
+            $scope.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
+            $scope.showPhoneWarning = true;
+            console.log('Is phone valid: ' + $scope.IsPhoneValid);
+
+
+        }
 
     }
 
