@@ -48,7 +48,10 @@
                 else {
                     vm.curFamily.new = false;
                     $state.go('main.familyDetail', {familyId: response.data.id});
-                    toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!');
+                    toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
                 }
             }).catch(function(err) {
                 console.log("error in updating family " + JSON.stringify(vm.curFamily));

@@ -61,9 +61,12 @@
                     vm.clearForm();
                     vm.curOrg.new = false;
                     $state.go('main.orgDetail', {orgId: response.id});
-                } else {
                 }
-                toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
+                toastr.clear();
+                toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
             }).catch(function (err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
             });
