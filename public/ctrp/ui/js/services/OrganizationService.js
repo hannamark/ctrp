@@ -15,8 +15,6 @@
                         GeoLocationService, Common, $rootScope,
                         PromiseTimeoutService,UserService) {
 
-        var userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
-        var userIsCurator = userRole.toUpperCase() === 'CURATOR';
         var statesOrProvinces = [];
         var initOrgSearchParams = {
             name : "",
@@ -43,13 +41,10 @@
             start: 1
             }; //initial Organization Search Parameters
 
-            console.log('role for row is: ', userIsCurator);
-            /* \'nonselectable-row\': userIsCurator && grid.appScope.rowFormatter( row )} */
-            
         var gridOptions = {
             rowTemplate: '<div>'+
                 '<div>' +
-                '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader}"  ui-grid-cell></div>' +
+                '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader, \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' && grid.appScope.rowFormatter( row )}"  ui-grid-cell></div>' +
                 '</div>',
 
             enableColumnResizing: true,
