@@ -14,6 +14,7 @@
        // console.log("in details controller ......."+JSON.stringify(familyDetailObj));
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
         vm.curFamily = vm.curFamily.data || vm.curFamily;
+        vm.masterCopy= angular.copy(vm.curFamily);
         vm.familyStatusArr = familyStatusObj.data;
         vm.familyTypeArr = familyTypeObj.data;
         vm.familyRelationshipArr = familyRelationshipObj == null ? '' : familyRelationshipObj.data;
@@ -108,11 +109,31 @@
             return $scope.msg ;
         };
 
-        vm.reset = function() {
+        vm.clear = function() {
             vm.batchSelect('removeAll');
             vm.curFamily.family_status_id = '';
             vm.curFamily.family_type_id = '';
             vm.savedSelection.length = 0;
+        };
+        vm.clearForm = function() {
+            $scope.family_form.$setPristine();
+            var excludedKeys = ['new'];
+            Object.keys(vm.curFamily).forEach(function (key) {
+                if (excludedKeys.indexOf(key) == -1) {
+                    vm.curFamily[key] = angular.isArray(vm.curFamily[key]) ? [] : '';
+                }
+            });
+            vm.savedSelection = [];
+            if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
+                populateFamilyMemberships();
+            }
+        };
+        vm.resetForm = function() {
+            angular.copy(vm.masterCopy,vm.curFamily);
+            vm.savedSelection = [];
+            if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
+                populateFamilyMemberships();
+            }
         };
 
         activate();
