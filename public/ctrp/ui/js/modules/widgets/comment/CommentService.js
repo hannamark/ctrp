@@ -90,8 +90,10 @@
         var userRolesAllowedToEdit = ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_CURATOR'];
 
         if (angular.isArray(comments)) {
+            var totalComments = comments.length;
             var isEditable = userRolesAllowedToEdit.indexOf(UserService.getUserRole()) > -1;
-            annotatedComments = comments.map(function(comment) {
+            annotatedComments = comments.map(function(comment, index) {
+              comment.index = totalComments - index;
               if (isEditable || comment.username == UserService.getLoggedInUsername()) {
                 comment.isEditable = true;
               } else {

@@ -90,7 +90,7 @@
       <md-divider></md-divider>
       <div class="md-list-item-text">
         <div class="md-list-item-text">
-          <p class="md-caption"><strong>#{{commentView.commentList.length - $index}} {{comment.username}}</strong> commented ({{comment.created_at | date: "dd-MMM-yyyy H:mm"}}): </p>
+          <p class="md-caption"><strong>#{{comment.index}} {{comment.username}}</strong> commented ({{comment.updated_at | date: "dd-MMM-yyyy H:mm"}}): </p>
           <h5 class="md-body-1" in-place-edit="comment.content" on-save="commentView.updateComment(comment.content, $index)"
           template="/ctrp/ui/js/modules/widgets/comment/comment-in-place-edit.html" is-editable="{{comment.isEditable}}">{{comment.content}}, {{comment.isEditable}}</h5>
         </div>
