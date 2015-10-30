@@ -458,7 +458,7 @@
 
             /* prepare grid layout and data options */
             function prepareGidOptions() {
-                $scope.gridOptions = OrgService.getGridOptions();
+                $scope.gridOptions = OrgService.getGridOptions($scope.usedInModal);
                 $scope.gridOptions.isRowSelectable = function (row) {
                     var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
                     if ($scope.usedInModal) {
