@@ -189,7 +189,7 @@
 
 
 
-        function getGridOptions() {
+        function getGridOptions(usedInModal) {
             var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
             var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
             var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
@@ -197,6 +197,10 @@
             if(!(user_role.toUpperCase() == curator_role.toUpperCase())) {
                 gridOptions.columnDefs.splice(updated_at_index,1);
                 gridOptions.columnDefs.splice(updated_by_index,1);
+            }
+            if(usedInModal){
+                var nullify_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'Nullify');
+                gridOptions.columnDefs.splice(nullify_index,1);
             }
 
             console.log('user role is: ', user_role.toUpperCase());
