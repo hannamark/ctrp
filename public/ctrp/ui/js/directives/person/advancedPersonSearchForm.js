@@ -138,7 +138,7 @@
                             });
                             // $scope.gridApi.grid.refresh();
                             $location.hash('people_search_results');
-                            $anchorScroll();
+                            //$anchorScroll();
                         }
                         $scope.$parent.personSearchResults = data.data; //{people: [], total, }
                     }).catch(function (err) {

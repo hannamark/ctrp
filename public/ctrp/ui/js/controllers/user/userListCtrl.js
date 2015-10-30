@@ -47,7 +47,7 @@
                 vm.gridOptions.totalItems =  data["users"].total;
 
                 $location.hash('users_search_results');
-                $anchorScroll();
+                //$anchorScroll();
             }).catch(function (err) {
                 console.log('Search Users failed');
             });

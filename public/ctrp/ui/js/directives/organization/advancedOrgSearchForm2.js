@@ -139,7 +139,7 @@
                             });
 
                             $location.hash('org_search_results');
-                            $anchorScroll();
+                            //$anchorScroll();
                         }
                         $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
                         // console.log($scope.$parent);

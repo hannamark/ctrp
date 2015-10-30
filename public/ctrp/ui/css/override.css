@@ -424,6 +424,9 @@ h4 {
     margin-right: -5px;
     margin-left: -5px;
 }
+.form-horizontal .has-feedback .form-control-feedback {
+    right: 5px;
+}
 
 .input-group-addon {
     line-height: 1;
@@ -434,6 +437,9 @@ h4 {
     height: 22px;
     padding: 2px 8px;
     border-radius: 6px;
+}
+.input-sm+.form-control-feedback {
+    line-height: 2em;
 }
 
 .btn {
@@ -525,6 +531,12 @@ h4 {
 
 .glyphicon.glyphicon-comment {
     font-size: 22px;
+}
+.glyphicon.glyphicon-ok.glyphicon-green {
+    color: #3c763d;
+}
+.glyphicon.glyphicon-exclamation-sign.glyphicon-red {
+    color: #a94442;
 }
 
 .md-sidenav-right {

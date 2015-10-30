@@ -27,14 +27,15 @@
         </div>
         <div class="row md-sidenav-push-in-target">
             <form class="form form-horizontal" name="family_form" role="form" novalidate ctrp-submit="familyDetailView.updateFamily()">
-                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.name)}">
+                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.name)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Name:</label>
                     <div class="col-xs-12 col-sm-6">
                         <input type="text" name="name" restriction-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus ng-change="checkForNameUniqueness()"/>
+                        <span class="form-control-feedback" ng-show="familyDetailView.curFamily.name.length > 0 && family_form.name.$dirty" ng-class="(!familyDetailView.showUniqueWarning) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                         <span class="help-block" ng-show="family_form.name.$error.required">Family name is Required</span>
                         <div class="has-error" ng-show="familyDetailView.curFamily.name.length > 0 && family_form.name.$dirty && familyDetailView.showUniqueWarning">
                             <span class="help-block">
-                                <i ng-class="(familyDetailView.name_unqiue === true) ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-exclamation-sign'"></i> Warning: Family exists in the database. Please verify and create a new Family record.
+                                Warning: Family exists in the database. Please verify and create a new Family record.
                             </span>
                         </div>
                     </div>
