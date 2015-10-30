@@ -601,6 +601,8 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 }
 
 .nonselectable-row {
-    background-color: rgba(255, 69, 0, 0.25) !important;
-    cursor: default;
+    background-color: rgba(255, 69, 0, 0.1) !important;
+}
+.nonselectable-row, .nonselectable-row a {
+    color: #444 !important;
 }
