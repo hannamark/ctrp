@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, :only => :index
- # before_filter :authenticate_user!, :only => :update
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
 
   attr_accessor :gsa_text
 
@@ -24,7 +24,6 @@ class UsersController < ApplicationController
   def update
     @user = User.find_by_username(params[:user][:username])
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
-
 
     respond_to do |format|
       #@person.po_affiliations.destroy
@@ -63,12 +62,31 @@ class UsersController < ApplicationController
     #Rails.logger.debug "yml_content = #{yml_content.inspect}"
     # It is critical to make sure that we dont loose the current_user when going through
     # the GSA Acceptance
+    user = nil
     if @current_user.nil?
       @current_user = get_user
     end
     user = @current_user
+
+
+    auth_string = request.headers['Authorization']
+    if !auth_string.blank?
+      Rails.logger.debug "UserController, GSA, auth_string = #{auth_string.inspect}"
+      token = auth_string.split(" ")[1]
+      Rails.logger.debug "UserController, GSA, auth_string = #{token.inspect}"
+      decoded_token = decode_token(token)
+     Rails.logger.debug "UserController, GSA, decoded_token = #{decoded_token.inspect}"
+      user_id =  decoded_token[0]["user_id"]
+      Rails.logger.debug "UserController, GSA, user_id = #{user_id.inspect}"
+      user = User.find(user_id)
+      @current_user = user
+      Rails.logger.debug "UserController, GSA, user = #{user.inspect}"
+    end
+
     Rails.logger.debug "IN GSA @current_user = #{@current_user}"
+
     unless user.nil?
+      login_user(user)
       set_current_user(user)
       if user.is_a?(LocalUser)
         gsa_text = yml_content['en']['non_nih_user_gsa_msg']
