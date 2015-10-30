@@ -7,7 +7,7 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-var menuItem = require('../support/PoCommonBar');
+var menuItemList = require('../support/PoCommonBar');
 var familyPage = require('../support/AddFamilyPage');
 var listFamilyPage = require('../support/ListOfFamiliesPage');
 var helper = require('../support/helper');
@@ -19,7 +19,7 @@ var searchOrgPage = require('../support/ListOfOrganizationsPage');
 
 
 module.exports = function() {
-    var menuItemList = new menuItem();
+    var menuItem = new menuItemList();
     var searchFamily = new listFamilyPage();
     var addFamily = new familyPage();
     var login = new loginPage();
@@ -31,7 +31,9 @@ module.exports = function() {
     this.Given(/^I know which organization I wish to assign to an Organization Family$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
-        menuItemList.clickWriteMode();
+        login.accept();
+        menuItem.clickHomeEnterOrganizations();
+        menuItem.clickWriteMode();
         addOrg.orgDefaultCreate('SSOrgCuke','','','','','','','','','','','');
         browser.sleep(250).then(callback);
     });
@@ -42,8 +44,8 @@ module.exports = function() {
             addFamily.familyDefaultCreate('SSFamilyCuke', 'Active', 'NIH');
             fam4.then(function(value4)
             {console.log('Added Family Name - ' + value4);});});
-        menuItemList.clickOrganizations();
-        menuItemList.clickListFamily();
+        menuItem.clickOrganizations();
+        menuItem.clickListFamily();
         browser.sleep(250).then(callback);
     });
 
@@ -52,7 +54,7 @@ module.exports = function() {
         {console.log('search family - ' + value2);
             searchFamily.setFamilyName(value2);
             searchFamily.clickSearchButton();
-            expect(menuItemList.inResults(value2)).to.become('true');
+            expect(menuItem.inResults(value2)).to.become('true');
         });
         browser.sleep(250).then(callback);
     });
@@ -105,7 +107,9 @@ module.exports = function() {
     this.Given(/^I know which Family I want to update$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
-        menuItemList.clickWriteMode();
+        login.accept();
+        menuItem.clickHomeEnterOrganizations();
+        menuItem.clickWriteMode();
         browser.sleep(250).then(callback);
     });
 
@@ -119,8 +123,8 @@ module.exports = function() {
         searchOrg.clickOrgModelConfirm();
          });
         addFamily.clickSave();
-        menuItemList.clickOrganizations();
-        menuItemList.clickListFamily();
+        menuItem.clickOrganizations();
+        menuItem.clickListFamily();
         fam4.then(function(value2)
         {console.log('search family - ' + value2);
             searchFamily.setFamilyName(value2);

@@ -16,6 +16,7 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
+        vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.sourceContextArr = sourceContextObj;
@@ -24,8 +25,7 @@
         vm.selectedOrgFilter = '';
 
 
-        if(!angular.isObject(personDetailObj))
-        {
+        if(!angular.isObject(personDetailObj)) {
             //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
             var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
             vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
@@ -56,13 +56,13 @@
             newPerson.person = vm.curPerson;
 
             PersonService.upsertPerson(newPerson).then(function (response) {
-                //console.log('response: ' + JSON.stringify(response));
+                console.log('response: ' + JSON.stringify(response));
                 vm.savedSelection = [];
                 if (newPerson.new) {
-                    vm.resetForm();
+                    vm.clearForm();
+                    vm.curPerson.new = false;
+                    $state.go('main.personDetail', {personId: response.data.id});
                 } else {
-                    vm.curPerson.updated_by = response.data.updated_by;
-                    $state.go('main.people', {}, {reload: true});
                 }
                 toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
@@ -72,17 +72,25 @@
 
 
         vm.resetForm = function() {
-            var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
+            angular.copy(vm.masterCopy,vm.curPerson);
+            vm.savedSelection = [];
+            populatePoAffiliations();
+        };
+
+        vm.clearForm = function() {
+            $scope.person_form.$setPristine();
+
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'cluster'];
             Object.keys(vm.curPerson).forEach(function(key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
-                    $scope.person_form.$setPristine();
                 }
             });
             //default context to ctrp
             vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
+            vm.savedSelection = [];
+            populatePoAffiliations();
         };
-
 
         //delete the affiliated organization from table view
         vm.toggleSelection = function (index) {
@@ -130,6 +138,22 @@
             }
         }; //openCalendar
 
+        // Swap context when different tab is selected
+        $scope.$watch(function() {
+            return vm.tabIndex;
+        }, function(newValue, oldValue) {
+            if (!vm.curPerson.new) {
+                PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
+                    vm.curPerson = response.data;
+                    vm.savedSelection = [];
+                    populatePoAffiliations();
+                    vm.masterCopy= angular.copy(vm.curPerson);
+                }).catch(function (err) {
+                    console.log("Error in retrieving person during tab change.");
+                });
+            }
+        });
+
         activate();
 
         /****************** implementations below ***************/
@@ -139,6 +163,7 @@
                 OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curPerson.source_context_id;
 
             appendNewPersonFlag();
+            setTabIndex();
             watchOrgReceiver();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
@@ -161,7 +186,17 @@
             }
         }
 
-
+        function setTabIndex() {
+            if (vm.curPerson.new) {
+                vm.curPerson.cluster = [{"context": "CTRP"}];
+            } else {
+                for (var i = 0; i < vm.curPerson.cluster.length; i++) {
+                    if (vm.curPerson.cluster[i].id == vm.curPerson.id) {
+                        vm.tabIndex = i;
+                    }
+                }
+            }
+        }
 
         /**
          * watch organizations selected from the modal
@@ -239,9 +274,16 @@
         //Function that checks if a user name - based on First & Last names is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the person/unique Rails end point.
         $scope.checkForNameUniqueness = function(){
 
-            var searchParams = {"person_fname": vm.curPerson.fname, "person_lname": vm.curPerson.lname};
+            var ID = 0;
+            if(angular.isObject(personDetailObj))
+                ID = vm.curPerson.id;
+
+            var searchParams = {"person_fname": vm.curPerson.fname, "person_lname": vm.curPerson.lname, "source_context_id": vm.curPerson.source_context_id, "person_exists": angular.isObject(personDetailObj), "person_id": ID};
             console.log('First name is ' + vm.curPerson.fname);
             console.log('Last name is ' + vm.curPerson.lname);
+            console.log('Source context is ' + vm.curPerson.source_context_id);
+            console.log('Person exists? ' + angular.isObject(personDetailObj));
+            console.log('Person ID ' + vm.curPerson.id);
 
             vm.showUniqueWarning = false
 

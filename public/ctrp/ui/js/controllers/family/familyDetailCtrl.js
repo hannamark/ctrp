@@ -14,6 +14,7 @@
        // console.log("in details controller ......."+JSON.stringify(familyDetailObj));
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
         vm.curFamily = vm.curFamily.data || vm.curFamily;
+        vm.masterCopy= angular.copy(vm.curFamily);
         vm.familyStatusArr = familyStatusObj.data;
         vm.familyTypeArr = familyTypeObj.data;
         vm.familyRelationshipArr = familyRelationshipObj == null ? '' : familyRelationshipObj.data;
@@ -40,15 +41,13 @@
 
             // console.log("newFamily is: " + JSON.stringify(newFamily));
             FamilyService.upsertFamily(newFamily).then(function(response) {
-                //var resObj= JSON.stringify(response).data;
-                //console.log('resObj' +resObj);
-                //vm.arrErrors=response.name;
                 if(response.status == 422) {
                     toastr.error('Problem in saving family', 'Family name has already been taken');
                     vm.curFamily.name="";
-
                 }
                 else {
+                    vm.curFamily.new = false;
+                    $state.go('main.familyDetail', {familyId: response.data.id});
                     toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!');
                 }
             }).catch(function(err) {
@@ -108,11 +107,31 @@
             return $scope.msg ;
         };
 
-        vm.reset = function() {
+        vm.clear = function() {
             vm.batchSelect('removeAll');
             vm.curFamily.family_status_id = '';
             vm.curFamily.family_type_id = '';
             vm.savedSelection.length = 0;
+        };
+        vm.clearForm = function() {
+            $scope.family_form.$setPristine();
+            var excludedKeys = ['new'];
+            Object.keys(vm.curFamily).forEach(function (key) {
+                if (excludedKeys.indexOf(key) == -1) {
+                    vm.curFamily[key] = angular.isArray(vm.curFamily[key]) ? [] : '';
+                }
+            });
+            vm.savedSelection = [];
+            if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
+                populateFamilyMemberships();
+            }
+        };
+        vm.resetForm = function() {
+            angular.copy(vm.masterCopy,vm.curFamily);
+            vm.savedSelection = [];
+            if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
+                populateFamilyMemberships();
+            }
         };
 
         activate();
@@ -234,6 +253,34 @@
 
             async.eachSeries(vm.curFamily.family_memberships, findOrgName, retOrgs);
         } //populateFamilyMemberships
+
+
+        //Function that checks if a Family name is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the families/unique Rails end point.
+        $scope.checkForNameUniqueness = function(){
+
+            var ID = 0;
+            if(angular.isObject(familyDetailObj))
+                ID = vm.curFamily.id;
+
+            var searchParams = {"family_name": vm.curFamily.name,"family_exists": angular.isObject(familyDetailObj), "family_id": ID};
+            console.log('Family name is ' + vm.curFamily.name);
+            console.log('Family exists? ' + angular.isObject(familyDetailObj));
+            console.log('Family ID ' + ID);
+
+            vm.showUniqueWarning = false
+
+            var result = FamilyService.checkUniqueFamily(searchParams).then(function (response) {
+                vm.name_unqiue = response.name_unique;
+
+                if(!response.name_unique && vm.curFamily.name.length > 0)
+                    vm.showUniqueWarning = true
+
+                console.log("Is Famiily name unique: " +  vm.name_unqiue);
+                console.log("Response is " + JSON.stringify(response));
+            }).catch(function (err) {
+                console.log("error in checking for duplicate family name " + JSON.stringify(err));
+            });
+        };
 
 
 

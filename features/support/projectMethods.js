@@ -115,11 +115,11 @@ var projectMethods = function() {
     this.createPersonWithAffiliatedOrg = function(prefix, fName, mName, lName, suffix, email, phone, affOrgName, affOrgEffectiveDate, affOrgExpirationDate){
         this.createOrganization(affOrgName,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','222-4444-555','888-9999-666');
         this.createPerson(prefix,fName,mName,lName,suffix,email,phone);
-        menuItem.clickPeople();
+    /*    menuItem.clickPeople();
         menuItem.clickListPeople();
         searchPeople.setPersonFirstName(cukePerson);
         searchPeople.clickSearch();
-        element(by.linkText(cukePerson)).click();
+        element(by.linkText(cukePerson)).click();*/
         searchOrg.clickOrgSearchModel();
         searchOrg.setOrgName(cukeOrganization);
         searchOrg.clickSearchButton();
@@ -147,7 +147,7 @@ var projectMethods = function() {
     };
 
     /**********************************
-     * Method: Create Family
+     * Method: Create Family with members
      * @param familyName
      * @param familyStatus
      * @param familyType
@@ -441,7 +441,25 @@ var projectMethods = function() {
         for (var i = sizeOfTheStrng; i > 0; --i) randAlpNmVal += alpNumStr[Math.round(Math.random() * (alpNumStr.sizeOfTheStrng - 1))];
         return randAlpNmVal;
     }
-
+    /*****************************************************************
+     * Method: Verify the affiliated Organization Effective Date
+     * @param searchedItem
+     *****************************************************************/
+    this.verifyOrgSearchResult = function(searchedItem) {
+        return searchOrg.orgSearchResultsPage.getText().filter(function(row) {
+            // Get the second column's text.
+            return row.$$('td').get(2).getText().then(function(rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === searchedItem;
+            });
+        }).then(function(filteredElements)  {
+            // Only the elements that passed the filter will be here. This is an array.
+            if(filteredElements.length > 0) {
+                return 'true';}
+            else {return 'false';}
+        });
+    };
 
 };
 module.exports = projectMethods;

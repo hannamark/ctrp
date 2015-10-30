@@ -28,10 +28,12 @@ module.exports = function() {
     this.Given(/^I know the name of the alias I wish to add for an organization$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
         }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
             menuItem.clickWriteMode();
             projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
         });

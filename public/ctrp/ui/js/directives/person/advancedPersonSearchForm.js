@@ -219,10 +219,17 @@
                 }
             }; //resetSearch
 
+            $scope.rowFormatter = function( row ) {
+                var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                return isCTEPContext;
+            };
 
             $scope.nullifyEntity = function (rowEntity) {
                 // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
-                if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
+                if (!rowEntity.nullifiable) {
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
+                }
+                else if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
                     // warning to user for nullifying active entity
                     $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is not allowed';
                     $scope.nullifiedId = '';
@@ -409,8 +416,16 @@
             function prepareGidOptions() {
                 //ui-grid plugin options
                 $scope.gridOptions = PersonService.getGridOptions();
-                $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-                $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+                $scope.gridOptions.isRowSelectable = function (row) {
+                    var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                    if (isCTEPContext) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                };
+                $scope.gridOptions.enableVerticalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
+                $scope.gridOptions.enableHorizontalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
                     $scope.gridApi = gridApi;
                     $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack);

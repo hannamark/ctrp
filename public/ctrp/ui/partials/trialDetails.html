@@ -1,5 +1,5 @@
 <div class="row-fluid">
-    <div class="col-xs-12">
+    <div class="col-xs-12 drop-shadow">
         <div class="row">
             <p>
                 <h4 ng-if="trialDetailView.curTrial.new">Register Trial</h4>
@@ -858,17 +858,18 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group no-bottom-margin">
                     <div class="btn-toolbar col-xs-12">
-                        <button type="submit" curation-field class="btn btn-primary pull-right" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" ctrp-click-once>
+                        <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" ctrp-click-once>
                             Save
                         </button>
-                        <button curation-field class="btn btn-warning pull-right" ng-click="trialDetailView.reload()">
+                        <button restriction-field class="btn btn-warning pull-right" ng-click="trialDetailView.reload()">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
                     </div>
                 </div>
             </form>
         </div>
+        <div class="row top-offset-xs"></div>
     </div>
 </div>
