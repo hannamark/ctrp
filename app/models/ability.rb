@@ -41,7 +41,7 @@ class Ability
         can :access, :rails_admin   # grant access to rails_admin
         can :dashboard              # grant access to the dashboard
     elsif user.role == 'ROLE_CURATOR' && user.approved?
-      can :manage, [Organization, Person, Family]
+      can :manage, [Organization, Person, Family, Comment]
       can :read, :all
       can :search, :all
       cannot :access_backoffice, :manage_backoffice

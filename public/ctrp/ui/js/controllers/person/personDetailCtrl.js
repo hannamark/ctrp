@@ -88,6 +88,8 @@
             });
             //default context to ctrp
             vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
+            vm.savedSelection = [];
+            populatePoAffiliations();
         };
 
         //delete the affiliated organization from table view
