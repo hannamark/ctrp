@@ -54,17 +54,29 @@
             var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
             var isShownToCurrentUser = !allowedUserRoles ? true : allowedUserRoles.indexOf(curUserRole) > -1; //boolean
 
-            if (isShownToCurrentUser && globalWriteModeEnabled) {
-              element.show();
-              element.removeAttr('disabled');
-            } else if (!isShownToCurrentUser) {
-              element.hide();
-            } else if (isShownToCurrentUser && !globalWriteModeEnabled) {
-              if (isButton(element)) {
-                element.hide(); //hide button if globalWriteModeEnabled is false
-              } else {
-                attrs.$set('disabled', 'disabled');
-              }
+            if (attrs.hasOwnProperty('ignoreRw')) {
+                //include user role only
+                console.log('ignore rw');
+                if (isShownToCurrentUser) {
+                    console.log('show up to the user role');
+                    element.show();
+                } else {
+                    element.hide();
+                }
+            } else {
+                //include both globalWriteMode and user role
+                if (isShownToCurrentUser && globalWriteModeEnabled) {
+                  element.show();
+                  element.removeAttr('disabled');
+                } else if (!isShownToCurrentUser) {
+                  element.hide();
+                } else if (isShownToCurrentUser && !globalWriteModeEnabled) {
+                  if (isButton(element)) {
+                    element.hide(); //hide button if globalWriteModeEnabled is false
+                  } else {
+                    attrs.$set('disabled', 'disabled');
+                  }
+                }
             }
           } //watchRestrictionRules
 
