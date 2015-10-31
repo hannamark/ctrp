@@ -86,7 +86,7 @@ class UsersController < ApplicationController
     Rails.logger.debug "IN GSA @current_user = #{@current_user}"
 
     unless user.nil?
-      login_user(user)
+      authenticate_user(user)
       set_current_user(user)
       if user.is_a?(LocalUser)
         gsa_text = yml_content['en']['non_nih_user_gsa_msg']
