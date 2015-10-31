@@ -65,8 +65,9 @@ class ApplicationController < ActionController::Base
     if token.blank?
       ## The App was signed/accessed via the Rails App (not Angular)
       #Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, get_user = #{get_user.inspect} "
-      user = @current_user
-      Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, user = #{user.inspect} "
+      user = @current_user || current_local_user || current_ldap_user
+      Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, user username = #{user.username.inspect} " unless user.nil?
+      Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, user current_sign_in_at = #{user.current_sign_in_at.inspect} " unless user.nil?
       if  !user.nil? && !user.current_sign_in_at.nil?
         authenticate_user(user)
       else
@@ -87,7 +88,6 @@ class ApplicationController < ActionController::Base
       end
       user = User.find_by_id(user_id)
       authenticate_user(user)
-      set_current_user(user)
     end
     Rails.logger.info "End of wrapper_authenticate_user"
   end
@@ -99,6 +99,7 @@ class ApplicationController < ActionController::Base
       # the user straight in session. This option is useful in cases the user is already
       # signed in, but we want to refresh the credentials in session.
       sign_in user, :bypass => true
+      set_current_user(user)
     rescue => e
       e.backtrace
       Rails.logger.debug "Unable to authenticate user exception #{e.backtrace}"
