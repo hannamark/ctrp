@@ -14,9 +14,8 @@ var LoginPage = function(){
     this.loginButton = element(by.css('button[ng-click="userView.authenticate()"]'));
     this.cancelButton = element(by.css('input[value="Reset"]'));
     this.logoutButton = element(by.css('a[ng-click="headerView.logOut()"]'));
-    //this.acceptButton = element(by.css('.btn.btn-primary'));
-    this.rejectButton = element(by.css('.btn.btn-warning'));
-    this.acceptButton = element(by.buttonText('Accept'));//element(by.css('.container.ng-scope>button:nth-child(2)'));
+    this.rejectButton = element(by.buttonText('Reject'));
+    this.acceptButton = element(by.buttonText('Accept'));
     var loginPageVerifyText = element(by.css('.panel-title'));
     this.writeMode =  element(by.css('.md-thumb'));
     var params = browser.params;
@@ -62,7 +61,15 @@ var LoginPage = function(){
     this.accept = function() {
         this.acceptButton.isDisplayed().then(function(retVal){
             if (retVal == true){
-                element(by.buttonText('Accept')).click();// element(by.css('.container.ng-scope>button:nth-child(2)')).click();
+                element(by.buttonText('Accept')).click();
+            }
+        });
+    };
+
+    this.reject = function() {
+        this.rejectButton.isDisplayed().then(function(retValRej){
+            if (retValRej == true){
+                element(by.buttonText('Reject')).click();
             }
         });
     };

@@ -187,8 +187,8 @@ var projectMethods = function() {
         }).then(function(filteredElements) {
             // Only the elements that passed the filter will be here. This is an array.
             if(filteredElements.length > 0) {
-                return 'true';}
-            else {return 'false';}
+                return 'false';}
+            else {return 'true';}
         });
     };
 

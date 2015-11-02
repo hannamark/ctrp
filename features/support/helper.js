@@ -128,11 +128,15 @@ var helper = function() {
         console.log(errorMessage + " - header value");
     };
 
-    this.pageRefresh = function() {
+    this.pageRefresh = function () {
         browser.refresh();
     };
 
-    function objToStringAll (obj) {
+    this.wait_for = function (enterTm){
+        browser.sleep(enterTm);
+    };
+
+    this.objToStringAll = function (obj) {
         var str = '';
         for (var p in obj) {
             if (obj.hasOwnProperty(p)) {
@@ -142,11 +146,13 @@ var helper = function() {
         return str;
     };
 
-    function objToString (obj) {
+    this.objToString = function (obj) {
         var j=''+obj+'';
         JSON.stringify(j);
         return j;
     };
+
+
 
 };
 module.exports = helper;

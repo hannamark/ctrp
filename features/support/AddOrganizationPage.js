@@ -31,6 +31,7 @@ AddOrganizationsPage = function(){
     this.resetButton = element(by.css('input[value="Reset"]'));
     this.cancelButton = element(by.css('.btn.btn-default'));
     this.deleteButton = element(by.css('.btn.btn-danger'));
+    this.deleteNowButton = element(by.buttonText('Delete Now'));
     this.orgLastUpdatedBy = element(by.binding('orgDetailView.curOrg.updated_by'));
     this.orgCreatedBy = element(by.binding('orgDetailView.curOrg.created_by'));
     this.addVerifyAddHeader = element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
@@ -99,6 +100,10 @@ AddOrganizationsPage = function(){
 
     this.clickDelete = function(){
         addOrg.clickButton(this.deleteButton,"Delete button on Organization page");
+    };
+
+    this.clickDeleteNow = function(){
+        addOrg.clickButton(this.deleteNowButton,"Delete button on Organization page");
     };
 
     this.clickReset = function(){
