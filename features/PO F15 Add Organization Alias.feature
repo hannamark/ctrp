@@ -1,5 +1,5 @@
 @PO @Global
-Feature: Add Organization Alias
+Feature: PO F15 Add Organization Alias
 
 Scenario: As a Po Curator, I can add an organization name alias
 Given I know the name of the alias I wish to add for an organization
