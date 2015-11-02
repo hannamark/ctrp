@@ -12,7 +12,7 @@ class UsersController < ApplicationController
     @users = []
     unless @user.blank?
       @users = @user.get_all_users_by_role
-      Rails.logger.info "UserController,index @users = #{@users.inspect}"
+      #Rails.logger.info "UserController,index @users = #{@users.inspect}"
     end
   end
 
@@ -68,7 +68,6 @@ class UsersController < ApplicationController
     end
     user = @current_user
 
-
     auth_string = request.headers['Authorization']
     if !auth_string.blank?
       Rails.logger.debug "UserController, GSA, auth_string = #{auth_string.inspect}"
@@ -86,8 +85,7 @@ class UsersController < ApplicationController
     Rails.logger.debug "IN GSA @current_user = #{@current_user}"
 
     unless user.nil?
-      login_user(user)
-      set_current_user(user)
+      authenticate_user(user)
       if user.is_a?(LocalUser)
         gsa_text = yml_content['en']['non_nih_user_gsa_msg']
       elsif user.is_a?(LdapUser)

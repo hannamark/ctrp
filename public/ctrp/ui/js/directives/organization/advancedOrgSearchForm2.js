@@ -139,7 +139,7 @@
                             });
 
                             $location.hash('org_search_results');
-                            $anchorScroll();
+                            //$anchorScroll();
                         }
                         $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
                         // console.log($scope.$parent);
@@ -458,7 +458,7 @@
 
             /* prepare grid layout and data options */
             function prepareGidOptions() {
-                $scope.gridOptions = OrgService.getGridOptions();
+                $scope.gridOptions = OrgService.getGridOptions($scope.usedInModal);
                 $scope.gridOptions.isRowSelectable = function (row) {
                     var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
                     if ($scope.usedInModal) {

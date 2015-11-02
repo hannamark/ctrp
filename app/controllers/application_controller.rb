@@ -35,6 +35,7 @@ class ApplicationController < ActionController::Base
   end
 
   def reset_current_user
+    Rails.logger.debug "\nIn Application Controller, reset_current_user, Setting Current User to Nil"
     @current_user = nil
   end
 
@@ -63,14 +64,17 @@ class ApplicationController < ActionController::Base
     ## If the App was accessed with the Angular UI, it will have a token, else the token will be nil
     if token.blank?
       ## The App was signed/accessed via the Rails App (not Angular)
+      #Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, get_user = #{get_user.inspect} "
+      user = @current_user || current_local_user || current_ldap_user
+      Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, user username = #{user.username.inspect} " unless user.nil?
+      Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, user current_sign_in_at = #{user.current_sign_in_at.inspect} " unless user.nil?
+      if  !user.nil? && !user.current_sign_in_at.nil?
+        authenticate_user(user)
+      else
+        raise CanCan::AccessDenied.new("Not authorized!")
+      end
       Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, current user  #{@current_user.inspect}" unless @current_user.nil?
       Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, current user is NIL " if @current_user.nil?
-      Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, get_user = #{get_user.inspect} "
-      user = @current_user || get_user
-      Rails.logger.debug "\nIn Application Controller, wrapper_authenticate_user, user = #{user.inspect} "
-      unless user.nil?
-        login_user(user)
-      end
     else
       # The App was signed in using Angular
       Rails.logger.info "token = " + token
@@ -83,19 +87,19 @@ class ApplicationController < ActionController::Base
         raise "Unable to decode token. The Authentication of the user cannot be performed"
       end
       user = User.find_by_id(user_id)
-      login_user(user)
-      set_current_user(user)
+      authenticate_user(user)
     end
     Rails.logger.info "End of wrapper_authenticate_user"
   end
 
-  def login_user(user)
+  def authenticate_user(user)
     begin
       # All options given to sign_in is passed forward to the set_user method in warden.
       # The only exception is the :bypass option, which bypass warden callbacks and stores
       # the user straight in session. This option is useful in cases the user is already
       # signed in, but we want to refresh the credentials in session.
       sign_in user, :bypass => true
+      set_current_user(user)
     rescue => e
       e.backtrace
       Rails.logger.debug "Unable to authenticate user exception #{e.backtrace}"
@@ -127,8 +131,15 @@ class ApplicationController < ActionController::Base
     Rails.logger.debug "In get_user"
     # Rails.logger.info "In get_user USER_ID  = #{session.inspect}"
     unless session.nil? || session["warden.user.user.key"].nil? || session["warden.user.user.key"][0].nil? || session["warden.user.user.key"][0][0].nil?
-      @user_id  = session["warden.user.user.key"][0][0]
-      return @current_user = User.find_by_id(@user_id)
+      user_id  = session["warden.user.user.key"][0][0]
+      user = User.find_by_id(user_id)
+      if user.nil? || user.current_sign_in_at.nil?
+        return nil
+      end
+      Rails.logger.debug "\nIn Application Controller, get_user, user = #{user.inspect}"
+      Rails.logger.debug "\nIn Application Controller, get_user, current_signed= #{user.current_sign_in_at.inspect}"
+      @current_user = user
+      return @current_user
     end
     return nil
   end
@@ -142,7 +153,9 @@ class ApplicationController < ActionController::Base
   ## TODO secret must be an environmental variable
   def decode_token(token)
     secret = "secret" # must be an environment variable
-    return JWT.decode token, secret
+    decoded_token = JWT.decode token, secret
+    Rails.logger.info "decoded_token = #{decoded_token}"
+    return decoded_token
   end
 
 

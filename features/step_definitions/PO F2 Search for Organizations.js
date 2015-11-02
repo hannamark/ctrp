@@ -105,11 +105,11 @@ module.exports = function() {
     this.Then(/^the system should display all organizations that contain the name or the alias$/, function (callback) {
         storeOrg1.then(function (value) {
             console.log('This is the first Org:' + value);
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
         });
         cukeOrganization.then(function (value) {
             console.log('This is the second Org which contains the alias:' + value);
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
         });
         browser.sleep(25).then(callback);
     });
@@ -122,11 +122,11 @@ module.exports = function() {
     this.Then(/^the system should display all organizations that contain the name$/, function (callback) {
         storeOrg1.then(function (value) {
             console.log('This is the first Org:' + value);
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
         });
         cukeOrganization.then(function (value) {
             console.log('This is the second Org that has the first Org Alias:' + value);
-            expect(projectFunctions.inSearchResults(value)).to.become('false');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('false');
         });
         browser.sleep(25).then(callback);
     });
@@ -142,7 +142,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all organizations that contain the CTEP ID$/, function (callback) {
-        expect(projectFunctions.inSearchResults(CTEPID)).to.become('true');
+        expect(projectFunctions.inOrgSearchResults(CTEPID)).to.become('true');
         browser.sleep(25).then(callback);
     });
 
@@ -167,7 +167,7 @@ module.exports = function() {
                     menuItem.clickListOrganizations();
                     searchOrg.setOrgName(value);
                     searchOrg.clickSearchButton();
-                    expect(projectFunctions.inSearchResults(value)).to.become('true');
+                    expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
                     element(by.linkText(value)).click();
                 });
             });
@@ -187,7 +187,7 @@ module.exports = function() {
     this.Then(/^the system should display all organizations that contain the Source ID for the Source Context$/, function (callback) {
         ctrpID.then(function(value) {
             console.log('This is the CTRP ID of added Org' + value);
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
         });
         browser.sleep(25).then(callback);
     });
@@ -202,7 +202,7 @@ module.exports = function() {
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
-            projectFunctions.createFamilyWithMembers('shiFam','Active','NIH','shiFamOrg','','','');
+            projectFunctions.createFamilyWithMembers('shiOrgFam','Active','NIH','shiFamOrg','','','');
         });
         browser.sleep(25).then(callback);
     });
@@ -217,7 +217,7 @@ module.exports = function() {
 
     this.Then(/^the system should display all organizations that are members of the Family Name$/, function (callback) {
         cukeFamily.then(function(value) {
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
         });
         browser.sleep(25).then(callback);
     });
@@ -243,7 +243,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all organizations whose address contains the city$/, function (callback) {
-        expect(projectFunctions.inSearchResults('cityAvenue')).to.become('true');
+        expect(projectFunctions.inOrgSearchResults('cityAvenue')).to.become('true');
         browser.sleep(25).then(callback);
     });
 
@@ -269,7 +269,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all organizations whose address contains the state$/, function (callback) {
-        expect(projectFunctions.inSearchResults('Canillo')).to.become('true');
+        expect(projectFunctions.inOrgSearchResults('Canillo')).to.become('true');
         browser.sleep(25).then(callback);
     });
 
@@ -294,7 +294,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all organizations whose address contains the country$/, function (callback) {
-        expect(projectFunctions.inSearchResults('Malta')).to.become('true');
+        expect(projectFunctions.inOrgSearchResults('Malta')).to.become('true');
         browser.sleep(25).then(callback);
     });
 
@@ -319,7 +319,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all organizations whose address contains the zip code$/, function (callback) {
-        expect(projectFunctions.inSearchResults('99999')).to.become('true');
+        expect(projectFunctions.inOrgSearchResults('99999')).to.become('true');
         browser.sleep(25).then(callback);
     });
 
@@ -344,7 +344,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all organizations with matching phone numbers$/, function (callback) {
-        expect(projectFunctions.inSearchResults('007-7777-777')).to.become('true');
+        expect(projectFunctions.inOrgSearchResults('007-7777-777')).to.become('true');
         browser.sleep(25).then(callback);
     });
 
@@ -377,20 +377,20 @@ module.exports = function() {
             searchOrg.setCity('cityAvenueM');
             searchOrg.setPostalCode('88888');
             searchOrg.setEmail('sem@s.com');
-            searchOrg.setPhone('008-8888-888')
+            searchOrg.setPhone('008-8888-888');
         });
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system should display all organizations that contain all of the entered parameters$/, function (callback) {
         cukeOrganization.then(function(value){
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
-            expect(projectFunctions.inSearchResults('Palau')).to.become('true');
-            expect(projectFunctions.inSearchResults('Airai')).to.become('true');
-            expect(projectFunctions.inSearchResults('cityAvenueM')).to.become('true');
-            expect(projectFunctions.inSearchResults('88888')).to.become('true');
-            expect(projectFunctions.inSearchResults('sem@s.com')).to.become('true');
-            expect(projectFunctions.inSearchResults('008-8888-888')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('Palau')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('Airai')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('cityAvenueM')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('88888')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('sem@s.com')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('008-8888-888')).to.become('true');
         });
         browser.sleep(25).then(callback);
     });
@@ -405,7 +405,7 @@ module.exports = function() {
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode();
-            projectFunctions.createOrganization('shiOrgCuDate','alias','add1','add2','Palau','Airai','cityAvenueM','88888','sem@s.com','008-8888-888','444-6666-555');
+            projectFunctions.createOrganization('1shiOrgCuDate','alias','add1','add2','Palau','Airai','cityAvenueM','88888','sem@s.com','008-8888-888','444-6666-555');
         });
         browser.sleep(25).then(callback);
     });
@@ -420,7 +420,7 @@ module.exports = function() {
     });
 
     this.When(/^I provide the curator date of the organization I wish to search for$/, function (callback) {
-        curatorDate = moment().format('YYYY-MM-DD');
+        curatorDate = moment().format('DD-MMM-YYYY');
         searchOrg.setOrgLastUpdatedStartDate(curatorDate);
         searchOrg.setOrgLastUpdatedEndDate(curatorDate);
         browser.sleep(25).then(callback);
@@ -428,8 +428,7 @@ module.exports = function() {
 
     this.Then(/^the system should display all organizations that contain the curator date$/, function (callback) {
         cukeOrganization.then(function(value) {
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
-            expect(projectFunctions.inSearchResults('curatorDate')).to.become('true').and.notify(callback);
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true').and.notify(callback);
         });
     });
 
@@ -455,8 +454,8 @@ module.exports = function() {
 
     this.Then(/^the system should display all organizations that contain the curator user name$/, function (callback) {
         cukeOrganization.then(function(value) {
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
-            expect(projectFunctions.inSearchResults('ctrpcurator')).to.become('true').and.notify(callback);
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('ctrpcurator')).to.become('true').and.notify(callback);
         });
     });
 
@@ -477,7 +476,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should display all organizations that have a matching organization status$/, function (callback) {
-        expect(projectFunctions.inSearchResults('Pending')).to.become('true');
+        expect(projectFunctions.inOrgSearchResults('Pending')).to.become('true');
     browser.sleep(25).then(callback);
     });
 
@@ -530,7 +529,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I enter the Country (.*)$/, function (Country, callback) {
+    this.Given(/^I enter the Country (.*) where the default will be "All Countries"$/, function (Country, callback) {
         selectItem.selectCountrySearchOrg(Country);
         browser.sleep(25).then(callback);
     });
@@ -556,8 +555,8 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the system should display (.*) with organizations that match the search criteria$/, function (Result, callback) {
-        //console.log('value here is:' + searchOrg.orgName.getText());
+
+    this.Then(/^the system should display (.*) with organizations that match the search criteria Organization Name (.*), Search Aliases (.*), Source Context (.*), Source ID (.*), Source Status (.*), Family Name (.*), City (.*), Country (.*), State (.*), Phone Number (.*), Email (.*), Curator Name (.*), Curator Date (.*)$/, function (Result, OrganizationName, SearchAliases, SourceContext, SourceID, SourceStatus, FamilyName, City, Country, State, PhoneNumber, Email, CuratorName, CuratorDate, callback) {
         searchOrg.orgName.getAttribute('value').then(function(orgName){
             console.log('orgName here is:' + orgName);
             searchOrg.sourceContext.$('option:checked').getText().then(function(sourceContext){
@@ -582,12 +581,33 @@ module.exports = function() {
                                                     console.log('email here is:' + email);
                                                     searchOrg.state.$('option:checked').getText().then(function(state) {
                                                         console.log('state here is:' + state);
-                                                        if (orgName == '' && sourceContext == 'All Contexts' && sourceStatus == 'Select a Status' && sourceId == '' && familyName == '' && city == '' && postalCode == '' && country == 'All Countries' && phone == '' && email == '' && state == 'All States/Provinces') {
-                                                            menuItem.verifyEmptySearchCriteria(callback);
-                                                        } else {
-                                                            console.log('in the else statement');
-                                                            expect(projectFunctions.inSearchResults('CTRP')).to.become(Result).and.notify(callback);
-                                                        }
+                                                        searchOrg.orgUpdatedStartDate.getAttribute('value').then(function(state) {
+                                                            console.log('state here is:' + state);
+                                                            searchOrg.orgUpdatedEndDate.getAttribute('value').then(function (state) {
+                                                                console.log('state here is:' + state);
+                                                                searchOrg.orgUpdatedByName.getAttribute('value').then(function (state) {
+                                                                    console.log('state here is:' + state);
+                                                                    if (orgName === '' && sourceContext === 'All Contexts' && sourceStatus === 'Select a Status' && sourceId === '' && familyName === '' && city === '' && postalCode === '' && country === 'All Countries' && phone === '' && email === '' && state === 'All States/Provinces') {
+                                                                        menuItem.verifyEmptySearchCriteria(callback);
+                                                                    } else {
+                                                                        console.log('in the else statement');
+                                                                        expect(projectFunctions.inOrgSearchResults('Active')).to.become(Result).and.notify(callback);
+                                                                        //expect(projectFunctions.inOrgSearchResults('Wake Forest University at Clemmons')).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(SourceContext)).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(SourceID)).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(SourceStatus)).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(FamilyName)).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(City)).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(Country)).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(State)).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(PhoneNumber)).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(Email)).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(CuratorName)).to.become(Result);
+                                                                        //expect(projectFunctions.inOrgSearchResults(CuratorDate)).to.become(Result).and.notify(callback);
+                                                                    }
+                                                                });
+                                                            });
+                                                        });
                                                     });
                                                 });
                                             });
@@ -636,7 +656,7 @@ module.exports = function() {
             console.log('This is the Org:' + value);
             searchOrg.setOrgName(value);
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();});
         browser.sleep(25).then(callback);
     });
@@ -655,9 +675,9 @@ module.exports = function() {
             expect(addOrg.verifyAddOrgLabels('Country:')).to.become('true');
             expect(addOrg.verifyAddOrgLabels('Families:')).to.become('true');
             expect(addOrg.verifyAddOrgLabels('Email:')).to.become('true');
-            expect(addOrg.verifyAddOrgLabels('Phone:')).to.become('true');
+            expect(addOrg.verifyAddOrgLabels('Fax:')).to.become('true');
            addOrg.verifyAddOrgPostalCodeLabel();
-            addOrg.verifyAddOrgFaxLabel();
+            addOrg.verifyAddOrgPhoneLabel();
         browser.sleep(25).then(callback);
     });
 
@@ -690,10 +710,133 @@ module.exports = function() {
         expect(addOrg.verifyAddOrgLabels('Country:')).to.become('true');
         expect(addOrg.verifyAddOrgLabels('Families:')).to.become('false');
         expect(addOrg.verifyAddOrgLabels('Email:')).to.become('true');
-        expect(addOrg.verifyAddOrgLabels('Phone:')).to.become('true');
+        expect(addOrg.verifyAddOrgLabels('Fax:')).to.become('true');
         addOrg.verifyAddOrgPostalCodeLabel();
-        addOrg.verifyAddOrgFaxLabel();
+        addOrg.verifyAddOrgPhoneLabel();
         browser.sleep(25).then(callback);
+    });
+
+
+    this.Given(/^I want to search for an Organization with wild card$/, function (callback) {
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            projectFunctions.createOrganization('shiWildCardOrg','aliasWildCard','add1WildCard','add2WildCard','Samoa','Atua','cityWildCardAvenueM','22928','semWildCard@s.com','111-9999-656','222-7777-444');
+        });
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I am on a Organization search screen$/, function (callback) {
+        menuItem.clickOrganizations();
+        menuItem.clickListOrganizations();
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I enter "([^"]*)" in a search field$/, function (arg1, callback) {
+        cukeOrganization.then(function(value){
+            var splitOrgName = value.split(" ",1);
+            console.log('value of Split Org : ' + splitOrgName);
+           searchOrg.setOrgName(splitOrgName + '*');
+            searchOrg.clickSearchButton();
+            console.log('value of Split Org : ' + value);
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
+            element(by.linkText(value)).click();
+            sourceWildID = addOrg.addOrgCTRPID.getText();
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.clickClearButton();
+            browser.driver.wait(function() {
+                console.log('wait here');
+                return true;
+            }, 4000).then(function() {
+                sourceWildID.then(function(value) {
+                    console.log('This is the CTRP ID of added Org' + value);
+                    searchOrg.setSourceId(value + '*');
+                    searchOrg.clickSearchButton();
+                    console.log('value of Split Org : ' + value);
+                    expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
+                });
+            });
+        });
+        searchOrg.clickClearButton();
+        searchOrg.setCity('cityWild*');
+        searchOrg.clickSearchButton();
+        expect(projectFunctions.inOrgSearchResults('cityWildCardAvenueM')).to.become('true');
+        searchOrg.clickClearButton();
+        searchOrg.setFamilyName('*fam*');
+        searchOrg.clickSearchButton();
+        expect(projectFunctions.inOrgSearchResults('Rockville')).to.become('true');
+        searchOrg.clickClearButton();
+        searchOrg.setPostalCode('2292*');
+        searchOrg.clickSearchButton();
+        expect(projectFunctions.inOrgSearchResults('22928')).to.become('true');
+        searchOrg.clickClearButton();
+        searchOrg.setPhone('111-99*');
+        searchOrg.clickSearchButton();
+        expect(projectFunctions.inOrgSearchResults('111-9999-656')).to.become('true');
+        searchOrg.clickClearButton();
+        searchOrg.setEmail('semWild*');
+        searchOrg.clickSearchButton();
+        expect(projectFunctions.inOrgSearchResults('semWildCard@s.com')).to.become('true');
+        searchOrg.clickClearButton();
+        searchOrg.setOrgLastUpdatedName('ctrpcu*');
+        searchOrg.clickSearchButton();
+        expect(projectFunctions.inOrgSearchResults('ctrpcurator')).to.become('true');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the search will perform a wild card search$/, function (callback) {
+        callback();
+    });
+
+    this.Given(/^I want to clear the organization search fields$/, function (callback) {
+        searchOrg.setOrgName('test');
+        searchOrg.checkAlias(true);
+        selectItem.selectSourceContext('CTEP');
+        selectItem.selectSourceStatus('Active');
+        searchOrg.setSourceId('56AB');
+        searchOrg.setFamilyName('fam1');
+        searchOrg.setCity('city');
+        searchOrg.setPostalCode('5462');
+        selectItem.selectCountrySearchOrg('Nepal');
+        searchOrg.setPhone('782');
+        searchOrg.setEmail('etj j');
+        selectItem.selectState('Bagmati');
+        searchOrg.setOrgLastUpdatedStartDate('07-Oct-2015');
+        searchOrg.setOrgLastUpdatedEndDate('07-Oct-2015');
+        searchOrg.setOrgLastUpdatedName('ret');
+        searchOrg.clickSearchButton();
+        browser.sleep(25).then(callback);
+    });
+
+
+    this.When(/^I select the Clear option$/, function (callback) {
+        searchOrg.clickClearButton();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^all values in all fields will be cleared$/, function (callback) {
+        expect(searchOrg.orgName.getAttribute('value')).to.eventually.equal('');
+        expect(searchOrg.sourceContext.$('option:checked').getText()).to.eventually.equal('All Contexts');
+        expect(searchOrg.sourceStatus.$('option:checked').getText()).to.eventually.equal('Select a Status');
+        expect(searchOrg.sourceId.getAttribute('value')).to.eventually.equal('');
+        expect(searchOrg.familyName.getAttribute('value')).to.eventually.equal('');
+        expect(searchOrg.city.getAttribute('value')).to.eventually.equal('');
+        expect(searchOrg.orgUpdatedByName.getAttribute('value')).to.eventually.equal('');
+        expect(searchOrg.postalCode.getAttribute('value')).to.eventually.equal('');
+        expect(searchOrg.country.$('option:checked').getText()).to.eventually.equal('All Countries');
+        expect(searchOrg.phone.getAttribute('value')).to.eventually.equal('');
+        expect(searchOrg.email.getAttribute('value')).to.eventually.equal('');
+        expect(searchOrg.state.$('option:checked').getText()).to.eventually.equal('All States/Provinces');
+        expect(searchOrg.alias.isSelected()).to.eventually.equal(true);
+        expect(searchOrg.orgUpdatedStartDate.getAttribute('value')).to.eventually.equal('');
+        expect(searchOrg.orgUpdatedEndDate.getAttribute('value')).to.eventually.equal('').then(callback);
     });
 
 

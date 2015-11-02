@@ -62,9 +62,12 @@
                     vm.clearForm();
                     vm.curPerson.new = false;
                     $state.go('main.personDetail', {personId: response.data.id});
-                } else {
                 }
-                toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
+                toastr.clear();
+                toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
             });

@@ -52,14 +52,15 @@
                                 <input tabindex="3" type="text" restriction-field name="mname" class="form-control input-sm" ng-model="personDetailView.curPerson.mname">
                             </div>
                         </div>
-                        <div class="form-group required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.lname)}">
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.lname)}">
                             <label class="control-label col-xs-12 col-sm-3">Last Name:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input tabindex="4" type="text" restriction-field name="lname" class="form-control input-sm has-success" ng-model="personDetailView.curPerson.lname" required ng-change="checkForNameUniqueness()">
+                                <input tabindex="4" type="text" restriction-field name="lname" class="form-control input-sm" ng-model="personDetailView.curPerson.lname" required ng-change="checkForNameUniqueness()">
+                                <span class="form-control-feedback" ng-show="personDetailView.curPerson.lname.length > 0 && person_form.lname.$dirty" ng-class="(!personDetailView.showUniqueWarning && personDetailView.name_unqiue) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="person_form.lname.$error.required">Last name is Required</span>
-                                <div class="has-error" ng-show="personDetailView.curPerson.lname.length > 0 && person_form.lname.$dirty && personDetailView.showUniqueWarning">
+                                <div class="has-error" ng-show="personDetailView.curPerson.lname.length > 0 && person_form.lname.$dirty && personDetailView.showUniqueWarning && !personDetailView.name_unqiue">
                                     <span class="help-block">
-                                        <i ng-class="(personDetailView.name_unqiue === true) ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-exclamation-sign'"></i> Warning: Person exists in the database. Please verify and create a new Person record.
+                                        Warning: Person exists in the database. Please verify and create a new Person record.
                                     </span>
                                 </div>
                             </div>

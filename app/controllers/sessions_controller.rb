@@ -114,7 +114,8 @@ class SessionsController < Devise::SessionsController
     Rails.logger.info "user = #{user.inspect} "
     source = request.params["source"] || ""
     sign_out(user)
-
+    user.current_sign_in_at = nil
+    user.save!
     reset_current_user
     current_user = nil
     current_ldap_user = nil
