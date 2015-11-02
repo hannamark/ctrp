@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can Register a Trial's Protocol Identifiers
+Feature: Reg F05 Register Trial Protocol Identifiers
+
+As a CTRP User, I can Register a Trial's Protocol Identifiers
 
 Scenario: #1 I can enter the different protocol identifiers for a trial
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial

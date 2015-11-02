@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can save my imcomplete registration as a draft, to be completed in the future
+Feature: Reg F15 Register Trial Save as Draft
+
+As a CTRP User, I can save my imcomplete registration as a draft, to be completed in the future
 
 Scenario: #1 I can save my incomplete registration as draft
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial

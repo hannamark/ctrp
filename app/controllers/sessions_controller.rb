@@ -77,6 +77,7 @@ class SessionsController < Devise::SessionsController
       #user.save!
       Rails.logger.info "Result of warden authenticate JWT token = #{token.inspect}"
       #self.resource.current_role = self.resource.role
+      set_current_user(self.resource)
       auth_json = create_authorization_json(self.resource, token)
       Rails.logger.info "authjson= #{auth_json.inspect}"
       if source == "Rails"
@@ -113,7 +114,8 @@ class SessionsController < Devise::SessionsController
     Rails.logger.info "user = #{user.inspect} "
     source = request.params["source"] || ""
     sign_out(user)
-
+    user.current_sign_in_at = nil
+    user.save!
     reset_current_user
     current_user = nil
     current_ldap_user = nil

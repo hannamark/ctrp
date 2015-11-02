@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can review my registration and if no errors, I can submit the registration to CTRP
+Feature: Reg F14 Register Trial Review and Submit
+
+As a CTRP User, I can review my registration and if no errors, I can submit the registration to CTRP
 
 Scenario: #1 I can review my registration without errors
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial

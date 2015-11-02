@@ -42,6 +42,11 @@
             }; //initial Organization Search Parameters
 
         var gridOptions = {
+            rowTemplate: '<div>'+
+                '<div>' +
+                '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader, \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' && grid.appScope.rowFormatter( row )}"  ui-grid-cell></div>' +
+                '</div>',
+
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
@@ -114,7 +119,8 @@
             preparePOAffiliationArr: preparePOAffiliationArr,
             initSelectedOrg: initSelectedOrg,
             curateOrg: curateOrg,
-            findContextId: findContextId
+            findContextId: findContextId,
+            checkUniqueOrganization: checkUniqueOrganization
         };
 
         return services;
@@ -183,7 +189,7 @@
 
 
 
-        function getGridOptions() {
+        function getGridOptions(usedInModal) {
             var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
             var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
             var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
@@ -192,6 +198,12 @@
                 gridOptions.columnDefs.splice(updated_at_index,1);
                 gridOptions.columnDefs.splice(updated_by_index,1);
             }
+            if(usedInModal){
+                var nullify_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'Nullify');
+                gridOptions.columnDefs.splice(nullify_index,1);
+            }
+
+            console.log('user role is: ', user_role.toUpperCase());
             return gridOptions;
         }
 
@@ -369,6 +381,16 @@
                 ctrpContextId = ctrpContextArr[needleIndex].id || -1;
             }
             return ctrpContextId;
+        }
+
+
+        /**
+         * Check if an Organization name is unique - based on Name & Source context
+         *
+         * @param curationObject, JSON object: {'org_name': '', 'source_context_id': ''}
+         */
+        function checkUniqueOrganization(name) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.UNIQUE_ORG, name);
         }
 
 

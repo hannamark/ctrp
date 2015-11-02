@@ -1,5 +1,7 @@
 @PA @global
-Feature: As any CTRP PA User, I can add and edit Regulatory Information – Human Subject Safety
+Feature: PAA F04 Add and Edit Regulatory Information Human Subject Safety
+
+As any CTRP PA User, I can add and edit Regulatory Information – Human Subject Safety
 
 Scenario: #1 I can add and edit Regulatory Information - Human Subject Safety for a Regulated Trial with board status approved
 Given I am logged into the CTRP Protocol Abstraction application

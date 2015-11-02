@@ -14,6 +14,7 @@
        // console.log("in details controller ......."+JSON.stringify(familyDetailObj));
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
         vm.curFamily = vm.curFamily.data || vm.curFamily;
+        vm.masterCopy= angular.copy(vm.curFamily);
         vm.familyStatusArr = familyStatusObj.data;
         vm.familyTypeArr = familyTypeObj.data;
         vm.familyRelationshipArr = familyRelationshipObj == null ? '' : familyRelationshipObj.data;
@@ -40,16 +41,17 @@
 
             // console.log("newFamily is: " + JSON.stringify(newFamily));
             FamilyService.upsertFamily(newFamily).then(function(response) {
-                //var resObj= JSON.stringify(response).data;
-                //console.log('resObj' +resObj);
-                //vm.arrErrors=response.name;
                 if(response.status == 422) {
                     toastr.error('Problem in saving family', 'Family name has already been taken');
                     vm.curFamily.name="";
-
                 }
                 else {
-                    toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!');
+                    vm.curFamily.new = false;
+                    $state.go('main.familyDetail', {familyId: response.data.id});
+                    toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
                 }
             }).catch(function(err) {
                 console.log("error in updating family " + JSON.stringify(vm.curFamily));
@@ -108,11 +110,31 @@
             return $scope.msg ;
         };
 
-        vm.reset = function() {
+        vm.clear = function() {
             vm.batchSelect('removeAll');
             vm.curFamily.family_status_id = '';
             vm.curFamily.family_type_id = '';
             vm.savedSelection.length = 0;
+        };
+        vm.clearForm = function() {
+            $scope.family_form.$setPristine();
+            var excludedKeys = ['new'];
+            Object.keys(vm.curFamily).forEach(function (key) {
+                if (excludedKeys.indexOf(key) == -1) {
+                    vm.curFamily[key] = angular.isArray(vm.curFamily[key]) ? [] : '';
+                }
+            });
+            vm.savedSelection = [];
+            if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
+                populateFamilyMemberships();
+            }
+        };
+        vm.resetForm = function() {
+            angular.copy(vm.masterCopy,vm.curFamily);
+            vm.savedSelection = [];
+            if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
+                populateFamilyMemberships();
+            }
         };
 
         activate();

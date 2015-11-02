@@ -16,6 +16,7 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
+        vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.sourceContextArr = sourceContextObj;
@@ -24,8 +25,7 @@
         vm.selectedOrgFilter = '';
 
 
-        if(!angular.isObject(personDetailObj))
-        {
+        if(!angular.isObject(personDetailObj)) {
             //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
             var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
             vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
@@ -56,15 +56,18 @@
             newPerson.person = vm.curPerson;
 
             PersonService.upsertPerson(newPerson).then(function (response) {
-                //console.log('response: ' + JSON.stringify(response));
+                console.log('response: ' + JSON.stringify(response));
                 vm.savedSelection = [];
                 if (newPerson.new) {
-                    vm.resetForm();
-                } else {
-                    vm.curPerson.updated_by = response.data.updated_by;
-                    $state.go('main.people', {}, {reload: true});
+                    vm.clearForm();
+                    vm.curPerson.new = false;
+                    $state.go('main.personDetail', {personId: response.data.id});
                 }
-                toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
+                toastr.clear();
+                toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
             });
@@ -72,17 +75,25 @@
 
 
         vm.resetForm = function() {
-            var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
+            angular.copy(vm.masterCopy,vm.curPerson);
+            vm.savedSelection = [];
+            populatePoAffiliations();
+        };
+
+        vm.clearForm = function() {
+            $scope.person_form.$setPristine();
+
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'cluster'];
             Object.keys(vm.curPerson).forEach(function(key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
-                    $scope.person_form.$setPristine();
                 }
             });
             //default context to ctrp
             vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
+            vm.savedSelection = [];
+            populatePoAffiliations();
         };
-
 
         //delete the affiliated organization from table view
         vm.toggleSelection = function (index) {
@@ -130,6 +141,22 @@
             }
         }; //openCalendar
 
+        // Swap context when different tab is selected
+        $scope.$watch(function() {
+            return vm.tabIndex;
+        }, function(newValue, oldValue) {
+            if (!vm.curPerson.new) {
+                PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
+                    vm.curPerson = response.data;
+                    vm.savedSelection = [];
+                    populatePoAffiliations();
+                    vm.masterCopy= angular.copy(vm.curPerson);
+                }).catch(function (err) {
+                    console.log("Error in retrieving person during tab change.");
+                });
+            }
+        });
+
         activate();
 
         /****************** implementations below ***************/
@@ -139,6 +166,7 @@
                 OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curPerson.source_context_id;
 
             appendNewPersonFlag();
+            setTabIndex();
             watchOrgReceiver();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
@@ -161,7 +189,17 @@
             }
         }
 
-
+        function setTabIndex() {
+            if (vm.curPerson.new) {
+                vm.curPerson.cluster = [{"context": "CTRP"}];
+            } else {
+                for (var i = 0; i < vm.curPerson.cluster.length; i++) {
+                    if (vm.curPerson.cluster[i].id == vm.curPerson.id) {
+                        vm.tabIndex = i;
+                    }
+                }
+            }
+        }
 
         /**
          * watch organizations selected from the modal

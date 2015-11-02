@@ -1,5 +1,7 @@
 @Admin
-Feature: As a CTRP User with Administration privileges, I can grant Trial Ownership privileges to CTRP Users with the same site affiliation
+Feature: ADMIN F05 Display Trial Ownership
+
+As a CTRP User with Administration privileges, I can grant Trial Ownership privileges to CTRP Users with the same site affiliation
 
 Scenario: #1 I can view CTRP Users that are affiliated with an Organization in my Family and their Trial Ownership privileges
 Given I am logged into CTRP 

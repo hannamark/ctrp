@@ -13,11 +13,6 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.json
   def show
-    @export_data = Person.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json { render :json => @export_data.to_json(:include => :po_affiliations) }
-    end
   end
 
   # GET /people/new
@@ -57,8 +52,6 @@ class PeopleController < ApplicationController
     respond_to do |format|
       #@person.po_affiliations.destroy
       if @person.update(person_params)
-        @person.updated_at = Time.now
-        @person.save
         format.html { redirect_to @person, notice: 'Person was successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
       else
@@ -153,15 +146,14 @@ class PeopleController < ApplicationController
     is_unique = true
     count = 0
 
+    #Get count of person record with the same name - can be the existing record (if the user is on the edit screen)
       if params.has_key?(:person_fname) && params.has_key?(:person_lname) && params.has_key?(:source_context_id)
-  #     exists =  Person.exists?(fname: params[:person_fname], lname: params[:person_lname]);
         count = Person.where("lower(fname)=?", params[:person_fname].downcase).where("lower(lname)=?",params[:person_lname].downcase).where("source_context_id=?", params[:source_context_id]).count;
       end
 
       print "count "
       print count
 
-      # For an existing person, the number of people with the same name should be 2 or more to qualify as duplicate
       if params[:person_exists] == true
         @dbPerson = Person.find(params[:person_id]);
         if @dbPerson != nil
@@ -169,10 +161,12 @@ class PeopleController < ApplicationController
           print @dbPerson.fname
           print @dbPerson.lname
 
+          #if on the Edit screen, then check for name changes and ignore if database & screen names are the same.
           if params[:person_fname] == @dbPerson.fname && params[:person_lname] == @dbPerson.lname
             print " both are equal. Must not warn "
             is_unique = true;
           else
+            #However if on the edit screen and the user types in a name that is the same as another org, then complain
              if count > 0
               print " both are different. Must warn. "
               is_unique = false
@@ -202,7 +196,7 @@ class PeopleController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
       params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone,
-                                     :source_status_id,:source_context_id, :updated_by, :updated_at, :lock_version,
+                                     :source_status_id,:source_context_id, :lock_version,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])

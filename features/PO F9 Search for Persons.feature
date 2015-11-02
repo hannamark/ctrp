@@ -1,5 +1,5 @@
 @Global
-Feature: Search for persons
+Feature: PO F9 Search for Persons
 
 Scenario Outline: As a Curator, search for persons with multiple parameters
 Given I know multiple parameters of the person I wish to search for

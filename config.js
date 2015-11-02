@@ -70,7 +70,9 @@ exports.config = {
         //    tags: '@runthis'
         /*     "@runThat",
         "~@ignoreThis"]*/// or summary
-    },
+    }
+
 
     // resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
+
 };

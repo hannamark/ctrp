@@ -101,7 +101,7 @@
                     vm.gridOptions.totalItems = data.data.total;
 
                     $location.hash('family_search_results');
-                    $anchorScroll();
+                    //$anchorScroll();
                 }).catch(function (err) {
                     console.log('search people failed');
                 });

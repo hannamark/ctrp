@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can register a trial's key dates and trial status
+Feature: Reg F11 Register Trial Dates and Trial Status
+
+As a CTRP User, I can register a trial's key dates and trial status
 
 Scenario: #1 I can enter a trial status and trial status date for a trial
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial

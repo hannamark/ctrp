@@ -1,4 +1,7 @@
-Feature: As a CTRP User I can request a new origanization in CTRP
+@Global @Reg
+Feature: Reg F23 Request New Organization
+
+ As a CTRP User I can request a new origanization in CTRP
 
 Scenario: #2 I can request the creation of a new organization
 Given I am logged into the CTRP Registration application

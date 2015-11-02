@@ -22,10 +22,9 @@
             config.timeout = 15000; //15 seconds timeout
             //var token = AuthTokenService.getToken();
             var token = LocalCacheService.getCacheWithKey("token"); //$window.localStorage.token;
-            //console.log("Printing token");
-            //console.log(token);
             if (token) {
-                var gsaFlag =  (LocalCacheService.getCacheWithKey("gsaFlag") + " " )|| "Reject "
+                var gsaFlag =  (LocalCacheService.getCacheWithKey("gsaFlag") || "Reject") + " ";
+                console.log("gsaFlag = " + gsaFlag);
                 config.headers.Authorization = gsaFlag + token;
             }
             return config;

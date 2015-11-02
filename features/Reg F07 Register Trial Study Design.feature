@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can Register a Trial's Study Design
+Feature: Reg F07 Register Trial Study Design
+
+As a CTRP User, I can Register a Trial's Study Design
 
 Scenario: #1 I can enter the Clinical Research Category and Primary Purpose for a trial
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
