@@ -57,7 +57,8 @@
           });
 
           function watchRestrictionRules() {
-            if (attrs.restrictionField == '' && attrs.hasOwnProperty('ignoreRw')) {
+            //sanity check first
+            if (attrs.restrictionField.trim() == '' && attrs.hasOwnProperty('ignoreRw')) {
                 //alert for errors
                 var errorMsg = '<span class="help-inline"><strong>Error: </strong>the restriction-field needs user role(s) assigned with the ignore-rw flag </span>';
                 element.html(errorMsg); //alert user for errors in using this directive with 'ignore-rw' flag
@@ -72,9 +73,7 @@
 
             if (attrs.hasOwnProperty('ignoreRw')) {
                 //include user role only
-                console.log('ignore rw');
                 if (isShownToCurrentUser) {
-                    console.log('show up to the user role');
                     element.show();
                 } else {
                     element.hide();
