@@ -1,5 +1,7 @@
 @Global @PA
-Feature: As a CTRP PA User, I can search CTRP Person records by various criteria
+Feature: PAM F02 Search Person
+
+As a CTRP PA User, I can search CTRP Person records by various criteria
 
 Scenario: #1 I am able to search for persons
 Given I am logged into the CTRP Protocol Abstraction
