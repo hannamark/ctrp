@@ -1,5 +1,5 @@
 @PO @Global
-Feature: PO F6 Curator review of a Pending Organization
+Feature: PO F6 Curator review of a Pending Organization 
 
 Scenario: #1 As a PO Curator, I can display all Organizations with Pending status
 Given I am logged in to the CTRP PO application
