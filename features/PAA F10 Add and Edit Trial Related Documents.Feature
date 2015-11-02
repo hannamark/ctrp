@@ -1,5 +1,5 @@
 @PA @global
-Feature: PAA F10 Add and Edit Trail Related Documents 
+Feature: PAA F10 Add and Edit Trial Related Documents  
 
 As any CTRP PA User, I can add and edit Trial Related Documents
 
