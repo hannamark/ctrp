@@ -1,5 +1,7 @@
 @Admin
-Feature: As someone without a CTRP User Account, I can request a user account
+Feature: ADMIN F02 Request CTRP User Account
+
+As someone without a CTRP User Account, I can request a user account
 
 Scenario: #1 I can request a user account
 Given I have access to a CTRP user sign up screen
