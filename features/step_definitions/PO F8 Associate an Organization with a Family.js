@@ -16,6 +16,7 @@ var moment = require('moment');
 var loginPage = require('../support/LoginPage');
 var addOrgPage = require('../support/AddOrganizationPage');
 var searchOrgPage = require('../support/ListOfOrganizationsPage');
+var projectFunctionsPage= require('../support/projectMethods');
 
 
 module.exports = function() {
@@ -25,6 +26,7 @@ module.exports = function() {
     var login = new loginPage();
     var addOrg = new addOrgPage();
     var searchOrg = new searchOrgPage();
+    var projectFunctions = new projectFunctionsPage();
     var selectItem =new selectList();
 
 
@@ -32,90 +34,101 @@ module.exports = function() {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
-        menuItem.clickHomeEnterOrganizations();
-        menuItem.clickWriteMode();
-        addOrg.orgDefaultCreate('SSOrgCuke','','','','','','','','','','','');
-        browser.sleep(250).then(callback);
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            projectFunctions.createOrganization('org4Fam', 'alss', 'add1', 'add2', 'United States', 'Maryland', 'city', '20908', 'em@eml.com', '222-222-7878', '5555');
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I am have selected the option to search Families$/, function (callback) {
-        org4.then(function(value2)
+        cukeOrganization.then(function(value2)
         {console.log('Added Org Name - ' + value2);
-            addFamily.familyDefaultCreate('SSFamilyCuke', 'Active', 'NIH');
-            fam4.then(function(value4)
+            projectFunctions.createFamily('SSFamilyCuke', 'Active', 'NIH');
+            cukeFamily.then(function(value4)
             {console.log('Added Family Name - ' + value4);});});
         menuItem.clickOrganizations();
         menuItem.clickListFamily();
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^a list of Family Names is displayed$/, function (callback) {
-        fam4.then(function(value2)
+        cukeFamily.then(function(value2)
         {console.log('search family - ' + value2);
             searchFamily.setFamilyName(value2);
             searchFamily.clickSearchButton();
-            expect(menuItem.inResults(value2)).to.become('true');
+            expect(projectFunctions.inSearchResults(value2)).to.become('true');
         });
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I select a Family to edit$/, function (callback) {
-        fam4.then(function(value2)
+        cukeFamily.then(function(value2)
         {element(by.linkText(value2)).click();
             addFamily.familyVerifyAddName(value2);
         });
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I select the option to Add Family Membership$/, function (callback) {
         searchOrg.clickOrgSearchModel();
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I Search Organizations and select an Organization$/, function (callback) {
-        org4.then(function(value4){
+        cukeOrganization.then(function(value4){
             console.log('search Organization - ' + value4);
             searchOrg.setOrgName(value4);
             searchOrg.clickSearchButton();
             searchOrg.selectOrgModelItem();
             searchOrg.clickOrgModelConfirm();
         });
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I select an effective date which is defaulted to the current date$/, function (callback) {
         searchOrg.verifyDefaultAffiliatedOrgEffectiveDate();
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I select an expiration date which is defaulted to null$/, function (callback) {
         searchOrg.verifyDefaultAffiliatedOrgExpirationDate();
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I select either Organization or Affiliate Family Relationship$/, function (callback) {
         selectItem.selectOrgFamilyRelationship('Affiliation');
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the Family is updated with the CTRP ID, Organization Name, Family Relationship, effective date, and expiration date$/, function (callback) {
+    this.Then(/^the Family is updated with the CTRP ID, CTEP ID, Organization Name, Family Relationship, effective date, and expiration date$/, function (callback) {
         addFamily.clickSave();
         addFamily.familyVerifyMembershipSize('1');
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I know which Family I want to update$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
-        menuItem.clickHomeEnterOrganizations();
-        menuItem.clickWriteMode();
-        browser.sleep(250).then(callback);
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            projectFunctions.createOrganization('org4Fam', 'alss', 'add1', 'add2', 'United States', 'Maryland', 'city', '20908', 'em@eml.com', '222-222-7878', '5555');
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^the Family Organizations are displayed$/, function (callback) {
         searchOrg.clickOrgSearchModel();
-         org4.then(function(value4){
+         cukeOrganization.then(function(value4){
            console.log('search Organization - ' + value4);
         searchOrg.setOrgName(value4);
         searchOrg.clickSearchButton();
@@ -125,23 +138,23 @@ module.exports = function() {
         addFamily.clickSave();
         menuItem.clickOrganizations();
         menuItem.clickListFamily();
-        fam4.then(function(value2)
+        cukeFamily.then(function(value2)
         {console.log('search family - ' + value2);
             searchFamily.setFamilyName(value2);
             searchFamily.clickSearchButton();
             element(by.linkText(value2)).click();});
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I select the option to remove an organization from a Family$/, function (callback) {
         searchOrg.clickOrgAffiliatedRemove();
-        browser.sleep(2500).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Family will be updated and the selected organization removed$/, function (callback) {
         addFamily.clickSave();
         addFamily.familyVerifyMembershipSize('0');
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
 

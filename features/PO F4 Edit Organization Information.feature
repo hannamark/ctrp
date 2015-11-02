@@ -1,7 +1,7 @@
 @PO @Global
 Feature: Edit Organization Information
 
-  @runthis
+
   Scenario: As a Curator, I can Edit organization name
   Given I know which organization I want to edit
   And I am logged in to CTRP PO application
@@ -92,9 +92,9 @@ Feature: Edit Organization Information
   Then the system should change the country in the organization record to the new country
   And my name should be listed as last update with the current date and time
   And the organization status should be Pending or Active as indicated
-
+  @runthis
   Scenario: As a Curator, I can Edit organization zip code
-  Given I know which CTRP organization I want to edit
+  Given I know which organization I want to edit
   And I am logged in to CTRP PO application
   And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
@@ -107,7 +107,7 @@ Feature: Edit Organization Information
   And the organization status should be Pending or Active as indicated
 
   Scenario: As a Curator, I can Edit organizations with multiple parameters
-  Given I know which CTRP organization I want to edit
+  Given I know which organization I want to edit
   And I am logged in to CTRP PO application
   And I have searched for a CTRP organization and found the one I wish to edit
   And I have selected the function Edit Organization
