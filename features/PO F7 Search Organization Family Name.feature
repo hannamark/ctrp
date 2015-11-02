@@ -1,4 +1,4 @@
-Feature: Search Organization Family
+Feature: PO F7 Search Organization Family Name
 
 Background:
 Given I am logged in to CTRP PO application
