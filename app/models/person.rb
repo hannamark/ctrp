@@ -45,10 +45,48 @@ class Person < ActiveRecord::Base
   validates :fname, presence: true
   validates :lname, presence: true
 
+  before_validation :check_phone_or_email
   before_destroy :check_for_organization
   after_create   :save_id_to_ctrp_id
 
+  # Get an array of maps of the people with the same ctrp_id
+  def cluster
+    tmp_arr = []
+    if self.ctrp_id.present?
+      tmp_arr = Person.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).order(:id).pluck(:id, :"source_contexts.name")
+    else
+      tmp_arr.push([self.id, self.source_context ? self.source_context.name : ''])
+    end
+
+    cluster_arr = []
+    tmp_arr.each do |person|
+      cluster_arr.push({"id": person[0], "context": person[1]})
+    end
+
+    return cluster_arr
+  end
+
+  def nullifiable
+    isNullifiable =true;
+    source_status_arr = []
+    source_status_arr = Person.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:"source_status_id") if self.ctrp_id.present?
+    source_status_arr.each_with_index { |e, i|
+      if SourceStatus.find_by_id(e).code == "ACT"
+        isNullifiable = false;
+      end
+    }
+    return isNullifiable
+  end
+
   private
+
+  # Method to check for the presence of phone or email. If both are empty, then return false
+  def check_phone_or_email
+    if (self.phone.nil? || self.phone.empty?) && (self.email.nil? || self.email.empty?)
+      return false
+    end
+  end
+
 
   def save_id_to_ctrp_id
     if self.source_context && self.source_context.code == "CTRP"
@@ -73,6 +111,16 @@ class Person < ActiveRecord::Base
       @toBeRetainedPerson =  Person.find_by_id(params[:id_to_be_retained]);
       #print "hello "+toBeRetainedPerson
       raise ActiveRecord::RecordNotFound if @toBeNullifiedPerson.nil? or @toBeRetainedPerson.nil?
+
+      @toBeNullifiedPerCtepOrNot=SourceContext.find_by_id(@toBeNullifiedPerson.source_context_id).code == "CTEP"
+      @toBeRetainedPerCtepOrNot=SourceContext.find_by_id(@toBeRetainedPerson.source_context_id).code == "CTEP"
+      p @toBeNullifiedPerCtepOrNot
+      p @toBeRetainedPerCtepOrNot
+
+      if @toBeNullifiedPerCtepOrNot || @toBeRetainedPerCtepOrNot
+        raise "CTEP persons can not be nullified"
+      end
+
       poAffiliationsOfNullifiedPerson = PoAffiliation.where(person_id:@toBeNullifiedPerson.id);
 
       poAffiliationsOfRetainedPerson  = PoAffiliation.where(person_id:@toBeRetainedPerson.id);

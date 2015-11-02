@@ -1,7 +1,8 @@
 
 
 <div class="col-md-9" role="content">
-    <div class="row">   <style>
+    <div class="row">
+        <style>
         .pdsa-summary-block-primary {
             background-color: #428bca;
             color: #fff;
@@ -62,7 +63,8 @@
 
         /* for danger */
         .pdsa-summary-block-danger {
-            background-color: #a94442;
+            /*background-color: #a94442;*/
+            background-color: crimson;
             color: #fff;
             margin:0 auto;
         }
@@ -77,6 +79,23 @@
             margin:0 auto;
         }
 
+
+        /* for danger */
+        .pdsa-summary-block-admin {
+            background-color: orange;
+            color: #fff;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-admin .summary-footer {
+            background-color: goldenrod;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-admin .summary-footer a {
+            color: white;
+            margin:0 auto;
+        }
 
         /* structure of summary blocks */
         .pdsa-summary-block {
@@ -136,13 +155,13 @@
             <div ng-if="headerView.currrentState.current.name != 'main.sign_in'">
                 <div class="collapse navbar-collapse" id="collapse-1">
                     <div ng-if="headerView.userRole == 'curator'">
-                        <div ng-include src="'ui/partials/welcome/allHome.html'"></div>
+                        <div ng-include src="'ui/partials/welcome/curatorHome.html'"></div>
                     </div>
                     <div ng-if="headerView.userRole == 'ro'">
                         <div ng-include src="'ui/partials/welcome/roHome.html'"></div>
                     </div>
                     <div ng-if="headerView.userRole == 'super' || headerView.userRole == 'admin'">
-                        <div ng-include src="'ui/partials/welcome/allHome.html'"></div>
+                        <div ng-include src="'ui/partials/welcome/adminHome.html'"></div>
                     </div>
                     <div ng-if="headerView.userRole == 'trial-submitter'">
                         <div ng-include src="'ui/partials/welcome/trialSubmitterHome.html'"></div>

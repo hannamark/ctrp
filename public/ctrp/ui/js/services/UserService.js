@@ -176,7 +176,7 @@
             console.log('User List: ' + JSON.stringify(user_list));
             return user_list
             // }
-        } //searchUsers
+        }; //searchUsers
 
         /**
          * get initial paramater object for people search
@@ -184,12 +184,12 @@
          */
         this.getInitialUserSearchParams = function () {
             return initUserSearchParams;
-        } //getInitialUserSearchParams
+        }; //getInitialUserSearchParams
 
 
         this.getGridOptions = function () {
             return gridOptions;
-        }
+        };
 
 
         /**
@@ -197,12 +197,12 @@
          */
         this.getLoggedInUsername = function () {
             return LocalCacheService.getCacheWithKey('username') || '';
-        }
+        };
 
         this.getUserDetailsByUsername = function (username) {
             var username = LocalCacheService.getCacheWithKey('username');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
-        } //getUserByName
+        }; //getUserByName
 
 
         /**

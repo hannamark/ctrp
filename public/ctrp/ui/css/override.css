@@ -424,6 +424,9 @@ h4 {
     margin-right: -5px;
     margin-left: -5px;
 }
+.form-horizontal .has-feedback .form-control-feedback {
+    right: 5px;
+}
 
 .input-group-addon {
     line-height: 1;
@@ -434,6 +437,9 @@ h4 {
     height: 22px;
     padding: 2px 8px;
     border-radius: 6px;
+}
+.input-sm+.form-control-feedback {
+    line-height: 2em;
 }
 
 .btn {
@@ -526,6 +532,12 @@ h4 {
 .glyphicon.glyphicon-comment {
     font-size: 22px;
 }
+.glyphicon.glyphicon-ok.glyphicon-green {
+    color: #3c763d;
+}
+.glyphicon.glyphicon-exclamation-sign.glyphicon-red {
+    color: #a94442;
+}
 
 .md-sidenav-right {
     z-index: 9999;
@@ -593,9 +605,16 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     transform: translate(-55px);
 }
 
-.form-group.required .control-label:before{
-    color: red;
+.form-group.required .control-label:after{
+    color: #C53531;
     content: "*";
     position: absolute;
-    margin-left: -15px;
+    margin-right: -13px;
+}
+
+.nonselectable-row {
+    background-color: rgba(255, 69, 0, 0.1) !important;
+}
+.nonselectable-row, .nonselectable-row a {
+    color: #444 !important;
 }

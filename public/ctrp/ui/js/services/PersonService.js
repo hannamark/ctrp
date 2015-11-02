@@ -8,9 +8,9 @@
     angular.module('ctrpApp')
         .factory('PersonService', PersonService);
 
-    PersonService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope', 'PromiseTimeoutService'];
+    PersonService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope', 'PromiseTimeoutService','UserService','Common'];
 
-    function PersonService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService) {
+    function PersonService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService,UserService,Common) {
 
         var initPersonSearchParams = {
             fname: "",
@@ -39,6 +39,10 @@
             }; //initial Person Search Parameters
 
         var gridOptions = {
+            rowTemplate: '<div ng-class="{ \'nonselectable-row-css-class\': grid.appScope.rowFormatter( row ) }">'+
+            '<div>' +
+            '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell></div>' +
+            '</div>',
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
@@ -58,7 +62,7 @@
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'id', enableSorting: true, displayName: 'CTRP ID', width: '8%'},
+                {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', width: '8%'},
                 {name: 'prefix', enableSorting: true, width: '8%'},
                 {name: 'fname', displayName: 'First', enableSorting: true, width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
@@ -86,7 +90,8 @@
                 },
                 {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs', width: '12%', cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0"><master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5"></master-directive></div>' +
                 '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'},
-                {name: 'updated_at', displayName: 'Last Updated', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'}
+                {name: 'updated_at', displayName: 'Last Updated Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy"', enableSorting: true, width: '14%'},
+                {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, width: '14%'}
             ]
         };
 
@@ -168,6 +173,22 @@
 
 
         function getGridOptions() {
+            //var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            var user_role = !!UserService.getUserRole() ? UserService.getUserRole() : '';
+
+            var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
+            console.log("updated_at_index is " + updated_at_index);
+
+            var curator_role = "curator";
+            if(user_role.toUpperCase().indexOf(curator_role.toUpperCase()) == -1) {
+                gridOptions.columnDefs.splice(updated_at_index,1);
+
+                //Recompute the updated_by_index, given that the columnDefs have changed
+                var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
+                console.log("updated_by_index is " + updated_by_index);
+                gridOptions.columnDefs.splice(updated_by_index,1);
+            }
+
             return gridOptions;
         }
 
