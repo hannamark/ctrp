@@ -1,5 +1,5 @@
 @PO @Global
-Feature: Edit Organization Information
+Feature: PO F4 Edit Organization Information
 
   @runthis
   Scenario: As a Curator, I can Edit organization name
