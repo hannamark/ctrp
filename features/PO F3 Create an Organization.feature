@@ -1,6 +1,6 @@
 @Global
 @PO
-Feature: PO F3 Create an Organization
+Feature: PO F3 Create an Organization 
 
 Scenario: #1 As a Curator, the Add Organization screen will have default values
 Given I am a Curator and on the Add Organization screen
