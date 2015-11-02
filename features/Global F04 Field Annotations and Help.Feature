@@ -1,5 +1,7 @@
 @PA @global
-Feature: As any CTRP PA User, I will see helpful comments on Trial Date and Status fields
+Feature: Global F04 Field Annotations and Help
+
+As any CTRP PA User, I will see helpful comments on Trial Date and Status fields
 
 Scenario: #1 PA Trial Status Comments (Trial Status)
 Given I am logged into the CTRP Protocol Abstraction application
