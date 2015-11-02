@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can register my site participation on an Industrial, Other, or Expanded Access trial
+Feature: Reg F22 Register Participating Site
+
+As a CTRP User, I can register my site participation on an Industrial, Other, or Expanded Access trial
 
 Scenario: #1 As a CTRP User, I can select an organization from my family as a participating site on an Industrial, Other, or Expanded Access Trial
 Given I am logged into CTRP
