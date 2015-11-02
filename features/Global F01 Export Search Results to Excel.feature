@@ -1,5 +1,7 @@
 @Global
-Feature: As a CTRP User, I can export search results to Excel
+Feature: Global F01 Export Search Results to Excel
+
+As a CTRP User, I can export search results to Excel
 
 Scenario: #1 I can export any search results into an Excel spreadsheet
 Given I have executed a search in CTRP

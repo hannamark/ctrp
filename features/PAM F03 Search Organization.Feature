@@ -1,5 +1,7 @@
 @Global @PA
-Feature: As a CTRP PA User, I am able to Search Organizations by various criteria
+Feature: PAM F03 Search Organization
+
+As a CTRP PA User, I am able to Search Organizations by various criteria
 
 Scenario: #1 I am able to search for organizations
 Given I am logged into the CTRP as a PA user
