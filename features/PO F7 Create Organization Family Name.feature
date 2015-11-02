@@ -1,4 +1,4 @@
-Feature: Create Organization Family Name
+Feature: PO F7 Create Organization Family Name
 
 Background:
 Given I am logged in to CTRP PO application
