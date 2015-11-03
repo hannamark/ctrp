@@ -68,4 +68,17 @@ class TrialsControllerTest < ActionController::TestCase
     search_result = JSON.parse(test_response.body)
     assert_equal purpose.name, search_result['trials'][0]['purpose']
   end
+
+  test "should search trial by Pilot" do
+    test_response = post :search, pilot: 'No', format: 'json'
+    search_result = JSON.parse(test_response.body)
+    assert_equal 'No', search_result['trials'][0]['pilot']
+  end
+
+  test "should search trial by Study Source" do
+    study_source = study_sources(:one)
+    test_response = post :search, study_source: study_source.code, format: 'json'
+    search_result = JSON.parse(test_response.body)
+    assert_equal study_source.name, search_result['trials'][0]['study_source']
+  end
 end

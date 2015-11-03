@@ -102,6 +102,8 @@ two:
 three:
   lead_protocol_id: 54321
   official_title: Test Trial 3
+  pilot: 'No'
+  study_source: one
   phase: one
   primary_purpose: one
   lead_org: three
