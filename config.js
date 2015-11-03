@@ -10,7 +10,7 @@ exports.config = {
     capabilities: {
         'browserName' : 'chrome',
         shardTestFiles: true,
-        maxInstances: 4
+        maxInstances: 8
     },
 
     baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
