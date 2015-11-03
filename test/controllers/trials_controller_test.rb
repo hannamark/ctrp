@@ -61,4 +61,11 @@ class TrialsControllerTest < ActionController::TestCase
     search_result = JSON.parse(test_response.body)
     assert_equal phase.name, search_result['trials'][0]['phase']
   end
+
+  test "should search trial by Purpose" do
+    purpose = primary_purposes(:one)
+    test_response = post :search, purpose: purpose.code, format: 'json'
+    search_result = JSON.parse(test_response.body)
+    assert_equal purpose.name, search_result['trials'][0]['purpose']
+  end
 end
