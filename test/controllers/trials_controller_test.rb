@@ -40,8 +40,25 @@ class TrialsControllerTest < ActionController::TestCase
   end
 
   test "should search trial by Protocol ID" do
-    test_response = post :search, protocol_id: "54321", format: "json"
+    ['54321', '5*', '*1', '*3*'].each do |x|
+      test_response = post :search, protocol_id: x, format: 'json'
+      search_result = JSON.parse(test_response.body)
+      assert_equal '54321', search_result['trials'][0]['lead_protocol_id']
+    end
+  end
+
+  test "should search trial by Official Title" do
+    ['Test Trial 3', 'Test*', '*3', '*Trial*'].each do |x|
+      test_response = post :search, official_title: x, format: 'json'
+      search_result = JSON.parse(test_response.body)
+      assert_equal 'Test Trial 3', search_result['trials'][0]['official_title']
+    end
+  end
+
+  test "should search trial by Phase" do
+    phase = phases(:one)
+    test_response = post :search, phase: phase.code, format: 'json'
     search_result = JSON.parse(test_response.body)
-    assert_equal "54321", search_result["trials"][0]["lead_protocol_id"]
+    assert_equal phase.name, search_result['trials'][0]['phase']
   end
 end

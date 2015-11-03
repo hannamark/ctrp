@@ -102,4 +102,5 @@ two:
 three:
   lead_protocol_id: 54321
   official_title: Test Trial 3
+  phase: one
   lead_org: three
