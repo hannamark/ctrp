@@ -69,8 +69,11 @@
         }; //gridOptions
 
 
-        vm.searchFamilies = function() {
+        vm.searchFamilies = function(newSearchFlag) {
 
+            if (newSearchFlag == 'fromStart') {
+                vm.searchParams.start = 1; //from first page
+            }
 
             //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
             // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika

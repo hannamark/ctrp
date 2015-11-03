@@ -98,7 +98,11 @@
             $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
 
-            $scope.searchPeople = function () {
+            $scope.searchPeople = function (newSearchFlag) {
+                if (newSearchFlag == 'fromStart') {
+                    $scope.searchParams.start = 1;
+                }
+
                 $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
                 if ($scope.searchParams.date_range_arr.length == 0) {
                     delete $scope.searchParams.date_range_arr;
