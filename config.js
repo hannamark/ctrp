@@ -8,9 +8,9 @@ exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
 
     capabilities: {
-        'browserName' : 'firefox',
+        'browserName' : 'chrome',
         shardTestFiles: true,
-        maxInstances: 3
+        maxInstances: 4
     },
 
     baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
