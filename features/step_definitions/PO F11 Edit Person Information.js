@@ -40,8 +40,15 @@ module.exports = function() {
     this.Given(/^I know which Person record I want to edit$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
-        menuItem.clickWriteMode();
-        projectFunctions.createPerson('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555');
+        login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            projectFunctions.createPerson('Mr', 'SScuke', 'Shia', 'Singh', 'Kt', 'singh@cukePR.com', '222-444-5555');
+        });
         browser.sleep(25).then(callback);
     });
 
@@ -50,7 +57,9 @@ module.exports = function() {
         menuItem.clickListPeople();
         search.setPersonFirstName(cukePerson);
         search.clickSearch();
-        cukePerson.then(function(value){expect(projectFunctions.inSearchResults(value)).to.become('true'); });
+        cukePerson.then(function(value) {
+            expect(projectFunctions.inSearchResults(value)).to.become('true');
+        });
         browser.sleep(25).then(callback);
     });
 
@@ -65,7 +74,9 @@ module.exports = function() {
     });
 
     this.When(/^I change the name of the Person I wish to edit$/, function (callback) {
-        cukePerson.then(function(value){person.setAddPersonFirstName(value + 'Edited');});
+        cukePerson.then(function(value) {
+            person.setAddPersonFirstName(value + 'Edited');
+        });
         browser.sleep(25).then(callback);
     });
 
@@ -83,8 +94,12 @@ module.exports = function() {
     });
 
     this.Then(/^the system should change the Person name in the Person record to the new name$/, function (callback) {
-        cukePerson.then(function(value){search.setPersonFirstName(value + 'Edited');
-            search.clickSearch();expect(projectFunctions.inSearchResults(value + 'Edited')).to.become('true');
+        cukePerson.then(function(value) {
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
+            search.setPersonFirstName(value + 'Edited');
+            search.clickSearch();
+            expect(projectFunctions.inSearchResults(value + 'Edited')).to.become('true');
             element(by.linkText(value + 'Edited')).click();
         });
         projectFunctions.verifyLastUpdatedNameDate('person',personEditedDateTime);
@@ -108,8 +123,10 @@ module.exports = function() {
     });
 
     this.Then(/^the system should change the phone number in the Person record to the new phone number$/, function (callback) {
-        cukePerson.then(function(value1){
+        cukePerson.then(function(value1) {
             console.log('set first Name' + value1);
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
             search.setPersonFirstName(value1);
             search.setPersonPhone(phoneEditTo);
             search.clickSearch();
@@ -129,7 +146,9 @@ module.exports = function() {
     });
 
     this.Then(/^the system should change the email address in the Person record to the new email address$/, function (callback) {
-        cukePerson.then(function(value1){
+        cukePerson.then(function(value1) {
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
             console.log('set first Name' + value1);
             search.setPersonFirstName(value1);
             search.setPersonEmail(emailEditTo);
@@ -147,12 +166,14 @@ module.exports = function() {
     this.Given(/^I know which Person with affiliated Organization record I want to edit$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
         }, 4000)
             .then(function(){
-                menuItem.clickWriteMode();
+                menuItem.clickHomeEnterOrganizations();
+                login.clickWriteMode();
                 projectFunctions.createPersonWithAffiliatedOrg('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555','ShiOrg','','');
             });
         browser.sleep(25).then(callback);
@@ -160,7 +181,9 @@ module.exports = function() {
 
 
     this.Given(/^I select an Affiliated Organization$/, function (callback) {
-        cukeOrganization.then(function(value){console.log('Affiliated Organization: '+ value);});
+        cukeOrganization.then(function(value) {
+            console.log('Affiliated Organization: '+ value);
+        });
         browser.sleep(25).then(callback);
     });
 
@@ -172,12 +195,16 @@ module.exports = function() {
     });
 
     this.Then(/^the system should change the effective date or expiration date of the Affiliated Organization in the Person Record$/, function (callback) {
-        cukePerson.then(function(value){search.setPersonFirstName(value);
-        search.clickSearch();
-        expect(projectFunctions.inSearchResults(value)).to.become('true');
-        element(by.linkText(value)).click();});
-        searchOrg.verifyAffiliatedOrgEffectiveDate(moment(new Date(orgEffectiveDate)).format('MMMM D, YYYY'));
-        searchOrg.verifyAffiliatedOrgExpirationDate(moment(new Date(orgExpirationDate)).format('MMMM D, YYYY'));
+        cukePerson.then(function(value) {
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
+            search.setPersonFirstName(value);
+            search.clickSearch();
+            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            element(by.linkText(value)).click();
+        });
+            searchOrg.verifyAffiliatedOrgEffectiveDate(moment(new Date(orgEffectiveDate)).format('DD-MMM-YYYY'));
+            searchOrg.verifyAffiliatedOrgExpirationDate(moment(new Date(orgExpirationDate)).format('DD-MMM-YYYY'));
         browser.sleep(25).then(callback);
     });
 
@@ -185,10 +212,12 @@ module.exports = function() {
         projectFunctions.createOrganization('aff_Org','alias','add1','add2','Nepal','Bagmati','Kathmandu','24567','s@s.com','222-4444-555','444-6666-555');
         menuItem.clickPeople();
         menuItem.clickListPeople();
-        cukePerson.then(function(value){search.setPersonFirstName(value);
+        cukePerson.then(function(value) {
+            search.setPersonFirstName(value);
             search.clickSearch();
             expect(projectFunctions.inSearchResults(value)).to.become('true');
-            element(by.linkText(value)).click();});
+            element(by.linkText(value)).click();
+        });
         searchOrg.clickOrgSearchModel();
         browser.sleep(25).then(callback);
     });
@@ -203,16 +232,26 @@ module.exports = function() {
     });
 
     this.Then(/^I enter the Affiliate organization effective date$/, function (callback) {
-        cukeOrganization.then(function(value){projectFunctions.setOrgAffiliatedEffectiveDate(value,orgEffectiveDate);});
+        cukeOrganization.then(function(value) {
+            console.log('value of affiliated org:' + value);
+            projectFunctions.setOrgPersonAffiliatedEffectiveDate(value,orgEffectiveDate);
+        });
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system should add the Affiliated Organization with the effective date in the Person Record$/, function (callback) {
-        cukePerson.then(function(value){search.setPersonFirstName(value);
+        cukePerson.then(function(value) {
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
+            search.setPersonFirstName(value);
             search.clickSearch();
             expect(projectFunctions.inSearchResults(value)).to.become('true');
-            element(by.linkText(value)).click();});
-        cukeOrganization.then(function(value){projectFunctions.verifyOrgAffiliated(value); projectFunctions.verifyOrgAffiliatedEffectiveDate(value,moment(new Date(orgEffectiveDate)).format('MMMM D, YYYY'));});
+            element(by.linkText(value)).click();
+        });
+        cukeOrganization.then(function(value) {
+            projectFunctions.verifyOrgAffiliated(value);
+            projectFunctions.verifyOrgPersonAffiliatedEffectiveDate(value,moment(new Date(orgEffectiveDate)).format('DD-MMM-YYYY'));
+        });
         browser.sleep(25).then(callback);
     });
 
@@ -222,7 +261,9 @@ module.exports = function() {
     });
 
     this.When(/^I change the Person First Name$/, function (callback) {
-        cukePerson.then(function(value){person.setAddPersonFirstName(value + 'Edited');});
+        cukePerson.then(function(value) {
+            person.setAddPersonFirstName(value + 'Edited');
+        });
         browser.sleep(25).then(callback);
     });
 
@@ -252,13 +293,19 @@ module.exports = function() {
     });
 
     this.When(/^I change an Affiliated Organization and Effective Date and Expiration Date$/, function (callback) {
-        cukeOrganization.then(function(value){projectFunctions.setOrgAffiliatedEffectiveDate(value,orgEffectiveDate); projectFunctions.setOrgAffiliatedExpirationDate(value,orgExpirationDate);});
+        cukeOrganization.then(function(value) {
+            projectFunctions.setOrgPersonAffiliatedEffectiveDate(value,orgEffectiveDate);
+            projectFunctions.setOrgPersonAffiliatedExpirationDate(value,orgExpirationDate);
+        });
         person.clickSave();
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system should update the Person record with the edited information$/, function (callback) {
-        cukePerson.then(function(value){search.setPersonFirstName(value + 'Edited');
+        cukePerson.then(function(value) {
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
+            search.setPersonFirstName(value + 'Edited');
             search.clickSearch();
             expect(projectFunctions.inSearchResults(value + 'Edited')).to.become('true');
             element(by.linkText(value + 'Edited')).click();
@@ -270,8 +317,11 @@ module.exports = function() {
         person.getVerifyAddPerSuffix(suffixEditTo);
         person.getVerifyAddPerEmail(emailEditTo);
         person.getVerifyAddPerPhone(phoneEditTo);
-        cukeOrganization.then(function(value){projectFunctions.verifyOrgAffiliated(value); projectFunctions.verifyOrgAffiliatedEffectiveDate(value,moment(new Date(orgEffectiveDate)).format('MMMM D, YYYY'));
-            projectFunctions.verifyOrgAffiliatedExpirationDate(value,moment(new Date(orgExpirationDate)).format('MMMM D, YYYY'));});
+        cukeOrganization.then(function(value) {
+            projectFunctions.verifyOrgAffiliated(value);
+            projectFunctions.verifyOrgPersonAffiliatedEffectiveDate(value,moment(new Date(orgEffectiveDate)).format('DD-MMM-YYYY'));
+            projectFunctions.verifyOrgPersonAffiliatedExpirationDate(value,moment(new Date(orgExpirationDate)).format('DD-MMM-YYYY'));
+        });
         browser.sleep(25).then(callback);
     });
 

@@ -10,8 +10,7 @@
 
 .grid {
     width: 100%;
-    min-height: 250px;
-    margin-left: 10px;
+    min-height: 550px;
 }
 
 .ui-grid-header-cell .ui-grid-cell-contents {
@@ -174,6 +173,9 @@ header img {
     color: #FFF;
 }
 
+.top-offset-tiny {
+    margin-top: 5px;
+}
 .top-offset-xs {
 	margin-top: 25px;
 }
@@ -422,6 +424,9 @@ h4 {
     margin-right: -5px;
     margin-left: -5px;
 }
+.form-horizontal .has-feedback .form-control-feedback {
+    right: 5px;
+}
 
 .input-group-addon {
     line-height: 1;
@@ -432,6 +437,9 @@ h4 {
     height: 22px;
     padding: 2px 8px;
     border-radius: 6px;
+}
+.input-sm+.form-control-feedback {
+    line-height: 2em;
 }
 
 .btn {
@@ -524,11 +532,52 @@ h4 {
 .glyphicon.glyphicon-comment {
     font-size: 22px;
 }
+.glyphicon.glyphicon-ok.glyphicon-green {
+    color: #3c763d;
+}
+.glyphicon.glyphicon-exclamation-sign.glyphicon-red {
+    color: #a94442;
+}
 
 .md-sidenav-right {
     z-index: 9999;
     width: 350px;
     word-wrap: break-word;
+}
+
+.btn-toolbar ng-md-icon {
+    height: 13px;
+    width: 12px;
+}
+
+input[type=radio] {
+    margin: 0;
+}
+
+.ngCellText {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-wrap: normal;
+    white-space: nowrap;
+    padding:5px;
+    width:99%;
+}
+
+.modal-header .close {
+    margin-top: -10px;
+}
+
+.drop-shadow {
+    box-shadow: 2px 2px 10px #E1E1E1;
+    border-radius: 6px;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0;
+}
+
+.no-padding {
+    padding: 0;
 }
 
 /* override the md-backdrop grey overlay/backdrop to make the content visible */
@@ -556,9 +605,16 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     transform: translate(-55px);
 }
 
-.form-group.required .control-label:before{
-    color: red;
+.form-group.required .control-label:after{
+    color: #C53531;
     content: "*";
     position: absolute;
-    margin-left: -15px;
+    margin-right: -13px;
+}
+
+.nonselectable-row {
+    background-color: rgba(255, 69, 0, 0.1) !important;
+}
+.nonselectable-row, .nonselectable-row a {
+    color: #444 !important;
 }

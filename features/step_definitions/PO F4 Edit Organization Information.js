@@ -19,7 +19,7 @@ module.exports = function() {
     var menuItem = new menuItemList();
     var addOrg = new addOrganizationPage();
     var searchOrg = new listOfOrganizationPage();
-    var selectItem =new mainSelectItemPage;
+    var selectItem =new mainSelectItemPage();
     var projectFunctions = new projectFunctionsPage();
     var sourceStatus = 'Pending';
     var addressEdited = '1988 S 16th Edited';
@@ -36,23 +36,25 @@ module.exports = function() {
     this.Given(/^I know which organization I want to edit$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
         }, 4000).then(function(){
-                menuItem.clickWriteMode();
+            menuItem.clickHomeEnterOrganizations();
+                login.clickWriteMode();
             projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
             });
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have searched for an organization and found the one I wish to edit$/, function (callback) {
+    this.Given(/^I have searched for a CTRP organization and found the one I wish to edit$/, function (callback) {
         cukeOrganization.then(function(value){
             menuItem.clickOrganizations();
             menuItem.clickListOrganizations();
             searchOrg.setOrgName(value);
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
         });
         browser.sleep(25).then(callback);
     });
@@ -76,12 +78,13 @@ module.exports = function() {
 
     this.Given(/^I set the organization status to either Pending or Active$/, function (callback) {
         selectItem.selectSourceStatus(sourceStatus);
-        callback();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I submit my edit request$/, function (callback) {
         addOrg.clickSave();
         dateOrgEdited = moment().format('DD-MMM-YYYY H:mm');
+        console.log('value of first dateorg edited' + dateOrgEdited);
         browser.sleep(25).then(callback);
     });
 
@@ -91,7 +94,7 @@ module.exports = function() {
         cukeOrganization.then(function(value){
             searchOrg.setOrgName(value + 'Edited');
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value + 'Edited')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value + 'Edited')).to.become('true');
             element(by.linkText(value + 'Edited')).click();
             addOrg.getVerifyAddOrgName(value + 'Edited');
         });
@@ -100,6 +103,7 @@ module.exports = function() {
 
     this.Then(/^my name should be listed as last update with the current date and time$/, function (callback) {
         projectFunctions.verifyLastUpdatedNameDate('organization',dateOrgEdited);
+        console.log('value of second dateorg edited' + dateOrgEdited);
         browser.sleep(25).then(callback);
     });
 
@@ -119,7 +123,7 @@ module.exports = function() {
         cukeOrganization.then(function(value){
             searchOrg.setOrgName(value);
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();
             addOrg.getVerifyAddAddress(addressEdited);
         });
@@ -137,7 +141,7 @@ module.exports = function() {
         cukeOrganization.then(function(value){
             searchOrg.setOrgName(value);
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();
             addOrg.getVerifyAddPhone(phoneEdited);
         });
@@ -155,7 +159,7 @@ module.exports = function() {
         cukeOrganization.then(function(value){
             searchOrg.setOrgName(value);
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();
             addOrg.getVerifyAddEmail(emailEdited);
         });
@@ -173,7 +177,7 @@ module.exports = function() {
         cukeOrganization.then(function(value){
             searchOrg.setOrgName(value);
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();
             addOrg.getVerifyAddCity(cityEdited);
         });
@@ -191,7 +195,7 @@ module.exports = function() {
         cukeOrganization.then(function(value){
             searchOrg.setOrgName(value);
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();
             addOrg.getVerifyAddState(stateEditedforUS);
         });
@@ -210,7 +214,7 @@ module.exports = function() {
         cukeOrganization.then(function(value){
             searchOrg.setOrgName(value);
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();
             addOrg.getVerifyAddCountry(countryEdited);
             addOrg.getVerifyAddState(stateEdited);
@@ -229,7 +233,7 @@ module.exports = function() {
         cukeOrganization.then(function(value){
             searchOrg.setOrgName(value);
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();
             addOrg.getVerifyAddPostalCode(postalEdited);
         });
@@ -251,7 +255,7 @@ module.exports = function() {
         cukeOrganization.then(function(value){
             searchOrg.setOrgName(value + 'Edited');
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value + 'Edited')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults(value + 'Edited')).to.become('true');
             element(by.linkText(value + 'Edited')).click();
             addOrg.getVerifyAddOrgName(value + 'Edited');
             addOrg.getVerifyAddAddress2(address2Edited);
@@ -261,5 +265,64 @@ module.exports = function() {
         });
         browser.sleep(25).then(callback);
     });
+
+    this.Given(/^I am in the Edit Organization feature$/, function (callback) {
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function(){
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            projectFunctions.createOrganization('shiOrg4Edit','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-444-5555','444-6666-555');
+            addOrg.setAddOrgName('test');
+            selectItem.selectSourceStatus('InActive');
+            addOrg.setAddAlias('editAl44');
+            addOrg.clickSaveAlias();
+            addOrg.setAddAlias('als29');
+            addOrg.setAddAddress('address1');
+            addOrg.setAddAddress2('address2');
+            selectItem.selectCountry('Nepal');
+            selectItem.selectState('Bagmati');
+            addOrg.setAddCity('city');
+            addOrg.setAddPostalCode('2009');
+            addOrg.setAddEmail('sdji');
+            addOrg.setAddPhone('398');
+            addOrg.setAddFax('879');
+        });
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I want to cancel my changes$/, function (callback) {
+        callback();
+    });
+
+    this.When(/^I select the Reset function$/, function (callback) {
+        addOrg.clickReset();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^edit form will be refreshed with the last committed values for the selected organization$/, function (callback) {
+        cukeOrganization.then(function(value){
+            addOrg.getVerifyAddOrgName(value);
+            addOrg.getVerifyAddOrgAlias('');
+            expect(projectFunctions.verifyOrgAlias('alias')).to.become('true');
+            expect(projectFunctions.verifyOrgAlias('editAl44')).to.become('false');
+            addOrg.getVerifyAddAddress('add1');
+            addOrg.getVerifyAddAddress2('add2');
+            addOrg.getVerifyAddCity('avenue');
+            addOrg.getVerifyAddEmail('s@s.com');
+            addOrg.getVerifyAddFax('444-6666-555');
+            addOrg.getVerifyAddPhone('222-444-5555');
+            addOrg.getVerifyAddPostalCode('24567');
+            addOrg.getVerifyAddState('Florida');
+            addOrg.getVerifyAddCountry('United States');
+            addOrg.getVerifyAddSourceStatusDefault('Active');
+        });
+        browser.sleep(25).then(callback);
+    });
+
 
 }

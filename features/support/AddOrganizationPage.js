@@ -16,6 +16,7 @@ AddOrganizationsPage = function(){
     this.addSourceContext = element(by.model('orgDetailView.curOrg.source_context_id'));
     this.addSourceId = element(by.model('orgDetailView.curOrg.source_id'));
     this.addSourceStatus = element(by.model('orgDetailView.curOrg.source_status_id'));
+    this.addSourceStatusDefault = element(by.binding('orgDetailView.activeStatusName'));
     this.addAlias = element(by.model('orgDetailView.alias'));
     this.addAliasButton = element(by.css('button[ng-click="orgDetailView.addNameAlias()"]'));
     this.addAddress = element(by.model('orgDetailView.curOrg.address'));
@@ -28,7 +29,8 @@ AddOrganizationsPage = function(){
     this.addPhone = element(by.model('orgDetailView.curOrg.phone'));
     this.addFax = element(by.model('orgDetailView.curOrg.fax'));
     this.saveButton = element(by.id('save_btn')); //element(by.css('input[value="Save"]'));
-    this.resetButton = element(by.css('input[value="Reset"]'));
+    this.clearButton = element(by.css('#clear_btn'));//element(by.css('input[value="Reset"]'));by.id('reset_btn')
+    this.resetButton = element(by.css('#reset_btn'));
     this.cancelButton = element(by.css('.btn.btn-default'));
     this.deleteButton = element(by.css('.btn.btn-danger'));
     this.orgLastUpdatedBy = element(by.binding('orgDetailView.curOrg.updated_by'));
@@ -36,6 +38,10 @@ AddOrganizationsPage = function(){
     this.addVerifyAddHeader = element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
     this.addVerifyEditHeader = element(by.css('h4[ng-if="!orgDetailView.curOrg.new"]'));
     this.verifyAddedOrgAlias = element.all(by.binding('nameAlias.name'));
+    this.addOrgCTRPID = element(by.binding('orgDetailView.curOrg.ctrp_id'));
+    this.addOrgFieldLabel = element.all(by.css('.control-label.col-xs-12.col-sm-3'));
+    this.addOrgFieldLabelPostalCode = element(by.css('.control-label.col-xs-12.col-sm-2'));
+    this.addOrgFieldLabelPhone = element(by.css('.control-label.col-xs-12.col-sm-1'));
     var addHeader = 'Add Organization';
     var editHeader = 'Edit Organization';
 
@@ -101,8 +107,16 @@ AddOrganizationsPage = function(){
         addOrg.clickButton(this.resetButton,"Reset button on Organization page");
     };
 
+    this.clickClear = function(){
+        addOrg.clickButton(this.clearButton,"Clear button on Organization page");
+    };
+
     this.getVerifyAddOrgName = function(orgName){
         addOrg.getVerifyValue(this.addOrgName,orgName,"Get Organization by Name field");
+    };
+
+    this.getVerifyAddOrgAlias = function(alias){
+        addOrg.getVerifyValue(this.addAlias,alias,"Get Organization by Alias field");
     };
 
     this.getVerifyAddSourceId = function(sourceId){
@@ -111,6 +125,10 @@ AddOrganizationsPage = function(){
 
     this.getVerifyAddSourceStatus = function(sourceStatus){
         addOrg.getVerifyListValue(this.addSourceStatus,sourceStatus,"Get Organization by Source Status field");
+    };
+
+    this.getVerifyAddSourceStatusDefault = function(sourceStatusDefault){
+        addOrg.getVerifyheader(this.addSourceStatusDefault,sourceStatusDefault,"Get Organization by Source Status field");
     };
 
     this.getVerifyAddAddress = function(address){
@@ -175,6 +193,31 @@ AddOrganizationsPage = function(){
         this.setAddPhone(phone);
         this.setAddFax(fax);
         this.clickSave();
+    };
+
+    /**********************************
+     * Method: Verify the labels in Add Org
+     * @param labels
+     ***********************************/
+    this.verifyAddOrgLabels = function(labels) {
+        return this.addOrgFieldLabel.filter(function(name) {
+            return name.getText().then(function(text) {
+                return text === labels ;
+            });
+        }).then(function(filteredElements) {
+            // Only the elements that passed the filter will be here. This is an array.
+            if(filteredElements.length > 0) {
+                return 'true';}
+            else {return 'false';}
+        });
+    };
+
+    this.verifyAddOrgPostalCodeLabel = function() {
+        expect(this.addOrgFieldLabelPostalCode.getText()).to.eventually.equal('Postal Code:');
+    };
+
+    this.verifyAddOrgPhoneLabel = function() {
+        expect(this.addOrgFieldLabelPhone.getText()).to.eventually.equal('Phone:');
     };
 
 };

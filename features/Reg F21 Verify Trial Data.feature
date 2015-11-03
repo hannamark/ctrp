@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can verify my trial data
+Feature: Reg F21 Verify Trial Data
+
+As a CTRP User, I can verify my trial data
 
 Scenario: #1 I search my trials and select the Verify Trial Data option
 Given I am in the CTRP Registration application

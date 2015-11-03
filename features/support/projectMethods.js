@@ -115,11 +115,11 @@ var projectMethods = function() {
     this.createPersonWithAffiliatedOrg = function(prefix, fName, mName, lName, suffix, email, phone, affOrgName, affOrgEffectiveDate, affOrgExpirationDate){
         this.createOrganization(affOrgName,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','222-4444-555','888-9999-666');
         this.createPerson(prefix,fName,mName,lName,suffix,email,phone);
-        menuItem.clickPeople();
+    /*    menuItem.clickPeople();
         menuItem.clickListPeople();
         searchPeople.setPersonFirstName(cukePerson);
         searchPeople.clickSearch();
-        element(by.linkText(cukePerson)).click();
+        element(by.linkText(cukePerson)).click();*/
         searchOrg.clickOrgSearchModel();
         searchOrg.setOrgName(cukeOrganization);
         searchOrg.clickSearchButton();
@@ -147,7 +147,7 @@ var projectMethods = function() {
     };
 
     /**********************************
-     * Method: Create Family
+     * Method: Create Family with members
      * @param familyName
      * @param familyStatus
      * @param familyType
@@ -179,18 +179,55 @@ var projectMethods = function() {
      * Method: Verify the item in Search Results
      * @param searchString
      ***********************************/
-    this.inSearchResults = function(searchString) {
-        return menuItem.searchResult.filter(function(name) {
-            return name.getText().then(function(text) {
-                return text === searchString ;
-            });
-        }).then(function(filteredElements) {
-            // Only the elements that passed the filter will be here. This is an array.
-            if(filteredElements.length > 0) {
-                return 'true';}
-            else {return 'false';}
+    this.inOrgSearchResults = function(searchString) {
+        return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+            if (state == true) {
+                return menuItem.orgSearchResult.filter(function(name) {
+                    return name.getText().then(function(text) {
+                       // console.log('value of text : ' + text + 'and value of searched string' + searchString);
+                        return text === searchString;
+                    });
+                }).then(function(filteredElements) {
+                    console.log('value of filteredElements' + filteredElements);
+                    // Only the elements that passed the filter will be here. This is an array.
+                    if (filteredElements.length > 0) {
+                        return 'true';
+                    } else {
+                        element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                        element(by.xpath('//*[@id="menuitem-4"]/button')).click();
+                        element(by.xpath('//*[@id="menuitem-8"]/button')).click();
+                        element(by.xpath('//*[@id="menuitem-10"]/button')).click();
+                        element(by.xpath('//*[@id="menuitem-14"]/button')).click();
+                        element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                         return menuItem.orgSearchResult.filter(function(name) {
+                            return name.getText().then(function(text) {
+                            //    console.log('value of text : ' + text + 'and value of searched string' + searchString);
+                                return text === searchString;
+                            });
+                        }).then(function(filteredElements) {
+                         //   console.log('value of filteredElements' + filteredElements);
+                             element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                            element(by.xpath('//*[@id="menuitem-5"]/button')).click();
+                            element(by.xpath('//*[@id="menuitem-9"]/button')).click();
+                            element(by.xpath('//*[@id="menuitem-11"]/button')).click();
+                            element(by.xpath('//*[@id="menuitem-15"]/button')).click();
+                             element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                            // Only the elements that passed the filter will be here. This is an array.
+                            if (filteredElements.length > 0) {
+                                return 'true';
+                            } else {
+                                return 'false';
+                            }
+                        });
+                    }
+                });
+            } else {
+                return 'false';
+            }
         });
     };
+
+
 
     /*****************************************************************
      * Method: Verify the organization Created Name Date in Edit Organization page
@@ -302,6 +339,48 @@ var projectMethods = function() {
     };
 
     /*****************************************************************
+     * Method: Add the Affiliated Organization Effective Date for Person
+     * @param affiliatedOrg
+     * @param effectiveDate
+     *****************************************************************/
+    this.setOrgPersonAffiliatedEffectiveDate = function(affiliatedOrg, effectiveDate) {
+        return searchOrg.orgPersonAffiliatedTable.getText().filter(function(row) {
+            // Get the second column's text.
+            return row.$$('td').get(1).getText().then(function(rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === affiliatedOrg;
+            });
+        }).then(function(rows) {
+            // This is an array. Find the button in the row and click on it.
+            console.log('value of row' + rows);
+            rows[0].element(by.model('org.effective_date')).clear();
+            rows[0].element(by.model('org.effective_date')).sendKeys(effectiveDate);
+        });
+    };
+
+
+    /*****************************************************************
+     * Method: Add the Affiliated Organization Expiration Date for Person
+     * @param affiliatedOrg
+     * @param expirationDate
+     *****************************************************************/
+    this.setOrgPersonAffiliatedExpirationDate = function(affiliatedOrg, expirationDate) {
+        return searchOrg.orgPersonAffiliatedTable.getText().filter(function(row) {
+            // Get the second column's text.
+            return row.$$('td').get(1).getText().then(function(rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === affiliatedOrg;
+            });
+        }).then(function(rows) {
+            // This is an array. Find the button in the row and click on it.
+            console.log('value of row' + rows);
+            rows[0].element(by.model('org.expiration_date')).clear();
+            rows[0].element(by.model('org.expiration_date')).sendKeys(expirationDate);
+        });
+    };
+    /*****************************************************************
      * Method: Verify the affiliated Organization
      * @param affiliatedOrg
      *****************************************************************/
@@ -309,6 +388,24 @@ var projectMethods = function() {
         return searchOrg.orgPersonAffiliatedTable.filter(function(name) {
             return name.getText().then(function(text) {
                 return text === affiliatedOrg ;
+            });
+        }).then(function(filteredElements) {
+            // Only the elements that passed the filter will be here. This is an array.
+            if(filteredElements.length > 0) {
+                return 'true';}
+            else {return 'false';}
+        });
+    };
+
+    /*****************************************************************
+     * Method: Verify the warning message
+     * @param warningText
+     *****************************************************************/
+    this.verifyWarningMessage = function(warningText) {
+        return menuItem.addWarningMessage.filter(function(name) {
+            return name.getText().then(function(text) {
+              //  console.log('value of text : ' + text + 'and value of searched string' + warningText);
+                return text === warningText ;
             });
         }).then(function(filteredElements) {
             // Only the elements that passed the filter will be here. This is an array.
@@ -377,6 +474,49 @@ var projectMethods = function() {
         });
     };
 
+    /*****************************************************************
+     * Method: Verify the affiliated Organization Effective Date for Person
+     * @param affiliatedOrg
+     * @param effectiveDate
+     *****************************************************************/
+    this.verifyOrgPersonAffiliatedEffectiveDate = function(affiliatedOrg, effectiveDate) {
+        return searchOrg.orgPersonAffiliatedTable.getText().filter(function(row) {
+            // Get the second column's text.
+            return row.$$('td').get(1).getText().then(function(rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === affiliatedOrg;
+            });
+        }).then(function(rows) {
+            // This is an array. Find the button in the row and click on it.
+            console.log('value of row' + rows);
+            // rows[0].element(by.model('org.effective_date')).getAttribute('value');
+            expect(rows[0].element(by.model('org.effective_date')).getAttribute('value')).to.eventually.equal(effectiveDate);
+        });
+    };
+
+
+    /*****************************************************************
+     * Method: Verify the affiliated Organization Expiration Date for Person
+     * @param affiliatedOrg
+     * @param expirationDate
+     *****************************************************************/
+    this.verifyOrgPersonAffiliatedExpirationDate = function(affiliatedOrg, expirationDate) {
+        return searchOrg.orgPersonAffiliatedTable.getText().filter(function(row) {
+            // Get the second column's text.
+            return row.$$('td').get(1).getText().then(function(rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === affiliatedOrg;
+            });
+        }).then(function(rows) {
+            // This is an array. Find the button in the row and click on it.
+            console.log('value of row' + rows);
+            expect(rows[0].element(by.model('org.expiration_date')).getAttribute('value')).to.eventually.equal(expirationDate);
+        });
+    };
+
+
 
     /********************************
      * Method: Convert Object value to a String
@@ -441,7 +581,23 @@ var projectMethods = function() {
         for (var i = sizeOfTheStrng; i > 0; --i) randAlpNmVal += alpNumStr[Math.round(Math.random() * (alpNumStr.sizeOfTheStrng - 1))];
         return randAlpNmVal;
     }
-
+    /*****************************************************************
+     * Method: Verify the affiliated Organization Effective Date
+     * @param searchedItem
+     *****************************************************************/
+    this.inSearchResults = function(searchedItem) {
+        return menuItem.searchResult.getText().filter(function(name) {
+            return name.getText().then(function(text) {
+                //  console.log('value of text : ' + text + 'and value of searched string' + warningText);
+                return text === searchedItem ;
+            });
+        }).then(function(filteredElements) {
+            // Only the elements that passed the filter will be here. This is an array.
+            if(filteredElements.length > 0) {
+                return 'true';}
+            else {return 'false';}
+        });
+    };
 
 };
 module.exports = projectMethods;

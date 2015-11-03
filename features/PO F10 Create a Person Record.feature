@@ -1,5 +1,5 @@
 @Global
-Feature: Create a Person Record
+Feature: PO F10 Create a Person Record
 
 Scenario Outline: As a Curator, I can request the creation of a new Person Record in CTRP
 Given I am logged in to CTRP PO application

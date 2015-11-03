@@ -42,6 +42,11 @@
             }; //initial Organization Search Parameters
 
         var gridOptions = {
+            rowTemplate: '<div>'+
+                '<div>' +
+                '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader, \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' && grid.appScope.rowFormatter( row )}"  ui-grid-cell></div>' +
+                '</div>',
+
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
@@ -55,11 +60,11 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '7%',
+                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '10%',
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '8%'},
+                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '11%'},
                 {
                     name: 'name', enableSorting: true, width: '25%',
                     //this does not work for .id
@@ -70,22 +75,22 @@
                     '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
-                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, width: '8%'},
-                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '8%'},
+                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, width: '11%'},
+                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '10%'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '13%'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '14%'},
                 {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '15%',height: '50%',
-                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names">{{fam.Name}}</div>'
+                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names" title="{{fam.Name}}">{{fam.Name}}</div>'
                 },
                 /* {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
                    cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" popover-trigger="mouseenter" class="btn btn-default">Family</button>',
                },*/
                 {name: 'city', enableSorting: true, width: '10%'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
-                {name: 'country', displayName: 'Country', enableSorting: true, width:'9%'},
-                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'8%'},
-                {name: 'phone', enableSorting: true, width: '10%'},
-                {name: 'email', enableSorting: true, width: '10%',
+                {name: 'country', displayName: 'Country', enableSorting: true, width:'12%'},
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'14%'},
+                {name: 'phone', enableSorting: true, width: '13%'},
+                {name: 'email', enableSorting: true, width: '13%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -114,7 +119,8 @@
             preparePOAffiliationArr: preparePOAffiliationArr,
             initSelectedOrg: initSelectedOrg,
             curateOrg: curateOrg,
-            findContextId: findContextId
+            findContextId: findContextId,
+            checkUniqueOrganization: checkUniqueOrganization
         };
 
         return services;
@@ -183,7 +189,7 @@
 
 
 
-        function getGridOptions() {
+        function getGridOptions(usedInModal) {
             var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
             var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
             var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
@@ -192,6 +198,12 @@
                 gridOptions.columnDefs.splice(updated_at_index,1);
                 gridOptions.columnDefs.splice(updated_by_index,1);
             }
+            if(usedInModal){
+                var nullify_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'Nullify');
+                gridOptions.columnDefs.splice(nullify_index,1);
+            }
+
+            console.log('user role is: ', user_role.toUpperCase());
             return gridOptions;
         }
 
@@ -369,6 +381,16 @@
                 ctrpContextId = ctrpContextArr[needleIndex].id || -1;
             }
             return ctrpContextId;
+        }
+
+
+        /**
+         * Check if an Organization name is unique - based on Name & Source context
+         *
+         * @param curationObject, JSON object: {'org_name': '', 'source_context_id': ''}
+         */
+        function checkUniqueOrganization(name) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.UNIQUE_ORG, name);
         }
 
 

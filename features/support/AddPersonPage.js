@@ -28,7 +28,7 @@ AddPersonPage = function () {
     this.addPersonAffiliatedOrg = element(by.css('select[ng-model="personDetailView.selectedOrgs"]'));
     this.addPersonSelectAllAffiliatedOrg = element(by.css('button[title="Select all"]'));
     this.addPersonRemoveAllAffiliatedOrg = element(by.css('button[title="Remove all"]'));
-    this.personSaveButton = element(by.css('button[type="submit"]')); //element(by.css('input[value="Save"]'));
+    this.personSaveButton = element(by.id('save_btn'));//element(by.css('button[type="submit"]')); //element(by.css('input[value="Save"]'));
     this.personResetButton = element(by.css('input[value="Reset"]'));
     this.addPersonHeader = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.editPersonHeader = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));

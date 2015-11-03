@@ -1,0 +1,73 @@
+[
+  {
+    "description": "As a PO Curator, I can Edit a Person record Affiliated Organization effective and expiration dates",
+    "assertions": [
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      }
+    ],
+    "duration": 113530666990
+  },
+  {
+    "description": "As a PO Curator, I can Edit a Person record and add an Affiliated Organization",
+    "assertions": [
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": true
+      },
+      {
+        "passed": false,
+        "errorMsg": "expected '08-Oct-2015' to equal 'October 8, 2015'",
+        "stackTrace": "AssertionError: expected '08-Oct-2015' to equal 'October 8, 2015'\n\n"
+      }
+    ],
+    "duration": 155969355504
+  }
+]

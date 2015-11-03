@@ -1,5 +1,6 @@
 @Reg @global
-Feature: As any CTRP User, I can search CTRP clinical trial by various criteria and trial ownership
+Feature: Reg F01 Search Clinical Trials
+As any CTRP User, I can search CTRP clinical trial by various criteria and trial ownership
 
 Scenario: #1 I can search for my clinical trials registered in CTRP
 Given I am logged into the CTRP Registration application

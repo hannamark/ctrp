@@ -119,42 +119,43 @@ AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', des
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
-AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'S5', big_value: '')
+AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'S6', big_value: '')
 
 
 
 ########## SEEDING APP SETTINGS ENDS ##########
 
 if Organization.count  == 0
-org1 = Organization.create(id: 139020, source_id: 'MN021', name: 'University of Minnesota/Masonic Children\'s Hospital', source_status: source_act, source_context: ctep, address: '2450 Riverside Ave', city: 'Minneapolis', state_province: 'Minnesota', country:usa)
+org1 = Organization.create( id: 139020, source_id: 'MN021', name: 'University of Minnesota/Masonic Children\'s Hospital', phone:'301-999-200f', source_status: source_act, source_context: ctep, address: '2450 Riverside Ave', city: 'Minneapolis', state_province: 'Minnesota', country:usa)
 if !org1.new_record?
   org1.name_aliases.create(name: 'University of Minnesota Children\'s Hospital Fairview')
   org1.name_aliases.create(name: 'University of Minnesota Medical Center-Fairview-Riverside')
 end
-org2 = Organization.create(id: 139049, source_id: 'MN022', name: 'University of Minnesota Medical Center-Fairview', source_status: source_act, source_context: ctep, address: '516 Delaware St SE', city: 'Minneapolis', state_province:'Minnesota', country:usa)
+org2 = Organization.create(id: 139049, source_id: 'MN022', name: 'University of Minnesota Medical Center-Fairview',  phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '516 Delaware St SE', city: 'Minneapolis', state_province:'Minnesota', country:usa)
 if !org2.new_record?
   org2.name_aliases.create(name: 'Masonic Cancer Center, University of Minnesota')
 end
-org3 = Organization.create(id: 153109, source_id: 'NC164', name: 'Coastal Carolina Radiation Oncology', source_status: source_act, source_context: ctep, address: '1988 S 16th St', city: 'Wilmington', state_province:'North Carolina', country:usa)
-org4 = Organization.create(id: 12733422, name: 'Comprehensive Cancer Center of Wake Forest University', source_status: source_act, source_context:ctrp, address: '1 Medical Center Blvd', city: '', state_province:'North Carolina', country: usa) #labeled unknown in directory
-org5 = Organization.create(id: 117163, source_id: 'LA032', name: 'Ochsner Baptist Medical Center', source_status: source_act, source_context: ctep, address: '2700 Napoleon Ave', city: 'New Orleans', state_province:'Louisiana', country:usa)
+
+org3 = Organization.create(id: 153109, source_id: 'NC164', name: 'Coastal Carolina Radiation Oncology', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '1988 S 16th St', city: 'Wilmington', state_province:'North Carolina', country:usa)
+org4 = Organization.create(id: 12733422, name: 'Comprehensive Cancer Center of Wake Forest University', phone:'315-425-2707', source_status: source_act, source_context:ctrp, address: '1 Medical Center Blvd', city: '', state_province:'North Carolina', country: usa) #labeled unknown in directory
+org5 = Organization.create(id: 117163, source_id: 'LA032', name: 'Ochsner Baptist Medical Center', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '2700 Napoleon Ave', city: 'New Orleans', state_province:'Louisiana', country:usa)
 if !org5.new_record?
   org5.name_aliases.create(name: 'Ochsner Baptist Medical Center')
 end
-org6 = Organization.create(id: 173475, source_id: 'NY139', name: 'Syracuse Veterans Administration Medical Center', source_status: source_act, source_context: ctep, address: ' 800 Irving Ave', city: 'Syracuse', state_province:'New York', country:usa)
-org7 = Organization.create(id: 150970, source_id: 'NC088', name: 'Veterans Administration Medical Center.', source_status: source_act, source_context: ctep, address: '50 Irving St NW', city: '', state_province:'District of Columbia', country:usa)
-org8 = Organization.create(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, phone: '336-716-0891', postal_code: '27157')
+org6 = Organization.create(id: 173475, source_id: 'NY139', name: 'Syracuse Veterans Administration Medical Center', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: ' 800 Irving Ave', city: 'Syracuse', state_province:'New York', country:usa)
+org7 = Organization.create(id: 150970, source_id: 'NC088', name: 'Veterans Administration Medical Center.', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '50 Irving St NW', city: '', state_province:'District of Columbia', country:usa)
+org8 = Organization.create(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, phone: '336-716-0891', postal_code: '27157')
 if !org8.new_record?
   org8.name_aliases.create(name: 'Wake Forest Cancer Center Research Base')
 end
-org9 = Organization.create(id: 36296220, source_id: 'NC275', name: 'Wake Forest University at Clemmons', source_status: source_act, source_context: ctep, address: '3540 Clemmons Rd', city: 'Clemmons', state_province:'North Carolina', country:usa)
-org10 = Organization.create(id: 36296062, source_id: 'NC273', name: 'Wake Forest University at Elkin', source_status: source_act, source_context: ctep, address: '200 Johnson Ridge Medical Park', city: 'Elkin', state_province:'North Carolina', country:usa)
-org11 = Organization.create(id: 36296115, source_id: 'NC274', name: 'Wake Forest University at Lexington', source_status: source_act, source_context: ctep, address: '250 Hospital Drive', city: 'Lexington', state_province:'North Carolina', country:usa)
-org12 = Organization.create(id: 36296009, source_id: 'NC272', name: 'Wake Forest University at Mount Airy', source_status: source_act, source_context: ctep, address: '910 Worth St.', city: 'Mt. Airy', state_province:'North Carolina', country:usa)
-org13 = Organization.create(id: 149074, source_id: 'NC002', name: 'Wake Forest University Health Sciences', source_status: source_act, source_context: ctep, address: '1 Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa) #no source id
-org14 = Organization.create(id: 149221, source_id: 'NC008', name: 'Wake Medical Center-Breast Screening and Diagnostic', source_status: source_act, source_context: ctep, address: '3000 New Bern Avenue ', city: 'Raleigh', state_province:'North Carolina', country:usa)
-org15 = Organization.create(id: 23875109, name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctrp, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: '23456') #no source id
-org16 = Organization.create(id: 24068, source_id: 'ACT', name: 'Actelion Pharmaceuticals Switzerland', source_status: source_act, source_context: ctep, address: 'Gewerbestrasse 16', city: 'Allschwil', state_province:'Basel-Landschaft', country: 'Switzerland')
+org9 = Organization.create(id: 36296220, source_id: 'NC275', name: 'Wake Forest University at Clemmons', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '3540 Clemmons Rd', city: 'Clemmons', state_province:'North Carolina', country:usa)
+org10 = Organization.create(id: 36296062, source_id: 'NC273', name: 'Wake Forest University at Elkin', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '200 Johnson Ridge Medical Park', city: 'Elkin', state_province:'North Carolina', country:usa)
+org11 = Organization.create(id: 36296115, source_id: 'NC274', name: 'Wake Forest University at Lexington', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '250 Hospital Drive', city: 'Lexington', state_province:'North Carolina', country:usa)
+org12 = Organization.create(id: 36296009, source_id: 'NC272', name: 'Wake Forest University at Mount Airy', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '910 Worth St.', city: 'Mt. Airy', state_province:'North Carolina', country:usa)
+org13 = Organization.create(id: 149074, source_id: 'NC002', name: 'Wake Forest University Health Sciences', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '1 Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa) #no source id
+org14 = Organization.create(id: 149221, source_id: 'NC008', name: 'Wake Medical Center-Breast Screening and Diagnostic', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '3000 New Bern Avenue ', city: 'Raleigh', state_province:'North Carolina', country:usa)
+org15 = Organization.create(id: 23875109, name: 'ACORN Research, LLC', phone:'315-425-2707', source_status: source_pend, source_context:ctrp, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: '23456') #no source id
+org16 = Organization.create(id: 24068, source_id: 'ACT', phone:'315-425-2707', name: 'Actelion Pharmaceuticals Switzerland', source_status: source_act, source_context: ctep, address: 'Gewerbestrasse 16', city: 'Allschwil', state_province:'Basel-Landschaft', country: 'Switzerland')
 if !org16.new_record?
   org16.name_aliases.create(name: 'Actelion')
 end
@@ -164,6 +165,27 @@ if !org18.new_record?
   org18.name_aliases.create(name: 'UCB Pharma')
 end
 org19 = Organization.create(name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctep, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: "ACRN", ctrp_id: org15.id) #no source id
+
+###### TEMPORARY Code to Bypass Validation
+org1.save(validate: false)
+org2.save(validate: false)
+org3.save(validate: false)
+org4.save(validate: false)
+org6.save(validate: false)
+org7.save(validate: false)
+org8.save(validate: false)
+org9.save(validate: false)
+org10.save(validate: false)
+org11.save(validate: false)
+org12.save(validate: false)
+org13.save(validate: false)
+org14.save(validate: false)
+org15.save(validate: false)
+org16.save(validate: false)
+org17.save(validate: false)
+org18.save(validate: false)
+org19.save(validate: false)
+
 
 family1 = Family.create(name: 'Masonic Cancer Center')
 if !family1.new_record?
@@ -218,11 +240,9 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "po_curator1", "role" => "ROLE_CURATOR", "approve" => false },
-               {"username" => "po_curator2", "role" => "ROLE_CURATOR" , "approve" => false},
-               {"username" => "po_curator3", "role" => "ROLE_CURATOR" , "approve" => false},
                {"username" => "ctrpreadonly", "role" => "ROLE_RO", "approve" => true },
-               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true }
+               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true },
+               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true }
           ]
 
 test_users.each do |u|

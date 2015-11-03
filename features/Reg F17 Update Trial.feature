@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can update information on a trial that does not require IRB approval or an amendment
+Feature: Reg F17 Update Trial
+
+As a CTRP User, I can update information on a trial that does not require IRB approval or an amendment
 
 Scenario: #1 I search my trials and select the update option
 Given I am in the CTRP Registration applicatin

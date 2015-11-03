@@ -14,15 +14,27 @@ CommonSelectList = function(){
     var select = new helper();
 
 
-    this.selectSourceContext = function(sourceContext){
-        var  SourceContext =  element(by.xpath('//*[@id="source_context"]/option[.="' + sourceContext + '"]'));
-        select.selectValue(SourceContext,sourceContext,"Source Context field");
+    this.selectSourceContext = function(sourceContextType){
+        var  sourceContext =  element(by.xpath('//*[@id="source_context"]/option[.="' + sourceContextType + '"]'));
+        var  sourceContextDefault =  element(by.xpath('//*[@id="source_context"]/option[.="All Contexts"]'));
+        if(sourceContextType == '') {
+            select.selectValue(sourceContextDefault,'All Contexts',"Source Context field");
+        }
+        else{
+            select.selectValue(sourceContext,sourceContextType,"Source Context  field");
+        }
     };
 
 
-    this.selectSourceStatus = function(sourceStatus){
-        var  SourceStatus =  element(by.xpath('//*[@id="source_status"]/option[.="' + sourceStatus + '"]'));
-        select.selectValue(SourceStatus,sourceStatus,"Source Status field");
+    this.selectSourceStatus = function(sourceStatusType){
+        var  sourceStatus =  element(by.xpath('//*[@id="source_status"]/option[.="' + sourceStatusType + '"]'));
+        var  sourceStatusDefault =  element(by.xpath('//*[@id="source_status"]/option[.="Select a Status"]'));
+        if(sourceStatusType == '') {
+            select.selectValue(sourceStatusDefault,'Select a Status',"Source Status field");
+        }
+        else{
+            select.selectValue(sourceStatus,sourceStatusType,"Source Status field");
+        }
     };
 
 
@@ -37,6 +49,19 @@ CommonSelectList = function(){
         }
     };
 
+
+    this.selectCountrySearchOrg = function(countryName){
+        var  country =  element(by.xpath('//*[@id="country"]/option[.="' + countryName + '"]'));
+        var  countryDefault =  element(by.xpath('//*[@id="country"]/option[.="All Countries"]'));
+        if(countryName == '') {
+            select.selectValue(countryDefault,'All Countries',"Country field");
+        }
+        else{
+            select.selectValue(country,countryName,"Country field");
+        }
+    };
+
+
     this.selectState = function(stateName){
         var  state =  element(by.xpath('//*[@id="state"]/option[.="' + stateName + '"]'));
         var stateDefault = element(by.xpath('//*[@id="state"]/option[.="Select a state or province"]'));
@@ -50,6 +75,18 @@ CommonSelectList = function(){
         }
     };
 
+    this.selectStateSearchOrg = function(stateName){
+        var  state =  element(by.xpath('//*[@id="state"]/option[.="' + stateName + '"]'));
+        var stateDefault = element(by.xpath('//*[@id="state"]/option[.="All States/Provinces"]'));
+        if(stateName == '') {
+            console.log('When no state is Provided');
+            select.selectValue(stateDefault,'All States/Provinces',"State field");
+        }
+        else{
+            console.log('When State is selected');
+            select.selectValue(state,stateName,"State field");
+        }
+    };
 
     this.selectFamilyType = function(type){
         var  familyType =  element(by.xpath('//*[@id="family_type"]/option[.="' + type + '"]'));
@@ -74,7 +111,12 @@ CommonSelectList = function(){
 
     this.selectOrgFamilyRelationship = function(relationshipType){
         var  relationship =  element(by.xpath('//*[@id="org.family_relationship"]/option[.="' + relationshipType + '"]'));
-        select.selectValue(relationship,relationshipType,"Org Family relationship field");
+        var  relationshipDefault =  element(by.xpath('//*[@id="org.family_relationship"]/option[.="Select a relationship"]'));
+        if(relationshipType == '') {
+            select.selectValue(relationshipDefault,'Select a relationship',"Family relationship Type field");
+        } else{
+            select.selectValue(relationship,relationshipType,"Org Family relationship field");
+        }
     };
 };
 module.exports = CommonSelectList;

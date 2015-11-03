@@ -1,5 +1,7 @@
 @PA @global
-Feature: As any CTRP PA User, I can add and edit Trial Participating Sites
+Feature: PAA F08 Add and Edit Trial Participating Sites
+
+As any CTRP PA User, I can add and edit Trial Participating Sites
 
 Scenario Outline: #1 I can add one or more a participating sites for a trial 
 Given I am on the Participating Site Page

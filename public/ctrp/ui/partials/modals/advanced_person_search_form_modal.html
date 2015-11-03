@@ -10,10 +10,15 @@
                     <ctrp-advanced-person-search-form show-grid="true" max-row-selectable="advPersonSearchModalView.maxRowSelectable" curation-mode="false" used-in-modal="true"></ctrp-advanced-person-search-form>
                 </div>
             </div>
-            <div class="modal-footer" style="align-content: center">
-                <button class="btn btn-success" ng-click="advPersonSearchModalView.confirmSelection()"
-                        ng-disabled="selectedPersonsArray.length == 0">Confirm Selection</button>
-                <button class="btn btn-danger" ng-click="advPersonSearchModalView.cancel()">Close</button>
+            <div class="modal-footer">
+                <div class="col-xs-12">
+                    <div class="btn-toolbar">
+                        <button class="btn btn-primary pull-right" ng-click="advPersonSearchModalView.confirmSelection()" ng-disabled="selectedPersonsArray.length == 0">Confirm Selection</button>
+                        <button class="btn btn-danger pull-right" ng-click="advPersonSearchModalView.cancel()">
+                            <i class="glyphicon glyphicon-remove"></i> Close
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

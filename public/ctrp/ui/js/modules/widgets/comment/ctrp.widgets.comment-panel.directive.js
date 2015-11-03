@@ -8,9 +8,12 @@
   angular.module('ctrpApp.widgets')
   .directive('ctrpComment', ctrpComment);
 
-  ctrpComment.$inject = ['$compile', '$log', 'CommentService', 'UserService', '$mdSidenav', '$mdUtil'];
+  ctrpComment.$inject = ['$compile', '$log', 'CommentService', '$timeout',
+      'UserService', '$mdSidenav', '$mdUtil', '$mdToast', '$document'];
 
-  function ctrpComment($compile, $log, CommentService, UserService, $mdSidenav, $mdUtil) {
+  function ctrpComment($compile, $log, CommentService, $timeout, UserService,
+      $mdSidenav, $mdUtil, $mdToast, $document) {
+
     var directive = {
       link: link,
       restrict: 'E',
@@ -70,12 +73,6 @@
       var vm = this;
       vm.commentList = [];
       vm.showCommentForm = false;
-      vm.comment = {
-        content: "", username: UserService.getLoggedInUsername(),
-        field: $scope.field, model: $scope.model || "",
-        instance_uuid: $scope.instanceUuid,
-        parent_id: ""
-      };
 
       //functions:
       vm.toggleRight = buildToggler('right');
@@ -83,7 +80,7 @@
       vm.postComment = postComment;
       vm.fetchComments = fetchComments;
       vm.toggleCommentFormShown = toggleCommentFormShown;
-      vm.changePage = changePage;
+      vm.updateComment = updateComment;
       //pagination options for comments
       vm.pagingOptions = {currentPage: 1, pageSize: 10};
 
@@ -95,18 +92,32 @@
 
 
       //implementations below
+
+      /** watch instanceUuid, fetch comments and initialize
+      * the comment object (to be posted)
+      * whenever the instanceUuid changes in the scope
+      */
       function watchInstanceUuid() {
         $scope.$watch(function() {return $scope.instanceUuid;}, function(newVal, oldVal) {
           if (newVal) {
             fetchComments();
           }
+          //initialize the vm.comment object
+          vm.comment = {
+            content: "",
+            username: UserService.getLoggedInUsername(),
+            field: $scope.field,
+            model: $scope.model || "",
+            instance_uuid: $scope.instanceUuid,
+            parent_id: ""
+          };
         }, true);
       } //watchInstanceUuid
 
       function fetchComments() {
         //include the field in the url in fetching comments
         CommentService.getComments($scope.instanceUuid, $scope.field).then(function(data) {
-          vm.commentList = data.comments;
+          vm.commentList = CommentService.annotateCommentIsEditable(data.comments);
         }).catch(function(error) {
           $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);
         });
@@ -118,6 +129,8 @@
           vm.comment.content = '';
           if (response.server_response.status == 201) {
             fetchComments(); //fetch the latest comments
+            toggleCommentFormShown(); //wait half second
+            showToastr('Comment created', 'right');
           }
           // console.log('created comment response: ' + JSON.stringify(response));
         }).catch(function(err) {
@@ -125,11 +138,31 @@
         });
       } //postComment
 
-      //TODO: edit and delete comment
+      //update
+      function updateComment(newContent, commentObjIndex) {
+        if (commentObjIndex > -1) {
+          var editedComment = angular.copy(vm.commentList[commentObjIndex]);
+          editedComment.content = newContent;
+          CommentService.updateComment(editedComment).then(function(response) {
+            if (response.server_response.status == 200) {
+              // fetchComments();
+              showToastr('Comment updated', 'right');
+            }
+          }).catch(function(err) {
+            //TODO: throw a toastr
+            $log.error('error in updating comment: ' + newContent);
+          });
+        }
+      } //updateComment
 
-      function toggleCommentFormShown() {
-        vm.showCommentForm = !vm.showCommentForm;
-      }
+
+
+      function toggleCommentFormShown(timeToWait) {
+        var time = timeToWait && timeToWait > 0 ? timeToWait : 0;
+        $timeout(function() {
+            vm.showCommentForm = !vm.showCommentForm;
+        }, time);
+      } //toggleCommentFormShown
 
     } //commentCtrl
 
@@ -148,9 +181,24 @@
       });
     }
 
-     function changePage(newPageNum) {
-         console.log('received new page num: ' + newPageNum);
-     }
+    function showToastr(message, position) {
+      /*
+      $mdToast.show(
+          $mdToast.simple()
+          .content(message || 'Success')
+          .position(position || 'right')
+          .hideDelay(3000)
+      );
+      */
+      $mdToast.show({
+        template: '<md-toast style="background-color: #6200EA"><span flex>' + message + '</span></md-toast>',
+        parent: $document[0].querySelector('#toastr_message'),
+        hideDelay: 1000,
+        position: 'right'
+      });
+    } //showToastr
+
+
 
   } //ctrpComment
 

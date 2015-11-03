@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can view my trial Trial Summary Report (TSR)
+Feature: Reg F20 View Trial Summary Report
+
+As a CTRP User, I can view my trial Trial Summary Report (TSR)
 
 Scenario: #1 I search my trials and select the update trial status option
 Given I am in the CTRP Registration applicatin

@@ -14,16 +14,7 @@
     function gsaModalCtrl($scope, $http, $window, toastr, $state, $sce,
                       $timeout, LocalCacheService, UserService, gsaObj, $modalInstance) {
         var vm = this;
-        //console.log('received loginBulletin: ' + JSON.stringify(loginBulletin));
-
-        console.log("In Child Modal");
-
-        vm.gsa = gsaObj.gsa;
         vm.userType = UserService.getUserType();
-        console.log('userType: ' + JSON.stringify(vm.userType));
-
-        console.log('gsa: ' + JSON.stringify(vm.gsa));
-
         vm.accept = function() {
             console.log('ACCEPT');
             LocalCacheService.cacheItem("gsaFlag", "Accept");
@@ -38,8 +29,13 @@
             $modalInstance.dismiss('cancel');
             UserService.logout();
         };
+
+        vm.renderGSAHtml = function() {
+            var gsaText = gsaObj.gsa;
+            gsaText = gsaText.replace(/(?:\r\n|\r|\n)/g, '<br />');
+            return $sce.trustAsHtml(gsaText);
+        };
         
     }
-
 
 })();

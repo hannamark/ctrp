@@ -4,17 +4,20 @@
     angular.module('ctrpApp')
         .factory('CommentService', CommentService);
 
-    CommentService.$inject = ['URL_CONFIGS', '$http', '$log', '_', 'Common', 'PromiseTimeoutService', '$q'];
+    CommentService.$inject = ['URL_CONFIGS', '$http', '$log', '_', 'Common',
+      'UserService', 'PromiseTimeoutService', '$q'];
 
-    function CommentService(URL_CONFIGS, $http, $log, _, Common, PromiseTimeoutService, $q) {
+    function CommentService(URL_CONFIGS, $http, $log, _, Common,
+      UserService, PromiseTimeoutService, $q) {
       //TODO: data services for comments
 
       return {
         getCommentCounts: getCommentCounts,
         createComment: createComment,
         getComments: getComments,
-        editComment: editComment,
-        deleteComment: deleteComment
+        updateComment: updateComment,
+        deleteComment: deleteComment,
+        annotateCommentIsEditable: annotateCommentIsEditable
       };
 
       ///// implementations
@@ -57,13 +60,51 @@
         return deferred.promise; //failed promise
       } //getComments
 
-      function editComment(editedCommentObj) {
-        //TODO: check commentId
+      //update
+      function updateComment(editedCommentObj) {
+        //check commentId
+        console.log('editedCommentObj: ' + JSON.stringify(editedCommentObj));
+        if (editedCommentObj.id) {
+          // 'WITH_ID': '/ctrp/comments/{:id}.json'
+          var url = URL_CONFIGS.COMMENTS.WITH_ID.replace(/\s*\{.*?\}\s*/g, editedCommentObj.id);
+          return PromiseTimeoutService.updateObj(url, editedCommentObj, {});
+        }
+        var deferred = $q.defer();
+        deferred.reject(null);
+        return deferred.promise; //failed promise
       } //editComment
 
-      function deleteComment(commentId) {
 
+      function deleteComment(commentId) {
+        //TODO: delete a comment
       } //deleteComment
+
+
+      /**
+      * Based on the user role or the username, annotate if the comment is editable
+      * to the currently logged in user
+      */
+      function annotateCommentIsEditable(comments) {
+        var annotatedComments = [];
+        //TODO: this should be placed in a Service component
+        var userRolesAllowedToEdit = ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_CURATOR'];
+
+        if (angular.isArray(comments)) {
+            var totalComments = comments.length;
+            var isEditable = userRolesAllowedToEdit.indexOf(UserService.getUserRole()) > -1;
+            annotatedComments = comments.map(function(comment, index) {
+              comment.index = totalComments - index;
+              if (isEditable || comment.username == UserService.getLoggedInUsername()) {
+                comment.isEditable = true;
+              } else {
+                comment.isEditable = false;
+              }
+              return comment;
+            });
+        }
+      //  console.log('after annotation: ' + JSON.stringify(annotatedComments));
+        return annotatedComments;
+      } //annotateCommentIsEditable
 
     }
 

@@ -7,7 +7,7 @@
     </div><br />
 
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="col-xs-12 col-md-6">
             <!-- organization name -->
             <div class="form-group">
                 <label for="organization_name" class="col-xs-12 col-sm-3 control-label">Name:</label>
@@ -24,7 +24,7 @@
                         <i class="glyphicon glyphicon-remove has-error">No organizations name matched</i>
                     </div>-->
                 </div>
-                <div class="col-xs-12 col-sm-3">
+                <div class="col-xs-12 col-sm-4">
                     <div ng-class="searchParams.alias == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
                         <label for="alias_search">
                             <input type="checkbox" id="alias_search" id="name_alias" ng-model="searchParams.alias"/> Search Alias
@@ -92,7 +92,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" restriction-field=“ROLE_CURATOR" ignore-rw>
                 <!-- last updated by -->
                 <label for="updated_by" class="control-label col-xs-12 col-sm-3">Updated by: </label>
                 <div class="col-xs-12 col-sm-9">
@@ -102,7 +102,7 @@
             </div>
 
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="col-xs-12 col-md-6">
             <!-- PO ID -->
             <div class="form-group">
                 <!--source context-->
@@ -160,7 +160,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" restriction-field=“ROLE_CURATOR" ignore-rw>
                 <!-- start date -->
                 <label for="start_date" class="control-label col-xs-12 col-sm-3">
                     <div class="dropdown">
@@ -230,10 +230,10 @@
 <!--<strong>Search Parameters:</strong> {{searchParams}}-->
 
 <!-- use the ui-grid to present the organization search results, if showgrid is set to 'true' -->
-<div class="row" ng-if="searchWarningMessage.length === 0">
-    <div class="col-sm-12">
+<div class="row" ng-class="{'top-offset-xs': gridOptions.totalItems != null }" ng-if="searchWarningMessage.length === 0">
+    <div class="col-xs-12">
         <div class="row" ng-if="gridOptions.totalItems != null">
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12">
                 <a href="" id="org_search_results"></a>
                 <div ng-if="searchWarningMessage.length === 0">
                     <p><h4>Organization Search Results: {{gridOptions.totalItems}} found</h4></p>
@@ -253,14 +253,17 @@
                 <a href="" class="close" data-dismiss="alert">&times;</a>
                 <strong>{{warningMessage}}</strong>
             </div>
-        </div> <br />
-        <div class="row animated-item"  ng-if="gridOptions.data.length > 0">
-            <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
-            <!--<div  ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
-                 ui-grid-auto-resize></div> -->
+        </div>
+        <div class="row animated-item" ng-if="gridOptions.data.length > 0">
+            <div class="col-xs-12">
+                <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
+                <!--<div  ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"
+                     ui-grid-auto-resize></div> -->
 
-            <!--<div ng-if="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize-->
-            <!--style="height: {{gridHeight}}"></div>-->
+                <!--<div ng-if="!enablerowselection" ui-grid="gridOptions" ui-grid-pagination class="grid" ui-grid-auto-resize-->
+                <!--style="height: {{gridHeight}}"></div>-->
+            </div>
         </div>
     </div>
 </div>
+<div class="row top-offset-xs"></div>

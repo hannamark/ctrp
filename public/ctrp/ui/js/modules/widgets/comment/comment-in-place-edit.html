@@ -1,0 +1,23 @@
+  <md-input-container md-no-float ng-show="editMode">
+    <label ng-show="editMode && writeModeEnabled">Comment:</label>
+    <textarea rows="1" cols="40" ng-model="model"></textarea>
+  </md-input-container>
+  <md-content>
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+      <md-button class="md-warn" ng-click="cancelEdit()" ng-show="editMode">Cancel</md-button>
+      <md-button md-no-ink class="md-primary" ng-click="saveEdit()" ng-show="editMode">Save</md-button>
+    </section>
+  </md-content>
+
+  <div ng-if="isEditable && writeModeEnabled">
+    <span ng-mouseenter="showEdit = true" ng-mouseleave="showEdit = false">
+      <span ng-hide="editMode" ng-click="edit()">{{model}}</span>
+      <a ng-show="showEdit" ng-click="edit()">Edit</a>
+    </span>
+  </div>
+<!-- switch template is not editable -->
+<div ng-if="!isEditable || !writeModeEnabled">
+  <span ng-mouseenter="showEdit = false" ng-mouseleave="showEdit = false">
+    <span ng-hide="editMode">{{model}}</span>
+  </span>
+</div>
