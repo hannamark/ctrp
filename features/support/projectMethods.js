@@ -582,7 +582,7 @@ var projectMethods = function() {
         return randAlpNmVal;
     }
     /*****************************************************************
-     * Method: Verify the affiliated Organization Effective Date
+     * Method: Verify in search results
      * @param searchedItem
      *****************************************************************/
     this.inSearchResults = function(searchedItem) {

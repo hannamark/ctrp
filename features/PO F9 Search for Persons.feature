@@ -3,7 +3,9 @@ Feature: Search for persons
 
 Scenario Outline: As a Curator, search for persons with multiple parameters
 Given I know multiple parameters of the person I wish to search for
-And I am logged in to CTRP
+  |Person First Name| |Person last name| |Affiliation| |Source Status| |email| |phone|
+  |shiFName         | |shiLName        | |shiPerOrgAff| |Active      | |shiPercuke@pr.com| |420-567-8906|
+And I am logged in to CTRP PO application
 And I am on the search persons screen
 When I want to search with first name <first_name>
 And I want to search with last name <last_name>
@@ -16,7 +18,7 @@ And I want to search with Person phone number <Person_phone_number>
 And I want to search for Person Records last updated by <Start Date> and <End Date>
 And I want to search for Person records last updated by <Username>
 And I submit my search request for Person Search
-Then the search results should display the following sorted by Last Name:
+Then the search results <result> should display the following sorted by Last Name:
 |CTRP Person ID|
 |Prefix|
 |First Name|
@@ -34,14 +36,23 @@ Then the search results should display the following sorted by Last Name:
 Examples:
 |first_name  || last_name ||Source Context||Source ID|| Source Status||Person_email||Person_phone_number||Person_affiliated_organization||Start Date||End Date||Username||result|
 |            ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||At Least one selection value must be entered prior to running the search|
-|Gisele      ||Sarosy     ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
-|            ||Sar*       ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
-|            ||           ||CTRP          ||1426655  ||              ||            ||                   ||                              ||          ||        ||        ||true|
-|            ||           ||CTEP          ||15179    ||              ||            ||                   ||                              ||          ||        ||        ||true|
-|            ||Sarosy     ||CTEP          ||15179    ||              ||            ||                   ||National Cancer Institute     ||          ||        ||        ||true|
-|            ||           ||              ||         ||              ||gsarosy@mail.nih.gov||           ||                              ||          ||        ||        ||true|
-|            ||Sarosy     ||              ||         ||              ||            ||                   ||Dana-Farber Cancer Institute  ||          ||        ||        ||false|
-|            ||           ||              ||         ||              ||            ||                   ||Dana-Farber*                  ||          ||        ||        ||True|
-|            ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||singhs10||True|
-|            ||           ||              ||         ||              ||            ||                   ||                              ||1/1/2015  ||6/1/2015||        ||True|
+|shiFName    ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
+|shiFNa*     ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
+|            ||shiLName   ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
+|            ||shiL*      ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
+|            ||           || CTEP         ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
+|            ||           || CTRP         ||65000000 ||              ||            ||                   ||                              ||          ||        ||        ||true|
+|            ||           ||              ||         ||Active        ||            ||                   ||                              ||          ||        ||        ||true|
+|            ||           ||              ||         ||              ||shiPercuke@pr.com||                  ||                              ||          ||        ||        ||true|
+|            ||           ||              ||         ||              ||shiPercuke* ||                   ||                              ||          ||        ||        ||true|
+|            ||           ||              ||         ||              ||            ||                   ||    shiPerOrgAff              ||          ||        ||        ||true|
+|            ||           ||              ||         ||              ||            ||                   ||    shiPerOrg*                ||          ||        ||        ||true|
+|            ||           ||              ||         ||              ||            ||  420-567-8906     ||                              ||          ||        ||        ||true|
+|            ||           ||              ||         ||              ||            ||   420-567*        ||                              ||          ||        ||        ||true|
+|            ||           ||              ||         ||              ||            ||                   ||                              ||  today   ||  today ||        ||true|
+|            ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||ctrpcurator  ||true|
+|            ||           ||              ||         ||              ||            ||                   ||                              ||          ||        || ctrpcu*  ||true|
+|            ||shiLName   ||              ||         ||              ||shiPercuke@pr.com||420-567*      || shiPerOrgAff                 ||          ||        ||        ||true|
+
+
 

@@ -88,7 +88,7 @@ module.exports = function() {
 
     this.When(/^I submit my edit request for Person$/, function (callback) {
         person.clickSave();
-        personEditedDateTime = moment().format('DD-MMM-YYYY HH:mm');
+        personEditedDateTime = moment().format('dd-MMM-yyyy H:mm');
         console.log('Date time when Save is : ' + personEditedDateTime);
         browser.sleep(25).then(callback);
     });
@@ -203,7 +203,7 @@ module.exports = function() {
             expect(projectFunctions.inSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();
         });
-            searchOrg.verifyAffiliatedOrgEffectiveDate(moment(new Date(orgEffectiveDate)).format('DD-MMM-YYYY'));
+            searchOrg.verifyAffiliatedOrgEffectiveDate(moment(new Date(orgEffectiveDate)).format('dd-MMM-yyyy H:mm'));
             searchOrg.verifyAffiliatedOrgExpirationDate(moment(new Date(orgExpirationDate)).format('DD-MMM-YYYY'));
         browser.sleep(25).then(callback);
     });
