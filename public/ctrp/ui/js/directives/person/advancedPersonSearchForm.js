@@ -116,11 +116,12 @@
                     if(excludedKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
                         isEmptySearch = false;
                 });
-                if(isEmptySearch) {
+                if(isEmptySearch && newSearchFlag == 'fromStart') {
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                     $scope.warningMessage = ''; //hide the 0 rows message if no search parameter was supplied
-                }else
+                } else {
                     $scope.searchWarningMessage = "";
+                }
 
                 if(!isEmptySearch) { //skip searching if empty search
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
@@ -156,7 +157,6 @@
                 var today = new Date();
                 switch (range) {
                     case 'today':
-                        var tempToday = new Date();
                         $scope.searchParams.startDate = moment().subtract(0, 'days').startOf('day').toDate();
                         $scope.searchParams.endDate = moment().subtract(0, 'days').endOf('day').toDate();
                         break;
@@ -271,7 +271,7 @@
                 if (fromStateName != 'main.personDetail') {
                     $scope.resetSearch();
                 } else {
-                   // $scope.searchPeople(); //refresh the search results
+                   $scope.searchPeople(); //refresh the search results
                 }
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();

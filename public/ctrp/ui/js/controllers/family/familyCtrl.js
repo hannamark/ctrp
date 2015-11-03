@@ -84,10 +84,11 @@
                     isEmptySearch = false;
             });
 
-            if (isEmptySearch)
+            if (isEmptySearch  && newSearchFlag == 'fromStart') {
                 $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
-            else
+            } else {
                 $scope.searchWarningMessage = "";
+            }
 
             console.log("search params are  " + JSON.stringify(vm.searchParams));
             console.log("isEmptySearch is " + isEmptySearch);

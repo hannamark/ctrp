@@ -107,10 +107,11 @@
                     isEmptySearch = false;
 
                 });
-                if(isEmptySearch)
+                if(isEmptySearch && newSearchFlag == 'fromStart') {
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
-                else
+                } else {
                     $scope.searchWarningMessage = "";
+                }
 
                 $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
                 if ($scope.searchParams.date_range_arr.length == 0) {
@@ -288,7 +289,7 @@
                 if (fromStateName != 'main.orgDetail') {
                     $scope.resetSearch();
                 } else {
-                   // $scope.searchOrgs();
+                   $scope.searchOrgs(); //refresh search results
                 }
                 watchCountryAndGetStates();
                 //listenToStatesProvinces();
