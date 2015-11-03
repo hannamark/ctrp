@@ -1,5 +1,7 @@
 @PA @global
-Feature: As any CTRP PA User, I can add and edit Regulatory Information (IND/IDE)
+Feature: PAA F05 Add and Edit Regulatory Information IND-IDE
+
+As any CTRP PA User, I can add and edit Regulatory Information (IND/IDE)
 
 Scenario: #1 I can add and edit Regulatory IND or IDE Information for a Trial
 Given I am logged into the CTRP Protocol Abstraction application

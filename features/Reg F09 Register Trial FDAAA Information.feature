@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can enter FDAAA required data elements for a trial
+Feature: Reg F09 Register Trial FDAAA Information
+
+As a CTRP User, I can enter FDAAA required data elements for a trial
 
 Scenario: #1 I can select the trial's information for FDAAA required Regulatory Information for a FDA Regulated Interventional trial
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial

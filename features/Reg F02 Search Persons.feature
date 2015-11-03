@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As any CTRP User, I am able to Search for Persons by various criteria
+Feature: Reg F02 Search Persons
+
+As any CTRP User, I am able to Search for Persons by various criteria
 
 Scenario outline: #1 I am able to search for organizations in CTRP
 Given I am logged into the CTRP Registration application

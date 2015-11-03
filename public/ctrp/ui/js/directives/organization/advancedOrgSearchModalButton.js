@@ -14,10 +14,10 @@
         .directive('ctrpOrgAdvSearchModalButton', ctrpOrgAdvSearchModalButton);
 
     advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', '$modalInstance', 'maxRowSelectable']; //for modal controller
-    ctrpOrgAdvSearchModalButton.$inject = ['$modal', '$compile', '_', '$timeout', 'Common']; //modal button directive
+    ctrpOrgAdvSearchModalButton.$inject = ['$uibModal', '$compile', '_', '$timeout', 'Common']; //modal button directive
 
 
-    function ctrpOrgAdvSearchModalButton($modal, $compile, _, $timeout, Common) {
+    function ctrpOrgAdvSearchModalButton($uibModal, $compile, _, $timeout, Common) {
         var directiveObj = {
             restrict: 'E',
             scope: {
@@ -58,7 +58,7 @@
             $scope.searchOrgs = function(size) {
                 if (modalOpened) return; //prevent modal open twice in single click
 
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: '/ctrp/ui/partials/modals/advanced_org_search_form_modal2.html',
                     controller: 'advancedOrgSearchForm2ModalCtrl as advOrgSearchForm2ModalView',

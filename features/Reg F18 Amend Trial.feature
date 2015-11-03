@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can Amend information on a trial which requires IRB approval or substantively alter the treatment and/or study design
+Feature: Reg F18 Amend Trial
+
+As a CTRP User, I can Amend information on a trial which requires IRB approval or substantively alter the treatment and/or study design
 
 Scenario: #1 I search my trials, select the Amend Trial option, and enter trial amendment information
 Given I am in the CTRP Registration applicatin

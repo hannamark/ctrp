@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can attach various documents to a trial registration
+Feature: Reg F13 Register Trial Documents
+
+As a CTRP User, I can attach various documents to a trial registration
 
 Scenario: #1 I can attach the protocol document, IRB, Informed Consent, and other documents to a trial registration
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial

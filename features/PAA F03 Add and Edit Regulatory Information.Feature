@@ -1,5 +1,7 @@
 @PA @global
-Feature: As any CTRP PA User, I can add and edit Regulatory Information (FDAAA)
+Feature: PAA F03 Add and Edit Regulatory Information
+
+As any CTRP PA User, I can add and edit Regulatory Information (FDAAA)
 
 Scenario: #1 I can add and edit Regulatory Information for a Regulated Trial
 Given I am logged into the CTRP Protocol Abstraction application

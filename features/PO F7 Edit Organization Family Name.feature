@@ -1,4 +1,4 @@
-Feature: Edit Organization Family
+Feature: PO F7 Edit Organization Family Name
 
 Background:
 Given I am logged in to CTRP PO application

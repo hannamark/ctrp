@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can Register a Trial's Title and Phase
+Feature: Reg F06 Register Trial Title and Phase 
+
+As a CTRP User, I can Register a Trial's Title and Phase
 
 
 Scenario: #1 I can enter the trial title and phase for a trial

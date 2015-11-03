@@ -1,5 +1,5 @@
 @PO @Global
-Feature: Curator review of a Pending Person Record
+Feature: PO F13 Curator review of a Pending Person Record
 
 Scenario: As a PO Curator, I can display all Person Records with Pending status
 Given I am logged in to the CTRP PO application

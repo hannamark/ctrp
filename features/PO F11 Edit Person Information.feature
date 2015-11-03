@@ -1,5 +1,5 @@
 @PO @Global
-Feature: Edit Person Information
+Feature: PO F11 Edit Person Information
 
 Scenario: As a Po Curator, I can Edit Person record name information
 Given I know which Person record I want to edit

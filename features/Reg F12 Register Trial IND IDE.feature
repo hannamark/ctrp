@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can indicate if a trial has an associated IND or IDE and if so, enter information about the IND or IDE
+Feature: Reg F12 Register Trial IND IDE
+
+As a CTRP User, I can indicate if a trial has an associated IND or IDE and if so, enter information about the IND or IDE
 
 Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial

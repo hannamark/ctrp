@@ -101,9 +101,10 @@ class PeopleController < ApplicationController
         params[:fname].present? || params[:lname].present? || params[:prefix].present? ||
         params[:suffix].present? || params[:email].present? || params[:phone].present? ||
         params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present? ||
-        params[:updated_by].present?
+        params[:updated_by].present? || params[:affiliated_org_name].present?
 
       @people = Person.all
+      @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
@@ -126,7 +127,6 @@ class PeopleController < ApplicationController
         # TODO need constant for Active
         @people = @people.with_source_status("Active")
       end
-      @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
     else
       @people = []

@@ -1,4 +1,8 @@
-Feature: As a CTRP User I can request the creation of a new person record
+
+@Global @Reg
+Feature: Reg F24 Request New Person
+
+ As a CTRP User I can request the creation of a new person record
 
 Scenario: #1 I can request the creation of a new Person record
 Given I am logged into the CTRP Registration application

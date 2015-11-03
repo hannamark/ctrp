@@ -1,5 +1,7 @@
 @PA @global
-Feature: As any CTRP PA User, I can add and edit Trial Collaborators
+Feature: PAA F09 Add and Edit Trial Collaborators
+
+As any CTRP PA User, I can add and edit Trial Collaborators
 
 Scenario: #1 I can add a Collaborators to a Trial
 Given I am logged into the CTRP Protocol Abstraction application

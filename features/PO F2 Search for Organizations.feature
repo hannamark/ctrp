@@ -1,8 +1,8 @@
 @Global
 @PO
-Feature: PO F2 Search for Organization
+Feature: PO F2 Search for Organization 
 
-Scenario: As any Curator, I am able to search for organizations by name including aliases
+Scenario: As any Curator,I am able to search for organizations by name including aliases
 Given I know the name of the organization I wish to search for
 And I am logged in to CTRP PO application
 And I have selected the option to search for an organization

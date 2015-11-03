@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can select the Study Source of the trial I will register
+Feature: Reg F04 Register Trial Study Source
+
+As a CTRP User, I can select the Study Source of the trial I will register
 
 Scenario: #1 I can select the option to register a protocol for a National, Externally Peer-Reviewed, or Institutional trial
 Given I am logged into the CTRP Registration application
