@@ -6,223 +6,216 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-var LoginPage = require('../support/LoginPage');
-var ListOfPeoplePage = require('../support/ListOfPeoplePage');
-var MenuItemList = require('../support/PoCommonBar');
+var listOfPeoplePage = require('../support/ListOfPeoplePage');
+var menuItemList = require('../support/PoCommonBar');
+var personPage = require('../support/AddPersonPage');
+var orgPage = require('../support/ListOfOrganizationsPage');
+var helper = require('../support/helper');
+var selectList = require('../support/CommonSelectList');
+var moment = require('moment');
+var loginPage = require('../support/LoginPage');
+var projectFunctionsPage= require('../support/projectMethods');
 
 
 module.exports = function() {
-    var Login = new LoginPage();
-    var menuItem = new MenuItemList();
-    var Search = new ListOfPeoplePage();
+    var login = new loginPage();
+    var menuItem = new menuItemList();
+    var searchPerson = new listOfPeoplePage();
+    var addPerson = new personPage();
+    var searchOrg = new orgPage();
+    var selectItem =new selectList();
+    var projectFunctions = new projectFunctionsPage();
 
-    this.Given(/^I know the name of the person I wish to search for$/, function (callback) {
-        fName = 'Daniel';
-        lName = 'Jonson';
-        callback();
-      //  setTimeout(callback,2000);
-    });
-
-    this.Given(/^I have selected the option to search for a person$/, function (callback) {
-        menuItem.clickPeople();
-        menuItem.clickListPeople();
-      //  setTimeout(callback,2000);
-        browser.sleep(250).then(callback);
-    });
-
-    this.When(/^I provide the full or partial first name of the person I wish to search for$/, function (callback) {
-        Search.setPersonFirstName(fName);
-        browser.sleep(250).then(callback);
-      //  Search.setPersonFirstName(fName).then(function(){callback();});
-     //   setTimeout(callback,2000);
-    });
-
-    this.When(/^I submit my search request for Person Search$/, function (callback) {
-        Search.clickSearch();
-        browser.sleep(250).then(callback);
-    });
-
-    this.Then(/^the system should display all persons that contain the first name$/, function (callback) {
-        expect(menuItem.inResults(fName)).to.become('true').then(function(){callback();});
-    });
-
-    this.Then(/^the search results should display:$/, function (table, callback) {
-        expect(menuItem.inResultsHeader('CTRP ID')).to.become('true');
-        expect(menuItem.inResultsHeader('Source ID')).to.become('true');
-        expect(menuItem.inResultsHeader('First')).to.become('true');
-        expect(menuItem.inResultsHeader('Last')).to.become('true');
-        expect(menuItem.inResultsHeader('Middle')).to.become('true');
-        expect(menuItem.inResultsHeader('Email')).to.become('true');
-        expect(menuItem.inResultsHeader('Phone')).to.become('true');
-        expect(menuItem.inResultsHeader('Affiliated Orgs')).to.become('true');
-        expect(menuItem.inResultsHeader('Source Status')).to.become('true');
-        browser.sleep(250).then(callback);
-    });
-
-    this.When(/^I provide the full or partial last name of the person I wish to search for$/, function (callback) {
-        Search.setPersonLastName(lName);
-        browser.sleep(250).then(callback);
-    });
-
-    this.Then(/^the system should display all persons that contain the last name$/, function (callback) {
-        expect(menuItem.inResults(lName)).to.become('true').then(function(){callback();});
-    });
-
-    this.Given(/^I know the CTEP ID of the person I wish to search for$/, function (callback) {
-        CTEPID = '33303';
-        callback();
-    });
-
-    this.When(/^I provide the CTEP Person ID of the person I wish to search for$/, function (callback) {
-        Search.setPersonSourceId(CTEPID);
-        browser.sleep(250).then(callback);
-    });
-
-    this.Then(/^the system should display all persons that contain the CTEP Person ID$/, function (callback) {
-        expect(menuItem.inResults(CTEPID)).to.become('true').then(function(){callback();});
-    });
-
-    this.Given(/^I know the PO Person ID of the person I wish to search for$/, function (callback) {
-        CTRPID = '2026171';
-        callback();
-    });
-
-    this.When(/^I provide the PO Person ID of the person I wish to search for$/, function (callback) {
-        Search.setPersonPoId(CTRPID);
-        browser.sleep(250).then(callback);
-    });
-
-    this.Then(/^the system should display all persons that contain the PO Person ID$/, function (callback) {
-        expect(menuItem.inResults(CTRPID)).to.become('true').then(function(){callback();});
-    });
-
-    this.Given(/^I know the email of the person I am searching$/, function (callback) {
-        email = 'depner@mdanderson.org';
-        callback();
-    });
-
-    this.When(/^I provide the email of the person I wish to search for$/, function (callback) {
-        Search.setPersonEmail(email);
-        browser.sleep(250).then(callback);
-    });
-
-    this.Then(/^the system should display all persons that have that email address$/, function (callback) {
-        expect(menuItem.inResults(email)).to.become('true').then(function(){callback();});
-    });
-
-    this.Given(/^I know the phone number of the person$/, function (callback) {
-        phone = '713-792-3245';
-        callback();
-    });
-
-    this.Given(/^I have selected the option to search for an person$/, function (callback) {
-        menuItem.clickPeople();
-        menuItem.clickListPeople();
-        browser.sleep(250).then(callback);
-    });
-
-    this.When(/^I provide the full or partial phone number of the person I wish to search for$/, function (callback) {
-        Search.setPersonPhone(phone);
-        browser.sleep(250).then(callback);
-    });
-
-    this.Then(/^the system should display all persons with matching phone number$/, function (callback) {
-        expect(menuItem.inResults(phone)).to.become('true').then(function(){callback();});
-    });
-
-    this.Given(/^I know the name of the organization I want to use in the search$/, function (callback) {
-        aff_Org = 'Coastal Carolina Radiation Oncology';
-        callback();
-    });
-
-    this.Given(/^I have performed an organization search$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.When(/^I select an organization for the affiliated organization search$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Then(/^the system should display all persons who are affiliated with the selected organization$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Given(/^I know multiple parameters of the person I wish to search for$/, function (callback) {
-        callback();
+    this.Given(/^I know multiple parameters of the person I wish to search for$/, function (table, callback) {
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
+            searchPerson.setPersonFirstName('shiFName' + moment().format('MMMDoYY h'));
+            per4 = searchPerson.personFirstName.getAttribute('value');
+            searchPerson.clickSearch();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Person exists');
+                    per4.then(function(value){
+                        element(by.linkText(value)).click();
+                        perSourceId = addPerson.addPersonSourceId.getText();
+                        cukeOrganization = addPerson.addPersonAffiliatedOrgName.getText();
+                    });
+                }
+                else {
+                    projectFunctions.createOrganization('shiPerOrgAff','als1','add1','add2','United States','Texas','city56','20980','shiPerson@mail.com','240-7809-855','490332');
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 4000).then(function() {
+                        menuItem.clickPeople();
+                        menuItem.clickAddPerson();
+                        addPerson.setAddPersonPrefix('prefix');
+                        per4.then(function (value1) {
+                            console.log('Add first Name' + value1);
+                            addPerson.setAddPersonFirstName(value1);
+                        });
+                        addPerson.setAddPersonSecondName('Rauniyar');
+                        addPerson.setAddPersonLastName('shiLName');
+                        addPerson.setAddPersonSuffix('suffix');
+                        addPerson.setAddPersonEmail('shiPercuke@pr.com');
+                        addPerson.setAddPersonPhone('420-567-8906');
+                        searchOrg.clickOrgSearchModel();
+                        cukeOrganization.then(function (value) {
+                            searchOrg.setOrgName(value);
+                            searchOrg.clickSearchButton();
+                            searchOrg.selectOrgModelItem();
+                            searchOrg.clickOrgModelConfirm();
+                        });
+                        addPerson.clickSave();
+                        perSourceId = addPerson.addPersonSourceId.getText();
+                    });
+                }
+            });
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I am on the search persons screen$/, function (callback) {
         menuItem.clickPeople();
         menuItem.clickListPeople();
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I want to search with first name (.*)$/, function (firstName, callback) {
-        Search.setPersonFirstName(firstName);
-        browser.sleep(250).then(callback);
+        if(firstName === 'shiFName' ) {
+            per4.then(function (value) {
+                searchPerson.setPersonFirstName(value);
+            });
+        }
+        else {
+                searchPerson.setPersonFirstName(firstName);
+            }
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I want to search with last name (.*)$/, function (lastName, callback) {
-        Search.setPersonLastName(lastName);
-        browser.sleep(250).then(callback);
-    });
-
-    this.Given(/^I want to search with PO Person ID (.*)$/, function (POPersonID, callback) {
-        Search.setPersonSourceId(POPersonID);
-       // Search.setPersonPoId(POPersonID);
-        browser.sleep(250).then(callback);
-    });
-
-    this.Given(/^I want to search with CTEP Person ID (.*)$/, function (CTEPPersonID, callback) {
-        Search.setPersonSourceId(CTEPPersonID);
-        browser.sleep(250).then(callback);
-    });
-
-    this.Given(/^I want to search with Person email (.*)$/, function (PersonEmail, callback) {
-        Search.setPersonEmail(PersonEmail);
-        browser.sleep(250).then(callback);
-    });
-
-    this.Given(/^I want to search with Person phone number (.*)$/, function (PersonPhoneNumber, callback) {
-        Search.setPersonPhone(PersonPhoneNumber);
-        browser.sleep(250).then(callback);
+        searchPerson.setPersonLastName(lastName);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I want to search with Person affiliated organization (.*)$/, function (PersonAffiliatedOrganization, callback) {
-        callback.pending();
+        if(PersonAffiliatedOrganization === 'shiPerOrgAff' ) {
+            cukeOrganization.then(function (value) {
+                searchPerson.setPersonOrgAffiliation(value);
+            });
+        }
+        else {
+                searchPerson.setPersonOrgAffiliation(PersonAffiliatedOrganization);
+        }
+        browser.sleep(25).then(callback);
     });
 
-    this.Then(/^in the search result for first name (.*), last name (.*), PO Person ID (.*), CTEP Person ID (.*), Person email (.*), and Person affiliated organization (.*) it shall return result (.*)$/, function (firstName, lastName, POPersonID, CTEPPersonID, PersonEmail, PersonAffiliatedOrganization, result, callback) {
-        expect(menuItem.inResults(firstName)).to.become(result);
-        expect(menuItem.inResults(lastName)).to.become(result);
-        expect(menuItem.inResults(POPersonID)).to.become(result);
-        expect(menuItem.inResults(CTEPPersonID)).to.become(result);
-        expect(menuItem.inResults(PersonEmail)).to.become(result);
-        expect(menuItem.inResults(PersonAffiliatedOrganization)).to.become(result);
-        browser.sleep(250).then(callback);
+    this.Given(/^I want to search with Source Context (.*)$/, function (SourceContext, callback) {
+        selectItem.selectSourceContext(SourceContext);
+        browser.sleep(25).then(callback);
     });
 
-    this.When(/^I provide the curator date of the person I wish to search for$/, function (callback) {
-        aff_Org = 'Coastal Carolina Radiation Oncology';
-        callback();
+    this.Given(/^I want to search with Source ID (.*)$/, function (SourceID, callback) {
+        if(SourceID === '65000000') {
+            perSourceId.then(function (value) {
+                console.log('Person Source ID is:' + value);
+                searchPerson.setPersonSourceId(value);
+            });
+        }
+        else {
+            searchPerson.setPersonSourceId(SourceID);
+        }
+        browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the system should display all persons that contain the curator date$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^I want to search with Source Status (.*)$/, function (SourceStatus, callback) {
+        selectItem.selectSourceStatus(SourceStatus);
+        browser.sleep(25).then(callback);
     });
 
-    this.When(/^I provide the curator name of the person I wish to search for$/, function (callback) {
-        callback.pending();
+    this.Given(/^I want to search with Person email (.*)$/, function (PersonEmail, callback) {
+        searchPerson.setPersonEmail(PersonEmail);
+        browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the system should display all persons that contain the curator name$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^I want to search with Person phone number (.*)$/, function (PersonPhoneNumber, callback) {
+        searchPerson.setPersonPhone(PersonPhoneNumber);
+        browser.sleep(25).then(callback);
     });
 
+    this.Given(/^I want to search for Person Records last updated by (.*) and (.*)$/, function (StartDate, EndDate, callback) {
+        if(StartDate === 'today' && EndDate === 'today' ) {
+            updatedDate = moment().format('DD-MMM-YYYY')
+            searchPerson.setPersonLastUpdatedStartDate(updatedDate);
+            searchPerson.setPersonLastUpdatedEndDate(updatedDate);
+        }
+        else {
+            searchPerson.setPersonLastUpdatedStartDate('');
+            searchPerson.setPersonLastUpdatedEndDate('');
+        }
+        browser.sleep(25).then(callback);
+    });
 
-}
+    this.Given(/^I want to search for Person records last updated by (.*)$/, function (Username, callback) {
+        searchPerson.setPersonUpdatedBy(Username);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I submit my search request for Person Search$/, function (callback) {
+        searchPerson.clickSearch();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the search results (.*) should display the following sorted by Last Name:$/, function (result, table, callback) {
+        searchPerson.personFirstName.getAttribute('value').then(function(personFirstName){
+            console.log('personFirstName here is:' + personFirstName);
+            searchPerson.personSourceContext.$('option:checked').getText().then(function(personSourceContext){
+                console.log('personSourceContext here is:' + personSourceContext);
+                searchPerson.personSourceStatus.$('option:checked').getText().then(function(personSourceStatus){
+                    console.log('personSourceStatus here is:' + personSourceStatus);
+                    searchPerson.personOrgAffiliation.getAttribute('value').then(function(personOrgAffiliation){
+                        console.log('personOrgAffiliation here is:' + personOrgAffiliation);
+                        searchPerson.personSourceId.getAttribute('value').then(function(personSourceId){
+                            console.log('personSourceId here is:' + personSourceId);
+                            searchPerson.personLastName.getAttribute('value').then(function(personLastName){
+                                console.log('personLastName here is:' + personLastName);
+                                searchPerson.personEmail.getAttribute('value').then(function(personEmail){
+                                    console.log('personEmail here is:' + personEmail);
+                                    searchPerson.personPhone.getAttribute('value').then(function(personPhone){
+                                        console.log('personPhone here is:' + personPhone);
+                                            searchPerson.personUpdateBy.getAttribute('value').then(function(personUpdateBy){
+                                                console.log('personUpdateBy here is:' + personUpdateBy);
+                                                searchPerson.personLastUpdatedStartDate.getAttribute('value').then(function(personLastUpdatedStartDate){
+                                                    console.log('personLastUpdatedStartDate here is:' + personLastUpdatedStartDate);
+                                                        searchPerson.personLastUpdatedEndDate.getAttribute('value').then(function(personLastUpdatedEndDate) {
+                                                            console.log('personLastUpdatedEndDate here is:' + personLastUpdatedEndDate);
+                                                                    if (personFirstName === '' && personSourceContext === 'All Contexts' && personSourceStatus === 'Select a Status' && personOrgAffiliation === '' && personSourceId === '' && personLastName === '' && personEmail === '' &&  personPhone === '' && personUpdateBy === '' && personLastUpdatedStartDate === '' && personLastUpdatedEndDate === '') {
+                                                                        menuItem.verifyEmptySearchCriteria(callback);
+                                                                    } else {
+                                                                        console.log('in the else statement');
+                                                                          expect(projectFunctions.inSearchResults(updatedDate)).to.become('true').and.notify(callback);
+                                                                    }
+                                                        });
+                                                    });
+                                                });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+       });
+
+
+};
