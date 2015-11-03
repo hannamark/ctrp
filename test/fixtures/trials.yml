@@ -98,3 +98,8 @@ two:
   sec801_indicator: MyString
   data_monitor_indicator: MyString
   history:
+
+three:
+  lead_protocol_id: 54321
+  official_title: Test Trial 3
+  lead_org: three

@@ -57,3 +57,14 @@ two:
   email: MyString
   phone: MyString
   fax: MyString
+
+three:
+  source_id: MD134
+  name: Test Org 3
+  address: 123 A St
+  city: Rockville
+  state_province: Maryland
+  country: United States
+  email: 12@123
+  phone: 19834567
+  fax: 9826745

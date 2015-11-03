@@ -38,4 +38,10 @@ class TrialsControllerTest < ActionController::TestCase
 
     assert_response :no_content
   end
+
+  test "should search trial by Protocol ID" do
+    test_response = post :search, protocol_id: "54321", format: "json"
+    search_result = JSON.parse(test_response.body)
+    assert_equal "54321", search_result["trials"][0]["lead_protocol_id"]
+  end
 end
