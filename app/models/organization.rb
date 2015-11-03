@@ -53,7 +53,10 @@ class Organization < ActiveRecord::Base
   accepts_nested_attributes_for :name_aliases, allow_destroy: true
 
   validates :name, presence: true
+  validates :address, presence: true
+  validates :city, presence: true
 
+  before_validation :check_conditional_fields
   before_destroy :check_for_family
   before_destroy :check_for_person
 
@@ -106,7 +109,20 @@ class Organization < ActiveRecord::Base
 
   private
 
-  def save_id_to_ctrp_id
+  # Method to check for the
+   def check_conditional_fields
+     #check for presence of phone or email. If both are empty, then return false
+    if (self.phone.nil? || self.phone.empty?) && (self.email.nil? || self.email.empty?)
+      return false
+    end
+    #If county is set to United states, then the postal_code should not be empty
+     if self.country == "United States" && (self.postal_code.nil? || self.postal_code.empty?)
+        return false
+     end
+   end
+
+
+    def save_id_to_ctrp_id
     if self.source_context && self.source_context.code == "CTRP"
       self.ctrp_id = self.id
       self.source_id =self.id
@@ -135,6 +151,15 @@ class Organization < ActiveRecord::Base
       @toBeNullifiedOrg = Organization.find_by_id(params[:id_to_be_nullified]);
       @toBeRetainedOrg =  Organization.find_by_id(params[:id_to_be_retained]);
       raise ActiveRecord::RecordNotFound if @toBeNullifiedOrg.nil? or @toBeRetainedOrg.nil?
+
+      @toBeNullifiedOrgCtepOrNot=SourceContext.find_by_id(@toBeNullifiedOrg.source_context_id).code == "CTEP"
+      @toBeRetainedOrgCtepOrNot=SourceContext.find_by_id(@toBeRetainedOrg.source_context_id).code == "CTEP"
+      #p @toBeNullifiedOrgCtepOrNot
+      #p @toBeRetainedOrgCtepOrNot
+
+      if @toBeNullifiedOrgCtepOrNot || @toBeRetainedOrgCtepOrNot
+        raise "CTEP organizations can not be nullified"
+      end
 
       #sleep(2.minutes);
 

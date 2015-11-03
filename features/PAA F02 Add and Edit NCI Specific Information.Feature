@@ -1,5 +1,7 @@
 @PA @global
-Feature: As any CTRP PA User, I can enter NCI Specific Information 
+Feature: PAA F02 Add and Edit NCI Specific Information
+
+As any CTRP PA User, I can enter NCI Specific Information 
 
 Scenario: #1 I can view and edit the value for Study Source
 Given I am logged into the CTRP PA application

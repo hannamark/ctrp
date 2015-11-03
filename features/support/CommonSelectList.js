@@ -25,9 +25,9 @@ CommonSelectList = function(){
         }
     };
 
-
+//*[@id="source_status"]
     this.selectSourceStatus = function(sourceStatusType){
-        var  sourceStatus =  element(by.xpath('//*[@id="source_status"]/option[.="' + sourceStatus + '"]'));
+        var  sourceStatus =  element(by.xpath('//*[@id="source_status"]/option[.="' + sourceStatusType + '"]'));
         var  sourceStatusDefault =  element(by.xpath('//*[@id="source_status"]/option[.="Select a Status"]'));
         if(sourceStatusType == '') {
             select.selectValue(sourceStatusDefault,'Select a Status',"Source Status field");

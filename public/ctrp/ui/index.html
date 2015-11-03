@@ -2,6 +2,9 @@
 <html ng-app="ctrpApp">
 <head>
     <meta charset="UTF-8">
+    <!-- force IE out of compatibility mode-->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="ui/third_party_libs/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="ui/third_party_libs/bootstrap/dist/css/bootstrap-theme.min.css">
@@ -87,11 +90,10 @@
     <script src="ui/js/directives/organization/advancedOrgSearchModalButton.js"></script>
     <script src="ui/js/directives/autoFocus.js"></script>
     <script src="ui/js/directives/buttons/backButton.js"></script>
-    <script src="ui/js/directives/buttons/ctrpClickOnce.js"></script>
+    <script src="ui/js/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js"></script>
     <script src="ui/js/directives/masterDirective.js"></script>
     <script src="ui/js/directives/validators/dateValidators.js"></script>
-    <script src="ui/js/modules/widgets/ctrp.widgets.availableTo.directive.js"></script>
-    <script src="ui/js/modules/widgets/ctrp.widgets.curationField.directive.js"></script>
+    <script src="ui/js/modules/widgets/ctrp.widgets.restrictionField.directive.js"></script>
     <script src="ui/js/modules/widgets/comment/ctrp.widgets.comment-panel.directive.js"></script>
     <script src="ui/js/modules/widgets/comment/ctrp.widgets.comment-modal.directive.js"></script>
     <script src="ui/js/modules/widgets/comment/ctrp.widgets.comment-push-in-panel.directive.js"></script>
@@ -130,6 +132,7 @@
     <script src="ui/js/modules/widgets/filters/ctrp.widgets.filter.reverseList.js"></script>
     <script src="ui/js/directives/buttons/validateOnSubmit.js"></script>
     <script src="ui/js/modules/buttonModule.js"></script>
+    <script src="ui/js/directives/validators/phoneValidator.js"></script>
 
 
 

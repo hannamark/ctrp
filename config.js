@@ -8,9 +8,9 @@ exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
 
     capabilities: {
-        'browserName' : 'firefox',
+        'browserName' : 'chrome',
         shardTestFiles: true,
-        maxInstances: 3
+        maxInstances: 8
     },
 
     baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
@@ -71,7 +71,7 @@ exports.config = {
         //    tags: '@runthis'
         /*     "@runThat",
         "~@ignoreThis"]*/// or summary
-    },
+    }
 
-    resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
+//    resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
 };

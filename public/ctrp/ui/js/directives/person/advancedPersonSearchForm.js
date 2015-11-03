@@ -98,7 +98,11 @@
             $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
 
-            $scope.searchPeople = function () {
+            $scope.searchPeople = function (newSearchFlag) {
+                if (newSearchFlag == 'fromStart') {
+                    $scope.searchParams.start = 1;
+                }
+
                 $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
                 if ($scope.searchParams.date_range_arr.length == 0) {
                     delete $scope.searchParams.date_range_arr;
@@ -112,11 +116,12 @@
                     if(excludedKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
                         isEmptySearch = false;
                 });
-                if(isEmptySearch) {
+                if(isEmptySearch && newSearchFlag == 'fromStart') {
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                     $scope.warningMessage = ''; //hide the 0 rows message if no search parameter was supplied
-                }else
+                } else {
                     $scope.searchWarningMessage = "";
+                }
 
                 if(!isEmptySearch) { //skip searching if empty search
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
@@ -138,7 +143,7 @@
                             });
                             // $scope.gridApi.grid.refresh();
                             $location.hash('people_search_results');
-                            $anchorScroll();
+                            //$anchorScroll();
                         }
                         $scope.$parent.personSearchResults = data.data; //{people: [], total, }
                     }).catch(function (err) {
@@ -152,7 +157,6 @@
                 var today = new Date();
                 switch (range) {
                     case 'today':
-                        var tempToday = new Date();
                         $scope.searchParams.startDate = moment().subtract(0, 'days').startOf('day').toDate();
                         $scope.searchParams.endDate = moment().subtract(0, 'days').endOf('day').toDate();
                         break;
@@ -219,10 +223,17 @@
                 }
             }; //resetSearch
 
+            $scope.rowFormatter = function( row ) {
+                var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                return isCTEPContext;
+            };
 
             $scope.nullifyEntity = function (rowEntity) {
                 // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
-                if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
+                if (!rowEntity.nullifiable) {
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
+                }
+                else if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
                     // warning to user for nullifying active entity
                     $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is not allowed';
                     $scope.nullifiedId = '';
@@ -260,7 +271,7 @@
                 if (fromStateName != 'main.personDetail') {
                     $scope.resetSearch();
                 } else {
-                   // $scope.searchPeople(); //refresh the search results
+                   $scope.searchPeople(); //refresh the search results
                 }
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
@@ -409,8 +420,16 @@
             function prepareGidOptions() {
                 //ui-grid plugin options
                 $scope.gridOptions = PersonService.getGridOptions();
-                $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-                $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+                $scope.gridOptions.isRowSelectable = function (row) {
+                    var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                    if (isCTEPContext) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                };
+                $scope.gridOptions.enableVerticalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
+                $scope.gridOptions.enableHorizontalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
                     $scope.gridApi = gridApi;
                     $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack);

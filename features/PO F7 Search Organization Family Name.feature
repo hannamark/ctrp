@@ -1,4 +1,4 @@
-Feature: Search Organization Family
+Feature: PO F7 Search Organization Family Name
 
 Background:
 Given I am logged in to CTRP PO application
@@ -16,8 +16,8 @@ And the result should be sorted by family name
 Examples:
 |family name| |result|
 |Albert Einstein Cancer Center| |true|
-|Masonic Cancer Center          | |true|
-|shilpi org                     | |false|
+|Yale Cancer Center         | |true|
+|shilpi org 546                | |false|
 
 
 Scenario Outline: #2 As a PO user, I am able to search with Family Type

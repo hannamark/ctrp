@@ -3,7 +3,7 @@
         <h3 class="modal-title">NCI CLINICAL TRIALS REPORTING PROGRAM (CTRP) SYSTEM</h3>
     </div>
     <div class="modal-body">
-        <p>{{gsaView.gsa}}</p>
+        <p ng-bind-html="gsaView.renderGSAHtml()"></p>
     </div>
     <div class="modal-footer">
         <div class="btn-toolbar">

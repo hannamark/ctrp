@@ -21,6 +21,7 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
+        vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
@@ -35,6 +36,7 @@
         vm.curationReady = false;
         console.log("vm.ctrpSourceContextIndex is " + vm.ctrpSourceContextIndex);
         console.log("context array is " + JSON.stringify(vm.sourceContextArr));
+        $scope.showPhoneWarning = false;
 
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
@@ -55,18 +57,28 @@
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
                 if (vm.curOrg.new) {
-                    vm.resetForm();
-                } else {
-                    vm.curOrg.updated_by = response.updated_by;
-                    $state.go('main.organizations', {}, {reload: true});
+                  console.log('successfully saved the new org with id: ' + JSON.stringify(response));
+                    vm.clearForm();
+                    vm.curOrg.new = false;
+                    $state.go('main.orgDetail', {orgId: response.id});
                 }
-                toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
+                toastr.clear();
+                toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
             }).catch(function (err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
             });
         }; // updateOrg
 
-        vm.resetForm = function () {
+        vm.resetForm = function() {
+            angular.copy(vm.masterCopy,vm.curOrg);
+            vm.addedNameAliases = [];
+            appendNameAliases();
+        };
+
+        vm.clearForm = function () {
             $scope.organization_form.$setPristine();
 
             var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id', 'cluster'];
@@ -80,6 +92,7 @@
                 vm.curOrg.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
             });
         };
+
       // Add other ID to a temp array
         vm.addNameAlias= function () {
             if (vm.alias) {
@@ -117,6 +130,7 @@
                 OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function (response) {
                     vm.curOrg = response;
                     listenToStatesProvinces();
+                    vm.masterCopy= angular.copy(vm.curOrg);
                     vm.addedNameAliases = [];
                     appendNameAliases();
                 }).catch(function (err) {
@@ -253,6 +267,19 @@
                 console.log("error in checking for duplicate org name " + JSON.stringify(err));
             });
         };
+
+        $scope.IsValidPhoneNumber = function(){
+
+            //var selectedCountryCode = countryToCountryCode('United States');
+
+            //console.log("country code is " + selectedCountryCode);
+
+            $scope.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
+            $scope.showPhoneWarning = true;
+            console.log('Is phone valid: ' + $scope.IsPhoneValid);
+
+
+        }
 
     }
 

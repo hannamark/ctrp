@@ -6,7 +6,7 @@
 
     'use strict';
 
-    angular.module('ctrpApp')
+    angular.module('ctrpApp.widgets')
         .directive('ctrpClickOnce', ctrpClickOnce);
 
     ctrpClickOnce.$inject = ['$timeout'];

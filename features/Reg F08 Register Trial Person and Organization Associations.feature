@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can associate Persons and Organizations with a Clinical Trial
+Feature: Reg F08 Register Trial Person and Organization Associations
+
+As a CTRP User, I can associate Persons and Organizations with a Clinical Trial
 
 Scenario: #1 I can associate an organization as the lead organization on a clinical trial
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial

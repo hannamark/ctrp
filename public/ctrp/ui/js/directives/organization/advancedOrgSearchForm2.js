@@ -53,6 +53,8 @@
             $scope.curationModeEnabled = false;
             $scope.searchWarningMessage = '';
             $scope.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            $scope.dateFormat = DateService.getFormats()[1];
+
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
@@ -105,10 +107,11 @@
                     isEmptySearch = false;
 
                 });
-                if(isEmptySearch)
+                if(isEmptySearch && newSearchFlag == 'fromStart') {
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
-                else
+                } else {
                     $scope.searchWarningMessage = "";
+                }
 
                 $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
                 if ($scope.searchParams.date_range_arr.length == 0) {
@@ -137,7 +140,7 @@
                             });
 
                             $location.hash('org_search_results');
-                            $anchorScroll();
+                            //$anchorScroll();
                         }
                         $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
                         // console.log($scope.$parent);
@@ -218,8 +221,12 @@
             }; //commitNullification
 
             $scope.rowFormatter = function( row ) {
-                var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
-                return isCTEPContext;
+                if (!$scope.usedInModal) {
+                    var isCTEPContext = row.entity.source_context && row.entity.source_context.indexOf('CTEP') > -1;
+                    return isCTEPContext;
+                } else {
+                    return false;
+                }
             };
 
             /**
@@ -282,7 +289,7 @@
                 if (fromStateName != 'main.orgDetail') {
                     $scope.resetSearch();
                 } else {
-                   // $scope.searchOrgs();
+                   $scope.searchOrgs(); //refresh search results
                 }
                 watchCountryAndGetStates();
                 //listenToStatesProvinces();
@@ -452,10 +459,13 @@
 
             /* prepare grid layout and data options */
             function prepareGidOptions() {
-                $scope.gridOptions = OrgService.getGridOptions();
+                $scope.gridOptions = OrgService.getGridOptions($scope.usedInModal);
                 $scope.gridOptions.isRowSelectable = function (row) {
                     var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
-                    if (isCTEPContext) {
+                    if ($scope.usedInModal) {
+                        return true;
+                    }
+                    else if (isCTEPContext) {
                         return false;
                     } else {
                         return true;

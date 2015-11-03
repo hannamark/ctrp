@@ -1,8 +1,8 @@
 @Global
 @PO
-Feature: Search for organization
+Feature: PO F2 Search for Organization 
 
-Scenario: As any Curator, I am able to search for organizations by name including aliases
+Scenario: As any Curator,I am able to search for organizations by name including aliases
 Given I know the name of the organization I wish to search for
 And I am logged in to CTRP PO application
 And I have selected the option to search for an organization
@@ -156,7 +156,7 @@ And I enter the Email <Email>
 And I enter the Curator Name <Curator Name>
 And I enter the Curator Date <Curator Date>
 And I submit my search request
-Then the system should display <Result> with organizations that match the search criteria
+Then the system should display <Result> with organizations that match the search criteria Organization Name <Organization Name>, Search Aliases <Search Aliases>, Source Context <Source Context>, Source ID <Source ID>, Source Status <Source Status>, Family Name <Family Name>, City <City>, Country <Country>, State <State>, Phone Number <Phone Number>, Email <Email>, Curator Name <Curator Name>, Curator Date <Curator Date>
 And the following fields should be displayed:
 |CTRP ID|
 |Organization Name|
@@ -181,10 +181,10 @@ Examples:
 |*                	||No		    ||              	||		    ||             	||           	||    	||     	||       	||           	||     	||            	||            	||true|
 |Wake Forest*	  	||No	  	    ||			        ||	    	||		        ||      		||	    ||    	||		    ||		        ||	    ||		        ||		        ||true|
 |Wake*			    ||Yes		    ||			        ||		    ||		        ||		        ||	    ||	    ||  		||		        ||  	||		        ||		        ||true|
-|	        		||No		    ||CTEP  			||TX035		||		        ||	        	||  	||	    ||		    ||		        ||	    ||      		||		        ||true|
-|		        	||No		    ||		        	||	    	||		        ||Dana-Farber*	||	    ||	    ||		    ||		        ||	    ||	        	||		        ||true|
-|			        ||No	    	||			        ||  		||		        ||		        ||	    ||Maryland||United States		||		        ||	    ||		        ||		        ||true|
-|			        ||No    		||			        ||		    ||	        	||		        ||	    ||	    ||		    ||		        ||  	||*Larco	    ||		        ||true|
+|	        		||No		    ||CTEP  			||WAKE		||		        ||	        	||  	||	    ||		    ||		        ||	    ||      		||		        ||true|
+|		        	||No		    ||		        	||	    	||		        ||*fam*	||	    ||	    ||		    ||		        ||	    ||	        	||		        ||true|
+|			        ||No	    	||			        ||  		||		        ||		        ||	    ||New York||United States		||		        ||	    ||		        ||		        ||true|
+|			        ||No    		||			        ||		    ||	        	||		        ||	    ||	    ||		    ||		        ||  	||*curator	    ||		        ||true|
 
 
 Scenario: As a Curator, I can select any organization with Family in a search result and display the detailed organization information
@@ -234,14 +234,17 @@ Scenario: As a Curator, I can select any organization in a search result and dis
  |Aliases|
 
 
-Scenario: As a Curator, when I search I will enter "*" as a wild card 
-Given I am a Curator PO application
+Scenario: As a Curator, when I search I will enter "*" as a wild card
+Given I want to search for an Organization with wild card
+And I am logged in to CTRP PO application
 And I am on a Organization search screen
 When I enter "*" in a search field
 Then the search will perform a wild card search
 
 Scenario: As a Curator, I can clear all my search selections
-Given I am on the search organization feature
-When I select the Clear option
-Then all values in all fields will be cleared
+Given I am logged in to CTRP PO application
+And I have selected the option to search for an organization
+And I want to clear the organization search fields
+When  I select the Clear option
+Then  all values in all fields will be cleared
 

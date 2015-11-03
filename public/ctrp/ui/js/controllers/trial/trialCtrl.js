@@ -38,7 +38,7 @@
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;
                 $location.hash('trial_search_results');
-                $anchorScroll();
+                //$anchorScroll();
             }).catch(function (err) {
                 console.log('search trial failed');
             });

@@ -52,8 +52,6 @@ class PeopleController < ApplicationController
     respond_to do |format|
       #@person.po_affiliations.destroy
       if @person.update(person_params)
-        @person.updated_at = Time.now
-        @person.save
         format.html { redirect_to @person, notice: 'Person was successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
       else
@@ -103,9 +101,10 @@ class PeopleController < ApplicationController
         params[:fname].present? || params[:lname].present? || params[:prefix].present? ||
         params[:suffix].present? || params[:email].present? || params[:phone].present? ||
         params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present? ||
-        params[:updated_by].present?
+        params[:updated_by].present? || params[:affiliated_org_name].present?
 
       @people = Person.all
+      @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
@@ -128,7 +127,6 @@ class PeopleController < ApplicationController
         # TODO need constant for Active
         @people = @people.with_source_status("Active")
       end
-      @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
     else
       @people = []
@@ -198,7 +196,7 @@ class PeopleController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
       params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone,
-                                     :source_status_id,:source_context_id, :updated_by, :updated_at, :lock_version,
+                                     :source_status_id,:source_context_id, :lock_version,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])

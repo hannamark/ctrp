@@ -6,26 +6,26 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-var MenuItem = require('../support/PoCommonBar');
+var menuItemList = require('../support/PoCommonBar');
 var familyPage = require('../support/AddFamilyPage');
 var listFamilyPage = require('../support/ListOfFamiliesPage');
 var helper = require('../support/helper');
 var selectList = require('../support/CommonSelectList');
+var projectFunctionsPage= require('../support/projectMethods');
 var moment = require('moment');
 
 
 module.exports = function() {
-    var menuItemList = new MenuItem();
+    var menuItem = new menuItemList();
     var searchFamily = new listFamilyPage();
-    var addFamily = new familyPage();
     var selectItem =new selectList();
-    var familyNameId = element(by.model('familyDetailView.curFamily.name'));
+    var projectFunctions = new projectFunctionsPage();
 
 
 
     this.Given(/^I select the option to search Organization Family$/, function (callback) {
-        menuItemList.clickOrganizations();
-        menuItemList.clickListFamily();
+        menuItem.clickOrganizations();
+        menuItem.clickListFamily();
         browser.sleep(250).then(callback);
     });
 
@@ -40,7 +40,7 @@ module.exports = function() {
     });
 
     this.Then(/^In the search result for family name (.*) it shall return result (.*)$/, function (familyName, result, callback) {
-        expect(menuItemList.inResults(familyName)).to.become(result);
+        expect(projectFunctions.inSearchResults(familyName)).to.become(result);
         browser.sleep(250).then(callback);
     });
 
@@ -55,7 +55,7 @@ module.exports = function() {
     });
 
     this.Then(/^In the search result for family type (.*) it shall return result (.*)$/, function (familyType, result, callback) {
-        expect(menuItemList.inResults(familyType)).to.become(result);
+        expect(projectFunctions.inSearchResults(familyType)).to.become(result);
         browser.sleep(250).then(callback);
     });
 
@@ -65,7 +65,7 @@ module.exports = function() {
     });
 
     this.Then(/^In the search result for family status (.*) it shall return result (.*)$/, function (familyStatus, result, callback) {
-        expect(menuItemList.inResults(familyStatus)).to.become(result);
+        expect(projectFunctions.inSearchResults(familyStatus)).to.become(result);
         browser.sleep(250).then(callback);
     });
 
@@ -75,11 +75,11 @@ module.exports = function() {
     });
 
     this.Then(/^the search results should display the following sorted by family name$/, function (table, callback) {
-      //  expect(MenuItemList.inResultsHeader('Family Name')).to.become('true');
-     //   expect(MenuItemList.inResultsHeader('Family Status')).to.become('true');
-     //   expect(MenuItemList.inResultsHeader('Family Type')).to.become('true');
-     //   expect(MenuItemList.inResultsHeader('OrganizationFamilyMembers')).to.become('true');
-     //   expect(MenuItemList.inResultsHeader('OrganizationFamilyMemberRelationship')).to.become('true');
+      //  expect(projectFunctions.inResultsHeader('Family Name')).to.become('true');
+     //   expect(projectFunctions.inResultsHeader('Family Status')).to.become('true');
+     //   expect(projectFunctions.inResultsHeader('Family Type')).to.become('true');
+     //   expect(projectFunctions.inResultsHeader('OrganizationFamilyMembers')).to.become('true');
+     //   expect(projectFunctions.inResultsHeader('OrganizationFamilyMemberRelationship')).to.become('true');
      //   browser.sleep(250).then(callback);
         callback.pending();
     });
@@ -95,14 +95,16 @@ module.exports = function() {
     });
 
     this.Then(/^In the search result for family name (.*) ,family type (.*) and family status (.*) it shall return result (.*)$/, function (familyName, familyType, familyStatus, result, callback) {
-        if (familyName != '')
-        {expect(menuItemList.inResults(familyName)).to.become(result);}
-        if (familyStatus != '')
-        {expect(menuItemList.inResults(familyStatus)).to.become(result);}
-        if (familyType != '')
-        {expect(menuItemList.inResults(familyType)).to.become(result);}
+        if (familyName !== '')
+        {expect(projectFunctions.inSearchResults(familyName)).to.become(result);}
+        if (familyStatus !== '')
+        {expect(projectFunctions.inSearchResults(familyStatus)).to.become(result);}
+        if (familyType !== '')
+        {expect(projectFunctions.inSearchResults(familyType)).to.become(result);}
         browser.sleep(250).then(callback);
     });
 
-
+    this.Given(/^the result should be sorted by family name$/, function (callback) {
+        browser.sleep(25).then(callback);
+    });
 }

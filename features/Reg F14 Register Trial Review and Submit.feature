@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can review my registration and if no errors, I can submit the registration to CTRP
+Feature: Reg F14 Register Trial Review and Submit
+
+As a CTRP User, I can review my registration and if no errors, I can submit the registration to CTRP
 
 Scenario: #1 I can review my registration without errors
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
@@ -75,3 +77,5 @@ When I have selected Register Trial
 Then all registration information will be entered in CTRP
 And the trial status will be Submitted
 And the trial milestone Submission Received Date will be created with the current date and time
+And the trial record will have the NCI Identifer with the format NCI-YYYY-NNNNN 
+

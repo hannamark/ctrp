@@ -1,5 +1,7 @@
 @PA @global
-Feature: As any CTRP PA User, I can add and edit Trial Dates and Status
+Feature: PAA F06 Add and Edit Trial Status
+
+As any CTRP PA User, I can add and edit Trial Dates and Status
 
 Scenario: #1 I can enter a trial status and trial status date for a trial
 Given I am logged into the CTRP Protocol Abstraction application

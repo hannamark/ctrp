@@ -78,25 +78,35 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have selected family name "([^"]*)" to edit$/, function (arg1, callback) {
-        menuItem.clickOrganizations();
-        menuItem.clickListFamily();
-        searchFamily.setFamilyName(arg1);
-        searchFamily.clickSearchButton();
-        expect(projectFunctions.inSearchResults(arg1)).to.become('true');
-        element(by.linkText(arg1)).click();
-        browser.sleep(25).then(callback);
-    });
 
 
     this.Given(/^I have changed the family name (.*) to edit$/, function (familyName, callback) {
-        addFamily.setAddFamilyName(familyName);
+        cukeFamily.then(function(value2) {
+            console.log('search family - ' + value2);
+            searchFamily.setFamilyName(value2);
+            searchFamily.clickSearchButton();
+            expect(projectFunctions.inSearchResults(value2)).to.become('true');
+            element(by.linkText(value2)).click();
+            addFamily.familyVerifyEditHeader();
+            addFamily.setAddFamilyName(familyName);
+        });
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the system will notify any error with (.*)$/, function (response, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^the system will notify any error with (.*) for family name (.*), family type (.*) and family status (.*)$/, function (familyName, familyType, familyStatus, response, callback) {
+        if(familyName === 'Albert Einstein Cancer Center') {
+            projectFunctions.verifyWarningMessage(response);
+        }
+        if(familyName === '') {
+            projectFunctions.verifyWarningMessage(response);
+        }
+        if(familyType === '') {
+            projectFunctions.verifyWarningMessage(response);
+        }
+        if(familyStatus === '') {
+            projectFunctions.verifyWarningMessage(response);
+        }
+        browser.sleep(25).then(callback);
     });
 
 

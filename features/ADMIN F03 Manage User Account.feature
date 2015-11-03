@@ -1,5 +1,7 @@
 @Admin
-Feature: As someone with a CTRP User Account, I can manage my account information
+Feature: ADMIN F03 Manage User Account
+
+As someone with a CTRP User Account, I can manage my account information
 
 Scenario: #1 I can initially enter my account information
 Given I am logged into CTRP
