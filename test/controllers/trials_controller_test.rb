@@ -39,6 +39,7 @@ class TrialsControllerTest < ActionController::TestCase
     assert_response :no_content
   end
 
+  # Trial search tests
   test "should search trial by Protocol ID" do
     ['54321', '5*', '*1', '*3*'].each do |x|
       test_response = post :search, protocol_id: x, format: 'json'
@@ -112,5 +113,16 @@ class TrialsControllerTest < ActionController::TestCase
     test_response = post :search, study_source: study_source.code, format: 'json'
     search_result = JSON.parse(test_response.body)
     assert_equal study_source.name, search_result['trials'][0]['study_source']
+  end
+
+  test "should search trial by multiple criteria" do
+    phase = phases(:one)
+    purpose = primary_purposes(:one)
+    study_source = study_sources(:one)
+    test_response = post :search, protocol_id: '54321', official_title: 'Test Trial 3', phase: phase.code,
+                         purpose: purpose.code, pilot: 'No', pi: 'Doe,John', org_type: 'Lead Organization',
+                         org: 'Test Org 3', study_source: study_source.code, format: 'json'
+    search_result = JSON.parse(test_response.body)
+    assert_equal '54321', search_result['trials'][0]['lead_protocol_id']
   end
 end
