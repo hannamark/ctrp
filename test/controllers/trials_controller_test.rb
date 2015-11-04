@@ -104,7 +104,7 @@ class TrialsControllerTest < ActionController::TestCase
     ['Test Org 3', 'Test Org 4', 'Test*', '*3', '*Org*'].each do |x|
       test_response = post :search, org: x, format: 'json'
       search_result = JSON.parse(test_response.body)
-      assert_equal 'Test Trial 3', search_result['trials'][0]['official_title']
+      assert_equal '54321', search_result['trials'][0]['lead_protocol_id']
     end
   end
 
