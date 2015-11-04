@@ -98,12 +98,19 @@ class Trial < ActiveRecord::Base
   validates :lead_protocol_id, presence: true
 
   before_create :save_history
+  before_save :check_indicator
 
   private
 
   def save_history
     history = {lead_org: self.lead_org, pi: self.pi}
     self.history = history.to_json
+  end
+
+  def check_indicator
+    if self.intervention_indicator == 'No' && self.sec801_indicator != 'No'
+      self.sec801_indicator = 'No'
+    end
   end
 
   #scopes for search API
