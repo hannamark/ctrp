@@ -29,12 +29,12 @@ module.exports = function() {
     var addPerson = new personPage();
     var projectFunctions = new projectFunctionsPage();
     var searchPerson = new searchPersonPage();
-/*
+
     this.Given(/^I want to test the Login page$/, function (callback) {
-        browser.get('angular#/main/sign_in').then(function(){callback();});
+        browser.get('ui#/main/sign_in').then(function(){callback();});
       //  setTimeout(callback,1000);
     });
-
+    /*
     this.When(/^I enter username (.*)$/, function (username, callback) {
         element(by.model('userView.userObj.user.username')).sendKeys(username).then(function(){callback();});
     //    callback();
@@ -281,6 +281,17 @@ module.exports = function() {
                //   per4.then(function(vv){console.log('value'+vv);searchPerson.setPersonFirstName(vv);searchPerson.clickSearch();expect(menuItemList.inResults(vv)).to.become('true');});
         browser.sleep(250).then(callback);
     });
+
+    this.Given(/^Creaye person with Organizationre$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^Create person with Organizationsfer$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
 
 
 //element.all(by.css('.ui-grid-viewport'))

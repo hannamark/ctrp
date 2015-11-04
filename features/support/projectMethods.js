@@ -599,5 +599,132 @@ var projectMethods = function() {
         });
     };
 
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Organization for Search, it creates a new org then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createOrgforSearch = function(){
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.setOrgName('shiOrgNameSearch' + moment().format('MMMDoYY h'));
+            orgSearch = searchOrg.orgName.getAttribute('value');
+            searchOrg.clickSearchButton();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Organization exists');
+                    orgSearch.then(function(value){
+                        element(by.linkText(value)).click();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                        cukeFamily = addOrg.addVerifyOrgFamilyName.getText();
+                    });
+                }
+                else {
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 4000).then(function() {
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddOrganizations();
+                        orgSearch.then(function(value){
+                            console.log('Add org Name' + value);
+                            addOrg.setAddOrgName(value);
+                        });
+                        addOrg.setAddAlias('shAlias');
+                        addOrg.clickSaveAlias();
+                        addOrg.setAddAddress('9609 Medical Center Drive');
+                        addOrg.setAddAddress2('9609 Medical Center Drive');
+                        selectValue.selectCountry('Benin');
+                        selectValue.selectState('Donga');
+                        addOrg.setAddCity('searchCity');
+                        addOrg.setAddPostalCode('46578');
+                        addOrg.setAddEmail('searchOrg@email.com');
+                        addOrg.setAddPhone('222-487-8956');
+                        addOrg.setAddFax('222-487-4242');
+                        addOrg.clickSave();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddFamily();
+                        addFamily.setAddFamilyName('famforOrgSearch' + moment().format('MMMDoYY hmmss'));
+                        cukeFamily = addFamily.addFamilyName.getAttribute('value');
+                        selectValue.selectFamilyStatus('Active');
+                        selectValue.selectFamilyType('NIH');
+                        searchOrg.clickOrgSearchModel();
+                       searchOrg.setOrgName(orgSearch);
+                        searchOrg.clickSearchButton();
+                        searchOrg.selectOrgModelItem();
+                        searchOrg.clickOrgModelConfirm();
+                        selectValue.selectOrgFamilyRelationship('Affiliation');
+                        searchOrg.setAffiliatedOrgEffectiveDate('02-Nov-2015');
+                        searchOrg.setAffiliatedOrgExpirationDate('02-Nov-2020');
+                        addFamily.clickSave();
+                    });
+                }
+            });
+        });
+    };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Organization for Edit, it creates a new org then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createOrgforEdit = function(){
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.setOrgName('shiOrgNameEdit' + moment().format('MMMDoYY h'));
+            cukeOrganization = searchOrg.orgName.getAttribute('value');
+            searchOrg.clickSearchButton();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Organization exists');
+                    cukeOrganization.then(function(value){
+                        element(by.linkText(value)).click();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                    });
+                }
+                else {
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 4000).then(function() {
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddOrganizations();
+                        cukeOrganization.then(function(value){
+                            console.log('Add org Name' + value);
+                            addOrg.setAddOrgName(value);
+                        });
+                        addOrg.setAddAlias('shEditAlias');
+                        addOrg.clickSaveAlias();
+                        addOrg.setAddAddress('9609 Medical Center Drive Edit');
+                        addOrg.setAddAddress2('9609 Medical Center Drive Edit');
+                        selectValue.selectCountry('United States');
+                        selectValue.selectState('Idaho');
+                        addOrg.setAddCity('editCity');
+                        addOrg.setAddPostalCode('42589');
+                        addOrg.setAddEmail('editOrg@email.com');
+                        addOrg.setAddPhone('589-687-8956');
+                        addOrg.setAddFax('898-420-4242');
+                        addOrg.clickSave();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                    });
+                }
+            });
+        });
+    };
 };
 module.exports = projectMethods;
