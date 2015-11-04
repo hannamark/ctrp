@@ -24,3 +24,7 @@ one:
 
 two:
   protocol_id: MyString
+
+three:
+  protocol_id: ABC123
+  trial: three
