@@ -178,14 +178,17 @@ module.exports = function() {
         }, 4000).then(function() {
             cukePerson.then(function (value) {
                 addPerson.setAddPersonFirstName(value);
-            });
+           });
         });
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I enter person last name which is duplicate$/, function (callback) {
         addPerson.setAddPersonLastName('dupLName');
-        browser.sleep(25).then(callback);
+        addPerson.setAddPersonSuffix('t1');
+        addPerson.addPersonEmail.click();
+        addPerson.setAddPersonLastName('dupLName');
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^I should get warning message "([^"]*)" for duplicate Person$/, function (arg1, callback) {

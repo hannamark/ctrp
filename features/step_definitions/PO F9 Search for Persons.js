@@ -153,8 +153,8 @@ module.exports = function() {
     });
 
     this.Given(/^I want to search for Person Records last updated by (.*) and (.*)$/, function (StartDate, EndDate, callback) {
+        updatedDate = moment().format('DD-MMM-YYYY');
         if(StartDate === 'today' && EndDate === 'today' ) {
-            updatedDate = moment().format('DD-MMM-YYYY')
             searchPerson.setPersonLastUpdatedStartDate(updatedDate);
             searchPerson.setPersonLastUpdatedEndDate(updatedDate);
         }
@@ -202,7 +202,7 @@ module.exports = function() {
                                                                         menuItem.verifyEmptySearchCriteria(callback);
                                                                     } else {
                                                                         console.log('in the else statement');
-                                                                          expect(projectFunctions.inSearchResults(updatedDate)).to.become('true').and.notify(callback);
+                                                                          expect(projectFunctions.inSearchResults('Active')).to.become('true').and.notify(callback);
                                                                     }
                                                         });
                                                     });
