@@ -75,6 +75,14 @@ class TrialsControllerTest < ActionController::TestCase
     assert_equal 'No', search_result['trials'][0]['pilot']
   end
 
+  test "should search trial by Principal Investigator" do
+    ['Doe', ' doe ', 'D*', '*e', '*o*', 'Doe,John', 'Doe, john ', 'Doe, J*', 'Doe, *n', 'Doe, *h*'].each do |x|
+      test_response = post :search, pi: x, format: 'json'
+      search_result = JSON.parse(test_response.body)
+      assert_equal 'Doe, John', search_result['trials'][0]['pi']
+    end
+  end
+
   test "should search trial by Lead Organization" do
     ['Test Org 3', 'Test*', '*3', '*Org*'].each do |x|
       test_response = post :search, org_type: 'Lead Organization', org: x, format: 'json'
