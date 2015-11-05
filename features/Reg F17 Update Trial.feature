@@ -14,6 +14,7 @@ And I will be able to add Grant Information
 And I will be able to update trial status and trial status dates and edit trial status history
 And I will be able to update trial start date, primary completion date, and completion date with actual or anticipated dates
 And I will be able to update participating site status
+And I will be able to review existing Trial Related Documents
 And I will be able to add Trial Related Document
 And I will be able to review or cancel my update
 

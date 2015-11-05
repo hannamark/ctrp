@@ -10,11 +10,13 @@ exports.config = {
     capabilities: {
         'browserName' : 'firefox',
         shardTestFiles: true,
-        maxInstances: 3
+        maxInstances: 6
+
     },
 
     baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
-  //     baseUrl: 'http://localhost:3000/ctrp/',
+    // baseUrl: 'http://localhost/ctrp/',
+    // baseUrl: 'http://ctrp-qa.ncifcrf.gov/ctrp/',
 
     params: {
         login: {
@@ -24,6 +26,10 @@ exports.config = {
         }
     },
 
+    //onPrepare: function() {
+    //    browser.driver.manage().window().maximize();
+    //    browser.driver.manage().window().setSize('1440', '900');
+    //},
 
 
     jasmineNodeOpts: {
@@ -50,7 +56,7 @@ exports.config = {
     //    'features/PO\ F7\ Edit\ Organization\ Family \Name.feature' //Done updated - has pending scenarios
     //    'features/PO\ F7\ Search\ Organization\ Family \Name.feature'
     //    'features/PO\ F8\ Associate\ an\ Organization\ with\ a\ Family.feature'
-  //      'features/PO\ F15\ Add\ Organization\ Alias.feature'
+    //      'features/PO\ F15\ Add\ Organization\ Alias.feature'
       'features/PO*.feature'
      // 'features/test.feature'
 
@@ -73,5 +79,9 @@ exports.config = {
         "~@ignoreThis"]*/// or summary
     }
 
-//    resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
+
+
+    // resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
+
 };
+

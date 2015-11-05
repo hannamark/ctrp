@@ -138,7 +138,7 @@ And I submit my search request
 Then the system should display all organizations that have a matching organization status
 And the result should be sorted by Organization Name
 
-Scenario Outline: As a Curator, I am able to search for organizations by name including aliases
+Scenario Outline: As a Curator, I am able to search for organizations by multiple parameters
 Given I know the parameters of organization I wish to search for
 And I am logged in to CTRP PO application
 And I have selected the option to search for an organization
@@ -179,11 +179,8 @@ Examples:
 |Organization Name	||Search Aliases||Source Context	||Source ID	||Source Status	||Family Name	||City	||State	||Country	||Phone Number	||Email	||Curator Name	||Curator Date	||Result|
 |                 	||No           	||              	||         	||             	||           	||    	||     	||       	||           	||     	||            	||            	||At least one selection value must be entered prior to running the search|
 |*                	||No		    ||              	||		    ||             	||           	||    	||     	||       	||           	||     	||            	||            	||true|
-|Wake Forest*	  	||No	  	    ||			        ||	    	||		        ||      		||	    ||    	||		    ||		        ||	    ||		        ||		        ||true|
-|Wake*			    ||Yes		    ||			        ||		    ||		        ||		        ||	    ||	    ||  		||		        ||  	||		        ||		        ||true|
 |	        		||No		    ||CTEP  			||WAKE		||		        ||	        	||  	||	    ||		    ||		        ||	    ||      		||		        ||true|
 |		        	||No		    ||		        	||	    	||		        ||*fam*	||	    ||	    ||		    ||		        ||	    ||	        	||		        ||true|
-|			        ||No	    	||			        ||  		||		        ||		        ||	    ||New York||United States		||		        ||	    ||		        ||		        ||true|
 |			        ||No    		||			        ||		    ||	        	||		        ||	    ||	    ||		    ||		        ||  	||*curator	    ||		        ||true|
 
 
