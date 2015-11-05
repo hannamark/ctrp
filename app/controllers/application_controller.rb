@@ -80,8 +80,7 @@ class ApplicationController < ActionController::Base
       Rails.logger.info "token = " + token
       # Decode the token
       begin
-        decoded_token = decode_token(token)
-        user_id =  decoded_token[0]["user_id"]
+        user_id = decode_token(token)
       rescue => e
         Rails.logger.debug "Unable to decode token exception #{e.backtrace}"
         raise "Unable to decode token. The Authentication of the user cannot be performed"
@@ -146,16 +145,28 @@ class ApplicationController < ActionController::Base
 
   ## TODO secret must be an environmental variable
   def create_token(token_data)
-    secret = "secret" # must be an environment variable
-    JWT.encode(token_data, secret)
+    hmac_secret = "secret" # must be an environment variable
+    exp = Time.now.to_i + 4 * 3600
+    exp_payload = { :token => token_data, :exp => exp }
+    JWT.encode(exp_payload, hmac_secret, 'HS256')
+    #JWT.encode(token_data, secret)
   end
 
   ## TODO secret must be an environmental variable
   def decode_token(token)
-    secret = "secret" # must be an environment variable
-    decoded_token = JWT.decode token, secret
-    Rails.logger.info "decoded_token = #{decoded_token}"
-    return decoded_token
+    hmac_secret = "secret" # must be an environment variable
+    begin
+      decoded_token = JWT.decode token, hmac_secret, true, { :algorithm => 'HS256' }
+      #decoded_token = JWT.decode token, hmac_secret
+      Rails.logger.info "decoded_token = #{decoded_token}"
+    rescue JWT::ExpiredSignature
+      # Handle expired token, e.g. logout user or deny access
+      raise CanCan::AccessDenied.new("Not authorized! Token Expired!")
+    end
+    if decoded_token.blank? || decoded_token[0]["token"].blank? || decoded_token[0]["token"]["user_id"].blank?
+      raise CanCan::AccessDenied.new("Not authorized! No Token!")
+    end
+    return decoded_token[0]["token"]["user_id"]
   end
 
 
