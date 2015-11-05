@@ -73,9 +73,7 @@ class UsersController < ApplicationController
       Rails.logger.debug "UserController, GSA, auth_string = #{auth_string.inspect}"
       token = auth_string.split(" ")[1]
       Rails.logger.debug "UserController, GSA, auth_string = #{token.inspect}"
-      decoded_token = decode_token(token)
-     Rails.logger.debug "UserController, GSA, decoded_token = #{decoded_token.inspect}"
-      user_id =  decoded_token[0]["user_id"]
+      user_id = decode_token(token)
       Rails.logger.debug "UserController, GSA, user_id = #{user_id.inspect}"
       user = User.find(user_id)
       @current_user = user
