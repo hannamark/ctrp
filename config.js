@@ -14,9 +14,9 @@ exports.config = {
 
     },
 
-    // baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
+    baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
     // baseUrl: 'http://localhost/ctrp/',
-    baseUrl: 'http://ctrp-qa.ncifcrf.gov/ctrp/',
+    // baseUrl: 'http://ctrp-qa.ncifcrf.gov/ctrp/',
 
     params: {
         login: {
@@ -26,11 +26,10 @@ exports.config = {
         }
     },
 
-
-    onPrepare: function() {
-        browser.driver.manage().window().maximize();
-    //browser.driver.manage().window().setSize('1440', '900');
-    },
+    //onPrepare: function() {
+    //    browser.driver.manage().window().maximize();
+    //    browser.driver.manage().window().setSize('1440', '900');
+    //},
 
 
     jasmineNodeOpts: {
