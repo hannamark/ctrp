@@ -48,11 +48,11 @@
                                 <label class="control-label col-xs-12 col-sm-3">CTRP ID:</label>
                                 <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curOrg.ctrp_id}}</div>
                             </div>
-                            <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name)}">
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name)}">
                                 <label class="control-label col-xs-12 col-sm-3">Name:</label>
                                 <div class="col-xs-12 col-sm-6">
                                     <input type="text" restriction-field class="form-control input-sm" name="name" id="organization_name" ng-model="orgDetailView.curOrg.name" auto-focus required ng-change="checkUniqueOrganization()">
-                                    <span class="form-control-feedback" ng-show="orgDetailView.curOrg.name.length > 0 && organization_form.name.$dirty" ng-class="(!orgDetailView.showUniqueWarning) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                    <span class="form-control-feedback" ng-show="organization_form.name.$dirty" ng-class="!(orgDetailView.showUniqueWarning || ctrpbtn.organization_form.needsAttention(organization_form.name)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                     <span class="help-block" ng-show="organization_form.name.$error.required">Name is Required</span>
                                     <div class="has-error" ng-show="orgDetailView.showUniqueWarning && orgDetailView.curOrg.name.length > 0 && organization_form.name.$dirty">
                                         <span class="help-block">
@@ -142,8 +142,9 @@
                                 </div>
                                 <div class="form-group required"  ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.address)}">
                                     <label class="control-label col-xs-12 col-xs-12 col-sm-3">Address 1:</label>
-                                    <div class="col-xs-12 col-sm-6">
+                                    <div class="col-xs12 col-sm-6">
                                         <input type="text" restriction-field class="form-control input-sm" id="address" ng-model="orgDetailView.curOrg.address" name="address" required>
+                                        <span class="form-control-feedback" ng-show="organization_form.address.$dirty" ng-class="!ctrpbtn.organization_form.needsAttention(organization_form.address) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                         <span class="help-block" ng-show="organization_form.address.$error.required">Address is Required</span>
                                     </div>
                                 </div>
@@ -178,12 +179,14 @@
                                     <label class="control-label col-xs-12 col-sm-3">City:</label>
                                     <div class="col-xs-12 col-sm-2">
                                         <input type="text" restriction-field class="form-control input-sm" id="city" ng-model="orgDetailView.curOrg.city" required name="city">
+                                        <span class="form-control-feedback" ng-show="organization_form.city.$dirty" ng-class="!ctrpbtn.organization_form.needsAttention(organization_form.city) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                         <span class="help-block" ng-show="organization_form.city.$error.required">City is Required</span>
                                     </div>
 
                                     <label class="control-label col-xs-12 col-sm-2">Postal Code:</label>
                                     <div class="col-xs-12 col-sm-2">
                                         <input type="text" restriction-field class="form-control input-sm" id="postal_code" ng-model="orgDetailView.curOrg.postal_code" placeholder="Postal Code" name="postal_code" ng-required="orgDetailView.curOrg.country==='United States'">
+                                        <span class="form-control-feedback" ng-show="organization_form.postal_code.$dirty" ng-class="!ctrpbtn.organization_form.needsAttention(organization_form.postal_code) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                         <span class="help-block" ng-show="organization_form.postal_code.$error && ctrpbtn.organization_form.needsAttention(organization_form.postal_code)">US Local Postal Code is Required</span>
                                     </div>
                                 </div>
@@ -192,12 +195,11 @@
                                         <label class="control-label col-xs-12 col-sm-3">Email:</label>
                                         <div class="col-xs-12 col-sm-3">
                                             <input type="email" restriction-field class="form-control input-sm" id="email" ng-model="orgDetailView.curOrg.email" type="email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
+                                            <span class="form-control-feedback" ng-show="organization_form.email.$dirty" ng-class="!(organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                         </div>
                                         <label class="control-label col-xs-12 col-sm-1">Phone:</label>
                                         <div class="col-xs-12 col-sm-2">
                                             <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" ng-model="orgDetailView.curOrg.phone" type="text" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="IsValidPhoneNumber()">
-
-
                                             <span ng-show="orgDetailView.curOrg.phone.length > 0" class="form-control-feedback" ng-class="(orgDetailView.curOrg.phone.length > 0 && showPhoneWarning && !IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                                             <div class="has-error" ng-show="orgDetailView.curOrg.phone.length > 0 && showPhoneWarning && !IsPhoneValid">
                                                 <span class="help-block">
