@@ -66,7 +66,7 @@
         vm.otherDocNum = 1;
 
         //update trial (vm.curTrial)
-        vm.updateTrial = function() {
+        vm.updateTrial = function(updateType) {
             if (vm.selectedLoArray.length > 0) {
                 vm.curTrial.lead_org_id = vm.selectedLoArray[0].id
             } else {
@@ -149,6 +149,10 @@
                 });
             }
 
+            if (vm.curTrial.new && updateType == 'draft') {
+                vm.curTrial.is_draft = true;
+            }
+
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -156,9 +160,11 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                uploadDocuments(response.id);
-                $state.go('main.trials', null, { reload: true });
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                if (response.server_response.status < 300) {
+                    uploadDocuments(response.id);
+                    $state.go('main.trials', null, {reload: true});
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
