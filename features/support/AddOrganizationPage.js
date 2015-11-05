@@ -28,6 +28,7 @@ AddOrganizationsPage = function(){
     this.addEmail = element(by.model('orgDetailView.curOrg.email'));
     this.addPhone = element(by.model('orgDetailView.curOrg.phone'));
     this.addFax = element(by.model('orgDetailView.curOrg.fax'));
+    this.addVerifyOrgFamilyName = element(by.binding('family.name'));
     this.saveButton = element(by.id('save_btn')); //element(by.css('input[value="Save"]'));
     this.clearButton = element(by.css('#clear_btn'));//element(by.css('input[value="Reset"]'));by.id('reset_btn')
     this.resetButton = element(by.css('#reset_btn'));

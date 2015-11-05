@@ -360,6 +360,14 @@
             }
         });
 
+        $scope.$watch(function() {
+            return vm.curTrial.intervention_indicator;
+        }, function(newValue, oldValue) {
+            if (newValue == 'No') {
+                vm.curTrial.sec801_indicator = 'No';
+            }
+        });
+
         vm.watchOption = function(type) {
             if (type == 'primary_purpose') {
                 var otherObj = vm.primaryPurposeArr.filter(findOtherOption);

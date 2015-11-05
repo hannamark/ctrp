@@ -29,22 +29,12 @@ module.exports = function() {
     var cityEdited = 'Wilmington Edited';
     var countryEdited = 'Nepal';
     var stateEdited = 'Bagmati';
-    var stateEditedforUS = 'Maryland';
+    var stateEditedforUS = 'Florida';
     var postalEdited = '20008';
 
 
     this.Given(/^I know which organization I want to edit$/, function (callback) {
-        browser.get('ui#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
-        browser.driver.wait(function(){
-            console.log('wait here');
-            return true;
-        }, 4000).then(function(){
-            menuItem.clickHomeEnterOrganizations();
-                login.clickWriteMode();
-            projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
-            });
+        projectFunctions.createOrgforEdit();
         browser.sleep(25).then(callback);
     });
 
@@ -241,7 +231,7 @@ module.exports = function() {
     });
 
     this.Given(/^I change multiple parameters of the organization I wish to edit$/, function (callback) {
-        cukeOrganization.then(function(value){addOrg.setAddOrgName(value + 'Edited'); });
+        cukeOrganization.then(function(value){addOrg.setAddOrgName(value + 'Edited1'); });
         addOrg.setAddAddress2(address2Edited);
         addOrg.setAddCity(cityEdited);
         selectItem.selectCountry(countryEdited);
@@ -253,11 +243,11 @@ module.exports = function() {
         menuItem.clickOrganizations();
         menuItem.clickListOrganizations();
         cukeOrganization.then(function(value){
-            searchOrg.setOrgName(value + 'Edited');
+            searchOrg.setOrgName(value + 'Edited1');
             searchOrg.clickSearchButton();
-            expect(projectFunctions.inOrgSearchResults(value + 'Edited')).to.become('true');
-            element(by.linkText(value + 'Edited')).click();
-            addOrg.getVerifyAddOrgName(value + 'Edited');
+            expect(projectFunctions.inOrgSearchResults(value + 'Edited1')).to.become('true');
+            element(by.linkText(value + 'Edited1')).click();
+            addOrg.getVerifyAddOrgName(value + 'Edited1');
             addOrg.getVerifyAddAddress2(address2Edited);
             addOrg.getVerifyAddCity(cityEdited);
             addOrg.getVerifyAddCountry(countryEdited);
@@ -281,7 +271,7 @@ module.exports = function() {
             selectItem.selectSourceStatus('InActive');
             addOrg.setAddAlias('editAl44');
             addOrg.clickSaveAlias();
-            addOrg.setAddAlias('als29');
+            addOrg.setAddAlias('alias29');
             addOrg.setAddAddress('address1');
             addOrg.setAddAddress2('address2');
             selectItem.selectCountry('Nepal');
@@ -307,7 +297,6 @@ module.exports = function() {
     this.Then(/^edit form will be refreshed with the last committed values for the selected organization$/, function (callback) {
         cukeOrganization.then(function(value){
             addOrg.getVerifyAddOrgName(value);
-            addOrg.getVerifyAddOrgAlias('');
             expect(projectFunctions.verifyOrgAlias('alias')).to.become('true');
             expect(projectFunctions.verifyOrgAlias('editAl44')).to.become('false');
             addOrg.getVerifyAddAddress('add1');
@@ -317,9 +306,10 @@ module.exports = function() {
             addOrg.getVerifyAddFax('444-6666-555');
             addOrg.getVerifyAddPhone('222-444-5555');
             addOrg.getVerifyAddPostalCode('24567');
-            addOrg.getVerifyAddState('Florida');
             addOrg.getVerifyAddCountry('United States');
+            addOrg.getVerifyAddState('Florida');
             addOrg.getVerifyAddSourceStatusDefault('Active');
+            addOrg.getVerifyAddOrgAlias('');
         });
         browser.sleep(25).then(callback);
     });

@@ -69,8 +69,11 @@
         }; //gridOptions
 
 
-        vm.searchFamilies = function() {
+        vm.searchFamilies = function(newSearchFlag) {
 
+            if (newSearchFlag == 'fromStart') {
+                vm.searchParams.start = 1; //from first page
+            }
 
             //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
             // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
@@ -81,10 +84,11 @@
                     isEmptySearch = false;
             });
 
-            if (isEmptySearch)
+            if (isEmptySearch  && newSearchFlag == 'fromStart') {
                 $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
-            else
+            } else {
                 $scope.searchWarningMessage = "";
+            }
 
             console.log("search params are  " + JSON.stringify(vm.searchParams));
             console.log("isEmptySearch is " + isEmptySearch);

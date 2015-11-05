@@ -20,8 +20,18 @@
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+family_one:
+  id: 65000000
+  name: "Albert Einstein Cancer Center"
+  family_status_id: 1
+  family_type_id: 1
+  lock_version: 1
+  ctrp_id: 65000000
 
-two:
-  name: MyString
+family_two:
+  id: 65000010
+  name: "David H. Koch Institute for Integrative Cancer Research at MIT"
+  family_status_id: 1
+  family_type_id: 4
+  lock_version: 1
+  ctrp_id: 65000010

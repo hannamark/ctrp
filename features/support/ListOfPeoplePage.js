@@ -12,6 +12,7 @@ ListOfPeoplePage = function () {
 
     this.personFirstName = element(by.model('searchParams.fname'));
     this.personLastName = element(by.model('searchParams.lname'));
+    this.personOrgAffiliation = element(by.model('searchParams.affiliated_org_name'));
     this.personPoId = element(by.model('searchParams.ctrp_id'));
     this.personSourceContext = element(by.model('searchParams.source_context'));
     this.personSourceId = element(by.model('searchParams.source_id'));
@@ -20,7 +21,10 @@ ListOfPeoplePage = function () {
     this.personSuffix = element(by.model('searchParams.suffix'));
     this.personEmail = element(by.model('searchParams.email'));
     this.personPhone = element(by.model('searchParams.phone'));
-    this.personSearchButton = element(by.css('button[ng-click="searchPeople()"]'));
+    this.personUpdateBy = element(by.model('searchParams.updated_by'));
+    this.personLastUpdatedStartDate = element(by.model('searchParams.startDate'));
+    this.personLastUpdatedEndDate = element(by.model('searchParams.endDate'));
+    this.personSearchButton = element(by.css('#submission_btn'));// element(by.css('button[ng-click="searchPeople()"]'));
     this.personClearButton = element(by.css('button[ng-click="resetSearch()"]'));
 
     var listPerson = new helper();
@@ -31,6 +35,10 @@ ListOfPeoplePage = function () {
 
     this.setPersonLastName = function(personLastName){
         listPerson.setValue(this.personLastName,personLastName,"Person by Last Name field");
+    };
+
+    this.setPersonOrgAffiliation = function(personOrgAffiliation){
+        listPerson.setValue(this.personOrgAffiliation,personOrgAffiliation,"Person by Org Affiliation field");
     };
 
     this.setPersonPoId = function(personPoId){
@@ -63,6 +71,18 @@ ListOfPeoplePage = function () {
 
     this.setPersonPhone = function(personPhone){
         listPerson.setValue(this.personPhone,personPhone,"Person by Phone field");
+    };
+
+    this.setPersonUpdatedBy= function(personUpdatedBy){
+        listPerson.setValue(this.personUpdateBy,personUpdatedBy,"Person by Updated by field");
+    };
+
+    this.setPersonLastUpdatedStartDate = function(personLastUpdatedStartDate){
+        listPerson.setValue(this.personLastUpdatedStartDate,personLastUpdatedStartDate,"Person by Last Updated Start Date field");
+    };
+
+    this.setPersonLastUpdatedEndDate = function(personLastUpdatedEndDate){
+        listPerson.setValue(this.personLastUpdatedEndDate,personLastUpdatedEndDate,"Person by Last Updated End Date field");
     };
 
     this.clickSearch = function(){
