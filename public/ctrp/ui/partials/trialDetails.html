@@ -20,11 +20,11 @@
 
         <div class="row">
             <form class="form form-horizontal" role="form" name="trial_form" novalidate>
-                <accordion close-others="false">
-                    <accordion-group is-open="trialDetailView.accordions[0]">
-                        <accordion-heading>
+                <uib-accordion close-others="false">
+                    <uib-accordion-group is-open="trialDetailView.accordions[0]">
+                        <uib-accordion-heading>
                             Trial Identifiers  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[0], 'glyphicon-chevron-right': !trialDetailView.accordions[0]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Study Source:</label>
@@ -102,12 +102,12 @@
                             </div>
                         </div>
 
-                    </accordion-group>
+                    </uib-accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordions[1]">
-                        <accordion-heading>
+                    <uib-accordion-group is-open="trialDetailView.accordions[1]">
+                        <uib-accordion-heading>
                             Trial Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[1], 'glyphicon-chevron-right': !trialDetailView.accordions[1]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Official Title:</label>
@@ -204,12 +204,12 @@
                                 </p>
                             </div>
                         </div>
-                    </accordion-group>
+                    </uib-accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordions[2]">
-                        <accordion-heading>
+                    <uib-accordion-group is-open="trialDetailView.accordions[2]">
+                        <uib-accordion-heading>
                             Lead Organization/Principal Investigator  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[2], 'glyphicon-chevron-right': !trialDetailView.accordions[2]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Lead Organization:</label>
@@ -230,12 +230,12 @@
                                 <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedPiArray"></ctrp-person-adv-search-modal-button>
                             </div>
                         </div>
-                    </accordion-group>
+                    </uib-accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordions[3]">
-                        <accordion-heading>
+                    <uib-accordion-group is-open="trialDetailView.accordions[3]">
+                        <uib-accordion-heading>
                             Sponsor/Responsible Party  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[3], 'glyphicon-chevron-right': !trialDetailView.accordions[3]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Sponsor:</label>
@@ -287,12 +287,12 @@
                                 <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedIaArray"></ctrp-org-adv-search-modal-button>
                             </div>
                         </div>
-                    </accordion-group>
+                    </uib-accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordions[4]">
-                        <accordion-heading>
+                    <uib-accordion-group is-open="trialDetailView.accordions[4]">
+                        <uib-accordion-heading>
                             Data Table 4 Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[4], 'glyphicon-chevron-right': !trialDetailView.accordions[4]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Data Table 4 Funding Source:</label>
@@ -317,12 +317,12 @@
                                 <input type="text" class="form-control input-sm" id="program_code" ng-model="trialDetailView.curTrial.program_code">
                             </div>
                         </div>
-                    </accordion-group>
+                    </uib-accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordions[5]">
-                        <accordion-heading>
+                    <uib-accordion-group is-open="trialDetailView.accordions[5]">
+                        <uib-accordion-heading>
                             NIH Grant Information (for NIH funded Trials)  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[5], 'glyphicon-chevron-right': !trialDetailView.accordions[5]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Is this trial funded by an NCI grant?</label>
@@ -413,12 +413,12 @@
                                 </table>
                             </div>
                         </div>
-                    </accordion-group>
+                    </uib-accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordions[6]">
-                        <accordion-heading>
+                    <uib-accordion-group is-open="trialDetailView.accordions[6]">
+                        <uib-accordion-heading>
                             Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[6], 'glyphicon-chevron-right': !trialDetailView.accordions[6]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <div class="col-sm-12">
@@ -490,12 +490,12 @@
                                 </table>
                             </div>
                         </div>
-                    </accordion-group>
+                    </uib-accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordions[7]">
-                        <accordion-heading>
+                    <uib-accordion-group is-open="trialDetailView.accordions[7]">
+                        <uib-accordion-heading>
                             Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[7], 'glyphicon-chevron-right': !trialDetailView.accordions[7]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Trial Start Date:</label>
@@ -553,12 +553,12 @@
                                 <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Anticipated"> Anticipated</label>
                             </div>
                         </div>
-                    </accordion-group>
+                    </uib-accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordions[8]">
-                        <accordion-heading>
+                    <uib-accordion-group is-open="trialDetailView.accordions[8]">
+                        <uib-accordion-heading>
                             FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[8], 'glyphicon-chevron-right': !trialDetailView.accordions[8]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <div class="col-sm-12">
@@ -653,12 +653,12 @@
                                 </table>
                             </div>
                         </div>
-                    </accordion-group>
+                    </uib-accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordions[9]">
-                        <accordion-heading>
+                    <uib-accordion-group is-open="trialDetailView.accordions[9]">
+                        <uib-accordion-heading>
                             Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[9], 'glyphicon-chevron-right': !trialDetailView.accordions[9]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Trial Oversight Authority:</label>
@@ -741,12 +741,12 @@
                                 <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="Yes"> Yes</label>
                             </div>
                         </div>
-                    </accordion-group>
+                    </uib-accordion-group>
 
-                    <accordion-group is-open="trialDetailView.accordions[10]">
-                        <accordion-heading>
+                    <uib-accordion-group is-open="trialDetailView.accordions[10]">
+                        <uib-accordion-heading>
                             Trial Related Documents  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[10], 'glyphicon-chevron-right': !trialDetailView.accordions[10]}"></i>
-                        </accordion-heading>
+                        </uib-accordion-heading>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
@@ -841,8 +841,8 @@
                                 <br>{{document.document_subtype}}
                             </div>
                         </div>
-                    </accordion-group>
-                </accordion>
+                    </uib-accordion-group>
+                </uib-accordion>
 
                 <div class="form-group" ng-hide="trialDetailView.curTrial.new || !trialDetailView.curTrial.created_by">
                     <label class="control-label col-xs-12 col-sm-3">Created By:</label>
