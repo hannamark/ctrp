@@ -16,6 +16,7 @@ var LoginPage = function(){
     this.logoutButton = element(by.css('a[ng-click="headerView.logOut()"]'));
     this.rejectButton = element(by.buttonText('Reject'));
     this.acceptButton = element(by.buttonText('Accept'));
+    this.loginUser = element(by.css('.ng-binding:nth-child(1)'));
     var loginPageVerifyText = element(by.css('.panel-title'));
     this.writeMode =  element(by.css('.md-thumb'));
     var params = browser.params;

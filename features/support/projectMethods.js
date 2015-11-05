@@ -113,7 +113,7 @@ var projectMethods = function() {
      * @param affOrgExpirationDate
      ***********************************/
     this.createPersonWithAffiliatedOrg = function(prefix, fName, mName, lName, suffix, email, phone, affOrgName, affOrgEffectiveDate, affOrgExpirationDate){
-        this.createOrganization(affOrgName,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','222-4444-555','888-9999-666');
+        this.createOrganization(affOrgName,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','240-276-5555','240-276-6338');
         this.createPerson(prefix,fName,mName,lName,suffix,email,phone);
     /*    menuItem.clickPeople();
         menuItem.clickListPeople();
@@ -157,7 +157,7 @@ var projectMethods = function() {
      * @param orgExpirationDate
      ***********************************/
     this.createFamilyWithMembers = function(familyName, familyStatus, familyType, orgMember, orgRelationship, orgEffectiveDate, orgExpirationDate){
-        this.createOrganization(orgMember,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','222-4444-555','888-9999-666');
+        this.createOrganization(orgMember,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','240-276-6338','240-276-6978');
         this.createFamily(familyName,familyStatus,familyType);
         menuItem.clickOrganizations();
         menuItem.clickListFamily();
