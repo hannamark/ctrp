@@ -1,11 +1,45 @@
 require 'test_helper'
 
 class FamiliesControllerTest < ActionController::TestCase
+  setup do
+    @family = families(:five)
+    #puts "In setup @family = #{@family.inspect}"
+  end
+
   test "should get index" do
     get :index, format: "json"
     assert_response :success
     assert_not_nil assigns(:families)
   end
+
+  test "should create family" do
+    assert_difference('Family.count') do
+      post :create, family: { name: @family.name, family_status_id: @family.family_status_id, family_type_id: @family.family_type_id},  format: "json"
+     end
+
+    assert_template :show
+    assert_response :created
+  end
+
+  test "should show family" do
+    get :show, id: @family, format: "json"
+    assert_response :success
+  end
+
+  test "should update family" do
+    patch :update, id: @family, family: { name: @family.name, family_status_id: @family.family_status_id, family_type_id: @family.family_type_id},  format: "json"
+    assert_template :show
+    assert_response :ok
+  end
+
+  test "should destroy family" do
+    assert_difference('Family.count', -1) do
+      delete :destroy, id: @family, format: "json"
+    end
+
+    assert_response :no_content
+  end
+
 
   # Family search tests
   test "should search family by name" do
@@ -15,7 +49,7 @@ class FamiliesControllerTest < ActionController::TestCase
     test_data.each do |t|
       #puts "name: #{t.inspect}"
       t["test_values"].each do |x|
-        test_response = post :search, name: x, format: 'json'
+        test_response = get :search, name: x, format: 'json'
         search_result = JSON.parse(test_response.body)
         #puts "Search Result: #{search_result.inspect}"
         #puts 'Center=', search_result['families'][0]['name']
