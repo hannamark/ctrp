@@ -349,6 +349,7 @@
                     templateUrl: '/ctrp/ui/partials/modals/gsa.html',
                     controller: 'gsaModalCtrl as gsaView',
                     size: 'lg',
+                    backdrop: 'static',
                     resolve: {
                         UserService: 'UserService',
                         gsaObj: function (UserService) {
