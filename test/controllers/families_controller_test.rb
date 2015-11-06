@@ -9,13 +9,18 @@ class FamiliesControllerTest < ActionController::TestCase
 
   # Family search tests
   test "should search family by name" do
-    ['Albert Einstein Cancer Center', 'Albert*'].each do |x|
+    test_data = [{ "result" => "Albert Einstein Cancer Center", "test_values" => ['Albert Einstein Cancer Center', 'Albert*']},
+                 { "result" => "Arizona Cancer Center", "test_values" => ['Arizona*', 'Ar*']},
+                   { "result" => "Yale Cancer Center", "test_values" => ['Y*', 'YALE*']}]
+    test_data.each do |t|
       #puts "name: #{t.inspect}"
-      test_response = post :search, name: x, format: 'json'
-      search_result = JSON.parse(test_response.body)
-      #Rails::logger.debug "Search Result: #{search_result.inspect}"
-      puts 'Albert Einstein Cancer Center', search_result['families'][0]['name']
-      assert_equal 'Albert Einstein Cancer Center', search_result['families'][0]['name']
+      t["test_values"].each do |x|
+        test_response = post :search, name: x, format: 'json'
+        search_result = JSON.parse(test_response.body)
+        #puts "Search Result: #{search_result.inspect}"
+        #puts 'Center=', search_result['families'][0]['name']
+        assert_equal t["result"], search_result['families'][0]['name']
+      end
     end
   end
 
