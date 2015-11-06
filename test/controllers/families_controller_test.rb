@@ -20,7 +20,7 @@ class FamiliesControllerTest < ActionController::TestCase
   end
 
   test "should search family by type" do
-    [ family_types(:one), family_types(:four)].each do |x|
+    [ family_types(:one), family_types(:two), family_types(:three), family_types(:four)].each do |x|
       #puts "family_type: #{x.inspect}"
       test_response = get :search, family_type: x.name, format: 'json'
       search_result = JSON.parse(test_response.body)
