@@ -32,10 +32,8 @@
 
         var ctrpSourceContextIndex = Common.indexOfObjectInJsonArray(vm.sourceContextArr, 'code', 'CTRP');
         vm.ctrpSourceContextIndex = ctrpSourceContextIndex;
-
+        vm.alias = '';
         vm.curationReady = false;
-        console.log("vm.ctrpSourceContextIndex is " + vm.ctrpSourceContextIndex);
-        console.log("context array is " + JSON.stringify(vm.sourceContextArr));
         $scope.showPhoneWarning = false;
 
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
@@ -80,6 +78,8 @@
 
         vm.clearForm = function () {
             $scope.organization_form.$setPristine();
+            vm.addedNameAliases = [];
+            vm.alias = '';
 
             var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id', 'cluster'];
             Object.keys(vm.curOrg).forEach(function (key) {
@@ -93,24 +93,15 @@
             });
         };
 
-      // Add other ID to a temp array
+        // Add new alias
         vm.addNameAlias= function () {
             if (vm.alias) {
-                for (var i = 0; i < vm.addedNameAliases.length; i++) {
-
-                    if(vm.alias.toUpperCase() == vm.addedNameAliases[i].name.toUpperCase() && vm.addedNameAliases[i]._destroy == false ) {
-                        alert('Alias already exists, please enter other alias');
-                        exit;
-                    }
+                var aliasIndex = Common.indexOfObjectInJsonArray(vm.addedNameAliases, 'name', vm.alias);
+                if (aliasIndex == -1) {
+                    var newAlias = {name: vm.alias, _destroy: false};
+                    vm.addedNameAliases.unshift(newAlias);
                 }
-                var newId = {};
-                newId.name = vm.alias;
-                newId._destroy = false;
-                vm.addedNameAliases.push(newId);
-                console.log()
-                vm.alias=null;
-            } else {
-                alert('Please enter alias');
+                vm.alias = '';
             }
         };
         // Delete the associations
