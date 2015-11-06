@@ -744,9 +744,13 @@ var projectMethods = function() {
         });
     };
 
-
+    /********************************************
+     * Method: isTextPresent
+     * @param textToVerify
+     * @returns {boolean}
+     */
     this.isTextPresent = function(textToVerify){
-      if(browser.getPageSource().contains(textToVerify)){
+      if(element.all(by.xpath('//*[contains(text(),'+textToVerify+')]'))){
           return true;
       }  else{
           return false;

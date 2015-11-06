@@ -29,6 +29,7 @@ module.exports = function() {
     var createdOrgAffiPerson = '';
     var createdOrgAffiFamily = '';
     var iteraCnt = '';
+    var delErrMsg = 'This organization cannot be deleted';
     var sourceStatus = 'Pending';
     var addressEdited = '9605 Medical Center Drive';
     var address2Edited = '1988 S 16th add2 Edited';
@@ -260,17 +261,6 @@ module.exports = function() {
         addOrg.clickDeleteNow();
         helper.wait_for(300);
 
-        /*
-        //var selectOrgAffiPers = createdOrgAffiPerson;
-        menuItem.clickOrganizations();
-        menuItem.clickListOrganizations();
-        Search.setOrgName(createdOrgAffiPerson);
-        Search.clickSearchButton();
-        element(by.linkText(createdOrgAffiPerson)).click();
-        helper.wait_for(5000)
-        addOrg.clickDelete();
-        helper.wait_for(300);
-        addOrg.clickDeleteNow(); */
         browser.sleep(250).then(callback);
     });
 
@@ -285,9 +275,38 @@ module.exports = function() {
         searchOrg.setOrgName(createdOrgAffiPerson);
         searchOrg.clickSearchButton();
         helper.wait_for(100);
-        var resultStatusPerson = expect(projectFunctions.inSearchResults(value)).to.become('true');
-        console.log('result status person:'+resultStatusPerson+'');
+        var resultStatusPerson = projectFunctions.isTextPresent(createdOrgAffiPerson);
+        console.log('Search Result Status Person:'+resultStatusPerson+'');
+
+        menuItem.clickOrganizations();
+        menuItem.clickListOrganizations();
+        searchOrg.setOrgName(createdOrgAffiFamily);
+        searchOrg.clickSearchButton();
+        helper.wait_for(100);
+        var resultStatusFamily = projectFunctions.isTextPresent(createdOrgAffiFamily);
+        console.log('Search Result Status Family:'+resultStatusFamily+'');
+
+        if (resultStatusPerson == true){
+            arg1 == true;
+            console.log('System unable to delete the Organization:['+createdOrgAffiPerson+'] and ' +
+                'the identified organization affiliated with a Person and the search result status is:['+resultStatusPerson+']');
+        } else{
+            arg1 == false;
+            console.error('System deleted the Organization:['+createdOrgAffiPerson+'] and ' +
+                'the identified organization affiliated with a Person and the search result status is:['+resultStatusPerson+']');
+        };
+
+        if (resultStatusFamily == true){
+            arg1 == true;
+            console.log('System unable to delete the Organization:['+createdOrgAffiFamily+'] and ' +
+                'the identified organization affiliated with a Family and the search result status is:['+resultStatusFamily+']');
+        } else{
+            arg1 == false;
+            console.error('System deleted the Organization:['+createdOrgAffiFamily+'] and ' +
+                'the identified organization affiliated with a Family and the search result status is:['+resultStatusFamily+']');
+        };
         browser.sleep(250).then(callback);
+        //callback();
     });
 
 
