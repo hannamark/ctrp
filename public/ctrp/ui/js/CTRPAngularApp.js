@@ -561,8 +561,14 @@
                     label: 'Trial Detail'
                 }
             });
-        }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService) {
-            console.log('running ctrp angular app');
+        }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService, LocalCacheService) {
+
+            $rootScope.$on('stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+                var statesNotRequiringGsa = ['main.sign_in', 'main.sign_up', 'main.gsa'];
+                if (statesNotRequiringGsa.indexOf(toState.name) == -1 && LocalCacheService.getCacheWithKey("gsaFlag") !== 'Accept') {
+                    $state.go('main.gsa');
+                }
+            });
 
             $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
