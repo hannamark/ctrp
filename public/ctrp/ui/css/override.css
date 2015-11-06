@@ -618,3 +618,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 .nonselectable-row, .nonselectable-row a {
     color: #444 !important;
 }
+
+.form-horizontal .has-feedback .select-feedback {
+    right: 15px;
+}

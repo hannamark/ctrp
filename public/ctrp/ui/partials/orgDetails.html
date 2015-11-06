@@ -140,7 +140,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.address)}">
+                                <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.address)}">
                                     <label class="control-label col-xs-12 col-xs-12 col-sm-3">Address 1:</label>
                                     <div class="col-xs12 col-sm-6">
                                         <input type="text" restriction-field class="form-control input-sm" id="address" ng-model="orgDetailView.curOrg.address" name="address" required>
@@ -154,7 +154,7 @@
                                         <input type="text" restriction-field class="form-control input-sm" id="address2" ng-model="orgDetailView.curOrg.address2">
                                     </div>
                                 </div>
-                                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.country)}">
+                                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.country)}">
                                     <label class="control-label col-xs-12 col-sm-3">Country:</label>
                                     <div class="col-xs-12 col-sm-6">
                                         <select restriction-field class="form-control input-sm" id="country"
@@ -163,6 +163,7 @@
                                             <option value="" ng-selected="orgDetailView.curOrg.country == ''">Select a country</option>
                                             <option ng-repeat="country in orgDetailView.countriesArr track by $index" value="{{country.name}}" ng-selected="orgDetailView.curOrg.country == country.name">{{country.name}}</option>
                                         </select>
+                                        <span class="form-control-feedback select-feedback" ng-show="organization_form.country.$dirty" ng-class="!ctrpbtn.organization_form.needsAttention(organization_form.country) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                         <span class="help-block" ng-show="organization_form.country.$invalid">Country is Required</span>
                                     </div>
                                 </div>
@@ -175,7 +176,7 @@
                                         </select>
                                     </div>
                                 </div>
-                               <div class="form-group required"  ng-class="{'has-error': (ctrpbtn.organization_form.needsAttention(organization_form.city) || ctrpbtn.organization_form.needsAttention(organization_form.postal_code))}">
+                               <div class="form-group has-feedback required"  ng-class="{'has-error': (ctrpbtn.organization_form.needsAttention(organization_form.city) || ctrpbtn.organization_form.needsAttention(organization_form.postal_code))}">
                                     <label class="control-label col-xs-12 col-sm-3">City:</label>
                                     <div class="col-xs-12 col-sm-2">
                                         <input type="text" restriction-field class="form-control input-sm" id="city" ng-model="orgDetailView.curOrg.city" required name="city">
@@ -183,7 +184,7 @@
                                         <span class="help-block" ng-show="organization_form.city.$error.required">City is Required</span>
                                     </div>
 
-                                    <label class="control-label col-xs-12 col-sm-2">Postal Code:</label>
+                                    <label class="control-label has-feedback col-xs-12 col-sm-2">Postal Code:</label>
                                     <div class="col-xs-12 col-sm-2">
                                         <input type="text" restriction-field class="form-control input-sm" id="postal_code" ng-model="orgDetailView.curOrg.postal_code" placeholder="Postal Code" name="postal_code" ng-required="orgDetailView.curOrg.country==='United States'">
                                         <span class="form-control-feedback" ng-show="organization_form.postal_code.$dirty" ng-class="!ctrpbtn.organization_form.needsAttention(organization_form.postal_code) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
