@@ -140,12 +140,13 @@
          * Log out user from backend as well as removing local cache
          */
         this.logout = function () {
-            Common.broadcastMsg('loggedOut');
+
             var username = LocalCacheService.getCacheWithKey("username");
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: "Angular"})
                 .then(function (data) {
                     if (data.success) {
                         LocalCacheService.clearAllCache();
+                        Common.broadcastMsg('loggedOut');
                         toastr.success('Success', 'Successfully logged out');
 
                         $timeout(function () {
@@ -348,6 +349,7 @@
                     templateUrl: '/ctrp/ui/partials/modals/gsa.html',
                     controller: 'gsaModalCtrl as gsaView',
                     size: 'lg',
+                    backdrop: 'static',
                     resolve: {
                         UserService: 'UserService',
                         gsaObj: function (UserService) {
