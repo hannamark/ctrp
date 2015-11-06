@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Lead Protocol Identifier:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" id="lead_protocol_id" name="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id" required autofocus>
+                                <input type="text" restriction-field class="form-control input-sm" id="lead_protocol_id" name="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id" required autofocus>
                                 <p ng-show="trial_form.lead_protocol_id.$error.required && trial_form.lead_protocol_id.$dirty" class="help-inline text-danger">
                                     Lead Protocol Identifier is required
                                 </p>
@@ -58,7 +58,7 @@
                                     <tr>
                                         <td class="col-md-4">
                                             <div>
-                                                <select class="form-control input-sm" id="protocol_id_origin" ng-model="trialDetailView.protocol_id_origin_id">
+                                                <select restriction-field class="form-control input-sm" id="protocol_id_origin" ng-model="trialDetailView.protocol_id_origin_id">
                                                     <option value="">-Select an Origin-</option>
                                                     <option ng-repeat="origin in trialDetailView.protocolIdOriginArr" value="{{origin.id}}">
                                                         {{origin.name}}
@@ -66,14 +66,14 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td class="col-md-7">
+                                        <td class="col-md-6">
                                             <div>
-                                                <input type="text" class="form-control input-sm" id="protocol_id" ng-model="trialDetailView.protocol_id" />
+                                                <input restriction-field type="text" class="form-control input-sm" id="protocol_id" ng-model="trialDetailView.protocol_id" />
                                             </div>
                                         </td>
-                                        <td class="col-md-1">
+                                        <td class="col-md-2">
                                             <div>
-                                                <button class="btn btn-primary" ng-click="trialDetailView.addOtherId()">
+                                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addOtherId()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -90,9 +90,9 @@
                                     <tbody>
                                     <tr ng-repeat="otherId in trialDetailView.addedOtherIds track by $index" ng-class="otherId._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                         <td class="col-md-4">{{otherId.protocol_id_origin_name}}</td>
-                                        <td class="col-md-7">{{otherId.protocol_id}}</td>
-                                        <td class="col-md-1" style="vertical-align: middle">
-                                            <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'other_id')">
+                                        <td class="col-md-6">{{otherId.protocol_id}}</td>
+                                        <td class="col-md-2" style="vertical-align: middle">
+                                            <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'other_id')">
                                                 <i ng-class="otherId._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>
@@ -112,7 +112,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Official Title:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <textarea class="form-control input-sm" id="official_title" name="official_title" ng-model="trialDetailView.curTrial.official_title" required />
+                                <textarea restriction-field class="form-control input-sm" id="official_title" name="official_title" ng-model="trialDetailView.curTrial.official_title" required />
                                 <p ng-show="trial_form.official_title.$error.required && trial_form.official_title.$dirty" class="help-inline text-danger">
                                     Official Title is required
                                 </p>
@@ -122,7 +122,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Phase:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <select class="form-control input-sm" id="phase" name="phase" ng-model="trialDetailView.curTrial.phase_id"
+                                <select restriction-field class="form-control input-sm" id="phase" name="phase" ng-model="trialDetailView.curTrial.phase_id"
                                         ng-options="phase.id as phase.name for phase in trialDetailView.phaseArr" required>
                                     <option value="">-Select a Phase-</option>
                                 </select>
@@ -135,15 +135,15 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Pilot?</label>
                             <div class="col-xs-12 col-sm-9">
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.pilot" value="No"> No</label>
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.pilot" value="Yes"> Yes</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.pilot" value="No"> No</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.pilot" value="Yes"> Yes</label>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Research Category:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <select class="form-control input-sm" id="research_category" name="research_category" ng-model="trialDetailView.curTrial.research_category_id"
+                                <select restriction-field class="form-control input-sm" id="research_category" name="research_category" ng-model="trialDetailView.curTrial.research_category_id"
                                         ng-options="category.id as category.name for category in trialDetailView.researchCategoryArr" required>
                                     <option value="">-Select a Research Category-</option>
                                 </select>
@@ -156,7 +156,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Primary Purpose:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <select class="form-control input-sm" id="primary_purpose" name="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id"
+                                <select restriction-field class="form-control input-sm" id="primary_purpose" name="primary_purpose" ng-model="trialDetailView.curTrial.primary_purpose_id"
                                         ng-options="primaryPurpose.id as primaryPurpose.name for primaryPurpose in trialDetailView.primaryPurposeArr"
                                         ng-change="trialDetailView.watchOption('primary_purpose')" required>
                                     <option value="">-Select a Primary Purpose-</option>
@@ -170,14 +170,14 @@
                         <div ng-show="trialDetailView.showPrimaryPurposeOther" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Describe "Other" Primary Purpose:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <textarea class="form-control input-sm" id="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other" />
+                                <textarea restriction-field class="form-control input-sm" id="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Secondary Purpose:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <select class="form-control input-sm" id="secondary_purpose" name="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id"
+                                <select restriction-field class="form-control input-sm" id="secondary_purpose" name="secondary_purpose" ng-model="trialDetailView.curTrial.secondary_purpose_id"
                                         ng-options="secondaryPurpose.id as secondaryPurpose.name for secondaryPurpose in trialDetailView.secondaryPurposeArr"
                                         ng-change="trialDetailView.watchOption('secondary_purpose')">
                                     <option value="">-Select a Secondary Purpose-</option>
@@ -188,14 +188,14 @@
                         <div ng-show="trialDetailView.showSecondaryPurposeOther" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Describe "Other" Secondary Purpose:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <textarea class="form-control input-sm" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other" />
+                                <textarea restriction-field class="form-control input-sm" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Accrual Disease Terminology:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <select class="form-control input-sm" id="accrual_disease_term" name="accrual_disease_term" ng-model="trialDetailView.curTrial.accrual_disease_term_id"
+                                <select restriction-field class="form-control input-sm" id="accrual_disease_term" name="accrual_disease_term" ng-model="trialDetailView.curTrial.accrual_disease_term_id"
                                         ng-options="term.id as term.name for term in trialDetailView.accrualDiseaseTermArr" required>
                                     <option value="">-Select an Accrual Disease Terminology-</option>
                                 </select>
@@ -250,7 +250,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Responsible Party:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <select class="form-control input-sm" id="responsible_party" name="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id"
+                                <select restriction-field class="form-control input-sm" id="responsible_party" name="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id"
                                         ng-options="responsibleParty.id as responsibleParty.name for responsibleParty in trialDetailView.responsiblePartyArr"
                                         ng-change="trialDetailView.watchOption('responsible_party')" required>
                                     <option value="">-Select a Responsible Party-</option>
@@ -274,7 +274,7 @@
                         <div ng-show="trialDetailView.showInvestigator" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Investigator Title:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" id="investigator_title" ng-model="trialDetailView.curTrial.investigator_title">
+                                <input type="text" restriction-field class="form-control input-sm" id="investigator_title" ng-model="trialDetailView.curTrial.investigator_title">
                             </div>
                         </div>
 
@@ -303,10 +303,10 @@
 
                         <div ng-repeat="fs in trialDetailView.addedFses track by $index" class="form-group">
                             <div class="col-xs-12 col-sm-3"></div>
-                            <div class="col-xs-12 col-sm-8">
+                            <div class="col-xs-12 col-sm-6">
                                 <input type="text" class="form-control input-sm" ng-class="fs._destroy == true ? 'deleted-text animated-item' : 'animated-item'" disabled value="{{fs.organization_name}}"/>
                             </div>
-                            <label class="col-xs-12 col-sm-1 btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'funding_source')">
+                            <label restriction-field class="col-xs-12 col-sm-1 btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'funding_source')">
                                 <i ng-class="fs._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                             </label>
                         </div>
@@ -314,7 +314,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Program code:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" id="program_code" ng-model="trialDetailView.curTrial.program_code">
+                                <input type="text" restriction-field class="form-control input-sm" id="program_code" ng-model="trialDetailView.curTrial.program_code">
                             </div>
                         </div>
                     </uib-accordion-group>
@@ -327,8 +327,8 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Is this trial funded by an NCI grant?</label>
                             <div class="col-xs-12 col-sm-9">
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.grant_question" value="Yes"> Yes</label>
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.grant_question" value="No"> No</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.grant_question" value="Yes"> Yes</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.grant_question" value="No"> No</label>
                             </div>
                         </div>
 
@@ -346,7 +346,7 @@
                                     <tr>
                                         <td class="col-md-2">
                                             <div>
-                                                <select class="form-control input-sm" id="funding_mechanism" ng-model="trialDetailView.funding_mechanism">
+                                                <select restriction-field class="form-control input-sm" id="funding_mechanism" ng-model="trialDetailView.funding_mechanism">
                                                     <option value="">-Select-</option>
                                                     <option ng-repeat="mechanism in trialDetailView.fundingMechanismArr" value="{{mechanism.code}}">
                                                         {{mechanism.code}}
@@ -356,7 +356,7 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div>
-                                                <select class="form-control input-sm" id="institute_code" ng-model="trialDetailView.institute_code">
+                                                <select restriction-field class="form-control input-sm" id="institute_code" ng-model="trialDetailView.institute_code">
                                                     <option value="">-Select-</option>
                                                     <option ng-repeat="institute in trialDetailView.instituteCodeArr" value="{{institute.code}}">
                                                         {{institute.code}}
@@ -366,12 +366,12 @@
                                         </td>
                                         <td class="col-md-3">
                                             <div>
-                                                <input class="form-control input-sm" id="serial_number" ng-model="trialDetailView.serial_number" />
+                                                <input restriction-field class="form-control input-sm" id="serial_number" ng-model="trialDetailView.serial_number" />
                                             </div>
                                         </td>
                                         <td class="col-md-4">
                                             <div>
-                                                <select class="form-control input-sm" id="nci" ng-model="trialDetailView.nci">
+                                                <select restriction-field class="form-control input-sm" id="nci" ng-model="trialDetailView.nci">
                                                     <option value="">-Select-</option>
                                                     <option ng-repeat="nci in trialDetailView.nciArr" value="{{nci.code}}">
                                                         {{nci.code}}
@@ -381,7 +381,7 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div>
-                                                <button class="btn btn-primary" ng-click="trialDetailView.addGrant()">
+                                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addGrant()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -404,7 +404,7 @@
                                         <td class="col-md-3">{{grant.serial_number}}</td>
                                         <td class="col-md-4">{{grant.nci}}</td>
                                         <td class="col-md-1" style="vertical-align: middle">
-                                            <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'grant')">
+                                            <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'grant')">
                                                 <i ng-class="grant._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>
@@ -436,7 +436,7 @@
                                                 <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.status_date"
                                                        is-open="trialDetailView.status_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'status_date')">
+                                                    <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'status_date')">
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                                 </span>
@@ -444,7 +444,7 @@
                                         </td>
                                         <td class="col-md-4">
                                             <div>
-                                                <select class="form-control input-sm" id="trial_status" ng-model="trialDetailView.trial_status_id"  ng-change="trialDetailView.watchOption('trial_status')">
+                                                <select restriction-field class="form-control input-sm" id="trial_status" ng-model="trialDetailView.trial_status_id"  ng-change="trialDetailView.watchOption('trial_status')">
                                                     <option value="">-Select a Trial Status-</option>
                                                     <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" value="{{trialStatus.id}}">
                                                         {{trialStatus.name}}
@@ -459,7 +459,7 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div>
-                                                <button class="btn btn-primary" ng-click="trialDetailView.addStatus()">
+                                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addStatus()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -481,7 +481,7 @@
                                         <td class="col-md-4">{{status.trial_status_name}}</td>
                                         <td class="col-md-4">{{status.why_stopped}}</td>
                                         <td class="col-md-1" style="vertical-align: middle">
-                                            <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
+                                            <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
                                                 <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>
@@ -504,15 +504,15 @@
                                     <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.start_date"
                                            is-open="trialDetailView.start_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'start_date')">
+                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'start_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                     </span>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-6">
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Actual"> Actual</label>
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.start_date_qual" value="Anticipated"> Anticipated</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.start_date_qual" value="Actual"> Actual</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.start_date_qual" value="Anticipated"> Anticipated</label>
                             </div>
                         </div>
 
@@ -523,15 +523,15 @@
                                     <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.primary_comp_date"
                                            is-open="trialDetailView.primary_comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'primary_comp_date')">
+                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'primary_comp_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                     </span>
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Actual"> Actual</label>
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Anticipated"> Anticipated</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Actual"> Actual</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Anticipated"> Anticipated</label>
                             </div>
                         </div>
 
@@ -542,15 +542,15 @@
                                     <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.comp_date"
                                            is-open="trialDetailView.comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'comp_date')">
+                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'comp_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                     </span>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-6">
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Actual"> Actual</label>
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.comp_date_qual" value="Anticipated"> Anticipated</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.comp_date_qual" value="Actual"> Actual</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.comp_date_qual" value="Anticipated"> Anticipated</label>
                             </div>
                         </div>
                     </uib-accordion-group>
@@ -575,7 +575,7 @@
                                     <tr>
                                         <td class="col-md-2">
                                             <div>
-                                                <select class="form-control input-sm" id="ind_ide_type" ng-model="trialDetailView.ind_ide_type" ng-change="trialDetailView.watchOption('ind_ide_type')">
+                                                <select restriction-field class="form-control input-sm" id="ind_ide_type" ng-model="trialDetailView.ind_ide_type" ng-change="trialDetailView.watchOption('ind_ide_type')">
                                                     <option value="">-Select-</option>
                                                     <option value="IND">IND</option>
                                                     <option value="IDE">IDE</option>
@@ -584,12 +584,12 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div>
-                                                <input class="form-control input-sm" id="ind_ide_number" ng-model="trialDetailView.ind_ide_number" />
+                                                <input restriction-field class="form-control input-sm" id="ind_ide_number" ng-model="trialDetailView.ind_ide_number" />
                                             </div>
                                         </td>
                                         <td class="col-md-2">
                                             <div>
-                                                <select class="form-control input-sm" id="grantor" ng-model="trialDetailView.grantor">
+                                                <select restriction-field class="form-control input-sm" id="grantor" ng-model="trialDetailView.grantor">
                                                     <option value="">-Select-</option>
                                                     <option ng-repeat="grantor in trialDetailView.grantorArr" value="{{grantor}}">
                                                         {{grantor}}
@@ -599,7 +599,7 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div>
-                                                <select class="form-control input-sm" id="holder_type" ng-model="trialDetailView.holder_type_id" ng-change="trialDetailView.watchOption('holder_type')">
+                                                <select restriction-field class="form-control input-sm" id="holder_type" ng-model="trialDetailView.holder_type_id" ng-change="trialDetailView.watchOption('holder_type')">
                                                     <option value="">-Select-</option>
                                                     <option ng-repeat="holderType in trialDetailView.holderTypeArr" value="{{holderType.id}}">
                                                         {{holderType.name}}
@@ -609,7 +609,7 @@
                                         </td>
                                         <td class="col-md-3">
                                             <div>
-                                                <select class="form-control input-sm" id="nih_nci" ng-model="trialDetailView.nih_nci">
+                                                <select restriction-field class="form-control input-sm" id="nih_nci" ng-model="trialDetailView.nih_nci">
                                                     <option value="">-Select-</option>
                                                     <option ng-repeat="nihNci in trialDetailView.nihNciArr" value="{{nihNci.code}}">
                                                         {{nihNci.code}}
@@ -619,7 +619,7 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div>
-                                                <button class="btn btn-primary" ng-click="trialDetailView.addIndIde()">
+                                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addIndIde()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -644,7 +644,7 @@
                                         <td class="col-md-2">{{indIde.holder_type_name}}</td>
                                         <td class="col-md-3">{{indIde.nih_nci}}</td>
                                         <td class="col-md-1" style="vertical-align: middle">
-                                            <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'ind_ide')">
+                                            <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'ind_ide')">
                                                 <i ng-class="indIde._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>
@@ -662,7 +662,7 @@
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Trial Oversight Authority:</label>
-                            <div class="col-xs-12 col-sm-9">
+                            <div class="col-xs-12 col-sm-6">
                                 <table class="table table-striped table-condensed">
                                     <thead>
                                     <th>Country</th>
@@ -673,23 +673,23 @@
                                     <tr>
                                         <td class="col-md-4">
                                             <div>
-                                                <select class="form-control input-sm" id="authority_country" ng-model="trialDetailView.authority_country" ng-change="trialDetailView.watchOption('authority_country')">
+                                                <select restriction-field class="form-control input-sm" id="authority_country" ng-model="trialDetailView.authority_country" ng-change="trialDetailView.watchOption('authority_country')">
                                                     <option value="">-Select a Country-</option>
                                                     <option ng-repeat="country in trialDetailView.countryArr track by $index" value="{{country.name}}" ng-selected="trialDetailView.curTrial.authority_country == country.name">{{country.name}}</option>
                                                 </select>
                                             </div>
                                         </td>
-                                        <td class="col-md-7">
+                                        <td class="col-md-6">
                                             <div>
-                                                <select class="form-control input-sm" id="authority_org" ng-model="trialDetailView.authority_org">
+                                                <select restriction-field class="form-control input-sm" id="authority_org" ng-model="trialDetailView.authority_org">
                                                     <option value="">-Select an Organization-</option>
                                                     <option ng-repeat="org in trialDetailView.authorityOrgArr track by $index" value="{{org}}" ng-selected="trialDetailView.curTrial.authority_org == org">{{org}}</option>
                                                 </select>
                                             </div>
                                         </td>
-                                        <td class="col-md-1">
+                                        <td class="col-md-2">
                                             <div>
-                                                <button class="btn btn-primary" ng-click="trialDetailView.addAuthority()">
+                                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addAuthority()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -706,9 +706,9 @@
                                     <tbody>
                                     <tr ng-repeat="authority in trialDetailView.addedAuthorities track by $index" ng-class="authority._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                         <td class="col-md-4">{{authority.country}}</td>
-                                        <td class="col-md-7">{{authority.organization}}</td>
-                                        <td class="col-md-1" style="vertical-align: middle">
-                                            <label class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'authority')">
+                                        <td class="col-md-6">{{authority.organization}}</td>
+                                        <td class="col-md-2" style="vertical-align: middle">
+                                            <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'authority')">
                                                 <i ng-class="authority._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>
@@ -721,24 +721,24 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">FDA Regulated Intervention Indicator:</label>
                             <div class="col-xs-12 col-sm-9">
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.intervention_indicator" value="No"> No</label>
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.intervention_indicator" value="Yes"> Yes</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.intervention_indicator" value="No"> No</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.intervention_indicator" value="Yes"> Yes</label>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Section 801 Indicator:</label>
                             <div class="col-xs-12 col-sm-9">
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.sec801_indicator" value="No"> No</label>
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.sec801_indicator" value="Yes" ng-disabled="trialDetailView.curTrial.intervention_indicator == 'No'"> Yes</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.sec801_indicator" value="No"> No</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.sec801_indicator" value="Yes" ng-disabled="trialDetailView.curTrial.intervention_indicator == 'No'"> Yes</label>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Data Monitoring Committee Appointed Indicator:</label>
                             <div class="col-xs-12 col-sm-9">
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="No"> No</label>
-                                <label class="radio-inline"><input type="radio" ng-model="trialDetailView.curTrial.data_monitor_indicator" value="Yes"> Yes</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator" value="No"> No</label>
+                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator" value="Yes"> Yes</label>
                             </div>
                         </div>
                     </uib-accordion-group>
@@ -751,7 +751,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
                             <div class="col-sm-9 form-file-upload">
-                                <input type="file" ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB">
                             </div>
                         </div>
 
@@ -759,14 +759,14 @@
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
-                                <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">IRB Approval:</label>
                             <div class="col-sm-9 form-file-upload">
-                                <input type="file" ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB">
                             </div>
                         </div>
 
@@ -774,14 +774,14 @@
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
-                                <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">List of Participating Sites:</label>
                             <div class="col-sm-9 form-file-upload">
-                                <input type="file" ngf-select ng-model="trialDetailView.participating_sites" name="participating_sites" ngf-max-size="10MB">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.participating_sites" name="participating_sites" ngf-max-size="10MB">
                             </div>
                         </div>
 
@@ -789,14 +789,14 @@
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
-                                <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Informed Consent Document:</label>
                             <div class="col-sm-9 form-file-upload">
-                                <input type="file" ngf-select ng-model="trialDetailView.informed_consent" name="informed_consent" ngf-max-size="10MB">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.informed_consent" name="informed_consent" ngf-max-size="10MB">
                             </div>
                         </div>
 
@@ -804,7 +804,7 @@
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
-                                <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
@@ -812,14 +812,14 @@
                             <div class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3">Other:</label>
                                 <div class="col-sm-3 form-file-upload">
-                                    <input type="file" ngf-select ng-model="trialDetailView.other_documents[$index]" name="other_documents" ngf-max-size="10MB">
+                                    <input type="file" restriction-field ngf-select ng-model="trialDetailView.other_documents[$index]" name="other_documents" ngf-max-size="10MB">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3"></label>
                                 <div class=" col-xs-12 col-sm-6">
-                                    <input type="text" class="form-control input-sm" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Please describe other document">
+                                    <input type="text" restriction-field class="form-control input-sm" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Please describe other document">
                                 </div>
                             </div>
                         </div>
@@ -827,7 +827,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
-                                <button class="btn btn-primary" ng-click="trialDetailView.addOtherDoc()">
+                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addOtherDoc()">
                                     <i class="glyphicon glyphicon-plus"></i> Add More ...
                                 </button>
                             </div>
@@ -837,7 +837,7 @@
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
-                                <span ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                                 <br>{{document.document_subtype}}
                             </div>
                         </div>
