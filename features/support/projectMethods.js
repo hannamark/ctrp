@@ -743,5 +743,18 @@ var projectMethods = function() {
             });
         });
     };
+
+
+    this.isTextPresent = function(textToVerify){
+      if(browser.getPageSource().contains(textToVerify)){
+          return true;
+      }  else{
+          return false;
+      }
+    };
+
+
+
+
 };
 module.exports = projectMethods;

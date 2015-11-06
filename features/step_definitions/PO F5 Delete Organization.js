@@ -280,8 +280,14 @@ module.exports = function() {
     });
 
     this.Then(/^the Delete operation will stop and the error message "([^"]*)" will be displayed$/, function (arg1, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback();
+        menuItem.clickOrganizations();
+        menuItem.clickListOrganizations();
+        searchOrg.setOrgName(createdOrgAffiPerson);
+        searchOrg.clickSearchButton();
+        helper.wait_for(100);
+        var resultStatusPerson = expect(projectFunctions.inSearchResults(value)).to.become('true');
+        console.log('result status person:'+resultStatusPerson+'');
+        browser.sleep(250).then(callback);
     });
 
 
