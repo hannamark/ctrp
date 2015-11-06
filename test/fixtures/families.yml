@@ -35,3 +35,19 @@ two:
   family_type: four
   lock_version: 1
   ctrp_id: 65000010
+
+three:
+  id: 65000005
+  name: "Arizona Cancer Center"
+  family_status: two
+  family_type: three
+  lock_version: 1
+  ctrp_id: 65000005
+
+four:
+  id: 65000025
+  name: "Yale Cancer Center"
+  family_status: one
+  family_type: two
+  lock_version: 1
+  ctrp_id: 65000025
