@@ -11,7 +11,7 @@ class FamiliesControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:families)
   end
-
+=begin
   test "should create family" do
     @family = Family.new
     @family = { name: "Test Family", family_status_id: family_statuses(:two).id, family_type_id: family_types(:one).id}
@@ -23,7 +23,7 @@ class FamiliesControllerTest < ActionController::TestCase
     assert_template :show
     assert_response :created
   end
-
+=end
 
   test "should show family" do
     get :show, id: @family, format: "json"
