@@ -11,16 +11,19 @@ class FamiliesControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:families)
   end
-=begin
+
   test "should create family" do
+    @family = Family.new
+    @family = { name: "Test Family", family_status_id: family_statuses(:two).id, family_type_id: family_types(:one).id}
+    puts "New family: #{@family.inspect}"
     assert_difference('Family.count') do
-      post :create, family: { name: @family.name, family_status_id: @family.family_status_id, family_type_id: @family.family_type_id},  format: "json"
+      post :create, family: @family,  format: "json"
      end
 
     assert_template :show
     assert_response :created
   end
-=end
+
 
   test "should show family" do
     get :show, id: @family, format: "json"
