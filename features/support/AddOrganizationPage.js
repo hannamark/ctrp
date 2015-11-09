@@ -28,11 +28,13 @@ AddOrganizationsPage = function(){
     this.addEmail = element(by.model('orgDetailView.curOrg.email'));
     this.addPhone = element(by.model('orgDetailView.curOrg.phone'));
     this.addFax = element(by.model('orgDetailView.curOrg.fax'));
+    this.addVerifyOrgFamilyName = element(by.binding('family.name'));
     this.saveButton = element(by.id('save_btn')); //element(by.css('input[value="Save"]'));
     this.clearButton = element(by.css('#clear_btn'));//element(by.css('input[value="Reset"]'));by.id('reset_btn')
     this.resetButton = element(by.css('#reset_btn'));
     this.cancelButton = element(by.css('.btn.btn-default'));
     this.deleteButton = element(by.css('.btn.btn-danger'));
+    this.deleteNowButton = element(by.buttonText('Delete Now'));
     this.orgLastUpdatedBy = element(by.binding('orgDetailView.curOrg.updated_by'));
     this.orgCreatedBy = element(by.binding('orgDetailView.curOrg.created_by'));
     this.addVerifyAddHeader = element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
@@ -101,6 +103,10 @@ AddOrganizationsPage = function(){
 
     this.clickDelete = function(){
         addOrg.clickButton(this.deleteButton,"Delete button on Organization page");
+    };
+
+    this.clickDeleteNow = function(){
+        addOrg.clickButton(this.deleteNowButton,"Delete button on Organization page");
     };
 
     this.clickReset = function(){

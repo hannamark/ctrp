@@ -60,17 +60,25 @@
 
         function listenToLoginEvent() {
             $scope.$on('signedIn', function() {
-                vm.signedIn = UserService.isLoggedIn();
-                vm.username = UserService.getLoggedInUsername();
-                vm.userRole = UserService.getUserRole().split("_")[1].toLowerCase(); //e.g. super
-                vm.isCurationEnabled = UserService.isCurationModeEnabled();
-                vm.isCurationModeSupported = UserService.isCurationSupported();
+                pullUserInfo();
             });
 
             $scope.$on('loggedOut', function() {
-              //do something if necessary on log out
+                console.log('logged out!!');
+                pullUserInfo();
+                // vm.signedIn = false;
             });
         } //listenToLoginEvent
+
+
+        function pullUserInfo() {
+            vm.signedIn = UserService.isLoggedIn();
+            vm.username = UserService.getLoggedInUsername();
+            vm.userRole = UserService.getUserRole().split("_")[1] || '';
+            vm.userRole = !!vm.userRole ? vm.userRole.toLowerCase() : ''; //e.g. super
+            vm.isCurationEnabled = UserService.isCurationModeEnabled();
+            vm.isCurationModeSupported = UserService.isCurationSupported();
+        } //pullUserInfo
 
 
         /**
@@ -163,7 +171,7 @@
                 }
             }, true);
         }
-        
+
 
     };
 

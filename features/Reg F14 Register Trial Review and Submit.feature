@@ -77,3 +77,15 @@ When I have selected Register Trial
 Then all registration information will be entered in CTRP
 And the trial status will be Submitted
 And the trial milestone Submission Received Date will be created with the current date and time
+And the trial record will have the NCI Identifer with the format NCI-YYYY-NNNNN 
+
+Scenario: #4 I can edit my completed trial registration
+Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
+When I have performed the Review Trial action without errors
+Then I will have the option to continue editing by trial registration
+
+Scenario: #5 I can print my completed trial registration
+Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
+When I have performed the Review Trial action without errors
+Then I will have the option to print a summary of my trial registration
+And after printing I will have the options Submit and Edit
