@@ -157,7 +157,7 @@ class Person < ActiveRecord::Base
 
   scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value,user_role) {
+  scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       where("people.#{column} ilike ?", "%#{value[1..str_len - 1]}")
@@ -166,7 +166,7 @@ class Person < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       where("people.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      if user_role != "ROLE_CURATOR"
+      if !wc_search
 
         if !value.match(/\s/).nil?
         value=value.gsub! /\s+/, '%'

@@ -18,6 +18,7 @@
             lname: "",
             //po_id: "",
             //ctrp_id: "",
+            wc_search:true,
             source_context: "", //default
             source_id: "",
             source_status: "",
@@ -167,6 +168,11 @@
          * @return initPersonSearchParams
          */
         function getInitialPersonSearchParams() {
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            var curator_role = "curator";
+            if(!(user_role.toUpperCase() == curator_role.toUpperCase())) {
+                initPersonSearchParams.wc_search = false;
+            }
             return initPersonSearchParams;
         } //getInitialPersonSearchParams
 
