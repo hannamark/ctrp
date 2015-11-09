@@ -1,4 +1,4 @@
-@Admin
+@Admin @Global
 Feature: ADMIN F07 Accrual Access Assignment By Trial
 
 As a CTRP User with Administration privileges, I can view and manage accrual access

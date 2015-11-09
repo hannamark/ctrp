@@ -1,4 +1,4 @@
-@Admin
+@Admin @Global
 Feature: ADMIN F04 Site Administration
 
 As a CTRP User with Administration privileges, I can grant Site Administrator privileges to CTRP Users with the same site affiliation

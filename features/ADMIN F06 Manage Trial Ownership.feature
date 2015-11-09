@@ -1,4 +1,4 @@
-@Admin
+@Admin @Global
 Feature: ADMIN F06 Manage Trial Ownership
 
 As a CTRP User with Administration privileges, I can grant Trial Ownership privileges to CTRP Users with the same site affiliation
