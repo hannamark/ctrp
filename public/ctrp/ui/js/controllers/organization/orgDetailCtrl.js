@@ -169,11 +169,9 @@
         function filterSourceContext() {
             var clonedSourceContextArr = angular.copy(vm.sourceContextArr);
             if (!vm.curOrg.new) {
-                //delete CTEP and NLM from source context array
                 var curOrgSourceContextIndex = Common.indexOfObjectInJsonArray(clonedSourceContextArr, 'id', vm.curOrg.source_context_id);
                 // _.findWhere(vm.sourceContextArr, {id: vm.curOrg.source_context_id});
                 vm.curSourceContextName = curOrgSourceContextIndex > -1 ? vm.sourceContextArr[curOrgSourceContextIndex].name : '';
-                console.log('source context name: ' + vm.curSourceContextName);
             } else {
                 vm.curSourceContextName = 'CTRP'; //CTRP is the only source context available to new organization
                 vm.ctrpSourceContextIndex = Common.indexOfObjectInJsonArray(vm.sourceContextArr, 'code', 'CTRP');
@@ -182,8 +180,7 @@
             //delete 'CTEP' and 'NLM' from the sourceContextArr
             vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'CTEP'}));
             vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'NLM'}));
-
-            console.log('sourceContextObj: ' + JSON.stringify(sourceContextObj));
+            vm.curOrgEditable = vm.curSourceContextName !== 'CTRP'; //if not CTRP context, render it readonly
         }
 
         /**
