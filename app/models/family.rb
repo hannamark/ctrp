@@ -59,7 +59,7 @@ class Family < ActiveRecord::Base
   scope :with_family_status, -> (value) { joins(:family_status).where("family_statuses.name = ?", "#{value}") }
   scope :with_family_type, -> (value) { joins(:family_type).where("family_types.name = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value) {
+  scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       where("families.#{column} ilike ?", "%#{value[1..str_len - 1]}")
@@ -68,7 +68,14 @@ class Family < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       where("families.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      where("families.#{column} ilike ?", "#{value}")
+      if !wc_search
+        if !value.match(/\s/).nil?
+          value=value.gsub! /\s+/, '%'
+        end
+        where("families.#{column} ilike ?", "%#{value}%")
+      else
+        where("families.#{column} ilike ?", "#{value}")
+      end
     end
   }
 

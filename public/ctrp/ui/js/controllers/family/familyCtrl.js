@@ -78,7 +78,7 @@
             //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
             // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
             var isEmptySearch = true;
-            var excludedKeys = ['sort', 'order', 'rows', 'start'];
+            var excludedKeys = ['sort', 'order', 'rows', 'start','wc_search'];
             Object.keys(vm.searchParams).forEach(function (key) {
                 if (excludedKeys.indexOf(key) == -1 && vm.searchParams[key] != '')
                     isEmptySearch = false;
@@ -114,10 +114,15 @@
 
 
         vm.resetSearch = function() {
+            vm.searchParams = FamilyService.getInitialFamilySearchParams();
+            var temp = vm.searchParams.wc_search;
+            var excludedKeys = ['wc_search'];
             Object.keys(vm.searchParams).forEach(function(key, index) {
-                vm.searchParams[key] = '';
+                if (excludedKeys.indexOf(key) == -1) {
+                    vm.searchParams[key] = '';
+                }
             });
-
+            vm.searchParams['wc_search'] = temp;
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
             $scope.searchWarningMessage = '';
