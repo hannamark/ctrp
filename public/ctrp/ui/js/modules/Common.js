@@ -52,17 +52,7 @@
          * @returns {number}
          */
         this.indexOfObjectInJsonArray = function(arrayOfJson, keyName, needleValue) {
-            var index = -1;
-
-            if (_.isArray(arrayOfJson) && keyName && needleValue) {
-                _.each(arrayOfJson, function(item, idx) {
-                   if (item[keyName] && item[keyName].toLowerCase() === needleValue.toLowerCase()) {
-                       index = idx;
-                       return;
-                   }
-                });
-            }
-            return index;
+            return _.findIndex(arrayOfJson, {keyName: needleValue});
         }
 
 
