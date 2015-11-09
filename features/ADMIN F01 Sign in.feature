@@ -1,4 +1,4 @@
-@Admin @Global
+@Admin @Global 
 Feature: ADMIN F01 Sign in
 
 As a CTRP User, I can sign in to the CTRP application
