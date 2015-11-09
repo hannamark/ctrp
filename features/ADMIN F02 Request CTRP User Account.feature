@@ -1,4 +1,4 @@
-@Admin @Global
+@Admin @Global 
 Feature: ADMIN F02 Request CTRP User Account
 
 As someone without a CTRP User Account, I can request a user account
