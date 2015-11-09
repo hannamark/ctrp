@@ -52,7 +52,9 @@
          * @returns {number}
          */
         this.indexOfObjectInJsonArray = function(arrayOfJson, keyName, needleValue) {
-            return _.findIndex(arrayOfJson, {keyName: needleValue});
+            var queryObj = {};
+            queryObj[keyName] = needleValue;
+            return _.findIndex(arrayOfJson, queryObj);
         }
 
 
