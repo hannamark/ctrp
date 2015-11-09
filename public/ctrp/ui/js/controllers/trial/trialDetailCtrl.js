@@ -149,8 +149,10 @@
                 });
             }
 
-            if (vm.curTrial.new && updateType == 'draft') {
+            if (updateType == 'draft') {
                 vm.curTrial.is_draft = true;
+            } else {
+                vm.curTrial.is_draft = false;
             }
 
             // An outer param wrapper is needed for nested attributes to work

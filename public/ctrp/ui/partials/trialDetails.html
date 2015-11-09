@@ -860,7 +860,7 @@
 
                 <div class="form-group no-bottom-margin">
                     <div class="btn-toolbar col-xs-12">
-                        <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_draft_btn" ng-click="trialDetailView.updateTrial('draft')" ng-disabled="trial_form.lead_protocol_id.$invalid" ctrp-click-once>
+                        <button ng-show="trialDetailView.curTrial.new || trialDetailView.curTrial.is_draft" type="submit" restriction-field class="btn btn-primary pull-right" id="save_draft_btn" ng-click="trialDetailView.updateTrial('draft')" ng-disabled="trial_form.lead_protocol_id.$invalid" ctrp-click-once>
                             Save as Draft
                         </button>
                         <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" ctrp-click-once>
