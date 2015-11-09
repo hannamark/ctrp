@@ -91,7 +91,7 @@
                 },
                 {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs', width: '12%', cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0"><master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5"></master-directive></div>' +
                 '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'},
-                {name: 'updated_at', displayName: 'Last Updated Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy"', enableSorting: true, width: '14%'},
+                {name: 'updated_at', displayName: 'Last Updated Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'},
                 {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, width: '14%'}
             ]
         };
