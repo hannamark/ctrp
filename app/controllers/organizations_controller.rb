@@ -125,6 +125,8 @@ class OrganizationsController < ApplicationController
   end
 
   def search
+    p "**********>"
+    p params[:wc_search]
     # Pagination/sorting params initialization
     Rails.logger.info "In Organization Controller, search"
     params[:start] = 1 if params[:start].blank?
@@ -142,10 +144,10 @@ class OrganizationsController < ApplicationController
       @organizations = Organization.all
 
       if params[:alias]
-        @organizations = @organizations.matches_name_wc(params[:name],@current_user.role) if params[:name].present?
+        @organizations = @organizations.matches_name_wc(params[:name],params[:wc_search]) if params[:name].present?
       else
         #@organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
-        @organizations = @organizations.matches_wc('name', params[:name],@current_user.role) if params[:name].present?
+        @organizations = @organizations.matches_wc('name', params[:name],params[:wc_search]) if params[:name].present?
 
       end
 
@@ -162,16 +164,16 @@ class OrganizationsController < ApplicationController
         @organizations = @organizations.with_source_context("CTRP")
       end
       @organizations = @organizations.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
-      @organizations = @organizations.matches_wc('updated_by', params[:updated_by],@current_user.role) if params[:updated_by].present?
+      @organizations = @organizations.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?
       @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
-      @organizations = @organizations.matches_wc('address', params[:address],@current_user.role) if params[:address].present?
-      @organizations = @organizations.matches_wc('address2', params[:address2],@current_user.role) if params[:address2].present?
-      @organizations = @organizations.matches_wc('city', params[:city],@current_user.role) if params[:city].present?
-      @organizations = @organizations.matches_wc('state_province', params[:state_province],@current_user.role) if params[:state_province].present?
+      @organizations = @organizations.matches_wc('address', params[:address],params[:wc_search]) if params[:address].present?
+      @organizations = @organizations.matches_wc('address2', params[:address2],params[:wc_search]) if params[:address2].present?
+      @organizations = @organizations.matches_wc('city', params[:city],params[:wc_search]) if params[:city].present?
+      @organizations = @organizations.matches_wc('state_province', params[:state_province],params[:wc_search]) if params[:state_province].present?
       @organizations = @organizations.matches('country', params[:country]) if params[:country].present?
-      @organizations = @organizations.matches_wc('postal_code', params[:postal_code],@current_user.role) if params[:postal_code].present?
-      @organizations = @organizations.matches_wc('email', params[:email],@current_user.role) if params[:email].present?
-      @organizations = @organizations.matches_wc('phone', params[:phone],@current_user.role) if params[:phone].present?
+      @organizations = @organizations.matches_wc('postal_code', params[:postal_code],params[:wc_search]) if params[:postal_code].present?
+      @organizations = @organizations.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
+      @organizations = @organizations.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
       @organizations = @organizations.sort_by_col(params[:sort], params[:order]).group(:'organizations.id').page(params[:start]).per(params[:rows])
     else
       @organizations = []
