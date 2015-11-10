@@ -14,23 +14,29 @@
     function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService,
                               $scope, Common, sourceStatusObj,sourceContextObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
-        vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
+        vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
         vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.sourceContextArr = sourceContextObj;
+        console.log('vm.sourceContextArr: ' + JSON.stringify(vm.sourceContextArr));
+        console.log('vm.sourceStatusArr:' + JSON.stringify(vm.sourceStatusArr));
+        console.log('curPerson: ' + JSON.stringify(vm.curPerson));
         vm.savedSelection = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
+        var curSourceStatusObj = !!vm.curPerson.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+        vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
+        vm.curPerson.source_status_id = curSourceStatusObj.id;
 
-
-        if(!angular.isObject(personDetailObj)) {
-            //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-            var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
-            vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
-            vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
-        }
+        //
+        // if(!angular.isObject(personDetailObj)) {
+        //     //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
+        //     var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
+        //     vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
+        //     vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
+        // }
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -75,13 +81,6 @@
 
         vm.clearForm = function() {
             $scope.person_form.$setPristine();
-
-            // var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'cluster'];
-            // Object.keys(vm.curPerson).forEach(function(key) {
-            //     if (excludedKeys.indexOf(key) == -1) {
-            //         vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
-            //     }
-            // });
             vm.curPerson = angular.copy(vm.masterCopy);
             //default context to ctrp
             vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
@@ -156,8 +155,8 @@
         /****************** implementations below ***************/
         function activate() {
             //default context to ctrp, if not set
-            vm.curPerson.source_context_id = !vm.curPerson.source_context_id ?
-                OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curPerson.source_context_id;
+            // vm.curPerson.source_context_id = !vm.curPerson.source_context_id ?
+            //     OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curPerson.source_context_id;
 
             appendNewPersonFlag();
             setTabIndex();
@@ -168,6 +167,7 @@
             if(!vm.curPerson.new) {
                 prepareModal();
             }
+            filterSourceContext();
         }
 
 
@@ -194,6 +194,26 @@
                 }
             }
         }
+
+        /**
+         * Filter out NLM and CTEP source contexts from UI
+         * @return {[type]} [description]
+         */
+        function filterSourceContext() {
+            var clonedPersonSourceContextArr = angular.copy(vm.sourceContextArr);
+            if (!vm.curPerson.new) {
+                var curPersonSourceContextObj = _.findWhere(vm.sourceContextArr, {id: vm.curPerson.source_context_id});
+                vm.curSourceContextName = !!curPersonSourceContextObj ? curPersonSourceContextObj.name : '';
+            } else {
+                vm.curSourceContextName = 'CTRP'; //default CTRP
+                var ctrpSourceContextObj = _.findWhere(vm.sourceContextArr, {code: 'CTRP'});
+                vm.curPerson.source_context_id = !!ctrpSourceContextObj ? ctrpSourceContextObj.id : '';
+            }
+            //delete 'CTEP and 'NLM' from the sourceContextArr
+            vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'CTEP'}));
+            vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'NLM'}));
+            vm.curPersonEditable = vm.curSourceContextName === 'CTRP' || vm.curPerson.new; //if not CTRP context, render it readonly
+         }
 
         /**
          * watch organizations selected from the modal
