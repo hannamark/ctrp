@@ -1,7 +1,6 @@
 @PO @Global
 Feature: PO F12 Delete Person record
 
-  @runthis
   Scenario: As a PO Curator, I can Delete a Person record with no Trial Record associations
   Given I know which Person Record I want to delete
   And I am logged in to CTRP PO application
