@@ -92,11 +92,15 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
 And I have selected Trail Identification Overview
 And the Trail Identification Overview and the Trial Identifications will be displayed 
-And I select one of the check in buttons
+When I select one of the check in buttons
 |Admin Check In Button|
 |Scientific Check In Button|
 |Admin and Scientific Check In Button|
-Then that section of the trial record will be unlocked for other to check out and edit
+Then a check in comment box will be displayed
+And I enter a comment 
+And select enter
+And my check in comment, my user name and the date and time will be recorded
+And that section of the trial record will be unlocked for other to check out and edit
 
 Scenario: #9 Check out history
 Given I am logged into the CTRP Protocol Abstraction application
