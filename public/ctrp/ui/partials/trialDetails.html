@@ -212,9 +212,12 @@
                         </uib-accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-12 col-sm-3">Lead Organization:</label>
+                            <label class="control-label col-xs-12 col-sm-3 required">Lead Organization:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedLoArray[0].name}}"/>
+                                <input type="text" class="form-control input-sm" name="lead_org_name" disabled ng-model="trialDetailView.selectedLoArray[0].name" required>
+                                <p ng-show="trial_form.lead_org_name.$error.required && trialDetailView.showError" class="help-inline text-danger">
+                                    Lead Organization is required
+                                </p>
                             </div>
                             <div class="col-xs-12 col-xs-3">
                                 <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedLoArray"></ctrp-org-adv-search-modal-button>
@@ -222,9 +225,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-12 col-sm-3">Principal Investigator:</label>
+                            <label class="control-label col-xs-12 col-sm-3 required">Principal Investigator:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedPiArray[0].fname + ' ' + (trialDetailView.selectedPiArray[0].mname ? trialDetailView.selectedPiArray[0].mname + ' ' : '') + trialDetailView.selectedPiArray[0].lname}}"/>
+                                <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedPiArray[0].fname + ' ' + (trialDetailView.selectedPiArray[0].mname ? trialDetailView.selectedPiArray[0].mname + ' ' : '') + trialDetailView.selectedPiArray[0].lname}}">
+                                <input type="hidden" name="pi_name" ng-model="trialDetailView.selectedPiArray[0]" required>
+                                <p ng-show="trial_form.pi_name.$error.required && trialDetailView.showError" class="help-inline text-danger">
+                                    Principal Investigator is required
+                                </p>
                             </div>
                             <div class="col-xs-12 col-xs-3">
                                 <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedPiArray"></ctrp-person-adv-search-modal-button>
@@ -238,9 +245,12 @@
                         </uib-accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-12 col-sm-3">Sponsor:</label>
+                            <label class="control-label col-xs-12 col-sm-3 required">Sponsor:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedSponsorArray[0].name}}"/>
+                                <input type="text" class="form-control input-sm" name="sponsor_name" disabled ng-model="trialDetailView.selectedSponsorArray[0].name" required>
+                                <p ng-show="trial_form.sponsor_name.$error.required && trialDetailView.showError" class="help-inline text-danger">
+                                    Sponsor is required
+                                </p>
                             </div>
                             <div class="col-xs-12 col-sm-3">
                                 <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedSponsorArray"></ctrp-org-adv-search-modal-button>
