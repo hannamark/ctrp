@@ -124,12 +124,12 @@ module.exports = function() {
 
     this.When(/^the organization is not referenced as a lead organization on a trial$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
-        callback();
+        callback().pending();
     });
 
     this.When(/^the organization is not referenced as a participating site on a trial$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
-        callback();
+        callback().pending();
     });
 
     this.When(/^the organization is not referenced as a Person record Affiliated Organization$/, function (callback) {
@@ -170,7 +170,7 @@ module.exports = function() {
 
     this.When(/^the organization is not referenced as a CTRP User Affiliated Organization$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
-        callback();
+        callback().pending();
     });
 
     this.When(/^the organization is not part of a Family Organization$/, function (callback) {
@@ -266,7 +266,7 @@ module.exports = function() {
 
     this.Given(/^the organization is referenced as a lead organization on a trial or participating site on a trial or Person record Affiliated Organization or CTRP User Affiliated Organization or part of a Family Organization$/, function (callback) {
         // need to add organization affiliation verification
-        callback();
+        callback().pending();
     });
 
     this.Then(/^the Delete operation will stop and the error message "([^"]*)" will be displayed$/, function (arg1, callback) {
