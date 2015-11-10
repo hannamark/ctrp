@@ -99,7 +99,7 @@
                 //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
                 // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
                 var isEmptySearch = true;
-                var ignoreKeys = ['rows', 'alias', 'start'];
+                var ignoreKeys = ['rows', 'alias', 'start','wc_search'];
 
                 Object.keys($scope.searchParams).forEach(function (key) {
 
@@ -155,17 +155,21 @@
             /* resetSearch */
             $scope.resetSearch = function () {
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
+                var temp = $scope.searchParams.wc_search;
                 //first reset to CTRP, then to All Context
                 //$scope.searchParams.source_context = 'CTRP';
-                var excludedKeys = ['alias'];
+                console.log("before ************>>>>. "+$scope.searchParams.wc_search);
+                var excludedKeys = ['alias','wc_search'];
                 Object.keys($scope.searchParams).forEach(function (key) {
 
                     if (excludedKeys.indexOf(key) == -1) {
                         $scope.searchParams[key] = '';
                     }
-                    $scope.searchParams['alias'] = true;
 
                 });
+
+                $scope.searchParams['alias'] = true;
+                $scope.searchParams['wc_search'] = temp;
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];

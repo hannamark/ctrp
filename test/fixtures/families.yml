@@ -21,42 +21,32 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: 65000000
   name: "Albert Einstein Cancer Center"
   family_status: one
   family_type: one
   lock_version: 1
-  ctrp_id: 65000000
 
 two:
-  id: 65000010
   name: "David H. Koch Institute for Integrative Cancer Research at MIT"
   family_status: two
   family_type: four
   lock_version: 1
-  ctrp_id: 65000010
 
 three:
-  id: 65000005
   name: "Arizona Cancer Center"
   family_status: two
   family_type: three
   lock_version: 1
-  ctrp_id: 65000005
 
 four:
-  id: 65000025
   name: "Yale Cancer Center"
   family_status: one
   family_type: two
   lock_version: 1
-  ctrp_id: 65000025
 
 five:
-  id: 65000026
   name: "Johns Hopkins University"
   family_status: one
   family_type: two
   lock_version: 1
-  ctrp_id: 65000026
 

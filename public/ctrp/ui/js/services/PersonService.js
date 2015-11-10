@@ -18,6 +18,7 @@
             lname: "",
             //po_id: "",
             //ctrp_id: "",
+            wc_search:true,
             source_context: "", //default
             source_id: "",
             source_status: "",
@@ -90,7 +91,7 @@
                 },
                 {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs', width: '12%', cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0"><master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5"></master-directive></div>' +
                 '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'},
-                {name: 'updated_at', displayName: 'Last Updated Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy"', enableSorting: true, width: '14%'},
+                {name: 'updated_at', displayName: 'Last Updated Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'},
                 {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, width: '14%'}
             ]
         };
@@ -167,6 +168,11 @@
          * @return initPersonSearchParams
          */
         function getInitialPersonSearchParams() {
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            var curator_role = "curator";
+            if(!(user_role.toUpperCase() == curator_role.toUpperCase())) {
+                initPersonSearchParams.wc_search = false;
+            }
             return initPersonSearchParams;
         } //getInitialPersonSearchParams
 
