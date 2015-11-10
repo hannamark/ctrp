@@ -8,12 +8,13 @@
     angular.module('ctrpApp')
         .factory('FamilyService', FamilyService);
 
-    FamilyService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope','PromiseTimeoutService'];
+    FamilyService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope','PromiseTimeoutService','UserService'];
 
-    function FamilyService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService) {
+    function FamilyService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService,UserService) {
 
         var initFamilySearchParams = {
             name: "",
+            wc_search: true,
             po_id: "",
             family_status:"",
             family_type:"",
@@ -135,6 +136,11 @@
          * @return initFamilySearchParams
          */
         function getInitialFamilySearchParams() {
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            var curator_role = "curator";
+            if(!(user_role.toUpperCase() == curator_role.toUpperCase())) {
+                initFamilySearchParams.wc_search = false;
+            }
             return initFamilySearchParams;
         } //getInitialFamilySearchParams
 

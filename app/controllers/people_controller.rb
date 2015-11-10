@@ -108,13 +108,13 @@ class PeopleController < ApplicationController
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
-      @people = @people.matches_wc('source_id',params[:source_id],@current_user.role) if params[:source_id].present?
-      @people = @people.matches_wc('fname', params[:fname],@current_user.role) if params[:fname].present?
-      @people = @people.matches_wc('lname', params[:lname],@current_user.role) if params[:lname].present?
-      @people = @people.matches_wc('prefix', params[:prefix],@current_user.role) if params[:prefix].present?
-      @people = @people.matches_wc('suffix', params[:suffix],@current_user.role) if params[:suffix].present?
-      @people = @people.matches_wc('email', params[:email],@current_user.role) if params[:email].present?
-      @people = @people.matches_wc('phone', params[:phone],@current_user.role) if params[:phone].present?
+      @people = @people.matches_wc('source_id',params[:source_id],params[:wc_search]) if params[:source_id].present?
+      @people = @people.matches_wc('fname', params[:fname],params[:wc_search]) if params[:fname].present?
+      @people = @people.matches_wc('lname', params[:lname],params[:wc_search]) if params[:lname].present?
+      @people = @people.matches_wc('prefix', params[:prefix],params[:wc_search]) if params[:prefix].present?
+      @people = @people.matches_wc('suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
+      @people = @people.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
+      @people = @people.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
       if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
         @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
       else

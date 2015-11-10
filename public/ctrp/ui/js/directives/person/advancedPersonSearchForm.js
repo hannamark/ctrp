@@ -111,7 +111,7 @@
                 //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
                 // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
                 var isEmptySearch = true;
-                var excludedKeys = ['sort', 'order','rows','start'];
+                var excludedKeys = ['sort', 'order','rows','start','wc_search'];
                 Object.keys($scope.searchParams).forEach(function (key) {
                     if(excludedKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
                         isEmptySearch = false;
@@ -208,12 +208,16 @@
             $scope.resetSearch = function () {
                 // $scope.states.length = 0;
                 $scope.searchParams = PersonService.getInitialPersonSearchParams();
+                var temp = $scope.searchParams.wc_search;
                 $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
+                var excludedKeys = ['wc_search'];
                 Object.keys($scope.searchParams).forEach(function (key) {
-                    $scope.searchParams[key] = '';
+                    if (excludedKeys.indexOf(key) == -1) {
+                        $scope.searchParams[key] = '';
+                    }
                 });
-
+                $scope.searchParams['wc_search'] = temp;
                 $scope.searchWarningMessage = '';
                 if (angular.isDefined($scope.$parent.personSearchResults)) {
                     $scope.$parent.personSearchResults = {};

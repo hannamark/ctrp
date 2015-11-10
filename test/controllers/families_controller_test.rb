@@ -3,7 +3,6 @@ require 'test_helper'
 class FamiliesControllerTest < ActionController::TestCase
   setup do
     @family = families(:five)
-    #puts "In setup @family = #{@family.inspect}"
   end
 
   test "should get index" do
@@ -15,8 +14,7 @@ class FamiliesControllerTest < ActionController::TestCase
   test "should create family" do
     assert_difference('Family.count') do
       post :create, family: { name: @family.name, family_status_id: @family.family_status_id, family_type_id: @family.family_type_id},  format: "json"
-     end
-
+    end
     assert_template :show
     assert_response :created
   end

@@ -19,6 +19,7 @@
         var initOrgSearchParams = {
             name : "",
             alias: true,
+            wc_search: true,
             // po_id : "",
             ctrp_id : "",
             source_context : "",
@@ -184,6 +185,11 @@
          * @return initOrgSearchParams
          */
         function getInitialOrgSearchParams() {
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            var curator_role = "curator";
+            if(!(user_role.toUpperCase() == curator_role.toUpperCase())) {
+                initOrgSearchParams.wc_search = false;
+            }
             return initOrgSearchParams;
         } //getInitialOrgSearchParams
 
