@@ -111,7 +111,7 @@
                                            <input type="text" class="form-control input-sm"
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.effective_date" is-open="org.opened_effective"
-                                                  is-open="opened" datepicker-options="familyDetailView.dateOptions"
+                                                  datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                            <span class="input-group-btn">
                                                <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
@@ -125,7 +125,7 @@
                                            <input type="text" class="form-control input-sm"
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.expiration_date" is-open="org.opened_expiration"
-                                                  is-open="opened" datepicker-options="familyDetailView.dateOptions"
+                                                  datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                            <span class="input-group-btn">
                                                <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
