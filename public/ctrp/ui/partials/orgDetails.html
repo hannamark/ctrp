@@ -19,13 +19,6 @@
     <script type="text/ng-template" id="ctrp">CTRP Context</script>
     <script type="text/ng-template" id="nlm">NLM Context</script>
     <script type="text/ng-template" id="ctep">CTEP Context</script>
-
-    <!-- comment button -->
-    <!-- <md-button class="md-fab md-primary md-fab-top-right" restriction-field aria-label="Comment" ctrp-comment-modal uuid="{{orgDetailView.curOrg.uuid}}">
-      <ng-md-icon icon="comment"></ng-md-icon>
-      <i class="glyphicon glyphicon-comment"></i>
-    </md-button> -->
-    <!-- end of comment button -->
     <div class="col-xs-12 drop-shadow">
         <div class="row">
             <p>
@@ -64,12 +57,15 @@
 
                                 <div class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">Source Context:</label>
-                                        <!--<select restriction-field ng-init="orgDetailView.curOrg.source_context_id"
-                                                class="form-control input-sm" id="source_context"
-                                                ng-model="orgDetailView.curOrg.source_context_id"
-                                                ng-options="context.id as context.name for context in orgDetailView.sourceContextArr">
-                                        </select>-->
-                                        <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curSourceContextName}}</div>
+                                        <div class="col-xs-12 col-sm-6 form-text" ng-if="orgDetailView.curOrg.new">
+                                            <select restriction-field ng-init="orgDetailView.curOrg.source_context_id"
+                                                    class="form-control input-sm" id="source_context"
+                                                    ng-model="orgDetailView.curOrg.source_context_id"
+                                                    ng-options="context.id as context.name for context in orgDetailView.sourceContextArr">
+                                            </select>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6 form-text" ng-if="!orgDetailView.curOrg.new">{{orgDetailView.curSourceContextName}}</div>
                                 </div>
                                 <div class="form-group">
                                     <!--  Make source ID a R/O field -->

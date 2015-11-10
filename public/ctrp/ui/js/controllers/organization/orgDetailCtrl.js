@@ -26,7 +26,6 @@
         //vm.curSourceContextName = '';
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-        console.log('vm.sourceStatusArr: ' + JSON.stringify(vm.sourceStatusArr));
         //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
         var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
         vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
