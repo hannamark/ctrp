@@ -64,6 +64,7 @@
         vm.showInvSearchBtn = true;
         vm.why_stopped_disabled = true;
         vm.otherDocNum = 1;
+        vm.showError = false;
 
         //update trial (vm.curTrial)
         vm.updateTrial = function(updateType) {
@@ -468,6 +469,11 @@
         // Add an other document
         vm.addOtherDoc = function() {
             vm.otherDocNum++;
+        };
+
+        // When Review button is clicked
+        vm.reviewTrial = function() {
+            vm.showError = true;
         };
 
         activate();

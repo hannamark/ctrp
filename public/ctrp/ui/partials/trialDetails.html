@@ -39,7 +39,7 @@
                             <label class="control-label col-xs-12 col-sm-3 required">Lead Protocol Identifier:</label>
                             <div class=" col-xs-12 col-sm-6">
                                 <input type="text" restriction-field class="form-control input-sm" id="lead_protocol_id" name="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id" required autofocus>
-                                <p ng-show="trial_form.lead_protocol_id.$error.required && trial_form.lead_protocol_id.$dirty" class="help-inline text-danger">
+                                <p ng-show="trial_form.lead_protocol_id.$error.required && trialDetailView.showError" class="help-inline text-danger">
                                     Lead Protocol Identifier is required
                                 </p>
                             </div>
@@ -113,7 +113,7 @@
                             <label class="control-label col-xs-12 col-sm-3 required">Official Title:</label>
                             <div class=" col-xs-12 col-sm-6">
                                 <textarea restriction-field class="form-control input-sm" id="official_title" name="official_title" ng-model="trialDetailView.curTrial.official_title" required />
-                                <p ng-show="trial_form.official_title.$error.required && trial_form.official_title.$dirty" class="help-inline text-danger">
+                                <p ng-show="trial_form.official_title.$error.required && trialDetailView.showError" class="help-inline text-danger">
                                     Official Title is required
                                 </p>
                             </div>
@@ -126,7 +126,7 @@
                                         ng-options="phase.id as phase.name for phase in trialDetailView.phaseArr" required>
                                     <option value="">-Select a Phase-</option>
                                 </select>
-                                <p ng-show="trial_form.phase.$error.required && trial_form.phase.$dirty" class="help-inline text-danger">
+                                <p ng-show="trial_form.phase.$error.required && trialDetailView.showError" class="help-inline text-danger">
                                     Phase is required
                                 </p>
                             </div>
@@ -147,7 +147,7 @@
                                         ng-options="category.id as category.name for category in trialDetailView.researchCategoryArr" required>
                                     <option value="">-Select a Research Category-</option>
                                 </select>
-                                <p ng-show="trial_form.research_category.$error.required && trial_form.research_category.$dirty" class="help-inline text-danger">
+                                <p ng-show="trial_form.research_category.$error.required && trialDetailView.showError" class="help-inline text-danger">
                                     Research Category is required
                                 </p>
                             </div>
@@ -161,7 +161,7 @@
                                         ng-change="trialDetailView.watchOption('primary_purpose')" required>
                                     <option value="">-Select a Primary Purpose-</option>
                                 </select>
-                                <p ng-show="trial_form.primary_purpose.$error.required && trial_form.primary_purpose.$dirty" class="help-inline text-danger">
+                                <p ng-show="trial_form.primary_purpose.$error.required && trialDetailView.showError" class="help-inline text-danger">
                                     Primary Purpose is required
                                 </p>
                             </div>
@@ -199,7 +199,7 @@
                                         ng-options="term.id as term.name for term in trialDetailView.accrualDiseaseTermArr" required>
                                     <option value="">-Select an Accrual Disease Terminology-</option>
                                 </select>
-                                <p ng-show="trial_form.accrual_disease_term.$error.required && trial_form.accrual_disease_term.$dirty" class="help-inline text-danger">
+                                <p ng-show="trial_form.accrual_disease_term.$error.required && trialDetailView.showError" class="help-inline text-danger">
                                     Accrual Disease Terminology is required
                                 </p>
                             </div>
@@ -255,7 +255,7 @@
                                         ng-change="trialDetailView.watchOption('responsible_party')" required>
                                     <option value="">-Select a Responsible Party-</option>
                                 </select>
-                                <p ng-show="trial_form.responsible_party.$error.required && trial_form.responsible_party.$dirty" class="help-inline text-danger">
+                                <p ng-show="trial_form.responsible_party.$error.required && trialDetailView.showError" class="help-inline text-danger">
                                     Responsible Party is required
                                 </p>
                             </div>
@@ -749,9 +749,12 @@
                         </uib-accordion-heading>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
+                            <label class="control-label col-xs-12 col-sm-3 required">Protocol Document:</label>
                             <div class="col-sm-9 form-file-upload">
-                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB" ng-required="trialDetailView.curTrial.new">
+                                <p ng-show="trial_form.protocol_document.$error.required && trialDetailView.showError" class="help-inline text-danger">
+                                    Protocol Document is required
+                                </p>
                             </div>
                         </div>
 
@@ -764,9 +767,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-12 col-sm-3">IRB Approval:</label>
+                            <label class="control-label col-xs-12 col-sm-3 required">IRB Approval:</label>
                             <div class="col-sm-9 form-file-upload">
-                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB" ng-required="trialDetailView.curTrial.new">
+                                <p ng-show="trial_form.irb_approval.$error.required && trialDetailView.showError" class="help-inline text-danger">
+                                    IRB Approval is required
+                                </p>
                             </div>
                         </div>
 
@@ -863,10 +869,13 @@
                         <button ng-show="trialDetailView.curTrial.new || trialDetailView.curTrial.is_draft" type="submit" restriction-field class="btn btn-primary pull-right" id="save_draft_btn" ng-click="trialDetailView.updateTrial('draft')" ng-disabled="trial_form.lead_protocol_id.$invalid" ctrp-click-once>
                             Save as Draft
                         </button>
-                        <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" ctrp-click-once>
-                            Save
+                        <button ng-hide="trialDetailView.showError" type="submit" restriction-field class="btn btn-primary pull-right" id="review_btn" ng-click="trialDetailView.reviewTrial()" ctrp-click-once>
+                            Review
                         </button>
-                        <button restriction-field class="btn btn-warning pull-right" ng-click="trialDetailView.reload()">
+                        <button ng-show="trialDetailView.showError" type="submit" restriction-field class="btn btn-primary pull-right" id="submit_btn" ng-click="trialDetailView.updateTrial()" ng-disabled="trial_form.$invalid" ctrp-click-once>
+                            Submit
+                        </button>
+                        <button restriction-field class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" ctrp-click-once>
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
                     </div>
