@@ -20,9 +20,6 @@
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.sourceContextArr = sourceContextObj;
-        console.log('vm.sourceContextArr: ' + JSON.stringify(vm.sourceContextArr));
-        console.log('vm.sourceStatusArr:' + JSON.stringify(vm.sourceStatusArr));
-        console.log('curPerson: ' + JSON.stringify(vm.curPerson));
         vm.savedSelection = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
@@ -154,10 +151,6 @@
 
         /****************** implementations below ***************/
         function activate() {
-            //default context to ctrp, if not set
-            // vm.curPerson.source_context_id = !vm.curPerson.source_context_id ?
-            //     OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curPerson.source_context_id;
-
             appendNewPersonFlag();
             setTabIndex();
             watchOrgReceiver();
