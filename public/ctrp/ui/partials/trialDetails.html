@@ -751,7 +751,8 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">Protocol Document:</label>
                             <div class="col-sm-9 form-file-upload">
-                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB" ng-required="trialDetailView.curTrial.new">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB"
+                                       ng-required="trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.protocolDocNum === 0)">
                                 <p ng-show="trial_form.protocol_document.$error.required && trialDetailView.showError" class="help-inline text-danger">
                                     Protocol Document is required
                                 </p>
@@ -769,7 +770,8 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3 required">IRB Approval:</label>
                             <div class="col-sm-9 form-file-upload">
-                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB" ng-required="trialDetailView.curTrial.new">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB"
+                                       ng-required="trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.irbApprovalNum === 0)">
                                 <p ng-show="trial_form.irb_approval.$error.required && trialDetailView.showError" class="help-inline text-danger">
                                     IRB Approval is required
                                 </p>

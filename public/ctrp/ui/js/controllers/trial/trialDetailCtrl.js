@@ -64,6 +64,8 @@
         vm.showInvSearchBtn = true;
         vm.why_stopped_disabled = true;
         vm.otherDocNum = 1;
+        vm.protocolDocNum = 0;
+        vm.irbApprovalNum = 0;
         vm.showError = false;
 
         //update trial (vm.curTrial)
@@ -216,6 +218,21 @@
             } else if (type == 'document') {
                 if (index < vm.addedDocuments.length) {
                     vm.addedDocuments[index]._destroy = !vm.addedDocuments[index]._destroy;
+
+                    // Change the doc number accordingly for validation purpose
+                    if (vm.addedDocuments[index].document_type === 'Protocol Document') {
+                        if (vm.addedDocuments[index]._destroy) {
+                            vm.protocolDocNum--;
+                        } else {
+                            vm.protocolDocNum++;
+                        }
+                    } else if (vm.addedDocuments[index].document_type === 'IRB Approval') {
+                        if (vm.addedDocuments[index]._destroy) {
+                            vm.irbApprovalNum--;
+                        } else {
+                            vm.irbApprovalNum++;
+                        }
+                    }
                 }
             }
         };// toggleSelection
@@ -714,6 +731,13 @@
                 document.document_subtype = vm.curTrial.trial_documents[i].document_subtype;
                 document._destroy = vm.curTrial.trial_documents[i]._destroy;
                 vm.addedDocuments.push(document);
+
+                // Keep track of doc number for validation purpose
+                if (vm.curTrial.trial_documents[i].document_type === 'Protocol Document') {
+                    vm.protocolDocNum++;
+                } else if (vm.curTrial.trial_documents[i].document_type === 'IRB Approval') {
+                    vm.irbApprovalNum++;
+                }
             }
         }
 
