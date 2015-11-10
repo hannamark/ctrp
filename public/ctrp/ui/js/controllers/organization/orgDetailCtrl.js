@@ -20,20 +20,16 @@
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-        vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
+        vm.curOrg = orgDetailObj || {name: "", country: "", source_status_id: ""}; //orgDetailObj.data;
         vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
         //vm.curSourceContextName = '';
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-        console.log('vm.sourceStatusArr: ' + JSON.stringify(vm.sourceStatusArr));
-        //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-        var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
-        vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
-        vm.curOrg.source_status_id = vm.curOrg.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
-
-        var ctrpSourceContextIndex = Common.indexOfObjectInJsonArray(vm.sourceContextArr, 'code', 'CTRP');
-        vm.ctrpSourceContextIndex = ctrpSourceContextIndex;
+        //if vm.curOrg.source_status_id is not null, pluck it out from the sourceStatusArr and get the name, otherwise get the 'Active' name
+        var curSourceStatusObj = !!vm.curOrg.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+        vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
+        vm.curOrg.source_status_id = curSourceStatusObj.id;
         vm.alias = '';
         vm.curationReady = false;
         $scope.showPhoneWarning = false;
@@ -180,7 +176,7 @@
             //delete 'CTEP' and 'NLM' from the sourceContextArr
             vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'CTEP'}));
             vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'NLM'}));
-            vm.curOrgEditable = vm.curSourceContextName !== 'CTRP'; //if not CTRP context, render it readonly
+            vm.curOrgEditable = vm.curSourceContextName === 'CTRP' || vm.curOrg.new; //if not CTRP context, render it readonly
         }
 
         /**

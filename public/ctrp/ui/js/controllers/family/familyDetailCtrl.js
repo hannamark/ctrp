@@ -7,9 +7,9 @@
     angular.module('ctrpApp')
         .controller('familyDetailCtrl', familyDetailCtrl);
     familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'familyStatusObj','familyTypeObj','familyRelationshipObj','OrgService','DateService','toastr',
-        '$scope', '$state', 'Common'];
+        '$scope', '$state', 'Common', '$modal'];
     function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,familyRelationshipObj,
-                              OrgService, DateService, toastr, $scope, $state, Common) {
+                              OrgService, DateService, toastr, $scope, $state, Common, $modal ) {
         var vm = this;
        // console.log("in details controller ......."+JSON.stringify(familyDetailObj));
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
@@ -141,6 +141,10 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewFamilyFlag();
+            if (!vm.curFamily.new) {
+                prepareModal();
+            }
+
             watchOrgReceiver();
 
             if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
@@ -161,7 +165,31 @@
             }
         }
 
+        function prepareModal() {
 
+            if (!vm.curFamily.new) {
+                vm.confirmDelete = function (size) {
+                    var modalInstance = $modal.open({
+                        animation: true,
+                        templateUrl: 'delete_confirm_template.html',
+                        controller: 'ModalInstanceFamilyCtrl as vm',
+                        size: size,
+                        resolve: {
+                            familyId: function () {
+                                return vm.curFamily.id;
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function (selectedItem) {
+                        console.log("about to delete the familyDetail " + vm.curFamily.id);
+                        $state.go('main.families');
+                    }, function () {
+                        console.log("operation canceled")
+                    });
+                }; //confirmDelete
+            }
+        }
         /**
          * watch organizations selected from the modal
          */
