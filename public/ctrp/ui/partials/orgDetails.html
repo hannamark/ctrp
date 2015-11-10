@@ -60,7 +60,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">Source Context:</label>
-                                        <div class="col-xs-12 col-sm-6 form-text" ng-if="orgDetailView.curOrg.new">
+                                        <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
                                             <select restriction-field ng-init="orgDetailView.curOrg.source_context_id"
                                                     class="form-control input-sm" id="source_context"
                                                     ng-model="orgDetailView.curOrg.source_context_id"
@@ -68,7 +68,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-xs-12 col-sm-6 form-text" ng-if="!orgDetailView.curOrg.new">{{orgDetailView.curSourceContextName}}</div>
+                                        <div class="col-xs-12 col-sm-6 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curSourceContextName}}</div>
                                 </div>
                                 <div class="form-group">
                                     <!--  Make source ID a R/O field -->
@@ -253,6 +253,7 @@
                                 </div>
 
                                 <div class="form-group no-bottom-margin" ng-show="orgDetailView.curOrgEditable">
+                                    <div class="col-xs-12 col-sm-3"></div>
                                     <div class="btn-toolbar col-xs-12 col-sm-9">
                                         <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
                                             Save
