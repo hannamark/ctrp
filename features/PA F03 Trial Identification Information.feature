@@ -13,7 +13,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
 And I have selected Trail Identification Overview
 Then the Trail Identification Overview and the Trial Identification Information will be displayed 
-And the Trial Identification Information for a Trial will include the follow fields:
+And the Trial Identification Information for a Trial will include the following fields:
 |Clinical Research Category |
 |NCI ID|
 |ClinicalTrials.Gov XML required?

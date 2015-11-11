@@ -1,5 +1,5 @@
 @PA @global
-Feature: FA F02 Trail Identification Overview
+Feature: PA F02 Trail Identification Overview
 Description:  As any CTRP PA User, I can view the Trail Identification Overview and check out a trial for abstraction with the appropriate role
 
 Scenario: #1 I can view the Trail Overview and the Trial Identification for a Trial
@@ -13,7 +13,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
 And I have selected Trail Identification Overview
 Then the Trail Identification Overview and the Trial Identifications will be displayed 
-And the Trail Overview for a Trial will include the follow fields:
+And the Trail Overview for a Trial will include the following fields:
 |NCI ID|
 |Brief Title|
 |Lead Organization|
