@@ -7,12 +7,12 @@
 
     angular.module('ctrpApp').controller('trialDetailCtrl', trialDetailCtrl);
 
-    trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope',
+    trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
         'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
 
-    function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope,
+    function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope, $window,
                              Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
                              holderTypeObj, expandedAccessTypeObj, countryList) {
@@ -66,8 +66,8 @@
         vm.otherDocNum = 1;
         vm.protocolDocNum = 0;
         vm.irbApprovalNum = 0;
+        vm.showLpiError = false;
 
-        //update trial (vm.curTrial)
         vm.updateTrial = function(updateType) {
             if (vm.selectedLoArray.length > 0) {
                 vm.curTrial.lead_org_id = vm.selectedLoArray[0].id
@@ -172,7 +172,17 @@
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
-        }; // updatePerson
+        }; // updateTrial
+
+        vm.saveDraft = function() {
+            if ($scope.trial_form.lead_protocol_id.$error.required) {
+                vm.showLpiError = true;
+                // Scroll to the top
+                $window.scrollTo(0, 0);
+            } else {
+                vm.updateTrial('draft');
+            }
+        };
 
         vm.collapseAccordion = function() {
             vm.accordions = [false, false, false, false, false, false, false, false, false, false, false];
