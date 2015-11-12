@@ -144,7 +144,7 @@ if !org5.new_record?
 end
 org6 = Organization.create(id: 173475, source_id: 'NY139', name: 'Syracuse Veterans Administration Medical Center', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: ' 800 Irving Ave', city: 'Syracuse', state_province:'New York', country:usa)
 org7 = Organization.create(id: 150970, source_id: 'NC088', name: 'Veterans Administration Medical Center.', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '50 Irving St NW', city: '', state_province:'District of Columbia', country:usa)
-org8 = Organization.create(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, phone: '336-716-0891', postal_code: '27157')
+org8 = Organization.create(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, postal_code: '27157')
 if !org8.new_record?
   org8.name_aliases.create(name: 'Wake Forest Cancer Center Research Base')
 end
