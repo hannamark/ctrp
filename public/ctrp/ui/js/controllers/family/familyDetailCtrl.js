@@ -11,8 +11,8 @@
     function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,familyRelationshipObj,
                               OrgService, DateService, toastr, $scope, $state, Common, $modal ) {
         var vm = this;
-       // console.log("in details controller ......."+JSON.stringify(familyDetailObj));
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
+        console.log('familyDetailObj: ' + JSON.stringify(familyDetailObj));
         vm.curFamily = vm.curFamily.data || vm.curFamily;
         vm.masterCopy= angular.copy(vm.curFamily);
         vm.familyStatusArr = familyStatusObj.data;
@@ -44,9 +44,10 @@
                 if(response.status == 422) {
                     toastr.error('Problem in saving family', 'Family name has already been taken');
                     vm.curFamily.name="";
-                }
-                else {
+                } else {
                     vm.curFamily.new = false;
+                    vm.curFamily.family_memberships = response.data.family_memberships_attributes || [];
+                    console.log('response is: ' + JSON.stringify(response));
                     $state.go('main.familyDetail', {familyId: response.data.id});
                     toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!', {
                         extendedTimeOut: 1000,
