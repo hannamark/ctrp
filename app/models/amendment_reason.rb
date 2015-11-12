@@ -12,4 +12,5 @@
 #
 
 class AmendmentReason < ActiveRecord::Base
+  include BasicConcerns
 end

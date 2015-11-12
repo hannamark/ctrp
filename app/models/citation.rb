@@ -18,4 +18,7 @@
 #
 
 class Citation < ActiveRecord::Base
+  include BasicConcerns
+
+  belongs_to :trial
 end

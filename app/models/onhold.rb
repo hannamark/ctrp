@@ -19,5 +19,8 @@
 #
 
 class Onhold < ActiveRecord::Base
+  include BasicConcerns
+
   belongs_to :onhold_reason
+  belongs_to :trial
 end

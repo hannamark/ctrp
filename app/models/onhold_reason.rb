@@ -12,4 +12,5 @@
 #
 
 class OnholdReason < ActiveRecord::Base
+  include BasicConcerns
 end

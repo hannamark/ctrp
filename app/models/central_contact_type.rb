@@ -12,4 +12,5 @@
 #
 
 class CentralContactType < ActiveRecord::Base
+  include BasicConcerns
 end

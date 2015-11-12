@@ -22,6 +22,9 @@
 #
 
 class CentralContact < ActiveRecord::Base
+  include BasicConcerns
+
   belongs_to :central_contact_type
   belongs_to :person
+  belongs_to :trial
 end

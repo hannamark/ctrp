@@ -12,4 +12,5 @@
 #
 
 class SiteRecruitmentStatus < ActiveRecord::Base
+  include BasicConcerns
 end

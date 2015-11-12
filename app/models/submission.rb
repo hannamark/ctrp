@@ -21,5 +21,8 @@
 #
 
 class Submission < ActiveRecord::Base
+  include BasicConcerns
+
   belongs_to :amendment_reason
+  belongs_to :trial
 end

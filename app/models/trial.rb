@@ -87,6 +87,37 @@ class Trial < ActiveRecord::Base
   has_many :oversight_authorities, -> { order 'oversight_authorities.id' }
   has_many :trial_documents, -> { order 'trial_documents.id' }
 
+  # PA fields
+  belongs_to :assigned_to, class_name: "User"
+  belongs_to :owner, class_name: "User"
+  belongs_to :board_approval_status
+  belongs_to :board, class_name: "Organization"
+  belongs_to :intervention_model
+  belongs_to :masking
+  belongs_to :allocation
+  belongs_to :study_classification
+  belongs_to :gender
+  belongs_to :min_age_unit, class_name: "AgeUnit"
+  belongs_to :max_age_unit, class_name: "AgeUnit"
+  belongs_to :anatomic_site
+  has_many :submissions, -> { order 'submissions.id' }
+  has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
+  has_many :onholds, -> { order 'onholds.id' }
+  has_many :associated_trials, -> { order 'associated_trials.id' }
+  has_many :alternate_titles, -> { order 'alternate_titles.id' }
+  has_many :central_contacts, -> { order 'central_contacts.id' }
+  has_many :outcome_measures, -> { order 'outcome_measures.id' }
+  has_many :other_criteria, -> { order 'other_criteria.id' }
+  has_many :markers, -> { order 'markers.id' }
+  has_many :interventions, -> { order 'interventions.id' }
+  has_many :arms_groups, -> { order 'arms_groups.id' }
+  has_many :sub_groups, -> { order 'sub_groups.id' }
+  has_many :participating_sites, -> { order 'participating_sites.id' }
+  has_many :ps_orgs, through: :participating_sites, source: :organization
+  has_many :citations, -> { order 'citations.id' }
+  has_many :links, -> { order 'links.id' }
+  has_many :diseases, -> { order 'diseases.id' }
+
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
   accepts_nested_attributes_for :grants, allow_destroy: true

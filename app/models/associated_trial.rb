@@ -18,5 +18,8 @@
 #
 
 class AssociatedTrial < ActiveRecord::Base
+  include BasicConcerns
+
   belongs_to :identifier_type
+  belongs_to :trial
 end

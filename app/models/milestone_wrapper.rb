@@ -18,5 +18,8 @@
 #
 
 class MilestoneWrapper < ActiveRecord::Base
+  include BasicConcerns
+
   belongs_to :milestone
+  belongs_to :trial
 end

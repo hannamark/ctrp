@@ -12,4 +12,5 @@
 #
 
 class Gender < ActiveRecord::Base
+  include BasicConcerns
 end

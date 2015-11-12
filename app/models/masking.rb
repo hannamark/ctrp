@@ -12,4 +12,5 @@
 #
 
 class Masking < ActiveRecord::Base
+  include BasicConcerns
 end

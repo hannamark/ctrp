@@ -12,4 +12,5 @@
 #
 
 class StudyClassification < ActiveRecord::Base
+  include BasicConcerns
 end

@@ -12,4 +12,5 @@
 #
 
 class OutcomeMeasureType < ActiveRecord::Base
+  include BasicConcerns
 end

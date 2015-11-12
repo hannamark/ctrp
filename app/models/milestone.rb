@@ -12,4 +12,5 @@
 #
 
 class Milestone < ActiveRecord::Base
+  include BasicConcerns
 end

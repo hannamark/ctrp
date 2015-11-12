@@ -12,4 +12,5 @@
 #
 
 class IdentifierType < ActiveRecord::Base
+  include BasicConcerns
 end

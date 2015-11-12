@@ -20,5 +20,8 @@
 #
 
 class Intervention < ActiveRecord::Base
+  include BasicConcerns
+
   belongs_to :intervention_type
+  belongs_to :trial
 end

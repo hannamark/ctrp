@@ -12,4 +12,5 @@
 #
 
 class EvaluationType < ActiveRecord::Base
+  include BasicConcerns
 end

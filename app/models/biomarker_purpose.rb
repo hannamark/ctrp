@@ -12,4 +12,5 @@
 #
 
 class BiomarkerPurpose < ActiveRecord::Base
+  include BasicConcerns
 end

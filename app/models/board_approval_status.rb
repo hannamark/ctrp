@@ -12,4 +12,5 @@
 #
 
 class BoardApprovalStatus < ActiveRecord::Base
+  include BasicConcerns
 end

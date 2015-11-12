@@ -12,4 +12,5 @@
 #
 
 class Allocation < ActiveRecord::Base
+  include BasicConcerns
 end

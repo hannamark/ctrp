@@ -12,4 +12,5 @@
 #
 
 class BiomarkerUse < ActiveRecord::Base
+  include BasicConcerns
 end

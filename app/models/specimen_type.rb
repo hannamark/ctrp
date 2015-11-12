@@ -12,4 +12,5 @@
 #
 
 class SpecimenType < ActiveRecord::Base
+  include BasicConcerns
 end

@@ -12,4 +12,5 @@
 #
 
 class AnatomicSite < ActiveRecord::Base
+  include BasicConcerns
 end

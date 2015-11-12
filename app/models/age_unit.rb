@@ -12,4 +12,5 @@
 #
 
 class AgeUnit < ActiveRecord::Base
+  include BasicConcerns
 end

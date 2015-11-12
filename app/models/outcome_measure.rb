@@ -21,5 +21,8 @@
 #
 
 class OutcomeMeasure < ActiveRecord::Base
+  include BasicConcerns
+
   belongs_to :outcome_measure_type
+  belongs_to :trial
 end

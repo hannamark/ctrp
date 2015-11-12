@@ -12,4 +12,5 @@
 #
 
 class AccrualDiseaseTerm < ActiveRecord::Base
+  include BasicConcerns
 end

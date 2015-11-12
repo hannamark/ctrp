@@ -12,4 +12,5 @@
 #
 
 class InterventionModel < ActiveRecord::Base
+  include BasicConcerns
 end

@@ -12,4 +12,5 @@
 #
 
 class AssayType < ActiveRecord::Base
+  include BasicConcerns
 end
