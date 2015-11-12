@@ -102,7 +102,7 @@ module.exports = function() {
              * Rails API settings
              */
             defaultPort: 3000,
-            nodeServer: 'http://localhost:' + defaultPort //point to rails
+            nodeServer: 'http://localhost:3000' //point to rails
         };
 
         config.getWiredepDefaultOptions = function() {
