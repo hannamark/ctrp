@@ -7,12 +7,12 @@
 
     angular.module('ctrpApp').controller('trialDetailCtrl', trialDetailCtrl);
 
-    trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope',
+    trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
         'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
 
-    function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope,
+    function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope, $window,
                              Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
                              holderTypeObj, expandedAccessTypeObj, countryList) {
@@ -64,13 +64,11 @@
         vm.showInvSearchBtn = true;
         vm.why_stopped_disabled = true;
         vm.otherDocNum = 1;
+        vm.protocolDocNum = 0;
+        vm.irbApprovalNum = 0;
+        vm.showLpiError = false;
 
-        //update trial (vm.curTrial)
-        vm.updateTrial = function() {
-            if (vm.curTrial.new) {
-                convertDate();
-            }
-
+        vm.updateTrial = function(updateType) {
             if (vm.selectedLoArray.length > 0) {
                 vm.curTrial.lead_org_id = vm.selectedLoArray[0].id
             } else {
@@ -153,6 +151,12 @@
                 });
             }
 
+            if (updateType == 'draft') {
+                vm.curTrial.is_draft = true;
+            } else {
+                vm.curTrial.is_draft = false;
+            }
+
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -160,13 +164,25 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                uploadDocuments(response.id);
-                $state.go('main.trials', null, { reload: true });
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                if (response.server_response.status < 300) {
+                    uploadDocuments(response.id);
+                    $state.go('main.trials', null, {reload: true});
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
-        }; // updatePerson
+        }; // updateTrial
+
+        vm.saveDraft = function() {
+            if ($scope.trial_form.lead_protocol_id.$error.required) {
+                vm.showLpiError = true;
+                // Scroll to the top
+                $window.scrollTo(0, 0);
+            } else {
+                vm.updateTrial('draft');
+            }
+        };
 
         vm.collapseAccordion = function() {
             vm.accordions = [false, false, false, false, false, false, false, false, false, false, false];
@@ -211,11 +227,26 @@
             } else if (type == 'document') {
                 if (index < vm.addedDocuments.length) {
                     vm.addedDocuments[index]._destroy = !vm.addedDocuments[index]._destroy;
+
+                    // Change the doc number accordingly for validation purpose
+                    if (vm.addedDocuments[index].document_type === 'Protocol Document') {
+                        if (vm.addedDocuments[index]._destroy) {
+                            vm.protocolDocNum--;
+                        } else {
+                            vm.protocolDocNum++;
+                        }
+                    } else if (vm.addedDocuments[index].document_type === 'IRB Approval') {
+                        if (vm.addedDocuments[index]._destroy) {
+                            vm.irbApprovalNum--;
+                        } else {
+                            vm.irbApprovalNum++;
+                        }
+                    }
                 }
             }
         };// toggleSelection
 
-        vm.dateFormat = DateService.getFormats()[0]; // January 20, 2015
+        vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
         vm.today = DateService.today();
         vm.openCalendar = function ($event, type) {
@@ -361,6 +392,14 @@
             var siOption = vm.responsiblePartyArr.filter(findSiOption);
             if (siOption[0].id == vm.curTrial.responsible_party_id) {
                 vm.selectedIaArray = vm.selectedSponsorArray;
+            }
+        });
+
+        $scope.$watch(function() {
+            return vm.curTrial.intervention_indicator;
+        }, function(newValue, oldValue) {
+            if (newValue == 'No') {
+                vm.curTrial.sec801_indicator = 'No';
             }
         });
 
@@ -696,6 +735,13 @@
                 document.document_subtype = vm.curTrial.trial_documents[i].document_subtype;
                 document._destroy = vm.curTrial.trial_documents[i]._destroy;
                 vm.addedDocuments.push(document);
+
+                // Keep track of doc number for validation purpose
+                if (vm.curTrial.trial_documents[i].document_type === 'Protocol Document') {
+                    vm.protocolDocNum++;
+                } else if (vm.curTrial.trial_documents[i].document_type === 'IRB Approval') {
+                    vm.irbApprovalNum++;
+                }
             }
         }
 

@@ -8,32 +8,31 @@
     angular.module('ctrpApp')
         .controller('orgDetailCtrl', orgDetailCtrl);
 
-    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService',
+    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter',
         '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$modal'];
 
-    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService,
+    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
         var vm = this;
+        $scope.organization_form = {};
         vm.addedNameAliases = [];
         vm.numbers = [1, 2, 3];
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-        vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
+        vm.curOrg = orgDetailObj || {name: "", country: "", source_status_id: ""}; //orgDetailObj.data;
+        vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
+        //vm.curSourceContextName = '';
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-        //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-        var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
-        vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
-        vm.curOrg.source_status_id = vm.curOrg.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
-
-        var ctrpSourceContextIndex = Common.indexOfObjectInJsonArray(vm.sourceContextArr, 'code', 'CTRP');
-        vm.ctrpSourceContextIndex = ctrpSourceContextIndex;
-
+        //if vm.curOrg.source_status_id is not null, pluck it out from the sourceStatusArr and get the name, otherwise get the 'Active' name
+        var curSourceStatusObj = !!vm.curOrg.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+        vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
+        vm.curOrg.source_status_id = curSourceStatusObj.id;
+        vm.alias = '';
         vm.curationReady = false;
-        console.log("vm.ctrpSourceContextIndex is " + vm.ctrpSourceContextIndex);
-        console.log("context array is " + JSON.stringify(vm.sourceContextArr));
+        $scope.showPhoneWarning = false;
 
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
@@ -54,48 +53,56 @@
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
                 if (vm.curOrg.new) {
-                    vm.resetForm();
+                    vm.clearForm();
+                    $state.go('main.orgDetail', {orgId: response.id});
                 } else {
+                    // vm.curOrg = response;
                     vm.curOrg.updated_by = response.updated_by;
-                    $state.go('main.organizations', {}, {reload: true});
+                    vm.curOrg.updated_at = response.updated_at;
                 }
-                toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!');
+                vm.curOrg.new = false;
+                toastr.clear();
+                toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
             }).catch(function (err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
             });
         }; // updateOrg
 
+        vm.resetForm = function() {
+            angular.copy(vm.masterCopy,vm.curOrg);
+            vm.addedNameAliases = [];
+            appendNameAliases();
+        };
 
-        vm.resetForm = function () {
-            // console.log('resetting form');
-            var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id'];
+        vm.clearForm = function () {
+            $scope.organization_form.$setPristine();
+            vm.addedNameAliases = [];
+            vm.alias = '';
+
+            var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id', 'cluster'];
             Object.keys(vm.curOrg).forEach(function (key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curOrg[key] = angular.isArray(vm.curOrg[key]) ? [] : '';
-                    $scope.organization_form.$setPristine();
+                    /* the following line should be removed */
+                   // $scope.organization_form.$setPristine(); //should not setPristine the form multiple times
                 }
                 //default context to ctrp
                 vm.curOrg.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
             });
         };
-      // Add other ID to a temp array
+
+        // Add new alias
         vm.addNameAlias= function () {
             if (vm.alias) {
-                for (var i = 0; i < vm.addedNameAliases.length; i++) {
-
-                    if(vm.alias.toUpperCase() == vm.addedNameAliases[i].name.toUpperCase() && vm.addedNameAliases[i]._destroy == false ) {
-                        alert('Alias already exists, please enter other alias');
-                        exit;
-                    }
+                var aliasIndex = Common.indexOfObjectInJsonArray(vm.addedNameAliases, 'name', vm.alias);
+                if (aliasIndex == -1) {
+                    var newAlias = {name: vm.alias, _destroy: false};
+                    vm.addedNameAliases.unshift(newAlias);
                 }
-                var newId = {};
-                newId.name = vm.alias;
-                newId._destroy = false;
-                vm.addedNameAliases.push(newId);
-                console.log()
-                vm.alias=null;
-            } else {
-                alert('Please enter alias');
+                vm.alias = '';
             }
         };
         // Delete the associations
@@ -115,6 +122,7 @@
                 OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function (response) {
                     vm.curOrg = response;
                     listenToStatesProvinces();
+                    vm.masterCopy= angular.copy(vm.curOrg);
                     vm.addedNameAliases = [];
                     appendNameAliases();
                 }).catch(function (err) {
@@ -140,6 +148,7 @@
                 prepareModal();
                 appendNameAliases();
             }
+            filterSourceContext();
         }
         // Append associations for existing Trial
         function appendNameAliases() {
@@ -150,6 +159,27 @@
                 name_alias._destroy = false;
                 vm.addedNameAliases.push(name_alias);
             }
+        }
+
+        /**
+         * Filter out NLM and CTEP source contexts from UI
+         * @return {void}
+         */
+        function filterSourceContext() {
+            var clonedSourceContextArr = angular.copy(vm.sourceContextArr);
+            if (!vm.curOrg.new) {
+                var curOrgSourceContextIndex = Common.indexOfObjectInJsonArray(clonedSourceContextArr, 'id', vm.curOrg.source_context_id);
+                // _.findWhere(vm.sourceContextArr, {id: vm.curOrg.source_context_id});
+                vm.curSourceContextName = curOrgSourceContextIndex > -1 ? vm.sourceContextArr[curOrgSourceContextIndex].name : '';
+            } else {
+                vm.curSourceContextName = 'CTRP'; //CTRP is the only source context available to new organization
+                vm.ctrpSourceContextIndex = Common.indexOfObjectInJsonArray(vm.sourceContextArr, 'code', 'CTRP');
+                vm.curOrg.source_context_id = vm.ctrpSourceContextIndex > -1 ? vm.sourceContextArr[vm.ctrpSourceContextIndex].id : '';
+            }
+            //delete 'CTEP' and 'NLM' from the sourceContextArr
+            vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'CTEP'}));
+            vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'NLM'}));
+            vm.curOrgEditable = vm.curSourceContextName === 'CTRP' || vm.curOrg.new; //if not CTRP context, render it readonly
         }
 
         /**
@@ -223,6 +253,40 @@
             } //prepareModal
         }; //confirmDelete
 
+
+        //Function that checks if an Organization - based on Name & source context is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the organization/unique Rails end point.
+        $scope.checkUniqueOrganization = function(){
+
+            var ID = 0;
+            if(angular.isObject(orgDetailObj))
+                ID = vm.curOrg.id;
+
+            var searchParams = {"org_name": vm.curOrg.name, "source_context_id": vm.curOrg.source_context_id, "org_exists": angular.isObject(orgDetailObj), "org_id": ID};
+            console.log('Org name is ' + vm.curOrg.name);
+            console.log('Source context is ' + vm.curOrg.source_context_id);
+            console.log('Org exists? ' + angular.isObject(orgDetailObj));
+            console.log('Org ID ' + vm.curOrg.id);
+
+            vm.showUniqueWarning = false
+
+            var result = OrgService.checkUniqueOrganization(searchParams).then(function (response) {
+                vm.name_unqiue = response.name_unique;
+
+                if(!response.name_unique && vm.curOrg.name.length > 0)
+                    vm.showUniqueWarning = true
+
+                console.log("Is org name unique: " +  vm.name_unqiue);
+                console.log(JSON.stringify(response));
+            }).catch(function (err) {
+                console.log("error in checking for duplicate org name " + JSON.stringify(err));
+            });
+        };
+
+        $scope.IsValidPhoneNumber = function(){
+            $scope.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
+            $scope.showPhoneWarning = true;
+            console.log('Is phone valid: ' + $scope.IsPhoneValid);
+        };
 
     }
 

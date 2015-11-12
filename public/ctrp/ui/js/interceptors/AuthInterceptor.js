@@ -22,10 +22,10 @@
             config.timeout = 15000; //15 seconds timeout
             //var token = AuthTokenService.getToken();
             var token = LocalCacheService.getCacheWithKey("token"); //$window.localStorage.token;
-            //console.log("Printing token");
-            //console.log(token);
             if (token) {
-                config.headers.Authorization = token;
+                var gsaFlag =  (LocalCacheService.getCacheWithKey("gsaFlag") || "Reject") + " ";
+                console.log("gsaFlag = " + gsaFlag);
+                config.headers.Authorization = gsaFlag + token;
             }
             return config;
         } //request
@@ -43,21 +43,17 @@
 
 
         function responseError(rejection) {
-            console.log("bad response status: " + rejection.status);
-            if(rejection.status == 422) {
-                console.log('Error code is 422');
-
+            if(rejection.status == 401) {
+              //if unauthorized, kick the user back to sign_in
+              $injector.get('$state').go('main.sign_in');
+              $injector.get('toastr').error('Access to the resources is not authorized', 'Please sign in to continue');
             }
             else if (rejection.status > 226 && errorCount < 2) {
                 $injector.get('toastr').clear();
-                $injector.get('toastr').error('Access to the resources is not authorized', 'Error Code: ' + rejection.status);
+                $injector.get('toastr').error('Failed request', 'Error Code: ' + rejection.status);
                 // $injector.get('UserService').logout();
-                console.log("error status code: " + rejection.status);
-                //redirect to login page
                 errorCount++;
             }
-            //$injector.get('$state').go('main.sign_in');
-
 
             return rejection;
         }

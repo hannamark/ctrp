@@ -1,80 +1,171 @@
+/**
+ * Created by wangg5 on 10/26/15.
+ */
+
 (function() {
   'use strict';
 
   angular.module('ctrpApp.widgets')
-  .directive('ctrpCommentPanel', ctrpCommentPanel);
+  .directive('ctrpComment', ctrpComment);
 
-  ctrpCommentPanel.$inject = ['$compile', '$log', '$mdSidenav', '$mdUtil', 'UserService'];
+  ctrpComment.$inject = ['$compile', '$log', 'CommentService', '$timeout',
+      'UserService', '$mdSidenav', '$mdUtil', '$mdToast', '$document'];
 
-  function ctrpCommentPanel($compile, $log, $mdSidenav, $mdUtil, UserService) {
-    var directiveObj = {
-      restrict: 'EA',
-      transclude: true,
-      scope: {},
+  function ctrpComment($compile, $log, CommentService, $timeout, UserService,
+      $mdSidenav, $mdUtil, $mdToast, $document) {
+
+    var directive = {
       link: link,
-      templateUrl: '/ctrp/ui/js/modules/widgets/comment/ctrpCommentPanelTemplate.html',
-//      controllerAs: 'commentPanelView',
-      controller: panelController
+      restrict: 'E',
+      scope: {
+        instanceUuid: '@',
+        buttonType: '@', //icon or btn
+        field: '@',
+        model: '@'
+      },
+      controller: commentCtrl,
+      controllerAs: 'commentView',
+      templateUrl: '/ctrp/ui/js/modules/widgets/comment/ctrp.widgets.comment-panel-template.html',
     };
-    return directiveObj;
+
+    return directive;
 
     function link(scope, element, attrs) {
+      scope.commentList = [];
+      //element.text('hello world from comment directive');
+      attrs.$observe('instanceUuid', function(newVal) {
+        if (newVal) {
+          scope.uuid = newVal;
+          element.show();
+          //show the counts on the element label
+          getCommentCounts();
+        } else {
+          scope.uuid = '';
+          scope.numComments = 0;
+          scope.commentList = [];
+          element.hide();
+        }
+      }, true);
+
+
+
+      /**
+      * Get the number of comments for the given uuid
+      */
+      function getCommentCounts() {
+        //include field in the url in getting the counts (from the backend)
+        var btnTemplate = '<span>Comment</span>';
+        CommentService.getCommentCounts(scope.uuid, attrs.field).then(function(data) {
+          scope.numComments = data.count;
+          if (scope.numComments > 0) {
+            btnTemplate.replace('Comment', scope.numComments);
+            // element.html('<span><strong>' + scope.numComments + '</strong></span> <i class="glyphicon glyphicon-comment" style="vertical-align: middle;"></i>');
+          }
+          // element.append($compile(btnTemplate)(scope));
+        });
+      } //getCommentCounts
+
 
     } //link
 
-    function panelController($scope, $element, $attrs) {
-      this.toggleRight = buildToggler('right');
-      this.closeSideNav = closeSideNav;
-      $scope.closeSideNav = closeSideNav;
-      $scope.showCommentForm = false;
+    function commentCtrl($scope, $element, $attrs) {
+      $log.info('in the comment directive!!');
+      var vm = this;
+      vm.commentList = [];
+      vm.showCommentForm = false;
 
-      $scope.comment = {
-      content: "",
-      fullname: "", //TODO: get user full name from UserService
-      model: "", //TODO: get model name
-      username: UserService.getLoggedInUsername(),
-      field: '',
-      instance_uuid: '',
-      parent_id: ''
-      };
+      //functions:
+      vm.toggleRight = buildToggler('right');
+      vm.closeSideNav = closeSideNav;
+      vm.postComment = postComment;
+      vm.fetchComments = fetchComments;
+      vm.toggleCommentFormShown = toggleCommentFormShown;
+      vm.updateComment = updateComment;
+      //pagination options for comments
+      vm.pagingOptions = {currentPage: 1, pageSize: 10};
+
+      activate();
+
+      function activate() {
+        watchInstanceUuid();
+      }
 
 
-      /**
-      * empty the commentList
+      //implementations below
+
+      /** watch instanceUuid, fetch comments and initialize
+      * the comment object (to be posted)
+      * whenever the instanceUuid changes in the scope
       */
-      this.clearCommentList = function() {
-        $scope.commentList = [];
-      };
+      function watchInstanceUuid() {
+        $scope.$watch(function() {return $scope.instanceUuid;}, function(newVal, oldVal) {
+          if (newVal) {
+            fetchComments();
+          }
+          //initialize the vm.comment object
+          vm.comment = {
+            content: "",
+            username: UserService.getLoggedInUsername(),
+            field: $scope.field,
+            model: $scope.model || "",
+            instance_uuid: $scope.instanceUuid,
+            parent_id: ""
+          };
+        }, true);
+      } //watchInstanceUuid
 
-      /**
-      * params commentList, array of comment objects
-      */
-      this.pushComments = function(commentList) {
-        $scope.commentList = commentList;
-      };
+      function fetchComments() {
+        //include the field in the url in fetching comments
+        CommentService.getComments($scope.instanceUuid, $scope.field).then(function(data) {
+          vm.commentList = CommentService.annotateCommentIsEditable(data.comments);
+        }).catch(function(error) {
+          $log.error('error in retrieving comments for instance uuid: ' + instanceUuid);
+        });
+      } //fetchComments
 
-      this.setInstanceUuid = function(uuid) {
-        $scope.comment.instance_uuid = uuid;
-      };
+      function postComment(form) {
+        form.$setUntouched();
+        CommentService.createComment(vm.comment).then(function(response) {
+          vm.comment.content = '';
+          if (response.server_response.status == 201) {
+            fetchComments(); //fetch the latest comments
+            toggleCommentFormShown(); //wait half second
+            showToastr('Comment created', 'right');
+          }
+          // console.log('created comment response: ' + JSON.stringify(response));
+        }).catch(function(err) {
+          $log.error('error in creating comments: ' + JSON.stringify($scope.comment));
+        });
+      } //postComment
 
-      this.setField = function(fieldName) {
-        $scope.comment.field = fieldName;
-      };
+      //update
+      function updateComment(newContent, commentObjIndex) {
+        if (commentObjIndex > -1) {
+          var editedComment = angular.copy(vm.commentList[commentObjIndex]);
+          editedComment.content = newContent;
+          CommentService.updateComment(editedComment).then(function(response) {
+            if (response.server_response.status == 200) {
+              // fetchComments();
+              showToastr('Comment updated', 'right');
+            }
+          }).catch(function(err) {
+            //TODO: throw a toastr
+            $log.error('error in updating comment: ' + newContent);
+          });
+        }
+      } //updateComment
 
-      //TODO: show, create comments...
-
-      /* clean up the scope */
-      $scope.$on('$destroy', function() {
-        $scope.commentList = [];
-      });
 
 
-    } //panelController
+      function toggleCommentFormShown(timeToWait) {
+        var time = timeToWait && timeToWait > 0 ? timeToWait : 0;
+        $timeout(function() {
+            vm.showCommentForm = !vm.showCommentForm;
+        }, time);
+      } //toggleCommentFormShown
 
+    } //commentCtrl
 
-
-    //// helper functions below
-    /* toggler for the panel */
     function buildToggler(navId) {
       var debounceFn = $mdUtil.debounce(function() {
         $mdSidenav(navId).toggle().then(function() {
@@ -84,14 +175,31 @@
       return debounceFn;
     }
 
-    /* close the slide-in panel */
     function closeSideNav() {
       $mdSidenav('right').close().then(function() {
-        $log.info('closing right slide-in panel');
+        $log.info('closed RIGHT side nav');
       });
     }
 
+    function showToastr(message, position) {
+      /*
+      $mdToast.show(
+          $mdToast.simple()
+          .content(message || 'Success')
+          .position(position || 'right')
+          .hideDelay(3000)
+      );
+      */
+      $mdToast.show({
+        template: '<md-toast style="background-color: #6200EA"><span flex>' + message + '</span></md-toast>',
+        parent: $document[0].querySelector('#toastr_message'),
+        hideDelay: 1000,
+        position: 'right'
+      });
+    } //showToastr
 
-  } //ctrpCommentPanel
+
+
+  } //ctrpComment
 
 })();

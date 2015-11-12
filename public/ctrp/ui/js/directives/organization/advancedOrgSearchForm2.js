@@ -10,10 +10,10 @@
         .directive('ctrpAdvancedOrgSearchForm2', ctrpAdvancedOrgSearchForm2);
 
     ctrpAdvancedOrgSearchForm2.$inject = ['OrgService', 'GeoLocationService', 'Common', '$location', '$state',
-        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$compile', 'UserService'];
+        'MESSAGES', 'uiGridConstants', '_', 'toastr', '$anchorScroll', '$compile', 'UserService','DateService'];
 
     function ctrpAdvancedOrgSearchForm2(OrgService, GeoLocationService, Common, $location, $state,
-                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService) {
+                                        MESSAGES, uiGridConstants, _, toastr, $anchorScroll, $compile, UserService,DateService) {
 
         var directiveObj = {
             restrict: 'E',
@@ -53,9 +53,11 @@
             $scope.curationModeEnabled = false;
             $scope.searchWarningMessage = '';
             $scope.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            $scope.dateFormat = DateService.getFormats()[1];
+
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
-            $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
+            $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
             //console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
@@ -80,7 +82,7 @@
                     });
 
                     return uniqueNames = orgNames.filter(function (name) {
-                        return uniqueNames.indexOf(name) == -1;
+                        return uniqueNames.indexOf(name) === -1;
                     });
                 });
             }; //typeAheadNameSearch
@@ -89,7 +91,7 @@
             /* searchOrgs */
             $scope.searchOrgs = function (newSearchFlag) {
 
-                if (newSearchFlag == 'fromStart') {
+                if (newSearchFlag === 'fromStart') {
                     $scope.searchParams.start = 1;
                 }
                 console.log("In searchOrgs " + JSON.stringify($scope.searchParams));
@@ -97,18 +99,24 @@
                 //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
                 // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
                 var isEmptySearch = true;
-                var ignoreKeys = ['rows', 'alias', 'start'];
+                var ignoreKeys = ['rows', 'alias', 'start','wc_search'];
 
                 Object.keys($scope.searchParams).forEach(function (key) {
 
-                if(ignoreKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
+                if(ignoreKeys.indexOf(key) === -1 && $scope.searchParams[key] != '')
                     isEmptySearch = false;
 
                 });
-                if(isEmptySearch)
+                if(isEmptySearch && newSearchFlag === 'fromStart') {
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
-                else
+                } else {
                     $scope.searchWarningMessage = "";
+                }
+
+                $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
+                if ($scope.searchParams.date_range_arr.length === 0) {
+                    delete $scope.searchParams.date_range_arr;
+                }
 
                 if(!isEmptySearch) { //skip searching if empty search
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
@@ -132,7 +140,7 @@
                             });
 
                             $location.hash('org_search_results');
-                            $anchorScroll();
+                            //$anchorScroll();
                         }
                         $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
                         // console.log($scope.$parent);
@@ -147,17 +155,18 @@
             /* resetSearch */
             $scope.resetSearch = function () {
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
-                //first reset to CTRP, then to All Context
-                //$scope.searchParams.source_context = 'CTRP';
-                var excludedKeys = ['alias'];
+                var temp = $scope.searchParams.wc_search;
+                var excludedKeys = ['alias','wc_search'];
                 Object.keys($scope.searchParams).forEach(function (key) {
 
-                    if (excludedKeys.indexOf(key) == -1) {
+                    if (excludedKeys.indexOf(key) === -1) {
                         $scope.searchParams[key] = '';
                     }
-                    $scope.searchParams['alias'] = true;
 
                 });
+
+                $scope.searchParams['alias'] = true;
+                $scope.searchParams['wc_search'] = temp;
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];
@@ -178,10 +187,11 @@
                 // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
                 var isActive = rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1;
                 var isNullified = rowEntity.source_status && rowEntity.source_status.indexOf('Nul') > -1;
-                if (isNullified || isActive) {
+                if (isNullified || isActive || !rowEntity.nullifiable) {
                     //warning to user for nullifying active entity
-
-                    if (isActive)
+                    if (!rowEntity.nullifiable)
+                        $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
+                    else if (isActive)
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
                     else
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
@@ -211,6 +221,65 @@
 
             }; //commitNullification
 
+            $scope.rowFormatter = function( row ) {
+                if (!$scope.usedInModal) {
+                    var isCTEPContext = row.entity.source_context && row.entity.source_context.indexOf('CTEP') > -1;
+                    return isCTEPContext;
+                } else {
+                    return false;
+                }
+            };
+
+            /**
+             * Open calendar
+             * @param $event
+             * @param type
+             */
+            $scope.openCalendar = function ($event, type) {
+                // $event.preventDefault();
+                //$event.stopPropagation();
+
+                if (type === "end") {
+                    $scope.endDateOpened = true;// !$scope.endDateOpened;
+                } else {
+                    $scope.startDateOpened = true;// !$scope.startDateOpened;
+                }
+            }; //openCalendar
+
+
+            $scope.getDateRange = function(range) {
+                var today = new Date();
+                switch (range) {
+                    case 'today':
+                        $scope.searchParams.startDate = today;
+                        $scope.searchParams.endDate = today;;
+                        break;
+                    case 'yesterday':
+                        $scope.searchParams.startDate = moment().add(-1, 'days').toDate();
+                        $scope.searchParams.endDate = moment().add(-1, 'days').toDate();
+                        break;
+                    case 'last7':
+                        $scope.searchParams.startDate = moment().add(-7, 'days').toDate();
+                        $scope.searchParams.endDate = moment().add(0, 'days').toDate();
+                        break;
+                    case 'last30':
+                        $scope.searchParams.startDate = moment().add(-30, 'days').toDate();
+                        $scope.searchParams.endDate = moment().add(0, 'days').toDate();
+                        break;
+                    case 'thisMonth':
+                        $scope.searchParams.startDate = moment([today.getFullYear(), today.getMonth()]).toDate();
+                        $scope.searchParams.endDate = today;
+                        break;
+                    case 'lastMonth':
+                        $scope.searchParams.startDate = moment([today.getFullYear(), today.getMonth()-1]).toDate();
+                        $scope.searchParams.endDate = moment(today).subtract(1, 'months').endOf('month').toDate();
+                        break;
+                    default:
+                        $scope.searchParams.startDate = '';
+                        $scope.searchParams.endDate = '';
+                }
+            };
+
 
             activate();
 
@@ -221,7 +290,7 @@
                 if (fromStateName != 'main.orgDetail') {
                     $scope.resetSearch();
                 } else {
-                   // $scope.searchOrgs();
+                   $scope.searchOrgs(); //refresh search results
                 }
                 watchCountryAndGetStates();
                 //listenToStatesProvinces();
@@ -282,7 +351,7 @@
              */
             function sortChangedCallBack(grid, sortColumns) {
 
-                if (sortColumns.length == 0) {
+                if (sortColumns.length === 0) {
                     //console.log("removing sorting");
                     //remove sorting
                     $scope.searchParams.sort = '';
@@ -314,6 +383,7 @@
              */
             function rowSelectionCallBack(row) {
 
+
                 if ($scope.maxRowSelectable > 0 && $scope.curationShown || $scope.usedInModal) {
                     if (row.isSelected) {
 
@@ -341,7 +411,7 @@
                         //remove it from the $scope.selectedRows, if exists
                         var needleIndex = -1;
                         _.each($scope.selectedRows, function (existingRow, idx) {
-                            if (existingRow.entity.id == row.entity.id) {
+                            if (existingRow.entity.id === row.entity.id) {
                                 needleIndex = idx;
                                 return;
                             }
@@ -390,17 +460,22 @@
 
             /* prepare grid layout and data options */
             function prepareGidOptions() {
-                $scope.gridOptions = OrgService.getGridOptions();
-                //console.log("*******cur user role is "+ $scope.userRole);
-                //console.log("*******index of ctep_id is "+ OrgService.findContextId($scope.gridOptions.columnDefs,'name','ctep_id'));
-                var cur="curator";
-                if(!($scope.userRole.toUpperCase() == cur.toUpperCase())) {
-                    $scope.gridOptions.columnDefs.splice(14,2);
-                }
-                //var needleIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, "ctep_id", contextName);
-
+                $scope.gridOptions = OrgService.getGridOptions($scope.usedInModal);
+                $scope.gridOptions.isRowSelectable = function (row) {
+                    var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                    if ($scope.usedInModal) {
+                        return true;
+                    }
+                    else if (isCTEPContext) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                };
                 $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+                $scope.gridOptions.enableVerticalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
+                $scope.gridOptions.enableHorizontalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
                     $scope.gridApi = gridApi;
                     $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
@@ -436,7 +511,7 @@
                             // vm.selectedRows.pop().isSelected = false;
                             var deselectedRow = $scope.selectedRows.pop();
                             deselectedRow.isSelected = false;
-                            $scope.nullifiedId = deselectedRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                            $scope.nullifiedId = deselectedRow.entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
                         }
                     } else {
                         // initializations for curation
@@ -459,7 +534,7 @@
                 $scope.$watch('nullifiedId', function (curVal, preVal) {
                     initCurationObj();
                     $scope.toBeCurated.id_to_be_nullified = $scope.nullifiedId;
-                    if ($scope.selectedRows.length == $scope.maxRowSelectable && $scope.nullifiedId) {
+                    if ($scope.selectedRows.length === $scope.maxRowSelectable && $scope.nullifiedId) {
                         _.each($scope.selectedRows, function (curRow) {
                             if (curRow.entity.id != $scope.nullifiedId) {
                                 $scope.toBeCurated['id_to_be_retained'] = curRow.entity.id;

@@ -19,8 +19,8 @@ var helper = function() {
     this.verifyLoginName = element(by.binding('headerView.username'));
 
     var exp_del_bttn_pg_hdr = 'Delete button on Organization page';
-    var header_Page_Text = '              Clinical Trials Reporting Program';
-    this.header_Page = element(by.css('span[style="font-size:large;font-weight:bold;"]'));
+    var header_Page_Text = 'Clinical Trials Reporting Program';
+    this.header_Page = element(by.css('.sub-title')); //element(by.css('span[style="font-size:large;font-weight:bold;"]'));
 
     this.wait = function (element, label) {
         browser.wait(function () {
@@ -128,7 +128,15 @@ var helper = function() {
         console.log(errorMessage + " - header value");
     };
 
-    function objToStringAll (obj) {
+    this.pageRefresh = function () {
+        browser.refresh();
+    };
+
+    this.wait_for = function (enterTm){
+        browser.sleep(enterTm);
+    };
+
+    this.objToStringAll = function (obj) {
         var str = '';
         for (var p in obj) {
             if (obj.hasOwnProperty(p)) {
@@ -138,11 +146,13 @@ var helper = function() {
         return str;
     };
 
-    function objToString (obj) {
+    this.objToString = function (obj) {
         var j=''+obj+'';
         JSON.stringify(j);
         return j;
     };
+
+
 
 };
 module.exports = helper;

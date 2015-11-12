@@ -1,5 +1,7 @@
 @PA @global
-Feature: As any CTRP PA User, I can add and edit Trial Related Documents
+Feature: PAA F10 Add and Edit Trial Related Documents  
+
+As any CTRP PA User, I can add and edit Trial Related Documents
 
 Scenario: #1 I can add Trial Related Documents 
 Given I am logged into the CTRP Protocol Abstraction application

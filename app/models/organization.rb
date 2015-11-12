@@ -53,7 +53,10 @@ class Organization < ActiveRecord::Base
   accepts_nested_attributes_for :name_aliases, allow_destroy: true
 
   validates :name, presence: true
+  validates :address, presence: true
+  validates :city, presence: true
 
+  before_validation :check_conditional_fields
   before_destroy :check_for_family
   before_destroy :check_for_person
 
@@ -74,11 +77,25 @@ class Organization < ActiveRecord::Base
     return ctep_id_str
   end
 
+
+  def nullifiable
+    isNullifiable =true;
+    source_status_arr = []
+    source_status_arr = Organization.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:"source_status_id") if self.ctrp_id.present?
+    source_status_arr.each_with_index { |e, i|
+      if SourceStatus.find_by_id(e).code == "ACT"
+        isNullifiable = false;
+      end
+    }
+    return isNullifiable
+  end
+
   # Get an array of maps of the orgs with the same ctrp_id
   def cluster
     tmp_arr = []
-    if self.ctrp_id.present?
-      tmp_arr = Organization.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).order(:id).pluck(:id, :"source_contexts.name")
+    if self.ctrp_id.present? && (self.source_status.nil? || self.source_status.code != 'NULLIFIED')
+      join_clause = "LEFT JOIN source_contexts ON source_contexts.id = organizations.source_context_id LEFT JOIN source_statuses ON source_statuses.id = organizations.source_status_id"
+      tmp_arr = Organization.joins(join_clause).where("ctrp_id = ? AND (source_statuses.code <> ? OR source_statuses IS NULL)", self.ctrp_id, "NULLIFIED").order(:id).pluck(:id, :"source_contexts.name")
     else
       tmp_arr.push([self.id, self.source_context ? self.source_context.name : ''])
     end
@@ -93,7 +110,20 @@ class Organization < ActiveRecord::Base
 
   private
 
-  def save_id_to_ctrp_id
+  # Method to check for the
+   def check_conditional_fields
+     #check for presence of phone or email. If both are empty, then return false
+    if (self.phone.nil? || self.phone.empty?) && (self.email.nil? || self.email.empty?)
+      return false
+    end
+    #If county is set to United states, then the postal_code should not be empty
+     if self.country == "United States" && (self.postal_code.nil? || self.postal_code.empty?)
+        return false
+     end
+   end
+
+
+    def save_id_to_ctrp_id
     if self.source_context && self.source_context.code == "CTRP"
       self.ctrp_id = self.id
       self.source_id =self.id
@@ -122,6 +152,15 @@ class Organization < ActiveRecord::Base
       @toBeNullifiedOrg = Organization.find_by_id(params[:id_to_be_nullified]);
       @toBeRetainedOrg =  Organization.find_by_id(params[:id_to_be_retained]);
       raise ActiveRecord::RecordNotFound if @toBeNullifiedOrg.nil? or @toBeRetainedOrg.nil?
+
+      @toBeNullifiedOrgCtepOrNot=SourceContext.find_by_id(@toBeNullifiedOrg.source_context_id).code == "CTEP"
+      @toBeRetainedOrgCtepOrNot=SourceContext.find_by_id(@toBeRetainedOrg.source_context_id).code == "CTEP"
+      #p @toBeNullifiedOrgCtepOrNot
+      #p @toBeRetainedOrgCtepOrNot
+
+      if @toBeNullifiedOrgCtepOrNot || @toBeRetainedOrgCtepOrNot
+        raise "CTEP organizations can not be nullified"
+      end
 
       #sleep(2.minutes);
 
@@ -203,7 +242,7 @@ class Organization < ActiveRecord::Base
 
   scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value) {
+  scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       where("organizations.#{column} ilike ?", "%#{value[1..str_len - 1]}")
@@ -212,11 +251,18 @@ class Organization < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       where("organizations.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      where("organizations.#{column} ilike ?", "#{value}")
+      if !wc_search
+        if !value.match(/\s/).nil?
+          value=value.gsub! /\s+/, '%'
+        end
+        where("organizations.#{column} ilike ?", "%#{value}%")
+      else
+        where("organizations.#{column} ilike ?", "#{value}")
+      end
     end
   }
 
-  scope :matches_name_wc, -> (value) {
+  scope :matches_name_wc, -> (value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
@@ -225,7 +271,14 @@ class Organization < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
     else
-      joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{value}", "#{value}")
+        if !wc_search
+          if !value.match(/\s/).nil?
+            value=value.gsub! /\s+/, '%'
+          end
+          joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value}%", "%#{value}%")
+        else
+          joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{value}", "#{value}")
+      end
     end
   }
 
@@ -281,5 +334,10 @@ class Organization < ActiveRecord::Base
     else
       order("LOWER(organizations.#{column}) #{order}")
     end
+  }
+  scope :updated_date_range, -> (dates) {
+    start_date = DateTime.parse(dates[0])
+    end_date = DateTime.parse(dates[1])
+    where("organizations.updated_at BETWEEN ? and ?", start_date, end_date)
   }
 end

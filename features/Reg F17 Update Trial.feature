@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can update information on a trial that does not require IRB approval or an amendment
+Feature: Reg F17 Update Trial
+
+As a CTRP User, I can update information on a trial that does not require IRB approval or an amendment
 
 Scenario: #1 I search my trials and select the update option
 Given I am in the CTRP Registration applicatin
@@ -12,6 +14,7 @@ And I will be able to add Grant Information
 And I will be able to update trial status and trial status dates and edit trial status history
 And I will be able to update trial start date, primary completion date, and completion date with actual or anticipated dates
 And I will be able to update participating site status
+And I will be able to review existing Trial Related Documents
 And I will be able to add Trial Related Document
 And I will be able to review or cancel my update
 

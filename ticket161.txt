@@ -1,0 +1,14 @@
+Based on the decision that PO data sourced from CTEP, NLM shall not be editable in the CTRP AUM, the below layers of the application will be impacted and need to be modified:
+1. UI - Organization & Person
+a) Search screen presentation
+b) Add Org/Person screen - Source context 'CTEP' shall be removed.
+    Similarly remove NLM.
+c) Edit & Delete Org/Person options absent for CTEP records
+d) Add/Edit/Delete options absent for Org - Person affiliations i.e.
+    the link to add affiliations should be absent for CTEP sourced
+    Orgs/Persons
+e) Presentation of Affiliations for a Person record
+f) Presentation of Affiliations for an Org record
+    Note -The jury is still out on whether these rules should be enforced at
+    the ActiveRecord level as we havent worked out the CTEP ECM/Restful services
+    part and their role in creating/editing CTEP orgs.

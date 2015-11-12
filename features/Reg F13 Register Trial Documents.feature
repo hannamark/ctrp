@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can attach various documents to a trial registration
+Feature: Reg F13 Register Trial Documents
+
+As a CTRP User, I can attach various documents to a trial registration
 
 Scenario: #1 I can attach the protocol document, IRB, Informed Consent, and other documents to a trial registration
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
@@ -11,4 +13,9 @@ And I have selected a file to attach as the Informed Consent Document (required 
 And I have selected a file to attach as the list of Participating Sites (optional)
 And I have selected one or more files to attach and entered the description of the file (optional)
 Then the Register Trial Related Document for the trial registration will be complete
+
+Scenario: #2 I can only attach document with permitted document types
+Given I am on the Register Trial Related Document screen
+When I select a file to attached as a trial document
+Then the system will only accept document of type pdf, zip, xls, xlsx, csv, doc, docx
 

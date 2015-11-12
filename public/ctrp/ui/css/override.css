@@ -10,8 +10,7 @@
 
 .grid {
     width: 100%;
-    min-height: 250px;
-    margin-left: 10px;
+    min-height: 550px;
 }
 
 .ui-grid-header-cell .ui-grid-cell-contents {
@@ -25,13 +24,40 @@
     overflow: visible;
 }
 
-.ui-grid-row, .ui-grid-cell {
-    line-height: 1em;
-    height: 22px !important;
-}
-
 .tooltip-uigrid {
     word-wrap: normal;
+}
+
+/* Overriding default table classes */
+.table-bordered > thead >tr > td, .table-bordered > thead > tr > th {
+    border-bottom-width: 1px;
+}
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+    line-height: 1em;
+    padding: 3px 5px;
+    height: 22px;
+    white-space: normal;
+    -ms-text-overflow: clip;
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    overflow: visible;
+    border: 1px solid #D4D4D4;
+}
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td,
+.table-bordered > thead > tr > td {
+    vertical-align: middle;
+}
+
+.table .btn, .input-group-btn .btn {
+    line-height: 1em;
 }
 
 .animated-item {
@@ -147,6 +173,9 @@ header img {
     color: #FFF;
 }
 
+.top-offset-tiny {
+    margin-top: 5px;
+}
 .top-offset-xs {
 	margin-top: 25px;
 }
@@ -256,12 +285,6 @@ form label {
 
 /*#adv-org-search-modal .modal-dialog  {width:75%;}*/
 
-.required:after {
-    color: #e32;
-    content: ' *';
-    display:inline;
-}
-
 .dropdown-submenu {
     position: relative;
 }
@@ -312,6 +335,12 @@ form label {
 
 
 /* New UI Overrides */
+header .sub-title {
+    font-size: large;
+    font-weight: bold;
+    margin-left: 69px;
+}
+
 body {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 12px;
@@ -369,8 +398,16 @@ form {
 }
 
 h4, .panel-title {
-    font-size: 16px;
     color: #2A71A5;
+}
+h4 {
+    font-size: 16px;
+}
+.panel-title {
+    font-size: 14px;
+}
+.panel-heading {
+    padding: 6px 15px;
 }
 
 .glyphicon {
@@ -381,6 +418,9 @@ h4, .panel-title {
     margin-right: -5px;
     margin-left: -5px;
 }
+.form-horizontal .has-feedback .form-control-feedback {
+    right: 5px;
+}
 
 .input-group-addon {
     line-height: 1;
@@ -389,7 +429,11 @@ h4, .panel-title {
 
 .input-sm, select.input-sm {
     height: 22px;
-    padding: 2px 10px;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+.input-sm+.form-control-feedback {
+    line-height: 2em;
 }
 
 .btn {
@@ -406,9 +450,17 @@ h4, .panel-title {
     margin-left: 0px;
 }
 
-.btn-toolbar span {
+.btn-toolbar span.pad-height {
     line-height: 2.5em;
     font-size: 11px;
+}
+
+.btn-toolbar > .btn-no-left-margin {
+    margin-left: 0;
+}
+
+.btn-left-margin {
+    margin-left: 5px;
 }
 
 .checkbox.checkbox-info, .checkbox.checkbox-circle {
@@ -442,14 +494,22 @@ h4, .panel-title {
     color: #FFF;
 }
 
+.ui-grid-cell {
+    line-height: 1em;
+    height: 22px !important;
+}
+
+.ui-grid-cell .btn {
+    margin: 0 auto;
+    padding: 0 6px;
+}
+
 .form-text {
     padding-top: 7px;
 }
 
-/* For datepicker widget */
-.btn-calendar {
-    padding-top: .12em;
-    padding-bottom: .12em;
+.form-file-upload {
+    padding-top: 5px;
 }
 
 .popover {
@@ -466,9 +526,89 @@ h4, .panel-title {
 .glyphicon.glyphicon-comment {
     font-size: 22px;
 }
+.glyphicon.glyphicon-ok.glyphicon-green {
+    color: #3c763d;
+}
+.glyphicon.glyphicon-exclamation-sign.glyphicon-red {
+    color: #a94442;
+}
 
 .md-sidenav-right {
     z-index: 9999;
     width: 350px;
     word-wrap: break-word;
+}
+
+.btn-toolbar ng-md-icon {
+    height: 13px;
+    width: 12px;
+}
+
+input[type=radio] {
+    margin: 0;
+}
+
+.ngCellText {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-wrap: normal;
+    white-space: nowrap;
+    padding:5px;
+    width:99%;
+}
+
+.modal-header .close {
+    margin-top: -10px;
+}
+
+.drop-shadow {
+    box-shadow: 2px 2px 10px #E1E1E1;
+    border-radius: 6px;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0;
+}
+
+.no-padding {
+    padding: 0;
+}
+
+/* override the md-backdrop grey overlay/backdrop to make the content visible */
+md-backdrop.md-opaque {
+    opacity: .18; }
+md-backdrop.md-opaque.ng-enter {
+    opacity: 0; }
+md-backdrop.md-opaque.ng-enter.md-opaque.ng-enter-active {
+    opacity: .18; }
+md-backdrop.md-opaque.ng-leave {
+    opacity: .18;
+    transition: opacity 400ms; }
+md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
+    opacity: 0; }
+
+/* for the comment push-in panel */
+.md-sidenav-push-in .md-sidenav-push-in-target {
+    transform: translate(0px);
+    transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.md-sidenav-push-in.md-sidenav-left-open .md-sidenav-push-in-target {
+    transform: translate(55px);
+}
+.md-sidenav-push-in.md-sidenav-right-open .md-sidenav-push-in-target {
+    transform: translate(-55px);
+}
+
+.form-group.required .control-label:after{
+    color: #C53531;
+    content: "*";
+    position: absolute;
+    margin-right: -13px;
+}
+
+.nonselectable-row {
+    background-color: rgba(255, 69, 0, 0.1) !important;
+}
+.nonselectable-row, .nonselectable-row a {
+    color: #444 !important;
 }

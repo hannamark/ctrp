@@ -1,5 +1,7 @@
 @Global @Reg
-Feature: As a CTRP User, I can indicate if a trial has an associated grant and if so, enter information about the grant
+Feature: Reg F10 Register Trial Grant Information
+
+As a CTRP User, I can indicate if a trial has an associated grant and if so, enter information about the grant
 
 Scenario: #1 I can indicate that the trial does not have an associated grant
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial

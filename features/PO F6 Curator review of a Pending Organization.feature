@@ -1,5 +1,5 @@
 @PO @Global
-Feature: Curator review of a Pending Organization
+Feature: PO F6 Curator review of a Pending Organization 
 
 Scenario: #1 As a PO Curator, I can display all Organizations with Pending status
 Given I am logged in to the CTRP PO application
@@ -33,9 +33,10 @@ And the Organization will be available for use in CTRP
 Scenario: #5 As a PO Curator, I can Nullify an Organization
 Given I am logged in to the CTRP PO Application
 And I am on the CTRP PO Curator Review screen
-And I have identified two organizations that are duplicates
+And I have identified two organizations in the CTRP context that are duplicates
 When I select one of the organizations to be retained
 And I select one of the organizations to be nullified
+And the organization to be nullified does not have an Active status
 Then all references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
 And all references in CTRP to the nullified organization as Sponsor will reference the retained organization as Sponsor
 And all references in CTRP to the nullified organization as Participating Site will reference the retained organization as Participating Site

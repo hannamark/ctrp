@@ -65,9 +65,25 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^an error (.*) will be displayed$/, function (response, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^I have entered a family name (.*)$/, function (familyName, callback) {
+        addFamily.setAddFamilyName(familyName);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^an error (.*) will be displayed for family name (.*), family type (.*) and family status (.*)$/, function (response, familyName, familyType, familyStatus, callback) {
+        if(familyName === 'Albert Einstein Cancer Center') {
+            projectFunctions.verifyWarningMessage(response);
+        }
+        if(familyName === '') {
+            projectFunctions.verifyWarningMessage(response);
+        }
+        if(familyType === '') {
+            projectFunctions.verifyWarningMessage(response);
+        }
+        if(familyStatus === '') {
+            projectFunctions.verifyWarningMessage(response);
+        }
+        browser.sleep(25).then(callback);
     });
 
 

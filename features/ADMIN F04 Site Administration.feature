@@ -1,5 +1,7 @@
-@Admin
-Feature: As a CTRP User with Administration privileges, I can grant Site Administrator privileges to CTRP Users with the same site affiliation
+@Admin @Global  
+Feature: ADMIN F04 Site Administration
+
+As a CTRP User with Administration privileges, I can grant Site Administrator privileges to CTRP Users with the same site affiliation
 
 Scenario: #1 I can view CTRP Users with the same site affilition and their Site Administration privileges
 Given I am logged into CTRP 

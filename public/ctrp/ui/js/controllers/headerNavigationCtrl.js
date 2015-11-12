@@ -60,18 +60,25 @@
 
         function listenToLoginEvent() {
             $scope.$on('signedIn', function() {
-                vm.signedIn = UserService.isLoggedIn();
-                vm.username = UserService.getLoggedInUsername();
-                vm.userRole = UserService.getUserRole().split("_")[1].toLowerCase(); //e.g. super
-                vm.isCurationEnabled = UserService.isCurationModeEnabled();
-                vm.isCurationModeSupported = UserService.isCurationSupported();
-                showMenus();
+                pullUserInfo();
             });
 
             $scope.$on('loggedOut', function() {
-              //do something if necessary on log out
+                console.log('logged out!!');
+                pullUserInfo();
+                // vm.signedIn = false;
             });
         } //listenToLoginEvent
+
+
+        function pullUserInfo() {
+            vm.signedIn = UserService.isLoggedIn();
+            vm.username = UserService.getLoggedInUsername();
+            vm.userRole = UserService.getUserRole().split("_")[1] || '';
+            vm.userRole = !!vm.userRole ? vm.userRole.toLowerCase() : ''; //e.g. super
+            vm.isCurationEnabled = UserService.isCurationModeEnabled();
+            vm.isCurationModeSupported = UserService.isCurationSupported();
+        } //pullUserInfo
 
 
         /**
@@ -164,21 +171,6 @@
                 }
             }, true);
         }
-
-        function showMenus() {
-          // Role based Dashboard
-          if (vm.userRole == "curator" || vm.userRole == "super") {
-              vm.dashboardOrganization = {"Search Organizations": "main.organizations", "Add Organization": "main.addOrganization"};
-              vm.dashboardFamily = {"Search Families": "main.families", "Add Family": "main.family"};
-              vm.dashboardPerson = {"Search Persons": "main.people", "Add Person": "main.addPerson"};
-          }
-          if (vm.userRole == "readonly") {
-              vm.dashboardOrganization = {"Search Organizations": "main.organizations"};
-              vm.dashboardFamily = {"Search Families": "main.families"};
-              vm.dashboardPerson = {"Search Persons": "main.people"};
-          }
-        } //showMenus
-
 
 
     };

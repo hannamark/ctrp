@@ -86,16 +86,63 @@ class FamiliesController < ApplicationController
     params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
+    print "ke;;;;;;;";
+    print params[:wc_search];
 
     if params[:ctrp_id].present? || params[:name].present? || params[:family_status].present? || params[:family_type].present?
       @families = Family.all
       @families = @families.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
-      @families = @families.matches_wc('name', params[:name]) if params[:name].present?
+      @families = @families.matches_wc('name', params[:name],params[:wc_search]) if params[:name].present?
       @families = @families.with_family_status(params[:family_status]) if params[:family_status].present?
       @families = @families.with_family_type(params[:family_type]) if params[:family_type].present?
       @families = @families.sort_by_col(params[:sort], params[:order]).group(:'families.id').page(params[:start]).per(params[:rows])
     else
       @families = []
+    end
+  end
+
+  #Method to check for Uniqueness while creating families - check on name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
+  def unique
+    print params[:family_name]
+    print params[:family_exists]
+    print "Family ID "
+    print params[:family_id]
+
+    is_unique = true
+    count = 0
+
+    if params.has_key?(:family_name)
+      count = Family.where("lower(name)=?", params[:family_name].downcase).count;
+    end
+
+    print "count "
+    print count
+
+    if params[:family_exists] == true
+      @dbFamily = Family.find(params[:family_id]);
+      if @dbFamily != nil
+        print " db family "
+        print @dbFamily.name
+
+        if params[:family_name] == @dbFamily.name
+          print " both are equal. Must not warn "
+          is_unique = true;
+        else
+          if count > 0
+            print " both are different. Must warn. "
+            is_unique = false
+          end
+        end
+      end
+    elsif params[:family_exists] == false && count > 0
+      is_unique = false
+    end
+
+    p " is unique? "
+    p is_unique
+
+    respond_to do |format|
+      format.json {render :json => {:name_unique => is_unique}}
     end
   end
 

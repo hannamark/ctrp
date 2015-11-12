@@ -11,10 +11,10 @@
         'ngAnimate',
         'ngSanitize',
         'ngMaterial',
-        'ctrp.constants',
-        'ctrp.commonTools',
-        'PromiseTimeoutModule',
-        'PromiseServiceModule',
+        'ctrp.module.constants',
+        'ctrp.module.common',
+        'ctrp.module.PromiseTimeoutService',
+        'ctrp.module.PromiseService',
         'LocalCacheModule',
         'toastr',
         'ui.bootstrap',
@@ -23,13 +23,14 @@
         'ui.grid.pagination',
         'ui.grid.selection',
         'ui.scrollpoint',
-        'DateServiceMod',
-        'CTRPUnderscoreModule',
-        'toggle-switch',
-        'TimeoutModule',
+        'ctrp.module.dateservice',
+        'ctrp.module.underscoreWrapper',
+        'ctrp.module.timeout',
         'ngFileUpload',
         'angularMoment',
-        'ctrpApp.widgets'
+        'ctrpApp.widgets',
+        'ctrpForm',
+        'ctrp.module.dataservices'
     ])
         .config(function($provide) {
             $provide.decorator('$state', function($delegate, $rootScope) {
@@ -76,15 +77,15 @@
                 url: '/main',
                 views: {
                     '': {
-                        templateUrl: '/ctrp/ui/partials/main_content_frame.html'
+                        templateUrl: '/ctrp/ui/partials/mainContentFrame.html'
                     },
 
-                    'right_panel@main': {
-                        templateUrl: '/ctrp/ui/partials/right_panel.html'
+                    'rightPanel@main': {
+                        templateUrl: '/ctrp/ui/partials/rightPanel.html'
                     },
 
-                    'main_content@main': {
-                        templateUrl: '/ctrp/ui/partials/main_content.html'
+                    'mainContent@main': {
+                        templateUrl: '/ctrp/ui/partials/mainContent.html'
                     }
                 },
                 ncyBreadcrumb: {
@@ -95,7 +96,8 @@
 
                 .state('main.defaultContent', {
                     url: '/welcome',
-                    templateUrl: '/ctrp/ui/partials/welcome_content.html',
+                    templateUrl: '/ctrp/ui/partials/welcome/welcomeContent.html',
+                    controller: 'headerNavigationCtrl as headerView',
                     ncyBreadcrumb: {
                         label: 'Home'
                     }
@@ -190,8 +192,9 @@
                     },
                     ncyBreadcrumb: {
                         parent: '',
-                        label: 'Sign in',
-                        skip: true
+                        label: 'CTRP Sign In',
+                        skip: true,
+
                     }
                 })
 
@@ -255,11 +258,12 @@
                         userDetailObj : function(UserService) {
                             return UserService.getUserDetailsByUsername();
                         }
-                    }//, //resolve the promise and pass it to controller
-                    //ncyBreadcrumb: {
-                    //    parent: 'main.people',
-                    //     label: 'Person Detail'
-                    //  }
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        label: 'User Profile',
+
+                    }
+
                 })
 
                 .state('main.families', {
@@ -557,8 +561,14 @@
                     label: 'Trial Detail'
                 }
             });
-        }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService) {
-            console.log('running ctrp angular app');
+        }).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService, LocalCacheService) {
+
+            $rootScope.$on('stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+                var statesNotRequiringGsa = ['main.sign_in', 'main.sign_up', 'main.gsa'];
+                if (statesNotRequiringGsa.indexOf(toState.name) == -1 && LocalCacheService.getCacheWithKey("gsaFlag") !== 'Accept') {
+                    $state.go('main.gsa');
+                }
+            });
 
             $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 

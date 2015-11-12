@@ -69,22 +69,26 @@
         }; //gridOptions
 
 
-        vm.searchFamilies = function() {
+        vm.searchFamilies = function(newSearchFlag) {
 
+            if (newSearchFlag == 'fromStart') {
+                vm.searchParams.start = 1; //from first page
+            }
 
             //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
             // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
             var isEmptySearch = true;
-            var excludedKeys = ['sort', 'order', 'rows', 'start'];
+            var excludedKeys = ['sort', 'order', 'rows', 'start','wc_search'];
             Object.keys(vm.searchParams).forEach(function (key) {
                 if (excludedKeys.indexOf(key) == -1 && vm.searchParams[key] != '')
                     isEmptySearch = false;
             });
 
-            if (isEmptySearch)
+            if (isEmptySearch  && newSearchFlag == 'fromStart') {
                 $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
-            else
+            } else {
                 $scope.searchWarningMessage = "";
+            }
 
             console.log("search params are  " + JSON.stringify(vm.searchParams));
             console.log("isEmptySearch is " + isEmptySearch);
@@ -101,7 +105,7 @@
                     vm.gridOptions.totalItems = data.data.total;
 
                     $location.hash('family_search_results');
-                    $anchorScroll();
+                    //$anchorScroll();
                 }).catch(function (err) {
                     console.log('search people failed');
                 });
@@ -110,15 +114,18 @@
 
 
         vm.resetSearch = function() {
-            // vm.states.length = 0;
             vm.searchParams = FamilyService.getInitialFamilySearchParams();
+            var temp = vm.searchParams.wc_search;
+            var excludedKeys = ['wc_search'];
+            Object.keys(vm.searchParams).forEach(function(key, index) {
+                if (excludedKeys.indexOf(key) == -1) {
+                    vm.searchParams[key] = '';
+                }
+            });
+            vm.searchParams['wc_search'] = temp;
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
             $scope.searchWarningMessage = '';
-
-            Object.keys(vm.searchParams).forEach(function(key, index) {
-                vm.searchParams[key] = '';
-            });
         }; //resetSearch
 
         activate();

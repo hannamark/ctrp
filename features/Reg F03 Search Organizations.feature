@@ -1,47 +1,39 @@
 @Global @Reg
-Feature: As a CTRP User, I am able to Search Organizations by various criteria
+Feature: Reg F03 Search Organizations
+
+As a CTRP User, I am able to Search Organizations by various criteria
 
 Scenario outline: #1 I am able to search for organizations in CTRP
 Given I am logged into the CTRP Registration application
 And I have selected the option "Search Organizations"
-When I provide the <CTRP Organization ID> of the organization
-And I provide the <CTEP Organization ID> of the organization
+When I provide the <Source ID> of the organization
 And I provide the <Organization Name> of the organization
 And I provide the <Family Name> of the organization
 And I provide the <City> of the organization
 And I provide the <State> of the organization
+And I provide the <Country> of the organization where the default is "All Countries"
 And I submit my search request
 Then the system should display the organization with that PO Organization ID
-And the <Organization Search Results> will display sorted by Organization Name:
+And the <Organization Search Results> will display Organizations with an Active status in the CTRP Context sorted by Organization Name:
 |PO Organization ID|
 |CTEP Organization ID|
 |Organization Name|
 |Family Name|
 |City|
-|State - two character ISO code|
+|State|
 |Country|
 |Zip|
 
 Example:
-|CTRP Org ID	||CTEP Org ID	||Organization Name	||Family Name	||City		||State		||Result	|
-|		||		||			||		||		||		||At least one selection value must be entered prior to running the search|
-|129345		||		||			||		||		||		||True		|
-|		||		||Dana-Farber		||		||		||		||True		|
-|		||MDA		||Dana-Farber		||		||		||		||False		|
-|		||		||@123			||		||		||		||False		|
-|		||		||			||Dana-Farber/Harvard Cancer Center||	||	||True		|
-|		||		||			||		||		||California	||True		|
-|		||		||			||		||CA		||		||False		|
-
-
-Scenario: #2 I can request the creation of a new organization
-Given I am logged into the CTRP Registration application
-And I have selected the option "Search Organizations"
-And I searched for the desired organization
-When I do not find the organization that I need for registration
-Then I can request the creation of a new organization by providing the Organization Name, Street Address, City, State, Country, phone, and email
-And requesting that a new organization be created
-
+|Source ID	||Organization Name	||Family Name	||City		||State		||Country	||Result	|
+|		||			||		||		||		||All Countries	||At least one selection value must be entered prior to running the search|
+|129345		||			||		||		||		||All Countries	||True		|
+|		||Dana-Farber		||		||		||		||All Countries	||True		|
+|MDA		||Dana-Farber		||		||		||		||All Countries	||False		|
+|		||@123			||		||		||		||All Countries	||False		|
+|		||			||Dana-Farber/Harvard Cancer Center||	||	||All Countries	||True		|
+|		||			||		||		||California	||Unites States	||True		|
+|		||			||		||CA		||		||Peru		||False		|
 
 
 

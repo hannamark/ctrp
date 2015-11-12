@@ -66,7 +66,7 @@
         function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService, $state) {
 
             var fromStateName = $state.fromState.name || '';
-            $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
+            $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
             $scope.sourceContextArr = []; //sourceContextObj;
             $scope.sourceStatusArr = []; //sourceStatusObj;
@@ -83,9 +83,6 @@
             $scope.searchWarningMessage = '';
 
 
-
-            //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
-            //default to curationMode eanbled to true if max row selectable is > 0
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
             } else {
@@ -98,25 +95,30 @@
             $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
 
-            $scope.searchPeople = function () {
+            $scope.searchPeople = function (newSearchFlag) {
+                if (newSearchFlag === 'fromStart') {
+                    $scope.searchParams.start = 1;
+                }
+
                 $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
-                if ($scope.searchParams.date_range_arr.length == 0) {
+                if ($scope.searchParams.date_range_arr.length === 0) {
                     delete $scope.searchParams.date_range_arr;
                 }
 
                 //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
                 // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
                 var isEmptySearch = true;
-                var excludedKeys = ['sort', 'order','rows','start'];
-                Object.keys($scope.searchParams).forEach(function (key) {
-                    if(excludedKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
+                var excludedKeys = ['sort', 'order','rows','start','wc_search'];
+                _.keys($scope.searchParams).forEach(function (key) {
+                    if(excludedKeys.indexOf(key) === -1 && $scope.searchParams[key] !== '')
                         isEmptySearch = false;
                 });
-                if(isEmptySearch) {
+                if(isEmptySearch && newSearchFlag === 'fromStart') {
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                     $scope.warningMessage = ''; //hide the 0 rows message if no search parameter was supplied
-                }else
+                } else {
                     $scope.searchWarningMessage = "";
+                }
 
                 if(!isEmptySearch) { //skip searching if empty search
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
@@ -138,7 +140,7 @@
                             });
                             // $scope.gridApi.grid.refresh();
                             $location.hash('people_search_results');
-                            $anchorScroll();
+                            //$anchorScroll();
                         }
                         $scope.$parent.personSearchResults = data.data; //{people: [], total, }
                     }).catch(function (err) {
@@ -152,12 +154,12 @@
                 var today = new Date();
                 switch (range) {
                     case 'today':
-                        $scope.searchParams.startDate = today;
-                        $scope.searchParams.endDate = today;;
+                        $scope.searchParams.startDate = moment().subtract(0, 'days').startOf('day').toDate();
+                        $scope.searchParams.endDate = moment().subtract(0, 'days').endOf('day').toDate();
                         break;
                     case 'yesterday':
-                        $scope.searchParams.startDate = moment().add(-1, 'days').toDate();
-                        $scope.searchParams.endDate = moment().add(-1, 'days').toDate();
+                        $scope.searchParams.startDate = moment().subtract(1, 'days').startOf('day').toDate();
+                        $scope.searchParams.endDate = moment().subtract(1, 'days').endOf('day').toDate();
                         break;
                     case 'last7':
                         $scope.searchParams.startDate = moment().add(-7, 'days').toDate();
@@ -193,7 +195,7 @@
                     });
 
                     return uniqueNames = orgNames.filter(function (name) {
-                        return uniqueNames.indexOf(name) == -1;
+                        return uniqueNames.indexOf(name) === -1;
                     });
                 });
             }; //typeAheadOrgNameSearch
@@ -203,12 +205,16 @@
             $scope.resetSearch = function () {
                 // $scope.states.length = 0;
                 $scope.searchParams = PersonService.getInitialPersonSearchParams();
+                var temp = $scope.searchParams.wc_search;
                 $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
-                Object.keys($scope.searchParams).forEach(function (key) {
-                    $scope.searchParams[key] = '';
+                var excludedKeys = ['wc_search'];
+                _.keys($scope.searchParams).forEach(function (key) {
+                    if (excludedKeys.indexOf(key) === -1) {
+                        $scope.searchParams[key] = '';
+                    }
                 });
-
+                $scope.searchParams['wc_search'] = temp;
                 $scope.searchWarningMessage = '';
                 if (angular.isDefined($scope.$parent.personSearchResults)) {
                     $scope.$parent.personSearchResults = {};
@@ -218,10 +224,17 @@
                 }
             }; //resetSearch
 
+            $scope.rowFormatter = function( row ) {
+                var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                return isCTEPContext;
+            };
 
             $scope.nullifyEntity = function (rowEntity) {
                 // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
-                if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
+                if (!rowEntity.nullifiable) {
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
+                }
+                else if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
                     // warning to user for nullifying active entity
                     $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is not allowed';
                     $scope.nullifiedId = '';
@@ -259,7 +272,7 @@
                 if (fromStateName != 'main.personDetail') {
                     $scope.resetSearch();
                 } else {
-                   // $scope.searchPeople(); //refresh the search results
+                   $scope.searchPeople(); //refresh the search results
                 }
                 watchReadinessOfCuration();
                 hideHyperLinkInModal();
@@ -313,7 +326,7 @@
              */
             function sortChangedCallBack(grid, sortColumns) {
 
-                if (sortColumns.length == 0) {
+                if (sortColumns.length === 0) {
                     //console.log("removing sorting");
                     //remove sorting
                     $scope.searchParams.sort = '';
@@ -365,7 +378,7 @@
                         //remove it from the $scope.selectedRows, if exists
                         var needleIndex = -1;
                         _.each($scope.selectedRows, function (existingRow, idx) {
-                            if (existingRow.entity.id == row.entity.id) {
+                            if (existingRow.entity.id === row.entity.id) {
                                 needleIndex = idx;
                                 return;
                             }
@@ -408,8 +421,16 @@
             function prepareGidOptions() {
                 //ui-grid plugin options
                 $scope.gridOptions = PersonService.getGridOptions();
-                $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-                $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+                $scope.gridOptions.isRowSelectable = function (row) {
+                    var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                    if (isCTEPContext) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                };
+                $scope.gridOptions.enableVerticalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
+                $scope.gridOptions.enableHorizontalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
                     $scope.gridApi = gridApi;
                     $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
@@ -451,7 +472,7 @@
                     } else {
                         var lastRow = clearSelectedRows();
                         if (!!lastRow) {
-                            $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                            $scope.nullifiedId = lastRow.entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
                         }
                     }
 
@@ -472,10 +493,8 @@
              * @param type
              */
             $scope.openCalendar = function ($event, type) {
-               // $event.preventDefault();
-                //$event.stopPropagation();
 
-                if (type == "end") {
+                if (type === "end") {
                     $scope.endDateOpened = true;// !$scope.endDateOpened;
                 } else {
                     $scope.startDateOpened = true;// !$scope.startDateOpened;
@@ -491,9 +510,9 @@
                 $scope.$watch('nullifiedId', function(curVal, preVal) {
                     initCurationObj();
                     $scope.toBeCurated.id_to_be_nullified = $scope.nullifiedId;
-                    if ($scope.selectedRows.length == $scope.maxRowSelectable && $scope.nullifiedId) {
+                    if ($scope.selectedRows.length === $scope.maxRowSelectable && $scope.nullifiedId) {
                         _.each($scope.selectedRows, function (curRow) {
-                            if (curRow.entity.id == $scope.nullifiedId) {
+                            if (curRow.entity.id === $scope.nullifiedId) {
                                 $scope.nullifiedPerson = curRow.entity.lname + ', ' + curRow.entity.fname + ' ( ' + curRow.entity.id + ' )';
                             } else {
                                 $scope.toBeCurated['id_to_be_retained'] = curRow.entity.id;

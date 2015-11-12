@@ -15,7 +15,7 @@ describe('Testing Organization Details Controller', function() {
     beforeEach(module('CommonTools'));
     beforeEach(module('Constants'));
     beforeEach(module('LocalCacheModule'));
-    beforeEach(module('PromiseTimeoutModule'));
+    beforeEach(module('ctrp.module.PromiseTimeoutService'));
     beforeEach(module('LocalCacheModule'));
 
     beforeEach(inject(function($injector, $controller, $rootScope, Common, $httpBackend, LocalCacheService) {

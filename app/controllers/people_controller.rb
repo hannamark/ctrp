@@ -13,11 +13,6 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.json
   def show
-    @export_data = Person.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json { render :json => @export_data.to_json(:include => :po_affiliations) }
-    end
   end
 
   # GET /people/new
@@ -57,8 +52,6 @@ class PeopleController < ApplicationController
     respond_to do |format|
       #@person.po_affiliations.destroy
       if @person.update(person_params)
-        @person.updated_at = Time.now
-        @person.save
         format.html { redirect_to @person, notice: 'Person was successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
       else
@@ -108,19 +101,20 @@ class PeopleController < ApplicationController
         params[:fname].present? || params[:lname].present? || params[:prefix].present? ||
         params[:suffix].present? || params[:email].present? || params[:phone].present? ||
         params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present? ||
-        params[:updated_by].present?
+        params[:updated_by].present? || params[:affiliated_org_name].present?
 
       @people = Person.all
+      @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
-      @people = @people.matches_wc('source_id',params[:source_id]) if params[:source_id].present?
-      @people = @people.matches_wc('fname', params[:fname]) if params[:fname].present?
-      @people = @people.matches_wc('lname', params[:lname]) if params[:lname].present?
-      @people = @people.matches_wc('prefix', params[:prefix]) if params[:prefix].present?
-      @people = @people.matches_wc('suffix', params[:suffix]) if params[:suffix].present?
-      @people = @people.matches_wc('email', params[:email]) if params[:email].present?
-      @people = @people.matches_wc('phone', params[:phone]) if params[:phone].present?
+      @people = @people.matches_wc('source_id',params[:source_id],params[:wc_search]) if params[:source_id].present?
+      @people = @people.matches_wc('fname', params[:fname],params[:wc_search]) if params[:fname].present?
+      @people = @people.matches_wc('lname', params[:lname],params[:wc_search]) if params[:lname].present?
+      @people = @people.matches_wc('prefix', params[:prefix],params[:wc_search]) if params[:prefix].present?
+      @people = @people.matches_wc('suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
+      @people = @people.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
+      @people = @people.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
       if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
         @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
       else
@@ -128,17 +122,70 @@ class PeopleController < ApplicationController
         @people = @people.with_source_context("CTRP")
       end
       if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
-        @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
+        @people = @people.with_source_status(params[:source_status][:name]) if params[:source_status].present?
       else
         # TODO need constant for Active
         @people = @people.with_source_status("Active")
       end
-      @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
     else
       @people = []
     end
   end
+
+  #Method to check for Uniqueness while creating persons - check on First & Last name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
+  def unique
+    print params[:person_fname]
+    print params[:person_lname]
+    print params[:source_context_id]
+    print params[:person_exists]
+    print "Person ID "
+    print params[:person_id]
+
+#    exists = false
+    is_unique = true
+    count = 0
+
+    #Get count of person record with the same name - can be the existing record (if the user is on the edit screen)
+      if params.has_key?(:person_fname) && params.has_key?(:person_lname) && params.has_key?(:source_context_id)
+        count = Person.where("lower(fname)=?", params[:person_fname].downcase).where("lower(lname)=?",params[:person_lname].downcase).where("source_context_id=?", params[:source_context_id]).count;
+      end
+
+      print "count "
+      print count
+
+      if params[:person_exists] == true
+        @dbPerson = Person.find(params[:person_id]);
+        if @dbPerson != nil
+          print " db person "
+          print @dbPerson.fname
+          print @dbPerson.lname
+
+          #if on the Edit screen, then check for name changes and ignore if database & screen names are the same.
+          if params[:person_fname] == @dbPerson.fname && params[:person_lname] == @dbPerson.lname
+            print " both are equal. Must not warn "
+            is_unique = true;
+          else
+            #However if on the edit screen and the user types in a name that is the same as another org, then complain
+             if count > 0
+              print " both are different. Must warn. "
+              is_unique = false
+             end
+          end
+        end
+      elsif params[:person_exists] == false && count > 0
+        is_unique = false
+      end
+
+    p " is unique? "
+    p is_unique
+
+    respond_to do |format|
+#        format.json {render :json => {:name_unique => !exists}}
+      format.json {render :json => {:name_unique => is_unique}}
+    end
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -149,7 +196,7 @@ class PeopleController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
       params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone,
-                                     :source_status_id,:source_context_id, :updated_by, :updated_at, :lock_version,
+                                     :source_status_id,:source_context_id, :lock_version,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])

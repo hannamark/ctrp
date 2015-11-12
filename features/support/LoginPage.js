@@ -14,8 +14,11 @@ var LoginPage = function(){
     this.loginButton = element(by.css('button[ng-click="userView.authenticate()"]'));
     this.cancelButton = element(by.css('input[value="Reset"]'));
     this.logoutButton = element(by.css('a[ng-click="headerView.logOut()"]'));
-    this.acceptButton = element(by.css('.container.ng-scope>button:nth-child(2)'));
+    this.rejectButton = element(by.buttonText('Reject'));
+    this.acceptButton = element(by.buttonText('Accept'));
+    this.loginUser = element(by.css('.ng-binding:nth-child(1)'));
     var loginPageVerifyText = element(by.css('.panel-title'));
+    this.writeMode =  element(by.css('.md-thumb'));
     var params = browser.params;
     var login = new helper();
 
@@ -47,6 +50,7 @@ var LoginPage = function(){
                 element(by.model('userView.userObj.user.username')).sendKeys(userName);
                 element(by.model('userView.userObj.user.password')).sendKeys(password);
                 element(by.css('button[ng-click="userView.authenticate()"]')).click();
+             //   expect(login.header_Page.getText()).to.eventually.equal('Clinical Trials Reporting Program');
             } else {
                 element(by.model('userView.userObj.user.username')).sendKeys(userName);
                 element(by.model('userView.userObj.user.password')).sendKeys(password);
@@ -58,7 +62,15 @@ var LoginPage = function(){
     this.accept = function() {
         this.acceptButton.isDisplayed().then(function(retVal){
             if (retVal == true){
-                element(by.css('.container.ng-scope>button:nth-child(2)')).click();
+                element(by.buttonText('Accept')).click();
+            }
+        });
+    };
+
+    this.reject = function() {
+        this.rejectButton.isDisplayed().then(function(retValRej){
+            if (retValRej == true){
+                element(by.buttonText('Reject')).click();
             }
         });
     };
@@ -69,5 +81,8 @@ var LoginPage = function(){
        expect(browser.getCurrentUrl()).to.eventually.equal('http://ctrp-ci.nci.nih.gov/ctrp/ui#/main/sign_in');
     };
 
+    this.clickWriteMode = function(){
+        login.clickButton(this.writeMode,"Role");
+    };
 };
 module.exports = LoginPage;

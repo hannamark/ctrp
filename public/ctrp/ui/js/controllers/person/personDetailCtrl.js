@@ -14,23 +14,26 @@
     function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService,
                               $scope, Common, sourceStatusObj,sourceContextObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
-        vm.curPerson = personDetailObj || {lname: ""}; //personDetailObj.data;
+        vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
+        vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.sourceContextArr = sourceContextObj;
         vm.savedSelection = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
+        var curSourceStatusObj = !!vm.curPerson.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+        vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
+        vm.curPerson.source_status_id = curSourceStatusObj.id;
 
-
-        if(!angular.isObject(personDetailObj))
-        {
-            //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-            var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
-            vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
-            vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
-        }
+        //
+        // if(!angular.isObject(personDetailObj)) {
+        //     //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
+        //     var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
+        //     vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
+        //     vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
+        // }
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -56,33 +59,34 @@
             newPerson.person = vm.curPerson;
 
             PersonService.upsertPerson(newPerson).then(function (response) {
-                //console.log('response: ' + JSON.stringify(response));
-                vm.savedSelection = [];
+                console.log('response: ' + JSON.stringify(response));
+                //vm.savedSelection = [];
                 if (newPerson.new) {
-                    vm.resetForm();
+                    vm.clearForm();
+                    $state.go('main.personDetail', {personId: response.data.id});
                 } else {
                     vm.curPerson.updated_by = response.data.updated_by;
-                    $state.go('main.people', {}, {reload: true});
+                    vm.curPerson.updated_at = response.data.updated_at;
                 }
-                toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!');
+                vm.curPerson.new = false;
+                toastr.clear();
+                toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
             });
         }; // updatePerson
 
-
-        vm.resetForm = function() {
-            var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
-            Object.keys(vm.curPerson).forEach(function(key) {
-                if (excludedKeys.indexOf(key) == -1) {
-                    vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
-                    $scope.person_form.$setPristine();
-                }
-            });
+        vm.clearForm = function() {
+            $scope.person_form.$setPristine();
+            vm.curPerson = angular.copy(vm.masterCopy);
             //default context to ctrp
             vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
+            vm.savedSelection = [];
+            populatePoAffiliations();
         };
-
 
         //delete the affiliated organization from table view
         vm.toggleSelection = function (index) {
@@ -130,15 +134,28 @@
             }
         }; //openCalendar
 
+        // Swap context when different tab is selected
+        $scope.$watch(function() {
+            return vm.tabIndex;
+        }, function(newValue, oldValue) {
+            if (!vm.curPerson.new) {
+                PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
+                    vm.curPerson = response.data;
+                    vm.savedSelection = [];
+                    populatePoAffiliations();
+                    vm.masterCopy= angular.copy(vm.curPerson);
+                }).catch(function (err) {
+                    console.log("Error in retrieving person during tab change.");
+                });
+            }
+        });
+
         activate();
 
         /****************** implementations below ***************/
         function activate() {
-            //default context to ctrp, if not set
-            vm.curPerson.source_context_id = !vm.curPerson.source_context_id ?
-                OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curPerson.source_context_id;
-
             appendNewPersonFlag();
+            setTabIndex();
             watchOrgReceiver();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
@@ -146,6 +163,7 @@
             if(!vm.curPerson.new) {
                 prepareModal();
             }
+            filterSourceContext();
         }
 
 
@@ -161,7 +179,37 @@
             }
         }
 
+        function setTabIndex() {
+            if (vm.curPerson.new) {
+                vm.curPerson.cluster = [{"context": "CTRP"}];
+            } else {
+                for (var i = 0; i < vm.curPerson.cluster.length; i++) {
+                    if (vm.curPerson.cluster[i].id == vm.curPerson.id) {
+                        vm.tabIndex = i;
+                    }
+                }
+            }
+        }
 
+        /**
+         * Filter out NLM and CTEP source contexts from UI
+         * @return {[type]} [description]
+         */
+        function filterSourceContext() {
+            var clonedPersonSourceContextArr = angular.copy(vm.sourceContextArr);
+            if (!vm.curPerson.new) {
+                var curPersonSourceContextObj = _.findWhere(vm.sourceContextArr, {id: vm.curPerson.source_context_id});
+                vm.curSourceContextName = !!curPersonSourceContextObj ? curPersonSourceContextObj.name : '';
+            } else {
+                vm.curSourceContextName = 'CTRP'; //default CTRP
+                var ctrpSourceContextObj = _.findWhere(vm.sourceContextArr, {code: 'CTRP'});
+                vm.curPerson.source_context_id = !!ctrpSourceContextObj ? ctrpSourceContextObj.id : '';
+            }
+            //delete 'CTEP and 'NLM' from the sourceContextArr
+            vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'CTEP'}));
+            vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'NLM'}));
+            vm.curPersonEditable = vm.curSourceContextName === 'CTRP' || vm.curPerson.new; //if not CTRP context, render it readonly
+         }
 
         /**
          * watch organizations selected from the modal
@@ -235,6 +283,35 @@
             } //prepareModal
         }; //confirmDelete
 
+
+        //Function that checks if a user name - based on First & Last names is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the person/unique Rails end point.
+        $scope.checkForNameUniqueness = function(){
+
+            var ID = 0;
+            if(angular.isObject(personDetailObj))
+                ID = vm.curPerson.id;
+
+            var searchParams = {"person_fname": vm.curPerson.fname, "person_lname": vm.curPerson.lname, "source_context_id": vm.curPerson.source_context_id, "person_exists": angular.isObject(personDetailObj), "person_id": ID};
+            console.log('First name is ' + vm.curPerson.fname);
+            console.log('Last name is ' + vm.curPerson.lname);
+            console.log('Source context is ' + vm.curPerson.source_context_id);
+            console.log('Person exists? ' + angular.isObject(personDetailObj));
+            console.log('Person ID ' + vm.curPerson.id);
+
+            vm.showUniqueWarning = false
+
+            var result = PersonService.checkUniquePerson(searchParams).then(function (response) {
+                vm.name_unqiue = response.name_unique;
+
+                if(!response.name_unique && vm.curPerson.lname.length > 0 && vm.curPerson.fname.length > 0)
+                    vm.showUniqueWarning = true
+
+                console.log("Is person name unique: " +  vm.name_unqiue);
+                console.log(JSON.stringify(response));
+            }).catch(function (err) {
+                console.log("error in checking for duplicate person name " + JSON.stringify(err));
+            });
+        };
     }
 
 

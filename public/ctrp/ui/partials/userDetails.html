@@ -1,148 +1,125 @@
 <div class="row-fluid">
-    <form class="form-horizontal" role="form" name="userDetail_form" novalidate>
-        <div class="form-group col-sm-12">
-        <label class="control-label col-sm-3">User Name:</label>
-
-        <div class="col-sm-9">
-            <input type="text" class="form-control input-xs" ng-model="userDetailView.userDetails.username"
-                   type="text"
-                   placeholder="Username" ng-disabled =true>
-        </div>
-        </div>
-
-        <div class="form-group col-sm-12">
-            <label class="control-label col-sm-3">Email:</label>
-
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" ng-model="userDetailView.userDetails.email"
-                       type="text"
-                       placeholder="email">
-            </div>
-        </div>
-
-        <div class="form-group col-sm-12">
-            <label class="control-label col-sm-3">Role:</label>
-
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" ng-model="userDetailView.userDetails.role"
-                       type="text"
-                       placeholder="email" ng-disabled="true">
-            </div>
-        </div>
-
-        <div class="form-group col-sm-12">
-            <label class="control-label col-sm-3">First Name</label>
-
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" ng-model="userDetailView.userDetails.first_name"
-                       type="text"
-                       placeholder="first_name">
-            </div>
-        </div>
-
-
-        <div class="form-group col-sm-12">
-            <label class="control-label col-sm-3">Last Name</label>
-
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" ng-model="userDetailView.userDetails.last_name"
-                       type="text"
-                       placeholder="last_name">
-            </div>
-        </div>
-
-        <div class="form-group col-sm-12">
-            <label class="control-label col-sm-3">Middle Name</label>
-
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" ng-model="userDetailView.userDetails.middle_name"
-                       type="text"
-                       placeholder="middle_name">
-            </div>
-        </div>
-
-
-        <div class="form-group col-sm-12">
-            <label class="control-label col-sm-3">Street Address</label>
-
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" ng-model="userDetailView.userDetails.street_address"
-                       type="text"
-                       placeholder="street_address">
-            </div>
-        </div>
-
-        <div class="form-group col-sm-12">
-            <label class="control-label col-sm-3">Zip Code</label>
-
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" ng-model="userDetailView.userDetails.zipcode"
-                       type="text"
-                       placeholder="zipcode">
-            </div>
-        </div>
-
-        <div class="form-group col-sm-12">
-            <label class="control-label col-sm-3">Receive Email Notifications</label>
-
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" ng-model="userDetailView.userDetails.receive_email_notifications"
-                       type="text"
-                       placeholder="receive_email_notifications">
-            </div>
-        </div>
-
-        <div class="form-group col-sm-12">
-            <label class="control-label col-sm-3">PRS Organization Name</label>
-
-            <div class="col-sm-9">
-                <input type="text" class="form-control input-xs" ng-model="userDetailView.userDetails.prs_organizations_name"
-                       type="text"
-                       placeholder="prs_organizations_name">
-            </div>
-        </div>
-
+    <div class="col-xs-12 drop-shadow">
         <div class="row">
-            <!-- ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button-->
-
-            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="true" allow-overwrite="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button>
-
-            <div class="row animated-item" ng-show="userDetailView.savedSelection.length > 0">
-                <br /><input type="text" ng-model="userDetailView.selectedOrgFilter" class="form-control" placeholder="Filter selected organizations"/>
-                <table class="table table-bordered table-striped table-condensed">
-                    <thead>
-                    <th>Remove</th>
-                    <th>CTRP ID</th>
-                    <th>Organization</th>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="org in userDetailView.savedSelection | filter: {'name': userDetailView.selectedOrgFilter} track by $index"
-                        ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                        <td style="vertical-align: middle">
-                            <label class="btn btn-default"
-                                   ng-click="userDetailView.toggleSelection($index)">
-                                <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                            </label>
-                        </td>
-                        <td>{{org.id}}</td>
-                        <td>{{org.name}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
-
+            <p>
+                <h4>Edit User Profile</h4>
+            </p>
         </div>
         <div class="row">
+            <form class="form-horizontal" role="form" name="userDetail_form" novalidate>
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">User Name:</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.username" type="text" placeholder="Username" ng-disabled =true>
+                    </div>
+                </div>
 
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Email:</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.email" type="text" placeholder="email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Role:</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.role" type="text" placeholder="email" ng-disabled="true">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">First Name</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.first_name" type="text" placeholder="first_name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Last Name</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.last_name" type="text" placeholder="last_name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Middle Name</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.middle_name" type="text" placeholder="middle_name">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Street Address</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.street_address" type="text" placeholder="street_address">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Zip Code</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.zipcode" type="text" placeholder="zipcode">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Receive Email Notifications</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.receive_email_notifications" type="text" placeholder="receive_email_notifications">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">PRS Organization Name</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.prs_organizations_name" type="text" placeholder="prs_organizations_name">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <!-- ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button-->
+                        <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="true" allow-overwrite="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button>
+                        <div class="row animated-item" ng-show="userDetailView.savedSelection.length > 0">
+                            <input type="text" ng-model="userDetailView.selectedOrgFilter" class="form-control" placeholder="Filter selected organizations"/>
+                            <table class="table table-bordered table-striped table-condensed">
+                                <thead>
+                                    <th width="6%">CTRP ID</th>
+                                    <th width="93%">Organization</th>
+                                    <th width="1%">Remove</th>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="org in userDetailView.savedSelection | filter: {'name': userDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                    <td>{{org.id}}</td>
+                                    <td>{{org.name}}</td>
+                                    <td>
+                                        <label class="btn btn-default" ng-click="userDetailView.toggleSelection($index)">
+                                            <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                        </label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group no-bottom-margin">
+                    <div class="col-xs-12 col-sm-3"></div>
+                    <div class="btn-toolbar col-xs-12 col-sm-9">
+                        <button type="submit" class="btn btn-primary pull-right" id="save_btn" ng-click="userDetailView.updateUser()" ng-disabled="userDetail_form.$invalid" ctrp-click-once>
+                            Save
+                        </button>
+                        <button class="btn btn-warning pull-right" ng-click="userDetailView.reset()">
+                            <i class="glyphicon glyphicon-remove"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div id="buttonBar" class="form-group col-sm-12">
-            <div class="col-sm-offset-3 col-sm-9">
-                <input type="submit" class="btn btn-success" ng-click="userDetailView.updateUser()"
-                       value="Save" ng-disabled="userDetail_form.$invalid" ctrp-click-once>
-                <input type="reset" class="btn btn-warning" value="Reset" ng-click="userDetailView.reset()">
-                <button class="btn btn-default" back-button>Cancel</button>
-            </div>
-        </div>
-    </form>
+        <div class="row top-offset-xs"></div>
+    </div>
 </div>

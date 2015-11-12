@@ -28,11 +28,13 @@ module.exports = function() {
     this.Given(/^I know the name of the alias I wish to add for an organization$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
+        login.accept();
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
         }, 4000).then(function(){
-            menuItem.clickWriteMode();
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
             projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
         });
         browser.sleep(25).then(callback);
@@ -57,14 +59,19 @@ module.exports = function() {
     });
 
     this.Then(/^the system should add the alias name to the list of alias names for the selected organization$/, function (callback) {
-        cukeAlias.then(function(value){
+        cukeAlias.then(function(value) {
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
             searchOrg.setOrgName(value);
-            searchOrg.clickSearchButton();});
-        cukeOrganization.then(function(value){
+            searchOrg.clickSearchButton();
+        });
+        cukeOrganization.then(function(value) {
             expect(projectFunctions.inSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();
         });
-        cukeAlias.then(function(value){expect(projectFunctions.verifyOrgAlias(value)).to.become('true');});
+        cukeAlias.then(function(value) {
+            expect(projectFunctions.verifyOrgAlias(value)).to.become('true');
+        });
         browser.sleep(25).then(callback);
     });
 

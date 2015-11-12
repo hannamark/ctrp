@@ -20,7 +20,7 @@ AddFamilyPage = function () {
     this.addFamilyMembership = element(by.model('familyDetailView.selectedOrgs'));
     this.addFamilySelectAllMembership = element(by.css('.glyphicon.glyphicon-arrow-right'));
     this.addFamilyRemoveAllMembership = element(by.css('.glyphicon.glyphicon-arrow-left'));
-    this.addFamilySaveButton = element(by.css('button[ng-click="familyDetailView.updateFamily()"]')); //element(by.css('input[ng-click="familyDetailView.updateFamily()"]'));
+    this.addFamilySaveButton = element(by.id('save_btn'));//element(by.css('button[ng-click="familyDetailView.updateFamily()"]')); //element(by.css('input[ng-click="familyDetailView.updateFamily()"]'));
     this.addFamilyResetButton = element(by.css('input[value="Reset"]'));
     this.addFamilyDeleteButton = element(by.css('button[ng-hide="familyDetailView.curFamily.new"]'));
     this.familyEditPage = element(by.css('h4[ng-if="!familyDetailView.curFamily.new"]'));

@@ -1,10 +1,13 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  load_and_authorize_resource unless Rails.env.test?
+  skip_authorize_resource :only => [:count, :comments_for_instance]
 
   # GET /comments
   # GET /comments.json
   def index
-    @comments = Comment.all
+    comments = Comment.all
   end
 
   # GET /comments/1
@@ -61,27 +64,29 @@ class CommentsController < ApplicationController
     end
   end
 
-  #GET a count of the comments for the given instance_uuid in url
+  #GET a count of the comments for the given instance_uuid in url (field is optional in url)
   def count
-    print params[:instance_uuid]
-    if !params.has_key?(:instance_uuid)
+    if !params.has_key?(:uuid) #instance_uuid
       num_comments = 0
     else
-      num_comments = Comment.where("instance_uuid = ?", params[:instance_uuid]).size
+      comments = Comment.where("instance_uuid = ?", params[:uuid])
+      comments = comments.matches('field', params[:field]) if params.has_key?(:field)
+      num_comments = comments.size
     end
     respond_to do |format|
       format.json { render :json => {:count => num_comments} }
     end
   end
 
-  #GET the comments for the given instance_uuid in url
+  #GET the comments for the given instance_uuid in url (field is optional in url)
   def comments_for_instance
-    print params[:instance_uuid]
     comments = []
-    if params.has_key?(:instance_uuid)
-      comments = Comment.where("instance_uuid = ?", params[:instance_uuid])
+    if params.has_key?(:uuid) #instance_uuid
+      comments = Comment.where("instance_uuid = ?", params[:uuid])
+      comments = comments.matches('field', params[:field]) if params.has_key?(:field)
+      comments = comments.order('updated_at DESC').all
     end
-    
+
     respond_to do |format|
       format.json {render :json => {:comments => comments}}
     end
