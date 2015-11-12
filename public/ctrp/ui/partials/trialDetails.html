@@ -507,60 +507,96 @@
                             Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[7], 'glyphicon-chevron-right': !trialDetailView.accordions[7]}"></i>
                         </uib-accordion-heading>
 
-                        <div class="form-group">
+                        <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.start_date) || ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual)}">
                             <label class="control-label col-xs-12 col-sm-3">Trial Start Date:</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.start_date"
-                                           is-open="trialDetailView.start_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
+                                    <input type="text" class="form-control input-sm" name="start_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.start_date"
+                                           is-open="trialDetailView.start_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required disabled>
                                     <span class="input-group-btn">
                                         <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'start_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                     </span>
                                 </div>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.start_date)">
+                                    Trial Start Date is required
+                                </span>
                             </div>
                             <div class="col-xs-12 col-sm-6">
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.start_date_qual" value="Actual"> Actual</label>
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.start_date_qual" value="Anticipated"> Anticipated</label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="start_date_qual" restriction-field ng-model="trialDetailView.curTrial.start_date_qual"
+                                           value="Actual" ng-required="!trialDetailView.curTrial.start_date_qual"> Actual
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="start_date_qual" restriction-field ng-model="trialDetailView.curTrial.start_date_qual"
+                                           value="Anticipated" ng-required="!trialDetailView.curTrial.start_date_qual"> Anticipated
+                                </label>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual)">
+                                    Trial Start Date Type is required
+                                </span>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date) || ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date_qual)}">
                             <label class="control-label col-xs-12 col-sm-3">Primary Completion Date:</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.primary_comp_date"
-                                           is-open="trialDetailView.primary_comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
+                                    <input type="text" class="form-control input-sm" name="primary_comp_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.primary_comp_date"
+                                           is-open="trialDetailView.primary_comp_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required disabled />
                                     <span class="input-group-btn">
                                         <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'primary_comp_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                     </span>
                                 </div>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date)">
+                                    Primary Completion Date is required
+                                </span>
                             </div>
                             <div class="col-sm-6">
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Actual"> Actual</label>
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.primary_comp_date_qual" value="Anticipated"> Anticipated</label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="primary_comp_date_qual" restriction-field ng-model="trialDetailView.curTrial.primary_comp_date_qual"
+                                           value="Actual" ng-required="!trialDetailView.curTrial.primary_comp_date_qual"> Actual
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="primary_comp_date_qual" restriction-field ng-model="trialDetailView.curTrial.primary_comp_date_qual"
+                                           value="Anticipated" ng-required="!trialDetailView.curTrial.primary_comp_date_qual"> Anticipated
+                                </label>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date_qual)">
+                                    Primary Completion Date Type is required
+                                </span>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.comp_date) || ctrpbtn.trial_form.needsAttention(trial_form.comp_date_qual)}">
                             <label class="control-label col-xs-12 col-sm-3">Completion Date:</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.comp_date"
-                                           is-open="trialDetailView.comp_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
+                                    <input type="text" class="form-control input-sm" name="comp_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.comp_date"
+                                           is-open="trialDetailView.comp_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required disabled />
                                     <span class="input-group-btn">
                                         <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'comp_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                     </span>
                                 </div>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.comp_date)">
+                                    Completion Date is required
+                                </span>
                             </div>
                             <div class="col-xs-12 col-sm-6">
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.comp_date_qual" value="Actual"> Actual</label>
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.comp_date_qual" value="Anticipated"> Anticipated</label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="comp_date_qual" restriction-field ng-model="trialDetailView.curTrial.comp_date_qual"
+                                           value="Actual" ng-required="!trialDetailView.curTrial.comp_date_qual"> Actual
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="comp_date_qual" restriction-field ng-model="trialDetailView.curTrial.comp_date_qual"
+                                           value="Anticipated" ng-required="!trialDetailView.curTrial.comp_date_qual"> Anticipated
+                                </label>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.comp_date_qual)">
+                                    Completion Date Type is required
+                                </span>
                             </div>
                         </div>
                     </uib-accordion-group>
