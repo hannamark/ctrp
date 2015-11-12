@@ -61,13 +61,13 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '10%',
+                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, minWidth: '75', width: '*',
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, width: '11%'},
+                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, minWidth: '80', width: '*'},
                 {
-                    name: 'name', enableSorting: true, width: '25%',
+                    name: 'name', enableSorting: true, minWidth: '100', width: '*',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                  //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
@@ -76,31 +76,27 @@
                     '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
-                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, width: '11%'},
-                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '10%'},
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '13%'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '14%'},
-                {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '15%',height: '50%',
+                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '80', width: '*'},
+                {name: 'source_context', displayName: 'Source Context', enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'aff_families_names', displayName: 'Families', enableSorting: true, minWidth: '100', width: '*',height: '50%',
                     cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names" title="{{fam.Name}}">{{fam.Name}}</div>'
                 },
                 /* {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
                    cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" popover-trigger="mouseenter" class="btn btn-default">Family</button>',
                },*/
-                {name: 'city', enableSorting: true, width: '10%'},
-                {name: 'state_province', displayName: 'State', enableSorting: true, width: '9%'},
-                {name: 'country', displayName: 'Country', enableSorting: true, width:'12%'},
-                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, width:'14%'},
-                {name: 'phone', enableSorting: true, width: '13%'},
-                {name: 'email', enableSorting: true, width: '13%',
+                {name: 'city', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'state_province', displayName: 'State', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'country', displayName: 'Country', enableSorting: true, minWidth: '100', width:'*'},
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, minWidth: '100', width:'*'},
+                {name: 'phone', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'email', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-
-                {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, width: '10%'},
-
-                {name: 'updated_at', displayName: 'Last Updated At', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'}
-
-
+                {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'updated_at', displayName: 'Last Updated At', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, minWidth: '160', width: '*'}
             ]
         };
 
