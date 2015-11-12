@@ -60,7 +60,7 @@ class  User < ActiveRecord::Base
   scope :not_approved, -> { where(approved: false) }
 
   #Define roles here to drive dropdown menu when adding users
-  ROLES = %i[ROLE_RO ROLE_SUPER ROLE_ADMIN ROLE_CURATOR ROLE_ABSTRACTOR ROLE_ABSTRACTOR-SU ROLE_TRIAL-SUBMITTER ROLE_TRIAL_SUBMITTER_SU]
+  ROLES = %i[ROLE_RO ROLE_SUPER ROLE_ADMIN ROLE_CURATOR ROLE_ABSTRACTOR ROLE_ABSTRACTOR-SU ROLE_TRIAL-SUBMITTER ROLE_TRIAL-SUBMITTER-SU]
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
@@ -80,7 +80,7 @@ class  User < ActiveRecord::Base
       # A Super Admin User can see all the Users and can approve access to the user
       if self.role == "ROLE_SUPER" && self.organization_id.blank?
         users = User.all
-       elsif self.role == "ROLE_SUPER"   && !self.organization_id.blank? #self.role == "ROLE_SITE_ADMIN"
+       elsif self.role == "ROLE_SUPER"   && !self.organization_id.blank? #self.role == "ROLE_TRIAL-SUBMITTER-SU"
         # A Site Admin User can see all the Users in its respective organization and
         # also can approve the user's site admin privileges
         unless self.organization_id.nil?
@@ -98,7 +98,7 @@ class  User < ActiveRecord::Base
       if self.organization_id.blank?
         self.role = "ROLE_RO"
       else
-        self.role = "ROLE_SITE_ADMIN"
+        self.role = "ROLE_TRIAL-SUBMITTER-SU"
       end
     end
 
@@ -136,7 +136,7 @@ class  User < ActiveRecord::Base
                           {write_mode: true }
                         when  "ROLE_ABSTRACTOR"
                           {write_mode: true }
-                        when  "ROLE_ABSTRACTOR_SU"
+                        when  "ROLE_ABSTRACTOR-SU"
                           {write_mode: true }
                       end
   end

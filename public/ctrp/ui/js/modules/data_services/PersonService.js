@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('ctrpApp')
+    angular.module('ctrp.module.dataservices')
         .factory('PersonService', PersonService);
 
     PersonService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope', 'PromiseTimeoutService','UserService','Common'];
@@ -170,7 +170,7 @@
         function getInitialPersonSearchParams() {
             var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
             var curator_role = "curator";
-            if(!(user_role.toUpperCase() == curator_role.toUpperCase())) {
+            if(!(user_role.toUpperCase() === curator_role.toUpperCase())) {
                 initPersonSearchParams.wc_search = false;
             }
             return initPersonSearchParams;
@@ -186,7 +186,7 @@
             console.log("updated_at_index is " + updated_at_index);
 
             var curator_role = "curator";
-            if(user_role.toUpperCase().indexOf(curator_role.toUpperCase()) == -1) {
+            if(user_role.toUpperCase().indexOf(curator_role.toUpperCase()) === -1) {
                 gridOptions.columnDefs.splice(updated_at_index,1);
 
                 //Recompute the updated_by_index, given that the columnDefs have changed
@@ -197,15 +197,6 @@
 
             return gridOptions;
         }
-
-        /**
-         *
-         * @returns {Array}, sorted A-Z
-         */
-        function getStatesOrProvinces() {
-            return statesOrProvinces;
-        }
-
 
 
         /**

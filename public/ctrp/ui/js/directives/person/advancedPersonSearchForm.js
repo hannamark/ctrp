@@ -66,7 +66,7 @@
         function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService, $state) {
 
             var fromStateName = $state.fromState.name || '';
-            $scope.maxRowSelectable = $scope.maxRowSelectable == 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
+            $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
             $scope.sourceContextArr = []; //sourceContextObj;
             $scope.sourceStatusArr = []; //sourceStatusObj;
@@ -83,9 +83,6 @@
             $scope.searchWarningMessage = '';
 
 
-
-            //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
-            //default to curationMode eanbled to true if max row selectable is > 0
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
             } else {
@@ -99,12 +96,12 @@
 
 
             $scope.searchPeople = function (newSearchFlag) {
-                if (newSearchFlag == 'fromStart') {
+                if (newSearchFlag === 'fromStart') {
                     $scope.searchParams.start = 1;
                 }
 
                 $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
-                if ($scope.searchParams.date_range_arr.length == 0) {
+                if ($scope.searchParams.date_range_arr.length === 0) {
                     delete $scope.searchParams.date_range_arr;
                 }
 
@@ -112,11 +109,11 @@
                 // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
                 var isEmptySearch = true;
                 var excludedKeys = ['sort', 'order','rows','start','wc_search'];
-                Object.keys($scope.searchParams).forEach(function (key) {
-                    if(excludedKeys.indexOf(key) == -1 && $scope.searchParams[key] != '')
+                _.keys($scope.searchParams).forEach(function (key) {
+                    if(excludedKeys.indexOf(key) === -1 && $scope.searchParams[key] !== '')
                         isEmptySearch = false;
                 });
-                if(isEmptySearch && newSearchFlag == 'fromStart') {
+                if(isEmptySearch && newSearchFlag === 'fromStart') {
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                     $scope.warningMessage = ''; //hide the 0 rows message if no search parameter was supplied
                 } else {
@@ -198,7 +195,7 @@
                     });
 
                     return uniqueNames = orgNames.filter(function (name) {
-                        return uniqueNames.indexOf(name) == -1;
+                        return uniqueNames.indexOf(name) === -1;
                     });
                 });
             }; //typeAheadOrgNameSearch
@@ -212,8 +209,8 @@
                 $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
                 var excludedKeys = ['wc_search'];
-                Object.keys($scope.searchParams).forEach(function (key) {
-                    if (excludedKeys.indexOf(key) == -1) {
+                _.keys($scope.searchParams).forEach(function (key) {
+                    if (excludedKeys.indexOf(key) === -1) {
                         $scope.searchParams[key] = '';
                     }
                 });
@@ -329,7 +326,7 @@
              */
             function sortChangedCallBack(grid, sortColumns) {
 
-                if (sortColumns.length == 0) {
+                if (sortColumns.length === 0) {
                     //console.log("removing sorting");
                     //remove sorting
                     $scope.searchParams.sort = '';
@@ -381,7 +378,7 @@
                         //remove it from the $scope.selectedRows, if exists
                         var needleIndex = -1;
                         _.each($scope.selectedRows, function (existingRow, idx) {
-                            if (existingRow.entity.id == row.entity.id) {
+                            if (existingRow.entity.id === row.entity.id) {
                                 needleIndex = idx;
                                 return;
                             }
@@ -475,7 +472,7 @@
                     } else {
                         var lastRow = clearSelectedRows();
                         if (!!lastRow) {
-                            $scope.nullifiedId = lastRow.entity.id == $scope.nullifiedId ? '' : $scope.nullifiedId;
+                            $scope.nullifiedId = lastRow.entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
                         }
                     }
 
@@ -496,10 +493,8 @@
              * @param type
              */
             $scope.openCalendar = function ($event, type) {
-               // $event.preventDefault();
-                //$event.stopPropagation();
 
-                if (type == "end") {
+                if (type === "end") {
                     $scope.endDateOpened = true;// !$scope.endDateOpened;
                 } else {
                     $scope.startDateOpened = true;// !$scope.startDateOpened;
@@ -515,9 +510,9 @@
                 $scope.$watch('nullifiedId', function(curVal, preVal) {
                     initCurationObj();
                     $scope.toBeCurated.id_to_be_nullified = $scope.nullifiedId;
-                    if ($scope.selectedRows.length == $scope.maxRowSelectable && $scope.nullifiedId) {
+                    if ($scope.selectedRows.length === $scope.maxRowSelectable && $scope.nullifiedId) {
                         _.each($scope.selectedRows, function (curRow) {
-                            if (curRow.entity.id == $scope.nullifiedId) {
+                            if (curRow.entity.id === $scope.nullifiedId) {
                                 $scope.nullifiedPerson = curRow.entity.lname + ', ' + curRow.entity.fname + ' ( ' + curRow.entity.id + ' )';
                             } else {
                                 $scope.toBeCurated['id_to_be_retained'] = curRow.entity.id;

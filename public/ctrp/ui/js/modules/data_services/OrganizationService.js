@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('ctrpApp')
+    angular.module('ctrp.module.dataservices')
         .factory('OrgService', OrgService);
 
     OrgService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
