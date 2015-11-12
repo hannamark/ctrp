@@ -5,7 +5,7 @@
 (function() {
 
     'use strict';
-    angular.module('DateServiceMod', [])
+    angular.module('ctrp.module.dateservice', [])
 
         .service('DateService', DateService);
 
