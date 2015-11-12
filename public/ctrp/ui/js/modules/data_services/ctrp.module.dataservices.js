@@ -9,7 +9,7 @@
         'LocalCacheModule',
         'toastr',
         'ui.bootstrap',
-        'DateServiceMod',
+        'ctrp.module.dateservice',
         'ctrp.module.underscoreWrapper',
         'ctrp.module.timeout',
         'angularMoment',

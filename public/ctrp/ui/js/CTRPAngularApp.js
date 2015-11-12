@@ -23,7 +23,7 @@
         'ui.grid.pagination',
         'ui.grid.selection',
         'ui.scrollpoint',
-        'DateServiceMod',
+        'ctrp.module.dateservice',
         'ctrp.module.underscoreWrapper',
         'ctrp.module.timeout',
         'ngFileUpload',
