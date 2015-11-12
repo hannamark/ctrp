@@ -25,7 +25,6 @@
         'ui.scrollpoint',
         'DateServiceMod',
         'ctrp.module.underscoreWrapper',
-        'toggle-switch',
         'ctrp.module.timeout',
         'ngFileUpload',
         'angularMoment',
