@@ -745,16 +745,56 @@ var projectMethods = function() {
     };
 
     /********************************************
+    * Method: inPersonSearchResults
+    * @param searchString
+    * @returns {*}
+    ********************************************/
+    this.inPersonSearchResults = function(searchString) {
+        return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+            if (state === true) {
+                return menuItem.personSearchResult.filter(function(name) {
+                    return name.getText().then(function(text) {
+                           var getAllTextToString = text.replace(/\n\s*\n/g, '\n');
+                           console.log('Search Result Value:['+getAllTextToString+']');
+                           return text === searchString;
+                    });
+                }).then(function(filteredElements) {
+                    console.log('value of filteredElements' + filteredElements);
+                          if (filteredElements.length > 0) {
+                              return 'true';
+                          } else {
+                                return menuItem.orgSearchResult.filter(function(name) {
+                                       return name.getText().then(function(text) {
+                                              return text === searchString;
+                                       });
+                                }).then(function(filteredElements) {
+                                    if (filteredElements.length > 0) {
+                                        return 'true';
+                                    } else {
+                                        return 'false';
+                                    }
+                                });
+                          }
+                });
+            } else if(state === false) {
+                return 'false';
+            }
+        });
+    };
+
+    /********************************************
      * Method: isTextPresent
      * @param textToVerify
      * @returns {boolean}
      ********************************************/
     this.isTextPresent = function(textToVerify){
-      if(element.all(by.xpath('//*[contains(text(),'+textToVerify+')]'))){
-          return true;
-      }  else{
-          return false;
-      }
+      return element.all(by.xpath('//*[contains(text(),'+textToVerify+')]')).isPresent().then(function(state){
+        if (state === true){
+            return 'true';
+        } else{
+            return 'false';
+        }
+      });
     };
 
     this.getAlertMsg = function(){

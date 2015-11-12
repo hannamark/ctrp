@@ -43,6 +43,7 @@ var PoCommonBar = function(){
 
 
     this.orgSearchResult = element.all(by.css('div[ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"]'));//element.all(by.binding('grid.getCellValue(row, col) '));element.all(by.css('.ui-grid-row'));
+    this.personSearchResult = element.all(by.css('div[ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"]'));
     this.searchResult = element.all(by.binding('grid.getCellValue(row, col) '));//element.all(by.css('.ui-grid-row'));
     this.searchHeader = element.all(by.binding(' col.displayName '));
 
