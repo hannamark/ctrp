@@ -24,7 +24,7 @@
         'ui.grid.selection',
         'ui.scrollpoint',
         'DateServiceMod',
-        'CTRPUnderscoreModule',
+        'ctrp.module.underscoreWrapper',
         'toggle-switch',
         'TimeoutModule',
         'ngFileUpload',

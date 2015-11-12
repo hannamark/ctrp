@@ -10,7 +10,7 @@
         'toastr',
         'ui.bootstrap',
         'DateServiceMod',
-        'CTRPUnderscoreModule',
+        'ctrp.module.underscoreWrapper',
         'TimeoutModule',
         'angularMoment',
         'ngFileUpload'
