@@ -59,8 +59,8 @@ class  User < ActiveRecord::Base
   scope :approved, -> { where(approved: true) }
   scope :not_approved, -> { where(approved: false) }
 
-  #ROLES = %i[ROLE_READONLY ROLE_SITE_ADMIN ROLE_SUPER ROLE_ADMIN ROLE_CURATOR]
-  ROLES = %i[ROLE_READONLY ROLE_SUPER ROLE_CURATOR]
+  #Define roles here to drive dropdown menu when adding users
+  ROLES = %i[ROLE_RO ROLE_SUPER ROLE_ADMIN ROLE_CURATOR ROLE_ABSTRACTOR ROLE_ABSTRACTOR-SU ROLE_TRIAL-SUBMITTER ROLE_TRIAL_SUBMITTER_SU]
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
@@ -96,7 +96,7 @@ class  User < ActiveRecord::Base
     # if it is not already chosen and the approved field is set to true
     if self.role.blank?
       if self.organization_id.blank?
-        self.role = "ROLE_READONLY"
+        self.role = "ROLE_RO"
       else
         self.role = "ROLE_SITE_ADMIN"
       end
@@ -126,9 +126,17 @@ class  User < ActiveRecord::Base
                           {write_mode: false}
                         when  "ROLE_SUPER"
                           {write_mode: true}
+                        when  "ROLE_ADMIN"
+                          {write_mode: true}
                         when  "ROLE_CURATOR"
                           {write_mode: true }
                         when  "ROLE_TRIAL-SUBMITTER"
+                          {write_mode: true }
+                        when  "ROLE_TRIAL-SUBMITTER-SU"
+                          {write_mode: true }
+                        when  "ROLE_ABSTRACTOR"
+                          {write_mode: true }
+                        when  "ROLE_ABSTRACTOR_SU"
                           {write_mode: true }
                       end
   end

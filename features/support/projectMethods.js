@@ -113,7 +113,7 @@ var projectMethods = function() {
      * @param affOrgExpirationDate
      ***********************************/
     this.createPersonWithAffiliatedOrg = function(prefix, fName, mName, lName, suffix, email, phone, affOrgName, affOrgEffectiveDate, affOrgExpirationDate){
-        this.createOrganization(affOrgName,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','222-4444-555','888-9999-666');
+        this.createOrganization(affOrgName,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','240-276-5555','240-276-6338');
         this.createPerson(prefix,fName,mName,lName,suffix,email,phone);
     /*    menuItem.clickPeople();
         menuItem.clickListPeople();
@@ -157,7 +157,7 @@ var projectMethods = function() {
      * @param orgExpirationDate
      ***********************************/
     this.createFamilyWithMembers = function(familyName, familyStatus, familyType, orgMember, orgRelationship, orgEffectiveDate, orgExpirationDate){
-        this.createOrganization(orgMember,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','222-4444-555','888-9999-666');
+        this.createOrganization(orgMember,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','240-276-6338','240-276-6978');
         this.createFamily(familyName,familyStatus,familyType);
         menuItem.clickOrganizations();
         menuItem.clickListFamily();
@@ -179,6 +179,23 @@ var projectMethods = function() {
      * Method: Verify the item in Search Results
      * @param searchString
      ***********************************/
+
+    this.inSearchResults = function(searchString) {
+        return menuItem.searchResult.filter(function(name) {
+            return name.getText().then(function(text) {
+                return text === searchString ;
+            });
+        }).then(function(filteredElements) {
+            // Only the elements that passed the filter will be here. This is an array.
+            if (filteredElements.length > 0) {
+                return 'false';
+            }
+            else {
+                return 'true';
+            }
+        });
+    };
+
     this.inOrgSearchResults = function(searchString) {
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
             if (state == true) {
@@ -582,7 +599,7 @@ var projectMethods = function() {
         return randAlpNmVal;
     }
     /*****************************************************************
-     * Method: Verify the affiliated Organization Effective Date
+     * Method: Verify in search results
      * @param searchedItem
      *****************************************************************/
     this.inSearchResults = function(searchedItem) {
@@ -598,6 +615,155 @@ var projectMethods = function() {
             else {return 'false';}
         });
     };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Organization for Search, it creates a new org then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createOrgforSearch = function(){
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.setOrgName('shiOrgNameSearch' + moment().format('MMMDoYY h'));
+            orgSearch = searchOrg.orgName.getAttribute('value');
+            searchOrg.clickSearchButton();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Organization exists');
+                    orgSearch.then(function(value){
+                        element(by.linkText(value)).click();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                        cukeFamily = addOrg.addVerifyOrgFamilyName.getText();
+                    });
+                }
+                else {
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 4000).then(function() {
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddOrganizations();
+                        orgSearch.then(function(value){
+                            console.log('Add org Name' + value);
+                            addOrg.setAddOrgName(value);
+                        });
+                        addOrg.setAddAlias('shAlias');
+                        addOrg.clickSaveAlias();
+                        addOrg.setAddAddress('9609 Medical Center Drive');
+                        addOrg.setAddAddress2('9609 Medical Center Drive');
+                        selectValue.selectCountry('Benin');
+                        selectValue.selectState('Donga');
+                        addOrg.setAddCity('searchCity');
+                        addOrg.setAddPostalCode('46578');
+                        addOrg.setAddEmail('searchOrg@email.com');
+                        addOrg.setAddPhone('222-487-8956');
+                        addOrg.setAddFax('222-487-4242');
+                        addOrg.clickSave();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddFamily();
+                        addFamily.setAddFamilyName('famforOrgSearch' + moment().format('MMMDoYY hmmss'));
+                        cukeFamily = addFamily.addFamilyName.getAttribute('value');
+                        selectValue.selectFamilyStatus('Active');
+                        selectValue.selectFamilyType('NIH');
+                        searchOrg.clickOrgSearchModel();
+                       searchOrg.setOrgName(orgSearch);
+                        searchOrg.clickSearchButton();
+                        searchOrg.selectOrgModelItem();
+                        searchOrg.clickOrgModelConfirm();
+                        selectValue.selectOrgFamilyRelationship('Affiliation');
+                        searchOrg.setAffiliatedOrgEffectiveDate('02-Nov-2015');
+                        searchOrg.setAffiliatedOrgExpirationDate('02-Nov-2020');
+                        addFamily.clickSave();
+                    });
+                }
+            });
+        });
+    };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Organization for Edit, it creates a new org then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createOrgforEdit = function(){
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.setOrgName('shiOrgNameEdit' + moment().format('MMMDoYY h'));
+            cukeOrganization = searchOrg.orgName.getAttribute('value');
+            searchOrg.clickSearchButton();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Organization exists');
+                    cukeOrganization.then(function(value){
+                        element(by.linkText(value)).click();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                    });
+                }
+                else {
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 4000).then(function() {
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddOrganizations();
+                        cukeOrganization.then(function(value){
+                            console.log('Add org Name' + value);
+                            addOrg.setAddOrgName(value);
+                        });
+                        addOrg.setAddAlias('shEditAlias');
+                        addOrg.clickSaveAlias();
+                        addOrg.setAddAddress('9609 Medical Center Drive Edit');
+                        addOrg.setAddAddress2('9609 Medical Center Drive Edit');
+                        selectValue.selectCountry('United States');
+                        selectValue.selectState('Idaho');
+                        addOrg.setAddCity('editCity');
+                        addOrg.setAddPostalCode('42589');
+                        addOrg.setAddEmail('editOrg@email.com');
+                        addOrg.setAddPhone('589-687-8956');
+                        addOrg.setAddFax('898-420-4242');
+                        addOrg.clickSave();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                    });
+                }
+            });
+        });
+    };
+
+    /********************************************
+     * Method: isTextPresent
+     * @param textToVerify
+     * @returns {boolean}
+     ********************************************/
+    this.isTextPresent = function(textToVerify){
+      if(element.all(by.xpath('//*[contains(text(),'+textToVerify+')]'))){
+          return true;
+      }  else{
+          return false;
+      }
+    };
+
+    this.getAlertMsg = function(){
+        return alert.then(function(alert){
+           return alert.getText();
+        });
+    };
+
+
 
 };
 module.exports = projectMethods;

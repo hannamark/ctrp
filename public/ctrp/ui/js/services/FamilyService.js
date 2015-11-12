@@ -8,12 +8,13 @@
     angular.module('ctrpApp')
         .factory('FamilyService', FamilyService);
 
-    FamilyService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope','PromiseTimeoutService'];
+    FamilyService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope','PromiseTimeoutService','UserService'];
 
-    function FamilyService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService) {
+    function FamilyService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService,UserService) {
 
         var initFamilySearchParams = {
             name: "",
+            wc_search: true,
             po_id: "",
             family_status:"",
             family_type:"",
@@ -72,13 +73,6 @@
 
 
         /*********************** implementations *****************/
-        function sample() {
-            var scope = angular.element(document.getElementById('container')).scope();
-            scope.$apply(function(){
-                scope.msg = scope.msg + ' I am the newly addded message from the outside of the controller.';
-            })
-            alert(scope.returnHello());
-        }
 
         function getAllFamilies() {
             return PromiseService.getData(URL_CONFIGS.FAMILY_LIST);
@@ -116,8 +110,7 @@
         /**
          *
          * @param searchParams, JSON object whose keys can include:
-         * name, po_id, source_id, source_status, family_name, address, address2, city, state_province, country,
-         * postal_code, and email
+         * name, status and type
          *
          * @returns Array of JSON objects
          */
@@ -135,6 +128,11 @@
          * @return initFamilySearchParams
          */
         function getInitialFamilySearchParams() {
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            var curator_role = "curator";
+            if(!(user_role.toUpperCase() === curator_role.toUpperCase())) {
+                initFamilySearchParams.wc_search = false;
+            }
             return initFamilySearchParams;
         } //getInitialFamilySearchParams
 
@@ -143,26 +141,6 @@
         function getGridOptions() {
             return gridOptions;
         }
-
-        /**
-         *
-         * @returns {Array}, sorted A-Z
-         */
-        function getStatesOrProvinces() {
-            return statesOrProvinces;
-        }
-
-
-
-        /**
-         * A helper function:
-         * Use $rootScope to broadcast messages
-         * @param msgCode
-         * @param msgContent
-         */
-        function broadcastMsg(msgCode, msgContent) {
-            $rootScope.$broadcast(msgCode, {content: msgContent});
-        } //broadcastMsg
 
 
         /**

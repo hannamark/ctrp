@@ -93,8 +93,9 @@ class Organization < ActiveRecord::Base
   # Get an array of maps of the orgs with the same ctrp_id
   def cluster
     tmp_arr = []
-    if self.ctrp_id.present?
-      tmp_arr = Organization.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).order(:id).pluck(:id, :"source_contexts.name")
+    if self.ctrp_id.present? && (self.source_status.nil? || self.source_status.code != 'NULLIFIED')
+      join_clause = "LEFT JOIN source_contexts ON source_contexts.id = organizations.source_context_id LEFT JOIN source_statuses ON source_statuses.id = organizations.source_status_id"
+      tmp_arr = Organization.joins(join_clause).where("ctrp_id = ? AND (source_statuses.code <> ? OR source_statuses IS NULL)", self.ctrp_id, "NULLIFIED").order(:id).pluck(:id, :"source_contexts.name")
     else
       tmp_arr.push([self.id, self.source_context ? self.source_context.name : ''])
     end
@@ -241,7 +242,7 @@ class Organization < ActiveRecord::Base
 
   scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value,user_role) {
+  scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       where("organizations.#{column} ilike ?", "%#{value[1..str_len - 1]}")
@@ -250,7 +251,7 @@ class Organization < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       where("organizations.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      if user_role != "ROLE_CURATOR"
+      if !wc_search
         if !value.match(/\s/).nil?
           value=value.gsub! /\s+/, '%'
         end
@@ -261,7 +262,7 @@ class Organization < ActiveRecord::Base
     end
   }
 
-  scope :matches_name_wc, -> (value,user_role) {
+  scope :matches_name_wc, -> (value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
@@ -270,7 +271,7 @@ class Organization < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
     else
-        if user_role != "ROLE_CURATOR"
+        if !wc_search
           if !value.match(/\s/).nil?
             value=value.gsub! /\s+/, '%'
           end

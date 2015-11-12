@@ -20,22 +20,18 @@
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-        vm.curOrg = orgDetailObj || {name: "", country: ""}; //orgDetailObj.data;
+        vm.curOrg = orgDetailObj || {name: "", country: "", source_status_id: ""}; //orgDetailObj.data;
         vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
+        //vm.curSourceContextName = '';
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-        //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-        var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
-        vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
-        vm.curOrg.source_status_id = vm.curOrg.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
-
-        var ctrpSourceContextIndex = Common.indexOfObjectInJsonArray(vm.sourceContextArr, 'code', 'CTRP');
-        vm.ctrpSourceContextIndex = ctrpSourceContextIndex;
-
+        //if vm.curOrg.source_status_id is not null, pluck it out from the sourceStatusArr and get the name, otherwise get the 'Active' name
+        var curSourceStatusObj = !!vm.curOrg.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+        vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
+        vm.curOrg.source_status_id = curSourceStatusObj.id;
+        vm.alias = '';
         vm.curationReady = false;
-        console.log("vm.ctrpSourceContextIndex is " + vm.ctrpSourceContextIndex);
-        console.log("context array is " + JSON.stringify(vm.sourceContextArr));
         $scope.showPhoneWarning = false;
 
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
@@ -80,6 +76,8 @@
 
         vm.clearForm = function () {
             $scope.organization_form.$setPristine();
+            vm.addedNameAliases = [];
+            vm.alias = '';
 
             var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id', 'cluster'];
             Object.keys(vm.curOrg).forEach(function (key) {
@@ -93,24 +91,15 @@
             });
         };
 
-      // Add other ID to a temp array
+        // Add new alias
         vm.addNameAlias= function () {
             if (vm.alias) {
-                for (var i = 0; i < vm.addedNameAliases.length; i++) {
-
-                    if(vm.alias.toUpperCase() == vm.addedNameAliases[i].name.toUpperCase() && vm.addedNameAliases[i]._destroy == false ) {
-                        alert('Alias already exists, please enter other alias');
-                        exit;
-                    }
+                var aliasIndex = Common.indexOfObjectInJsonArray(vm.addedNameAliases, 'name', vm.alias);
+                if (aliasIndex == -1) {
+                    var newAlias = {name: vm.alias, _destroy: false};
+                    vm.addedNameAliases.unshift(newAlias);
                 }
-                var newId = {};
-                newId.name = vm.alias;
-                newId._destroy = false;
-                vm.addedNameAliases.push(newId);
-                console.log()
-                vm.alias=null;
-            } else {
-                alert('Please enter alias');
+                vm.alias = '';
             }
         };
         // Delete the associations
@@ -156,6 +145,7 @@
                 prepareModal();
                 appendNameAliases();
             }
+            filterSourceContext();
         }
         // Append associations for existing Trial
         function appendNameAliases() {
@@ -166,6 +156,27 @@
                 name_alias._destroy = false;
                 vm.addedNameAliases.push(name_alias);
             }
+        }
+
+        /**
+         * Filter out NLM and CTEP source contexts from UI
+         * @return {void}
+         */
+        function filterSourceContext() {
+            var clonedSourceContextArr = angular.copy(vm.sourceContextArr);
+            if (!vm.curOrg.new) {
+                var curOrgSourceContextIndex = Common.indexOfObjectInJsonArray(clonedSourceContextArr, 'id', vm.curOrg.source_context_id);
+                // _.findWhere(vm.sourceContextArr, {id: vm.curOrg.source_context_id});
+                vm.curSourceContextName = curOrgSourceContextIndex > -1 ? vm.sourceContextArr[curOrgSourceContextIndex].name : '';
+            } else {
+                vm.curSourceContextName = 'CTRP'; //CTRP is the only source context available to new organization
+                vm.ctrpSourceContextIndex = Common.indexOfObjectInJsonArray(vm.sourceContextArr, 'code', 'CTRP');
+                vm.curOrg.source_context_id = vm.ctrpSourceContextIndex > -1 ? vm.sourceContextArr[vm.ctrpSourceContextIndex].id : '';
+            }
+            //delete 'CTEP' and 'NLM' from the sourceContextArr
+            vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'CTEP'}));
+            vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'NLM'}));
+            vm.curOrgEditable = vm.curSourceContextName === 'CTRP' || vm.curOrg.new; //if not CTRP context, render it readonly
         }
 
         /**
@@ -269,17 +280,10 @@
         };
 
         $scope.IsValidPhoneNumber = function(){
-
-            //var selectedCountryCode = countryToCountryCode('United States');
-
-            //console.log("country code is " + selectedCountryCode);
-
             $scope.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
             $scope.showPhoneWarning = true;
             console.log('Is phone valid: ' + $scope.IsPhoneValid);
-
-
-        }
+        };
 
     }
 

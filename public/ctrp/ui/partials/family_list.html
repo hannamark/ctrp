@@ -29,6 +29,15 @@
                 <!-- first row -->
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-4">
+                                <div ng-class="familyView.searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
+                                    <label for="wc_search">
+                                        <input type="checkbox" id="wc_search"  ng-model="familyView.searchParams.wc_search"  /> Exact Search
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <!-- name -->
                         <div class="form-group">
                             <label for="family_name" class="control-label col-xs-12 col-sm-3">Name:</label>

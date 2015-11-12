@@ -52,8 +52,9 @@ class Person < ActiveRecord::Base
   # Get an array of maps of the people with the same ctrp_id
   def cluster
     tmp_arr = []
-    if self.ctrp_id.present?
-      tmp_arr = Person.joins(:source_context).where("ctrp_id = ?", self.ctrp_id).order(:id).pluck(:id, :"source_contexts.name")
+    if self.ctrp_id.present? && (self.source_status.nil? || self.source_status.code != 'NULLIFIED')
+      join_clause = "LEFT JOIN source_contexts ON source_contexts.id = people.source_context_id LEFT JOIN source_statuses ON source_statuses.id = people.source_status_id"
+      tmp_arr = Person.joins(join_clause).where("ctrp_id = ? AND (source_statuses.code <> ? OR source_statuses IS NULL)", self.ctrp_id, "NULLIFIED").order(:id).pluck(:id, :"source_contexts.name")
     else
       tmp_arr.push([self.id, self.source_context ? self.source_context.name : ''])
     end
@@ -156,7 +157,7 @@ class Person < ActiveRecord::Base
 
   scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value,user_role) {
+  scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       where("people.#{column} ilike ?", "%#{value[1..str_len - 1]}")
@@ -165,7 +166,7 @@ class Person < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       where("people.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      if user_role != "ROLE_CURATOR"
+      if !wc_search
 
         if !value.match(/\s/).nil?
         value=value.gsub! /\s+/, '%'

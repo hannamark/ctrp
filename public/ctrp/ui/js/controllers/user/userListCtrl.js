@@ -17,7 +17,6 @@
 
         //toastr.success('Success', 'In userListCtrl');
         vm.searchParams = UserService.getInitialUserSearchParams();
-        vm.gridScope = vm;
 
         //ui-grid plugin options
         vm.gridOptions = UserService.getGridOptions();

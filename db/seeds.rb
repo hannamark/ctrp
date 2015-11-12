@@ -242,9 +242,11 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "ctrpreadonly", "role" => "ROLE_RO", "approve" => true },
-               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true },
-               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true }
+               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true},
+               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
+               {"username" => "ctrptrialsubmittersu", "role" => "ROLE_TRIAL-SUBMITTER-SU", "approve" => true},
+               {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true}
           ]
 
 test_users.each do |u|
@@ -276,7 +278,7 @@ ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sara
 ##Add CTRP Business Analysts
 
 joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Joe", "last_name" => "Martucci" }
-jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Jose", "last_name" => "Galvez" }
+jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
 michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Michael", "last_name" => "Izbicki"}
 sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Sandy", "last_name" => "Lightbody" }
 kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
