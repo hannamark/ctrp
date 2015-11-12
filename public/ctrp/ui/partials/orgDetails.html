@@ -164,7 +164,7 @@
                                         {{orgDetailView.curOrg.country}}
                                     </div>
                                 </div>
-                                <div class="form-group" ng-hide="orgDetailView.curOrg.state_province == '' || orgDetailView.states.length == 0">
+                                <div class="form-group" ng-hide="orgDetailView.states.length == 0">
                                     <label class="control-label col-xs-12 col-sm-3">State:</label>
                                     <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
                                         <select restriction-field class="form-control input-sm" id="state" ng-model="orgDetailView.curOrg.state_province">
@@ -259,7 +259,7 @@
                                             Save
                                         </button>
                                         <button type="button" ng-show="orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.clearForm()">
-                                            <i class="glyphicon glyphicon-remove"></i>  Reset
+                                            <i class="glyphicon glyphicon-remove"></i>  Clear
                                         </button>
                                         <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="reset_btn" ng-click="orgDetailView.resetForm()">
                                             <i class="glyphicon glyphicon-remove"></i>  Reset
