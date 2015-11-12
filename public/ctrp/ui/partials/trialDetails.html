@@ -731,24 +731,51 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">FDA Regulated Intervention Indicator:</label>
                             <div class="col-xs-12 col-sm-9">
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.intervention_indicator" value="No"> No</label>
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.intervention_indicator" value="Yes"> Yes</label>
+                                <label class="radio-inline">
+                                    <input type="radio" restriction-field name="interventin_indicator" ng-model="trialDetailView.curTrial.intervention_indicator"
+                                           value="No" ng-required="!trialDetailView.curTrial.intervention_indicator"> No
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" restriction-field name="interventin_indicator" ng-model="trialDetailView.curTrial.intervention_indicator"
+                                           value="Yes" ng-required="!trialDetailView.curTrial.intervention_indicator"> Yes
+                                </label>
+                                <p ng-show="trial_form.interventin_indicator.$error.required && trialDetailView.showError" class="help-inline text-danger">
+                                    FDA Regulated Intervention Indicator is required
+                                </p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Section 801 Indicator:</label>
                             <div class="col-xs-12 col-sm-9">
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.sec801_indicator" value="No"> No</label>
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.sec801_indicator" value="Yes" ng-disabled="trialDetailView.curTrial.intervention_indicator == 'No'"> Yes</label>
+                                <label class="radio-inline">
+                                    <input type="radio" restriction-field name="sec801_indicator" ng-model="trialDetailView.curTrial.sec801_indicator"
+                                           value="No" ng-required="!trialDetailView.curTrial.sec801_indicator"> No
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" restriction-field name="sec801_indicator" ng-model="trialDetailView.curTrial.sec801_indicator"
+                                                                   value="Yes" ng-required="!trialDetailView.curTrial.sec801_indicator" ng-disabled="trialDetailView.curTrial.intervention_indicator == 'No'"> Yes
+                                </label>
+                                <p ng-show="trial_form.sec801_indicator.$error.required && trialDetailView.showError" class="help-inline text-danger">
+                                    Section 801 Indicator is required
+                                </p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Data Monitoring Committee Appointed Indicator:</label>
                             <div class="col-xs-12 col-sm-9">
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator" value="No"> No</label>
-                                <label class="radio-inline"><input type="radio" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator" value="Yes"> Yes</label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="data_monitor_indicator" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator"
+                                           value="No" ng-required="!trialDetailView.curTrial.data_monitor_indicator"> No
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="data_monitor_indicator" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator"
+                                           value="Yes" ng-required="!trialDetailView.curTrial.data_monitor_indicator"> Yes
+                                </label>
+                                <p ng-show="trial_form.data_monitor_indicator.$error.required && trialDetailView.showError" class="help-inline text-danger">
+                                    Data Monitoring Committee Appointed Indicator is required
+                                </p>
                             </div>
                         </div>
                     </uib-accordion-group>
