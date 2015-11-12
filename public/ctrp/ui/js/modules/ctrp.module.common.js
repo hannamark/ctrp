@@ -6,7 +6,7 @@
 
     'use strict';
 
-    angular.module('ctrp.commonTools', [])
+    angular.module('ctrp.module.common', [])
         .service('Common', Common);
 
     Common.$inject = ['$rootScope', '_'];

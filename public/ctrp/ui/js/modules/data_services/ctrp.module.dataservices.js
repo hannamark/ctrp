@@ -2,16 +2,16 @@
     'use strict';
 
     angular.module('ctrp.module.dataservices', [
-        'ctrp.constants',
-        'ctrp.commonTools',
-        'PromiseTimeoutModule',
-        'PromiseServiceModule',
+        'ctrp.module.constants',
+        'ctrp.module.common',
+        'ctrp.module.PromiseTimeoutService',
+        'ctrp.module.PromiseService',
         'LocalCacheModule',
         'toastr',
         'ui.bootstrap',
         'DateServiceMod',
         'ctrp.module.underscoreWrapper',
-        'TimeoutModule',
+        'ctrp.module.timeout',
         'angularMoment',
         'ngFileUpload'
     ]);

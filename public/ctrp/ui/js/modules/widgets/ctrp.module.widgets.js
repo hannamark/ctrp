@@ -15,9 +15,9 @@
 
     //ctrp modules
     'ctrpApp',
-    'ctrp.commonTools',
-    'ctrp.constants',
-    'PromiseTimeoutModule'
+    'ctrp.module.common',
+    'ctrp.module.constants',
+    'ctrp.module.PromiseTimeoutService'
   ]);
 
 })();

@@ -5,7 +5,7 @@
 (function() {
     'use strict';
 
-    angular.module('ctrp.constants', [])
+    angular.module('ctrp.module.constants', [])
         .constant('HOST', 'http://localhost/')
         .constant('URL_CONFIGS', {
             //relative urls to the host
