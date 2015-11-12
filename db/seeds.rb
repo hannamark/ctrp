@@ -144,7 +144,7 @@ if !org5.new_record?
 end
 org6 = Organization.create(id: 173475, source_id: 'NY139', name: 'Syracuse Veterans Administration Medical Center', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: ' 800 Irving Ave', city: 'Syracuse', state_province:'New York', country:usa)
 org7 = Organization.create(id: 150970, source_id: 'NC088', name: 'Veterans Administration Medical Center.', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '50 Irving St NW', city: '', state_province:'District of Columbia', country:usa)
-org8 = Organization.create(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, phone: '336-716-0891', postal_code: '27157')
+org8 = Organization.create(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, postal_code: '27157')
 if !org8.new_record?
   org8.name_aliases.create(name: 'Wake Forest Cancer Center Research Base')
 end
@@ -242,9 +242,11 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "ctrpreadonly", "role" => "ROLE_RO", "approve" => true },
-               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true },
-               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true }
+               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true},
+               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
+               {"username" => "ctrptrialsubmittersu", "role" => "ROLE_TRIAL-SUBMITTER-SU", "approve" => true},
+               {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true}
           ]
 
 test_users.each do |u|
@@ -276,7 +278,7 @@ ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sara
 ##Add CTRP Business Analysts
 
 joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Joe", "last_name" => "Martucci" }
-jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Jose", "last_name" => "Galvez" }
+jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
 michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Michael", "last_name" => "Izbicki"}
 sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Sandy", "last_name" => "Lightbody" }
 kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
