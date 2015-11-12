@@ -99,7 +99,7 @@ module.exports = function() {
             serverIntegrationSpecs: [client + 'tests/server-integration/**/*.spec.js'],
 
             /**
-             * Node settings
+             * Rails API settings
              */
             defaultPort: 3000,
             nodeServer: 'http://localhost:' + defaultPort //point to rails
@@ -145,5 +145,5 @@ module.exports = function() {
             options.preprocessors[clientApp + '**/!(*.spec)+(.js)'] = ['coverage'];
 
             return options;
-        }        
+        }
 };
