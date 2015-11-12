@@ -9,10 +9,10 @@
 
         <div class="row">
             <p>
-                <button class="btn btn-primary" ng-show="!trialDetailView.collapsed" ng-click="trialDetailView.collapseAccordion()">
+                <button type="button" class="btn btn-primary" ng-show="!trialDetailView.collapsed" ng-click="trialDetailView.collapseAccordion()">
                     <i class="glyphicon glyphicon-minus"></i> Collapse All
                 </button>
-                <button class="btn btn-primary" ng-show="trialDetailView.collapsed" ng-click="trialDetailView.expandAccordion()">
+                <button type="button" class="btn btn-primary" ng-show="trialDetailView.collapsed" ng-click="trialDetailView.expandAccordion()">
                     <i class="glyphicon glyphicon-plus"></i> Expand All
                 </button>
             </p>
@@ -73,7 +73,7 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div>
-                                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addOtherId()">
+                                                <button type="button" restriction-field class="btn btn-primary" ng-click="trialDetailView.addOtherId()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -391,7 +391,7 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div>
-                                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addGrant()">
+                                                <button type="button" restriction-field class="btn btn-primary" ng-click="trialDetailView.addGrant()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -469,7 +469,7 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div>
-                                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addStatus()">
+                                                <button type="button" restriction-field class="btn btn-primary" ng-click="trialDetailView.addStatus()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -629,7 +629,7 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div>
-                                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addIndIde()">
+                                                <button type="button" restriction-field class="btn btn-primary" ng-click="trialDetailView.addIndIde()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -699,7 +699,7 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div>
-                                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addAuthority()">
+                                                <button type="button" restriction-field class="btn btn-primary" ng-click="trialDetailView.addAuthority()">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -872,7 +872,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
-                                <button restriction-field class="btn btn-primary" ng-click="trialDetailView.addOtherDoc()">
+                                <button type="button" restriction-field class="btn btn-primary" ng-click="trialDetailView.addOtherDoc()">
                                     <i class="glyphicon glyphicon-plus"></i> Add More ...
                                 </button>
                             </div>
@@ -905,13 +905,13 @@
 
                 <div class="form-group no-bottom-margin">
                     <div class="btn-toolbar col-xs-12">
-                        <button ng-show="trialDetailView.curTrial.new || trialDetailView.curTrial.is_draft" type="submit" restriction-field class="btn btn-primary pull-right" id="save_draft_btn" ng-click="trialDetailView.updateTrial('draft')" ng-disabled="trial_form.lead_protocol_id.$invalid" ctrp-click-once>
+                        <button ng-show="trialDetailView.curTrial.new || trialDetailView.curTrial.is_draft" type="button" restriction-field class="btn btn-primary pull-right" id="save_draft_btn" ng-click="trialDetailView.updateTrial('draft')" ng-disabled="trial_form.lead_protocol_id.$invalid" ctrp-click-once>
                             Save as Draft
                         </button>
                         <button type="submit" restriction-field class="btn btn-primary pull-right" id="submit_btn">
                             Review
                         </button>
-                        <button restriction-field class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" ctrp-click-once>
+                        <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" ctrp-click-once>
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
                     </div>
