@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('ctrpApp')
+    angular.module('ctrp.module.dataservices')
         .factory('TrialService', TrialService);
 
     TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload'];
