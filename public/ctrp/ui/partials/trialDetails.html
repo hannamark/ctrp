@@ -945,7 +945,7 @@
                             Save as Draft
                         </button>
                         <button type="submit" restriction-field class="btn btn-primary pull-right" id="submit_btn">
-                            Review
+                            {{trial_form.$invalid ? 'Review' : 'Submit'}}
                         </button>
                         <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" ctrp-click-once>
                             <i class="glyphicon glyphicon-remove"></i> Reset
