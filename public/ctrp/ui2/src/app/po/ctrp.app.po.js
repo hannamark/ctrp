@@ -35,7 +35,7 @@
         'ui.grid.pagination',
         'ui.grid.selection',
         'ui.scrollpoint',
-        'ngFileUpload',
+        //'ngFileUpload',
         'angularMoment',
 
     ]);

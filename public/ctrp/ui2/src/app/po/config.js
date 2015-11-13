@@ -42,7 +42,7 @@
                 $httpProvider.defaults.headers.common = {};
             }
 
-            $httpProvider.interceptors.push('AuthInterceptor');
+            //TODO: load the interceptors: $httpProvider.interceptors.push('AuthInterceptor');
             //disable IE ajax request caching
             $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
             $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
