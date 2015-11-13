@@ -4,7 +4,7 @@
 
 (function () {
     'use strict';
-    angular.module('ctrpApp')
+    angular.module('ctrp.module.dataservices')
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',

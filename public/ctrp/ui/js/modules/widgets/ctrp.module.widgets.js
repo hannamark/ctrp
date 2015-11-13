@@ -14,10 +14,11 @@
     'angularUtils.directives.dirPagination',
 
     //ctrp modules
-    'ctrpApp',
-    'ctrp.commonTools',
-    'ctrp.constants',
-    'PromiseTimeoutModule'
+    //'ctrpApp',
+    'ctrp.module.dataservices',
+    'ctrp.module.common',
+    'ctrp.module.constants',
+    'ctrp.module.PromiseTimeoutService'
   ]);
 
 })();

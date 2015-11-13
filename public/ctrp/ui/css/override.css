@@ -365,12 +365,6 @@ form label {
 
 /*#adv-org-search-modal .modal-dialog  {width:75%;}*/
 
-.required:after {
-    color: #e32;
-    content: ' *';
-    display:inline;
-}
-
 .dropdown-submenu {
     position: relative;
 }

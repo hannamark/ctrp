@@ -15,8 +15,6 @@
     <link rel="stylesheet" type="text/css"
           href="ui/third_party_libs/datatables/media/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-ui-grid/ui-grid.min.css">
-    <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-toggle-switch/angular-toggle-switch.css">
-    <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-toggle-switch/angular-toggle-switch-bootstrap.css">
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-material/angular-material.min.css">
     <link rel="stylesheet" type="text/css" href="ui/third_party_libs/angular-material-icons/angular-material-icons.css">
     <link rel="stylesheet" href="ui/css/override.css">
@@ -48,7 +46,6 @@
     <script src="ui/third_party_libs/datatables/media/js/jquery.dataTables.min.js"></script>
     <script src="ui/third_party_libs/angular-datatables/dist/angular-datatables.min.js"></script>
     <script src="ui/third_party_libs/angular-ui-grid/ui-grid.min.js"></script>
-    <script src="ui/third_party_libs/angular-toggle-switch/angular-toggle-switch.js"></script>
     <script src="ui/third_party_libs/ng-idle/angular-idle.min.js"></script>
     <script src="ui/third_party_libs/angular-breadcrumb/release/angular-breadcrumb.min.js"></script>
     <script src="ui/third_party_libs/ng-file-upload-bower-7.0.17/ng-file-upload-shim.min.js"></script> <!-- for no html5 browsers support -->
@@ -62,26 +59,29 @@
     <!-- injectors -->
     <!--<script src="ui/js/interceptors/TimeoutHttpInterceptor.js"></script>-->
     <!-- home-made Angular modules -->
-    <script src="ui/js/modules/Constants.js"></script>
-    <script src="ui/js/modules/Common.js"></script>
-    <script src="ui/js/modules/PromiseServiceMod.js"></script>
-    <script src="ui/js/modules/LocalCacheModule.js"></script>
-    <script src="ui/js/modules/PromiseWithTimeoutService.js"></script>
-    <script src="ui/js/modules/DateServiceModule.js"></script>
-    <script src="ui/js/modules/CTRPUnderscoreModule.js"></script>
-    <script src="ui/js/modules/TimeoutModule.js"></script>
-    <script src="ui/js/modules/widgets/ctrp.widgets.module.js"></script>
+    <script src="ui/js/modules/ctrp.module.constants.js"></script>
+    <script src="ui/js/modules/ctrp.module.common.js"></script>
+    <script src="ui/js/modules/ctrp.module.promiseservice.js"></script>
+    <script src="ui/js/modules/ctrp.module.promisewithtimeoutservice.js"></script>
+    <script src="ui/js/modules/ctrp.module.dateservice.js"></script>
+    <script src="ui/js/modules/ctrp.module.underscoreWrapper.js"></script>
+    <script src="ui/js/modules/ctrp.module.timeout.js"></script>
+    <script src="ui/js/modules/widgets/ctrp.module.widgets.js"></script>
 
+    <!-- cache services -->
+    <script src="ui/js/modules/cache_service/ctrp.module.LocalCacheModule.js"></script>
+    <script src="ui/js/modules/cache_service/LocalCacheService.js"></script>
 
-    <!-- services -->
-    <script src="ui/js/services/OrganizationService.js"></script>
-    <script src="ui/js/services/cache/LocalCacheService.js"></script>
-    <script src="ui/js/services/GeoLocationService.js"></script>
-    <script src="ui/js/services/PersonService.js"></script>
-    <script src="ui/js/services/FamilyService.js"></script>
-    <script src="ui/js/services/UserService.js"></script>
-    <script src="ui/js/services/TrialService.js"></script>
+    <!-- data services -->
+    <script src="ui/js/modules/data_services/ctrp.module.dataservices.js"></script>
+    <script src="ui/js/modules/data_services/OrganizationService.js"></script>
+    <script src="ui/js/modules/data_services/GeoLocationService.js"></script>
+    <script src="ui/js/modules/data_services/PersonService.js"></script>
+    <script src="ui/js/modules/data_services/FamilyService.js"></script>
+    <script src="ui/js/modules/data_services/UserService.js"></script>
+    <script src="ui/js/modules/data_services/TrialService.js"></script>
     <script src="ui/js/modules/widgets/comment/CommentService.js"></script>
+
 
     <!-- directives -->
     <script src="ui/js/directives/organization/advancedOrgSearchForm2.js"></script>

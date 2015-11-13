@@ -6,7 +6,7 @@
 (function () {
     'use strict';
 
-    angular.module('ctrpApp')
+    angular.module('ctrp.module.dataservices')
         .factory('GeoLocationService', GeoLocationService);
 
     GeoLocationService.$inject = ['PromiseService', 'PromiseTimeoutService', 'URL_CONFIGS', '$log'];
@@ -44,7 +44,7 @@
         }
 
     }
-    
+
 
 
 })();
