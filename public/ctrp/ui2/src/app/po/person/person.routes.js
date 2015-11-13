@@ -12,7 +12,15 @@
                 .state('main.people', {
                     url: '/people',
                     templateUrl: 'app/po/person/person_list.html',
-                    //controller: 'personCtrl as personView',
+                    controller: function($scope, $http) {
+                        $scope.name = 'Tony';
+                        $scope.getPeople = function() {
+                            $http.get('http://localhost/ctrp/people.json')
+                            .success(function(data) {
+                                console.log('success getting people: ' + JSON.stringify(data));
+                            });
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Persons'

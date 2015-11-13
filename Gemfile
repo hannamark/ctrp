@@ -81,3 +81,6 @@ gem 'carrierwave'
 #gem for pg_sequencer
 gem 'pg_sequencer'
 
+#gem for rack-cors
+gem 'rack-cors', :require => 'rack/cors'
+
