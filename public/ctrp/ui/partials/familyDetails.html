@@ -30,7 +30,7 @@
                 <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.name) || familyDetailView.showUniqueWarning}">
                     <label class="control-label col-xs-12 col-sm-3">Family Name:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" name="name" restriction-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus ng-change="checkForNameUniqueness()"/>
+                        <input type="text" name="name" restriction-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus ng-blur="checkForNameUniqueness()"/>
                         <span class="form-control-feedback" ng-show="familyDetailView.curFamily.name.length" ng-class="(!familyDetailView.showUniqueWarning && familyDetailView.curFamily.name.length) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                         <span class="help-block" ng-show="family_form.name.$error.required">Family name is Required</span>
                         <div class="has-error" ng-show="familyDetailView.curFamily.name.length > 0 && family_form.name.$dirty && familyDetailView.showUniqueWarning">

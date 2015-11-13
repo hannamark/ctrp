@@ -44,7 +44,7 @@
                             <label class="control-label col-xs-12 col-sm-3">First Name:</label>
                             <div class="col-xs-12 col-sm-6" ng-if="personDetailView.curPersonEditable">
                                 <input tabindex="2" type="text" restriction-field name="fname" class="form-control input-sm" ng-model="personDetailView.curPerson.fname" required auto-focus ng-change="checkForNameUniqueness()" />
-                                <span class="form-control-feedback" ng-show="person_form.fname.$dirty" ng-class="!ctrpbtn.person_form.needsAttention(person_form.fname) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="form-control-feedback" ng-show="personDetailView.curPerson.fname.length" ng-class="!ctrpbtn.person_form.needsAttention(person_form.fname) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="person_form.fname.$error.required">First name is Required</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curPerson.fname}}</div>
@@ -56,11 +56,11 @@
                             </div>
                             <div class="col-xs-12 col-sm-6 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curPerson.mname}}</div>
                         </div>
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.lname)}">
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.lname) || personDetailView.showUniqueWarning}">
                             <label class="control-label col-xs-12 col-sm-3">Last Name:</label>
                             <div class="col-xs-12 col-sm-6" ng-if="personDetailView.curPersonEditable">
-                                <input tabindex="4" type="text" restriction-field name="lname" class="form-control input-sm" ng-model="personDetailView.curPerson.lname" required ng-change="checkForNameUniqueness()">
-                                <span class="form-control-feedback" ng-show="person_form.lname.$dirty" ng-class="!personDetailView.showUniqueWarning && personDetailView.curPerson.lname.length ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <input tabindex="4" type="text" restriction-field name="lname" class="form-control input-sm" ng-model="personDetailView.curPerson.lname" required ng-blur="checkForNameUniqueness()">
+                                <span class="form-control-feedback" ng-show="personDetailView.curPerson.lname.length" ng-class="!personDetailView.showUniqueWarning ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="person_form.lname.$error.required">Last name is Required</span>
                                 <div class="has-error" ng-show="personDetailView.curPerson.lname.length > 0 && person_form.lname.$dirty && personDetailView.showUniqueWarning && !personDetailView.name_unqiue">
                                     <span class="help-block">
@@ -83,7 +83,7 @@
                                 <select tabindex="6" restriction-field ng-init="personDetailView.curPerson.source_context_id" class="form-control input-sm" id="source_context" ng-model="personDetailView.curPerson.source_context_id" ng-options="context.id as context.name for context in personDetailView.sourceContextArr" name="source_context" required>
                                     <option value="6">Select context</option>
                                 </select>
-                                <span class="form-control-feedback select-feedback" ng-show="person_form.source_context.$dirty" ng-class="!ctrpbtn.person_form.needsAttention(person_form.source_context) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="form-control-feedback select-feedback" ng-show="personDetailView.curPerson.source_context_id.length" ng-class="!ctrpbtn.person_form.needsAttention(person_form.source_context) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="person_form.source_context.$invalid">Source context is Required</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curSourceContextName}}</div>
@@ -110,13 +110,13 @@
                                 <label class="control-label col-xs-12 col-sm-3">Email:</label>
                                 <div class="col-xs-12 col-sm-3" ng-if="personDetailView.curPersonEditable">
                                     <input tabindex="8" restriction-field class="form-control input-sm" name="email" ng-model="personDetailView.curPerson.email" type="email" ng-required="!personDetailView.curPerson.phone">
-                                    <span class="form-control-feedback" ng-show="person_form.email.$dirty" ng-class="!(person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                    <span class="form-control-feedback" ng-show="person_form.email.$viewValue.length" ng-class="!(person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 </div>
                                 <div class="col-xs-12 col-sm-3 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curPerson.email}}</div>
                                 <label class="control-label col-xs-12 col-sm-1">Phone:</label>
                                 <div class="col-xs-12 col-sm-2" ng-if="personDetailView.curPersonEditable">
                                     <input tabindex="9" type="text" restriction-field class="form-control input-sm" name="phone" ng-model="personDetailView.curPerson.phone" ng-required="!personDetailView.curPerson.email">
-                                    <span ng-show="personDetailView.curPerson.phone.length" class="form-control-feedback" ng-class="!(person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                    <span ng-show="personDetailView.curPerson.phone.length" class="form-control-feedback" ng-class="!ctrpbtn.person_form.needsAttention(person_form.phone) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 </div>
                                 <div class="col-xs-12 col-sm-2 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curPerson.phone}}</div>
                             </div>

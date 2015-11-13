@@ -80,9 +80,17 @@
     transition: margin-left 0.3s linear;
 }
 
+.ui-grid, .ui-grid-viewport {
+  height: auto !important;
+}
+
+.ui-grid-contents-wrapper {
+    margin-bottom: 32px;
+}
+
 .grid {
     width: 100%;
-    min-height: 550px;
+
 }
 
 .ui-grid-header-cell .ui-grid-cell-contents {
