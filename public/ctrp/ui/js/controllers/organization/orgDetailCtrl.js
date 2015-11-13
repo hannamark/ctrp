@@ -8,10 +8,10 @@
     angular.module('ctrpApp')
         .controller('orgDetailCtrl', orgDetailCtrl);
 
-    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService',
+    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter',
         '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$modal'];
 
-    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService,
+    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
         var vm = this;
         $scope.organization_form = {};
@@ -53,11 +53,14 @@
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
                 if (vm.curOrg.new) {
-                  console.log('successfully saved the new org with id: ' + JSON.stringify(response));
                     vm.clearForm();
-                    vm.curOrg.new = false;
                     $state.go('main.orgDetail', {orgId: response.id});
+                } else {
+                    // vm.curOrg = response;
+                    vm.curOrg.updated_by = response.updated_by;
+                    vm.curOrg.updated_at = response.updated_at;
                 }
+                vm.curOrg.new = false;
                 toastr.clear();
                 toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
