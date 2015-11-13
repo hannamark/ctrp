@@ -8,18 +8,17 @@
 
     personRoutes.$inject = ['$stateProvider'];
     function personRoutes($stateProvider) {
-        $stateProvider.state('main.people', {
+        $stateProvider
+                .state('main.people', {
                     url: '/people',
                     templateUrl: 'app/po/person/person_list.html',
-                    /*
-                    controller: 'personCtrl as personView',
+                    //controller: 'personCtrl as personView',
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Persons'
                     }
-                    */
-                })
 
+                })
                 .state('main.personDetail', {
                     url: '/people/:personId',
                     templateUrl: 'app/po/person/personDetails.html',

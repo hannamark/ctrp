@@ -63,11 +63,11 @@
     poAppRoutesConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
 
     function poAppRoutesConfig($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise(function($injector) {
-              var $state = $injector.get('$state');
-               $state.go('main.defaultContent');
-           });
-
+        // $urlRouterProvider.otherwise(function($injector) {
+        //       var $state = $injector.get('$state');
+        //        $state.go('main.defaultContent');
+        //    });
+           $urlRouterProvider.otherwise('/main/welcome');
            $stateProvider.state('main', {
                   url: '/main',
                   views: {
@@ -83,22 +83,20 @@
                           templateUrl: 'app/layout/mainContent.html'
                       }
                   },
-                  /*
+
                   ncyBreadcrumb: {
                       label: 'Home',
                       skip: true
                   }
-                  */
               })
               .state('main.defaultContent', {
                    url: '/welcome',
                    templateUrl: 'app/layout/welcome/welcomeContent.html',
-                   /*
-                   controller: 'headerNavigationCtrl as headerView',
+
+                   //controller: 'headerNavigationCtrl as headerView',
                    ncyBreadcrumb: {
                        label: 'Home'
                    }
-                   */
                })
 
     } //poAppRoutesConfig

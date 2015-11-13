@@ -31,13 +31,13 @@
         <!-- endbuild -->
     </head>
     <body>
-        <div ng-include src="'app/layout/header.html'"></div>
+        <div ng-include src="'./app/layout/header.html'"></div>
         <div class="container top-offset-lg">
             <div class="row">
                 <div class="col-md-12" ui-view></div>
             </div>
         </div>
-        <div ng-include src="'app/layout/footer.html'"></div>
+        <div ng-include src="'./app/layout/footer.html'"></div>
 
         <!-- build:js js/lib.js -->
         <!-- bower:js -->
@@ -90,11 +90,15 @@
 
 
 
+        <script src="/src/app/routes/ctrp.app.routes.js"></script>
+
+
+
         <script src="/src/app/po/ctrp.app.po.js"></script>
 
 
 
-        <script src="/src/app/routes/ctrp.app.routes.js"></script>
+        <script src="/src/app/po/person/person.routes.js"></script>
 
 
 
