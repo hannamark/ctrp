@@ -135,37 +135,43 @@ module.exports = function() {
         menuItem.clickListPeople();
         search.setPersonFirstName(createdPersonDel);
         search.clickSearch();
+        helper.wait_for(3000);
+        projectFunctions.inPersonSearchResults(createdPersonDel);
         cukePerson.then(function(createdPersonDel) {
-            expect(projectFunctions.inSearchResults(createdPersonDel)).to.become('true');
+            expect(projectFunctions.inPersonSearchResults(createdPersonDel)).to.become('true');
+            //expect(projectFunctions.inSearchResults(createdPersonDel)).to.become('true');
         });
         browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected the function Delete Person Record$/, function (callback) {
         element(by.linkText(createdPersonDel)).click();
-        browser.sleep(3000).then(callback);
+        browser.sleep(1000).then(callback);
     });
 
+    // And I submit my delete request
+
     this.When(/^there are no occurrences of the Person Record in use in CTRP$/, function (callback) {
-        menuItem.clickPeople();
-        menuItem.clickListPeople();
-        search.setPersonFirstName(createdPersonDel);
-        search.clickSearch();
-        helper.wait_for(100);
-        browser.sleep(250).then(callback);
+        login.logout();
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode();
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
+            search.setPersonFirstName(createdPersonDel);
+            search.clickSearch();
+            helper.wait_for(100);
+            browser.sleep(25).then(callback);
+        });
     });
 
     this.Then(/^the system will delete the Person Record$/, function (callback) {
-        var resultStatusPerson = projectFunctions.isTextPresent(createdPersonDel);
-        console.log('Search Result Status Person Record:'+resultStatusPerson+'');
-
-        if (resultStatusPerson === false){
-            console.log('System able to delete the Person:['+createdPersonDel+'] record ' +
-                'successfully and the search result status is:['+resultStatusPerson+']');
-        } else{
-            console.error('System unable to delete the Person:['+createdPersonDel+'] record ' +
-                'successfully and the search result status is:['+resultStatusPerson+']');
-        };
+        expect(projectFunctions.inPersonSearchResults(createdPersonDel)).to.become('false');
         browser.sleep(25).then(callback);
     });
 

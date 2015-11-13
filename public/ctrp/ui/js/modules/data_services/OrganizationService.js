@@ -187,7 +187,7 @@
         function getInitialOrgSearchParams() {
             var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
             var curator_role = "curator";
-            if(!(user_role.toUpperCase() == curator_role.toUpperCase())) {
+            if(!(user_role.toUpperCase() === curator_role.toUpperCase())) {
                 initOrgSearchParams.wc_search = false;
             }
             return initOrgSearchParams;
@@ -200,7 +200,7 @@
             var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
             var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
             var curator_role = "curator";
-            if(!(user_role.toUpperCase() == curator_role.toUpperCase())) {
+            if(!(user_role.toUpperCase() === curator_role.toUpperCase())) {
                 gridOptions.columnDefs.splice(updated_at_index,1);
                 gridOptions.columnDefs.splice(updated_by_index,1);
             }
@@ -230,7 +230,7 @@
                             statesOrProvinces = response;
 
                             //states or provinces are not available
-                            if (statesOrProvinces.length == 0) {
+                            if (statesOrProvinces.length === 0) {
                                 broadcastMsg(MESSAGES.STATES_UNAVAIL, 'states or provinces are not available');
                                 return;
                             }
@@ -308,7 +308,7 @@
         function indexOfOrganization(targetOrgsArr, orgObj) {
             var index = -1;
             _.each(targetOrgsArr, function (org, idx) {
-                if (org.id == orgObj.id) { //what if the user deletes the po_affiliation accidentally???
+                if (org.id === orgObj.id) { //what if the user deletes the po_affiliation accidentally???
                     index = idx;
                     return;
                 }
