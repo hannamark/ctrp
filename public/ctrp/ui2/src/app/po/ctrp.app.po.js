@@ -11,6 +11,7 @@
         'ngSanitize',
 
         /* Cross-app modules */
+        'ctrp.app.routes',
         /*
         'ctrp.module.constants',
         'ctrp.module.common',
@@ -35,7 +36,7 @@
         'ui.grid.pagination',
         'ui.grid.selection',
         'ui.scrollpoint',
-        //'ngFileUpload',
+        'ngFileUpload',
         'angularMoment',
 
     ]);
