@@ -42,7 +42,6 @@ gulp.task('fonts', ['clean-fonts'], function() {
         .pipe(gulp.dest(config.build + 'fonts'));
 });
 
-
 gulp.task('images', ['clean-images'], function() {
     log('Copying and compressing the images');
 
@@ -83,7 +82,6 @@ gulp.task('less-watcher', function() {
     gulp.watch([config.less], ['styles']);
 });
 
-
 gulp.task('templatecache', ['clean-code'], function() {
     log('Creating AngularJS $templateCache');
 
@@ -96,7 +94,6 @@ gulp.task('templatecache', ['clean-code'], function() {
             ))
         .pipe(gulp.dest(config.temp));
 });
-
 
 gulp.task('wiredep', function() {
     log('Wire up the bower css js and our app js into the html');
