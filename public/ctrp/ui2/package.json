@@ -13,11 +13,12 @@
     "compression": "^1.1.0",
     "cors": "^2.2.0",
     "serve-favicon": "^2.0.1"
-},
-"devDependencies": {
+  },
+  "devDependencies": {
     "browser-sync": "^1.8.2",
     "chai": "^1.10.0",
     "del": "^1.1.1",
+    "express": "^4.13.3",
     "gulp": "^3.8.10",
     "gulp-angular-templatecache": "^1.5.0",
     "gulp-autoprefixer": "^2.0.0",
@@ -55,6 +56,7 @@
     "lodash": "^2.4.1",
     "mocha": "^2.1.0",
     "mocha-clean": "^0.4.0",
+    "morgan": "^1.6.1",
     "node-notifier": "^4.0.3",
     "phantomjs": "^1.9.13",
     "sinon": "^1.12.2",

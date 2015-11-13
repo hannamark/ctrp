@@ -6,6 +6,8 @@
 
         /* ctrp feature modules */
         'ctrp.app.po'
-    ]);
+    ]).run(function() {
+        console.log('ctrp.app.main is running');
+    });
 
 })();

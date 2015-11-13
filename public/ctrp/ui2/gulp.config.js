@@ -98,10 +98,10 @@ module.exports = function() {
         serverIntegrationSpecs: [client + 'tests/server-integration/**/*.spec.js'],
 
         /**
-         * Rails API settings
+         * mock Express API settings
          */
-        defaultPort: 3000,
-        nodeServer: 'http://localhost:3000' //point to rails
+        defaultPort: 7203,
+        nodeServer: './src/mock_api/mock_server.js' //mock server
     };
 
     config.getWiredepDefaultOptions = function() {

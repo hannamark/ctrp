@@ -254,7 +254,7 @@ function serve(isDev, specRunner) {
             'PORT': port,
             'NODE_ENV': isDev ? 'dev' : 'build'
         },
-        watch: [config.server]
+        watch: [config.server] //not necessary to watch, as we won't change the mock server //TODO: comment out
     };
 
     return $.nodemon(nodeOptions)
