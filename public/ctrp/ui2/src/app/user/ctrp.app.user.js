@@ -2,19 +2,26 @@
     'use strict';
 
     angular.module('ctrp.app.user', [
+        /* Angular modules */
+        'ngTouch',
+        'ngAnimate',
+        'ngSanitize',
+
         /* ctrp cross-app modules */
         'ctrp.module.constants',
         'ctrp.module.common',
         'LocalCacheModule',
-        'toastr',
-        'ui.bootstrap',
+        'ctrpApp.widgets',
         'ctrp.module.dataservice',
         'ctrp.module.underscoreWrapper',
-        'angularMoment',
 
         /* ctrp feature modules */
         'ctrp.app.routes',
 
+        /* 3rd party */
+        'toastr',
+        'ui.bootstrap',
+        'angularMoment'
     ]);
 
 })();

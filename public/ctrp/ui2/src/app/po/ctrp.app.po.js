@@ -12,32 +12,25 @@
 
         /* Cross-app modules */
         'ctrp.app.routes',
-        /*
+
         'ctrp.module.constants',
         'ctrp.module.common',
-        'ctrp.module.PromiseTimeoutService',
-        'ctrp.module.PromiseService',
-        'ctrp.module.dateservice',
         'ctrp.module.underscoreWrapper',
-        'ctrp.module.timeout',
         'LocalCacheModule',
         'ctrpApp.widgets',
-        'ctrpForm',
-        'ctrp.module.dataservices'
-        */
+        'ctrp.module.dataservices',
 
         /* 3rd-party modules */
         'ui.router',
+        //        'ncy-angular-breadcrumb',
         'ui.bootstrap',
         'ngMaterial',
         'toastr',
-        'ncy-angular-breadcrumb',
         'ui.grid',
         'ui.grid.pagination',
         'ui.grid.selection',
         'ui.scrollpoint',
         'ngFileUpload',
-        'angularMoment',
-
+        'angularMoment'
     ]);
 })();

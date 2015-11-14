@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    var ctrpAppRoutes = angular.module('ctrp.app.routes', ['ui.router']);
+    var ctrpAppRoutes = angular.module('ctrp.app.routes', ['ui.router', 'ncy-angular-breadcrumb']);
 
     ctrpAppRoutes.config(uiRouterConfig);
     uiRouterConfig.$inject = ['$provide'];
@@ -96,7 +96,7 @@
                    ncyBreadcrumb: {
                        label: 'Home'
                    }
-               })
+               });
 
     } //poAppRoutesConfig
 

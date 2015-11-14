@@ -90,7 +90,7 @@
                     url: '/person_directive',
                     templateUrl: 'app/po/person/person_search.html',
                     //controller: 'personSearchCtrl as personSearchView'
-                })
+                });
     } //personRoutes
 
 
