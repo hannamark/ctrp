@@ -7,6 +7,22 @@ var path = require('path');
 var _ = require('lodash');
 var $ = require('gulp-load-plugins')({lazy: true});
 var port = process.env.PORT || config.defaultPort;
+//pipe segments
+var pipes = {};
+
+pipes.orderedVendorScripts = function() {
+    return $.order(['jquery.js', 'angular.js']);
+};
+
+pipes.orderedAppScripts = function() {
+    return $.angularFilesort();
+};
+
+pipes.minifiedFileName = function() {
+    return $.rename(function (path) {
+        path.extname = '.min' + path.extname;
+    });
+};
 
 gulp.task('help', $.taskListing);
 gulp.task('default', ['help']); //list help menus
@@ -102,8 +118,10 @@ gulp.task('wiredep', function() {
 
     return gulp
         .src(config.index)
-        .pipe(wiredep(options))
         .pipe($.inject(gulp.src(config.js)))
+        .pipe($.angularFilesort())
+        //.pipe(pipes.orderedAppScripts())
+        .pipe(wiredep(options))
         .pipe(gulp.dest(config.client));
 });
 
@@ -150,10 +168,12 @@ gulp.task('build-specs', ['templatecache'], function() {
 
     return gulp
         .src(config.specRunner)
-        .pipe(wiredep(options))
         .pipe($.inject(gulp.src(config.testlibraries),
             {name: 'inject:testlibraries', read: false}))
         .pipe($.inject(gulp.src(config.js)))
+        .pipe($.angularFilesort())
+        //.pipe(pipes.orderedAppScripts())
+        .pipe(wiredep(options))
         .pipe($.inject(gulp.src(config.specHelpers),
             {name: 'inject:spechelpers', read: false}))
         .pipe($.inject(gulp.src(specs),
