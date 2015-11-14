@@ -15,6 +15,7 @@
                                   $uibModal, $timeout, $state, _, Common, MESSAGES, $rootScope) {
 
         var vm = this;
+        console.log('hello from header controller!');
         vm.signedIn = UserService.isLoggedIn();
         vm.username = UserService.getLoggedInUsername();
         vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';

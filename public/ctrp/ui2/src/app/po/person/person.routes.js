@@ -4,7 +4,7 @@
 
 (function() {
     'use strict';
-    angular.module('ctrp.app.po').config(personRoutes);
+    angular.module('ctrp.app.routes').config(personRoutes);
 
     personRoutes.$inject = ['$stateProvider'];
     function personRoutes($stateProvider) {
@@ -15,7 +15,7 @@
                     controller: function($scope, $http) {
                         $scope.name = 'Tony';
                         $scope.getPeople = function() {
-                            $http.get('http://localhost/ctrp/people.json')
+                            $http.get('http://192.168.1.8:3000/ctrp/people.json')
                             .success(function(data) {
                                 console.log('success getting people: ' + JSON.stringify(data));
                             });

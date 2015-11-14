@@ -2,6 +2,11 @@
     'use strict';
 
     angular.module('ctrp.app.layout', [
+        /* Angular modules */
+        'ngTouch',
+        'ngAnimate',
+        'ngSanitize',
+
         /* ctrp cross-app modules */
         'ctrp.module.timeout',
         'ctrp.module.dataservices',
@@ -10,7 +15,10 @@
         'ctrp.module.underscoreWrapper',
 
         /* ctrp feature modules */
-        'ctrp.app.routes'
+        'ctrp.app.routes',
+
+        /* 3rd party */
+        'ui.router'
 
     ]).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService, LocalCacheService) {
             console.log('ctrp.app.layout is running!');
@@ -37,10 +45,6 @@
                             console.log('retrieved data from dmz: ' + JSON.stringify(data));
                             UserService.setAppRelMilestone(data.app_rel_milestone);
                         });
-                    } else {
-                        //TODO: remove this testing
-                        UserService.setAppVersion(5.01);
-                        UserService.setAppRelMilestone(5.02);
                     }
                 } else {
                     //do not show app version or release milestone on other pages unless authenticated

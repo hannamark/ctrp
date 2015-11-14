@@ -8,10 +8,10 @@
     angular.module('ctrp.app.user')
         .controller('userCtrl', userCtrl);
 
-    userCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$sce',
+    userCtrl.$inject = ['$scope',
         '$state', '$timeout', 'LocalCacheService', 'UserService', 'loginBulletin'];
 
-    function userCtrl($scope, $http, $window, toastr, $state, $sce,
+    function userCtrl($scope, $state,
                       $timeout, LocalCacheService, UserService, loginBulletin) {
         var vm = this;
         console.log('in user controller');
@@ -27,8 +27,6 @@
             "type": vm.type
         };
 
-        console.log("vm="+JSON.stringify(vm));
-        //
         vm.authenticate = function() {
             return UserService.login(vm.userObj);
         }; // authenticate

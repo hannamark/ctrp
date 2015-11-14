@@ -10,13 +10,13 @@
 (function () {
     'use strict';
 
-    angular.module('ctrp.module.PromiseTimeoutService', ['ngResource', 'toastr'])
+    angular.module('ctrp.module.PromiseTimeoutService', ['ngResource', 'toastr', 'ctrp.module.constants'])
 
         .service('PromiseTimeoutService', PromiseTimeoutService);
 
-    PromiseTimeoutService.$inject = ['$q', '$resource', '$timeout', '$log', '$http', 'toastr'];
+    PromiseTimeoutService.$inject = ['$q', '$resource', '$timeout', '$log', '$http', 'toastr', 'HOST'];
 
-    function PromiseTimeoutService($q, $resource, $timeout, $log, $http, toastr) {
+    function PromiseTimeoutService($q, $resource, $timeout, $log, $http, toastr, HOST) {
 
         /**
          * get data from service
@@ -26,7 +26,7 @@
          */
         this.getData = function (url) {
             var deferred = $q.defer();
-
+            url = HOST + url;
             $http.get(url).success(function (data, status, headers, config) {
                 // $log.info('status: ' + status);
                 var packagedData = packageDataWithResponse(data, status, headers, config);
@@ -48,6 +48,7 @@
          */
         this.postDataExpectObj = function (url, params) {
             var deferred = $q.defer();
+            url = HOST + url;
             $http.post(url, params).success(function (data, status, headers, config) {
                 var packagedData = packageDataWithResponse(data, status, headers, config);
                 deferred.resolve(packagedData);
@@ -71,6 +72,7 @@
         this.updateObj = function (url, params, configObj) {
 
             var deferred = $q.defer();
+            url = HOST + url;
             $http.put(url, params, configObj).success(function (data, status, headers, config) {
                 var packagedData = packageDataWithResponse(data, status, headers, config);
                 deferred.resolve(packagedData);
@@ -89,6 +91,7 @@
          * @returns {HttpPromise}
          */
         this.deleteObjFromBackend = function (url) {
+            url = HOST + url;
             return $http.delete(url);
         }; //deleteObjFromBackend
 

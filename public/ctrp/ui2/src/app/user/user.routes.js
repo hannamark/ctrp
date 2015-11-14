@@ -4,7 +4,7 @@
 
 (function() {
     'use strict';
-    angular.module('ctrp.app.user').config(userRoutes);
+    angular.module('ctrp.app.routes').config(userRoutes);
 
     userRoutes.$inject = ['$stateProvider'];
     function userRoutes($stateProvider) {
@@ -18,7 +18,7 @@
                     url: '/sign_in',
                     templateUrl: 'app/user/sign_in.html',
                     controller: 'userCtrl as userView',
-                    /*
+
                     resolve: {
                         UserService: 'UserService',
                         loginBulletin: function(UserService, $q) {
@@ -32,7 +32,6 @@
                             $state.go('main.defaultContent');
                         }
                     },
-                    */
                     ncyBreadcrumb: {
                         parent: '',
                         label: 'CTRP Sign In',

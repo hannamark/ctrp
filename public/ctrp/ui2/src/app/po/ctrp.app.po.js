@@ -20,8 +20,6 @@
         'ctrp.module.dataservices',
 
         /* 3rd-party modules */
-        'ui.router',
-        //        'ncy-angular-breadcrumb',
         'ui.bootstrap',
         'ngMaterial',
         'toastr',
@@ -30,6 +28,7 @@
         'ui.grid.selection',
         'ui.scrollpoint',
         'ngFileUpload',
-        'angularMoment'
+        'angularMoment',
+        'ncy-angular-breadcrumb'
     ]);
 })();
