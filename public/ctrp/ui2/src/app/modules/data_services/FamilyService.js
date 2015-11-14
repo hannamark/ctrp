@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('ctrpApp')
+    angular.module('ctrp.module.dataservices')
         .factory('FamilyService', FamilyService);
 
     FamilyService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope','PromiseTimeoutService','UserService'];

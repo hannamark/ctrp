@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('ctrpApp')
+    angular.module('ctrpApp.widgets')
         .factory('CommentService', CommentService);
 
     CommentService.$inject = ['URL_CONFIGS', '$http', '$log', '_', 'Common',
