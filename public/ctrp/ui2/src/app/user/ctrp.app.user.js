@@ -8,7 +8,7 @@
         'ngSanitize',
 
         /* ctrp cross-app modules */
-        'ctrp.app.routes',
+        'ctrp.module.routes',
         'ctrp.module.constants',
         'ctrp.module.common',
         'LocalCacheModule',

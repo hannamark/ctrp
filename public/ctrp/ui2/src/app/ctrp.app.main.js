@@ -7,7 +7,7 @@
         /* ctrp feature modules */
         'ctrp.app.po',
         'ctrp.app.user',
-        'ctrp.app.routes',
+        'ctrp.module.routes',
         'ctrp.app.layout'
     ]).run(function() {
         console.log('ctrp.app.main is running');

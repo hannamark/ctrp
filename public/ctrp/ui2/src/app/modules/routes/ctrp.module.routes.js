@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    var ctrpAppRoutes = angular.module('ctrp.app.routes', ['ui.router', 'ncy-angular-breadcrumb']);
+    var ctrpAppRoutes = angular.module('ctrp.module.routes', ['ui.router', 'ncy-angular-breadcrumb']);
 
     ctrpAppRoutes.config(uiRouterConfig);
     uiRouterConfig.$inject = ['$provide'];

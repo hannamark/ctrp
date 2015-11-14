@@ -15,7 +15,7 @@
         'ctrp.module.underscoreWrapper',
 
         /* ctrp feature modules */
-        'ctrp.app.routes',
+        'ctrp.module.routes',
 
         /* 3rd party */
         'ui.router'

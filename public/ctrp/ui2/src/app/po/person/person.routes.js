@@ -4,7 +4,7 @@
 
 (function() {
     'use strict';
-    angular.module('ctrp.app.routes').config(personRoutes);
+    angular.module('ctrp.module.routes').config(personRoutes);
 
     personRoutes.$inject = ['$stateProvider'];
     function personRoutes($stateProvider) {
