@@ -6,6 +6,7 @@
 
         /* ctrp feature modules */
         'ctrp.app.po',
+        'ctrp.app.user',
         'ctrp.app.routes',
         'ctrp.app.layout'
     ]).run(function() {

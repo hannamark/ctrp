@@ -13,7 +13,7 @@
         'ctrp.module.common',
         'LocalCacheModule',
         'ctrpApp.widgets',
-        'ctrp.module.dataservice',
+        'ctrp.module.dataservices',
         'ctrp.module.underscoreWrapper',
 
 
@@ -26,8 +26,7 @@
         'ui.grid.selection',
         'ui.scrollpoint',
         'ngFileUpload',
-        'angularMoment',
-        'ncy-angular-breadcrumb'
+        'angularMoment'
     ]);
 
 })();
