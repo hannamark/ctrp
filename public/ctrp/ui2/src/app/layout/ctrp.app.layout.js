@@ -11,6 +11,58 @@
 
         /* ctrp feature modules */
         'ctrp.app.routes'
-    ]);
+
+    ]).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService, LocalCacheService) {
+            console.log('ctrp.app.layout is running');
+            $rootScope.$on('stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+                var statesNotRequiringGsa = ['main.sign_in', 'main.sign_up', 'main.gsa'];
+                if (statesNotRequiringGsa.indexOf(toState.name) == -1 && LocalCacheService.getCacheWithKey("gsaFlag") !== 'Accept') {
+                    $state.go('main.gsa');
+                }
+            });
+
+            $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+
+                event.preventDefault();
+                //get appversion from DMZ if unauthenticated
+                //var tempUserService = $injector.get('UserService'); //reference to UserService
+                if (toState.name == 'main.sign_in' || toState.name == 'main.sign_up') {
+
+                    if (!UserService.isLoggedIn()) {
+                        UserService.getAppVerFromDMZ().then(function(data) {
+                            console.log('retrieved data from dmz: ' + JSON.stringify(data));
+                            UserService.setAppVersion(data.app_version);
+                        });
+                        UserService.getAppRelMilestoneFromDMZ().then(function(data) {
+                            console.log('retrieved data from dmz: ' + JSON.stringify(data));
+                            UserService.setAppRelMilestone(data.app_rel_milestone);
+                        });
+                    } else {
+                        //TODO: remove this testing
+                        UserService.setAppVersion(5.01);
+                        UserService.setAppRelMilestone(5.02);
+                    }
+                } else {
+                    //do not show app version or release milestone on other pages unless authenticated
+                    if (!UserService.isLoggedIn()) {
+                        UserService.setAppVersion('');
+                        UserService.setAppRelMilestone('');
+                    }
+                }
+            });
+
+
+            /*
+            $rootScope.$on('$stateChangeStart', function(event, next, current) {
+                if (next && current) {
+                    var answer = confirm("Are you sure you want to navigate away from this page");
+                    if (!answer) {
+                        event.preventDefault();
+                    }
+                }
+
+            });
+            */
+        });
 
 })();
