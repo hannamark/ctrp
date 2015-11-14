@@ -6,7 +6,7 @@
     'use strict';
     /*
     angular.module('ctrp.module.constants', [])
-        .constant('HOST', 'http://localhost/');
+        .constant('HOST', 'http://localhost');
 
         */
 

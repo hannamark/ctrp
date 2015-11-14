@@ -120,8 +120,10 @@ gulp.task('wiredep', function() {
     return gulp
         .src(config.index)
         .pipe(wiredep(options))
-        .pipe($.inject(gulp.src(config.js).pipe(pipes.orderedAppScripts())))
-        //.pipe(pipes.orderedAppScripts())
+        .pipe($.inject(gulp.src(config.js)
+            .pipe(pipes.orderedVendorScripts())
+            .pipe(pipes.orderedAppScripts())
+        ))
         .pipe(gulp.dest(config.client));
 });
 
@@ -171,7 +173,11 @@ gulp.task('build-specs', ['templatecache'], function() {
         .pipe(wiredep(options))
         .pipe($.inject(gulp.src(config.testlibraries),
             {name: 'inject:testlibraries', read: false}))
-        .pipe($.inject(gulp.src(config.js).pipe(pipes.orderedAppScripts())))
+        .pipe($.inject(gulp.src(config.js)
+            .pipe(pipes.orderedVendorScripts())
+            .pipe(pipes.orderedAppScripts())
+        ))
+        //.pipe($.inject(gulp.src(config.js).pipe(pipes.orderedAppScripts())))
         .pipe($.inject(gulp.src(config.specHelpers),
             {name: 'inject:spechelpers', read: false}))
         .pipe($.inject(gulp.src(specs),

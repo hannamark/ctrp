@@ -92,7 +92,6 @@
               .state('main.defaultContent', {
                    url: '/welcome',
                    templateUrl: 'app/layout/welcome/welcomeContent.html',
-
                    //controller: 'headerNavigationCtrl as headerView',
                    ncyBreadcrumb: {
                        label: 'Home'
