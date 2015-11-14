@@ -13,11 +13,12 @@
                 url: '/user_test',
                 templateUrl: 'app/user/test_user.html'
             })
-            /*
+
             .state('main.sign_in', {
                     url: '/sign_in',
                     templateUrl: 'app/user/sign_in.html',
                     controller: 'userCtrl as userView',
+                    /*
                     resolve: {
                         UserService: 'UserService',
                         loginBulletin: function(UserService, $q) {
@@ -31,6 +32,7 @@
                             $state.go('main.defaultContent');
                         }
                     },
+                    */
                     ncyBreadcrumb: {
                         parent: '',
                         label: 'CTRP Sign In',
@@ -101,8 +103,6 @@
                         label: 'User Profile'
                     }
                 });
-                */
-
     } //userRoutes
 
 })();

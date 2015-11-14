@@ -12,7 +12,6 @@
 
         /* Cross-app modules */
         'ctrp.app.routes',
-
         'ctrp.module.constants',
         'ctrp.module.common',
         'ctrp.module.underscoreWrapper',

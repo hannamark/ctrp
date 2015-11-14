@@ -14,6 +14,7 @@
     function userCtrl($scope, $http, $window, toastr, $state, $sce,
                       $timeout, LocalCacheService, UserService, loginBulletin) {
         var vm = this;
+        console.log('in user controller');
         //console.log('received loginBulletin: ' + JSON.stringify(loginBulletin));
         vm.loginBulletin = loginBulletin['login_bulletin'] || '';
 

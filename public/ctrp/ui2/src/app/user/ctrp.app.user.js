@@ -8,6 +8,7 @@
         'ngSanitize',
 
         /* ctrp cross-app modules */
+        'ctrp.app.routes',
         'ctrp.module.constants',
         'ctrp.module.common',
         'LocalCacheModule',
@@ -15,10 +16,10 @@
         'ctrp.module.dataservice',
         'ctrp.module.underscoreWrapper',
 
-        /* ctrp feature modules */
-        'ctrp.app.routes',
 
         /* 3rd party */
+        'ui.router',
+        'ngMaterial',
         'toastr',
         'ui.bootstrap',
         'angularMoment'
