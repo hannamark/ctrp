@@ -38,7 +38,7 @@
         var gridOptions = {
             enableColumnResizing: true,
             totalItems: null,
-            rowHeight: 50,
+            rowHeight: 22,
             // enableFullRowSelection: true,
             enableSelectAll: false,
             //enableRowSelection: false,
@@ -48,39 +48,41 @@
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
+            enableVerticalScrollbar: 2,
+            enableHorizontalScrollbar: 2,
             columnDefs: [
                 {
-                    name: 'username', enableSorting: true, displayName: 'Username', width: '10%',
+                    name: 'username', enableSorting: true, displayName: 'Username', minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {
-                    name: 'first_name', displayName: 'First', enableSorting: true, width: '8%',
+                    name: 'first_name', displayName: 'First', enableSorting: true, minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {
-                    name: 'middle_name', displayName: 'Middle', enableSorting: true, width: '5%',
+                    name: 'middle_name', displayName: 'Middle', enableSorting: true, minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {
-                    name: 'last_name', displayName: 'Last', enableSorting: true, width: '6%',
+                    name: 'last_name', displayName: 'Last', enableSorting: true, minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {
-                    name: 'email', displayName: 'Email', enableSorting: true, width: '10%',
+                    name: 'email', displayName: 'Email', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {
-                    name: 'phone', displayName: 'Phone', enableSorting: true, width: '6%',
+                    name: 'phone', displayName: 'Phone', enableSorting: true, minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {
-                    name: 'approved', displayName: 'Approval', enableSorting: true, width: '6%',
+                    name: 'approved', displayName: 'Approval', enableSorting: true, minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }//,
