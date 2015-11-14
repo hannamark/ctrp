@@ -12,7 +12,9 @@
                 .state('main.people', {
                     url: '/people',
                     templateUrl: 'app/po/person/person_list.html',
-                    controller: function($scope, $http) {
+                    controller: 'personctrl as personView',
+
+                    /*function($scope, $http) {
                         $scope.name = 'Tony';
                         $scope.getPeople = function() {
                             $http.get('http://192.168.1.8:3000/ctrp/people.json')
@@ -20,7 +22,7 @@
                                 console.log('success getting people: ' + JSON.stringify(data));
                             });
                         }
-                    },
+                    },*/
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Persons'
@@ -30,7 +32,6 @@
                 .state('main.personDetail', {
                     url: '/people/:personId',
                     templateUrl: 'app/po/person/personDetails.html',
-                    /*
                     controller: 'personDetailCtrl as personDetailView',
                     resolve: {
                         OrgService: 'OrgService',
@@ -52,13 +53,11 @@
                         parent: 'main.people',
                         label: 'Person Detail'
                     }
-                    */
                 })
 
                 .state('main.addPerson', {
                     url: '/new_person',
                     templateUrl: 'app/po/person/personDetails.html',
-                    /*
                     controller: 'personDetailCtrl as personDetailView',
                     resolve: {
                         OrgService: 'OrgService',
@@ -78,12 +77,10 @@
                             return PersonService.getPoAffStatuses();
                         }
                     },
-
                     ncyBreadcrumb: {
                         parent: 'main.people',
                         label: 'Add Person'
                     }
-                    */
                 })
 
                 .state('main.testPerson', {

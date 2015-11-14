@@ -21,10 +21,6 @@
         'ui.bootstrap',
         'ngMaterial',
         'toastr',
-        'ui.grid',
-        'ui.grid.pagination',
-        'ui.grid.selection',
-        'ui.scrollpoint',
         'ngFileUpload',
         'angularMoment'
     ]);

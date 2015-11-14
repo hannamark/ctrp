@@ -28,7 +28,6 @@
         'ui.grid.selection',
         'ui.scrollpoint',
         'ngFileUpload',
-        'angularMoment',
-        'ncy-angular-breadcrumb'
+        'angularMoment'
     ]);
 })();
