@@ -1,10 +1,10 @@
 (function() {
     'use strict';
-    angular.module('ctrp.module.routes')
+    angular.module('ctrp.module.authInterceptor', ['LocalCacheModule'])
         .factory('AuthInterceptor', AuthInterceptor);
-    AuthInterceptor.$inject = ['$window', '$timeout', 'LocalCacheService', '$location', '$injector'];
+    AuthInterceptor.$inject = ['LocalCacheService', '$injector'];
     //function AuthInterceptor(AuthTokenService) {
-    function AuthInterceptor($window, $timeout, LocalCacheService, $location, $injector) {
+    function AuthInterceptor(LocalCacheService, $injector) {
 
         //var uService = $injector.get('UserService');
         var methodObj = {
@@ -21,7 +21,7 @@
         function request(config) {
             config.timeout = 15000; //15 seconds timeout
             //var token = AuthTokenService.getToken();
-            var token = LocalCacheService.getCacheWithKey("token"); //$window.localStorage.token;
+            var token = LocalCacheService.getCacheWithKey("token");
             if (token) {
                 var gsaFlag =  (LocalCacheService.getCacheWithKey("gsaFlag") || "Reject") + " ";
                 console.log("gsaFlag = " + gsaFlag);

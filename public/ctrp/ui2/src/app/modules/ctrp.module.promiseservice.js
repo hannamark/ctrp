@@ -7,7 +7,8 @@
 
 (function () {
     'use strict';
-    angular.module('ctrp.module.PromiseService', ['ngResource', 'ctrp.module.constants'])
+    angular.module('ctrp.module.PromiseService', 
+    ['ngResource', 'ctrp.module.constants', 'ctrp.module.authInterceptor'])
         .factory('PromiseService', PromiseService);
 
     PromiseService.$inject = ['$http', '$q', '$resource', '$timeout', '$log', 'HOST'];

@@ -10,7 +10,8 @@
 (function () {
     'use strict';
 
-    angular.module('ctrp.module.PromiseTimeoutService', ['ngResource', 'toastr', 'ctrp.module.constants'])
+    angular.module('ctrp.module.PromiseTimeoutService',
+    ['ngResource', 'toastr', 'ctrp.module.constants', 'ctrp.module.authInterceptor'])
 
         .service('PromiseTimeoutService', PromiseTimeoutService);
 

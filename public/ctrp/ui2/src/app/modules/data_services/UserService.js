@@ -110,7 +110,7 @@
 
 
         this.login = function (userObj) {
-            PromiseTimeoutService.postDataExpectObj('/sign_in', userObj)
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in', userObj)
                 .then(function (data) {
                     console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
