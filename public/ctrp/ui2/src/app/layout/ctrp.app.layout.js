@@ -13,7 +13,7 @@
         'ctrp.app.routes'
 
     ]).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService, LocalCacheService) {
-            console.log('ctrp.app.layout is running');
+            console.log('ctrp.app.layout is running!');
             $rootScope.$on('stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
                 var statesNotRequiringGsa = ['main.sign_in', 'main.sign_up', 'main.gsa'];
                 if (statesNotRequiringGsa.indexOf(toState.name) == -1 && LocalCacheService.getCacheWithKey("gsaFlag") !== 'Accept') {
