@@ -15,7 +15,7 @@
     inPlaceEdit.$inject = ['$timeout', '$compile', 'MESSAGES', 'UserService'];
 
     function inPlaceEdit($timeout, $compile, MESSAGES, UserService) {
-      var defaultTemplateUrl = '/ctrp/ui/js/modules/widgets/ctrp.widgets.in-place-edit.default_template.html';
+      var defaultTemplateUrl = 'app/modules/widgets/ctrp.widgets.in-place-edit.default_template.html';
       var directiveObj = {
         restrict: 'A',
         transclude: true,

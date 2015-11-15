@@ -246,12 +246,11 @@
                                         'dd-MMM-yyyy H:mm'}})
                                     </div>
                                 </div>
-
                                 <div ng-show="orgDetailView.curOrg.families.length > 0" class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">Families:</label>
                                     <div class="col-xs-12 col-sm-6 form-text">
                                         <p ng-repeat="family in orgDetailView.curOrg.families">
-                                            <a href="/ctrp/ui#/main/families/{{family.id}}">{{family.name}}</a>
+                                          <a ui-sref="main.familyDetail({familyId : family.id })">{{family.name}}</a>
                                         </p>
                                     </div>
                                 </div>
