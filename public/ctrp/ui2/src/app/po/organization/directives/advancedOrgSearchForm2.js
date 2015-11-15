@@ -25,7 +25,7 @@
                 orgSearchResults: '@orgSearchResults',
                 selectedOrgsArray: '@selectedOrgsArray'
             },
-            templateUrl: '/ctrp/ui/js/directives/organization/advancedOrgSearchFormTemplate2.html',
+            templateUrl: 'app/po/organization/directives/advancedOrgSearchFormTemplate2.html',
             link: linkFn,
             controller: ctrpAdvancedOrgSearchController
         };
@@ -101,7 +101,7 @@
                 var isEmptySearch = true;
                 var ignoreKeys = ['rows', 'alias', 'start','wc_search'];
 
-                Object.keys($scope.searchParams).forEach(function (key) {
+                _.keys($scope.searchParams).forEach(function (key) {
 
                     if(ignoreKeys.indexOf(key) === -1 && $scope.searchParams[key] != '')
                         isEmptySearch = false;
@@ -119,7 +119,7 @@
 
                 if(!isEmptySearch) { //skip searching if empty search
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                        //  console.log("received data for org search: " + JSON.stringify(data));
+                        console.log("received data for org search: " + JSON.stringify(data));
                         if ($scope.showGrid && data.orgs) {
                             $scope.gridOptions.data = data.orgs;
                             $scope.gridOptions.totalItems = data.total;
