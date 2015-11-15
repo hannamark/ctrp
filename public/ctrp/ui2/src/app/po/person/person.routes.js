@@ -12,17 +12,7 @@
                 .state('main.people', {
                     url: '/people',
                     templateUrl: 'app/po/person/person_list.html',
-                    controller: 'personctrl as personView',
-
-                    /*function($scope, $http) {
-                        $scope.name = 'Tony';
-                        $scope.getPeople = function() {
-                            $http.get('http://192.168.1.8:3000/ctrp/people.json')
-                            .success(function(data) {
-                                console.log('success getting people: ' + JSON.stringify(data));
-                            });
-                        }
-                    },*/
+                    controller: 'personCtrl as personView',
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Persons'
@@ -86,7 +76,7 @@
                 .state('main.testPerson', {
                     url: '/person_directive',
                     templateUrl: 'app/po/person/person_search.html',
-                    //controller: 'personSearchCtrl as personSearchView'
+                    controller: 'personSearchCtrl as personSearchView'
                 });
     } //personRoutes
 

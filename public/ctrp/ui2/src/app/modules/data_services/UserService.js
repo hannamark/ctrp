@@ -348,7 +348,7 @@
 
             (function() {
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/ctrp/ui/partials/modals/gsa.html',
+                    templateUrl: 'app/user/gsa.html',
                     controller: 'gsaModalCtrl as gsaView',
                     size: 'lg',
                     backdrop: 'static',

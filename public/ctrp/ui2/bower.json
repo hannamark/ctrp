@@ -46,7 +46,6 @@
     "angular-material-icons": "~0.6.0",
     "angularUtils-pagination": "angular-utils-pagination#~0.9.1",
     "angular-ui-form-validation": "~2.0.1",
-    "ag-grid": "~2.3.5",
     "font-awesome": "fontawesome#~4.4.0",
     "ng-file-upload": "~10.0.2",
     "angular-local-storage": "~0.2.3"

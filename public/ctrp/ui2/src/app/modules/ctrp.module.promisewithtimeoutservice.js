@@ -123,12 +123,16 @@
          * @returns {*}
          */
         function packageDataWithResponse(data, status, headers, config) {
-            data.server_response = {};
-            data.server_response.status = status;
-            data.server_response.headers = headers;
-            data.server_response.config = config;
+            if (!!data) {
+              data.server_response = {};
+              data.server_response.status = status;
+              data.server_response.headers = headers;
+              data.server_response.config = config;
 
-            return data;
+              return data;
+          } else {
+            return {"server_response": ""};
+          }
         }
 
 

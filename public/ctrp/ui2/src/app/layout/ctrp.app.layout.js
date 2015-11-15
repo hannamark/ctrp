@@ -8,6 +8,7 @@
         'ngSanitize',
 
         /* ctrp cross-app modules */
+        'ctrp.module.routes',
         'ctrp.module.timeout',
         'ctrp.module.dataservices',
         'ctrp.module.common',
@@ -15,7 +16,7 @@
         'ctrp.module.underscoreWrapper',
 
         /* ctrp feature modules */
-        'ctrp.module.routes',
+
 
         /* 3rd party */
         'ui.router'

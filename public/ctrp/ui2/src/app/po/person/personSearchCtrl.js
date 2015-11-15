@@ -4,12 +4,12 @@
 
 (function() {
     'use strict';
-    
+
     angular.module('ctrp.app.po')
         .controller('personSearchCtrl', personSearchCtrl);
 
     personSearchCtrl.$inject = ['PersonService', '$scope'];
-    
+
     function personSearchCtrl(PersonService, $scope) {
         var vm = this;
 
@@ -43,6 +43,6 @@
 
 
     } //personSearchCtrl
-    
-    
+
+
 })();

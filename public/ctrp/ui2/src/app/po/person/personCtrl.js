@@ -13,34 +13,14 @@
 
     function personCtrl(PersonService, $scope) {
         var vm = this;
-
+        console.log('in person controller for list');
         $scope.personSearchResults = {people: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
         $scope.selectedPersonsArray = []; // persons selected in the ui-grid
-
+        
 
         activate();
+        function activate() {}
 
-
-        function activate() {
-            watchpersonSearchResults();
-        }
-
-
-        /**
-         * watch the organization search results
-         */
-        function watchpersonSearchResults() {
-            $scope.$watch('personSearchResults', function(newVal, oldVal) {
-                // $scope.personSearchResults = newVal;
-                // console.log("received personSearchResults: " + JSON.stringify(newVal));
-            }, true);
-
-
-            $scope.$watch('selectedPersonsArray', function(newVal, oldVal) {
-                // $scope.personSearchResults = newVal;
-                //console.log("received selectedPersonsArray: " + JSON.stringify(newVal));
-            }, true);
-        } //watchpersonSearchResults
     }
 
 })();
