@@ -5,6 +5,7 @@
         /* ctrp cross-app modules */
         'ctrp.module.routes',
         /* ctrp feature modules */
+        'ctrp.app.pa',
         'ctrp.app.po',
         'ctrp.app.user',
         'ctrp.app.layout'
