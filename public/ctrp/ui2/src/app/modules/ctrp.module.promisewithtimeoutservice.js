@@ -20,7 +20,6 @@
       $httpProvider.interceptors.push('AuthInterceptor');
     } //httpInterceptorConfig
 
-
     PromiseTimeoutService.$inject = ['$q', '$resource', '$timeout', '$log', '$http', 'toastr', 'HOST'];
 
     function PromiseTimeoutService($q, $resource, $timeout, $log, $http, toastr, HOST) {

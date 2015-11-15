@@ -123,6 +123,7 @@
 
                 if(!isEmptySearch) { //skip searching if empty search
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
+                        // console.log('received data for person search: ' + JSON.stringify(data));
                         if ($scope.showGrid && data.data.people) {
                             // console.log("received person search results: " + JSON.stringify(data.data.people));
                             $scope.gridOptions.data = data.data.people;

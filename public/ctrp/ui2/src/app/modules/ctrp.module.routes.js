@@ -8,13 +8,15 @@
 (function() {
     'use strict';
 
-    var ctrpAppRoutes = angular.module('ctrp.module.routes',
+    angular.module('ctrp.module.routes',
      ['ui.router',
      'ncy-angular-breadcrumb',
      'LocalCacheModule'
-     ]);
+   ])
+   .config(httpProviderConfig)
+   .config(poAppRoutesConfig)
+   .config(uiRouterConfig)
 
-    ctrpAppRoutes.config(uiRouterConfig);
     uiRouterConfig.$inject = ['$provide'];
 
     /**
@@ -36,7 +38,6 @@
     } //uiRouterConfig
 
 
-    ctrpAppRoutes.config(httpProviderConfig);
     httpProviderConfig.$inject = ['$httpProvider']; //inject the $httpProvider service object
 
     /**
@@ -51,21 +52,16 @@
                $httpProvider.defaults.headers.common = {};
            }
 
-           //TODO: load the interceptors: $httpProvider.interceptors.push('AuthInterceptor');
            //disable IE ajax request caching
            $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
            $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
            $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
-
-           //interceptor below:
            $httpProvider.defaults.useXDomain = true;
            delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
     } //httpProviderConfig
 
-    ctrpAppRoutes.config(poAppRoutesConfig);
     poAppRoutesConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
-
     function poAppRoutesConfig($stateProvider, $urlRouterProvider) {
         // $urlRouterProvider.otherwise(function($injector) {
         //       var $state = $injector.get('$state');
