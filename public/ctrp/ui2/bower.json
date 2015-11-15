@@ -35,7 +35,7 @@
     "angular-ui-grid": "~3.0.0-rc.22",
     "angular-ui-scrollpoint": "~1.0.1",
     "async": "~1.2.1",
-    "bootstrap": "^3.2.0",
+    "bootstrap": "^3.3.4",
     "karma": "~0.4.6",
     "jasmine": "~2.3.4",
     "lodash": "^2.4.1",
@@ -45,7 +45,6 @@
     "underscore": "~1.8.3",
     "angular-material-icons": "~0.6.0",
     "angularUtils-pagination": "angular-utils-pagination#~0.9.1",
-    "angular-ui-form-validation": "~2.1.1",
     "font-awesome": "fontawesome#~4.4.0",
     "ng-file-upload": "~10.0.2",
     "angular-local-storage": "~0.2.3"
