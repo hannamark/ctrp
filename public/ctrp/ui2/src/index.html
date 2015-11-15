@@ -28,13 +28,14 @@
         <!-- endbuild -->
     </head>
     <body>
-        <div ng-include src="'./app/layout/header.html'"></div>
+        <div ng-include src="'app/layout/header.html'"></div>
+        <img class="img-responsive" src="images/nci-logo-full.svg" alt="National Cancer Institute">
         <div class="container top-offset-lg">
             <div class="row">
                 <div class="col-md-12" ui-view></div>
             </div>
         </div>
-        <div ng-include src="'./app/layout/footer.html'"></div>
+        <div ng-include src="'app/layout/footer.html'"></div>
 
         <!-- build:js js/lib.js -->
         <!-- bower:js -->
