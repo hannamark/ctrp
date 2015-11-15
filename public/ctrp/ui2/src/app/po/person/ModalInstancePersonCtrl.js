@@ -1,5 +1,7 @@
 /**
  * Created by wus4 on 7/7/15.
+ *
+ * Modal confirmationf or deleting a person
  */
 
 (function () {

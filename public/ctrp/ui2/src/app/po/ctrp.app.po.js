@@ -24,6 +24,11 @@
         'ngMaterial',
         'toastr',
         'ngFileUpload',
-        'angularMoment'
+        'angularMoment',
+        'ui.grid',
+        'ui.grid.pagination',
+        'ui.grid.selection',
+        'ui.scrollpoint'
+
     ]);
 })();
