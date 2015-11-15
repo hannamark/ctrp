@@ -81,6 +81,7 @@
             $scope.startDateOpened = ''; //false;
             $scope.endDateOpened = ''; // false;
             $scope.searchWarningMessage = '';
+            console.log('in person search form directive');
 
 
             if ($scope.maxRowSelectable > 0) {
