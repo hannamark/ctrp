@@ -12,8 +12,14 @@
 
     angular.module('ctrp.module.PromiseTimeoutService',
     ['ngResource', 'toastr', 'ctrp.module.constants', 'ctrp.module.authInterceptor'])
+    .config(httpInterceptorConfig)
+    .service('PromiseTimeoutService', PromiseTimeoutService);
 
-        .service('PromiseTimeoutService', PromiseTimeoutService);
+    httpInterceptorConfig.$inject = ['$httpProvider'];
+    function httpInterceptorConfig($httpProvider) {
+      $httpProvider.interceptors.push('AuthInterceptor');
+    } //httpInterceptorConfig
+
 
     PromiseTimeoutService.$inject = ['$q', '$resource', '$timeout', '$log', '$http', 'toastr', 'HOST'];
 

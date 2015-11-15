@@ -7,9 +7,15 @@
 
 (function () {
     'use strict';
-    angular.module('ctrp.module.PromiseService', 
+    angular.module('ctrp.module.PromiseService',
     ['ngResource', 'ctrp.module.constants', 'ctrp.module.authInterceptor'])
-        .factory('PromiseService', PromiseService);
+    .config(httpInterceptorConfig)
+    .factory('PromiseService', PromiseService);
+
+    httpInterceptorConfig.$inject = ['$httpProvider'];
+    function httpInterceptorConfig($httpProvider) {
+      $httpProvider.interceptors.push('AuthInterceptor');
+    } //httpInterceptorConfig
 
     PromiseService.$inject = ['$http', '$q', '$resource', '$timeout', '$log', 'HOST'];
 

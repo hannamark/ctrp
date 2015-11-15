@@ -18,6 +18,7 @@
         'LocalCacheModule',
         'ctrpApp.widgets',
         'ctrp.module.dataservices',
+        'ctrp.module.authInterceptor',
 
         /* 3rd-party modules */
         'ui.bootstrap',

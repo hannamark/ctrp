@@ -20,11 +20,11 @@
 
         function request(config) {
             config.timeout = 15000; //15 seconds timeout
-            //var token = AuthTokenService.getToken();
             var token = LocalCacheService.getCacheWithKey("token");
+            //console.log('token is: ' + token);
             if (token) {
                 var gsaFlag =  (LocalCacheService.getCacheWithKey("gsaFlag") || "Reject") + " ";
-                console.log("gsaFlag = " + gsaFlag);
+                //console.log("gsaFlag = " + gsaFlag);
                 config.headers.Authorization = gsaFlag + token;
             }
             return config;
