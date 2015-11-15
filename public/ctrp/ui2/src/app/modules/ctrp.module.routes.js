@@ -69,6 +69,7 @@
         //    });
            $urlRouterProvider.otherwise('/main/welcome');
            $stateProvider.state('main', {
+                  abstract: true,
                   url: '/main',
                   views: {
                       '': {
@@ -92,7 +93,7 @@
               .state('main.defaultContent', {
                    url: '/welcome',
                    templateUrl: 'app/layout/welcome/welcomeContent.html',
-                   //controller: 'headerNavigationCtrl as headerView',
+                   controller: 'headerNavigationCtrl as headerView',
                    ncyBreadcrumb: {
                        label: 'Home'
                    }
