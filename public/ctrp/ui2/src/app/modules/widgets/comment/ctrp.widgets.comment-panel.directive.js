@@ -25,7 +25,7 @@
       },
       controller: commentCtrl,
       controllerAs: 'commentView',
-      templateUrl: '/ctrp/ui/js/modules/widgets/comment/ctrp.widgets.comment-panel-template.html',
+      templateUrl: 'app/modules/widgets/comment/ctrp.widgets.comment-panel-template.html'
     };
 
     return directive;

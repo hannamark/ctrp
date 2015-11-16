@@ -1,5 +1,3 @@
-//TODO: put the third_party_libs folder at the root of ui2
-//TODO: rename third_party_libs to bower_components
 // path: src/ is equivalent to src/client; and src/app is equivalent to src/client/app
 
 module.exports = function() {
