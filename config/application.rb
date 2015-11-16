@@ -34,9 +34,10 @@ module Ctrp
     config.middleware.insert_before 0, "Rack::Cors", :debug => true, :logger => (-> { Rails.logger }) do
 
       allow do
-        origins 'http://localhost:9000'
+        origins '*'
         resource '*',
             :headers => :any,
+            :expose => ['Access-Control-Allow-Headers'],
             :methods => [:get, :post, :delete, :put, :patch, :head, :options],
             :max_age => 0
       end
