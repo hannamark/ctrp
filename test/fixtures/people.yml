@@ -20,6 +20,7 @@
 #  ctrp_id           :integer
 #  created_by        :string
 #  updated_by        :string
+#  extension         :string(255)
 #
 # Indexes
 #
