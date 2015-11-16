@@ -103,9 +103,8 @@
 
                 Object.keys($scope.searchParams).forEach(function (key) {
 
-                if(ignoreKeys.indexOf(key) === -1 && $scope.searchParams[key] != '')
-                    isEmptySearch = false;
-
+                    if(ignoreKeys.indexOf(key) === -1 && $scope.searchParams[key] != '')
+                        isEmptySearch = false;
                 });
                 if(isEmptySearch && newSearchFlag === 'fromStart') {
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
@@ -472,13 +471,11 @@
                         return true;
                     }
                 };
-                $scope.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-                $scope.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableVerticalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
                     $scope.gridApi = gridApi;
-                    $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
+                    $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
                     $scope.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                         $scope.searchParams.start = newPage;
                         $scope.searchParams.rows = pageSize;

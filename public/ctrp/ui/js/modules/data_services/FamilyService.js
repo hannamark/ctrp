@@ -38,16 +38,16 @@
             enableHorizontalScrollbar: 2,
             enableVerticalScrollbar: 2,
             columnDefs: [
-                {name: 'name', enableSorting: true, displayName: 'Family Name', width: '48%',
+                {name: 'name', enableSorting: true, displayName: 'Family Name', minWidth: '120', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'family_status', displayName: 'Family Status', enableSorting: true, width: '12%'},
-                {name: 'family_type', displayName: 'Family Type', enableSorting: true, width: '20%'},
+                {name: 'family_status', displayName: 'Family Status', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'family_type', displayName: 'Family Type', enableSorting: true, minWidth: '120', width: '*'},
                 /*{name: 'family_members', enableSorting:false, displayName:'Family Members', width: '25%',
                 cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                 '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}} Show Family Members</a></div>'},*/
-                {name: 'aff_org_count', displayName: 'Membership Size', width: '20%'}
+                {name: 'aff_org_count', displayName: 'Membership Size', minWidth: '170', width: '*'}
          // Displaying Org count for now. Tooltip is not meeting requirements and is quirky.
          //       {name: 'aff_orgs', displayName:'Family Members',width:'20%',cellTemplate:'<div ng-show="row.entity.aff_orgs.length > 0"><master-directive button-label="Family Members" mod="row.entity.aff_orgs"></master-directive></div><div class="text-center" ng-show="row.entity.aff_orgs.length == 0">--</div>'}
             ]
