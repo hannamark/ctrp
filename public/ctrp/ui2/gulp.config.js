@@ -52,7 +52,7 @@ module.exports = function() {
         templateCache: {
             file: 'templates.js',
             options: {
-                module: 'app.core', //TODO: change the core module name!!
+                module: 'ctrp.app.main', //core module name!!
                 standAlone: false,
                 root: 'app/'
             }
