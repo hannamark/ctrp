@@ -797,6 +797,11 @@ var projectMethods = function() {
       });
     };
 
+    this.isTextPresentA = function(textToVerify){
+        var anyTxt = element(by.binding(''+textToVerify+''));
+        return anyTxt.getText();
+    }
+
     this.getAlertMsg = function(){
         return alert.then(function(alert){
            return alert.getText();
