@@ -655,6 +655,10 @@ input[type=radio] {
     padding: 0;
 }
 
+.has-feedback label~.form-control-feedback.no-top {
+    top: 0;
+}
+
 /* override the md-backdrop grey overlay/backdrop to make the content visible */
 md-backdrop.md-opaque {
     opacity: .18; }
@@ -696,4 +700,8 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 
 .form-horizontal .has-feedback .select-feedback {
     right: 15px;
+}
+
+.form-horizontal .has-feedback .datepicker-feedback {
+    right: 25px;
 }
