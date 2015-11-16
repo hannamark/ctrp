@@ -23,6 +23,7 @@
 #  ctrp_id           :integer
 #  created_by        :string
 #  updated_by        :string
+#  extension         :string(255)
 #
 # Indexes
 #
@@ -49,6 +50,11 @@ class Organization < ActiveRecord::Base
   has_many :lo_trials, foreign_key: :lead_org_id, class_name: "Trial"
   has_many :sponsor_trials, foreign_key: :sponsor_id, class_name: "Trial"
   has_many :inv_aff_trials, foreign_key: :investigator_aff_id, class_name: "Trial"
+
+  # PA fields
+  has_many :board_trials, foreign_key: :board_id, class_name: "Trial"
+  has_many :participating_sites
+  has_many :ps_trials, through: :participating_sites, source: :trial
 
   accepts_nested_attributes_for :name_aliases, allow_destroy: true
 

@@ -71,7 +71,7 @@ exports.config = {
         /*     "@runThat",
         resultJsonOutputFile: 'true',
         tags: '@runthis'
-        /*     "@runThat",
+        /*     "@runThat",lo
          "~@ignoreThis"]*/// or summary
         // tags: '@runthis'
         //    tags: '@runthis'

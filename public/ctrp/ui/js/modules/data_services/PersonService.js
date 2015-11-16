@@ -59,40 +59,40 @@
             enableHorizontalScrollbar: 2,
             enableVerticalScrollbar: 2,
             columnDefs: [
-                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, width: '8%',
+                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, minWidth: '75', width: '*',
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', width: '8%'},
-                {name: 'prefix', enableSorting: true, width: '8%'},
-                {name: 'fname', displayName: 'First', enableSorting: true, width: '10%',
+                {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', minWidth: '80', width: '*'},
+                {name: 'prefix', enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'fname', displayName: 'First', enableSorting: true,  minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'mname', displayName: 'Middle', enableSorting: true, width: '10%',
+                {name: 'mname', displayName: 'Middle', enableSorting: true, minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'lname', displayName: 'Last', enableSorting: true, width: '10%',
+                {name: 'lname', displayName: 'Last', enableSorting: true, minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'suffix', enableSorting: true, width: '8%'},
-                {name: 'source_context', displayName: 'Source Context', enableSorting: true, width: '7%'},
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, width: '10%'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: true, width: '7%'},
-                {name: 'email', enableSorting: true, width: '10%',
+                {name: 'suffix', enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'source_context', displayName: 'Source Context', enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '65', width: '*'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: true, minWidth: '65', width: '*'},
+                {name: 'email', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phone', enableSorting: true, width: '10%',
+                {name: 'phone', enableSorting: true, minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs', width: '12%', cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0"><master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5"></master-directive></div>' +
+                {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs', minWidth: '150', width: '*', cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0"><master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5"></master-directive></div>' +
                 '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'},
-                {name: 'updated_at', displayName: 'Last Updated Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, width: '14%'},
-                {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, width: '14%'}
+                {name: 'updated_at', displayName: 'Last Updated Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, minWidth: '150', width: '*'}
             ]
         };
 
