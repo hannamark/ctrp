@@ -194,6 +194,7 @@ module.exports = function() {
         helper.wait_for(1000);
         cukePerson.then(function(createdPersonNotDel) {
             expect(projectFunctions.inSearchResults(createdPersonNotDel)).to.become('true');
+            //expect(projectFunctions.inPersonSearchResults(createdPersonDel)).to.become('true');
         });
         element(by.linkText(createdPersonNotDel)).click();
         helper.wait_for(900);

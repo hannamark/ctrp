@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'roo'
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -115,7 +117,7 @@ AppSetting.find_or_create_by(code: 'IC', name: 'Institute Code List', value: 'se
 
 AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List', value: 'see big value', big_value: 'CCR,CCT/CTB,CIP,CDP,CTEP,DCB,DCCPS,DCEG,DCP,DEA,DTP,OD,OSB/SPOREs,TRP,RRP,N/A')
 
-AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', description: 'Message for login page if needed.', value: 'see big value', big_value: '')
+AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', description: 'Message for login page if needed.', value: 'see big value', big_value: 'This is the CI tier at CBIIT')
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
@@ -235,6 +237,48 @@ family3 = Family.find_or_create_by(name: 'David H. Koch Institute for Integrativ
 family4 = Family.find_or_create_by(name: 'NCI Center for Cancer Research (CCR)',family_status_id:1,family_type_id:3) #NIH
 family5 = Family.find_or_create_by(name: 'NRG Oncology',family_status_id:1,family_type_id:2)#NCTN
 family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2,family_type_id:1)#Cancer Center
+
+
+## Trials
+## Reading spreadsheet
+trial_spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-trials-random-2014.xls'))
+trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
+((trial_spreadsheet.first_row+1)..trial_spreadsheet.last_row).each do |row|
+  trial = Trial.new
+  trial.official_title = trial_spreadsheet.cell(row,'BP')
+  trial.phase = Phase.find_by_name(trial_spreadsheet.cell(row,'BS'))
+  primary_purpose = trial_spreadsheet.cell(row,'BY')
+  unless primary_purpose.blank?
+    primary_purpose.gsub! "_", " "
+    trial.primary_purpose = PrimaryPurpose.where("lower(name) = ?", primary_purpose.downcase).first
+  end
+  secondary_purpose = trial_spreadsheet.cell(row,'BZ')
+  unless secondary_purpose.blank?
+    trial.secondary_purpose = SecondaryPurpose.where("lower(name) = ?", secondary_purpose.downcase).first
+  end
+  research_category = trial_spreadsheet.cell(row,'DO')
+  unless research_category.blank?
+    research_category.gsub! "_", " "
+    trial.research_category = ResearchCategory.where("lower(name) = ?", research_category.downcase).first
+  end
+  study_source = trial_spreadsheet.cell(row,'CZ')
+  unless study_source.blank?
+    study_source.gsub! "_", " "
+    puts "study_source = #{study_source.inspect}"
+    study_source = "EXTERNALLY PEER-REVIEWED" if study_source == "EXTERNALLY PEER REVIEWED"
+    trial.study_source = StudySource.where("lower(name) = ?", study_source.downcase).first
+  end
+  # randomly assign the rest of the data
+  trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
+  trial.sponsor = Organization.all[rand(0..13)]
+  trial.lead_org = Organization.all[rand(0..13)]
+  trial.pilot = "YES"
+  trial.pi = Person.all[rand(0..11)]
+  trial.investigator = Person.all[rand(0..11)]
+  trial.save!
+  puts "trial = #{trial.inspect}"
+
+end
 
 
 
