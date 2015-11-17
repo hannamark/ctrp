@@ -1,0 +1,7 @@
+# Ignore Node and Bower packages
+node_modules
+bower_components
+
+#Ignore Test reporters
+report
+**/test/coverage

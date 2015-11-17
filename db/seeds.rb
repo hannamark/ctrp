@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'roo'
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -235,6 +237,48 @@ family3 = Family.find_or_create_by(name: 'David H. Koch Institute for Integrativ
 family4 = Family.find_or_create_by(name: 'NCI Center for Cancer Research (CCR)',family_status_id:1,family_type_id:3) #NIH
 family5 = Family.find_or_create_by(name: 'NRG Oncology',family_status_id:1,family_type_id:2)#NCTN
 family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2,family_type_id:1)#Cancer Center
+
+
+## Trials
+## Reading spreadsheet
+trial_spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-trials-random-2014.xls'))
+trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
+((trial_spreadsheet.first_row+1)..trial_spreadsheet.last_row).each do |row|
+  trial = Trial.new
+  trial.official_title = trial_spreadsheet.cell(row,'BP')
+  trial.phase = Phase.find_by_name(trial_spreadsheet.cell(row,'BS'))
+  primary_purpose = trial_spreadsheet.cell(row,'BY')
+  unless primary_purpose.blank?
+    primary_purpose.gsub! "_", " "
+    trial.primary_purpose = PrimaryPurpose.where("lower(name) = ?", primary_purpose.downcase).first
+  end
+  secondary_purpose = trial_spreadsheet.cell(row,'BZ')
+  unless secondary_purpose.blank?
+    trial.secondary_purpose = SecondaryPurpose.where("lower(name) = ?", secondary_purpose.downcase).first
+  end
+  research_category = trial_spreadsheet.cell(row,'DO')
+  unless research_category.blank?
+    research_category.gsub! "_", " "
+    trial.research_category = ResearchCategory.where("lower(name) = ?", research_category.downcase).first
+  end
+  study_source = trial_spreadsheet.cell(row,'CZ')
+  unless study_source.blank?
+    study_source.gsub! "_", " "
+    puts "study_source = #{study_source.inspect}"
+    study_source = "EXTERNALLY PEER-REVIEWED" if study_source == "EXTERNALLY PEER REVIEWED"
+    trial.study_source = StudySource.where("lower(name) = ?", study_source.downcase).first
+  end
+  # randomly assign the rest of the data
+  trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
+  trial.sponsor = Organization.all[rand(0..13)]
+  trial.lead_org = Organization.all[rand(0..13)]
+  trial.pilot = "Yes"
+  trial.pi = Person.all[rand(0..11)]
+  trial.investigator = Person.all[rand(0..11)]
+  trial.save!
+  puts "trial = #{trial.inspect}"
+
+end
 
 
 
