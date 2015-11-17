@@ -268,7 +268,13 @@ trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
     study_source = "EXTERNALLY PEER-REVIEWED" if study_source == "EXTERNALLY PEER REVIEWED"
     trial.study_source = StudySource.where("lower(name) = ?", study_source.downcase).first
   end
+  # randomly assign the rest of the data
   trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
+  trial.sponsor = Organization.all[rand(0..13)]
+  trial.lead_org = Organization.all[rand(0..13)]
+  trial.pilot = "YES"
+  trial.pi = Person.all[rand(0..11)]
+  trial.investigator = Person.all[rand(0..11)]
   trial.save!
   puts "trial = #{trial.inspect}"
 
