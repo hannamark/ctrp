@@ -246,6 +246,12 @@ trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
 ((trial_spreadsheet.first_row+1)..trial_spreadsheet.last_row).each do |row|
   trial = Trial.new
   trial.official_title = trial_spreadsheet.cell(row,'BP')
+  nci_id = trial_spreadsheet.cell(row,'BL')
+  trial_db_exists = Trial.find_by_nci_id(nci_id)
+  if trial_db_exists
+    next
+  end
+  trial.nci_id = nci_id
   trial.phase = Phase.find_by_name(trial_spreadsheet.cell(row,'BS'))
   primary_purpose = trial_spreadsheet.cell(row,'BY')
   unless primary_purpose.blank?
@@ -264,9 +270,20 @@ trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
   study_source = trial_spreadsheet.cell(row,'CZ')
   unless study_source.blank?
     study_source.gsub! "_", " "
-    puts "study_source = #{study_source.inspect}"
     study_source = "EXTERNALLY PEER-REVIEWED" if study_source == "EXTERNALLY PEER REVIEWED"
     trial.study_source = StudySource.where("lower(name) = ?", study_source.downcase).first
+  end
+  current_trail_status = trial_spreadsheet.cell(row,'T')
+  current_trail_status_date = trial_spreadsheet.cell(row,'U')
+  puts "current_trail_status = #{current_trail_status.inspect}"
+  puts "current_trail_status date = #{current_trail_status_date.inspect}"
+  unless current_trail_status.blank?
+    trial_status = TrialStatus.where("lower(name) = ?", current_trail_status.downcase).first
+    tsw = TrialStatusWrapper.new
+    tsw.trial = trial
+    tsw.trial_status = trial_status
+    tsw.status_date = current_trail_status_date
+    trial.trial_status_wrappers << tsw
   end
   # randomly assign the rest of the data
   trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
@@ -276,7 +293,7 @@ trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
   trial.pi = Person.all[rand(0..11)]
   trial.investigator = Person.all[rand(0..11)]
   trial.save!
-  puts "trial = #{trial.inspect}"
+  #puts "trial = #{trial.inspect}"
 
 end
 
