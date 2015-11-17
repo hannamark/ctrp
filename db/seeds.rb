@@ -109,6 +109,18 @@ TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
 ResearchCategory.find_or_create_by(code: 'ANC', name: 'Ancillary Correlative')
+
+ProcessingStatus.find_or_create_by(code: 'SUB', name: 'Submitted')
+ProcessingStatus.find_or_create_by(code: 'STM', name: 'Submission Terminated')
+ProcessingStatus.find_or_create_by(code: 'SRE', name: 'Submission Reactivated')
+ProcessingStatus.find_or_create_by(code: 'AMS', name: 'Amendment Submitted')
+ProcessingStatus.find_or_create_by(code: 'ACC', name: 'Accepted')
+ProcessingStatus.find_or_create_by(code: 'REJ', name: 'Rejected')
+ProcessingStatus.find_or_create_by(code: 'ABS', name: 'Abstracted')
+ProcessingStatus.find_or_create_by(code: 'VFP', name: 'Verification Pending')
+ProcessingStatus.find_or_create_by(code: 'AVR', name: 'Abstraction Verified Response')
+ProcessingStatus.find_or_create_by(code: 'VNR', name: 'Abstraction Verified No Response')
+ProcessingStatus.find_or_create_by(code: 'OHD', name: 'On-Hold')
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
