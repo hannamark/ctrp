@@ -6,6 +6,7 @@ class CreateProcessingStatusWrappers < ActiveRecord::Migration
       t.references :trial, index: true
 
       t.timestamps null: false
+      t.ctrp_base_columns
     end
     add_foreign_key :processing_status_wrappers, :processing_statuses
     add_foreign_key :processing_status_wrappers, :trials
