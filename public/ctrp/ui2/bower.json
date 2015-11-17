@@ -47,6 +47,6 @@
     "font-awesome": "fontawesome#~4.4.0",
     "ng-file-upload": "~10.0.2",
     "angular-local-storage": "~0.2.3",
-    "bootstrap": "3.3.2"
+    "bootstrap": "3.3.4"
   }
 }
