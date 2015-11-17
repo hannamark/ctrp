@@ -8,13 +8,13 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$sce',
-        '$state', '$timeout', 'LocalCacheService', 'UserService', 'uiGridConstants', '$location', '$anchorScroll'];
+    userListCtrl.$inject = ['$scope', 'toastr', 'LocalCacheService',
+    'UserService', 'uiGridConstants', '$location', '$anchorScroll'];
 
-    function userListCtrl($scope, $http, $window, toastr, $state, $sce,
-                      $timeout, LocalCacheService, UserService, uiGridConstants, $location, $anchorScroll) {
+    function userListCtrl($scope, toastr, LocalCacheService,
+        UserService, uiGridConstants, $location, $anchorScroll) {
+
         var vm = this;
-
         //toastr.success('Success', 'In userListCtrl');
         vm.searchParams = UserService.getInitialUserSearchParams();
 
@@ -24,7 +24,7 @@
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
         vm.gridOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
+            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.searchParams.start = newPage;
                 vm.searchParams.rows = pageSize;
@@ -34,16 +34,16 @@
 
         vm.searchUsers = function () {
             //toastr.success('Success', 'In userListCtrl, searchUsers');
-            // vm.searchParams.name = vm.searchParams.name || "*";
-            //console.log("searching params: " + JSON.stringify(vm.searchParams));
+            // vm.searchParams.name = vm.searchParams.name || '*';
+            //console.log('searching params: ' + JSON.stringify(vm.searchParams));
             UserService.searchUsers(vm.searchParams).then(function (data) {
                 //toastr.success('Success', 'In userListCtrl, UserService.searchUsers');
-                console.log("received search results data: " + JSON.stringify(data));
-                vm.gridOptions.data = data["users"]; //prepareGridData(data.data.orgs); //data.data.orgs;
+                console.log('received search results data: ' + JSON.stringify(data));
+                vm.gridOptions.data = data['users']; //prepareGridData(data.data.orgs); //data.data.orgs;
 
-                //console.log("vm grid: " + JSON.stringify(vm.gridOptions.data));
-                //console.log("received search results: " + JSON.stringify(data.data));
-                vm.gridOptions.totalItems =  data["users"].total;
+                //console.log('vm grid: ' + JSON.stringify(vm.gridOptions.data));
+                //console.log('received search results: ' + JSON.stringify(data.data));
+                vm.gridOptions.totalItems =  data['users'].total;
 
                 $location.hash('users_search_results');
                 //$anchorScroll();
@@ -80,8 +80,8 @@
          * @param sortColumns
          */
         function sortChangedCallBack(grid, sortColumns) {
-            if (sortColumns.length == 0) {
-                console.log("removing sorting");
+            if (sortColumns.length === 0) {
+                console.log('removing sorting');
                 //remove sorting
                 vm.searchParams.sort = '';
                 vm.searchParams.order = '';
@@ -101,7 +101,7 @@
 
             //do the search with the updated sorting
             vm.searchUsers();
-        }; //sortChangedCallBack
+        } //sortChangedCallBack
 
     }
 

@@ -8,16 +8,16 @@
     angular.module('ctrp.app.layout')
         .controller('headerNavigationCtrl', headerNavigationCtrl);
 
-    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'Keepalive',
-        '$uibModal', '$timeout', '$state', '_', 'Common', 'MESSAGES', '$rootScope'];
+    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'MESSAGES',
+        '$uibModal', '$timeout', '$state', 'Common'];
 
-    function headerNavigationCtrl(UserService, $scope, Idle, Keepalive,
-                                  $uibModal, $timeout, $state, _, Common, MESSAGES, $rootScope) {
+    function headerNavigationCtrl(UserService, $scope, Idle, MESSAGES,
+                                  $uibModal, $timeout, $state, Common) {
 
         var vm = this;
         vm.signedIn = UserService.isLoggedIn();
         vm.username = UserService.getLoggedInUsername();
-        vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+        vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
         vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.isCurationModeSupported = UserService.isCurationSupported();
         vm.warning = null;
@@ -68,7 +68,7 @@
         function pullUserInfo() {
             vm.signedIn = UserService.isLoggedIn();
             vm.username = UserService.getLoggedInUsername();
-            vm.userRole = UserService.getUserRole().split("_")[1] || '';
+            vm.userRole = UserService.getUserRole().split('_')[1] || '';
             vm.userRole = !!vm.userRole ? vm.userRole.toLowerCase() : ''; //e.g. super
             vm.isCurationEnabled = UserService.isCurationModeEnabled();
             vm.isCurationModeSupported = UserService.isCurationSupported();
@@ -80,7 +80,7 @@
         function watchForInactivity() {
             $scope.$watch(function() {return vm.signedIn; }, function(curVal, preVal) {
 
-                if (curVal == true) {
+                if (curVal === true) {
                     Idle.watch();
                     closeModals();
                     watchIdleEvents();
@@ -160,13 +160,13 @@
             $scope.$watch(function() {return vm.currrentState.current.name;},
                 function(newVal, oldVal) {
                 if (newVal !== oldVal) {
-                  //  console.log('current state name: ' + vm.currrentState.current.name);
+                    console.log('current state name: ' + vm.currrentState.current.name);
                 }
             }, true);
         }
 
 
-    };
+    }
 
 
 })();

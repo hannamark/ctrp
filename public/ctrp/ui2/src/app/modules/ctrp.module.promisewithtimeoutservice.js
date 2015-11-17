@@ -108,12 +108,12 @@
          * @param deferred
          */
         function raiseErrorMessage(error) {
-            var errorMsg = "Failed to retrieve data from service";
+            var errorMsg = 'Failed to retrieve data from service';
             if (error.status === 408) {
-                errorMsg = "Retrieving data from service timed out";
+                errorMsg = 'Retrieving data from service timed out';
             }
             toastr.error(errorMsg, 'Error');
-            console.log("request has timed out");
+            console.log('request has timed out');
         } //raiseErrorMessage
 
 
@@ -129,14 +129,14 @@
          */
         function packageDataWithResponse(data, status, headers, config) {
             if (!!data) {
-              data.server_response = {};
-              data.server_response.status = status;
-              data.server_response.headers = headers;
-              data.server_response.config = config;
+              data['server_response'] = {};
+              data['server_response'].status = status;
+              data['server_response'].headers = headers;
+              data['server_response'].config = config;
 
               return data;
           } else {
-            return {"server_response": ""};
+            return {'server_response': ''};
           }
         }
 

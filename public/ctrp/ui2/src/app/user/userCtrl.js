@@ -19,12 +19,12 @@
         vm.loginBulletin = loginBulletin['login_bulletin'] || '';
 
         vm.userObj = {
-            "user": {
+            'user': {
                 username: '',
                 password: '',
                 source: 'Angular'
             },
-            "type": vm.type
+            'type': vm.type
         };
 
         vm.authenticate = function() {
