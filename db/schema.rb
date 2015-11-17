@@ -669,8 +669,10 @@ ActiveRecord::Schema.define(version: 20151117221120) do
     t.date     "status_date"
     t.integer  "processing_status_id"
     t.integer  "trial_id"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.string   "uuid",                 limit: 255
+    t.integer  "lock_version",                     default: 0
   end
 
   add_index "processing_status_wrappers", ["processing_status_id"], name: "index_processing_status_wrappers_on_processing_status_id", using: :btree
