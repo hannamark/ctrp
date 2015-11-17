@@ -16,7 +16,7 @@ module.exports = function() {
          * Files paths
          */
         alljs: [
-            clientApp + '*.js',
+            clientApp + '**/*.js',
             './*.js'
         ],
         build: './build/',
@@ -24,11 +24,11 @@ module.exports = function() {
         css: temp + 'styles.css',
         fonts: './bower_components/font-awesome/fonts/**/*.*',
         html: clientApp + '**/*.html',
-        htmltemplates: [clientApp + '**/*.html', clientApp + '**/**/*.html'],
+        htmltemplates: clientApp + '**/*.html',
         images: client + 'images/**/*.*',
         index: client + 'index.html',
         js: [
-            clientApp + '**/*.module.js',  //name modules, example: ctrp.po.module.js
+            clientApp + '**/*.module.js',  //name modules,
             clientApp + '**/*.js',
             '!' + clientApp + '**/*.spec.js' //exclude unit test files
         ],
@@ -69,8 +69,8 @@ module.exports = function() {
 
         bower: {
             json: require('./bower.json'),
-            directory: './bower_components/',
-            ignorePath: '../..'
+            directory: 'bower_components/',
+            ignorePath: '../'
         },
 
         packages: [
