@@ -16,6 +16,7 @@ Then the Trail Identification Overview and the Trial Identifications will be dis
 And the Trail Overview for a Trial will include the following fields:
 |NCI ID|
 |Brief Title|
+|NCT ID|
 |Lead Organization|
 |Lead Organization Trail ID|
 |Amendment Number|
@@ -112,4 +113,11 @@ And I select one of the check in buttons
 |Scientific Check In Button|
 |Admin and Scientific Check In Button|
 Then my user name and date will be recorded in the trial check out history. 
+
+Scenario: #10 I can open the ClinicalTrails.gov record for the Trail
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial 
+And the Trail Identification Overview and is displayed 
+And I selcet the NCT ID
+Then an new browser window is openend displaying the trail record in ClinicalTrials.gov
 

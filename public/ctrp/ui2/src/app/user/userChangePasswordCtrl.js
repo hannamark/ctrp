@@ -15,21 +15,21 @@
                       $timeout,  UserService) {
         var vm = this;
 
-        // {"local_user"=>{"username"=>"abc",
-        // "password"=>"[FILTERED]",
-        // "password_confirmation"=>"[FILTERED]",
-        // "current_password"=>"[FILTERED]"}}
+        // {'local_user'=>{'username'=>'abc',
+        // 'password'=>'[FILTERED]',
+        // 'password_confirmation'=>'[FILTERED]',
+        // 'current_password'=>'[FILTERED]'}}
 
          var username = UserService.getLoggedInUsername();
         toastr.success('User ' + username);
         vm.userObj = {
-            "local_user": {
+            'local_user': {
                 username: username,
                 password: '',
                 password_confirmation: '',
                 current_password: ''
             },
-            "type": vm.type
+            'type': vm.type
         };
 
         vm.updateUser = function () {
@@ -37,9 +37,9 @@
             UserService.upsertUserChangePassword(vm.userObj).then(function (response) {
                 //toastr.success('User ' + vm.userObj + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {
-                console.log("Error in Changing the Password " + JSON.stringify(vm.userObj));
+                console.log('Error in Changing the Password ' + JSON.stringify(vm.userObj));
             });
-        }
+        };
     }
 
 })();
