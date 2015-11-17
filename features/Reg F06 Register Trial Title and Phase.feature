@@ -10,15 +10,18 @@ And I am on the Register Trial Title and Phase screen
 When I have entered the trial's Title
 And I have selected the trial phase from a list of trial phases
 And I have either selected the option "Yes" if the trial is a Pilot or left the option "No" as the default
-And I have submitted the Trial Registration Title and Phase section
-Then the Trial Registration Title and Phase section will be complete
+Then the Register Trial Title and Phase section will not indicate any errors during Trial Review
 
-Scenario: #2 I must enter the trial title and phase
+Scenario: #2 I must enter the trial title
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
 and I am on the Register Trial title and Phase screen
-When I have not entered the trial title or trial phase
-And I have submitted the Register Trial Title and Phase section
-hen I click on the Review Trial Button
-hen I click on the Review Trial Button
-When I click on the Review Trial Button then the Register Trial Title and Phase section will indicate an error "Trial Title and Phase are Required" 
+When I have not entered the trial title
+And I have selected a trial phase
+Then during Trial Review the Register Trial Title and Phase section will indicate an error "Trial Title is Required" 
 
+Scenario: #3 I must select a trial phase
+Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
+and I am on the Register Trial title and Phase screen
+When I have entered a trial title
+And I have not selected a trial phase
+Then during Trial Review the Register Trial Title and Phase section will indicate an error "Trial Phase is Required" 

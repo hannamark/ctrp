@@ -30,6 +30,21 @@ module Ctrp
     config.families_id_sequence_start_with = 65000000
 
 
+    ## Rack-cors settings for Rails
+    config.middleware.insert_before 0, "Rack::Cors", :debug => true, :logger => (-> { Rails.logger }) do
+
+      allow do
+        origins '*'
+        resource '*',
+            :headers => :any,
+            :expose => ['Access-Control-Allow-Headers'],
+            :methods => [:get, :post, :delete, :put, :patch, :head, :options],
+            :max_age => 0
+      end
+
+    end
+
+
     config.active_record.raise_in_transactional_callbacks = true
 
     config.paths["log"] = "../../logs/#{Rails.env}.log"
