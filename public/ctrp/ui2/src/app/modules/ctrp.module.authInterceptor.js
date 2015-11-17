@@ -20,11 +20,11 @@
 
         function request(config) {
             config.timeout = 15000; //15 seconds timeout
-            var token = LocalCacheService.getCacheWithKey("token");
+            var token = LocalCacheService.getCacheWithKey('token');
             //console.log('token is: ' + token);
             if (token) {
-                var gsaFlag =  (LocalCacheService.getCacheWithKey("gsaFlag") || "Reject") + " ";
-                //console.log("gsaFlag = " + gsaFlag);
+                var gsaFlag =  (LocalCacheService.getCacheWithKey('gsaFlag') || 'Reject') + ' ';
+                //console.log('gsaFlag = ' + gsaFlag);
                 config.headers.Authorization = gsaFlag + token;
             }
             return config;
@@ -34,16 +34,16 @@
         /**
          * return the HTTP response through the interceptor, could inject something here
          *
-         * @param response
+         * @param res
          * @returns {*}
          */
-        function response(response) {
-            return response;
+        function response(res) {
+            return res;
         } //response
 
 
         function responseError(rejection) {
-            if(rejection.status == 401) {
+            if(rejection.status === 401) {
               //if unauthorized, kick the user back to sign_in
               $injector.get('$state').go('main.sign_in');
               $injector.get('toastr').error('Access to the resources is not authorized', 'Please sign in to continue');

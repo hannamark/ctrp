@@ -12,14 +12,14 @@
 
     function userDetailCtrl(UserService, $scope, toastr, OrgService, userDetailObj) {
         var vm = this;
-         console.log("curuser is ");
+         console.log('curuser is ');
         vm.userDetails = userDetailObj;
         vm.selectedOrgsArray = [];
         vm.savedSelection = []; //save selected organizations
 
         vm.updateUser = function () {
 
-            console.log("hello email changed ? " +vm.userDetails.email);
+            console.log('hello email changed ? ' +vm.userDetails.email);
             console.log('IN UPDATEUSER');
             var newUser = {};
             newUser.new = vm.userDetails.new || '';
@@ -31,13 +31,13 @@
            //newUser.org_id=watch.org[o];
 
             if (vm.selectedOrgsArray[0] != null){
-                console.log("orgs id is " + vm.selectedOrgsArray[0].id);
+                console.log('orgs id is ' + vm.selectedOrgsArray[0].id);
             }
-            console.log("newUser is: " + JSON.stringify(newUser));
+            console.log('newUser is: ' + JSON.stringify(newUser));
             UserService.upsertUser(newUser).then(function(response) {
                 //toastr.success('Family ' + vm.newUser.username + ' has been recorded', 'Operation Successful!');
             }).catch(function(err) {
-                console.log("error in updating family " + JSON.stringify(vm.userDetails));
+                console.log('error in updating family ' + JSON.stringify(vm.userDetails));
             });
 
 
@@ -66,7 +66,7 @@
                 var org_id= vm.userDetails.organization_id;
                 //var org_name =vm.userDetails.organization_name;
                 OrgService.getOrgById(vm.userDetails.organization_id).then(function(organization) {
-                    var curOrg = {"id" : vm.userDetails.organization_id, "name": organization.name};
+                    var curOrg = {'id' : vm.userDetails.organization_id, 'name': organization.name};
                     //var org_name = organization.name;
                     //var org_name = vm.userDetails.organization_name;
                     vm.savedSelection.push(curOrg);

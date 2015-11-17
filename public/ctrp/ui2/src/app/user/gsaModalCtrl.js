@@ -8,16 +8,15 @@
     angular.module('ctrp.app.user')
         .controller('gsaModalCtrl', gsaModalCtrl);
 
-    gsaModalCtrl.$inject = ['$scope', '$http', '$window', 'toastr', '$state','$sce',
-         '$timeout', 'LocalCacheService', 'UserService', 'gsaObj', '$modalInstance'];
+    gsaModalCtrl.$inject = ['$state', '$sce', 'LocalCacheService',
+                            'UserService', 'gsaObj', '$modalInstance'];
 
-    function gsaModalCtrl($scope, $http, $window, toastr, $state, $sce,
-                      $timeout, LocalCacheService, UserService, gsaObj, $modalInstance) {
+    function gsaModalCtrl($state, $sce, LocalCacheService, UserService, gsaObj, $modalInstance) {
         var vm = this;
         vm.userType = UserService.getUserType();
         vm.accept = function() {
             console.log('ACCEPT');
-            LocalCacheService.cacheItem("gsaFlag", "Accept");
+            LocalCacheService.cacheItem('gsaFlag', 'Accept');
             $modalInstance.close();
             $state.go('main.defaultContent');
 
@@ -25,7 +24,7 @@
 
         vm.reject = function() {
             console.log('REJECT');
-            LocalCacheService.cacheItem("gsaFlag", "Reject");
+            LocalCacheService.cacheItem('gsaFlag', 'Reject');
             $modalInstance.dismiss('cancel');
             UserService.logout();
         };

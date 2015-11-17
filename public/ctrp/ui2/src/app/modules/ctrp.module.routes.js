@@ -15,7 +15,7 @@
    ])
    .config(httpProviderConfig)
    .config(poAppRoutesConfig)
-   .config(uiRouterConfig)
+   .config(uiRouterConfig);
 
     uiRouterConfig.$inject = ['$provide'];
 
