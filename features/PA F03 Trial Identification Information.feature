@@ -16,10 +16,9 @@ Then the Trail Identification Overview and the Trial Identification Information 
 And the Trial Identification Information for a Trial will include the following fields:
 |Clinical Research Category |
 |NCI ID|
-|ClinicalTrials.Gov XML required?
+|ClinicalTrials.Gov XML required|
 |Lead Organization Trail ID|
 |NCT ID|
-|Abbreviated Trail?|
 |Official Title|
 |Submission Source|
 |Processing Priority|
