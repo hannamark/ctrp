@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.lead_protocol_id) || (trial_form.lead_protocol_id.$error.required && trialDetailView.showLpiError)}">
-                            <label class="control-label col-xs-12 col-sm-3">Lead Protocol Identifier:</label>
+                            <label class="control-label col-xs-12 col-sm-3">Lead Organization Trial Identifier:</label>
                             <div class=" col-xs-12 col-sm-6">
                                 <input type="text" restriction-field class="form-control input-sm" id="lead_protocol_id" name="lead_protocol_id" ng-model="trialDetailView.curTrial.lead_protocol_id" required autofocus>
                                 <span class="form-control-feedback" ng-show="trialDetailView.curTrial.lead_protocol_id.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.lead_protocol_id) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -51,7 +51,7 @@
                             <div class=" col-xs-12 col-sm-6">
                                 <table class="table table-striped table-condensed">
                                     <thead>
-                                        <th>Protocol ID Origin</th>
+                                        <th>Protocol ID Type</th>
                                         <th>Protocol ID</th>
                                         <th></th>
                                     </thead>
@@ -60,7 +60,7 @@
                                         <td class="col-md-4">
                                             <div>
                                                 <select restriction-field class="form-control input-sm" id="protocol_id_origin" ng-model="trialDetailView.protocol_id_origin_id">
-                                                    <option value="">-Select an Origin-</option>
+                                                    <option value="">-Select a Protocol ID Type-</option>
                                                     <option ng-repeat="origin in trialDetailView.protocolIdOriginArr" value="{{origin.id}}">
                                                         {{origin.name}}
                                                     </option>
@@ -84,7 +84,7 @@
                                 </table>
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedOtherIds.length > 0">
                                     <thead>
-                                    <th>Protocol ID Origin</th>
+                                    <th>Protocol ID Type</th>
                                     <th>Protocol ID</th>
                                     <th></th>
                                     </thead>
