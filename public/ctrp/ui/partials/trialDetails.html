@@ -90,8 +90,8 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="otherId in trialDetailView.addedOtherIds track by $index" ng-class="otherId._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                        <td class="col-md-4">{{otherId.protocol_id_origin_name}}</td>
-                                        <td class="col-md-6">{{otherId.protocol_id}}</td>
+                                        <td class="col-md-4 protocol-id-origin">{{otherId.protocol_id_origin_name}}</td>
+                                        <td class="col-md-6 protocol-id">{{otherId.protocol_id}}</td>
                                         <td class="col-md-2" style="vertical-align: middle">
                                             <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'other_id')">
                                                 <i ng-class="otherId._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
