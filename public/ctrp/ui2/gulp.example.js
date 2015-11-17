@@ -7,25 +7,9 @@ var path = require('path');
 var _ = require('lodash');
 var $ = require('gulp-load-plugins')({lazy: true});
 var port = process.env.PORT || config.defaultPort;
-//pipe segments
-var pipes = {};
-
-pipes.orderedVendorScripts = function() {
-    return $.order(['jquery.js', 'angular.js']);
-};
-
-pipes.orderedAppScripts = function() {
-    return $.angularFilesort();
-};
-
-pipes.minifiedFileName = function() {
-    return $.rename(function (path) {
-        path.extname = '.min' + path.extname;
-    });
-};
 
 gulp.task('help', $.taskListing);
-gulp.task('default', ['help']); //list help menus
+gulp.task('default', ['help']);
 
 gulp.task('vet', function() {
     log('Analyzing source with JSHint and JSCS');
@@ -33,8 +17,8 @@ gulp.task('vet', function() {
     return gulp
         .src(config.alljs)
         .pipe($.if(args.verbose, $.print()))
-        //.pipe($.jscs())
-        //.pipe($.jshint())
+        .pipe($.jscs())
+        .pipe($.jshint())
         .pipe($.jshint.reporter('jshint-stylish', {verbose: true}))
         .pipe($.jshint.reporter('fail'));
 });
@@ -119,10 +103,7 @@ gulp.task('wiredep', function() {
     return gulp
         .src(config.index)
         .pipe(wiredep(options))
-        .pipe($.inject(gulp.src(config.js)
-            .pipe(pipes.orderedVendorScripts())
-            .pipe(pipes.orderedAppScripts())
-        ))
+        .pipe($.inject(gulp.src(config.js)))
         .pipe(gulp.dest(config.client));
 });
 
@@ -172,10 +153,7 @@ gulp.task('build-specs', ['templatecache'], function() {
         .pipe(wiredep(options))
         .pipe($.inject(gulp.src(config.testlibraries),
             {name: 'inject:testlibraries', read: false}))
-        .pipe($.inject(gulp.src(config.js)
-            .pipe(pipes.orderedVendorScripts())
-            .pipe(pipes.orderedAppScripts())
-        ))
+        .pipe($.inject(gulp.src(config.js)))
         .pipe($.inject(gulp.src(config.specHelpers),
             {name: 'inject:spechelpers', read: false}))
         .pipe($.inject(gulp.src(specs),
@@ -258,10 +236,8 @@ gulp.task('serve-dev', ['inject'], function() {
     serve(true /* isDev */);
 });
 
-//TODO: re-enable test!!
 gulp.task('test', ['vet', 'templatecache'], function(done) {
-    //startTests(true /* singleRun */, done);
-    done();
+    startTests(true /* singleRun */, done);
 });
 
 gulp.task('autotest', ['vet', 'templatecache'], function(done) {
@@ -278,7 +254,7 @@ function serve(isDev, specRunner) {
             'PORT': port,
             'NODE_ENV': isDev ? 'dev' : 'build'
         },
-        watch: [config.server] //not necessary to watch, as we won't change the mock server //TODO: comment out
+        watch: [config.server]
     };
 
     return $.nodemon(nodeOptions)
@@ -335,7 +311,7 @@ function startBrowserSync(isDev, specRunner) {
 
     var options = {
         proxy: 'localhost:' + port,
-        port: 9000,
+        port: 3000,
         files: isDev ? [
             config.client + '**/*.*',
             '!' + config.less,
