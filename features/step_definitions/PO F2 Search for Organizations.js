@@ -72,9 +72,9 @@ module.exports = function() {
     this.Given(/^I am logged in to CTRP$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpadmin', 'Welcome01');
-        login.accept();
-        menuItem.clickHomeEnterOrganizations();
-        login.clickWriteMode();
+        //login.accept();
+        //menuItem.clickHomeEnterOrganizations();
+        //login.clickWriteMode();
         browser.sleep(25).then(callback);
     });
 
@@ -370,10 +370,10 @@ module.exports = function() {
     });
 
     this.Given(/^I indicate to include or not include a (.*)$/, function (SearchAliases, callback) {
-        if(SearchAliases == 'No'){
+        if(SearchAliases === 'No'){
             searchOrg.checkAlias(true);
         }
-        if(SearchAliases == 'Yes'){
+        if(SearchAliases === 'Yes'){
             searchOrg.checkAlias(false);
         }
         browser.sleep(25).then(callback);

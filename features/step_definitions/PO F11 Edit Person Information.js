@@ -203,7 +203,7 @@ module.exports = function() {
             expect(projectFunctions.inSearchResults(value)).to.become('true');
             element(by.linkText(value)).click();
         });
-            searchOrg.verifyAffiliatedOrgEffectiveDate(moment(new Date(orgEffectiveDate)).format('DD-MMM-YYYY H:mm'));
+            searchOrg.verifyAffiliatedOrgEffectiveDate(moment(new Date(orgEffectiveDate)).format('DD-MMM-YYYY'));
             searchOrg.verifyAffiliatedOrgExpirationDate(moment(new Date(orgExpirationDate)).format('DD-MMM-YYYY'));
         browser.sleep(25).then(callback);
     });
@@ -325,4 +325,4 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-}
+};

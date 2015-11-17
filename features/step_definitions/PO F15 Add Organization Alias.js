@@ -75,4 +75,4 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-}
+};

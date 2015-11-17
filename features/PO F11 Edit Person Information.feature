@@ -31,7 +31,7 @@ And I am on the edit Person information screen
 When I change the email of the Person I wish to edit
 And I submit my edit request for Person
 Then the system should change the email address in the Person record to the new email address
-@runthis
+
 Scenario: As a PO Curator, I can Edit a Person record Affiliated Organization effective and expiration dates
 Given I know which Person with affiliated Organization record I want to edit
 And I am logged in to CTRP PO application
@@ -42,7 +42,7 @@ And I select an Affiliated Organization
 When I change the effective date or expiration date of the Affiliated Organization I wish to edit
 And I submit my edit request for Person
 Then the system should change the effective date or expiration date of the Affiliated Organization in the Person Record
-@runthis
+
 Scenario: As a PO Curator, I can Edit a Person record and add an Affiliated Organization
 Given I know which Person with affiliated Organization record I want to edit
 And I am logged in to CTRP PO application
@@ -54,7 +54,7 @@ When I select an additional Affiliated organization
 And I enter the Affiliate organization effective date
 And I submit my edit request for Person
 Then the system should add the Affiliated Organization with the effective date in the Person Record
-
+  @runthis
 Scenario: As a PO Curator, I can edit Person records with multiple parameters
 Given I know which Person with affiliated Organization record I want to edit
 And I am logged in to CTRP PO application

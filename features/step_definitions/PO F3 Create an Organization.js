@@ -280,7 +280,7 @@ module.exports = function() {
     });
 
     this.Then(/^the system should indicate with a warning that the organization is a duplicate name in the same context$/, function (callback) {
-        projectFunctions.verifyWarningMessage('Warning: Organization exists in the database. Please verify and create a new Organization record.');
+        expect(projectFunctions.verifyWarningMessage('Warning: Organization exists in the database. Please verify and create a new Organization record.')).to.become('true');
         browser.sleep(25).then(callback);
     });
 
@@ -328,5 +328,5 @@ module.exports = function() {
 
 
 
-}
+};
 

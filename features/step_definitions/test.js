@@ -25,14 +25,18 @@ module.exports = function() {
     var menuItemList = new MenuItem();
     var searchFamily = new listFamilyPage();
     var Search = new ListOfOrganizationPage();
-    var Login = new LoginPage();
+    var login = new LoginPage();
     var addPerson = new personPage();
     var projectFunctions = new projectFunctionsPage();
     var searchPerson = new searchPersonPage();
 
     this.Given(/^I want to test the Login page$/, function (callback) {
-        browser.get('ui#/main/sign_in').then(function(){callback();});
-      //  setTimeout(callback,1000);
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+     //   login.accept();
+       //     menuItemList.clickHomeEnterOrganizations();
+         //   login.clickWriteMode();
+            browser.sleep(25).then(callback);
     });
     /*
     this.When(/^I enter username (.*)$/, function (username, callback) {
@@ -277,14 +281,20 @@ module.exports = function() {
     });
 
     this.Then(/^verify person$/, function (callback) {
+        Search.setOrgName('w*');
+        Search.clickSearchButton();
        //   element(by.model('searchParams.fname')).sendKeys(per4);
                //   per4.then(function(vv){console.log('value'+vv);searchPerson.setPersonFirstName(vv);searchPerson.clickSearch();expect(menuItemList.inResults(vv)).to.become('true');});
         browser.sleep(250).then(callback);
     });
 
     this.Given(/^Creaye person with Organizationre$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        browser.get('ui#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        menuItemList.clickHomeEnterOrganizations();
+        login.clickWriteMode();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^Create person with Organizationsfer$/, function (callback) {

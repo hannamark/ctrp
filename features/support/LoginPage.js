@@ -6,10 +6,12 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
+var menuItemList = require('../support/PoCommonBar');
 
 var LoginPage = function(){
 
     this.username = element(by.model('userView.userObj.user.username'));
+    var menuItem = new menuItemList();
     this.password = element(by.model('userView.userObj.user.password'));
     this.loginButton = element(by.css('button[ng-click="userView.authenticate()"]'));
     this.cancelButton = element(by.css('input[value="Reset"]'));
@@ -59,7 +61,7 @@ var LoginPage = function(){
 
     this.accept = function() {
         this.acceptButton.isDisplayed().then(function(retVal){
-            if (retVal == true){
+            if (retVal === true){
                 element(by.buttonText('Accept')).click();// element(by.css('.container.ng-scope>button:nth-child(2)')).click();
             }
         });

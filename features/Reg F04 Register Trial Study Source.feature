@@ -3,11 +3,18 @@ Feature: Reg F04 Register Trial Study Source
 
 As a CTRP User, I can select the Study Source of the trial I will register
 
-Scenario: #1 I can select the option to register a protocol for a National, Externally Peer-Reviewed, or Institutional trial
+Scenario Outline: #1 I can select the option to register a protocol for a National, Externally Peer-Reviewed, or Institutional trial
 Given I am logged into the CTRP Registration application
 And I am on the Register Trial screen
-When I select the option to register a National, Externally Peer-Reviewed, or Institutional trial
-Then CTRP will display the required registration elements for a complete protocol registration
+When I select the option to register a trial <Trial Type>
+Then CTRP will display the required registration elements for a complete protocol registration for the selected <Trial Type>
+
+  Examples:
+  |Trial Type               |
+  |National                 |
+  |Externally Peer-Reviewed |
+  |Institutional            |
+
 
 Scenario: #2 I can select the option to import trial information for an Industrial, Other, or Expanded Access trial
 Given I am logged into the CTRP Registration application
