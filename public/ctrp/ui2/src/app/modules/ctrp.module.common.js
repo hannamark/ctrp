@@ -55,7 +55,7 @@
             var queryObj = {};
             queryObj[keyName] = needleValue;
             return _.findIndex(arrayOfJson, queryObj);
-        }
+        };
 
 
     }

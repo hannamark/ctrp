@@ -161,7 +161,7 @@
                                             <td>{{org.name}}</td>
                                             <td>
                                                 <div class="input-group add-on col-sm-12 date datepicker">
-                                                    <input tabindex="10" type="text" class="form-control input-sm"
+                                                    <input tabindex="15" type="text" class="form-control input-sm"
                                                            uib-datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                            ng-model="org.effective_date" is-open="org.opened_effective"
                                                            datepicker-options="personDetailView.dateOptions"
@@ -175,7 +175,7 @@
                                             </td>
                                             <td>
                                                 <div class="input-group add-on col-sm-12 date datepicker">
-                                                    <input tabindex="11" type="text" class="form-control input-sm"
+                                                    <input tabindex="16" type="text" class="form-control input-sm"
                                                            uib-datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                            ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                            datepicker-options="personDetailView.dateOptions"
@@ -204,15 +204,15 @@
                             <div class="col-xs-12 col-sm-3"></div>
                             <div class="btn-toolbar col-xs-12 col-sm-9">
                                 <div class="btn-toolbar pull-right">
-                                    <button type="button" tabindex="12" restriction-field class="btn btn-warning" id="reset_btn" ng-click="personDetailView.clearForm()">
+                                    <button type="button" tabindex="17" restriction-field class="btn btn-warning" id="reset_btn" ng-click="personDetailView.clearForm()">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button tabindex="13" type="submit" restriction-field class="btn btn-primary" id="save_btn">
+                                    <button tabindex="18" type="submit" restriction-field class="btn btn-primary" id="save_btn">
                                         Save
                                     </button>
                                 </div>
                                 <div class="btn-toolbar pull-left">
-                                    <button tabindex="14" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger btn-no-left-margin" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
+                                    <button tabindex="19" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger btn-no-left-margin" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
                                         <i class="glyphicon glyphicon-remove"></i> Delete This Person
                                     </button>
                                 </div>
