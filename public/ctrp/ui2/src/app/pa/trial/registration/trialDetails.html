@@ -859,7 +859,7 @@
                         <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Document'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
-                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                                 <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
@@ -881,7 +881,7 @@
                         <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'IRB Approval'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
-                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                                 <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
@@ -896,7 +896,7 @@
                         <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'List of Participating Sites'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
-                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                                 <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
@@ -911,7 +911,7 @@
                         <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Informed Consent'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
-                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                                 <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
@@ -944,7 +944,7 @@
                         <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Other Document'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
-                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="/ctrp/registry/trial_documents/download/{{document.id}}">{{document.file_name}}</a>
+                                <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                                 <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                                 <br>{{document.document_subtype}}
                             </div>

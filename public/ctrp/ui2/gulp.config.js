@@ -22,7 +22,7 @@ module.exports = function() {
         build: './build/',
         client: client,
         css: temp + 'styles.css',
-        fonts: './bower_components/font-awesome/fonts/**/*.*',
+        fonts: './src/bower_components/font-awesome/fonts/**/*.*',
         html: clientApp + '**/*.html',
         htmltemplates: clientApp + '**/*.html',
         images: client + 'images/**/*.*',
@@ -69,8 +69,8 @@ module.exports = function() {
 
         bower: {
             json: require('./bower.json'),
-            directory: 'bower_components/',
-            ignorePath: '../..'
+            directory: './src/bower_components/',
+            ignorePath: '../'
         },
 
         packages: [
