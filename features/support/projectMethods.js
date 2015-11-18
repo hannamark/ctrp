@@ -799,13 +799,47 @@ var projectMethods = function() {
 
     this.isTextPresentA = function(textToVerify){
         var anyTxt = element(by.binding(''+textToVerify+''));
-        return anyTxt.getText();
-    }
+        //return anyTxt.getText();
+        if (expect(anyTxt.getText()).toEqual(''+textToVerify+'')){
+            return true;
+        } else {
+            return false;
+        };
+    };
 
     this.getAlertMsg = function(){
         return alert.then(function(alert){
            return alert.getText();
         });
+    };
+
+    // UI Grid Testing Methods
+
+    /**
+     * @ngdoc function
+     * @name clickGridButton
+     * @methodOf functional_common.api:pageObject.grids
+     *
+     */
+    this.clickGridButton = function ( rowNum, buttonId ) {
+        this.tableRow( rowNum ).element( by.id(buttonId) ).click();
+    };
+
+    /**
+     * @ngdoc function
+     * @name clickRow
+     * @methodOf functional_common.api:pageObject.grids
+     * @description Clicks on a row.  We used to just go tableRow.click(),
+     * but with ui-grid 3.0 it doesn't like that, so we do this instead.
+     * @param {integer} rowNum the row number you want to click on
+     *
+     * @example
+     *   risksPage.clickRow( 1 );
+     *
+     */
+    this.clickRow = function( rowNum ) {
+        row = this.tableRow( rowNum );
+        row.element(by.repeater('(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name').row(element(by.cssContainingText('.ui-grid-cell-contents', '')).then(function(cell){cell.click();})));
     };
 
 
