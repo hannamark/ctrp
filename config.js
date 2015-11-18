@@ -43,6 +43,7 @@ exports.config = {
     getPageTimeout: 50000,
 
     specs: [
+           //PO F2-F15
            'features/PO\ F2\ Search\ for\ Organizations.feature',
            'features/PO\ F3\ Create\ an\ Organization.feature',
            'features/PO\ F4\ Edit\ Organization\ Information.feature',
