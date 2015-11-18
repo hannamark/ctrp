@@ -11,7 +11,7 @@ var port = process.env.PORT || config.defaultPort;
 var pipes = {};
 
 pipes.orderedVendorScripts = function() {
-    return $.order(['jquery.js', 'angular.js']);
+    return $.order(['jquery.js', 'underscore.js', 'angular.js']);
 };
 
 pipes.orderedAppScripts = function() {
@@ -122,7 +122,7 @@ gulp.task('wiredep', function() {
         .pipe($.inject(gulp.src(config.js)
             .pipe(pipes.orderedVendorScripts())
             .pipe(pipes.orderedAppScripts())
-        ))
+        , {relative: true}))
         .pipe(gulp.dest(config.client));
 });
 

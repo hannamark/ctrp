@@ -1,6 +1,9 @@
 # Ignore Node and Bower packages
 node_modules
+src/bower_components
 bower_components
+build
+.tmp
 
 #Ignore Test reporters
 report
