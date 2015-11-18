@@ -12,7 +12,7 @@
               restrict: 'A',
               require: ['ctrpSubmit', '?form'],
               controller: ['$scope', function ($scope) {
-                  console.log('in ctrpSubmit');
+                  
                   this.attempted = false;
 
                   var formController = null;
