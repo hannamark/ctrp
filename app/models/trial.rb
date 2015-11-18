@@ -166,6 +166,7 @@ class Trial < ActiveRecord::Base
   has_many :links, -> { order 'links.id' }
   has_many :diseases, -> { order 'diseases.id' }
   has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
+  has_many :collaborators, -> { order 'collaborators.id' }
 
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
