@@ -3,8 +3,7 @@
 (function() {
   'use strict';
     angular.module('ctrp.module.validators')
-  .directive(ctrpSubmitDirective);
-
+            .directive(ctrpSubmitDirective);
 
 
   var ctrpSubmitDirective = {
@@ -13,6 +12,7 @@
               restrict: 'A',
               require: ['ctrpSubmit', '?form'],
               controller: ['$scope', function ($scope) {
+                  console.log('in ctrpSubmit');
                   this.attempted = false;
 
                   var formController = null;
