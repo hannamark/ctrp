@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151116161633) do
+ActiveRecord::Schema.define(version: 20151117221120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -665,6 +665,28 @@ ActiveRecord::Schema.define(version: 20151116161633) do
     t.integer  "lock_version",             default: 0
   end
 
+  create_table "processing_status_wrappers", force: :cascade do |t|
+    t.date     "status_date"
+    t.integer  "processing_status_id"
+    t.integer  "trial_id"
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.string   "uuid",                 limit: 255
+    t.integer  "lock_version",                     default: 0
+  end
+
+  add_index "processing_status_wrappers", ["processing_status_id"], name: "index_processing_status_wrappers_on_processing_status_id", using: :btree
+  add_index "processing_status_wrappers", ["trial_id"], name: "index_processing_status_wrappers_on_trial_id", using: :btree
+
+  create_table "processing_statuses", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
   create_table "protocol_id_origins", force: :cascade do |t|
     t.string   "code",         limit: 255
     t.string   "name",         limit: 255
@@ -1096,6 +1118,8 @@ ActiveRecord::Schema.define(version: 20151116161633) do
   add_foreign_key "po_affiliations", "organizations"
   add_foreign_key "po_affiliations", "people"
   add_foreign_key "po_affiliations", "po_affiliation_statuses"
+  add_foreign_key "processing_status_wrappers", "processing_statuses"
+  add_foreign_key "processing_status_wrappers", "trials"
   add_foreign_key "site_rec_status_wrappers", "participating_sites"
   add_foreign_key "site_rec_status_wrappers", "site_recruitment_statuses"
   add_foreign_key "sub_groups", "trials"
@@ -1188,6 +1212,8 @@ ActiveRecord::Schema.define(version: 20151116161633) do
   create_sequence "po_affiliation_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "po_affiliations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "primary_purposes_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "processing_status_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "processing_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "protocol_id_origins_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "research_categories_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "responsible_parties_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

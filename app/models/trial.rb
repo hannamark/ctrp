@@ -165,6 +165,7 @@ class Trial < ActiveRecord::Base
   has_many :citations, -> { order 'citations.id' }
   has_many :links, -> { order 'links.id' }
   has_many :diseases, -> { order 'diseases.id' }
+  has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
 
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
@@ -176,10 +177,24 @@ class Trial < ActiveRecord::Base
 
   validates :lead_protocol_id, presence: true
 
+  before_save :generate_nci_id
   before_create :save_history
   before_save :check_indicator
 
   private
+
+  def generate_nci_id
+    if !self.is_draft && self.nci_id.nil?
+      current_year = Time.new.year.to_s
+      largest_id = Trial.where('nci_id ilike ?', "%NCI-#{current_year}-%").order('nci_id desc').pluck('nci_id').first
+      if largest_id.nil?
+        new_id = "NCI-#{current_year}-00000"
+      else
+        new_id = largest_id.next
+      end
+      self.nci_id = new_id
+    end
+  end
 
   def save_history
     history = {lead_org: self.lead_org, pi: self.pi}

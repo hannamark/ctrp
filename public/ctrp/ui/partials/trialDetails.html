@@ -90,8 +90,8 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="otherId in trialDetailView.addedOtherIds track by $index" ng-class="otherId._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                        <td class="col-md-4">{{otherId.protocol_id_origin_name}}</td>
-                                        <td class="col-md-6">{{otherId.protocol_id}}</td>
+                                        <td class="col-md-4 protocol-id-origin">{{otherId.protocol_id_origin_name}}</td>
+                                        <td class="col-md-6 protocol-id">{{otherId.protocol_id}}</td>
                                         <td class="col-md-2" style="vertical-align: middle">
                                             <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'other_id')">
                                                 <i ng-class="otherId._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
@@ -787,7 +787,9 @@
                                     <input type="radio" restriction-field name="interventin_indicator" ng-model="trialDetailView.curTrial.intervention_indicator"
                                            value="Yes" ng-required="!trialDetailView.curTrial.intervention_indicator"> Yes
                                 </label>
+                                <!--
                                 <span class="form-control-feedback no-top" ng-show="trialDetailView.curTrial.intervention_indicator" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.interventin_indicator) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                -->
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.interventin_indicator)">
                                     FDA Regulated Intervention Indicator is required
                                 </span>
@@ -805,7 +807,9 @@
                                     <input type="radio" restriction-field name="sec801_indicator" ng-model="trialDetailView.curTrial.sec801_indicator"
                                                                    value="Yes" ng-required="!trialDetailView.curTrial.sec801_indicator" ng-disabled="trialDetailView.curTrial.intervention_indicator == 'No'"> Yes
                                 </label>
+                                <!--
                                 <span class="form-control-feedback no-top" ng-show="trialDetailView.curTrial.sec801_indicator" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.sec801_indicator) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                -->
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.sec801_indicator)">
                                     Section 801 Indicator is required
                                 </span>
@@ -823,7 +827,9 @@
                                     <input type="radio" name="data_monitor_indicator" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator"
                                            value="Yes" ng-required="!trialDetailView.curTrial.data_monitor_indicator"> Yes
                                 </label>
+                                <!--
                                 <span class="form-control-feedback no-top" ng-show="trialDetailView.curTrial.data_monitor_indicator" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.data_monitor_indicator) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                -->
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.data_monitor_indicator)">
                                     Data Monitoring Committee Appointed Indicator is required
                                 </span>
@@ -841,7 +847,9 @@
                             <div class="col-xs-12 col-sm-9 form-file-upload">
                                 <input type="file" restriction-field ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB"
                                        ng-required="trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.protocolDocNum === 0)">
+                                <!--
                                 <span class="form-control-feedback" ng-show="trialDetailView.protocol_document" ng-class="trialDetailView.protocol_document ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                -->
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_document)">
                                     Protocol Document is required
                                 </span>
@@ -861,7 +869,9 @@
                             <div class="col-xs-12 col-sm-9 form-file-upload">
                                 <input type="file" restriction-field ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB"
                                        ng-required="trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.irbApprovalNum === 0)">
+                                <!--
                                 <span class="form-control-feedback" ng-show="trialDetailView.irb_approval" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.irb_approval) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                -->
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.irb_approval)">
                                     IRB Approval is required
                                 </span>
