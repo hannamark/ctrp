@@ -28,7 +28,7 @@
                         submitController.attempted = formController.$submitted;
                         $log.info('form is submitted: ' + formController.$submitted);
                         if (!scope.$$phase) scope.$apply();
-                        
+
                         if (formController.$invalid) { //|| formController.$pristine
                             $log.error('form submission invalid or untouched!');
                             return false;
@@ -39,10 +39,7 @@
                         scope.$apply(function() {
                             formAction(scope, {$event: event});
                         });
-
-
                     });
-
                 } //linkerFn
 
                 function controllerFn($scope, $element, $attrs) {
@@ -53,7 +50,6 @@
                         console.log('setting form controller!');
                         formController = controller;
                     };
-
 
                     /* fieldModelController is ngModel controller */
                     this.needsAttention = function(fieldModelController) {
