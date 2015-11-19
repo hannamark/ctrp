@@ -5,6 +5,10 @@ bower_components
 build
 .tmp
 
+#Ignore the host url in the constant file
+src/app/modules/ctrp.module.constants.dev.js
+src/app/modules/ctrp.module.constants.prod.js
+
 #Ignore Test reporters
 report
 **/test/coverage

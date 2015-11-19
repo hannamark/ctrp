@@ -94,6 +94,11 @@
                    url: '/welcome',
                    templateUrl: 'app/layout/welcome/welcomeContent.html',
                    controller: 'headerNavigationCtrl as headerView',
+                   onEnter: function($state, UserService, toastr) {
+                       if (!UserService.isLoggedIn()) {
+                           $state.go('main.sign_in');
+                       }
+                   },
                    ncyBreadcrumb: {
                        label: 'Home'
                    }
