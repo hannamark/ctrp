@@ -196,13 +196,13 @@
                                     <div class="row">
                                         <label class="control-label col-xs-12 col-sm-3">Email:</label>
                                         <div class="col-xs-12 col-sm-3" ng-if="orgDetailView.curOrgEditable">
-                                            <input tabindex="11" type="email" restriction-field class="form-control input-sm" id="email" ng-model="orgDetailView.curOrg.email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
+                                            <input tabindex="15" type="email" restriction-field class="form-control input-sm" id="email" ng-model="orgDetailView.curOrg.email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
                                             <span class="form-control-feedback" ng-show="organization_form.email.$viewValue.length" ng-class="!(organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                         </div>
                                         <div class="col-xs-12 col-sm-3 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.email}}</div>
                                         <label class="control-label col-xs-12 col-sm-1">Phone:</label>
                                         <div class="col-xs-12 col-sm-2" ng-if="orgDetailView.curOrgEditable">
-                                            <input tabindex="12" type="text" restriction-field class="form-control input-sm" id="phone" name="phone" ng-model="orgDetailView.curOrg.phone" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="orgDetailView.isValidPhoneNumber()">
+                                            <input tabindex="16" type="text" restriction-field class="form-control input-sm" id="phone" name="phone" ng-model="orgDetailView.curOrg.phone" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="orgDetailView.isValidPhoneNumber()">
                                             <span ng-show="orgDetailView.curOrg.phone.length" class="form-control-feedback" ng-class="(orgDetailView.curOrg.phone.length > 0 && showPhoneWarning && !IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                                             <div class="has-error" ng-show="orgDetailView.curOrg.phone.length && showPhoneWarning && !IsPhoneValid">
                                                 <span class="help-block">
@@ -226,7 +226,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">Fax:</label>
                                     <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
-                                        <input tabindex="13" type="text" restriction-field class="form-control input-sm" id="fax" ng-model="orgDetailView.curOrg.fax" placeholder="Fax">
+                                        <input tabindex="17" type="text" restriction-field class="form-control input-sm" id="fax" ng-model="orgDetailView.curOrg.fax" placeholder="Fax">
                                     </div>
                                     <div class="col-xs-12 col-sm-6 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.fax}}</div>
                                 </div>
@@ -258,16 +258,16 @@
                                 <div class="form-group no-bottom-margin" ng-show="orgDetailView.curOrgEditable">
                                     <div class="col-xs-12 col-sm-3"></div>
                                     <div class="btn-toolbar col-xs-12 col-sm-9">
-                                        <button tabindex="15" type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
+                                        <button tabindex="19" type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
                                             Save
                                         </button>
-                                        <button tabindex="14" type="button" ng-hide="!orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.clearForm()">
+                                        <button tabindex="18" type="button" ng-hide="!orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.clearForm()">
                                             <i class="glyphicon glyphicon-remove"></i>  Reset
                                         </button>
-                                        <button tabindex="14" type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.resetForm()">
+                                        <button tabindex="18" type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.resetForm()">
                                             <i class="glyphicon glyphicon-remove"></i>  Reset
                                         </button>
-                                        <button tabindex="16" type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
+                                        <button tabindex="20" type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
                                             <i class="glyphicon glyphicon-remove"></i> Delete This Organization
                                         </button>
                                     </div>
