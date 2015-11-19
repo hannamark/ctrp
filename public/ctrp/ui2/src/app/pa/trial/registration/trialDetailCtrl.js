@@ -530,6 +530,7 @@
             if (vm.curTrial.new) {
                 vm.curTrial.pilot = 'No';
                 vm.curTrial.grant_question = 'Yes';
+                vm.curTrial.ind_ide_question = 'Yes';
                 populateStudySource();
             } else {
                 convertDate();
