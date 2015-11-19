@@ -66,7 +66,7 @@ exports.config = {
 
     cucumberOpts: {
         require: ['features/step_definitions/*.js', 'features/support/*.js'],
-        format: 'json:tests/features/output/cuke-report-test.json',
+        format: 'json:tests/features/output/*.json',
         format: 'pretty',
         resultJsonOutputFile: 'true'
         //  tags: '@runthis'
