@@ -148,6 +148,7 @@ two:
   history:
 
 three:
+  nci_id: NCI-2015-00003
   lead_protocol_id: 54321
   official_title: Test Trial 3
   pilot: 'No'
