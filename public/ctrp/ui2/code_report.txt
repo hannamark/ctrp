@@ -1,6 +1,6 @@
-[11:37:05] Using gulpfile ~/Desktop/Code/ctrp-gulp/public/ctrp/ui2/gulpfile.js
-[11:37:05] Starting 'vet'...
-[11:37:05] Analyzing source with JSHint and JSCS
+[11:52:52] Using gulpfile ~/Desktop/Code/ctrp-gulp/public/ctrp/ui2/gulpfile.js
+[11:52:52] Starting 'vet'...
+[11:52:52] Analyzing source with JSHint and JSCS
 
 src/app/layout/footerCtrl.js
   line 15  col 18  Possible strict violation.  (W040)
@@ -137,96 +137,72 @@ src/app/modules/data_services/OrganizationService.js
 
 
 src/app/modules/data_services/PersonService.js
-  line 11   col 131  Line is too long.                                       (W101)
-  line 21   col 0    Identifier 'wc_search' is not in camel case.            (W106)
-  line 22   col 0    Identifier 'source_context' is not in camel case.       (W106)
-  line 23   col 0    Identifier 'source_id' is not in camel case.            (W106)
-  line 24   col 0    Identifier 'source_status' is not in camel case.        (W106)
-  line 31   col 0    Identifier 'date_range_arr' is not in camel case.       (W106)
-  line 32   col 0    Identifier 'affiliated_org_name' is not in camel case.  (W106)
-  line 33   col 0    Identifier 'updated_by' is not in camel case.           (W106)
-  line 37   col 25   Strings must use singlequote.                           (W109)
-  line 45   col 215  Line is too long.                                       (W101)
-  line 62   col 131  Line is too long.                                       (W101)
-  line 63   col 157  Line is too long.                                       (W101)
-  line 81   col 121  Line is too long.                                       (W101)
-  line 92   col 295  Line is too long.                                       (W101)
-  line 94   col 175  Line is too long.                                       (W101)
-  line 171  col 0    Identifier 'user_role' is not in camel case.            (W106)
-  line 172  col 0    Identifier 'curator_role' is not in camel case.         (W106)
+  line 23   col 0    Identifier 'wc_search' is not in camel case.            (W106)
+  line 24   col 0    Identifier 'source_context' is not in camel case.       (W106)
+  line 25   col 0    Identifier 'source_id' is not in camel case.            (W106)
+  line 26   col 0    Identifier 'source_status' is not in camel case.        (W106)
+  line 33   col 0    Identifier 'date_range_arr' is not in camel case.       (W106)
+  line 34   col 0    Identifier 'affiliated_org_name' is not in camel case.  (W106)
+  line 35   col 0    Identifier 'updated_by' is not in camel case.           (W106)
+  line 39   col 25   Strings must use singlequote.                           (W109)
+  line 47   col 215  Line is too long.                                       (W101)
+  line 64   col 131  Line is too long.                                       (W101)
+  line 65   col 157  Line is too long.                                       (W101)
+  line 83   col 121  Line is too long.                                       (W101)
+  line 94   col 295  Line is too long.                                       (W101)
+  line 96   col 175  Line is too long.                                       (W101)
   line 173  col 0    Identifier 'user_role' is not in camel case.            (W106)
-  line 173  col 0    Identifier 'curator_role' is not in camel case.         (W106)
-  line 173  col 16   Confusing use of '!'.                                   (W018)
-  line 174  col 0    Identifier 'wc_search' is not in camel case.            (W106)
-  line 183  col 0    Identifier 'user_role' is not in camel case.            (W106)
-  line 185  col 0    Identifier 'updated_at_index' is not in camel case.     (W106)
-  line 186  col 0    Identifier 'updated_at_index' is not in camel case.     (W106)
-  line 188  col 0    Identifier 'curator_role' is not in camel case.         (W106)
-  line 189  col 0    Identifier 'user_role' is not in camel case.            (W106)
-  line 189  col 0    Identifier 'curator_role' is not in camel case.         (W106)
-  line 190  col 0    Identifier 'updated_at_index' is not in camel case.     (W106)
-  line 193  col 0    Identifier 'updated_by_index' is not in camel case.     (W106)
-  line 194  col 0    Identifier 'updated_by_index' is not in camel case.     (W106)
+  line 174  col 0    Identifier 'curator_role' is not in camel case.         (W106)
+  line 175  col 0    Identifier 'user_role' is not in camel case.            (W106)
+  line 175  col 0    Identifier 'curator_role' is not in camel case.         (W106)
+  line 175  col 16   Confusing use of '!'.                                   (W018)
+  line 176  col 0    Identifier 'wc_search' is not in camel case.            (W106)
+  line 185  col 0    Identifier 'user_role' is not in camel case.            (W106)
+  line 187  col 0    Identifier 'updated_at_index' is not in camel case.     (W106)
+  line 188  col 0    Identifier 'updated_at_index' is not in camel case.     (W106)
+  line 190  col 0    Identifier 'curator_role' is not in camel case.         (W106)
+  line 191  col 0    Identifier 'user_role' is not in camel case.            (W106)
+  line 191  col 0    Identifier 'curator_role' is not in camel case.         (W106)
+  line 192  col 0    Identifier 'updated_at_index' is not in camel case.     (W106)
   line 195  col 0    Identifier 'updated_by_index' is not in camel case.     (W106)
+  line 196  col 0    Identifier 'updated_by_index' is not in camel case.     (W106)
+  line 197  col 0    Identifier 'updated_by_index' is not in camel case.     (W106)
 
-  ⚠  31 warnings
+  ⚠  30 warnings
 
 
 src/app/modules/data_services/TrialService.js
-  line 11   col 127  Line is too long.                (W101)
-  line 17   col 21   Strings must use singlequote.    (W109)
-  line 18   col 22   Strings must use singlequote.    (W109)
-  line 36   col 125  Line is too long.                (W101)
-  line 37   col 208  Line is too long.                (W101)
-  line 40   col 147  Line is too long.                (W101)
-  line 44   col 149  Line is too long.                (W101)
-  line 47   col 147  Line is too long.                (W101)
-  line 50   col 147  Line is too long.                (W101)
-  line 53   col 147  Line is too long.                (W101)
-  line 56   col 147  Line is too long.                (W101)
-  line 99   col 63   Strings must use singlequote.    (W109)
-  line 120  col 95   Strings must use singlequote.    (W109)
-  line 224  col 123  Line is too long.                (W101)
-  line 227  col 173  Line is too long.                (W101)
-  line 242  col 171  Line is too long.                (W101)
-  line 248  col 190  Line is too long.                (W101)
-  line 251  col 287  Line is too long.                (W101)
-  line 254  col 144  Line is too long.                (W101)
-  line 263  col 332  Line is too long.                (W101)
-  line 275  col 164  Line is too long.                (W101)
-  line 290  col 141  Line is too long.                (W101)
-  line 293  col 158  Line is too long.                (W101)
-  line 296  col 173  Line is too long.                (W101)
-  line 302  col 176  Line is too long.                (W101)
-  line 305  col 194  Line is too long.                (W101)
-  line 314  col 308  Line is too long.                (W101)
-  line 317  col 151  Line is too long.                (W101)
-  line 323  col 161  Line is too long.                (W101)
-  line 329  col 180  Line is too long.                (W101)
-  line 338  col 202  Line is too long.                (W101)
-  line 341  col 448  Line is too long.                (W101)
-  line 353  col 441  Line is too long.                (W101)
-  line 359  col 131  Line is too long.                (W101)
-  line 368  col 137  Line is too long.                (W101)
-  line 371  col 144  Line is too long.                (W101)
-  line 377  col 326  Line is too long.                (W101)
-  line 380  col 131  Line is too long.                (W101)
-  line 386  col 152  Line is too long.                (W101)
-  line 389  col 228  Line is too long.                (W101)
-  line 392  col 248  Line is too long.                (W101)
-  line 398  col 275  Line is too long.                (W101)
-  line 410  col 152  Line is too long.                (W101)
-  line 434  col 139  Line is too long.                (W101)
-  line 449  col 296  Line is too long.                (W101)
-  line 461  col 293  Line is too long.                (W101)
-  line 464  col 197  Line is too long.                (W101)
-  line 473  col 350  Line is too long.                (W101)
-  line 485  col 174  Line is too long.                (W101)
-  line 488  col 169  Line is too long.                (W101)
-  line 488  col 169  Too many errors. (74% scanned).  (E043)
+  line 11   col 127  Line is too long.                                         (W101)
+  line 36   col 125  Line is too long.                                         (W101)
+  line 37   col 208  Line is too long.                                         (W101)
+  line 40   col 147  Line is too long.                                         (W101)
+  line 44   col 149  Line is too long.                                         (W101)
+  line 47   col 147  Line is too long.                                         (W101)
+  line 50   col 147  Line is too long.                                         (W101)
+  line 53   col 147  Line is too long.                                         (W101)
+  line 56   col 147  Line is too long.                                         (W101)
+  line 396  col 133  Line is too long.                                         (W101)
+  line 428  col 131  Line is too long.                                         (W101)
+  line 461  col 131  Line is too long.                                         (W101)
+  line 571  col 293  Line is too long.                                         (W101)
+  line 574  col 197  Line is too long.                                         (W101)
+  line 660  col 157  Line is too long.                                         (W101)
+  line 666  col 135  Line is too long.                                         (W101)
+  line 672  col 170  Line is too long.                                         (W101)
+  line 678  col 250  Line is too long.                                         (W101)
+  line 687  col 247  Line is too long.                                         (W101)
+  line 690  col 129  Line is too long.                                         (W101)
+  line 693  col 162  Line is too long.                                         (W101)
+  line 696  col 134  Line is too long.                                         (W101)
+  line 699  col 181  Line is too long.                                         (W101)
+  line 711  col 164  Line is too long.                                         (W101)
+  line 717  col 175  Line is too long.                                         (W101)
+  line 720  col 241  Line is too long.                                         (W101)
+  line 738  col 129  Line is too long.                                         (W101)
+  line 219  col 36   This function's cyclomatic complexity is too high. (131)  (W074)
+  line 95   col 20   'PromiseService' is not defined.                          (W117)
 
-  ✖  1 error
-  ⚠  50 warnings
+  ⚠  29 warnings
 
 
 src/app/modules/data_services/UserService.js
@@ -286,22 +262,6 @@ src/app/modules/data_services/UserService.js
   ⚠  50 warnings
 
 
-src/app/modules/widgets/ctrp.widgets.in-place-edit.directive.js
-  line 48  col 31  Expected '===' and instead saw '=='.  (W116)
-  line 83  col 53  Expected '===' and instead saw '=='.  (W116)
-
-  ⚠  2 warnings
-
-
-src/app/modules/widgets/ctrp.widgets.restrictionField.directive.js
-  line 61  col 49   Expected '===' and instead saw '=='.                     (W116)
-  line 63  col 124  Line is too long.                                        (W101)
-  line 64  col 165  Line is too long.                                        (W101)
-  line 59  col 41   This function's cyclomatic complexity is too high. (12)  (W074)
-
-  ⚠  4 warnings
-
-
 src/app/modules/validators/ctrp.dateLaterThan.directive.js
   line 109  col 28  Expected '===' and instead saw '=='.  (W116)
   line 109  col 44  Expected '===' and instead saw '=='.  (W116)
@@ -323,93 +283,110 @@ src/app/modules/validators/ctrp.validateFormSubmission.directive.js
   ⚠  7 warnings
 
 
-src/app/po/person/ModalInstancePersonCtrl.js
-  line 18  col 41  Strings must use singlequote.         (W109)
-  line 19  col 31  Strings must use singlequote.         (W109)
-  line 24  col 53  Strings must use singlequote.         (W109)
-  line 25  col 58  Strings must use singlequote.         (W109)
-  line 26  col 45  Expected '===' and instead saw '=='.  (W116)
-  line 27  col 47  Expected '===' and instead saw '=='.  (W116)
-  line 27  col 87  Missing semicolon.                    (W033)
-  line 30  col 50  Strings must use singlequote.         (W109)
-  line 31  col 72  Strings must use singlequote.         (W109)
-  line 32  col 65  Strings must use singlequote.         (W109)
-  line 43  col 45  Strings must use singlequote.         (W109)
-  line 44  col 44  Strings must use singlequote.         (W109)
+src/app/modules/widgets/ctrp.widgets.in-place-edit.directive.js
+  line 48  col 31  Expected '===' and instead saw '=='.  (W116)
+  line 83  col 53  Expected '===' and instead saw '=='.  (W116)
 
-  ⚠  12 warnings
+  ⚠  2 warnings
 
 
-src/app/po/person/personCtrl.js
-  line 15  col 18  Possible strict violation.  (W040)
+src/app/modules/widgets/ctrp.widgets.restrictionField.directive.js
+  line 61  col 49   Expected '===' and instead saw '=='.                     (W116)
+  line 63  col 124  Line is too long.                                        (W101)
+  line 64  col 165  Line is too long.                                        (W101)
+  line 59  col 41   This function's cyclomatic complexity is too high. (12)  (W074)
+
+  ⚠  4 warnings
+
+
+src/app/po/organization/ModalInstanceCtrl.js
+  line 18  col 41  Strings must use singlequote.  (W109)
+  line 19  col 31  Strings must use singlequote.  (W109)
+  line 22  col 53  Strings must use singlequote.  (W109)
+  line 24  col 54  Strings must use singlequote.  (W109)
+  line 27  col 61  Strings must use singlequote.  (W109)
+  line 28  col 60  Strings must use singlequote.  (W109)
+  line 31  col 50  Strings must use singlequote.  (W109)
+  line 32  col 78  Strings must use singlequote.  (W109)
+  line 33  col 65  Strings must use singlequote.  (W109)
+
+  ⚠  9 warnings
+
+
+src/app/po/organization/advancedOrgSearchModalCtrl.js
+  line 17  col 18  Possible strict violation.  (W040)
 
   ⚠  1 warning
 
 
-src/app/po/person/personDetailCtrl.js
-  line 12   col 122  Line is too long.                                              (W101)
-  line 15   col 127  Line is too long.                                              (W101)
-  line 14   col 30   This function has too many parameters. (14)                    (W072)
-  line 16   col 18   Possible strict violation.                                     (W040)
-  line 17   col 53   Strings must use singlequote.                                  (W109)
-  line 17   col 0    Identifier 'source_status_id' is not in camel case.            (W106)
-  line 17   col 75   Strings must use singlequote.                                  (W109)
-  line 26   col 185  Line is too long.                                              (W101)
-  line 26   col 0    Identifier 'source_status_id' is not in camel case.            (W106)
-  line 26   col 0    Identifier 'source_status_id' is not in camel case.            (W106)
-  line 28   col 0    Identifier 'source_status_id' is not in camel case.            (W106)
-  line 32   col 131  Line is too long.                                              (W101)
-  line 35   col 121  Line is too long.                                              (W101)
-  line 40   col 154  Line is too long.                                              (W101)
-  line 40   col 0    Identifier 'po_affiliations_attributes' is not in camel case.  (W106)
-  line 41   col 0    Identifier 'po_affiliations_attributes' is not in camel case.  (W106)
-  line 43   col 131  Line is too long.                                              (W101)
-  line 43   col 0    Identifier 'effective_date' is not in camel case.              (W106)
-  line 44   col 134  Line is too long.                                              (W101)
-  line 44   col 0    Identifier 'expiration_date' is not in camel case.             (W106)
-  line 46   col 0    Identifier 'effective_date' is not in camel case.              (W106)
-  line 46   col 0    Identifier 'expiration_date' is not in camel case.             (W106)
-  line 48   col 0    Identifier 'expiration_date' is not in camel case.             (W106)
-  line 51   col 0    Identifier 'po_affiliation_status_id' is not in camel case.    (W106)
-  line 51   col 65   Expected '===' and instead saw '=='.                           (W116)
-  line 52   col 124  Line is too long.                                              (W101)
-  line 52   col 0    Identifier 'po_affiliations_attributes' is not in camel case.  (W106)
-  line 68   col 0    Identifier 'updated_by' is not in camel case.                  (W106)
-  line 68   col 0    Identifier 'updated_by' is not in camel case.                  (W106)
-  line 69   col 0    Identifier 'updated_at' is not in camel case.                  (W106)
-  line 69   col 0    Identifier 'updated_at' is not in camel case.                  (W106)
-  line 78   col 56   Strings must use singlequote.                                  (W109)
-  line 83   col 0    Identifier 'person_form' is not in camel case.                 (W106)
-  line 86   col 0    Identifier 'source_context_id' is not in camel case.           (W106)
-  line 101  col 41   Strings must use singlequote.                                  (W109)
-  line 101  col 29   Expected '===' and instead saw '=='.                           (W116)
-  line 104  col 82   Expected '===' and instead saw '=='.                           (W116)
-  line 110  col 89   Strings must use singlequote.                                  (W109)
-  line 130  col 36   Strings must use singlequote.                                  (W109)
-  line 130  col 24   Expected '===' and instead saw '=='.                           (W116)
-  line 131  col 0    Identifier 'opened_effective' is not in camel case.            (W106)
-  line 131  col 0    Identifier 'opened_effective' is not in camel case.            (W106)
-  line 133  col 0    Identifier 'opened_expiration' is not in camel case.           (W106)
-  line 133  col 0    Identifier 'opened_expiration' is not in camel case.           (W106)
-  line 148  col 80   Strings must use singlequote.                                  (W109)
-  line 160  col 0    Identifier 'po_affiliations' is not in camel case.             (W106)
-  line 160  col 0    Identifier 'po_affiliations' is not in camel case.             (W106)
-  line 184  col 51   Strings must use singlequote.                                  (W109)
-  line 184  col 59   Strings must use singlequote.                                  (W109)
-  line 187  col 54   Expected '===' and instead saw '=='.                           (W116)
-  line 187  col 54   Too many errors. (58% scanned).                                (E043)
+src/app/po/organization/orgDetailCtrl.js
+  line 14   col 27   This function has too many parameters. (13)                 (W072)
+  line 16   col 18   Possible strict violation.                                  (W040)
+  line 17   col 0    Identifier 'organization_form' is not in camel case.        (W106)
+  line 23   col 46   Strings must use singlequote.                               (W109)
+  line 23   col 59   Strings must use singlequote.                               (W109)
+  line 23   col 0    Identifier 'source_status_id' is not in camel case.         (W106)
+  line 23   col 81   Strings must use singlequote.                               (W109)
+  line 29   col 140  Line is too long.                                           (W101)
+  line 30   col 179  Line is too long.                                           (W101)
+  line 30   col 0    Identifier 'source_status_id' is not in camel case.         (W106)
+  line 30   col 0    Identifier 'source_status_id' is not in camel case.         (W106)
+  line 32   col 0    Identifier 'source_status_id' is not in camel case.         (W106)
+  line 44   col 0    Identifier 'name_aliases_attributes' is not in camel case.  (W106)
+  line 46   col 0    Identifier 'name_aliases_attributes' is not in camel case.  (W106)
+  line 60   col 0    Identifier 'updated_by' is not in camel case.               (W106)
+  line 60   col 0    Identifier 'updated_by' is not in camel case.               (W106)
+  line 61   col 0    Identifier 'updated_at' is not in camel case.               (W106)
+  line 61   col 0    Identifier 'updated_at' is not in camel case.               (W106)
+  line 70   col 62   Strings must use singlequote.                               (W109)
+  line 81   col 0    Identifier 'organization_form' is not in camel case.        (W106)
+  line 87   col 49   Expected '===' and instead saw '=='.                        (W116)
+  line 93   col 0    Identifier 'source_context_id' is not in camel case.        (W106)
+  line 101  col 34   Expected '===' and instead saw '=='.                        (W116)
+  line 110  col 24   Expected '===' and instead saw '=='.                        (W116)
+  line 129  col 86   Strings must use singlequote.                               (W109)
+  line 140  col 0    Identifier 'source_context_id' is not in camel case.        (W106)
+  line 140  col 0    Identifier 'source_context_id' is not in camel case.        (W106)
+  line 141  col 0    Identifier 'source_context_id' is not in camel case.        (W106)
+  line 155  col 0    Identifier 'name_aliases' is not in camel case.             (W106)
+  line 156  col 0    Identifier 'name_alias' is not in camel case.               (W106)
+  line 157  col 0    Identifier 'name_alias' is not in camel case.               (W106)
+  line 157  col 0    Identifier 'name_aliases' is not in camel case.             (W106)
+  line 158  col 0    Identifier 'name_alias' is not in camel case.               (W106)
+  line 158  col 0    Identifier 'name_aliases' is not in camel case.             (W106)
+  line 159  col 0    Identifier 'name_alias' is not in camel case.               (W106)
+  line 160  col 0    Identifier 'name_alias' is not in camel case.               (W106)
+  line 171  col 138  Line is too long.                                           (W101)
+  line 171  col 0    Identifier 'source_context_id' is not in camel case.        (W106)
+  line 173  col 130  Line is too long.                                           (W101)
+  line 177  col 134  Line is too long.                                           (W101)
+  line 177  col 0    Identifier 'source_context_id' is not in camel case.        (W106)
+  line 182  col 126  Line is too long.                                           (W101)
+  line 203  col 15   Missing semicolon.                                          (W033)
+  line 221  col 48   Strings must use singlequote.                               (W109)
+  line 221  col 56   Strings must use singlequote.                               (W109)
+  line 224  col 51   Expected '===' and instead saw '=='.                        (W116)
+  line 246  col 65   Strings must use singlequote.                               (W109)
+  line 249  col 53   Strings must use singlequote.                               (W109)
+  line 249  col 54   Missing semicolon.                                          (W033)
+  line 253  col 14   Missing semicolon.                                          (W033)
+  line 253  col 14   Too many errors. (88% scanned).                             (E043)
 
   ✖  1 error
   ⚠  50 warnings
 
 
-src/app/po/person/personSearchCtrl.js
-  line 14  col 18   Possible strict violation.     (W040)
-  line 17  col 124  Line is too long.              (W101)
-  line 18  col 27   Strings must use singlequote.  (W109)
-  line 43  col 63   Strings must use singlequote.  (W109)
+src/app/po/organization/organization.routes.js
+  line 32  col 61  Strings must use singlequote.  (W109)
+  line 40  col 56  Strings must use singlequote.  (W109)
 
-  ⚠  4 warnings
+  ⚠  2 warnings
+
+
+src/app/po/organization/organizationCtrl.js
+  line 16  col 18  Possible strict violation.  (W040)
+
+  ⚠  1 warning
 
 
 src/app/po/family/ModalInstanceFamilyCtrl.js
@@ -518,162 +495,99 @@ src/app/po/family/familyDetailCtrl.js
   ⚠  50 warnings
 
 
-src/app/po/organization/ModalInstanceCtrl.js
-  line 18  col 41  Strings must use singlequote.  (W109)
-  line 19  col 31  Strings must use singlequote.  (W109)
-  line 22  col 53  Strings must use singlequote.  (W109)
-  line 24  col 54  Strings must use singlequote.  (W109)
-  line 27  col 61  Strings must use singlequote.  (W109)
-  line 28  col 60  Strings must use singlequote.  (W109)
-  line 31  col 50  Strings must use singlequote.  (W109)
-  line 32  col 78  Strings must use singlequote.  (W109)
-  line 33  col 65  Strings must use singlequote.  (W109)
+src/app/po/person/ModalInstancePersonCtrl.js
+  line 18  col 41  Strings must use singlequote.         (W109)
+  line 19  col 31  Strings must use singlequote.         (W109)
+  line 24  col 53  Strings must use singlequote.         (W109)
+  line 25  col 58  Strings must use singlequote.         (W109)
+  line 26  col 45  Expected '===' and instead saw '=='.  (W116)
+  line 27  col 47  Expected '===' and instead saw '=='.  (W116)
+  line 27  col 87  Missing semicolon.                    (W033)
+  line 30  col 50  Strings must use singlequote.         (W109)
+  line 31  col 72  Strings must use singlequote.         (W109)
+  line 32  col 65  Strings must use singlequote.         (W109)
+  line 43  col 45  Strings must use singlequote.         (W109)
+  line 44  col 44  Strings must use singlequote.         (W109)
 
-  ⚠  9 warnings
+  ⚠  12 warnings
 
 
-src/app/po/organization/advancedOrgSearchModalCtrl.js
-  line 17  col 18  Possible strict violation.  (W040)
+src/app/po/person/personCtrl.js
+  line 15  col 18  Possible strict violation.  (W040)
 
   ⚠  1 warning
 
 
-src/app/po/organization/orgDetailCtrl.js
-  line 14   col 27   This function has too many parameters. (13)                 (W072)
-  line 16   col 18   Possible strict violation.                                  (W040)
-  line 17   col 0    Identifier 'organization_form' is not in camel case.        (W106)
-  line 23   col 46   Strings must use singlequote.                               (W109)
-  line 23   col 59   Strings must use singlequote.                               (W109)
-  line 23   col 0    Identifier 'source_status_id' is not in camel case.         (W106)
-  line 23   col 81   Strings must use singlequote.                               (W109)
-  line 29   col 140  Line is too long.                                           (W101)
-  line 30   col 179  Line is too long.                                           (W101)
-  line 30   col 0    Identifier 'source_status_id' is not in camel case.         (W106)
-  line 30   col 0    Identifier 'source_status_id' is not in camel case.         (W106)
-  line 32   col 0    Identifier 'source_status_id' is not in camel case.         (W106)
-  line 44   col 0    Identifier 'name_aliases_attributes' is not in camel case.  (W106)
-  line 46   col 0    Identifier 'name_aliases_attributes' is not in camel case.  (W106)
-  line 60   col 0    Identifier 'updated_by' is not in camel case.               (W106)
-  line 60   col 0    Identifier 'updated_by' is not in camel case.               (W106)
-  line 61   col 0    Identifier 'updated_at' is not in camel case.               (W106)
-  line 61   col 0    Identifier 'updated_at' is not in camel case.               (W106)
-  line 70   col 62   Strings must use singlequote.                               (W109)
-  line 81   col 0    Identifier 'organization_form' is not in camel case.        (W106)
-  line 87   col 49   Expected '===' and instead saw '=='.                        (W116)
-  line 93   col 0    Identifier 'source_context_id' is not in camel case.        (W106)
-  line 101  col 34   Expected '===' and instead saw '=='.                        (W116)
-  line 110  col 24   Expected '===' and instead saw '=='.                        (W116)
-  line 129  col 86   Strings must use singlequote.                               (W109)
-  line 140  col 0    Identifier 'source_context_id' is not in camel case.        (W106)
-  line 140  col 0    Identifier 'source_context_id' is not in camel case.        (W106)
-  line 141  col 0    Identifier 'source_context_id' is not in camel case.        (W106)
-  line 155  col 0    Identifier 'name_aliases' is not in camel case.             (W106)
-  line 156  col 0    Identifier 'name_alias' is not in camel case.               (W106)
-  line 157  col 0    Identifier 'name_alias' is not in camel case.               (W106)
-  line 157  col 0    Identifier 'name_aliases' is not in camel case.             (W106)
-  line 158  col 0    Identifier 'name_alias' is not in camel case.               (W106)
-  line 158  col 0    Identifier 'name_aliases' is not in camel case.             (W106)
-  line 159  col 0    Identifier 'name_alias' is not in camel case.               (W106)
-  line 160  col 0    Identifier 'name_alias' is not in camel case.               (W106)
-  line 171  col 138  Line is too long.                                           (W101)
-  line 171  col 0    Identifier 'source_context_id' is not in camel case.        (W106)
-  line 173  col 130  Line is too long.                                           (W101)
-  line 177  col 134  Line is too long.                                           (W101)
-  line 177  col 0    Identifier 'source_context_id' is not in camel case.        (W106)
-  line 182  col 126  Line is too long.                                           (W101)
-  line 203  col 15   Missing semicolon.                                          (W033)
-  line 221  col 48   Strings must use singlequote.                               (W109)
-  line 221  col 56   Strings must use singlequote.                               (W109)
-  line 224  col 51   Expected '===' and instead saw '=='.                        (W116)
-  line 246  col 65   Strings must use singlequote.                               (W109)
-  line 249  col 53   Strings must use singlequote.                               (W109)
-  line 249  col 54   Missing semicolon.                                          (W033)
-  line 253  col 14   Missing semicolon.                                          (W033)
-  line 253  col 14   Too many errors. (88% scanned).                             (E043)
+src/app/po/person/personDetailCtrl.js
+  line 12   col 122  Line is too long.                                              (W101)
+  line 15   col 127  Line is too long.                                              (W101)
+  line 14   col 30   This function has too many parameters. (14)                    (W072)
+  line 16   col 18   Possible strict violation.                                     (W040)
+  line 17   col 53   Strings must use singlequote.                                  (W109)
+  line 17   col 0    Identifier 'source_status_id' is not in camel case.            (W106)
+  line 17   col 75   Strings must use singlequote.                                  (W109)
+  line 26   col 185  Line is too long.                                              (W101)
+  line 26   col 0    Identifier 'source_status_id' is not in camel case.            (W106)
+  line 26   col 0    Identifier 'source_status_id' is not in camel case.            (W106)
+  line 28   col 0    Identifier 'source_status_id' is not in camel case.            (W106)
+  line 32   col 131  Line is too long.                                              (W101)
+  line 35   col 121  Line is too long.                                              (W101)
+  line 40   col 154  Line is too long.                                              (W101)
+  line 40   col 0    Identifier 'po_affiliations_attributes' is not in camel case.  (W106)
+  line 41   col 0    Identifier 'po_affiliations_attributes' is not in camel case.  (W106)
+  line 43   col 131  Line is too long.                                              (W101)
+  line 43   col 0    Identifier 'effective_date' is not in camel case.              (W106)
+  line 44   col 134  Line is too long.                                              (W101)
+  line 44   col 0    Identifier 'expiration_date' is not in camel case.             (W106)
+  line 46   col 0    Identifier 'effective_date' is not in camel case.              (W106)
+  line 46   col 0    Identifier 'expiration_date' is not in camel case.             (W106)
+  line 48   col 0    Identifier 'expiration_date' is not in camel case.             (W106)
+  line 51   col 0    Identifier 'po_affiliation_status_id' is not in camel case.    (W106)
+  line 51   col 65   Expected '===' and instead saw '=='.                           (W116)
+  line 52   col 124  Line is too long.                                              (W101)
+  line 52   col 0    Identifier 'po_affiliations_attributes' is not in camel case.  (W106)
+  line 68   col 0    Identifier 'updated_by' is not in camel case.                  (W106)
+  line 68   col 0    Identifier 'updated_by' is not in camel case.                  (W106)
+  line 69   col 0    Identifier 'updated_at' is not in camel case.                  (W106)
+  line 69   col 0    Identifier 'updated_at' is not in camel case.                  (W106)
+  line 78   col 56   Strings must use singlequote.                                  (W109)
+  line 83   col 0    Identifier 'person_form' is not in camel case.                 (W106)
+  line 86   col 0    Identifier 'source_context_id' is not in camel case.           (W106)
+  line 101  col 41   Strings must use singlequote.                                  (W109)
+  line 101  col 29   Expected '===' and instead saw '=='.                           (W116)
+  line 104  col 82   Expected '===' and instead saw '=='.                           (W116)
+  line 110  col 89   Strings must use singlequote.                                  (W109)
+  line 130  col 36   Strings must use singlequote.                                  (W109)
+  line 130  col 24   Expected '===' and instead saw '=='.                           (W116)
+  line 131  col 0    Identifier 'opened_effective' is not in camel case.            (W106)
+  line 131  col 0    Identifier 'opened_effective' is not in camel case.            (W106)
+  line 133  col 0    Identifier 'opened_expiration' is not in camel case.           (W106)
+  line 133  col 0    Identifier 'opened_expiration' is not in camel case.           (W106)
+  line 148  col 80   Strings must use singlequote.                                  (W109)
+  line 160  col 0    Identifier 'po_affiliations' is not in camel case.             (W106)
+  line 160  col 0    Identifier 'po_affiliations' is not in camel case.             (W106)
+  line 184  col 51   Strings must use singlequote.                                  (W109)
+  line 184  col 59   Strings must use singlequote.                                  (W109)
+  line 187  col 54   Expected '===' and instead saw '=='.                           (W116)
+  line 187  col 54   Too many errors. (58% scanned).                                (E043)
 
   ✖  1 error
   ⚠  50 warnings
 
 
-src/app/po/organization/organization.routes.js
-  line 32  col 61  Strings must use singlequote.  (W109)
-  line 40  col 56  Strings must use singlequote.  (W109)
+src/app/po/person/personSearchCtrl.js
+  line 14  col 18   Possible strict violation.     (W040)
+  line 17  col 124  Line is too long.              (W101)
+  line 18  col 27   Strings must use singlequote.  (W109)
+  line 43  col 63   Strings must use singlequote.  (W109)
 
-  ⚠  2 warnings
+  ⚠  4 warnings
 
 
-src/app/po/organization/organizationCtrl.js
-  line 16  col 18  Possible strict violation.  (W040)
+src/app/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js
+  line 24  col 23  Missing semicolon.  (W033)
 
   ⚠  1 warning
-
-
-src/app/pa/trial/registration/trialCtrl.js
-  line 14  col 23  This function has too many parameters. (11)  (W072)
-  line 17  col 18  Possible strict violation.                   (W040)
-  line 30  col 72  Missing semicolon.                           (W033)
-  line 71  col 38  Expected '===' and instead saw '=='.         (W116)
-  line 72  col 47  Strings must use singlequote.                (W109)
-  line 92  col 10  Unnecessary semicolon.                       (W032)
-
-  ⚠  6 warnings
-
-
-src/app/pa/trial/registration/trialDetailCtrl.js
-  line 10   col 132  Line is too long.                                                    (W101)
-  line 11   col 153  Line is too long.                                                    (W101)
-  line 12   col 149  Line is too long.                                                    (W101)
-  line 16   col 156  Line is too long.                                                    (W101)
-  line 17   col 156  Line is too long.                                                    (W101)
-  line 15   col 29   This function has too many parameters. (27)                          (W072)
-  line 19   col 18   Possible strict violation.                                           (W040)
-  line 20   col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
-  line 20   col 62   Strings must use singlequote.                                        (W109)
-  line 44   col 0    Identifier 'status_date_opened' is not in camel case.                (W106)
-  line 45   col 0    Identifier 'start_date_opened' is not in camel case.                 (W106)
-  line 46   col 0    Identifier 'primary_comp_date_opened' is not in camel case.          (W106)
-  line 47   col 0    Identifier 'comp_date_opened' is not in camel case.                  (W106)
-  line 65   col 0    Identifier 'why_stopped_disabled' is not in camel case.              (W106)
-  line 73   col 0    Identifier 'lead_org_id' is not in camel case.                       (W106)
-  line 73   col 67   Missing semicolon.                                                   (W033)
-  line 75   col 0    Identifier 'lead_org_id' is not in camel case.                       (W106)
-  line 79   col 0    Identifier 'pi_id' is not in camel case.                             (W106)
-  line 81   col 0    Identifier 'pi_id' is not in camel case.                             (W106)
-  line 85   col 0    Identifier 'sponsor_id' is not in camel case.                        (W106)
-  line 87   col 0    Identifier 'sponsor_id' is not in camel case.                        (W106)
-  line 91   col 0    Identifier 'investigator_id' is not in camel case.                   (W106)
-  line 93   col 0    Identifier 'investigator_id' is not in camel case.                   (W106)
-  line 97   col 0    Identifier 'investigator_aff_id' is not in camel case.               (W106)
-  line 99   col 0    Identifier 'investigator_aff_id' is not in camel case.               (W106)
-  line 104  col 0    Identifier 'other_ids_attributes' is not in camel case.              (W106)
-  line 106  col 0    Identifier 'other_ids_attributes' is not in camel case.              (W106)
-  line 111  col 0    Identifier 'trial_funding_sources_attributes' is not in camel case.  (W106)
-  line 113  col 0    Identifier 'trial_funding_sources_attributes' is not in camel case.  (W106)
-  line 118  col 0    Identifier 'grants_attributes' is not in camel case.                 (W106)
-  line 120  col 0    Identifier 'grants_attributes' is not in camel case.                 (W106)
-  line 125  col 0    Identifier 'trial_status_wrappers_attributes' is not in camel case.  (W106)
-  line 127  col 0    Identifier 'trial_status_wrappers_attributes' is not in camel case.  (W106)
-  line 132  col 0    Identifier 'ind_ides_attributes' is not in camel case.               (W106)
-  line 134  col 0    Identifier 'ind_ides_attributes' is not in camel case.               (W106)
-  line 139  col 0    Identifier 'oversight_authorities_attributes' is not in camel case.  (W106)
-  line 141  col 0    Identifier 'oversight_authorities_attributes' is not in camel case.  (W106)
-  line 146  col 0    Identifier 'trial_documents_attributes' is not in camel case.        (W106)
-  line 149  col 0    Identifier 'trial_documents_attributes' is not in camel case.        (W106)
-  line 154  col 30   Expected '===' and instead saw '=='.                                 (W116)
-  line 155  col 0    Identifier 'is_draft' is not in camel case.                          (W106)
-  line 157  col 0    Identifier 'is_draft' is not in camel case.                          (W106)
-  line 167  col 0    Identifier 'server_response' is not in camel case.                   (W106)
-  line 170  col 124  Line is too long.                                                    (W101)
-  line 170  col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
-  line 173  col 55   Strings must use singlequote.                                        (W109)
-  line 71   col 34   This function has too many statements. (44)                          (W071)
-  line 71   col 34   This function's cyclomatic complexity is too high. (14)              (W074)
-  line 178  col 0    Identifier 'trial_form' is not in camel case.                        (W106)
-  line 178  col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
-  line 178  col 34   Too many errors. (21% scanned).                                      (E043)
-
-  ✖  1 error
-  ⚠  50 warnings
 
 
 src/app/modules/widgets/comment/CommentService.js
@@ -714,10 +628,77 @@ src/app/modules/widgets/comment/ctrp.widgets.comment-panel.directive.js
   ⚠  12 warnings
 
 
-src/app/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js
-  line 24  col 23  Missing semicolon.  (W033)
+src/app/po/organization/directives/advancedOrgSearchForm2.js
+  line 16   col 129  Line is too long.                                               (W101)
+  line 15   col 40   This function has too many parameters. (13)                     (W072)
+  line 55   col 96   Strings must use singlequote.                                   (W109)
+  line 59   col 122  Line is too long.                                               (W101)
+  line 60   col 167  Line is too long.                                               (W101)
+  line 68   col 128  Line is too long.                                               (W101)
+  line 74   col 147  Line is too long.                                               (W101)
+  line 76   col 0    Identifier 'source_context' is not in camel case.               (W106)
+  line 76   col 92   Strings must use singlequote.                                   (W109)
+  line 84   col 41   Did you mean to return a conditional instead of an assignment?  (W093)
+  line 97   col 45   Strings must use singlequote.                                   (W109)
+  line 99   col 149  Line is too long.                                               (W101)
+  line 100  col 167  Line is too long.                                               (W101)
+  line 106  col 85   Expected '!==' and instead saw '!='.                            (W116)
+  line 107  col 25   Expected '{' and instead saw 'isEmptySearch'.                   (W116)
+  line 110  col 125  Line is too long.                                               (W101)
+  line 110  col 125  Strings must use singlequote.                                   (W109)
+  line 112  col 53   Strings must use singlequote.                                   (W109)
+  line 115  col 138  Line is too long.                                               (W101)
+  line 115  col 0    Identifier 'date_range_arr' is not in camel case.               (W106)
+  line 116  col 0    Identifier 'date_range_arr' is not in camel case.               (W106)
+  line 117  col 0    Identifier 'date_range_arr' is not in camel case.               (W106)
+  line 122  col 69   Strings must use singlequote.                                   (W109)
+  line 127  col 54   Strings must use singlequote.                                   (W109)
+  line 132  col 133  Line is too long.                                               (W101)
+  line 148  col 65   Strings must use singlequote.                                   (W109)
+  line 157  col 0    Identifier 'wc_search' is not in camel case.                    (W106)
+  line 187  col 0    Identifier 'source_status' is not in camel case.                (W106)
+  line 187  col 0    Identifier 'source_status' is not in camel case.                (W106)
+  line 188  col 0    Identifier 'source_status' is not in camel case.                (W106)
+  line 188  col 0    Identifier 'source_status' is not in camel case.                (W106)
+  line 192  col 133  Line is too long.                                               (W101)
+  line 192  col 25   Expected '{' and instead saw '$scope'.                          (W116)
+  line 194  col 139  Line is too long.                                               (W101)
+  line 194  col 25   Expected '{' and instead saw '$scope'.                          (W116)
+  line 196  col 133  Line is too long.                                               (W101)
+  line 196  col 25   Expected '{' and instead saw '$scope'.                          (W116)
+  line 225  col 0    Identifier 'source_context' is not in camel case.               (W106)
+  line 225  col 0    Identifier 'source_context' is not in camel case.               (W106)
+  line 241  col 35   Strings must use singlequote.                                   (W109)
+  line 254  col 61   Unnecessary semicolon.                                          (W032)
+  line 289  col 37   Expected '!==' and instead saw '!='.                            (W116)
+  line 333  col 46   Expected '!==' and instead saw '!='.                            (W116)
+  line 397  col 122  Line is too long.                                               (W101)
+  line 401  col 138  Line is too long.                                               (W101)
+  line 423  col 128  Line is too long.                                               (W101)
+  line 427  col 124  Line is too long.                                               (W101)
+  line 427  col 46   'curRowSavedIndex' is already defined.                          (W004)
+  line 464  col 0    Identifier 'source_context' is not in camel case.               (W106)
+  line 464  col 0    Identifier 'source_context' is not in camel case.               (W106)
+  line 464  col 80   Too many errors. (75% scanned).                                 (E043)
 
-  ⚠  1 warning
+  ✖  1 error
+  ⚠  50 warnings
+
+
+src/app/po/organization/directives/advancedOrgSearchModalButton.js
+  line 51   col 61   Expected '===' and instead saw '=='.    (W116)
+  line 54   col 151  Line is too long.                       (W101)
+  line 57   col 127  Line is too long.                       (W101)
+  line 59   col 34   Expected '{' and instead saw 'return'.  (W116)
+  line 84   col 95   Strings must use singlequote.           (W109)
+  line 84   col 115  Expected '===' and instead saw '=='.    (W116)
+  line 90   col 126  Line is too long.                       (W101)
+  line 98   col 53   Strings must use singlequote.           (W109)
+  line 112  col 33   Expected '===' and instead saw '=='.    (W116)
+  line 115  col 14   Missing semicolon.                      (W033)
+  line 132  col 18   Possible strict violation.              (W040)
+
+  ⚠  11 warnings
 
 
 src/app/po/person/directives/advancedPersonSearchForm.js
@@ -795,77 +776,72 @@ src/app/po/person/directives/personAdvSearchModalButton.js
   ⚠  13 warnings
 
 
-src/app/po/organization/directives/advancedOrgSearchForm2.js
-  line 16   col 129  Line is too long.                                               (W101)
-  line 15   col 40   This function has too many parameters. (13)                     (W072)
-  line 55   col 96   Strings must use singlequote.                                   (W109)
-  line 59   col 122  Line is too long.                                               (W101)
-  line 60   col 167  Line is too long.                                               (W101)
-  line 68   col 128  Line is too long.                                               (W101)
-  line 74   col 147  Line is too long.                                               (W101)
-  line 76   col 0    Identifier 'source_context' is not in camel case.               (W106)
-  line 76   col 92   Strings must use singlequote.                                   (W109)
-  line 84   col 41   Did you mean to return a conditional instead of an assignment?  (W093)
-  line 97   col 45   Strings must use singlequote.                                   (W109)
-  line 99   col 149  Line is too long.                                               (W101)
-  line 100  col 167  Line is too long.                                               (W101)
-  line 106  col 85   Expected '!==' and instead saw '!='.                            (W116)
-  line 107  col 25   Expected '{' and instead saw 'isEmptySearch'.                   (W116)
-  line 110  col 125  Line is too long.                                               (W101)
-  line 110  col 125  Strings must use singlequote.                                   (W109)
-  line 112  col 53   Strings must use singlequote.                                   (W109)
-  line 115  col 138  Line is too long.                                               (W101)
-  line 115  col 0    Identifier 'date_range_arr' is not in camel case.               (W106)
-  line 116  col 0    Identifier 'date_range_arr' is not in camel case.               (W106)
-  line 117  col 0    Identifier 'date_range_arr' is not in camel case.               (W106)
-  line 122  col 69   Strings must use singlequote.                                   (W109)
-  line 127  col 54   Strings must use singlequote.                                   (W109)
-  line 132  col 133  Line is too long.                                               (W101)
-  line 148  col 65   Strings must use singlequote.                                   (W109)
-  line 157  col 0    Identifier 'wc_search' is not in camel case.                    (W106)
-  line 187  col 0    Identifier 'source_status' is not in camel case.                (W106)
-  line 187  col 0    Identifier 'source_status' is not in camel case.                (W106)
-  line 188  col 0    Identifier 'source_status' is not in camel case.                (W106)
-  line 188  col 0    Identifier 'source_status' is not in camel case.                (W106)
-  line 192  col 133  Line is too long.                                               (W101)
-  line 192  col 25   Expected '{' and instead saw '$scope'.                          (W116)
-  line 194  col 139  Line is too long.                                               (W101)
-  line 194  col 25   Expected '{' and instead saw '$scope'.                          (W116)
-  line 196  col 133  Line is too long.                                               (W101)
-  line 196  col 25   Expected '{' and instead saw '$scope'.                          (W116)
-  line 225  col 0    Identifier 'source_context' is not in camel case.               (W106)
-  line 225  col 0    Identifier 'source_context' is not in camel case.               (W106)
-  line 241  col 35   Strings must use singlequote.                                   (W109)
-  line 254  col 61   Unnecessary semicolon.                                          (W032)
-  line 289  col 37   Expected '!==' and instead saw '!='.                            (W116)
-  line 333  col 46   Expected '!==' and instead saw '!='.                            (W116)
-  line 397  col 122  Line is too long.                                               (W101)
-  line 401  col 138  Line is too long.                                               (W101)
-  line 423  col 128  Line is too long.                                               (W101)
-  line 427  col 124  Line is too long.                                               (W101)
-  line 427  col 46   'curRowSavedIndex' is already defined.                          (W004)
-  line 464  col 0    Identifier 'source_context' is not in camel case.               (W106)
-  line 464  col 0    Identifier 'source_context' is not in camel case.               (W106)
-  line 464  col 80   Too many errors. (75% scanned).                                 (E043)
+src/app/pa/trial/registration/trialCtrl.js
+  line 14  col 23  This function has too many parameters. (11)  (W072)
+  line 17  col 18  Possible strict violation.                   (W040)
+  line 30  col 72  Missing semicolon.                           (W033)
+  line 71  col 38  Expected '===' and instead saw '=='.         (W116)
+  line 72  col 47  Strings must use singlequote.                (W109)
+  line 92  col 10  Unnecessary semicolon.                       (W032)
+
+  ⚠  6 warnings
+
+
+src/app/pa/trial/registration/trialDetailCtrl.js
+  line 10   col 132  Line is too long.                                                    (W101)
+  line 11   col 153  Line is too long.                                                    (W101)
+  line 12   col 149  Line is too long.                                                    (W101)
+  line 16   col 156  Line is too long.                                                    (W101)
+  line 17   col 156  Line is too long.                                                    (W101)
+  line 15   col 29   This function has too many parameters. (27)                          (W072)
+  line 19   col 18   Possible strict violation.                                           (W040)
+  line 20   col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
+  line 20   col 62   Strings must use singlequote.                                        (W109)
+  line 44   col 0    Identifier 'status_date_opened' is not in camel case.                (W106)
+  line 45   col 0    Identifier 'start_date_opened' is not in camel case.                 (W106)
+  line 46   col 0    Identifier 'primary_comp_date_opened' is not in camel case.          (W106)
+  line 47   col 0    Identifier 'comp_date_opened' is not in camel case.                  (W106)
+  line 65   col 0    Identifier 'why_stopped_disabled' is not in camel case.              (W106)
+  line 73   col 0    Identifier 'lead_org_id' is not in camel case.                       (W106)
+  line 73   col 67   Missing semicolon.                                                   (W033)
+  line 75   col 0    Identifier 'lead_org_id' is not in camel case.                       (W106)
+  line 79   col 0    Identifier 'pi_id' is not in camel case.                             (W106)
+  line 81   col 0    Identifier 'pi_id' is not in camel case.                             (W106)
+  line 85   col 0    Identifier 'sponsor_id' is not in camel case.                        (W106)
+  line 87   col 0    Identifier 'sponsor_id' is not in camel case.                        (W106)
+  line 91   col 0    Identifier 'investigator_id' is not in camel case.                   (W106)
+  line 93   col 0    Identifier 'investigator_id' is not in camel case.                   (W106)
+  line 97   col 0    Identifier 'investigator_aff_id' is not in camel case.               (W106)
+  line 99   col 0    Identifier 'investigator_aff_id' is not in camel case.               (W106)
+  line 104  col 0    Identifier 'other_ids_attributes' is not in camel case.              (W106)
+  line 106  col 0    Identifier 'other_ids_attributes' is not in camel case.              (W106)
+  line 111  col 0    Identifier 'trial_funding_sources_attributes' is not in camel case.  (W106)
+  line 113  col 0    Identifier 'trial_funding_sources_attributes' is not in camel case.  (W106)
+  line 118  col 0    Identifier 'grants_attributes' is not in camel case.                 (W106)
+  line 120  col 0    Identifier 'grants_attributes' is not in camel case.                 (W106)
+  line 125  col 0    Identifier 'trial_status_wrappers_attributes' is not in camel case.  (W106)
+  line 127  col 0    Identifier 'trial_status_wrappers_attributes' is not in camel case.  (W106)
+  line 132  col 0    Identifier 'ind_ides_attributes' is not in camel case.               (W106)
+  line 134  col 0    Identifier 'ind_ides_attributes' is not in camel case.               (W106)
+  line 139  col 0    Identifier 'oversight_authorities_attributes' is not in camel case.  (W106)
+  line 141  col 0    Identifier 'oversight_authorities_attributes' is not in camel case.  (W106)
+  line 146  col 0    Identifier 'trial_documents_attributes' is not in camel case.        (W106)
+  line 149  col 0    Identifier 'trial_documents_attributes' is not in camel case.        (W106)
+  line 154  col 30   Expected '===' and instead saw '=='.                                 (W116)
+  line 155  col 0    Identifier 'is_draft' is not in camel case.                          (W106)
+  line 157  col 0    Identifier 'is_draft' is not in camel case.                          (W106)
+  line 167  col 0    Identifier 'server_response' is not in camel case.                   (W106)
+  line 170  col 124  Line is too long.                                                    (W101)
+  line 170  col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
+  line 173  col 55   Strings must use singlequote.                                        (W109)
+  line 71   col 34   This function has too many statements. (44)                          (W071)
+  line 71   col 34   This function's cyclomatic complexity is too high. (14)              (W074)
+  line 178  col 0    Identifier 'trial_form' is not in camel case.                        (W106)
+  line 178  col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
+  line 178  col 34   Too many errors. (21% scanned).                                      (E043)
 
   ✖  1 error
   ⚠  50 warnings
-
-
-src/app/po/organization/directives/advancedOrgSearchModalButton.js
-  line 51   col 61   Expected '===' and instead saw '=='.    (W116)
-  line 54   col 151  Line is too long.                       (W101)
-  line 57   col 127  Line is too long.                       (W101)
-  line 59   col 34   Expected '{' and instead saw 'return'.  (W116)
-  line 84   col 95   Strings must use singlequote.           (W109)
-  line 84   col 115  Expected '===' and instead saw '=='.    (W116)
-  line 90   col 126  Line is too long.                       (W101)
-  line 98   col 53   Strings must use singlequote.           (W109)
-  line 112  col 33   Expected '===' and instead saw '=='.    (W116)
-  line 115  col 14   Missing semicolon.                      (W033)
-  line 132  col 18   Possible strict violation.              (W040)
-
-  ⚠  11 warnings
 
 
 gulpfile.js
