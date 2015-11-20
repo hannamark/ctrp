@@ -537,7 +537,6 @@
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control input-sm" name="start_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.start_date"
                                            is-open="trialDetailView.start_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required disabled>
-                                    <span class="form-control-feedback datepicker-feedback" ng-show="trialDetailView.curTrial.start_date" ng-class="!(ctrpbtn.trial_form.needsAttention(trial_form.start_date) || ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                     <span class="input-group-btn">
                                         <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'start_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
@@ -569,7 +568,6 @@
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control input-sm" name="primary_comp_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.primary_comp_date"
                                            is-open="trialDetailView.primary_comp_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required disabled />
-                                    <span class="form-control-feedback datepicker-feedback" ng-show="trialDetailView.curTrial.primary_comp_date" ng-class="!(ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date) || ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date_qual)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                     <span class="input-group-btn">
                                         <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'primary_comp_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
@@ -601,7 +599,6 @@
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control input-sm" name="comp_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.comp_date"
                                            is-open="trialDetailView.comp_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required disabled />
-                                    <span class="form-control-feedback datepicker-feedback" ng-show="trialDetailView.curTrial.comp_date" ng-class="!(ctrpbtn.trial_form.needsAttention(trial_form.comp_date) || ctrpbtn.trial_form.needsAttention(trial_form.comp_date_qual)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                     <span class="input-group-btn">
                                         <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'comp_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
