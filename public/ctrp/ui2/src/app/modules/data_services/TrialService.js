@@ -8,9 +8,9 @@
     angular.module('ctrp.module.dataservices')
         .factory('TrialService', TrialService);
 
-    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload'];
+    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST'];
 
-    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload) {
+    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload, HOST) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -629,15 +629,16 @@
          */
         function uploadDocument(trialId, documentType, documentSubtype, file) {
             Upload.upload({
-                url: URL_CONFIGS.TRIAL_DOCUMENT_LIST,
+                url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
                 method: 'POST',
-                fields: {
+                data: {
                     'trial_document[document_type]': documentType,
                     'trial_document[document_subtype]': documentSubtype,
-                    'trial_document[trial_id]': trialId
-                },
-                file: file,
-                fileFormDataName: 'trial_document[file]'
+                    'trial_document[trial_id]': trialId,
+                    'trial_document[file]': file
+                }
+                //file: file,
+                //fileFormDataName: 'trial_document[file]'
             }).progress(function (evt) {
                 var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                 $log.info('progress: ' + progressPercentage + '% ' + evt.config.file.name);
