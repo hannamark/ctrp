@@ -20,7 +20,7 @@ When I select one or more of the values to search all trials
 |Processing Status|
 |Milestone|
 |On Hold Status|
-|My Trials|
+|Trials I Have Checked Out|
 |Submission Type|
 |Study Source|
 |Clinical Research Category|
