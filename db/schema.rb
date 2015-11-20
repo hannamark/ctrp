@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151120153039) do
+ActiveRecord::Schema.define(version: 20151120200542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,6 +169,7 @@ ActiveRecord::Schema.define(version: 20151120153039) do
     t.datetime "updated_at",                                      null: false
     t.string   "uuid",                    limit: 255
     t.integer  "lock_version",                        default: 0
+    t.string   "extension",               limit: 255
   end
 
   add_index "central_contacts", ["central_contact_type_id"], name: "index_central_contacts_on_central_contact_type_id", using: :btree
@@ -607,6 +608,7 @@ ActiveRecord::Schema.define(version: 20151120153039) do
     t.datetime "updated_at",                              null: false
     t.string   "uuid",            limit: 255
     t.integer  "lock_version",                default: 0
+    t.string   "extension",       limit: 255
   end
 
   add_index "participating_sites", ["organization_id"], name: "index_participating_sites_on_organization_id", using: :btree
@@ -1003,6 +1005,7 @@ ActiveRecord::Schema.define(version: 20151120153039) do
     t.integer  "max_age_unit_id"
     t.integer  "anatomic_site_id"
     t.integer  "num_of_arms"
+    t.date     "verification_date"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree

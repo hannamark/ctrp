@@ -79,6 +79,7 @@
 #  max_age_unit_id          :integer
 #  anatomic_site_id         :integer
 #  num_of_arms              :integer
+#  verification_date        :date
 #
 # Indexes
 #
