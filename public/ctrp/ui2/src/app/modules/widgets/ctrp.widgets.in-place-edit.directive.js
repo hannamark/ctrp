@@ -45,7 +45,7 @@
 
         //Esc for canceling edit
         element.bind('keydown', function(event) {
-            if (event.which == 27) {
+            if (event.which === 27) {
               cancelEdit(event.target, event);
             }
         });
@@ -80,7 +80,7 @@
         /* check for the global write mode */
         function checkWriteMode() {
           scope.writeModeEnabled = UserService.isCurationModeEnabled() || false;
-          scope.editMode = scope.writeModeEnabled == false ? false : scope.editMode;
+          scope.editMode = !scope.writeModeEnabled ? false : scope.editMode;
         }
 
       } //linkerFn
