@@ -11,6 +11,7 @@ exports.config = {
         'browserName' : 'firefox',
         shardTestFiles: true,
         maxInstances: 6
+
     },
 
     baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
@@ -24,6 +25,10 @@ exports.config = {
         }
     },
 
+    //onPrepare: function() {
+    //    browser.driver.manage().window().maximize();
+    //    browser.driver.manage().window().setSize('1440', '900');
+    //},
 
 
     jasmineNodeOpts: {
@@ -76,3 +81,4 @@ exports.config = {
 
 //    resultJsonOutputFile: 'tests/features/output/cuke-report-test.json'
 };
+

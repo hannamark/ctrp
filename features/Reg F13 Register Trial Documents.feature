@@ -14,3 +14,8 @@ And I have selected a file to attach as the list of Participating Sites (optiona
 And I have selected one or more files to attach and entered the description of the file (optional)
 Then the Register Trial Related Document for the trial registration will be complete
 
+Scenario: #2 I can only attach document with permitted document types
+Given I am on the Register Trial Related Document screen
+When I select a file to attached as a trial document
+Then the system will only accept document of type pdf, zip, xls, xlsx, csv, doc, docx
+

@@ -49,12 +49,8 @@ var projectMethodsRegistry = function() {
                 return rowName === protocolIDOrigin;
             });
         }).then(function (rows) {
-            // This is an array. Find the button in the row and click on it.
             console.log('value of row' + rows);
-            var test5 = element(by.css('table[ng-show="trialDetailView.addedOtherIds.length > 0"]')).$('.col-md-6').getText(); //.then(function(value){
-            //    console.log('value of this text here is : ' + value );
-            //});
-            expect(rows[0].element(by.css('table[ng-show="trialDetailView.addedOtherIds.length > 0"]')).$('.col-md-6').getText()).to.eventually.equal(protocolID);
+           expect(rows[0].element(by.css('.col-md-6.protocol-id')).getText()).to.eventually.equal(protocolID);
         });
     };
 };

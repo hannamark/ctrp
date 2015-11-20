@@ -27,11 +27,11 @@
         </div>
         <div class="row md-sidenav-push-in-target">
             <form class="form form-horizontal" name="family_form" role="form" novalidate ctrp-submit="familyDetailView.updateFamily()">
-                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.name)}">
+                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.name) || familyDetailView.showUniqueWarning}">
                     <label class="control-label col-xs-12 col-sm-3">Family Name:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" name="name" restriction-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus ng-change="checkForNameUniqueness()"/>
-                        <span class="form-control-feedback" ng-show="familyDetailView.curFamily.name.length > 0 && family_form.name.$dirty" ng-class="(!familyDetailView.showUniqueWarning) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                        <input type="text" name="name" restriction-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus ng-blur="checkForNameUniqueness()"/>
+                        <span class="form-control-feedback" ng-show="familyDetailView.curFamily.name.length" ng-class="(!familyDetailView.showUniqueWarning && familyDetailView.curFamily.name.length) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                         <span class="help-block" ng-show="family_form.name.$error.required">Family name is Required</span>
                         <div class="has-error" ng-show="familyDetailView.curFamily.name.length > 0 && family_form.name.$dirty && familyDetailView.showUniqueWarning">
                             <span class="help-block">
@@ -40,29 +40,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_status)}">
+                <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_status)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Status:</label>
                     <div class="col-xs-12 col-sm-6">
                         <select restriction-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control input-sm" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr" name="family_status" required>
                             <option value="">Select a status</option>
                         </select>
+                        <span class="form-control-feedback select-feedback" ng-show="familyDetailView.curFamily.family_status_id" ng-class="!ctrpbtn.family_form.needsAttention(family_form.family_status) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                         <span class="help-block" ng-show="family_form.family_status.$invalid">Family status is Required</span>
                     </div>
                 </div>
-                <div class="form-group required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_type)}">
+                <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_type)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Type:</label>
                     <div class="col-xs-12 col-sm-6">
                         <select restriction-field ng-init="familyDetailView.curFamily.family_type_id" class="form-control input-sm" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr" name="family_type" required>
                             <option value="">Select a type</option>
                         </select>
-                        <span class="help-block"
-                              ng-show="family_form.family_type.$invalid">Family type is Required</span>
+                        <span class="form-control-feedback select-feedback" ng-show="familyDetailView.curFamily.family_type_id" ng-class="!ctrpbtn.family_form.needsAttention(family_form.family_type) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                        <span class="help-block" ng-show="family_form.family_type.$invalid">Family type is Required</span>
                     </div>
                 </div>
                 <div class="form-group">
                      <label class="control-label col-xs-12 col-sm-3">Membership Size:</label>
                     <div class="col-xs-12 col-sm-6 form-text"><!--TODO fix line height display-->
-                        {{familyDetailView.savedSelection.length}}
+                        {{familyDetailView.curFamily.family_memberships.length}}
                     </div>
                 </div>
 
@@ -110,7 +111,7 @@
                                            <input type="text" class="form-control input-sm"
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.effective_date" is-open="org.opened_effective"
-                                                  is-open="opened" datepicker-options="familyDetailView.dateOptions"
+                                                  datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                            <span class="input-group-btn">
                                                <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
@@ -124,7 +125,7 @@
                                            <input type="text" class="form-control input-sm"
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.expiration_date" is-open="org.opened_expiration"
-                                                  is-open="opened" datepicker-options="familyDetailView.dateOptions"
+                                                  datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                            <span class="input-group-btn">
                                                <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">

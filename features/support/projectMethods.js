@@ -113,7 +113,7 @@ var projectMethods = function() {
      * @param affOrgExpirationDate
      ***********************************/
     this.createPersonWithAffiliatedOrg = function(prefix, fName, mName, lName, suffix, email, phone, affOrgName, affOrgEffectiveDate, affOrgExpirationDate){
-        this.createOrganization(affOrgName,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','222-4444-555','888-9999-666');
+        this.createOrganization(affOrgName,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','240-276-5555','240-276-6338');
         this.createPerson(prefix,fName,mName,lName,suffix,email,phone);
     /*    menuItem.clickPeople();
         menuItem.clickListPeople();
@@ -157,7 +157,7 @@ var projectMethods = function() {
      * @param orgExpirationDate
      ***********************************/
     this.createFamilyWithMembers = function(familyName, familyStatus, familyType, orgMember, orgRelationship, orgEffectiveDate, orgExpirationDate){
-        this.createOrganization(orgMember,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','222-4444-555','888-9999-666');
+        this.createOrganization(orgMember,'cukeAlias','Shady Grove', 'Rockville','United States','Maryland','Rockville','20675','singh@cuke.com','240-276-6338','240-276-6978');
         this.createFamily(familyName,familyStatus,familyType);
         menuItem.clickOrganizations();
         menuItem.clickListFamily();
@@ -179,6 +179,23 @@ var projectMethods = function() {
      * Method: Verify the item in Search Results
      * @param searchString
      ***********************************/
+
+    this.inSearchResults = function(searchString) {
+        return menuItem.searchResult.filter(function(name) {
+            return name.getText().then(function(text) {
+                return text === searchString ;
+            });
+        }).then(function(filteredElements) {
+            // Only the elements that passed the filter will be here. This is an array.
+            if (filteredElements.length > 0) {
+                return 'false';
+            }
+            else {
+                return 'true';
+            }
+        });
+    };
+
     this.inOrgSearchResults = function(searchString) {
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
             if (state === true) {
@@ -727,5 +744,72 @@ var projectMethods = function() {
             });
         });
     };
+
+    /********************************************
+    * Method: inPersonSearchResults
+    * @param searchString
+    * @returns {*}
+    ********************************************/
+    this.inPersonSearchResults = function(searchString) {
+        return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+            if (state === true) {
+                return menuItem.personSearchResult.filter(function(name) {
+                    return name.getText().then(function(text) {
+                           var getAllTextToString = text.replace(/\n\s*\n/g, '\n');
+                           console.log('Search Result Value:['+getAllTextToString+']');
+                           return text === searchString;
+                    });
+                }).then(function(filteredElements) {
+                    console.log('value of filteredElements' + filteredElements);
+                          if (filteredElements.length > 0) {
+                              return 'true';
+                          } else {
+                                return menuItem.orgSearchResult.filter(function(name) {
+                                       return name.getText().then(function(text) {
+                                              return text === searchString;
+                                       });
+                                }).then(function(filteredElements) {
+                                    if (filteredElements.length > 0) {
+                                        return 'true';
+                                    } else {
+                                        return 'false';
+                                    }
+                                });
+                          }
+                });
+            } else if(state === false) {
+                return 'false';
+            }
+        });
+    };
+
+    /********************************************
+     * Method: isTextPresent
+     * @param textToVerify
+     * @returns {boolean}
+     ********************************************/
+    this.isTextPresent = function(textToVerify){
+      return element.all(by.xpath('//*[contains(text(),'+textToVerify+')]')).isPresent().then(function(state){
+        if (state === true){
+            return 'true';
+        } else{
+            return 'false';
+        }
+      });
+    };
+
+    this.isTextPresentA = function(textToVerify){
+        var anyTxt = element(by.binding(''+textToVerify+''));
+        return anyTxt.getText();
+    }
+
+    this.getAlertMsg = function(){
+        return alert.then(function(alert){
+           return alert.getText();
+        });
+    };
+
+
+
 };
 module.exports = projectMethods;

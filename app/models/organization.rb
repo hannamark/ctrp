@@ -23,6 +23,7 @@
 #  ctrp_id           :integer
 #  created_by        :string
 #  updated_by        :string
+#  extension         :string(255)
 #
 # Indexes
 #
@@ -49,6 +50,11 @@ class Organization < ActiveRecord::Base
   has_many :lo_trials, foreign_key: :lead_org_id, class_name: "Trial"
   has_many :sponsor_trials, foreign_key: :sponsor_id, class_name: "Trial"
   has_many :inv_aff_trials, foreign_key: :investigator_aff_id, class_name: "Trial"
+
+  # PA fields
+  has_many :board_trials, foreign_key: :board_id, class_name: "Trial"
+  has_many :participating_sites
+  has_many :ps_trials, through: :participating_sites, source: :trial
 
   accepts_nested_attributes_for :name_aliases, allow_destroy: true
 
@@ -242,7 +248,7 @@ class Organization < ActiveRecord::Base
 
   scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value,user_role) {
+  scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       where("organizations.#{column} ilike ?", "%#{value[1..str_len - 1]}")
@@ -251,7 +257,7 @@ class Organization < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       where("organizations.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      if user_role != "ROLE_CURATOR"
+      if !wc_search
         if !value.match(/\s/).nil?
           value=value.gsub! /\s+/, '%'
         end
@@ -262,7 +268,7 @@ class Organization < ActiveRecord::Base
     end
   }
 
-  scope :matches_name_wc, -> (value,user_role) {
+  scope :matches_name_wc, -> (value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
@@ -271,7 +277,7 @@ class Organization < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
     else
-        if user_role != "ROLE_CURATOR"
+        if !wc_search
           if !value.match(/\s/).nil?
             value=value.gsub! /\s+/, '%'
           end

@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'roo'
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -71,11 +73,13 @@ ResponsibleParty.find_or_create_by(code: 'SP', name: 'Sponsor')
 ResponsibleParty.find_or_create_by(code: 'PI', name: 'Principal Investigator')
 ResponsibleParty.find_or_create_by(code: 'SI', name: 'Sponsor Investigator')
 
-ProtocolIdOrigin.find_or_create_by(code: 'CTEP', name: 'CTEP')
-ProtocolIdOrigin.find_or_create_by(code: 'DCP', name: 'DCP')
-ProtocolIdOrigin.find_or_create_by(code: 'CCR', name: 'CCR')
-ProtocolIdOrigin.find_or_create_by(code: 'NCT', name: 'NCT')
-ProtocolIdOrigin.find_or_create_by(code: 'OTH', name: 'Other')
+ProtocolIdOrigin.find_or_create_by(code: 'NCT', name: 'ClinicalTrials.gov Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'CTEP', name: 'CTEP Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'DCP', name: 'DCP Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'CCR', name: 'CCR Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'DNCI', name: 'Duplicate NCI Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'ONCT', name: 'Obsolete ClinicalTrials.gov Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'OTH', name: 'Other Identifier')
 
 HolderType.find_or_create_by(code: 'INV', name: 'Investigator')
 HolderType.find_or_create_by(code: 'ORG', name: 'Organization')
@@ -115,7 +119,7 @@ AppSetting.find_or_create_by(code: 'IC', name: 'Institute Code List', value: 'se
 
 AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List', value: 'see big value', big_value: 'CCR,CCT/CTB,CIP,CDP,CTEP,DCB,DCCPS,DCEG,DCP,DEA,DTP,OD,OSB/SPOREs,TRP,RRP,N/A')
 
-AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', description: 'Message for login page if needed.', value: 'see big value', big_value: '')
+AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', description: 'Message for login page if needed.', value: 'see big value', big_value: 'This is the CI tier at CBIIT')
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
@@ -144,7 +148,7 @@ if !org5.new_record?
 end
 org6 = Organization.create(id: 173475, source_id: 'NY139', name: 'Syracuse Veterans Administration Medical Center', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: ' 800 Irving Ave', city: 'Syracuse', state_province:'New York', country:usa)
 org7 = Organization.create(id: 150970, source_id: 'NC088', name: 'Veterans Administration Medical Center.', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '50 Irving St NW', city: '', state_province:'District of Columbia', country:usa)
-org8 = Organization.create(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, phone: '336-716-0891', postal_code: '27157')
+org8 = Organization.create(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, postal_code: '27157')
 if !org8.new_record?
   org8.name_aliases.create(name: 'Wake Forest Cancer Center Research Base')
 end
@@ -237,14 +241,75 @@ family5 = Family.find_or_create_by(name: 'NRG Oncology',family_status_id:1,famil
 family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2,family_type_id:1)#Cancer Center
 
 
+## Trials
+## Reading spreadsheet
+trial_spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-trials-random-2014.xls'))
+trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
+((trial_spreadsheet.first_row+1)..trial_spreadsheet.last_row).each do |row|
+  trial = Trial.new
+  trial.official_title = trial_spreadsheet.cell(row,'BP')
+  nci_id = trial_spreadsheet.cell(row,'BL')
+  trial_db_exists = Trial.find_by_nci_id(nci_id)
+  if trial_db_exists
+    next
+  end
+  trial.nci_id = nci_id
+  trial.phase = Phase.find_by_name(trial_spreadsheet.cell(row,'BS'))
+  primary_purpose = trial_spreadsheet.cell(row,'BY')
+  unless primary_purpose.blank?
+    primary_purpose.gsub! "_", " "
+    trial.primary_purpose = PrimaryPurpose.where("lower(name) = ?", primary_purpose.downcase).first
+  end
+  secondary_purpose = trial_spreadsheet.cell(row,'BZ')
+  unless secondary_purpose.blank?
+    trial.secondary_purpose = SecondaryPurpose.where("lower(name) = ?", secondary_purpose.downcase).first
+  end
+  research_category = trial_spreadsheet.cell(row,'DO')
+  unless research_category.blank?
+    research_category.gsub! "_", " "
+    trial.research_category = ResearchCategory.where("lower(name) = ?", research_category.downcase).first
+  end
+  study_source = trial_spreadsheet.cell(row,'CZ')
+  unless study_source.blank?
+    study_source.gsub! "_", " "
+    study_source = "EXTERNALLY PEER-REVIEWED" if study_source == "EXTERNALLY PEER REVIEWED"
+    trial.study_source = StudySource.where("lower(name) = ?", study_source.downcase).first
+  end
+  current_trail_status = trial_spreadsheet.cell(row,'T')
+  current_trail_status_date = trial_spreadsheet.cell(row,'U')
+  puts "current_trail_status = #{current_trail_status.inspect}"
+  puts "current_trail_status date = #{current_trail_status_date.inspect}"
+  unless current_trail_status.blank?
+    trial_status = TrialStatus.where("lower(name) = ?", current_trail_status.downcase).first
+    tsw = TrialStatusWrapper.new
+    tsw.trial = trial
+    tsw.trial_status = trial_status
+    tsw.status_date = current_trail_status_date
+    trial.trial_status_wrappers << tsw
+  end
+  # randomly assign the rest of the data
+  trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
+  trial.sponsor = Organization.all[rand(0..13)]
+  trial.lead_org = Organization.all[rand(0..13)]
+  trial.pilot = "Yes"
+  trial.pi = Person.all[rand(0..11)]
+  trial.investigator = Person.all[rand(0..11)]
+  trial.save!
+  #puts "trial = #{trial.inspect}"
+
+end
+
+
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "ctrpreadonly", "role" => "ROLE_RO", "approve" => true },
-               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true },
-               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true }
+               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true},
+               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
+               {"username" => "ctrptrialsubmittersu", "role" => "ROLE_TRIAL-SUBMITTER-SU", "approve" => true},
+               {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true}
           ]
 
 test_users.each do |u|
@@ -276,7 +341,7 @@ ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sara
 ##Add CTRP Business Analysts
 
 joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Joe", "last_name" => "Martucci" }
-jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Jose", "last_name" => "Galvez" }
+jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
 michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Michael", "last_name" => "Izbicki"}
 sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Sandy", "last_name" => "Lightbody" }
 kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }

@@ -62,3 +62,6 @@ bower.json
 
 # Robots.txt We want this set to disallow on EC2 server. This file is set to disallow out there.
 robots.txt
+
+# Ignore tmp dir in ui2
+public/ctrp/ui2/.tmp

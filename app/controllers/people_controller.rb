@@ -108,13 +108,13 @@ class PeopleController < ApplicationController
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
-      @people = @people.matches_wc('source_id',params[:source_id],@current_user.role) if params[:source_id].present?
-      @people = @people.matches_wc('fname', params[:fname],@current_user.role) if params[:fname].present?
-      @people = @people.matches_wc('lname', params[:lname],@current_user.role) if params[:lname].present?
-      @people = @people.matches_wc('prefix', params[:prefix],@current_user.role) if params[:prefix].present?
-      @people = @people.matches_wc('suffix', params[:suffix],@current_user.role) if params[:suffix].present?
-      @people = @people.matches_wc('email', params[:email],@current_user.role) if params[:email].present?
-      @people = @people.matches_wc('phone', params[:phone],@current_user.role) if params[:phone].present?
+      @people = @people.matches_wc('source_id',params[:source_id],params[:wc_search]) if params[:source_id].present?
+      @people = @people.matches_wc('fname', params[:fname],params[:wc_search]) if params[:fname].present?
+      @people = @people.matches_wc('lname', params[:lname],params[:wc_search]) if params[:lname].present?
+      @people = @people.matches_wc('prefix', params[:prefix],params[:wc_search]) if params[:prefix].present?
+      @people = @people.matches_wc('suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
+      @people = @people.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
+      @people = @people.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
       if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
         @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
       else
@@ -122,7 +122,7 @@ class PeopleController < ApplicationController
         @people = @people.with_source_context("CTRP")
       end
       if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
-        @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
+        @people = @people.with_source_status(params[:source_status][:name]) if params[:source_status].present?
       else
         # TODO need constant for Active
         @people = @people.with_source_status("Active")
@@ -195,8 +195,8 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone,
-                                     :source_status_id,:source_context_id, :lock_version,
+      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :extension,
+                                     :source_status_id, :source_context_id, :lock_version,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])

@@ -17,9 +17,36 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
-  code: II
-  name: II
+# ["0", "I", "I/II", "II", "II/III", "III", "IV", "NA"]
 
-two: {}
-#  column: value
+one:
+  code: "0"
+  name: "0"
+
+two:
+  code: "I"
+  name: "I"
+
+three:
+  code: "I/II"
+  name: "I/II"
+
+four:
+  code: "II"
+  name: "II"
+
+five:
+  code: "II/III"
+  name: "II/III"
+
+six:
+   code: "II/III"
+   name: "II/III"
+
+seven:
+  code: "IV"
+  name: "IV"
+
+seven:
+  code: "NA"
+  name: "NA"

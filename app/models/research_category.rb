@@ -12,4 +12,5 @@
 #
 
 class ResearchCategory < ActiveRecord::Base
+  include BasicConcerns
 end

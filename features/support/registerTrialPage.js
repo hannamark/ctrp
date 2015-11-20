@@ -17,7 +17,7 @@ var registerTrial = function(){
     this.addTrialProtocolIDOrigin = element(by.model('trialDetailView.protocol_id_origin_id'));
     this.addTrialProtocolID = element(by.model('trialDetailView.protocol_id'));
     this.addTrialAddProtocolButton = element(by.css('button[ng-click="trialDetailView.addOtherId()"]'));
-    this.addTrialVerifyOtherTrialIdentifier = element.all(by.css('table[ng-show="trialDetailView.addedOtherIds.length > 0"]'));
+    this.addTrialVerifyOtherTrialIdentifier = element.all(by.css('tr[ng-repeat="otherId in trialDetailView.addedOtherIds track by $index"]'));
 
     /** Trial Details **/
     this.addTrialOfficialTitle = element(by.model('trialDetailView.curTrial.official_title'));
