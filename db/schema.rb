@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151118153227) do
+ActiveRecord::Schema.define(version: 20151120153039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -490,10 +490,12 @@ ActiveRecord::Schema.define(version: 20151118153227) do
     t.date     "onhold_date"
     t.integer  "onhold_reason_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.string   "uuid",             limit: 255
-    t.integer  "lock_version",                 default: 0
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "uuid",               limit: 255
+    t.integer  "lock_version",                   default: 0
+    t.string   "onhold_reason_code", limit: 255
+    t.date     "offhold_date"
   end
 
   add_index "onholds", ["onhold_reason_id"], name: "index_onholds_on_onhold_reason_id", using: :btree
@@ -1000,6 +1002,7 @@ ActiveRecord::Schema.define(version: 20151118153227) do
     t.integer  "min_age_unit_id"
     t.integer  "max_age_unit_id"
     t.integer  "anatomic_site_id"
+    t.integer  "num_of_arms"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
