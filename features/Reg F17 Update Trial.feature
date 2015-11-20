@@ -8,7 +8,7 @@ Given I am in the CTRP Registration applicatin
 And I have selected the option to search my trials in CTRP (trials where I am listed as owner)
 When the Update option is enabled on one of my trials
 And I have selected the Update option
-Then all trial information will be displayed
+Then all trial information will be displayed as in Registration with only Update fields enabled
 And I will be able to add Other Protocol Identifiers
 And I will be able to add Grant Information
 And I will be able to update trial status and trial status dates and edit trial status history
