@@ -8,32 +8,34 @@
     angular.module('ctrp.module.dataservices')
         .factory('PersonService', PersonService);
 
-    PersonService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope', 'PromiseTimeoutService','UserService','Common'];
+    PersonService.$inject = ['PromiseService', 'URL_CONFIGS','$log',
+            '$rootScope', 'PromiseTimeoutService','UserService','Common'];
 
-    function PersonService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService,UserService,Common) {
+    function PersonService(PromiseService, URL_CONFIGS, $log,
+                $rootScope, PromiseTimeoutService,UserService,Common) {
 
         var initPersonSearchParams = {
-            fname: "",
-            mname: "",
-            lname: "",
-            //po_id: "",
-            //ctrp_id: "",
+            fname: '',
+            mname: '',
+            lname: '',
+            //po_id: '',
+            //ctrp_id: '',
             wc_search:true,
-            source_context: "", //default
-            source_id: "",
-            source_status: "",
-            prefix: "",
-            suffix: "",
-            email: "",
-            phone: "",
-            startDate: "",  //updated_at
-            endDate: "",   //updated_at
+            source_context: '', //default
+            source_id: '',
+            source_status: '',
+            prefix: '',
+            suffix: '',
+            email: '',
+            phone: '',
+            startDate: '',  //updated_at
+            endDate: '',   //updated_at
             date_range_arr: [],
-            affiliated_org_name: "",
-            updated_by: "",
+            affiliated_org_name: '',
+            updated_by: '',
 
             //for pagination and sorting
-            sort: "lname",
+            sort: 'lname',
             order: "ASC",
             rows: 10,
             start: 1
@@ -142,7 +144,7 @@
 
             //update an existing person
             var configObj = {}; //empty config
-            return PromiseService.updateObj(URL_CONFIGS.A_PERSON + personObj.person.id + ".json", personObj, configObj);
+            return PromiseService.updateObj(URL_CONFIGS.A_PERSON + personObj.person.id + '.json', personObj, configObj);
         } //upsertPerson
 
 
@@ -168,8 +170,8 @@
          * @return initPersonSearchParams
          */
         function getInitialPersonSearchParams() {
-            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
-            var curator_role = "curator";
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
+            var curator_role = 'curator';
             if(!(user_role.toUpperCase() === curator_role.toUpperCase())) {
                 initPersonSearchParams.wc_search = false;
             }
@@ -179,19 +181,19 @@
 
 
         function getGridOptions() {
-            //var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            //var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
             var user_role = !!UserService.getUserRole() ? UserService.getUserRole() : '';
 
             var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
-            console.log("updated_at_index is " + updated_at_index);
+            console.log('updated_at_index is ' + updated_at_index);
 
-            var curator_role = "curator";
+            var curator_role = 'curator';
             if(user_role.toUpperCase().indexOf(curator_role.toUpperCase()) === -1) {
                 gridOptions.columnDefs.splice(updated_at_index,1);
 
                 //Recompute the updated_by_index, given that the columnDefs have changed
                 var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
-                console.log("updated_by_index is " + updated_by_index);
+                console.log('updated_by_index is ' + updated_by_index);
                 gridOptions.columnDefs.splice(updated_by_index,1);
             }
 
@@ -233,7 +235,7 @@
          * @returns {*}
          */
         function deletePerson(personId) {
-            return PromiseService.deleteObjFromBackend(URL_CONFIGS.A_PERSON + personId + ".json");
+            return PromiseService.deleteObjFromBackend(URL_CONFIGS.A_PERSON + personId + '.json');
         }
 
 

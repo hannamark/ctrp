@@ -27,7 +27,9 @@
                     element.bind('submit', function(event) {
                         submitController.attempted = formController.$submitted;
                         $log.info('form is submitted: ' + formController.$submitted);
-                        if (!scope.$$phase) scope.$apply();
+                        if (!scope.$$phase) {
+                            scope.$apply();
+                        }
 
                         if (formController.$invalid) { //|| formController.$pristine
                             $log.error('form submission invalid or untouched!');
@@ -53,7 +55,9 @@
 
                     /* fieldModelController is ngModel controller */
                     this.needsAttention = function(fieldModelController) {
-                        if (!formController) return false;
+                        if (!formController) {
+                            return false;
+                        }
                         // $log.info('fieldModelController: ', fieldModelController);
 
                         // support passing-in validators, use the cb to alert user
@@ -61,9 +65,12 @@
                         // $log.info('needsAttention $viewValue: ', fieldModelController.$viewValue);
 
                         if (fieldModelController) {
-                            return fieldModelController.$invalid && (fieldModelController.$dirty || this.attempted);
+                            return fieldModelController.$invalid &&
+                                (fieldModelController.$dirty || this.attempted);
                         } else {
-                            return formController && formController.$invalid && (formController.$dirty || this.attempted);
+                            return formController &&
+                                formController.$invalid && 
+                                (formController.$dirty || this.attempted);
                         }
                     }; //needsAttention
 
