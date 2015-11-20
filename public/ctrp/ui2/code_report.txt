@@ -1,6 +1,6 @@
-[12:38:48] Using gulpfile ~/Desktop/Code/ctrp-afterM1/public/ctrp/ui2/gulpfile.js
-[12:38:48] Starting 'vet'...
-[12:38:48] Analyzing source with JSHint and JSCS
+[11:19:45] Using gulpfile ~/Desktop/Code/ctrp-gulp/public/ctrp/ui2/gulpfile.js
+[11:19:45] Starting 'vet'...
+[11:19:45] Analyzing source with JSHint and JSCS
 
 src/app/layout/footerCtrl.js
   line 15  col 18  Possible strict violation.  (W040)
@@ -53,12 +53,9 @@ src/app/user/userDetailCtrl.js
 
 
 src/app/user/userListCtrl.js
-  line 17   col 18  Possible strict violation.            (W040)
-  line 27   col 72  Missing semicolon.                    (W033)
-  line 83   col 38  Expected '===' and instead saw '=='.  (W116)
-  line 104  col 10  Unnecessary semicolon.                (W032)
+  line 17  col 18  Possible strict violation.  (W040)
 
-  ⚠  4 warnings
+  ⚠  1 warning
 
 
 src/app/user/userSignupCtrl.js
@@ -348,11 +345,30 @@ src/app/modules/validators/ctrp.dateLaterThan.directive.js
   ⚠  4 warnings
 
 
-src/app/modules/validators/ctrp.validateOnSubmit.directive.js
-  line 10  col 27  'ctrpSubmitDirective' was used before it was defined.  (W003)
-  line 29  col 44  Expected '{' and instead saw 'return'.                 (W116)
-  line 58  col 51  Expected '{' and instead saw 'scope'.                  (W116)
-  line 60  col 59  Expected '{' and instead saw 'return'.                 (W116)
+src/app/modules/validators/ctrp.validateFormSubmission.directive.js
+  line 30  col 45   Expected '{' and instead saw 'scope'.   (W116)
+  line 46  col 21   Possible strict violation.              (W040)
+  line 49  col 21   Possible strict violation.              (W040)
+  line 55  col 21   Possible strict violation.              (W040)
+  line 56  col 46   Expected '{' and instead saw 'return'.  (W116)
+  line 60  col 135  Line is too long.                       (W101)
+  line 66  col 122  Line is too long.                       (W101)
+
+  ⚠  7 warnings
+
+
+src/app/modules/widgets/ctrp.widgets.in-place-edit.directive.js
+  line 48  col 31  Expected '===' and instead saw '=='.  (W116)
+  line 83  col 53  Expected '===' and instead saw '=='.  (W116)
+
+  ⚠  2 warnings
+
+
+src/app/modules/widgets/ctrp.widgets.restrictionField.directive.js
+  line 61  col 49   Expected '===' and instead saw '=='.                     (W116)
+  line 63  col 124  Line is too long.                                        (W101)
+  line 64  col 165  Line is too long.                                        (W101)
+  line 59  col 41   This function's cyclomatic complexity is too high. (12)  (W074)
 
   ⚠  4 warnings
 
@@ -461,22 +477,6 @@ src/app/po/family/familyDetailCtrl.js
 
   ✖  1 error
   ⚠  50 warnings
-
-
-src/app/modules/widgets/ctrp.widgets.in-place-edit.directive.js
-  line 48  col 31  Expected '===' and instead saw '=='.  (W116)
-  line 83  col 53  Expected '===' and instead saw '=='.  (W116)
-
-  ⚠  2 warnings
-
-
-src/app/modules/widgets/ctrp.widgets.restrictionField.directive.js
-  line 61  col 49   Expected '===' and instead saw '=='.                     (W116)
-  line 63  col 124  Line is too long.                                        (W101)
-  line 64  col 165  Line is too long.                                        (W101)
-  line 59  col 41   This function's cyclomatic complexity is too high. (12)  (W074)
-
-  ⚠  4 warnings
 
 
 src/app/po/organization/ModalInstanceCtrl.js
@@ -652,9 +652,10 @@ src/app/po/person/personDetailCtrl.js
 src/app/po/person/personSearchCtrl.js
   line 14  col 18   Possible strict violation.     (W040)
   line 17  col 124  Line is too long.              (W101)
-  line 40  col 63   Strings must use singlequote.  (W109)
+  line 18  col 27   Strings must use singlequote.  (W109)
+  line 43  col 63   Strings must use singlequote.  (W109)
 
-  ⚠  3 warnings
+  ⚠  4 warnings
 
 
 src/app/pa/trial/registration/trialCtrl.js
@@ -915,4 +916,11 @@ src/app/po/person/directives/personAdvSearchModalButton.js
   line 170  col 122  Line is too long.                       (W101)
 
   ⚠  13 warnings
+
+
+gulpfile.js
+  line 125  col 9   Comma warnings can be turned off with 'laxcomma'.  (I001)
+  line 124  col 44  Bad line breaking before ','.                      (W014)
+
+  ⚠  2 warnings
 
