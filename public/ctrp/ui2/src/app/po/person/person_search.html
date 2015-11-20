@@ -11,6 +11,18 @@
         </ul>
     </div>
 
+    <div class="row">
+        <form name="test_person" ctrp-submit="personSearchView.trySubmit()" novalidate>
+            <div class="form-group"  ng-class="{'has-error': ctrpbtn.test_person.needsAttention(test_person.name)}">
+                <input type="text" class="form-control" name="name" placeholder="Name" ng-model="personSearchView.name" ng-minlength="3" required>
+
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
     <!--
     <div class="row">
         <ctrp-advanced-person-search-form show-grid="true" max-row-selectable="2" curation-mode="true"></ctrp-advanced-person-search-form>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117221120) do
+ActiveRecord::Schema.define(version: 20151120153039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -187,6 +187,19 @@ ActiveRecord::Schema.define(version: 20151117221120) do
   end
 
   add_index "citations", ["trial_id"], name: "index_citations_on_trial_id", using: :btree
+
+  create_table "collaborators", force: :cascade do |t|
+    t.string   "org_name"
+    t.integer  "organization_id"
+    t.integer  "trial_id"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.string   "uuid",            limit: 255
+    t.integer  "lock_version",                default: 0
+  end
+
+  add_index "collaborators", ["organization_id"], name: "index_collaborators_on_organization_id", using: :btree
+  add_index "collaborators", ["trial_id"], name: "index_collaborators_on_trial_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.string   "instance_uuid", limit: 255
@@ -477,10 +490,12 @@ ActiveRecord::Schema.define(version: 20151117221120) do
     t.date     "onhold_date"
     t.integer  "onhold_reason_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.string   "uuid",             limit: 255
-    t.integer  "lock_version",                 default: 0
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "uuid",               limit: 255
+    t.integer  "lock_version",                   default: 0
+    t.string   "onhold_reason_code", limit: 255
+    t.date     "offhold_date"
   end
 
   add_index "onholds", ["onhold_reason_id"], name: "index_onholds_on_onhold_reason_id", using: :btree
@@ -987,6 +1002,7 @@ ActiveRecord::Schema.define(version: 20151117221120) do
     t.integer  "min_age_unit_id"
     t.integer  "max_age_unit_id"
     t.integer  "anatomic_site_id"
+    t.integer  "num_of_arms"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
@@ -1078,6 +1094,8 @@ ActiveRecord::Schema.define(version: 20151117221120) do
   add_foreign_key "central_contacts", "people"
   add_foreign_key "central_contacts", "trials"
   add_foreign_key "citations", "trials"
+  add_foreign_key "collaborators", "organizations"
+  add_foreign_key "collaborators", "trials"
   add_foreign_key "diseases", "trials"
   add_foreign_key "families", "family_statuses"
   add_foreign_key "families", "family_types"
@@ -1175,6 +1193,7 @@ ActiveRecord::Schema.define(version: 20151117221120) do
   create_sequence "central_contact_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "central_contacts_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "citations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "collaborators_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "comments_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "diseases_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "evaluation_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
