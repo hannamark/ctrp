@@ -32,12 +32,6 @@ module Ctrp
     #config.serve_static_files = true
     paths['public'] = File.join 'public', 'ctrp', 'ui2', 'src'
 
-
-    #configure for path rewrite
-    config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
-        rewrite   '/ctrp/ui2',  '/ui'
-    end
-
     ## Rack-cors settings for Rails
     config.middleware.insert_before 0, "Rack::Cors", :debug => true, :logger => (-> { Rails.logger }) do
 
