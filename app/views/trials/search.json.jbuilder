@@ -8,6 +8,13 @@ json.trials do
     json.sponsor trial.sponsor.present? ? trial.sponsor.name : nil
     json.study_source trial.study_source.present? ? trial.study_source.name : nil
     json.url trial_url(trial, format: :json)
+    actions = []
+    if trial.is_draft
+      actions.append('Complete')
+    else
+      actions.append('Update')
+    end
+    json.actions actions
   end
 end
 json.start params[:start]

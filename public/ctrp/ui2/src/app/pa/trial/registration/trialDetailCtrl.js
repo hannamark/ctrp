@@ -10,12 +10,12 @@
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
-        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST'];
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams'];
 
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope, $window,
                              Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
-                             holderTypeObj, expandedAccessTypeObj, countryList, HOST) {
+                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
@@ -547,6 +547,7 @@
                 vm.curTrial.ind_ide_question = 'Yes';
                 populateStudySource();
             } else {
+                appendEditType();
                 convertDate();
                 displayPOs();
                 ppFieldChange();
@@ -593,6 +594,12 @@
                         vm.trialStatusArr.splice(i, 1);
                     }
                 }
+            }
+        }
+
+        function appendEditType() {
+            if ($stateParams.editType === 'update') {
+                vm.curTrial.edit_type = 'update'
             }
         }
 

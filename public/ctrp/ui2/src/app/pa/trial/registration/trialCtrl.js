@@ -9,11 +9,11 @@
 
     trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope',
                          'Common', '$modal', '$location', '$anchorScroll',
-                         'studySourceObj', 'phaseObj', 'primaryPurposeObj'];
+                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state'];
 
     function trialCtrl(TrialService, uiGridConstants, $scope,
                 $rootScope, Commo, $modal, $location, $anchorScroll,
-                       studySourceObj, phaseObj, primaryPurposeObj) {
+                       studySourceObj, phaseObj, primaryPurposeObj, $state) {
         var vm = this;
         vm.searchParams = TrialService.getInitialTrialSearchParams();
         vm.studySourceArr = studySourceObj;
@@ -53,6 +53,14 @@
 
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
+        };
+
+        $scope.takeTrialAction = function(actionType, trialId) {
+            if (actionType == 'Complete') {
+                $state.go('main.trialDetail', {trialId: trialId});
+            } else if (actionType == 'Update') {
+                $state.go('main.trialDetail', {trialId: trialId, editType: 'update'});
+            }
         };
 
         activate();
