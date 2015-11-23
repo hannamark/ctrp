@@ -84,6 +84,4 @@ gem 'pg_sequencer'
 #gem for rack-cors
 gem 'rack-cors', :require => 'rack/cors'
 
-#gem for rack-rewrite
-gem 'rack-rewrite'
 
