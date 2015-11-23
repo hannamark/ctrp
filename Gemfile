@@ -84,4 +84,7 @@ gem 'pg_sequencer'
 #gem for rack-cors
 gem 'rack-cors', :require => 'rack/cors'
 
+#gem for reading/writing spreadsheet
+gem 'roo'
+gem 'roo-xls'
 
