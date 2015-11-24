@@ -285,28 +285,42 @@
                             </div>
                         </div>
 
-                        <div ng-show="trialDetailView.showInvestigator" class="form-group">
+                        <div ng-show="trialDetailView.showInvestigator" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.investigator_name)}">
                             <label class="control-label col-xs-12 col-sm-3">Investigator:</label>
                             <div class="col-xs-12 col-sm-6">
                                 <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedInvArray[0].fname + ' ' + (trialDetailView.selectedInvArray[0].mname ? trialDetailView.selectedInvArray[0].mname + ' ' : '') + trialDetailView.selectedInvArray[0].lname}}"/>
+                                <span class="form-control-feedback" ng-show="trialDetailView.selectedInvArray[0].lname.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.investigator_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <input type="hidden" name="investigator_name" ng-model="trialDetailView.selectedInvArray[0]" ng-required="trialDetailView.showInvestigator">
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.investigator_name)">
+                                    Investigator is required
+                                </span>
                             </div>
                             <div class="col-xs-12 col-sm-3" ng-show="trialDetailView.showInvSearchBtn && trialDetailView.curTrial.edit_type !== 'update'">
                                 <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedInvArray"></ctrp-person-adv-search-modal-button>
                             </div>
                         </div>
 
-                        <div ng-show="trialDetailView.showInvestigator" class="form-group">
+                        <div ng-show="trialDetailView.showInvestigator" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.investigator_title)}">
                             <label class="control-label col-xs-12 col-sm-3">Investigator Title:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" restriction-field class="form-control input-sm" id="investigator_title" ng-model="trialDetailView.curTrial.investigator_title"
-                                       ng-disabled="trialDetailView.curTrial.edit_type === 'update'">
+                                <input type="text" restriction-field class="form-control input-sm" id="investigator_title" name="investigator_title" ng-model="trialDetailView.curTrial.investigator_title"
+                                       ng-disabled="trialDetailView.curTrial.edit_type === 'update'" ng-required="trialDetailView.showInvestigator">
+                                <span class="form-control-feedback" ng-show="trialDetailView.curTrial.investigator_title.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.investigator_title) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.investigator_title)">
+                                    Investigator Title is required
+                                </span>
                             </div>
                         </div>
 
-                        <div ng-show="trialDetailView.showInvestigator" class="form-group">
+                        <div ng-show="trialDetailView.showInvestigator" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name)}">
                             <label class="control-label col-xs-12 col-sm-3">Investigator Affiliation:</label>
                             <div class="col-xs-12 col-sm-6">
                                 <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedIaArray[0].name}}"/>
+                                <span class="form-control-feedback" ng-show="trialDetailView.selectedIaArray[0].name.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <input type="hidden" name="inv_aff_name" ng-model="trialDetailView.selectedIaArray[0]" ng-required="trialDetailView.showInvestigator">
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name)">
+                                    Investigator Affilication is required
+                                </span>
                             </div>
                             <div class="col-xs-12 col-sm-3" ng-show="!trialDetailView.showInvSearchBtn && trialDetailView.curTrial.edit_type !== 'update'">
                                 <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedIaArray"></ctrp-org-adv-search-modal-button>
