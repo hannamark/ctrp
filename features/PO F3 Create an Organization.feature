@@ -124,7 +124,7 @@ And I know the name of the organization I wish to create
 And I provide the full name of the organization I wish to create
 And I submit my create request
 Then the system should indicate with a warning that the organization is a duplicate name in the same context
-
+@runthis
 Scenario: #4 As a Curator, I can clear any data I entered
 Given I am logged in to CTRP PO application
 And I am on the create organization feature

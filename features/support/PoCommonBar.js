@@ -11,7 +11,7 @@ var helperFunctions = require('../support/helper');
 
 var PoCommonBar = function(){
     this.home = element(by.css('a[href="#/main/welcome"]'));
-    this.homeEnterOrganizations = element(by.css('a[href="/ctrp/ui#/main/organizations"]'));
+    var homeEnterOrganizations = element(by.css('a[href="/ctrp/ui#/main/organizations"]'));
     this.organizations = element(by.linkText('Organizations & Families'));
     this.listOrganizations = element(by.css('a[ui-sref="main.organizations"]')); //element(by.css('a[href="#/main/organizations"]'));
     this.addOrganizations = element(by.css('a[href="#/main/new_organization"]'));
@@ -23,10 +23,6 @@ var PoCommonBar = function(){
     this.addFamily = element(by.css('a[href="#/main/new_family"]'));
     this.trials = element(by.linkText('Trials'));
     this.searchTrials = element(by.linkText('Search Trials')) ;
-    this.registerTrials = element(by.linkText('Register Trial')) ;
-    this.registerNationalTrial = element();
-    this.registerExternallyPeerReviewedTrial = element();
-    this.registerInstitutional = element();
     this.signIn = element(by.css('a[href="#/main/sign_in"]'));
     this.signOut = element(by.css('a[ng-click="headerView.logOut()"]'));
     var helper = new helperFunctions();
@@ -67,7 +63,12 @@ var PoCommonBar = function(){
 
 
     this.clickHomeEnterOrganizations = function(){
-        helper.clickLink(this.homeEnterOrganizations, "Home link");
+        homeEnterOrganizations.isPresent().then(function(retVal){
+            console.log('value of ret val : ' + retVal);
+            if (retVal === true) {
+                helper.clickLink(homeEnterOrganizations, "Home link");
+            }
+        });
     };
 
 
@@ -144,8 +145,8 @@ var PoCommonBar = function(){
         });
     };
 
-    this.verifyEmptySearchCriteria = function(done){
-        expect(this.searchEmptyCriteria.getText()).to.eventually.equal('At least one selection value must be entered prior to running the search').and.notify(done);
+    this.verifyEmptySearchCriteria = function(arg, done){
+        expect(this.searchEmptyCriteria.getText()).to.eventually.equal(arg).and.notify(done);
     }
 
 

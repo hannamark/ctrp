@@ -39,7 +39,7 @@ module.exports = function() {
             return true;
         }, 4000).then(function() {
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             projectFunctions.createOrganization('org4Fam', 'alss', 'add1', 'add2', 'United States', 'Maryland', 'city', '20908', 'em@eml.com', '222-222-7878', '5555');
         });
         browser.sleep(25).then(callback);
@@ -120,7 +120,7 @@ module.exports = function() {
             return true;
         }, 4000).then(function() {
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             projectFunctions.createOrganization('org4Fam', 'alss', 'add1', 'add2', 'United States', 'Maryland', 'city', '20908', 'em@eml.com', '222-222-7878', '5555');
         });
         browser.sleep(25).then(callback);
@@ -158,4 +158,4 @@ module.exports = function() {
     });
 
 
-}
+};

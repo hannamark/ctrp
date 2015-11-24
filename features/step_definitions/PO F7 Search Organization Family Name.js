@@ -107,4 +107,4 @@ module.exports = function() {
     this.Given(/^the result should be sorted by family name$/, function (callback) {
         browser.sleep(25).then(callback);
     });
-}
+};

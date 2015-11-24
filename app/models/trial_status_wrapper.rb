@@ -23,4 +23,14 @@ class TrialStatusWrapper < ActiveRecord::Base
 
   belongs_to :trial_status
   belongs_to :trial
+
+  scope :by_value, ->  (value) {
+     joins(:trial_status).where("trial_status_wrappers.trial_status_id = trial_statuses.id and trial_statuses.code = ?","#{value.to_s}")
+   }
+
+  scope :latest, -> {
+    order("updated_at DESC").first
+  }
+
+
 end

@@ -198,7 +198,7 @@ var projectMethods = function() {
 
     this.inOrgSearchResults = function(searchString) {
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
-            if (state == true) {
+            if (state === true) {
                 return menuItem.orgSearchResult.filter(function(name) {
                     return name.getText().then(function(text) {
                        // console.log('value of text : ' + text + 'and value of searched string' + searchString);
@@ -265,14 +265,14 @@ var projectMethods = function() {
      * @param dateTimeEdited
      *****************************************************************/
     this.verifyLastUpdatedNameDate = function(module, dateTimeEdited) {
-            if (module == 'organization') {
+            if (module === 'organization') {
                 var userLoggedIn = menuItem.loginName.getText();
                 userLoggedIn.then(function (value2) {
                     var userUpdatedDate = value2 + ' (' + dateTimeEdited + ')';
                     console.log('user-date last updated value is: ' + userUpdatedDate);
                     (addOrg.orgLastUpdatedBy.getText()).should.eventually.equal(userUpdatedDate);
                 });
-            } else if (module == 'person') {
+            } else if (module === 'person') {
             var userLoggedIn = menuItem.loginName.getText();
             userLoggedIn.then(function (value2) {
                 var userUpdatedDate = value2 + ' (' + dateTimeEdited + ')';
@@ -426,6 +426,7 @@ var projectMethods = function() {
             });
         }).then(function(filteredElements) {
             // Only the elements that passed the filter will be here. This is an array.
+           // console.log(filteredElements);
             if(filteredElements.length > 0) {
                 return 'true';}
             else {return 'false';}
@@ -434,7 +435,7 @@ var projectMethods = function() {
 
     /*****************************************************************
      * Method: Verify the alias in Org page
-     * @param affiliatedOrg
+     * @param orgAlias
      *****************************************************************/
     this.verifyOrgAlias = function(orgAlias) {
         return addOrg.verifyAddedOrgAlias.filter(function(name) {
@@ -548,7 +549,7 @@ var projectMethods = function() {
             }
         }
         return str;
-    };
+    }
 
     /*********************************
      * Method: Convert Object value to a String
@@ -559,7 +560,7 @@ var projectMethods = function() {
         var j=''+obj+'';
         JSON.stringify(j);
         return j;
-    };
+    }
 
     /********************************
      * Method: Returns random number
@@ -628,7 +629,7 @@ var projectMethods = function() {
             return true;
         }, 4000).then(function() {
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             menuItem.clickOrganizations();
             menuItem.clickListOrganizations();
             searchOrg.setOrgName('shiOrgNameSearch' + moment().format('MMMDoYY h'));
@@ -700,7 +701,7 @@ var projectMethods = function() {
             return true;
         }, 4000).then(function() {
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             menuItem.clickOrganizations();
             menuItem.clickListOrganizations();
             searchOrg.setOrgName('shiOrgNameEdit' + moment().format('MMMDoYY h'));
