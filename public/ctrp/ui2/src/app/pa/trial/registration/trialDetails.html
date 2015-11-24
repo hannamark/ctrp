@@ -149,7 +149,8 @@
                             <label class="control-label col-xs-12 col-sm-3">Research Category:</label>
                             <div class=" col-xs-12 col-sm-6">
                                 <select restriction-field class="form-control input-sm" id="research_category" name="research_category" ng-model="trialDetailView.curTrial.research_category_id"
-                                        ng-options="category.id as category.name for category in trialDetailView.researchCategoryArr" ng-disabled="trialDetailView.curTrial.edit_type === 'update'" required>
+                                        ng-options="category.id as category.name for category in trialDetailView.researchCategoryArr"
+                                        ng-change="trialDetailView.watchOption('research_category')"ng-disabled="trialDetailView.curTrial.edit_type === 'update'" required>
                                     <option value="">-Select a Research Category-</option>
                                 </select>
                                 <span class="form-control-feedback select-feedback" ng-show="trialDetailView.curTrial.research_category_id" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.research_category) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -939,10 +940,14 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group has-feedback" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.informed_consent)}">
                             <label class="control-label col-xs-12 col-sm-3">Informed Consent Document:</label>
                             <div class="col-xs-12 col-sm-9 form-file-upload">
-                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.informed_consent" name="informed_consent" ngf-max-size="10MB">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.informed_consent" name="informed_consent" ngf-max-size="10MB"
+                                       ng-required="trialDetailView.isInterventional && (trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.informedConsentNum === 0))">
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.informed_consent)">
+                                    Informed Consent Document is required for Interventional Trial
+                                </span>
                             </div>
                         </div>
 

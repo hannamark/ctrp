@@ -58,6 +58,7 @@
         vm.selectedInvArray = [];
         vm.selectedIaArray = [];
         vm.selectedFsArray = [];
+        vm.isInterventional = false;
         vm.showPrimaryPurposeOther = false;
         vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
@@ -71,6 +72,7 @@
         vm.toaNum = 0;
         vm.protocolDocNum = 0;
         vm.irbApprovalNum = 0;
+        vm.informedConsentNum = 0;
         vm.showLpiError = false;
         vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
 
@@ -272,6 +274,12 @@
                         } else {
                             vm.irbApprovalNum++;
                         }
+                    } else if (vm.addedDocuments[index].document_type === 'Informed Consent') {
+                        if (vm.addedDocuments[index]._destroy) {
+                            vm.informedConsentNum--;
+                        } else {
+                            vm.informedConsentNum++;
+                        }
                     }
                 }
             }
@@ -452,7 +460,14 @@
         });
 
         vm.watchOption = function(type) {
-            if (type == 'primary_purpose') {
+            if (type == 'research_category') {
+                var intObj = vm.researchCategoryArr.filter(findIntOption);
+                if (intObj[0].id == vm.curTrial.research_category_id) {
+                    vm.isInterventional = true;
+                } else {
+                    vm.isInterventional = false;
+                }
+            } else if (type == 'primary_purpose') {
                 var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
                 if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
                     vm.showPrimaryPurposeOther = true;
@@ -562,6 +577,7 @@
                 appendEditType();
                 convertDate();
                 displayPOs();
+                rcFieldChange();
                 ppFieldChange();
                 spFieldChange();
                 rpFieldChange();
@@ -653,6 +669,14 @@
         }
 
         // Display/hide dynamic fields
+        function rcFieldChange() {
+            var intObj = vm.researchCategoryArr.filter(findIntOption);
+            if (intObj[0].id == vm.curTrial.research_category_id) {
+                vm.isInterventional = true;
+            }
+        }
+
+
         function ppFieldChange() {
             var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
             if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
@@ -802,7 +826,17 @@
                     vm.protocolDocNum++;
                 } else if (vm.curTrial.trial_documents[i].document_type === 'IRB Approval') {
                     vm.irbApprovalNum++;
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Informed Consent') {
+                    vm.informedConsentNum++;
                 }
+            }
+        }
+
+        function findIntOption(option) {
+            if (option.code === 'INT') {
+                return true;
+            } else {
+                return false;
             }
         }
 
