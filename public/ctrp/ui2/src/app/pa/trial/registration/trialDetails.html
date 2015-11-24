@@ -940,7 +940,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group has-feedback" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.informed_consent)}">
+                        <div class="form-group has-feedback" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.informed_consent), 'required': trialDetailView.isInterventional}">
                             <label class="control-label col-xs-12 col-sm-3">Informed Consent Document:</label>
                             <div class="col-xs-12 col-sm-9 form-file-upload">
                                 <input type="file" restriction-field ngf-select ng-model="trialDetailView.informed_consent" name="informed_consent" ngf-max-size="10MB"
