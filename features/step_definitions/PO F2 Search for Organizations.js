@@ -34,7 +34,7 @@ module.exports = function() {
             return true;
         }, 4000).then(function() {
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             projectFunctions.createOrganization('shiOrg1', 'alias', 'add1', 'add2', 'United States', 'Florida', 'avenue', '24567', 's@s.com', '222-4444-555', '444-6666-555');
             storeOrg1 = cukeOrganization.then(function(value) {
                 console.log('This is the first org that is added' + value);
@@ -72,9 +72,9 @@ module.exports = function() {
     this.Given(/^I am logged in to CTRP$/, function (callback) {
         browser.get('ui#/main/sign_in');
         login.login('ctrpadmin', 'Welcome01');
-        login.accept();
-        menuItem.clickHomeEnterOrganizations();
-        login.clickWriteMode();
+        //login.accept();
+        //menuItem.clickHomeEnterOrganizations();
+        //login.clickWriteMode('On');
         browser.sleep(25).then(callback);
     });
 
@@ -310,7 +310,7 @@ module.exports = function() {
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         menuItem.clickHomeEnterOrganizations();
-        login.clickWriteMode();
+        login.clickWriteMode('On');
         browser.sleep(25).then(callback);
     });
 
@@ -365,15 +365,17 @@ module.exports = function() {
     });
 
     this.When(/^I provide the partial name with wild card '\*' of the (.*) I wish to search for$/, function (OrganizationName, callback) {
-        searchOrg.setOrgName(OrganizationName);
+        if(OrganizationName !== '') {
+            searchOrg.setOrgName(OrganizationName);
+        }
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I indicate to include or not include a (.*)$/, function (SearchAliases, callback) {
-        if(SearchAliases == 'No'){
+        if(SearchAliases === 'No'){
             searchOrg.checkAlias(true);
         }
-        if(SearchAliases == 'Yes'){
+        if(SearchAliases === 'Yes'){
             searchOrg.checkAlias(false);
         }
         browser.sleep(25).then(callback);
@@ -385,7 +387,9 @@ module.exports = function() {
     });
 
     this.Given(/^I enter the Source ID (.*)$/, function (SourceID, callback) {
-        searchOrg.setSourceId(SourceID);
+        if (SourceID !== '') {
+            searchOrg.setSourceId(SourceID);
+        }
         browser.sleep(25).then(callback);
     });
 
@@ -395,12 +399,16 @@ module.exports = function() {
     });
 
     this.Given(/^I enter the Family Name (.*)$/, function (FamilyName, callback) {
-        searchOrg.setFamilyName(FamilyName);
+        if(FamilyName !== '') {
+            searchOrg.setFamilyName(FamilyName);
+        }
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I enter the City (.*)$/, function (City, callback) {
-        searchOrg.setCity(City);
+        if(City !== ''){
+            searchOrg.setCity(City);
+        }
         browser.sleep(25).then(callback);
     });
 
@@ -415,91 +423,99 @@ module.exports = function() {
     });
 
     this.Given(/^I enter the Phone Number (.*)$/, function (PhoneNumber, callback) {
-        searchOrg.setPhone(PhoneNumber);
+        if(PhoneNumber !== '') {
+            searchOrg.setPhone(PhoneNumber);
+        }
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I enter the Email (.*)$/, function (Email, callback) {
-        searchOrg.setEmail(Email);
+        if (Email !== '') {
+            searchOrg.setEmail(Email);
+        }
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I enter the Curator Name (.*)$/, function (CuratorName, callback) {
-        searchOrg.setOrgLastUpdatedName(CuratorName);
+        if(CuratorName !== ''){
+            searchOrg.setOrgLastUpdatedName(CuratorName);
+        }
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I enter the Curator Date (.*)$/, function (CuratorDate, callback) {
-        searchOrg.setOrgLastUpdatedStartDate(CuratorDate);
-        searchOrg.setOrgLastUpdatedEndDate(CuratorDate);
+        if (CuratorDate !== ''){
+            searchOrg.setOrgLastUpdatedStartDate(CuratorDate);
+            searchOrg.setOrgLastUpdatedEndDate(CuratorDate);
+        }
         browser.sleep(25).then(callback);
     });
 
 
     this.Then(/^the system should display (.*) with organizations that match the search criteria Organization Name (.*), Search Aliases (.*), Source Context (.*), Source ID (.*), Source Status (.*), Family Name (.*), City (.*), Country (.*), State (.*), Phone Number (.*), Email (.*), Curator Name (.*), Curator Date (.*)$/, function (Result, OrganizationName, SearchAliases, SourceContext, SourceID, SourceStatus, FamilyName, City, Country, State, PhoneNumber, Email, CuratorName, CuratorDate, callback) {
-        searchOrg.orgName.getAttribute('value').then(function(orgName){
-            console.log('orgName here is:' + orgName);
-            searchOrg.sourceContext.$('option:checked').getText().then(function(sourceContext){
-                console.log('sourceContext here is:' + sourceContext);
-                searchOrg.sourceStatus.$('option:checked').getText().then(function(sourceStatus){
-                    console.log('sourceStatus here is:' + sourceStatus);
-                    searchOrg.sourceId.getAttribute('value').then(function(sourceId){
-                        console.log('sourceId here is:' + sourceId);
-                        searchOrg.familyName.getAttribute('value').then(function(familyName){
-                            console.log('familyName here is:' + familyName);
-                            searchOrg.city.getAttribute('value').then(function(city){
-                                console.log('city here is:' + city);
-                                searchOrg.orgUpdatedByName.getAttribute('value').then(function(orgUpdatedByName){
-                                    console.log('orgUpdatedByName here is:' + orgUpdatedByName);
-                                    searchOrg.postalCode.getAttribute('value').then(function(postalCode){
-                                        console.log('postalCode here is:' + postalCode);
-                                        searchOrg.country.$('option:checked').getText().then(function(country){
-                                            console.log('country here is:' + country);
-                                            searchOrg.phone.getAttribute('value').then(function(phone){
-                                                console.log('phone here is:' + phone);
-                                                searchOrg.email.getAttribute('value').then(function(email){
-                                                    console.log('email here is:' + email);
-                                                    searchOrg.state.$('option:checked').getText().then(function(state) {
-                                                        console.log('state here is:' + state);
-                                                        searchOrg.orgUpdatedStartDate.getAttribute('value').then(function(state) {
-                                                            console.log('state here is:' + state);
-                                                            searchOrg.orgUpdatedEndDate.getAttribute('value').then(function (state) {
-                                                                console.log('state here is:' + state);
-                                                                searchOrg.orgUpdatedByName.getAttribute('value').then(function (state) {
-                                                                    console.log('state here is:' + state);
-                                                                    if (orgName === '' && sourceContext === 'All Contexts' && sourceStatus === 'Select a Status' && sourceId === '' && familyName === '' && city === '' && postalCode === '' && country === 'All Countries' && phone === '' && email === '' && state === 'All States/Provinces') {
-                                                                        menuItem.verifyEmptySearchCriteria(callback);
-                                                                    } else {
-                                                                        console.log('in the else statement');
+        //searchOrg.orgName.getAttribute('value').then(function(orgName){
+        //    console.log('orgName here is:' + orgName);
+        //    searchOrg.sourceContext.$('option:checked').getText().then(function(sourceContext){
+        //        console.log('sourceContext here is:' + sourceContext);
+        //        searchOrg.sourceStatus.$('option:checked').getText().then(function(sourceStatus){
+        //            console.log('sourceStatus here is:' + sourceStatus);
+        //            searchOrg.sourceId.getAttribute('value').then(function(sourceId){
+        //                console.log('sourceId here is:' + sourceId);
+        //                searchOrg.familyName.getAttribute('value').then(function(familyName){
+        //                    console.log('familyName here is:' + familyName);
+        //                    searchOrg.city.getAttribute('value').then(function(city){
+        //                        console.log('city here is:' + city);
+        //                        searchOrg.orgUpdatedByName.getAttribute('value').then(function(orgUpdatedByName){
+        //                            console.log('orgUpdatedByName here is:' + orgUpdatedByName);
+        //                            searchOrg.postalCode.getAttribute('value').then(function(postalCode){
+        //                                console.log('postalCode here is:' + postalCode);
+        //                                searchOrg.country.$('option:checked').getText().then(function(country){
+        //                                    console.log('country here is:' + country);
+        //                                    searchOrg.phone.getAttribute('value').then(function(phone){
+        //                                        console.log('phone here is:' + phone);
+        //                                        searchOrg.email.getAttribute('value').then(function(email){
+        //                                            console.log('email here is:' + email);
+        //                                            searchOrg.state.$('option:checked').getText().then(function(state) {
+        //                                                console.log('state here is:' + state);
+        //                                                searchOrg.orgUpdatedStartDate.getAttribute('value').then(function(state) {
+        //                                                    console.log('state here is:' + state);
+        //                                                    searchOrg.orgUpdatedEndDate.getAttribute('value').then(function (state) {
+        //                                                        console.log('state here is:' + state);
+        //                                                        searchOrg.orgUpdatedByName.getAttribute('value').then(function (state) {
+        //                                                            console.log('state here is:' + state);
+        //                                                            if (orgName === '' && sourceContext === 'All Contexts' && sourceStatus === 'Select a Status' && sourceId === '' && familyName === '' && city === '' && postalCode === '' && country === 'All Countries' && phone === '' && email === '' && state === 'All States/Provinces') {
+        //                                                                menuItem.verifyEmptySearchCriteria(callback);
+        //                                                            } else {
+        //                                                                console.log('in the else statement');
                                                                         expect(projectFunctions.inOrgSearchResults('Active')).to.become(Result).and.notify(callback);
-                                                                        //expect(projectFunctions.inOrgSearchResults('Wake Forest University at Clemmons')).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(SourceContext)).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(SourceID)).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(SourceStatus)).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(FamilyName)).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(City)).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(Country)).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(State)).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(PhoneNumber)).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(Email)).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(CuratorName)).to.become(Result);
-                                                                        //expect(projectFunctions.inOrgSearchResults(CuratorDate)).to.become(Result).and.notify(callback);
-                                                                    }
-                                                                });
-                                                            });
-                                                        });
-                                                    });
-                                                });
-                                            });
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
+        //                                                                //expect(projectFunctions.inOrgSearchResults('Wake Forest University at Clemmons')).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(SourceContext)).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(SourceID)).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(SourceStatus)).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(FamilyName)).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(City)).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(Country)).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(State)).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(PhoneNumber)).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(Email)).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(CuratorName)).to.become(Result);
+        //                                                                //expect(projectFunctions.inOrgSearchResults(CuratorDate)).to.become(Result).and.notify(callback);
+        //                                                            }
+        //                                                        });
+        //                                                    });
+        //                                                });
+        //                                            });
+        //                                        });
+        //                                    });
+        //                                });
+        //                            });
+        //                        });
+        //                    });
+        //                });
+        //            });
+        //        });
+        //    });
+        //});
     });
 
     this.Given(/^the following fields should be displayed:$/, function (table, callback) {
@@ -509,6 +525,22 @@ module.exports = function() {
     this.Given(/^the result should be sorted by Organization Name$/, function (callback) {
         browser.sleep(25).then(callback);
     });
+
+    this.Given(/^I searched without providing any search parameters$/, function (callback) {
+        searchOrg.clickSearchButton();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^I should get message as "([^"]*)"$/, function (arg1, callback) {
+        menuItem.verifyEmptySearchCriteria(arg1, callback);
+    });
+
+    this.Then(/^I searched without any search parameters and Search Alias box unchecked$/, function (callback) {
+        searchOrg.checkAlias(true);
+        searchOrg.clickSearchButton();
+        browser.sleep(25).then(callback);
+    });
+
 
     this.Given(/^I want to see the detail information of organization when linked with Family$/, function (callback) {
         projectFunctions.createOrgforSearch();
@@ -554,7 +586,7 @@ module.exports = function() {
             return true;
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
         });
         browser.sleep(25).then(callback);

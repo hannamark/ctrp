@@ -177,12 +177,19 @@ And the result should be sorted by Organization Name
 
 Examples:
 |Organization Name	||Search Aliases||Source Context	||Source ID	||Source Status	||Family Name	||City	||State	||Country	||Phone Number	||Email	||Curator Name	||Curator Date	||Result|
-|                 	||No           	||              	||         	||             	||           	||    	||     	||       	||           	||     	||            	||            	||At least one selection value must be entered prior to running the search|
 |*                	||No		    ||              	||		    ||             	||           	||    	||     	||       	||           	||     	||            	||            	||true|
 |	        		||No		    ||CTEP  			||WAKE		||		        ||	        	||  	||	    ||		    ||		        ||	    ||      		||		        ||true|
 |		        	||No		    ||		        	||	    	||		        ||*fam*	||	    ||	    ||		    ||		        ||	    ||	        	||		        ||true|
 |			        ||No    		||			        ||		    ||	        	||		        ||	    ||	    ||		    ||		        ||  	||*curator	    ||		        ||true|
 
+
+ Scenario: As a Curator, I will get message if no Search Parameter is provided
+  Given I know the parameters of organization I wish to search for
+  And I am logged in to CTRP PO application
+  And I searched without providing any search parameters
+  Then I should get message as "At least one selection value must be entered prior to running the search"
+  And I searched without any search parameters and Search Alias box unchecked
+  Then I should get message as "At least one selection value must be entered prior to running the search"
 
 Scenario: As a Curator, I can select any organization with Family in a search result and display the detailed organization information
 Given I want to see the detail information of organization when linked with Family

@@ -25,9 +25,9 @@ var helper = function() {
     this.wait = function (element, label) {
         browser.wait(function () {
             return element.isPresent().then(function (state) {
-                if (state == true) {
+                if (state === true) {
                     return element.isDisplayed().then(function (state2) {
-                        return state2 == true;
+                        return state2 === true;
                     });
                 } else {
                     return false;
@@ -63,14 +63,13 @@ var helper = function() {
      //   expect(fieldName.$('option:checked').getText()).to.eventually.equal(fieldValue);
 
     }; */
-/*
-    this.selectValue = function (fieldName, fieldValue, errorMessage) {
+
+    this.selectValueFromList = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
-       // element(by.cssContainingText('option', fieldValue)).click();  //or use this
-       fieldName.sendKeys(fieldValue);
+        fieldName.element(by.cssContainingText('option', fieldValue)).click();
         console.log(errorMessage + ' ' + fieldValue + " Value selected");
         expect(fieldName.$('option:checked').getText()).to.eventually.equal(fieldValue);
-    }; */
+    };
 
     this.selectValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
@@ -90,7 +89,7 @@ var helper = function() {
         this.wait(button, errorMessage);
         button.click();
         console.log(errorMessage + " was clicked");
-        if (errorMessage == exp_del_bttn_pg_hdr){
+        if (errorMessage === exp_del_bttn_pg_hdr){
             console.log("Page header does not exists on the popup dialog box");
         } else {
           //  expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
@@ -102,6 +101,20 @@ var helper = function() {
         this.wait(button, errorMessage);
         button.click();
         console.log(errorMessage + " was clicked");
+    };
+
+    this.clickRadioButton = function (button, value, errorMessage){
+        this.wait(button, errorMessage);
+        if (value === '0') {
+            button.get(0).click();
+            console.log(errorMessage + " was clicked");
+            expect((button.get(0).isSelected).to.eventually.equal(true));
+        }
+        else if (value === '1') {
+            button.get(1).click();
+            console.log(errorMessage + " was clicked");
+            expect((button.get(1).isSelected).to.eventually.equal(true));
+        }
     };
 
     this.getValue = function (fieldName, errorMessage) {
@@ -144,13 +157,13 @@ var helper = function() {
             }
         }
         return str;
-    };
+    }
 
     this.objToString = function (obj) {
         var j=''+obj+'';
         JSON.stringify(j);
         return j;
-    };
+    }
 
 
 

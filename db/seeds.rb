@@ -121,6 +121,28 @@ ProcessingStatus.find_or_create_by(code: 'VFP', name: 'Verification Pending')
 ProcessingStatus.find_or_create_by(code: 'AVR', name: 'Abstraction Verified Response')
 ProcessingStatus.find_or_create_by(code: 'VNR', name: 'Abstraction Verified No Response')
 ProcessingStatus.find_or_create_by(code: 'OHD', name: 'On-Hold')
+
+Milestone.find_or_create_by(code: 'SAC', name: 'Submission Acceptance Date')
+Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
+Milestone.find_or_create_by(code: 'STR', name: 'Submission Terminated Date')
+Milestone.find_or_create_by(code: 'SRE', name: 'Submission Reactivated Date')
+Milestone.find_or_create_by(code: 'APS', name: 'Administrative Processing Start Date')
+Milestone.find_or_create_by(code: 'APC', name: 'Administrative Processing Completed Date')
+Milestone.find_or_create_by(code: 'RAQ', name: 'Ready for Administrative QC Date')
+Milestone.find_or_create_by(code: 'AQS', name: 'Administrative QC Start Date Administrative')
+Milestone.find_or_create_by(code: 'QCS', name: 'QC Completed Date Scientific Processing Start')
+Milestone.find_or_create_by(code: 'DSC', name: 'Date Scientific Processing Completed Date')
+Milestone.find_or_create_by(code: 'RSQ', name: 'Ready for Scientific QC Date')
+Milestone.find_or_create_by(code: 'SQS', name: 'Scientific QC Start Date')
+Milestone.find_or_create_by(code: 'SQC', name: 'Scientific QC Completed Date')
+Milestone.find_or_create_by(code: 'RTS', name: 'Ready for Trial Summary Report Date')
+Milestone.find_or_create_by(code: 'TSR', name: 'Trial Summary Report Date')
+Milestone.find_or_create_by(code: 'STS', name: 'Submitter Trial Summary Report Feedback Date')
+Milestone.find_or_create_by(code: 'IAV', name: 'Initial Abstraction Verified Date')
+Milestone.find_or_create_by(code: 'ONG', name: 'On-going')
+Milestone.find_or_create_by(code: 'AVD', name: 'Abstraction Verified Date')
+Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date ')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
