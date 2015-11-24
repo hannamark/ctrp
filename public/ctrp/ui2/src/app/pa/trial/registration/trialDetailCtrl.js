@@ -297,7 +297,9 @@
 
         // Add other ID to a temp array
         vm.addOtherId = function () {
-            if (vm.protocol_id_origin_id && vm.protocol_id) {
+            var errorMsg = TrialService.checkOtherId(vm.protocol_id_origin_id, vm.protocol_id, vm.addedOtherIds);
+
+            if (!errorMsg) {
                 var newId = {};
                 newId.protocol_id_origin_id = vm.protocol_id_origin_id;
                 // For displaying other ID origin name in the table
@@ -309,8 +311,10 @@
                 newId.protocol_id = vm.protocol_id;
                 newId._destroy = false;
                 vm.addedOtherIds.push(newId);
+                vm.protocol_id_origin_id = null;
+                vm.protocol_id = null;
             } else {
-                alert('Please select a Protocol ID Origin and enter a Protocol ID');
+                alert(errorMsg);
             }
         };
 
