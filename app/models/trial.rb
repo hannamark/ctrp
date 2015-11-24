@@ -178,6 +178,16 @@ class Trial < ActiveRecord::Base
   accepts_nested_attributes_for :oversight_authorities, allow_destroy: true
   accepts_nested_attributes_for :trial_documents, allow_destroy: true
 
+  # Array of actions can be taken on this Trial
+  def actions
+    actions = []
+    if self.is_draft
+      actions.append('Complete')
+    else
+      actions.append('Update')
+    end
+  end
+
   validates :lead_protocol_id, presence: true
 
   before_save :generate_nci_id
