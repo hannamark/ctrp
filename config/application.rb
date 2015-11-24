@@ -30,7 +30,7 @@ module Ctrp
     config.families_id_sequence_start_with = 65000000
 
     #config.serve_static_files = true
-    paths['public'] = File.join 'public', 'ctrp', 'ui2', 'src'
+    #paths['public'] = File.join 'public', 'ctrp', 'ui2', 'src'
 
     ## Rack-cors settings for Rails
     config.middleware.insert_before 0, "Rack::Cors", :debug => true, :logger => (-> { Rails.logger }) do
