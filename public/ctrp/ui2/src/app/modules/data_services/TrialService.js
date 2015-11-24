@@ -765,14 +765,15 @@
                 return errorMsg;
             }
             for (var i = 0; i < addedOtherIds.length; i++) {
-                if (addedOtherIds[i].protocol_id_origin_id === protocolIdOriginId
+                if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
                     && addedOtherIds[i].protocol_id_origin_name !== 'Other Identifier'
                     && addedOtherIds[i].protocol_id_origin_name !== 'Obsolete ClinicalTrials.gov Identifier') {
                     errorMsg = addedOtherIds[i].protocol_id_origin_name + ' already exists';
                     return errorMsg;
-                } else if ((addedOtherIds[i].protocol_id_origin_name === 'Other Identifier'
-                    || addedOtherIds[i].protocol_id_origin_name === 'Obsolete ClinicalTrials.gov Identifier')
-                    && addedOtherIds[i].protocol_id === protocolId) {
+                } else if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
+                    && addedOtherIds[i].protocol_id === protocolId
+                    && (addedOtherIds[i].protocol_id_origin_name === 'Other Identifier'
+                    || addedOtherIds[i].protocol_id_origin_name === 'Obsolete ClinicalTrials.gov Identifier')) {
                     errorMsg = addedOtherIds[i].protocol_id_origin_name + ' ' + addedOtherIds[i].protocol_id + ' already exists';
                     return errorMsg;
                 }
