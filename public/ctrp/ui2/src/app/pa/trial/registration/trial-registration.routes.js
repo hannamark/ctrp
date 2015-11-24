@@ -23,6 +23,9 @@
                             },
                             primaryPurposeObj: function(TrialService) {
                                 return TrialService.getPrimaryPurposes();
+                            },
+                            trialStatusObj: function(TrialService) {
+                                return TrialService.getTrialStatuses();
                             }
                         },
                         ncyBreadcrumb: {

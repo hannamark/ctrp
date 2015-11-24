@@ -98,10 +98,22 @@ class TrialsController < ApplicationController
       end
       @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
       @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
+
+      # TODO further add another scope
+      if params[:trial_status].present?
+        Rails.logger.info "params trial_status = #{params[:trial_status].inspect}"
+        @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
+      end
+      if params[:milestone].present?
+        Rails.logger.info "params milestone = #{params[:milestone].inspect}"
+        @trials = @trials.select{|trial| trial.milestone_wrappers.blank? &&  trial.milestone_wrappers.last.milestone.code == params[:milestone]}
+      end
+
     else
       @trials = []
     end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
