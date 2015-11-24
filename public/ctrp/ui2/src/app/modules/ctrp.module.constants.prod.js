@@ -6,7 +6,7 @@
     'use strict';
 
     angular.module('ctrp.module.constants', [])
-        .constant('HOST', 'http://localhost') //TODO: to be replaced with production server url
+        .constant('HOST', 'http://localhost:3000') //TODO: to be replaced with production server url
         .constant('URL_CONFIGS', {
             //relative urls to the host
             'ORG_LIST': '/ctrp/organizations.json',
