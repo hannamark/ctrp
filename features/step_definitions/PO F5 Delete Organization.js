@@ -67,7 +67,7 @@ module.exports = function() {
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
             helper.wait_for(300);
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             iteraCnt = iteraCnt + 1;
             var getCrntCnt = iteraCnt + 1;
             console.log('calculating count:'+getCrntCnt+'')
@@ -141,7 +141,7 @@ module.exports = function() {
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
             helper.wait_for(300);
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             menuItem.clickOrganizations();
             menuItem.clickAddOrganizations();
             projectFunctions.createPersonWithAffiliatedOrg(
@@ -182,7 +182,7 @@ module.exports = function() {
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
             helper.wait_for(300);
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             menuItem.clickOrganizations();
             menuItem.clickAddOrganizations();
             projectFunctions.createFamilyWithMembers(
@@ -216,7 +216,7 @@ module.exports = function() {
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
             helper.wait_for(300);
-            login.clickWriteMode();
+            login.clickWriteMode('On');
         });
         menuItem.clickOrganizations();
         menuItem.clickListOrganizations();

@@ -2,11 +2,6 @@
  * Created by singhs10 on 11/7/15.
  */
 
-/**
- * Created by singhs10 on 11/5/15.
- */
-
-
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);

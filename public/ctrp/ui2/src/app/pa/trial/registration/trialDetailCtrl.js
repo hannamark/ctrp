@@ -10,12 +10,12 @@
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
-        'holderTypeObj', 'expandedAccessTypeObj', 'countryList'];
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST'];
 
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope, $window,
                              Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
-                             holderTypeObj, expandedAccessTypeObj, countryList) {
+                             holderTypeObj, expandedAccessTypeObj, countryList, HOST) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
@@ -64,9 +64,13 @@
         vm.showInvSearchBtn = true;
         vm.why_stopped_disabled = true;
         vm.otherDocNum = 1;
+        vm.fsNum = 0;
+        vm.tsNum = 0;
+        vm.toaNum = 0;
         vm.protocolDocNum = 0;
         vm.irbApprovalNum = 0;
         vm.showLpiError = false;
+        vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
 
         vm.updateTrial = function(updateType) {
             if (vm.selectedLoArray.length > 0) {
@@ -207,6 +211,11 @@
             } else if (type == 'funding_source') {
                 if (index < vm.addedFses.length) {
                     vm.addedFses[index]._destroy = !vm.addedFses[index]._destroy;
+                    if (vm.addedFses[index]._destroy) {
+                        vm.fsNum--;
+                    } else {
+                        vm.fsNum++;
+                    }
                 }
             } else if (type == 'grant') {
                 if (index < vm.addedGrants.length) {
@@ -215,6 +224,11 @@
             } else if (type == 'trial_status') {
                 if (index < vm.addedStatuses.length) {
                     vm.addedStatuses[index]._destroy = !vm.addedStatuses[index]._destroy;
+                    if (vm.addedStatuses[index]._destroy) {
+                        vm.tsNum--;
+                    } else {
+                        vm.tsNum++;
+                    }
                 }
             } else if (type == 'ind_ide') {
                 if (index < vm.addedIndIdes.length) {
@@ -223,6 +237,11 @@
             } else if (type == 'authority') {
                 if (index < vm.addedAuthorities.length) {
                     vm.addedAuthorities[index]._destroy = !vm.addedAuthorities[index]._destroy;
+                    if (vm.addedAuthorities[index]._destroy) {
+                        vm.toaNum--;
+                    } else {
+                        vm.toaNum++;
+                    }
                 }
             } else if (type == 'document') {
                 if (index < vm.addedDocuments.length) {
@@ -313,6 +332,7 @@
                 newStatus.why_stopped = vm.why_stopped;
                 newStatus._destroy = false;
                 vm.addedStatuses.push(newStatus);
+                vm.tsNum++;
             } else {
                 alert('Please provide a Status Date and select a Status');
             }
@@ -357,6 +377,7 @@
                 newAuthority.organization = vm.authority_org;
                 newAuthority._destroy = false;
                 vm.addedAuthorities.push(newAuthority);
+                vm.toaNum++;
             } else {
                 alert('Please select a Country and Organization');
             }
@@ -372,6 +393,7 @@
                 newFs.organization_name = vm.selectedFsArray[vm.selectedFsArray.length - 1].name;
                 newFs._destroy = false;
                 vm.addedFses.push(newFs);
+                vm.fsNum++;
             }
         });
 
@@ -508,6 +530,7 @@
             if (vm.curTrial.new) {
                 vm.curTrial.pilot = 'No';
                 vm.curTrial.grant_question = 'Yes';
+                vm.curTrial.ind_ide_question = 'Yes';
                 populateStudySource();
             } else {
                 convertDate();
@@ -652,6 +675,7 @@
                 });
                 tfs._destroy = false;
                 vm.addedFses.push(tfs);
+                vm.fsNum++;
             }
         }
 
@@ -683,6 +707,7 @@
                 statusWrapper.why_stopped = vm.curTrial.trial_status_wrappers[i].why_stopped;
                 statusWrapper._destroy = false;
                 vm.addedStatuses.push(statusWrapper);
+                vm.tsNum++;
             }
         }
 
@@ -723,6 +748,7 @@
                 authority.organization = vm.curTrial.oversight_authorities[i].organization;
                 authority._destroy = false;
                 vm.addedAuthorities.push(authority);
+                vm.toaNum++;
             }
         }
 

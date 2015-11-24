@@ -72,7 +72,7 @@ module.exports = function() {
                     return true;
                 }, 4000).then(function() {
                     menuItem.clickHomeEnterOrganizations();
-                    login.clickWriteMode();
+                    login.clickWriteMode('On');
                     projectFunctions.createPerson(
                         'Mr',//* @param prefix
                         'TestFName',//* @param fName
@@ -102,7 +102,7 @@ module.exports = function() {
                 }, 4000).then(function(){
                   menuItem.clickHomeEnterOrganizations();
                   helper.wait_for(300);
-                  login.clickWriteMode();
+                  login.clickWriteMode('On');
                   menuItem.clickOrganizations();
                   menuItem.clickAddOrganizations();
                   projectFunctions.createPersonWithAffiliatedOrg(
@@ -160,7 +160,7 @@ module.exports = function() {
             return true;
         }, 4000).then(function() {
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             menuItem.clickPeople();
             menuItem.clickListPeople();
             search.setPersonFirstName(createdPersonDel);

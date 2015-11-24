@@ -17,6 +17,7 @@ Scenario Outline: #1c I can enter the different protocol identifiers for a trial
   |Other Identifier                       |
   Then the Register Trial Protocol Identifiers section will not indicate any errors during Trial Review
 
+<<<<<<< HEAD
   Examples:
     |trialType|
     |National                 |
@@ -43,6 +44,17 @@ Scenario Outline: #3 Duplicate rules for the Other trial identifier
   And I am on the Register Trial Protocol Identifiers screen
   Then I should not be allowed to enter Duplicate Identifiers of the same type
   And I should not be allowed to enter the "Other Identifier" with duplicate Protocol ID
+=======
+Scenario: Registering a trial Lead Organization Protocol Identifier
+When registering a National, Externally Peer-Reviewed, or Institutional Trial
+Then the Lead Organization Trial Identifer is required
+
+Scenario: Registering other trial Identifiers
+When registering a National, Externally Peer-Reviewed, or Institutional Trial
+Then the ClinicalTrials.gov identifier can be optionally registered
+And Other Trial Identifiers can be optionally registered
+
+>>>>>>> 1e89b1a6ec07181547fdad0606e6520666d177fd
 
   Examples:
     |trialType|

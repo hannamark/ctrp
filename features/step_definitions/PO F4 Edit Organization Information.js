@@ -265,7 +265,7 @@ module.exports = function() {
             return true;
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             projectFunctions.createOrganization('shiOrg4Edit','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-444-5555','444-6666-555');
             addOrg.setAddOrgName('test');
             selectItem.selectSourceStatus('InActive');

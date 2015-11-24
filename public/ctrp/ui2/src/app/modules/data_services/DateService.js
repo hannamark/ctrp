@@ -66,7 +66,7 @@
                 var year = date.getFullYear();
                 var monthNum = date.getMonth() + 1;
                 var month = monthsDict[monthNum];
-                dateStr = day + "-" + month + "-" + year;
+                dateStr = day + '-' + month + '-' + year;
             }
             return dateStr;
         }; //convertISODateToLocale
@@ -91,8 +91,8 @@
                 endDate.setMinutes(59);
                 endDate.setSeconds(59);
 
-                var startDateStr = moment(startDate).format("YYYY-MM-DD HH:mm:ss");
-                var endDateStr = moment(endDate).format("YYYY-MM-DD HH:mm:ss");
+                var startDateStr = moment(startDate).format('YYYY-MM-DD HH:mm:ss');
+                var endDateStr = moment(endDate).format('YYYY-MM-DD HH:mm:ss');
                 dateRangeArray[0] = startDateStr;
                 dateRangeArray[1] = endDateStr;
             }

@@ -2,9 +2,6 @@
  * Created by singhs10 on 9/4/15.
  */
 
-/**
- * Created by singhs10 on 8/7/15.
- */
 
 var helper = require('../support/helper');
 

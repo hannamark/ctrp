@@ -78,6 +78,7 @@
 #  min_age_unit_id          :integer
 #  max_age_unit_id          :integer
 #  anatomic_site_id         :integer
+#  num_of_arms              :integer
 #
 # Indexes
 #
@@ -165,6 +166,8 @@ class Trial < ActiveRecord::Base
   has_many :citations, -> { order 'citations.id' }
   has_many :links, -> { order 'links.id' }
   has_many :diseases, -> { order 'diseases.id' }
+  has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
+  has_many :collaborators, -> { order 'collaborators.id' }
 
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
@@ -223,16 +226,21 @@ class Trial < ActiveRecord::Base
   }
 
   scope :with_protocol_id, -> (value) {
+    join_clause = 'LEFT JOIN other_ids ON other_ids.trial_id = trials.id'
+    where_clause = 'trials.lead_protocol_id ilike ? OR trials.nci_id ilike ? OR other_ids.protocol_id ilike ?'
+
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
-      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
+      value_exp = "%#{value[1..str_len - 1]}"
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "#{value[0..str_len - 2]}%", "#{value[0..str_len - 2]}%")
+      value_exp = "#{value[0..str_len - 2]}%"
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
+      value_exp = "%#{value[1..str_len - 2]}%"
     else
-      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "#{value}", "#{value}")
+      value_exp = "#{value}"
     end
+
+    joins(join_clause).where(where_clause, value_exp, value_exp, value_exp)
   }
 
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }

@@ -9,6 +9,7 @@ var expect = require('chai').expect;
 var helperFunctions = require('../support/helper');
 var addTrialPage = require('../support/registerTrialPage');
 var searchTrialPage = require('../support/searchTrialPage');
+var trialMenuItemList = require('../support/trialCommonBar');
 //var menuItemList = require('../support/PoCommonBar');
 //var addOrgPage = require('../support/AddOrganizationPage');
 //var searchOrgPage = require('../support/ListOfOrganizationsPage');
@@ -34,9 +35,22 @@ var projectMethodsRegistry = function() {
     var helper = new helperFunctions();
     var addTrial = new addTrialPage();
     var searchTrial = new searchTrialPage();
+    var trialMenuItem = new trialMenuItemList();
+
+    this.selectTrials = function(trialType) {
+        if (trialType === 'National') {
+            trialMenuItem.clickRegisterNationalTrialLink();
+        }
+        else if (trialType === 'Externally Peer-Reviewed') {
+            trialMenuItem.clickRegisterExternallyPeerReviewedTrialLink();
+        }
+        else if (trialType === 'Institutional')   {
+            trialMenuItem.clickRegisterInstitutionalTrialLink();
+        }
+    };
 
     /*****************************************************************
-     * Method: Verify the affiliated Organization Expiration Date for Person
+     * Method: Verify Trial Other Identifiers value
      * @param protocolIDOrigin
      * @param protocolID
      *****************************************************************/

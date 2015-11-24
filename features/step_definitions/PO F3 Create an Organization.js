@@ -46,7 +46,7 @@ module.exports = function() {
             return true;
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             menuItem.clickOrganizations();
             menuItem.clickAddOrganizations();
         });

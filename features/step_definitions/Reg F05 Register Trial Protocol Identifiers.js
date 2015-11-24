@@ -34,23 +34,7 @@ module.exports = function() {
 
 
 
-    this.Given(/^I have selected the option to register a trial (.*)$/, function (trialType, callback) {
-        browser.get('ui#/main/sign_in');
-        login.login('ctrptrialsubmitter', 'Welcome01');
-        login.accept();
-        trialMenuItem.clickHomeSearchTrial();
-        login.clickWriteMode();
-        if (trialType === 'National') {
-            trialMenuItem.clickRegisterNationalTrialLink();
-        }
-        else if (trialType === 'Externally Peer-Reviewed') {
-            trialMenuItem.clickRegisterExternallyPeerReviewedTrialLink();
-        }
-        else if (trialType === 'Institutional')   {
-            trialMenuItem.clickRegisterInstitutionalTrialLink();
-        }
-        browser.sleep(25).then(callback);
-    });
+
 
     this.When(/^I have entered the lead organization trial identifier$/, function (callback) {
         addTrial.setAddTrialLeadProtocolIdentifier('shiLeadProtocolIdentifier');
