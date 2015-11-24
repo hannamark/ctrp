@@ -184,6 +184,8 @@ class Trial < ActiveRecord::Base
   before_create :save_history
   before_save :check_indicator
 
+  attr_accessor :current_trial_status
+
   private
 
   def generate_nci_id
