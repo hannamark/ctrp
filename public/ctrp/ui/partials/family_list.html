@@ -1,6 +1,6 @@
-<div class="row" ng-hide="familyView.searchWarningMessage==''" ng-cloak>
+<div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
     <div class="alert alert-warning fade in">
-        <strong>{{familyView.searchWarningMessage}}</strong>
+        <strong>{{searchWarningMessage}}</strong>
     </div>
 </div>
 <div class="row">
@@ -91,9 +91,9 @@
         </div>
 
         <!-- list of families -->
-        <div class="row" ng-class="{'top-offset-xs': familyView.gridOptions.data.length > 0 }" ng-if="familyView.searchWarningMessage.length === 0">
+        <div class="row" ng-class="{'top-offset-xs': familyView.gridOptions.data.length > 0 }" ng-if="searchWarningMessage.length === 0">
             <div class="col-xs-12">
-                <div class="row" ng-if="familyView.searchWarningMessage.length === 0 && familyView.gridOptions.totalItems != null">
+                <div class="row" ng-if="searchWarningMessage.length === 0 && familyView.gridOptions.totalItems != null">
                     <a href="" id="family_search_results"></a>
                     <p><h4>Family Search Results: {{familyView.gridOptions.totalItems}} found</h4></p>
                 </div>

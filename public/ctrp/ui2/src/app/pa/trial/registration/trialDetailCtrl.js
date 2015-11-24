@@ -65,7 +65,9 @@
         vm.why_stopped_disabled = true;
         vm.otherDocNum = 1;
         vm.fsNum = 0;
+        vm.grantNum = 0;
         vm.tsNum = 0;
+        vm.indIdeNum = 0;
         vm.toaNum = 0;
         vm.protocolDocNum = 0;
         vm.irbApprovalNum = 0;
@@ -220,6 +222,11 @@
             } else if (type == 'grant') {
                 if (index < vm.addedGrants.length) {
                     vm.addedGrants[index]._destroy = !vm.addedGrants[index]._destroy;
+                    if (vm.addedGrants[index]._destroy) {
+                        vm.grantNum--;
+                    } else {
+                        vm.grantNum++;
+                    }
                 }
             } else if (type == 'trial_status') {
                 if (index < vm.addedStatuses.length) {
@@ -233,6 +240,11 @@
             } else if (type == 'ind_ide') {
                 if (index < vm.addedIndIdes.length) {
                     vm.addedIndIdes[index]._destroy = !vm.addedIndIdes[index]._destroy;
+                    if (vm.addedIndIdes[index]._destroy) {
+                        vm.indIdeNum--;
+                    } else {
+                        vm.indIdeNum++;
+                    }
                 }
             } else if (type == 'authority') {
                 if (index < vm.addedAuthorities.length) {
@@ -312,6 +324,7 @@
                 newGrant.nci = vm.nci;
                 newGrant._destroy = false;
                 vm.addedGrants.push(newGrant);
+                vm.grantNum++;
             } else {
                 alert('Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code');
             }
@@ -364,6 +377,7 @@
                 newIndIde.exempt = vm.exempt;
                 newIndIde._destroy = false;
                 vm.addedIndIdes.push(newIndIde);
+                vm.indIdeNum++;
             } else {
                 alert('Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type');
             }
@@ -689,6 +703,7 @@
                 grant.nci = vm.curTrial.grants[i].nci;
                 grant._destroy = false;
                 vm.addedGrants.push(grant);
+                vm.grantNum++;
             }
         }
 
@@ -737,6 +752,7 @@
                 indIde.exempt = vm.curTrial.ind_ides[i].exempt;
                 indIde._destroy = false;
                 vm.addedIndIdes.push(indIde);
+                vm.indIdeNum++;
             }
         }
 

@@ -44,7 +44,7 @@
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name) || orgDetailView.showUniqueWarning}">
                                 <label class="control-label col-xs-12 col-sm-3">Name:</label>
                                 <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
-                                    <input tabindex="11" type="text" restriction-field class="form-control input-sm" name="name" id="organization_name" ng-model="orgDetailView.curOrg.name" auto-focus required ng-blur="orgDetailView.checkUniqueOrganization()">
+                                    <input tabindex="11" type="text" restriction-field class="form-control input-sm" name="name" id="organization_name" ng-model="orgDetailView.curOrg.name" auto-focus required ng-blur="checkUniqueOrganization()">
                                     <span class="form-control-feedback" ng-show="orgDetailView.curOrg.name.length" ng-class="!(orgDetailView.showUniqueWarning || ctrpbtn.organization_form.needsAttention(organization_form.name)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                     <span class="help-block" ng-show="organization_form.name.$error.required">Name is Required</span>
                                     <div class="has-error" ng-show="orgDetailView.showUniqueWarning && orgDetailView.curOrg.name.length > 0 && organization_form.name.$dirty">
