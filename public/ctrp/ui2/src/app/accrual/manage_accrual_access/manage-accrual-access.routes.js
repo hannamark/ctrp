@@ -1,16 +1,16 @@
 /**
- * Configure routes for pa-abstraction component
+ * Configure routes for accrual- 'manage accrual access' component
  */
 
 (function() {
     'use strict';
-    angular.module('ctrp.module.routes').config(resultsReportingRoutes);
+    angular.module('ctrp.module.routes').config(manageAccrualAccessRoutes);
 
-    resultsReportingRoutes.$inject = ['$stateProvider'];
-    function resultsReportingRoutes($stateProvider) {
+    manageAccrualAccessRoutes.$inject = ['$stateProvider'];
+    function manageAccrualAccessRoutes($stateProvider) {
         $stateProvider
             .state(
-                'main.resultsReporting', {} //TODO: rename this if needed
+                'main.manageAccrualAccess', {} //TODO: rename this if needed
                 /** TODO: configure this section
                  {
                         url: '/trial_overview',
@@ -24,7 +24,7 @@
                         */
                     );
 
-    } //resultsReportingRoutes
+    } //manageAccrualAccessRoutes
 
 
 })();

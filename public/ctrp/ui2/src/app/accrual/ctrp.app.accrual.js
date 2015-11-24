@@ -1,10 +1,10 @@
 /**
- * PA - trial section of the CTRP app
+ * Accruals section of the CTRP app
  */
 
 (function() {
     'use strict';
-    angular.module('ctrp.app.pa.dashboard', [
+    angular.module('ctrp.app.accruals', [
         /* Angular modules */
         'ngTouch',
         'ngAnimate',

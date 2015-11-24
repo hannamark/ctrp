@@ -4,7 +4,7 @@
 
 (function() {
     'use strict';
-    angular.module('ctrp.app.pa.dashboard', [
+    angular.module('ctrp.app.administrative', [
         /* Angular modules */
         'ngTouch',
         'ngAnimate',

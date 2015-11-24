@@ -1,15 +1,15 @@
 /**
- * Configure routes for pa-abstraction component
+ * Configure routes for accrual- 'accrual out-of-scope trials' component
  */
 
 (function() {
     'use strict';
-    angular.module('ctrp.module.routes').config(govImportRoutes);
+    angular.module('ctrp.module.routes').config(accrualsOutOfScopeTrialsRoutes);
 
-    govImportRoutes.$inject = ['$stateProvider'];
-    function govImportRoutes($stateProvider) {
+    accrualsOutOfScopeTrialsRoutes.$inject = ['$stateProvider'];
+    function accrualsOutOfScopeTrialsRoutes($stateProvider) {
         $stateProvider
-            .state('main.govImport', {} //TODO: rename this state if needed
+            .state('main.accrualsOutOfScopeTrials', {} //TODO: rename this state if needed
                 /** TODO: configure this section
                  {
                         url: '/trial_overview',
@@ -23,7 +23,7 @@
                         */
                     );
 
-    } //govImportRoutes
+    } //accrualsOutOfScopeTrialsRoutes
 
 
 })();

@@ -1,16 +1,16 @@
 /**
- * Configure routes for pa-abstraction component
+ * Configure routes for accrual- 'manage flagged trails' component
  */
 
 (function() {
     'use strict';
-    angular.module('ctrp.module.routes').config(resultsReportingRoutes);
+    angular.module('ctrp.module.routes').config(manageFlaggedTrailsRoutes);
 
-    resultsReportingRoutes.$inject = ['$stateProvider'];
-    function resultsReportingRoutes($stateProvider) {
+    manageFlaggedTrailsRoutes.$inject = ['$stateProvider'];
+    function manageFlaggedTrailsRoutes($stateProvider) {
         $stateProvider
             .state(
-                'main.resultsReporting', {} //TODO: rename this if needed
+                'main.manageFlaggedTrails', {} //TODO: rename this if needed
                 /** TODO: configure this section
                  {
                         url: '/trial_overview',
@@ -24,7 +24,7 @@
                         */
                     );
 
-    } //resultsReportingRoutes
+    } //manageFlaggedTrailsRoutes
 
 
 })();

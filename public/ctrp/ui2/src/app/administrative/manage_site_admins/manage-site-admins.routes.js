@@ -1,15 +1,15 @@
 /**
- * Configure routes for pa-abstraction component
+ * Configure routes for administrative - 'manage site admins' component
  */
 
 (function() {
     'use strict';
-    angular.module('ctrp.module.routes').config(govImportRoutes);
+    angular.module('ctrp.module.routes').config(manageSiteAdminsRoutes);
 
-    govImportRoutes.$inject = ['$stateProvider'];
-    function govImportRoutes($stateProvider) {
+    manageSiteAdminsRoutes.$inject = ['$stateProvider'];
+    function manageSiteAdminsRoutes($stateProvider) {
         $stateProvider
-            .state('main.govImport', {} //TODO: rename this state if needed
+            .state('main.manageSiteAdmins', {} //TODO: rename this state if needed
                 /** TODO: configure this section
                  {
                         url: '/trial_overview',
@@ -23,7 +23,7 @@
                         */
                     );
 
-    } //govImportRoutes
+    } //manageSiteAdminsRoutes
 
 
 })();

@@ -1,25 +1,29 @@
 /**
- * Configure routes for pa-abstraction component
+ * Configure routes for accrual- 'pending accrual queue' component
  */
 
 (function() {
     'use strict';
-    angular.module('ctrp.module.routes').config(trialAbstractionRoutes);
+    angular.module('ctrp.module.routes').config(pendingAccrualQueueRoutes);
 
-    trialAbstractionRoutes.$inject = ['$stateProvider'];
-    function trialAbstractionRoutes($stateProvider) {
+    pendingAccrualQueueRoutes.$inject = ['$stateProvider'];
+    function pendingAccrualQueueRoutes($stateProvider) {
         $stateProvider
-            .state('main.trialOverview', {
+            .state('main.pendingAccrualQueue', {}
+                /** TODO: configure this section
+                 {
                         url: '/trial_overview',
-                        templateUrl: 'app/pa/dashboard/abstraction/trial_overview.html',
+                        templateUrl: 'app/pa/trial/abstraction/trial_overview.html',
                         // controller: 'trialCtrl as trialView'
                         ncyBreadcrumb: {
-                            parent: 'main.defaultContent', //TODO: replace this with search page
-                            label: 'Trial Overview and Identification'
+                            parent: 'main.defaultContent', //TODO: replace this with appropriate parent state name
+                            label: 'label place holder' //TODO: give an appropriate label name
                         }
-                    });
+                    }
+                        */
+                    );
 
-    } //trialAbstractionRoutes
+    } //pendingAccrualQueueRoutes
 
 
 })();
