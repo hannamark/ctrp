@@ -329,6 +329,10 @@
                 newGrant._destroy = false;
                 vm.addedGrants.push(newGrant);
                 vm.grantNum++;
+                vm.funding_mechanism = null;
+                vm.institute_code = null;
+                vm.serial_number = null;
+                vm.nci = null;
             } else {
                 alert('Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code');
             }
@@ -350,6 +354,9 @@
                 newStatus._destroy = false;
                 vm.addedStatuses.push(newStatus);
                 vm.tsNum++;
+                vm.status_date = null;
+                vm.trial_status_id = null;
+                vm.why_stopped = null;
             } else {
                 alert('Please provide a Status Date and select a Status');
             }
@@ -370,18 +377,16 @@
                     }
                 });
                 newIndIde.nih_nci = vm.nih_nci;
-                newIndIde.expanded_access = vm.expanded_access;
-                newIndIde.expanded_access_type_id = vm.expanded_access_type_id;
-                // For displaying name in the table
-                _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
-                    if (expandedAccessType.id == vm.expanded_access_type_id) {
-                        newIndIde.expanded_access_type_name = expandedAccessType.name;
-                    }
-                });
-                newIndIde.exempt = vm.exempt;
                 newIndIde._destroy = false;
                 vm.addedIndIdes.push(newIndIde);
                 vm.indIdeNum++;
+                vm.ind_ide_type = null;
+                vm.ind_ide_number = null;
+                vm.grantor = null;
+                vm.holder_type_id = null;
+                vm.nih_nci = null;
+                vm.grantorArr = [];
+                vm.nihNciArr = [];
             } else {
                 alert('Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type');
             }
@@ -396,6 +401,9 @@
                 newAuthority._destroy = false;
                 vm.addedAuthorities.push(newAuthority);
                 vm.toaNum++;
+                vm.authority_country = null;
+                vm.authority_org = null;
+                vm.authorityOrgArr = [];
             } else {
                 alert('Please select a Country and Organization');
             }
