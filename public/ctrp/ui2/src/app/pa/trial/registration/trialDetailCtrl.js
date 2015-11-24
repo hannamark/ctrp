@@ -305,17 +305,20 @@
 
         // Add other ID to a temp array
         vm.addOtherId = function () {
-            var errorMsg = TrialService.checkOtherId(vm.protocol_id_origin_id, vm.protocol_id, vm.addedOtherIds);
+            // Get other ID origin name
+            var originName;
+            _.each(vm.protocolIdOriginArr, function (origin) {
+                if (origin.id == vm.protocol_id_origin_id) {
+                    originName = origin.name;
+                }
+            });
+
+            var errorMsg = TrialService.checkOtherId(vm.protocol_id_origin_id, originName, vm.protocol_id, vm.addedOtherIds);
 
             if (!errorMsg) {
                 var newId = {};
                 newId.protocol_id_origin_id = vm.protocol_id_origin_id;
-                // For displaying other ID origin name in the table
-                _.each(vm.protocolIdOriginArr, function (origin) {
-                    if (origin.id == vm.protocol_id_origin_id) {
-                        newId.protocol_id_origin_name = origin.name;
-                    }
-                });
+                newId.protocol_id_origin_name = originName;
                 newId.protocol_id = vm.protocol_id;
                 newId._destroy = false;
                 vm.addedOtherIds.push(newId);
