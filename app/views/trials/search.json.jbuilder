@@ -7,6 +7,7 @@ json.trials do
     json.lead_org trial.lead_org.present? ? trial.lead_org.name : nil
     json.sponsor trial.sponsor.present? ? trial.sponsor.name : nil
     json.study_source trial.study_source.present? ? trial.study_source.name : nil
+    json.current_trial_status trial.trial_status_wrappers.present? ? trial.trial_status_wrappers.last.trial_status.name : nil
     json.url trial_url(trial, format: :json)
     json.actions trial.actions
   end
