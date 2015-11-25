@@ -98,7 +98,7 @@ module.exports = function() {
         /**
          * mock Express API settings
          */
-        defaultPort: 7203, // 80
+        defaultPort: 7203,  //7203
         nodeServer: './src/mock_api/mock_server.js' //mock server
     };
 

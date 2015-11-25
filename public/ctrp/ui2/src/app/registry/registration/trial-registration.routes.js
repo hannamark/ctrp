@@ -11,7 +11,7 @@
         $stateProvider
             .state('main.trials', {
                         url: '/trials',
-                        templateUrl: 'app/pa/trial/registration/trial_list.html',
+                        templateUrl: 'app/registry/registration/trial_list.html',
                         controller: 'trialCtrl as trialView',
                         resolve: {
                             TrialService: 'TrialService',
@@ -33,7 +33,7 @@
 
                     .state('main.addTrial', {
                         url: '/new_trial/:studySourceCode',
-                        templateUrl: 'app/pa/trial/registration/trialDetails.html',
+                        templateUrl: 'app/registry/registration/trialDetails.html',
                         controller: 'trialDetailCtrl as trialDetailView',
                         resolve: {
                             TrialService: 'TrialService',
@@ -101,7 +101,7 @@
 
                 .state('main.trialDetail', {
                     url: '/trials/:trialId',
-                    templateUrl: 'app/pa/trial/registration/trialDetails.html',
+                    templateUrl: 'app/registry/registration/trialDetails.html',
                     controller: 'trialDetailCtrl as trialDetailView',
                     resolve: {
                         TrialService: 'TrialService',
