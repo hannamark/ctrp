@@ -279,6 +279,8 @@ family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2
 ## Reading spreadsheet
 puts "Parsing Trial Spreadsheet"
 DataImport.import_trials
+puts "Parsing Milestone Spreadsheet"
+DataImport.import_milestones
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
@@ -343,7 +345,7 @@ begin
     ldap_user.last_name = u["last_name"]
     ldap_user.approved = true
     ldap_user.save(validate: false)
-    puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
+    #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"

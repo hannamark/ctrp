@@ -10,16 +10,19 @@
 #  updated_at     :datetime         not null
 #  uuid           :string(255)
 #  lock_version   :integer          default(0)
+#  submission_id  :integer
 #
 # Indexes
 #
-#  index_milestone_wrappers_on_milestone_id  (milestone_id)
-#  index_milestone_wrappers_on_trial_id      (trial_id)
+#  index_milestone_wrappers_on_milestone_id   (milestone_id)
+#  index_milestone_wrappers_on_submission_id  (submission_id)
+#  index_milestone_wrappers_on_trial_id       (trial_id)
 #
 
 class MilestoneWrapper < ActiveRecord::Base
   include BasicConcerns
 
   belongs_to :milestone
+  belongs_to :submission
   belongs_to :trial
 end

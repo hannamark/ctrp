@@ -40,8 +40,8 @@ Then CTRP will then display the results for all the Clinical Trials Search Resul
 |NIH/NCI Program Identifier|
 |Current Trial Status|
 |Milestone (current) and Milestone Date|
-|Admin Milestone (current) and Admin Milestone Date|
-|Scientific Milestone (current) and Scientific Milestone Date|
+|Admin Milestone (current) and Admin Milestone Date (Milestone Type = Administrative)|
+|Scientific Milestone (current) and Scientific Milestone Date (Milestone Type = Scientific)|
 |Processing Status|
 |Processing Status Date|
 |Record Verification Date|
@@ -173,6 +173,7 @@ Scenario: #12 I can search trials by Milestone
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Search Clinical Trials Screen
 When I select one or more Milestones
+|Submission Received Date|
 |Submission Acceptance Date|
 |Submission Rejection Date|
 |Submission Terminated Date|
