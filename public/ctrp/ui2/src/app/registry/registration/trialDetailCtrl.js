@@ -641,6 +641,8 @@
         function appendEditType() {
             if ($stateParams.editType === 'update') {
                 vm.curTrial.edit_type = 'update'
+            } else if ($stateParams.editType === 'amend') {
+                vm.curTrial.edit_type = 'amend'
             }
         }
 
