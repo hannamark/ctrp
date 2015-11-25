@@ -104,7 +104,7 @@
 
                 .state('main.trialDetail', {
                     url: '/trials/:trialId/{editType}',
-                    templateUrl: 'app/pa/trial/registration/trialDetails.html',
+                    templateUrl: 'app/registry/registration/trialDetails.html',
                     controller: 'trialDetailCtrl as trialDetailView',
                     resolve: {
                         TrialService: 'TrialService',
