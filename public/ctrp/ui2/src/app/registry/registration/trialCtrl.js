@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('ctrp.app.pa.trial').controller('trialCtrl', trialCtrl);
+    angular.module('ctrp.app.registry').controller('trialCtrl', trialCtrl);
 
     trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal', '$location',
                          '$anchorScroll', 'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'];

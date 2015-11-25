@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('ctrp.app.pa.trial').controller('trialDetailCtrl', trialDetailCtrl);
+    angular.module('ctrp.app.registry').controller('trialDetailCtrl', trialDetailCtrl);
 
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
