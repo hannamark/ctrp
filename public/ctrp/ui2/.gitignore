@@ -9,6 +9,10 @@ build
 src/app/modules/ctrp.module.constants.dev.js
 src/app/modules/ctrp.module.constants.prod.js
 
+
+#Ignore the gulp config file
+./gulp.config.js
+
 #Ignore Test reporters
 report
 **/test/coverage

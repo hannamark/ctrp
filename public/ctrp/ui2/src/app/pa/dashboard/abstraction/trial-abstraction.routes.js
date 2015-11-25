@@ -15,7 +15,7 @@
                         // controller: 'trialCtrl as trialView'
                         ncyBreadcrumb: {
                             parent: 'main.defaultContent', //TODO: replace this with search page
-                            label: 'Trial Overview and Identification'
+                            label: 'Trial Overview'
                         }
                     });
 
