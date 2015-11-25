@@ -127,6 +127,7 @@ Rails.application.routes.draw do
       resources :holder_types
       resources :expanded_access_types
       resources :trial_statuses
+      resources :milestones
       resources :research_categories
       resources :trial_documents do
         collection do
