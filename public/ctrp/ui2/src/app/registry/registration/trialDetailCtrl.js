@@ -74,6 +74,8 @@
         vm.protocolDocNum = 0;
         vm.irbApprovalNum = 0;
         vm.informedConsentNum = 0;
+        vm.changeMemoNum = 0;
+        vm.protocolHighlightedNum = 0;
         vm.showLpiError = false;
         vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
 
@@ -280,6 +282,18 @@
                             vm.informedConsentNum--;
                         } else {
                             vm.informedConsentNum++;
+                        }
+                    } else if (vm.addedDocuments[index].document_type === 'Change Memo Document') {
+                        if (vm.addedDocuments[index]._destroy) {
+                            vm.changeMemoNum--;
+                        } else {
+                            vm.changeMemoNum++;
+                        }
+                    } else if (vm.addedDocuments[index].document_type === 'Protocol Highlighted Document') {
+                        if (vm.addedDocuments[index]._destroy) {
+                            vm.protocolHighlightedNum--;
+                        } else {
+                            vm.protocolHighlightedNum++;
                         }
                     }
                 }
@@ -847,6 +861,10 @@
                     vm.irbApprovalNum++;
                 }  else if (vm.curTrial.trial_documents[i].document_type === 'Informed Consent') {
                     vm.informedConsentNum++;
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Change Memo Document') {
+                    vm.changeMemoNum++;
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Protocol Highlighted Document') {
+                    vm.protocolHighlightedNum++;
                 }
             }
         }
@@ -926,6 +944,12 @@
             for (var key in vm.other_documents) {
                 var subtype = key in vm.other_document_subtypes ? vm.other_document_subtypes[key] : '';
                 TrialService.uploadDocument(trialId, 'Other Document', subtype, vm.other_documents[key]);
+            }
+            if (vm.change_memo) {
+                TrialService.uploadDocument(trialId, 'Change Memo Document', '', vm.change_memo);
+            }
+            if (vm.protocol_highlighted) {
+                TrialService.uploadDocument(trialId, 'Protocol Highlighted Document', '', vm.protocol_highlighted);
             }
         }
     }

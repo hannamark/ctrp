@@ -937,6 +937,46 @@
                             </div>
                         </div>
 
+                        <div ng-if="['amend'].indexOf(trialDetailView.curTrial.edit_type) > -1">
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.change_memo)}">
+                                <label class="control-label col-xs-12 col-sm-3">Change Memo Document:</label>
+                                <div class="col-xs-12 col-sm-9 form-file-upload">
+                                    <input type="file" restriction-field ngf-select ng-model="trialDetailView.change_memo" name="change_memo" ngf-max-size="10MB"
+                                           ng-required="trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.changeMemoNum === 0)">
+                                    <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.change_memo)">
+                                        Change Memo Document is required
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Change Memo Document'" class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3"></label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
+                                    <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.protocol_highlighted)}">
+                                <label class="control-label col-xs-12 col-sm-3">Protocol Highlighted Document:</label>
+                                <div class="col-xs-12 col-sm-9 form-file-upload">
+                                    <input type="file" restriction-field ngf-select ng-model="trialDetailView.protocol_highlighted" name="protocol_highlighted" ngf-max-size="10MB"
+                                           ng-required="trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.protocolHighlightedNum === 0)">
+                                    <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_highlighted)">
+                                        Protocol Highlighted Document is required
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Highlighted Document'" class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3"></label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
+                                    <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.irb_approval)}">
                             <label class="control-label col-xs-12 col-sm-3">IRB Approval:</label>
                             <div class="col-xs-12 col-sm-9 form-file-upload">
