@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151120200542) do
+ActiveRecord::Schema.define(version: 20151125153832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -452,9 +452,11 @@ ActiveRecord::Schema.define(version: 20151120200542) do
     t.datetime "updated_at",                             null: false
     t.string   "uuid",           limit: 255
     t.integer  "lock_version",               default: 0
+    t.integer  "submission_id"
   end
 
   add_index "milestone_wrappers", ["milestone_id"], name: "index_milestone_wrappers_on_milestone_id", using: :btree
+  add_index "milestone_wrappers", ["submission_id"], name: "index_milestone_wrappers_on_submission_id", using: :btree
   add_index "milestone_wrappers", ["trial_id"], name: "index_milestone_wrappers_on_trial_id", using: :btree
 
   create_table "milestones", force: :cascade do |t|
@@ -1119,6 +1121,7 @@ ActiveRecord::Schema.define(version: 20151120200542) do
   add_foreign_key "markers", "specimen_types"
   add_foreign_key "markers", "trials"
   add_foreign_key "milestone_wrappers", "milestones"
+  add_foreign_key "milestone_wrappers", "submissions"
   add_foreign_key "milestone_wrappers", "trials"
   add_foreign_key "name_aliases", "organizations"
   add_foreign_key "onholds", "onhold_reasons"

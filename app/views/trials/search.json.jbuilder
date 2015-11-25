@@ -9,6 +9,7 @@ json.trials do
     json.study_source trial.study_source.present? ? trial.study_source.name : nil
     json.current_trial_status trial.trial_status_wrappers.present? ? trial.trial_status_wrappers.last.trial_status.name : nil
     json.url trial_url(trial, format: :json)
+    json.actions trial.actions
   end
 end
 json.start params[:start]
