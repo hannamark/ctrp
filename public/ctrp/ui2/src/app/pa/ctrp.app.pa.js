@@ -8,7 +8,6 @@
         /* Angular modules */
 
         /* Cross-app modules */
-        'ctrp.app.pa.trial',
         'ctrp.app.pa.dashboard'
 
         /* 3rd-party modules */
