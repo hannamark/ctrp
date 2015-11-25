@@ -9,16 +9,17 @@
 
     trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope',
                          'Common', '$modal', '$location', '$anchorScroll',
-                         'studySourceObj', 'phaseObj', 'primaryPurposeObj'];
+                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', 'trialStatusObj'];
 
     function trialCtrl(TrialService, uiGridConstants, $scope,
                 $rootScope, Commo, $modal, $location, $anchorScroll,
-                       studySourceObj, phaseObj, primaryPurposeObj) {
+                       studySourceObj, phaseObj, primaryPurposeObj, trialStatusObj) {
         var vm = this;
         vm.searchParams = TrialService.getInitialTrialSearchParams();
         vm.studySourceArr = studySourceObj;
         vm.phaseArr = phaseObj;
         vm.primaryPurposeArr = primaryPurposeObj;
+        vm.trialStatusArr = trialStatusObj;
         vm.gridScope=vm;
 
         //ui-grid plugin options

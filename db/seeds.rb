@@ -121,6 +121,28 @@ ProcessingStatus.find_or_create_by(code: 'VFP', name: 'Verification Pending')
 ProcessingStatus.find_or_create_by(code: 'AVR', name: 'Abstraction Verified Response')
 ProcessingStatus.find_or_create_by(code: 'VNR', name: 'Abstraction Verified No Response')
 ProcessingStatus.find_or_create_by(code: 'OHD', name: 'On-Hold')
+
+Milestone.find_or_create_by(code: 'SAC', name: 'Submission Acceptance Date')
+Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
+Milestone.find_or_create_by(code: 'STR', name: 'Submission Terminated Date')
+Milestone.find_or_create_by(code: 'SRE', name: 'Submission Reactivated Date')
+Milestone.find_or_create_by(code: 'APS', name: 'Administrative Processing Start Date')
+Milestone.find_or_create_by(code: 'APC', name: 'Administrative Processing Completed Date')
+Milestone.find_or_create_by(code: 'RAQ', name: 'Ready for Administrative QC Date')
+Milestone.find_or_create_by(code: 'AQS', name: 'Administrative QC Start Date Administrative')
+Milestone.find_or_create_by(code: 'QCS', name: 'QC Completed Date Scientific Processing Start')
+Milestone.find_or_create_by(code: 'DSC', name: 'Date Scientific Processing Completed Date')
+Milestone.find_or_create_by(code: 'RSQ', name: 'Ready for Scientific QC Date')
+Milestone.find_or_create_by(code: 'SQS', name: 'Scientific QC Start Date')
+Milestone.find_or_create_by(code: 'SQC', name: 'Scientific QC Completed Date')
+Milestone.find_or_create_by(code: 'RTS', name: 'Ready for Trial Summary Report Date')
+Milestone.find_or_create_by(code: 'TSR', name: 'Trial Summary Report Date')
+Milestone.find_or_create_by(code: 'STS', name: 'Submitter Trial Summary Report Feedback Date')
+Milestone.find_or_create_by(code: 'IAV', name: 'Initial Abstraction Verified Date')
+Milestone.find_or_create_by(code: 'ONG', name: 'On-going')
+Milestone.find_or_create_by(code: 'AVD', name: 'Abstraction Verified Date')
+Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date ')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -255,63 +277,10 @@ family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2
 
 ## Trials
 ## Reading spreadsheet
-trial_spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-trials-random-2014.xls'))
-trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
-((trial_spreadsheet.first_row+1)..trial_spreadsheet.last_row).each do |row|
-  trial = Trial.new
-  trial.official_title = trial_spreadsheet.cell(row,'BP')
-  nci_id = trial_spreadsheet.cell(row,'BL')
-  trial_db_exists = Trial.find_by_nci_id(nci_id)
-  if trial_db_exists
-    next
-  end
-  trial.nci_id = nci_id
-  trial.phase = Phase.find_by_name(trial_spreadsheet.cell(row,'BS'))
-  primary_purpose = trial_spreadsheet.cell(row,'BY')
-  unless primary_purpose.blank?
-    primary_purpose.gsub! "_", " "
-    trial.primary_purpose = PrimaryPurpose.where("lower(name) = ?", primary_purpose.downcase).first
-  end
-  secondary_purpose = trial_spreadsheet.cell(row,'BZ')
-  unless secondary_purpose.blank?
-    trial.secondary_purpose = SecondaryPurpose.where("lower(name) = ?", secondary_purpose.downcase).first
-  end
-  research_category = trial_spreadsheet.cell(row,'DO')
-  unless research_category.blank?
-    research_category.gsub! "_", " "
-    trial.research_category = ResearchCategory.where("lower(name) = ?", research_category.downcase).first
-  end
-  study_source = trial_spreadsheet.cell(row,'CZ')
-  unless study_source.blank?
-    study_source.gsub! "_", " "
-    study_source = "EXTERNALLY PEER-REVIEWED" if study_source == "EXTERNALLY PEER REVIEWED"
-    trial.study_source = StudySource.where("lower(name) = ?", study_source.downcase).first
-  end
-  current_trail_status = trial_spreadsheet.cell(row,'T')
-  current_trail_status_date = trial_spreadsheet.cell(row,'U')
-  puts "current_trail_status = #{current_trail_status.inspect}"
-  puts "current_trail_status date = #{current_trail_status_date.inspect}"
-  unless current_trail_status.blank?
-    trial_status = TrialStatus.where("lower(name) = ?", current_trail_status.downcase).first
-    tsw = TrialStatusWrapper.new
-    tsw.trial = trial
-    tsw.trial_status = trial_status
-    tsw.status_date = current_trail_status_date
-    trial.trial_status_wrappers << tsw
-  end
-  # randomly assign the rest of the data
-  trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
-  trial.sponsor = Organization.all[rand(0..13)]
-  trial.lead_org = Organization.all[rand(0..13)]
-  trial.pilot = "Yes"
-  trial.pi = Person.all[rand(0..11)]
-  trial.investigator = Person.all[rand(0..11)]
-  trial.save!
-  #puts "trial = #{trial.inspect}"
-
-end
-
-
+puts "Parsing Trial Spreadsheet"
+DataImport.import_trials
+puts "Parsing Milestone Spreadsheet"
+DataImport.import_milestones
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
@@ -376,7 +345,7 @@ begin
     ldap_user.last_name = u["last_name"]
     ldap_user.approved = true
     ldap_user.save(validate: false)
-    puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
+    #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"

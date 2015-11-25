@@ -17,27 +17,27 @@
 
         var statesOrProvinces = [];
         var initOrgSearchParams = {
-            name : "",
+            name : '',
             alias: true,
             wc_search: true,
-            // po_id : "",
-            ctrp_id : "",
-            source_context : "",
-            source_id : "",
-            source_status : "",
-            family_name : "",
-            address : "",
-            address2 : "",
-            city : "",
-            state_province : "",
-            country : "", //default country ? United States ?
-            email : "",
-            postal_code : "",
-            phone: "",
+            // po_id : '',
+            ctrp_id : '',
+            source_context : '',
+            source_id : '',
+            source_status : '',
+            family_name : '',
+            address : '',
+            address2 : '',
+            city : '',
+            state_province : '',
+            country : '', //default country ? United States ?
+            email : '',
+            postal_code : '',
+            phone: '',
 
             //for pagination and sorting
-            sort: "",
-            order: "",
+            sort: '',
+            order: '',
             rows: 10,
             start: 1
             }; //initial Organization Search Parameters
@@ -70,10 +70,7 @@
                     name: 'name', enableSorting: true, minWidth: '100', width: '*',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                 //   '<a href="angular#/main/organizations/{{row.entity.id}}">' +
-                 //   '<a ui-sref="main.orgDetail({orgId: row.entity.id })">' +   //this is preferred, but does not work now.
-                 //   '{{row.entity.name}} ' +
-                    '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                   '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
                 {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '80', width: '*'},
@@ -83,9 +80,6 @@
                 {name: 'aff_families_names', displayName: 'Families', enableSorting: true, minWidth: '100', width: '*',height: '50%',
                     cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names" title="{{fam.Name}}">{{fam.Name}}</div>'
                 },
-                /* {name: 'aff_families_names', displayName: 'Families', enableSorting: true, width: '8%',
-                   cellTemplate: '<button uib-popover="{{COL_FIELD CUSTOM_FILTERS}}" popover-placement="left" type="button" popover-trigger="mouseenter" class="btn btn-default">Family</button>',
-               },*/
                 {name: 'city', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'country', displayName: 'Country', enableSorting: true, minWidth: '100', width:'*'},
@@ -127,12 +121,12 @@
         /*********************** implementations *****************/
 
         function getAllOrgs() {
-            return PromiseService.getData(URL_CONFIGS.ORG_LIST);
+            return PromiseTimeoutService.getData(URL_CONFIGS.ORG_LIST);
         } //getAllOrgs
 
 
         function getOrgById(orgId) {
-            console.log("calling getOrgById in OrgService");
+            console.log('calling getOrgById in OrgService');
             //return PromiseService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
             return PromiseTimeoutService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
         } //getOrgById
@@ -153,7 +147,7 @@
 
             //update an existing organization
             var configObj = {}; //empty config
-            return PromiseTimeoutService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + ".json", orgObj, configObj);
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + '.json', orgObj, configObj);
         } //upsertOrg
 
 
@@ -181,9 +175,9 @@
          * @return initOrgSearchParams
          */
         function getInitialOrgSearchParams() {
-            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
-            var curator_role = "curator";
-            if(!(user_role.toUpperCase() === curator_role.toUpperCase())) {
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
+            var curator_role = 'curator';
+            if(user_role.toUpperCase() !== curator_role.toUpperCase()) {
                 initOrgSearchParams.wc_search = false;
             }
             return initOrgSearchParams;
@@ -192,11 +186,11 @@
 
 
         function getGridOptions(usedInModal) {
-            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
             var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
             var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
-            var curator_role = "curator";
-            if(!(user_role.toUpperCase() === curator_role.toUpperCase())) {
+            var curator_role = 'curator';
+            if(user_role.toUpperCase() !== curator_role.toUpperCase()) {
                 gridOptions.columnDefs.splice(updated_at_index,1);
                 gridOptions.columnDefs.splice(updated_by_index,1);
             }
@@ -220,7 +214,7 @@
             return function(countryName) {
                 if (countryName) {
 
-                   // console.log("countryName: " + countryName + ", calling GeoLocationService");
+                   // console.log('countryName: ' + countryName + ', calling GeoLocationService');
                     GeoLocationService.getStateListInCountry(countryName)
                         .then(function (response) {
                             statesOrProvinces = response;
@@ -232,7 +226,7 @@
                             }
                             broadcastMsg(MESSAGES.STATES_AVAIL, 'come get your states or provinces');
                         }).catch(function (err) {
-                            $log.info("error in retrieving states for country: " + countryName);
+                            $log.info('error in retrieving states for country: ' + countryName);
                         });
                 } else {
                     //countryName is not set
@@ -287,7 +281,7 @@
          * @returns {*}
          */
         function deleteOrg(orgId) {
-            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.AN_ORG + orgId + ".json");
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.AN_ORG + orgId + '.json');
         }
 
 
@@ -325,13 +319,13 @@
             var results = [];
             _.each(savedSelectionArr, function (org) {
                 var cleanedOrg = {
-                    "organization_id": org.id,
-                    "po_affiliation_status_id": org.po_affiliation_status_id,
-                    "effective_date": org.effective_date,
-                    "expiration_date": org.expiration_date,
-                    "id" : org.po_affiliation_id || '',
-                    "lock_version": org.lock_version,
-                    "_destroy" : org._destroy
+                    'organization_id': org.id,
+                    'po_affiliation_status_id': org.po_affiliation_status_id,
+                    'effective_date': org.effective_date,
+                    'expiration_date': org.expiration_date,
+                    'id' : org.po_affiliation_id || '',
+                    'lock_version': org.lock_version,
+                    '_destroy' : org._destroy
                 };
                 results.push(cleanedOrg);
             });
@@ -350,7 +344,7 @@
         function initSelectedOrg(org) {
             org.po_affiliation_status_id = '';
             org.effective_date = new Date(); //today as the effective date
-            org.expiration_date = "";
+            org.expiration_date = '';
             org.opened_effective = false;
             org.opened_expiration = false;
             org._destroy = false;

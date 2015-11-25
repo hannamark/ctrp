@@ -14,7 +14,7 @@
                 <div class="col-xs-12 col-sm-9">
                     <div ng-class="searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
                         <label for="wc_search">
-                            <input tabindex="1" type="checkbox" id="wc_search" ng-model="searchParams.wc_search" /> Exact Search
+                            <input tabindex="11" type="checkbox" id="wc_search" ng-model="searchParams.wc_search" /> Exact Search
                         </label>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                     <!--<input type="text" id="organization_name" class="form-control"
                            placeholder="Organization Name" ng-model="searchParams.name" auto-focus/>-->
 
-                    <input tabindex="2" type="text" id="organization_name" class="form-control input-sm"
+                    <input tabindex="12" type="text" id="organization_name" class="form-control input-sm"
                             autocomplete="off" placeholder="Organization Name" ng-model="searchParams.name" auto-focus
                             uib-typeahead="org for org in typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
                             typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
@@ -37,7 +37,7 @@
                 <div class="col-xs-12 col-sm-4">
                     <div ng-class="searchParams.alias == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
                         <label for="alias_search">
-                            <input tabindex="3" type="checkbox" id="alias_search" ng-model="searchParams.alias"/> Search Alias
+                            <input tabindex="13" type="checkbox" id="alias_search" ng-model="searchParams.alias"/> Search Alias
                         </label>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                 <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status: </label>
                 <div ng-if="sourceStatuses.length > 1">
                     <div class="col-xs-12 col-sm-3">
-                        <select tabindex="7" class="form-control input-sm" id="source_status" ng-model="searchParams.source_status">
+                        <select tabindex="17" class="form-control input-sm" id="source_status" ng-model="searchParams.source_status">
                             <option value="">Select a Status</option>
                             <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
                         </select>
@@ -63,7 +63,7 @@
                 <!--source id -->
                 <label for="source_id" class="control-label col-xs-12 col-sm-2">Source ID: </label>
                 <div class="col-xs-12 col-sm-4">
-                    <input tabindex="6" type="text" id="source_id" class="form-control input-sm" placeholder="Source ID" ng-model="searchParams.source_id"/>
+                    <input tabindex="16" type="text" id="source_id" class="form-control input-sm" placeholder="Source ID" ng-model="searchParams.source_id"/>
                 </div>
             </div>
             <!-- source id ends -->
@@ -80,14 +80,14 @@
             <div class="form-group">
                 <label for="city" class="control-label col-xs-12 col-sm-3">City:</label>
                 <div class="col-xs-12 col-sm-9">
-                    <input tabindex="9" type="text" id="city" class="form-control input-sm" placeholder="City" ng-model="searchParams.city"/>
+                    <input tabindex="19" type="text" id="city" class="form-control input-sm" placeholder="City" ng-model="searchParams.city"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="country" class="control-label col-xs-12 col-sm-3">Country:</label>
                 <div class="col-xs-12 col-sm-9">
-                    <select tabindex="8" class="form-control input-sm" id="country" ng-model="searchParams.country" ng-change="watchCountrySelection(searchParams.country)">
+                    <select tabindex="18" class="form-control input-sm" id="country" ng-model="searchParams.country" ng-change="watchCountrySelection(searchParams.country)">
                         <option value="" selected>All Countries</option>
                         <option ng-repeat="country in countries" value="{{country.name}}">{{country.name}}</option>
                     </select>
@@ -97,7 +97,7 @@
             <div class="form-group">
                 <label for="state" class="control-label col-xs-12 col-sm-3">State:</label>
                 <div class="col-xs-12 col-sm-9">
-                    <select tabindex="10" class="form-control input-sm" id="state" ng-model="searchParams.state_province">
+                    <select tabindex="25" class="form-control input-sm" id="state" ng-model="searchParams.state_province">
                         <option value="">All States/Provinces</option>
                         <option ng-repeat="state in states track by state.name" value="{{state.name}}">{{state.name}}</option>
                     </select>
@@ -107,7 +107,7 @@
                 <!-- last updated by -->
                 <label for="updated_by" class="control-label col-xs-12 col-sm-3">Updated by: </label>
                 <div class="col-xs-12 col-sm-9">
-                    <input tabindex="16" type="text" class="form-control input-sm" id="updated_by" ng-model="searchParams.updated_by" placeholder="Username" />
+                    <input tabindex="26" type="text" class="form-control input-sm" id="updated_by" ng-model="searchParams.updated_by" placeholder="Username" />
                 </div>
                 <!-- end of last updated by -->
             </div>
@@ -120,7 +120,7 @@
                 <label for="source_id" class="control-label col-xs-12 col-sm-3">Source Context: </label>
                 <div ng-if="sourceContexts.length > 1">
                     <div class="col-xs-12 col-sm-9">
-                        <select tabindex="5" class="form-control input-sm" id="source_context" ng-model="searchParams.source_context">
+                        <select tabindex="15" class="form-control input-sm" id="source_context" ng-model="searchParams.source_context">
                             <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
                             <option ng-repeat="context in sourceContexts" value="{{context.name}}">{{context.name}}</option>
                         </select>
@@ -139,7 +139,7 @@
             <div class="form-group">
                 <label for="family_name" class="control-label col-xs-12 col-sm-3">Family Name:</label>
                 <div class="col-xs-12 col-sm-9">
-                    <input tabindex="4" type="text" id="family_name" class="form-control input-sm" placeholder="Family Name" ng-model="searchParams.family_name"/>
+                    <input tabindex="14" type="text" id="family_name" class="form-control input-sm" placeholder="Family Name" ng-model="searchParams.family_name"/>
                 </div>
             </div>
             <!-- source status ends -->
@@ -156,18 +156,18 @@
             <div class="form-group">
                 <label for="postal_code" class="control-label col-xs-12 col-sm-3">Postal Code:</label>
                 <div class="col-xs-12 col-sm-9">
-                    <input tabindex="11" type="text" id="postal_code" class="form-control input-sm" placeholder="Postal Code" ng-model="searchParams.postal_code"/>
+                    <input tabindex="25" type="text" id="postal_code" class="form-control input-sm" placeholder="Postal Code" ng-model="searchParams.postal_code"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="phone" class="control-label col-xs-12 col-sm-3">Phone:</label>
                 <div class="col-xs-12 col-sm-3">
-                    <input tabindex="13" type="text" id="phone" class="form-control input-sm" placeholder="Phone" ng-model="searchParams.phone"/>
+                    <input tabindex="27" type="text" id="phone" class="form-control input-sm" placeholder="Phone" ng-model="searchParams.phone"/>
                 </div>
                 <label for="email" class="control-label col-xs-12 col-sm-2">Email:</label>
                 <div class="col-xs-12 col-sm-4">
-                    <input tabindex="12" type="text" id="email" class="form-control input-sm" placeholder="Email" ng-model="searchParams.email"/>
+                    <input tabindex="26" type="text" id="email" class="form-control input-sm" placeholder="Email" ng-model="searchParams.email"/>
                 </div>
             </div>
 
@@ -188,13 +188,13 @@
                 </label>
                 <div class="col-xs-12 col-sm-5">
                     <div class="input-group add-on col-sm-12 date datepicker">
-                        <input tabindex="14" type="text" class="form-control input-sm" id="start_date" name="startDate"
+                        <input tabindex="28" type="text" class="form-control input-sm" id="start_date" name="startDate"
                                uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.startDate" is-open="startDateOpened"
                                datepicker-options="dateOptions" ng-click="openCalendar($event, 'start')"
                                ng-required="false" close-text="Close" placeholder="Start Date"/>
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
+                            <button tabindex="29" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -205,13 +205,13 @@
                 <!--<label for="person_fname" class="control-label col-sm-2"></label>-->
                 <div class="col-xs-12 col-sm-4">
                     <div class="input-group add-on col-sm-12 date datepicker" ng-class="{'has-error': search_person_form.endDate.dateLaterThan && search_person_form.endDate.$dirty}">
-                        <input tabindex="15" type="text" class="form-control input-sm" id="end_date" name="endDate"
+                        <input tabindex="30" type="text" class="form-control input-sm" id="end_date" name="endDate"
                                uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" ng-click="openCalendar($event, 'end')"
                                datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
                                ng-required="false" close-text="Close" placeholder="End Date"/>
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
+                            <button tabindex="31" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -227,10 +227,10 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="btn-toolbar">
-                <button tabindex="18" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchOrgs('fromStart')">
+                <button tabindex="33" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchOrgs('fromStart')">
                     <i class="glyphicon glyphicon-search"></i> Search
                 </button>
-                <button tabindex="17" class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()">
+                <button tabindex="32" class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()">
                     <i class="glyphicon glyphicon-remove"></i> Clear
                 </button>
             </div>

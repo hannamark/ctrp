@@ -46,7 +46,7 @@ module.exports = function() {
             return true;
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             menuItem.clickOrganizations();
             menuItem.clickAddOrganizations();
         });
@@ -280,8 +280,8 @@ module.exports = function() {
     });
 
     this.Then(/^the system should indicate with a warning that the organization is a duplicate name in the same context$/, function (callback) {
-        projectFunctions.verifyWarningMessage('Warning: Organization exists in the database. Please verify and create a new Organization record.');
-        browser.sleep(25).then(callback);
+        expect(projectFunctions.verifyWarningMessage('Warning: Organization exists in the database. Please verify and create a new Organization record.')).to.become('true').and.notify(callback);
+       // browser.sleep(25).then(callback);
     });
 
     this.Given(/^I am on the create organization feature$/, function (callback) {
@@ -328,5 +328,5 @@ module.exports = function() {
 
 
 
-}
+};
 

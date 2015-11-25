@@ -8,14 +8,14 @@
     angular.module('ctrp.module.dataservices')
         .factory('TrialService', TrialService);
 
-    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload'];
+    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST'];
 
-    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload) {
+    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload, HOST) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
-            sort: "",
-            order: "",
+            sort: '',
+            order: '',
             rows: 10,
             start: 1
         }; //initial Trial Search Parameters
@@ -36,6 +36,9 @@
                 {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
+                {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '150', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
                 {name: 'official_title', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -54,7 +57,11 @@
                 },
                 {name: 'study_source', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'current_trial_status', enableSorting: true, minWidth: '150', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }
+
             ]
         };
 
@@ -92,11 +99,11 @@
         /*********************** implementations *****************/
 
         function getAllTrials() {
-            return PromiseService.getData(URL_CONFIGS.TRIAL_LIST);
+            return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_LIST);
         } //getAllTrials
 
         function getTrialById(trialId) {
-            console.log("calling getTrialById in TrialService");
+            console.log('calling getTrialById in TrialService');
             //return PromiseService.getData(URL_CONFIGS.AN_TRIAL + trialId + '.json');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_TRIAL + trialId + '.json');
         } //getTrialById
@@ -117,7 +124,7 @@
             //update an existing trial
             var configObj = {}; //empty config
             $log.info('updating a trial: ' + JSON.stringify(trialObj));
-            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_TRIAL + trialObj.id + ".json", trialObj, configObj);
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_TRIAL + trialObj.id + '.json', trialObj, configObj);
         } //upsertTrial
 
         /**
@@ -221,10 +228,15 @@
 
             switch(country) {
                 case 'United States':
-                    authorityOrgArr = ['Federal Government', 'Food and Drug Administration', 'Institutional Review Board'];
+                    authorityOrgArr = ['Federal Government',
+                        'Food and Drug Administration',
+                        'Institutional Review Board'];
                     break;
                 case 'Canada':
-                    authorityOrgArr = ['Canadian Institutes of Health Research', 'Ethics Review Committee', 'Health Canada', 'Ministry of Health & Long Term Care, Ontario'];
+                    authorityOrgArr = ['Canadian Institutes of Health Research',
+                        'Ethics Review Committee',
+                        'Health Canada',
+                        'Ministry of Health & Long Term Care, Ontario'];
                     break;
                 case 'Afghanistan':
                     authorityOrgArr = ['Ministry of Public Health'];
@@ -239,19 +251,30 @@
                     authorityOrgArr = ['Ministeri de Salut i Benestar'];
                     break;
                 case 'Argentina':
-                    authorityOrgArr = ['Administracion Nacional de Medicamentos, Alimentos y Tecnologia Medica','Human Research Bioethics Committee','Ministry of Health'];
+                    authorityOrgArr = ['Administracion Nacional de Medicamentos, Alimentos y Tecnologia Medica',
+                        'Human Research Bioethics Committee',
+                        'Ministry of Health'];
                     break;
                 case 'Armenia':
                     authorityOrgArr = ['Ministry of Health'];
                     break;
                 case 'Australia':
-                    authorityOrgArr = ['Department of Health and Ageing Therapeutic Goods Administration', 'Human Research Ethics Committee', 'National Health and Medical Research Council'];
+                    authorityOrgArr = ['Department of Health and Ageing Therapeutic Goods Administration',
+                        'Human Research Ethics Committee',
+                        'National Health and Medical Research Council'];
                     break;
                 case 'Austria':
-                    authorityOrgArr = ['Federal Ministry for Labour, Health, and Social Affairs', 'Agency for Health and Food Safety', 'Ethikkommission', 'Federal Ministry for Health Family and Youth', 'Federal Ministry for Health and Women', 'Federal Office for Safety in Health Care'];
+                    authorityOrgArr = ['Federal Ministry for Labour, Health, and Social Affairs',
+                        'Agency for Health and Food Safety',
+                        'Ethikkommission',
+                        'Federal Ministry for Health Family and Youth',
+                        'Federal Ministry for Health and Women',
+                        'Federal Office for Safety in Health Care'];
                     break;
                 case 'Bangladesh':
-                    authorityOrgArr = ['Bangladesh Medical Research Council', 'Directorate of Drug Administration', 'Ethical Review Committee'];
+                    authorityOrgArr = ['Bangladesh Medical Research Council',
+                        'Directorate of Drug Administration',
+                        'Ethical Review Committee'];
                     break;
                 case 'Barbados':
                     authorityOrgArr = ['Ministry of Health'];
@@ -260,7 +283,11 @@
                     authorityOrgArr = ['Ministry of Health'];
                     break;
                 case 'Belgium':
-                    authorityOrgArr = ['Directorate general for the protection of Public health', 'Federal Agency for Medicinal Products and Health Products', 'Institutional Review Board', 'Ministry of Social Affairs, Public Health and the Environment', 'The Federal Public Service (FPS) Health, Food Chain Safety and Environment'];
+                    authorityOrgArr = ['Directorate general for the protection of Public health',
+                        'Federal Agency for Medicinal Products and Health Products',
+                        'Institutional Review Board',
+                        'Ministry of Social Affairs, Public Health and the Environment',
+                        'The Federal Public Service (FPS) Health, Food Chain Safety and Environment'];
                     break;
                 case 'Bolivia':
                     authorityOrgArr = ['Ethics Committee', 'Ministry of Health'];
@@ -269,16 +296,22 @@
                     authorityOrgArr = ['Federal Ministry of Health'];
                     break;
                 case 'Botswana':
-                    authorityOrgArr = ['Health Research and Development Committee', 'Ministry of Health'];
+                    authorityOrgArr = ['Health Research and Development Committee',
+                                        'Ministry of Health'];
                     break;
                 case 'Brazil':
-                    authorityOrgArr = ['Ethics Committee', 'Ministry of Health', 'National Committee of Ethics in Research', 'National Health Surveillance Agency'];
+                    authorityOrgArr = ['Ethics Committee',
+                        'Ministry of Health',
+                        'National Committee of Ethics in Research',
+                        'National Health Surveillance Agency'];
                     break;
                 case 'Bulgaria':
-                    authorityOrgArr = ['Bulgarian Drug Agency', 'Ministry of Health'];
+                    authorityOrgArr = ['Bulgarian Drug Agency',
+                                    'Ministry of Health'];
                     break;
                 case 'Burkina Faso':
-                    authorityOrgArr = ['Ministry for Higher Education and Research', 'Ministry of Health'];
+                    authorityOrgArr = ['Ministry for Higher Education and Research',
+                                    'Ministry of Health'];
                     break;
                 case 'Cambodia':
                     authorityOrgArr = ['Ministry of Health'];
@@ -287,22 +320,34 @@
                     authorityOrgArr = ['Ministry of Public Health'];
                     break;
                 case 'Chile':
-                    authorityOrgArr = ['Comisión Nacional de Investigación Científica y Tecnológica', 'Instituto de Salud Publica de Chile'];
+                    authorityOrgArr = ['Comisión Nacional de Investigación Científica y Tecnológica',
+                        'Instituto de Salud Publica de Chile'];
                     break;
                 case 'China':
-                    authorityOrgArr = ['Ethics Committee', 'Ministry of Health', 'National Natural Science Foundation', 'State Food and Drug Administration'];
+                    authorityOrgArr = ['Ethics Committee',
+                        'Ministry of Health',
+                        'National Natural Science Foundation',
+                        'State Food and Drug Administration'];
                     break;
                 case 'Colombia':
-                    authorityOrgArr = ['INVIMA Instituto Nacional de Vigilancia de Medicamentos y Alimentos', 'Institutional Review Board', 'National Institutes of Health'];
+                    authorityOrgArr = ['INVIMA Instituto Nacional de Vigilancia de Medicamentos y Alimentos',
+                        'Institutional Review Board', 'National Institutes of Health'];
                     break;
                 case 'Costa Rica':
-                    authorityOrgArr = ['Ethics Committee', 'Ministry of Health Costa Rica'];
+                    authorityOrgArr = ['Ethics Committee',
+                        'Ministry of Health Costa Rica'];
                     break;
                 case 'Côte D\'Ivoire':
-                    authorityOrgArr = ['Ministry of AIDS', 'Ministry of Health and Public Hygiene', 'National Research and Ethics Committee', 'Ministry for the Public Health'];
+                    authorityOrgArr = ['Ministry of AIDS',
+                        'Ministry of Health and Public Hygiene',
+                        'National Research and Ethics Committee',
+                        'Ministry for the Public Health'];
                     break;
                 case 'Croatia':
-                    authorityOrgArr = ['Agency for Medicinal Product and Medical Devices', 'Ethics Committee', 'Ministry of Health and Social Care', 'Ministry of Science, Education and Sports'];
+                    authorityOrgArr = ['Agency for Medicinal Product and Medical Devices',
+                        'Ethics Committee',
+                        'Ministry of Health and Social Care',
+                        'Ministry of Science, Education and Sports'];
                     break;
                 case 'Cuba':
                     authorityOrgArr = ['Ministry of Public Health', 'Scientific and Ethics Committee'];
@@ -311,22 +356,34 @@
                     authorityOrgArr = ['Ethics Committee', 'State Institute for Drug Control'];
                     break;
                 case 'Denmark':
-                    authorityOrgArr = ['Danish Dataprotection Agency', 'Danish Medicines Agency', 'Ethics Committee', 'National Board of Health', 'The Danish National Committee on Biomedical Research Ethics', 'The Ministry of the Interior and Health', 'The Regional Committee on Biomedical Research Ethics'];
+                    authorityOrgArr = ['Danish Dataprotection Agency',
+                        'Danish Medicines Agency',
+                        'Ethics Committee',
+                        'National Board of Health',
+                        'The Danish National Committee on Biomedical Research Ethics',
+                        'The Ministry of the Interior and Health',
+                        'The Regional Committee on Biomedical Research Ethics'];
                     break;
                 case 'Dominican Republic':
-                    authorityOrgArr = ['Consejo Nacional de Bioetica en Salud', 'Secretaría del Estado de Salud Pública y Asistencia Social (SESPAS)'];
+                    authorityOrgArr = ['Consejo Nacional de Bioetica en Salud',
+                        'Secretaría del Estado de Salud Pública y Asistencia Social (SESPAS)'];
                     break;
                 case 'Ecuador':
                     authorityOrgArr = ['Ethical Committee', 'Public Health Ministry'];
                     break;
                 case 'Egypt':
-                    authorityOrgArr = ['Institutional Review Board', 'Ministry of Health and Population', 'Ministry of Health, Drug Policy and Planning Center'];
+                    authorityOrgArr = ['Institutional Review Board',
+                        'Ministry of Health and Population',
+                        'Ministry of Health, Drug Policy and Planning Center'];
                     break;
                 case 'Estonia':
                     authorityOrgArr = ['The State Agency of Medicine'];
                     break;
                 case 'Ethiopia':
-                    authorityOrgArr = ['Drug Administration and Control Authority', 'Ethical Review Committee', 'Ethiopia Science and Technology Commission', 'Ministry of Health'];
+                    authorityOrgArr = ['Drug Administration and Control Authority',
+                        'Ethical Review Committee',
+                        'Ethiopia Science and Technology Commission',
+                        'Ministry of Health'];
                     break;
                 case 'European Union':
                     authorityOrgArr = ['European Medicines Agency'];
@@ -335,22 +392,41 @@
                     authorityOrgArr = ['Ministry of Health'];
                     break;
                 case 'Finland':
-                    authorityOrgArr = ['Data Protection Board', 'Ethics Committee', 'Finnish Medicines Agency', 'Ministry of Social Affairs and Health', 'National Advisory Board on Health Care Ethics'];
+                    authorityOrgArr = ['Data Protection Board',
+                        'Ethics Committee',
+                        'Finnish Medicines Agency',
+                        'Ministry of Social Affairs and Health',
+                        'National Advisory Board on Health Care Ethics'];
                     break;
                 case 'France':
-                    authorityOrgArr = ['Afssaps - French Health Products Safety Agency', 'Comité consultatif sur le traitement de l\'information en matière de recherche dans le domaine de la santé', 'Direction Générale de la Santé', 'French Data Protection Authority', 'Haute Autorité de Santé Transparency Commission', 'Institutional Ethical Committee', 'Ministry of Health', 'National Consultative Ethics Committee for Health and Life Sciences'];
+                    authorityOrgArr = ['Afssaps - French Health Products Safety Agency',
+                        'Comité consultatif sur le traitement de l\'information en matière de recherche dans le domaine de la santé',
+                        'Direction Générale de la Santé',
+                        'French Data Protection Authority',
+                        'Haute Autorité de Santé Transparency Commission',
+                        'Institutional Ethical Committee',
+                        'Ministry of Health',
+                        'National Consultative Ethics Committee for Health and Life Sciences'];
                     break;
                 case 'Gabon':
                     authorityOrgArr = ['Ministry of Health'];
                     break;
                 case 'Gambia':
-                    authorityOrgArr = ['Department of State for Health and Social Welfare', 'MRC Ethics Committee'];
+                    authorityOrgArr = ['Department of State for Health and Social Welfare',
+                                        'MRC Ethics Committee'];
                     break;
                 case 'Georgia':
                     authorityOrgArr = ['Ministry of Health'];
                     break;
                 case 'Germany':
-                    authorityOrgArr = ['Ethics Commission', 'Federal Institute for Drugs and Medical Devices', 'Federal Ministry of Education and Research', 'Federal Ministry of Food, Agriculture and Consumer Protection', 'Federal Office for Radiation Protection', 'German Institute of Medical Documentation and Information', 'Ministry of Health', 'Paul-Ehrlich-Institut', 'The Bavarian State Ministry of the Environment and Public Health'];
+                    authorityOrgArr = ['Ethics Commission',
+                        'Federal Institute for Drugs and Medical Devices',
+                        'Federal Ministry of Education and Research',
+                        'Federal Ministry of Food, Agriculture and Consumer Protection',
+                        'Federal Office for Radiation Protection',
+                        'German Institute of Medical Documentation and Information',
+                        'Ministry of Health', 'Paul-Ehrlich-Institut',
+                        'The Bavarian State Ministry of the Environment and Public Health'];
                     break;
                 case 'Ghana':
                     authorityOrgArr = ['Committee on Human Research', 'Ministry of Health'];
@@ -365,37 +441,65 @@
                     authorityOrgArr = ['Ministry of Health'];
                     break;
                 case 'Hong Kong':
-                    authorityOrgArr = ['Department of Health', 'Ethics Committee', 'Joint CUHK-NTEC Clinical Research Ethics Committee'];
+                    authorityOrgArr = ['Department of Health',
+                        'Ethics Committee',
+                        'Joint CUHK-NTEC Clinical Research Ethics Committee'];
                     break;
                 case 'Hungary':
-                    authorityOrgArr = ['Institutional Ethics Committee', 'National Institute of Pharmacy', 'Research Ethics Medical Committee'];
+                    authorityOrgArr = ['Institutional Ethics Committee',
+                        'National Institute of Pharmacy',
+                        'Research Ethics Medical Committee'];
                     break;
                 case 'Iceland':
-                    authorityOrgArr = ['Icelandic Medicines Control Agency', 'Ministry of Health and Social Security'];
+                    authorityOrgArr = ['Icelandic Medicines Control Agency',
+                                    'Ministry of Health and Social Security'];
                     break;
                 case 'India':
-                    authorityOrgArr = ['Central Drugs Standard Control Organization', 'Department of Atomic Energy', 'Drugs Controller General of India', 'Indian Council of Medical Research', 'Institutional Review Board', 'Ministry of Health', 'Ministry of Science and Technology', 'Science and Engineering Research Council'];
+                    authorityOrgArr = ['Central Drugs Standard Control Organization',
+                        'Department of Atomic Energy',
+                        'Drugs Controller General of India',
+                        'Indian Council of Medical Research',
+                        'Institutional Review Board',
+                        'Ministry of Health',
+                        'Ministry of Science and Technology',
+                        'Science and Engineering Research Council'];
                     break;
                 case 'Indonesia':
                     authorityOrgArr = ['Departement Kesehatan (Department of Health)', 'National Agency of Drug and Food Control'];
                     break;
                 case 'Iran, Islamic Republic Of':
-                    authorityOrgArr = ['Ethics Committee', 'Ministry of Health'];
+                    authorityOrgArr = ['Ethics Committee',
+                                    'Ministry of Health'];
                     break;
                 case 'Ireland':
-                    authorityOrgArr = ['Irish Medicines Board', 'Medical Ethics Research Committee', 'Ministry of Health', 'Research Ethics Committee'];
+                    authorityOrgArr = ['Irish Medicines Board',
+                        'Medical Ethics Research Committee',
+                        'Ministry of Health',
+                        'Research Ethics Committee'];
                     break;
                 case 'Israel':
-                    authorityOrgArr = ['Ethics Commission', 'Israeli Health Ministry Pharmaceutical Administration', 'Ministry of Health', 'The Israel National Institute for Health Policy Research and Health Services Research'];
+                    authorityOrgArr = ['Ethics Commission',
+                        'Israeli Health Ministry Pharmaceutical Administration',
+                        'Ministry of Health',
+                        'The Israel National Institute for Health Policy Research and Health Services Research'];
                     break;
                 case 'Italy':
-                    authorityOrgArr = ['Ethics Committee', 'Ministry of Health', 'National Bioethics Committee', 'National Institute of Health', 'National Monitoring Centre for Clinical Trials - Ministry of Health', 'The Italian Medicines Agency'];
+                    authorityOrgArr = ['Ethics Committee',
+                        'Ministry of Health',
+                        'National Bioethics Committee',
+                        'National Institute of Health',
+                        'National Monitoring Centre for Clinical Trials - Ministry of Health',
+                        'The Italian Medicines Agency'];
                     break;
                 case 'Jamaica':
                     authorityOrgArr = ['Ministry of Health'];
                     break;
                 case 'Japan':
-                    authorityOrgArr = ['Foundation for Biomedical Research and Innovation', 'Institutional Review Board', 'Ministry of Education, Culture, Sports, Science and Technology', 'Ministry of Health, Labor and Welfare', 'Pharmaceuticals and Medical Devices Agency'];
+                    authorityOrgArr = ['Foundation for Biomedical Research and Innovation',
+                        'Institutional Review Board',
+                        'Ministry of Education, Culture, Sports, Science and Technology',
+                        'Ministry of Health, Labor and Welfare',
+                        'Pharmaceuticals and Medical Devices Agency'];
                     break;
                 case 'Jordan':
                     authorityOrgArr = ['Ethical Committee'];
@@ -404,22 +508,29 @@
                     authorityOrgArr = ['Ethical Commission'];
                     break;
                 case 'Kenya':
-                    authorityOrgArr = ['Ethical Review Committee', 'Institutional Review Board', 'Ministry of Health'];
+                    authorityOrgArr = ['Ethical Review Committee',
+                        'Institutional Review Board',
+                        'Ministry of Health'];
                     break;
                 case 'Korea, Republic of':
-                    authorityOrgArr = ['Food and Drug Administration', 'Institutional Review Board', 'Ministry for Health, Welfare and Family Affairs'];
+                    authorityOrgArr = ['Food and Drug Administration',
+                        'Institutional Review Board',
+                        'Ministry for Health, Welfare and Family Affairs'];
                     break;
                 case 'Latvia':
-                    authorityOrgArr = ['Institutional Review Board', 'State Agency of Medicines'];
+                    authorityOrgArr = ['Institutional Review Board',
+                                        'State Agency of Medicines'];
                     break;
                 case 'Lebanon':
-                    authorityOrgArr = ['Institutional Review Board', 'Ministry of Public Health'];
+                    authorityOrgArr = ['Institutional Review Board',
+                                        'Ministry of Public Health'];
                     break;
                 case 'Liechtenstein':
                     authorityOrgArr = ['Control Authority for Medicinal Products'];
                     break;
                 case 'Lithuania':
-                    authorityOrgArr = ['Bioethics Committee', 'State Medicine Control Agency - Ministry of Health'];
+                    authorityOrgArr = ['Bioethics Committee',
+                        'State Medicine Control Agency - Ministry of Health'];
                     break;
                 case 'Luxembourg':
                     authorityOrgArr = ['Comite National d\'Ethique de Recherche', 'Ministère de la Santé'];
@@ -431,7 +542,8 @@
                     authorityOrgArr = ['Ministry of Health'];
                     break;
                 case 'Malawi':
-                    authorityOrgArr = ['College of Medicine Research and Ethics Committee', 'National Health Sciences Research Committee'];
+                    authorityOrgArr = ['College of Medicine Research and Ethics Committee',
+                        'National Health Sciences Research Committee'];
                     break;
                 case 'Malaysia':
                     authorityOrgArr = ['Ministry of Health'];
@@ -446,7 +558,12 @@
                     authorityOrgArr = ['Ministry of Health and Quality of Life'];
                     break;
                 case 'Mexico':
-                    authorityOrgArr = ['Ethics Committee', 'Federal Commission for Protection Against Health Risks', 'Federal Commission for Sanitary Risks Protection', 'Ministry of Health', 'National Council of Science and Technology', 'National Institute of Public Health, Health Secretariat'];
+                    authorityOrgArr = ['Ethics Committee',
+                        'Federal Commission for Protection Against Health Risks',
+                        'Federal Commission for Sanitary Risks Protection',
+                        'Ministry of Health',
+                        'National Council of Science and Technology',
+                        'National Institute of Public Health, Health Secretariat'];
                     break;
                 case 'Moldavia':
                     authorityOrgArr = ['Ministry of Health'];
@@ -470,7 +587,14 @@
                     authorityOrgArr = ['The National Agency for Food and Drug Administration and Control'];
                     break;
                 case 'Norway':
-                    authorityOrgArr = ['Data Inspectorate', 'Directorate for Health and Social Affairs', 'Ethics Committee', 'Norwegian Institute of Public Health', 'Norwegian Medicines Agency', 'Norwegian Social Science Data Services', 'Royal Norwegian Ministry of Health and Care Services', 'The National Committees for Research Ethics in Norway'];
+                    authorityOrgArr = ['Data Inspectorate',
+                        'Directorate for Health and Social Affairs',
+                        'Ethics Committee',
+                        'Norwegian Institute of Public Health',
+                        'Norwegian Medicines Agency',
+                        'Norwegian Social Science Data Services',
+                        'Royal Norwegian Ministry of Health and Care Services',
+                        'The National Committees for Research Ethics in Norway'];
                     break;
                 case 'Pakistan':
                     authorityOrgArr = ['Ministry of Health', 'Research Ethics Committee'];
@@ -482,25 +606,41 @@
                     authorityOrgArr = ['Ministerio de Salud Pública y Bienestar Social'];
                     break;
                 case 'Peru':
-                    authorityOrgArr = ['Ethics Committee', 'General Directorate of Pharmaceuticals, Devices, and Drugs', 'Instituto Nacional de Salud', 'Ministry of Health'];
+                    authorityOrgArr = ['Ethics Committee',
+                        'General Directorate of Pharmaceuticals, Devices, and Drugs',
+                        'Instituto Nacional de Salud', 'Ministry of Health'];
                     break;
                 case 'Philippines':
-                    authorityOrgArr = ['Bureau of Food and Drugs', 'Department of Health', 'Ethics Committee', 'Philippine Council for Health Research and Development'];
+                    authorityOrgArr = ['Bureau of Food and Drugs',
+                        'Department of Health', 'Ethics Committee',
+                        'Philippine Council for Health Research and Development'];
                     break;
                 case 'Poland':
-                    authorityOrgArr = ['Ethics Committee', 'Ministry of Health', 'Ministry of Science and Higher Education', 'Office for Registration of Medicinal Products, Medical Devices and Biocidal Products', 'The Central Register of Clinical Trials'];
+                    authorityOrgArr = ['Ethics Committee',
+                        'Ministry of Health',
+                        'Ministry of Science and Higher Education',
+                        'Office for Registration of Medicinal Products, Medical Devices and Biocidal Products',
+                        'The Central Register of Clinical Trials'];
                     break;
                 case 'Portugal':
-                    authorityOrgArr = ['Ethics Committee for Clinical Research', 'Health Ethic Committee', 'National Pharmacy and Medicines Institute'];
+                    authorityOrgArr = ['Ethics Committee for Clinical Research',
+                        'Health Ethic Committee',
+                        'National Pharmacy and Medicines Institute'];
                     break;
                 case 'Qatar':
                     authorityOrgArr = ['Hamad Medical Corporation'];
                     break;
                 case 'Romania':
-                    authorityOrgArr = ['Ethics Committee', 'Ministry of Public Health', 'National Authority for Scientific Research', 'National Medicines Agency', 'State Institute for Drug Control'];
+                    authorityOrgArr = ['Ethics Committee', 'Ministry of Public Health',
+                        'National Authority for Scientific Research',
+                        'National Medicines Agency',
+                        'State Institute for Drug Control'];
                     break;
                 case 'Russian Federation':
-                    authorityOrgArr = ['Ethics Committee', 'FSI Scientific Center of Expertise of Medical Application', 'Ministry of Health and Social Development of the Russian Federation', 'Pharmacological Committee, Ministry of Health'];
+                    authorityOrgArr = ['Ethics Committee',
+                        'FSI Scientific Center of Expertise of Medical Application',
+                        'Ministry of Health and Social Development of the Russian Federation',
+                        'Pharmacological Committee, Ministry of Health'];
                     break;
                 case 'Rwanda':
                     authorityOrgArr = ['Ethics Committee'];
@@ -626,15 +766,16 @@
          */
         function uploadDocument(trialId, documentType, documentSubtype, file) {
             Upload.upload({
-                url: URL_CONFIGS.TRIAL_DOCUMENT_LIST,
+                url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
                 method: 'POST',
-                fields: {
+                data: {
                     'trial_document[document_type]': documentType,
                     'trial_document[document_subtype]': documentSubtype,
-                    'trial_document[trial_id]': trialId
-                },
-                file: file,
-                fileFormDataName: 'trial_document[file]'
+                    'trial_document[trial_id]': trialId,
+                    'trial_document[file]': file
+                }
+                //file: file,
+                //fileFormDataName: 'trial_document[file]'
             }).progress(function (evt) {
                 var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                 $log.info('progress: ' + progressPercentage + '% ' + evt.config.file.name);
@@ -652,7 +793,7 @@
          * @returns {*}
          */
         function deleteTrial(trialId) {
-            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_TRIAL + trialId + ".json");
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_TRIAL + trialId + '.json');
         }
     }
 })();

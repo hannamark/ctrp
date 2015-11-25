@@ -15,7 +15,10 @@
 
         $scope.personSearchResults = {people: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
         $scope.selectedPersonsArray = []; // persons selected in the ui-grid, fed by the embedded directive controller scope
-
+        vm.name = "Tony W";
+        vm.trySubmit = function() {
+            console.log('inside the person search form, trySubmit!');
+        };
 
         activate();
 

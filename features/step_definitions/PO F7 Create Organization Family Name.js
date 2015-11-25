@@ -72,19 +72,19 @@ module.exports = function() {
 
     this.Then(/^an error (.*) will be displayed for family name (.*), family type (.*) and family status (.*)$/, function (response, familyName, familyType, familyStatus, callback) {
         if(familyName === 'Albert Einstein Cancer Center') {
-            projectFunctions.verifyWarningMessage(response);
+            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
         }
         if(familyName === '') {
-            projectFunctions.verifyWarningMessage(response);
+            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
         }
         if(familyType === '') {
-            projectFunctions.verifyWarningMessage(response);
+            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
         }
         if(familyStatus === '') {
-            projectFunctions.verifyWarningMessage(response);
+            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
         }
         browser.sleep(25).then(callback);
     });
 
 
-}
+};

@@ -8,19 +8,21 @@
     angular.module('ctrp.module.dataservices')
         .factory('FamilyService', FamilyService);
 
-    FamilyService.$inject = ['PromiseService', 'URL_CONFIGS','$log', '$rootScope','PromiseTimeoutService','UserService'];
+    FamilyService.$inject = ['PromiseService', 'URL_CONFIGS','$log',
+                '$rootScope','PromiseTimeoutService','UserService'];
 
-    function FamilyService(PromiseService, URL_CONFIGS, $log, $rootScope, PromiseTimeoutService,UserService) {
+    function FamilyService(PromiseService, URL_CONFIGS, $log,
+                $rootScope, PromiseTimeoutService,UserService) {
 
         var initFamilySearchParams = {
-            name: "",
+            name: '',
             wc_search: true,
-            po_id: "",
-            family_status:"",
-            family_type:"",
+            po_id: '',
+            family_status:'',
+            family_type:'',
             //for pagination and sorting
-            sort: "",
-            order: "",
+            sort: '',
+            order: '',
             rows: 10,
             start: 1
         }; //initial Family Search Parameters
@@ -44,12 +46,7 @@
                 },
                 {name: 'family_status', displayName: 'Family Status', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'family_type', displayName: 'Family Type', enableSorting: true, minWidth: '120', width: '*'},
-                /*{name: 'family_members', enableSorting:false, displayName:'Family Members', width: '25%',
-                cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                '<a ui-sref="main.familyDetail({familyId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}} Show Family Members</a></div>'},*/
                 {name: 'aff_org_count', displayName: 'Membership Size', minWidth: '170', width: '*'}
-         // Displaying Org count for now. Tooltip is not meeting requirements and is quirky.
-         //       {name: 'aff_orgs', displayName:'Family Members',width:'20%',cellTemplate:'<div ng-show="row.entity.aff_orgs.length > 0"><master-directive button-label="Family Members" mod="row.entity.aff_orgs"></master-directive></div><div class="text-center" ng-show="row.entity.aff_orgs.length == 0">--</div>'}
             ]
         };
 
@@ -101,7 +98,7 @@
 
             //update an existing family
             var configObj = {}; //empty config
-            return PromiseService.updateObj(URL_CONFIGS.A_FAMILY + familyObj.id + ".json", familyObj, configObj);
+            return PromiseService.updateObj(URL_CONFIGS.A_FAMILY + familyObj.id + '.json', familyObj, configObj);
         } //upsertfamily
 
 
@@ -128,9 +125,9 @@
          * @return initFamilySearchParams
          */
         function getInitialFamilySearchParams() {
-            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
-            var curator_role = "curator";
-            if(!(user_role.toUpperCase() === curator_role.toUpperCase())) {
+            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
+            var curator_role = 'curator';
+            if(user_role.toUpperCase() !== curator_role.toUpperCase()) {
                 initFamilySearchParams.wc_search = false;
             }
             return initFamilySearchParams;
@@ -170,7 +167,7 @@
          * @returns {*}
          */
         function deleteFamily(familyId) {
-            return PromiseService.deleteObjFromBackend(URL_CONFIGS.A_FAMILY + familyId + ".json");
+            return PromiseService.deleteObjFromBackend(URL_CONFIGS.A_FAMILY + familyId + '.json');
         }
 
         /**

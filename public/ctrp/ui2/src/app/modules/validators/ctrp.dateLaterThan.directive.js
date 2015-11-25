@@ -106,15 +106,15 @@
 
 
         function isValidDateRange(fromDate, toDate) {
-            if (fromDate == '' || toDate == '') {
+            if (fromDate === '' || toDate === '') {
                 return true;
             }
 
-            if (isValidDate(fromDate) == false) {
+            if (!isValidDate(fromDate)) {
                 return false;
             }
 
-            if (isValidDate(toDate) == true) {
+            if (isValidDate(toDate)) {
                 var days = dateDiff(fromDate, toDate);
                 return days < 0 ? false : true;
             }
