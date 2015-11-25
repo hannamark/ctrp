@@ -19,7 +19,7 @@
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
-        vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
+        vm.accordions = [true, true, true, true, true, true, true, true, true, true, true, true];
         vm.collapsed = false;
         vm.studySourceCode = studySourceCode;
         vm.isExp = false;
@@ -45,6 +45,7 @@
         vm.start_date_opened = false;
         vm.primary_comp_date_opened = false;
         vm.comp_date_opened = false;
+        vm.amendment_date_opened = false;
         vm.addedOtherIds = [];
         vm.addedFses = [];
         vm.addedGrants = [];
@@ -193,12 +194,12 @@
         };
 
         vm.collapseAccordion = function() {
-            vm.accordions = [false, false, false, false, false, false, false, false, false, false, false];
+            vm.accordions = [false, false, false, false, false, false, false, false, false, false, false, false];
             vm.collapsed = true;
         };
 
         vm.expandAccordion = function() {
-            vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
+            vm.accordions = [true, true, true, true, true, true, true, true, true, true, true, true];
             vm.collapsed = false;
         };
 
@@ -300,6 +301,8 @@
                 vm.primary_comp_date_opened = !vm.primary_comp_date_opened;
             } else if (type == 'comp_date') {
                 vm.comp_date_opened = !vm.comp_date_opened;
+            } else if (type == 'amendment_date') {
+                vm.amendment_date_opened = !vm.amendment_date_opened;
             }
         }; //openCalendar
 
@@ -650,6 +653,7 @@
             vm.curTrial.start_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.start_date);
             vm.curTrial.primary_comp_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.primary_comp_date);
             vm.curTrial.comp_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.comp_date);
+            vm.curTrial.amendment_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.amendment_date);
         }
 
         // Populate Study Source field based on the param studySourceCode

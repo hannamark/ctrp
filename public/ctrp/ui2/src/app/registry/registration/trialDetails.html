@@ -21,9 +21,40 @@
         <div class="row">
             <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
                 <uib-accordion close-others="false">
-                    <uib-accordion-group is-open="trialDetailView.accordions[0]">
+                    <uib-accordion-group ng-if="['amend'].indexOf(trialDetailView.curTrial.edit_type) > -1" is-open="trialDetailView.accordions[0]">
                         <uib-accordion-heading>
-                            Trial Identifiers  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[0], 'glyphicon-chevron-right': !trialDetailView.accordions[0]}"></i>
+                            Amendment Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[0], 'glyphicon-chevron-right': !trialDetailView.accordions[0]}"></i>
+                        </uib-accordion-heading>
+
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-3">Amendment Number:</label>
+                            <div class=" col-xs-12 col-sm-6">
+                                <input type="text" restriction-field class="form-control input-sm" id="amendment_num" ng-model="trialDetailView.amendment_num">
+                            </div>
+                        </div>
+
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.amendment_date)}">
+                            <label class="control-label col-xs-12 col-sm-3">Amendment Date:</label>
+                            <div class="col-xs-12 col-sm-3">
+                                <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control input-sm" name="amendment_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.amendment_date"
+                                           is-open="trialDetailView.amendment_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required disabled />
+                                    <span class="input-group-btn">
+                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'amendment_date')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.amendment_date)">
+                                    Amendment Date is required
+                                </span>
+                            </div>
+                        </div>
+                    </uib-accordion-group>
+
+                    <uib-accordion-group is-open="trialDetailView.accordions[1]">
+                        <uib-accordion-heading>
+                            Trial Identifiers  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[1], 'glyphicon-chevron-right': !trialDetailView.accordions[1]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group required">
@@ -106,9 +137,9 @@
 
                     </uib-accordion-group>
 
-                    <uib-accordion-group is-open="trialDetailView.accordions[1]">
+                    <uib-accordion-group is-open="trialDetailView.accordions[2]">
                         <uib-accordion-heading>
-                            Trial Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[1], 'glyphicon-chevron-right': !trialDetailView.accordions[1]}"></i>
+                            Trial Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[2], 'glyphicon-chevron-right': !trialDetailView.accordions[2]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.official_title)}">
@@ -217,9 +248,9 @@
                         </div>
                     </uib-accordion-group>
 
-                    <uib-accordion-group is-open="trialDetailView.accordions[2]">
+                    <uib-accordion-group is-open="trialDetailView.accordions[3]">
                         <uib-accordion-heading>
-                            Lead Organization/Principal Investigator  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[2], 'glyphicon-chevron-right': !trialDetailView.accordions[2]}"></i>
+                            Lead Organization/Principal Investigator  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[3], 'glyphicon-chevron-right': !trialDetailView.accordions[3]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.lead_org_name)}">
@@ -252,9 +283,9 @@
                         </div>
                     </uib-accordion-group>
 
-                    <uib-accordion-group is-open="trialDetailView.accordions[3]">
+                    <uib-accordion-group is-open="trialDetailView.accordions[4]">
                         <uib-accordion-heading>
-                            Sponsor/Responsible Party  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[3], 'glyphicon-chevron-right': !trialDetailView.accordions[3]}"></i>
+                            Sponsor/Responsible Party  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[4], 'glyphicon-chevron-right': !trialDetailView.accordions[4]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.sponsor_name)}">
@@ -329,9 +360,9 @@
                         </div>
                     </uib-accordion-group>
 
-                    <uib-accordion-group is-open="trialDetailView.accordions[4]">
+                    <uib-accordion-group is-open="trialDetailView.accordions[5]">
                         <uib-accordion-heading>
-                            Data Table 4 Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[4], 'glyphicon-chevron-right': !trialDetailView.accordions[4]}"></i>
+                            Data Table 4 Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[5], 'glyphicon-chevron-right': !trialDetailView.accordions[5]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
@@ -364,9 +395,9 @@
                         </div>
                     </uib-accordion-group>
 
-                    <uib-accordion-group is-open="trialDetailView.accordions[5]">
+                    <uib-accordion-group is-open="trialDetailView.accordions[6]">
                         <uib-accordion-heading>
-                            NIH Grant Information (for NIH funded Trials)  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[5], 'glyphicon-chevron-right': !trialDetailView.accordions[5]}"></i>
+                            NIH Grant Information (for NIH funded Trials)  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[6], 'glyphicon-chevron-right': !trialDetailView.accordions[6]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group required">
@@ -466,9 +497,9 @@
                         </div>
                     </uib-accordion-group>
 
-                    <uib-accordion-group is-open="trialDetailView.accordions[6]">
+                    <uib-accordion-group is-open="trialDetailView.accordions[7]">
                         <uib-accordion-heading>
-                            Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[6], 'glyphicon-chevron-right': !trialDetailView.accordions[6]}"></i>
+                            Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[7], 'glyphicon-chevron-right': !trialDetailView.accordions[7]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ts_dummy)}">
@@ -548,9 +579,9 @@
                         </div>
                     </uib-accordion-group>
 
-                    <uib-accordion-group is-open="trialDetailView.accordions[7]">
+                    <uib-accordion-group is-open="trialDetailView.accordions[8]">
                         <uib-accordion-heading>
-                            Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[7], 'glyphicon-chevron-right': !trialDetailView.accordions[7]}"></i>
+                            Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[8], 'glyphicon-chevron-right': !trialDetailView.accordions[8]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.start_date) || ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual)}">
@@ -647,9 +678,9 @@
                         </div>
                     </uib-accordion-group>
 
-                    <uib-accordion-group is-open="trialDetailView.accordions[8]">
+                    <uib-accordion-group is-open="trialDetailView.accordions[9]">
                         <uib-accordion-heading>
-                            FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[8], 'glyphicon-chevron-right': !trialDetailView.accordions[8]}"></i>
+                            FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[9], 'glyphicon-chevron-right': !trialDetailView.accordions[9]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group required">
@@ -761,9 +792,9 @@
                         </div>
                     </uib-accordion-group>
 
-                    <uib-accordion-group is-open="trialDetailView.accordions[9]">
+                    <uib-accordion-group is-open="trialDetailView.accordions[10]">
                         <uib-accordion-heading>
-                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[9], 'glyphicon-chevron-right': !trialDetailView.accordions[9]}"></i>
+                            Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[10], 'glyphicon-chevron-right': !trialDetailView.accordions[10]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.toa_dummy)}">
@@ -882,9 +913,9 @@
                         </div>
                     </uib-accordion-group>
 
-                    <uib-accordion-group is-open="trialDetailView.accordions[10]">
+                    <uib-accordion-group is-open="trialDetailView.accordions[11]">
                         <uib-accordion-heading>
-                            Trial Related Documents  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[10], 'glyphicon-chevron-right': !trialDetailView.accordions[10]}"></i>
+                            Trial Related Documents  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[11], 'glyphicon-chevron-right': !trialDetailView.accordions[11]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.protocol_document)}">
