@@ -1,10 +1,10 @@
 /**
- * PA - trial section of the CTRP app
+ * Registry section of the CTRP app
  */
 
 (function() {
     'use strict';
-    angular.module('ctrp.app.pa.trial', [
+    angular.module('ctrp.app.registry', [
         /* Angular modules */
         'ngTouch',
         'ngAnimate',
