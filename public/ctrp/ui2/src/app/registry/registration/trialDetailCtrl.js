@@ -10,12 +10,12 @@
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
-        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST'];
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams'];
 
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope, $window,
                              Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
-                             holderTypeObj, expandedAccessTypeObj, countryList, HOST) {
+                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
@@ -58,6 +58,7 @@
         vm.selectedInvArray = [];
         vm.selectedIaArray = [];
         vm.selectedFsArray = [];
+        vm.isInterventional = false;
         vm.showPrimaryPurposeOther = false;
         vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
@@ -71,6 +72,7 @@
         vm.toaNum = 0;
         vm.protocolDocNum = 0;
         vm.irbApprovalNum = 0;
+        vm.informedConsentNum = 0;
         vm.showLpiError = false;
         vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
 
@@ -272,6 +274,12 @@
                         } else {
                             vm.irbApprovalNum++;
                         }
+                    } else if (vm.addedDocuments[index].document_type === 'Informed Consent') {
+                        if (vm.addedDocuments[index]._destroy) {
+                            vm.informedConsentNum--;
+                        } else {
+                            vm.informedConsentNum++;
+                        }
                     }
                 }
             }
@@ -297,20 +305,27 @@
 
         // Add other ID to a temp array
         vm.addOtherId = function () {
-            if (vm.protocol_id_origin_id && vm.protocol_id) {
+            // Get other ID origin name
+            var originName;
+            _.each(vm.protocolIdOriginArr, function (origin) {
+                if (origin.id == vm.protocol_id_origin_id) {
+                    originName = origin.name;
+                }
+            });
+
+            var errorMsg = TrialService.checkOtherId(vm.protocol_id_origin_id, originName, vm.protocol_id, vm.addedOtherIds);
+
+            if (!errorMsg) {
                 var newId = {};
                 newId.protocol_id_origin_id = vm.protocol_id_origin_id;
-                // For displaying other ID origin name in the table
-                _.each(vm.protocolIdOriginArr, function (origin) {
-                    if (origin.id == vm.protocol_id_origin_id) {
-                        newId.protocol_id_origin_name = origin.name;
-                    }
-                });
+                newId.protocol_id_origin_name = originName;
                 newId.protocol_id = vm.protocol_id;
                 newId._destroy = false;
                 vm.addedOtherIds.push(newId);
+                vm.protocol_id_origin_id = null;
+                vm.protocol_id = null;
             } else {
-                alert('Please select a Protocol ID Origin and enter a Protocol ID');
+                alert(errorMsg);
             }
         };
 
@@ -325,6 +340,10 @@
                 newGrant._destroy = false;
                 vm.addedGrants.push(newGrant);
                 vm.grantNum++;
+                vm.funding_mechanism = null;
+                vm.institute_code = null;
+                vm.serial_number = null;
+                vm.nci = null;
             } else {
                 alert('Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code');
             }
@@ -346,6 +365,9 @@
                 newStatus._destroy = false;
                 vm.addedStatuses.push(newStatus);
                 vm.tsNum++;
+                vm.status_date = null;
+                vm.trial_status_id = null;
+                vm.why_stopped = null;
             } else {
                 alert('Please provide a Status Date and select a Status');
             }
@@ -366,18 +388,16 @@
                     }
                 });
                 newIndIde.nih_nci = vm.nih_nci;
-                newIndIde.expanded_access = vm.expanded_access;
-                newIndIde.expanded_access_type_id = vm.expanded_access_type_id;
-                // For displaying name in the table
-                _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
-                    if (expandedAccessType.id == vm.expanded_access_type_id) {
-                        newIndIde.expanded_access_type_name = expandedAccessType.name;
-                    }
-                });
-                newIndIde.exempt = vm.exempt;
                 newIndIde._destroy = false;
                 vm.addedIndIdes.push(newIndIde);
                 vm.indIdeNum++;
+                vm.ind_ide_type = null;
+                vm.ind_ide_number = null;
+                vm.grantor = null;
+                vm.holder_type_id = null;
+                vm.nih_nci = null;
+                vm.grantorArr = [];
+                vm.nihNciArr = [];
             } else {
                 alert('Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type');
             }
@@ -392,6 +412,9 @@
                 newAuthority._destroy = false;
                 vm.addedAuthorities.push(newAuthority);
                 vm.toaNum++;
+                vm.authority_country = null;
+                vm.authority_org = null;
+                vm.authorityOrgArr = [];
             } else {
                 alert('Please select a Country and Organization');
             }
@@ -440,7 +463,14 @@
         });
 
         vm.watchOption = function(type) {
-            if (type == 'primary_purpose') {
+            if (type == 'research_category') {
+                var intObj = vm.researchCategoryArr.filter(findIntOption);
+                if (intObj[0].id == vm.curTrial.research_category_id) {
+                    vm.isInterventional = true;
+                } else {
+                    vm.isInterventional = false;
+                }
+            } else if (type == 'primary_purpose') {
                 var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
                 if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
                     vm.showPrimaryPurposeOther = true;
@@ -539,6 +569,7 @@
         function activate() {
             appendNewTrialFlag();
             getExpFlag();
+            adjustProtocolIdOriginArr();
             adjustTrialStatusArr();
 
             if (vm.curTrial.new) {
@@ -547,8 +578,10 @@
                 vm.curTrial.ind_ide_question = 'Yes';
                 populateStudySource();
             } else {
+                appendEditType();
                 convertDate();
                 displayPOs();
+                rcFieldChange();
                 ppFieldChange();
                 spFieldChange();
                 rpFieldChange();
@@ -586,6 +619,15 @@
             }
         }
 
+        function adjustProtocolIdOriginArr() {
+            for (var i = vm.protocolIdOriginArr.length - 1; i >= 0; i--) {
+                if (vm.protocolIdOriginArr[i].code === 'CTEP' || vm.protocolIdOriginArr[i].code === 'DCP'
+                    || vm.protocolIdOriginArr[i].code === 'CCR' || vm.protocolIdOriginArr[i].code === 'DNCI') {
+                    vm.protocolIdOriginArr.splice(i, 1);
+                }
+            }
+        }
+
         function adjustTrialStatusArr() {
             if (!vm.isExp) {
                 for (var i = vm.trialStatusArr.length - 1; i >= 0; i--) {
@@ -593,6 +635,12 @@
                         vm.trialStatusArr.splice(i, 1);
                     }
                 }
+            }
+        }
+
+        function appendEditType() {
+            if ($stateParams.editType === 'update') {
+                vm.curTrial.edit_type = 'update'
             }
         }
 
@@ -634,6 +682,14 @@
         }
 
         // Display/hide dynamic fields
+        function rcFieldChange() {
+            var intObj = vm.researchCategoryArr.filter(findIntOption);
+            if (intObj[0].id == vm.curTrial.research_category_id) {
+                vm.isInterventional = true;
+            }
+        }
+
+
         function ppFieldChange() {
             var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
             if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
@@ -783,7 +839,17 @@
                     vm.protocolDocNum++;
                 } else if (vm.curTrial.trial_documents[i].document_type === 'IRB Approval') {
                     vm.irbApprovalNum++;
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Informed Consent') {
+                    vm.informedConsentNum++;
                 }
+            }
+        }
+
+        function findIntOption(option) {
+            if (option.code === 'INT') {
+                return true;
+            } else {
+                return false;
             }
         }
 

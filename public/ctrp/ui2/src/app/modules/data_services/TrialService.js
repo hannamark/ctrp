@@ -60,6 +60,9 @@
                 },
                 {name: 'current_trial_status', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '*',
+                    cellTemplate: '<button restriction-field ng-repeat="action in row.entity.actions" type="button" class="btn btn-primary" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)"><i class="glyphicon"></i> {{action}} </button>'
                 }
 
             ]
@@ -88,6 +91,7 @@
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
+            checkOtherId: checkOtherId,
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial
         };
@@ -755,6 +759,37 @@
             }
 
             return authorityOrgArr;
+        }
+
+        // Validation logic for Other Trial Identifier
+        function checkOtherId(protocolIdOriginId, protocolIdOriginName, protocolId, addedOtherIds) {
+            var errorMsg = '';
+
+            if (!protocolIdOriginId || !protocolId) {
+                errorMsg = 'Please select a Protocol ID Origin and enter a Protocol ID';
+                return errorMsg;
+            }
+            for (var i = 0; i < addedOtherIds.length; i++) {
+                if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
+                    && protocolIdOriginName !== 'Other Identifier'
+                    && protocolIdOriginName !== 'Obsolete ClinicalTrials.gov Identifier') {
+                    errorMsg = addedOtherIds[i].protocol_id_origin_name + ' already exists';
+                    return errorMsg;
+                } else if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
+                    && addedOtherIds[i].protocol_id === protocolId
+                    && (protocolIdOriginName === 'Other Identifier'
+                    || protocolIdOriginName === 'Obsolete ClinicalTrials.gov Identifier')) {
+                    errorMsg = addedOtherIds[i].protocol_id_origin_name + ' ' + addedOtherIds[i].protocol_id + ' already exists';
+                    return errorMsg;
+                }
+            }
+            // Validate the format of ClinicalTrials.gov Identifier: NCT00000000
+            if (protocolIdOriginName === 'ClinicalTrials.gov Identifier' && !/^NCT\d{8}/.test(protocolId)) {
+                errorMsg = 'The format must be "NCT" followed by 8 numeric characters';
+                return errorMsg;
+            }
+
+            return errorMsg;
         }
 
         /**

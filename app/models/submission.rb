@@ -25,4 +25,5 @@ class Submission < ActiveRecord::Base
 
   belongs_to :amendment_reason
   belongs_to :trial
+  has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
 end

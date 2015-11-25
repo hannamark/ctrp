@@ -7,13 +7,12 @@
 
     angular.module('ctrp.app.registry').controller('trialCtrl', trialCtrl);
 
-    trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope',
-                         'Common', '$modal', '$location', '$anchorScroll',
-                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', 'trialStatusObj'];
+    trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal', '$location',
+                         '$anchorScroll', 'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'];
 
-    function trialCtrl(TrialService, uiGridConstants, $scope,
-                $rootScope, Commo, $modal, $location, $anchorScroll,
-                       studySourceObj, phaseObj, primaryPurposeObj, trialStatusObj) {
+    function trialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal, $location,
+                       $anchorScroll, studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj) {
+
         var vm = this;
         vm.searchParams = TrialService.getInitialTrialSearchParams();
         vm.studySourceArr = studySourceObj;
@@ -54,6 +53,14 @@
 
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
+        };
+
+        $scope.takeTrialAction = function(actionType, trialId) {
+            if (actionType == 'Complete') {
+                $state.go('main.trialDetail', {trialId: trialId});
+            } else if (actionType == 'Update') {
+                $state.go('main.trialDetail', {trialId: trialId, editType: 'update'});
+            }
         };
 
         activate();
