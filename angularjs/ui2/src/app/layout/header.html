@@ -1,0 +1,90 @@
+<header ng-controller="headerNavigationCtrl as headerView">
+  <script type="text/ng-template" id="warning-dialog.html">
+      <div class="modal-header">
+          <h3>Since you have been inactive, the system will log you out soon</h3>
+      </div>
+      <div idle-countdown="countdown" ng-init="countdown=5" class="modal-body">
+          <progressbar max="5" value="5" animate="false" class="progress-striped active">
+              You will be logged out in {{countdown}} seconds.
+          </progressbar>
+      </div>
+
+  </script>
+  <script type="text/ng-template" id="timedout-dialog.html">
+      <div class="modal-header">
+          <h3>You have been logged out for exceeding our inactivity threshold.</h3>
+      </div>
+      <div class="modal-body">
+          <p>
+              Your authentication session has been cleared. Please log back in if needed. <strong>Thank you</strong>
+          </p>
+      </div>
+  </script>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-7">
+                <img class="img-responsive" src="./images/nci-logo-full.svg" alt="National Cancer Institute">
+                <div class="sub-title">Clinical Trials Reporting Program</div>
+            </div>
+            <div class="col-xs-12 col-sm-5">
+                <div class="row">
+                    <ul class="list-inline animated-item">
+                        <li ng-show="headerView.signedIn">Welcome, <strong><a ui-sref="main.userDetail">{{headerView.username}}</a></strong></li>
+                        <li ng-show="headerView.signedIn"> | &nbsp;&nbsp;<a href="" ng-click="headerView.logOut()"><strong>Sign Out</strong></a></li><br />
+                        <li ng-show="headerView.signedIn">&nbsp;&nbsp;&nbsp;&nbsp;Role: {{headerView.userRole}}</li>
+                    </ul>
+                </div>
+                <div class="row" ng-show="headerView.signedIn && headerView.isCurationModeSupported &&
+                headerView.currrentState.current.name != 'main.sign_in' && headerView.currrentState.current.name != 'main.defaultContent'">
+                    <!-- ng-true-value="On" ng-false-value="Off" -->
+                    <md-switch class="md-warn" md-no-ink aria-label="Curation mode" ng-change="headerView.toggleCurationMode()"
+                               ng-model="headerView.isCurationEnabled">
+                        Write Mode:
+                        <span flex ng-if="headerView.isCurationEnabled">On</span>
+                        <span flex ng-if="!headerView.isCurationEnabled">Off</span>
+                        <!-- {{headerView.isCurationEnabled}} -->
+                    </md-switch>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contain-to-grid">
+        <nav class="navbar navbar-default navbar-fixed-top nav-search-bar">
+            <div class="container-fluid row-blue">
+                <div class="top-bar-section pull-right">
+
+                </div>
+            </div>
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div ng-if="headerView.currrentState.current.name != 'main.sign_in' && headerView.currrentState.current.name != 'main.defaultContent'">
+                    <div class="collapse navbar-collapse" id="collapse-1">
+                        <div ng-if="headerView.userRole == 'curator'">
+                            <div ng-include src="'app/layout/navbar/navbarCurator.html'"></div>
+                        </div>
+                        <div ng-if="headerView.userRole == 'ro'">
+                            <div ng-include src="'app/layout/navbar/navbarRo.html'"></div>
+                        </div>
+                        <div ng-if="headerView.userRole == 'super' || headerView.userRole == 'admin'">
+                            <div ng-include src="'app/layout/navbar/navbarSuper.html'"></div>
+                        </div>
+                        <div ng-if="headerView.userRole == 'trial-submitter' || headerView.userRole == 'trial-submitter-su'">
+                            <div ng-include src="'app/layout/navbar/navbarTrialSubmitter.html'"></div>
+                        </div>
+                        <div ng-if="headerView.userRole == 'abstractor' || headerView.userRole == 'abstractor-su'">
+                            <div ng-include src="'app/layout/navbar/navbarAbstractor.html'"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+    </div>
+</header>
