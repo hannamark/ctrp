@@ -9,7 +9,6 @@
 
         /* Cross-app modules */
         'ctrp.app.pa.dashboard',
-        'ctrp.app.pa.search.trials',
 
         /* 3rd-party modules */
 

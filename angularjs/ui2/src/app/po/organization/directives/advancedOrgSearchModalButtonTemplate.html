@@ -1,0 +1,42 @@
+<div class="row">
+    <button type="button" tabindex="21" class="btn btn-primary" restriction-field id="org_search_modal" ng-click="searchOrgs('lg')"><i class="glyphicon glyphicon-search"></i> Search Organizations</button>
+    <button ng-if="useBuiltInTemplate" class="btn btn-danger" ng-click="batchSelect('removeAll')" ng-show="savedSelection.length > 0">
+        <i class="glyphicon glyphicon-remove"></i> Remove All Organizations
+    </button>
+</div>
+<div ng-if="useBuiltInTemplate" class="row animated-item top-offset-tiny" ng-show="savedSelection.length > 0">
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+            <th width="10%">CTRP ID</th>
+            <th width="11%">Name</th>
+            <th width="10%">Source Context</th>
+            <th width="13%">Source ID</th>
+            <th width="14%">Source Status</th>
+            <th width="10%">City</th>
+            <th width="9%">State</th>
+            <th width="10%">Email</th>
+            <th width="13%">Phone</th>
+            <th width="1%"></th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="org in savedSelection track by $index" class="animated-item" ng-class="org._destroy == true ? 'deleted-text' : ''">
+            <td>{{org.id}}</td>
+            <td>{{org.name}}</td>
+            <td>{{org.source_context}}</td>
+            <td>{{org.source_id}}</td>
+            <td>{{org.source_status}}</td>
+            <td>{{org.city}}</td>
+            <td>{{org.state_province}}</td>
+            <td>{{org.email}}</td>
+            <td>{{org.phone}}</td>
+            <td>
+                <label class="btn btn-default" ng-click="toggleSelection($index)">
+                    <i class="glyphicon" ng-class="org._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                </label>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- row for the table ends -->
+<!--</div>-->
