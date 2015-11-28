@@ -3,6 +3,13 @@ require 'roo'
 
 class DataImport < ActiveRecord::Base
 
+  def self.delete_trial_data
+    TrialStatusWrapper.delete_all
+    MilestoneWrapper.delete_all
+    ProcessingStatusWrapper.delete_all
+    Trial.delete_all
+  end
+
   def self.import_trials
     begin
       trial_spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-trials-random-2014.xls'))
@@ -47,6 +54,19 @@ class DataImport < ActiveRecord::Base
           tsw.status_date = current_trail_status_date
           trial.trial_status_wrappers << tsw
         end
+        processing_status = trial_spreadsheet.cell(row,'CC')
+        Rails.logger.info "spreadsheet processing_status = #{processing_status.inspect}"
+        processing_status_date = trial_spreadsheet.cell(row,'CD')
+        unless processing_status.blank?
+          processing_status = ProcessingStatus.where("lower(name) = ?", processing_status.downcase).first
+          puts "processing_status = #{processing_status.inspect}"
+          psw = ProcessingStatusWrapper.new
+          psw.trial = trial
+          psw.processing_status = processing_status
+          #psw.status_date = processing_status_date
+          psw.status_date = Time.now
+          trial.processing_status_wrappers << psw
+        end
         # randomly assign the rest of the data
         trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
         trial.sponsor = Organization.all[rand(0..13)]
@@ -58,7 +78,7 @@ class DataImport < ActiveRecord::Base
         #puts "trial = #{trial.inspect}"
       end
     rescue Exception => e
-      Rails.logger.info "Exception thrown while reading Trial spreadsheet #{e.inspect}"
+      puts "Exception thrown while reading Trial spreadsheet #{e.inspect}"
     end
   end
 
@@ -80,6 +100,5 @@ class DataImport < ActiveRecord::Base
         end
       end
     end
-
   end
 end

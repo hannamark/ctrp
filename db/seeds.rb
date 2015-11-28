@@ -276,7 +276,9 @@ family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2
 
 
 ## Trials
-## Reading spreadsheet
+## Delete existing Trial data
+DataImport.delete_trial_data
+## Reading and importing Trial related spreadsheets
 puts "Parsing Trial Spreadsheet"
 DataImport.import_trials
 puts "Parsing Milestone Spreadsheet"

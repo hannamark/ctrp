@@ -4,7 +4,7 @@
 
 (function() {
     'use strict';
-    angular.module('ctrp.module.routes').config(paRoutes);
+    angular.module('ctrp.app.pa.search.trials').config(paRoutes);
 
     paRoutes.$inject = ['$stateProvider'];
     function paRoutes($stateProvider) {
@@ -27,6 +27,7 @@
                             trialStatusObj: function(TrialService) {
                                 return TrialService.getTrialStatuses();
                             }
+
                         },
                         ncyBreadcrumb: {
                             parent: 'main.defaultContent',
