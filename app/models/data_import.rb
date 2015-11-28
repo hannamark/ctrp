@@ -6,6 +6,7 @@ class DataImport < ActiveRecord::Base
   def self.delete_trial_data
     TrialStatusWrapper.delete_all
     MilestoneWrapper.delete_all
+    Submission.delete_all
     ProcessingStatusWrapper.delete_all
     Trial.delete_all
   end
@@ -55,11 +56,10 @@ class DataImport < ActiveRecord::Base
           trial.trial_status_wrappers << tsw
         end
         processing_status = trial_spreadsheet.cell(row,'CC')
-        Rails.logger.info "spreadsheet processing_status = #{processing_status.inspect}"
         processing_status_date = trial_spreadsheet.cell(row,'CD')
         unless processing_status.blank?
           processing_status = ProcessingStatus.where("lower(name) = ?", processing_status.downcase).first
-          puts "processing_status = #{processing_status.inspect}"
+          #puts "processing_status = #{processing_status.inspect}"
           psw = ProcessingStatusWrapper.new
           psw.trial = trial
           psw.processing_status = processing_status
@@ -83,13 +83,13 @@ class DataImport < ActiveRecord::Base
   end
 
   def self.import_milestones
+    missed_milestones = []
     spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-milestones_for_20_sample_trials_in_prod.xls'))
     spreadsheet.default_sheet = spreadsheet.sheets.first
     ((spreadsheet.first_row+1)..spreadsheet.last_row).each do |row|
       t = spreadsheet.cell(row,'A')
       trial = Trial.find_by_nci_id(t)
       unless trial.nil?
-        current_milestone = spreadsheet.cell(row,'B')
         submission_num = spreadsheet.cell(row,'E')
         current_submission = Submission.find_by_trial_id_and_submission_num(trial.id, submission_num)
         if current_submission.blank?
@@ -98,16 +98,22 @@ class DataImport < ActiveRecord::Base
           trial.submissions << current_submission
           trial.save!
         end
+        current_milestone = spreadsheet.cell(row,'B')
         unless current_milestone.nil?
-          current_milestone = Milestone.where("lower(name) = ?", current_milestone.downcase).first
+          milestone = Milestone.where("lower(name) = ?", current_milestone.downcase).first
+          if milestone.nil?
+            missed_milestones << current_milestone
+            next
+          end
           cmw = MilestoneWrapper.new
           cmw.trial = trial
-          cmw.milestone = current_milestone
+          cmw.milestone = milestone
           cmw.submission = current_submission
           trial.milestone_wrappers << cmw
           trial.save!
         end
       end
     end
+    puts "List of missed milestones = #{missed_milestones.uniq.inspect}"
   end
 end
