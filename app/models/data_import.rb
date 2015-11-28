@@ -70,11 +70,20 @@ class DataImport < ActiveRecord::Base
       trial = Trial.find_by_nci_id(t)
       unless trial.nil?
         current_milestone = spreadsheet.cell(row,'B')
+        submission_num = spreadsheet.cell(row,'E')
+        current_submission = Submission.find_by_trial_id_and_submission_num(trial.id, submission_num)
+        if current_submission.blank?
+          current_submission = Submission.new
+          current_submission.submission_num = submission_num
+          trial.submissions << current_submission
+          trial.save!
+        end
         unless current_milestone.nil?
           current_milestone = Milestone.where("lower(name) = ?", current_milestone.downcase).first
           cmw = MilestoneWrapper.new
           cmw.trial = trial
           cmw.milestone = current_milestone
+          cmw.submission = current_submission
           trial.milestone_wrappers << cmw
           trial.save!
         end
