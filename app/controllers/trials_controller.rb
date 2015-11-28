@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  #before_filter :wrapper_authenticate_user unless Rails.env.test?
-  #load_and_authorize_resource unless Rails.env.test?
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -104,9 +104,51 @@ class TrialsController < ApplicationController
         Rails.logger.info "params trial_status = #{params[:trial_status].inspect}"
         @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
       end
+    else
+      @trials = []
+    end
+  end
+
+
+  def search_pa
+    # Pagination/sorting params initialization
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 10 if params[:rows].blank?
+    params[:sort] = 'lead_protocol_id' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+
+    if params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_source].present?
+      @trials = Trial.all
+      @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
+      @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
+      @trials = @trials.with_phase(params[:phase]) if params[:phase].present?
+      @trials = @trials.with_purpose(params[:purpose]) if params[:purpose].present?
+      @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
+      if params[:pi].present?
+        splits = params[:pi].split(',').map(&:strip)
+        @trials = @trials.with_pi_lname(splits[0])
+        @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
+      end
+      if params[:org].present?
+        if params[:org_type] == 'Lead Organization'
+          @trials = @trials.with_lead_org(params[:org])
+        elsif params[:org_type] == 'Sponsor'
+          @trials = @trials.with_sponsor(params[:org])
+        else
+          @trials = @trials.with_any_org(params[:org])
+        end
+      end
+      @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
+      @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
+
+      # TODO further add another scope
+      if params[:trial_status].present?
+        Rails.logger.info "params trial_status = #{params[:trial_status].inspect}"
+        @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
+      end
       if params[:milestone].present?
         Rails.logger.info "params milestone = #{params[:milestone].inspect}"
-        @trials = @trials.select{|trial| trial.milestone_wrappers.blank? &&  trial.milestone_wrappers.last.milestone.code == params[:milestone]}
+        @trials = @trials.select{|trial| !trial.milestone_wrappers.blank? &&  trial.milestone_wrappers.last.milestone.code == params[:milestone]}
       end
 
     else

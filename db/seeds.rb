@@ -126,6 +126,7 @@ Milestone.find_or_create_by(code: 'SAC', name: 'Submission Acceptance Date')
 Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
 Milestone.find_or_create_by(code: 'STR', name: 'Submission Terminated Date')
 Milestone.find_or_create_by(code: 'SRE', name: 'Submission Reactivated Date')
+Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
 Milestone.find_or_create_by(code: 'APS', name: 'Administrative Processing Start Date')
 Milestone.find_or_create_by(code: 'APC', name: 'Administrative Processing Completed Date')
 Milestone.find_or_create_by(code: 'RAQ', name: 'Ready for Administrative QC Date')
@@ -141,8 +142,15 @@ Milestone.find_or_create_by(code: 'STS', name: 'Submitter Trial Summary Report F
 Milestone.find_or_create_by(code: 'IAV', name: 'Initial Abstraction Verified Date')
 Milestone.find_or_create_by(code: 'ONG', name: 'On-going')
 Milestone.find_or_create_by(code: 'AVD', name: 'Abstraction Verified Date')
-Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date ')
+Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date')
 
+## Missing Milestones in Feature description
+# ["Scientific Processing Completed Date",
+# "Scientific Processing Start Date",
+# "Administrative QC Completed Date",
+# "Administrative QC Start Date"]
+#
+##
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########

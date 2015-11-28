@@ -121,6 +121,7 @@ Rails.application.routes.draw do
         collection do
           get 'search'
           post 'search'
+          get 'search_pa'
         end
       end
       resources :protocol_id_origins

@@ -195,6 +195,7 @@ class Trial < ActiveRecord::Base
   before_save :check_indicator
 
   attr_accessor :current_trial_status
+  attr_accessor :current_milestone_status
 
   private
 
