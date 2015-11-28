@@ -145,7 +145,7 @@ class TrialsController < ApplicationController
       if params[:trial_status].present? && params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
         @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
       end
-      if params[:milestone].present?
+      if params[:milestone].present? && params[:milestone_latest].present? && params[:milestone_latest] == "YES"
         Rails.logger.info "params milestone = #{params[:milestone].inspect}"
         @trials = @trials.select{|trial| !trial.milestone_wrappers.blank? &&  trial.milestone_wrappers.last.milestone.code == params[:milestone]}
       end

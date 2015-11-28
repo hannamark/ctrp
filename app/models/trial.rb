@@ -194,12 +194,6 @@ class Trial < ActiveRecord::Base
   before_create :save_history
   before_save :check_indicator
 
-  attr_accessor :current_trial_status # Latest trial status
-  attr_accessor :selected_trial_status # User selected trial status, the latest from the matched ones
-  attr_accessor :current_milestone_status # Latest Milestone
-  attr_accessor :selected_milestone  # User selected milestone, the latest from the matched ones
-
-
   private
 
   def generate_nci_id
