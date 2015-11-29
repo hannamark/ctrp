@@ -258,6 +258,8 @@ class Trial < ActiveRecord::Base
 
   scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
 
+  scope :with_research_category, -> (value) { joins(:research_category).where("research_categories.code = ?", "#{value}") }
+
   scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
 
   scope :with_pi_lname, -> (value) {

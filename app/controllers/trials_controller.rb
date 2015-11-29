@@ -142,12 +142,19 @@ class TrialsController < ApplicationController
       @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
 
       # PA fields
+      if params[:research_category].present?
+        @trials = @trials.with_research_category(params[:research_category])
+      end
       if params[:trial_status].present? && params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
         @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
       end
       if params[:milestone].present? && params[:milestone_latest].present? && params[:milestone_latest] == "YES"
-        Rails.logger.info "params milestone = #{params[:milestone].inspect}"
         @trials = @trials.select{|trial| !trial.milestone_wrappers.blank? &&  trial.milestone_wrappers.last.milestone.code == params[:milestone]}
+      end
+      if params[:processing_status].present? #&& params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
+        Rails.logger.debug " Before params[:processing_status] = #{params[:processing_status].inspect}"
+        @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && trial.processing_status_wrappers.last.processing_status.code == params[:processing_status]}
+        Rails.logger.debug "After @trials = #{@trials.inspect}"
       end
     else
       @trials = []

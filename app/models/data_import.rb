@@ -67,6 +67,11 @@ class DataImport < ActiveRecord::Base
           psw.status_date = Time.now
           trial.processing_status_wrappers << psw
         end
+        rc= trial_spreadsheet.cell(row,'DO')
+        if rc.present?
+          research_category = ResearchCategory.where("lower(name) = ?", rc.downcase).first
+          trial.research_category = research_category if research_category.present?
+        end
         # randomly assign the rest of the data
         trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
         trial.sponsor = Organization.all[rand(0..13)]

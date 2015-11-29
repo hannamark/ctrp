@@ -24,6 +24,8 @@ json.trials do
         end
       end
     end
+    json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
+    json.research_category trial.research_category.present? ? trial.research_category.name : nil
     json.url trial_url(trial, format: :json)
     json.actions trial.actions
   end
