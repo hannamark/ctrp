@@ -8,6 +8,7 @@ class DataImport < ActiveRecord::Base
     MilestoneWrapper.delete_all
     Submission.delete_all
     ProcessingStatusWrapper.delete_all
+    OtherId.delete_all
     Trial.delete_all
   end
 
@@ -34,11 +35,13 @@ class DataImport < ActiveRecord::Base
         unless secondary_purpose.blank?
           trial.secondary_purpose = SecondaryPurpose.where("lower(name) = ?", secondary_purpose.downcase).first
         end
+=begin
         research_category = trial_spreadsheet.cell(row,'DO')
         unless research_category.blank?
           research_category.gsub! "_", " "
           trial.research_category = ResearchCategory.where("lower(name) = ?", research_category.downcase).first
         end
+=end
         study_source = trial_spreadsheet.cell(row,'CZ')
         unless study_source.blank?
           study_source.gsub! "_", " "
@@ -72,6 +75,32 @@ class DataImport < ActiveRecord::Base
           research_category = ResearchCategory.where("lower(name) = ?", rc.downcase).first
           trial.research_category = research_category if research_category.present?
         end
+        #other_ids
+        ctep_id = trial_spreadsheet.cell(row,'R')
+        if ctep_id.present?
+          other_id_record = OtherId.new
+          other_id_record.protocol_id = ctep_id
+          other_id_record.protocol_id_origin = ProtocolIdOrigin.find_by_code("CTEP")
+          other_id_record.trial = trial
+          trial.other_ids << other_id_record
+        end
+        dcp_id = trial_spreadsheet.cell(row,'Y')
+        if dcp_id.present?
+          other_id_record = OtherId.new
+          other_id_record.protocol_id = dcp_id
+          other_id_record.protocol_id_origin = ProtocolIdOrigin.find_by_code("DCP")
+          other_id_record.trial = trial
+          trial.other_ids << other_id_record
+        end
+        ccr_id = trial_spreadsheet.cell(row,'DS')
+        if ccr_id.present?
+          other_id_record = OtherId.new
+          other_id_record.protocol_id = ccr_id
+          other_id_record.protocol_id_origin = ProtocolIdOrigin.find_by_code("CCR")
+          other_id_record.trial = trial
+          trial.other_ids << other_id_record
+        end
+
         # randomly assign the rest of the data
         trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
         trial.sponsor = Organization.all[rand(0..13)]

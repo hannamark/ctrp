@@ -24,6 +24,17 @@ json.trials do
         end
       end
     end
+    json.other_id_string = ""
+    if trial.other_ids.present?
+      other_ids = trial.other_ids
+      other_ids_string = ""
+      delimiter = ""
+      other_ids.each do |o|
+        other_ids_string = other_ids_string + delimiter + o.protocol_id_origin.code + "_ID:" + o.protocol_id
+        delimiter = "; "
+      end
+      json.other_id_string = other_ids_string
+    end
     json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
     json.research_category trial.research_category.present? ? trial.research_category.name : nil
     json.url trial_url(trial, format: :json)
