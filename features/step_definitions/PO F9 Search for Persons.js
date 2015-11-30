@@ -35,7 +35,7 @@ module.exports = function() {
             return true;
         }, 4000).then(function() {
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             menuItem.clickPeople();
             menuItem.clickListPeople();
             searchPerson.setPersonFirstName('shiFName' + moment().format('MMMDoYY h'));
@@ -96,14 +96,16 @@ module.exports = function() {
                 searchPerson.setPersonFirstName(value);
             });
         }
-        else {
+        else if (firstName !== '') {
                 searchPerson.setPersonFirstName(firstName);
             }
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I want to search with last name (.*)$/, function (lastName, callback) {
-        searchPerson.setPersonLastName(lastName);
+        if (lastName !== '') {
+            searchPerson.setPersonLastName(lastName);
+        }
         browser.sleep(25).then(callback);
     });
 
@@ -113,7 +115,7 @@ module.exports = function() {
                 searchPerson.setPersonOrgAffiliation(value);
             });
         }
-        else {
+        else if (PersonAffiliatedOrganization !== '') {
                 searchPerson.setPersonOrgAffiliation(PersonAffiliatedOrganization);
         }
         browser.sleep(25).then(callback);
@@ -131,7 +133,7 @@ module.exports = function() {
                 searchPerson.setPersonSourceId(value);
             });
         }
-        else {
+        else if (SourceID !== '') {
             searchPerson.setPersonSourceId(SourceID);
         }
         browser.sleep(25).then(callback);
@@ -143,12 +145,16 @@ module.exports = function() {
     });
 
     this.Given(/^I want to search with Person email (.*)$/, function (PersonEmail, callback) {
-        searchPerson.setPersonEmail(PersonEmail);
+        if (PersonEmail !== '') {
+            searchPerson.setPersonEmail(PersonEmail);
+        }
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I want to search with Person phone number (.*)$/, function (PersonPhoneNumber, callback) {
-        searchPerson.setPersonPhone(PersonPhoneNumber);
+        if (PersonPhoneNumber !== '') {
+            searchPerson.setPersonPhone(PersonPhoneNumber);
+        }
         browser.sleep(25).then(callback);
     });
 
@@ -166,7 +172,9 @@ module.exports = function() {
     });
 
     this.Given(/^I want to search for Person records last updated by (.*)$/, function (Username, callback) {
-        searchPerson.setPersonUpdatedBy(Username);
+        if (Username !== '') {
+            searchPerson.setPersonUpdatedBy(Username);
+        }
         browser.sleep(25).then(callback);
     });
 
@@ -176,46 +184,53 @@ module.exports = function() {
     });
 
     this.Then(/^the search results (.*) should display the following sorted by Last Name:$/, function (result, table, callback) {
-        searchPerson.personFirstName.getAttribute('value').then(function(personFirstName){
-            console.log('personFirstName here is:' + personFirstName);
-            searchPerson.personSourceContext.$('option:checked').getText().then(function(personSourceContext){
-                console.log('personSourceContext here is:' + personSourceContext);
-                searchPerson.personSourceStatus.$('option:checked').getText().then(function(personSourceStatus){
-                    console.log('personSourceStatus here is:' + personSourceStatus);
+        //searchPerson.personFirstName.getAttribute('value').then(function(personFirstName){
+        //    console.log('personFirstName here is:' + personFirstName);
+        //    searchPerson.personSourceContext.$('option:checked').getText().then(function(personSourceContext){
+        //        console.log('personSourceContext here is:' + personSourceContext);
+        //        searchPerson.personSourceStatus.$('option:checked').getText().then(function(personSourceStatus){
+        //            console.log('personSourceStatus here is:' + personSourceStatus);
                     searchPerson.personOrgAffiliation.getAttribute('value').then(function(personOrgAffiliation){
                         console.log('personOrgAffiliation here is:' + personOrgAffiliation);
-                        searchPerson.personSourceId.getAttribute('value').then(function(personSourceId){
-                            console.log('personSourceId here is:' + personSourceId);
-                            searchPerson.personLastName.getAttribute('value').then(function(personLastName){
-                                console.log('personLastName here is:' + personLastName);
-                                searchPerson.personEmail.getAttribute('value').then(function(personEmail){
-                                    console.log('personEmail here is:' + personEmail);
-                                    searchPerson.personPhone.getAttribute('value').then(function(personPhone){
-                                        console.log('personPhone here is:' + personPhone);
-                                            searchPerson.personUpdateBy.getAttribute('value').then(function(personUpdateBy){
-                                                console.log('personUpdateBy here is:' + personUpdateBy);
+        //                searchPerson.personSourceId.getAttribute('value').then(function(personSourceId){
+        //                    console.log('personSourceId here is:' + personSourceId);
+        //                    searchPerson.personLastName.getAttribute('value').then(function(personLastName){
+        //                        console.log('personLastName here is:' + personLastName);
+        //                        searchPerson.personEmail.getAttribute('value').then(function(personEmail){
+        //                            console.log('personEmail here is:' + personEmail);
+        //                            searchPerson.personPhone.getAttribute('value').then(function(personPhone){
+        //                                console.log('personPhone here is:' + personPhone);
+        //                                    searchPerson.personUpdateBy.getAttribute('value').then(function(personUpdateBy){
+        //                                        console.log('personUpdateBy here is:' + personUpdateBy);
                                                 searchPerson.personLastUpdatedStartDate.getAttribute('value').then(function(personLastUpdatedStartDate){
                                                     console.log('personLastUpdatedStartDate here is:' + personLastUpdatedStartDate);
                                                         searchPerson.personLastUpdatedEndDate.getAttribute('value').then(function(personLastUpdatedEndDate) {
                                                             console.log('personLastUpdatedEndDate here is:' + personLastUpdatedEndDate);
-                                                                    if (personFirstName === '' && personSourceContext === 'All Contexts' && personSourceStatus === 'Select a Status' && personOrgAffiliation === '' && personSourceId === '' && personLastName === '' && personEmail === '' &&  personPhone === '' && personUpdateBy === '' && personLastUpdatedStartDate === '' && personLastUpdatedEndDate === '') {
-                                                                        menuItem.verifyEmptySearchCriteria(callback);
-                                                                    } else {
-                                                                        console.log('in the else statement');
+                                                                   if (personLastUpdatedStartDate === '' && personLastUpdatedEndDate === '') {
+                                                                       expect(projectFunctions.inSearchResults('CTRP')).to.become('true').and.notify(callback);
+                                                                    }
+                                                                   else if (personOrgAffiliation !== '') {
+                                                                       cukeOrganization.then(function (value) {
+                                                                           console.log('Org affiliation search in result : ' + value);
+                                                                           expect(projectFunctions.inSearchResults(value)).to.become('true').and.notify(callback);
+                                                                       });
+                                                                   }
+                                                                   else {
+        //                                                                console.log('in the else statement');
                                                                           expect(projectFunctions.inSearchResults('Active')).to.become('true').and.notify(callback);
                                                                     }
                                                         });
-                                                    });
-                                                });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
+       //                                             });
+       //                                         });
+       //                             });
+       //                         });
+       //                     });
+       //                 });
+       //             });
+       //         });
+           });
        });
-
+       });
+       //
 
 };

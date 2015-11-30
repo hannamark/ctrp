@@ -39,6 +39,7 @@ When I select the Organizations and Families menu item
 Then the Organizations and Families menu is expanded and includes:
 |Search Organizations|
 |Add Organizations|
+|Request a New Organization|
 |Search Families|
 |Add Families|
 
@@ -49,6 +50,7 @@ When I select the Organizations and Families menu item
 Then the Person menu is expanded and includes:
 |Search Persons|
 |Add Persons|
+|Request a Person|
 
 Scenario: #6 View Trials Tab
 Given I am logged into the CTRP application
@@ -58,6 +60,8 @@ Then the Trials menu is expanded and includes:
 |Search Trials|
 |Register Trial|
 |Import Trial|
+|Add My Site|
+
 Scenario: #7 View Accrual Tab
 Given I am logged into the CTRP application
 And I am on the home screen
@@ -91,4 +95,24 @@ Given I am logged into the CTRP application
 And I am on the home screen
 When I select the Home menu item that is already expanded
 Then the menu will be closed 
+
+Scenario: #10 View Trials Register sub menu
+Given I am logged into the CTRP application
+And I am on the home screen
+And I am on Trials menu item
+When I select the Register Trials sub menu
+Then the Register Trials menu is expanded and includes:
+|National|
+|Externally Peer-Reviewed|
+|Institutional|
+
+Scenario: #11 View Trials Import sub menu
+Given I am logged into the CTRP application
+And I am on the home screen
+And I am on Trials menu item
+When I select the Import Trials sub menu
+Then the Import Trials menu is expanded and includes:
+|Industrial|
+|Other|
+|Expanded Access|
 

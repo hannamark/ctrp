@@ -1,0 +1,28 @@
+# == Schema Information
+#
+# Table name: associated_trials
+#
+#  id                 :integer          not null, primary key
+#  trial_identifier   :string(255)
+#  identifier_type_id :integer
+#  trial_id           :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  uuid               :string(255)
+#  lock_version       :integer          default(0)
+#
+# Indexes
+#
+#  index_associated_trials_on_identifier_type_id  (identifier_type_id)
+#  index_associated_trials_on_trial_id            (trial_id)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  trial_identifier: MyString
+  identifier_type_id: 
+
+two:
+  trial_identifier: MyString
+  identifier_type_id: 

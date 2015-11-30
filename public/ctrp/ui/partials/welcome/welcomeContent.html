@@ -1,6 +1,6 @@
 
 
-<div class="col-md-9" role="content">
+<div class="col-xs-12" role="content">
     <div class="row">
         <style>
         .pdsa-summary-block-primary {
@@ -151,7 +151,7 @@
         }
     </style>
 
-        <div class="container drop-shadow">
+        <div class="drop-shadow">
             <div ng-if="headerView.currrentState.current.name != 'main.sign_in'">
                 <div class="collapse navbar-collapse" id="collapse-1">
                     <div ng-if="headerView.userRole == 'curator'">
@@ -163,8 +163,11 @@
                     <div ng-if="headerView.userRole == 'super' || headerView.userRole == 'admin'">
                         <div ng-include src="'ui/partials/welcome/adminHome.html'"></div>
                     </div>
-                    <div ng-if="headerView.userRole == 'trial-submitter'">
+                    <div ng-if="headerView.userRole == 'trial-submitter' || headerView.userRole == 'trial-submitter-su'">
                         <div ng-include src="'ui/partials/welcome/trialSubmitterHome.html'"></div>
+                    </div>
+                    <div ng-if="headerView.userRole == 'abstractor' || headerView.userRole == 'abstractor-su'">
+                        <div ng-include src="'ui/partials/welcome/abstractorHome.html'"></div>
                     </div>
                 </div>
             </div>

@@ -34,7 +34,7 @@ module.exports = function() {
             return true;
         }, 4000).then(function(){
             menuItem.clickHomeEnterOrganizations();
-            login.clickWriteMode();
+            login.clickWriteMode('On');
             projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');
         });
         browser.sleep(25).then(callback);
@@ -75,4 +75,4 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-}
+};

@@ -7,12 +7,12 @@
     angular.module('ctrpApp')
         .controller('familyDetailCtrl', familyDetailCtrl);
     familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'familyStatusObj','familyTypeObj','familyRelationshipObj','OrgService','DateService','toastr',
-        '$scope', '$state', 'Common'];
+        '$scope', '$state', 'Common', '$modal'];
     function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,familyRelationshipObj,
-                              OrgService, DateService, toastr, $scope, $state, Common) {
+                              OrgService, DateService, toastr, $scope, $state, Common, $modal ) {
         var vm = this;
-       // console.log("in details controller ......."+JSON.stringify(familyDetailObj));
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
+        console.log('familyDetailObj: ' + JSON.stringify(familyDetailObj));
         vm.curFamily = vm.curFamily.data || vm.curFamily;
         vm.masterCopy= angular.copy(vm.curFamily);
         vm.familyStatusArr = familyStatusObj.data;
@@ -44,9 +44,10 @@
                 if(response.status == 422) {
                     toastr.error('Problem in saving family', 'Family name has already been taken');
                     vm.curFamily.name="";
-                }
-                else {
+                } else {
                     vm.curFamily.new = false;
+                    vm.curFamily.family_memberships = response.data.family_memberships_attributes || [];
+                    console.log('response is: ' + JSON.stringify(response));
                     $state.go('main.familyDetail', {familyId: response.data.id});
                     toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!', {
                         extendedTimeOut: 1000,
@@ -141,6 +142,10 @@
         /****************** implementations below ***************/
         function activate() {
             appendNewFamilyFlag();
+            if (!vm.curFamily.new) {
+                prepareModal();
+            }
+
             watchOrgReceiver();
 
             if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
@@ -161,7 +166,31 @@
             }
         }
 
+        function prepareModal() {
 
+            if (!vm.curFamily.new) {
+                vm.confirmDelete = function (size) {
+                    var modalInstance = $modal.open({
+                        animation: true,
+                        templateUrl: 'delete_confirm_template.html',
+                        controller: 'ModalInstanceFamilyCtrl as vm',
+                        size: size,
+                        resolve: {
+                            familyId: function () {
+                                return vm.curFamily.id;
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function (selectedItem) {
+                        console.log("about to delete the familyDetail " + vm.curFamily.id);
+                        $state.go('main.families');
+                    }, function () {
+                        console.log("operation canceled")
+                    });
+                }; //confirmDelete
+            }
+        }
         /**
          * watch organizations selected from the modal
          */

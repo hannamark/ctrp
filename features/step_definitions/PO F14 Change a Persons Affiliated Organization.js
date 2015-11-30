@@ -35,7 +35,7 @@ module.exports = function() {
         }, 4000)
             .then(function(){
                 menuItem.clickHomeEnterOrganizations();
-                login.clickWriteMode();
+                login.clickWriteMode('On');
                 projectFunctions.createPersonWithAffiliatedOrg('Mr','SScuke','Shia','Singh','Kt','singh@cukePR.com','222-444-5555','ShiOrg','08-Oct-2015','25-Oct-2020');
             });
         browser.sleep(25).then(callback);
@@ -73,4 +73,4 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-}
+};

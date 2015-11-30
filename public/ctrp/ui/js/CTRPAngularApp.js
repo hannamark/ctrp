@@ -11,10 +11,10 @@
         'ngAnimate',
         'ngSanitize',
         'ngMaterial',
-        'ctrp.constants',
-        'ctrp.commonTools',
-        'PromiseTimeoutModule',
-        'PromiseServiceModule',
+        'ctrp.module.constants',
+        'ctrp.module.common',
+        'ctrp.module.PromiseTimeoutService',
+        'ctrp.module.PromiseService',
         'LocalCacheModule',
         'toastr',
         'ui.bootstrap',
@@ -23,14 +23,14 @@
         'ui.grid.pagination',
         'ui.grid.selection',
         'ui.scrollpoint',
-        'DateServiceMod',
-        'CTRPUnderscoreModule',
-        'toggle-switch',
-        'TimeoutModule',
+        'ctrp.module.dateservice',
+        'ctrp.module.underscoreWrapper',
+        'ctrp.module.timeout',
         'ngFileUpload',
         'angularMoment',
         'ctrpApp.widgets',
-        'ctrpForm'
+        'ctrpForm',
+        'ctrp.module.dataservices'
     ])
         .config(function($provide) {
             $provide.decorator('$state', function($delegate, $rootScope) {

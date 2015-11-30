@@ -1,6 +1,6 @@
 @Global
 Feature: PO F9 Search for Persons
-
+@runthis
 Scenario Outline: As a Curator, search for persons with multiple parameters
 Given I know multiple parameters of the person I wish to search for
   |Person First Name| |Person last name| |Affiliation| |Source Status| |email| |phone|
@@ -35,7 +35,6 @@ Then the search results <result> should display the following sorted by Last Nam
 
 Examples:
 |first_name  || last_name ||Source Context||Source ID|| Source Status||Person_email||Person_phone_number||Person_affiliated_organization||Start Date||End Date||Username||result|
-|            ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||At Least one selection value must be entered prior to running the search|
 |shiFName    ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
 |shiFNa*     ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
 |            ||shiLName   ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
@@ -54,4 +53,8 @@ Examples:
 |            ||shiLName   ||              ||         ||              ||shiPercuke@pr.com||420-567*      || shiPerOrgAff                 ||          ||        ||        ||true|
 
 
-
+Scenario: As a Curator, I will get a message if searched with no parameters
+  Given I am logged in to CTRP PO application
+  And I am on the search persons screen
+  When I searched without providing any search parameters
+  Then I should get message as "At least one selection value must be entered prior to running the search"

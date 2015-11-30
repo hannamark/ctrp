@@ -2,61 +2,111 @@
 #
 # Table name: trials
 #
-#  id                      :integer          not null, primary key
-#  nci_id                  :string(255)
-#  lead_protocol_id        :string(255)
-#  official_title          :text
-#  pilot                   :string(255)
-#  primary_purpose_other   :string(255)
-#  secondary_purpose_other :string(255)
-#  program_code            :string(255)
-#  grant_question          :string(255)
-#  start_date              :date
-#  start_date_qual         :string(255)
-#  primary_comp_date       :date
-#  primary_comp_date_qual  :string(255)
-#  comp_date               :date
-#  comp_date_qual          :string(255)
-#  ind_ide_question        :string(255)
-#  intervention_indicator  :string(255)
-#  sec801_indicator        :string(255)
-#  data_monitor_indicator  :string(255)
-#  history                 :json
-#  study_source_id         :integer
-#  phase_id                :integer
-#  primary_purpose_id      :integer
-#  secondary_purpose_id    :integer
-#  responsible_party_id    :integer
-#  lead_org_id             :integer
-#  pi_id                   :integer
-#  sponsor_id              :integer
-#  investigator_id         :integer
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#  uuid                    :string(255)
-#  lock_version            :integer          default(0)
-#  research_category_id    :integer
-#  accrual_disease_term_id :integer
-#  investigator_title      :string(255)
-#  investigator_aff_id     :integer
-#  created_by              :string(255)
-#  updated_by              :string(255)
-#  is_draft                :boolean
+#  id                       :integer          not null, primary key
+#  nci_id                   :string(255)
+#  lead_protocol_id         :string(255)
+#  official_title           :text
+#  pilot                    :string(255)
+#  primary_purpose_other    :string(255)
+#  secondary_purpose_other  :string(255)
+#  program_code             :string(255)
+#  grant_question           :string(255)
+#  start_date               :date
+#  start_date_qual          :string(255)
+#  primary_comp_date        :date
+#  primary_comp_date_qual   :string(255)
+#  comp_date                :date
+#  comp_date_qual           :string(255)
+#  ind_ide_question         :string(255)
+#  intervention_indicator   :string(255)
+#  sec801_indicator         :string(255)
+#  data_monitor_indicator   :string(255)
+#  history                  :json
+#  study_source_id          :integer
+#  phase_id                 :integer
+#  primary_purpose_id       :integer
+#  secondary_purpose_id     :integer
+#  responsible_party_id     :integer
+#  lead_org_id              :integer
+#  pi_id                    :integer
+#  sponsor_id               :integer
+#  investigator_id          :integer
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  uuid                     :string(255)
+#  lock_version             :integer          default(0)
+#  research_category_id     :integer
+#  accrual_disease_term_id  :integer
+#  investigator_title       :string(255)
+#  investigator_aff_id      :integer
+#  created_by               :string(255)
+#  updated_by               :string(255)
+#  is_draft                 :boolean
+#  admin_checkout           :text
+#  scientific_checkout      :text
+#  check_in_comment         :text
+#  process_priority         :string(255)
+#  process_comment          :text
+#  receive_email            :boolean
+#  xml_required             :string(255)
+#  acronym                  :string(255)
+#  keywords                 :text
+#  nih_nci_div              :string(255)
+#  nih_nci_prog             :string(255)
+#  send_trial               :string(255)
+#  board_approval_num       :string(255)
+#  board_affiliation        :string(255)
+#  brief_title              :text
+#  brief_summary            :text
+#  detailed_description     :text
+#  objective                :text
+#  target_enrollment        :integer
+#  final_enrollment         :integer
+#  accruals                 :integer
+#  accept_vol               :string(255)
+#  min_age                  :integer
+#  max_age                  :integer
+#  assigned_to_id           :integer
+#  owner_id                 :integer
+#  board_approval_status_id :integer
+#  board_id                 :integer
+#  intervention_model_id    :integer
+#  masking_id               :integer
+#  allocation_id            :integer
+#  study_classification_id  :integer
+#  gender_id                :integer
+#  min_age_unit_id          :integer
+#  max_age_unit_id          :integer
+#  anatomic_site_id         :integer
+#  num_of_arms              :integer
+#  verification_date        :date
 #
 # Indexes
 #
-#  index_trials_on_accrual_disease_term_id  (accrual_disease_term_id)
-#  index_trials_on_investigator_aff_id      (investigator_aff_id)
-#  index_trials_on_investigator_id          (investigator_id)
-#  index_trials_on_lead_org_id              (lead_org_id)
-#  index_trials_on_phase_id                 (phase_id)
-#  index_trials_on_pi_id                    (pi_id)
-#  index_trials_on_primary_purpose_id       (primary_purpose_id)
-#  index_trials_on_research_category_id     (research_category_id)
-#  index_trials_on_responsible_party_id     (responsible_party_id)
-#  index_trials_on_secondary_purpose_id     (secondary_purpose_id)
-#  index_trials_on_sponsor_id               (sponsor_id)
-#  index_trials_on_study_source_id          (study_source_id)
+#  index_trials_on_accrual_disease_term_id   (accrual_disease_term_id)
+#  index_trials_on_allocation_id             (allocation_id)
+#  index_trials_on_anatomic_site_id          (anatomic_site_id)
+#  index_trials_on_assigned_to_id            (assigned_to_id)
+#  index_trials_on_board_approval_status_id  (board_approval_status_id)
+#  index_trials_on_board_id                  (board_id)
+#  index_trials_on_gender_id                 (gender_id)
+#  index_trials_on_intervention_model_id     (intervention_model_id)
+#  index_trials_on_investigator_aff_id       (investigator_aff_id)
+#  index_trials_on_investigator_id           (investigator_id)
+#  index_trials_on_lead_org_id               (lead_org_id)
+#  index_trials_on_masking_id                (masking_id)
+#  index_trials_on_max_age_unit_id           (max_age_unit_id)
+#  index_trials_on_min_age_unit_id           (min_age_unit_id)
+#  index_trials_on_owner_id                  (owner_id)
+#  index_trials_on_phase_id                  (phase_id)
+#  index_trials_on_pi_id                     (pi_id)
+#  index_trials_on_primary_purpose_id        (primary_purpose_id)
+#  index_trials_on_research_category_id      (research_category_id)
+#  index_trials_on_responsible_party_id      (responsible_party_id)
+#  index_trials_on_secondary_purpose_id      (secondary_purpose_id)
+#  index_trials_on_sponsor_id                (sponsor_id)
+#  index_trials_on_study_classification_id   (study_classification_id)
+#  index_trials_on_study_source_id           (study_source_id)
 #
 
 class Trial < ActiveRecord::Base
@@ -87,6 +137,39 @@ class Trial < ActiveRecord::Base
   has_many :oversight_authorities, -> { order 'oversight_authorities.id' }
   has_many :trial_documents, -> { order 'trial_documents.id' }
 
+  # PA fields
+  belongs_to :assigned_to, class_name: "User"
+  belongs_to :owner, class_name: "User"
+  belongs_to :board_approval_status
+  belongs_to :board, class_name: "Organization"
+  belongs_to :intervention_model
+  belongs_to :masking
+  belongs_to :allocation
+  belongs_to :study_classification
+  belongs_to :gender
+  belongs_to :min_age_unit, class_name: "AgeUnit"
+  belongs_to :max_age_unit, class_name: "AgeUnit"
+  belongs_to :anatomic_site
+  has_many :submissions, -> { order 'submissions.id' }
+  has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
+  has_many :onholds, -> { order 'onholds.id' }
+  has_many :associated_trials, -> { order 'associated_trials.id' }
+  has_many :alternate_titles, -> { order 'alternate_titles.id' }
+  has_many :central_contacts, -> { order 'central_contacts.id' }
+  has_many :outcome_measures, -> { order 'outcome_measures.id' }
+  has_many :other_criteria, -> { order 'other_criteria.id' }
+  has_many :markers, -> { order 'markers.id' }
+  has_many :interventions, -> { order 'interventions.id' }
+  has_many :arms_groups, -> { order 'arms_groups.id' }
+  has_many :sub_groups, -> { order 'sub_groups.id' }
+  has_many :participating_sites, -> { order 'participating_sites.id' }
+  has_many :ps_orgs, through: :participating_sites, source: :organization
+  has_many :citations, -> { order 'citations.id' }
+  has_many :links, -> { order 'links.id' }
+  has_many :diseases, -> { order 'diseases.id' }
+  has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
+  has_many :collaborators, -> { order 'collaborators.id' }
+
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
   accepts_nested_attributes_for :grants, allow_destroy: true
@@ -95,12 +178,37 @@ class Trial < ActiveRecord::Base
   accepts_nested_attributes_for :oversight_authorities, allow_destroy: true
   accepts_nested_attributes_for :trial_documents, allow_destroy: true
 
+  # Array of actions can be taken on this Trial
+  def actions
+    actions = []
+    if self.is_draft
+      actions.append('Complete')
+    else
+      actions.append('Update')
+      actions.append('Amend')
+    end
+  end
+
   validates :lead_protocol_id, presence: true
 
+  before_save :generate_nci_id
   before_create :save_history
   before_save :check_indicator
 
   private
+
+  def generate_nci_id
+    if !self.is_draft && self.nci_id.nil?
+      current_year = Time.new.year.to_s
+      largest_id = Trial.where('nci_id ilike ?', "%NCI-#{current_year}-%").order('nci_id desc').pluck('nci_id').first
+      if largest_id.nil?
+        new_id = "NCI-#{current_year}-00000"
+      else
+        new_id = largest_id.next
+      end
+      self.nci_id = new_id
+    end
+  end
 
   def save_history
     history = {lead_org: self.lead_org, pi: self.pi}
@@ -130,21 +238,28 @@ class Trial < ActiveRecord::Base
   }
 
   scope :with_protocol_id, -> (value) {
+    join_clause = 'LEFT JOIN other_ids ON other_ids.trial_id = trials.id'
+    where_clause = 'trials.lead_protocol_id ilike ? OR trials.nci_id ilike ? OR other_ids.protocol_id ilike ?'
+
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
-      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
+      value_exp = "%#{value[1..str_len - 1]}"
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "#{value[0..str_len - 2]}%", "#{value[0..str_len - 2]}%")
+      value_exp = "#{value[0..str_len - 2]}%"
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
+      value_exp = "%#{value[1..str_len - 2]}%"
     else
-      joins("LEFT JOIN other_ids ON other_ids.trial_id = trials.id").where("trials.lead_protocol_id ilike ? OR other_ids.protocol_id ilike ?", "#{value}", "#{value}")
+      value_exp = "#{value}"
     end
+
+    joins(join_clause).where(where_clause, value_exp, value_exp, value_exp)
   }
 
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 
   scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
+
+  scope :with_research_category, -> (value) { joins(:research_category).where("research_categories.code = ?", "#{value}") }
 
   scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
 

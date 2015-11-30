@@ -10,7 +10,7 @@
 //        module('Constants');
 //        module('LocalCacheModule');
 //        module('CommonTools');
-//        module('PromiseServiceModule');
+//        module('ctrp.module.PromiseService');
 //        module('ctrpApp');
 //
 //        // Provide will help us create fake implementations for our dependencies
