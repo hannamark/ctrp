@@ -94,7 +94,7 @@
                 if (newSearchFlag === 'fromStart') {
                     $scope.searchParams.start = 1;
                 }
-                console.log("In searchOrgs " + JSON.stringify($scope.searchParams));
+                // console.log("In searchOrgs " + JSON.stringify($scope.searchParams));
 
                 //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
                 // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
@@ -119,12 +119,10 @@
 
                 if(!isEmptySearch) { //skip searching if empty search
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                        console.log("received data for org search: " + JSON.stringify(data));
+                        // console.log("received data for org search: " + JSON.stringify(data));
                         if ($scope.showGrid && data.orgs) {
                             $scope.gridOptions.data = data.orgs;
                             $scope.gridOptions.totalItems = data.total;
-
-                            console.log("data ..... "+JSON.stringify(data));
 
                             //pin the selected rows, if any, at the top of the results
                             _.each($scope.selectedRows, function (curRow, idx) {
