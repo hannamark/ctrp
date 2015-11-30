@@ -1,6 +1,6 @@
-[11:33:08] Using gulpfile ~/Desktop/Code/ctrp-gulp/public/ctrp/ui2/gulpfile.js
-[11:33:08] Starting 'vet'...
-[11:33:08] Analyzing source with JSHint and JSCS
+[11:35:40] Using gulpfile ~/Desktop/Code/ctrp-gulp/public/ctrp/ui2/gulpfile.js
+[11:35:40] Starting 'vet'...
+[11:35:40] Analyzing source with JSHint and JSCS
 
 src/app/layout/footerCtrl.js
   line 15  col 18  Possible strict violation.  (W040)
@@ -221,20 +221,17 @@ src/app/modules/data_services/UserService.js
 
 
 src/app/modules/validators/ctrp.validateFormSubmission.directive.js
-  line 48  col 21   Possible strict violation.  (W040)
-  line 51  col 21   Possible strict violation.  (W040)
-  line 57  col 21   Possible strict violation.  (W040)
-  line 64  col 135  Line is too long.           (W101)
+  line 48  col 21  Possible strict violation.  (W040)
+  line 51  col 21  Possible strict violation.  (W040)
+  line 57  col 21  Possible strict violation.  (W040)
 
-  ⚠  4 warnings
+  ⚠  3 warnings
 
 
 src/app/modules/widgets/ctrp.widgets.restrictionField.directive.js
-  line 63  col 124  Line is too long.                                        (W101)
-  line 64  col 165  Line is too long.                                        (W101)
-  line 59  col 41   This function's cyclomatic complexity is too high. (12)  (W074)
+  line 59  col 41  This function's cyclomatic complexity is too high. (12)  (W074)
 
-  ⚠  3 warnings
+  ⚠  1 warning
 
 
 src/app/po/family/ModalInstanceFamilyCtrl.js
@@ -593,12 +590,6 @@ src/app/registry/registration/trialDetailCtrl.js
   ⚠  50 warnings
 
 
-src/app/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js
-  line 24  col 23  Missing semicolon.  (W033)
-
-  ⚠  1 warning
-
-
 src/app/modules/widgets/comment/CommentService.js
   line 97  col 52  Expected '===' and instead saw '=='.  (W116)
 
@@ -635,6 +626,12 @@ src/app/modules/widgets/comment/ctrp.widgets.comment-panel.directive.js
   line 122  col 75   'instanceUuid' is not defined.                      (W117)
 
   ⚠  12 warnings
+
+
+src/app/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js
+  line 24  col 23  Missing semicolon.  (W033)
+
+  ⚠  1 warning
 
 
 src/app/pa/search/trials/paTrialCtrl.js
