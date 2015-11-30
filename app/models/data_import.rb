@@ -100,10 +100,29 @@ class DataImport < ActiveRecord::Base
           other_id_record.trial = trial
           trial.other_ids << other_id_record
         end
-
+        nct_id = trial_spreadsheet.cell(row,'BM')
+        if nct_id.present?
+          other_id_record = OtherId.new
+          other_id_record.protocol_id = nct_id
+          other_id_record.protocol_id_origin = ProtocolIdOrigin.find_by_code("NCT")
+          other_id_record.trial = trial
+          trial.other_ids << other_id_record
+        end
+        #Regulatory information
+        trial.intervention_indicator = trial_spreadsheet.cell(row,'AM') == "YES" ? "Yes" : "No"
+        trial.sec801_indicator = trial_spreadsheet.cell(row,'CN') == "YES" ? "Yes" : "No"
+        trial.data_monitor_indicator = trial_spreadsheet.cell(row,'V') == "YES" ? "Yes" : "No"
+        # Sponsor
+        trial.sponsor = Organization.all[rand(0..13)]
+        resp_party = trial_spreadsheet.cell(row,'CJ')
+        responsible_party = ResponsibleParty.find_by_code(resp_party)
+        if resp_party.present? && responsible_party.blank?
+          puts "missed resonsible party = #{resp_party} "
+        else
+          trial.responsible_party = responsible_party
+        end
         # randomly assign the rest of the data
         trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
-        trial.sponsor = Organization.all[rand(0..13)]
         trial.lead_org = Organization.all[rand(0..13)]
         trial.pilot = "Yes"
         trial.pi = Person.all[rand(0..11)]
