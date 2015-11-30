@@ -1,6 +1,6 @@
-[11:35:40] Using gulpfile ~/Desktop/Code/ctrp-gulp/public/ctrp/ui2/gulpfile.js
-[11:35:40] Starting 'vet'...
-[11:35:40] Analyzing source with JSHint and JSCS
+[11:42:44] Using gulpfile ~/Desktop/Code/ctrp-gulp/public/ctrp/ui2/gulpfile.js
+[11:42:44] Starting 'vet'...
+[11:42:44] Analyzing source with JSHint and JSCS
 
 src/app/layout/footerCtrl.js
   line 15  col 18  Possible strict violation.  (W040)
@@ -234,53 +234,89 @@ src/app/modules/widgets/ctrp.widgets.restrictionField.directive.js
   ⚠  1 warning
 
 
-src/app/po/family/ModalInstanceFamilyCtrl.js
-  line 16  col 41  Strings must use singlequote.  (W109)
-  line 17  col 31  Strings must use singlequote.  (W109)
-  line 20  col 53  Strings must use singlequote.  (W109)
-  line 21  col 57  Strings must use singlequote.  (W109)
-  line 22  col 56  Strings must use singlequote.  (W109)
-  line 24  col 50  Strings must use singlequote.  (W109)
-  line 25  col 72  Strings must use singlequote.  (W109)
-  line 26  col 65  Strings must use singlequote.  (W109)
+src/app/registry/registration/trialCtrl.js
+  line 11   col 121  Line is too long.                            (W101)
+  line 13   col 23   This function has too many parameters. (13)  (W072)
+  line 16   col 18   Possible strict violation.                   (W040)
+  line 30   col 72   Missing semicolon.                           (W033)
+  line 59   col 30   Expected '===' and instead saw '=='.         (W116)
+  line 61   col 37   Expected '===' and instead saw '=='.         (W116)
+  line 79   col 38   Expected '===' and instead saw '=='.         (W116)
+  line 80   col 47   Strings must use singlequote.                (W109)
+  line 100  col 10   Unnecessary semicolon.                       (W032)
 
-  ⚠  8 warnings
+  ⚠  9 warnings
+
+
+src/app/registry/registration/trialDetailCtrl.js
+  line 10   col 132  Line is too long.                                                    (W101)
+  line 11   col 153  Line is too long.                                                    (W101)
+  line 12   col 149  Line is too long.                                                    (W101)
+  line 16   col 156  Line is too long.                                                    (W101)
+  line 17   col 156  Line is too long.                                                    (W101)
+  line 15   col 29   This function has too many parameters. (29)                          (W072)
+  line 19   col 18   Possible strict violation.                                           (W040)
+  line 20   col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
+  line 20   col 62   Strings must use singlequote.                                        (W109)
+  line 44   col 0    Identifier 'status_date_opened' is not in camel case.                (W106)
+  line 45   col 0    Identifier 'start_date_opened' is not in camel case.                 (W106)
+  line 46   col 0    Identifier 'primary_comp_date_opened' is not in camel case.          (W106)
+  line 47   col 0    Identifier 'comp_date_opened' is not in camel case.                  (W106)
+  line 66   col 0    Identifier 'why_stopped_disabled' is not in camel case.              (W106)
+  line 81   col 0    Identifier 'lead_org_id' is not in camel case.                       (W106)
+  line 81   col 67   Missing semicolon.                                                   (W033)
+  line 83   col 0    Identifier 'lead_org_id' is not in camel case.                       (W106)
+  line 87   col 0    Identifier 'pi_id' is not in camel case.                             (W106)
+  line 89   col 0    Identifier 'pi_id' is not in camel case.                             (W106)
+  line 93   col 0    Identifier 'sponsor_id' is not in camel case.                        (W106)
+  line 95   col 0    Identifier 'sponsor_id' is not in camel case.                        (W106)
+  line 99   col 0    Identifier 'investigator_id' is not in camel case.                   (W106)
+  line 101  col 0    Identifier 'investigator_id' is not in camel case.                   (W106)
+  line 105  col 0    Identifier 'investigator_aff_id' is not in camel case.               (W106)
+  line 107  col 0    Identifier 'investigator_aff_id' is not in camel case.               (W106)
+  line 112  col 0    Identifier 'other_ids_attributes' is not in camel case.              (W106)
+  line 114  col 0    Identifier 'other_ids_attributes' is not in camel case.              (W106)
+  line 119  col 0    Identifier 'trial_funding_sources_attributes' is not in camel case.  (W106)
+  line 121  col 0    Identifier 'trial_funding_sources_attributes' is not in camel case.  (W106)
+  line 126  col 0    Identifier 'grants_attributes' is not in camel case.                 (W106)
+  line 128  col 0    Identifier 'grants_attributes' is not in camel case.                 (W106)
+  line 133  col 0    Identifier 'trial_status_wrappers_attributes' is not in camel case.  (W106)
+  line 135  col 0    Identifier 'trial_status_wrappers_attributes' is not in camel case.  (W106)
+  line 140  col 0    Identifier 'ind_ides_attributes' is not in camel case.               (W106)
+  line 142  col 0    Identifier 'ind_ides_attributes' is not in camel case.               (W106)
+  line 147  col 0    Identifier 'oversight_authorities_attributes' is not in camel case.  (W106)
+  line 149  col 0    Identifier 'oversight_authorities_attributes' is not in camel case.  (W106)
+  line 154  col 0    Identifier 'trial_documents_attributes' is not in camel case.        (W106)
+  line 157  col 0    Identifier 'trial_documents_attributes' is not in camel case.        (W106)
+  line 162  col 30   Expected '===' and instead saw '=='.                                 (W116)
+  line 163  col 0    Identifier 'is_draft' is not in camel case.                          (W106)
+  line 165  col 0    Identifier 'is_draft' is not in camel case.                          (W106)
+  line 175  col 0    Identifier 'server_response' is not in camel case.                   (W106)
+  line 178  col 124  Line is too long.                                                    (W101)
+  line 178  col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
+  line 181  col 55   Strings must use singlequote.                                        (W109)
+  line 79   col 34   This function has too many statements. (44)                          (W071)
+  line 79   col 34   This function's cyclomatic complexity is too high. (14)              (W074)
+  line 186  col 0    Identifier 'trial_form' is not in camel case.                        (W106)
+  line 186  col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
+  line 186  col 34   Too many errors. (20% scanned).                                      (E043)
+
+  ✖  1 error
+  ⚠  50 warnings
 
 
 src/app/po/family/ModalInstanceFamilyMembersCtrl.js
-  line 16  col 50  Strings must use singlequote.                (W109)
-  line 20  col 11  Missing semicolon.                           (W033)
-  line 24  col 0   Identifier 'aff_orgs' is not in camel case.  (W106)
-  line 26  col 57  Strings must use singlequote.                (W109)
-  line 27  col 0   Identifier 'aff_orgs' is not in camel case.  (W106)
-  line 29  col 67  Strings must use singlequote.                (W109)
-  line 30  col 11  Missing semicolon.                           (W033)
+  line 26  col 0  Identifier 'aff_orgs' is not in camel case.  (W106)
+  line 29  col 0  Identifier 'aff_orgs' is not in camel case.  (W106)
 
-  ⚠  7 warnings
+  ⚠  2 warnings
 
 
 src/app/po/family/familyCtrl.js
-  line 17   col 18   Possible strict violation.                     (W040)
-  line 33   col 72   Missing semicolon.                             (W033)
-  line 44   col 33   Expected '===' and instead saw '=='.           (W116)
-  line 48   col 145  Line is too long.                              (W101)
-  line 49   col 163  Line is too long.                              (W101)
-  line 53   col 49   Expected '===' and instead saw '=='.           (W116)
-  line 53   col 79   Expected '!==' and instead saw '!='.           (W116)
-  line 54   col 21   Expected '{' and instead saw 'isEmptySearch'.  (W116)
-  line 57   col 51   Expected '===' and instead saw '=='.           (W116)
-  line 58   col 117  Strings must use singlequote.                  (W109)
-  line 60   col 45   Strings must use singlequote.                  (W109)
-  line 63   col 46   Strings must use singlequote.                  (W109)
-  line 64   col 44   Strings must use singlequote.                  (W109)
-  line 70   col 60   Strings must use singlequote.                  (W109)
-  line 88   col 0    Identifier 'wc_search' is not in camel case.   (W106)
-  line 91   col 49   Expected '===' and instead saw '=='.           (W116)
-  line 116  col 38   Expected '===' and instead saw '=='.           (W116)
-  line 117  col 47   Strings must use singlequote.                  (W109)
-  line 137  col 10   Unnecessary semicolon.                         (W032)
+  line 17  col 18  Possible strict violation.                    (W040)
+  line 92  col 0   Identifier 'wc_search' is not in camel case.  (W106)
 
-  ⚠  19 warnings
+  ⚠  2 warnings
 
 
 src/app/po/family/familyDetailCtrl.js
@@ -519,75 +555,10 @@ src/app/po/person/personSearchCtrl.js
   ⚠  4 warnings
 
 
-src/app/registry/registration/trialCtrl.js
-  line 11   col 121  Line is too long.                            (W101)
-  line 13   col 23   This function has too many parameters. (13)  (W072)
-  line 16   col 18   Possible strict violation.                   (W040)
-  line 30   col 72   Missing semicolon.                           (W033)
-  line 59   col 30   Expected '===' and instead saw '=='.         (W116)
-  line 61   col 37   Expected '===' and instead saw '=='.         (W116)
-  line 79   col 38   Expected '===' and instead saw '=='.         (W116)
-  line 80   col 47   Strings must use singlequote.                (W109)
-  line 100  col 10   Unnecessary semicolon.                       (W032)
+src/app/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js
+  line 24  col 23  Missing semicolon.  (W033)
 
-  ⚠  9 warnings
-
-
-src/app/registry/registration/trialDetailCtrl.js
-  line 10   col 132  Line is too long.                                                    (W101)
-  line 11   col 153  Line is too long.                                                    (W101)
-  line 12   col 149  Line is too long.                                                    (W101)
-  line 16   col 156  Line is too long.                                                    (W101)
-  line 17   col 156  Line is too long.                                                    (W101)
-  line 15   col 29   This function has too many parameters. (29)                          (W072)
-  line 19   col 18   Possible strict violation.                                           (W040)
-  line 20   col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
-  line 20   col 62   Strings must use singlequote.                                        (W109)
-  line 44   col 0    Identifier 'status_date_opened' is not in camel case.                (W106)
-  line 45   col 0    Identifier 'start_date_opened' is not in camel case.                 (W106)
-  line 46   col 0    Identifier 'primary_comp_date_opened' is not in camel case.          (W106)
-  line 47   col 0    Identifier 'comp_date_opened' is not in camel case.                  (W106)
-  line 66   col 0    Identifier 'why_stopped_disabled' is not in camel case.              (W106)
-  line 81   col 0    Identifier 'lead_org_id' is not in camel case.                       (W106)
-  line 81   col 67   Missing semicolon.                                                   (W033)
-  line 83   col 0    Identifier 'lead_org_id' is not in camel case.                       (W106)
-  line 87   col 0    Identifier 'pi_id' is not in camel case.                             (W106)
-  line 89   col 0    Identifier 'pi_id' is not in camel case.                             (W106)
-  line 93   col 0    Identifier 'sponsor_id' is not in camel case.                        (W106)
-  line 95   col 0    Identifier 'sponsor_id' is not in camel case.                        (W106)
-  line 99   col 0    Identifier 'investigator_id' is not in camel case.                   (W106)
-  line 101  col 0    Identifier 'investigator_id' is not in camel case.                   (W106)
-  line 105  col 0    Identifier 'investigator_aff_id' is not in camel case.               (W106)
-  line 107  col 0    Identifier 'investigator_aff_id' is not in camel case.               (W106)
-  line 112  col 0    Identifier 'other_ids_attributes' is not in camel case.              (W106)
-  line 114  col 0    Identifier 'other_ids_attributes' is not in camel case.              (W106)
-  line 119  col 0    Identifier 'trial_funding_sources_attributes' is not in camel case.  (W106)
-  line 121  col 0    Identifier 'trial_funding_sources_attributes' is not in camel case.  (W106)
-  line 126  col 0    Identifier 'grants_attributes' is not in camel case.                 (W106)
-  line 128  col 0    Identifier 'grants_attributes' is not in camel case.                 (W106)
-  line 133  col 0    Identifier 'trial_status_wrappers_attributes' is not in camel case.  (W106)
-  line 135  col 0    Identifier 'trial_status_wrappers_attributes' is not in camel case.  (W106)
-  line 140  col 0    Identifier 'ind_ides_attributes' is not in camel case.               (W106)
-  line 142  col 0    Identifier 'ind_ides_attributes' is not in camel case.               (W106)
-  line 147  col 0    Identifier 'oversight_authorities_attributes' is not in camel case.  (W106)
-  line 149  col 0    Identifier 'oversight_authorities_attributes' is not in camel case.  (W106)
-  line 154  col 0    Identifier 'trial_documents_attributes' is not in camel case.        (W106)
-  line 157  col 0    Identifier 'trial_documents_attributes' is not in camel case.        (W106)
-  line 162  col 30   Expected '===' and instead saw '=='.                                 (W116)
-  line 163  col 0    Identifier 'is_draft' is not in camel case.                          (W106)
-  line 165  col 0    Identifier 'is_draft' is not in camel case.                          (W106)
-  line 175  col 0    Identifier 'server_response' is not in camel case.                   (W106)
-  line 178  col 124  Line is too long.                                                    (W101)
-  line 178  col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
-  line 181  col 55   Strings must use singlequote.                                        (W109)
-  line 79   col 34   This function has too many statements. (44)                          (W071)
-  line 79   col 34   This function's cyclomatic complexity is too high. (14)              (W074)
-  line 186  col 0    Identifier 'trial_form' is not in camel case.                        (W106)
-  line 186  col 0    Identifier 'lead_protocol_id' is not in camel case.                  (W106)
-  line 186  col 34   Too many errors. (20% scanned).                                      (E043)
-
-  ✖  1 error
-  ⚠  50 warnings
+  ⚠  1 warning
 
 
 src/app/modules/widgets/comment/CommentService.js
@@ -626,12 +597,6 @@ src/app/modules/widgets/comment/ctrp.widgets.comment-panel.directive.js
   line 122  col 75   'instanceUuid' is not defined.                      (W117)
 
   ⚠  12 warnings
-
-
-src/app/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js
-  line 24  col 23  Missing semicolon.  (W033)
-
-  ⚠  1 warning
 
 
 src/app/pa/search/trials/paTrialCtrl.js
