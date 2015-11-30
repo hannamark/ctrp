@@ -60,6 +60,8 @@
                 $state.go('main.trialDetail', {trialId: trialId});
             } else if (actionType == 'Update') {
                 $state.go('main.trialDetail', {trialId: trialId, editType: 'update'});
+            } else if (actionType == 'Amend') {
+                $state.go('main.trialDetail', {trialId: trialId, editType: 'amend'});
             }
         };
 
