@@ -49,7 +49,6 @@
                 ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
                 ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
                 ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
-
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
