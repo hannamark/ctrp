@@ -3,6 +3,7 @@ class PeopleController < ApplicationController
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
   skip_authorize_resource :only => [:search]
+  #http_basic_authenticate_with name: "ctrpadmin", password: "Welcome02", except: :index
 
   # GET /people
   # GET /people.json
@@ -27,6 +28,7 @@ class PeopleController < ApplicationController
   # POST /people
   # POST /people.json
   def create
+    print "hello request type is :: " + request.content_type
     @person = Person.new(person_params)
     @person.created_by = @current_user.username unless @current_user.nil?
     @person.updated_by = @person.created_by
@@ -47,6 +49,8 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1
   # PATCH/PUT /people/1.json
   def update
+    print "hello request type is :: " + request.content_type
+
     @person.updated_by = @current_user.username unless @current_user.nil?
 
     respond_to do |format|

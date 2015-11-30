@@ -81,3 +81,7 @@ gem 'carrierwave'
 #gem for pg_sequencer
 gem 'pg_sequencer'
 
+gem 'nokogiri'
+
+gem 'cobravsmongoose'
+
