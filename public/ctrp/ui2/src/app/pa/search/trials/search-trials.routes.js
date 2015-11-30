@@ -1,7 +1,7 @@
 /**
  * Configure routes for trial component
  */
-
+/*
 (function() {
     'use strict';
     angular.module('ctrp.app.pa.search.trials').config(paRoutes);
@@ -39,3 +39,4 @@
 
 
 })();
+*/

@@ -162,6 +162,14 @@
                 });
             }
 
+            if (vm.curTrial.edit_type === 'amend') {
+                var submissionObj = {};
+                submissionObj.amendment_num = vm.amendment_num;
+                submissionObj.amendment_date = vm.amendment_date;
+                submissionObj._destroy = false;
+                vm.curTrial.submissions_attributes = [submissionObj];
+            }
+
             if (updateType == 'draft') {
                 vm.curTrial.is_draft = true;
             } else {
