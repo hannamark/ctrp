@@ -14,7 +14,7 @@ And I select an expiration date which is defaulted to null
 And I select either Organization or Affiliate Family Relationship 
 Then the Family is updated with the CTRP ID, CTEP ID, Organization Name, Family Relationship, effective date, and expiration date
 
-@runthis
+
 Scenario: As a PO Curator, I can remove an organization From a Family
 Given I know which Family I want to update
 And I am logged in to CTRP PO application
