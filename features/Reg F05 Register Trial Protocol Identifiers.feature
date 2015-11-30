@@ -1,4 +1,4 @@
-  Feature: Reg F05 Register Trial Protocol Identifiers
+ Feature: Reg F05 Register Trial Protocol Identifiers
   	As a CTRP User, I can Register a Trial's Protocol Identifiers
     
     Scenario Outline:#1 I can enter protocol identifiers for a trial

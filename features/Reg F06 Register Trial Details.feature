@@ -1,4 +1,4 @@
-  @Global @Reg
+ @Global @Reg
   Feature: Reg F06 Register Trial Details
   
   As a CTRP User, I can Register Trial Details
