@@ -185,6 +185,7 @@ class Trial < ActiveRecord::Base
       actions.append('Complete')
     else
       actions.append('Update')
+      actions.append('Amend')
     end
   end
 
