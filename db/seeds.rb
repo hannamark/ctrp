@@ -69,7 +69,7 @@ AccrualDiseaseTerm.find_or_create_by(code: 'ICD9', name: 'ICD9')
 AccrualDiseaseTerm.find_or_create_by(code: 'ICD10', name: 'ICD10')
 AccrualDiseaseTerm.find_or_create_by(code: 'ICD-O-3', name: 'ICD-O-3')
 
-ResponsibleParty.find_or_create_by(code: 'SP', name: 'Sponsor')
+ResponsibleParty.find_or_create_by(code: 'SPONSOR', name: 'Sponsor')
 ResponsibleParty.find_or_create_by(code: 'PI', name: 'Principal Investigator')
 ResponsibleParty.find_or_create_by(code: 'SI', name: 'Sponsor Investigator')
 
@@ -126,6 +126,7 @@ Milestone.find_or_create_by(code: 'SAC', name: 'Submission Acceptance Date')
 Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
 Milestone.find_or_create_by(code: 'STR', name: 'Submission Terminated Date')
 Milestone.find_or_create_by(code: 'SRE', name: 'Submission Reactivated Date')
+Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
 Milestone.find_or_create_by(code: 'APS', name: 'Administrative Processing Start Date')
 Milestone.find_or_create_by(code: 'APC', name: 'Administrative Processing Completed Date')
 Milestone.find_or_create_by(code: 'RAQ', name: 'Ready for Administrative QC Date')
@@ -141,8 +142,15 @@ Milestone.find_or_create_by(code: 'STS', name: 'Submitter Trial Summary Report F
 Milestone.find_or_create_by(code: 'IAV', name: 'Initial Abstraction Verified Date')
 Milestone.find_or_create_by(code: 'ONG', name: 'On-going')
 Milestone.find_or_create_by(code: 'AVD', name: 'Abstraction Verified Date')
-Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date ')
+Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date')
 
+## Missing Milestones in Feature description
+# ["Scientific Processing Completed Date",
+# "Scientific Processing Start Date",
+# "Administrative QC Completed Date",
+# "Administrative QC Start Date"]
+#
+##
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -276,7 +284,9 @@ family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2
 
 
 ## Trials
-## Reading spreadsheet
+## Delete existing Trial data
+DataImport.delete_trial_data
+## Reading and importing Trial related spreadsheets
 puts "Parsing Trial Spreadsheet"
 DataImport.import_trials
 puts "Parsing Milestone Spreadsheet"
@@ -299,7 +309,7 @@ test_users.each do |u|
     user.role = u["role"]
     user.approved =  u["approve"]
     user.save!
-    puts "Updated role of user = #{user.username}, role = #{user.role}"
+    #puts "Updated role of user = #{user.username}, role = #{user.role}"
   end
 end
 
