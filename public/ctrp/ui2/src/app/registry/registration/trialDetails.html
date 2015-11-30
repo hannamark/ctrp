@@ -161,7 +161,6 @@
                                         ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required>
                                     <option value="">-Select a Phase-</option>
                                 </select>
-                                <span class="form-control-feedback select-feedback" ng-show="trialDetailView.curTrial.phase_id" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.phase) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.phase)">
                                     Phase is required
                                 </span>
@@ -184,7 +183,6 @@
                                         ng-change="trialDetailView.watchOption('research_category')"ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required>
                                     <option value="">-Select a Research Category-</option>
                                 </select>
-                                <span class="form-control-feedback select-feedback" ng-show="trialDetailView.curTrial.research_category_id" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.research_category) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.research_category)">
                                     Research Category is required
                                 </span>
@@ -199,7 +197,6 @@
                                         ng-change="trialDetailView.watchOption('primary_purpose')" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required>
                                     <option value="">-Select a Primary Purpose-</option>
                                 </select>
-                                <span class="form-control-feedback select-feedback" ng-show="trialDetailView.curTrial.primary_purpose_id" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose)">
                                     Primary Purpose is required
                                 </span>
@@ -240,8 +237,7 @@
                                         ng-options="term.id as term.name for term in trialDetailView.accrualDiseaseTermArr" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required>
                                     <option value="">-Select an Accrual Disease Terminology-</option>
                                 </select>
-                                <span class="form-control-feedback select-feedback" ng-show="trialDetailView.curTrial.accrual_disease_term_id" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.accrual_disease_term) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.accrual_disease_term)">
+                               <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.accrual_disease_term)">
                                     Accrual Disease Terminology is required
                                 </span>
                             </div>
@@ -310,7 +306,6 @@
                                         ng-change="trialDetailView.watchOption('responsible_party')" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required>
                                     <option value="">-Select a Responsible Party-</option>
                                 </select>
-                                <span class="form-control-feedback select-feedback" ng-show="trialDetailView.curTrial.responsible_party_id" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.responsible_party) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.responsible_party)">
                                     Responsible Party is required
                                 </span>
