@@ -58,18 +58,13 @@
                         if (!formController) {
                             return false;
                         }
-                        // $log.info('fieldModelController: ', fieldModelController);
-
-                        // support passing-in validators, use the cb to alert user
-                        // fieldModelController.$$runValidators(fieldModelController.$modelValue, fieldModelController.$viewValue, cb);
-                        // $log.info('needsAttention $viewValue: ', fieldModelController.$viewValue);
 
                         if (fieldModelController) {
                             return fieldModelController.$invalid &&
                                 (fieldModelController.$dirty || this.attempted);
                         } else {
                             return formController &&
-                                formController.$invalid && 
+                                formController.$invalid &&
                                 (formController.$dirty || this.attempted);
                         }
                     }; //needsAttention

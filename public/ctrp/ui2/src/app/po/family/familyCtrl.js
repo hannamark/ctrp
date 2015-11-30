@@ -30,7 +30,7 @@
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
         vm.gridOptions.onRegisterApi = function(gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
+            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
                 vm.searchParams.start = newPage;
                 vm.searchParams.rows = pageSize;
@@ -41,37 +41,41 @@
 
         vm.searchFamilies = function(newSearchFlag) {
 
-            if (newSearchFlag == 'fromStart') {
+            if (newSearchFlag === 'fromStart') {
                 vm.searchParams.start = 1; //from first page
             }
 
-            //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
-            // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
+            /**
+             * If not, it should throw a warning to the user to select atleast one parameter.
+             * Right now, ignoring the alias parameter as it is set to true by default.
+             * To refactor and look at default parameters instead of hardcoding -- radhika
+             */
             var isEmptySearch = true;
             var excludedKeys = ['sort', 'order', 'rows', 'start','wc_search'];
             Object.keys(vm.searchParams).forEach(function (key) {
-                if (excludedKeys.indexOf(key) == -1 && vm.searchParams[key] != '')
+                if (excludedKeys.indexOf(key) === -1 && vm.searchParams[key] !== '') {
                     isEmptySearch = false;
+                }
             });
 
-            if (isEmptySearch  && newSearchFlag == 'fromStart') {
-                vm.searchWarningMessage = "At least one selection value must be entered prior to running the search";
+            if (isEmptySearch  && newSearchFlag === 'fromStart') {
+                vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
             } else {
-                vm.searchWarningMessage = "";
+                vm.searchWarningMessage = '';
             }
 
-            console.log("search params are  " + JSON.stringify(vm.searchParams));
-            console.log("isEmptySearch is " + isEmptySearch);
+            console.log('search params are  ' + JSON.stringify(vm.searchParams));
+            console.log('isEmptySearch is ' + isEmptySearch);
 
-            // vm.searchParams.name = vm.searchParams.name || "*";
-            //console.log("searching params: " + JSON.stringify(vm.searchParams));
+            // vm.searchParams.name = vm.searchParams.name || '*';
+            //console.log('searching params: ' + JSON.stringify(vm.searchParams));
             if (!isEmptySearch) { //skip searching if no search parameters supplied by user
                 FamilyService.searchFamilies(vm.searchParams).then(function (data) {
-                    console.log("received search results: " + JSON.stringify(data.data));
+                    console.log('received search results: ' + JSON.stringify(data.data));
                     vm.gridOptions.data = data.data.families; //prepareGridData(data.data.orgs); //data.data.orgs;
 
-                    //console.log("vm grid: " + JSON.stringify(vm.gridOptions.data));
-                    //console.log("received search results: " + JSON.stringify(data.data));
+                    //console.log('vm grid: ' + JSON.stringify(vm.gridOptions.data));
+                    //console.log('received search results: ' + JSON.stringify(data.data));
                     vm.gridOptions.totalItems = data.data.total;
 
                     $location.hash('family_search_results');
@@ -88,7 +92,7 @@
             var temp = vm.searchParams.wc_search;
             var excludedKeys = ['wc_search'];
             Object.keys(vm.searchParams).forEach(function(key, index) {
-                if (excludedKeys.indexOf(key) == -1) {
+                if (excludedKeys.indexOf(key) === -1) {
                     vm.searchParams[key] = '';
                 }
             });
@@ -113,8 +117,8 @@
          * @param sortColumns
          */
         function sortChangedCallBack(grid, sortColumns) {
-            if (sortColumns.length == 0) {
-                console.log("removing sorting");
+            if (sortColumns.length === 0) {
+                console.log('removing sorting');
                 //remove sorting
                 vm.searchParams.sort = '';
                 vm.searchParams.order = '';
@@ -134,7 +138,7 @@
 
             //do the search with the updated sorting
             vm.searchFamilies();
-        }; //sortChangedCallBack
+        } //sortChangedCallBack
 
     }
 
