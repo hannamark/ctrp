@@ -18,18 +18,18 @@
 
         // Initial User Search Parameters
         var initUserSearchParams = {
-            username: "",
-            first_name: "",
-            middle_name: "",
-            last_name: "",
-            email: "",
-            phone: "",
-            approved: "",
-            // affiliated_org_name: "",
+            username: '',
+            first_name: '',
+            middle_name: '',
+            last_name: '',
+            email: '',
+            phone: '',
+            approved: '',
+            // affiliated_org_name: '',
 
             //for pagination and sorting
-            sort: "updated_at",
-            order: "DESC",
+            sort: 'updated_at',
+            order: 'DESC',
             rows: 10,
             start: 1
         }; //initial User Search Parameters
@@ -52,41 +52,73 @@
             enableHorizontalScrollbar: 2,
             columnDefs: [
                 {
-                    name: 'username', enableSorting: true, displayName: 'Username', minWidth: '100', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    name: 'username',
+                    enableSorting: true,
+                    displayName: 'Username',
+                    minWidth: '100',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
+                        ' title="{{COL_FIELD}}">' +
+                        ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
+                        '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {
-                    name: 'first_name', displayName: 'First', enableSorting: true, minWidth: '100', width: '*',
+                    name: 'first_name',
+                    displayName: 'First',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {
-                    name: 'middle_name', displayName: 'Middle', enableSorting: true, minWidth: '100', width: '*',
+                    name: 'middle_name',
+                    displayName: 'Middle',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {
-                    name: 'last_name', displayName: 'Last', enableSorting: true, minWidth: '100', width: '*',
+                    name: 'last_name',
+                    displayName: 'Last',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {
-                    name: 'email', displayName: 'Email', enableSorting: true, minWidth: '150', width: '*',
+                    name: 'email',
+                    displayName: 'Email',
+                    enableSorting: true,
+                    minWidth: '150',
+                    width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {
-                    name: 'phone', displayName: 'Phone', enableSorting: true, minWidth: '100', width: '*',
+                    name: 'phone',
+                    displayName: 'Phone',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {
-                    name: 'approved', displayName: 'Approval', enableSorting: true, minWidth: '100', width: '*',
+                    name: 'approved',
+                    displayName: 'Approval',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                }//,
-                //{name: 'affiliated_org', displayName:'Affiliated Org', enableSorting: true, width: '6%'}
+                }
             ]
         };
 
@@ -105,8 +137,8 @@
 
 
         this.getUserType = function () {
-            return LocalCacheService.getCacheWithKey("user_type");
-        }
+            return LocalCacheService.getCacheWithKey('user_type');
+        };
 
 
         this.login = function (userObj) {
@@ -114,16 +146,16 @@
                 .then(function (data) {
                     console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
-                        LocalCacheService.cacheItem("token", data.token);
-                        LocalCacheService.cacheItem("username", userObj.user.username);
+                        LocalCacheService.cacheItem('token', data.token);
+                        LocalCacheService.cacheItem('username', userObj.user.username);
                         _setAppVersion(data.app_version);
-                        // LocalCacheService.cacheItem("app_version", data.application_version);
-                        LocalCacheService.cacheItem("user_role", data.role); //e.g. ROLE_SUPER
-                        LocalCacheService.cacheItem("user_type", data.user_type); //e.g. LocalUser
-                        LocalCacheService.cacheItem("write_mode", data.privileges.write_mode || false);
-                        LocalCacheService.cacheItem("curation_enabled", false); //default: curation mode is off/false
+                        // LocalCacheService.cacheItem('app_version', data.application_version);
+                        LocalCacheService.cacheItem('user_role', data.role); //e.g. ROLE_SUPER
+                        LocalCacheService.cacheItem('user_type', data.user_type); //e.g. LocalUser
+                        LocalCacheService.cacheItem('write_mode', data.privileges.write_mode || false);
+                        LocalCacheService.cacheItem('curation_enabled', false); //default: curation mode is off/false
                         toastr.success('Login is successful', 'Logged In!');
-                        Common.broadcastMsg("signedIn");
+                        Common.broadcastMsg('signedIn');
 
                         $timeout(function () {
                             openGsaModal();
@@ -133,7 +165,7 @@
                         toastr.error('Login failed', 'Login error');
                     }
                 }).catch(function (err) {
-                    $log.error("error in log in: " + JSON.stringify(err));
+                    $log.error('error in log in: ' + JSON.stringify(err));
                 });
         }; //login
 
@@ -143,8 +175,8 @@
          */
         this.logout = function () {
 
-            var username = LocalCacheService.getCacheWithKey("username");
-            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: "Angular"})
+            var username = LocalCacheService.getCacheWithKey('username');
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: 'Angular'})
                 .then(function (data) {
                     if (data.success) {
                         LocalCacheService.clearAllCache();
@@ -155,9 +187,9 @@
                             $state.go('main.sign_in');
                         }, 200);
                     }
-                    $log.info("success in log out: " + JSON.stringify(data));
+                    $log.info('success in log out: ' + JSON.stringify(data));
                 }).catch(function (err) {
-                    $log.error("error in logging out: " + JSON.stringify(err));
+                    $log.error('error in logging out: ' + JSON.stringify(err));
                 });
         }; //logout
 
@@ -176,8 +208,8 @@
             // if (!!searchParams) {
             // toastr.success('Success', 'Successful in UserService, searchUsers');
             var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
-            console.log('User List: ' + JSON.stringify(user_list));
-            return user_list
+            // console.log('User List: ' + JSON.stringify(user_list));
+            return user_list;
             // }
         }; //searchUsers
 
@@ -203,8 +235,8 @@
         };
 
         this.getUserDetailsByUsername = function (username) {
-            var username = LocalCacheService.getCacheWithKey('username');
-            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
+            var username2 = LocalCacheService.getCacheWithKey('username');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username2 + '.json');
         }; //getUserByName
 
 
@@ -261,20 +293,20 @@
         this.upsertUser = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
-            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + ".json", userObj, configObj);
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj);
         }; //upsertUser
 
         this.upsertUserSignup = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
-            console.log("userObj = " + JSON.stringify(userObj));
+            console.log('userObj = ' + JSON.stringify(userObj));
 
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
                 .then(function (data) {
                     console.log('successful login, data returned: ' + JSON.stringify(data));
                     $state.go('main.welcome_signup');
                 }).catch(function (err) {
-                    $log.error("error in log in: " + JSON.stringify(err));
+                    $log.error('error in log in: ' + JSON.stringify(err));
                 });
 
         }; //upsertUserSignup
@@ -282,7 +314,7 @@
         this.upsertUserChangePassword = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
-            console.log("upsertUserChangePassword userObj = " + JSON.stringify(userObj));
+            console.log('upsertUserChangePassword userObj = ' + JSON.stringify(userObj));
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
         }; //upsertUserChangePassword
 
@@ -292,7 +324,7 @@
          *
          */
         this.isCurationSupported = function () {
-            return LocalCacheService.getCacheWithKey("write_mode"); //TODO: change true to data.write_mode
+            return LocalCacheService.getCacheWithKey('write_mode'); //TODO: change true to data.write_mode
         };
 
 
@@ -302,7 +334,7 @@
          * @returns {*|boolean}
          */
         this.isCurationModeEnabled = function () {
-            return LocalCacheService.getCacheWithKey("curation_enabled") || false;
+            return LocalCacheService.getCacheWithKey('curation_enabled') || false;
         };
 
 
@@ -311,7 +343,7 @@
          * @params curationMode, boolean
          */
         this.saveCurationMode = function (curationMode) {
-            LocalCacheService.cacheItem("curation_enabled", curationMode);
+            LocalCacheService.cacheItem('curation_enabled', curationMode);
         };
 
 
@@ -321,10 +353,10 @@
             if (!version) {
                 //if null or empty value
                 appVersion = '';
-                LocalCacheService.removeItemFromCache("app_version");
+                LocalCacheService.removeItemFromCache('app_version');
             } else {
                 appVersion = version;
-                LocalCacheService.cacheItem("app_version", version);
+                LocalCacheService.cacheItem('app_version', version);
             }
             //notify listeners
             Common.broadcastMsg('updatedAppVersion');
@@ -334,10 +366,10 @@
             if (!milestone) {
                 //if null or empty value
                 appRelMilestone = '';
-                LocalCacheService.removeItemFromCache("app_rel_milestone");
+                LocalCacheService.removeItemFromCache('app_rel_milestone');
             } else {
                 appRelMilestone = milestone;
-                LocalCacheService.cacheItem("app_rel_milestone", milestone);
+                LocalCacheService.cacheItem('app_rel_milestone', milestone);
             }
             //notify listeners
             Common.broadcastMsg('updatedAppRelMilestone');
