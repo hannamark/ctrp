@@ -195,8 +195,6 @@ class Trial < ActiveRecord::Base
   before_create :save_history
   before_save :check_indicator
 
-  attr_accessor :current_trial_status
-
   private
 
   def generate_nci_id
@@ -260,6 +258,8 @@ class Trial < ActiveRecord::Base
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 
   scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
+
+  scope :with_research_category, -> (value) { joins(:research_category).where("research_categories.code = ?", "#{value}") }
 
   scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
 

@@ -1,0 +1,21 @@
+<!-- this is the default template to fall back on, DO NOT MODIFY THIS TEMPLATE!!! -->
+<div>
+  <input type="text" ng-model="model" ng-show="editMode">
+  <button ng-click="cancelEdit()" ng-show="editMode">cancel</button>
+  <button ng-click="saveEdit()" ng-show="editMode">save</button>
+
+  <div ng-if="isEditable">
+    <span ng-mouseenter="showEdit = true" ng-mouseleave="showEdit = false">
+      <span ng-hide="editMode" ng-click="edit()">{{model}}</span>
+      <a ng-show="showEdit" ng-click="edit()">edit</a>
+    </span>
+  </div>
+  <!-- switch template if not editable -->
+  <div ng-if="!isEditable">
+    <span ng-mouseenter="showEdit = false" ng-mouseleave="showEdit = false">
+      <span ng-hide="editMode">{{model}}</span>
+    </span>
+  </div>
+</div>
+<!-- this is the default template to fall back on, DO NOT MODIFY THIS TEMPLATE!!! -->
+<!-- Only use this template as a reference for creating custom template -->
