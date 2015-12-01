@@ -167,6 +167,6 @@ class DataImport < ActiveRecord::Base
         end
       end
     end
-    puts "List of missed milestones = #{missed_milestones.uniq.inspect}"
+    puts "List of missed milestones = #{missed_milestones.uniq.inspect}" if missed_milestones.count() > 0
   end
 end
