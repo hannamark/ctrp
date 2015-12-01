@@ -52,12 +52,6 @@
 
 
       function link(scope, element, attrs, ngModelCtrl) {
-          // if the field already has 'ngDisabled', let it take
-          // the precedence
-          if (attrs.hasOwnProperty('ngDisabled')) {
-              console.log('already has ngDisabled');
-              return;
-          }
 
           watchRestrictionRules();
           scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
@@ -94,13 +88,19 @@
                 //include both globalWriteMode and user role
                 if (isShownToCurrentUser && globalWriteModeEnabled) {
                   element.show();
+                  if (attrs.hasOwnProperty('ngDisabled')) {
+                      return;
+                  }
                   element.removeAttr('disabled');
                 } else if (!isShownToCurrentUser) {
                   element.hide();
                 } else if (isShownToCurrentUser && !globalWriteModeEnabled) {
                   if (isButton(element)) {
-                    element.hide(); //hide button if globalWriteModeEnabled is false
+                      element.hide(); //hide button if globalWriteModeEnabled is false
                   } else {
+                    if (attrs.hasOwnProperty('ngDisabled')) {
+                          return;
+                    }
                     attrs.$set('disabled', 'disabled');
                   }
                 }
