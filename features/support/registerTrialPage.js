@@ -12,21 +12,29 @@ var helperFunctions = require('../support/helper');
 var registerTrial = function(){
 
     /** Trial Identifiers **/
+    this.addTrialIdentifiersSection = element(by.linkText('Trial Identifiers'));
     this.addTrialStudySource = element(by.model('trialDetailView.curTrial.study_source_id'));
     this.addTrialLeadProtocolIdentifier = element(by.model('trialDetailView.curTrial.lead_protocol_id'));
     this.addTrialProtocolIDOrigin = element(by.model('trialDetailView.protocol_id_origin_id'));
+    this.addTrialProtocolIDOriginList = element.all(by.binding('origin.name'));
     this.addTrialProtocolID = element(by.model('trialDetailView.protocol_id'));
     this.addTrialAddProtocolButton = element(by.css('button[ng-click="trialDetailView.addOtherId()"]'));
     this.addTrialVerifyOtherTrialIdentifier = element.all(by.css('tr[ng-repeat="otherId in trialDetailView.addedOtherIds track by $index"]'));
 
     /** Trial Details **/
+    this.addTrialDetailsSection = element(by.linkText('Trial Details'));
     this.addTrialOfficialTitle = element(by.model('trialDetailView.curTrial.official_title'));
     this.addTrialPhase = element(by.model('trialDetailView.curTrial.phase_id'));
+    this.addTrialPhaseList = element(by.model('trialDetailView.curTrial.phase_id')).all(by.css('option[label]'));
     this.addTrialPilotOption = element.all(by.model('trialDetailView.curTrial.pilot'));
     this.addTrialResearchCategory = element(by.model('trialDetailView.curTrial.research_category_id'));
+    this.addTrialResearchCategoryList = element(by.model('trialDetailView.curTrial.research_category_id')).all(by.css('option[label]'));
     this.addTrialPrimaryPurpose = element(by.model('trialDetailView.curTrial.primary_purpose_id'));
+    this.addTrialPrimaryPurposeList = element(by.model('trialDetailView.curTrial.primary_purpose_id')).all(by.css('option[label]'));
     this.addTrialSecondaryPurpose = element(by.model('trialDetailView.curTrial.secondary_purpose_id'));
+    this.addTrialSecondaryPurposeList = element(by.model('trialDetailView.curTrial.secondary_purpose_id')).all(by.css('option[label]'));
     this.addTrialAccrualDiseaseTerminology = element(by.model('trialDetailView.curTrial.accrual_disease_term_id'));
+    this.addTrialAccrualDiseaseTerminologyList = element(by.model('trialDetailView.curTrial.accrual_disease_term_id')).all(by.css('option[label]'));
 
     /** Lead Organization/Principal Investigator **/
     this.addTrialLeadOrganization = element();
@@ -88,6 +96,10 @@ var registerTrial = function(){
 
     /********** Trial Identifiers **********/
 
+    this.getVerifyTrialIdentifiersSection = function()  {
+        expect(this.addTrialIdentifiersSection.getText()).to.eventually.equal('Trial Identifiers');
+    };
+
     this.getVerifyTrialStudySource = function(studySource)  {
         helper.getVerifyListValue(this.addTrialStudySource,studySource,"Get Trial Study Source field");
     };
@@ -108,7 +120,15 @@ var registerTrial = function(){
         helper.clickButton(this.addTrialAddProtocolButton,"Add Trial Protocol ID Add button");
     };
 
+    this.getVerifyAddTrialLeadProtocolIdentifier = function(trialLeadProtocolIdentifier){
+        helper.getVerifyValue(this.addTrialLeadProtocolIdentifier,trialLeadProtocolIdentifier,"Add Trial by Lead Protocol Identifier field");
+    };
+
     /********** Trial Details **********/
+
+    this.getVerifyTrialDetailsSection = function()  {
+        expect(this.addTrialDetailsSection.getText()).to.eventually.equal('Trial Details');
+    };
 
     this.setAddTrialOfficialTitle= function(trialOfficialTitle)  {
         helper.setValue(this.addTrialOfficialTitle,trialOfficialTitle,"Add Trial by Official Title field");
@@ -137,6 +157,41 @@ var registerTrial = function(){
     this.selectAddTrialAccrualDiseaseTerminology = function(trialAccrualDiseaseTerminology)  {
         helper.selectValueFromList(this.addTrialAccrualDiseaseTerminology,trialAccrualDiseaseTerminology,"Add Trial by Accrual Disease Terminology field");
     };
+
+
+    this.getVerifyAddTrialOfficialTitle= function(trialOfficialTitle)  {
+        helper.getVerifyValue(this.addTrialOfficialTitle,trialOfficialTitle,"Add Trial by Official Title field");
+    };
+
+    this.getVerifyAddTrialPhase = function(trialPhase)  {
+        helper.getVerifyListValue(this.addTrialPhase,trialPhase,"Add Trial by Phase ID field");
+    };
+
+    this.getVerifyAddTrialPilotOption = function(trialPilotOption)  {
+        if (trialPilotOption === '0') {
+            expect(this.addTrialPilotOption.get(0).isSelected()).to.eventually.equal(true);
+        }
+        else if (trialPilotOption === '1') {
+            expect(this.addTrialPilotOption.get(1).isSelected()).to.eventually.equal(true);
+        }
+    };
+
+    this.getVerifyAddTrialResearchCategory = function(trialResearchCategory)  {
+        helper.getVerifyListValue(this.addTrialResearchCategory,trialResearchCategory,"Add Trial by Research Category field");
+    };
+
+    this.getVerifyAddTrialPrimaryPurpose = function(trialPrimaryPurpose)  {
+        helper.getVerifyListValue(this.addTrialPrimaryPurpose,trialPrimaryPurpose,"Add Trial by Primary Purpose field");
+    };
+
+    this.getVerifyAddTrialSecondaryPurpose = function(trialSecondaryPurpose)  {
+        helper.getVerifyListValue(this.addTrialSecondaryPurpose,trialSecondaryPurpose,"Add Trial by Secondary Purpose field");
+    };
+
+    this.getVerifyAddTrialAccrualDiseaseTerminology = function(trialAccrualDiseaseTerminology)  {
+        helper.getVerifyListValue(this.addTrialAccrualDiseaseTerminology,trialAccrualDiseaseTerminology,"Add Trial by Accrual Disease Terminology field");
+    };
+
 
     /********** Sponsor/Responsible Party **********/
 
@@ -285,6 +340,7 @@ var registerTrial = function(){
     this.clickAddTrialSaveDraftButton = function(){
         helper.clickButton(this.addTrialSaveDraftButton,"Add Trial Save Draft button");
     };
+
 };
 
 module.exports = registerTrial;

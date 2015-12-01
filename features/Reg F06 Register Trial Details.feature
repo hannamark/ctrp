@@ -2,8 +2,8 @@
   Feature: Reg F06 Register Trial Details
   
   As a CTRP User, I can Register Trial Details
-  
-  Scenario Outline:I can enter the trail Details 
+
+  Scenario Outline: #1 I can enter the trail Details
     Given I have selected the option to register a trial <TrialType>
     And I am on the Register Trial Details screen
      When I have entered the trial's title
@@ -56,7 +56,7 @@
     
     Then the Trial Details section will be complete
 
-  Example: 
+  Examples:
   
   
       |TrialType               |
@@ -64,36 +64,34 @@
       |Externally Peer-Reviewed|
       |Institutional           |
 
-
+    @runthis
   Scenario Outline: #2 I must enter Trial Details Types
     Given I have selected the option to register a trial <TrialType>
      When I have not entered The official Title
-     Then 
      And I have not entered the trial Phase type
-     Then
      And I have not entered the Research Category type
      And I have not entered the trial Primary Purpose
      And I have not entered the Accrual Disease Terminology type
      Then the Trial Details field <FieldType> section will indicate an error <error> 
      
-      |<FieldType>                  |<error>                                      |
-      | Official Title              | "Trial Title is Required"                   |
-      | Phase                       | "Trial Phase is Required"                   |
-      | Research Category           | "Research Category is Required"             |
-      | Primary Purpose             | "Primary Purpose is Required"               |
-      | Accrual Disease Terminology | "Accrual Disease Terminology is Required"   |
+      |FieldType                  |error                                      |
+      | Official Title              | Official Title is required                   |
+      | Phase                       | Phase is required                  |
+      | Research Category           | Research Category is required            |
+      | Primary Purpose             | Primary Purpose is required             |
+      | Accrual Disease Terminology | Accrual Disease Terminology is required   |
 
      
       
      
      
-Example:
+Examples:
 
       |TrialType               |
       |National                |
       |Externally Peer-Reviewed|
       |Institutional           |
-      
+
        Scenario Outline: #3 Rules for Trial's Primary and Secondary Purpose Type
       Given I have selected the option to register a trial <TrialType>
       And I am on the Register Trial Details screen
@@ -103,7 +101,7 @@ Example:
       Then I must provide the Secondary Purpose other description
       
 
-  Example: 
+  Examples:
 
       |TrialType               |
       |National                |

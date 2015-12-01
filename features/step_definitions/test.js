@@ -23,6 +23,7 @@ var searchPersonPage = require('../support/ListOfPeoplePage');
 var projectFunctionsPage = require('../support/projectMethods');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var trialMenuItemList = require('../support/trialCommonBar');
+var addTrialPage = require('../support/registerTrialPage');
 
 module.exports = function() {
     var menuItemList = new MenuItem();
@@ -35,20 +36,31 @@ module.exports = function() {
     var searchPerson = new searchPersonPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
     var trialMenuItem = new trialMenuItemList();
+    var addTrial = new addTrialPage();
 
     this.Given(/^I want to test the Login page$/, function (callback) {
         browser.get('ui#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
+        login.login('ctrptrialsubmitter', 'Welcome01');
         login.accept();
-            menuItemList.clickHomeEnterOrganizations();
+        trialMenuItem.clickHomeSearchTrial();
             login.clickWriteMode('On');
-        menuItemList.clickOrganizations();
-        menuItemList.clickAddOrganizations();
+        projectFunctionsRegistry.selectTrials('National');
+        addTrial.clickAddTrialAddProtocolButton();
+     //   var ptor = protractor.getInstance();
+        var alertDialog = browser.switchTo().alert();
+        alertDialog.getText().then(function(value){
+            console.log('value of alert dialog' + value);
+        });
         browser.sleep(5000);
-        login.clickWriteMode('On');
-        menuItemList.clickOrganizations();
-        menuItemList.clickAddOrganizations();
-        addOrg.setAddOrgName('test');
+        alertDialog.accept();
+      //  expect(alertDialog.getText()).toEqual("Hello");
+        //menuItemList.clickOrganizations();
+        //menuItemList.clickAddOrganizations();
+        //browser.sleep(5000);
+        //login.clickWriteMode('On');
+        //menuItemList.clickOrganizations();
+        //menuItemList.clickAddOrganizations();
+        //addOrg.setAddOrgName('test');
    /*     browser.sleep(5000);
         login.clickWriteMode('Off');
         menuItemList.clickOrganizations();
@@ -72,21 +84,21 @@ module.exports = function() {
     });
 
     this.Given(/^Test with same login$/, function (callback) {
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
-        menuItemList.clickHomeEnterOrganizations();
-        menuItemList.clickOrganizations();
-        menuItemList.clickListFamily();
-        browser.sleep(5000).then(callback);
+        //login.login('ctrpcurator', 'Welcome01');
+        //login.accept();
+        //menuItemList.clickHomeEnterOrganizations();
+        //menuItemList.clickOrganizations();
+        //menuItemList.clickListFamily();
+        browser.sleep(5).then(callback);
     });
 
     this.Then(/^Test with different login$/, function (callback) {
-        login.login('ctrptrialsubmitter', 'Welcome01');
-        login.accept();
-        menuItemList.clickHomeEnterOrganizations();
-        trialMenuItem.clickHomeSearchTrial();
-        login.clickWriteMode('On');
-        browser.sleep(5000).then(callback);
+        //login.login('ctrptrialsubmitter', 'Welcome01');
+        //login.accept();
+        //menuItemList.clickHomeEnterOrganizations();
+        //trialMenuItem.clickHomeSearchTrial();
+        //login.clickWriteMode('On');
+        browser.sleep(5).then(callback);
     });
 
     this.Given(/^I want to test the Login page second time$/, function (callback) {

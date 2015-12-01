@@ -1,6 +1,6 @@
   Feature: Reg F05 Register Trial Protocol Identifiers
   	As a CTRP User, I can Register a Trial's Protocol Identifiers
-    
+
     Scenario Outline:#1 I can enter protocol identifiers for a trial
     Given I have selected the option to register a trial <TrialType>
     And I am on the Register Trial Protocol Identifiers screen
@@ -12,7 +12,7 @@
      And I have to specify every selected Protocol ID Origin's Protocol ID 
      Then the Register Trial Protocol Identifiers section will not indicate any errors during Trial Review
 
- Example:
+ Examples:
       
       |TrialType                 |
       |National                  |
@@ -26,7 +26,7 @@
      And I click on the Review Trial button
      Then the Register Trial Protocol Identifiers section will indicate an error "Lead Organization Trial Identifier is Required"
      
- Example: 
+ Examples:
  
  
       |TrialType                 |
@@ -44,13 +44,13 @@
      Then the Register Trial Protocol Identifiers section will indicate zero errors
      
      
-    Example: 
+    Examples:
      
       |TrialType  				 |
       |National                  |
       |Externally Peer-Reviewed  |
       |Institutional             |
-	
+
 
   
       
