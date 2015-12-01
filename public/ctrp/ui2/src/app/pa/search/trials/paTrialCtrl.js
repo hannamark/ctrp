@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('ctrp.app.registry').controller('paTrialCtrl', paTrialCtrl);
+    angular.module('ctrp.app.pa').controller('paTrialCtrl', paTrialCtrl);
 
     paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal', '$location',
                          '$anchorScroll', 'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'];
@@ -36,7 +36,7 @@
         }; //gridOptions
 
         vm.searchTrials = function() {
-            TrialService.searchTrials(vm.searchParams).then(function (data) {
+            TrialService.searchTrialsPa(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;
                 $location.hash('trial_search_results');

@@ -45,9 +45,10 @@
         var gridOptions = {
             rowTemplate: '<div>'+
                 '<div>' +
-                '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader, \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' && grid.appScope.rowFormatter( row )}"  ui-grid-cell></div>' +
-                '</div>',
-
+                ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+                ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
+                ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
+                ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
@@ -61,24 +62,38 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, minWidth: '75', width: '*',
-                    cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
+                {name: 'Nullify', displayName: 'Nullify',
+                    enableSorting: false,
+                    enableFiltering: false,
+                    minWidth: '75', width: '*',
+                    cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify"' +
+                    ' ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'ctrp_id', displayName: 'CTRP ID', enableSorting: true, minWidth: '80', width: '*'},
+                {name: 'ctrp_id', displayName: 'CTRP ID',
+                    enableSorting: true,
+                    minWidth: '80',
+                    width: '*'},
                 {
                     name: 'name', enableSorting: true, minWidth: '100', width: '*',
                     //this does not work for .id
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                   '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
+                    ' title="{{COL_FIELD}}">' +
+                    ' <a ui-sref="main.orgDetail({orgId : row.entity.id })">' +
+                    ' {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
                 {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '80', width: '*'},
-                {name: 'source_context', displayName: 'Source Context', enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'aff_families_names', displayName: 'Families', enableSorting: true, minWidth: '100', width: '*',height: '50%',
-                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names" title="{{fam.Name}}">{{fam.Name}}</div>'
+                {name: 'source_context', displayName: 'Source Context',
+                    enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'source_id', displayName: 'Source ID',
+                    enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'source_status', displayName: 'Source Status',
+                    enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'aff_families_names', displayName: 'Families',
+                    enableSorting: true, minWidth: '100', width: '*',height: '50%',
+                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names"' +
+                    ' title="{{fam.Name}}">{{fam.Name}}</div>'
                 },
                 {name: 'city', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, minWidth: '100', width: '*'},
@@ -89,8 +104,11 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, minWidth: '150', width: '*'},
-                {name: 'updated_at', displayName: 'Last Updated At', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, minWidth: '160', width: '*'}
+                {name: 'updated_by', displayName: 'Last Updated By',
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'updated_at', displayName: 'Last Updated At',
+                    type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"',
+                    enableSorting: true, minWidth: '160', width: '*'}
             ]
         };
 

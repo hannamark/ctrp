@@ -73,6 +73,7 @@
             getTrialById: getTrialById,
             upsertTrial: upsertTrial,
             searchTrials: searchTrials,
+            searchTrialsPa: searchTrialsPa,
             getInitialTrialSearchParams: getInitialTrialSearchParams,
             getGridOptions: getGridOptions,
             getStudySources: getStudySources,
@@ -87,6 +88,7 @@
             getInstituteCodes: getInstituteCodes,
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
+            getMilestones: getMilestones,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
@@ -142,6 +144,12 @@
         function searchTrials(searchParams) {
             if (!!searchParams) {
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_TRIAL, searchParams);
+            }
+        } //searchTrials
+
+        function searchTrialsPa(searchParams) {
+            if (!!searchParams) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_TRIAL_PA, searchParams);
             }
         } //searchTrials
 
@@ -213,6 +221,10 @@
 
         function getTrialStatuses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_STATUSES);
+        }
+
+        function getMilestones() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
         }
 
         function getHolderTypes() {

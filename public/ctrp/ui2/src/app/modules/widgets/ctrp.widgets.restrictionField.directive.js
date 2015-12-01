@@ -60,8 +60,11 @@
             //sanity check first
             if (attrs.restrictionField.trim() === '' && attrs.hasOwnProperty('ignoreRw')) {
                 //alert for errors
-                $log.error('The restriction-field directive must have user roles assigned when using the flag "ignore-rw"');
-                var errorMsg = '<span class="help-inline"><strong>Error: </strong>the restriction-field needs user role(s) assigned with the ignore-rw flag </span>';
+                $log.error('The restriction-field directive must have user' +
+                    ' roles assigned when using the flag "ignore-rw"');
+                var errorMsg = '<span class="help-inline"><strong>Error:' +
+                    ' </strong>the restriction-field needs user role(s)' +
+                    ' assigned with the ignore-rw flag </span>';
                 element.html(errorMsg); //alert user for errors in using this directive with 'ignore-rw' flag
                 $compile(element.contents())(scope);
                 return;
