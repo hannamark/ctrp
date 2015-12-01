@@ -57,7 +57,7 @@
           if (attrs.hasOwnProperty('ngDisabled')) {
               attrs.$observe('ngDisabled', function(newVal) {
                   ngDisabledVal = scope.$eval(newVal);
-                  // $log.info('ngDisabled is now true? ', ngDisabledVal);
+                  $log.info('ngDisabled is now true? ', ngDisabledVal);
                   watchRestrictionRules();
               });
           }
@@ -98,9 +98,10 @@
                 //include both globalWriteMode and user role
                 if (isShownToCurrentUser && globalWriteModeEnabled) {
                   element.show();
-                  if (ngDisabledVal) {
-                      element.removeAttr('disabled');
+                  if (attrs.hasOwnProperty('ngDisabled') && ngDisabledVal === true) {
+                      return; //keep disabled
                   }
+                  element.removeAttr('disabled');
 
                 } else if (!isShownToCurrentUser) {
                   element.hide();
