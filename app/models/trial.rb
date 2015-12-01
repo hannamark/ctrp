@@ -183,10 +183,10 @@ class Trial < ActiveRecord::Base
   def actions
     actions = []
     if self.is_draft
-      actions.append('Complete')
+      actions.append('complete')
     else
-      actions.append('Update')
-      actions.append('Amend')
+      actions.append('update')
+      actions.append('amend')
     end
   end
 
