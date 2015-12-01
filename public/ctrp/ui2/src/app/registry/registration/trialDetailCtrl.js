@@ -19,7 +19,7 @@
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
-        vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
+        vm.accordions = [true, true, true, true, true, true, true, true, true, true, true, true];
         vm.collapsed = false;
         vm.studySourceCode = studySourceCode;
         vm.isExp = false;
@@ -45,6 +45,7 @@
         vm.start_date_opened = false;
         vm.primary_comp_date_opened = false;
         vm.comp_date_opened = false;
+        vm.amendment_date_opened = false;
         vm.addedOtherIds = [];
         vm.addedFses = [];
         vm.addedGrants = [];
@@ -73,6 +74,8 @@
         vm.protocolDocNum = 0;
         vm.irbApprovalNum = 0;
         vm.informedConsentNum = 0;
+        vm.changeMemoNum = 0;
+        vm.protocolHighlightedNum = 0;
         vm.showLpiError = false;
         vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
 
@@ -159,6 +162,14 @@
                 });
             }
 
+            if (vm.curTrial.edit_type === 'amend') {
+                var submissionObj = {};
+                submissionObj.amendment_num = vm.amendment_num;
+                submissionObj.amendment_date = vm.amendment_date;
+                submissionObj._destroy = false;
+                vm.curTrial.submissions_attributes = [submissionObj];
+            }
+
             if (updateType == 'draft') {
                 vm.curTrial.is_draft = true;
             } else {
@@ -193,12 +204,12 @@
         };
 
         vm.collapseAccordion = function() {
-            vm.accordions = [false, false, false, false, false, false, false, false, false, false, false];
+            vm.accordions = [false, false, false, false, false, false, false, false, false, false, false, false];
             vm.collapsed = true;
         };
 
         vm.expandAccordion = function() {
-            vm.accordions = [true, true, true, true, true, true, true, true, true, true, true];
+            vm.accordions = [true, true, true, true, true, true, true, true, true, true, true, true];
             vm.collapsed = false;
         };
 
@@ -280,6 +291,18 @@
                         } else {
                             vm.informedConsentNum++;
                         }
+                    } else if (vm.addedDocuments[index].document_type === 'Change Memo Document') {
+                        if (vm.addedDocuments[index]._destroy) {
+                            vm.changeMemoNum--;
+                        } else {
+                            vm.changeMemoNum++;
+                        }
+                    } else if (vm.addedDocuments[index].document_type === 'Protocol Highlighted Document') {
+                        if (vm.addedDocuments[index]._destroy) {
+                            vm.protocolHighlightedNum--;
+                        } else {
+                            vm.protocolHighlightedNum++;
+                        }
                     }
                 }
             }
@@ -300,6 +323,8 @@
                 vm.primary_comp_date_opened = !vm.primary_comp_date_opened;
             } else if (type == 'comp_date') {
                 vm.comp_date_opened = !vm.comp_date_opened;
+            } else if (type == 'amendment_date') {
+                vm.amendment_date_opened = !vm.amendment_date_opened;
             }
         }; //openCalendar
 
@@ -641,6 +666,8 @@
         function appendEditType() {
             if ($stateParams.editType === 'update') {
                 vm.curTrial.edit_type = 'update'
+            } else if ($stateParams.editType === 'amend') {
+                vm.curTrial.edit_type = 'amend'
             }
         }
 
@@ -648,6 +675,7 @@
             vm.curTrial.start_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.start_date);
             vm.curTrial.primary_comp_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.primary_comp_date);
             vm.curTrial.comp_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.comp_date);
+            vm.curTrial.amendment_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.amendment_date);
         }
 
         // Populate Study Source field based on the param studySourceCode
@@ -841,6 +869,10 @@
                     vm.irbApprovalNum++;
                 }  else if (vm.curTrial.trial_documents[i].document_type === 'Informed Consent') {
                     vm.informedConsentNum++;
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Change Memo Document') {
+                    vm.changeMemoNum++;
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Protocol Highlighted Document') {
+                    vm.protocolHighlightedNum++;
                 }
             }
         }
@@ -920,6 +952,12 @@
             for (var key in vm.other_documents) {
                 var subtype = key in vm.other_document_subtypes ? vm.other_document_subtypes[key] : '';
                 TrialService.uploadDocument(trialId, 'Other Document', subtype, vm.other_documents[key]);
+            }
+            if (vm.change_memo) {
+                TrialService.uploadDocument(trialId, 'Change Memo Document', '', vm.change_memo);
+            }
+            if (vm.protocol_highlighted) {
+                TrialService.uploadDocument(trialId, 'Protocol Highlighted Document', '', vm.protocol_highlighted);
             }
         }
     }

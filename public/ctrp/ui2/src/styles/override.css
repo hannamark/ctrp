@@ -15,7 +15,7 @@
         width: 1470px;
     }
 
-    form {
+    .drop-shadow form {
         width: 75%;
         margin: 0 auto;
     }
@@ -38,7 +38,7 @@
         width: 1770px;
     }
 
-    form {
+    .drop-shadow form {
         width: 65%;
         margin: 0 auto;
     }
@@ -61,7 +61,7 @@
         width: 2070px;
     }
 
-    form {
+    .drop-shadow form {
         width: 55%;
         margin: 0 auto;
     }
@@ -446,6 +446,23 @@ body {
     font-size: 14px;
 }
 
+.nav.nav-stacked > li {
+    border-bottom: 1px solid #DDD;
+    margin: 0;
+}
+
+.nav.nav-stacked > li > a {
+    padding: 5px 15px;
+}
+
+.sidebar {
+    margin-left: -20px;
+}
+
+.sidebar .panel-title, .nav-stacked {
+    font-size: 12px;
+}
+
 .row {
     margin-right: 0px;
     margin-left: 0px;
@@ -666,7 +683,7 @@ input[type=radio] {
     margin-bottom: 0;
 }
 
-.no-padding {
+.no-padding, .sidebar .panel-body {
     padding: 0;
 }
 

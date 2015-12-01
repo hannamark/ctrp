@@ -36,7 +36,7 @@
 
             //for pagination and sorting
             sort: 'lname',
-            order: "ASC",
+            order: 'ASC',
             rows: 10,
             start: 1
             }; //initial Person Search Parameters
@@ -44,7 +44,8 @@
         var gridOptions = {
             rowTemplate: '<div ng-class="{ \'nonselectable-row-css-class\': grid.appScope.rowFormatter( row ) }">'+
             '<div>' +
-            '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell></div>' +
+            ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+            ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell></div>' +
             '</div>',
             enableColumnResizing: true,
             totalItems: null,
@@ -61,8 +62,11 @@
             enableHorizontalScrollbar: 2,
             enableVerticalScrollbar: 2,
             columnDefs: [
-                {name: 'Nullify', displayName: 'Nullify', enableSorting: false, enableFiltering: false, minWidth: '75', width: '*',
-                    cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify" ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
+                {name: 'Nullify', displayName: 'Nullify',
+                    enableSorting: false, enableFiltering: false,
+                    minWidth: '75', width: '*',
+                    cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify"' +
+                    ' ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
                 {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', minWidth: '80', width: '*'},
@@ -80,7 +84,8 @@
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'suffix', enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'source_context', displayName: 'Source Context', enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'source_context', displayName: 'Source Context',
+                    enableSorting: true, minWidth: '75', width: '*'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '65', width: '*'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, minWidth: '65', width: '*'},
                 {name: 'email', enableSorting: true, minWidth: '150', width: '*',
@@ -91,10 +96,17 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs', minWidth: '150', width: '*', cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0"><master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5"></master-directive></div>' +
-                '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'},
-                {name: 'updated_at', displayName: 'Last Updated Date', type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"', enableSorting: true, minWidth: '150', width: '*'},
-                {name: 'updated_by', displayName: 'Last Updated By', enableSorting: true, minWidth: '150', width: '*'}
+                {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs',
+                    minWidth: '150', width: '*',
+                    cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0">' +
+                    ' <master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5">' +
+                    '</master-directive></div>' +
+                    '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'},
+                {name: 'updated_at', displayName: 'Last Updated Date',
+                    type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"',
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'updated_by', displayName: 'Last Updated By',
+                    enableSorting: true, minWidth: '150', width: '*'}
             ]
         };
 
@@ -172,7 +184,7 @@
         function getInitialPersonSearchParams() {
             var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
             var curator_role = 'curator';
-            if(!(user_role.toUpperCase() === curator_role.toUpperCase())) {
+            if(user_role.toUpperCase() !== curator_role.toUpperCase()) {
                 initPersonSearchParams.wc_search = false;
             }
             return initPersonSearchParams;

@@ -25,4 +25,13 @@ class MilestoneWrapper < ActiveRecord::Base
   belongs_to :milestone
   belongs_to :submission
   belongs_to :trial
+
+  scope :by_value, ->  (value) {
+    joins(:milestone).where("milestone_wrappers.milestone_id = milestones.id and milestones.code = ?","#{value.to_s}")
+  }
+
+  scope :latest, -> {
+    order("updated_at DESC").first
+  }
+
 end

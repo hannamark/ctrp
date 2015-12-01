@@ -13,17 +13,17 @@
 
     function ModalInstanceFamilyCtrl($modalInstance, FamilyService, familyId, $timeout) {
         var vm = this;
-        vm.modalTitle = "Please confirm";
-        vm.deletionStatus = "";
+        vm.modalTitle = 'Please confirm';
+        vm.deletionStatus = '';
         vm.ok = function() {
             FamilyService.deleteFamily(familyId).then(function(data) {
-                console.log("delete data returned: " + JSON.stringify(data));
-                vm.modalTitle = "Deletion is successful";
-                timeoutCloseModal("Permanently deleted", data.status); //204 for successful deletion
+                console.log('delete data returned: ' + JSON.stringify(data));
+                vm.modalTitle = 'Deletion is successful';
+                timeoutCloseModal('Permanently deleted', data.status); //204 for successful deletion
             }).catch(function(err) {
-                vm.modalTitle = "Deletion failed";
-                console.log("failed to delete the family, error code: " + err.status);
-                timeoutCloseModal(err.data || "Failed to delete", err.status);
+                vm.modalTitle = 'Deletion failed';
+                console.log('failed to delete the family, error code: ' + err.status);
+                timeoutCloseModal(err.data || 'Failed to delete', err.status);
             });
         };
 
