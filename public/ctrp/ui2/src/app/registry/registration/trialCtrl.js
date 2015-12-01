@@ -56,13 +56,7 @@
         };
 
         $scope.takeTrialAction = function(actionType, trialId) {
-            if (actionType == 'Complete') {
-                $state.go('main.trialDetail', {trialId: trialId});
-            } else if (actionType == 'Update') {
-                $state.go('main.trialDetail', {trialId: trialId, editType: 'update'});
-            } else if (actionType == 'Amend') {
-                $state.go('main.trialDetail', {trialId: trialId, editType: 'amend'});
-            }
+            $state.go('main.trialDetail', {trialId: trialId, editType: actionType});
         };
 
         activate();
