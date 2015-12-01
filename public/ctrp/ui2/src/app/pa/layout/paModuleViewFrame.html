@@ -1,18 +1,7 @@
-<div class="row pull-left">
-    <!-- PA menu on the left -->
-    <div class="col-sm-2 col-xs-12">
-        <div class="row pull-left">
-            <div ui-view="paMenu">
-            </div>
-        </div>
-    </div>
-    <!-- end of PA menus -->
+<!-- PA menu on the left -->
+<div class="col-sm-2 col-xs-12" ui-view="paMenu"></div>
+<!-- end of PA menus -->
 
-
-    <!-- PA content view -->
-    <div class="col-sm-10 col-xs-12">
-        <div ui-view="paContentView">
-        </div>
-    </div>
-    <!-- end of PA content view -->
-</div>
+<!-- PA content view -->
+<div class="col-sm-10 col-xs-12" ui-view="paContentView"></div>
+<!-- end of PA content view -->
