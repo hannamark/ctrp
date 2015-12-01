@@ -4,25 +4,68 @@ Feature: Reg F12 Register Trial IND IDE
 As a CTRP User, I can indicate if a trial has an associated IND or IDE and if so, enter information about the IND or IDE
 
 Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
-Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
+Given I have selected the option to register a trial <TrialType>
 And I am on the Register Trial IND/IDE Information screen
 When I have selected "No" for the question "Does this trial have an associated IND or IDE?"
-Then the IND/IDE Information for the trial registration will be complete
+Then the IND/IDE Information section for the trial registration will not indicate any errors during trial review
+      
+      |TrialType                 |
+      |National                  |
+      |Externally Peer-Reviewed  |
+      |Institutional             |
 
 Scenario: #2 I can enter the IND or IDE information for a trial
-Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
+Given I have selected the option to register a trial <TrialType>
 And I am on the Register Trial IND/IDE Information screen
 And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
-When I have selected the IND/IDE Type from a list
+When I have selected the IND/IDE Type:
+  
+      |IND|
+      |IED|
+  
 And I have entered the IND/IDE number
-And I have selected the IND/IDE Grantor from a list based on IND or IDE selected
-And I have selected the IND/IDE Holder Type from a list
-And I have selected the NIH Institution or NCI Division/Program from a list
-Then the IND/IDE Information for the trial registration will be complete
+And I have selected the IND/IDE Grantor <Grantor> based on IND/IDE type selected <IND/IDE>
+      
+      |<IND/IDE>  |<Grantor>  |
+      | IND       | CDER      |
+      | IND       | CBER      |
+      | IDE       | CDRH      |
+      | IDE       | CBER      |
 
+And I have selected the IND/IDE Holder Type:
+      
+      |Investigator |
+      |Organization |
+      |Industry     |
+      |NIH          |
+      |NCI          |
+
+And I have selected the NIH Institution or NCI Division/Program from a list if the IND/IDE Holder type
+      
+      |NIH  |  
+      |NCI  | 
+And I will click on the add button to register IND/IDE information
+
+Then the IND/IDE Information for the trial registration will not indicate any errors during Trial Review
+      
+      |TrialType                 |
+      |National                  |
+      |Externally Peer-Reviewed  |
+      |Institutional             |
+      
 Scenario: #3 I can enter the IND and IDE information for multiple IND or IDE registrations for a trial
-Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
+Given I have selected the option to register a trial <TrialType>
 And I am on the Register Trial IND/IDE Information screen
 And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
-When I have entered the information for an IND or IDE
+When I have entered the information for an IND/IDE Type
+        |IND|
+        |IED|
 Then I will be able to select "Add IND/IDE" and enter the information for multiple IND/IDEs
+
+      |TrialType                 |
+      |National                  |
+      |Externally Peer-Reviewed  |
+      |Institutional             |
+
+
+
