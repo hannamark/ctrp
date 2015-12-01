@@ -138,10 +138,10 @@
                         <!-- end of first row in the accordion body -->
 
                         <!-- second row in the accordion body -->
-                        <div class="row pull-left">
-                            <form name="abstraction_form" class="form-horizontal" role="form">
+                        <div class="row">
+                            <form name="abstraction_form" class="form form-horizontal" role="form" novalidate>
                                 <!-- first form-group -->
-                                <div class="form-group">
+                                <div class="row pull-left">
                                     <label for="processing_priority" class="control-label col-xs-12 col-sm-8">Processing Priority:</label>
                                     <div class="col-xs-12 col-sm-4">
                                         <select name="priority_selection" id="processing_priority" class="form-control input-sm">
@@ -152,13 +152,25 @@
                                 <!-- end of first form-group -->
 
                                 <!-- second form-group -->
-                                <div class="form-group">
-                                    <label for="trial_processing_comment" class="control-label col-sx-12 col-sm-8">Trial Processing Comments:</label>
-                                    <div class="col-xs-12 col-sm-12">
+                                <div class="row pull-left">
+                                    <label for="trial_processing_comment" class="col-xs-12">Trial Processing Comments:</label>
+                                </div>
+                                <!-- end of second form-group -->
+
+                                <!-- third row in the form -->
+                                <div class="row">
+                                    <div class="col-xs-12">
                                         <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5"></textarea>
                                     </div>
                                 </div>
-                                <!-- end of second form-group -->
+                                <!-- end of third row -->
+
+                                <div class="row no-bottom-margin">
+                                    <button type="submit" class="btn btn-primary pull-right" id="submit_processing">Save</button>
+                                    <button type="button" class="btn btn-warning pull-right" id="cancel_processing">
+                                        <i class="glyphicon glyphicon-remove"></i> Cancel
+                                    </button>
+                                </div>
 
                             </form>
 
