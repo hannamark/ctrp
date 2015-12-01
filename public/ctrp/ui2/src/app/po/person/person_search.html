@@ -14,7 +14,8 @@
     <div class="row">
         <form name="test_person" ctrp-submit="personSearchView.trySubmit()" novalidate>
             <div class="form-group"  ng-class="{'has-error': ctrpbtn.test_person.needsAttention(test_person.name)}">
-                <input type="text" class="form-control" name="name" placeholder="Name" ng-model="personSearchView.name" ng-minlength="3" required>
+                <!-- test the combo of ngDisabled and restrictionField directives -->
+                <input type="text" restriction-field class="form-control" ng-disabled="personSearchView.name.length > 3" name="name" placeholder="Name" ng-model="personSearchView.name" ng-minlength="3" required>
 
             </div>
             <div class="form-group">

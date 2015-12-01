@@ -451,6 +451,18 @@ body {
     margin: 0;
 }
 
+.nav.nav-stacked > li > a {
+    padding: 5px 15px;
+}
+
+.sidebar {
+    margin-left: -20px;
+}
+
+.sidebar .panel-title, .nav-stacked {
+    font-size: 12px;
+}
+
 .row {
     margin-right: 0px;
     margin-left: 0px;
