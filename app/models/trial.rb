@@ -191,6 +191,27 @@ class Trial < ActiveRecord::Base
   end
 
   validates :lead_protocol_id, presence: true
+  validates :official_title, presence: true, if: 'is_draft == false'
+  validates :phase, presence: true, if: 'is_draft == false'
+  validates :pilot, presence: true, if: 'is_draft == false'
+  validates :research_category, presence: true, if: 'is_draft == false'
+  validates :primary_purpose, presence: true, if: 'is_draft == false'
+  validates :accrual_disease_term, presence: true, if: 'is_draft == false'
+  validates :lead_org, presence: true, if: 'is_draft == false'
+  validates :pi, presence: true, if: 'is_draft == false'
+  validates :sponsor, presence: true, if: 'is_draft == false'
+  validates :responsible_party, presence: true, if: 'is_draft == false'
+  validates :grant_question, presence: true, if: 'is_draft == false'
+  validates :ind_ide_question, presence: true, if: 'is_draft == false'
+  validates :start_date, presence: true, if: 'is_draft == false'
+  validates :start_date_qual, presence: true, if: 'is_draft == false'
+  validates :primary_comp_date, presence: true, if: 'is_draft == false'
+  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false'
+  validates :comp_date, presence: true, if: 'is_draft == false'
+  validates :comp_date_qual, presence: true, if: 'is_draft == false'
+  validates :intervention_indicator, presence: true, if: 'is_draft == false'
+  validates :sec801_indicator, presence: true, if: 'is_draft == false'
+  validates :data_monitor_indicator, presence: true, if: 'is_draft == false'
 
   before_save :generate_status
   before_create :save_history
