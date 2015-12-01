@@ -10,6 +10,8 @@
         'ngAnimate',
         'ngSanitize',
 
+        /* Service */
+
         /* Cross-app modules */
         'ctrp.module.routes',
         'ctrp.module.constants',
