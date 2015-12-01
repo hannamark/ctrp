@@ -1,10 +1,10 @@
 /**
  * Configure routes for trial component
  */
-/*
+
 (function() {
     'use strict';
-    angular.module('ctrp.app.pa.search.trials').config(paRoutes);
+    angular.module('ctrp.module.routes').config(paRoutes);
 
     paRoutes.$inject = ['$stateProvider'];
     function paRoutes($stateProvider) {
@@ -39,4 +39,4 @@
 
 
 })();
-*/
+

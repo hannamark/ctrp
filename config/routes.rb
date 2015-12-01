@@ -122,12 +122,14 @@ Rails.application.routes.draw do
           get 'search'
           post 'search'
           get 'search_pa'
+          post 'search_pa'
         end
       end
       resources :protocol_id_origins
       resources :holder_types
       resources :expanded_access_types
       resources :trial_statuses
+      resources :processing_statuses
       resources :milestones
       resources :research_categories
       resources :trial_documents do
