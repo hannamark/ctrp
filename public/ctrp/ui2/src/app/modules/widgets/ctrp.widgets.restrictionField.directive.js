@@ -53,7 +53,17 @@
 
       function link(scope, element, attrs, ngModelCtrl) {
 
+          var ngDisabledVal = undefined;
+          if (attrs.hasOwnProperty('ngDisabled')) {
+              attrs.$observe('ngDisabled', function(newVal) {
+                  ngDisabledVal = scope.$eval(newVal);
+                  // $log.info('ngDisabled is now true? ', ngDisabledVal);
+                  watchRestrictionRules();
+              });
+          }
+
           watchRestrictionRules();
+
           scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
               watchRestrictionRules();
           });
@@ -88,19 +98,16 @@
                 //include both globalWriteMode and user role
                 if (isShownToCurrentUser && globalWriteModeEnabled) {
                   element.show();
-                  if (attrs.hasOwnProperty('ngDisabled')) {
-                      return;
+                  if (ngDisabledVal) {
+                      element.removeAttr('disabled');
                   }
-                  element.removeAttr('disabled');
+
                 } else if (!isShownToCurrentUser) {
                   element.hide();
                 } else if (isShownToCurrentUser && !globalWriteModeEnabled) {
                   if (isButton(element)) {
                       element.hide(); //hide button if globalWriteModeEnabled is false
                   } else {
-                    if (attrs.hasOwnProperty('ngDisabled')) {
-                          return;
-                    }
                     attrs.$set('disabled', 'disabled');
                   }
                 }
