@@ -2,6 +2,7 @@
  * wangg5 created 10/01/2015
  *
  * This directive watches for user roles and the global write mode to hide/show or disable/enable fields (or divs)
+ * If the field already has ng-disabled, it will have the 'ng-disabled' directive take precedence
  *
  * Usage:
  *
@@ -51,6 +52,13 @@
 
 
       function link(scope, element, attrs, ngModelCtrl) {
+          // if the field already has 'ngDisabled', let it take
+          // the precedence
+          if (attrs.hasOwnProperty('ngDisabled')) {
+              console.log('already has ngDisabled');
+              return;
+          }
+
           watchRestrictionRules();
           scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
               watchRestrictionRules();
