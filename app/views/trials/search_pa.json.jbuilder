@@ -15,16 +15,16 @@ json.trials do
       end
     end
     json.current_milestone trial.milestone_wrappers.present? ? trial.milestone_wrappers.last.milestone.name : nil
-    json.selected_milestone = ""
-    if params[:milestone].present? && params[:milestone_latest].present? && params[:milestone_latest] == "NO"
+    json.selected_milestone  ""
+    if params[:milestone].present?# && params[:milestone_latest].present? && params[:milestone_latest] == "NO"
       if trial.milestone_wrappers.present?
         selected_milestones = trial.milestone_wrappers.by_value(params[:milestone])
         unless selected_milestones.blank?
-          json.selected_milestone = selected_milestones.latest.milestone.name
+          json.selected_milestone selected_milestones.latest.milestone.name
         end
       end
     end
-    json.other_id_string = ""
+    json.other_ids  ""
     if trial.other_ids.present?
       other_ids = trial.other_ids
       other_ids_string = ""
@@ -33,7 +33,7 @@ json.trials do
         other_ids_string = other_ids_string + delimiter + o.protocol_id_origin.code + "_ID:" + o.protocol_id
         delimiter = "; "
       end
-      json.other_id_string = other_ids_string
+      json.other_ids  other_ids_string
     end
     json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
     json.research_category trial.research_category.present? ? trial.research_category.name : nil

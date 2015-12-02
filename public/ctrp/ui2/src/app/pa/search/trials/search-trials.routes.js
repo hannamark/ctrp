@@ -15,6 +15,7 @@
                         controller: 'paTrialCtrl as trialView',
                         resolve: {
                             TrialService: 'TrialService',
+                            PATrialService: 'PATrialService',
                             studySourceObj: function(TrialService) {
                                 return TrialService.getStudySources();
                             },
@@ -26,8 +27,14 @@
                             },
                             trialStatusObj: function(TrialService) {
                                 return TrialService.getTrialStatuses();
+                            },
+                            milestoneObj: function(TrialService) {
+                                return TrialService.getMilestones();
                             }
-
+                            ,
+                            processingStatusObj: function(PATrialService) {
+                                return PATrialService.getProcessingStatuses();
+                            }
                         },
                         ncyBreadcrumb: {
                             parent: 'main.defaultContent',
