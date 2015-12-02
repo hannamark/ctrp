@@ -559,7 +559,9 @@ h4 {
 }
 
 .btn-toolbar {
+    margin-top: 2px;
     margin-left: 0px;
+    margin-bottom: 2px;
 }
 
 .btn-toolbar span.pad-height {
@@ -729,10 +731,6 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 .form-horizontal .has-feedback .select-feedback {
     margin-top: 20px;
     right: 15px;
-}
-
-.panel-default.border-less {
-    border: 0;
 }
 
 .ui-grid-cell.overflow {

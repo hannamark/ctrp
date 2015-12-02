@@ -98,6 +98,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Processing Status: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="processingStatus" ng-model="trialView.searchParams.milestone">
+                                    <option value="">-Select a Processing Status -</option>
+                                    <option ng-repeat="processingStatus in trialView.processingStatusArr" value="{{processingStatus.code}}">{{processingStatus.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="official_title" class="control-label col-xs-12 col-sm-3">Principal Investigator: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <input type="text" id="pi" class="form-control input-sm" placeholder="Principal Investigator" ng-model="trialView.searchParams.pi" />
