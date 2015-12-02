@@ -104,6 +104,9 @@ class Ws::ApiPeopleController < Ws::BaseApiController
     #@person.assign_attributes(@json['person'])
     if @person.save
       if request.content_type == "application/json"
+        puts "**********"
+        print response
+        puts "***********"
         render json: @person
       elsif request.content_type == "application/xml"
         render xml: @person
