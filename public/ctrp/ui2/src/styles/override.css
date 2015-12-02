@@ -738,6 +738,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     right: 15px;
 }
 
-.ui-grid-cell.overflow {
+.ui-grid-cell.action-btn {
     overflow: visible;
+    text-align: center;
 }
