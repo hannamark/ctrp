@@ -20,6 +20,14 @@
             start: 1
         }; //initial Trial Search Parameters
 
+        //var actionTemplate = '<button ng-repeat="action in row.entity.actions" type="button" class="btn btn-primary" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)"><i class="glyphicon"></i> {{action}} </button>';
+        var actionTemplate = '<div class="btn-group">'
+            + '<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+            + 'Action <span class="caret"></span>'
+            + '</button>'
+            + '<ul class="dropdown-menu"><li ng-repeat="action in row.entity.actions"><a href="#" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)">{{action}}</a></li></ul>'
+            + '</div>';
+
         var gridOptions = {
             enableColumnResizing: true,
             totalItems: null,
@@ -33,36 +41,36 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '*',
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'official_title', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phase', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'purpose', enableSorting: true, minWidth: '100', width: '*',
+                {name: 'phase', enableSorting: true, minWidth: '70', width: '70'},
+                {name: 'purpose', enableSorting: true, minWidth: '120', width: '120',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
-                {name: 'pilot', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'pilot', enableSorting: true, minWidth: '60', width: '60'},
+                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '180', width: '180',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '170', width: '*',
+                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'sponsor', enableSorting: true, minWidth: '100', width: '*',
+                {name: 'sponsor', enableSorting: true, minWidth: '200', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'study_source', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'study_source', enableSorting: true, minWidth: '170', width: '170',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_trial_status', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'current_trial_status', enableSorting: false, minWidth: '170', width: '170',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '*',
-                    cellTemplate: '<button ng-repeat="action in row.entity.actions" type="button" class="btn btn-primary" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)"><i class="glyphicon"></i> {{action}} </button>'
+                {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '120', width: '120',
+                    cellTemplate: actionTemplate, cellClass: 'overflow'
                 }
 
             ]
@@ -88,6 +96,7 @@
             getInstituteCodes: getInstituteCodes,
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
+            getTrialStatusById: getTrialStatusById,
             getMilestones: getMilestones,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
@@ -221,6 +230,12 @@
 
         function getTrialStatuses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_STATUSES);
+        }
+
+        function getTrialStatusById(trialStatusId) {
+            //insert the trialStatusId into the url
+            var url = URL_CONFIGS.TRIALS.STATUS_WITH_ID.replace(/\s*\{.*?\}\s*/g, trialStatusId);
+            return PromiseTimeoutService.getData(url);
         }
 
         function getMilestones() {
