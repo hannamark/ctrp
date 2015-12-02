@@ -734,3 +734,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 .panel-default.border-less {
     border: 0;
 }
+
+.ui-grid-cell.overflow {
+    overflow: visible;
+}
