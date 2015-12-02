@@ -138,12 +138,27 @@
                         <!-- end of first row in the accordion body -->
 
                         <!-- second row in the accordion body -->
+                        <div class="row text-center">
+                            <div class="btn-toolbar">
+                                <button type="button" class="btn btn-primary pull-right" id="admin_sci_checkout">Admin/Scientific Check Out</button>
+                                <button type="button" class="btn btn-primary pull-right" id="scientific_checkout">Scientific Check Out</button>
+                                <button type="button" class="btn btn-primary pull-right" id="admin_checkout">Admin Check Out</button>
+                                <button type="button" class="btn btn-warning pull-right" id="back_to_search">
+                                    <i class="glyphicon glyphicon-arrow-left"></i> Back to Search Results
+                                </button>
+                            </div>
+                            <hr />
+                        </div>
+                        <!-- end of second row -->
+
+                        <!-- third row in the accordion body -->
                         <div class="row">
-                            <form name="abstraction_form" class="form form-horizontal" role="form" novalidate>
+                            <div class="col-xs-12 pull-left">
+                            <form name="abstraction_form" class="form" role="form" novalidate>
                                 <!-- first form-group -->
-                                <div class="row pull-left">
+                                <div class="form-group">
                                     <label for="processing_priority" class="control-label col-xs-12 col-sm-8">Processing Priority:</label>
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="input-group col-xs-12 col-sm-4">
                                         <select name="priority_selection" id="processing_priority" class="form-control input-sm">
                                             <option value="2">2 - Normal</option>
                                         </select>
@@ -152,30 +167,32 @@
                                 <!-- end of first form-group -->
 
                                 <!-- second form-group -->
-                                <div class="row pull-left">
+                                <div class="form-group">
                                     <label for="trial_processing_comment" class="col-xs-12">Trial Processing Comments:</label>
                                 </div>
                                 <!-- end of second form-group -->
 
                                 <!-- third row in the form -->
-                                <div class="row">
+                                <div class="form-group">
                                     <div class="col-xs-12">
                                         <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5"></textarea>
                                     </div>
                                 </div>
                                 <!-- end of third row -->
 
-                                <div class="row no-bottom-margin">
-                                    <button type="submit" class="btn btn-primary pull-right" id="submit_processing">Save</button>
-                                    <button type="button" class="btn btn-warning pull-right" id="cancel_processing">
-                                        <i class="glyphicon glyphicon-remove"></i> Cancel
-                                    </button>
+                                <div class="form-group no-bottom-margin">
+                                    <div class="btn-toolbar">
+                                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing">Save</button>
+                                        <button type="button" class="btn btn-warning pull-right" id="cancel_processing">
+                                            <i class="glyphicon glyphicon-remove"></i> Cancel
+                                        </button>
+                                    </div>
                                 </div>
 
                             </form>
-
                         </div>
-                        <!-- end of second row in the accordion body -->
+                        </div>
+                        <!-- end of third row in the accordion body -->
                 </uib-accordion-group>
             </uib-accordion>
         </div>
