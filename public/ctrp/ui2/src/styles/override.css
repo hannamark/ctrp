@@ -732,7 +732,3 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     margin-top: 20px;
     right: 15px;
 }
-
-.panel-default.border-less {
-    border: 0;
-}

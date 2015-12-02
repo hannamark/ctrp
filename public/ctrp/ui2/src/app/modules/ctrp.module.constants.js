@@ -52,6 +52,11 @@
             'INSTITUTE_CODES': '/ctrp/registry/institute_codes.json',
             'NCI': '/ctrp/registry/nci.json',
             'TRIAL_STATUSES': '/ctrp/registry/trial_statuses.json',
+
+            'TRIALS': {
+                'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
+            },
+
             'MILESTONES': '/ctrp/registry/milestones.json',
             'PROCESSING_STATUSES': '/ctrp/registry/processing_statuses.json',
             'HOLDER_TYPES': '/ctrp/registry/holder_types.json',

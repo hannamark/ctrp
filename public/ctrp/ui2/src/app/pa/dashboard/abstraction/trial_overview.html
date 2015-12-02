@@ -1,13 +1,18 @@
-<div class="row-fluid">
-    <div class="col-xs-12 drop-shadow">
+<div class="row-fluid" ng-controller="paTrialOverviewCtrl as paTrialOverview">
+    <div class="col-xs-12 drop-shadow" ng-show="paTrialOverview.loadingTrialDetail">
+        <!-- overlay -->
+        Loading data ....
+        <!-- overlay -->
+    </div>
+
+    <div class="col-xs-12 drop-shadow" ng-show="!paTrialOverview.loadingTrialDetail">
         <!-- first row -->
         <div class="row">
             <p>
                 <h4><strong>Trial Overview</strong></h4>
             </p>
             <p>
-                <h5><strong>NCI-2013000800: A Phase I/II Study of First Line Gemcitabine,
-                Cisplatin, and MEK162 in Advanced Bilary Tract Cardinoma</strong></h5>
+                <h5><strong>{{paTrialOverview.trialDetailObj.official_title}}</strong></h5>
             </p>
         </div>
         <!-- end of first row -->
@@ -18,11 +23,13 @@
             <div class="col-sm-4 col-xs-12">
                 <p>
                     <strong>Lead Organization Trial ID:</strong>
-                    <span>13-004</span>
+                    <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
                 </p>
                 <p>
                     <strong>Lead Organization:</strong>
-                    <span>Memorial Sloan-Kettering Cancer Center</span>
+                    <span><a ui-sref="main.orgDetail({orgId: paTrialOverview.trialDetailObj.history.lead_org.id})">
+                        {{paTrialOverview.trialDetailObj.history.lead_org.name}}
+                    </a></span>
                 </p>
                 <p>
                     <strong>Amendment Number:</strong>
@@ -43,22 +50,24 @@
             <div class="col-sm-4 col-xs-12">
                 <p>
                     <strong>Principal Investigator:</strong>
-                    <span><a href="">Lowery Maeve</a></span>
+                    <span><a ui-sref="main.personDetail({personId: paTrialOverview.trialDetailObj.pi.id})">
+                        {{paTrialOverview.trialDetailObj.pi.fullName}}
+                    </a></span>
                 </p>
 
                 <p>
                     <strong>Last Submitter:</strong>
-                    <span><a href="">SilverbM</a></span>
+                    <span><a href="">SilverbM ??</a></span>
                 </p>
 
                 <p>
                     <strong>Last Submitter Organization:</strong>
-                    <span><a href="">Memorial Sloan-Kettering CAncer Center</a></span>
+                    <span><a href="">Memorial Sloan-Kettering CAncer Center??</a></span>
                 </p>
 
                 <p>
                     <strong>Amendment Date:</strong>
-                    <span>01/16/2015</span>
+                    <span>01/16/2015 ??</span>
                 </p>
             </div>
             <!-- end of column 2-->
@@ -67,24 +76,23 @@
             <div class="col-sm-4 col-xs-12">
                 <p>
                     <strong>Current Trial Status:</strong>
-                    <span>Active</span>
+                    <span>Active??</span>
                 </p>
 
                 <p>
                     <strong>Current Trial Status Date:</strong>
-                    <span>04/09/2013</span>
+                    <span>04/09/2013??</span>
                 </p>
                 <p>
                     <strong>Processing Status:</strong>
-                    <span>Abstraction Verified</span>
+                    <span>Abstraction Verified ??</span>
                 </p>
             </div>
             <!-- end of column 3-->
         </div>
         <!-- end of second row -->
 
-        <!-- dynamic loading of partial views here -->
-        <!-- <div ng-include="paTrialOverview.subViewPartialUrl"></div> -->
+        <!-- dynamic loading of sub-partial views here -->
         <div ui-view></div>
         <!-- end of dynamic loading of partial views -->
 
