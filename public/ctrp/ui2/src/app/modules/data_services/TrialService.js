@@ -88,7 +88,6 @@
             getInstituteCodes: getInstituteCodes,
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
-            getMilestones: getMilestones,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
@@ -221,10 +220,6 @@
 
         function getTrialStatuses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_STATUSES);
-        }
-
-        function getMilestones() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
         }
 
         function getHolderTypes() {
