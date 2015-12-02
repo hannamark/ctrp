@@ -25,7 +25,7 @@
             + '<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
             + 'Action <span class="caret"></span>'
             + '</button>'
-            + '<ul class="dropdown-menu"><li ng-repeat="action in row.entity.actions"><a href="#" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)">{{action}}</a></li></ul>'
+            + '<ul class="dropdown-menu"><li ng-repeat="action in row.entity.actions"><a href="#" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)">{{grid.appScope.capitalizeFirst(action)}}</a></li></ul>'
             + '</div>';
 
         var gridOptions = {
