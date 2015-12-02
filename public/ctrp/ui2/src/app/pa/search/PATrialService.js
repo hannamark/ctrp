@@ -70,6 +70,9 @@
                 {name: 'other_ids', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
+                {name: 'current_processing_status', enableSorting: true, minWidth: '150', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
                 {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '*',
                     cellTemplate: '<button restriction-field ng-repeat="action in row.entity.actions" type="button" class="btn btn-primary" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)"><i class="glyphicon"></i> {{action}} </button>'
                 }
@@ -97,11 +100,11 @@
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
             getMilestones: getMilestones,
+            getProcessingStatuses: getProcessingStatuses,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
             checkOtherId: checkOtherId,
-            uploadDocument: uploadDocument,
             deleteTrial: deleteTrial
         };
 
@@ -220,6 +223,10 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
         }
 
+        function getProcessingStatuses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PROCESSING_STATUSES);
+        }
+
         function getHolderTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.HOLDER_TYPES);
         }
@@ -261,35 +268,6 @@
             }
 
             return errorMsg;
-        }
-
-        /**
-         * Upload a file associated with a given trial
-         *
-         * @param trialId
-         * @param documentType
-         * @param file
-         */
-        function uploadDocument(trialId, documentType, documentSubtype, file) {
-            Upload.upload({
-                url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
-                method: 'POST',
-                data: {
-                    'trial_document[document_type]': documentType,
-                    'trial_document[document_subtype]': documentSubtype,
-                    'trial_document[trial_id]': trialId,
-                    'trial_document[file]': file
-                }
-                //file: file,
-                //fileFormDataName: 'trial_document[file]'
-            }).progress(function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                $log.info('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-            }).success(function (data, status, headers, config) {
-                $log.info('file ' + config.file.name + ' uploaded.');
-            }).error(function (data, status, headers, config) {
-                $log.info('file ' + config.file.name + ' upload error. error status: ' + status);
-            });
         }
 
         /**
