@@ -31,7 +31,10 @@
                             milestoneObj: function(TrialService) {
                                 return TrialService.getMilestones();
                             }
-
+                            ,
+                            processingStatusObj: function(PATrialService) {
+                                return PATrialService.getProcessingStatuses();
+                            }
                         },
                         ncyBreadcrumb: {
                             parent: 'main.defaultContent',
