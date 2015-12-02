@@ -59,6 +59,10 @@
             $state.go('main.trialDetail', {trialId: trialId, editType: actionType});
         };
 
+        $scope.capitalizeFirst = function(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        };
+
         activate();
 
         /****************************** implementations **************************/
