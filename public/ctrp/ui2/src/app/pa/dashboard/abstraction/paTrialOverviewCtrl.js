@@ -19,8 +19,6 @@
 
         activate();
 
-
-
         function activate() {
             $timeout(function() {
                 getTrialDetail();
