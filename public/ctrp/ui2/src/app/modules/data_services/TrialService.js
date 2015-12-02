@@ -21,11 +21,11 @@
         }; //initial Trial Search Parameters
 
         //var actionTemplate = '<button ng-repeat="action in row.entity.actions" type="button" class="btn btn-primary" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)"><i class="glyphicon"></i> {{action}} </button>';
-        var actionTemplate = '<div class="btn-group">'
+        var actionTemplate = '<div class="btn-group" ng-class="grid.renderContainers.body.visibleRowCache.indexOf(row) > 4 ? \'dropup\' : \'\'">'
             + '<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
             + 'Action <span class="caret"></span>'
             + '</button>'
-            + '<ul class="dropdown-menu"><li ng-repeat="action in row.entity.actions"><a href="#" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)">{{grid.appScope.capitalizeFirst(action)}}</a></li></ul>'
+            + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions"><a href="#" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)">{{grid.appScope.capitalizeFirst(action)}}</a></li></ul>'
             + '</div>';
 
         var gridOptions = {
@@ -69,8 +69,8 @@
                 {name: 'current_trial_status', enableSorting: false, minWidth: '170', width: '170',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '120', width: '120',
-                    cellTemplate: actionTemplate, cellClass: 'overflow'
+                {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '100',
+                    cellTemplate: actionTemplate, cellClass: 'action-btn'
                 }
 
             ]
