@@ -1,4 +1,4 @@
-<div class="row-fluid">
+<div class="row-fluid" ng-controller="paTrialOverviewCtrl as paTrialOverview">
     <div class="col-xs-12 drop-shadow">
         <!-- first row -->
         <div class="row">
@@ -83,8 +83,7 @@
         </div>
         <!-- end of second row -->
 
-        <!-- dynamic loading of partial views here -->
-        <!-- <div ng-include="paTrialOverview.subViewPartialUrl"></div> -->
+        <!-- dynamic loading of sub-partial views here -->
         <div ui-view></div>
         <!-- end of dynamic loading of partial views -->
 
