@@ -732,3 +732,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     margin-top: 20px;
     right: 15px;
 }
+
+.ui-grid-cell.overflow {
+    overflow: visible;
+}
