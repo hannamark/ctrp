@@ -13,6 +13,7 @@ rake db:migrate
 
 #Launch new Mac OS X terminal, navigate to project, start WEBrick
 osascript -e 'tell app "Terminal"
+#   do script "cd /local/content/ctrp/apps/ctrp/public/ctrp/ui2 && bower install"
    do script "cd /local/content/ctrp/apps/ctrp/ && rails s" 
 end tell'
 
@@ -22,6 +23,7 @@ sleep 5
 #Instantiate data via REST and ActiveRecord db seeding
 ruby db/add_users.rb
 rake db:seed
+
 
 #Note: as written, this script won't close terminals previously opened by this script
 
