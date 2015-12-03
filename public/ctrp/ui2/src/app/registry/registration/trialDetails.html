@@ -210,11 +210,15 @@
                             </div>
                         </div>
 
-                        <div ng-show="trialDetailView.showPrimaryPurposeOther" class="form-group">
+                        <div ng-if="trialDetailView.showPrimaryPurposeOther" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose_other)}">
                             <label class="control-label col-xs-12 col-sm-3">Describe "Other" Primary Purpose:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <textarea restriction-field class="form-control input-sm" id="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other"
-                                          ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"></textarea>
+                                <textarea restriction-field class="form-control input-sm" id="primary_purpose_other" name="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other"
+                                          ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required></textarea>
+                                <span class="form-control-feedback" ng-show="trialDetailView.curTrial.primary_purpose_other.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose_other) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose_other)">
+                                    Other Primary Purpose is required
+                                </span>
                             </div>
                         </div>
 
@@ -229,11 +233,15 @@
                             </div>
                         </div>
 
-                        <div ng-show="trialDetailView.showSecondaryPurposeOther" class="form-group">
+                        <div ng-if="trialDetailView.showSecondaryPurposeOther" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.secondary_purpose_other)}">
                             <label class="control-label col-xs-12 col-sm-3">Describe "Other" Secondary Purpose:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <textarea restriction-field class="form-control input-sm" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other"
-                                          ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"></textarea>
+                                <textarea restriction-field class="form-control input-sm" id="secondary_purpose_other" name="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other"
+                                          ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required></textarea>
+                                <span class="form-control-feedback" ng-show="trialDetailView.curTrial.secondary_purpose_other.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.secondary_purpose_other) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.secondary_purpose_other)">
+                                    Other Secondary Purpose is required
+                                </span>
                             </div>
                         </div>
 
