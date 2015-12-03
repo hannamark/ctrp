@@ -1,8 +1,9 @@
 <div class="row-fluid" ng-controller="paTrialOverviewCtrl as paTrialOverview">
     <div class="col-xs-12 drop-shadow" ng-show="paTrialOverview.loadingTrialDetail">
-        <!-- overlay -->
-        Loading data ....
-        <!-- overlay -->
+        <!-- Loading data .... -->
+        <div class="row">
+            <img src="./images/ajax_loader.svg">
+        </div>
     </div>
 
     <div class="col-xs-12 drop-shadow" ng-show="!paTrialOverview.loadingTrialDetail">
