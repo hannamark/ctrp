@@ -76,16 +76,16 @@
             <div class="col-sm-4 col-xs-12">
                 <p>
                     <strong>Current Trial Status:</strong>
-                    <span>Active??</span>
+                    <span>{{paTrialOverview.trialDetailObj.current_trial_status}}</span>
                 </p>
 
                 <p>
                     <strong>Current Trial Status Date:</strong>
-                    <span>04/09/2013??</span>
+                    <span>{{paTrialOverview.trialDetailObj.current_trial_status_date | date: "dd-MMM-yyyy H:mm"}}</span>
                 </p>
                 <p>
                     <strong>Processing Status:</strong>
-                    <span>Abstraction Verified ??</span>
+                    <span>{{paTrialOverview.trialDetailObj.processing_status}}</span>
                 </p>
             </div>
             <!-- end of column 3-->
