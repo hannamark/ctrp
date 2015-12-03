@@ -14,3 +14,10 @@ json.trial_status_wrappers do
     json.extract! status, :trial_id, :id, :status_date, :why_stopped, :trial_status_id, :trial_status, :comment, :created_at, :updated_at
   end
 end
+
+json.submissions do
+  json.array!(@trial.submissions) do |submission|
+    json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
+                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at
+  end
+end
