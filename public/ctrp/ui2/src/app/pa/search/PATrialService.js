@@ -33,8 +33,10 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '120', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+
                 },
                 {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -42,10 +44,10 @@
                 {name: 'official_title', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phase', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'phase', enableSorting: true, minWidth: '40', width: '1%'},
                 {name: 'purpose', enableSorting: true, minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
-                {name: 'pilot', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'pilot', enableSorting: true, minWidth: '40', width: '1%'},
                 {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -59,6 +61,24 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'current_trial_status', enableSorting: true, minWidth: '150', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'current_milestone', enableSorting: true, minWidth: '170', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'selected_milestone', enableSorting: true, minWidth: '170', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'scientific_milestone', enableSorting: true, minWidth: '170', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'admin_milestone', enableSorting: true, minWidth: '170', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'other_ids', enableSorting: true, minWidth: '250', width: '8%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'current_processing_status', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '*',
@@ -88,11 +108,11 @@
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
             getMilestones: getMilestones,
+            getProcessingStatuses: getProcessingStatuses,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
             checkOtherId: checkOtherId,
-            uploadDocument: uploadDocument,
             deleteTrial: deleteTrial
         };
 
@@ -211,6 +231,10 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
         }
 
+        function getProcessingStatuses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PROCESSING_STATUSES);
+        }
+
         function getHolderTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.HOLDER_TYPES);
         }
@@ -252,35 +276,6 @@
             }
 
             return errorMsg;
-        }
-
-        /**
-         * Upload a file associated with a given trial
-         *
-         * @param trialId
-         * @param documentType
-         * @param file
-         */
-        function uploadDocument(trialId, documentType, documentSubtype, file) {
-            Upload.upload({
-                url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
-                method: 'POST',
-                data: {
-                    'trial_document[document_type]': documentType,
-                    'trial_document[document_subtype]': documentSubtype,
-                    'trial_document[trial_id]': trialId,
-                    'trial_document[file]': file
-                }
-                //file: file,
-                //fileFormDataName: 'trial_document[file]'
-            }).progress(function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                $log.info('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-            }).success(function (data, status, headers, config) {
-                $log.info('file ' + config.file.name + ' uploaded.');
-            }).error(function (data, status, headers, config) {
-                $log.info('file ' + config.file.name + ' upload error. error status: ' + status);
-            });
         }
 
         /**

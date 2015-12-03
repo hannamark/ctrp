@@ -2,7 +2,8 @@
  * Created by singhs10 on 10/8/15.
  */
 
-
+//var plumber = require('gulp-plumber');
+//var coffee = require('gulp-coffee');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -28,6 +29,7 @@ module.exports = function() {
     var searchOrg = new searchOrgPage();
     var projectFunctions = new projectFunctionsPage();
     var selectItem =new selectList();
+    //gulp.src('./src/*.ext').pipe(plumber()).pipe(coffee()).pipe(gulp.dest('./dist'));
 
 
     this.Given(/^I know which organization I wish to assign to an Organization Family$/, function (callback) {
@@ -51,6 +53,7 @@ module.exports = function() {
             projectFunctions.createFamily('SSFamilyCuke', 'Active', 'NIH');
             cukeFamily.then(function(value4)
             {console.log('Added Family Name - ' + value4);});});
+        projectFunctions.createFamily('SSFamilyCuke', 'Active', 'NIH');
         menuItem.clickOrganizations();
         menuItem.clickListFamily();
         browser.sleep(25).then(callback);
@@ -61,8 +64,10 @@ module.exports = function() {
         {console.log('search family - ' + value2);
             searchFamily.setFamilyName(value2);
             searchFamily.clickSearchButton();
-            expect(projectFunctions.inSearchResults(value2)).to.become('true');
         });
+        helper.wait_for(9000);
+        expect(projectFunctions.inSearchResults(value2)).to.become('true').and.notify(next);
+        helper.wait_for(9000);
         browser.sleep(25).then(callback);
     });
 

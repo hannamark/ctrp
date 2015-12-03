@@ -1,13 +1,18 @@
-<div class="row-fluid">
-    <div class="col-xs-12 drop-shadow">
+<div class="row-fluid" ng-controller="paTrialOverviewCtrl as paTrialOverview">
+    <div class="col-xs-12 drop-shadow" ng-show="paTrialOverview.loadingTrialDetail">
+        <!-- overlay -->
+        Loading data ....
+        <!-- overlay -->
+    </div>
+
+    <div class="col-xs-12 drop-shadow" ng-show="!paTrialOverview.loadingTrialDetail">
         <!-- first row -->
         <div class="row">
             <p>
                 <h4><strong>Trial Overview</strong></h4>
             </p>
             <p>
-                <h5><strong>NCI-2013000800: A Phase I/II Study of First Line Gemcitabine,
-                Cisplatin, and MEK162 in Advanced Bilary Tract Cardinoma</strong></h5>
+                <h5><strong>{{paTrialOverview.trialDetailObj.official_title}}</strong></h5>
             </p>
         </div>
         <!-- end of first row -->
@@ -18,23 +23,25 @@
             <div class="col-sm-4 col-xs-12">
                 <p>
                     <strong>Lead Organization Trial ID:</strong>
-                    <span>13-004</span>
+                    <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
                 </p>
                 <p>
                     <strong>Lead Organization:</strong>
-                    <span>Memorial Sloan-Kettering Cancer Center</span>
+                    <span><a ui-sref="main.orgDetail({orgId: paTrialOverview.trialDetailObj.lead_org.id})">
+                        {{paTrialOverview.trialDetailObj.lead_org.name}}
+                    </a></span>
                 </p>
                 <p>
                     <strong>Amendment Number:</strong>
-                    <span>2</span>
+                    <span>2??</span>
                 </p>
                 <p>
                     <strong>Trial Category:</strong>
-                    <span>Complete Trial</span>
+                    <span>Complete Trial??</span>
                 </p>
                 <p>
                     <strong>Submission Source:</strong>
-                    <span></span>
+                    <span>??</span>
                 </p>
             </div>
             <!-- end of column 1-->
@@ -43,22 +50,24 @@
             <div class="col-sm-4 col-xs-12">
                 <p>
                     <strong>Principal Investigator:</strong>
-                    <span><a href="">Lowery Maeve</a></span>
+                    <span><a ui-sref="main.personDetail({personId: paTrialOverview.trialDetailObj.pi.ctrp_id})">
+                        {{paTrialOverview.trialDetailObj.pi.fullName}}
+                    </a></span>
                 </p>
 
                 <p>
                     <strong>Last Submitter:</strong>
-                    <span><a href="">SilverbM</a></span>
+                    <span><a href="">SilverbM ??</a></span>
                 </p>
 
                 <p>
                     <strong>Last Submitter Organization:</strong>
-                    <span><a href="">Memorial Sloan-Kettering CAncer Center</a></span>
+                    <span><a href="">Memorial Sloan-Kettering CAncer Center??</a></span>
                 </p>
 
                 <p>
                     <strong>Amendment Date:</strong>
-                    <span>01/16/2015</span>
+                    <span>01/16/2015 ??</span>
                 </p>
             </div>
             <!-- end of column 2-->
@@ -67,35 +76,25 @@
             <div class="col-sm-4 col-xs-12">
                 <p>
                     <strong>Current Trial Status:</strong>
-                    <span>Active</span>
+                    <span>{{paTrialOverview.trialDetailObj.current_trial_status}}</span>
                 </p>
 
                 <p>
                     <strong>Current Trial Status Date:</strong>
-                    <span>04/09/2013</span>
+                    <span>{{paTrialOverview.trialDetailObj.current_trial_status_date | date: "dd-MMM-yyyy H:mm"}}</span>
                 </p>
-
                 <p>
                     <strong>Processing Status:</strong>
-                    <span>Abstraction Verified</span>
+                    <span>{{paTrialOverview.trialDetailObj.processing_status}}</span>
                 </p>
             </div>
             <!-- end of column 3-->
         </div>
         <!-- end of second row -->
 
-        <!-- third row: Trial identification -->
-        <div class="row">
-            <uib-accordion close-others="false">
-                <uib-accordion-group is-open="true">
-                    <uib-accordion-heading>
-                        Trial Identification <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialOverview.accordions[0], 'glyphicon-chevron-right': !trialOverview.accordions[0]}"></i>
-                    </uib-accordion-heading>
-                </uib-accordion-group>
-            </uib-accordion>
-        </div>
-        <!-- end of trial identification -->
-        <!-- end of third row -->
+        <!-- dynamic loading of sub-partial views here -->
+        <div ui-view></div>
+        <!-- end of dynamic loading of partial views -->
 
     </div> <!-- end of col-xs-12 drop-shadow -->
 </div>

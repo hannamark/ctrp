@@ -9,7 +9,7 @@
     paRoutes.$inject = ['$stateProvider'];
     function paRoutes($stateProvider) {
         $stateProvider
-            .state('main.pa.trials', {
+            .state('main.paTrialSearch', {
                         url: '/pa_trials',
                         templateUrl: 'app/pa/search/trials/pa_trial_list.html',
                         controller: 'paTrialCtrl as trialView',
@@ -28,10 +28,13 @@
                             trialStatusObj: function(TrialService) {
                                 return TrialService.getTrialStatuses();
                             },
-                            milestoneObj: function(TrialService) {
-                                return TrialService.getMilestones();
+                            milestoneObj: function(PATrialService) {
+                                return PATrialService.getMilestones();
                             }
-
+                            ,
+                            processingStatusObj: function(PATrialService) {
+                                return PATrialService.getProcessingStatuses();
+                            }
                         },
                         ncyBreadcrumb: {
                             parent: 'main.defaultContent',
@@ -43,4 +46,3 @@
 
 
 })();
-

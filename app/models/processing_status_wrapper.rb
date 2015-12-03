@@ -22,4 +22,8 @@ class ProcessingStatusWrapper < ActiveRecord::Base
 
   belongs_to :processing_status
   belongs_to :trial
+
+  scope :latest, -> {
+    order("updated_at DESC").first
+  }
 end

@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+  #load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -134,6 +134,11 @@ class TrialsController < ApplicationController
           @trials = @trials.with_lead_org(params[:org])
         elsif params[:org_type] == 'Sponsor'
           @trials = @trials.with_sponsor(params[:org])
+        elsif params[:org_type] == 'Participating Sites'
+          # TODO handle wildcard
+          if params[:org] != "*"
+            @trials = @trials.select{|trial| trial.participating_sites.by_value(params[:org])}
+          end
         else
           @trials = @trials.with_any_org(params[:org])
         end
@@ -145,12 +150,12 @@ class TrialsController < ApplicationController
       if params[:research_category].present?
         @trials = @trials.with_research_category(params[:research_category])
       end
-      if params[:trial_status].present? && params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
+      if params[:trial_status].present?# && params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
         @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
       end
-      if params[:milestone].present? && params[:milestone_latest].present? && params[:milestone_latest] == "YES"
-        @trials = @trials.select{|trial| !trial.milestone_wrappers.blank? &&  trial.milestone_wrappers.last.milestone.code == params[:milestone]}
-      end
+      #if params[:milestone].present? #&& params[:milestone_latest].present? && params[:milestone_latest] == "YES"
+      #  @trials = @trials.select{|trial| !trial.milestone_wrappers.blank? &&  trial.milestone_wrappers.last.milestone.code == params[:milestone]}
+      #end
       if params[:processing_status].present? #&& params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
         Rails.logger.debug " Before params[:processing_status] = #{params[:processing_status].inspect}"
         @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && trial.processing_status_wrappers.last.processing_status.code == params[:processing_status]}

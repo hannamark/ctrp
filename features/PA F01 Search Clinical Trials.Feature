@@ -181,9 +181,10 @@ When I select one or more Milestones
 |Administrative Processing Start Date|
 |Administrative Processing Completed Date|
 |Ready for Administrative QC Date|
-|Administrative QC Start Date Administrative|
-|QC Completed Date Scientific Processing Start|
-|Date Scientific Processing Completed Date|
+|Administrative QC Start Date |
+|Administrative QC Completed Date|
+|Scientific Processing Start Date|
+|Scientific Processing Completed Date|
 |Ready for Scientific QC Date|
 |Scientific QC Start Date|
 |Scientific QC Completed Date|
