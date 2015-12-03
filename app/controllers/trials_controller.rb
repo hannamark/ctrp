@@ -177,7 +177,7 @@ class TrialsController < ApplicationController
                                     :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                     :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
-                                    :investigator_id, :investigator_aff_id, :is_draft, :lock_version,
+                                    :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
