@@ -33,8 +33,10 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '120', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+
                 },
                 {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -42,10 +44,10 @@
                 {name: 'official_title', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phase', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'phase', enableSorting: true, minWidth: '40', width: '1%'},
                 {name: 'purpose', enableSorting: true, minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
-                {name: 'pilot', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'pilot', enableSorting: true, minWidth: '40', width: '1%'},
                 {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -61,13 +63,19 @@
                 {name: 'current_trial_status', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_milestone', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'current_milestone', enableSorting: true, minWidth: '170', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'selected_milestone', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'selected_milestone', enableSorting: true, minWidth: '170', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'other_ids', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'scientific_milestone', enableSorting: true, minWidth: '170', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'admin_milestone', enableSorting: true, minWidth: '170', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'other_ids', enableSorting: true, minWidth: '250', width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'current_processing_status', enableSorting: true, minWidth: '150', width: '*',

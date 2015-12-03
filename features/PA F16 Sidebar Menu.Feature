@@ -26,6 +26,7 @@ Then the sidebar menu will be displayed expanded:
 |Regulatory Information - IND/IDE|
 |Participating Sites|
 |Trial Related Documents|
+|NCI Specific Information|
 |Scientific Data (Section)|
 |Trial Design|
 |Trial Description|
@@ -38,9 +39,6 @@ Then the sidebar menu will be displayed expanded:
 |Outcome Measures|
 |Sub-Groups|
 |Bio Markers|
-
-
-
 |Completion (Section)|
 |Abstraction Validation|
 

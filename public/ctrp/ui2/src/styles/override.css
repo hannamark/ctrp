@@ -459,8 +459,13 @@ body {
     margin-left: -20px;
 }
 
+.sidebar .panel-heading {
+    background: #2A71A5;
+}
+
 .sidebar .panel-title, .nav-stacked {
     font-size: 12px;
+    color: #FFF;
 }
 
 .row {

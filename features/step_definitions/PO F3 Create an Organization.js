@@ -32,13 +32,13 @@ module.exports = function() {
     var phone = '444-555-6666';
     var fax = '222-444-7777';
     var sourceStatus_Pending = 'Pending';
-    var sourceStatus_Active = 'Active';
+    var sourceStatus_Active = 'ACTIVE';
     var duplicate_org_name = 'Ochsner Baptist Medical Center';
     var sourceContext = '1'; // '1' selects CTRP
     var sourceID = 'CT 007';
 
     this.Given(/^I am a Curator and on the Add Organization screen$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function(){
@@ -310,18 +310,18 @@ module.exports = function() {
 
 
     this.Then(/^all values in create organization for all fields will be cleared$/, function (callback) {
-        addOrg.getVerifyAddOrgName('');
+        addOrg.getVerifyAddOrgName('').and.notify(next);
     //    addOrg.getVerifyAddOrgAlias('');
-        addOrg.getVerifyAddAddress('');
-        addOrg.getVerifyAddAddress2('');
-        addOrg.getVerifyAddCity('');
-        addOrg.getVerifyAddEmail('');
-        addOrg.getVerifyAddFax('');
-        addOrg.getVerifyAddPhone('');
-        addOrg.getVerifyAddPostalCode('');
-        addOrg.getVerifyAddState('Select a state or province');
-        addOrg.getVerifyAddCountry('United States');
-        addOrg.getVerifyAddSourceStatusDefault('Active');
+        addOrg.getVerifyAddAddress('').and.notify(next);
+        addOrg.getVerifyAddAddress2('').and.notify(next);
+        addOrg.getVerifyAddCity('').and.notify(next);
+        addOrg.getVerifyAddEmail('').and.notify(next);
+        addOrg.getVerifyAddFax('').and.notify(next);
+        addOrg.getVerifyAddPhone('').and.notify(next);
+        addOrg.getVerifyAddPostalCode('').and.notify(next);
+        addOrg.getVerifyAddState('Select a state or province').and.notify(next);
+        addOrg.getVerifyAddCountry('United States').and.notify(next);
+        addOrg.getVerifyAddSourceStatusDefault('Active').and.notify(next);
         browser.sleep(25).then(callback);
     });
 

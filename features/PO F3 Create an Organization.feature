@@ -6,7 +6,7 @@ Scenario: #1 As a Curator, the Add Organization screen will have default values
 Given I am a Curator and on the Add Organization screen
 When I look at the default values
 Then I will see "United States" as the default for Country
-And I will see "Active" as the default for Source Status
+And I will see "ACTIVE" as the default for Source Status
 
 Scenario: #2a As a Curator, I can request the creation of a new Organization in CTRP
 Given I am logged in to CTRP PO application
@@ -124,7 +124,7 @@ And I know the name of the organization I wish to create
 And I provide the full name of the organization I wish to create
 And I submit my create request
 Then the system should indicate with a warning that the organization is a duplicate name in the same context
-@runthis
+
 Scenario: #4 As a Curator, I can clear any data I entered
 Given I am logged in to CTRP PO application
 And I am on the create organization feature

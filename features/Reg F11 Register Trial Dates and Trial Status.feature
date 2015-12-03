@@ -4,54 +4,81 @@ Feature: Reg F11 Register Trial Dates and Trial Status
 As a CTRP User, I can register a trial's key dates and trial status
 
 Scenario Outline: #1 Active Trial Status Transition Rules
-  Given I have selected the option to register a National or Externally Peer-Reviewed or Institutional trial
+  Given I have selected the option to register a trial type 
+  
+  		
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+
     And I am on the Register Trial Status screen
    When I choose a trial status <status-from> from the status drop down box
     And the trial status changes from <Status-from> to status <status-to>
-    And I click on the add status button
-   Then no error or warning should be displayed in the validation messages column
-   And a condition < Condition-Text> should be respected for the transition to be valid
-
+    And a condition < Condition-Text> should be respected for the transition to be valid
+	And I click on the add status button
+   Then no error or warning should be displayed in the validation messages column 
+   
 Examples: 
 
-      |Status From                                     |Status to                                      |Condition-Text                                                                                                                                                            |
+      |Status From                                     |Status to                                      |Condition-Text                                                                                          |
       |In Review                                       |Approved                                       |                                                                                                                                                                          
-      |In Review                                       |Active                                         |This can occur when the trial has been Approved and is Active/Enrolling by Invitation on the same day                                                                        |
+      |In Review                                       |Active                                         |This can occur when the trial has been Approved and is Active/Enrolling by Invitation on the same day   |
       |In Review                                       |Enrolling by Invitation                        |This can occur when the trial has been Approved and is Active/Enrolling by Invitation on the same day 
-      |In Review                                       |Withdrawn                                      |                                                                                                                                                                             |
-      |Approved                                        |Active                                         |                                                                                                                                                                             |
-      |Approved                                        |Enrolling by invitation                        |                                                                                                                                                                             |
-      |Approved                                        |Withdrawn                                      |                                                                                                                                                                             |
-      |Active                                          |Closed to Accrual                              |                                                                                                                                                                             |
-      |Active                                          |Temporarily Closed to Accrual                  |                                                                                                                                                                             |
-      |Active                                          |Temporarily Closed to Accrual and Intervention |                                                                                                                                                                             |
-      |Active                                          |Closed to Accrual and Intervention             |                                                                                                                                                                             |
-      |Active                                          |Administratively Completed                     |                                                                                                                                                                             |
-      |Active                                          |Completed                                      |                                                                                                                                                                             |
-      |Enrolling by Invitation                         |Closed to Accrual                              |                                                                                                                                                                             |
-      |Enrolling by Invitation                         |Temporarily Closed to Accrual                  |                                                                                                                                                                             |
-      |Enrolling by Invitation                         |Temporarily Closed to Accrual and Intervention |                                                                                                                                                                             |
-      |Enrolling by Invitation                         |Closed to Accrual and Intervention             |                                                                                                                                                                             |
-      |Enrolling by Invitation                         |Administratively Completed                     |                                                                                                                                                                             |
-      |Enrolling by Invitation                         |Completed                                      |                                                                                                                                                                             |
-      |Closed to Accrual                               |Closed to Accrual and Intervention             |                                                                                                                                                                             |
-      |Closed to Accrual                               |Administratively Completed                     |                                                                                                                                                                             |
-      |Closed to Accrual and Intervention              |Completed                                      |                                                                                                                                                                             |
-      |Closed to Accrual and Intervention              |Administratively Completed                     |                                                                                                                                                                             |
-      |Temporarily Closed to Accrual                   |Temporarily Closed to Accrual and Intervention |                                                                                                                                                                             |
-      |Temporarily Closed to Accrual                   |Active                 				           |                                                                                                                                                                             |
-      |Temporarily Closed to Accrual                    Enrolling by Invitation                        |                                                                                                                                                                             |                                                   
-      |Temporarily Closed to Accrual                   |Closed to Accrual                              |                                                                                                                                                                             |
-      |Temporarily Closed to Accrual                   |Closed to Accrual and Intervention             |                                                                                                                                                                             |
-      |Temporarily Closed to Accrual                   |Administratively Completed                     |                                                                                                                                                                             |
-      |Temporarily Closed to Accrual and Intervention  |Administratively Completed                     |                                                                                                                                                                             |
-      |Temporarily Closed to Accrual and Intervention  |Active                                         |                                                                                                                                                                             |
-      |Temporarily Closed to Accrual and Intervention   Enrolling by Invitation                        |                                                                                                                                                                             |
-      |Temporarily Closed to Accrual and Intervention  |Closed to Accrual                              |                                                                                                                                                                             |
-      |Temporarily Closed to Accrual and Intervention  |Closed to Accrual and Intervention             |                                                                                                                                                                             |
+      |In Review                                       |Withdrawn                                      |                                                                                                        |
+      |Approved                                        |Active                                         |                                                                                                        |
+      |Approved                                        |Enrolling by invitation                        |                                                                                                        |
+      |Approved                                        |Withdrawn                                      |                                                                                                        |
+      |Active                                          |Closed to Accrual                              |                                                                                                        |
+      |Active                                          |Temporarily Closed to Accrual                  |                                                                                                        |
+      |Active                                          |Temporarily Closed to Accrual and Intervention |                                                                                                        |
+      |Active                                          |Closed to Accrual and Intervention             |                                                                                                        |
+      |Active                                          |Administratively Completed                     |                                                                                                        |
+      |Active                                          |Completed                                      |                                                                                                        |
+      |Enrolling by Invitation                         |Closed to Accrual                              |                                                                                                        |
+      |Enrolling by Invitation                         |Temporarily Closed to Accrual                  |                                                                                                        |
+      |Enrolling by Invitation                         |Temporarily Closed to Accrual and Intervention |                                                                                                        |
+      |Enrolling by Invitation                         |Closed to Accrual and Intervention             |                                                                                                        |
+      |Enrolling by Invitation                         |Administratively Completed                     |                                                                                                        |
+      |Enrolling by Invitation                         |Completed                                      |                                                                                                        |
+      |Closed to Accrual                               |Closed to Accrual and Intervention             |                                                                                                        |
+      |Closed to Accrual                               |Administratively Completed                     |                                                                                                        |
+      |Closed to Accrual and Intervention              |Completed                                      |                                                                                                        |
+      |Closed to Accrual and Intervention              |Administratively Completed                     |                                                                                                        |
+      |Temporarily Closed to Accrual                   |Temporarily Closed to Accrual and Intervention |                                                                                                        |
+      |Temporarily Closed to Accrual                   |Active                 				           |                                                                                                        |
+      |Temporarily Closed to Accrual                    Enrolling by Invitation                        |                                                                                                        |                                                   
+      |Temporarily Closed to Accrual                   |Closed to Accrual                              |                                                                                                        |
+      |Temporarily Closed to Accrual                   |Closed to Accrual and Intervention             |                                                                                                        |
+      |Temporarily Closed to Accrual                   |Administratively Completed                     |                                                                                                        |
+      |Temporarily Closed to Accrual and Intervention  |Administratively Completed                     |                                                                                                        |
+      |Temporarily Closed to Accrual and Intervention  |Active                                         |                                                                                                   
+      |Temporarily Closed to Accrual and Intervention   Enrolling by Invitation                        |                                                                                                        |
+      |Temporarily Closed to Accrual and Intervention  |Closed to Accrual                              |                                                                                                        |
+      |Temporarily Closed to Accrual and Intervention  |Closed to Accrual and Intervention             |                                                                                                        |
                                                                                                                                                                                                                                                                                                                                                      |
-    Scenario Outline: #2Invalid Trial Status Transitions 
-   Given I have selected the option to register a National or Externally Peer-Reviewed or Institutional trial
+      Scenario Outline:#2 Trial Status Rules
+    Given I have selected the option to register a trial type 
+  
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+
+    And I am on the Register Trial Status screen 
+    When the trial status type
+     
+      |Administratively Complete    |
+      |Withdrawn                    |
+      |Temporarily Closed to accrual| for the trial status type
+      
+    Then I must answer the question Why Study Stopped? and a green bubble will appear in the trial status Actions 
+    
+    Scenario Outline: #3 Invalid Trial Status Transitions 
+   Given I have selected the option to register a trial type
+   
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+      
     And I am on the Register Trial Status screen
    When I choose a trial status <status-from> from the status drop down box
     And the trial status changes from <Status-from> to status <status-to>
@@ -77,8 +104,13 @@ Examples:
       
 
    
-   Scenario Outline:#1 I can enter a trial status and trial status date for a trial
-Given I have selected the option to register a National or Externally Peer-Reviewed or Institutional trial
+   Scenario Outline:#4 I can enter a trial status and trial status date for a trial
+Given I have selected the option to register a trial type 
+
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+      
 And I am on the Register Trial Status screen
 When I have selected a date <status date> and a status <status> and explained why study stopped <why study stopped>
 Then I click on the add status button
@@ -102,7 +134,53 @@ Then the <date> and <status> will be validated and displayed on the trial status
       |11-05-2017  | Complete                                      |                       |
 
    
+    Scenario Outline: #5 I can add, edit or delete a trial
+    Given I have selected the option to register a trial type 
+
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+      
+   And I am on the Register Trial Status screen
+   When When I add a trial status 
+   Then a new trial status will appear in the Trial Status History
+   And I can delete any status by clinking on the delete button in the Actions column
+   And I can edit any status by clicking on the edit button in the Actions column
+   Then the Trial Status history will be updated and no errors will be indicated during Trial Review
    
+     Scenario Outline: #5 I can Edit Trial Status
+    Given I have selected the option to register a trial type 
+
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+     
+     And I am on the Register trial Status History table
+     When I click on the edit button in the Actions column for the trial status I want to edit
+     And I must have entered a Status Date 
+     And I must have entered a Trial status
+     And I have entered Why Study Stopped 
+     And I must have entered a comment 
+     And I have clicked on the save button
+     Then the trial status section will not indicate any errors during Trial Review
+     
+     
+     
+     
+     Then 
+
+  Example: 
+
+  Scenario Outline: 
+    Given 
+     When 
+     Then 
+
+  Example: 
+
+
+
+ 
    
    
 

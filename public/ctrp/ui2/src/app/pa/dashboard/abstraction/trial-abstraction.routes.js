@@ -13,7 +13,6 @@
                 /* this is the parent state for the states below */
                     url: '/trial/:trialId',
                     templateUrl: 'app/pa/dashboard/abstraction/trial_overview.html',
-                    // controller: 'paTrialOverviewCtrl as paTrialOverview',
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent', //TODO: to be changed to PA Trial search
                         label: 'Trial Overview'
@@ -35,7 +34,47 @@
                         parent: 'main.pa.trialOverview',
                         label: 'Trial History'
                     }
-                });
+                })
+                .state('main.pa.trialOverview.trialMilestones', {
+                    url: '/milestones',
+                    templateUrl: 'app/pa/dashboard/abstraction/trial_milestones.html',
+                    ncyBreadcrumb: {
+                        parent: 'main.pa.trialOverview',
+                        label: 'Trial Milestones'
+                    }
+                })
+                .state('main.pa.trialOverview.onHoldInfo', {
+                    url: '/on_hold_info',
+                    templateUrl: 'app/pa/dashboard/abstraction/on_hold_info.html',
+                    ncyBreadcrumb: {
+                        parent: 'main.pa.trialOverview',
+                        label: 'On Hold Info'
+                    }
+                })
+                .state('main.pa.trialOverview.viewTSR', {
+                    url: '/view_TSR',
+                    templateUrl: 'app/pa/dashboard/abstraction/view_TSR.html',
+                    ncyBreadcrumb: {
+                        parent: 'main.pa.trialOverview',
+                        label: 'View TSR'
+                    }
+                })
+                .state('main.pa.trialOverview.assignOwnership', {
+                    url: '/assign_ownership',
+                    templateUrl: 'app/pa/dashboard/abstraction/assign_ownership.html',
+                    ncyBreadcrumb: {
+                        parent: 'main.pa.trialOverview',
+                        label: 'Assign Ownership'
+                    }
+                })
+                .state('main.pa.trialOverview.checkoutHistory', {
+                    url: '/check_out_history',
+                    templateUrl: 'app/pa/dashboard/abstraction/check_out_history.html',
+                    ncyBreadcrumb: {
+                        parent: 'main.pa.trialOverview',
+                        label: 'Check Out History'
+                    }
+                })
 
     } //trialAbstractionRoutes
 

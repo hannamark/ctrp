@@ -3,10 +3,10 @@
         <a tabindex="1" ui-sref="main.defaultContent">Home<span class="sr-only">(current)</span></a>
     </li>
     <!--<li><a ui-sref="main.organizations">Organizations</a></li>-->
-    <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.dashboards, main.trialOverview, main.resultsReporting, main.govImport') }">
+    <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.dashboards, main.paTrialSearch, main.pa.trialOverview, main.pa.resultsReporting, main.pa.govImport') }">
         <a tabindex="2" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dashboards <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a ui-sref="main.pa.trialOverview">Abstraction</a></li>
+            <li><a ui-sref="main.paTrialSearch">Abstraction</a></li>
             <li><a ui-sref="main.resultsReporting">Results Reporting</a></li>
             <li><a ui-sref="main.govImport">CT.Gov Import</a></li>
         </ul>

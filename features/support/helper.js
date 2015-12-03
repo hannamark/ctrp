@@ -104,16 +104,15 @@ var helper = function() {
     };
 
     this.clickRadioButton = function (button, value, errorMessage){
-        this.wait(button, errorMessage);
         if (value === '0') {
             button.get(0).click();
             console.log(errorMessage + " was clicked");
-            expect((button.get(0).isSelected).to.eventually.equal(true));
+            expect(button.get(0).isSelected()).to.eventually.equal(true);
         }
         else if (value === '1') {
             button.get(1).click();
             console.log(errorMessage + " was clicked");
-            expect((button.get(1).isSelected).to.eventually.equal(true));
+            expect(button.get(1).isSelected()).to.eventually.equal(true);
         }
     };
 
@@ -157,15 +156,34 @@ var helper = function() {
             }
         }
         return str;
-    }
+    };
 
     this.objToString = function (obj) {
         var j=''+obj+'';
         JSON.stringify(j);
         return j;
-    }
+    };
 
-
+    this.alertDialog= function(action, textToVerify){
+        var alertDialog = browser.switchTo().alert();
+            alertDialog.then(
+                function(){
+                    alertDialog.getText().then(function(value){
+                        console.log('value of alert dialog' + value);
+                        expect(value).to.equal(textToVerify);
+                    });
+                    if (action === 'accept') {
+                        alertDialog.accept();
+                    }
+                    else if (action === 'dismiss') {
+                        alertDialog.dismiss();
+                    }
+            },
+                function (err) {
+                    console.log('There was an error! ' + err);
+                }
+            );
+    };
 
 };
 module.exports = helper;

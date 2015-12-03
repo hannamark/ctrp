@@ -7,23 +7,27 @@
             <!-- first row in the accordion body -->
             <div class="row">
                 <p>
-                    <strong>Clinical Research Category:</strong>
-                    <span>Interventional</span>
+                    <s><strong>Clinical Research Category:</strong>
+                    <!-- get data from parent controller view -->
+                    <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span></s>
                 </p>
 
                 <p>
                     <strong>NCI Trial Identification: </strong>
-                    <span>NCI-2013-00600</span>
+                    <!-- get data from parent controller view -->
+                    <span>{{paTrialOverview.trialDetailObj.nci_id}}</span>
                 </p>
 
                 <p>
                     <strong>ClinicalTrials.gov XML required? </strong>
-                    <span>Yes</span>
+                    <span>Yes ??</span>
                 </p>
 
                 <p>
-                    <strong>Lead Organization Trial ID: </strong>
-                    <span>13-004</span>
+                    <s>
+                        <strong>Lead Organization Trial ID: </strong>
+                        <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
+                    </s>
                 </p>
 
                 <p>
@@ -33,17 +37,19 @@
 
                 <p>
                     <strong>Last Verification Date: </strong>
-                    <span>2015-02-10 21:05:37.396</span>
+                    <span>2015-02-10 21:05:37.396 ??</span>
                 </p>
 
                 <p>
-                    <strong>Official Title: </strong>
-                    <span>A Phase I/II Study of First Line Gemcitabine, Displatin and MEK162 in Advanced Billary Tract Carcinoma</span>
+                    <s><strong>Official Title: </strong>
+                    <span>{{paTrialOverview.trialDetailObj.official_title}}</span></s>
                 </p>
 
                 <p>
-                    <strong>Submission Source:</strong>
-                    <span></span>
+                    <s>
+                        <strong>Submission Source:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
+                    </s>
                 </p>
 
                 <hr />

@@ -28,8 +28,8 @@ Given I am logged into the CTRP application
 And I am on the home screen
 When I select the Dashboards menu item
 Then the Dashboards menu is expanded and includes:
-|Abstraction|
-|Results Reporting|
+|Abstraction Dashboard|
+|Results Reporting Dashboard|
 |ClinicalTrials.gov Import Log| 
 
 Scenario: #4 View Organizations and Families Tab

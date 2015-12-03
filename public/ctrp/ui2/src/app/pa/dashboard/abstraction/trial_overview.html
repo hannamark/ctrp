@@ -1,8 +1,9 @@
 <div class="row-fluid" ng-controller="paTrialOverviewCtrl as paTrialOverview">
     <div class="col-xs-12 drop-shadow" ng-show="paTrialOverview.loadingTrialDetail">
-        <!-- overlay -->
-        Loading data ....
-        <!-- overlay -->
+        <!-- Loading data .... -->
+        <div class="row">
+            <img src="./images/ajax_loader.svg">
+        </div>
     </div>
 
     <div class="col-xs-12 drop-shadow" ng-show="!paTrialOverview.loadingTrialDetail">
@@ -27,21 +28,17 @@
                 </p>
                 <p>
                     <strong>Lead Organization:</strong>
-                    <span><a ui-sref="main.orgDetail({orgId: paTrialOverview.trialDetailObj.history.lead_org.id})">
-                        {{paTrialOverview.trialDetailObj.history.lead_org.name}}
+                    <span><a ui-sref="main.orgDetail({orgId: paTrialOverview.trialDetailObj.lead_org.id})">
+                        {{paTrialOverview.trialDetailObj.lead_org.name}}
                     </a></span>
                 </p>
                 <p>
                     <strong>Amendment Number:</strong>
-                    <span>2</span>
+                    <span>{{paTrialOverview.trialDetailObj.amendment_num}}</span>
                 </p>
                 <p>
                     <strong>Trial Category:</strong>
-                    <span>Complete Trial</span>
-                </p>
-                <p>
-                    <strong>Submission Source:</strong>
-                    <span></span>
+                    <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span>
                 </p>
             </div>
             <!-- end of column 1-->
@@ -50,7 +47,7 @@
             <div class="col-sm-4 col-xs-12">
                 <p>
                     <strong>Principal Investigator:</strong>
-                    <span><a ui-sref="main.personDetail({personId: paTrialOverview.trialDetailObj.pi.id})">
+                    <span><a ui-sref="main.personDetail({personId: paTrialOverview.trialDetailObj.pi.ctrp_id})">
                         {{paTrialOverview.trialDetailObj.pi.fullName}}
                     </a></span>
                 </p>
@@ -67,7 +64,7 @@
 
                 <p>
                     <strong>Amendment Date:</strong>
-                    <span>01/16/2015 ??</span>
+                    <span>{{paTrialOverview.trialDetailObj.amendment_date | date: "dd-MMM-yyyy H:mm"}}</span>
                 </p>
             </div>
             <!-- end of column 2-->
@@ -76,16 +73,20 @@
             <div class="col-sm-4 col-xs-12">
                 <p>
                     <strong>Current Trial Status:</strong>
-                    <span>Active??</span>
+                    <span>{{paTrialOverview.trialDetailObj.current_trial_status}}</span>
                 </p>
 
                 <p>
                     <strong>Current Trial Status Date:</strong>
-                    <span>04/09/2013??</span>
+                    <span>{{paTrialOverview.trialDetailObj.current_trial_status_date | date: "dd-MMM-yyyy H:mm"}}</span>
                 </p>
                 <p>
                     <strong>Processing Status:</strong>
-                    <span>Abstraction Verified ??</span>
+                    <span>{{paTrialOverview.trialDetailObj.processing_status}}</span>
+                </p>
+                <p>
+                    <strong>Submission Source:</strong>
+                    <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
                 </p>
             </div>
             <!-- end of column 3-->
