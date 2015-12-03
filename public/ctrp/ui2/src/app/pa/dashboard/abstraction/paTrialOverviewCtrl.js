@@ -4,6 +4,7 @@
 
 (function() {
     'use strict';
+    
     angular.module('ctrp.app.pa.dashboard')
     .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
 
@@ -27,7 +28,6 @@
 
         } //activate
 
-
         /**
          * Promise call to get the trial detail object
          * @return {[type]} [description]
@@ -41,8 +41,6 @@
                 vm.trialDetailObj.pi.fullName = vm.trialDetailObj.pi.fname +
                     ' ' + vm.trialDetailObj.pi.mname ||'' + ' ' +
                     vm.trialDetailObj.pi.lname;
-
-                getTrialStatus(12); //getstatus
             }).catch(function(error) {
                 console.log('error in fetching trial detail object');
             }).finally(function() {
@@ -51,23 +49,6 @@
             });
         } //getTrialDetail
 
-
-        /**
-         * Promise call to get trial status object with the given id
-         * @param  {[type]} trialStatusId [description]
-         * @return {[type]}               [description]
-         */
-        function getTrialStatus(trialStatusId) {
-            TrialService.getTrialStatusById(trialStatusId).then(function(statusObj) {
-                console.log('received trial status obj: ', statusObj);
-            });
-        }
-
-        /*
-        console.log('in accordion, state.name: ', $state.current.name);
-        console.log('in trial overview, from state name: ', $state.fromState);
-        console.log('trialId in the url is: ', $stateParams.trialId);
-        */
     };
 
 })();
