@@ -3,7 +3,8 @@
         <div class="row">
             <p>
                 <h4 ng-if="trialDetailView.curTrial.new">Register Trial</h4>
-                <h4 ng-if="!trialDetailView.curTrial.new">Edit Trial</h4>
+                <h4 ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'amend'">Amend Trial</h4>
+                <h4 ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'">Update Trial</h4>
             </p>
         </div>
 
@@ -210,11 +211,15 @@
                             </div>
                         </div>
 
-                        <div ng-show="trialDetailView.showPrimaryPurposeOther" class="form-group">
+                        <div ng-if="trialDetailView.showPrimaryPurposeOther" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose_other)}">
                             <label class="control-label col-xs-12 col-sm-3">Describe "Other" Primary Purpose:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <textarea restriction-field class="form-control input-sm" id="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other"
-                                          ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"></textarea>
+                                <textarea restriction-field class="form-control input-sm" id="primary_purpose_other" name="primary_purpose_other" ng-model="trialDetailView.curTrial.primary_purpose_other"
+                                          ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required></textarea>
+                                <span class="form-control-feedback" ng-show="trialDetailView.curTrial.primary_purpose_other.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose_other) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose_other)">
+                                    Other Primary Purpose is required
+                                </span>
                             </div>
                         </div>
 
@@ -229,11 +234,15 @@
                             </div>
                         </div>
 
-                        <div ng-show="trialDetailView.showSecondaryPurposeOther" class="form-group">
+                        <div ng-if="trialDetailView.showSecondaryPurposeOther" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.secondary_purpose_other)}">
                             <label class="control-label col-xs-12 col-sm-3">Describe "Other" Secondary Purpose:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <textarea restriction-field class="form-control input-sm" id="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other"
-                                          ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"></textarea>
+                                <textarea restriction-field class="form-control input-sm" id="secondary_purpose_other" name="secondary_purpose_other" ng-model="trialDetailView.curTrial.secondary_purpose_other"
+                                          ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required></textarea>
+                                <span class="form-control-feedback" ng-show="trialDetailView.curTrial.secondary_purpose_other.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.secondary_purpose_other) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.secondary_purpose_other)">
+                                    Other Secondary Purpose is required
+                                </span>
                             </div>
                         </div>
 
@@ -510,12 +519,13 @@
                                     <thead>
                                         <th>Status Date</th>
                                         <th>Status</th>
+                                        <th>Comment</th>
                                         <th>Why Study Stopped</th>
                                         <th></th>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="col-md-3">
+                                            <td class="col-md-2">
                                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                                     <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.status_date"
                                                            is-open="trialDetailView.status_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
@@ -526,7 +536,7 @@
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td class="col-md-4">
+                                            <td class="col-md-3">
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="trial_status" ng-model="trialDetailView.trial_status_id"  ng-change="trialDetailView.watchOption('trial_status')">
                                                         <option value="">-Select a Trial Status-</option>
@@ -536,7 +546,12 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td class="col-md-4">
+                                            <td class="col-md-3">
+                                                <div>
+                                                    <textarea style="resize: vertical;" class="form-control input-sm" id="status_comment" ng-model="trialDetailView.status_comment" />
+                                                </div>
+                                            </td>
+                                            <td class="col-md-3">
                                                 <div>
                                                     <textarea style="resize: vertical;" class="form-control input-sm" id="why_stopped" ng-model="trialDetailView.why_stopped" ng-disabled="trialDetailView.why_stopped_disabled" />
                                                 </div>
@@ -561,14 +576,16 @@
                                     <thead>
                                         <th>Status Date</th>
                                         <th>Status</th>
+                                        <th>Comment</th>
                                         <th>Why Study Stopped</th>
                                         <th></th>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="status in trialDetailView.addedStatuses track by $index" ng-class="status._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                            <td class="col-md-3">{{status.status_date}}</td>
-                                            <td class="col-md-4">{{status.trial_status_name}}</td>
-                                            <td class="col-md-4">{{status.why_stopped}}</td>
+                                            <td class="col-md-2">{{status.status_date}}</td>
+                                            <td class="col-md-3">{{status.trial_status_name}}</td>
+                                            <td class="col-md-3">{{status.comment}}</td>
+                                            <td class="col-md-3">{{status.why_stopped}}</td>
                                             <td class="col-md-1" style="vertical-align: middle">
                                                 <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
                                                     <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
