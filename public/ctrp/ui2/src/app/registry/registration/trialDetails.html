@@ -510,12 +510,13 @@
                                     <thead>
                                         <th>Status Date</th>
                                         <th>Status</th>
+                                        <th>Comment</th>
                                         <th>Why Study Stopped</th>
                                         <th></th>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="col-md-3">
+                                            <td class="col-md-2">
                                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                                     <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.status_date"
                                                            is-open="trialDetailView.status_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close" disabled />
@@ -526,7 +527,7 @@
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td class="col-md-4">
+                                            <td class="col-md-3">
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="trial_status" ng-model="trialDetailView.trial_status_id"  ng-change="trialDetailView.watchOption('trial_status')">
                                                         <option value="">-Select a Trial Status-</option>
@@ -536,7 +537,12 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td class="col-md-4">
+                                            <td class="col-md-3">
+                                                <div>
+                                                    <textarea style="resize: vertical;" class="form-control input-sm" id="status_comment" ng-model="trialDetailView.status_comment" />
+                                                </div>
+                                            </td>
+                                            <td class="col-md-3">
                                                 <div>
                                                     <textarea style="resize: vertical;" class="form-control input-sm" id="why_stopped" ng-model="trialDetailView.why_stopped" ng-disabled="trialDetailView.why_stopped_disabled" />
                                                 </div>
@@ -561,14 +567,16 @@
                                     <thead>
                                         <th>Status Date</th>
                                         <th>Status</th>
+                                        <th>Comment</th>
                                         <th>Why Study Stopped</th>
                                         <th></th>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="status in trialDetailView.addedStatuses track by $index" ng-class="status._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                            <td class="col-md-3">{{status.status_date}}</td>
-                                            <td class="col-md-4">{{status.trial_status_name}}</td>
-                                            <td class="col-md-4">{{status.why_stopped}}</td>
+                                            <td class="col-md-2">{{status.status_date}}</td>
+                                            <td class="col-md-3">{{status.trial_status_name}}</td>
+                                            <td class="col-md-3">{{status.comment}}</td>
+                                            <td class="col-md-3">{{status.why_stopped}}</td>
                                             <td class="col-md-1" style="vertical-align: middle">
                                                 <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
                                                     <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
