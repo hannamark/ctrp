@@ -26,7 +26,7 @@ module.exports = function() {
     var CTEPID = 'ACRN';
 
     this.Given(/^I know the name of the organization I wish to search for$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function() {
@@ -70,7 +70,7 @@ module.exports = function() {
     });
 
     this.Given(/^I am logged in to CTRP$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpadmin', 'Welcome01');
         //login.accept();
         //menuItem.clickHomeEnterOrganizations();
@@ -306,7 +306,7 @@ module.exports = function() {
     });
 
     this.Given(/^I am logged in to CTRP PO application$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         menuItem.clickHomeEnterOrganizations();
@@ -578,7 +578,7 @@ module.exports = function() {
     });
 
     this.Given(/^I want to see the detail information of organization$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function(){

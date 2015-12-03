@@ -8,7 +8,6 @@
     And I am on the Register Trial Details screen
      When I have entered the trial's title
      And I have selected the trial phase types:
-     
       |0      |
       |I      |
       |I/II   |
@@ -17,19 +16,12 @@
       |III    |
       |IV     |
       |NA     |
-    
     And I have selected the "Yes" if the study is a pilot study or left the option"No" as the default
-        
     And I have selected the appropriate Research Category Types:
-    
-
       |Interventional         |
       |Observational          |
       |Ancillary Correlative  |
-
     And I have selected the Trial's Primary Purpose Type:
-    
-      
       |Treatment               |
       |Prevention              |
       |Supportive Care         |
@@ -38,33 +30,23 @@
       |Health Services Research|
       |Basic Science           |
       |Other                   |
-
     And I have selected the Trial's Secondary Purpose Type:
-    
-      
       |Ancillary-Correlative|
       |Other                |
-      
     And I have selceted the Trial's Accrual Disease Terminology Type:
-    
-      
       |SDC    |
       |ICD9   |
       |ICD10  |
       |ICD-O-3|
-
-    
     Then the Trial Details section will be complete
 
   Examples:
-  
-  
       |TrialType               |
       |National                |
       |Externally Peer-Reviewed|
       |Institutional           |
 
-    @runthis
+
   Scenario Outline: #2 I must enter Trial Details Types
     Given I have selected the option to register a trial <TrialType>
      When I have not entered The official Title
@@ -81,11 +63,7 @@
       | Primary Purpose             | Primary Purpose is required             |
       | Accrual Disease Terminology | Accrual Disease Terminology is required   |
 
-     
-      
-     
-     
-Examples:
+  Examples:
 
       |TrialType               |
       |National                |
@@ -99,7 +77,6 @@ Examples:
       Then I must provide the Primary Purpose other description
       And I select "Other" as the Trial Secondary Purpose
       Then I must provide the Secondary Purpose other description
-      
 
   Examples:
 

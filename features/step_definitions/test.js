@@ -39,7 +39,7 @@ module.exports = function() {
     var addTrial = new addTrialPage();
 
     this.Given(/^I want to test the Login page$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrptrialsubmitter', 'Welcome01');
         login.accept();
         trialMenuItem.clickHomeSearchTrial();
@@ -102,7 +102,7 @@ module.exports = function() {
     });
 
     this.Given(/^I want to test the Login page second time$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrptrialsubmitter', 'Welcome01');
         login.accept();
         menuItemList.clickHomeEnterOrganizations();

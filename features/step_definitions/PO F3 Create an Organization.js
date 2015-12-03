@@ -38,7 +38,7 @@ module.exports = function() {
     var sourceID = 'CT 007';
 
     this.Given(/^I am a Curator and on the Add Organization screen$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function(){

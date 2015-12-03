@@ -20,6 +20,7 @@ var registerTrial = function(){
     this.addTrialProtocolID = element(by.model('trialDetailView.protocol_id'));
     this.addTrialAddProtocolButton = element(by.css('button[ng-click="trialDetailView.addOtherId()"]'));
     this.addTrialVerifyOtherTrialIdentifier = element.all(by.css('tr[ng-repeat="otherId in trialDetailView.addedOtherIds track by $index"]'));
+    this.addTrialVerifyOtherTrialIdentifierTable =  element.all(by.binding('otherId.protocol_id'));
 
     /** Trial Details **/
     this.addTrialDetailsSection = element(by.linkText('Trial Details'));

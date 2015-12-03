@@ -38,7 +38,7 @@ module.exports = function() {
 
 
     this.Given(/^I know which Person record I want to edit$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function() {
@@ -164,7 +164,7 @@ module.exports = function() {
     });
 
     this.Given(/^I know which Person with affiliated Organization record I want to edit$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function(){

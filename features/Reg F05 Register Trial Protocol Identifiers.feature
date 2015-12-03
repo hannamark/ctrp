@@ -13,7 +13,6 @@
      Then the Register Trial Protocol Identifiers section will not indicate any errors during Trial Review
 
  Examples:
-      
       |TrialType                 |
       |National                  |
       |Externally Peer-Reviewed  |
@@ -27,25 +26,23 @@
      Then the Register Trial Protocol Identifiers section will indicate an error "Lead Organization Trial Identifier is Required"
      
  Examples:
- 
- 
       |TrialType                 |
       |National                  |
       |Externally Peer-Reviewed  |
       |Institutional             |
 
+
     Scenario Outline: #3 Duplicate and format rules for Other Trial Identifier 
     Given I have selected the option to register a trial <TrialType>
      And I am on the Register Trial Protocol Identifiers screen
      And I should be allowed to enter only one "ClinicalTrials.gov Identifier"         
-     And I should be allowed to enter more than one "Obsolete ClinicaTrials.gov Identifier" with unique IDs
-     And I should be allowed to enter more than one "other Identifier" with unique IDs
-     And I should check for valid ClinicaTrials.gov Identifier format as NCT followed by 8 numeric characters <NCT00000000>
+     And I should be allowed to enter more than one "Obsolete ClinicalTrials.gov Identifier" with unique IDs
+     And I should be allowed to enter more than one "Other Identifier" with unique IDs
+     And I should check for valid "ClinicalTrials.gov Identifier" format as NCT followed by 8 numeric characters <NCT00000000>
      Then the Register Trial Protocol Identifiers section will indicate zero errors
      
      
     Examples:
-     
       |TrialType  				 |
       |National                  |
       |Externally Peer-Reviewed  |

@@ -156,15 +156,34 @@ var helper = function() {
             }
         }
         return str;
-    }
+    };
 
     this.objToString = function (obj) {
         var j=''+obj+'';
         JSON.stringify(j);
         return j;
-    }
+    };
 
-
+    this.alertDialog= function(action, textToVerify){
+        var alertDialog = browser.switchTo().alert();
+            alertDialog.then(
+                function(){
+                    alertDialog.getText().then(function(value){
+                        console.log('value of alert dialog' + value);
+                        expect(value).to.equal(textToVerify);
+                    });
+                    if (action === 'accept') {
+                        alertDialog.accept();
+                    }
+                    else if (action === 'dismiss') {
+                        alertDialog.dismiss();
+                    }
+            },
+                function (err) {
+                    console.log('There was an error! ' + err);
+                }
+            );
+    };
 
 };
 module.exports = helper;

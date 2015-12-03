@@ -20,7 +20,7 @@ module.exports = function() {
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
 
     this.Given(/^I am logged into the CTRP Registration application$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrptrialsubmitter', 'Welcome01');
         login.accept();
         trialMenuItem.clickHomeSearchTrial();
@@ -29,7 +29,7 @@ module.exports = function() {
     });
 
     this.Given(/^I have selected the option to register a trial (.*)$/, function (trialType, callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrptrialsubmitter', 'Welcome01');
         login.accept();
         trialMenuItem.clickHomeSearchTrial();

@@ -65,6 +65,29 @@ var projectMethodsRegistry = function() {
         }).then(function (rows) {
             console.log('value of row' + rows);
            expect(rows[0].element(by.css('.col-md-6.protocol-id')).getText()).to.eventually.equal(protocolID);
+        },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
+
+    /*****************************************************************
+     * Method: Verify Trial Other Identifiers value
+     * @param anyItemInTable
+     *****************************************************************/
+    this.verifyAddTrialOtherTrialIdentifierTable = function (anyItemInTable) {
+        return addTrial.addTrialVerifyOtherTrialIdentifierTable.filter(function(name) {
+            return name.getText().then(function(text) {
+                console.log('text is' + text + 'Itemto be verified' + anyItemInTable);
+                return text === anyItemInTable ;
+            });
+        }).then(function(filteredElements) {
+            console.log('filtered elements' + filteredElements);
+            // Only the elements that passed the filter will be here. This is an array.
+            if(filteredElements.length > 0) {
+                return 'true';}
+            else {return 'false';}
         });
     };
 };

@@ -273,7 +273,7 @@ var projectMethods = function() {
                     (addOrg.orgLastUpdatedBy.getText()).should.eventually.equal(userUpdatedDate);
                 });
             } else if (module === 'person') {
-            var userLoggedIn = menuItem.loginName.getText();
+           // var userLoggedIn = menuItem.loginName.getText();
             userLoggedIn.then(function (value2) {
                 var userUpdatedDate = value2 + ' (' + dateTimeEdited + ')';
                 console.log('user-date last updated value is: ' + userUpdatedDate);
@@ -281,9 +281,8 @@ var projectMethods = function() {
             });
         } else {
                 return false;
-                console.log('Select a proper module');
+               // console.log('Select a proper module');
             }
-
     };
 
     /*****************************************************************
@@ -621,7 +620,7 @@ var projectMethods = function() {
      * Method: This will create Organization for Search, it creates a new org then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createOrgforSearch = function(){
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function() {
@@ -693,7 +692,7 @@ var projectMethods = function() {
      * Method: This will create Organization for Edit, it creates a new org then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createOrgforEdit = function(){
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function() {
