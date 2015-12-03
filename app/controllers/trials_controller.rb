@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  #before_filter :wrapper_authenticate_user unless Rails.env.test?
-  #load_and_authorize_resource unless Rails.env.test?
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -134,6 +134,11 @@ class TrialsController < ApplicationController
           @trials = @trials.with_lead_org(params[:org])
         elsif params[:org_type] == 'Sponsor'
           @trials = @trials.with_sponsor(params[:org])
+        elsif params[:org_type] == 'Participating Sites'
+          # TODO handle wildcard
+          if params[:org] != "*"
+            @trials = @trials.select{|trial| trial.participating_sites.by_value(params[:org])}
+          end
         else
           @trials = @trials.with_any_org(params[:org])
         end

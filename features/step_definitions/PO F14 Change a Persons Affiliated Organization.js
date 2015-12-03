@@ -26,7 +26,7 @@ module.exports = function() {
     var orgExpirationDate = '19-Oct-2020';
 
     this.Given(/^I know which person's organizational affiliation I want to change$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function(){

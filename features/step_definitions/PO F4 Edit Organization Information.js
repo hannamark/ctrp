@@ -257,7 +257,7 @@ module.exports = function() {
     });
 
     this.Given(/^I am in the Edit Organization feature$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function(){

@@ -14,3 +14,12 @@ json.trial_status_wrappers do
     json.extract! status, :trial_id, :id, :status_date, :why_stopped, :trial_status_id, :trial_status, :created_at, :updated_at
   end
 end
+
+json.current_trial_status @trial.trial_status_wrappers.present? ?
+    @trial.trial_status_wrappers.latest.trial_status.name : nil
+
+json.current_trial_status_date @trial.trial_status_wrappers.present? ?
+    @trial.trial_status_wrappers.latest.trial_status.updated_at : nil
+    
+json.processing_status @trial.processing_status_wrappers.present? ?
+    @trial.processing_status_wrappers.latest.processing_status.name : nil

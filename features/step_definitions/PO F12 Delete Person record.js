@@ -64,7 +64,7 @@ module.exports = function() {
             console.log('calculating count:'+getCrntCnt+'')
             // Person for to be Delete function validation
             if (getCrntCnt == 11){
-              browser.get('ui#/main/sign_in');
+              browser.get('ui/#/main/sign_in');
               login.login('ctrpcurator', 'Welcome01');
               login.accept();
               browser.driver.wait(function() {

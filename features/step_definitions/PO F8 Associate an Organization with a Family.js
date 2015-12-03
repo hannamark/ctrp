@@ -33,7 +33,7 @@ module.exports = function() {
 
 
     this.Given(/^I know which organization I wish to assign to an Organization Family$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function(){
@@ -117,7 +117,7 @@ module.exports = function() {
     });
 
     this.Given(/^I know which Family I want to update$/, function (callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function(){

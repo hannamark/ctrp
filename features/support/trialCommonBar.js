@@ -13,8 +13,8 @@ var helperFunctions = require('../support/helper');
 
 var trialCommonBar = function(){
 
-    var homeSearchTrial = element(by.css('a[href="/ctrp/ui#/main/trials"]'));
-    this.homeRegisterTrial = element(by.css('a[href="/ctrp/ui#/main/new_trial/NAT"]'));
+    var homeSearchTrial = element(by.css('a[href="#/main/trials"]'));
+    this.homeRegisterTrial = element(by.css('a[href="#/main/new_trial/NAT"]'));
     this.mainTrialsLink = element(by.linkText('Trials')) ;
     this.searchTrialLink = element(by.linkText('Search Trials'));
     this.registerTrialLink = element(by.linkText('Register Trial'));
@@ -58,8 +58,8 @@ var trialCommonBar = function(){
     };
 
     this.clickRegisterNationalTrialLink = function(){
-        browser.get('ui#/main/new_trial/NAT');
-      //  http://ctrp-ci.nci.nih.gov/ctrp/ui#/main/new_trial/NAT
+        browser.get('ui/#/main/new_trial/NAT');
+      //  http://ctrp-ci.nci.nih.gov/ctrp/ui/#/main/new_trial/NAT
       //  element(by.linkText('Register Trial')).sendKeys(protractor.Key.RIGHT);
       ////  browser.actions().mouseMove(element(by.linkText('Search Trials')).find()).perform();
       //  browser.sleep(10000);
@@ -72,13 +72,13 @@ var trialCommonBar = function(){
     };
 
     this.clickRegisterExternallyPeerReviewedTrialLink = function(){
-        browser.get('ui#/main/new_trial/EPR');
+        browser.get('ui/#/main/new_trial/EPR');
        // helper.clickLink(this.registerExternallyPeerReviewedTrial, "Register Externally Peer Reviewed Trial link");
         expect(pageHeaderText.getText()).to.eventually.equal(register_Trial_Header_Text);
     };
 
     this.clickRegisterInstitutionalTrialLink = function(){
-        browser.get('ui#/main/new_trial/INS');
+        browser.get('ui/#/main/new_trial/INS');
        // helper.clickLink(this.registerInstitutional, "Register Institutional Trial link");
         expect(pageHeaderText.getText()).to.eventually.equal(register_Trial_Header_Text);
     };
