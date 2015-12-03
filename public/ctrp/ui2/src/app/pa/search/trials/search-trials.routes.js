@@ -9,7 +9,7 @@
     paRoutes.$inject = ['$stateProvider'];
     function paRoutes($stateProvider) {
         $stateProvider
-            .state('main.pa.trials', {
+            .state('main.paTrialSearch', {
                         url: '/pa_trials',
                         templateUrl: 'app/pa/search/trials/pa_trial_list.html',
                         controller: 'paTrialCtrl as trialView',
@@ -46,4 +46,3 @@
 
 
 })();
-
