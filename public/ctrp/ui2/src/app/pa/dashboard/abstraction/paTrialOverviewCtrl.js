@@ -4,7 +4,7 @@
 
 (function() {
     'use strict';
-    
+
     angular.module('ctrp.app.pa.dashboard')
     .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
 
@@ -24,7 +24,7 @@
         function activate() {
             $timeout(function() {
                 getTrialDetail();
-            }, 500);
+            }, 1000);
 
         } //activate
 
