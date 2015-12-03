@@ -1,8 +1,9 @@
 <div class="row-fluid" ng-controller="paTrialOverviewCtrl as paTrialOverview">
     <div class="col-xs-12 drop-shadow" ng-show="paTrialOverview.loadingTrialDetail">
-        <!-- overlay -->
-        Loading data ....
-        <!-- overlay -->
+        <!-- Loading data .... -->
+        <div class="row">
+            <img src="./images/ajax_loader.svg">
+        </div>
     </div>
 
     <div class="col-xs-12 drop-shadow" ng-show="!paTrialOverview.loadingTrialDetail">
@@ -33,15 +34,11 @@
                 </p>
                 <p>
                     <strong>Amendment Number:</strong>
-                    <span>2??</span>
+                    <span>{{paTrialOverview.trialDetailObj.amendment_num}}</span>
                 </p>
                 <p>
                     <strong>Trial Category:</strong>
-                    <span>Complete Trial??</span>
-                </p>
-                <p>
-                    <strong>Submission Source:</strong>
-                    <span>??</span>
+                    <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span>
                 </p>
             </div>
             <!-- end of column 1-->
@@ -67,7 +64,7 @@
 
                 <p>
                     <strong>Amendment Date:</strong>
-                    <span>01/16/2015 ??</span>
+                    <span>{{paTrialOverview.trialDetailObj.amendment_date | date: "dd-MMM-yyyy H:mm"}}</span>
                 </p>
             </div>
             <!-- end of column 2-->
@@ -86,6 +83,10 @@
                 <p>
                     <strong>Processing Status:</strong>
                     <span>{{paTrialOverview.trialDetailObj.processing_status}}</span>
+                </p>
+                <p>
+                    <strong>Submission Source:</strong>
+                    <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
                 </p>
             </div>
             <!-- end of column 3-->

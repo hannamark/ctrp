@@ -7,14 +7,26 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :created_at, :updated_at, :created_by, :updated_by, :study_source, :lead_org, :pi, :sponsor,
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
-              :actions
+              :actions, :research_category
 
 json.trial_status_wrappers do
   json.array!(@trial.trial_status_wrappers) do |status|
-    json.extract! status, :trial_id, :id, :status_date, :why_stopped, :trial_status_id, :trial_status, :created_at, :updated_at
+    json.extract! status, :trial_id, :id, :status_date, :why_stopped, :trial_status_id, :trial_status, :comment, :created_at, :updated_at
   end
 end
 
-json.current_trial_status @trial.trial_status_wrappers.present? ? @trial.trial_status_wrappers.latest.trial_status.name : nil
-json.current_trial_status_date @trial.trial_status_wrappers.present? ? @trial.trial_status_wrappers.latest.trial_status.updated_at : nil
-json.processing_status @trial.processing_status_wrappers.present? ? @trial.processing_status_wrappers.latest.processing_status.name : nil
+json.submissions do
+  json.array!(@trial.submissions) do |submission|
+    json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
+                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at
+  end
+end
+
+json.current_trial_status @trial.trial_status_wrappers.present? ?
+    @trial.trial_status_wrappers.latest.trial_status.name : nil
+
+json.current_trial_status_date @trial.trial_status_wrappers.present? ?
+    @trial.trial_status_wrappers.latest.trial_status.updated_at : nil
+
+json.processing_status @trial.processing_status_wrappers.present? ?
+    @trial.processing_status_wrappers.latest.processing_status.name : nil
