@@ -24,6 +24,22 @@ json.trials do
         end
       end
     end
+    json.scientific_milestone  ""
+    if  trial.milestone_wrappers.present?
+      science_milestones = trial.milestone_wrappers.select{|x| x.milestone.name.include?("Scientific")}
+      unless science_milestones.empty?
+        json.scientific_milestone science_milestones.last.milestone.name
+      end
+    end
+
+    json.admin_milestone  ""
+    if  trial.milestone_wrappers.present?
+      admin_milestones = trial.milestone_wrappers.select{|x| x.milestone.name.include?("Admin")}
+      unless admin_milestones.empty?
+        json.admin_milestone admin_milestones.last.milestone.name
+      end
+    end
+
     json.other_ids  ""
     if trial.other_ids.present?
       other_ids = trial.other_ids
