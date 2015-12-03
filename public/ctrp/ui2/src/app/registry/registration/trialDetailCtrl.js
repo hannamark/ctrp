@@ -386,6 +386,7 @@
                         newStatus.trial_status_name = status.name;
                     }
                 });
+                newStatus.comment = vm.status_comment;
                 newStatus.why_stopped = vm.why_stopped;
                 newStatus._destroy = false;
                 vm.addedStatuses.push(newStatus);
@@ -804,6 +805,7 @@
                         statusWrapper.trial_status_name = status.name;
                     }
                 });
+                statusWrapper.comment = vm.curTrial.trial_status_wrappers[i].comment;
                 statusWrapper.why_stopped = vm.curTrial.trial_status_wrappers[i].why_stopped;
                 statusWrapper._destroy = false;
                 vm.addedStatuses.push(statusWrapper);
