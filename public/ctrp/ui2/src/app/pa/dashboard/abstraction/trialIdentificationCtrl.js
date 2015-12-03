@@ -8,10 +8,11 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialIdentificationCtrl', trialIdentificationCtrl);
 
-    trialIdentificationCtrl.$inject = [];
+    trialIdentificationCtrl.$inject = ['$scope'];
 
-    function trialIdentificationCtrl() {
+    function trialIdentificationCtrl($scope) {
         var vm = this;
+        console.log('in trial identifiation, parent detail object: ',$scope.$parent);
     } //trialIdentificationCtrl
 
 })();

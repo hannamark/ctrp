@@ -16,6 +16,7 @@
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         vm.trialDetailObj = {};
+        console.log('trial overview controller id: ', $scope.$id);
 
         activate();
 
@@ -36,6 +37,7 @@
             TrialService.getTrialById(trialId).then(function(data) {
                 console.log('received trial detail obj: ', data);
                 vm.trialDetailObj = data;
+                $scope.trialDetailObj = vm.trialDetailObj;
                 vm.trialDetailObj.pi.fullName = vm.trialDetailObj.pi.fname +
                     ' ' + vm.trialDetailObj.pi.mname ||'' + ' ' +
                     vm.trialDetailObj.pi.lname;
