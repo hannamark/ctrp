@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'roo'
 
-class DataImport < ActiveRecord::Base
+class DataImport
 
   def self.delete_trial_data
     ParticipatingSite.delete_all
