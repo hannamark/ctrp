@@ -32,8 +32,10 @@ var registerTrial = function(){
     this.addTrialResearchCategoryList = element(by.model('trialDetailView.curTrial.research_category_id')).all(by.css('option[label]'));
     this.addTrialPrimaryPurpose = element(by.model('trialDetailView.curTrial.primary_purpose_id'));
     this.addTrialPrimaryPurposeList = element(by.model('trialDetailView.curTrial.primary_purpose_id')).all(by.css('option[label]'));
+    this.addTrialPrimaryPurposeOtherDescription = element(by.model('trialDetailView.curTrial.primary_purpose_other'));
     this.addTrialSecondaryPurpose = element(by.model('trialDetailView.curTrial.secondary_purpose_id'));
     this.addTrialSecondaryPurposeList = element(by.model('trialDetailView.curTrial.secondary_purpose_id')).all(by.css('option[label]'));
+    this.addTrialSecondaryPurposeOtherDescription = element(by.model('trialDetailView.curTrial.secondary_purpose_other'));
     this.addTrialAccrualDiseaseTerminology = element(by.model('trialDetailView.curTrial.accrual_disease_term_id'));
     this.addTrialAccrualDiseaseTerminologyList = element(by.model('trialDetailView.curTrial.accrual_disease_term_id')).all(by.css('option[label]'));
 
@@ -151,8 +153,16 @@ var registerTrial = function(){
         helper.selectValueFromList(this.addTrialPrimaryPurpose,trialPrimaryPurpose,"Add Trial by Primary Purpose field");
     };
 
+    this.setAddTrialPrimaryPurposeOtherDescription= function(PrimaryPurposeOtherDescription)  {
+        helper.setValue(this.addTrialPrimaryPurposeOtherDescription,PrimaryPurposeOtherDescription,"Add Trial by Primary Purpose Other Description field");
+    };
+
     this.selectAddTrialSecondaryPurpose = function(trialSecondaryPurpose)  {
         helper.selectValueFromList(this.addTrialSecondaryPurpose,trialSecondaryPurpose,"Add Trial by Secondary Purpose field");
+    };
+
+    this.setAddTrialSecondaryPurposeOtherDescription = function(SecondaryPurposeOtherDescription)  {
+        helper.setValue(this.addTrialSecondaryPurposeOtherDescription,SecondaryPurposeOtherDescription,"Add Trial by Secondary Purpose Other Description field");
     };
 
     this.selectAddTrialAccrualDiseaseTerminology = function(trialAccrualDiseaseTerminology)  {

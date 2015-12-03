@@ -1,8 +1,9 @@
  @Global @Reg 
  Feature: Reg F08 Register Trial Person and Organization Associations 
  As a CTRP User, I can associate a Lead Organization/Principal Investigator with a Clinical Trial
- Scenario Outline:#1 I can associate a Lead Organization/Principal Investigator with a Clinical Trial 
-    Given I have selected the option to register a trial <TrialType>
+@runthis
+   Scenario Outline:#1 I can associate a Lead Organization/Principal Investigator with a Clinical Trial
+    Given I have selected the option to register a trial <trialType>
      And I am on the Register Trial Lead Organization/Principal Investigator screen
      When I have performed a Lead Organization look-up in Search Organization
      And I have selected an Organization as the trial's Lead Organization
@@ -11,11 +12,9 @@
      Then the Register Lead Organization/Principal Investigator section will not indicate any errors during Trial Review
 
   Examples:
-  
-  
-      |<TrialType>              |
+      |trialType              |
       |National                 |
-      |Extenally Peer-Reviewed  |
+      |Externally Peer-Reviewed  |
       |Institutional            |
    
     Scenario Outline:#2 I must associate a Lead Organization/Principal Investigator with a Clinical Trial
@@ -26,7 +25,7 @@
      Then the Register Trial Lead Organization/Principal Investigator screen will indicate errors as:
      
       |"Please choose a 'Lead organization' using the lookup"          |
-      |"Pleese choose a 'Lead Principal Investigator'using the lookup" 
+      |"Please choose a 'Lead Principal Investigator'using the lookup" |
 
 
    Scenario Outline:#3 I can associate an organization ad the Sponsor/Responsible Party on a clinical trial
@@ -115,7 +114,7 @@
     When I have not entered one or more organizations as the trial's Funding Source 
      Then The Register Trial Funding Source will indicate a error as "Select the Funding Source"
 
-  Example: 
+  Examples:
 
      |<TrialType>              |
      |National                 |

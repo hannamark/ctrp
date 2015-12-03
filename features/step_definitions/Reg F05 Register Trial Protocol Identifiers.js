@@ -114,6 +114,7 @@ module.exports = function() {
         addTrial.clickAddTrialAddProtocolButton();
         helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT2222556')).to.become('false');
+
         /**** Check for 8 characters without NCT *****/
         addTrial.clickAddTrialResetButton();
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
@@ -121,6 +122,7 @@ module.exports = function() {
         addTrial.clickAddTrialAddProtocolButton();
         helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('LLT2222556')).to.become('false');
+
         /**** Check for 8 characters with just numbers *****/
         addTrial.clickAddTrialResetButton();
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
@@ -128,6 +130,7 @@ module.exports = function() {
         addTrial.clickAddTrialAddProtocolButton();
         helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('12322225568')).to.become('false');
+
         /**** Check for 8 characters with just characters *****/
         addTrial.clickAddTrialResetButton();
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
@@ -135,6 +138,7 @@ module.exports = function() {
         addTrial.clickAddTrialAddProtocolButton();
         helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCTAQWERTYU')).to.become('false');
+
         /**** Check for 9 characters *****/
         addTrial.clickAddTrialResetButton();
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
