@@ -12,7 +12,6 @@
 
     function trialIdentificationCtrl($scope) {
         var vm = this;
-        console.log('in trial identifiation, parent detail object: ',$scope.$parent);
     } //trialIdentificationCtrl
 
 })();
