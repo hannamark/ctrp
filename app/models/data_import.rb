@@ -4,6 +4,7 @@ require 'roo'
 class DataImport < ActiveRecord::Base
 
   def self.delete_trial_data
+    ParticipatingSite.delete_all
     TrialStatusWrapper.delete_all
     MilestoneWrapper.delete_all
     Submission.delete_all
@@ -168,5 +169,28 @@ class DataImport < ActiveRecord::Base
       end
     end
     puts "List of missed milestones = #{missed_milestones.uniq.inspect}" if missed_milestones.count() > 0
+  end
+
+  def self.import_participating_sites
+    spreadsheet = Roo::Excel.new(Rails.root.join('db', 'participating_sites_for_20_sample_trials_in_prod.xls'))
+    spreadsheet.default_sheet = spreadsheet.sheets.first
+    ((spreadsheet.first_row+1)..spreadsheet.last_row).each do |row|
+      ps = ParticipatingSite.new
+      ps.contact_email = spreadsheet.cell(row,'A')
+      ps.contact_name = spreadsheet.cell(row,'B')
+      ps.contact_phone = spreadsheet.cell(row,'C')
+      ps.program_code = spreadsheet.cell(row,'M')
+      t = spreadsheet.cell(row,'F')
+      #puts "t = #{t.inspect}"
+      trial = Trial.find_by_nci_id(t)
+      if t.nil? || trial.nil?
+        next
+      end
+      ps.trial = trial
+      ps.organization =  Organization.all[rand(0..13)]
+      ps.person = Person.all[rand(0..11)]
+      trial.participating_sites << ps
+      trial.save!
+    end
   end
 end
