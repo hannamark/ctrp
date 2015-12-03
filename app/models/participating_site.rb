@@ -31,4 +31,10 @@ class ParticipatingSite < ActiveRecord::Base
   belongs_to :organization
   belongs_to :person
   has_many :site_rec_status_wrappers, -> { order 'site_rec_status_wrappers.id' }
+
+  scope :by_value, ->  (value) {
+    joins(:organization).where("organizations.name ilike  ?","#{value.to_s}")
+  }
+
+
 end

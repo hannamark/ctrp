@@ -292,6 +292,9 @@ puts "Parsing Trial Spreadsheet"
 DataImport.import_trials
 puts "Parsing Milestone Spreadsheet"
 DataImport.import_milestones
+puts "Parsing Participating Sites Spreadsheet"
+DataImport.import_participating_sites
+
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
