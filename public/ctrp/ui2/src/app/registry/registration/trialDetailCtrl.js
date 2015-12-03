@@ -162,6 +162,14 @@
                 });
             }
 
+            if (vm.curTrial.edit_type === 'amend') {
+                var submissionObj = {};
+                submissionObj.amendment_num = vm.amendment_num;
+                submissionObj.amendment_date = vm.amendment_date;
+                submissionObj._destroy = false;
+                vm.curTrial.submissions_attributes = [submissionObj];
+            }
+
             if (updateType == 'draft') {
                 vm.curTrial.is_draft = true;
             } else {
@@ -656,10 +664,11 @@
         }
 
         function appendEditType() {
-            if ($stateParams.editType === 'update') {
-                vm.curTrial.edit_type = 'update'
-            } else if ($stateParams.editType === 'amend') {
-                vm.curTrial.edit_type = 'amend'
+            if (vm.curTrial.actions.indexOf($stateParams.editType) < 0) {
+                // Action not allowed
+                $state.go('main.trials', null, {reload: true});
+            } else {
+                vm.curTrial.edit_type = $stateParams.editType;
             }
         }
 

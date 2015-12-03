@@ -1,10 +1,10 @@
 /**
  * Configure routes for trial component
  */
-/*
+
 (function() {
     'use strict';
-    angular.module('ctrp.app.pa.search.trials').config(paRoutes);
+    angular.module('ctrp.module.routes').config(paRoutes);
 
     paRoutes.$inject = ['$stateProvider'];
     function paRoutes($stateProvider) {
@@ -15,6 +15,7 @@
                         controller: 'paTrialCtrl as trialView',
                         resolve: {
                             TrialService: 'TrialService',
+                            PATrialService: 'PATrialService',
                             studySourceObj: function(TrialService) {
                                 return TrialService.getStudySources();
                             },
@@ -26,8 +27,14 @@
                             },
                             trialStatusObj: function(TrialService) {
                                 return TrialService.getTrialStatuses();
+                            },
+                            milestoneObj: function(PATrialService) {
+                                return PATrialService.getMilestones();
                             }
-
+                            ,
+                            processingStatusObj: function(PATrialService) {
+                                return PATrialService.getProcessingStatuses();
+                            }
                         },
                         ncyBreadcrumb: {
                             parent: 'main.defaultContent',
@@ -39,4 +46,4 @@
 
 
 })();
-*/
+

@@ -6,7 +6,6 @@
     'use strict';
 
     angular.module('ctrp.module.constants', [])
-        .constant('HOST', 'http://localhost:3000') //TODO: to be replaced with production server url
         .constant('URL_CONFIGS', {
             //relative urls to the host
             'ORG_LIST': '/ctrp/organizations.json',
@@ -40,6 +39,7 @@
             'TRIAL_LIST': '/ctrp/registry/trials.json',
             'A_TRIAL': '/ctrp/registry/trials/',
             'SEARCH_TRIAL': '/ctrp/registry/trials/search.json',
+            'SEARCH_TRIAL_PA': '/ctrp/registry/trials/search_pa.json',
             'STUDY_SOURCES': '/ctrp/registry/study_sources.json',
             'PROTOCOL_ID_ORIGINS': '/ctrp/registry/protocol_id_origins.json',
             'PHASES': '/ctrp/registry/phases.json',
@@ -52,6 +52,13 @@
             'INSTITUTE_CODES': '/ctrp/registry/institute_codes.json',
             'NCI': '/ctrp/registry/nci.json',
             'TRIAL_STATUSES': '/ctrp/registry/trial_statuses.json',
+
+            'TRIALS': {
+                'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
+            },
+
+            'MILESTONES': '/ctrp/registry/milestones.json',
+            'PROCESSING_STATUSES': '/ctrp/registry/processing_statuses.json',
             'HOLDER_TYPES': '/ctrp/registry/holder_types.json',
             'NIH': '/ctrp/registry/nih.json',
             'EXPANDED_ACCESS_TYPES': '/ctrp/registry/expanded_access_types.json',

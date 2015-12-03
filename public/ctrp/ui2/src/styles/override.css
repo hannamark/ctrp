@@ -15,7 +15,7 @@
         width: 1470px;
     }
 
-    form {
+    .drop-shadow form {
         width: 75%;
         margin: 0 auto;
     }
@@ -38,7 +38,7 @@
         width: 1770px;
     }
 
-    form {
+    .drop-shadow form {
         width: 65%;
         margin: 0 auto;
     }
@@ -61,7 +61,7 @@
         width: 2070px;
     }
 
-    form {
+    .drop-shadow form {
         width: 55%;
         margin: 0 auto;
     }
@@ -446,6 +446,28 @@ body {
     font-size: 14px;
 }
 
+.nav.nav-stacked > li {
+    border-bottom: 1px solid #DDD;
+    margin: 0;
+}
+
+.nav.nav-stacked > li > a {
+    padding: 5px 15px;
+}
+
+.sidebar {
+    margin-left: -20px;
+}
+
+.sidebar .panel-heading {
+    background: #2A71A5;
+}
+
+.sidebar .panel-title, .nav-stacked {
+    font-size: 12px;
+    color: #FFF;
+}
+
 .row {
     margin-right: 0px;
     margin-left: 0px;
@@ -542,7 +564,9 @@ h4 {
 }
 
 .btn-toolbar {
+    margin-top: 2px;
     margin-left: 0px;
+    margin-bottom: 2px;
 }
 
 .btn-toolbar span.pad-height {
@@ -666,7 +690,7 @@ input[type=radio] {
     margin-bottom: 0;
 }
 
-.no-padding {
+.no-padding, .sidebar .panel-body {
     padding: 0;
 }
 
@@ -714,6 +738,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     right: 15px;
 }
 
-.panel-default.border-less {
-    border: 0;
+.ui-grid-cell.action-btn {
+    overflow: visible;
+    text-align: center;
 }

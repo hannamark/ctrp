@@ -78,15 +78,34 @@
                         </div>
 
                         <div class="form-group">
-                        <label for="purpose" class="control-label col-xs-12 col-sm-3">Trial Status: </label>
-                        <div class="col-xs-12 col-sm-9">
-                            <select class="form-control input-sm" id="trial_status" ng-model="trialView.searchParams.trial_status">
-                                <option value="">-Select a Trial Status-</option>
-                                <option ng-repeat="trialStatus in trialView.trialStatusArr" value="{{trialStatus.code}}">{{trialStatus.name}}</option>
-                            </select>
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Trial Status!: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="trial_status" ng-model="trialView.searchParams.trial_status">
+                                    <option value="">-Select a Trial Status-</option>
+                                    <option ng-repeat="trialStatus in trialView.trialStatusArr" value="{{trialStatus.code}}">{{trialStatus.name}}</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Milestone: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="milestone" ng-model="trialView.searchParams.milestone">
+                                    <option value="">-Select a Milestone-</option>
+                                    <option ng-repeat="milestone in trialView.milestoneArr" value="{{milestone.code}}">{{milestone.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Processing Status: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="processingStatus" ng-model="trialView.searchParams.milestone">
+                                    <option value="">-Select a Processing Status -</option>
+                                    <option ng-repeat="processingStatus in trialView.processingStatusArr" value="{{processingStatus.code}}">{{processingStatus.name}}</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="official_title" class="control-label col-xs-12 col-sm-3">Principal Investigator: </label>

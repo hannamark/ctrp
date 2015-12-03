@@ -5,24 +5,28 @@
 (function () {
     'use strict';
 
-    angular.module('ctrp.app.registry').controller('paTrialCtrl', paTrialCtrl);
+    angular.module('ctrp.app.pa').controller('paTrialCtrl', paTrialCtrl);
 
     paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal', '$location',
-                         '$anchorScroll', 'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'];
+                         '$anchorScroll', 'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'
+    ,'PATrialService', 'milestoneObj', 'processingStatusObj'];
 
     function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal, $location,
-                       $anchorScroll, studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj) {
+                       $anchorScroll, studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
+                         PATrialService, milestoneObj, processingStatusObj) {
 
         var vm = this;
-        vm.searchParams = TrialService.getInitialTrialSearchParams();
+        vm.searchParams = PATrialService.getInitialTrialSearchParams();
         vm.studySourceArr = studySourceObj;
         vm.phaseArr = phaseObj;
         vm.primaryPurposeArr = primaryPurposeObj;
         vm.trialStatusArr = trialStatusObj;
+        vm.milestoneArr = milestoneObj;
+        vm.processingStatusArr = processingStatusObj;
         vm.gridScope=vm;
 
         //ui-grid plugin options
-        vm.gridOptions = TrialService.getGridOptions();
+        vm.gridOptions = PATrialService.getGridOptions();
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
         vm.gridOptions.onRegisterApi = function(gridApi) {
@@ -36,7 +40,7 @@
         }; //gridOptions
 
         vm.searchTrials = function() {
-            TrialService.searchTrials(vm.searchParams).then(function (data) {
+            PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;
                 $location.hash('trial_search_results');

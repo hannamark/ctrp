@@ -177,28 +177,51 @@ class Trial < ActiveRecord::Base
   accepts_nested_attributes_for :ind_ides, allow_destroy: true
   accepts_nested_attributes_for :oversight_authorities, allow_destroy: true
   accepts_nested_attributes_for :trial_documents, allow_destroy: true
+  accepts_nested_attributes_for :submissions, allow_destroy: true
 
   # Array of actions can be taken on this Trial
   def actions
     actions = []
     if self.is_draft
-      actions.append('Complete')
+      actions.append('complete')
     else
-      actions.append('Update')
-      actions.append('Amend')
+      actions.append('update')
+      actions.append('amend')
     end
   end
 
   validates :lead_protocol_id, presence: true
+  validates :official_title, presence: true, if: 'is_draft == false'
+  validates :phase, presence: true, if: 'is_draft == false'
+  validates :pilot, presence: true, if: 'is_draft == false'
+  validates :research_category, presence: true, if: 'is_draft == false'
+  validates :primary_purpose, presence: true, if: 'is_draft == false'
+  validates :accrual_disease_term, presence: true, if: 'is_draft == false'
+  validates :lead_org, presence: true, if: 'is_draft == false'
+  validates :pi, presence: true, if: 'is_draft == false'
+  validates :sponsor, presence: true, if: 'is_draft == false'
+  validates :responsible_party, presence: true, if: 'is_draft == false'
+  validates :grant_question, presence: true, if: 'is_draft == false'
+  validates :ind_ide_question, presence: true, if: 'is_draft == false'
+  validates :start_date, presence: true, if: 'is_draft == false'
+  validates :start_date_qual, presence: true, if: 'is_draft == false'
+  validates :primary_comp_date, presence: true, if: 'is_draft == false'
+  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false'
+  validates :comp_date, presence: true, if: 'is_draft == false'
+  validates :comp_date_qual, presence: true, if: 'is_draft == false'
+  validates :intervention_indicator, presence: true, if: 'is_draft == false'
+  validates :sec801_indicator, presence: true, if: 'is_draft == false'
+  validates :data_monitor_indicator, presence: true, if: 'is_draft == false'
 
-  before_save :generate_nci_id
+  before_save :generate_status
   before_create :save_history
   before_save :check_indicator
 
   private
 
-  def generate_nci_id
+  def generate_status
     if !self.is_draft && self.nci_id.nil?
+      # Generate NCI ID
       current_year = Time.new.year.to_s
       largest_id = Trial.where('nci_id ilike ?', "%NCI-#{current_year}-%").order('nci_id desc').pluck('nci_id').first
       if largest_id.nil?
@@ -207,6 +230,17 @@ class Trial < ActiveRecord::Base
         new_id = largest_id.next
       end
       self.nci_id = new_id
+
+      # New Submission
+      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self)
+
+      # New Milestone
+      srd = Milestone.find_by_code('SRD')
+      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: newSubmission)
+
+      # New Processing Status
+      sub = ProcessingStatus.find_by_code('SUB')
+      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self)
     end
   end
 

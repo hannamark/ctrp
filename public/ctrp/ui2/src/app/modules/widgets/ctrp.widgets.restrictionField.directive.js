@@ -2,6 +2,7 @@
  * wangg5 created 10/01/2015
  *
  * This directive watches for user roles and the global write mode to hide/show or disable/enable fields (or divs)
+ * If the field already has ng-disabled, it will have the 'ng-disabled' directive take precedence
  *
  * Usage:
  *
@@ -51,24 +52,26 @@
 
 
       function link(scope, element, attrs, ngModelCtrl) {
+
+          //sanity check first
+          if (attrs.restrictionField.trim() === '' && attrs.hasOwnProperty('ignoreRw')) {
+              //alert for errors
+              $log.error('The restriction-field directive must have user' +
+                  ' roles assigned when using the flag "ignore-rw"');
+              var errorMsg = '<span class="help-inline"><strong>Error:' +
+                  ' </strong>the restriction-field needs user role(s)' +
+                  ' assigned with the ignore-rw flag </span>';
+              element.html(errorMsg); //alert user for errors in using this directive with 'ignore-rw' flag
+              $compile(element.contents())(scope);
+              return;
+          }
+
           watchRestrictionRules();
           scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
               watchRestrictionRules();
           });
 
           function watchRestrictionRules() {
-            //sanity check first
-            if (attrs.restrictionField.trim() === '' && attrs.hasOwnProperty('ignoreRw')) {
-                //alert for errors
-                $log.error('The restriction-field directive must have user' +
-                    ' roles assigned when using the flag "ignore-rw"');
-                var errorMsg = '<span class="help-inline"><strong>Error:' +
-                    ' </strong>the restriction-field needs user role(s)' +
-                    ' assigned with the ignore-rw flag </span>';
-                element.html(errorMsg); //alert user for errors in using this directive with 'ignore-rw' flag
-                $compile(element.contents())(scope);
-                return;
-            }
 
             var allowedUserRoles = attrs.restrictionField.trim().toLowerCase() || '';
             var curUserRole = UserService.getUserRole().toLowerCase() || '';
@@ -85,16 +88,24 @@
             } else {
                 //include both globalWriteMode and user role
                 if (isShownToCurrentUser && globalWriteModeEnabled) {
-                  element.show();
-                  element.removeAttr('disabled');
+                    // $log.warn('global writing mode enabled!');
+                    element.show();
+                    if (attrs.hasOwnProperty('ngDisabled') && scope.$eval(attrs.ngDisabled) === true) {
+                        return; //keep disabled
+                    }
+                    element.removeAttr('disabled');
+
                 } else if (!isShownToCurrentUser) {
                   element.hide();
                 } else if (isShownToCurrentUser && !globalWriteModeEnabled) {
-                  if (isButton(element)) {
-                    element.hide(); //hide button if globalWriteModeEnabled is false
-                  } else {
-                    attrs.$set('disabled', 'disabled');
-                  }
+                    if (isButton(element)) {
+                        element.hide(); //hide button if globalWriteModeEnabled is false
+                    } else {
+
+                        $timeout(function() {
+                            attrs.$set('disabled', 'disabled');
+                        }, 0);
+                    }
                 }
             }
           } //watchRestrictionRules
