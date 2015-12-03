@@ -27,8 +27,8 @@
                 </p>
                 <p>
                     <strong>Lead Organization:</strong>
-                    <span><a ui-sref="main.orgDetail({orgId: paTrialOverview.trialDetailObj.history.lead_org.id})">
-                        {{paTrialOverview.trialDetailObj.history.lead_org.name}}
+                    <span><a ui-sref="main.orgDetail({orgId: paTrialOverview.trialDetailObj.lead_org.id})">
+                        {{paTrialOverview.trialDetailObj.lead_org.name}}
                     </a></span>
                 </p>
                 <p>
@@ -50,7 +50,7 @@
             <div class="col-sm-4 col-xs-12">
                 <p>
                     <strong>Principal Investigator:</strong>
-                    <span><a ui-sref="main.personDetail({personId: paTrialOverview.trialDetailObj.pi.id})">
+                    <span><a ui-sref="main.personDetail({personId: paTrialOverview.trialDetailObj.pi.ctrp_id})">
                         {{paTrialOverview.trialDetailObj.pi.fullName}}
                     </a></span>
                 </p>
