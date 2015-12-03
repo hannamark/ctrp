@@ -11,7 +11,7 @@ var helperFunctions = require('../support/helper');
 
 var PoCommonBar = function(){
     this.home = element(by.css('a[href="#/main/welcome"]'));
-    var homeEnterOrganizations = element(by.css('a[href="/ctrp/ui#/main/organizations"]'));
+    var homeEnterOrganizations = element(by.css('a[href="#/main/organizations"]'));
     this.organizations = element(by.linkText('Organizations & Families'));
     this.listOrganizations = element(by.css('a[ui-sref="main.organizations"]')); //element(by.css('a[href="#/main/organizations"]'));
     this.addOrganizations = element(by.css('a[href="#/main/new_organization"]'));

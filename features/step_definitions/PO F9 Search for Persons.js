@@ -27,7 +27,7 @@ module.exports = function() {
     var projectFunctions = new projectFunctionsPage();
 
     this.Given(/^I know multiple parameters of the person I wish to search for$/, function (table, callback) {
-        browser.get('ui#/main/sign_in');
+        browser.get('ui/#/main/sign_in');
         login.login('ctrpcurator', 'Welcome01');
         login.accept();
         browser.driver.wait(function() {

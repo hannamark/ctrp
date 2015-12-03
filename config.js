@@ -15,7 +15,7 @@ exports.config = {
     },
 
     baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
-  //     baseUrl: 'http://localhost:3000/ctrp/',
+  //     baseUrl: 'http://localhost/ctrp/',
 
     params: {
         login: {
@@ -58,8 +58,12 @@ exports.config = {
            'features/PO\ F12\ Delete\ Person\ record.feature',
            'features/PO\ F13 Curator\ review\ of\ a\ Pending\ Person\ Record.feature',
            'features/PO\ F14\ Change\ a\ Person\'s\ Affiliated\ Organization.feature',
-           'features/PO\ F15\ Add\ Organization\ Alias.feature'
-     // 'features/PO*.feature'
+           'features/PO\ F15\ Add\ Organization\ Alias.feature',
+        //Registry Features
+           'features/Reg\ F04\ Register\ Trial\ Study\ Source.feature',
+           'features/Reg\ F05\ Register\ Trial\ Protocol\ Identifiers.feature',
+           'features/Reg\ F06\ Register\ Trial\ Details.feature'
+// 'features/PO*.feature'
      // 'features/test.feature'
     ],
 
