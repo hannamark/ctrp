@@ -15,6 +15,11 @@ json.trial_status_wrappers do
   end
 end
 
-json.current_trial_status @trial.trial_status_wrappers.present? ? @trial.trial_status_wrappers.latest.trial_status.name : nil
-json.current_trial_status_date @trial.trial_status_wrappers.present? ? @trial.trial_status_wrappers.latest.trial_status.updated_at : nil
-json.processing_status @trial.processing_status_wrappers.present? ? @trial.processing_status_wrappers.latest.processing_status.name : nil
+json.current_trial_status @trial.trial_status_wrappers.present? ?
+    @trial.trial_status_wrappers.latest.trial_status.name : nil
+
+json.current_trial_status_date @trial.trial_status_wrappers.present? ?
+    @trial.trial_status_wrappers.latest.trial_status.updated_at : nil
+    
+json.processing_status @trial.processing_status_wrappers.present? ?
+    @trial.processing_status_wrappers.latest.processing_status.name : nil
