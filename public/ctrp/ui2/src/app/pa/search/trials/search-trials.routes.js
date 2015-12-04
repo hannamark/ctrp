@@ -40,7 +40,7 @@
                         },
                         ncyBreadcrumb: {
                             parent: 'main.defaultContent',
-                            label: 'Search PA Trials'
+                            label: 'Search Trials (PA)'
                         }
                     })
 
