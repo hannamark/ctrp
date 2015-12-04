@@ -32,12 +32,12 @@
     angular.module('ctrp.app.po')
         .directive('ctrpAdvancedPersonSearchForm', ctrpAdvancedPersonSearchForm);
 
-    ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', '$location', 'UserService', 'DateService',
-            'uiGridConstants', '$timeout', '_', 'toastr', '$anchorScroll', 'OrgService', '$compile', 'MESSAGES', '$state'];
+    ctrpAdvancedPersonSearchForm.$inject = ['PersonService', 'Common', 'UserService', 'DateService',
+            'uiGridConstants', '$timeout', '_', 'toastr', 'OrgService', '$compile', 'MESSAGES', '$state'];
 
 
-    function ctrpAdvancedPersonSearchForm(PersonService, Common, $location, uiGridConstants, UserService, DateService,
-                                          $timeout,  _, toastr, $anchorScroll, OrgService, $compile, MESSAGES, $state) {
+    function ctrpAdvancedPersonSearchForm(PersonService, Common, uiGridConstants, UserService, DateService,
+                                          $timeout,  _, toastr, OrgService, $compile, MESSAGES, $state) {
 
         var directiveObj = {
             restrict: 'E',
@@ -141,8 +141,6 @@
 
                             });
                             // $scope.gridApi.grid.refresh();
-                            $location.hash('people_search_results');
-                            //$anchorScroll();
                         }
                         $scope.$parent.personSearchResults = data.data; //{people: [], total, }
                     }).catch(function (err) {

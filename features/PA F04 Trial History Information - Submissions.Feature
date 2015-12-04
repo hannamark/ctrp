@@ -10,14 +10,14 @@ And I am on the Trial History Information for Submissions Screen
 Then I can view the Trial History Information for Submissions for each submission number Ordered by greatest submission number:
 |Submission Number| 
 |Submission Date|
-|Submission Type|
+|Submission Type
 |Amendment Date|
 |Amendment Number|
 |Amendment Reason|
 |Submitter User ID|
 |Documents| 
 |Milestone|
-|Milestone Reason|
+|Milestone Comment|
 
 Scenario: #2 I can edit the Trial History 
 Given I am logged into the CTRP Protocol Abstraction application
@@ -40,7 +40,7 @@ Scenario: #3 I can view Trial History Information Documents
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
-Then the trial documents are displayed
+Then the trial documents are displayed for each submission
 And the documents that are attached for each submission are identified as original documents 
 
 Scenario: #4 I can view Trial History Information for Original Submission
@@ -55,7 +55,7 @@ Then I can view the Trial History Information for Submissions for each submissio
 |Submitter User ID|
 |Documents| 
 |Milestone|
-|Milestone Reason|
+|Milestone Comment|
 
 Scenario: #5 I can view each document
 Given I am logged into the CTRP Protocol Abstraction application

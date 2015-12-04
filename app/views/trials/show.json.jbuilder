@@ -15,6 +15,13 @@ json.trial_status_wrappers do
   end
 end
 
+# # get the ClinicalTrial.gov Identifier:
+# json.other_ids do
+#     json.array!(@trial.other_ids) do |other_id|
+#         json.extract! other_id, :protocol_id_origin_id
+#     end
+# end
+
 json.submissions do
   json.array!(@trial.submissions) do |submission|
     json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
@@ -30,3 +37,9 @@ json.current_trial_status_date @trial.trial_status_wrappers.present? ?
 
 json.processing_status @trial.processing_status_wrappers.present? ?
     @trial.processing_status_wrappers.latest.processing_status.name : nil
+
+json.last_amendment_num @trial.milestone_wrappers.present? ?
+    @trial.milestone_wrappers.last.submission.amendment_num : nil
+
+json.last_amendment_date @trial.milestone_wrappers.present? ?
+    @trial.milestone_wrappers.last.submission.amendment_date : nil

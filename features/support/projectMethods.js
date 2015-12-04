@@ -265,8 +265,8 @@ var projectMethods = function() {
      * @param dateTimeEdited
      *****************************************************************/
     this.verifyLastUpdatedNameDate = function(module, dateTimeEdited) {
+        var userLoggedIn = menuItem.loginName.getText();
             if (module === 'organization') {
-                var userLoggedIn = menuItem.loginName.getText();
                 userLoggedIn.then(function (value2) {
                     var userUpdatedDate = value2 + ' (' + dateTimeEdited + ')';
                     console.log('user-date last updated value is: ' + userUpdatedDate);
@@ -420,7 +420,7 @@ var projectMethods = function() {
     this.verifyWarningMessage = function(warningText) {
         return menuItem.addWarningMessage.filter(function(name) {
             return name.getText().then(function(text) {
-              //  console.log('value of text : ' + text + 'and value of searched string' + warningText);
+            //    console.log('value of text : ' + text + 'and value of searched string' + warningText);
                 return text === warningText ;
             });
         }).then(function(filteredElements) {

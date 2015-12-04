@@ -99,8 +99,6 @@
             getProtocolIdOrigins: getProtocolIdOrigins,
             getPhases: getPhases,
             getResearchCategories: getResearchCategories,
-            getPrimaryPurposes: getPrimaryPurposes,
-            getSecondaryPurposes: getSecondaryPurposes,
             getAccrualDiseaseTerms: getAccrualDiseaseTerms,
             getResponsibleParties: getResponsibleParties,
             getFundingMechanisms: getFundingMechanisms,
@@ -193,14 +191,6 @@
 
         function getResearchCategories() {
             return PromiseTimeoutService.getData(URL_CONFIGS.RESEARCH_CATEGORIES);
-        }
-
-        function getPrimaryPurposes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.PRIMARY_PURPOSES);
-        }
-
-        function getSecondaryPurposes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.SECONDARY_PURPOSES);
         }
 
         function getAccrualDiseaseTerms() {

@@ -35,7 +35,12 @@ And I am on the Trial Milestones Screen
 And I have selected the current submission number
 And I can view the trail milestone information for the current 
 And I can select a Milestone from the list:
-| Submission Received Date|
+|Submission Received Date|
+|Validation Processing Start Date|
+|Validation Processing Completed Date|
+|Ready for Validation QC Date|
+|Validation QC Start Date|
+|Validation QC Completed Date|
 |Submission Acceptance Date|
 |Submission Terminated Date|
 |Submission Reactivated Date|

@@ -219,7 +219,7 @@ Scenario: As a Curator, I can select any organization in a search result and dis
  Given I want to see the detail information of organization
  And I am logged in to CTRP PO application
  And I have selected the option to search for an organization
- When I select an organization name in the search results
+ When I select organization name in the search results
  Then the complete organization information will be displayed including:
  |CTRP Organization ID|
  |Organization Name|

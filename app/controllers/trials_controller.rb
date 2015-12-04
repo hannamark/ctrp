@@ -112,6 +112,7 @@ class TrialsController < ApplicationController
 
   def search_pa
     # Pagination/sorting params initialization
+    Rails.logger.info "In Search PA, params = #{params.inspect}"
     params[:start] = 1 if params[:start].blank?
     params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
@@ -153,6 +154,7 @@ class TrialsController < ApplicationController
       if params[:trial_status].present?# && params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
         @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
       end
+      ## Enable this section, if the Radio button on the UI will be used.
       #if params[:milestone].present? #&& params[:milestone_latest].present? && params[:milestone_latest] == "YES"
       #  @trials = @trials.select{|trial| !trial.milestone_wrappers.blank? &&  trial.milestone_wrappers.last.milestone.code == params[:milestone]}
       #end
@@ -160,6 +162,9 @@ class TrialsController < ApplicationController
         Rails.logger.debug " Before params[:processing_status] = #{params[:processing_status].inspect}"
         @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && trial.processing_status_wrappers.last.processing_status.code == params[:processing_status]}
         Rails.logger.debug "After @trials = #{@trials.inspect}"
+      end
+      if params[:protocol_origin_type].present?
+        @trials = @trials.select{|trial| trial.other_ids.by_value(params[:protocol_origin_type]).size>0}
       end
     else
       @trials = []

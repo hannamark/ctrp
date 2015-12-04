@@ -27,7 +27,7 @@ Scenario Outline: #2 As a PO Curator, I will get errors if I enter incomplete in
   And I have changed the family type <family Type>
   And I have changed the family status <family status>
   And I save the Family information
-  Then the system will notify any error with <response> for family name <family Name>, family type <family Type> and family status <family status>
+  Then the system will notify any error for family name <family Name>, family type <family Type> and family status <family status> with <response>
 
   Examples:
     |family Name                    |       |family Type            |     |family status|   |response |
