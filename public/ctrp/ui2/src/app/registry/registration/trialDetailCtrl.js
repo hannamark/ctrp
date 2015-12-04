@@ -185,7 +185,11 @@
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 if (response.server_response.status < 300) {
                     uploadDocuments(response.id);
-                    $state.go('main.trials', null, {reload: true});
+                    if (vm.curTrial.is_draft) {
+                        $state.go('main.trialDetail', {trialId: response.id, editType: 'complete'}, {reload: true});
+                    } else {
+                        $state.go('main.trials', null, {reload: true});
+                    }
                     toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 }
             }).catch(function(err) {
