@@ -9,10 +9,10 @@
         .controller('familyCtrl', familyCtrl);
 
     familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', '$rootScope',
-        'Common','familyStatusObj','familyTypeObj','$modal', '$location', '$anchorScroll'];
+        'Common','familyStatusObj','familyTypeObj','$modal'];
 
     function familyCtrl(FamilyService, uiGridConstants, $scope, $rootScope,
-                        Common,familyStatusObj,familyTypeObj,$modal, $location, $anchorScroll) {
+                        Common,familyStatusObj,familyTypeObj, $modal) {
 
         var vm = this;
 
@@ -77,9 +77,6 @@
                     //console.log('vm grid: ' + JSON.stringify(vm.gridOptions.data));
                     //console.log('received search results: ' + JSON.stringify(data.data));
                     vm.gridOptions.totalItems = data.data.total;
-
-                    $location.hash('family_search_results');
-                    //$anchorScroll();
                 }).catch(function (err) {
                     console.log('search people failed');
                 });
