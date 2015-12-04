@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203152811) do
+ActiveRecord::Schema.define(version: 20151204163444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -842,7 +842,6 @@ ActiveRecord::Schema.define(version: 20151203152811) do
   create_table "submissions", force: :cascade do |t|
     t.integer  "submission_num"
     t.date     "submission_date"
-    t.integer  "amendment_num"
     t.date     "amendment_date"
     t.integer  "amendment_reason_id"
     t.integer  "trial_id"
@@ -850,6 +849,7 @@ ActiveRecord::Schema.define(version: 20151203152811) do
     t.datetime "updated_at",                                  null: false
     t.string   "uuid",                limit: 255
     t.integer  "lock_version",                    default: 0
+    t.string   "amendment_num",       limit: 255
   end
 
   add_index "submissions", ["amendment_reason_id"], name: "index_submissions_on_amendment_reason_id", using: :btree
