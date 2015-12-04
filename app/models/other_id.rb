@@ -22,4 +22,14 @@ class OtherId < ActiveRecord::Base
 
   belongs_to :protocol_id_origin
   belongs_to :trial
+
+  scope :by_value, ->  (value) {
+    joins(:protocol_id_origin).where("other_ids.protocol_id_origin_id = protocol_id_origins.id and protocol_id_origins.code = ?","#{value.to_s}")
+  }
+
+  scope :latest, -> {
+    order("updated_at DESC").first
+  }
+
+
 end
