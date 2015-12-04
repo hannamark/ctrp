@@ -74,7 +74,7 @@
                                        ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required autofocus>
                                 <span class="form-control-feedback" ng-show="trialDetailView.curTrial.lead_protocol_id.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.lead_protocol_id) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.lead_protocol_id) || (trial_form.lead_protocol_id.$error.required && trialDetailView.showLpiError)">
-                                    Lead Protocol Identifier is required
+                                    Lead Organization Trial Identifier is required
                                 </span>
                             </div>
                         </div>
