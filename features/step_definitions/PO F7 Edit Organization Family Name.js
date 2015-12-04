@@ -93,17 +93,21 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the system will notify any error with (.*) for family name (.*), family type (.*) and family status (.*)$/, function (familyName, familyType, familyStatus, response, callback) {
+    this.Then(/^the system will notify any error for family name (.*), family type (.*) and family status (.*) with (.*)$/, function (familyName, familyType, familyStatus, response, callback) {
         if(familyName === 'Albert Einstein Cancer Center') {
+            console.log('response1 ' + response);
             expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
         }
-        if(familyName === '') {
+        else if(familyName === '') {
+            console.log('reponse2 ' + response);
             expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
         }
-        if(familyType === '') {
+        else if(familyType === '') {
+            console.log('reponse3 ' + response);
             expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
         }
-        if(familyStatus === '') {
+        else if(familyStatus === '') {
+            console.log('reponse4 ' + response);
             expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
         }
         browser.sleep(25).then(callback);
