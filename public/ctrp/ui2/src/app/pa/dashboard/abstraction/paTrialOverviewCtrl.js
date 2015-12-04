@@ -38,9 +38,9 @@
                 console.log('received trial detail obj: ', data);
                 vm.trialDetailObj = data;
                 $scope.trialDetailObj = vm.trialDetailObj;
-                vm.trialDetailObj.pi.fullName = vm.trialDetailObj.pi.fname +
-                    ' ' + vm.trialDetailObj.pi.mname ||'' + ' ' +
-                    vm.trialDetailObj.pi.lname;
+                vm.trialDetailObj.pi.fullName = vm.trialDetailObj.pi.fname || '' +
+                    ' ' + vm.trialDetailObj.pi.mname || '' + ' ' +
+                    vm.trialDetailObj.pi.lname || '';
             }).catch(function(error) {
                 console.log('error in fetching trial detail object');
             }).finally(function() {
