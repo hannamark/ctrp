@@ -163,7 +163,7 @@
                     <div ng-if="headerView.userRole == 'super' || headerView.userRole == 'admin'">
                         <div ng-include src="'app/layout/welcome/adminHome.html'"></div>
                     </div>
-                    <div ng-if="headerView.userRole == 'trial-submitter' || headerView.userRole == 'trial-submitter-su'">
+                    <div ng-if="headerView.userRole == 'trial-submitter' || headerView.userRole == 'site-su'">
                         <div ng-include src="'app/layout/welcome/trialSubmitterHome.html'"></div>
                     </div>
                     <div ng-if="headerView.userRole == 'abstractor' || headerView.userRole == 'abstractor-su'">
