@@ -76,6 +76,12 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    this.Then(/^the Register Trial Protocol Identifiers section will indicate an error "([^"]*)"$/, function (arg1, callback) {
+        expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true');
+        browser.sleep(25).then(callback);
+    });
+
+
     this.Given(/^I should be allowed to enter only one "([^"]*)"$/, function (arg1, callback) {
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('NCT98745632');
@@ -114,6 +120,7 @@ module.exports = function() {
         addTrial.clickAddTrialAddProtocolButton();
         helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT2222556')).to.become('false');
+
         /**** Check for 8 characters without NCT *****/
         addTrial.clickAddTrialResetButton();
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
@@ -121,6 +128,7 @@ module.exports = function() {
         addTrial.clickAddTrialAddProtocolButton();
         helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('LLT2222556')).to.become('false');
+
         /**** Check for 8 characters with just numbers *****/
         addTrial.clickAddTrialResetButton();
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
@@ -128,6 +136,7 @@ module.exports = function() {
         addTrial.clickAddTrialAddProtocolButton();
         helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('12322225568')).to.become('false');
+
         /**** Check for 8 characters with just characters *****/
         addTrial.clickAddTrialResetButton();
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
@@ -135,6 +144,7 @@ module.exports = function() {
         addTrial.clickAddTrialAddProtocolButton();
         helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCTAQWERTYU')).to.become('false');
+
         /**** Check for 9 characters *****/
         addTrial.clickAddTrialResetButton();
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();

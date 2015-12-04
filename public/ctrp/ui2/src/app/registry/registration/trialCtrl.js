@@ -7,11 +7,11 @@
 
     angular.module('ctrp.app.registry').controller('trialCtrl', trialCtrl);
 
-    trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal', '$location',
-                         '$anchorScroll', 'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'];
+    trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal',
+                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'];
 
-    function trialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal, $location,
-                       $anchorScroll, studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj) {
+    function trialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal,
+                       studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj) {
 
         var vm = this;
         vm.searchParams = TrialService.getInitialTrialSearchParams();
@@ -39,8 +39,6 @@
             TrialService.searchTrials(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;
-                $location.hash('trial_search_results');
-                //$anchorScroll();
             }).catch(function (err) {
                 console.log('search trial failed');
             });
@@ -53,10 +51,6 @@
 
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
-        };
-
-        $scope.takeTrialAction = function(actionType, trialId) {
-            $state.go('main.trialDetail', {trialId: trialId, editType: actionType});
         };
 
         $scope.capitalizeFirst = function(str) {

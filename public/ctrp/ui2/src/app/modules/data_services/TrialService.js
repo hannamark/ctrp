@@ -20,12 +20,11 @@
             start: 1
         }; //initial Trial Search Parameters
 
-        //var actionTemplate = '<button ng-repeat="action in row.entity.actions" type="button" class="btn btn-primary" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)"><i class="glyphicon"></i> {{action}} </button>';
         var actionTemplate = '<div class="btn-group" ng-class="grid.renderContainers.body.visibleRowCache.indexOf(row) > 4 ? \'dropup\' : \'\'">'
             + '<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
             + 'Action <span class="caret"></span>'
             + '</button>'
-            + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions"><a href="#" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)">{{grid.appScope.capitalizeFirst(action)}}</a></li></ul>'
+            + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions"><a ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a></li></ul>'
             + '</div>';
 
         var gridOptions = {
@@ -42,7 +41,8 @@
             enableFiltering: true,
             columnDefs: [
                 {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    //cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.trialDetail({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -811,7 +811,7 @@
                 }
             }
             // Validate the format of ClinicalTrials.gov Identifier: NCT00000000
-            if (protocolIdOriginName === 'ClinicalTrials.gov Identifier' && !/^NCT\d{8}/.test(protocolId)) {
+            if (protocolIdOriginName === 'ClinicalTrials.gov Identifier' && !/^NCT\d{8}$/.test(protocolId)) {
                 errorMsg = 'The format must be "NCT" followed by 8 numeric characters';
                 return errorMsg;
             }

@@ -5,7 +5,6 @@
 #  id                  :integer          not null, primary key
 #  submission_num      :integer
 #  submission_date     :date
-#  amendment_num       :integer
 #  amendment_date      :date
 #  amendment_reason_id :integer
 #  trial_id            :integer
@@ -13,6 +12,7 @@
 #  updated_at          :datetime         not null
 #  uuid                :string(255)
 #  lock_version        :integer          default(0)
+#  amendment_num       :string(255)
 #
 # Indexes
 #

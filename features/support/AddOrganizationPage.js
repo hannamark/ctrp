@@ -33,7 +33,7 @@ AddOrganizationsPage = function(){
     this.addVerifyOrgFamilyName = element(by.binding('family.name'));
     this.saveButton = element(by.id('save_btn')); //element(by.css('input[value="Save"]'));
     this.clearButton = element(by.css('#clear_btn'));//element(by.css('input[value="Reset"]'));by.id('reset_btn')
-    this.resetButton = element(by.css('#reset_btn'));
+    this.resetButton = element(by.css('button[ng-click="orgDetailView.resetForm()"]')); //element(by.css('#reset_btn'));
     this.cancelButton = element(by.css('.btn.btn-default'));
     this.deleteButton = element(by.css('.btn.btn-danger'));
     this.deleteNowButton = element(by.buttonText('Delete Now'));

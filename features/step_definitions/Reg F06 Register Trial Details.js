@@ -130,23 +130,36 @@ module.exports = function() {
         addTrial.clickAddTrialReviewButton();
         errorTable = table.hashes();
         for (var i = 0; i < errorTable.length; i++) {
-            //console.log('value of i' + i);
-            //console.log('value of data field  :  ' + errorTable[i]);
-            //console.log(errorTable[i]);
-            //console.log('new line');
-            //console.log(errorTable[i].FieldType);
-            //console.log('new2 line');
-            //console.log(errorTable[i].error);
             expect(projectFunctions.verifyWarningMessage(errorTable[i].error)).to.become('true');
         }
         browser.sleep(25).then(callback);
     });
 
+    this.When(/^I select "([^"]*)" as the Trial Primary Purpose$/, function (arg1, callback) {
+        addTrial.selectAddTrialPrimaryPurpose(arg1);
+        addTrial.clickAddTrialReviewButton();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^I must provide the Primary Purpose other description$/, function (callback) {
+        expect(projectFunctions.verifyWarningMessage('Other Primary Purpose is required')).to.become('true');
+        addTrial.setAddTrialPrimaryPurposeOtherDescription('Primary Purpose Other Description');
+        expect(projectFunctions.verifyWarningMessage('Other Primary Purpose is required')).to.become('false');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I select "([^"]*)" as the Trial Secondary Purpose$/, function (arg1, callback) {
+        addTrial.selectAddTrialSecondaryPurpose(arg1);
+        addTrial.clickAddTrialReviewButton();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^I must provide the Secondary Purpose other description$/, function (callback) {
+        expect(projectFunctions.verifyWarningMessage('Other Secondary Purpose is required')).to.become('true');
+        addTrial.setAddTrialSecondaryPurposeOtherDescription('Secondary Purpose Other Description');
+        expect(projectFunctions.verifyWarningMessage('Other Secondary Purpose is required')).to.become('false');
+        browser.sleep(25).then(callback);
+    });
+
 
 };
-
-//element.all(by.css('#phase')).element(by.css('option')).getText()
-//by.css('option[label="0"]')
-//
-//element(by.css('#research_category')).all(by.css('option[label]')).getText()
-//element(by.css('#phase')).all(by.css('option[label]')).getText()

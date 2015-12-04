@@ -60,7 +60,13 @@ class Ability
       cannot :access_backoffice, :manage_backoffice
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
-    elsif user.role == 'ROLE_TRIAL-SUBMITTER-SU' && user.approved?
+    elsif user.role == 'ROLE_ACCRUAL-SUBMITTER' && user.approved?
+      can :read, :all
+      can :search, :all
+      cannot :access_backoffice, :manage_backoffice
+      cannot :access, :rails_admin   # grant access to rails_admin
+      cannot :dashboard
+    elsif user.role == 'ROLE_SITE-SU' && user.approved?
       can :manage, [Trial]
       can :read, :all
       can :search, :all

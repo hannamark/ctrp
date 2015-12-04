@@ -170,6 +170,8 @@ class Trial < ActiveRecord::Base
   has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
   has_many :collaborators, -> { order 'collaborators.id' }
 
+  attr_accessor :edit_type
+
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
   accepts_nested_attributes_for :grants, allow_destroy: true
@@ -241,6 +243,14 @@ class Trial < ActiveRecord::Base
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
       ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self)
+    elsif self.edit_type == 'amend'
+      # Populate submission number for the latest Submission and create a Milestone
+      largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
+      latest_submission = self.submissions.last
+      latest_submission.submission_num = largest_sub_num + 1
+
+      srd = Milestone.find_by_code('SRD')
+      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
     end
   end
 

@@ -88,7 +88,7 @@ Given I am logged into the CTRP application
 And I am on the home screen
 When I select the Back Office menu item
 Then the Back Office menu is expanded and includes:
-| Dropdown Lists|
+|Dropdown Lists|
 
 Scenario: #9 Close Menu
 Given I am logged into the CTRP application

@@ -44,9 +44,11 @@ module.exports = function() {
     });
 
 
-    this.Then(/^CTRP will display the required registration elements for a complete protocol registration for the selected (.*)$/, function (trialType, callback) {
-            addTrial.getVerifyTrialStudySource(trialType);
+    this.Given(/^CTRP will display the required registration elements for a complete protocol registration for the selected (.*)$/, function (trialType, callback) {
+        console.log(trialType);
+        addTrial.getVerifyTrialStudySource(trialType);
         browser.sleep(25).then(callback);
     });
+
 
 };
