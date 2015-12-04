@@ -592,6 +592,18 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    this.When(/^I select organization name in the search results$/, function (callback) {
+        cukeOrganization.then(function(value) {
+            console.log('This is the Org:' + value);
+            searchOrg.setOrgName(value);
+            searchOrg.clickSearchButton();
+            expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
+            element(by.linkText(value)).click();
+        });
+        browser.sleep(25).then(callback);
+    });
+
+
     this.Then(/^the complete organization information will be displayed including:$/, function (table, callback) {
         expect(addOrg.verifyAddOrgLabels('CTRP ID:')).to.become('true');
         expect(addOrg.verifyAddOrgLabels('Name:')).to.become('true');
