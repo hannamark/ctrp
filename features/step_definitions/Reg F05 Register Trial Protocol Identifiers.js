@@ -76,6 +76,12 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    this.Then(/^the Register Trial Protocol Identifiers section will indicate an error "([^"]*)"$/, function (arg1, callback) {
+        expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true');
+        browser.sleep(25).then(callback);
+    });
+
+
     this.Given(/^I should be allowed to enter only one "([^"]*)"$/, function (arg1, callback) {
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('NCT98745632');
