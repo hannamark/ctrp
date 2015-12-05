@@ -71,18 +71,23 @@ module.exports = function() {
     });
 
     this.Then(/^an error (.*) will be displayed for family name (.*), family type (.*) and family status (.*)$/, function (response, familyName, familyType, familyStatus, callback) {
-        if(familyName === 'Albert Einstein Cancer Center') {
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
-        if(familyName === '') {
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
-        if(familyType === '') {
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
-        if(familyStatus === '') {
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            if(familyName === 'Albert Einstein Cancer Center') {
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+            else if(familyName === '') {
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+            else if(familyType === '') {
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+            else if(familyStatus === '') {
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+        });
         browser.sleep(25).then(callback);
     });
 

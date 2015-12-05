@@ -94,22 +94,27 @@ module.exports = function() {
     });
 
     this.Then(/^the system will notify any error for family name (.*), family type (.*) and family status (.*) with (.*)$/, function (familyName, familyType, familyStatus, response, callback) {
-        if(familyName === 'Albert Einstein Cancer Center') {
-            console.log('response1 ' + response);
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
-        else if(familyName === '') {
-            console.log('reponse2 ' + response);
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
-        else if(familyType === '') {
-            console.log('reponse3 ' + response);
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
-        else if(familyStatus === '') {
-            console.log('reponse4 ' + response);
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            if(familyName === 'Albert Einstein Cancer Center') {
+                console.log('response1 ' + response);
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+            else if(familyName === '') {
+                console.log('reponse2 ' + response);
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+            else if(familyType === '') {
+                console.log('reponse3 ' + response);
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+            else if(familyStatus === '') {
+                console.log('reponse4 ' + response);
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+    });
         browser.sleep(25).then(callback);
     });
 
