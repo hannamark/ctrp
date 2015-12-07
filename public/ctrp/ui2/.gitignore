@@ -2,8 +2,9 @@
 node_modules/
 src/bower_components/
 bower_components/
-!**/bower.json
-!**/.bowerrc
+!./bower.json
+!./.bowerrc
+!src/bower_components/**/bower.json
 build/
 .tmp/**
 
