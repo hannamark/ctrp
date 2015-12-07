@@ -222,12 +222,13 @@
             var curSourceStatusObj = {name: '', id: ''};
 
             if (vm.curPerson.new) {
+                //default to Active
                 curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}) || curSourceStatusObj;
             } else {
                 curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) || curSourceStatusObj;
             }
 
-            vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
+            vm.curSourceStatusName = curSourceStatusObj.name;
             vm.curPerson.source_status_id = curSourceStatusObj.id;
         }
 
