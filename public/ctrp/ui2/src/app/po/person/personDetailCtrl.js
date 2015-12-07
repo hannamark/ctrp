@@ -170,6 +170,7 @@
                     vm.curPerson = response.data;
                     vm.savedSelection = [];
                     populatePoAffiliations();
+                    filterSourceContext();
                     vm.masterCopy= angular.copy(vm.curPerson);
                 }).catch(function (err) {
                     console.log("Error in retrieving person during tab change.");
@@ -319,12 +320,6 @@
                 ID = vm.curPerson.id;
 
             var searchParams = {"person_fname": vm.curPerson.fname, "person_lname": vm.curPerson.lname, "source_context_id": vm.curPerson.source_context_id, "person_exists": angular.isObject(personDetailObj), "person_id": ID};
-            console.log('First name is ' + vm.curPerson.fname);
-            console.log('Last name is ' + vm.curPerson.lname);
-            console.log('Source context is ' + vm.curPerson.source_context_id);
-            console.log('Person exists? ' + angular.isObject(personDetailObj));
-            console.log('Person ID ' + vm.curPerson.id);
-
             vm.showUniqueWarning = false
 
             var result = PersonService.checkUniquePerson(searchParams).then(function (response) {
