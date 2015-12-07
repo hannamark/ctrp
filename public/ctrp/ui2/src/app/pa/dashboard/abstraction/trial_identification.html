@@ -6,11 +6,10 @@
             </uib-accordion-heading>
             <!-- first row in the accordion body -->
             <div class="row">
-                <p>
+                <!-- <p>
                     <s><strong>Clinical Research Category:</strong>
-                    <!-- get data from parent controller view -->
                     <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span></s>
-                </p>
+                </p> -->
 
                 <p>
                     <strong>NCI Trial Identification: </strong>
@@ -23,7 +22,7 @@
                     <span>Yes ??</span>
                 </p>
 
-                <p>
+                <!-- <p>
                     <s>
                         <strong>Lead Organization Trial ID: </strong>
                         <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
@@ -31,16 +30,18 @@
                 </p>
 
                 <p>
-                    <strong>ClinicalTrials.gov Identifier: </strong>
-                    <span>{{paTrialOverview.trialDetailObj.other_ids[0].protocol_id}}</span>
-                </p>
+                    <s>
+                        <strong>ClinicalTrials.gov Identifier: </strong>
+                        <span>{{paTrialOverview.trialDetailObj.other_ids[0].protocol_id}}</span>
+                    </s>
+                </p> -->
 
                 <p>
                     <strong>Last Verification Date: </strong>
                     <span>2015-02-10 21:05:37.396 ??</span>
                 </p>
 
-                <p>
+                <!-- <p>
                     <s><strong>Official Title: </strong>
                     <span>{{paTrialOverview.trialDetailObj.official_title}}</span></s>
                 </p>
@@ -50,27 +51,13 @@
                         <strong>Submission Source:</strong>
                         <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
                     </s>
-                </p>
+                </p> -->
 
                 <hr />
             </div>
             <!-- end of first row in the accordion body -->
 
             <!-- second row in the accordion body -->
-            <div class="row text-center">
-                <div class="btn-toolbar">
-                    <button type="button" class="btn btn-primary pull-right" id="admin_sci_checkout">Admin/Scientific Check Out</button>
-                    <button type="button" class="btn btn-primary pull-right" id="scientific_checkout">Scientific Check Out</button>
-                    <button type="button" class="btn btn-primary pull-right" id="admin_checkout">Admin Check Out</button>
-                    <button type="button" class="btn btn-warning pull-right" id="back_to_search">
-                        <i class="glyphicon glyphicon-arrow-left"></i> Back to Search Results
-                    </button>
-                </div>
-                <hr />
-            </div>
-            <!-- end of second row -->
-
-            <!-- third row in the accordion body -->
             <div class="row">
                 <div class="col-xs-12 pull-left">
                     <form name="abstraction_form" class="form" role="form" novalidate>
@@ -107,7 +94,6 @@
                                 </button>
                             </div>
                         </div>
-
                     </form>
                 </div>
             </div>

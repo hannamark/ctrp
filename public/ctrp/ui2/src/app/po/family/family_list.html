@@ -29,16 +29,6 @@
                 <!-- first row -->
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6">
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-3"></div>
-                            <div class="col-xs-12 col-sm-9">
-                                <div ng-class="familyView.searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
-                                    <label for="wc_search">
-                                        <input tabindex="11" type="checkbox" id="wc_search"  ng-model="familyView.searchParams.wc_search"  /> Exact Search
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                         <!-- name -->
                         <div class="form-group">
                             <label for="family_name" class="control-label col-xs-12 col-sm-3">Name:</label>
@@ -76,6 +66,13 @@
                 </div><!-- first row ends -->
 
                 <div class="row">
+                    <div class="col-xs-12 col-sm-9">
+                        <div ng-class="familyView.searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
+                            <label for="wc_search">
+                                <input tabindex="11" type="checkbox" id="wc_search"  ng-model="familyView.searchParams.wc_search"  /> Exact Search
+                            </label>
+                        </div>
+                    </div>
                     <div class="col-xs-12">
                         <div class="btn-toolbar">
                             <button tabindex="26" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="familyView.searchFamilies('fromStart')">

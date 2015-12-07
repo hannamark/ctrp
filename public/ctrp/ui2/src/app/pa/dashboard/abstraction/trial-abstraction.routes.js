@@ -13,8 +13,9 @@
                 /* this is the parent state for the states below */
                     url: '/trial/:trialId',
                     templateUrl: 'app/pa/dashboard/abstraction/trial_overview.html',
+                    // controller: 'paTrialOverviewCtrl',
                     ncyBreadcrumb: {
-                        parent: 'main.defaultContent', //TODO: to be changed to PA Trial search
+                        parent: 'main.paTrialSearch',
                         label: 'Trial Overview'
                     }
                 })
@@ -75,6 +76,14 @@
                         label: 'Check Out History'
                     }
                 })
+                .state('main.pa.trialOverview.jsonRawData', {
+                    url: '/raw-json-trial-data',
+                    templateUrl: 'app/pa/dashboard/abstraction/raw_json_trial_data.html',
+                    ncyBreadcrumb: {
+                        parent: 'main.pa.trialOverview',
+                        label: 'Raw JSON Data'
+                    }
+                });
 
     } //trialAbstractionRoutes
 
