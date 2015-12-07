@@ -13,8 +13,9 @@
                 /* this is the parent state for the states below */
                     url: '/trial/:trialId',
                     templateUrl: 'app/pa/dashboard/abstraction/trial_overview.html',
+                    // controller: 'paTrialOverviewCtrl',
                     ncyBreadcrumb: {
-                        parent: 'main.defaultContent', //TODO: to be changed to PA Trial search
+                        parent: 'main.paTrialSearch',
                         label: 'Trial Overview'
                     }
                 })
