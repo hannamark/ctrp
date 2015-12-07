@@ -23,9 +23,9 @@
         vm.savedSelection = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
-        var curSourceStatusObj = !!vm.curPerson.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
-        vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
-        vm.curPerson.source_status_id = curSourceStatusObj.id;
+        // var curSourceStatusObj = !!vm.curPerson.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+        // vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
+        // vm.curPerson.source_status_id = curSourceStatusObj.id;
 
         //
         // if(!angular.isObject(personDetailObj)) {
@@ -171,6 +171,7 @@
                     vm.savedSelection = [];
                     populatePoAffiliations();
                     filterSourceContext();
+                    locateSourceStatus();
                     vm.masterCopy= angular.copy(vm.curPerson);
                 }).catch(function (err) {
                     console.log("Error in retrieving person during tab change.");
@@ -192,6 +193,7 @@
                 prepareModal();
             }
             filterSourceContext();
+            locateSourceStatus();
         }
 
 
@@ -217,6 +219,30 @@
                     }
                 }
             }
+        }
+
+
+        /**
+         * Find the source status name if the person has a source_status_id,
+         * or find the source status name that has code = 'ACT' if the person does not
+         * have a source_status_id (e.g. a new person)
+         * @return {void}
+         */
+        function locateSourceStatus() {
+            var curSourceStatusObj = {};
+            if (!!vm.curPerson.source_status_id && !vm.curPerson.new) {
+                console.log("this has has source_status_id: ", vm.curPerson.source_status_id);
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id});
+            } else if (vm.curPerson.new) {
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+            } else {
+                console.log("this person does not have source_status_id: ", vm.curPerson.source_status_id);
+                curSourceStatusObj.curSourceContextName = '';
+                curSourceStatusObj.id = '';
+            }
+            // var curSourceStatusObj = !!vm.curPerson.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+            vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
+            vm.curPerson.source_status_id = curSourceStatusObj.id;
         }
 
         /**
