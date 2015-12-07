@@ -8,16 +8,6 @@
     <!-- first row -->
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-6">
-            <div class="form-group">
-                <div class="col-xs-12 col-sm-3"></div>
-                <div class="col-xs-12 col-sm-9">
-                    <div ng-class="searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
-                        <label for="wc_search">
-                            <input tabindex="11" type="checkbox" id="wc_search"  ng-model="searchParams.wc_search"  /> Exact Search
-                        </label>
-                    </div>
-                </div>
-            </div>
             <!-- person name -->
             <div class="form-group">
                 <label for="person_fname" class="control-label col-xs-12 col-sm-3">First Name:</label>
@@ -172,6 +162,13 @@
     <!-- first row ends -->
 
     <div class="row">
+        <div class="col-xs-12 col-sm-9">
+            <div ng-class="searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
+                <label for="wc_search">
+                    <input tabindex="11" type="checkbox" id="wc_search"  ng-model="searchParams.wc_search"  /> Exact Search
+                </label>
+            </div>
+        </div>
         <div class="col-xs-12">
             <div class="btn-toolbar">
                 <button tabindex="30" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchPeople('fromStart')">
