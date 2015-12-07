@@ -75,6 +75,7 @@
             angular.copy(vm.masterCopy,vm.curOrg);
             vm.addedNameAliases = [];
             appendNameAliases();
+            listenToStatesProvinces();
         };
 
         vm.clearForm = function () {
