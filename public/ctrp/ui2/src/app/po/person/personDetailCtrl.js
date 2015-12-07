@@ -23,17 +23,7 @@
         vm.savedSelection = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
-        // var curSourceStatusObj = !!vm.curPerson.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
-        // vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
-        // vm.curPerson.source_status_id = curSourceStatusObj.id;
 
-        //
-        // if(!angular.isObject(personDetailObj)) {
-        //     //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-        //     var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
-        //     vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
-        //     vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
-        // }
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -229,18 +219,14 @@
          * @return {void}
          */
         function locateSourceStatus() {
-            var curSourceStatusObj = {};
-            if (!!vm.curPerson.source_status_id && !vm.curPerson.new) {
-                console.log("this has has source_status_id: ", vm.curPerson.source_status_id);
-                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id});
-            } else if (vm.curPerson.new) {
-                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+            var curSourceStatusObj = {name: '', id: ''};
+
+            if (vm.curPerson.new) {
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}) || curSourceStatusObj;
             } else {
-                console.log("this person does not have source_status_id: ", vm.curPerson.source_status_id);
-                curSourceStatusObj.curSourceContextName = '';
-                curSourceStatusObj.id = '';
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) || curSourceStatusObj;
             }
-            // var curSourceStatusObj = !!vm.curPerson.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+
             vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
             vm.curPerson.source_status_id = curSourceStatusObj.id;
         }
