@@ -20,6 +20,7 @@
         vm.primaryPurposeArr = primaryPurposeObj;
         vm.trialStatusArr = trialStatusObj;
         vm.gridScope=vm;
+        var fromStateName = $state.fromState.name || '';
 
         //ui-grid plugin options
         vm.gridOptions = TrialService.getGridOptions();
@@ -49,7 +50,7 @@
                 vm.searchParams[key] = '';
             });
 
-            vm.gridOptions.data.length = 0;
+            vm.gridOptions.data = [];
             vm.gridOptions.totalItems = null;
         };
 
@@ -62,6 +63,11 @@
         /****************************** implementations **************************/
 
         function activate() {
+            if (fromStateName != 'main.trialDetail') {
+                vm.resetSearch();
+            } else {
+                vm.searchTrials(); //refresh search results
+            }
         }
 
         /**
