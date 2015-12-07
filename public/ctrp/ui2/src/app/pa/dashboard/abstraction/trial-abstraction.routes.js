@@ -75,6 +75,14 @@
                         label: 'Check Out History'
                     }
                 })
+                .state('main.pa.trialOverview.jsonRawData', {
+                    url: '/raw-json-trial-data',
+                    templateUrl: 'app/pa/dashboard/abstraction/raw_json_trial_data.html',
+                    ncyBreadcrumb: {
+                        parent: 'main.pa.trialOverview',
+                        label: 'Raw JSON Data'
+                    }
+                });
 
     } //trialAbstractionRoutes
 
