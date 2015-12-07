@@ -48,11 +48,6 @@ module.exports = function() {
     });
 
     this.Given(/^I am have selected the option to search Families$/, function (callback) {
-        cukeOrganization.then(function(value2)
-        {console.log('Added Org Name - ' + value2);
-            projectFunctions.createFamily('SSFamilyCuke', 'Active', 'NIH');
-            cukeFamily.then(function(value4)
-            {console.log('Added Family Name - ' + value4);});});
         projectFunctions.createFamily('SSFamilyCuke', 'Active', 'NIH');
         menuItem.clickOrganizations();
         menuItem.clickListFamily();
@@ -64,10 +59,8 @@ module.exports = function() {
         {console.log('search family - ' + value2);
             searchFamily.setFamilyName(value2);
             searchFamily.clickSearchButton();
+            expect(projectFunctions.inSearchResults(value2)).to.become('true');
         });
-        helper.wait_for(9000);
-        expect(projectFunctions.inSearchResults(value2)).to.become('true').and.notify(next);
-        helper.wait_for(9000);
         browser.sleep(25).then(callback);
     });
 

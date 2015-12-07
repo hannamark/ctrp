@@ -7,6 +7,8 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 var util = require('util');
+var fs = require('fs');
+var junit = require('cucumberjs-junitxml');
 
 
 /**
@@ -20,6 +22,9 @@ var helper = function() {
 
     var exp_del_bttn_pg_hdr = 'Delete button on Organization page';
     var header_Page_Text = 'Clinical Trials Reporting Program';
+    var retTextAndSelectedValue = '';
+    var retListCurrentValue = '';
+    var retTextCurrentValue = '';
     this.header_Page = element(by.css('.sub-title')); //element(by.css('span[style="font-size:large;font-weight:bold;"]'));
 
     this.wait = function (element, label) {
@@ -183,6 +188,116 @@ var helper = function() {
                     console.log('There was an error! ' + err);
                 }
             );
+    };
+
+    this.listTextValue = function (obj) {
+        var propList = "";
+        for(var propName in obj) {
+            if(typeof(obj[propName]) != "undefined") {
+                propList += (propName + ", ");
+            }
+        }
+        obj.$('option:checked').getText().then (function(text){
+            var pasTxtValue = ''+text+'';
+            console.log('Object['+ obj +'] current value:['+ pasTxtValue +']');
+            function retTxtVal(){
+                return pasTxtValue;
+            }
+            retListCurrentValue = retTxtVal();
+            console.log('retTextAndSelectedValue['+ retListCurrentValue +']');
+            return retListCurrentValue;
+        });
+    };
+
+    this.objTextValue = function (obj) {
+        var propList = "";
+        for(var propName in obj) {
+            if(typeof(obj[propName]) != "undefined") {
+                propList += (propName + ", ");
+            }
+        }
+        obj.getText().then (function(text){
+            var pasTxtValue = ''+text+'';
+            console.log('Object['+ obj +'] current value:['+ pasTxtValue +']');
+            function retTxtVal(){
+                return pasTxtValue;
+            }
+            retTextCurrentValue = retTxtVal();
+            console.log('retTextAndSelectedValue['+ retTextCurrentValue +']');
+            return retTextCurrentValue;
+        });
+    };
+
+    this.retValVerification = function(obj, objType, expectedVal){
+        var actualVal;
+        if (objType === 'list'){
+            var propList = "";
+            for(var propName in obj) {
+                if(typeof(obj[propName]) != "undefined") {
+                    propList += (propName + ", ");
+                }
+            }
+            obj.$('option:checked').getText().then (function(text){
+                var pasTxtValue = ''+text+'';
+                console.log('Object['+ obj +'] current value:['+ pasTxtValue +']');
+                function retTxtVal(){
+                    return pasTxtValue;
+                }
+                retTextAndSelectedValue = retTxtVal();
+                console.log('retTextAndSelectedValue['+ retTextAndSelectedValue +']');
+                actualVal = ''+ retTextAndSelectedValue +'';
+                console.log('************************************');
+                console.log('************************************');
+                console.log('Expected value:['+ expectedVal +']');
+                console.log('************************************');
+                console.log('Actual value:['+ actualVal +']');
+                console.log('************************************');
+                console.log('************************************');
+                if (expectedVal === retTextAndSelectedValue){
+                    expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
+                    console.log('Successfully verified the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps PASSED');
+                    return true;
+                } else {
+                    console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED');
+                    return false;
+                    callback.fail();
+                };
+            });
+        };
+        if (objType === 'text'){
+            var propList = "";
+            for(var propName in obj) {
+                if(typeof(obj[propName]) != "undefined") {
+                    propList += (propName + ", ");
+                }
+            }
+            obj.getText().then (function(text){
+                var pasTxtValue = ''+text+'';
+                console.log('Object['+ obj +'] current value:['+ pasTxtValue +']');
+                function retTxtVal(){
+                    return pasTxtValue;
+                }
+                retTextAndSelectedValue = retTxtVal();
+                console.log('retTextAndSelectedValue['+ retTextAndSelectedValue +']');
+                actualVal = ''+ retTextAndSelectedValue +'';
+                console.log('************************************');
+                console.log('************************************');
+                console.log('Expected value:['+ expectedVal +']');
+                console.log('************************************');
+                console.log('Actual value:['+ actualVal +']');
+                console.log('************************************');
+                console.log('************************************');
+                if (expectedVal === retTextAndSelectedValue){
+                    expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
+                    console.log('Successfully verified the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps PASSED');
+                    return true;
+                } else {
+                    console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED');
+                    return false;
+                    callback.fail();
+                };
+            });
+        };
     };
 
 };

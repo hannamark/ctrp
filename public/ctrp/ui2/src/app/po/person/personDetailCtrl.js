@@ -79,9 +79,36 @@
             });
         }; // updatePerson
 
-        vm.clearForm = function() {
+        /*vm.clearForm1 = function() {
+            alert('clear ');
             $scope.person_form.$setPristine();
             vm.curPerson = angular.copy(vm.masterCopy);
+            //default context to ctrp
+            vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
+            vm.savedSelection = [];
+            populatePoAffiliations();
+        };
+
+        vm.clearForm = function() {
+            alert('jjjjj');
+            angular.copy(vm.masterCopy,vm.curPerson);
+        };*/
+
+        vm.resetForm = function() {
+            angular.copy(vm.masterCopy,vm.curPerson);
+            vm.savedSelection = [];
+            populatePoAffiliations();
+        };
+
+        vm.clearForm = function() {
+            $scope.person_form.$setPristine();
+
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'cluster'];
+            Object.keys(vm.curPerson).forEach(function(key) {
+                if (excludedKeys.indexOf(key) == -1) {
+                    vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
+                }
+            });
             //default context to ctrp
             vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
             vm.savedSelection = [];

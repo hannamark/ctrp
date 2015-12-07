@@ -75,7 +75,7 @@
                 {name: 'admin_milestone', enableSorting: true, minWidth: '170', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'other_ids', enableSorting: true, minWidth: '250', width: '8%',
+                {name: 'other_ids', enableSorting: true, minWidth: '300', width: '12%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'current_processing_status', enableSorting: true, minWidth: '150', width: '*',
@@ -99,8 +99,6 @@
             getProtocolIdOrigins: getProtocolIdOrigins,
             getPhases: getPhases,
             getResearchCategories: getResearchCategories,
-            getPrimaryPurposes: getPrimaryPurposes,
-            getSecondaryPurposes: getSecondaryPurposes,
             getAccrualDiseaseTerms: getAccrualDiseaseTerms,
             getResponsibleParties: getResponsibleParties,
             getFundingMechanisms: getFundingMechanisms,
@@ -193,14 +191,6 @@
 
         function getResearchCategories() {
             return PromiseTimeoutService.getData(URL_CONFIGS.RESEARCH_CATEGORIES);
-        }
-
-        function getPrimaryPurposes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.PRIMARY_PURPOSES);
-        }
-
-        function getSecondaryPurposes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.SECONDARY_PURPOSES);
         }
 
         function getAccrualDiseaseTerms() {

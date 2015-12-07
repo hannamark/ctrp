@@ -20,7 +20,7 @@
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-        vm.curOrg = orgDetailObj || {name: "", country: "", source_status_id: ""}; //orgDetailObj.data;
+        vm.curOrg = orgDetailObj || {name: "", country: "", state: "", source_status_id: ""}; //orgDetailObj.data;
         vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
         //vm.curSourceContextName = '';
@@ -75,6 +75,7 @@
             angular.copy(vm.masterCopy,vm.curOrg);
             vm.addedNameAliases = [];
             appendNameAliases();
+            listenToStatesProvinces();
         };
 
         vm.clearForm = function () {

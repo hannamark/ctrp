@@ -28,17 +28,19 @@
                             trialStatusObj: function(TrialService) {
                                 return TrialService.getTrialStatuses();
                             },
+                            protocolIdOriginObj: function(TrialService) {
+                                return TrialService.getProtocolIdOrigins();
+                            },
                             milestoneObj: function(PATrialService) {
                                 return PATrialService.getMilestones();
-                            }
-                            ,
+                            },
                             processingStatusObj: function(PATrialService) {
                                 return PATrialService.getProcessingStatuses();
                             }
                         },
                         ncyBreadcrumb: {
                             parent: 'main.defaultContent',
-                            label: 'Search PA Trials'
+                            label: 'Search Trials (PA)'
                         }
                     })
 

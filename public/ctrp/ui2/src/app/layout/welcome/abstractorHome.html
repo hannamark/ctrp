@@ -46,47 +46,6 @@
 
         </div>
 
-        <!-- second row -->
-        <div class="row">
-            <!-- left column -->
-            <div class="col-xs-12 col-sm-6">
-                <!-- summary block -->
-                <div class="pdsa-summary-block pdsa-summary-block-info">
-                    <div class="summary-background" align="left">
-                        <i class="glyphicon glyphicon-filter" align="left"></i>
-                    </div>
-                    <div class="summary-body">
-
-                    </div>
-                    <div class="summary-footer">
-                        <a ui-sref="main.trials">Search Trials</a>
-                        <i class="glyphicon glyphicon-chevron-right pull-right"></i>
-                    </div>
-                </div>
-                <!--end of summary block -->
-            </div>
-            <!-- end of left column -->
-            <!-- right column -->
-            <div class="col-xs-12 col-sm-6">
-                <!-- summary block -->
-                <div class="pdsa-summary-block pdsa-summary-block-info">
-                    <div class="summary-background" align="left">
-                        <i class="glyphicon glyphicon-filter" align="left"></i>
-                    </div>
-                    <div class="summary-body">
-
-                    </div>
-                    <div class="summary-footer">
-                        <a ui-sref="main.addTrial({studySourceCode: 'NAT'})">Abstract Trials</a>
-                        <i class="glyphicon glyphicon-chevron-right pull-right"></i>
-                    </div>
-                </div>
-                <!-- end of summary block -->
-            </div>
-            <!-- end of right column -->
-        </div>
-        <!-- end of second row -->
-
         <!-- third row -->
         <div class="row">
             <!-- left column -->
@@ -100,7 +59,7 @@
 
                     </div>
                     <div class="pdsa-summary-block-primary summary-footer">
-                        <a ui-sref="main.paTrialSearch">Search PA</a>
+                        <a ui-sref="main.paTrialSearch">Search Trials</a>
                         <i class="glyphicon glyphicon-chevron-right pull-right"></i>
                     </div>
                 </div>
@@ -109,7 +68,17 @@
             <!-- end of left column -->
             <!-- right column -->
             <div class="col-xs-12 col-sm-6">
+                <div class="pdsa-summary-block pdsa-summary-block-danger">
+                    <div class="summary-background" align="left">
+                        <i class="glyphicon glyphicon-paperclip" align="left"></i>
+                    </div>
+                    <div class="summary-body">
 
+                    </div>
+                    <div class="pdsa-summary-block-primary summary-footer">
+                        <a ui-sref="main.paTrialSearch">Abstraction Dashboards</a>
+                        <i class="glyphicon glyphicon-chevron-right pull-right"></i>
+                    </div>
             </div>
             <!-- end of right column -->
         </div>

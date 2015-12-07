@@ -93,19 +93,28 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the system will notify any error with (.*) for family name (.*), family type (.*) and family status (.*)$/, function (familyName, familyType, familyStatus, response, callback) {
-        if(familyName === 'Albert Einstein Cancer Center') {
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
-        if(familyName === '') {
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
-        if(familyType === '') {
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
-        if(familyStatus === '') {
-            expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
-        }
+    this.Then(/^the system will notify any error for family name (.*), family type (.*) and family status (.*) with (.*)$/, function (familyName, familyType, familyStatus, response, callback) {
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            if(familyName === 'Albert Einstein Cancer Center') {
+                console.log('response1 ' + response);
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+            else if(familyName === '') {
+                console.log('reponse2 ' + response);
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+            else if(familyType === '') {
+                console.log('reponse3 ' + response);
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+            else if(familyStatus === '') {
+                console.log('reponse4 ' + response);
+                expect(projectFunctions.verifyWarningMessage(response)).to.become('true');
+            }
+    });
         browser.sleep(25).then(callback);
     });
 

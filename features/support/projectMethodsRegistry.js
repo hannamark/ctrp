@@ -10,28 +10,28 @@ var helperFunctions = require('../support/helper');
 var addTrialPage = require('../support/registerTrialPage');
 var searchTrialPage = require('../support/searchTrialPage');
 var trialMenuItemList = require('../support/trialCommonBar');
-//var menuItemList = require('../support/PoCommonBar');
-//var addOrgPage = require('../support/AddOrganizationPage');
-//var searchOrgPage = require('../support/ListOfOrganizationsPage');
+var menuItemList = require('../support/PoCommonBar');
+var addOrgPage = require('../support/AddOrganizationPage');
+var searchOrgPage = require('../support/ListOfOrganizationsPage');
 //var searchPeoplePage = require('../support/ListOfPeoplePage');
 //var addPeoplePage = require('../support/AddPersonPage');
 //var searchFamilyPage = require('../support/ListOfFamiliesPage');
-//var addFamilyPage = require('../support/AddFamilyPage');
-//var selectValuePage = require('../support/CommonSelectList');
+var addFamilyPage = require('../support/AddFamilyPage');
+var selectValuePage = require('../support/CommonSelectList');
 //var loginPage = require('../support/LoginPage');
 //var moment = require('moment');
 
 
 var projectMethodsRegistry = function() {
     //var login = new loginPage();
-    //var menuItem = new menuItemList();
-    //var selectValue = new selectValuePage();
-    //var addOrg = new addOrgPage();
-    //var searchOrg = new searchOrgPage();
+    var menuItem = new menuItemList();
+    var selectValue = new selectValuePage();
+    var addOrg = new addOrgPage();
+    var searchOrg = new searchOrgPage();
     //var searchPeople = new searchPeoplePage();
     //var addPeople = new addPeoplePage();
     //var searchFamily = new searchFamilyPage();
-    //var addFamily = new addFamilyPage();
+    var addFamily = new addFamilyPage();
     var helper = new helperFunctions();
     var addTrial = new addTrialPage();
     var searchTrial = new searchTrialPage();
@@ -88,6 +88,78 @@ var projectMethodsRegistry = function() {
             if(filteredElements.length > 0) {
                 return 'true';}
             else {return 'false';}
+        });
+    };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createOrgforTrial = function(){
+        browser.get('ui/#/main/sign_in');
+        login.login('ctrpcurator', 'Welcome01');
+        login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode('On');
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.setOrgName('shiTrialOrg' + moment().format('MMMDoYY h'));
+            orgSearch = searchOrg.orgName.getAttribute('value');
+            searchOrg.clickSearchButton();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Organization exists');
+                    orgSearch.then(function(value){
+                        element(by.linkText(value)).click();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                        cukeFamily = addOrg.addVerifyOrgFamilyName.getText();
+                    });
+                }
+                else {
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 4000).then(function() {
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddOrganizations();
+                        orgSearch.then(function(value){
+                            console.log('Add org Name' + value);
+                            addOrg.setAddOrgName(value);
+                        });
+                        addOrg.setAddAlias('shAlias');
+                        addOrg.clickSaveAlias();
+                        addOrg.setAddAddress('9609 Medical Center Drive');
+                        addOrg.setAddAddress2('9609 Medical Center Drive');
+                        selectValue.selectCountry('Benin');
+                        selectValue.selectState('Donga');
+                        addOrg.setAddCity('searchCity');
+                        addOrg.setAddPostalCode('46578');
+                        addOrg.setAddEmail('searchOrg@email.com');
+                        addOrg.setAddPhone('222-487-8956');
+                        addOrg.setAddFax('222-487-4242');
+                        addOrg.clickSave();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddFamily();
+                        addFamily.setAddFamilyName('famforOrgSearch' + moment().format('MMMDoYY hmmss'));
+                        cukeFamily = addFamily.addFamilyName.getAttribute('value');
+                        selectValue.selectFamilyStatus('Active');
+                        selectValue.selectFamilyType('NIH');
+                        searchOrg.clickOrgSearchModel();
+                        searchOrg.setOrgName(orgSearch);
+                        searchOrg.clickSearchButton();
+                        searchOrg.selectOrgModelItem();
+                        searchOrg.clickOrgModelConfirm();
+                        selectValue.selectOrgFamilyRelationship('Affiliation');
+                        searchOrg.setAffiliatedOrgEffectiveDate('02-Nov-2015');
+                        searchOrg.setAffiliatedOrgExpirationDate('02-Nov-2020');
+                        addFamily.clickSave();
+                    });
+                }
+            });
         });
     };
 };

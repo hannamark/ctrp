@@ -302,7 +302,8 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true},
                {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmittersu", "role" => "ROLE_TRIAL-SUBMITTER-SU", "approve" => true},
+               {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "approve" => true},
+               {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
                {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true}
           ]

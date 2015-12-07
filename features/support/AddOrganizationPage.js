@@ -1,5 +1,6 @@
 /**
  * Created by singhs10 on 8/7/15.
+ * Updated by Shamim Ahmed
  */
 
 var helper = require('../support/helper');
@@ -22,6 +23,7 @@ AddOrganizationsPage = function(){
     this.addAddress = element(by.model('orgDetailView.curOrg.address'));
     this.addAddress2 = element(by.model('orgDetailView.curOrg.address2'));
     this.addCountry = element(by.model('orgDetailView.curOrg.country'));
+    this.newCountry = element(by.id('country'));
     this.addState = element(by.model('orgDetailView.curOrg.state_province'));
     this.addCity = element(by.model('orgDetailView.curOrg.city'));
     this.addPostalCode = element(by.model('orgDetailView.curOrg.postal_code'));
@@ -31,7 +33,7 @@ AddOrganizationsPage = function(){
     this.addVerifyOrgFamilyName = element(by.binding('family.name'));
     this.saveButton = element(by.id('save_btn')); //element(by.css('input[value="Save"]'));
     this.clearButton = element(by.css('#clear_btn'));//element(by.css('input[value="Reset"]'));by.id('reset_btn')
-    this.resetButton = element(by.css('#reset_btn'));
+    this.resetButton = element(by.css('button[ng-click="orgDetailView.resetForm()"]')); //element(by.css('#reset_btn'));
     this.cancelButton = element(by.css('.btn.btn-default'));
     this.deleteButton = element(by.css('.btn.btn-danger'));
     this.deleteNowButton = element(by.buttonText('Delete Now'));
@@ -146,7 +148,12 @@ AddOrganizationsPage = function(){
     };
 
     this.getVerifyAddCountry = function(country){
-        addOrg.getVerifyListValue(this.addCountry,country,"Get Organization by Country field");
+        addOrg.retValVerification(this.addCountry, 'list', country);
+
+        //console.log(this.newCountry.getWebElement());
+        //console.log(this.newCountry + " country");
+        //addOrg.listProperties(this.addCountry);
+       // addOrg.getVerifyListValue(this.addCountry,country,"Get Organization by Country field");
     };
 
     this.getVerifyAddState = function(state){

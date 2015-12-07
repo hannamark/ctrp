@@ -149,6 +149,8 @@ class DataImport
         if current_submission.blank?
           current_submission = Submission.new
           current_submission.submission_num = submission_num
+          current_submission.amendment_num = rand(1..20)
+          current_submission.amendment_date = Time.now
           trial.submissions << current_submission
           trial.save!
         end

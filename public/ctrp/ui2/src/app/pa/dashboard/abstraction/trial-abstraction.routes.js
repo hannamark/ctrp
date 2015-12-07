@@ -44,7 +44,7 @@
                     }
                 })
                 .state('main.pa.trialOverview.onHoldInfo', {
-                    url: '/on_hold_info',
+                    url: '/on-hold-info',
                     templateUrl: 'app/pa/dashboard/abstraction/on_hold_info.html',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
@@ -52,7 +52,7 @@
                     }
                 })
                 .state('main.pa.trialOverview.viewTSR', {
-                    url: '/view_TSR',
+                    url: '/view-tsr',
                     templateUrl: 'app/pa/dashboard/abstraction/view_TSR.html',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
@@ -60,7 +60,7 @@
                     }
                 })
                 .state('main.pa.trialOverview.assignOwnership', {
-                    url: '/assign_ownership',
+                    url: '/assign-ownership',
                     templateUrl: 'app/pa/dashboard/abstraction/assign_ownership.html',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
@@ -68,7 +68,7 @@
                     }
                 })
                 .state('main.pa.trialOverview.checkoutHistory', {
-                    url: '/check_out_history',
+                    url: '/check-out-history',
                     templateUrl: 'app/pa/dashboard/abstraction/check_out_history.html',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',

@@ -102,19 +102,19 @@
                                                <option ng-repeat="relation in familyDetailView.familyRelationshipArr" value="{{relation.id}}" ng-selected="org.family_relationship_id == relation.id">{{relation.name}}</option>
                                            </select>
                                            -->
-                                       <select tabindex="25" ng-init="org.family_relationship_id" class="form-control input-sm" id="org.family_relationship" ng-model="org.family_relationship_id" ng-options="relation.id as relation.name for relation in familyDetailView.familyRelationshipArr">
+                                       <select tabindex="25" ng-init="org.family_relationship_id" restriction-field class="form-control input-sm" id="org.family_relationship" ng-model="org.family_relationship_id" ng-options="relation.id as relation.name for relation in familyDetailView.familyRelationshipArr">
                                            <option value="">Select a relationship</option>
                                        </select>
                                    </td>
                                    <td>
                                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                           <input tabindex="16" type="text" class="form-control input-sm"
+                                           <input tabindex="16" type="text" class="form-control input-sm" restriction-field
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.effective_date" is-open="org.opened_effective"
                                                   datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                            <span class="input-group-btn">
-                                               <button tabindex="26" type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
+                                               <button tabindex="26" type="button" restriction-field class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
                                                    <i class="glyphicon glyphicon-calendar"></i>
                                                </button>
                                            </span>
@@ -122,20 +122,20 @@
                                    </td>
                                    <td>
                                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                           <input tabindex="27" type="text" class="form-control input-sm"
+                                           <input tabindex="27" type="text" class="form-control input-sm" restriction-field
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                   datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                            <span class="input-group-btn">
-                                               <button tabindex="28" type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
+                                               <button tabindex="28" type="button" restriction-field class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
                                                    <i class="glyphicon glyphicon-calendar"></i>
                                                </button>
                                            </span>
                                        </div>
                                    </td>
                                    <td>
-                                       <label class="btn btn-default" ng-click="familyDetailView.toggleSelection($index)">
+                                       <label class="btn btn-default" restriction-field ng-click="familyDetailView.toggleSelection($index)">
                                            <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                        </label>
                                    </td>
