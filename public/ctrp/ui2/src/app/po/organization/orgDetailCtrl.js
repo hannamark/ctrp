@@ -126,6 +126,7 @@
                     vm.masterCopy= angular.copy(vm.curOrg);
                     vm.addedNameAliases = [];
                     appendNameAliases();
+                    filterSourceContext();
                 }).catch(function (err) {
                     console.log("Error in retrieving organization during tab change.");
                 });
