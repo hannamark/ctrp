@@ -6,7 +6,6 @@ bower_components/
 !./.bowerrc
 !src/bower_components/**/bower.json
 build/
-.tmp/**
 
 #Ignore the host url in the constant file
 src/app/modules/ctrp.module.constants.dev.js
