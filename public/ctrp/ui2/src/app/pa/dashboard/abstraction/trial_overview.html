@@ -37,9 +37,9 @@
                     <span>{{paTrialOverview.trialDetailObj.last_amendment_num}}</span>
                 </p>
                 <p>
-                    <strong>Trial Category:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span>
-                </p>
+                    <strong>Amendment Date:</strong>
+                    <span>{{paTrialOverview.trialDetailObj.last_amendment_date | date: "dd-MMM-yyyy H:mm"}}</span>
+                </p>                
             </div>
             <!-- end of column 1-->
 
@@ -63,8 +63,8 @@
                 </p>
 
                 <p>
-                    <strong>Amendment Date:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.last_amendment_date | date: "dd-MMM-yyyy H:mm"}}</span>
+                    <strong>Trial Category:</strong>
+                    <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span>
                 </p>
             </div>
             <!-- end of column 2-->
