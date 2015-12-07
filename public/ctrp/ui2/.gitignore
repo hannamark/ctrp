@@ -1,8 +1,11 @@
 # Ignore Node and Bower packages
-node_modules
-src/bower_components
-bower_components
-build
+node_modules/
+src/bower_components/
+bower_components/
+!./bower.json
+!./.bowerrc
+!src/bower_components/**/bower.json
+build/
 .tmp/**
 
 #Ignore the host url in the constant file
@@ -14,5 +17,5 @@ src/app/modules/ctrp.module.constants.prod.js
 ./gulp.config.js
 
 #Ignore Test reporters
-report
+./report
 **/test/coverage
