@@ -95,7 +95,7 @@
         };*/
 
         vm.resetForm = function() {
-            angular.copy(vm.masterCopy,vm.curPerson);
+            angular.copy(vm.masterCopy, vm.curPerson);
             vm.savedSelection = [];
             populatePoAffiliations();
         };
