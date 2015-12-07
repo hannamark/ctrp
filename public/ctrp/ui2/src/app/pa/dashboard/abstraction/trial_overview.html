@@ -23,6 +23,11 @@
             <!-- column 1 -->
             <div class="col-sm-4 col-xs-12">
                 <p>
+                    <!--same as ClinicalTrials.gov Id -->
+                    <strong>NCT ID:</strong>
+                    <span>{{paTrialOverview.trialDetailObj.other_ids[0].protocol_id}}</span>
+                </p>
+                <p>
                     <strong>Lead Organization Trial ID:</strong>
                     <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
                 </p>
@@ -53,18 +58,30 @@
                 </p>
 
                 <p>
+                    <!-- logic not in rails yet -->
                     <strong>Last Submitter:</strong>
-                    <span><a href="">SilverbM ??</a></span>
+                    <span><a href=""></a></span>
                 </p>
 
                 <p>
+                    <!-- logic not in rails yet -->
                     <strong>Last Submitter Organization:</strong>
-                    <span><a href="">Memorial Sloan-Kettering Cancer Center??</a></span>
+                    <span><a href=""></a></span>
                 </p>
 
                 <p>
                     <strong>Trial Category:</strong>
                     <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span>
+                </p>
+
+                <p>
+                    <strong>Last Updated By:</strong>
+                    <span>{{paTrialOverview.trialDetailObj.updated_by}}</span>
+                </p>
+
+                <p>
+                    <strong>Last Updated Date:</strong>
+                    <span>{{paTrialOverview.trialDetailObj.updated_at | date: "dd-MMM-yyyy H:mm"}}</span>
                 </p>
             </div>
             <!-- end of column 2-->
@@ -84,14 +101,41 @@
                     <strong>Processing Status:</strong>
                     <span>{{paTrialOverview.trialDetailObj.processing_status}}</span>
                 </p>
+
                 <p>
                     <strong>Submission Source:</strong>
                     <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
                 </p>
+
+                <p>
+                    <strong>Checked Out for Admin by: </strong>
+                    <span></span>
+                </p>
+
+                <p>
+                    <strong>Checked Out for Scientific by: </strong>
+                    <span></span>
+                </p>
+                <hr />
             </div>
             <!-- end of column 3-->
         </div>
         <!-- end of second row -->
+
+        <!-- third row -->
+        <div class="row text-center">
+            <div class="btn-toolbar">
+                <button type="button" class="btn btn-primary pull-right" id="admin_sci_checkout">Admin/Scientific Check Out</button>
+                <button type="button" class="btn btn-primary pull-right" id="scientific_checkout">Scientific Check Out</button>
+                <button type="button" class="btn btn-primary pull-right" id="admin_checkout">Admin Check Out</button>
+                <button type="button" class="btn btn-warning pull-right" id="back_to_search">
+                    <i class="glyphicon glyphicon-arrow-left"></i> Back to Search Results
+                </button>
+            </div>
+            <hr />
+        </div>
+
+        <!-- end of third row -->
 
         <!-- dynamic loading of sub-partial views here -->
         <div ui-view></div>

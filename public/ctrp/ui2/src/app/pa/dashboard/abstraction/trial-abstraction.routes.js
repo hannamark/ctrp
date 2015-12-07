@@ -13,12 +13,10 @@
                 /* this is the parent state for the states below */
                     url: '/trial/:trialId',
                     templateUrl: 'app/pa/dashboard/abstraction/trial_overview.html',
-                    controller: function($scope) {
-                        $scope.trialName = "Test!!";
-                    },
+                    // controller: 'paTrialOverviewCtrl',
                     ncyBreadcrumb: {
                         parent: 'main.paTrialSearch',
-                        label: 'Trial Overview: {{trialName}}'
+                        label: 'Trial Overview'
                     }
                 })
                 .state('main.pa.trialOverview.trialIdentification', {
