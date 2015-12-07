@@ -90,7 +90,8 @@
             var excludedKeys = ['wc_search'];
             Object.keys(vm.searchParams).forEach(function(key, index) {
                 if (excludedKeys.indexOf(key) === -1) {
-                    vm.searchParams[key] = '';
+                    // vm.searchParams[key] = '';
+                    vm.searchParams[key] = angular.isArray(vm.searchParams[key]) ? [] : '';
                 }
             });
             vm.searchParams['wc_search'] = temp;
