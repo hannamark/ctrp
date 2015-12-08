@@ -30,7 +30,7 @@
                 <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.name) || familyDetailView.showUniqueWarning}">
                     <label class="control-label col-xs-12 col-sm-3">Family Name:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input tabindex="11" type="text" name="name" restriction-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus ng-blur="checkForNameUniqueness()"/>
+                        <input type="text" name="name" restriction-field class="form-control input-sm" ng-model="familyDetailView.curFamily.name" required auto-focus ng-blur="checkForNameUniqueness()"/>
                         <span class="form-control-feedback" ng-show="familyDetailView.curFamily.name.length" ng-class="(!familyDetailView.showUniqueWarning && familyDetailView.curFamily.name.length) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                         <span class="help-block" ng-show="family_form.name.$error.required">Family name is Required</span>
                         <div class="has-error" ng-show="familyDetailView.curFamily.name.length > 0 && family_form.name.$dirty && familyDetailView.showUniqueWarning">
@@ -43,7 +43,7 @@
                 <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_status)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Status:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <select tabindex="13" restriction-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control input-sm" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr" name="family_status" required>
+                        <select restriction-field ng-init="familyDetailView.curFamily.family_status_id" class="form-control input-sm" id="family_status" ng-model="familyDetailView.curFamily.family_status_id" ng-options="status.id as status.name for status in familyDetailView.familyStatusArr" name="family_status" required>
                             <option value="">Select a status</option>
                         </select>
                         <span class="form-control-feedback select-feedback" ng-show="familyDetailView.curFamily.family_status_id" ng-class="!ctrpbtn.family_form.needsAttention(family_form.family_status) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -53,7 +53,7 @@
                 <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_type)}">
                     <label class="control-label col-xs-12 col-sm-3">Family Type:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <select tabindex="12" restriction-field ng-init="familyDetailView.curFamily.family_type_id" class="form-control input-sm" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr" name="family_type" required>
+                        <select restriction-field ng-init="familyDetailView.curFamily.family_type_id" class="form-control input-sm" id="family_type" ng-model="familyDetailView.curFamily.family_type_id" ng-options="status.id as status.name for status in familyDetailView.familyTypeArr" name="family_type" required>
                             <option value="">Select a type</option>
                         </select>
                         <span class="form-control-feedback select-feedback" ng-show="familyDetailView.curFamily.family_type_id" ng-class="!ctrpbtn.family_form.needsAttention(family_form.family_type) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -94,7 +94,7 @@
                                    <tr ng-repeat="org in familyDetailView.savedSelection | filter: {'name': familyDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                        <td>{{org.id}}</td>
                                        <td>{{org.ctep_id}}</td>
-                                       <td><a ui-sref="main.orgDetail({orgId : org.id })">{{org.name}}</a></td>
+                                       <td><a ng-href="/ctrp/ui#main/organizations/{{org.id}}">{{org.name}}</a></td>
                                        <td>
                                            <!--
                                            <select class="form-control" id="family_relationship" ng-model="org.family_relationship_id">
@@ -102,19 +102,19 @@
                                                <option ng-repeat="relation in familyDetailView.familyRelationshipArr" value="{{relation.id}}" ng-selected="org.family_relationship_id == relation.id">{{relation.name}}</option>
                                            </select>
                                            -->
-                                       <select tabindex="25" ng-init="org.family_relationship_id" class="form-control input-sm" id="org.family_relationship" ng-model="org.family_relationship_id" ng-options="relation.id as relation.name for relation in familyDetailView.familyRelationshipArr">
+                                       <select ng-init="org.family_relationship_id" class="form-control input-sm" id="org.family_relationship" ng-model="org.family_relationship_id" ng-options="relation.id as relation.name for relation in familyDetailView.familyRelationshipArr">
                                            <option value="">Select a relationship</option>
                                        </select>
                                    </td>
                                    <td>
                                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                           <input tabindex="16" type="text" class="form-control input-sm"
+                                           <input type="text" class="form-control input-sm"
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.effective_date" is-open="org.opened_effective"
                                                   datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                            <span class="input-group-btn">
-                                               <button tabindex="26" type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
+                                               <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
                                                    <i class="glyphicon glyphicon-calendar"></i>
                                                </button>
                                            </span>
@@ -122,13 +122,13 @@
                                    </td>
                                    <td>
                                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                           <input tabindex="27" type="text" class="form-control input-sm"
+                                           <input type="text" class="form-control input-sm"
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                   datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
                                            <span class="input-group-btn">
-                                               <button tabindex="28" type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
+                                               <button type="button" class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
                                                    <i class="glyphicon glyphicon-calendar"></i>
                                                </button>
                                            </span>
@@ -149,16 +149,16 @@
                 <div class="form-group no-bottom-margin">
                     <div class="col-xs-12 col-sm-3"></div>
                     <div class="btn-toolbar col-xs-12 col-sm-9">
-                        <button tabindex="29" type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
+                        <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
                             Save
                         </button>
-                        <button tabindex="28" type="button" ng-hide="!familyDetailView.curFamily.new" restriction-field class="btn btn-warning pull-right" ng-click="familyDetailView.clearForm()">
+                        <button type="button" ng-hide="!familyDetailView.curFamily.new" restriction-field class="btn btn-warning pull-right" ng-click="familyDetailView.clearForm()">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
-                        <button tabindex="28" type="button" ng-hide="familyDetailView.curFamily.new"  restriction-field class="btn btn-warning pull-right" ng-click="familyDetailView.resetForm()">
+                        <button type="button" ng-hide="familyDetailView.curFamily.new"  restriction-field class="btn btn-warning pull-right" ng-click="familyDetailView.resetForm()">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
-                        <button tabindex="30" type="button" ng-hide="familyDetailView.curFamily.new" restriction-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="familyDetailView.confirmDelete('sm')">
+                        <button type="button" ng-hide="familyDetailView.curFamily.new" restriction-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="familyDetailView.confirmDelete('sm')">
                             Delete This Family
                         </button>
                     </div>

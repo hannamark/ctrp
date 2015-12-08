@@ -21,8 +21,7 @@
     <div class="col-xs-12 drop-shadow">
         <div class="row">
             <p>
-            <h4 ng-if="personDetailView.curPerson.new">Add Person</h4>
-            <h4 ng-if="!personDetailView.curPerson.new">Edit Person</h4>
+                <h4>{{personDetailView.formTitleLabel}}</h4>
             </p>
         </div>
         <div class="row">
@@ -86,7 +85,7 @@
                                 <span class="form-control-feedback select-feedback" ng-show="personDetailView.curPerson.source_context_id.length" ng-class="!ctrpbtn.person_form.needsAttention(person_form.source_context) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="person_form.source_context.$invalid">Source context is Required</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curSourceContextName}}</div>
+                            <div class="col-xs-12 col-sm-6 form-text" ng-if="!personDetailView.curPersonEditable">{{clusterPerson.context}}</div>
                         </div>
                         <!-- Source ID will be R/O on Person screen -->
                         <div class="form-group">
@@ -161,7 +160,7 @@
                                             <td>{{org.name}}</td>
                                             <td>
                                                 <div class="input-group add-on col-sm-12 date datepicker">
-                                                    <input tabindex="25" type="text" class="form-control input-sm"
+                                                    <input tabindex="25" type="text" class="form-control input-sm" restriction-field
                                                            uib-datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                            ng-model="org.effective_date" is-open="org.opened_effective"
                                                            datepicker-options="personDetailView.dateOptions"
@@ -175,7 +174,7 @@
                                             </td>
                                             <td>
                                                 <div class="input-group add-on col-sm-12 date datepicker">
-                                                    <input tabindex="27" type="text" class="form-control input-sm"
+                                                    <input tabindex="27" type="text" class="form-control input-sm" restriction-field
                                                            uib-datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                            ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                            datepicker-options="personDetailView.dateOptions"
@@ -204,10 +203,13 @@
                             <div class="col-xs-12 col-sm-3"></div>
                             <div class="btn-toolbar col-xs-12 col-sm-9">
                                 <div class="btn-toolbar pull-right">
-                                    <button type="button" tabindex="29" restriction-field class="btn btn-warning" id="reset_btn" ng-click="personDetailView.clearForm()">
+                                    <button type="button" tabindex="29" restriction-field  ng-hide="!personDetailView.curPerson.new"class="btn btn-warning" id="reset_btn" ng-click="personDetailView.clearForm()">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button tabindex="30" type="submit" restriction-field class="btn btn-primary" id="save_btn">
+                                    <button tabindex="29" type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="personDetailView.resetForm()">
+                                        <i class="glyphicon glyphicon-remove"></i>  Reset
+                                    </button>
+                                    <button tabindex="29" type="submit" restriction-field class="btn btn-primary" id="save_btn">
                                         Save
                                     </button>
                                 </div>

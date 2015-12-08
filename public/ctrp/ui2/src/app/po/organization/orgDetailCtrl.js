@@ -20,19 +20,18 @@
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-        vm.curOrg = orgDetailObj || {name: "", country: "", source_status_id: ""}; //orgDetailObj.data;
+        vm.curOrg = orgDetailObj || {name: "", country: "", state: "", source_status_id: ""}; //orgDetailObj.data;
         vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
         //vm.curSourceContextName = '';
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-        //if vm.curOrg.source_status_id is not null, pluck it out from the sourceStatusArr and get the name, otherwise get the 'Active' name
-        var curSourceStatusObj = !!vm.curOrg.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
-        vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
-        vm.curOrg.source_status_id = curSourceStatusObj.id;
+        vm.formTitleLabel = 'Add Organization'; //default form title
+
+
         vm.alias = '';
         vm.curationReady = false;
-        $scope.showPhoneWarning = false;
+        vm.showPhoneWarning = false;
 
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
@@ -75,6 +74,7 @@
             angular.copy(vm.masterCopy,vm.curOrg);
             vm.addedNameAliases = [];
             appendNameAliases();
+            listenToStatesProvinces();
         };
 
         vm.clearForm = function () {
@@ -125,6 +125,9 @@
                     vm.masterCopy= angular.copy(vm.curOrg);
                     vm.addedNameAliases = [];
                     appendNameAliases();
+                    filterSourceContext();
+                    locateSourceStatus();
+                    createFormTitleLabel();
                 }).catch(function (err) {
                     console.log("Error in retrieving organization during tab change.");
                 });
@@ -141,6 +144,7 @@
                 OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curOrg.source_context_id;
 
             listenToStatesProvinces();
+            watchGlobalWriteModeChanges();
             appendNewOrgFlag();
             setTabIndex();
             //prepare the modal window for existing organizations
@@ -149,6 +153,8 @@
                 appendNameAliases();
             }
             filterSourceContext();
+            locateSourceStatus();
+            createFormTitleLabel();
         }
         // Append associations for existing Trial
         function appendNameAliases() {
@@ -160,6 +166,47 @@
                 vm.addedNameAliases.push(name_alias);
             }
         }
+
+        /**
+         * Watch for the global write mode changes in the header
+         * @return {[type]}
+         */
+        function watchGlobalWriteModeChanges() {
+            $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                createFormTitleLabel();
+            });
+        }
+
+        /**
+         * Generate approprate appropriate form title, e.g. 'Edit Organization'
+         * @return {void}
+         */
+        function createFormTitleLabel() {
+            vm.formTitleLabel = vm.curOrgEditable && !vm.curOrg.new ? 'Edit Organization' : 'View Organization';
+            vm.formTitleLabel = vm.curOrg.new ? 'Add Organization' : vm.formTitleLabel;
+        }
+
+
+        /**
+         * Find the source status name if the organization has a source_status_id,
+         * or find the source status name that has code = 'ACT' if the organization does not
+         * have a source_status_id (e.g. a new organization)
+         * @return {void}
+         */
+        function locateSourceStatus() {
+            var curSourceStatusObj = {name: '', id: ''};
+
+            if (vm.curOrg.new) {
+                //default to Active
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+            } else {
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id});
+            }
+            vm.curSourceStatusName = curSourceStatusObj.name;
+            vm.curOrg.source_status_id = curSourceStatusObj.id;
+        }
+
+
 
         /**
          * Filter out NLM and CTEP source contexts from UI
@@ -275,9 +322,9 @@
         };
 
         vm.isValidPhoneNumber = function(){
-            $scope.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
-            $scope.showPhoneWarning = true;
-            console.log('Is phone valid: ' + $scope.IsPhoneValid);
+            vm.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
+            vm.showPhoneWarning = true;
+            console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
 
     }

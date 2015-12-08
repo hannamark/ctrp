@@ -101,6 +101,7 @@
             getHolderTypes: getHolderTypes,
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
+            getAcceptedFileTypes: getAcceptedFileTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
             uploadDocument: uploadDocument,
@@ -252,6 +253,10 @@
 
         function getExpandedAccessTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
+        }
+
+        function getAcceptedFileTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES);
         }
 
         function getAuthorityOrgArr(country) {
@@ -811,7 +816,7 @@
                 }
             }
             // Validate the format of ClinicalTrials.gov Identifier: NCT00000000
-            if (protocolIdOriginName === 'ClinicalTrials.gov Identifier' && !/^NCT\d{8}$/.test(protocolId)) {
+            if ((protocolIdOriginName === 'ClinicalTrials.gov Identifier' || protocolIdOriginName === 'Obsolete ClinicalTrials.gov Identifier') && !/^NCT\d{8}$/.test(protocolId)) {
                 errorMsg = 'The format must be "NCT" followed by 8 numeric characters';
                 return errorMsg;
             }

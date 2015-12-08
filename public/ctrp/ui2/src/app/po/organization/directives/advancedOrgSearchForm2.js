@@ -42,6 +42,7 @@
         function ctrpAdvancedOrgSearchController($scope) {
 
             var fromStateName = $state.fromState.name || '';
+            var curStateName = $state.$current.name || '';
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
             $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows = [];
@@ -54,6 +55,8 @@
             $scope.searchWarningMessage = '';
             $scope.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
             $scope.dateFormat = DateService.getFormats()[1];
+
+            console.log('current state name: ', curStateName);
 
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
@@ -73,7 +76,16 @@
             $scope.typeAheadNameSearch = function () {
                 var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
                 //search context: 'CTRP', to avoid duplicate names
-                return OrgService.searchOrgs({name: wildcardOrgName, source_context: "CTRP"}).then(function (res) {
+                var queryObj = {
+                    name: wildcardOrgName,
+                    source_context: 'CTRP',
+                    source_status: 'Active'
+                };
+                //for trial-related org search, use only 'Active' source status
+                if (curStateName.indexOf('trial') === -1) {
+                    delete queryObj.source_status;
+                }
+                return OrgService.searchOrgs(queryObj).then(function(res) {
                     //remove duplicates
                     var uniqueNames = [];
                     var orgNames = [];
@@ -117,9 +129,13 @@
                     delete $scope.searchParams.date_range_arr;
                 }
 
-                if(!isEmptySearch) { //skip searching if empty search
+                if(!isEmptySearch) {
+                    //for trial-related org search, use only 'Active' source status
+                    if (curStateName.indexOf('trial') > -1) {
+                        $scope.searchParams.source_status = 'Active';
+                    }
+
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                        // console.log("received data for org search: " + JSON.stringify(data));
                         if ($scope.showGrid && data.orgs) {
                             $scope.gridOptions.data = data.orgs;
                             $scope.gridOptions.totalItems = data.total;
@@ -154,7 +170,8 @@
                 Object.keys($scope.searchParams).forEach(function (key) {
 
                     if (excludedKeys.indexOf(key) === -1) {
-                        $scope.searchParams[key] = '';
+                        // $scope.searchParams[key] = '';
+                        $scope.searchParams[key] = angular.isArray($scope.searchParams[key]) ? [] : '';
                     }
 
                 });

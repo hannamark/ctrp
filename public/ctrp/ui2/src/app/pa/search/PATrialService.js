@@ -8,9 +8,11 @@
     angular.module('ctrp.app.pa')
         .factory('PATrialService', PATrialService);
 
-    PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST'];
+    PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common',
+            '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST', 'LocalCacheService'];
 
-    function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload, HOST) {
+    function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common,
+            $rootScope, PromiseTimeoutService, Upload, HOST, LocalCacheService) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -19,6 +21,8 @@
             rows: 10,
             start: 1
         }; //initial Trial Search Parameters
+
+        var _curTrialId;
 
         var gridOptions = {
             enableColumnResizing: true,
@@ -75,7 +79,7 @@
                 {name: 'admin_milestone', enableSorting: true, minWidth: '170', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'other_ids', enableSorting: true, minWidth: '250', width: '8%',
+                {name: 'other_ids', enableSorting: true, minWidth: '300', width: '12%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'current_processing_status', enableSorting: true, minWidth: '150', width: '*',
@@ -111,7 +115,9 @@
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
             checkOtherId: checkOtherId,
-            deleteTrial: deleteTrial
+            deleteTrial: deleteTrial,
+            getCurrentTrialId: getCurrentTrialId,
+            setCurrentTrialId: setCurrentTrialId
         };
 
         return services;
@@ -276,6 +282,17 @@
          */
         function deleteTrial(trialId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_TRIAL + trialId + '.json');
+        }
+
+
+        function getCurrentTrialId() {
+            _curTrialId = LocalCacheService.getCacheWithKey('curTrialId');
+            return _curTrialId;
+        }
+
+        function setCurrentTrialId(trialId) {
+            _curTrialId = trialId;
+            LocalCacheService.cacheItem('curTrialId', trialId);
         }
     }
 })();

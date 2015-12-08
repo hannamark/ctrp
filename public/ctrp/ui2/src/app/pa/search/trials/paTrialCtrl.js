@@ -7,16 +7,18 @@
 
     angular.module('ctrp.app.pa').controller('paTrialCtrl', paTrialCtrl);
 
-    paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal', '$location',
-                         '$anchorScroll', 'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'
+    paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal',
+                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'
     ,'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj'];
 
-    function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal, $location,
-                       $anchorScroll, studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
+    function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal,
+                         studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
                          PATrialService, milestoneObj, processingStatusObj, protocolIdOriginObj) {
 
         var vm = this;
+        var fromStateName = $state.fromState.name || '';
         vm.searchParams = PATrialService.getInitialTrialSearchParams();
+        // clean search params
         vm.studySourceArr = studySourceObj;
         vm.phaseArr = phaseObj;
         vm.primaryPurposeArr = primaryPurposeObj;
@@ -44,19 +46,18 @@
             PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;
-                $location.hash('trial_search_results');
-                //$anchorScroll();
             }).catch(function (err) {
                 console.log('search trial failed');
             });
         };
 
         vm.resetSearch = function() {
+            vm.searchParams = PATrialService.getInitialTrialSearchParams();
             Object.keys(vm.searchParams).forEach(function(key, index) {
                 vm.searchParams[key] = '';
             });
 
-            vm.gridOptions.data.length = 0;
+            vm.gridOptions.data = [];
             vm.gridOptions.totalItems = null;
         };
 
@@ -73,6 +74,11 @@
         /****************************** implementations **************************/
 
         function activate() {
+            if (fromStateName != 'main.pa.trialOverview') {
+                vm.resetSearch();
+            } else {
+                vm.searchTrials(); //refresh search results
+            }
         }
 
         /**

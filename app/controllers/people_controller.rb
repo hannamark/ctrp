@@ -107,7 +107,7 @@ class PeopleController < ApplicationController
       @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
-      @people = @people.matches('updated_by', params[:updated_by]) if params[:updated_by].present?
+      @people = @people.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?
       @people = @people.matches_wc('source_id',params[:source_id],params[:wc_search]) if params[:source_id].present?
       @people = @people.matches_wc('fname', params[:fname],params[:wc_search]) if params[:fname].present?
       @people = @people.matches_wc('lname', params[:lname],params[:wc_search]) if params[:lname].present?

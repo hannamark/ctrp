@@ -211,7 +211,8 @@
                 var excludedKeys = ['wc_search'];
                 _.keys($scope.searchParams).forEach(function (key) {
                     if (excludedKeys.indexOf(key) === -1) {
-                        $scope.searchParams[key] = '';
+                        //$scope.searchParams[key] = '';
+                        $scope.searchParams[key] = angular.isArray($scope.searchParams[key]) ? [] : '';
                     }
                 });
                 $scope.searchParams['wc_search'] = temp;

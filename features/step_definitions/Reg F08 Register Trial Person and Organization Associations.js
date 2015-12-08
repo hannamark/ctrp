@@ -23,13 +23,11 @@ module.exports = function() {
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
 
     this.Given(/^I am on the Register Trial Lead Organization\/Principal Investigator screen$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        callback();
     });
 
     this.When(/^I have performed a Lead Organization look\-up in Search Organization$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected an Organization as the trial's Lead Organization$/, function (callback) {

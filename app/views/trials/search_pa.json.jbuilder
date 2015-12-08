@@ -46,8 +46,12 @@ json.trials do
       other_ids_string = ""
       delimiter = ""
       other_ids.each do |o|
-        other_ids_string = other_ids_string + delimiter + o.protocol_id_origin.code + "_ID:" + o.protocol_id
-        delimiter = "; "
+        name = o.protocol_id_origin.name
+        unless name.nil?
+          name.gsub!("Identifier", "")
+          other_ids_string = other_ids_string + delimiter + name + o.protocol_id
+          delimiter = ";  "
+        end
       end
       json.other_ids  other_ids_string
     end

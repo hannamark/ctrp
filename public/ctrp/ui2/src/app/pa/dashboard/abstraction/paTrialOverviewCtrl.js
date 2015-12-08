@@ -8,15 +8,18 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
 
-    paTrialOverviewCtrl.$inject = ['$state', '$stateParams',
+    paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
         '$scope', 'TrialService', '$timeout', 'URL_CONFIGS'];
-    function paTrialOverviewCtrl($state, $stateParams,
+    function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $scope, TrialService, $timeout, URL_CONFIGS) {
 
         var vm = this;
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         vm.trialDetailObj = {};
+        vm.isPanelOpen = true;
+        vm.togglePanelOpen = togglePanelOpen;
+        vm.backToPATrialSearch = backToPATrialSearch;
         console.log('trial overview controller id: ', $scope.$id);
 
         activate();
@@ -34,13 +37,21 @@
          */
         function getTrialDetail() {
             var trialId = $stateParams.trialId || 1;
+            //save the current trialId for PA menus to use
+            PATrialService.setCurrentTrialId(trialId);
             TrialService.getTrialById(trialId).then(function(data) {
                 console.log('received trial detail obj: ', data);
                 vm.trialDetailObj = data;
                 $scope.trialDetailObj = vm.trialDetailObj;
-                vm.trialDetailObj.pi.fullName = vm.trialDetailObj.pi.fname || '' +
-                    ' ' + vm.trialDetailObj.pi.mname || '' + ' ' +
-                    vm.trialDetailObj.pi.lname || '';
+                var firstName = vm.trialDetailObj.pi.fname || '';
+                var middleName = vm.trialDetailObj.pi.mname || '';
+                var lastName = vm.trialDetailObj.pi.lname || '';
+                vm.trialDetailObj.pi.fullName = firstName + ' ' + middleName + ' ' + lastName;
+
+                delete vm.trialDetailObj.server_response;
+                // vm.trialDetailObj.pi.fullName = vm.trialDetailObj.pi.fname +
+                //     ' ' + vm.trialDetailObj.pi.mname + ' ' +
+                //     vm.trialDetailObj.pi.lname;
             }).catch(function(error) {
                 console.log('error in fetching trial detail object');
             }).finally(function() {
@@ -48,6 +59,15 @@
                 vm.loadingTrialDetail = false;
             });
         } //getTrialDetail
+
+
+        function togglePanelOpen() {
+            vm.isPanelOpen = !vm.isPanelOpen;
+        } //togglePanelOpen
+
+        function backToPATrialSearch() {
+            $state.go('main.paTrialSearch');
+        } //backToPATrialSearch
 
     };
 
