@@ -209,12 +209,15 @@
             var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
             var curator_role = 'curator';
             if(user_role.toUpperCase() !== curator_role.toUpperCase()) {
-                gridOptions.columnDefs.splice(updated_at_index,1);
-                gridOptions.columnDefs.splice(updated_by_index,1);
+                if (updated_at_index >= 0 )
+                    gridOptions.columnDefs.splice(updated_at_index,1);
+                if (updated_by_index >= 0)
+                    gridOptions.columnDefs.splice(updated_by_index,1);
             }
             if(usedInModal){
                 var nullify_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'Nullify');
-                gridOptions.columnDefs.splice(nullify_index,1);
+                if (nullify_index >= 0)
+                   gridOptions.columnDefs.splice(nullify_index,1);
             }
 
             console.log('user role is: ', user_role.toUpperCase());
