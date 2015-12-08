@@ -8,10 +8,10 @@
     angular.module('ctrp.app.po')
         .controller('personDetailCtrl', personDetailCtrl);
 
-    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService',
+    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService', 'MESSAGES',
         '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
 
-    function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService,
+    function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService, MESSAGES,
                               $scope, Common, sourceStatusObj,sourceContextObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
@@ -23,17 +23,8 @@
         vm.savedSelection = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
-        var curSourceStatusObj = !!vm.curPerson.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
-        vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
-        vm.curPerson.source_status_id = curSourceStatusObj.id;
+        vm.formTitleLabel = 'Add Person'; //default form title
 
-        //
-        // if(!angular.isObject(personDetailObj)) {
-        //     //default source status is 'Pending', as identified by the 'code' value (hard coded allowed as per the requirements)
-        //     var activeStatusIndex = Common.indexOfObjectInJsonArray(vm.sourceStatusArr, 'code', 'ACT');
-        //     vm.activeStatusName = vm.sourceStatusArr[activeStatusIndex].name || '';
-        //     vm.curPerson.source_status_id = vm.curPerson.source_status_id || vm.sourceStatusArr[activeStatusIndex].id;
-        // }
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -171,6 +162,8 @@
                     vm.savedSelection = [];
                     populatePoAffiliations();
                     filterSourceContext();
+                    locateSourceStatus();
+                    createFormTitleLabel();
                     vm.masterCopy= angular.copy(vm.curPerson);
                 }).catch(function (err) {
                     console.log("Error in retrieving person during tab change.");
@@ -184,6 +177,7 @@
         function activate() {
             appendNewPersonFlag();
             setTabIndex();
+            watchGlobalWriteModeChanges();
             watchOrgReceiver();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
@@ -192,6 +186,8 @@
                 prepareModal();
             }
             filterSourceContext();
+            locateSourceStatus();
+            createFormTitleLabel();
         }
 
 
@@ -217,6 +213,46 @@
                     }
                 }
             }
+        }
+
+        /**
+         * Watch for the global write mode changes in the header
+         * @return {[type]}
+         */
+        function watchGlobalWriteModeChanges() {
+            $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                createFormTitleLabel();
+            });
+        }
+
+        /**
+         * Generate approprate appropriate form title, e.g. 'Edit Person'
+         * @return {void}
+         */
+        function createFormTitleLabel() {
+            vm.formTitleLabel = vm.curPersonEditable && !vm.curPerson.new ? 'Edit Person' : 'View Person';
+            vm.formTitleLabel = vm.curPerson.new ? 'Add Person' : vm.formTitleLabel;
+        }
+
+
+        /**
+         * Find the source status name if the person has a source_status_id,
+         * or find the source status name that has code = 'ACT' if the person does not
+         * have a source_status_id (e.g. a new person)
+         * @return {void}
+         */
+        function locateSourceStatus() {
+            var curSourceStatusObj = {name: '', id: ''};
+
+            if (vm.curPerson.new) {
+                //default to Active
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}) || curSourceStatusObj;
+            } else {
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) || curSourceStatusObj;
+            }
+
+            vm.curSourceStatusName = curSourceStatusObj.name;
+            vm.curPerson.source_status_id = curSourceStatusObj.id;
         }
 
         /**

@@ -2,7 +2,7 @@
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
-                Trial Identification <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+                Trial History <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
             <!-- first row in the accordion body -->
             <div class="row">
@@ -63,12 +63,13 @@
                     <form name="abstraction_form" class="form" role="form" novalidate>
                         <!-- first form-group -->
                         <div class="form-group">
-                            <label for="processing_priority" class="control-label col-xs-12 col-sm-8">Processing Priority:</label>
+                            <label for="processing_priority" class="control-label col-xs-12 col-sm-3">Processing Priority:</label>
                             <div class="input-group col-xs-12 col-sm-4">
                                 <select name="priority_selection" id="processing_priority" class="form-control input-sm">
                                     <option value="2">2 - Normal</option>
                                 </select>
                             </div>
+                            <div class="col-sm-offset-4"></div>
                         </div>
                         <!-- end of first form-group -->
 
