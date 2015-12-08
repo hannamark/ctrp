@@ -744,3 +744,8 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     overflow: visible;
     text-align: center;
 }
+
+.ctrp-md-panel-header {
+    background-color: #337ab7 !important;
+    font-size: 18px !important;
+}

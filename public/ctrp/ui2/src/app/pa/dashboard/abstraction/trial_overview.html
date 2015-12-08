@@ -1,145 +1,152 @@
 <div class="row-fluid" ng-controller="paTrialOverviewCtrl as paTrialOverview">
-    <div class="col-xs-12 drop-shadow" ng-show="paTrialOverview.loadingTrialDetail">
-        <!-- Loading data .... -->
-        <div class="row">
+    <section class="md-whiteframe-z1">
+        <md-content>
+            <md-toolbar class="md-toolbar-tools ctrp-md-panel-header">
+                <md-button class="md-icon-button" aria-label="showsubmenus">
+                    <ng-md-icon icon="menu" ng-click="paTrialOverview.showSubMenus()"></ng-md-icon>
+                </md-button>
+                <h3><span>Trial Overview</span></h3>
+                <span flex></span>
+                <md-button class="md-icon-button" aria-label="showcontent">
+                        <ng-md-icon ng-if="paTrialOverview.isPanelOpen" icon="unfold_less" size="28" ng-click="paTrialOverview.togglePanelOpen()"></ng-md-icon>
+                        <ng-md-icon ng-if="!paTrialOverview.isPanelOpen" icon="unfold_more" size="28" ng-click="paTrialOverview.togglePanelOpen()"></ng-md-icon>
+                </md-button>
+            </md-toolbar>
+        </md-content>
+    </section>
+
+    <div class="col-xs-12 drop-shadow">
+        <!-- loading is active -->
+        <div class="row" ng-show="paTrialOverview.loadingTrialDetail">
             <img src="./images/ajax_loader.svg">
         </div>
-    </div>
-
-    <div class="col-xs-12 drop-shadow" ng-show="!paTrialOverview.loadingTrialDetail">
-        <!-- first row -->
-        <div class="row">
-            <p>
-                <h4><strong>Trial Overview</strong></h4>
-            </p>
-            <p>
-                <h5><strong>{{paTrialOverview.trialDetailObj.official_title}}</strong></h5>
-            </p>
-        </div>
-        <!-- end of first row -->
-
-        <!-- second row -->
-        <div class="row">
-            <!-- column 1 -->
-            <div class="col-sm-4 col-xs-12">
+        <div class="row animated-item" ng-show="!paTrialOverview.loadingTrialDetail && paTrialOverview.isPanelOpen">
+            <!-- first row -->
+            <div class="row">
                 <p>
-                    <!--same as ClinicalTrials.gov Id -->
-                    <strong>NCT ID:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.other_ids[0].protocol_id}}</span>
-                </p>
-                <p>
-                    <strong>Lead Organization Trial ID:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
-                </p>
-                <p>
-                    <strong>Lead Organization:</strong>
-                    <span><a ui-sref="main.orgDetail({orgId: paTrialOverview.trialDetailObj.lead_org.id})">
-                        {{paTrialOverview.trialDetailObj.lead_org.name}}
-                    </a></span>
-                </p>
-                <p>
-                    <strong>Amendment Number:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.last_amendment_num}}</span>
-                </p>
-                <p>
-                    <strong>Amendment Date:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.last_amendment_date | date: "dd-MMM-yyyy H:mm"}}</span>
+                    <h5><strong>{{paTrialOverview.trialDetailObj.official_title}}</strong></h5>
                 </p>
             </div>
-            <!-- end of column 1-->
+            <!-- end of first row -->
 
-            <!-- column 2 -->
-            <div class="col-sm-4 col-xs-12">
-                <p>
-                    <strong>Principal Investigator:</strong>
-                    <span><a ui-sref="main.personDetail({personId: paTrialOverview.trialDetailObj.pi.id})">
-                        {{paTrialOverview.trialDetailObj.pi.fullName}}
-                    </a></span>
-                </p>
+            <!-- second row -->
+            <div class="row">
+                <!-- column 1 -->
+                <div class="col-sm-4 col-xs-12">
+                    <p>
+                        <!--same as ClinicalTrials.gov Id -->
+                        <strong>NCT ID:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.other_ids[0].protocol_id}}</span>
+                    </p>
+                    <p>
+                        <strong>Lead Organization Trial ID:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
+                    </p>
+                    <p>
+                        <strong>Lead Organization:</strong>
+                        <span><a ui-sref="main.orgDetail({orgId: paTrialOverview.trialDetailObj.lead_org.id})">
+                            {{paTrialOverview.trialDetailObj.lead_org.name}}
+                        </a></span>
+                    </p>
+                    <p>
+                        <strong>Amendment Number:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.last_amendment_num}}</span>
+                    </p>
+                    <p>
+                        <strong>Amendment Date:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.last_amendment_date | date: "dd-MMM-yyyy H:mm"}}</span>
+                    </p>
+                </div>
+                <!-- end of column 1-->
 
-                <p>
-                    <!-- logic not in rails yet -->
-                    <strong>Last Submitter:</strong>
-                    <span><a href=""></a></span>
-                </p>
+                <!-- column 2 -->
+                <div class="col-sm-4 col-xs-12">
+                    <p>
+                        <strong>Principal Investigator:</strong>
+                        <span><a ui-sref="main.personDetail({personId: paTrialOverview.trialDetailObj.pi.id})">
+                            {{paTrialOverview.trialDetailObj.pi.fullName}}
+                        </a></span>
+                    </p>
 
-                <p>
-                    <!-- logic not in rails yet -->
-                    <strong>Last Submitter Organization:</strong>
-                    <span><a href=""></a></span>
-                </p>
+                    <p>
+                        <!-- logic not in rails yet -->
+                        <strong>Last Submitter:</strong>
+                        <span><a href=""></a></span>
+                    </p>
 
-                <p>
-                    <strong>Trial Category:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span>
-                </p>
+                    <p>
+                        <!-- logic not in rails yet -->
+                        <strong>Last Submitter Organization:</strong>
+                        <span><a href=""></a></span>
+                    </p>
 
-                <p>
-                    <strong>Last Updated By:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.updated_by}}</span>
-                </p>
+                    <p>
+                        <strong>Trial Category:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span>
+                    </p>
 
-                <p>
-                    <strong>Last Updated Date:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.updated_at | date: "dd-MMM-yyyy H:mm"}}</span>
-                </p>
+                    <p>
+                        <strong>Last Updated By:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.updated_by}}</span>
+                    </p>
+
+                    <p>
+                        <strong>Last Updated Date:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.updated_at | date: "dd-MMM-yyyy H:mm"}}</span>
+                    </p>
+                </div>
+                <!-- end of column 2-->
+
+                <!-- column 3 -->
+                <div class="col-sm-4 col-xs-12">
+                    <p>
+                        <strong>Current Trial Status:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.current_trial_status}}</span>
+                    </p>
+
+                    <p>
+                        <strong>Current Trial Status Date:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.current_trial_status_date | date: "dd-MMM-yyyy H:mm"}}</span>
+                    </p>
+                    <p>
+                        <strong>Processing Status:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.processing_status}}</span>
+                    </p>
+
+                    <p>
+                        <strong>Submission Source:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
+                    </p>
+
+                    <p>
+                        <strong>Checked Out for Admin by: </strong>
+                    </p>
+
+                    <p>
+                        <strong>Checked Out for Scientific by: </strong>
+                    </p>
+                </div>
+                <!-- end of column 3-->
             </div>
-            <!-- end of column 2-->
+            <!-- end of second row -->
 
-            <!-- column 3 -->
-            <div class="col-sm-4 col-xs-12">
-                <p>
-                    <strong>Current Trial Status:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.current_trial_status}}</span>
-                </p>
-
-                <p>
-                    <strong>Current Trial Status Date:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.current_trial_status_date | date: "dd-MMM-yyyy H:mm"}}</span>
-                </p>
-                <p>
-                    <strong>Processing Status:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.processing_status}}</span>
-                </p>
-
-                <p>
-                    <strong>Submission Source:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
-                </p>
-
-                <p>
-                    <strong>Checked Out for Admin by: </strong>
-                    <span></span>
-                </p>
-
-                <p>
-                    <strong>Checked Out for Scientific by: </strong>
-                    <span></span>
-                </p>
+            <!-- third row -->
+            <div class="row text-center">
+                <div class="btn-toolbar">
+                    <button type="button" class="btn btn-primary pull-right" id="admin_sci_checkout">Admin/Scientific Check Out</button>
+                    <button type="button" class="btn btn-primary pull-right" id="scientific_checkout">Scientific Check Out</button>
+                    <button type="button" class="btn btn-primary pull-right" id="admin_checkout">Admin Check Out</button>
+                    <button type="button" class="btn btn-warning pull-right" id="back_to_search" ng-click="paTrialOverview.backToPATrialSearch()">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Back to Search Results
+                    </button>
+                </div>
                 <hr />
             </div>
-            <!-- end of column 3-->
+            <!-- end of third row -->
         </div>
-        <!-- end of second row -->
-
-        <!-- third row -->
-        <div class="row text-center">
-            <div class="btn-toolbar">
-                <button type="button" class="btn btn-primary pull-right" id="admin_sci_checkout">Admin/Scientific Check Out</button>
-                <button type="button" class="btn btn-primary pull-right" id="scientific_checkout">Scientific Check Out</button>
-                <button type="button" class="btn btn-primary pull-right" id="admin_checkout">Admin Check Out</button>
-                <button type="button" class="btn btn-warning pull-right" id="back_to_search">
-                    <i class="glyphicon glyphicon-arrow-left"></i> Back to Search Results
-                </button>
-            </div>
-            <hr />
-        </div>
-
-        <!-- end of third row -->
 
         <!-- dynamic loading of sub-partial views here -->
+        <br />
         <div ui-view></div>
         <!-- end of dynamic loading of partial views -->
-
-    </div> <!-- end of col-xs-12 drop-shadow -->
-</div>
+    </div>

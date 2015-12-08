@@ -17,6 +17,9 @@
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         vm.trialDetailObj = {};
+        vm.isPanelOpen = true;
+        vm.togglePanelOpen = togglePanelOpen;
+        vm.backToPATrialSearch = backToPATrialSearch;
         console.log('trial overview controller id: ', $scope.$id);
 
         activate();
@@ -54,6 +57,15 @@
                 vm.loadingTrialDetail = false;
             });
         } //getTrialDetail
+
+
+        function togglePanelOpen() {
+            vm.isPanelOpen = !vm.isPanelOpen;
+        } //togglePanelOpen
+
+        function backToPATrialSearch() {
+            $state.go('main.paTrialSearch');
+        } //backToPATrialSearch
 
     };
 
