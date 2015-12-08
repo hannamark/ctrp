@@ -1,0 +1,176 @@
+
+
+<div class="col-xs-12" role="content">
+    <div class="row">
+        <style>
+        .pdsa-summary-block-primary {
+            background-color: #428bca;
+            color: #fff;
+        }
+
+        /* theme of summary blocks */
+        .pdsa-summary-block-primary {
+            background-color: #428bca;
+            color: #fff;
+        }
+
+        .pdsa-summary-block-primary .summary-footer {
+            background-color: deepskyblue;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-primary .summary-footer a {
+            color: white;
+            margin:0 auto;
+        }
+
+        /* for success */
+        .pdsa-summary-block-success {
+            background-color: #3c763d;
+            color: #fff;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-success .summary-footer {
+            background-color: green;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-success .summary-footer a {
+            color: white;
+            margin:0 auto;
+        }
+
+
+        /* for info */
+        .pdsa-summary-block-info {
+            background-color: #31708f;
+            color: #fff;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-info .summary-footer {
+            background-color: teal;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-info .summary-footer a {
+            color: white;
+            margin:0 auto;
+        }
+
+
+
+        /* for danger */
+        .pdsa-summary-block-danger {
+            /*background-color: #a94442;*/
+            background-color: crimson;
+            color: #fff;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-danger .summary-footer {
+            background-color: red;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-danger .summary-footer a {
+            color: white;
+            margin:0 auto;
+        }
+
+
+        /* for danger */
+        .pdsa-summary-block-admin {
+            background-color: orange;
+            color: #fff;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-admin .summary-footer {
+            background-color: goldenrod;
+            margin:0 auto;
+        }
+
+        .pdsa-summary-block-admin .summary-footer a {
+            color: white;
+            margin:0 auto;
+        }
+
+        /* structure of summary blocks */
+        .pdsa-summary-block {
+            position: relative;
+            width: 100%;
+            margin: 0.3em;
+            padding: 1em;
+            min-height: 15em;
+
+        }
+
+        .pdsa-summary-block .summary-background i,
+        .pdsa-summary-block .summary-background div {
+            margin-left: -0.4em;
+            margin-top: 0.1em;
+            font-size: 8em;
+            opacity: 0.3;
+        }
+
+        .pdsa-summary-block .summary-body {
+            position: absolute;
+            top: 1.3em;
+            right: 0.8em;
+        }
+
+        .pdsa-summary-block .summary-body .summary-line1 {
+            text-align: right;
+            font-size: xx-large;
+        }
+
+        .pdsa-summary-block .summary-body .summary-line2 {
+            text-align: right;
+            font-size: medium;
+        }
+
+        .pdsa-summary-block .summary-footer {
+            position: absolute;
+            bottom: 0em;
+            right: 0em;
+            width: 100%;
+            padding: 0.4em;
+            text-transform: uppercase;
+            font-size: small;
+        }
+
+        .pdsa-summary-block .summary-footer a {
+            text-decoration: none;
+        }
+
+        .pdsa-summary-block .summary-footer:hover {
+            opacity: 12;
+            cursor: pointer;
+        }
+    </style>
+
+        <div class="drop-shadow">
+            <div ng-if="headerView.currrentState.current.name != 'main.sign_in'">
+                <div class="collapse navbar-collapse" id="collapse-1">
+                    <div ng-if="headerView.userRole == 'curator'">
+                        <div ng-include src="'ui/partials/welcome/curatorHome.html'"></div>
+                    </div>
+                    <div ng-if="headerView.userRole == 'ro'">
+                        <div ng-include src="'ui/partials/welcome/roHome.html'"></div>
+                    </div>
+                    <div ng-if="headerView.userRole == 'super' || headerView.userRole == 'admin'">
+                        <div ng-include src="'ui/partials/welcome/adminHome.html'"></div>
+                    </div>
+                    <div ng-if="headerView.userRole == 'trial-submitter' || headerView.userRole == 'trial-submitter-su'">
+                        <div ng-include src="'ui/partials/welcome/trialSubmitterHome.html'"></div>
+                    </div>
+                    <div ng-if="headerView.userRole == 'abstractor' || headerView.userRole == 'abstractor-su'">
+                        <div ng-include src="'ui/partials/welcome/abstractorHome.html'"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
