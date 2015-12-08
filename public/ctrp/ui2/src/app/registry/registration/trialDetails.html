@@ -331,7 +331,7 @@
                         <div ng-show="trialDetailView.showInvestigator" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.investigator_name)}">
                             <label class="control-label col-xs-12 col-sm-3">Investigator:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedInvArray[0].lname + (trialDetailView.selectedInvArray[0].lname ? ', ' : ' ') + trialDetailView.selectedInvArray[0].fname}}"/>
+                                <input type="text" class="form-control input-sm" name="investigator_name1" disabled value="{{trialDetailView.selectedInvArray[0].lname + (trialDetailView.selectedInvArray[0].lname ? ', ' : ' ') + trialDetailView.selectedInvArray[0].fname}}"/>
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedInvArray[0].lname.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.investigator_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <input type="hidden" name="investigator_name" ng-model="trialDetailView.selectedInvArray[0]" ng-required="trialDetailView.showInvestigator">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.investigator_name)">
@@ -358,7 +358,7 @@
                         <div ng-show="trialDetailView.showInvestigator" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name)}">
                             <label class="control-label col-xs-12 col-sm-3">Investigator Affiliation:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedIaArray[0].name}}"/>
+                                <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedIaArray[0].name}}" name="inv_aff_name1"/>
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedIaArray[0].name.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <input type="hidden" name="inv_aff_name" ng-model="trialDetailView.selectedIaArray[0]" ng-required="trialDetailView.showInvestigator">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name)">
