@@ -9,7 +9,8 @@
 
         /* Cross-app modules */
         'ctrp.app.pa.dashboard',
-        'ctrp.app.pa.search'
+        'ctrp.app.pa.search',
+        'ctrp.module.routes',
 
         /* 3rd-party modules */
 

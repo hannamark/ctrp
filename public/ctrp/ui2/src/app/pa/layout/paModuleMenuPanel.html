@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div class="sidebar" ng-controller="paModuleMenuPanel as paMenuPanel">
   <uib-accordion close-others="false">
       <uib-accordion-group is-open="true">
           <uib-accordion-heading>
@@ -9,7 +9,9 @@
               <li><a ui-sref="main.pa.trialOverview.trialHistory">Trial History</a></li>
               <li><a ui-sref="main.pa.trialOverview.trialMilestones">Trial Milestones</a></li>
               <li><a ui-sref="main.pa.trialOverview.onHoldInfo">On Hold Info</a></li>
-              <li><a ui-sref="main.pa.trialOverview.viewTSR">View TSR</a></li>
+              <!-- <li><a ui-sref="main.pa.trialOverview.viewTSR">View TSR</a></li> -->
+              <!-- redirect View TSR to trial update for temporary -->
+              <li ng-hide="paMenuPanel.trialId == ''"><a ui-sref="main.trialDetail({trialId: paMenuPanel.trialId, editType: 'update'})">View TSR</a></li>
               <li><a ui-sref="main.pa.trialOverview.assignOwnership">Assign Ownership</a></li>
               <li><a ui-sref="main.pa.trialOverview.checkoutHistory">Check Out History</a></li>
               <li><a ui-sref="main.pa.trialOverview.jsonRawData">Raw JSON Data</a></li>
