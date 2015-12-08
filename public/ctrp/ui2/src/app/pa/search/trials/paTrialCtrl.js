@@ -7,12 +7,12 @@
 
     angular.module('ctrp.app.pa').controller('paTrialCtrl', paTrialCtrl);
 
-    paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal', '$location',
-                         '$anchorScroll', 'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'
+    paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal',
+                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'
     ,'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj'];
 
-    function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal, $location,
-                       $anchorScroll, studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
+    function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal,
+                         studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
                          PATrialService, milestoneObj, processingStatusObj, protocolIdOriginObj) {
 
         var vm = this;
@@ -46,8 +46,6 @@
             PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;
-                $location.hash('trial_search_results');
-                //$anchorScroll();
             }).catch(function (err) {
                 console.log('search trial failed');
             });
