@@ -71,7 +71,7 @@ AccrualDiseaseTerm.find_or_create_by(code: 'ICD-O-3', name: 'ICD-O-3')
 
 ResponsibleParty.find_or_create_by(code: 'SPONSOR', name: 'Sponsor')
 ResponsibleParty.find_or_create_by(code: 'PI', name: 'Principal Investigator')
-ResponsibleParty.find_or_create_by(code: 'SI', name: 'Sponsor Investigator')
+ResponsibleParty.find_or_create_by(code: 'SI', name: 'Sponsor-Investigator')
 
 ProtocolIdOrigin.find_or_create_by(code: 'NCT', name: 'ClinicalTrials.gov Identifier')
 ProtocolIdOrigin.find_or_create_by(code: 'CTEP', name: 'CTEP Identifier')
