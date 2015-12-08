@@ -202,8 +202,8 @@
                                         <label class="control-label col-xs-12 col-sm-1">Phone:</label>
                                         <div class="col-xs-12 col-sm-2" ng-if="orgDetailView.curOrgEditable">
                                             <input tabindex="28" type="text" restriction-field class="form-control input-sm" id="phone" name="phone" ng-model="orgDetailView.curOrg.phone" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="orgDetailView.isValidPhoneNumber()">
-                                            <span ng-show="orgDetailView.curOrg.phone.length" class="form-control-feedback" ng-class="(orgDetailView.curOrg.phone.length > 0 && showPhoneWarning && !IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
-                                            <div class="has-error" ng-show="orgDetailView.curOrg.phone.length && showPhoneWarning && !IsPhoneValid">
+                                            <span ng-show="orgDetailView.curOrg.phone.length" class="form-control-feedback" ng-class="(orgDetailView.curOrg.phone.length > 0 && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                                            <div class="has-error" ng-show="orgDetailView.curOrg.phone.length && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid">
                                                 <span class="help-block">
                                                     Warning: Phone number invalid for the selected Country.
                                                  </span>

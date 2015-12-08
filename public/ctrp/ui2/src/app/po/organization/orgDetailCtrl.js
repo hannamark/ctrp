@@ -31,7 +31,7 @@
 
         vm.alias = '';
         vm.curationReady = false;
-        $scope.showPhoneWarning = false;
+        vm.showPhoneWarning = false;
 
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
@@ -322,9 +322,9 @@
         };
 
         vm.isValidPhoneNumber = function(){
-            $scope.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
-            $scope.showPhoneWarning = true;
-            console.log('Is phone valid: ' + $scope.IsPhoneValid);
+            vm.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
+            vm.showPhoneWarning = true;
+            console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
 
     }
