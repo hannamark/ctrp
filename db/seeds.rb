@@ -168,6 +168,7 @@ AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', val
 
 AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'S6', big_value: '')
 
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,zip,gz', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/zip, application/x-gzip')
 
 
 ########## SEEDING APP SETTINGS ENDS ##########

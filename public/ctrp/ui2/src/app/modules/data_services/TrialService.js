@@ -101,6 +101,7 @@
             getHolderTypes: getHolderTypes,
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
+            getAcceptedFileTypes: getAcceptedFileTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
             uploadDocument: uploadDocument,
@@ -252,6 +253,10 @@
 
         function getExpandedAccessTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
+        }
+
+        function getAcceptedFileTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES);
         }
 
         function getAuthorityOrgArr(country) {

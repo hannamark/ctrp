@@ -142,6 +142,7 @@ Rails.application.routes.draw do
       get 'institute_codes' => 'util#get_institute_codes'
       get 'nci' => 'util#get_nci'
       get 'nih' => 'util#get_nih'
+      get 'accepted_file_types' => 'util#get_accepted_file_types'
     end
   end
   # Devise related routes
