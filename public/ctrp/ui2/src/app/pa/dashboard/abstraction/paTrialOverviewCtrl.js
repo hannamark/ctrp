@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
 
-    paTrialOverviewCtrl.$inject = ['$state', '$stateParams',
+    paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
         '$scope', 'TrialService', '$timeout', 'URL_CONFIGS'];
-    function paTrialOverviewCtrl($state, $stateParams,
+    function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $scope, TrialService, $timeout, URL_CONFIGS) {
 
         var vm = this;
@@ -37,6 +37,8 @@
          */
         function getTrialDetail() {
             var trialId = $stateParams.trialId || 1;
+            //save the current trialId for PA menus to use
+            PATrialService.setCurrentTrialId(trialId);
             TrialService.getTrialById(trialId).then(function(data) {
                 console.log('received trial detail obj: ', data);
                 vm.trialDetailObj = data;
