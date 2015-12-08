@@ -86,7 +86,7 @@
                                 <span class="form-control-feedback select-feedback" ng-show="personDetailView.curPerson.source_context_id.length" ng-class="!ctrpbtn.person_form.needsAttention(person_form.source_context) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="person_form.source_context.$invalid">Source context is Required</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curSourceContextName}}</div>
+                            <div class="col-xs-12 col-sm-6 form-text" ng-if="!personDetailView.curPersonEditable">{{clusterPerson.context}}</div>
                         </div>
                         <!-- Source ID will be R/O on Person screen -->
                         <div class="form-group">

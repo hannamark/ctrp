@@ -27,9 +27,11 @@
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         //if vm.curOrg.source_status_id is not null, pluck it out from the sourceStatusArr and get the name, otherwise get the 'Active' name
-        var curSourceStatusObj = !!vm.curOrg.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
-        vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
-        vm.curOrg.source_status_id = curSourceStatusObj.id;
+
+        // var curSourceStatusObj = !!vm.curOrg.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+        // vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
+        // vm.curOrg.source_status_id = curSourceStatusObj.id;
+
         vm.alias = '';
         vm.curationReady = false;
         $scope.showPhoneWarning = false;
@@ -126,6 +128,8 @@
                     vm.masterCopy= angular.copy(vm.curOrg);
                     vm.addedNameAliases = [];
                     appendNameAliases();
+                    filterSourceContext();
+                    locateSourceStatus();
                 }).catch(function (err) {
                     console.log("Error in retrieving organization during tab change.");
                 });
@@ -150,6 +154,7 @@
                 appendNameAliases();
             }
             filterSourceContext();
+            locateSourceStatus();
         }
         // Append associations for existing Trial
         function appendNameAliases() {
@@ -161,6 +166,27 @@
                 vm.addedNameAliases.push(name_alias);
             }
         }
+
+        /**
+         * Find the source status name if the organization has a source_status_id,
+         * or find the source status name that has code = 'ACT' if the organization does not
+         * have a source_status_id (e.g. a new organization)
+         * @return {void}
+         */
+        function locateSourceStatus() {
+            var curSourceStatusObj = {name: '', id: ''};
+
+            if (vm.curOrg.new) {
+                //default to Active
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+            } else {
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id});
+            }
+            vm.curSourceStatusName = curSourceStatusObj.name;
+            vm.curOrg.source_status_id = curSourceStatusObj.id;
+        }
+
+
 
         /**
          * Filter out NLM and CTEP source contexts from UI

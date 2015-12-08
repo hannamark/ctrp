@@ -42,6 +42,8 @@
                 var middleName = vm.trialDetailObj.pi.mname || '';
                 var lastName = vm.trialDetailObj.pi.lname || '';
                 vm.trialDetailObj.pi.fullName = firstName + ' ' + middleName + ' ' + lastName;
+
+                delete vm.trialDetailObj.server_response;
                 // vm.trialDetailObj.pi.fullName = vm.trialDetailObj.pi.fname +
                 //     ' ' + vm.trialDetailObj.pi.mname + ' ' +
                 //     vm.trialDetailObj.pi.lname;

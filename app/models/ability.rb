@@ -44,6 +44,7 @@ class Ability
       can :manage, [Organization, Person, Family, Comment]
       can :read, :all
       can :search, :all
+      can :search_pa, Trial
       cannot :access_backoffice, :manage_backoffice
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard

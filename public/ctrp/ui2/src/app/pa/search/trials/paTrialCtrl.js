@@ -16,7 +16,9 @@
                          PATrialService, milestoneObj, processingStatusObj, protocolIdOriginObj) {
 
         var vm = this;
+        var fromStateName = $state.fromState.name || '';
         vm.searchParams = PATrialService.getInitialTrialSearchParams();
+        // clean search params
         vm.studySourceArr = studySourceObj;
         vm.phaseArr = phaseObj;
         vm.primaryPurposeArr = primaryPurposeObj;
@@ -52,11 +54,12 @@
         };
 
         vm.resetSearch = function() {
+            vm.searchParams = PATrialService.getInitialTrialSearchParams();
             Object.keys(vm.searchParams).forEach(function(key, index) {
                 vm.searchParams[key] = '';
             });
 
-            vm.gridOptions.data.length = 0;
+            vm.gridOptions.data = [];
             vm.gridOptions.totalItems = null;
         };
 
@@ -73,6 +76,11 @@
         /****************************** implementations **************************/
 
         function activate() {
+            if (fromStateName != 'main.pa.trialOverview') {
+                vm.resetSearch();
+            } else {
+                vm.searchTrials(); //refresh search results
+            }
         }
 
         /**
