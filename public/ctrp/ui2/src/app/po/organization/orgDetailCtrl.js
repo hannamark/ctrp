@@ -26,15 +26,12 @@
         //vm.curSourceContextName = '';
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-        //if vm.curOrg.source_status_id is not null, pluck it out from the sourceStatusArr and get the name, otherwise get the 'Active' name
+        vm.formTitleLabel = 'Add Organization'; //default form title
 
-        // var curSourceStatusObj = !!vm.curOrg.source_status_id ? _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id}) : _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
-        // vm.curSourceStatusName = !!curSourceStatusObj ? curSourceStatusObj.name : '';
-        // vm.curOrg.source_status_id = curSourceStatusObj.id;
 
         vm.alias = '';
         vm.curationReady = false;
-        $scope.showPhoneWarning = false;
+        vm.showPhoneWarning = false;
 
         //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
 
@@ -130,6 +127,7 @@
                     appendNameAliases();
                     filterSourceContext();
                     locateSourceStatus();
+                    createFormTitleLabel();
                 }).catch(function (err) {
                     console.log("Error in retrieving organization during tab change.");
                 });
@@ -146,6 +144,7 @@
                 OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP') : vm.curOrg.source_context_id;
 
             listenToStatesProvinces();
+            watchGlobalWriteModeChanges();
             appendNewOrgFlag();
             setTabIndex();
             //prepare the modal window for existing organizations
@@ -155,6 +154,7 @@
             }
             filterSourceContext();
             locateSourceStatus();
+            createFormTitleLabel();
         }
         // Append associations for existing Trial
         function appendNameAliases() {
@@ -166,6 +166,26 @@
                 vm.addedNameAliases.push(name_alias);
             }
         }
+
+        /**
+         * Watch for the global write mode changes in the header
+         * @return {[type]}
+         */
+        function watchGlobalWriteModeChanges() {
+            $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                createFormTitleLabel();
+            });
+        }
+
+        /**
+         * Generate approprate appropriate form title, e.g. 'Edit Organization'
+         * @return {void}
+         */
+        function createFormTitleLabel() {
+            vm.formTitleLabel = vm.curOrgEditable && !vm.curOrg.new ? 'Edit Organization' : 'View Organization';
+            vm.formTitleLabel = vm.curOrg.new ? 'Add Organization' : vm.formTitleLabel;
+        }
+
 
         /**
          * Find the source status name if the organization has a source_status_id,
@@ -302,9 +322,9 @@
         };
 
         vm.isValidPhoneNumber = function(){
-            $scope.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
-            $scope.showPhoneWarning = true;
-            console.log('Is phone valid: ' + $scope.IsPhoneValid);
+            vm.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
+            vm.showPhoneWarning = true;
+            console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
 
     }
