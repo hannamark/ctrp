@@ -8,10 +8,10 @@
     angular.module('ctrp.app.po')
         .controller('personDetailCtrl', personDetailCtrl);
 
-    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService',
+    personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService', 'MESSAGES',
         '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
 
-    function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService,
+    function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService, MESSAGES,
                               $scope, Common, sourceStatusObj,sourceContextObj, $state, $modal, OrgService, poAffStatuses, _) {
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
@@ -23,6 +23,7 @@
         vm.savedSelection = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
+        vm.formTitleLabel = 'Add Person'; //default form title
 
 
         //update person (vm.curPerson)
@@ -162,6 +163,7 @@
                     populatePoAffiliations();
                     filterSourceContext();
                     locateSourceStatus();
+                    createFormTitleLabel();
                     vm.masterCopy= angular.copy(vm.curPerson);
                 }).catch(function (err) {
                     console.log("Error in retrieving person during tab change.");
@@ -175,6 +177,7 @@
         function activate() {
             appendNewPersonFlag();
             setTabIndex();
+            watchGlobalWriteModeChanges();
             watchOrgReceiver();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
@@ -184,6 +187,7 @@
             }
             filterSourceContext();
             locateSourceStatus();
+            createFormTitleLabel();
         }
 
 
@@ -209,6 +213,25 @@
                     }
                 }
             }
+        }
+
+        /**
+         * Watch for the global write mode changes in the header
+         * @return {[type]}
+         */
+        function watchGlobalWriteModeChanges() {
+            $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                createFormTitleLabel();
+            });
+        }
+
+        /**
+         * Generate approprate appropriate form title, e.g. 'Edit Person'
+         * @return {void}
+         */
+        function createFormTitleLabel() {
+            vm.formTitleLabel = vm.curPersonEditable && !vm.curPerson.new ? 'Edit Person' : 'View Person';
+            vm.formTitleLabel = vm.curPerson.new ? 'Add Person' : vm.formTitleLabel;
         }
 
 
