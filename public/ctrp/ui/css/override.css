@@ -14,11 +14,6 @@
     .container {
         width: 1470px;
     }
-
-    form {
-        width: 75%;
-        margin: 0 auto;
-    }
 }
 
 @media screen and (min-width: 1600px) {
@@ -37,11 +32,6 @@
     .container {
         width: 1770px;
     }
-
-    form {
-        width: 65%;
-        margin: 0 auto;
-    }
 }
 
 @media screen and (min-width: 1900px) {
@@ -59,11 +49,6 @@
 @media screen and (min-width: 2100px) {
     .container {
         width: 2070px;
-    }
-
-    form {
-        width: 55%;
-        margin: 0 auto;
     }
 }
 
@@ -670,10 +655,6 @@ input[type=radio] {
     padding: 0;
 }
 
-.has-feedback label~.form-control-feedback.no-top {
-    top: 0;
-}
-
 /* override the md-backdrop grey overlay/backdrop to make the content visible */
 md-backdrop.md-opaque {
     opacity: .18; }
@@ -715,8 +696,4 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 
 .form-horizontal .has-feedback .select-feedback {
     right: 15px;
-}
-
-.form-horizontal .has-feedback .datepicker-feedback {
-    right: 25px;
 }
