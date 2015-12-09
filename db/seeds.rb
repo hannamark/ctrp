@@ -7,12 +7,11 @@ require 'roo'
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
 #Remove Data
 DataImport.delete_trial_data
 NameAlias.delete_all
 Organization.delete_all
-
+Person.delete_all
 
 
 SourceContext.find_or_create_by(code: 'CTEP', name: 'CTEP')
@@ -254,7 +253,6 @@ if !family2.new_record?
   family2.family_memberships.create(organization: org14, family_relationship: org)
 end
 
-if Person.count  == 0
 person1 = Person.find_or_create_by(id:1699192, source_id:'33303', source_context: ctep, fname:'Ajeet', lname:'Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
 person2 = Person.find_or_create_by(id:7857011, source_id:'518786', source_context: ctrp, fname:'Alicia', lname:'Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
 person3 = Person.find_or_create_by(id:3567738, source_id:'515762', source_context: ctep, fname:'Amy', mname:'M.', lname:'Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
@@ -267,7 +265,8 @@ Person.find_or_create_by(source_id:'AB123', source_context: ctep, fname:'Daniel'
 Person.find_or_create_by(source_id:'098', source_context: nlm, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@nlm', phone:'098-765-4321', ctrp_id: person8.id)
 person9 = Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
 person10 = Person.find_or_create_by(id:1426655, source_id:'15179', source_context: ctrp, fname:'Gisele', lname:'Sarosy', prefix:'Dr.', suffix:'', email:'gsarosy@mail.nih.gov', phone:'800-411-1222')
-end
+person11 = Person.find_or_create_by(id:28417522, source_id:'15178', source_context: ctrp, source_status: source_act, fname:'Rachel', lname:'Nusbaum', prefix:'Dr.', suffix:'', email:'rhm23@georgetown.edu', phone:'800-555-1244')
+
 
 PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')
 PoAffiliationStatus.find_or_create_by(name: 'Inactive', code: 'INACTIVE')
