@@ -39,55 +39,55 @@
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             columnDefs: [
+                {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '150', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
                 {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '120', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-
                 },
-                {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '150', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'official_title', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'official_title', enableSorting: true, minWidth: '150', width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'phase', enableSorting: true, minWidth: '40', width: '1%'},
-                {name: 'purpose', enableSorting: true, minWidth: '100', width: '*',
+                {name: 'purpose', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
                 {name: 'pilot', enableSorting: true, minWidth: '40', width: '1%'},
-                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '5%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '170', width: '*',
+                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '170', width: '5%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'sponsor', enableSorting: true, minWidth: '100', width: '*',
+                {name: 'sponsor', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'study_source', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'study_source', enableSorting: true, minWidth: '150', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_trial_status', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'current_trial_status', enableSorting: true, minWidth: '150', width: '4%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_milestone', enableSorting: true, minWidth: '170', width: '*',
+                {name: 'current_milestone', enableSorting: true, minWidth: '170', width: '4%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'selected_milestone', enableSorting: true, minWidth: '170', width: '*',
+                {name: 'selected_milestone', enableSorting: true, minWidth: '170', width: '4%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'scientific_milestone', enableSorting: true, minWidth: '170', width: '*',
+                {name: 'scientific_milestone', enableSorting: true, minWidth: '170', width: '4%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'admin_milestone', enableSorting: true, minWidth: '170', width: '*',
+                {name: 'admin_milestone', enableSorting: true, minWidth: '170', width: '4%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'other_ids', enableSorting: true, minWidth: '300', width: '12%',
+                {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_processing_status', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'current_processing_status', enableSorting: true, minWidth: '150', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '*',
+                {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '2%',
                     cellTemplate: '<button restriction-field ng-repeat="action in row.entity.actions" type="button" class="btn btn-primary" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)"><i class="glyphicon"></i> {{action}} </button>'
                 }
 
