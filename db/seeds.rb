@@ -266,6 +266,10 @@ Person.find_or_create_by(source_id:'098', source_context: nlm, fname:'Daniel', m
 person9 = Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
 person10 = Person.find_or_create_by(id:1426655, source_id:'15179', source_context: ctrp, fname:'Gisele', lname:'Sarosy', prefix:'Dr.', suffix:'', email:'gsarosy@mail.nih.gov', phone:'800-411-1222')
 person11 = Person.find_or_create_by(id:28417522, source_id:'15178', source_context: ctrp, source_status: source_act, fname:'Rachel', lname:'Nusbaum', prefix:'Dr.', suffix:'', email:'rhm23@georgetown.edu', phone:'800-555-1244')
+person12 = Person.find_or_create_by(id:1950481, source_id:'15177', source_context: ctrp, source_status: source_act, fname:'Alessandra', lname:'Ferrajol', prefix:'Dr.', suffix:'', email:'aferrajo@mdanderson.org', phone:'800-111-1244')
+person13 = Person.find_or_create_by(id:28186245, source_id:'15176', source_context: ctrp, source_status: source_act, fname:'Kristi', lname:'Graves', prefix:'Dr.', suffix:'', email:'kdg9@georgetown.edu', phone:'800-777-1244')
+person14 = Person.find_or_create_by(id:3561594, source_id:'15175', source_context: ctrp, source_status: source_act, fname:'Diane', lname:'Roulston', prefix:'Dr.', suffix:'', email:'droulstn@umich.edu', phone:'800-777-1244')
+person15 = Person.find_or_create_by(id:1500960, source_id:'15180', source_context: ctrp, source_status: source_act, fname:'James', lname:'Lee', prefix:'Mr.', suffix:'', email:'jal2024@med.cornell.edu', phone:'800-777-1244')
 
 
 PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')
