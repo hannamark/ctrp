@@ -97,9 +97,9 @@ var projectMethodsRegistry = function() {
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/
-    this.createOrgforTrial = function(trialType,indexOfOrgModel){
+    this.createOrgforTrial = function(trialOrgName,trialType,indexOfOrgModel){
        addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
-            searchOrg.setOrgName('shiTrialOrg' + moment().format('MMMDoYY h'));
+            searchOrg.setOrgName(trialOrgName + moment().format('MMMDoYY h'));
             cukeOrganization = searchOrg.orgName.getAttribute('value');
             searchOrg.clickSearchButton();
             return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
@@ -163,9 +163,9 @@ var projectMethodsRegistry = function() {
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/
-    this.createPersonforTrial = function(trialType,indexOfPersonModel){
+    this.createPersonforTrial = function(trialPersonName, trialType,indexOfPersonModel){
         addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);
-        searchPeople.setPersonFirstName('shiTrialPerson' + moment().format('MMMDoYY h'));
+        searchPeople.setPersonFirstName(trialPersonName + moment().format('MMMDoYY h'));
         cukePerson = searchPeople.personFirstName.getAttribute('value');
         searchPeople.clickSearch();
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
