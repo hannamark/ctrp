@@ -197,9 +197,10 @@
             var curSourceStatusObj = {name: '', id: ''};
 
             if (vm.curOrg.new) {
-                //default to Active
                 curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+                vm.sourceStatusArr = [curSourceStatusObj]; // only show the active status for new org
             } else {
+                vm.sourceStatusArr = sourceStatusObj; //restore the list of source statuses if now new
                 curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id});
             }
             vm.curSourceStatusName = curSourceStatusObj.name;
