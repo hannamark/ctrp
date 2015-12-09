@@ -959,7 +959,7 @@
                 TrialService.uploadDocument(trialId, 'Informed Consent', '', vm.informed_consent);
             }
             for (var key in vm.other_documents) {
-                var subtype = key in vm.other_document_subtypes ? vm.other_document_subtypes[key] : '';
+                var subtype = vm.other_document_subtypes[key] ? vm.other_document_subtypes[key] : '';
                 TrialService.uploadDocument(trialId, 'Other Document', subtype, vm.other_documents[key]);
             }
             if (vm.change_memo) {
