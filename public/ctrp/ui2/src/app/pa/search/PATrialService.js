@@ -9,10 +9,10 @@
         .factory('PATrialService', PATrialService);
 
     PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common',
-            '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST', 'LocalCacheService'];
+            '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST', 'LocalCacheService', 'uiGridConstants'];
 
     function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common,
-            $rootScope, PromiseTimeoutService, Upload, HOST, LocalCacheService) {
+            $rootScope, PromiseTimeoutService, Upload, HOST, LocalCacheService, uiGridConstants) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -36,6 +36,8 @@
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
+            enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             columnDefs: [
                 {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '120', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +

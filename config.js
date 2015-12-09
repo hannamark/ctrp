@@ -10,7 +10,7 @@ exports.config = {
     capabilities: {
         'browserName' : 'firefox',
         shardTestFiles: true,
-        maxInstances: 6
+        maxInstances: 3
 
     },
 
@@ -63,7 +63,7 @@ exports.config = {
            'features/Reg\ F04\ Register\ Trial\ Study\ Source.feature',
            'features/Reg\ F05\ Register\ Trial\ Protocol\ Identifiers.feature',
            'features/Reg\ F06\ Register\ Trial\ Details.feature'
-// 'features/PO*.feature'
+     // 'features/PO*.feature'
      // 'features/test.feature'
     ],
 
@@ -76,7 +76,6 @@ exports.config = {
         /*     "@runThat",
         resultJsonOutputFile: 'true',
         tags: '@runthis'
-<<<<<<< HEAD
         /*     "@runThat",
          "~@ignoreThis"]*/// or summary
         // tags: '@runthis'
