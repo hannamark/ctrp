@@ -845,11 +845,11 @@
                 //fileFormDataName: 'trial_document[file]'
             }).progress(function (evt) {
                 var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                $log.info('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                $log.info('progress: ' + progressPercentage + '% ' + evt.config._file.name);
             }).success(function (data, status, headers, config) {
-                $log.info('file ' + config.file.name + ' uploaded.');
+                $log.info('file ' + config._file.name + ' uploaded.');
             }).error(function (data, status, headers, config) {
-                $log.info('file ' + config.file.name + ' upload error. error status: ' + status);
+                $log.info('file ' + config._file.name + ' upload error. error status: ' + status);
             });
         }
 
