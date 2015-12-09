@@ -344,14 +344,21 @@
         // Add other ID to a temp array
         vm.addOtherId = function () {
             // Get other ID origin name
+            var originCode;
             var originName;
             _.each(vm.protocolIdOriginArr, function (origin) {
                 if (origin.id == vm.protocol_id_origin_id) {
+                    originCode = origin.code;
                     originName = origin.name;
                 }
             });
 
-            var errorMsg = TrialService.checkOtherId(vm.protocol_id_origin_id, originName, vm.protocol_id, vm.addedOtherIds);
+            // Force NCT ID to be upper case
+            if (originCode === 'NCT' || originCode === 'ONCT') {
+                vm.protocol_id = vm.protocol_id.toUpperCase();
+            }
+
+            var errorMsg = TrialService.checkOtherId(vm.protocol_id_origin_id, originCode, vm.protocol_id, vm.addedOtherIds);
 
             if (!errorMsg) {
                 var newId = {};
