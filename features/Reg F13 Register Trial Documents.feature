@@ -3,8 +3,8 @@ Feature: Reg F13 Register Trial Documents
 
 As a CTRP User, I can attach various documents to a trial registration
 
-Scenario: #1 I can attach Trial Related Documents to a trial registration
-Given I have selected the option to register a trial <TrialType>
+Scenario Outline: #1 I can attach Trial Related Documents to a trial registration
+Given I have selected the option to register a trial <trialType>
 And I am on the Register Trial Related Documents screen
 When I have selected a file to attach as the Protocol Document
 And I have selected a file to attach as the IRB Approval
@@ -13,7 +13,7 @@ And I have selected a file to attach as the Informed Consent Document
 And I have selected one or more files to attach as Other file and entered the description of the file
 Then the Register Trial Related Document for the trial registration will not indicate an errors during Trial Review
 
-      |TrialType                |
+      |trialType                |
       |National                 |
       |Externally Peer-Reviewed |
       |Institutional            |
@@ -30,7 +30,7 @@ Then the Register Trial Related Document for the trial registration will not ind
       |IRB Approval is required       |
 
     
-  Examples: 
+  Examples:
       |TrialType                |
       |National                 |
       |Externally Peer-Reviewed |
