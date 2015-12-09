@@ -55,6 +55,14 @@
                 .state('main.pa.trialOverview.viewTSR', {
                     url: '/view-tsr',
                     templateUrl: 'app/pa/dashboard/abstraction/view_TSR.html',
+                    controller: function($scope, $state) {
+                        console.log('trialId from trialOverview controller: ', $scope.$parent.paTrialOverview.trialId);
+                        var curTrialId = $scope.$parent.paTrialOverview.trialId;
+                        //redirect to trial update page
+                        var url = $state.href('main.trialDetail', {trialId: curTrialId, editType: 'update'});
+                        window.open(url, '_blank');
+                        // $state.go('main.trialDetail', {trialId: curTrialId, editType: 'update'}, {inherit: false});
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
                         label: 'View TSR'

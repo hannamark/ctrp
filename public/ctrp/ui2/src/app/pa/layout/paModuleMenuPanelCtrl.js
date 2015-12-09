@@ -9,24 +9,16 @@
     angular.module('ctrp.app.pa')
     .controller('paModuleMenuPanel', paModuleMenuPanel);
 
-    paModuleMenuPanel.$inject = ['$scope', 'PATrialService', '$timeout'];
+    paModuleMenuPanel.$inject = ['$scope'];
 
-    function paModuleMenuPanel($scope, PATrialService, $timeout) {
+    function paModuleMenuPanel($scope) {
         var vm = this;
-        vm.trialId = '';
 
         activate();
 
         function activate() {
-            getCachedTrialId();
+
         } //activate
-
-        function getCachedTrialId() {
-            $timeout(function() {
-                vm.trialId = PATrialService.getCurrentTrialId();
-            }, 500);
-        }
-
 
 
         /*

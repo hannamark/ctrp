@@ -10,7 +10,7 @@ exports.config = {
     capabilities: {
         'browserName' : 'firefox',
         shardTestFiles: true,
-        maxInstances: 1
+        maxInstances: 3
 
     },
 
