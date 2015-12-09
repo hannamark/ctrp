@@ -1,5 +1,6 @@
 /**
  * Created by singhs10 on 7/31/15.
+ * Updated by Shamim Ahmed
  */
 
 var chai = require('chai');
@@ -234,6 +235,15 @@ var helper = function() {
         });
     };
 
+    this.retValVerification = function (objt, objtType, expectedValue){
+        try {
+            console.log("You see", this.retValVerificationch(objt, objtType, expectedValue));
+        } catch (error) {
+            console.log("Something went wrong: " + error);
+        }
+    }
+
+
     this.retValVerification = function(obj, objType, expectedVal){
         var actualVal;
         if (objType === 'list'){
@@ -264,9 +274,13 @@ var helper = function() {
                     console.log('Successfully verified the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps PASSED');
                     return true;
                 } else {
-                    console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED');
-                    return false;
-                    callback.fail();
+                    try{
+                        console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED, ' + error);
+                        expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
+                        return false;
+                    } catch (error){
+                        console.error('Test steps FAILED, ' + error);
+                    }
                 };
             });
         };
@@ -298,13 +312,19 @@ var helper = function() {
                     console.log('Successfully verified the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps PASSED');
                     return true;
                 } else {
-                    console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED');
-                    return false;
-                    callback.fail();
+                    try{
+                        console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED, ' + error);
+                        expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
+                        return false;
+                    } catch (error){
+                        console.error('Test steps FAILED, ' + error);
+                    }
                 };
             });
         };
     };
+
+
 
 };
 module.exports = helper;

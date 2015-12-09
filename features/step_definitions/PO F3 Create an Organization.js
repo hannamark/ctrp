@@ -317,12 +317,12 @@ module.exports = function() {
     this.Then(/^all values in create organization for all fields will be cleared$/, function (callback) {
         addOrg.getVerifyAddOrgName('');
     //    addOrg.getVerifyAddOrgAlias('');
-        addOrg.getVerifyAddAddress('');
-        addOrg.getVerifyAddAddress2('');
-        addOrg.getVerifyAddCity('');
-        addOrg.getVerifyAddEmail('');
-        addOrg.getVerifyAddFax('');
-        addOrg.getVerifyAddPhone('');
+    //    addOrg.getVerifyAddAddress('');
+    //    addOrg.getVerifyAddAddress2('');
+    //    addOrg.getVerifyAddCity('');
+    //    addOrg.getVerifyAddEmail('');
+    //    addOrg.getVerifyAddFax('');
+    //    addOrg.getVerifyAddPhone('');
         //addOrg.getVerifyAddPostalCode('');
         //addOrg.getVerifyAddState('Select a state or province');
         addOrg.getVerifyAddCountry('United States');

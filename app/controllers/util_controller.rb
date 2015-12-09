@@ -27,4 +27,9 @@ class UtilController < ActionController::Base
   def get_nih
     @nih = AppSetting.find_by_code('NIH').big_value.split(';')
   end
+
+  def get_accepted_file_types
+    @file_extensions = AppSetting.find_by_code('ACCEPTED_FILE_TYPES').value
+    @file_types = AppSetting.find_by_code('ACCEPTED_FILE_TYPES').big_value
+  end
 end

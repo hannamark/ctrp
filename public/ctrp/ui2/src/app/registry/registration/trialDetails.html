@@ -282,7 +282,7 @@
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.pi_name)}">
                             <label class="control-label col-xs-12 col-sm-3">Principal Investigator:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" name="pi_name1" disabled value="{{trialDetailView.selectedPiArray[0].fname + ' ' + (trialDetailView.selectedPiArray[0].mname ? trialDetailView.selectedPiArray[0].mname + ' ' : '') + trialDetailView.selectedPiArray[0].lname}}">
+                                <input type="text" class="form-control input-sm" name="pi_name1" disabled value="{{trialDetailView.selectedPiArray[0].lname + (trialDetailView.selectedPiArray[0].lname ? ', ' : ' ') + trialDetailView.selectedPiArray[0].fname}}">
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedPiArray[0].lname.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.pi_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <input type="hidden" name="pi_name" ng-model="trialDetailView.selectedPiArray[0]" required>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.pi_name)">
@@ -331,7 +331,7 @@
                         <div ng-show="trialDetailView.showInvestigator" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.investigator_name)}">
                             <label class="control-label col-xs-12 col-sm-3">Investigator:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedInvArray[0].fname + ' ' + (trialDetailView.selectedInvArray[0].mname ? trialDetailView.selectedInvArray[0].mname + ' ' : '') + trialDetailView.selectedInvArray[0].lname}}"/>
+                                <input type="text" class="form-control input-sm" name="investigator_name1" disabled value="{{trialDetailView.selectedInvArray[0].lname + (trialDetailView.selectedInvArray[0].lname ? ', ' : ' ') + trialDetailView.selectedInvArray[0].fname}}"/>
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedInvArray[0].lname.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.investigator_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <input type="hidden" name="investigator_name" ng-model="trialDetailView.selectedInvArray[0]" ng-required="trialDetailView.showInvestigator">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.investigator_name)">
@@ -358,7 +358,7 @@
                         <div ng-show="trialDetailView.showInvestigator" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name)}">
                             <label class="control-label col-xs-12 col-sm-3">Investigator Affiliation:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedIaArray[0].name}}"/>
+                                <input type="text" class="form-control input-sm" disabled value="{{trialDetailView.selectedIaArray[0].name}}" name="inv_aff_name1"/>
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedIaArray[0].name.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <input type="hidden" name="inv_aff_name" ng-model="trialDetailView.selectedIaArray[0]" ng-required="trialDetailView.showInvestigator">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name)">
@@ -941,9 +941,13 @@
                             <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
                             <div class="col-xs-12 col-sm-9 form-file-upload">
                                 <input type="file" restriction-field ngf-select ng-model="trialDetailView.protocol_document" name="protocol_document" ngf-max-size="10MB"
+                                       validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                        ng-required="trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.protocolDocNum === 0)">
-                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_document)">
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_document) && trial_form.protocol_document.$error.required">
                                     Protocol Document is required
+                                </span>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_document) && trial_form.protocol_document.$error.validateFileType">
+                                    Please select a valid file. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                 </span>
                             </div>
                         </div>
@@ -961,9 +965,13 @@
                                 <label class="control-label col-xs-12 col-sm-3">Change Memo Document:</label>
                                 <div class="col-xs-12 col-sm-9 form-file-upload">
                                     <input type="file" restriction-field ngf-select ng-model="trialDetailView.change_memo" name="change_memo" ngf-max-size="10MB"
+                                           validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                            ng-required="trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.changeMemoNum === 0)">
-                                    <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.change_memo)">
+                                    <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.change_memo) && trial_form.change_memo.$error.required">
                                         Change Memo Document is required
+                                    </span>
+                                    <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.change_memo) && trial_form.change_memo.$error.validateFileType">
+                                        Please select a valid file. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                     </span>
                                 </div>
                             </div>
@@ -980,9 +988,13 @@
                                 <label class="control-label col-xs-12 col-sm-3">Protocol Highlighted Document:</label>
                                 <div class="col-xs-12 col-sm-9 form-file-upload">
                                     <input type="file" restriction-field ngf-select ng-model="trialDetailView.protocol_highlighted" name="protocol_highlighted" ngf-max-size="10MB"
+                                           validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                            ng-required="trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.protocolHighlightedNum === 0)">
-                                    <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_highlighted)">
+                                    <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_highlighted) && trial_form.protocol_highlighted.$error.required">
                                         Protocol Highlighted Document is required
+                                    </span>
+                                    <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_highlighted) && trial_form.protocol_highlighted.$error.validateFileType">
+                                        Please select a valid file. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                     </span>
                                 </div>
                             </div>
@@ -1000,9 +1012,13 @@
                             <label class="control-label col-xs-12 col-sm-3">IRB Approval:</label>
                             <div class="col-xs-12 col-sm-9 form-file-upload">
                                 <input type="file" restriction-field ngf-select ng-model="trialDetailView.irb_approval" name="irb_approval" ngf-max-size="10MB"
+                                       validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                        ng-required="trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.irbApprovalNum === 0)">
-                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.irb_approval)">
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.irb_approval) && trial_form.irb_approval.$error.required">
                                     IRB Approval is required
+                                </span>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.irb_approval) && trial_form.irb_approval.$error.validateFileType">
+                                    Please select a valid file. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                 </span>
                             </div>
                         </div>
@@ -1015,10 +1031,14 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group has-feedback" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.participating_sites)}">
                             <label class="control-label col-xs-12 col-sm-3">List of Participating Sites:</label>
                             <div class="col-xs -12 col-sm-9 form-file-upload">
-                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.participating_sites" name="participating_sites" ngf-max-size="10MB">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.participating_sites" name="participating_sites" ngf-max-size="10MB"
+                                       validate-file-type="{{trialDetailView.acceptedFileExtensions}}">
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.participating_sites) && trial_form.participating_sites.$error.validateFileType">
+                                    Please select a valid file. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
+                                </span>
                             </div>
                         </div>
 
@@ -1034,9 +1054,13 @@
                             <label class="control-label col-xs-12 col-sm-3">Informed Consent Document:</label>
                             <div class="col-xs-12 col-sm-9 form-file-upload">
                                 <input type="file" restriction-field ngf-select ng-model="trialDetailView.informed_consent" name="informed_consent" ngf-max-size="10MB"
+                                       validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                        ng-required="trialDetailView.isInterventional && (trialDetailView.curTrial.new || (!trialDetailView.curTrial.new && trialDetailView.informedConsentNum === 0))">
-                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.informed_consent)">
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.informed_consent) && trial_form.informed_consent.$error.required">
                                     Informed Consent Document is required for Interventional Trial
+                                </span>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.informed_consent) && trial_form.informed_consent.$error.validateFileType">
+                                    Please select a valid file. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                 </span>
                             </div>
                         </div>
@@ -1050,10 +1074,14 @@
                         </div>
 
                         <div ng-repeat="i in trialDetailView.getNumArr(trialDetailView.otherDocNum) track by $index">
-                            <div class="form-group">
+                            <div class="form-group has-feedback" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.other_documents{{$index}})}">
                                 <label class="control-label col-xs-12 col-sm-3">Other:</label>
                                 <div class="col-xs-12 col-sm-3 form-file-upload">
-                                    <input type="file" restriction-field ngf-select ng-model="trialDetailView.other_documents[$index]" name="other_documents" ngf-max-size="10MB">
+                                    <input type="file" restriction-field ngf-select ng-model="trialDetailView.other_documents[$index]" name="other_documents{{$index}}" ngf-max-size="10MB"
+                                           validate-file-type="{{trialDetailView.acceptedFileExtensions}}">
+                                    <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.other_documents{{$index}}) && trial_form.other_documents{{$index}}.$error.validateFileType">
+                                        Please select a valid file. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
+                                    </span>
                                 </div>
                             </div>
 
