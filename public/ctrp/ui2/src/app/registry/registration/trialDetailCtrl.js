@@ -80,6 +80,7 @@
         vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
         vm.acceptedFileExtensions = acceptedFileTypesObj.accepted_file_extensions;
         vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
+        vm.docUploadedCount = 0;
 
         vm.updateTrial = function(updateType) {
             if (vm.selectedLoArray.length > 0) {
@@ -186,13 +187,19 @@
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 if (response.server_response.status < 300) {
-                    uploadDocuments(response.id);
-                    if (vm.curTrial.is_draft) {
-                        $state.go('main.trialDetail', {trialId: response.id, editType: 'complete'}, {reload: true});
-                    } else {
-                        $state.go('main.trials', null, {reload: true});
-                    }
-                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                    var docCount = uploadDocuments(response.id);
+                    // Poll docUploadedCount every 100 ms until upload finishes
+                    var intvl = setInterval(function() {
+                        if (vm.docUploadedCount === docCount) {
+                            clearInterval(intvl);
+                            if (vm.curTrial.is_draft) {
+                                $state.go('main.trialDetail', {trialId: response.id, editType: 'complete'}, {reload: true});
+                            } else {
+                                $state.go('main.trials', null, {reload: true});
+                            }
+                            toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                        }
+                    }, 100);
                 }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
@@ -595,6 +602,11 @@
             vm.otherDocNum++;
         };
 
+        // Listen to file upload
+        $scope.$on(MESSAGES.DOCUMENT_UPLOADED, function() {
+            vm.docUploadedCount++;
+        });
+
         activate();
 
         /****************** implementations below ***************/
@@ -945,29 +957,41 @@
             }
         }
 
+        // Return the number of documents to be uploaded
         function uploadDocuments(trialId) {
+            var docCount = 0;
+
             if (vm.protocol_document) {
+                docCount++;
                 TrialService.uploadDocument(trialId, 'Protocol Document', '', vm.protocol_document);
             }
             if (vm.irb_approval) {
+                docCount++;
                 TrialService.uploadDocument(trialId, 'IRB Approval', '', vm.irb_approval);
             }
             if (vm.participating_sites) {
+                docCount++;
                 TrialService.uploadDocument(trialId, 'List of Participating Sites', '', vm.participating_sites);
             }
             if (vm.informed_consent) {
+                docCount++;
                 TrialService.uploadDocument(trialId, 'Informed Consent', '', vm.informed_consent);
             }
             for (var key in vm.other_documents) {
+                docCount++;
                 var subtype = (vm.other_document_subtypes && vm.other_document_subtypes[key]) ? vm.other_document_subtypes[key] : '';
                 TrialService.uploadDocument(trialId, 'Other Document', subtype, vm.other_documents[key]);
             }
             if (vm.change_memo) {
+                docCount++;
                 TrialService.uploadDocument(trialId, 'Change Memo Document', '', vm.change_memo);
             }
             if (vm.protocol_highlighted) {
+                docCount++;
                 TrialService.uploadDocument(trialId, 'Protocol Highlighted Document', '', vm.protocol_highlighted);
             }
+
+            return docCount;
         }
     }
 })();

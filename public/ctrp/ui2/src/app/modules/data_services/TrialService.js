@@ -847,6 +847,7 @@
                 //var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                 //$log.info('progress: ' + progressPercentage + '% ' + evt.config._file.name);
             }).success(function (data, status, headers, config) {
+                Common.broadcastMsg(MESSAGES.DOCUMENT_UPLOADED);
                 $log.info('file ' + config._file.name + ' uploaded.');
             }).error(function (data, status, headers, config) {
                 $log.info('file ' + config._file.name + ' upload error. error status: ' + status);
