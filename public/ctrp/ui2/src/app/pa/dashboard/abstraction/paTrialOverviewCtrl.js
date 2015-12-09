@@ -20,6 +20,7 @@
         vm.isPanelOpen = true;
         vm.togglePanelOpen = togglePanelOpen;
         vm.backToPATrialSearch = backToPATrialSearch;
+        vm.trialId = $stateParams.trialId;
         console.log('trial overview controller id: ', $scope.$id);
 
         activate();
@@ -36,11 +37,8 @@
          * @return {[type]} [description]
          */
         function getTrialDetail() {
-            var trialId = $stateParams.trialId || 1;
-            //save the current trialId for PA menus to use
-            PATrialService.setCurrentTrialId(trialId);
-            TrialService.getTrialById(trialId).then(function(data) {
-                console.log('received trial detail obj: ', data);
+            TrialService.getTrialById(vm.trialId).then(function(data) {
+                // console.log('received trial detail obj: ', data);
                 vm.trialDetailObj = data;
                 $scope.trialDetailObj = vm.trialDetailObj;
                 var firstName = vm.trialDetailObj.pi.fname || '';

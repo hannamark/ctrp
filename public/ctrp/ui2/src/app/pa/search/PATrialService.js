@@ -115,9 +115,7 @@
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
             checkOtherId: checkOtherId,
-            deleteTrial: deleteTrial,
-            getCurrentTrialId: getCurrentTrialId,
-            setCurrentTrialId: setCurrentTrialId
+            deleteTrial: deleteTrial
         };
 
         return services;
@@ -282,17 +280,6 @@
          */
         function deleteTrial(trialId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_TRIAL + trialId + '.json');
-        }
-
-
-        function getCurrentTrialId() {
-            _curTrialId = LocalCacheService.getCacheWithKey('curTrialId');
-            return _curTrialId;
-        }
-
-        function setCurrentTrialId(trialId) {
-            _curTrialId = trialId;
-            LocalCacheService.cacheItem('curTrialId', trialId);
         }
     }
 })();
