@@ -81,8 +81,12 @@
         vm.acceptedFileExtensions = acceptedFileTypesObj.accepted_file_extensions;
         vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
         vm.docUploadedCount = 0;
+        vm.disableBtn = false;
 
         vm.updateTrial = function(updateType) {
+            // Prevent multiple submissions
+            vm.disableBtn = true;
+
             if (vm.selectedLoArray.length > 0) {
                 vm.curTrial.lead_org_id = vm.selectedLoArray[0].id
             } else {
