@@ -14,7 +14,6 @@ Then I can view the Trial History Information type for Submissions for each subm
 |Submitter User ID|
 |Documents| 
 |Milestone|
-|Milestone Reason|
 
 Scenario Outline: #2 I can view Amendment Information for Submissions
 Given I am logged into the CTRP Protocol Abstraction Application
@@ -22,11 +21,21 @@ And I have selected a Trial
 When I am on the Trial History information for Submissions Screen
 Then I can view Amendment Information from the the Submission Type column
      
+      |Submission Type   |
       |Amendment Date    |
       |Amendment Number  |
       |Amendment Reason  |
 
-Scenario: #3 I can edit the Trial History 
+Scenario Outline: #3 I can view Milestone Information for Submissions
+Given I am logged into the CTRP Protocol Abstraction Application
+And I have selected a Trial
+When I am on the Trial History information for Submissions Screen
+Then I can view Milestone Information from the the Milestone column
+     
+    |Milestone|
+    |Milestone Reason|
+
+Scenario: #4 I can edit the Trial History 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
@@ -43,14 +52,14 @@ And I enter the Amendment Date
 And I select Save
 Then the Trial History will be associated with the trial
 
-Scenario: #4 I can view Trial History Information Documents 
+Scenario: #5 I can view Trial History Information Documents 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
 Then the trial documents are displayed
 And the documents that are attached for each submission are identified as original documents 
 
-Scenario: #5 I can view Trial History Information for Original Submission
+Scenario: #6 I can view Trial History Information for Original Submission
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
@@ -62,16 +71,16 @@ Then I can view the Trial History Information for Submissions for each submissio
 |Submitter User ID|
 |Documents| 
 |Milestone|
-|Milestone Reason|
 
-Scenario: #6 I can view each document
+
+Scenario: #7 I can view each document
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
 When I select a document
 Then the document will be opened
 
-Scenario: #7 I can view deleted documents
+Scenario: #8 I can view deleted documents
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
