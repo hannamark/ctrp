@@ -243,7 +243,7 @@ class Trial < ActiveRecord::Base
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       latest_submission = self.submissions.last
-      latest_submission.submission_num = latgest_sub_num.present? ? largest_sub_num + 1 : 1
+      latest_submission.submission_num = largest_sub_num.present? ? largest_sub_num + 1 : 1
 
       srd = Milestone.find_by_code('SRD')
       MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
