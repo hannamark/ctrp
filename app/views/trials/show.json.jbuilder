@@ -43,3 +43,20 @@ json.last_amendment_num @trial.milestone_wrappers.present? ?
 
 json.last_amendment_date @trial.milestone_wrappers.present? ?
     @trial.milestone_wrappers.last.submission.amendment_date : nil
+
+#extract NCT Trial ID, if present
+if @trial.other_ids.present?
+  other_ids = @trial.other_ids
+  nct_trial_id = nil
+
+  other_ids.each do |o|
+    name = o.protocol_id_origin.name
+    unless name.nil?
+      name.gsub!("Identifier", "")
+      if name.downcase.include? "ClinicalTrials".downcase
+        nct_trial_id = o.protocol_id
+      end
+    end
+  end
+  json.nct_trial_id nct_trial_id
+end

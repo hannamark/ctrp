@@ -5,7 +5,7 @@
                 <md-button class="md-icon-button" aria-label="showsubmenus">
                     <ng-md-icon icon="menu" ng-click="paTrialOverview.showSubMenus()"></ng-md-icon>
                 </md-button>
-                <h3><span>Trial Overview</span></h3>
+                <h3><span>Trial Overview (NCI Trial ID: {{paTrialOverview.trialDetailObj.nci_id}})</span></h3>
                 <span flex></span>
                 <md-button class="md-icon-button" aria-label="showcontent">
                         <ng-md-icon ng-if="paTrialOverview.isPanelOpen" icon="unfold_less" size="28" ng-click="paTrialOverview.togglePanelOpen()"></ng-md-icon>
@@ -34,9 +34,13 @@
                 <!-- column 1 -->
                 <div class="col-sm-4 col-xs-12">
                     <p>
+                        <strong>NCI Trial ID: </strong>
+                        <span>{{paTrialOverview.trialDetailObj.nci_id}}</span>
+                    </p>
+                    <p>
                         <!--same as ClinicalTrials.gov Id -->
                         <strong>NCT ID:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.other_ids[0].protocol_id}}</span>
+                        <span>{{paTrialOverview.trialDetailObj.nct_trial_id}}</span>
                     </p>
                     <p>
                         <strong>Lead Organization Trial ID:</strong>
@@ -48,10 +52,15 @@
                             {{paTrialOverview.trialDetailObj.lead_org.name}}
                         </a></span>
                     </p>
+
                     <p>
+                        <strong>Submission Source:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
+                    </p>
+                    <!-- <p>
                         <strong>Amendment Number:</strong>
                         <span>{{paTrialOverview.trialDetailObj.last_amendment_num}}</span>
-                    </p>
+                    </p> -->
                     <p>
                         <strong>Amendment Date:</strong>
                         <span>{{paTrialOverview.trialDetailObj.last_amendment_date | date: "dd-MMM-yyyy H:mm"}}</span>
@@ -90,7 +99,7 @@
 
                     <p>
                         <strong>Last Updated Date:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.updated_at | date: "dd-MMM-yyyy H:mm"}}</span>
+                        <span ng-hide="!paTrialOverview.trialDetailObj.updated_by">{{paTrialOverview.trialDetailObj.updated_at | date: "dd-MMM-yyyy H:mm"}}</span>
                     </p>
                 </div>
                 <!-- end of column 2-->
@@ -106,22 +115,18 @@
                         <strong>Current Trial Status Date:</strong>
                         <span>{{paTrialOverview.trialDetailObj.current_trial_status_date | date: "dd-MMM-yyyy H:mm"}}</span>
                     </p>
+
                     <p>
                         <strong>Processing Status:</strong>
                         <span>{{paTrialOverview.trialDetailObj.processing_status}}</span>
                     </p>
 
                     <p>
-                        <strong>Submission Source:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
+                        <strong>Checked Out for Admin. Use by: </strong>
                     </p>
 
                     <p>
-                        <strong>Checked Out for Admin by: </strong>
-                    </p>
-
-                    <p>
-                        <strong>Checked Out for Scientific by: </strong>
+                        <strong>Checked Out for Scientific. Use by: </strong>
                     </p>
                 </div>
                 <!-- end of column 3-->

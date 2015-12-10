@@ -50,10 +50,6 @@ module.exports = function() {
 
     this.Then(/^the Register Trial Protocol Identifiers section will not indicate any errors during Trial Review$/, function (callback) {
         projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('ClinicalTrials.gov Identifier', 'NCT65478912');
-     //   projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('CTEP Identifier', 'test45');
-      //  projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('DCP Identifier', 'test45');
-      //  projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('CCR Identifier', 'test45');
-      //  projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('Duplicate NCI Identifier', 'test45');
         projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('Obsolete ClinicalTrials.gov Identifier', 'NCT65478912');
         projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('Other Identifier', 'NCT65478912');
         browser.sleep(25).then(callback);
@@ -83,34 +79,67 @@ module.exports = function() {
 
 
     this.Given(/^I should be allowed to enter only one "([^"]*)"$/, function (arg1, callback) {
+
+        /* Add a Unique Clinical.gov id **/
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('NCT98745632');
         addTrial.clickAddTrialAddProtocolButton();
+
+        /* Add a second Clinical.gov id **/
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('NCT98745222');
         addTrial.clickAddTrialAddProtocolButton();
+
+        /*Verify second clinical.gov id is not allowed **/
         helper.alertDialog('accept', 'ClinicalTrials.gov Identifier already exists' );
         projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('ClinicalTrials.gov Identifier', 'NCT98745632');
+
+        /*Verify first clinical.gov id is added and second is not added **/
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT98745222')).to.become('false');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT98745632')).to.become('true');
         browser.sleep(25).then(callback);
+
     });
 
-    this.Given(/^I should be allowed to enter more than one "([^"]*)" with unique IDs$/, function (arg1, callback) {
+  /*  this.Given(/^I should be allowed to enter more than one "([^"]*)" with unique IDs$/, function (arg1, callback) {
             addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
             addTrial.setAddTrialProtocolID('NCT00798');
+        //addTrial.setAddTrialProtocolID('NCT00798');
             addTrial.clickAddTrialAddProtocolButton();
             addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
             addTrial.setAddTrialProtocolID('NCT0079822');
+        //addTrial.setAddTrialProtocolID('NCT0079822');
             addTrial.clickAddTrialAddProtocolButton();
             addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
             addTrial.setAddTrialProtocolID('NCT00798');
+       // addTrial.setAddTrialProtocolID('NCT00798');
             addTrial.clickAddTrialAddProtocolButton();
             helper.alertDialog('accept', arg1 + ' NCT00798 already exists' );
+       // helper.alertDialog('accept', arg1 + ' NCT00798 already exists' );
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT00798')).to.become('true');
+      //  expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT00798')).to.become('true');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT0079822')).to.become('true');
+     //   expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT0079822')).to.become('true');
+        browser.sleep(25).then(callback);
+    }); */
+
+
+    this.Given(/^I should be allowed to enter more than one "([^"]*)" with unique IDs$/, function (arg1, callback) {
+        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
+        addTrial.setAddTrialProtocolID('NCT55556666');
+        addTrial.clickAddTrialAddProtocolButton();
+        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
+        addTrial.setAddTrialProtocolID('NCT44442222');
+        addTrial.clickAddTrialAddProtocolButton();
+        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
+        addTrial.setAddTrialProtocolID('NCT55556666');
+        addTrial.clickAddTrialAddProtocolButton();
+        helper.alertDialog('accept', arg1 + ' NCT55556666 already exists' );
+        expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT55556666')).to.become('true');
+        expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT44442222')).to.become('true');
         browser.sleep(25).then(callback);
     });
+
 
     this.Given(/^I should check for valid "([^"]*)" format as NCT followed by (\d+) numeric characters (.*)$/, function (arg1, arg2, NCT00000000, callback) {
         /**** Check for 7 characters *****/

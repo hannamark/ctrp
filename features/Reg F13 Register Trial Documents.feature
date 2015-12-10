@@ -2,41 +2,43 @@
 Feature: Reg F13 Register Trial Documents
 
 As a CTRP User, I can attach various documents to a trial registration
-  @runthis
-  Scenario Outline: #1 I can attach Trial Related Documents to a trial registration
-    Given I have selected the option to register a trial <TrialType>
-    And I am on the Register Trial Related Documents screen
-    When I have selected a file to attach as the Protocol Document
-    And I have selected a file to attach as the IRB Approval
-    And I have selected a file to attach as the list of Participating Sites
-    And I have selected a file to attach as the Informed Consent Document
-    And I have selected one or more files to attach as Other file and entered the description of the file
-    Then the Register Trial Related Document for the trial registration will not indicate an errors during Trial Review
 
-      Examples:
-        |TrialType                |
-        |National                 |
-        |Externally Peer-Reviewed |
-        |Institutional            |
+Scenario Outline: #1 I can attach Trial Related Documents to a trial registration
+Given I have selected the option to register a trial <trialType>
+And I am on the Register Trial Related Documents screen
+When I have selected a file to attach as the Protocol Document
+And I have selected a file to attach as the IRB Approval
+And I have selected a file to attach as the list of Participating Sites
+And I have selected a file to attach as the Informed Consent Document
+And I have selected one or more files to attach as Other file and entered the description of the file
+Then the Register Trial Related Document for the trial registration will not indicate an errors during Trial Review
+Examples:
+      |trialType                |
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+
+
 
   Scenario Outline:#2 I must enter the Protocol Document and the IRB Approval
     Given I have selected the option to register a trial <TrialType>
     And I am on the Register Trial Related Documents screen
     When I have not attached a file as the Protocol Document
-    And I have not attached a file as the IRB Approval 
+    And I have not attached a file as the IRB Approval
     And I click on the Review Trial button
-    Then Trial Related Documents section will indicate an error 
-    
+    Then Trial Related Documents section will indicate an error
+
         |Protocol Document is required  |
         |IRB Approval is required       |
 
-    
-      Examples:
-        |TrialType                |
-        |National                 |
-        |Externally Peer-Reviewed |
-        |Institutional            |
- 
+
+
+  Examples:
+      |TrialType                |
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+
   Scenario Outline:#3 Informed consent rules
     Given I have selected the option to register a trial <TrialType>
     And I am on the Register Trial Related Documents screen

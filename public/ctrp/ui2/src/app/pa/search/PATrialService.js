@@ -22,8 +22,6 @@
             start: 1
         }; //initial Trial Search Parameters
 
-        var _curTrialId;
-
         var gridOptions = {
             enableColumnResizing: true,
             totalItems: null,
@@ -117,7 +115,9 @@
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
             checkOtherId: checkOtherId,
-            deleteTrial: deleteTrial
+            deleteTrial: deleteTrial,
+            setCurrentTrial: setCurrentTrial,
+            getCurrentTrialFromCache: getCurrentTrialFromCache
         };
 
         return services;
@@ -282,6 +282,22 @@
          */
         function deleteTrial(trialId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_TRIAL + trialId + '.json');
+        }
+
+        /**
+         * Cache the current trial object
+         * @param {JSON} trialDetailObj
+         */
+        function setCurrentTrial(trialDetailObj) {
+            LocalCacheService.cacheItem('current_trial_object', trialDetailObj);
+        }
+
+        /**
+         * get the currently cached trial detail object
+         * @return {JSON}
+         */
+        function getCurrentTrialFromCache() {
+            return LocalCacheService.getCacheWithKey('current_trial_object');
         }
     }
 })();

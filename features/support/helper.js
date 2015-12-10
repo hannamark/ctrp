@@ -109,6 +109,12 @@ var helper = function() {
         console.log(errorMessage + " was clicked");
     };
 
+    this.clickButtonNoHeaderIndex = function (button, index, errorMessage){
+       // this.wait(button, errorMessage);
+        button.get(index).click();
+        console.log(errorMessage + " was clicked");
+    };
+
     this.clickRadioButton = function (button, value, errorMessage){
         if (value === '0') {
             button.get(0).click();

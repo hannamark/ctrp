@@ -9,9 +9,9 @@
     .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
-        '$scope', 'TrialService', '$timeout', 'URL_CONFIGS'];
+        '$scope', 'TrialService', '$timeout', 'URL_CONFIGS', 'Common', 'MESSAGES'];
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
-            $scope, TrialService, $timeout, URL_CONFIGS) {
+            $scope, TrialService, $timeout, URL_CONFIGS, Common, MESSAGES) {
 
         var vm = this;
         vm.accordionOpen = true; //default open accordion
@@ -38,7 +38,8 @@
          */
         function getTrialDetail() {
             TrialService.getTrialById(vm.trialId).then(function(data) {
-                // console.log('received trial detail obj: ', data);
+                PATrialService.setCurrentTrial(data); //cache the trial data
+                Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
                 vm.trialDetailObj = data;
                 $scope.trialDetailObj = vm.trialDetailObj;
                 var firstName = vm.trialDetailObj.pi.fname || '';
