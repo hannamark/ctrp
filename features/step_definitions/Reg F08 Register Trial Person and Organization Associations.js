@@ -14,6 +14,8 @@ var projectFunctionsPage= require('../support/projectMethods');
 var trialMenuItemList = require('../support/trialCommonBar');
 var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
+var searchOrgPage = require('../support/ListOfOrganizationsPage');
+var searchPeoplePage = require('../support/ListOfPeoplePage');
 
 
 module.exports = function() {
@@ -21,6 +23,8 @@ module.exports = function() {
     var addTrial = new addTrialPage();
     var projectFunctions = new projectFunctionsPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
+    var searchOrg = new searchOrgPage();
+    var searchPeople = new searchPeoplePage();
 
     this.Given(/^I am on the Register Trial Lead Organization\/Principal Investigator screen$/, function (callback) {
         callback();
@@ -121,7 +125,7 @@ module.exports = function() {
     });
 
     this.Given(/^I have not selected the Responsible Party type as:$/, function (table, callback) {
-        addTrial.getVerifyAddTrialPhase('-Select a Responsible Party-');
+        addTrial.getVerifyAddTrialResponsibleParty('-Select a Responsible Party-');
         browser.sleep(25).then(callback);
     });
 
@@ -155,17 +159,50 @@ module.exports = function() {
     this.When(/^I select the Responsible Party type as the Principal Investigator$/, function (callback) {
         addTrial.clickAddTrialResetButton();
         projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0', typeOfTrial, '0');
-        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg0', typeOfTrial, '0');
-        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1',typeOfTrial, '1');
-        addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+        storePrincipalInv = cukePerson.then(function(value) {
+            console.log('This is the first person that is added' + value);
+            return value;
+        });
+        //projectFunctionsRegistry.createOrgforTrial('shiTrialOrg0', typeOfTrial, '0');
+        //storeLeadOrg = cukeOrganization.then(function(value) {
+        //    console.log('This is the first org that is added' + value);
+        //    return value;
+        //});
+        //projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1',typeOfTrial, '1');
+        //storeSponsorOrg = cukeOrganization.then(function(value) {
+        //    console.log('This is the second org that is added' + value);
+        //    return value;
+        //});
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            storePrincipalInv.then(function (value) {
+                    console.log('value of Person' + value);
+                    addTrial.clickAddTrialPersonSearchModel('0');
+                    searchPeople.setPersonFirstName(value);
+                    searchPeople.clickSearch();
+                    searchOrg.selectOrgModelItem();
+                    searchOrg.clickOrgModelConfirm();
+                });
+        });
+        //storePrincipalInv.then(function (value) {
+        //    console.log('value of Org' + value);
+        //    addTrial.clickAddTrialPersonSearchModel('0');
+        //    searchPeople.setPersonFirstName(value);
+        //    searchPeople.clickSearch();
+        //    searchOrg.selectOrgModelItem();
+        //    searchOrg.clickOrgModelConfirm();
+        //});
+                addTrial.selectAddTrialResponsibleParty('Principal Investigator');
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Principal Investigator selected will be recorded as the Responsible Party Investigator$/, function (callback) {
-        cukeOrganization.then(function (value) {
-            console.log('value of Org' + value);
-            addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
-        });
+        storePrincipalInv.then(function (value) {
+                console.log('value of Org' + value);
+                addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
+            });
         browser.sleep(25).then(callback);
     });
 
@@ -180,8 +217,11 @@ module.exports = function() {
     });
 
     this.Given(/^the Investigator Affiliation will be the Principal Investigator's organization affiliation$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        //storeLeadOrg.then(function (value) {
+        //    console.log('value of Org' + value);
+        //    addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
+        //});
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^the Investigation Affiliation can be changed$/, function (callback) {

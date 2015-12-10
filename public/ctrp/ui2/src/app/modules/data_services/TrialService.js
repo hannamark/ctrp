@@ -794,7 +794,7 @@
         }
 
         // Validation logic for Other Trial Identifier
-        function checkOtherId(protocolIdOriginId, protocolIdOriginName, protocolId, addedOtherIds) {
+        function checkOtherId(protocolIdOriginId, protocolIdOriginCode, protocolId, addedOtherIds) {
             var errorMsg = '';
 
             if (!protocolIdOriginId || !protocolId) {
@@ -803,20 +803,20 @@
             }
             for (var i = 0; i < addedOtherIds.length; i++) {
                 if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
-                    && protocolIdOriginName !== 'Other Identifier'
-                    && protocolIdOriginName !== 'Obsolete ClinicalTrials.gov Identifier') {
+                    && protocolIdOriginCode !== 'OTH'
+                    && protocolIdOriginCode !== 'ONCT') {
                     errorMsg = addedOtherIds[i].protocol_id_origin_name + ' already exists';
                     return errorMsg;
                 } else if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
                     && addedOtherIds[i].protocol_id === protocolId
-                    && (protocolIdOriginName === 'Other Identifier'
-                    || protocolIdOriginName === 'Obsolete ClinicalTrials.gov Identifier')) {
+                    && (protocolIdOriginCode === 'OTH'
+                    || protocolIdOriginCode === 'ONCT')) {
                     errorMsg = addedOtherIds[i].protocol_id_origin_name + ' ' + addedOtherIds[i].protocol_id + ' already exists';
                     return errorMsg;
                 }
             }
             // Validate the format of ClinicalTrials.gov Identifier: NCT00000000
-            if ((protocolIdOriginName === 'ClinicalTrials.gov Identifier' || protocolIdOriginName === 'Obsolete ClinicalTrials.gov Identifier') && !/^NCT\d{8}$/.test(protocolId)) {
+            if ((protocolIdOriginCode === 'NCT' || protocolIdOriginCode === 'ONCT') && !/^NCT\d{8}$/.test(protocolId)) {
                 errorMsg = 'The format must be "NCT" followed by 8 numeric characters';
                 return errorMsg;
             }
@@ -843,13 +843,14 @@
                 }
                 //file: file,
                 //fileFormDataName: 'trial_document[file]'
-            }).progress(function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                $log.info('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+            //}).progress(function (evt) {
+                //var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                //$log.info('progress: ' + progressPercentage + '% ' + evt.config._file.name);
             }).success(function (data, status, headers, config) {
-                $log.info('file ' + config.file.name + ' uploaded.');
+                Common.broadcastMsg(MESSAGES.DOCUMENT_UPLOADED);
+                $log.info('file ' + config._file.name + ' uploaded.');
             }).error(function (data, status, headers, config) {
-                $log.info('file ' + config.file.name + ' upload error. error status: ' + status);
+                $log.info('file ' + config._file.name + ' upload error. error status: ' + status);
             });
         }
 

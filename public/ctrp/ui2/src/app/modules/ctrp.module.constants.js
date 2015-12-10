@@ -77,7 +77,8 @@
             'STATES_AVAIL': 'states_or_provinces_available',
             'STATES_UNAVAIL': 'states_or_provinces_not_available',
             'PRIVILEGE_CHANGED': 'user_privilege_changed',
-            'CURATION_MODE_CHANGED': 'curation_mode_changed'
+            'CURATION_MODE_CHANGED': 'curation_mode_changed',
+            'DOCUMENT_UPLOADED': 'document_uploaded'
         })
         .constant('DMZ_UTILS', {
             'APP_VERSION': '/ctrp/dmzutils/app_version.json',
