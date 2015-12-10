@@ -27,11 +27,11 @@ var PoCommonBar = function(){
     this.signOut = element(by.css('a[ng-click="headerView.logOut()"]'));
     var helper = new helperFunctions();
     this.search_Page = element(by.css('div.row > h4'));
-    this.add_Org_Page = element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
+    this.add_Org_Page = element(by.binding('orgDetailView.formTitleLabel'));//element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
     this.edit_Org_page = element(by.css('h4[ng-if="!orgDetailView.curOrg.new"]'));
     this.add_Family_Page = element(by.css('h4[ng-if="familyDetailView.curFamily.new"]'));
     this.edit_Family_Page = element(by.css('h4[ng-if="!familyDetailView.curFamily.new"]'));
-    this.add_Person_Page = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
+    this.add_Person_Page = element(by.binding('personDetailView.formTitleLabel'));//element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.edit_Person_Page = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
     this.loginName = element(by.binding('headerView.username'));
     this.searchEmptyCriteria = element(by.binding('searchWarningMessage'));

@@ -24,6 +24,7 @@
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
         vm.formTitleLabel = 'Add Person'; //default form title
+        var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
 
 
         //update person (vm.curPerson)
@@ -152,26 +153,29 @@
             }
         }; //openCalendar
 
+        activate();
+
         // Swap context when different tab is selected
         $scope.$watch(function() {
             return vm.tabIndex;
         }, function(newValue, oldValue) {
             if (!vm.curPerson.new) {
-                PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
-                    vm.curPerson = response.data;
-                    vm.savedSelection = [];
-                    populatePoAffiliations();
-                    filterSourceContext();
-                    locateSourceStatus();
-                    createFormTitleLabel();
-                    vm.masterCopy= angular.copy(vm.curPerson);
-                }).catch(function (err) {
-                    console.log("Error in retrieving person during tab change.");
-                });
+                var contextKey = vm.curPerson.cluster[newValue].context;
+                if (!!personContextCache[contextKey]) {
+                    vm.curPerson = personContextCache[contextKey];
+                    switchSourceContext();
+                } else {
+                    PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
+                        personContextCache[contextKey] = angular.copy(response.data);
+                        vm.curPerson = personContextCache[contextKey];
+                        switchSourceContext();
+                    }).catch(function (err) {
+                        console.log("Error in retrieving person during tab change.");
+                    });
+                }
+
             }
         });
-
-        activate();
 
         /****************** implementations below ***************/
         function activate() {
@@ -216,6 +220,20 @@
         }
 
         /**
+         * functions to be triggered when source context is switched
+         *
+         * @return {[type]} [description]
+         */
+        function switchSourceContext() {
+            vm.savedSelection = [];
+            populatePoAffiliations();
+            filterSourceContext();
+            locateSourceStatus();
+            createFormTitleLabel();
+            vm.masterCopy= angular.copy(vm.curPerson);
+        }
+
+        /**
          * Watch for the global write mode changes in the header
          * @return {[type]}
          */
@@ -245,9 +263,12 @@
             var curSourceStatusObj = {name: '', id: ''};
 
             if (vm.curPerson.new) {
-                //default to Active
                 curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}) || curSourceStatusObj;
+                //only show active status for new Person
+                vm.sourceStatusArr = [curSourceStatusObj];
             } else {
+                //restore the list of source status for non-new person
+                vm.sourceStatusArr = sourceStatusObj;
                 curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) || curSourceStatusObj;
             }
 

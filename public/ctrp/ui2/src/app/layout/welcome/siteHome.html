@@ -8,8 +8,8 @@
         <div class="row" align="center">
             <!-- left column -->
             <div class="col-xs-12 col-sm-6">
-                <!-- summary block -->
-                <div class="pdsa-summary-block pdsa-summary-block-primary">
+                <!-- summary block
+                <div class="pdsa-summary-block pdsa-summary-block-success">
                     <div class="summary-background"  align="left">
                         <i class="glyphicon glyphicon-tint"></i>
                     </div>
@@ -17,74 +17,77 @@
 
                     </div>
                     <div class="summary-footer">
-                        <a ui-sref="main.organizations">Search Organizations</a><br />
-                        <a ui-sref="main.addOrganization">Add New Organization</a>
+                        <a ui-sref="main.organizations">Enter Organizations</a>
                         <i class="glyphicon glyphicon-chevron-right pull-right"></i>
                     </div>
                 </div>
-                <!--end of summary block -->
+                end of summary block -->
             </div>
             <!-- end of left column -->
 
             <!-- right column -->
             <div class="col-xs-12 col-sm-6">
-                <!-- summary block -->
+                <!-- summary block
                 <div class="pdsa-summary-block pdsa-summary-block-primary">
-                    <div class="summary-background" align="left">
+                    <div class="summary-background" align = left>
                         <i class="glyphicon glyphicon-tree-deciduous"></i>
                     </div>
                     <div class="summary-body">
 
                     </div>
                     <div class="pdsa-summary-block-primary summary-footer">
-                        <a ui-sref="main.people">Search Persons</a><br />
-                        <a ui-sref="main.addPerson">Add New Person</a>
-                        <i class="glyphicon glyphicon-chevron-right pull-right"></i>
+                        <a ui-sref="main.people">Enter Persons
+                            <i class="glyphicon glyphicon-chevron-right pull-right"></i></a>
                     </div>
                 </div>
-                <!--end of summary block -->
+                end of summary block -->
             </div>
             <!-- end of right column -->
 
         </div>
 
-        <!-- third row -->
+        <!-- second row -->
         <div class="row">
             <!-- left column -->
             <div class="col-xs-12 col-sm-6">
                 <!-- summary block -->
-                <div class="pdsa-summary-block pdsa-summary-block-danger">
-                    <div class="summary-background" align="left">
-                        <i class="glyphicon glyphicon-paperclip" align="left"></i>
+                <div class="pdsa-summary-block pdsa-summary-block-info">
+                    <div class="summary-background" align = left>
+                        <i class="glyphicon glyphicon-filter" align = left></i>
                     </div>
                     <div class="summary-body">
 
                     </div>
-                    <div class="pdsa-summary-block-primary summary-footer">
-                        <a ui-sref="main.paTrialSearch">Search Trials</a>
+                    <div class="summary-footer">
+                        <a ui-sref="main.trials">Search Trials</a>
+                        <i class="glyphicon glyphicon-chevron-right pull-right"></i>
+                    </div>
+                </div>
+                <!--end of summary block -->
+            </div>
+            <!-- end of left column -->
+            <!-- right column -->
+            <div class="col-xs-12 col-sm-6">
+                <!-- summary block -->
+                <div class="pdsa-summary-block pdsa-summary-block-info">
+                    <div class="summary-background" align = left>
+                        <i class="glyphicon glyphicon-filter" align = left></i>
+                    </div>
+                    <div class="summary-body">
+
+                    </div>
+                    <div class="summary-footer">
+                        <a ui-sref="main.addTrial({studySourceCode: 'NAT'})">Register National Trial</a><br />
+                        <a ui-sref="main.addTrial({studySourceCode: 'EPR'})">Register External Peer-Reviewed Trial</a><br />
+                        <a ui-sref="main.addTrial({studySourceCode: 'INS'})">Register Institutional Trial</a>
                         <i class="glyphicon glyphicon-chevron-right pull-right"></i>
                     </div>
                 </div>
                 <!-- end of summary block -->
             </div>
-            <!-- end of left column -->
-            <!-- right column -->
-            <div class="col-xs-12 col-sm-6">
-                <div class="pdsa-summary-block pdsa-summary-block-danger">
-                    <div class="summary-background" align="left">
-                        <i class="glyphicon glyphicon-paperclip" align="left"></i>
-                    </div>
-                    <div class="summary-body">
-
-                    </div>
-                    <div class="pdsa-summary-block-primary summary-footer">
-                        <a ui-sref="main.paTrialSearch">Abstraction Dashboards</a>
-                        <i class="glyphicon glyphicon-chevron-right pull-right"></i>
-                    </div>
-                </div>
-                <!-- end of right column -->
-            </div>
-            <!-- end of third row -->
+            <!-- end of right column -->
+        </div>
+        <!-- end of second row -->
     </div>
     <div class="col-md-1">
 

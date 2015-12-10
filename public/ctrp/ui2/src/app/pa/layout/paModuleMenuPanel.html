@@ -1,8 +1,14 @@
 <div class="sidebar" ng-controller="paModuleMenuPanel as paMenuPanel">
+    <!-- <span flex class="animated-item" ng-hide="paMenuPanel.nciTrialId==''"><strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong></span> -->
   <uib-accordion close-others="false">
-      <uib-accordion-group is-open="true">
+      <div class="panel panel-default animated-item" ng-hide="paMenuPanel.nciTrialId==''">
+          <div class="panel-heading" style="color: #fff">
+              <strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong>
+          </div>
+      </div>
+      <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialOverviewOpen">
           <uib-accordion-heading>
-              Trial Overview  <i class="pull-right glyphicon glyphicon-chevron-right"></i>
+              <strong>Trial Overview</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialOverviewOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialOverviewOpen}"></i>
           </uib-accordion-heading>
           <ul class="nav nav-pills nav-stacked">
               <li><a ui-sref="main.pa.trialOverview.trialIdentification">Trial Identification</a></li>
@@ -15,9 +21,9 @@
               <li><a ui-sref="main.pa.trialOverview.jsonRawData">Raw JSON Data</a></li>
           </ul>
       </uib-accordion-group>
-      <uib-accordion-group is-open="true">
+      <uib-accordion-group is-open="paMenuPanel.menuAccordions.adminDataOpen">
           <uib-accordion-heading>
-              Admin Data  <i class="pull-right glyphicon glyphicon-chevron-right"></i>
+              <strong>Admin Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.adminDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.adminDataOpen}"></i>
           </uib-accordion-heading>
           <ul class="nav nav-pills nav-stacked">
               <li><a href="">General Trial Details</a></li>
@@ -29,14 +35,16 @@
               <li><a href="">Participating Sites</a></li>
               <li><a href="">Collaborators</a></li>
               <li><a href="">Trial Related Documents</a></li>
+              <li><a href="">NCI specific information</a></li>
           </ul>
       </uib-accordion-group>
-      <uib-accordion-group is-open="true">
+      <uib-accordion-group is-open="paMenuPanel.menuAccordions.scientificDataOpen">
           <uib-accordion-heading>
-              Scientific Data  <i class="pull-right glyphicon glyphicon-chevron-right"></i>
+              <strong>Scientific Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.scientificDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.scientificDataOpen}"></i>
           </uib-accordion-heading>
           <ul class="nav nav-pills nav-stacked">
               <li><a href="">Trial Design</a></li>
+              <li><a href="">Trial Description</a></li>
               <li><a href="">Design Details</a></li>
               <li><a href="">Outcome Measures</a></li>
               <li><a href="">Eligibility Criteria</a></li>
@@ -49,9 +57,9 @@
               <li><a href="">Sub-Groups</a></li>
           </ul>
       </uib-accordion-group>
-      <uib-accordion-group>
+      <uib-accordion-group is-open="paMenuPanel.menuAccordions.completeOpen">
           <uib-accordion-heading>
-              Complete  <i class="pull-right glyphicon glyphicon-chevron-right"></i>
+              <strong>Complete</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.completeOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.completeOpen}"></i>
           </uib-accordion-heading>
           <!--
           <ul class="nav nav-pills nav-stacked">

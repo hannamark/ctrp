@@ -20,22 +20,18 @@
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-        vm.curOrg = orgDetailObj || {name: "", country: "", state: "", source_status_id: ""}; //orgDetailObj.data;
+        vm.curOrg = orgDetailObj || {name: '', country: '', state: '', source_status_id: ''}; //orgDetailObj.data;
         vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
         //vm.curSourceContextName = '';
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.formTitleLabel = 'Add Organization'; //default form title
-
-
         vm.alias = '';
         vm.curationReady = false;
         vm.showPhoneWarning = false;
+        var orgContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
 
-        //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
-
-        //update organization (vm.curOrg)
         vm.updateOrg = function () {
 
             // Construct nested attributes
@@ -114,27 +110,29 @@
             }
         };// toggleSelection
 
+        activate();
+
+
         // Swap context when different tab is selected
         $scope.$watch(function() {
             return vm.tabIndex;
         }, function(newValue, oldValue) {
             if (!vm.curOrg.new) {
-                OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function (response) {
-                    vm.curOrg = response;
-                    listenToStatesProvinces();
-                    vm.masterCopy= angular.copy(vm.curOrg);
-                    vm.addedNameAliases = [];
-                    appendNameAliases();
-                    filterSourceContext();
-                    locateSourceStatus();
-                    createFormTitleLabel();
-                }).catch(function (err) {
-                    console.log("Error in retrieving organization during tab change.");
-                });
+                var contextKey = vm.curOrg.cluster[newValue].context;
+                if (!!orgContextCache[contextKey]) {
+                    vm.curOrg = orgContextCache[contextKey];
+                    switchSourceContext();
+                } else {
+                    OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function(response) {
+                        orgContextCache[contextKey] = angular.copy(response);
+                        vm.curOrg = orgContextCache[contextKey]
+                        switchSourceContext()
+                    }).catch(function (err) {
+                        console.log("Error in retrieving organization during tab change.");
+                    });
+                }
             }
         });
-
-        activate();
 
 
         /****************** implementations below ***************/
@@ -168,6 +166,21 @@
         }
 
         /**
+         * For switching the source context when the context tab is tapped
+         *
+         * @return {[type]} [description]
+         */
+        function switchSourceContext() {
+            listenToStatesProvinces();
+            vm.masterCopy= angular.copy(vm.curOrg);
+            vm.addedNameAliases = [];
+            appendNameAliases();
+            filterSourceContext();
+            locateSourceStatus();
+            createFormTitleLabel();
+        }
+
+        /**
          * Watch for the global write mode changes in the header
          * @return {[type]}
          */
@@ -197,10 +210,11 @@
             var curSourceStatusObj = {name: '', id: ''};
 
             if (vm.curOrg.new) {
-                //default to Active
-                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}) || curSourceStatusObj;
+                vm.sourceStatusArr = [curSourceStatusObj]; // only show the active status for new org
             } else {
-                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id});
+                vm.sourceStatusArr = sourceStatusObj; //restore the list of source statuses if now new
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id}) || curSourceStatusObj;
             }
             vm.curSourceStatusName = curSourceStatusObj.name;
             vm.curOrg.source_status_id = curSourceStatusObj.id;

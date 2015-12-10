@@ -40,12 +40,16 @@ var registerTrial = function(){
     this.addTrialAccrualDiseaseTerminologyList = element(by.model('trialDetailView.curTrial.accrual_disease_term_id')).all(by.css('option[label]'));
 
     /** Lead Organization/Principal Investigator **/
-    this.addTrialLeadOrganization = element();
-    this.addTrialPrincipalInvestigator = element();
+    this.addTrialLeadOrganization = element(by.css('input[name="lead_org_name"]'));
+    this.addTrialPrincipalInvestigator = element(by.css('input[name="pi_name1"]'));
 
     /** Sponsor/Responsible Party **/
-    this.addTrialSponsor = element();
+    this.addTrialSponsor = element(by.css('input[name="sponsor_name"]'));
     this.addTrialResponsibleParty = element(by.model('trialDetailView.curTrial.responsible_party_id'));
+    this.addTrialResponsiblePartyList = element(by.model('trialDetailView.curTrial.responsible_party_id')).all(by.css('option[label]'));
+    this.addTrialInvestigator = element(by.css('input[name="investigator_name1"]'));
+    this.addTrialInvestigatorTitle = element(by.model('trialDetailView.curTrial.investigator_title'));
+    this.addTrialInvestigatorAffiliation = element(by.css('input[name="inv_aff_name1"]'));
 
     /** Data Table 4 Information **/
     this.addTrialDataTable4FundingSource = element();
@@ -94,6 +98,12 @@ var registerTrial = function(){
     this.addTrialResetButton = element(by.css('button[ng-click="trialDetailView.reload()"]'));
     this.addTrialReviewButton = element(by.css('button[type="submit"]'));
     this.addTrialSaveDraftButton = element(by.css('button[ng-click="trialDetailView.saveDraft()"]'));
+
+    /**Org Search Model**/
+    this.addTrialOrgSearchModel = element.all(by.id('org_search_modal'));//.get(2).click()
+
+    /**Person Search Model**/
+    this.addTrialPersonSearchModel = element.all(by.id('person_search_modal'));
 
     var helper = new helperFunctions();
 
@@ -203,11 +213,44 @@ var registerTrial = function(){
         helper.getVerifyListValue(this.addTrialAccrualDiseaseTerminology,trialAccrualDiseaseTerminology,"Add Trial by Accrual Disease Terminology field");
     };
 
+    /********** Lead Organization/Principal Investigator **********/
+
+    this.getVerifyAddTrialLeadOrganization = function(trialLeadOrganization){
+        helper.getVerifyValue(this.addTrialLeadOrganization,trialLeadOrganization,"Add Trial by Lead Organization field");
+    };
+
+    this.getVerifyAddTrialPrincipalInvestigator = function(principalInvestigator){
+        helper.getVerifyValue(this.addTrialPrincipalInvestigator,principalInvestigator,"Add Trial by Principal Investigator field");
+    };
 
     /********** Sponsor/Responsible Party **********/
 
+    this.getVerifyAddTrialSponsor = function(trialSponsor){
+        helper.getVerifyValue(this.addTrialSponsor,trialSponsor,"Add Trial by Sponsor field");
+    };
+
     this.selectAddTrialResponsibleParty = function(trialResponsibleParty)  {
-        helper.selectValueFromList(this.addTrialResponsibleParty,trialResponsibleParty,"Add Trial by Reponsible Party field");
+        helper.selectValueFromList(this.addTrialResponsibleParty,trialResponsibleParty,"Add Trial by Responsible Party field");
+    };
+
+    this.getVerifyAddTrialResponsibleParty = function(trialResponsibleParty)  {
+        helper.getVerifyListValue(this.addTrialResponsibleParty,trialResponsibleParty,"Add Trial by Responsible Party field");
+    };
+
+    this.getVerifyAddTrialInvestigator = function(trialInvestigator){
+        helper.getVerifyValue(this.addTrialInvestigator,trialInvestigator,"Add Trial by Investigator field");
+    };
+
+    this.setAddTrialInvestigatorTitle = function(trialInvestigatorTitle)  {
+        helper.setValue(this.addTrialInvestigatorTitle ,trialInvestigatorTitle,"Add Trial by Investigator Title field");
+    };
+
+    this.getVerifyAddTrialInvestigatorTitle= function(trialInvestigatorTitle)  {
+        helper.getVerifyValue(this.addTrialInvestigatorTitle,trialInvestigatorTitle,"Add Trial by Investigator Title field");
+    };
+
+    this.getVerifyAddTrialInvestigatorAffiliation = function(trialInvestigatorAffiliation){
+        helper.getVerifyValue(this.addTrialInvestigatorAffiliation,trialInvestigatorAffiliation,"Add Trial by Investigator Affiliation field");
     };
 
     /**********  Data Table 4 Information **********/
@@ -350,6 +393,18 @@ var registerTrial = function(){
 
     this.clickAddTrialSaveDraftButton = function(){
         helper.clickButton(this.addTrialSaveDraftButton,"Add Trial Save Draft button");
+    };
+
+    /*************** Org Model Search **************/
+
+    this.clickAddTrialOrgSearchModel = function(index){
+        helper.clickButtonNoHeaderIndex(this.addTrialOrgSearchModel,index, "Organization Model Search button");
+    };
+
+    /*************** Person Model Search **************/
+
+    this.clickAddTrialPersonSearchModel = function(index){
+        helper.clickButtonNoHeaderIndex(this.addTrialPersonSearchModel,index, "Person Model Search button");
     };
 
 };
