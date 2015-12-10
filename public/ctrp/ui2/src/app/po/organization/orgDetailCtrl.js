@@ -21,6 +21,14 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: '', country: '', state: '', source_status_id: ''}; //orgDetailObj.data;
+        var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
+        var ctep_index = Common.indexOfObjectInJsonArray(vm.curOrg.cluster, 'context', 'CTEP');
+        var trial_submitter_role = 'trial-submitter';
+        if(user_role.toUpperCase() == trial_submitter_role.toUpperCase()) {
+
+             if (ctep_index >=0)   vm.curOrg.cluster.splice(ctep_index,1);
+        }
+
         vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
         //vm.curSourceContextName = '';

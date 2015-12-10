@@ -202,7 +202,6 @@ class Trial < ActiveRecord::Base
   validates :lead_org, presence: true, if: 'is_draft == false'
   validates :pi, presence: true, if: 'is_draft == false'
   validates :sponsor, presence: true, if: 'is_draft == false'
-  validates :responsible_party, presence: true, if: 'is_draft == false'
   validates :grant_question, presence: true, if: 'is_draft == false'
   validates :ind_ide_question, presence: true, if: 'is_draft == false'
   validates :start_date, presence: true, if: 'is_draft == false'
@@ -211,9 +210,6 @@ class Trial < ActiveRecord::Base
   validates :primary_comp_date_qual, presence: true, if: 'is_draft == false'
   validates :comp_date, presence: true, if: 'is_draft == false'
   validates :comp_date_qual, presence: true, if: 'is_draft == false'
-  validates :intervention_indicator, presence: true, if: 'is_draft == false'
-  validates :sec801_indicator, presence: true, if: 'is_draft == false'
-  validates :data_monitor_indicator, presence: true, if: 'is_draft == false'
 
   before_save :generate_status
   before_create :save_history
@@ -247,7 +243,7 @@ class Trial < ActiveRecord::Base
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       latest_submission = self.submissions.last
-      latest_submission.submission_num = largest_sub_num + 1
+      latest_submission.submission_num = largest_sub_num.present? ? largest_sub_num + 1 : 1
 
       srd = Milestone.find_by_code('SRD')
       MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
