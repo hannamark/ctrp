@@ -31,8 +31,8 @@ AddPersonPage = function () {
     this.addPersonRemoveAllAffiliatedOrg = element(by.css('button[title="Remove all"]'));
     this.personSaveButton = element(by.id('save_btn'));//element(by.css('button[type="submit"]')); //element(by.css('input[value="Save"]'));
     this.personResetButton = element(by.css('#reset_btn'));
-    this.addPersonHeader = element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
-    this.editPersonHeader = element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
+    this.addPersonHeader = element(by.binding('personDetailView.formTitleLabel'));//element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
+    this.editPersonHeader = element(by.binding('personDetailView.formTitleLabel'));//element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
     this.personLastUpdatedBy = element(by.binding('personDetailView.curPerson.updated_by'));
     this.personCreatedBy = element(by.binding('personDetailView.curPerson.created_by'));
 

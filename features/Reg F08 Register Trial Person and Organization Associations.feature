@@ -14,7 +14,7 @@
   Examples:
   
   
-      |<trialType>              |
+      |trialType              |
       |National                 |
       |Externally Peer-Reviewed  |
       |Institutional            |
