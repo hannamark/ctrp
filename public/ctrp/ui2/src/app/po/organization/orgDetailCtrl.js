@@ -110,31 +110,29 @@
             }
         };// toggleSelection
 
+        activate();
+
+
         // Swap context when different tab is selected
         $scope.$watch(function() {
             return vm.tabIndex;
         }, function(newValue, oldValue) {
-            console.log('curOrg.cluster: ', vm.curOrg.cluster);
-            console.log('cluter value: ', newValue);
             if (!vm.curOrg.new) {
                 var contextKey = vm.curOrg.cluster[newValue].context;
-                console.log('contextKey: ', contextKey);
-                if (orgContextCache[contextKey] != null) {
+                if (!!orgContextCache[contextKey]) {
                     vm.curOrg = angular.copy(orgContextCache[contextKey]);
-                    switchContext();
+                    switchSourceContext();
                 } else {
                     OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function(response) {
                         orgContextCache[contextKey] = angular.copy(response);
                         vm.curOrg = response;
-                        switchContext()
+                        switchSourceContext()
                     }).catch(function (err) {
                         console.log("Error in retrieving organization during tab change.");
                     });
                 }
             }
         });
-
-        activate();
 
 
         /****************** implementations below ***************/
@@ -172,7 +170,7 @@
          *
          * @return {[type]} [description]
          */
-        function switchContext() {
+        function switchSourceContext() {
             listenToStatesProvinces();
             vm.masterCopy= angular.copy(vm.curOrg);
             vm.addedNameAliases = [];

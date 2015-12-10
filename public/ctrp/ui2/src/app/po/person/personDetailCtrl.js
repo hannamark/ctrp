@@ -24,6 +24,7 @@
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
         vm.formTitleLabel = 'Add Person'; //default form title
+        var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
 
 
         //update person (vm.curPerson)
@@ -152,26 +153,30 @@
             }
         }; //openCalendar
 
+        activate();
+
         // Swap context when different tab is selected
         $scope.$watch(function() {
             return vm.tabIndex;
         }, function(newValue, oldValue) {
             if (!vm.curPerson.new) {
-                PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
-                    vm.curPerson = response.data;
-                    vm.savedSelection = [];
-                    populatePoAffiliations();
-                    filterSourceContext();
-                    locateSourceStatus();
-                    createFormTitleLabel();
-                    vm.masterCopy= angular.copy(vm.curPerson);
-                }).catch(function (err) {
-                    console.log("Error in retrieving person during tab change.");
-                });
+                var contextKey = vm.curPerson.cluster[newValue].context;
+                if (!!personContextCache[contextKey]) {
+                    vm.curPerson = angular.copy(personContextCache[contextKey]);
+                    switchSourceContext();
+                } else {
+                    PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
+                        vm.curPerson = response.data;
+                        personContextCache[contextKey] = angular.copy(response.data);
+                        vm.savedSelection = [];
+                        switchSourceContext();
+                    }).catch(function (err) {
+                        console.log("Error in retrieving person during tab change.");
+                    });
+                }
+
             }
         });
-
-        activate();
 
         /****************** implementations below ***************/
         function activate() {
@@ -213,6 +218,19 @@
                     }
                 }
             }
+        }
+
+        /**
+         * functions to be triggered when source context is switched
+         *
+         * @return {[type]} [description]
+         */
+        function switchSourceContext() {
+            populatePoAffiliations();
+            filterSourceContext();
+            locateSourceStatus();
+            createFormTitleLabel();
+            vm.masterCopy= angular.copy(vm.curPerson);
         }
 
         /**
