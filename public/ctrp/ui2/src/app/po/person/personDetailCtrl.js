@@ -162,13 +162,12 @@
             if (!vm.curPerson.new) {
                 var contextKey = vm.curPerson.cluster[newValue].context;
                 if (!!personContextCache[contextKey]) {
-                    vm.curPerson = angular.copy(personContextCache[contextKey]);
+                    vm.curPerson = personContextCache[contextKey];
                     switchSourceContext();
                 } else {
                     PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
-                        vm.curPerson = response.data;
                         personContextCache[contextKey] = angular.copy(response.data);
-                        vm.savedSelection = [];
+                        vm.curPerson = personContextCache[contextKey];
                         switchSourceContext();
                     }).catch(function (err) {
                         console.log("Error in retrieving person during tab change.");
@@ -226,6 +225,7 @@
          * @return {[type]} [description]
          */
         function switchSourceContext() {
+            vm.savedSelection = [];
             populatePoAffiliations();
             filterSourceContext();
             locateSourceStatus();
