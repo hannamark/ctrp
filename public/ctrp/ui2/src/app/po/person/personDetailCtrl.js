@@ -16,6 +16,13 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
+        var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
+        var ctep_index = Common.indexOfObjectInJsonArray(vm.curPerson.cluster, 'context', 'CTEP');
+        var trial_submitter_role = 'trial-submitter';
+        if(user_role.toUpperCase() == trial_submitter_role.toUpperCase()) {
+
+            if (ctep_index >=0)   vm.curPerson.cluster.splice(ctep_index,1);
+        }
         vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
@@ -54,7 +61,7 @@
                 console.log('response: ' + JSON.stringify(response));
                 //vm.savedSelection = [];
                 if (newPerson.new) {
-                    vm.clearForm();
+                    //vm.clearForm();
                     $state.go('main.personDetail', {personId: response.data.id});
                 } else {
                     vm.curPerson.updated_by = response.data.updated_by;

@@ -74,6 +74,9 @@
                     enableSorting: true,
                     minWidth: '80',
                     width: '*'},
+
+                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '80', width: '*'},
+
                 {
                     name: 'name', enableSorting: true, minWidth: '100', width: '*',
                     //this does not work for .id
@@ -83,22 +86,18 @@
                     ' {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
 
                 },
-                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '80', width: '*'},
+                {name: 'source_status', displayName: 'Source Status',
+                    enableSorting: true, minWidth: '75', width: '*'},
                 {name: 'source_context', displayName: 'Source Context',
                     enableSorting: true, minWidth: '75', width: '*'},
                 {name: 'source_id', displayName: 'Source ID',
                     enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'source_status', displayName: 'Source Status',
-                    enableSorting: true, minWidth: '75', width: '*'},
+
                 {name: 'aff_families_names', displayName: 'Families',
                     enableSorting: true, minWidth: '100', width: '*',height: '50%',
                     cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names"' +
                     ' title="{{fam.Name}}">{{fam.Name}}</div>'
                 },
-                {name: 'city', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'state_province', displayName: 'State', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'country', displayName: 'Country', enableSorting: true, minWidth: '100', width:'*'},
-                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, minWidth: '100', width:'*'},
                 {name: 'phone', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'email', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
@@ -106,9 +105,15 @@
                 },
                 {name: 'updated_by', displayName: 'Last Updated By',
                     enableSorting: true, minWidth: '150', width: '*'},
-                {name: 'updated_at', displayName: 'Last Updated At',
+                {name: 'updated_at', displayName: 'Last Updated Date',
                     type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"',
-                    enableSorting: true, minWidth: '160', width: '*'}
+                    enableSorting: true, minWidth: '160', width: '*'},
+                {name: 'city', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'state_province', displayName: 'State', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'country', displayName: 'Country', enableSorting: true, minWidth: '100', width:'*'},
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, minWidth: '100', width:'*'}
+
+
             ]
         };
 
