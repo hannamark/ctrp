@@ -54,7 +54,7 @@
                 console.log('response: ' + JSON.stringify(response));
                 //vm.savedSelection = [];
                 if (newPerson.new) {
-                    vm.clearForm();
+                    //vm.clearForm();
                     $state.go('main.personDetail', {personId: response.data.id});
                 } else {
                     vm.curPerson.updated_by = response.data.updated_by;
