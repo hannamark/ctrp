@@ -70,7 +70,7 @@
                     visible: false
                 },
                 {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', minWidth: '80', width: '*'},
-                {name: 'prefix', enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'ctep_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '80', width: '*'},
                 {name: 'fname', displayName: 'First', enableSorting: true,  minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
@@ -83,11 +83,11 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'suffix', enableSorting: true, minWidth: '75', width: '*'},
+
                 {name: 'source_context', displayName: 'Source Context',
                     enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '65', width: '*'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, minWidth: '65', width: '*'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '65', width: '*'},
                 {name: 'email', enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -106,7 +106,9 @@
                     type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"',
                     enableSorting: true, minWidth: '150', width: '*'},
                 {name: 'updated_by', displayName: 'Last Updated By',
-                    enableSorting: true, minWidth: '150', width: '*'}
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'prefix', enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'suffix', enableSorting: true, minWidth: '75', width: '*'}
             ]
         };
 
