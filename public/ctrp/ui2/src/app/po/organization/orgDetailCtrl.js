@@ -20,22 +20,18 @@
         vm.states = [];
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-        vm.curOrg = orgDetailObj || {name: "", country: "", state: "", source_status_id: ""}; //orgDetailObj.data;
+        vm.curOrg = orgDetailObj || {name: '', country: '', state: '', source_status_id: ''}; //orgDetailObj.data;
         vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
         //vm.curSourceContextName = '';
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.formTitleLabel = 'Add Organization'; //default form title
-
-
         vm.alias = '';
         vm.curationReady = false;
         vm.showPhoneWarning = false;
+        var orgContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
 
-        //console.log('vm.curOrg: ' + JSON.stringify(vm.curOrg));
-
-        //update organization (vm.curOrg)
         vm.updateOrg = function () {
 
             // Construct nested attributes
@@ -118,9 +114,18 @@
         $scope.$watch(function() {
             return vm.tabIndex;
         }, function(newValue, oldValue) {
+            console.log('curOrg.cluster: ', vm.curOrg.cluster);
+            console.log('cluter value: ', newValue);
             if (!vm.curOrg.new) {
                 OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function (response) {
-                    vm.curOrg = response;
+                    var contextKey = vm.curOrg.cluster[newValue].context;
+                    if (orgContextCache.contextKey != null) {
+                        vm.curOrg = angular.copy(orgContextCache.contextKey);
+                    } else {
+                        orgContextCache.contextKey = response;
+                        vm.curOrg = response;
+                    }
+                    // vm.curOrg = response;
                     listenToStatesProvinces();
                     vm.masterCopy= angular.copy(vm.curOrg);
                     vm.addedNameAliases = [];
@@ -197,11 +202,11 @@
             var curSourceStatusObj = {name: '', id: ''};
 
             if (vm.curOrg.new) {
-                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}) || curSourceStatusObj;
                 vm.sourceStatusArr = [curSourceStatusObj]; // only show the active status for new org
             } else {
                 vm.sourceStatusArr = sourceStatusObj; //restore the list of source statuses if now new
-                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id});
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curOrg.source_status_id}) || curSourceStatusObj;
             }
             vm.curSourceStatusName = curSourceStatusObj.name;
             vm.curOrg.source_status_id = curSourceStatusObj.id;
