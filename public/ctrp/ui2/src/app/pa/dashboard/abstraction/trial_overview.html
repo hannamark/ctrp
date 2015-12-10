@@ -99,7 +99,7 @@
 
                     <p>
                         <strong>Last Updated Date:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.updated_at | date: "dd-MMM-yyyy H:mm"}}</span>
+                        <span ng-hide="!paTrialOverview.trialDetailObj.updated_by">{{paTrialOverview.trialDetailObj.updated_at | date: "dd-MMM-yyyy H:mm"}}</span>
                     </p>
                 </div>
                 <!-- end of column 2-->
