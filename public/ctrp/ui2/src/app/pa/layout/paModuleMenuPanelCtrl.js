@@ -13,6 +13,12 @@
 
     function paModuleMenuPanel($scope) {
         var vm = this;
+        vm.menuAccordions = {
+            "trialOverviewOpen": true,
+            "adminDataOpen": true,
+            "scientificDataOpen": true,
+            "completeOpen": true
+        };
 
         activate();
 
