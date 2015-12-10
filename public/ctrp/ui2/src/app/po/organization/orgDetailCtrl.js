@@ -21,7 +21,6 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: '', country: '', state: '', source_status_id: ''}; //orgDetailObj.data;
-        console.log("hey ----- "+JSON.stringify(vm.curOrg.cluster));
         var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
         var ctep_index = Common.indexOfObjectInJsonArray(vm.curOrg.cluster, 'context', 'CTEP');
         var trial_submitter_role = 'trial-submitter';
