@@ -117,25 +117,20 @@
             console.log('curOrg.cluster: ', vm.curOrg.cluster);
             console.log('cluter value: ', newValue);
             if (!vm.curOrg.new) {
-                OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function (response) {
-                    var contextKey = vm.curOrg.cluster[newValue].context;
-                    if (orgContextCache.contextKey != null) {
-                        vm.curOrg = angular.copy(orgContextCache.contextKey);
-                    } else {
-                        orgContextCache.contextKey = response;
+                var contextKey = vm.curOrg.cluster[newValue].context;
+                console.log('contextKey: ', contextKey);
+                if (orgContextCache[contextKey] != null) {
+                    vm.curOrg = angular.copy(orgContextCache[contextKey]);
+                    switchContext();
+                } else {
+                    OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function(response) {
+                        orgContextCache[contextKey] = angular.copy(response);
                         vm.curOrg = response;
-                    }
-                    // vm.curOrg = response;
-                    listenToStatesProvinces();
-                    vm.masterCopy= angular.copy(vm.curOrg);
-                    vm.addedNameAliases = [];
-                    appendNameAliases();
-                    filterSourceContext();
-                    locateSourceStatus();
-                    createFormTitleLabel();
-                }).catch(function (err) {
-                    console.log("Error in retrieving organization during tab change.");
-                });
+                        switchContext()
+                    }).catch(function (err) {
+                        console.log("Error in retrieving organization during tab change.");
+                    });
+                }
             }
         });
 
@@ -170,6 +165,21 @@
                 name_alias._destroy = false;
                 vm.addedNameAliases.push(name_alias);
             }
+        }
+
+        /**
+         * For switching the source context when the context tab is tapped
+         *
+         * @return {[type]} [description]
+         */
+        function switchContext() {
+            listenToStatesProvinces();
+            vm.masterCopy= angular.copy(vm.curOrg);
+            vm.addedNameAliases = [];
+            appendNameAliases();
+            filterSourceContext();
+            locateSourceStatus();
+            createFormTitleLabel();
         }
 
         /**
