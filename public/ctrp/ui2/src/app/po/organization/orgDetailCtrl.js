@@ -48,7 +48,7 @@
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
                 if (vm.curOrg.new) {
-                    vm.clearForm();
+                    //vm.clearForm();
                     $state.go('main.orgDetail', {orgId: response.id});
                 } else {
                     // vm.curOrg = response;

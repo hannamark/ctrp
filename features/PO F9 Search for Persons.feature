@@ -58,3 +58,23 @@ Scenario: As a Curator, I will get a message if searched with no parameters
   And I am on the search persons screen
   When I searched without providing any search parameters
   Then I should get message as "At least one selection value must be entered prior to running the search"
+  
+    Scenario: As a curator, when I search persons I will enter "*" as a wild card when Exact Search is selected
+    Given I want to search for a person using a wild card
+    And I am logged in to the CTRP PO application 
+    And Exact Search is selected
+    And I am on Search Persons screen
+     When I enter "*" in a search field
+     Then People Search Results will display all persons found
+     
+     
+       Scenario: As a Curator, when I search, a wild card search will be the default when Exact Search is not selected
+    Given I want to search for persons using wild card
+    And I am logged in to CTRP PO Application
+    And Exact Search is NOT selected
+    And I am on a Search Persons screen 
+     When I enter text in a search field 
+     Then People Search Results will display wild card search
+
+
+

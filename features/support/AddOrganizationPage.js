@@ -39,8 +39,8 @@ AddOrganizationsPage = function(){
     this.deleteNowButton = element(by.buttonText('Delete Now'));
     this.orgLastUpdatedBy = element(by.binding('orgDetailView.curOrg.updated_by'));
     this.orgCreatedBy = element(by.binding('orgDetailView.curOrg.created_by'));
-    this.addVerifyAddHeader = element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
-    this.addVerifyEditHeader = element(by.css('h4[ng-if="!orgDetailView.curOrg.new"]'));
+    this.addVerifyAddHeader = element(by.binding('orgDetailView.formTitleLabel'));//element(by.css('h4[ng-if="orgDetailView.curOrg.new"]'));
+    this.addVerifyEditHeader = element(by.binding('orgDetailView.formTitleLabel'));//element(by.css('h4[ng-if="!orgDetailView.curOrg.new"]'));
     this.verifyAddedOrgAlias = element.all(by.binding('nameAlias.name'));
     this.addOrgCTRPID = element(by.binding('orgDetailView.curOrg.ctrp_id'));
     this.addOrgFieldLabel = element.all(by.css('.control-label.col-xs-12.col-sm-3'));

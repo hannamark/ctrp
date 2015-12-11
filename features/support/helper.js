@@ -237,7 +237,7 @@ var helper = function() {
 
     this.retValVerification = function (objt, objtType, expectedValue){
         try {
-            console.log("You see", this.retValVerificationch(objt, objtType, expectedValue));
+            console.log("You see", this.retValVerification(objt, objtType, expectedValue));
         } catch (error) {
             console.log("Something went wrong: " + error);
         }
@@ -276,7 +276,7 @@ var helper = function() {
                 } else {
                     try{
                         console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED, ' + error);
-                        expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
+                        expectedVal === retTextAndSelectedValue ? callback() : callback.fail();
                         return false;
                     } catch (error){
                         console.error('Test steps FAILED, ' + error);
@@ -314,7 +314,7 @@ var helper = function() {
                 } else {
                     try{
                         console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED, ' + error);
-                        expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
+                        expectedVal === retTextAndSelectedValue ? callback() : callback.fail();
                         return false;
                     } catch (error){
                         console.error('Test steps FAILED, ' + error);

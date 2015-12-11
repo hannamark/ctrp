@@ -50,7 +50,7 @@ var LoginPage = function(){
                 //Whatever if it is true (displayed)
                 element(by.binding('headerView.username')).getText().then(function(value)   {
                     if (value === userName) {
-                        console.log(userName + 'already logged in');
+                        console.log(userName + ' already logged in');
                     }
                     else {
                         element(by.css('a[ng-click="headerView.logOut()"]')).click();
