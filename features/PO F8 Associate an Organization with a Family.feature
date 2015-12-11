@@ -4,8 +4,15 @@ Feature: PO F8 Associate an Organization with a Family
 Scenario: As a PO Curator, I can Assign an organization to a Family
 Given I know which organization I wish to assign to an Organization Family
 And I am logged in to CTRP PO application
-And I am have selected the option to search Families
-And a list of Family Names is displayed
+And I have selected the option to search Families
+And the Family Search Results type will be displayed
+    
+      |Family Name      |
+      |Family Status    |
+      |Family Type      |
+      |Membership Size  |
+
+
 And I select a Family to edit
 When I select the option to Add Family Membership
 And I Search Organizations and select an Organization
