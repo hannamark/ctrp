@@ -152,7 +152,8 @@
                         // LocalCacheService.cacheItem('app_version', data.application_version);
                         LocalCacheService.cacheItem('user_role', data.role); //e.g. ROLE_SUPER
                         LocalCacheService.cacheItem('user_type', data.user_type); //e.g. LocalUser
-                        LocalCacheService.cacheItem('write_mode', data.privileges.write_mode || false);
+                        //array of write_mode for each area (e.g. pa or po)
+                        LocalCacheService.cacheItem('write_mode', data.privileges.write_mode || []);
                         LocalCacheService.cacheItem('curation_enabled', false); //default: curation mode is off/false
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg('signedIn');
@@ -324,7 +325,7 @@
          *
          */
         this.isCurationSupported = function () {
-            return LocalCacheService.getCacheWithKey('write_mode'); //TODO: change true to data.write_mode
+            return LocalCacheService.getCacheWithKey('write_mode');
         };
 
 
