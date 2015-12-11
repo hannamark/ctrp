@@ -148,7 +148,7 @@ class  User < ActiveRecord::Base
                            {pa_write_mode: false}]
                         when  "ROLE_SITE-SU"
                           [{po_write_mode: false},
-                           {registry_write_mode: false},
+                           {registry_write_mode: true},
                            {pa_write_mode: false}]
                         when  "ROLE_ABSTRACTOR"
                           [{po_write_mode: false},
