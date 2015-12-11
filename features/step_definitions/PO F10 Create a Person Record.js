@@ -192,8 +192,13 @@ module.exports = function() {
     });
 
     this.Then(/^I should get warning message "([^"]*)" for duplicate Person$/, function (arg1, callback) {
-        expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true');
-        browser.sleep(25).then(callback);
+        browser.driver.wait(function(){
+            console.log('wait here');
+            return true;
+        }, 4000).then(function(){
+            expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true').and.notify(callback);
+    });
+      //  browser.sleep(25).then(callback);
     });
 
 
