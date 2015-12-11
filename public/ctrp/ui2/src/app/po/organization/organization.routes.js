@@ -13,6 +13,7 @@
               url: '/organizations',
               templateUrl: 'app/po/organization/organization_list.html',
               controller: 'organizationCtrl as orgsView',
+              section: 'po',
               ncyBreadcrumb: {
                   parent: 'main.defaultContent',
                   label: 'Search Organizations'
@@ -23,6 +24,7 @@
               url: '/organizations/:orgId',
               templateUrl: 'app/po/organization/orgDetails.html',
               controller: 'orgDetailCtrl as orgDetailView',
+              section: 'po',
               resolve: {
                   OrgService : 'OrgService',
                   sourceContextObj: function(OrgService) {
@@ -51,6 +53,7 @@
               url: '/new_organization',
               templateUrl: 'app/po/organization/orgDetails.html',
               controller: 'orgDetailCtrl as orgDetailView',
+              section: 'po',
               resolve: {
                   OrgService : 'OrgService',
                   sourceContextObj: function(OrgService) {

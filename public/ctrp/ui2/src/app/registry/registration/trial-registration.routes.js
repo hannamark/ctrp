@@ -13,6 +13,7 @@
                         url: '/trials',
                         templateUrl: 'app/registry/registration/trial_list.html',
                         controller: 'trialCtrl as trialView',
+                        section: 'registry',
                         resolve: {
                             TrialService: 'TrialService',
                             studySourceObj: function(TrialService) {
@@ -38,6 +39,7 @@
                         url: '/new_trial/:studySourceCode',
                         templateUrl: 'app/registry/registration/trialDetails.html',
                         controller: 'trialDetailCtrl as trialDetailView',
+                        section: 'registry',
                         resolve: {
                             TrialService: 'TrialService',
                             trialDetailObj: function($q) {
@@ -109,6 +111,7 @@
                     url: '/trials/:trialId/{editType}',
                     templateUrl: 'app/registry/registration/trialDetails.html',
                     controller: 'trialDetailCtrl as trialDetailView',
+                    section: 'registry',
                     resolve: {
                         TrialService: 'TrialService',
                         trialDetailObj: function($stateParams, TrialService) {

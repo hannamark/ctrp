@@ -13,6 +13,7 @@
               url: '/families',
               templateUrl: 'app/po/family/family_list.html',
               controller: 'familyCtrl as familyView',
+              section: 'po',
               resolve: {
                   FamilyService: 'FamilyService',
                   familyStatusObj : function(FamilyService) {
@@ -32,6 +33,7 @@
               url: '/families/:familyId',
               templateUrl: 'app/po/family/familyDetails.html',
               controller: 'familyDetailCtrl as familyDetailView',
+              section: 'po',
               resolve: {
                   FamilyService: 'FamilyService',
                   familyStatusObj : function(FamilyService) {
@@ -57,6 +59,7 @@
               url: '/new_family',
               templateUrl: 'app/po/family/familyDetails.html',
               controller: 'familyDetailCtrl as familyDetailView',
+              section: 'po',
               resolve: {
                   FamilyService: 'FamilyService',
                   familyStatusObj : function(FamilyService) {
