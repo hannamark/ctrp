@@ -42,6 +42,7 @@
 
                 $rootScope.$broadcast('isWriteModeSupported', writeModeSupported); //broadcast this
 
+
                 if (toState.name === 'main.sign_in' || toState.name === 'main.sign_up') {
 
                     if (!UserService.isLoggedIn()) {
