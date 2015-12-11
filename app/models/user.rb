@@ -133,9 +133,9 @@ class  User < ActiveRecord::Base
                         when  "ROLE_TRIAL-SUBMITTER"
                           {write_mode: true }
                         when  "ROLE_ACCRUAL-SUBMITTER"
-                          {write_mode: true }
+                          {write_mode: false }
                         when  "ROLE_SITE-SU"
-                          {write_mode: true }
+                          {write_mode: false }
                         when  "ROLE_ABSTRACTOR"
                           {write_mode: true }
                         when  "ROLE_ABSTRACTOR-SU"
