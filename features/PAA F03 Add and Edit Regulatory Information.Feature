@@ -91,3 +91,11 @@ When I select save
 And the Responsible Party Type is “Principal Investigator”
 And the Investigator Affiliation is Null
 Then a warning message will appear “Please enter the Investigator Affiliation”
+
+Scenario: #12 "Upload from NCI CTRP" Note
+Given I have selected a trial to abstract 
+And I am on the Trial Regulatory Information screen
+Then the label should be displayed below the Trial Regulatory Information section header"
+|The information in this section is REQUIRED to enable "Upload from NCI CTRP" in ClinicalTrials.gov:|
+And ClinicalTrials.gov it a link to 
+|https://clinicaltrials.gov/|

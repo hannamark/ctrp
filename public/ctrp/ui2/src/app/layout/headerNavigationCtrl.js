@@ -15,11 +15,12 @@
                                   $uibModal, $timeout, $state, Common) {
 
         var vm = this;
+        console.log('in header, current state name is: ', $state.current);
         vm.signedIn = UserService.isLoggedIn();
         vm.username = UserService.getLoggedInUsername();
         vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
         vm.isCurationEnabled = UserService.isCurationModeEnabled();
-        vm.isCurationModeSupported = UserService.isCurationSupported();
+        vm.isCurationModeSupported = false; //UserService.isCurationSupported();
         vm.warning = null;
         vm.timedout = null;
         //vm.uiRouterState = $state;
@@ -27,7 +28,7 @@
         vm.navbarIsActive = navbarIsActive;
 
         vm.toggleCurationMode = function() {
-            console.log('toggling curation mode: ' + vm.isCurationEnabled);
+            // console.log('toggling curation mode: ' + vm.isCurationEnabled);
             // vm.isCurationEnabled = !vm.isCurationEnabled;
             UserService.saveCurationMode(vm.isCurationEnabled);
             Common.broadcastMsg(MESSAGES.CURATION_MODE_CHANGED);
@@ -49,6 +50,7 @@
             listenToLoginEvent();
             watchForInactivity();
             watchStateName();
+            listenToSectionWriteMode();
         }
 
         function listenToLoginEvent() {
@@ -71,8 +73,20 @@
             vm.userRole = UserService.getUserRole().split('_')[1] || '';
             vm.userRole = !!vm.userRole ? vm.userRole.toLowerCase() : ''; //e.g. super
             vm.isCurationEnabled = UserService.isCurationModeEnabled();
-            vm.isCurationModeSupported = UserService.isCurationSupported();
+            // vm.isCurationModeSupported = UserService.isCurationSupported();
         } //pullUserInfo
+
+        function listenToSectionWriteMode() {
+            $scope.$on('isWriteModeSupported', function(evt, val) {
+                // console.log('header hears isWriteModeSupported: ', val);
+                vm.isCurationModeSupported = val || false;
+                if (!vm.isCurationModeSupported) {
+                    vm.isCurationEnabled = false;
+                    UserService.saveCurationMode(vm.isCurationEnabled);
+                    Common.broadcastMsg(MESSAGES.CURATION_MODE_CHANGED);
+                }
+            });
+        }
 
         /**
          * Observer for the vm.signedIn (boolean) status

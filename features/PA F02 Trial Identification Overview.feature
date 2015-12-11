@@ -118,6 +118,6 @@ Scenario: #10 I can open the ClinicalTrails.gov record for the Trail
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
 And the Trail Identification Overview and is displayed 
-And I selcet the NCT ID
+And I select the NCT ID
 Then an new browser window is openend displaying the trail record in ClinicalTrials.gov
-
+|https://clinicaltrials.gov/ct2/show/NCT01783171 where NCT01783171 is the NCT ID| 

@@ -29,6 +29,7 @@ module.exports = function() {
     });
 
     this.Given(/^I have selected the option to register a trial (.*)$/, function (trialType, callback) {
+        typeOfTrial = trialType;
         browser.get('ui/#/main/sign_in');
         login.login('ctrptrialsubmitter', 'Welcome01');
         login.accept();

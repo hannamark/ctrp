@@ -9,10 +9,12 @@
     angular.module('ctrp.app.pa')
     .controller('paModuleMenuPanel', paModuleMenuPanel);
 
-    paModuleMenuPanel.$inject = ['$scope'];
+    paModuleMenuPanel.$inject = ['$scope', 'MESSAGES', 'PATrialService'];
 
-    function paModuleMenuPanel($scope) {
+    function paModuleMenuPanel($scope, MESSAGES, PATrialService) {
         var vm = this;
+        var currentTrialDetailObj = {};
+        vm.nciTrialId = '';
         vm.menuAccordions = {
             "trialOverviewOpen": true,
             "adminDataOpen": true,
@@ -24,6 +26,12 @@
 
         function activate() {
 
+            //Listen to the update to the current trial detail object
+            $scope.$on(MESSAGES.TRIAL_DETAIL_SAVED, function() {
+                currentTrialDetailObj = PATrialService.getCurrentTrialFromCache();
+                vm.nciTrialId = currentTrialDetailObj.nci_id;
+                console.log('nciTrialId: ', vm.nciTrialId);
+            });
         } //activate
 
 

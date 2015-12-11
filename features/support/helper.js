@@ -109,6 +109,12 @@ var helper = function() {
         console.log(errorMessage + " was clicked");
     };
 
+    this.clickButtonNoHeaderIndex = function (button, index, errorMessage){
+       // this.wait(button, errorMessage);
+        button.get(index).click();
+        console.log(errorMessage + " was clicked");
+    };
+
     this.clickRadioButton = function (button, value, errorMessage){
         if (value === '0') {
             button.get(0).click();
@@ -231,7 +237,7 @@ var helper = function() {
 
     this.retValVerification = function (objt, objtType, expectedValue){
         try {
-            console.log("You see", this.retValVerificationch(objt, objtType, expectedValue));
+            console.log("You see", this.retValVerification(objt, objtType, expectedValue));
         } catch (error) {
             console.log("Something went wrong: " + error);
         }
@@ -270,7 +276,7 @@ var helper = function() {
                 } else {
                     try{
                         console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED, ' + error);
-                        expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
+                        expectedVal === retTextAndSelectedValue ? callback() : callback.fail();
                         return false;
                     } catch (error){
                         console.error('Test steps FAILED, ' + error);
@@ -308,7 +314,7 @@ var helper = function() {
                 } else {
                     try{
                         console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED, ' + error);
-                        expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
+                        expectedVal === retTextAndSelectedValue ? callback() : callback.fail();
                         return false;
                     } catch (error){
                         console.error('Test steps FAILED, ' + error);

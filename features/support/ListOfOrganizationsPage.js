@@ -34,6 +34,7 @@ ListOfOrganizationsPage = function () {
     this.orgModelSearch = element(by.id('org_search_modal'));
     this.orgModelSelectItem = element(by.css('div[ng-click="selectButtonClick(row, $event)"]'));
     this.orgModelConfirm = element(by.buttonText('Confirm Selection'));
+    this.orgModelCloseButton = element(by.css('.btn.btn-danger.pull-right')); //element(by.css('button[ng-click="advOrgSearchForm2ModalView.cancel()"]'));
       this.orgPersonAffiliatedTable = element.all(by.repeater('org in personDetailView.savedSelection'));
     //  this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
     this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
@@ -218,6 +219,9 @@ ListOfOrganizationsPage = function () {
         search.clickButton(this.orgModelConfirm,"Organization Model Confirm button");
     };
 
+    this.clickOrgModelClose = function(){
+        search.clickButton(this.orgModelCloseButton,"Organization Model Close button");
+    };
 
     this.setAffiliatedOrgEffectiveDate = function(orgEffectiveDate){
         search.setValue(this.orgAffiliatedEffectiveDate,orgEffectiveDate,"Add Organization Effective Date field");

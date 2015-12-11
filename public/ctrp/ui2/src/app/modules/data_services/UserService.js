@@ -140,6 +140,9 @@
             return LocalCacheService.getCacheWithKey('user_type');
         };
 
+        this.getWriteModesArr = function() {
+            return LocalCacheService.getCacheWithKey('write_modes');
+        };
 
         this.login = function (userObj) {
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in', userObj)
@@ -152,7 +155,8 @@
                         // LocalCacheService.cacheItem('app_version', data.application_version);
                         LocalCacheService.cacheItem('user_role', data.role); //e.g. ROLE_SUPER
                         LocalCacheService.cacheItem('user_type', data.user_type); //e.g. LocalUser
-                        LocalCacheService.cacheItem('write_mode', data.privileges.write_mode || false);
+                        //array of write_modes for each area (e.g. pa or po)
+                        LocalCacheService.cacheItem('write_modes', data.privileges || []);
                         LocalCacheService.cacheItem('curation_enabled', false); //default: curation mode is off/false
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg('signedIn');
@@ -324,7 +328,7 @@
          *
          */
         this.isCurationSupported = function () {
-            return LocalCacheService.getCacheWithKey('write_mode'); //TODO: change true to data.write_mode
+            return LocalCacheService.getCacheWithKey('write_modes');
         };
 
 
@@ -336,6 +340,29 @@
         this.isCurationModeEnabled = function () {
             return LocalCacheService.getCacheWithKey('curation_enabled') || false;
         };
+
+
+        /**
+         * given a sectionName (e.g. 'po'), check if allows global write mode For
+         * the sectionName
+         * @param  {String} sectionName [description]
+         * @return {boolean}
+         */
+        this.isWriteModeSupportedForSection = function(sectionName) {
+            var completeSectionNameKey = sectionName + '_write_mode';
+            var queryObj = {};
+            queryObj[completeSectionNameKey] = true; //only look for 'true'
+            var writeModesArray = LocalCacheService.getCacheWithKey('write_modes');
+            var objIndex = _.findIndex(writeModesArray, queryObj);
+            if (objIndex == -1) {
+                return false;
+            }
+
+            var writeModeObj = writeModesArray[objIndex];
+            // var writeModeObj = _.findWhere(writeModesArray, queryObj);
+            // console.log('found the writeModeObj', writeModeObj);
+            return writeModeObj[completeSectionNameKey];
+        }
 
 
         /**

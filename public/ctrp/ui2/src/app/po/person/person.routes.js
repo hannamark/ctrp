@@ -13,6 +13,7 @@
                     url: '/people',
                     templateUrl: 'app/po/person/person_list.html',
                     controller: 'personCtrl as personView',
+                    section: 'po',
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
                         label: 'Search Persons'
@@ -23,6 +24,7 @@
                     url: '/people/:personId',
                     templateUrl: 'app/po/person/personDetails.html',
                     controller: 'personDetailCtrl as personDetailView',
+                    section: 'po',
                     resolve: {
                         OrgService: 'OrgService',
                         PersonService: 'PersonService',
@@ -49,6 +51,7 @@
                     url: '/new_person',
                     templateUrl: 'app/po/person/personDetails.html',
                     controller: 'personDetailCtrl as personDetailView',
+                    section: 'po',
                     resolve: {
                         OrgService: 'OrgService',
                         PersonService: 'PersonService',
@@ -76,7 +79,8 @@
                 .state('main.testPerson', {
                     url: '/person_directive',
                     templateUrl: 'app/po/person/person_search.html',
-                    controller: 'personSearchCtrl as personSearchView'
+                    controller: 'personSearchCtrl as personSearchView',
+                    section: 'po',
                 });
     } //personRoutes
 
