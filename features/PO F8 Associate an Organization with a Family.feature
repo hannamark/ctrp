@@ -12,7 +12,7 @@ And the Family Search Results type will be displayed
       |Family Type      |
       |Membership Size  |
 
-And Membership size column will only display active associated organizations
+And Membership size column will only display the total count of active associated organizations
 When I select a Family to edit
 And I select the option to Add Family Membership
 And I Search Organizations and select an Organization
