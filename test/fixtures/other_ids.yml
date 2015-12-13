@@ -19,7 +19,7 @@
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-#one:
-#  protocol_id: ABC123
-#  protocol_id_origin_id: one
-#  trial: three
+one:
+  protocol_id: ABC123
+  protocol_id_origin: one
+  trial: three

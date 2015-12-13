@@ -76,7 +76,7 @@ class TrialsControllerTest < ActionController::TestCase
 
   test "should search trial by TrialStatus" do
     trial_status = trial_statuses(:one)
-    trial = trials(:three)
+    #trial = trials(:three)
     #puts "trial_status = #{trial_status.inspect}"
     #puts "trial = #{trial.trial_status_wrappers.inspect}"
     test_response = get :search_pa, official_title: "*", trial_status: trial_status.code, format: 'json'
@@ -87,12 +87,18 @@ class TrialsControllerTest < ActionController::TestCase
 
   test "should search trial by ProcessingStatus" do
     processing_status = processing_statuses(:one)
-    #puts "trial_status = #{trial_status.inspect}"
-    #puts "trial = #{trial.trial_status_wrappers.inspect}"
     test_response = get :search_pa, official_title: "*", processing_status: processing_status.code, format: 'json'
     search_result = JSON.parse(test_response.body)
-    #puts "search_result = #{search_result.inspect}"
     assert_equal processing_status.name, search_result['trials'][0]['current_processing_status']
+  end
+
+  test "should search trial by OtherIds" do
+    trial = trials(:three)
+    protocol_id_origin = protocol_id_origins(:one)
+    test_response = get :search_pa, official_title: "*", protocol_id_origin: protocol_id_origin.code, format: 'json'
+    search_result = JSON.parse(test_response.body)
+    #puts "search_result = #{search_result.inspect}"
+    assert_equal protocol_id_origin.code + " " + trial.other_ids.by_value(protocol_id_origin.code).first.protocol_id, search_result['trials'][0]['other_ids']
   end
 
   test "should search trial by Purpose" do
