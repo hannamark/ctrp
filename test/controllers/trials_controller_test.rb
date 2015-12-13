@@ -71,7 +71,7 @@ class TrialsControllerTest < ActionController::TestCase
     test_response = get :search_pa, official_title: "*", milestone: milestone.code, format: 'json'
     search_result = JSON.parse(test_response.body)
     #puts "search_result = #{search_result.inspect}"
-    assert_equal "Submission Acceptance Date", search_result['trials'][0]['selected_milestone']
+    assert_equal milestone.name, search_result['trials'][0]['selected_milestone']
   end
 
   test "should search trial by TrialStatus" do
@@ -83,6 +83,16 @@ class TrialsControllerTest < ActionController::TestCase
     search_result = JSON.parse(test_response.body)
     #puts "search_result = #{search_result.inspect}"
     assert_equal trial_status.name, search_result['trials'][0]['current_trial_status']
+  end
+
+  test "should search trial by ProcessingStatus" do
+    processing_status = processing_statuses(:one)
+    #puts "trial_status = #{trial_status.inspect}"
+    #puts "trial = #{trial.trial_status_wrappers.inspect}"
+    test_response = get :search_pa, official_title: "*", processing_status: processing_status.code, format: 'json'
+    search_result = JSON.parse(test_response.body)
+    #puts "search_result = #{search_result.inspect}"
+    assert_equal processing_status.name, search_result['trials'][0]['current_processing_status']
   end
 
   test "should search trial by Purpose" do
