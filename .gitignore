@@ -4,14 +4,8 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
-#Ignore the old ui folder
-./public/ctrp/ui
-
 # Ignore bundler config.
 /.bundle
-
-# Ignore bower in the ui2 folder
-./public/ctrp/ui2/src/bower_components
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -50,8 +44,7 @@ config/ldap.yml
 .rvmrc
 # if using bower-rails ignore default bower_components path bower.json files
 /vendor/assets/bower_components
-*.bowerrc
-bower.json
+
 # Ignore pow environment settings
 .powenv
 
@@ -70,5 +63,7 @@ bower.json
 # Robots.txt We want this set to disallow on EC2 server. This file is set to disallow out there.
 robots.txt
 
-# Ignore tmp dir in ui2
-public/ctrp/ui2/.tmp
+# Ignore stuff in ui2
+/angularjs/ui2/.tmp
+/angularjs/ui2/src/bower_components
+/angularjs/node_modules
