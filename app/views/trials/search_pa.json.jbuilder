@@ -45,15 +45,17 @@ json.trials do
       other_ids = trial.other_ids
       other_ids_string = ""
       delimiter = ""
-      other_ids.each do |o|
-        name = o.protocol_id_origin.name
-        unless name.nil?
-          name.gsub!("Identifier", "")
-          other_ids_string = other_ids_string + delimiter + name + o.protocol_id
-          delimiter = ";  "
+      unless trial.other_ids.empty?
+        other_ids.each do |o|
+          name = o.protocol_id_origin.name
+          unless name.nil?
+            name.gsub!("Identifier", "")
+            other_ids_string = other_ids_string + delimiter + name + o.protocol_id
+            delimiter = ";  "
+          end
         end
+        json.other_ids  other_ids_string
       end
-      json.other_ids  other_ids_string
     end
     json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
     json.research_category trial.research_category.present? ? trial.research_category.name : nil

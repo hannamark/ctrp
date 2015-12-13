@@ -22,9 +22,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  trial_status: one
+  trial: three
   status_date: 2015-07-16
-  why_stopped: MyText
-
-two:
-  status_date: 2015-07-16
-  why_stopped: MyText
+  why_stopped: Good reason

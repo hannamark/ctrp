@@ -38,11 +38,16 @@ json.current_trial_status_date @trial.trial_status_wrappers.present? ?
 json.processing_status @trial.processing_status_wrappers.present? ?
     @trial.processing_status_wrappers.latest.processing_status.name : nil
 
-json.last_amendment_num @trial.milestone_wrappers.present? ?
-    @trial.milestone_wrappers.last.submission.amendment_num : nil
-
-json.last_amendment_date @trial.milestone_wrappers.present? ?
-    @trial.milestone_wrappers.last.submission.amendment_date : nil
+#TODO change: The last submission maynot be an amendment
+json.last_amendment_num nil
+json.last_amendment_date nil
+if @trial.milestone_wrappers.present?
+  if !@trial.milestone_wrappers.last.submission.nil?
+    json.last_amendment_num @trial.milestone_wrappers.last.submission.amendment_num
+    json.last_amendment_date @trial.milestone_wrappers.last.submission.amendment_date
+  end
+end
+   # @trial.milestone_wrappers.last.submission.amendment_num : nil
 
 #extract NCT Trial ID, if present
 if @trial.other_ids.present?

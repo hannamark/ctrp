@@ -22,9 +22,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  milestone_id: 
-  milestone_date: 2015-08-18
-
-two:
-  milestone_id: 
-  milestone_date: 2015-08-18
+  milestone: one
+  trial: three
