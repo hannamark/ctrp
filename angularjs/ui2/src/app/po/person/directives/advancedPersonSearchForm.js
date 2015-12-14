@@ -421,7 +421,7 @@
              */
             function prepareGidOptions() {
                 //ui-grid plugin options
-                $scope.gridOptions = PersonService.getGridOptions();
+                $scope.gridOptions = PersonService.getGridOptions($scope.usedInModal);
                 $scope.gridOptions.isRowSelectable = function (row) {
                     var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
                     if (isCTEPContext) {
