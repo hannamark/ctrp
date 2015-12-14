@@ -338,7 +338,7 @@
         };
 
         vm.isValidPhoneNumber = function(){
-            vm.IsPhoneValid = isValidNumber(vm.curOrg.phone, GeoLocationService.getAlpha2Code(vm.curOrg.country));
+            vm.IsPhoneValid = isValidNumberPO(vm.curOrg.phone, vm.curOrg.country);
             vm.showPhoneWarning = true;
             console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
