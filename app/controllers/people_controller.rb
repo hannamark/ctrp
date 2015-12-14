@@ -93,7 +93,7 @@ class PeopleController < ApplicationController
     print @params
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 10 if params[:rows].blank?
+    params[:rows] = 20 if params[:rows].blank?
     params[:sort] = 'lname' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 

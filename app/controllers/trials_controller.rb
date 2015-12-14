@@ -71,7 +71,7 @@ class TrialsController < ApplicationController
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 10 if params[:rows].blank?
+    params[:rows] = 20 if params[:rows].blank?
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
@@ -114,7 +114,7 @@ class TrialsController < ApplicationController
     # Pagination/sorting params initialization
     Rails.logger.info "In Search PA, params = #{params.inspect}"
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 10 if params[:rows].blank?
+    params[:rows] = 20 if params[:rows].blank?
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 

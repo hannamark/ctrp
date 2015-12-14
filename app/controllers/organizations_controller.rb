@@ -130,7 +130,7 @@ class OrganizationsController < ApplicationController
     # Pagination/sorting params initialization
     Rails.logger.info "In Organization Controller, search"
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 10 if params[:rows].blank?
+    params[:rows] = 20 if params[:rows].blank?
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
     # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
