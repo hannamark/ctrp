@@ -36,7 +36,11 @@
             });
         }; //gridOptions
 
-        vm.searchTrials = function() {
+        vm.searchTrials = function(newSearchFlag) {
+            if (newSearchFlag === 'fromStart') {
+                vm.searchParams.start = 1; //from first page
+            }
+
             TrialService.searchTrials(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;

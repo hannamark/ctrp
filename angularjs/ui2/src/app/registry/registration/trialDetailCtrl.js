@@ -204,6 +204,9 @@
                             toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                         }
                     }, 100);
+                } else {
+                    // Enable buttons in case of backend error
+                    vm.disableBtn = false;
                 }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
