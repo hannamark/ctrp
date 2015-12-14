@@ -307,8 +307,21 @@
 
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
                 .then(function (data) {
-                    console.log('successful login, data returned: ' + JSON.stringify(data));
-                    $state.go('main.welcome_signup');
+                    console.log('login, data returned: ' + JSON.stringify(data["server_response"]));
+                    if (data["server_response"] == 422 || data["server_response"]["status"] == 422) {
+                        toastr.error('Sign Up failed', 'Login error');
+                        for (var key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                if (key != "server_response") {
+                                    toastr.error("SignUp error:", key + " -> " + data[key]);
+                                }
+                            }
+                        }
+                        $state.go('main.signup');
+                    } else {
+                        toastr.success('Sign Up Success', 'You have been signed up');
+                        $state.go('main.welcome_signup');
+                    }
                 }).catch(function (err) {
                     $log.error('error in log in: ' + JSON.stringify(err));
                 });
