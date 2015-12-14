@@ -78,7 +78,7 @@
             vm.addedNameAliases = [];
             vm.alias = '';
 
-            var excludedKeys = ['new', 'ctrp_id', 'id', 'state', 'country', 'source_status_id', 'cluster'];
+            var excludedKeys = ['new', 'ctrp_id', 'id', 'source_status_id', 'cluster'];
             Object.keys(vm.curOrg).forEach(function (key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curOrg[key] = angular.isArray(vm.curOrg[key]) ? [] : '';
@@ -88,6 +88,7 @@
                 //default context to ctrp
                 vm.curOrg.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
             });
+            listenToStatesProvinces();
         };
 
         // Add new alias
