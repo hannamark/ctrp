@@ -34,8 +34,8 @@
                     },
                     ncyBreadcrumb: {
                         parent: '',
-                        label: 'CTRP Sign In',
-                        skip: true,
+                        label: 'CTRP Sign In'
+                        // skip: true,
                     }
                 })
                 .state('main.signup', {
