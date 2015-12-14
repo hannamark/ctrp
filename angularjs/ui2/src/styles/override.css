@@ -736,7 +736,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 }
 
 .form-horizontal .has-feedback .select-feedback {
-    margin-top: 20px;
+    /* margin-top: 20px; */
     right: 15px;
 }
 
