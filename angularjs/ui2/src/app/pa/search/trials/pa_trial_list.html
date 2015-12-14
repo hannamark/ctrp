@@ -59,13 +59,12 @@
                             </div>
                         </div>
 
-
                         <div class="form-group">
-                            <label for="protocol_origin_type" class="control-label col-xs-12 col-sm-3">Other Ids: </label>
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Processing Status: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <select class="form-control input-sm" id="protocol_origin_type" ng-model="trialView.searchParams.protocol_origin_type">
-                                    <option value="">-Select Other ID-</option>
-                                    <option ng-repeat="protocol_origin_type in trialView.protocolIdOriginArr" value="{{protocol_origin_type.code}}">{{protocol_origin_type.name}}</option>
+                                <select class="form-control input-sm" id="processingStatus" ng-model="trialView.searchParams.milestone">
+                                    <option value="">-Select a Processing Status -</option>
+                                    <option ng-repeat="processingStatus in trialView.processingStatusArr" value="{{processingStatus.code}}">{{processingStatus.name}}</option>
                                 </select>
                             </div>
                         </div>
@@ -122,16 +121,6 @@
                                 <select class="form-control input-sm" id="milestone" ng-model="trialView.searchParams.milestone">
                                     <option value="">-Select a Milestone-</option>
                                     <option ng-repeat="milestone in trialView.milestoneArr" value="{{milestone.code}}">{{milestone.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Processing Status: </label>
-                            <div class="col-xs-12 col-sm-9">
-                                <select class="form-control input-sm" id="processingStatus" ng-model="trialView.searchParams.milestone">
-                                    <option value="">-Select a Processing Status -</option>
-                                    <option ng-repeat="processingStatus in trialView.processingStatusArr" value="{{processingStatus.code}}">{{processingStatus.name}}</option>
                                 </select>
                             </div>
                         </div>
