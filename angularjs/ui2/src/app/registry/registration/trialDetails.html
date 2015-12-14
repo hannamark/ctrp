@@ -957,7 +957,7 @@
                                            validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                            ng-required="!trialDetailView.protocol_highlighted">
                                     <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.change_memo) && trial_form.change_memo.$error.required">
-                                        Change Memo Document is required
+                                        Either Change Memo Document or Protocol Highlighted Document  is required
                                     </span>
                                     <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.change_memo) && trial_form.change_memo.$error.validateFileType">
                                         Please select a valid file. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
@@ -980,7 +980,7 @@
                                            validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                            ng-required="!trialDetailView.change_memo">
                                     <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_highlighted) && trial_form.protocol_highlighted.$error.required">
-                                        Protocol Highlighted Document is required
+                                        Either Change Memo Document or Protocol Highlighted Document  is required
                                     </span>
                                     <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_highlighted) && trial_form.protocol_highlighted.$error.validateFileType">
                                         Please select a valid file. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
