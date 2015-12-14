@@ -88,6 +88,7 @@
                     url: '/userDetail/username',
                     templateUrl: 'app/user/userDetails.html',
                     controller: 'userDetailCtrl as userDetailView',
+                    section: 'user',
                     resolve: {
                         UserService: 'UserService',
                         GeoLocationService : 'GeoLocationService',
