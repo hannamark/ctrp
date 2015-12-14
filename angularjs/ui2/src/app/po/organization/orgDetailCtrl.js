@@ -9,7 +9,8 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter',
-        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$modal'];
+        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$modal',
+        'GeoLocationService'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
@@ -337,7 +338,7 @@
         };
 
         vm.isValidPhoneNumber = function(){
-            vm.IsPhoneValid = isValidNumber(vm.curOrg.phone,  vm.curOrg.country);
+            vm.IsPhoneValid = isValidNumber(vm.curOrg.phone, GeoLocationService.getAlpha2Code(vm.curOrg.country));
             vm.showPhoneWarning = true;
             console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
