@@ -1,16 +1,14 @@
 class RegistrationsController < Devise::RegistrationsController
+  respond_to :html, :js
 
   def create
     build_resource(sign_up_params)
-    respond_to do |format|
       if resource.save
-        format.json { render :status => 200, :json => { :success => true, :info => "Sign Up"} }
+        render :status => 200, :json => { :success => true, :info => "Sign Up"}
       else
         Rails.logger.debug resource.errors.full_messages
-        format.json { render json: resource.errors, status: :unprocessable_entity }
+        render json: resource.errors, status: :unprocessable_entity
       end
-    end
-
   end
 
   # Build a devise resource passing in the session. Useful to move
