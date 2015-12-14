@@ -23,7 +23,7 @@
             //for pagination and sorting
             sort: '',
             order: '',
-            rows: 10,
+            rows: 20,
             start: 1
         }; //initial Family Search Parameters
 

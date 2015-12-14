@@ -37,7 +37,7 @@
             //for pagination and sorting
             sort: 'lname',
             order: 'ASC',
-            rows: 10,
+            rows: 20,
             start: 1
             }; //initial Person Search Parameters
 
