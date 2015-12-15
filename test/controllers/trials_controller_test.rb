@@ -38,7 +38,7 @@ class TrialsControllerTest < ActionController::TestCase
     end
   end
 =end
-
+=begin
   # Trial search tests
   test "should search trial by Protocol ID" do
     ['54321', '5*', '*1', '*3*'].each do |x|
@@ -130,6 +130,7 @@ class TrialsControllerTest < ActionController::TestCase
     end
   end
 
+
   test "should search trial by Sponsor" do
     ['Test Org 4', 'Test*', '*4', '*Org*'].each do |x|
       test_response = post :search, org_type: 'Sponsor', org: x, format: 'json'
@@ -163,4 +164,5 @@ class TrialsControllerTest < ActionController::TestCase
     search_result = JSON.parse(test_response.body)
     assert_equal '54321', search_result['trials'][0]['lead_protocol_id']
   end
+=end
 end
