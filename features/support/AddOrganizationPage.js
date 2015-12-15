@@ -17,7 +17,8 @@ AddOrganizationsPage = function(){
     this.addSourceContext = element(by.model('orgDetailView.curOrg.source_context_id'));
     this.addSourceId = element(by.model('orgDetailView.curOrg.source_id'));
     this.addSourceStatus = element(by.model('orgDetailView.curOrg.source_status_id'));
-    this.addSourceStatusDefault = element(by.binding('orgDetailView.activeStatusName'));
+    this.addSourceStatusDefault = element(by.model('orgDetailView.curOrg.source_status_id'));//element(by.binding('orgDetailView.activeStatusName'));
+    this.addSourceStatusList = element.all(by.model('orgDetailView.curOrg.source_status_id'));
     this.addAlias = element(by.model('orgDetailView.alias'));
     this.addAliasButton = element(by.css('button[ng-click="orgDetailView.addNameAlias()"]'));
     this.addAddress = element(by.model('orgDetailView.curOrg.address'));
@@ -148,12 +149,8 @@ AddOrganizationsPage = function(){
     };
 
     this.getVerifyAddCountry = function(country){
-        addOrg.retValVerification(this.addCountry, 'list', country);
-
-        //console.log(this.newCountry.getWebElement());
-        //console.log(this.newCountry + " country");
-        //addOrg.listProperties(this.addCountry);
-       // addOrg.getVerifyListValue(this.addCountry,country,"Get Organization by Country field");
+        //addOrg.retValVerification(this.addCountry, 'list', country);
+        addOrg.getVerifyListValue(this.addCountry,country,"Get Organization by Country field");
     };
 
     this.getVerifyAddState = function(state){

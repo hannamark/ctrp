@@ -74,6 +74,11 @@ module.exports = function() {
 
     this.Then(/^I will see "([^"]*)" as the default for Source Status$/, function (arg1, callback) {
         addOrg.getVerifyAddSourceStatusDefault(arg1);
+        /***** This checks that in list only "Active" is there ********/
+        addOrg.addSourceStatusList.getText().then(function(value) {
+            console.log(value);
+            expect(value).to.eql(arg1.toString().split(","));
+        });
         browser.sleep(25).then(callback);
     });
 
@@ -316,17 +321,17 @@ module.exports = function() {
 
     this.Then(/^all values in create organization for all fields will be cleared$/, function (callback) {
         addOrg.getVerifyAddOrgName('');
-    //    addOrg.getVerifyAddOrgAlias('');
-    //    addOrg.getVerifyAddAddress('');
-    //    addOrg.getVerifyAddAddress2('');
-    //    addOrg.getVerifyAddCity('');
-    //    addOrg.getVerifyAddEmail('');
-    //    addOrg.getVerifyAddFax('');
-    //    addOrg.getVerifyAddPhone('');
-        //addOrg.getVerifyAddPostalCode('');
-        //addOrg.getVerifyAddState('Select a state or province');
-        addOrg.getVerifyAddCountry('United States');
-        //addOrg.getVerifyAddSourceStatusDefault('Active');
+        addOrg.getVerifyAddOrgAlias('');
+        addOrg.getVerifyAddAddress('');
+        addOrg.getVerifyAddAddress2('');
+        addOrg.getVerifyAddCity('');
+        addOrg.getVerifyAddEmail('');
+        addOrg.getVerifyAddFax('');
+        addOrg.getVerifyAddPhone('');
+        addOrg.getVerifyAddPostalCode('');
+        addOrg.getVerifyAddState('Select a state or province');
+        addOrg.getVerifyAddCountry('United 1States');
+        addOrg.getVerifyAddSourceStatusDefault('Active');
         browser.sleep(25).then(callback);
     });
 

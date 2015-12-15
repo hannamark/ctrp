@@ -125,3 +125,24 @@ Feature: PO F4 Edit Organization Information
   When I select the Reset function
   Then edit form will be refreshed with the last committed values for the selected organization
 
+    Scenario: As a Curator, I am allowed to Edit Organization when I am on the CTRP Context
+    Given I know which organization I want to edit
+    And I am logged in to the CTRP PO Application
+    And I have selected the organization I want to edit
+    And I am on the Edit Organization screen
+    When I am on the CTRP context and my write mode should be on 
+    Then I should be allowed to edit editable features
+    When I am on the CTRP Context and my write mode is off
+     Then I will not be able to edit editable features
+
+      Scenario: As a Curator, I should not be allowed to Edit Organization when I am on the CTEP Context
+    Given I know wich organization I want to edit
+    And I am logged in to the CTRP PO Application
+    And I have selected the organization I want to edit
+    And I am on the Edit Organization screen
+    When I am on the CTEP Context and my write mode is on 
+     Then I should not be allowed to edit any features
+     When I am on the CTEP Context and my write mode is off
+     Then I should not be allowed to edit any features
+
+

@@ -269,5 +269,36 @@ module.exports = function() {
         callback.pending();
     });
 
+    this.Given(/^I have selected the option to Register a trial (.*)$/, function (trialType, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I am on the Register Trial Funding Source screen$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.When(/^I have perfomed an organization look\-yp$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have selected one or more organizations as the trial's Funding Source$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have entered a trial's Program Code$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the Register Trial Funding Source screen will not indicate any errors during Trial Review$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+
 
 };
