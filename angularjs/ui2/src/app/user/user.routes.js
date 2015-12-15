@@ -44,7 +44,12 @@
                     controller: 'userSignupCtrl as userView',
                     resolve: {
                         UserService: 'UserService'
-                    }
+                    },
+                ncyBreadcrumb: {
+                    parent: '',
+                    label: 'CTRP Sign Up'
+                    // skip: true,
+                }
                 })
 
                 .state('main.welcome_signup', {
