@@ -10,27 +10,25 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-
+//Login Methods
+var loginPage = require('../support/LoginPage');
 //Helper Methods
 var helperFunctions = require('../support/helper');
-
 //File System
 var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
 var testConfiguration = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testConfig/';
 
-//Login dependencies
-var loginPage = require('../support/LoginPage');
 
-
-var commonMethods = function(){
+var abstractionCommonMethods = function(){
     /*******
      * Methods Description: Abstraction common helper methods
      *
      *
      *******/
-    var reader;
     var login = new loginPage();
+    var helper = new helperFunctions();
+    var reader;
 
     /*****************************************
      * Check for the various File API support.
@@ -68,7 +66,9 @@ var commonMethods = function(){
                 return output;
             } catch (e) {
                 if (e.number == -2146827859) {
-                    alert('Unable to access local files due to browser security settings.');
+                    alert('Unable to access local files due to browser security settings. ' +
+                        'To overcome this, go to Tools->Internet Options->Security->Custom Level. ' +
+                        'Find the setting for "Initialize and script ActiveX controls not marked as safe" and change it to "Enable" or "Prompt"');
                 }
             }
         }
@@ -86,24 +86,45 @@ var commonMethods = function(){
     };
 
     /*****************************************
-     * Before Test
+     * On Prepare Login Test
      *****************************************/
-    this.beforeTest = function(appUID) {
-        var configurationFile;
+    this.onPrepareLoginTest = function(usrID) {
+       var configurationFile;
+        console.log('file path'+testConfiguration);
         configurationFile = ''+testConfiguration+'/testSettings.json';
         var configuration = JSON.parse(
             fs.readFileSync(configurationFile)
         );
-        //initiating browser
-        browser.get(''+ configuration.uiUrl +'');
-        expect(login.username().isDisplayed().to.become('true'));
-
-
+        console.log(configuration.uiUrl);
         console.log(configuration.abstractorUID);
         console.log(configuration.abstractorPWD);
+        console.log(configuration.curatorUID);
+        console.log(configuration.curatorPWD);
+        console.log(configuration.trialSubmitterUID);
+        console.log(configuration.trialSubmitterPWD);
+
+        browser.get(configuration.uiUrl);
+
+        if (usrID === 'ctrpabstractor'){
+            login.login(configuration.abstractorUID, configuration.abstractorPWD);
+            login.accept();
+            helper.wait_for(5000);
+        }
+
+        if (usrID === 'ctrpcurator'){
+            login.login(configuration.curatorUID, configuration.curatorPWD);
+            login.accept();
+            helper.wait_for(5000);
+        }
+
+        if (usrID === 'ctrptrialsubmitter'){
+            login.login(configuration.trialSubmitterUID, configuration.trialSubmitterPWD);
+            login.accept();
+            helper.wait_for(5000);
+        }
 
     }
 
 };
 
-module.exports = commonMethods;
+module.exports = abstractionCommonMethods;

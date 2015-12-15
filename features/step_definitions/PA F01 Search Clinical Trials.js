@@ -22,7 +22,7 @@ var abstractionPageMenu = require('../support/abstractionCommonBar');
 //Abstraction search page dependencies
 var abstractionTrialSearchPage = require('../support/abstractionSearchTrialPage');
 //Abstraction common dependencies
-var abstractionCommonMethods = require('../support/commonMethods');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 
 
 module.exports = function() {
@@ -46,11 +46,10 @@ module.exports = function() {
      */
 
     this.Given(/^I am logged into the CTRP Protocol Abstraction application$/, function (callback) {
-        browser.get('ui/#/main/sign_in');
-        login.login('ctrpabstractor', 'Welcome01');
-        login.accept();
-        helper.wait_for(5000);
-        commonFunctions.beforeTest();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+
+
+        //commonFunctions.beforeTest();
 
         browser.sleep(25).then(callback);
     });
