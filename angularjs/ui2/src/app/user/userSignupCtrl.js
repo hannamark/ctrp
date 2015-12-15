@@ -23,7 +23,7 @@
                 email: '',
                 password: '',
                 password_confirmation: '',
-                role: ''
+                role: 'ROLE_RO'
             },
             "type": vm.type
         };

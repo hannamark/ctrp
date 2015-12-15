@@ -44,7 +44,12 @@
                     controller: 'userSignupCtrl as userView',
                     resolve: {
                         UserService: 'UserService'
-                    }
+                    },
+                ncyBreadcrumb: {
+                    parent: '',
+                    label: 'CTRP Sign Up'
+                    // skip: true,
+                }
                 })
 
                 .state('main.welcome_signup', {
@@ -88,6 +93,7 @@
                     url: '/userDetail/username',
                     templateUrl: 'app/user/userDetails.html',
                     controller: 'userDetailCtrl as userDetailView',
+                    section: 'user',
                     resolve: {
                         UserService: 'UserService',
                         GeoLocationService : 'GeoLocationService',
