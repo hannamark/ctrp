@@ -55,7 +55,7 @@ config/ldap.yml
 /node_modules
 
 # Ignore cucumber tests dir
-/tests
+#/tests
 
 # Ignore local config document
 /config_ahmed.js

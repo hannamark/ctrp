@@ -49,6 +49,8 @@ module.exports = function() {
         browser.get('ui/#/main/sign_in');
         login.login('ctrpabstractor', 'Welcome01');
         login.accept();
+        helper.wait_for(5000);
+        commonFunctions.beforeTest();
 
         browser.sleep(25).then(callback);
     });

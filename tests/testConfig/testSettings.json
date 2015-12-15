@@ -1,0 +1,10 @@
+{
+  "baseMainUrl" : "http://ctrp-ci.nci.nih.gov/ctrp/",
+  "uiUrl" : "ui/#/main/sign_in",
+  "curatorUID" : "ctrpcurator",
+  "curatorPWD" : "Welcome01",
+  "abstractorUID" : "ctrpabstractor",
+  "abstractorPWD" : "Welcome01"
+  "trialSubmitterUID" : "ctrptrialsubmitter",
+  "trialSubmitterPWD" : "Welcome01"
+}

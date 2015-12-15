@@ -5,12 +5,17 @@
  */
 
 
+//Common dependencies
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-
+//Helper Methods
 var helperFunctions = require('../support/helper');
+//File System
+var fs = require('fs');
+var junit = require('cucumberjs-junitxml');
+var testConfiguration = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testConfig/';
 
 
 var abstractionCommonMethods = function(){
@@ -76,7 +81,21 @@ var abstractionCommonMethods = function(){
         return txt;
     };
 
+    /*****************************************
+     * Before Test
+     *****************************************/
+    this.beforeTest = function() {
+        var configurationFile;
+        configurationFile = ''+testConfiguration+'/testSettings.json';
+        var configuration = JSON.parse(
+            fs.readFileSync(configurationFile)
+        );
+
+        console.log(configuration.abstractorUID);
+        console.log(configuration.abstractorPWD);
+        console.log(configuration.uiUrl);
+    }
 
 };
 
-module.exports = trialCommonBar;
+module.exports = abstractionCommonMethods;
