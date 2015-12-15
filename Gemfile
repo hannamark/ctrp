@@ -88,6 +88,3 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'roo'
 gem 'roo-xls'
 
-#gem that helps write subqueries without using sql. Instead by using ruby blocks.
-gem 'squeel'
-
