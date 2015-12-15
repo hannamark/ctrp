@@ -370,11 +370,12 @@
             if (objIndex == -1) {
                 return false;
             }
+            return true;
 
-            var writeModeObj = writeModesArray[objIndex];
+            // var writeModeObj = writeModesArray[objIndex];
             // var writeModeObj = _.findWhere(writeModesArray, queryObj);
             // console.log('found the writeModeObj', writeModeObj);
-            return writeModeObj[completeSectionNameKey];
+            // return writeModeObj[completeSectionNameKey];
         }
 
 
