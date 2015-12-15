@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TrialsControllerTest < ActionController::TestCase
   setup do
-    @trial = trials(:three)
+    @trial = trials(:one)
   end
 
   test "should get index" do
@@ -31,14 +31,12 @@ class TrialsControllerTest < ActionController::TestCase
     assert_response :ok
   end
 
-=begin
   test "should destroy trial" do
     assert_difference('Trial.count', -1) do
-      delete :destroy, id: @trial.id
+      delete :destroy, id: @trial, format: "json"
     end
   end
-=end
-=begin
+
   # Trial search tests
   test "should search trial by Protocol ID" do
     ['54321', '5*', '*1', '*3*'].each do |x|
@@ -164,5 +162,5 @@ class TrialsControllerTest < ActionController::TestCase
     search_result = JSON.parse(test_response.body)
     assert_equal '54321', search_result['trials'][0]['lead_protocol_id']
   end
-=end
+
 end
