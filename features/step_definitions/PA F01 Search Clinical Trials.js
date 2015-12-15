@@ -22,7 +22,7 @@ var abstractionPageMenu = require('../support/abstractionCommonBar');
 //Abstraction search page dependencies
 var abstractionTrialSearchPage = require('../support/abstractionSearchTrialPage');
 //Abstraction common dependencies
-var abstractionCommonMethods = require('../support/abstractionCommonMethods');
+var abstractionCommonMethods = require('../support/commonMethods');
 
 
 module.exports = function() {

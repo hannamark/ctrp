@@ -10,21 +10,27 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
+
 //Helper Methods
 var helperFunctions = require('../support/helper');
+
 //File System
 var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
 var testConfiguration = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testConfig/';
 
+//Login dependencies
+var loginPage = require('../support/LoginPage');
 
-var abstractionCommonMethods = function(){
+
+var commonMethods = function(){
     /*******
      * Methods Description: Abstraction common helper methods
      *
      *
      *******/
     var reader;
+    var login = new loginPage();
 
     /*****************************************
      * Check for the various File API support.
@@ -62,9 +68,7 @@ var abstractionCommonMethods = function(){
                 return output;
             } catch (e) {
                 if (e.number == -2146827859) {
-                    alert('Unable to access local files due to browser security settings. ' +
-                        'To overcome this, go to Tools->Internet Options->Security->Custom Level. ' +
-                        'Find the setting for "Initialize and script ActiveX controls not marked as safe" and change it to "Enable" or "Prompt"');
+                    alert('Unable to access local files due to browser security settings.');
                 }
             }
         }
@@ -84,18 +88,22 @@ var abstractionCommonMethods = function(){
     /*****************************************
      * Before Test
      *****************************************/
-    this.beforeTest = function() {
+    this.beforeTest = function(appUID) {
         var configurationFile;
         configurationFile = ''+testConfiguration+'/testSettings.json';
         var configuration = JSON.parse(
             fs.readFileSync(configurationFile)
         );
+        //initiating browser
+        browser.get(''+ configuration.uiUrl +'');
+        expect(login.username().isDisplayed().to.become('true'));
+
 
         console.log(configuration.abstractorUID);
         console.log(configuration.abstractorPWD);
-        console.log(configuration.uiUrl);
+
     }
 
 };
 
-module.exports = abstractionCommonMethods;
+module.exports = commonMethods;
