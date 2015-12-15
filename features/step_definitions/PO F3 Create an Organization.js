@@ -330,7 +330,7 @@ module.exports = function() {
         addOrg.getVerifyAddPhone('');
         addOrg.getVerifyAddPostalCode('');
         addOrg.getVerifyAddState('Select a state or province');
-        addOrg.getVerifyAddCountry('United States');
+        addOrg.getVerifyAddCountry('United 1States');
         addOrg.getVerifyAddSourceStatusDefault('Active');
         browser.sleep(25).then(callback);
     });

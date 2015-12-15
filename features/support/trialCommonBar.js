@@ -47,7 +47,6 @@ var trialCommonBar = function(){
         helper.clickLink(this.mainTrialsLink, "Trial link");
     };
 
-
     this.clickListSearchTrialLink = function(){
         helper.clickLink(this.searchTrialLink, "Search Trial link");
         expect(pageHeaderText.getText()).to.eventually.equal(search_Trial_Header_Text);

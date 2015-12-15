@@ -149,11 +149,7 @@ AddOrganizationsPage = function(){
     };
 
     this.getVerifyAddCountry = function(country){
-      //  addOrg.retValVerification(this.addCountry, 'list', country);
-
-        //console.log(this.newCountry.getWebElement());
-        //console.log(this.newCountry + " country");
-        //addOrg.listProperties(this.addCountry);
+        //addOrg.retValVerification(this.addCountry, 'list', country);
         addOrg.getVerifyListValue(this.addCountry,country,"Get Organization by Country field");
     };
 
