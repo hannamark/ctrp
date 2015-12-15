@@ -367,10 +367,8 @@
             queryObj[completeSectionNameKey] = true; //only look for 'true'
             var writeModesArray = LocalCacheService.getCacheWithKey('write_modes');
             var objIndex = _.findIndex(writeModesArray, queryObj);
-            if (objIndex == -1) {
-                return false;
-            }
-            return true;
+
+            return objIndex > -1;            
 
             // var writeModeObj = writeModesArray[objIndex];
             // var writeModeObj = _.findWhere(writeModesArray, queryObj);
