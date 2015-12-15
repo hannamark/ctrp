@@ -180,7 +180,6 @@ class Trial < ActiveRecord::Base
   accepts_nested_attributes_for :oversight_authorities, allow_destroy: true
   accepts_nested_attributes_for :trial_documents, allow_destroy: true
   accepts_nested_attributes_for :submissions, allow_destroy: true
-  accepts_nested_attributes_for :milestone_wrappers, allow_destroy: true
 
   # Array of actions can be taken on this Trial
   def actions

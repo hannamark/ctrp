@@ -152,8 +152,7 @@ class TrialsController < ApplicationController
         @trials = @trials.with_research_category(params[:research_category])
       end
       if params[:trial_status].present?# && params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
-        Rails.logger.debug "#{params[:trial_status].inspect}"
-        @trials = @trials.select{|trial| !trial.trial_status_wrappers.blank? && trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
+        @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
       end
       ## Enable this section, if the Radio button on the UI will be used.
       #if params[:milestone].present? #&& params[:milestone_latest].present? && params[:milestone_latest] == "YES"

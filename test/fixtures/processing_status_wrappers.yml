@@ -20,5 +20,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  processing_status: one
-  trial: three
+  status_date: 2015-11-17
+
+two:
+  status_date: 2015-11-17
