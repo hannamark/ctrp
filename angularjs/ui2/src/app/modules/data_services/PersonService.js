@@ -37,7 +37,7 @@
             //for pagination and sorting
             sort: 'lname',
             order: 'ASC',
-            rows: 10,
+            rows: 20,
             start: 1
             }; //initial Person Search Parameters
 
@@ -53,8 +53,8 @@
             // enableFullRowSelection: true,
             enableSelectAll: false,
             //enableRowSelection: false,
-            paginationPageSizes: [10, 25, 50, 100],
-            paginationPageSize: 10,
+            paginationPageSizes: [20, 50, 100],
+            paginationPageSize: 20,
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
@@ -194,7 +194,7 @@
 
 
 
-        function getGridOptions() {
+        function getGridOptions(usedInModal) {
             //var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
             var user_role = !!UserService.getUserRole() ? UserService.getUserRole() : '';
 
@@ -203,14 +203,19 @@
 
             var curator_role = 'curator';
             if(user_role.toUpperCase().indexOf(curator_role.toUpperCase()) === -1) {
-                gridOptions.columnDefs.splice(updated_at_index,1);
 
+                if (updated_at_index >= 0)
+                    gridOptions.columnDefs.splice(updated_at_index,1);
                 //Recompute the updated_by_index, given that the columnDefs have changed
                 var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
-                console.log('updated_by_index is ' + updated_by_index);
-                gridOptions.columnDefs.splice(updated_by_index,1);
+                if (updated_by_index >= 0)
+                    gridOptions.columnDefs.splice(updated_by_index,1);
             }
-
+            if(usedInModal){
+                var nullify_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'Nullify');
+                if (nullify_index >= 0)
+                    gridOptions.columnDefs.splice(nullify_index,1);
+            }
             return gridOptions;
         }
 

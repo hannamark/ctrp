@@ -12,7 +12,7 @@ var expect = require('chai').expect;
 var helperFunctions = require('../support/helper');
 
 
-var searchTrial = function(){
+var abstractionSearchTrialPage = function(){
 
     this.searchTrialProtocolID = element(by.model('trialView.searchParams.protocol_id'));
     this.searchTrialOfficialTitle = element(by.model('trialView.searchParams.official_title'));
@@ -74,4 +74,4 @@ var searchTrial = function(){
 
 };
 
-module.exports = searchTrial;
+module.exports = abstractionSearchTrialPage;

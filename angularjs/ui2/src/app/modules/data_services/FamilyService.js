@@ -23,7 +23,7 @@
             //for pagination and sorting
             sort: '',
             order: '',
-            rows: 10,
+            rows: 20,
             start: 1
         }; //initial Family Search Parameters
 
@@ -31,8 +31,8 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
-            paginationPageSizes: [10, 25, 50, 100],
-            paginationPageSize: 10,
+            paginationPageSizes: [20, 50, 100],
+            paginationPageSize: 20,
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,

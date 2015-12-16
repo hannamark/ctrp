@@ -13,7 +13,7 @@ var expect = require('chai').expect;
 var helperFunctions = require('../support/helper');
 
 
-var trialCommonBar = function(){
+var abstractionCommonBar = function(){
     /*******
      * Page Object: Abstraction Dashboards
      *
@@ -69,4 +69,4 @@ var trialCommonBar = function(){
 
 };
 
-module.exports = trialCommonBar;
+module.exports = abstractionCommonBar;

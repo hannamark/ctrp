@@ -275,7 +275,7 @@ var helper = function() {
                     return true;
                 } else {
                     try{
-                        console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED, ' + error);
+                        console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED');
                         expectedVal === retTextAndSelectedValue ? callback() : callback.fail();
                         return false;
                     } catch (error){
@@ -313,7 +313,7 @@ var helper = function() {
                     return true;
                 } else {
                     try{
-                        console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED, ' + error);
+                        console.error('Unable to verify the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps FAILED');
                         expectedVal === retTextAndSelectedValue ? callback() : callback.fail();
                         return false;
                     } catch (error){
