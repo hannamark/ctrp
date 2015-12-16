@@ -50,6 +50,10 @@
     "bootstrap": "3.3.4",
     "phoneformat": "phoneformat.js#~1.0.3",
     "angular-json-tree": "*"
+  },
+  "devDependencies": {
+    "bardjs": "~0.1.8",
+    "sinon": "~1.17.2",
+    "angular-mocks": "~1.4.8"
   }
 }
-
