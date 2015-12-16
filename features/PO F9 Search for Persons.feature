@@ -59,7 +59,45 @@ Scenario: As a Curator, I will get a message if searched with no parameters
   When I searched without providing any search parameters
   Then I should get message as "At least one selection value must be entered prior to running the search"
   
-    Scenario: As a curator, when I search persons I will enter "*" as a wild card when Exact Search is selected
+ Scenario: As a curator, I can Search Organizations when the Exact Search box is checked
+    Given I am logged in to CTRP PO application
+    And I have selected the option to search persons 
+     When I have entered the exact person First Name
+     Then the exact person First Name will be displayed on the People Search Results table
+     When I have entered the exact person Last Name
+     Then the exact person Last Name will be displayed on the People Search Results table
+     When I have entered a Source ID
+     Then The exact Source ID will be displayed on the People Search Results table
+     When I have entered an Email
+     Then the exact Email will be displayed on the People Search Results table
+     When I have entered an Affiliation
+     Then I the exact Affiliation will be displayed on the People Search Results table
+     When I have entered a Phone Number
+     Then the exact Phone Number will be displayed on the People Search Results table
+     When I have entered a Username
+     Then the exact Username will be displayed on the People Search Results table
+     
+     
+     Scenario: As a curator, I can Search Organizations when the Exact Search box is NOT checked
+    Given I am logged in to CTRP PO application
+    And I have selected the option to Search Persons 
+     When I have entered a person First Name
+     Then the exact First Name will not be displayed on the People Search Results table
+     When I have entered a person Last Name
+     Then the exact person Last Name will not be displayed on the People Search Results table
+     When I have entered a Source ID
+     Then The exact Source ID will not be displayed on the People Search Results table
+     When I have entered an Email
+     Then the exact Email will be displayed on the People Search Results table
+     When I have entered an Affiliation
+     Then I the exact Affiliation will not be displayed on the People Search Results table
+     When I have entered a Phone number 
+     Then the exact phone number will not be displayed on the People Search Results table
+     When I have entered a Username
+     Then the exact Username will not be displayed on the People Search Results table
+       
+   
+  Scenario: As a curator, when I search persons I will enter "*" as a wild card when Exact Search is selected
     Given I want to search for a person using a wild card
     And I am logged in to the CTRP PO application 
     And Exact Search is selected

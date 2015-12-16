@@ -15,7 +15,7 @@
                                   $uibModal, $timeout, $state, Common) {
 
         var vm = this;
-        console.log('in header, current state name is: ', $state.current);
+        // console.log('in header, current state name is: ', $state.current);
         vm.signedIn = UserService.isLoggedIn();
         vm.username = UserService.getLoggedInUsername();
         vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
@@ -174,7 +174,7 @@
             $scope.$watch(function() {return vm.currrentState.current.name;},
                 function(newVal, oldVal) {
                 if (newVal !== oldVal) {
-                    console.log('current state name: ' + vm.currrentState.current.name);
+                    // console.log('current state name: ' + vm.currrentState.current.name);
                 }
             }, true);
         }

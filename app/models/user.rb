@@ -125,38 +125,47 @@ class  User < ActiveRecord::Base
                         when "ROLE_RO"
                           [{po_write_mode: false},
                            {registry_write_mode: false},
+                           {user_write_mode: true},
                            {pa_write_mode: false}]
                         when  "ROLE_SUPER"
                           [{po_write_mode: true},
                            {registry_write_mode: true},
+                           {user_write_mode: true},
                            {pa_write_mode: true}]
                         when  "ROLE_ADMIN"
                           [{po_write_mode: true},
                            {registry_write_mode: true},
+                           {user_write_mode: true},
                            {pa_write_mode: true}]
                         when  "ROLE_CURATOR"
                           [{po_write_mode: true},
                            {registry_write_mode: false},
+                           {user_write_mode: true},
                            {pa_write_mode: false}]
                         when  "ROLE_TRIAL-SUBMITTER"
                           [{po_write_mode: false},
                            {registry_write_mode: true},
+                           {user_write_mode: true},
                            {pa_write_mode: true}]
                         when  "ROLE_ACCRUAL-SUBMITTER"
                           [{po_write_mode: false},
                            {registry_write_mode: false},
+                           {user_write_mode: true},
                            {pa_write_mode: false}]
                         when  "ROLE_SITE-SU"
                           [{po_write_mode: false},
                            {registry_write_mode: true},
+                           {user_write_mode: true},
                            {pa_write_mode: false}]
                         when  "ROLE_ABSTRACTOR"
                           [{po_write_mode: false},
                            {registry_write_mode: false},
+                           {user_write_mode: true},
                            {pa_write_mode: true}]
                         when  "ROLE_ABSTRACTOR-SU"
                           [{po_write_mode: false},
                            {registry_write_mode: false},
+                           {user_write_mode: true},
                            {pa_write_mode: true}]
                       end
   end
