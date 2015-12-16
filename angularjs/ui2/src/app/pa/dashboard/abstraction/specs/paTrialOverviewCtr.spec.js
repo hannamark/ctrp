@@ -5,12 +5,10 @@ describe('ctrp.app.pa.dashboard', function() {
 
     beforeEach(function() {
         bard.appModule('ctrp.app.pa.dashboard');
-        bard.inject('$controller', '$state', '$stateParams', 'PATrialService',
-            '$scope', 'TrialService', '$timeout', 'URL_CONFIGS', 'Common', 'MESSAGES');
+        bard.inject(this, '$controller', '$log', '$q', '$rootScope', 'PATrialService');
     });
 
     beforeEach(function() {
-
         controller = $controller('paTrialOverviewCtrl');
     });
 
