@@ -7,6 +7,7 @@
 ps -ef | grep [r]ails | grep -v grep | awk '{print $2}' | xargs kill -15
 
 #Fully reset db (depends on properly configured config/database.yml)
+bundle install
 rake db:drop
 rake db:create
 rake db:migrate
@@ -24,7 +25,7 @@ cd /local/content/ctrp/apps/ctrp/ && rails s"
 end tell'
 
 #Wait for WEBrick to start. Increase for npm and bower if needed
-sleep 10
+sleep 15
 
 #Instantiate data via REST and ActiveRecord db seeding
 ruby db/add_users.rb
