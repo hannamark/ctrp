@@ -137,7 +137,7 @@ AddOrganizationsPage = function(){
     };
 
     this.getVerifyAddSourceStatusDefault = function(sourceStatusDefault){
-        addOrg.getVerifyheader(this.addSourceStatusDefault,sourceStatusDefault,"Get Organization by Source Status field");
+        addOrg.getVerifyListValue(this.addSourceStatusDefault,sourceStatusDefault,"Get Organization by Source Status field");
     };
 
     this.getVerifyAddAddress = function(address){

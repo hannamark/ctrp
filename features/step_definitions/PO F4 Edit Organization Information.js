@@ -271,7 +271,7 @@ module.exports = function() {
             selectItem.selectSourceStatus('InActive');
             addOrg.setAddAlias('editAl44');
             addOrg.clickSaveAlias();
-            addOrg.setAddAlias('alias29');
+            addOrg.setAddAlias('aliasInAliasbox');
             addOrg.setAddAddress('address1');
             addOrg.setAddAddress2('address2');
             selectItem.selectCountry('Nepal');
@@ -309,6 +309,7 @@ module.exports = function() {
             addOrg.getVerifyAddCountry('United States');
             addOrg.getVerifyAddState('Florida');
             addOrg.getVerifyAddSourceStatusDefault('Active');
+            console.log('Test the alias added in field is clear after Reset');
             addOrg.getVerifyAddOrgAlias('');
         });
         browser.sleep(25).then(callback);
