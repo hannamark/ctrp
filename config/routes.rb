@@ -123,6 +123,7 @@ Rails.application.routes.draw do
           post 'search'
           get 'search_pa'
           post 'search_pa'
+          post 'validate_status'
         end
       end
       resources :protocol_id_origins

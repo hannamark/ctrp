@@ -421,6 +421,7 @@
                 vm.status_date = null;
                 vm.trial_status_id = null;
                 vm.why_stopped = null;
+                vm.validateStatus();
             } else {
                 alert('Please provide a Status Date and select a Status');
             }
@@ -620,6 +621,15 @@
         $scope.$on(MESSAGES.DOCUMENT_UPLOADED, function() {
             vm.docUploadedCount++;
         });
+
+        // Validate Trials Stautuses
+        vm.validateStatus = function() {
+            TrialService.validateStatus({"statuses": vm.addedStatuses}).then(function(response) {
+                console.log(response);
+            }).catch(function(err) {
+                console.log("error in validating trial status: " + err);
+            });
+        };
 
         activate();
 

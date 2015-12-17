@@ -171,6 +171,9 @@ class TrialsController < ApplicationController
     end
   end
 
+  def validate_status
+    transition_matrix = JSON.parse(AppSetting.find_by_code('TRIAL_STATUS_TRANSITION').big_value)
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
