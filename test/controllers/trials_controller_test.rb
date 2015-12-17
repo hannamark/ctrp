@@ -25,6 +25,7 @@ class TrialsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+
   test "should update trial" do
     patch :update, id: @trial, trial: { comp_date: @trial.comp_date, comp_date_qual: @trial.comp_date_qual, data_monitor_indicator: @trial.data_monitor_indicator, grant_question: @trial.grant_question, history: @trial.history, ind_ide_question: @trial.ind_ide_question, intervention_indicator: @trial.intervention_indicator, investigator_id: @trial.investigator_id, lead_org_id: @trial.lead_org_id, lead_protocol_id: @trial.lead_protocol_id, nci_id: @trial.nci_id, official_title: @trial.official_title, phase_id: @trial.phase_id, pi_id: @trial.pi_id, pilot: @trial.pilot, primary_comp_date: @trial.primary_comp_date, primary_comp_date_qual: @trial.primary_comp_date_qual, primary_purpose_id: @trial.primary_purpose_id, primary_purpose_other: @trial.primary_purpose_other, program_code: @trial.program_code, research_category_id: @trial.research_category_id, responsible_party_id: @trial.responsible_party_id, sec801_indicator: @trial.sec801_indicator, secondary_purpose_id: @trial.secondary_purpose_id, secondary_purpose_other: @trial.secondary_purpose_other, sponsor_id: @trial.sponsor_id, start_date: @trial.start_date, start_date_qual: @trial.start_date_qual, study_source_id: @trial.study_source_id }, format: "json"
     assert_template :show
@@ -33,15 +34,14 @@ class TrialsControllerTest < ActionController::TestCase
 
   test "should destroy trial" do
     assert_difference('Trial.count', -1) do
-      delete :destroy, id: @trial, format: "json"
+      delete :destroy, id: @trial.id
     end
-
-    assert_response :no_content
   end
+
 
   # Trial search tests
   test "should search trial by Protocol ID" do
-    ['54321', 'ABC123', 'NCI-2015-00003', '5*', '*1', '*3*'].each do |x|
+    ['54321', '5*', '*1', '*3*'].each do |x|
       test_response = post :search, protocol_id: x, format: 'json'
       search_result = JSON.parse(test_response.body)
       assert_equal '54321', search_result['trials'][0]['lead_protocol_id']
@@ -61,6 +61,44 @@ class TrialsControllerTest < ActionController::TestCase
     test_response = post :search, phase: phase.code, format: 'json'
     search_result = JSON.parse(test_response.body)
     assert_equal phase.name, search_result['trials'][0]['phase']
+  end
+
+  test "should search trial by Milestone" do
+    milestone = milestones(:one)
+    #puts "milestone = #{milestone.inspect}"
+    #puts "@trial = #{@trial.inspect}"
+    #puts "@trial milestones = #{@trial.milestone_wrappers.inspect}"
+    test_response = get :search_pa, official_title: "*", milestone: milestone.code, format: 'json'
+    search_result = JSON.parse(test_response.body)
+    #puts "search_result = #{search_result.inspect}"
+    assert_equal milestone.name, search_result['trials'][0]['selected_milestone']
+  end
+
+  test "should search trial by TrialStatus" do
+    trial_status = trial_statuses(:one)
+    #trial = trials(:three)
+    #puts "trial_status = #{trial_status.inspect}"
+    #puts "trial = #{trial.trial_status_wrappers.inspect}"
+    test_response = get :search_pa, official_title: "*", trial_status: trial_status.code, format: 'json'
+    search_result = JSON.parse(test_response.body)
+    #puts "search_result = #{search_result.inspect}"
+    assert_equal trial_status.name, search_result['trials'][0]['current_trial_status']
+  end
+
+  test "should search trial by ProcessingStatus" do
+    processing_status = processing_statuses(:one)
+    test_response = get :search_pa, official_title: "*", processing_status: processing_status.code, format: 'json'
+    search_result = JSON.parse(test_response.body)
+    assert_equal processing_status.name, search_result['trials'][0]['current_processing_status']
+  end
+
+  test "should search trial by OtherIds" do
+    trial = trials(:three)
+    protocol_id_origin = protocol_id_origins(:one)
+    test_response = get :search_pa, official_title: "*", protocol_id_origin: protocol_id_origin.code, format: 'json'
+    search_result = JSON.parse(test_response.body)
+    #puts "search_result = #{search_result.inspect}"
+    assert_equal protocol_id_origin.code + " " + trial.other_ids.by_value(protocol_id_origin.code).first.protocol_id, search_result['trials'][0]['other_ids']
   end
 
   test "should search trial by Purpose" do
@@ -91,6 +129,7 @@ class TrialsControllerTest < ActionController::TestCase
       assert_equal 'Test Org 3', search_result['trials'][0]['lead_org']
     end
   end
+
 
   test "should search trial by Sponsor" do
     ['Test Org 4', 'Test*', '*4', '*Org*'].each do |x|
@@ -125,4 +164,5 @@ class TrialsControllerTest < ActionController::TestCase
     search_result = JSON.parse(test_response.body)
     assert_equal '54321', search_result['trials'][0]['lead_protocol_id']
   end
+
 end

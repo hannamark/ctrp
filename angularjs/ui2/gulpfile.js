@@ -167,6 +167,7 @@ gulp.task('build-specs', ['templatecache'], function() {
         specs = [].concat(specs, config.serverIntegrationSpecs);
     }
 
+
     return gulp
         .src(config.specRunner)
         .pipe(wiredep(options))

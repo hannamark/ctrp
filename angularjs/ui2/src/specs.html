@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <title>CTRP Angular Unite Tests</title>
+
+    <style>
+        body {
+            font: 20px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+            padding-left: 20px;
+        }
+    </style>
+
+    <!--BEWARE of using any app styles as @media can screw up tests -->
+    <link rel="stylesheet" href="node_modules/mocha/mocha.css">
+
+</head>
+<body>
+
+<h1><a href="specs.html">Spec Runner</a></h1>
+<p><strong>Make sure the REMOTE server is running</strong><br/>
+    Click on a <em>description title</em> to narrow the scope to just its specs
+    (see "<a href="http://mochajs.github.io/mocha/#grep-option" target="_blank" title="MochaJS grep option">
+        ?grep</a>" in address bar).<br/>
+    Click on a <em>spec title</em> to see the test implementation.<br/>
+    Click on <em>page title</em> to start over.
+</p>
+
+<div id="mocha"></div>
+
+    <!-- inject:testlibraries:js -->
+    <script src="/node_modules/mocha/mocha.js"></script>
+    <script src="/node_modules/chai/chai.js"></script>
+    <script src="/node_modules/mocha-clean/index.js"></script>
+    <script src="/node_modules/sinon-chai/lib/sinon-chai.js"></script>
+    <!-- endinject -->
+
+    <script>
+        expect = chai.expect;
+        AssertionError = chai.AssertionError;
+        mocha.setup('bdd');
+        mocha.traceIgnores = ['mocha.js', 'chai.js', 'angular.js'];
+    </script>
+
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-breadcrumb/release/angular-breadcrumb.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-mocks/angular-mocks.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
+    <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
+    <script src="bower_components/angular-ui-scrollpoint/dist/scrollpoint.js"></script>
+    <script src="bower_components/async/lib/async.js"></script>
+    <script src="bower_components/jasmine/lib/jasmine-core/jasmine.js"></script>
+    <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+    <script src="bower_components/ng-idle/angular-idle.js"></script>
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/angular-material-icons/angular-material-icons.min.js"></script>
+    <script src="bower_components/angularUtils-pagination/dirPagination.js"></script>
+    <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/phoneformat/dist/phone-format.js"></script>
+    <script src="bower_components/sinon/index.js"></script>
+    <script src="bower_components/bardjs/dist/bard.js"></script>
+    <script src="bower_components/bardjs/dist/bard-ngRouteTester.js"></script>
+    <!-- endbower -->
+
+    <!-- dependency exception: noninjectable -->
+    <script src="bower_components/angular-json-tree/build/angular-json-tree.js"></script>
+    <!-- end of dependency exception -->
+
+    <!-- inject:js -->
+    <script src="/src/app/user/ctrp.app.user.js"></script>
+    <script src="/src/app/user/userSignupCtrl.js"></script>
+    <script src="/src/app/user/userListCtrl.js"></script>
+    <script src="/src/app/user/userDetailCtrl.js"></script>
+    <script src="/src/app/user/userCtrl.js"></script>
+    <script src="/src/app/user/userChangePasswordCtrl.js"></script>
+    <script src="/src/app/modules/ctrp.module.routes.js"></script>
+    <script src="/src/app/user/user.routes.js"></script>
+    <script src="/src/app/user/user.constants.js"></script>
+    <script src="/src/app/user/gsaModalCtrl.js"></script>
+    <script src="/src/app/user/gsaCtrl.js"></script>
+    <script src="/src/app/registry/ctrp.app.registry.js"></script>
+    <script src="/src/app/registry/registration/trialDetailCtrl.js"></script>
+    <script src="/src/app/registry/registration/trialCtrl.js"></script>
+    <script src="/src/app/registry/registration/trial-registration.routes.js"></script>
+    <script src="/src/app/po/ctrp.app.po.js"></script>
+    <script src="/src/app/po/person/personSearchCtrl.js"></script>
+    <script src="/src/app/po/person/personDetailCtrl.js"></script>
+    <script src="/src/app/po/person/personCtrl.js"></script>
+    <script src="/src/app/po/person/person.routes.js"></script>
+    <script src="/src/app/po/person/ModalInstancePersonCtrl.js"></script>
+    <script src="/src/app/po/person/directives/personAdvSearchModalButton.js"></script>
+    <script src="/src/app/po/person/directives/advancedPersonSearchForm.js"></script>
+    <script src="/src/app/po/organization/phoneValidator.js"></script>
+    <script src="/src/app/po/organization/orgDetailCtrl.js"></script>
+    <script src="/src/app/po/organization/organizationCtrl.js"></script>
+    <script src="/src/app/po/organization/organization.routes.js"></script>
+    <script src="/src/app/po/organization/ModalInstanceCtrl.js"></script>
+    <script src="/src/app/po/organization/directives/advancedOrgSearchModalButton.js"></script>
+    <script src="/src/app/po/organization/directives/advancedOrgSearchForm2.js"></script>
+    <script src="/src/app/po/organization/advancedOrgSearchModalCtrl.js"></script>
+    <script src="/src/app/po/family/ModalInstanceFamilyMembersCtrl.js"></script>
+    <script src="/src/app/po/family/ModalInstanceFamilyCtrl.js"></script>
+    <script src="/src/app/po/family/familyDetailCtrl.js"></script>
+    <script src="/src/app/po/family/familyCtrl.js"></script>
+    <script src="/src/app/po/family/family.routes.js"></script>
+    <script src="/src/app/pa/search/trials/search-trials.routes.js"></script>
+    <script src="/src/app/pa/ctrp.app.pa.js"></script>
+    <script src="/src/app/pa/search/trials/paTrialCtrl.js"></script>
+    <script src="/src/app/pa/search/PATrialService.js"></script>
+    <script src="/src/app/pa/search/ctrp.app.pa.search.js"></script>
+    <script src="/src/app/pa/layout/paModuleMenuPanelCtrl.js"></script>
+    <script src="/src/app/pa/layout/ctrp.app.pa.layout.js"></script>
+    <script src="/src/app/pa/dashboard/results_reporting/results-reporting.routes.js"></script>
+    <script src="/src/app/pa/dashboard/gov_import/gov-import.routes.js"></script>
+    <script src="/src/app/pa/dashboard/ctrp.app.pa.dashboard.js"></script>
+    <script src="/src/app/pa/dashboard/abstraction/trialIdentificationCtrl.js"></script>
+    <script src="/src/app/pa/dashboard/abstraction/trial-abstraction.routes.js"></script>
+    <script src="/src/app/pa/dashboard/abstraction/paTrialOverviewCtrl.js"></script>
+    <script src="/src/app/modules/widgets/ctrp.module.widgets.js"></script>
+    <script src="/src/app/modules/widgets/forms/ctrp.widgets.autoFocus.directive.js"></script>
+    <script src="/src/app/modules/widgets/filters/ctrp.widgets.filter.reverseList.js"></script>
+    <script src="/src/app/modules/widgets/ctrp.widgets.restrictionField.directive.js"></script>
+    <script src="/src/app/modules/widgets/ctrp.widgets.in-place-edit.directive.js"></script>
+    <script src="/src/app/modules/widgets/comment/ctrp.widgets.comment-push-in-panel.directive.js"></script>
+    <script src="/src/app/modules/widgets/comment/ctrp.widgets.comment-panel.directive.js"></script>
+    <script src="/src/app/modules/widgets/comment/ctrp.widgets.comment-modal.directive.js"></script>
+    <script src="/src/app/modules/widgets/comment/CommentService.js"></script>
+    <script src="/src/app/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js"></script>
+    <script src="/src/app/modules/widgets/buttons/ctrp.widgets.backButton.directive.js"></script>
+    <script src="/src/app/modules/validators/ctrp.module.validators.js"></script>
+    <script src="/src/app/modules/validators/ctrp.validateFormSubmission.directive.js"></script>
+    <script src="/src/app/modules/validators/ctrp.validateFileType.directive.js"></script>
+    <script src="/src/app/modules/validators/ctrp.dateLaterThan.directive.js"></script>
+    <script src="/src/app/modules/data_services/ctrp.module.dataservices.js"></script>
+    <script src="/src/app/modules/data_services/UserService.js"></script>
+    <script src="/src/app/modules/data_services/TrialService.js"></script>
+    <script src="/src/app/modules/data_services/PersonService.js"></script>
+    <script src="/src/app/modules/data_services/OrganizationService.js"></script>
+    <script src="/src/app/modules/data_services/GeoLocationService.js"></script>
+    <script src="/src/app/modules/data_services/FamilyService.js"></script>
+    <script src="/src/app/modules/data_services/DateService.js"></script>
+    <script src="/src/app/modules/ctrp.module.underscoreWrapper.js"></script>
+    <script src="/src/app/modules/ctrp.module.timeout.js"></script>
+    <script src="/src/app/modules/ctrp.module.promisewithtimeoutservice.js"></script>
+    <script src="/src/app/modules/ctrp.module.promiseservice.js"></script>
+    <script src="/src/app/modules/ctrp.module.constants.js"></script>
+    <script src="/src/app/modules/ctrp.module.constants.host.js"></script>
+    <script src="/src/app/modules/ctrp.module.common.js"></script>
+    <script src="/src/app/modules/ctrp.module.authInterceptor.js"></script>
+    <script src="/src/app/modules/cache_service/ctrp.module.localCache.js"></script>
+    <script src="/src/app/modules/cache_service/LocalCacheService.js"></script>
+    <script src="/src/app/layout/ctrp.app.layout.js"></script>
+    <script src="/src/app/layout/headerNavigationCtrl.js"></script>
+    <script src="/src/app/layout/footerCtrl.js"></script>
+    <script src="/src/app/ctrp.app.main.js"></script>
+    <script src="/src/app/administrative/registered_user_details/registered-user-details.routes.js"></script>
+    <script src="/src/app/administrative/new_biomarker_requests/new-biomarker-requests.routes.js"></script>
+    <script src="/src/app/administrative/manage_site_admins/manage-site-admins.routes.js"></script>
+    <script src="/src/app/administrative/manage_nclt_terms/manage-nclt-terms.routes.js"></script>
+    <script src="/src/app/administrative/ctrp.app.administrative.js"></script>
+    <script src="/src/app/accrual/pending_accrual_queue/pending-accrual-queue.routes.js"></script>
+    <script src="/src/app/accrual/manage_flagged_trails/manage-flagged-trails.routes.js"></script>
+    <script src="/src/app/accrual/manage_accrual_access/manage-accrual-access.routes.js"></script>
+    <script src="/src/app/accrual/ctrp.app.accrual.js"></script>
+    <script src="/src/app/accrual/accruals_outofscope_trials/accruals-outofscope-trials.routes.js"></script>
+    <!-- endinject -->
+
+    <!-- inject:spechelpers:js -->
+    <!-- endinject -->
+
+    <!-- inject:specs:js -->
+    <script src="/src/app/pa/dashboard/abstraction/specs/paTrialOverviewCtr.spec.js"></script>
+    <!-- endinject -->
+
+    <!-- inject:templates:js -->
+    <script src="/.tmp/templates.js"></script>
+    <!-- endinject -->
+
+    <script>
+        mocha.run();
+    </script>
+
+</body>
+</html>

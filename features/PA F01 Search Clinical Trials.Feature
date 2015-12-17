@@ -2,7 +2,7 @@
 Feature: PA F01 Search Clinical Trials
 
 As any CTRP PA User, I can search CTRP clinical trials by various criteria and trial ownership
-
+  @runthis
   Scenario: #1 I can search for clinical trials registered in CTRP
       Given I am logged into the CTRP Protocol Abstraction application
       And I am on the Search Clinical Trials Screen
