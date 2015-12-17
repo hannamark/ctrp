@@ -46,6 +46,7 @@ json.trials do
       other_ids_string = ""
       delimiter = ""
       other_ids.each do |o|
+        next if o.protocol_id_origin.nil?
         name = o.protocol_id_origin.name
         unless name.nil?
           name.gsub!("Identifier", "")
