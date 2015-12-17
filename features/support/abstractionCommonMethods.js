@@ -104,19 +104,19 @@ var abstractionCommonMethods = function(){
         console.log(configuration.trialSubmitterPWD);
 
         browser.get(configuration.uiUrl);
-
+        //ctrp abstractor user
         if (usrID === 'ctrpabstractor'){
             login.login(configuration.abstractorUID, configuration.abstractorPWD);
             login.accept();
             helper.wait_for(5000);
         }
-
+        //ctrp curator user
         if (usrID === 'ctrpcurator'){
             login.login(configuration.curatorUID, configuration.curatorPWD);
             login.accept();
             helper.wait_for(5000);
         }
-
+        //ctrp trial submitter user
         if (usrID === 'ctrptrialsubmitter'){
             login.login(configuration.trialSubmitterUID, configuration.trialSubmitterPWD);
             login.accept();
