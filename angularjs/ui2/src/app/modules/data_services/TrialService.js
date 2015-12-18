@@ -104,6 +104,7 @@
             getAcceptedFileTypes: getAcceptedFileTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
+            validateStatus: validateStatus,
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial
         };
@@ -852,6 +853,17 @@
             }).error(function (data, status, headers, config) {
                 $log.info('file ' + config._file.name + ' upload error. error status: ' + status);
             });
+        }
+
+        /**
+         *
+         *
+         * @param statuses
+         */
+        function validateStatus(statuses) {
+            if (!!statuses) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_TRIAL_STATUS, statuses);
+            }
         }
 
         /**
