@@ -1,13 +1,13 @@
 @PA @global
-Feature: PA F04 Trial History Information -Submission
+Feature: PA F04 Trial History Information - Submission
 
-As any CTRP PA User, I can View Trial History Information for Submissions and Edit the submission Type
+As any CTRP PA User, I can View Trial History Information for Submissions and Edit the Submission Type
 
 Scenario: #1 I can view Trial History Information for Submissions
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
-Then I can view the Trial History Information type for Submissions for each submission number Ordered by greatest submission number:
+Then I can view the Trial History Information type for Submissions and Updates for each submission Ordered by greatest submission number and then most recent Date:
 |Submission Number| 
 |Submission Date|
 |Submission Type|
@@ -58,6 +58,7 @@ And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
 Then the trial documents are displayed
 And the documents that are attached for each submission are identified as original documents 
+And the documents that are attached for each Update are identified as original documents
 
 Scenario: #6 I can view Trial History Information for Original Submission
 Given I am logged into the CTRP Protocol Abstraction application
