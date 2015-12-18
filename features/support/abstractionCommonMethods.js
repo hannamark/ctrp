@@ -18,7 +18,10 @@ var helperFunctions = require('../support/helper');
 var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
 var testConfiguration = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testConfig/';
-
+//Trial Common Bar
+var trialMenuItemList = require('../support/trialCommonBar');
+//Abstraction Common Bar
+var abstractionPageMenu = require('../support/abstractionCommonBar');
 
 var abstractionCommonMethods = function(){
     /*******
@@ -28,6 +31,8 @@ var abstractionCommonMethods = function(){
      *******/
     var login = new loginPage();
     var helper = new helperFunctions();
+    var trialHome = new trialMenuItemList();
+    var abstractPageMenu = new abstractionPageMenu();
     var reader;
 
     /*****************************************
@@ -47,13 +52,13 @@ var abstractionCommonMethods = function(){
      * read text input
      *****************************************/
     this.readText = function(filePath) {
-        var output = ""; //placeholder for text output
+        var output = "";
         if(filePath.files && filePath.files[0]) {
             reader.onload = function (e) {
                 output = e.target.result;
                 returnContents(output);
                 return output;
-            };//end onload()
+            };
             reader.readAsText(filePath.files[0]);
         }
         else if(ActiveXObject && filePath) {
@@ -107,18 +112,22 @@ var abstractionCommonMethods = function(){
             login.login(configuration.abstractorUID, configuration.abstractorPWD);
             login.accept();
             helper.wait_for(5000);
+            expect(abstractPageMenu.homeSearchTrials.isDisplayed()).to.eventually.equal(true);
+            expect(abstractPageMenu.homeAbstractionDashboards.isDisplayed()).to.eventually.equal(true);
         }
         //ctrp curator user
         if (usrID === 'ctrpcurator'){
             login.login(configuration.curatorUID, configuration.curatorPWD);
             login.accept();
             helper.wait_for(5000);
+            expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
         }
         //ctrp trial submitter user
         if (usrID === 'ctrptrialsubmitter'){
             login.login(configuration.trialSubmitterUID, configuration.trialSubmitterPWD);
             login.accept();
             helper.wait_for(5000);
+            expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
         }
     };
 
@@ -146,18 +155,22 @@ var abstractionCommonMethods = function(){
             login.login(configuration.abstractorUID, configuration.abstractorPWD);
             login.reject();
             helper.wait_for(5000);
+            expect(abstractPageMenu.homeSearchTrials.isDisplayed()).to.eventually.equal(false);
+            expect(abstractPageMenu.homeAbstractionDashboards.isDisplayed()).to.eventually.equal(false);
         }
         //ctrp curator user
         if (usrID === 'ctrpcurator'){
             login.login(configuration.curatorUID, configuration.curatorPWD);
             login.reject();
             helper.wait_for(5000);
+            expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(false);
         }
         //ctrp trial submitter user
         if (usrID === 'ctrptrialsubmitter'){
             login.login(configuration.trialSubmitterUID, configuration.trialSubmitterPWD);
             login.reject();
             helper.wait_for(5000);
+            expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(false);
         }
 
     }
