@@ -165,6 +165,21 @@ Milestone.find_or_create_by(code: 'ONG', name: 'On-going')
 Milestone.find_or_create_by(code: 'AVD', name: 'Abstraction Verified Date')
 Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date')
 
+SubmissionType.find_or_create_by(code: 'ORI', name: 'Original')
+SubmissionType.find_or_create_by(code: 'AMD', name: 'Amendment')
+SubmissionType.find_or_create_by(code: 'UPD', name: 'Update')
+
+SubmissionSource.find_or_create_by(code: 'CCR', name: 'CCR')
+SubmissionSource.find_or_create_by(code: 'CTEP', name: 'CTEP')
+SubmissionSource.find_or_create_by(code: 'DCP', name: 'DCP')
+SubmissionSource.find_or_create_by(code: 'CCT', name: 'Cancer Center')
+
+SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registery')
+SubmissionMethod.find_or_create_by(code: 'BAT', name: 'Batch')
+SubmissionMethod.find_or_create_by(code: 'CTI', name: 'ClinicalTrials.gov Import')
+SubmissionMethod.find_or_create_by(code: 'PDQ', name: 'PDQ')
+SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
+SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
