@@ -2,7 +2,7 @@
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
-                Trial Identification <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+                Trial NCI Specific Information <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
             <!-- first row in the accordion body -->
             <div class="row">
@@ -10,6 +10,15 @@
                     <s><strong>Clinical Research Category:</strong>
                     <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span></s>
                 </p> -->
+                <div class="form-group">
+                    <label for="studySource" class="control-label col-xs-12 col-sm-3">Study Source: </label>
+                    <div class="col-xs-12 col-sm-9">
+                        <select class="form-control input-sm" id="study_source" ng-model="trialNciView.study_source">
+                            <option value="">-Select a Study Source-</option>
+                            <option ng-repeat="studySource in trialNciView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
+                        </select>
+                    </div>
+                </div>
 
                 <p>
                     <strong>NCI Trial ID: </strong>
@@ -17,10 +26,6 @@
                     <span>{{paTrialOverview.trialDetailObj.nci_id}}</span>
                 </p>
 
-                <p>
-                    <strong>ClinicalTrials.gov XML required? </strong>
-                    <span></span>
-                </p>
 
                 <!-- <p>
                     <s>
