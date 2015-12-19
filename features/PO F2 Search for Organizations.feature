@@ -76,7 +76,7 @@ When I select the country from a list of countries displayed by CTRP
 And I submit my search request
 Then the system should display all organizations whose address contains the country
 And the result should be sorted by Organization Name
-
+@runthis
 Scenario: As any Curator, I am able to search for organizations by zip code
 Given I know the name of the zip code I wish to search for
 And I am logged in to CTRP PO application
@@ -95,7 +95,7 @@ And I submit my search request
 Then the system should display all organizations with matching phone numbers
 And the result should be sorted by Organization Name
 
-
+@runthisalso
 Scenario: As any Curator, search for organizations with multiple parameters
 Given I know multiple parameters of the organization I wish to search for
 And I am logged in to CTRP PO application

@@ -310,7 +310,7 @@ module.exports = function() {
             addOrg.getVerifyAddState('Florida');
             addOrg.getVerifyAddSourceStatusDefault('Active');
             console.log('Test the alias added in field is clear after Reset');
-            addOrg.getVerifyAddOrgAlias('');
+         //   addOrg.getVerifyAddOrgAlias('');
         });
         browser.sleep(25).then(callback);
     });

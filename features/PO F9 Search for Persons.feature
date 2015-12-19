@@ -58,7 +58,7 @@ Scenario: As a Curator, I will get a message if searched with no parameters
   And I am on the search persons screen
   When I searched without providing any search parameters
   Then I should get message as "At least one selection value must be entered prior to running the search"
-
+@runthis
  Scenario: As a curator, I can Search Persons when the Exact Search box is checked
     Given I am logged in to CTRP PO application
     And I have selected the option to search persons
