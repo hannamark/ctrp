@@ -241,8 +241,8 @@ Scenario: As a Curator, I can select any organization in a search result and dis
 Scenario: As a Curator, when I search I will enter "*" as a wild card when Exact Search is selected
 Given I want to search for an Organization with wild card
 And I am logged in to CTRP PO application
-And Exact Search is selected
 And I am on a Organization search screen
+And Exact Search is selected
 When I enter "*" in a search field
 Then Organization Search Results will display all found organizations
 
@@ -256,31 +256,52 @@ Then  all values in all fields will be cleared
 
   Scenario: As a curator, I can Search Organizations when the Exact Search box is checked
     Given I am logged in to CTRP PO application
-    And I have selected the option to search for an organization 
-     When I have entered the exact organization name
+    And I have selected the option to search for an organization
+    And Exact Search is selected
+     When I have entered the "exact" organization name
      Then the exact Organization name will be displayed on the organization search results table 
-     When I have entered a Source ID
+     When I have entered the "exact" Source ID
      Then The exact Source ID will be displayed on the Organization search results table
-     When I have entered a City
-     Then the exact City name will be displayed on the Organization search resukts table
-     When I have entered a username
-     Then I the exact username will be displayed on the Organization search results table
-     When I have entered a Family Name
+     When I have entered the "exact" City
+     Then the exact City name will be displayed on the Organization search results table
+     When I have entered the "exact" username
+     Then The exact username will be displayed on the Organization search results table
+     When I have entered the "exact" Family Name
      Then the exact Family Name will be displayed on the Organization search results table
-     When I have entered a Postal Code
+     When I have entered the "exact" Postal Code
      Then the exact Postal Code will be displayed on the Organization search results table
-     When I have entered a phone number 
+     When I have entered the "exact" phone number
      Then the exact phone number will be displayed on the Organization search results table
-     When I have entered an email 
+     When I have entered the "exact" email
      Then the exact email will be displayed on the Organization search results table
-     
-     Scenario: As a curator, I can Search Organizations when the Exact Search box is NOT checked
-    Given I want to search for an Organization with wild card
-    And I am logged in to CTRP PO application
-    And the Exact Search box is NOT selected
-    And I am on an Organization search screen
-     When I have entered text in a search field
-     Then the search will perform a wild card search 
+
+
+  Scenario: As a curator, I can Search Organizations when the Exact Search box is NOT checked
+    Given I am logged in to CTRP PO application
+    And I have selected the option to search for an organization
+    And Exact Search is not selected
+    When I have entered the "partial" organization name
+    Then the exact Organization name will be displayed on the organization search results table
+    When I have entered the "partial" Source ID
+    Then The exact Source ID will be displayed on the Organization search results table
+    When I have entered the "partial" City
+    Then the exact City name will be displayed on the Organization search results table
+    When I have entered the "partial" username
+    Then The exact username will be displayed on the Organization search results table
+    When I have entered the "partial" Family Name
+    Then the exact Family Name will be displayed on the Organization search results table
+    When I have entered the "partial" Postal Code
+    Then the exact Postal Code will be displayed on the Organization search results table
+    When I have entered the "partial" phone number
+    Then the exact phone number will be displayed on the Organization search results table
+    When I have entered the "partial" email
+    Then the exact email will be displayed on the Organization search results table
+
+     Scenario: As a curator, I cannot Search Results when the Exact Search box is checked and Exact Match is not provided
+    Given I am logged in to CTRP PO application
+    And Exact Search is selected
+    And I dont provide the Exact criteria
+    Then the search result should not be displayed
      
 
 
