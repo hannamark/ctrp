@@ -19,6 +19,8 @@ var abstractionCommonBar = function(){
      *
      *
      *******/
+    this.homeSearchTrials = element(By.xpath('//a[contains(text(),"Search Trials")]'));
+    this.homeAbstractionDashboards = element(By.xpath('//a[contains(text(),"Abstraction Dashboards")]'));
     var homeAbstractionDashboards = element(by.css('a[href="#/main/pa_trials"]'));
     this.homeMenu = element(by.linkText('Home'));
     this.dashboardMenu = element(by.linkText('Dashboards'));

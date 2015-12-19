@@ -166,11 +166,25 @@ class TrialsController < ApplicationController
       if params[:protocol_origin_type].present?
         @trials = @trials.select{|trial| trial.other_ids.by_value(params[:protocol_origin_type]).size>0}
       end
+      if params[:admin_checkout].present?
+        Rails.logger.info "Admin Checkout"
+        @trials = @trials.select{|trial| !trial.admin_checkout.nil?}
+      else
+        Rails.logger.info "NO Admin Checkout"
+      end
+      if params[:scientific_checkout].present?
+        Rails.logger.info "Science Checkout"
+        @trials = @trials.select{|trial| !trial.scientific_checkout.nil?}
+      end
+
     else
       @trials = []
     end
   end
 
+  def validate_status
+    transition_matrix = JSON.parse(AppSetting.find_by_code('TRIAL_STATUS_TRANSITION').big_value)
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
