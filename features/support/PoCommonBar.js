@@ -11,7 +11,7 @@ var helperFunctions = require('../support/helper');
 
 var PoCommonBar = function(){
     this.home = element(by.css('a[href="#/main/welcome"]'));
-    var homeEnterOrganizations = element(by.css('a[href="#/main/organizations"]'));
+    this.homeEnterOrganizations = element(by.css('a[href="#/main/organizations"]'));
     this.organizations = element(by.linkText('Organizations & Families'));
     this.listOrganizations = element(by.css('a[ui-sref="main.organizations"]')); //element(by.css('a[href="#/main/organizations"]'));
     this.addOrganizations = element(by.css('a[href="#/main/new_organization"]'));
@@ -55,7 +55,7 @@ var PoCommonBar = function(){
     var edit_Person_Page_Text = 'Edit Person';
 
 
-
+    var self = this;
 
     this.clickHome = function(){
         helper.clickLink(this.home, "Home link");
@@ -63,10 +63,10 @@ var PoCommonBar = function(){
 
 
     this.clickHomeEnterOrganizations = function(){
-        homeEnterOrganizations.isPresent().then(function(retVal){
+        self.homeEnterOrganizations.isPresent().then(function(retVal){
             console.log('value of ret val : ' + retVal);
             if (retVal === true) {
-                helper.clickLink(homeEnterOrganizations, "Home link");
+                helper.clickLink(self.homeEnterOrganizations, "Home link");
             }
         });
     };
