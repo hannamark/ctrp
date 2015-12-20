@@ -95,7 +95,7 @@ And I submit my search request
 Then the system should display all organizations with matching phone numbers
 And the result should be sorted by Organization Name
 
-@runthisalso
+
 Scenario: As any Curator, search for organizations with multiple parameters
 Given I know multiple parameters of the organization I wish to search for
 And I am logged in to CTRP PO application

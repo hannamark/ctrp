@@ -15,7 +15,7 @@ var mainSelectItemPage = require('../support/CommonSelectList.js');
 var projectFunctionsPage= require('../support/projectMethods');
 var moment = require ('moment');
 var abstractionCommonMethods = require('../support/abstractionCommonMethods');
-var Q = require('q');
+//var Q = require('q');
 
 
 module.exports = function() {
@@ -294,16 +294,17 @@ module.exports = function() {
 
     this.Then(/^the system should display all organizations that contain all of the entered parameters$/, function (callback) {
         orgSearch.then(function(value){
-            Q.all([ expect(projectFunctions.inOrgSearchResults(value)).to.become('true'),
-            expect(projectFunctions.inOrgSearchResults('Benin')).to.become('true'),
-            expect(projectFunctions.inOrgSearchResults('Donga')).to.become('true'),
-            expect(projectFunctions.inOrgSearchResults('searchCity')).to.become('true'),
-            expect(projectFunctions.inOrgSearchResults('46578')).to.become('true'),
-            expect(projectFunctions.inOrgSearchResults('searchOrg@email.com')).to.become('true'),
-            expect(projectFunctions.inOrgSearchResults('222-487-8956')).to.become('true')
-            ]).should.notify(callback);
+          //  Q.all([
+                expect(projectFunctions.inOrgSearchResults(value)).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('Benin')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('Donga')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('searchCity')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('46578')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('searchOrg@email.com')).to.become('true');
+            expect(projectFunctions.inOrgSearchResults('222-487-8956')).to.become('true');
+           // ]).should.notify(callback);
         });
-      //  browser.sleep(25).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I know the date of the curator date I wish to search for$/, function (callback) {

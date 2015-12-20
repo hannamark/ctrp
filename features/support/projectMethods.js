@@ -20,6 +20,7 @@ var addFamilyPage = require('../support/AddFamilyPage');
 var selectValuePage = require('../support/CommonSelectList');
 var loginPage = require('../support/LoginPage');
 var moment = require('moment');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 
 
 var projectMethods = function() {
@@ -33,6 +34,8 @@ var projectMethods = function() {
     var searchFamily = new searchFamilyPage();
     var addFamily = new addFamilyPage();
     var helper = new helperFunctions();
+    var commonFunctions = new abstractionCommonMethods();
+    var self = this;
 
     /**********************************
      * Method: Create Organization
@@ -626,8 +629,8 @@ var projectMethods = function() {
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createOrgforSearch = function(){
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
+       // login.accept();
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
@@ -698,8 +701,8 @@ var projectMethods = function() {
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createOrgforEdit = function(){
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
+       // login.accept();
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
@@ -743,6 +746,66 @@ var projectMethods = function() {
                         addOrg.setAddFax('898-420-4242');
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
+                    });
+                }
+            });
+        });
+    };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Person for Search, it creates a new org then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createPersonforSearch = function(){
+        browser.get('ui/#/main/sign_in');
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
+       // login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode('On');
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
+            searchPeople.setPersonFirstName('shiFName' + moment().format('MMMDoYY h'));
+            per4 = searchPeople.personFirstName.getAttribute('value');
+            searchPeople.clickSearch();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Person exists');
+                    per4.then(function(value){
+                        element(by.linkText(value)).click();
+                        perSourceId = addPeople.addPersonSourceId.getText();
+                        cukeOrganization = addPeople.addPersonAffiliatedOrgName.getText();
+                    });
+                }
+                else {
+                    self.createOrganization('shiPerOrgAff','als1','add1','add2','United States','Texas','city56','20980','shiPerson@mail.com','240-7809-855','490332');
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 4000).then(function() {
+                        menuItem.clickPeople();
+                        menuItem.clickAddPerson();
+                        addPeople.setAddPersonPrefix('prefix');
+                        per4.then(function (value1) {
+                            console.log('Add first Name' + value1);
+                            addPeople.setAddPersonFirstName(value1);
+                        });
+                        addPeople.setAddPersonSecondName('Rauniyar');
+                        addPeople.setAddPersonLastName('shiLName');
+                        addPeople.setAddPersonSuffix('suffix');
+                        addPeople.setAddPersonEmail('shiPercuke@pr.com');
+                        addPeople.setAddPersonPhone('420-567-8906');
+                        searchOrg.clickOrgSearchModel();
+                        cukeOrganization.then(function (value) {
+                            searchOrg.setOrgName(value);
+                            searchOrg.clickSearchButton();
+                            searchOrg.selectOrgModelItem();
+                            searchOrg.clickOrgModelConfirm();
+                        });
+                        addPeople.clickSave();
+                        perSourceId = addPeople.addPersonSourceId.getText();
                     });
                 }
             });

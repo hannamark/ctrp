@@ -58,63 +58,52 @@ Scenario: As a Curator, I will get a message if searched with no parameters
   And I am on the search persons screen
   When I searched without providing any search parameters
   Then I should get message as "At least one selection value must be entered prior to running the search"
-@runthis
+
  Scenario: As a curator, I can Search Persons when the Exact Search box is checked
     Given I am logged in to CTRP PO application
     And I have selected the option to search persons
-   And Exact Search is selected
+   And Exact Search is checked on search person
      When I have entered the "exact" person First Name
      Then the person First Name will be displayed on the People Search Results table
      When I have entered the "exact" person Last Name
      Then the person Last Name will be displayed on the People Search Results table
-     When I have entered the "exact" Source ID
+     When I have entered the "exact" Source ID for Person
      Then The Source ID will be displayed on the People Search Results table
-     When I have entered the "exact" Email
+     When I have entered the "exact" Email for Person
      Then the Email will be displayed on the People Search Results table
      When I have entered the "exact" Affiliation
      Then the Affiliation will be displayed on the People Search Results table
-     When I have entered the "exact" Phone Number
+     When I have entered the "exact" Phone Number for Person
      Then the Phone Number will be displayed on the People Search Results table
-     When I have entered the "exact" Username
+     When I have entered the "exact" Username for Person
      Then the Username will be displayed on the People Search Results table
-     
-     
+
+
      Scenario: As a curator, I can Search Organizations when the Exact Search box is NOT checked
     Given I am logged in to CTRP PO application
-    And I have selected the option to Search Persons
-       And Exact Search is not selected
+    And I have selected the option to search persons
+       And Exact Search is not checked on search person
        When I have entered the "partial" person First Name
        Then the person First Name will be displayed on the People Search Results table
        When I have entered the "partial" person Last Name
        Then the person Last Name will be displayed on the People Search Results table
-       When I have entered the "partial" Source ID
+       When I have entered the "partial" Source ID for Person
        Then The Source ID will be displayed on the People Search Results table
-       When I have entered the "partial" Email
+       When I have entered the "partial" Email for Person
        Then the Email will be displayed on the People Search Results table
        When I have entered the "partial" Affiliation
        Then the Affiliation will be displayed on the People Search Results table
-       When I have entered the "partial" Phone Number
+       When I have entered the "partial" Phone Number for Person
        Then the Phone Number will be displayed on the People Search Results table
-       When I have entered the "partial" Username
+       When I have entered the "partial" Username for Person
        Then the Username will be displayed on the People Search Results table
-       
-   
-  Scenario: As a curator, when I search persons I will enter "*" as a wild card when Exact Search is selected
-    Given I want to search for a person using a wild card
-    And I am logged in to the CTRP PO application 
-    And Exact Search is selected
-    And I am on Search Persons screen
-     When I enter "*" in a search field
-     Then People Search Results will display all persons found
-     
-     
-       Scenario: As a Curator, when I search, a wild card search will be the default when Exact Search is not selected
-    Given I want to search for persons using wild card
-    And I am logged in to CTRP PO Application
-    And Exact Search is NOT selected
-    And I am on a Search Persons screen 
-     When I enter text in a search field 
-     Then People Search Results will display wild card search
+
+
+  Scenario: As a curator, I cannot Search Results when the Exact Search box is checked and Exact Match is not provided
+    Given I am logged in to CTRP PO application
+    And Exact Search is checked on search person
+    And I dont provide the Exact criteria for Person
+    Then the search result should not be displayed
 
 
 
