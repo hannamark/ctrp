@@ -420,6 +420,7 @@
                 vm.tsNum++;
                 vm.status_date = null;
                 vm.trial_status_id = null;
+                vm.status_comment = null;
                 vm.why_stopped = null;
                 vm.validateStatus();
             } else {
