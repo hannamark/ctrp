@@ -118,7 +118,7 @@ Feature: PO F4 Edit Organization Information
   Then the system should change all the parameters in the organization record
   And my name should be listed as last update with the current date and time
   And the organization status should be Pending or Active as indicated
-
+@runthis
   Scenario: As a Curator, I can reset the edit values during the edit process
   Given I am in the Edit Organization feature
   And I want to cancel my changes

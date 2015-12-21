@@ -1,6 +1,6 @@
 @Global
 @PO
-Feature: PO F3 Create an Organization   
+Feature: PO F3 Create an Organization
 
 Scenario: #1 As a Curator, the Add Organization screen will have default values
 Given I am a Curator and on the Add Organization screen
@@ -124,7 +124,7 @@ And I know the name of the organization I wish to create
 And I provide the full name of the organization I wish to create
 And I submit my create request
 Then the system should indicate with a warning that the organization is a duplicate name in the same context
-@runthis
+
 Scenario: #4 As a Curator, I can clear any data I entered
 Given I am logged in to CTRP PO application
 And I am on the create organization feature

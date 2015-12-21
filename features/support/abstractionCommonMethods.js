@@ -22,6 +22,8 @@ var testConfiguration = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/
 var trialMenuItemList = require('../support/trialCommonBar');
 //Abstraction Common Bar
 var abstractionPageMenu = require('../support/abstractionCommonBar');
+//PO Common Bar
+var poMenuItemList = require('../support/PoCommonBar');
 
 var abstractionCommonMethods = function(){
     /*******
@@ -33,6 +35,7 @@ var abstractionCommonMethods = function(){
     var helper = new helperFunctions();
     var trialHome = new trialMenuItemList();
     var abstractPageMenu = new abstractionPageMenu();
+    var poHome = new poMenuItemList();
     var reader;
 
     /*****************************************
@@ -120,7 +123,7 @@ var abstractionCommonMethods = function(){
             login.login(configuration.curatorUID, configuration.curatorPWD);
             login.accept();
             helper.wait_for(5000);
-            expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
+            expect(poHome.homeEnterOrganizations.isDisplayed()).to.eventually.equal(true);
         }
         //ctrp trial submitter user
         if (usrID === 'ctrptrialsubmitter'){
