@@ -135,7 +135,7 @@ var abstractionCommonMethods = function(){
      * On Prepare Login Test Reject
      *****************************************/
     this.onPrepareLoginReject = function(usrID) {
-        var configurationFile;git
+        var configurationFile;
         console.log('file path'+testConfiguration);
         configurationFile = ''+testConfiguration+'/testSettings.json';
         var configuration = JSON.parse(
