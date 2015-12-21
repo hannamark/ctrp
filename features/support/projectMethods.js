@@ -20,6 +20,7 @@ var addFamilyPage = require('../support/AddFamilyPage');
 var selectValuePage = require('../support/CommonSelectList');
 var loginPage = require('../support/LoginPage');
 var moment = require('moment');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 
 
 var projectMethods = function() {
@@ -33,6 +34,8 @@ var projectMethods = function() {
     var searchFamily = new searchFamilyPage();
     var addFamily = new addFamilyPage();
     var helper = new helperFunctions();
+    var commonFunctions = new abstractionCommonMethods();
+    var self = this;
 
     /**********************************
      * Method: Create Organization
@@ -173,7 +176,7 @@ var projectMethods = function() {
         searchOrg.setAffiliatedOrgEffectiveDate(orgEffectiveDate);
         searchOrg.setAffiliatedOrgExpirationDate(orgExpirationDate);
         addFamily.clickSave();
-    }
+    };
 
     /**********************************
      * Method: Verify the item in Search Results
@@ -199,6 +202,7 @@ var projectMethods = function() {
     this.inOrgSearchResults = function(searchString) {
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
             if (state === true) {
+                browser.executeScript('window.scrollTo(0,600)');
                 return menuItem.orgSearchResult.filter(function(name) {
                     return name.getText().then(function(text) {
                        // console.log('value of text : ' + text + 'and value of searched string' + searchString);
@@ -211,10 +215,12 @@ var projectMethods = function() {
                         return 'true';
                     } else {
                         element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
-                        element(by.xpath('//*[@id="menuitem-4"]/button')).click();
-                        element(by.xpath('//*[@id="menuitem-8"]/button')).click();
                         element(by.xpath('//*[@id="menuitem-10"]/button')).click();
-                        element(by.xpath('//*[@id="menuitem-14"]/button')).click();
+                        element(by.xpath('//*[@id="menuitem-12"]/button')).click();
+                        element(by.xpath('//*[@id="menuitem-16"]/button')).click();
+                        element(by.xpath('//*[@id="menuitem-18"]/button')).click();
+                        element(by.xpath('//*[@id="menuitem-20"]/button')).click();
+                        element(by.xpath('//*[@id="menuitem-24"]/button')).click();
                         element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
                          return menuItem.orgSearchResult.filter(function(name) {
                             return name.getText().then(function(text) {
@@ -224,10 +230,12 @@ var projectMethods = function() {
                         }).then(function(filteredElements) {
                          //   console.log('value of filteredElements' + filteredElements);
                              element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
-                            element(by.xpath('//*[@id="menuitem-5"]/button')).click();
-                            element(by.xpath('//*[@id="menuitem-9"]/button')).click();
                             element(by.xpath('//*[@id="menuitem-11"]/button')).click();
-                            element(by.xpath('//*[@id="menuitem-15"]/button')).click();
+                            element(by.xpath('//*[@id="menuitem-13"]/button')).click();
+                            element(by.xpath('//*[@id="menuitem-17"]/button')).click();
+                            element(by.xpath('//*[@id="menuitem-19"]/button')).click();
+                             element(by.xpath('//*[@id="menuitem-21"]/button')).click();
+                             element(by.xpath('//*[@id="menuitem-25"]/button')).click();
                              element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
                             // Only the elements that passed the filter will be here. This is an array.
                             if (filteredElements.length > 0) {
@@ -621,8 +629,8 @@ var projectMethods = function() {
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createOrgforSearch = function(){
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
+       // login.accept();
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
@@ -693,8 +701,8 @@ var projectMethods = function() {
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createOrgforEdit = function(){
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
+       // login.accept();
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
@@ -738,6 +746,66 @@ var projectMethods = function() {
                         addOrg.setAddFax('898-420-4242');
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
+                    });
+                }
+            });
+        });
+    };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Person for Search, it creates a new org then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createPersonforSearch = function(){
+        browser.get('ui/#/main/sign_in');
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
+       // login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 4000).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode('On');
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
+            searchPeople.setPersonFirstName('shiFName' + moment().format('MMMDoYY h'));
+            per4 = searchPeople.personFirstName.getAttribute('value');
+            searchPeople.clickSearch();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Person exists');
+                    per4.then(function(value){
+                        element(by.linkText(value)).click();
+                        perSourceId = addPeople.addPersonSourceId.getText();
+                        cukeOrganization = addPeople.addPersonAffiliatedOrgName.getText();
+                    });
+                }
+                else {
+                    self.createOrganization('shiPerOrgAff','als1','add1','add2','United States','Texas','city56','20980','shiPerson@mail.com','240-7809-855','490332');
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 4000).then(function() {
+                        menuItem.clickPeople();
+                        menuItem.clickAddPerson();
+                        addPeople.setAddPersonPrefix('prefix');
+                        per4.then(function (value1) {
+                            console.log('Add first Name' + value1);
+                            addPeople.setAddPersonFirstName(value1);
+                        });
+                        addPeople.setAddPersonSecondName('Rauniyar');
+                        addPeople.setAddPersonLastName('shiLName');
+                        addPeople.setAddPersonSuffix('suffix');
+                        addPeople.setAddPersonEmail('shiPercuke@pr.com');
+                        addPeople.setAddPersonPhone('420-567-8906');
+                        searchOrg.clickOrgSearchModel();
+                        cukeOrganization.then(function (value) {
+                            searchOrg.setOrgName(value);
+                            searchOrg.clickSearchButton();
+                            searchOrg.selectOrgModelItem();
+                            searchOrg.clickOrgModelConfirm();
+                        });
+                        addPeople.clickSave();
+                        perSourceId = addPeople.addPersonSourceId.getText();
                     });
                 }
             });

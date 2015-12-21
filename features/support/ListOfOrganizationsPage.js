@@ -29,6 +29,7 @@ ListOfOrganizationsPage = function () {
     this.orgUpdatedStartDate = element(by.model('searchParams.startDate'));
     this.orgUpdatedEndDate = element(by.model('searchParams.endDate'));
     this.orgUpdatedByName = element(by.model('searchParams.updated_by'));
+    this.exactSearch = element(by.model('searchParams.wc_search'));
      this.searchButton = element(by.css('#submission_btn'));//element(by.css('button[type="submit"]'));
      this.clearButton = element(by.buttonText('Clear'));
     this.orgModelSearch = element(by.id('org_search_modal'));
@@ -48,6 +49,7 @@ ListOfOrganizationsPage = function () {
 
 
     var search = new helper();
+    var self = this;
 
     this.setOrgName = function(orgName){
         search.setValue(this.orgName,orgName,"Organization Search by Name field");
@@ -255,6 +257,23 @@ ListOfOrganizationsPage = function () {
 
     this.clickOrgAffiliatedRemove = function(){
         search.clickButton(this.orgAffiliatedRemoveButton,"Organization Model Remove Affiliated Organization button");
+    };
+
+    this.clickExactSearch = function(exactSearchTrueFalseValue){
+        this.exactSearch.isSelected().then (function(value) {
+            console.log('value of exact search : ' + value);
+            console.log('value of passed exact Search' + exactSearchTrueFalseValue);
+            if (value === false && exactSearchTrueFalseValue === 'true') {
+                console.log('value of exact Search1' + value);
+                console.log('value of passed exact Search1' + exactSearchTrueFalseValue);
+                search.clickButton(self.exactSearch,"Exact Search button");
+            }
+            else if (value  === true && exactSearchTrueFalseValue === 'false') {
+                console.log('value of exact Search2' + value);
+                console.log('value of passed exact Search2' + exactSearchTrueFalseValue);
+                search.clickButton(self.exactSearch,"Exact Search button");
+            }
+        });
     };
 
 };

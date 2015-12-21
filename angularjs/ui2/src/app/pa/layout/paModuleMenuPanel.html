@@ -26,7 +26,7 @@
               <strong>Admin Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.adminDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.adminDataOpen}"></i>
           </uib-accordion-heading>
           <ul class="nav nav-pills nav-stacked">
-              <li><a href="">General Trial Details</a></li>
+              <li><a ui-sref="main.pa.trialOverview.generalTrialDetails">General Trial Details</a></li>
               <li><a href="">Regulatory Information - FDAAA</a></li>
               <li><a href="">Regulatory Information - Human Subject Safety</a></li>
               <li><a href="">Regulatory Information - IND/IDE</a></li>
@@ -35,7 +35,7 @@
               <li><a href="">Participating Sites</a></li>
               <li><a href="">Collaborators</a></li>
               <li><a href="">Trial Related Documents</a></li>
-              <li><a href="">NCI specific information</a></li>
+              <li><a ui-sref="main.pa.trialOverview.nciInfo">NCI specific information</a></li>
           </ul>
       </uib-accordion-group>
       <uib-accordion-group is-open="paMenuPanel.menuAccordions.scientificDataOpen">
