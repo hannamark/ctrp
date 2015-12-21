@@ -4,8 +4,6 @@ Background:
 Given I am logged in to CTRP PO application
 And  I select the option to search Organization Family
 
-
-
 Scenario Outline: #1 As a PO user, I am able to search with Family Name
 Then I want to search with family name <family name>
 And I click on Search button
@@ -75,3 +73,21 @@ Scenario Outline: #5 As a PO user, I am able to search with multiple Parameters
     |NRG Oncology                   |       |                       |     |Active       |     |true   |
     |                               |       |Cancer Center          |     |Active       |     |true   |
     |NRG Oncology                   |       |NCTN                   |     |             |     |true   |
+    
+    
+      Scenario:#6 As a curator, I can Search Family when the Exact Search box is checked
+    Given I am logged in to CTRP PO application
+    And I have selected the option to Search Families
+    And Exact Search box is selected in Family Search
+     When I have entered the "exact" Family name
+     Then the "exact" Family Name will be displayed on the Family search results table 
+     
+     Scenario:#7  As a curator, I can Search Family when the Exact Search box is NOT checked
+    Given I am logged in to CTRP PO application
+    And I have selected the option to Search Families
+    And Exact Search box is Not seleted in Family Search
+     When I have entered the "partial" Family name
+     Then the Family Name will be displayed on the Family search results table 
+    
+
+
