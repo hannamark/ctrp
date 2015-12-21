@@ -73,6 +73,11 @@
               'WITH_ID': '/ctrp/comments/{:id}.json',  //GET, DELETE, and PATCH or PUT
               'CREATE': '/ctrp/comments.json'
             },
+
+            //for PA
+            'PA': {
+                'TRIALS_CHECKOUT_IN': '/ctrp/pa/trial/{:trialId}/{:checkWhat}/{:checkoutType}.json'
+            }
         })
         .constant('MESSAGES', {
             'STATES_AVAIL': 'states_or_provinces_available',

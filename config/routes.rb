@@ -54,6 +54,10 @@ Rails.application.routes.draw do
 
     resources :family_memberships
 
+    resources :pa_trials
+    get '/pa/trial/:trial_id/checkout/:type', to: 'trials#checkout_trial'
+    get '/pa/trial/:trial_id/checkin/:type', to: 'trials#checkin_trial'
+
     resources :comments
     get '/instance/:uuid/comments/count(/:field)', to: 'comments#count'
     get '/instance/:uuid/comments(/:field)', to: 'comments#comments_for_instance'
@@ -126,6 +130,7 @@ Rails.application.routes.draw do
           post 'validate_status'
         end
       end
+
       resources :protocol_id_origins
       resources :holder_types
       resources :expanded_access_types
@@ -138,6 +143,7 @@ Rails.application.routes.draw do
           get 'download/:id' => 'trial_documents#download'
         end
       end
+
 
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'
