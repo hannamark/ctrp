@@ -411,6 +411,7 @@
                 _.each(vm.trialStatusArr, function (status) {
                     if (status.id == vm.trial_status_id) {
                         newStatus.trial_status_name = status.name;
+                        newStatus.trial_status_code = status.code;
                     }
                 });
                 newStatus.comment = vm.status_comment;
@@ -626,7 +627,7 @@
         // Validate Trials Stautuses
         vm.validateStatus = function() {
             TrialService.validateStatus({"statuses": vm.addedStatuses}).then(function(response) {
-                console.log(response);
+                vm.statusValidationMsgs = response.validation_msgs;
             }).catch(function(err) {
                 console.log("error in validating trial status: " + err);
             });
@@ -846,6 +847,7 @@
                 _.each(vm.trialStatusArr, function (status) {
                     if (status.id == vm.curTrial.trial_status_wrappers[i].trial_status_id) {
                         statusWrapper.trial_status_name = status.name;
+                        statusWrapper.trial_status_code = status.code;
                     }
                 });
                 statusWrapper.comment = vm.curTrial.trial_status_wrappers[i].comment;
@@ -853,6 +855,7 @@
                 statusWrapper._destroy = false;
                 vm.addedStatuses.push(statusWrapper);
                 vm.tsNum++;
+                vm.validateStatus();
             }
         }
 

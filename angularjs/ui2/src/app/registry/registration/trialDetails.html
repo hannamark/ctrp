@@ -542,14 +542,29 @@
                                         <th>Status</th>
                                         <th>Comment</th>
                                         <th>Why Study Stopped</th>
+                                        <th>Errors/Warnings</th>
                                         <th></th>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="status in trialDetailView.addedStatuses track by $index" ng-class="status._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                             <td class="col-md-2">{{status.status_date}}</td>
-                                            <td class="col-md-3">{{status.trial_status_name}}</td>
-                                            <td class="col-md-3">{{status.comment}}</td>
-                                            <td class="col-md-3">{{status.why_stopped}}</td>
+                                            <td class="col-md-2">{{status.trial_status_name}}</td>
+                                            <td class="col-md-2">{{status.comment}}</td>
+                                            <td class="col-md-2">{{status.why_stopped}}</td>
+                                            <td class="col-md-3">
+                                                <div class="text-danger" ng-repeat="error in trialDetailView.statusValidationMsgs[$index].errors" ng-if="error.status">
+                                                    ERROR: Interim status [{{error.status}}] is missing
+                                                </div>
+                                                <div class="text-danger" ng-repeat="error in trialDetailView.statusValidationMsgs[$index].errors" ng-if="error.message">
+                                                    ERROR: {{error.message}}
+                                                </div>
+                                                <div class="text-warning" ng-repeat="warning in trialDetailView.statusValidationMsgs[$index].warnings" ng-if="warning.status">
+                                                    WARNING: Interim status [{{warning.status}}] is missing
+                                                </div>
+                                                <div class="text-warning" ng-repeat="warning in trialDetailView.statusValidationMsgs[$index].warnings" ng-if="warning.message">
+                                                    WARNING: {{warning.message}}
+                                                </div>
+                                            </td>
                                             <td class="col-md-1" style="vertical-align: middle">
                                                 <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
                                                     <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
