@@ -8,7 +8,7 @@ Given I am a valid account in CTRP
 And I am on the CTRP Login Page
 and I enter my user id 
 And I enter my password 
-And my user id is NIH Credentialed (i.e. LDAP Account) 
+And my user id is NIH Credentialed (LDAP Account) 
 and I select sign in
 When the system displays the Goverment System Authorization acknowledgement: 
 |NCI CLINICAL TRIALS REPORTING PROGRAM (CTRP) SYSTEM
