@@ -13,6 +13,7 @@ var addOrganizationPage = require('../support/AddOrganizationPage');
 var mainSelectItemPage = require('../support/CommonSelectList.js');
 var projectFunctionsPage= require('../support/projectMethods');
 var moment = require('moment');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 
 module.exports = function() {
     var login = new loginPage();
@@ -31,6 +32,7 @@ module.exports = function() {
     var stateEdited = 'Bagmati';
     var stateEditedforUS = 'Florida';
     var postalEdited = '20008';
+    var commonFunctions = new abstractionCommonMethods();
 
 
     this.Given(/^I know which organization I want to edit$/, function (callback) {
@@ -258,8 +260,7 @@ module.exports = function() {
 
     this.Given(/^I am in the Edit Organization feature$/, function (callback) {
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
         browser.driver.wait(function(){
             console.log('wait here');
             return true;

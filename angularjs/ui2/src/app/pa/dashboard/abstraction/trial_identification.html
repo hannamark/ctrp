@@ -19,7 +19,7 @@
 
                 <p>
                     <strong>ClinicalTrials.gov XML required? </strong>
-                    <span></span>
+                    <span>{{paTrialOverview.trialDetailObj.xml_required}}</span>
                 </p>
 
                 <!-- <p>
@@ -66,7 +66,9 @@
                             <label for="processing_priority" class="control-label col-xs-12 col-sm-3">Processing Priority:</label>
                             <div class="input-group col-xs-12 col-sm-4">
                                 <select name="priority_selection" id="processing_priority" class="form-control input-sm">
+                                    <option value="1">1 - High</option>
                                     <option value="2">2 - Normal</option>
+                                    <option value="3">3 - Low</option>
                                 </select>
                             </div>
                             <div class="col-sm-offset-4"></div>

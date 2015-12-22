@@ -110,6 +110,55 @@ class TrialsController < ApplicationController
   end
 
 
+  def checkout_trial
+
+    checkout_types = ["admin", "scientific"]
+    checkout_type = params[:type].downcase
+    success = false
+
+    if params.has_key?(:trial_id) and checkout_types.include? (checkout_type) and
+        @current_user != nil
+
+      @trial = Trial.where("id = ?", params[:trial_id])
+      checkout_json = {"by": @current_user.username, "date": Time.now}.to_json
+
+      if checkout_type == "admin"
+        @trial.update_all(admin_checkout: checkout_json)
+      else
+        @trial.update_all(scientific_checkout: checkout_json)
+      end
+      success = true
+    end
+
+    respond_to do |format|
+      format.json { render :json => {:result => success} }
+    end
+  end
+
+
+  def checkin_trial
+    checkin_types = ["admin", "scientific"]
+    checkin_type = params[:type].downcase
+    success = false
+
+    if params.has_key?(:trial_id) and checkin_types.include? (checkin_type)
+      @trial = Trial.where("id = ?", params[:trial_id])
+
+      if checkin_type == "admin"
+        @trial.update_all(admin_checkout: nil)
+      else
+        @trial.update_all(scientific_checkout: nil)
+      end
+      success = true
+    end
+
+    respond_to do |format|
+      format.json { render :json => {:result => success} }
+    end
+
+  end
+
+
   def search_pa
     # Pagination/sorting params initialization
     Rails.logger.info "In Search PA, params = #{params.inspect}"
@@ -181,6 +230,8 @@ class TrialsController < ApplicationController
       @trials = []
     end
   end
+
+
 
   def validate_status
     @validation_msgs = []
