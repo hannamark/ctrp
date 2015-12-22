@@ -9,9 +9,11 @@
     .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
-        '$scope', 'TrialService', '$timeout', 'Common', 'MESSAGES', 'UserService'];
+        '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES',
+        '$scope', 'TrialService', 'UserService'];
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
-            $scope, TrialService, $timeout, Common, MESSAGES, UserService) {
+            $mdToast, $document, $timeout, Common, MESSAGES,
+            $scope, TrialService, UserService) {
 
         var vm = this;
         vm.accordionOpen = true; //default open accordion
@@ -34,7 +36,7 @@
         function activate() {
             $timeout(function() {
                 getTrialDetail();
-                watchCheckoutButton();
+                watchCheckoutButtons();
             }, 500);
         } //activate
 
@@ -78,14 +80,16 @@
         function checkoutTrial(checkoutType) {
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
                 console.log('checkout result: ', res.result[0]);
-                saveTrialDetailObj(res.result[0]);
+                updateTrialDetailObj(res.result[0]);
+                showToastr(checkoutType + ' checkout was successful!', 'top right');
             });
         }
 
         function checkinTrial(checkinType) {
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
                 console.log('checkin result: ', res.result[0]);
-                saveTrialDetailObj(res.result[0]);
+                updateTrialDetailObj(res.result[0]);
+                showToastr(checkinType + ' checkin was successful!', 'top right')
             });
         }
 
@@ -93,7 +97,7 @@
          * Update the trial detail object for the checkout/in results
          * @param  {JSON} data [updated trial detail object with the checkout/in records]
          */
-        function saveTrialDetailObj(data) {
+        function updateTrialDetailObj(data) {
             vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
@@ -101,7 +105,14 @@
             $scope.trialDetailObj = vm.trialDetailObj;
         }
 
-        function watchCheckoutButton() {
+        /**
+         * Watcher for the checkout / checkin buttons,
+         * watch for whether or not checkout/in is allowed, and
+         * whether or not the buttons should be disabled (if the user is not the same as the one
+         * who checked it out)
+         * @return {Void}
+         */
+        function watchCheckoutButtons() {
 
             $scope.$watch(function() {return vm.trialDetailObj.admin_checkout;},
                 function(newVal) {
@@ -120,7 +131,24 @@
                         vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.scientific_checkout.by;
                     }
                 });
-        }
+        } //watchCheckoutButtons
+
+
+        /**
+         * Throw a toaster for checkout and checkin operations
+         * @param  {String} message  [toastr message]
+         * @param  {String} position [where the toastr is displayed]
+         * @return {Void}
+         */
+        function showToastr(message, position) {
+            console.log('showing a toastr!');
+            $mdToast.show({
+            template: '<md-toast style="background-color: #6200EA"><span flex>' + message + '</span></md-toast>',
+            parent: $document[0].querySelector('#checkoutORin_message'),
+            hideDelay: 3000,
+            position: position
+          });
+        } //showToastr
 
     };
 
