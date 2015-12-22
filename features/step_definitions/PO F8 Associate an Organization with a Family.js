@@ -18,6 +18,7 @@ var loginPage = require('../support/LoginPage');
 var addOrgPage = require('../support/AddOrganizationPage');
 var searchOrgPage = require('../support/ListOfOrganizationsPage');
 var projectFunctionsPage= require('../support/projectMethods');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 
 
 module.exports = function() {
@@ -29,13 +30,13 @@ module.exports = function() {
     var searchOrg = new searchOrgPage();
     var projectFunctions = new projectFunctionsPage();
     var selectItem =new selectList();
+    var commonFunctions = new abstractionCommonMethods();
     //gulp.src('./src/*.ext').pipe(plumber()).pipe(coffee()).pipe(gulp.dest('./dist'));
 
 
     this.Given(/^I know which organization I wish to assign to an Organization Family$/, function (callback) {
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
@@ -111,8 +112,7 @@ module.exports = function() {
 
     this.Given(/^I know which Family I want to update$/, function (callback) {
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
