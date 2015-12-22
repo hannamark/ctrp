@@ -194,7 +194,7 @@
         template: '<md-toast style="background-color: #6200EA"><span flex>' + message + '</span></md-toast>',
         parent: $document[0].querySelector('#toastr_message'),
         hideDelay: 1000,
-        position: 'right'
+        position: position
       });
     } //showToastr
 
