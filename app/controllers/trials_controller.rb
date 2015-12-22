@@ -118,17 +118,17 @@ class TrialsController < ApplicationController
     if params.has_key?(:trial_id) and available_checkout_types.include? (checkout_type) and
         @current_user != nil
 
-      @trial = Trial.where("id = ?", params[:trial_id])
+      @trial = Trial.find(params[:trial_id])
       checkout_json = {"by": @current_user.username, "date": Time.now}.to_json
 
       if checkout_type == "admin"
-        @trial.update_all(admin_checkout: checkout_json)
+        @trial.update_attribute('admin_checkout', checkout_json)
 
       elsif checkout_type == "scientificadmin"
-        @trial.update_all(admin_checkout: checkout_json, scientific_checkout: checkout_json)
+        @trial.update_attributes('admin_checkout': checkout_json, 'scientific_checkout': checkout_json)
 
       elsif checkout_type == "scientific"
-        @trial.update_all(scientific_checkout: checkout_json)
+        @trial.update_attribute('scientific_checkout', checkout_json)
       end
     end
 
@@ -145,18 +145,18 @@ class TrialsController < ApplicationController
     if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type) and
         @current_user != nil
 
-      @trial = Trial.where("id = ?", params[:trial_id])
+      @trial = Trial.find(params[:trial_id])
 
       if checkin_type == "admin"
-        @trial.update_all(admin_checkout: nil)
+        @trial.update_attribute('admin_checkout', nil)
 
       elsif checkin_type == "scientificadmin"
-        @trial.update_all(admin_checkout: nil, scientific_checkout: nil)
+        @trial.update_attributes('admin_checkout': nil, 'scientific_checkout': nil)
 
       elsif checkin_type == "scientific"
-        @trial.update_all(scientific_checkout: nil)
-      end
+        @trial.update_attribute('scientific_checkout', nil)
 
+      end
     end
 
     respond_to do |format|

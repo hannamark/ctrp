@@ -79,16 +79,16 @@
 
         function checkoutTrial(checkoutType) {
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
-                console.log('checkout result: ', res.result[0]);
-                updateTrialDetailObj(res.result[0]);
+                console.log('checkout result: ', res.result);
+                updateTrialDetailObj(res.result);
                 showToastr(checkoutType + ' checkout was successful!', 'top right');
             });
         }
 
         function checkinTrial(checkinType) {
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
-                console.log('checkin result: ', res.result[0]);
-                updateTrialDetailObj(res.result[0]);
+                console.log('checkin result: ', res.result);
+                updateTrialDetailObj(res.result);
                 showToastr(checkinType + ' checkin was successful!', 'top right')
             });
         }
