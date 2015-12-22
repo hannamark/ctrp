@@ -269,6 +269,7 @@
                     } else {
                         vm.tsNum++;
                     }
+                    vm.validateStatus();
                 }
             } else if (type == 'ind_ide') {
                 if (index < vm.addedIndIdes.length) {
@@ -626,10 +627,25 @@
 
         // Validate Trials Stautuses
         vm.validateStatus = function() {
-            TrialService.validateStatus({"statuses": vm.addedStatuses}).then(function(response) {
+            // Remove statuses with _destroy is true
+            var noDestroyStatusArr = [];
+            for (var i = 0; i < vm.addedStatuses.length; i++) {
+                if (!vm.addedStatuses[i]._destroy) {
+                    noDestroyStatusArr.push(vm.addedStatuses[i]);
+                }
+            }
+
+            TrialService.validateStatus({"statuses": noDestroyStatusArr}).then(function(response) {
                 vm.statusValidationMsgs = response.validation_msgs;
+
+                // Add empty object to positions where _destroy is true
+                for (var i = 0; i < vm.addedStatuses.length; i++) {
+                    if (vm.addedStatuses[i]._destroy) {
+                        vm.statusValidationMsgs.splice(i, 0, {});
+                    }
+                }
             }).catch(function(err) {
-                console.log("error in validating trial status: " + err);
+                console.log("Error in validating trial status: " + err);
             });
         };
 
@@ -855,8 +871,8 @@
                 statusWrapper._destroy = false;
                 TrialService.addStatus(vm.addedStatuses, statusWrapper);
                 vm.tsNum++;
-                vm.validateStatus();
             }
+            vm.validateStatus();
         }
 
         function appendIndIdes() {
