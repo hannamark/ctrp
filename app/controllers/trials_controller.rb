@@ -283,14 +283,16 @@ class TrialsController < ApplicationController
     # Convert status code to name in validation messages
     def convert_validation_msg (msg)
       if msg.has_key?('warnings')
-        msg['warnings'].each do |e|
-          e['status'] = TrialStatus.find_by_code(e['status']).name if e.has_key?('status')
+        msg['warnings'].each do |warning|
+          statusObj = TrialStatus.find_by_code(warning['status']) if warning.has_key?('status')
+          warning['status'] = statusObj.name if statusObj.present?
         end
       end
 
       if msg.has_key?('errors')
-        msg['errors'].each do |e|
-          e['status'] = TrialStatus.find_by_code(e['status']).name if e.has_key?('status')
+        msg['errors'].each do |error|
+          statusObj = TrialStatus.find_by_code(error['status']) if error.has_key?('status')
+          error['status'] = statusObj.name if statusObj.present?
         end
       end
 
