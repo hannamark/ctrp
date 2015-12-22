@@ -1,4 +1,5 @@
 <div class="row">
+    <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
@@ -6,7 +7,7 @@
             </uib-accordion-heading>
             <!-- first row in the accordion body -->
             <div class="row">
-                <!-- <p>
+                 <!-- <p>
                     <s><strong>Clinical Research Category:</strong>
                     <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span></s>
                 </p> -->
@@ -18,6 +19,28 @@
                             <option ng-repeat="studySource in trialNciView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
                         </select>
                     </div>
+                </div>
+
+
+                <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
+                    <label class="control-label col-xs-12 col-sm-3">Data Table 4 Funding Source:</label>
+                    <div class="col-xs-12 col-sm-9" ng-hide="['update'].indexOf(trialNciView.curTrial.edit_type) > -1">
+                        <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialNciView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
+                        <input type="hidden" name="fs_dummy" ng-model="trialNciView.dummyField" ng-required="trialNciView.fsNum === 0">
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)">
+                                    Funding Source is required
+                                </span>
+                    </div>
+                </div>
+
+                <div ng-repeat="fs in trialNciView.addedFses track by $index" class="form-group">
+                    <div class="col-xs-12 col-sm-3"></div>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-class="fs._destroy == true ? 'deleted-text animated-item' : 'animated-item'" disabled value="{{fs.organization_name}}"/>
+                    </div>
+                    <label restriction-field class="col-xs-12 col-sm-1 btn btn-default" ng-click="trialNciView.toggleSelection($index, 'funding_source')" ng-hide="['update'].indexOf(trialNciView.curTrial.edit_type) > -1">
+                        <i ng-class="fs._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                    </label>
                 </div>
 
                 <p>
@@ -105,6 +128,7 @@
             </div>
         </uib-accordion-group>
     </uib-accordion>
+    </form>
 </div>
 
 <!-- end of row -->

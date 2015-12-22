@@ -13,6 +13,7 @@ var addOrganizationPage = require('../support/AddOrganizationPage');
 var mainSelectItemPage = require('../support/CommonSelectList');
 var projectFunctionsPage= require('../support/projectMethods');
 var moment = require ('moment');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 
 module.exports = function() {
     var projectFunctions = new projectFunctionsPage();
@@ -36,11 +37,11 @@ module.exports = function() {
     var duplicate_org_name = 'Ochsner Baptist Medical Center';
     var sourceContext = '1'; // '1' selects CTRP
     var sourceID = 'CT 007';
+    var commonFunctions = new abstractionCommonMethods();
 
     this.Given(/^I am a Curator and on the Add Organization screen$/, function (callback) {
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
         browser.driver.wait(function(){
             console.log('wait here');
             return true;

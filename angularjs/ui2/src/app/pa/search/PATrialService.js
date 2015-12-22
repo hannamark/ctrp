@@ -117,7 +117,9 @@
             checkOtherId: checkOtherId,
             deleteTrial: deleteTrial,
             setCurrentTrial: setCurrentTrial,
-            getCurrentTrialFromCache: getCurrentTrialFromCache
+            getCurrentTrialFromCache: getCurrentTrialFromCache,
+            checkoutTrial: checkoutTrial,
+            checkinTrial: checkinTrial
         };
 
         return services;
@@ -299,5 +301,20 @@
         function getCurrentTrialFromCache() {
             return LocalCacheService.getCacheWithKey('current_trial_object');
         }
+
+        function checkoutTrial(trialId, checkoutType) {
+            var url = URL_CONFIGS.PA.TRIALS_CHECKOUT_IN.replace('{:trialId}', trialId);
+            url = url.replace('{:checkWhat}', 'checkout');
+            url = url.replace('{:checkoutType}', checkoutType);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        function checkinTrial(trialId, checkinType) {
+            var url = URL_CONFIGS.PA.TRIALS_CHECKOUT_IN.replace('{:trialId}', trialId);
+            url = url.replace('{:checkWhat}', 'checkin');
+            url = url.replace('{:checkoutType}', checkinType);
+            return PromiseTimeoutService.getData(url);
+        }
+
     }
 })();

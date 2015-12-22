@@ -20,7 +20,6 @@ exports.config = {
     params: {
         login: {
             user_admin: 'ctrpadmin',
-            password: 'Welcome01',
             user_po: 'testercurator'
         }
     },

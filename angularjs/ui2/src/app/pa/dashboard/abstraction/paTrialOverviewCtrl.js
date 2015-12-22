@@ -9,9 +9,9 @@
     .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
-        '$scope', 'TrialService', '$timeout', 'URL_CONFIGS', 'Common', 'MESSAGES'];
+        '$scope', 'TrialService', '$timeout', 'Common', 'MESSAGES'];
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
-            $scope, TrialService, $timeout, URL_CONFIGS, Common, MESSAGES) {
+            $scope, TrialService, $timeout, Common, MESSAGES) {
 
         var vm = this;
         vm.accordionOpen = true; //default open accordion
@@ -21,7 +21,9 @@
         vm.togglePanelOpen = togglePanelOpen;
         vm.backToPATrialSearch = backToPATrialSearch;
         vm.trialId = $stateParams.trialId;
-        console.log('trial overview controller id: ', $scope.$id);
+        vm.checkoutTrial = checkoutTrial;
+        vm.checkinTrial = checkinTrial;
+        // console.log('trial overview controller id: ', $scope.$id);
 
         activate();
 
@@ -67,6 +69,19 @@
         function backToPATrialSearch() {
             $state.go('main.paTrialSearch');
         } //backToPATrialSearch
+
+
+        function checkoutTrial(checkoutType) {
+            PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
+                console.log('checkout result: ', res);
+            });
+        }
+
+        function checkinTrial(checkinType) {
+            PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
+                console.log('checkin result: ', res);
+            });
+        }
 
     };
 
