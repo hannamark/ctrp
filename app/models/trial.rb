@@ -127,7 +127,7 @@ class Trial < ActiveRecord::Base
   has_many :other_ids, -> { order 'other_ids.id' }
   has_many :ind_ides, -> { order 'ind_ides.id' }
   has_many :grants, -> { order 'grants.id' }
-  has_many :trial_status_wrappers, -> { order 'trial_status_wrappers.id' }
+  has_many :trial_status_wrappers, -> { order 'trial_status_wrappers.status_date, trial_status_wrappers.id' }
   has_many :trial_funding_sources, -> { order 'trial_funding_sources.id' }
   has_many :funding_sources, through: :trial_funding_sources, source: :organization
   has_many :trial_co_lead_orgs
