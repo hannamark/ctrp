@@ -123,10 +123,12 @@
 
                     <p>
                         <strong>Checked Out for Admin. Use by: </strong>
+                        <span>{{paTrialOverview.trialDetailObj.admin_checkout.by}}</span>
                     </p>
 
                     <p>
                         <strong>Checked Out for Scientific. Use by: </strong>
+                        <span>{{paTrialOverview.trialDetailObj.scientific_checkout.by}}</span>
                     </p>
                 </div>
                 <!-- end of column 3-->
@@ -136,9 +138,15 @@
             <!-- third row -->
             <div class="row text-center">
                 <div class="btn-toolbar">
-                    <button type="button" class="btn btn-primary pull-right" id="admin_sci_checkout">Admin/Scientific Check Out</button>
-                    <button type="button" class="btn btn-primary pull-right" id="scientific_checkout" ng-click="paTrialOverview.checkoutTrial('scientific')">Scientific Check Out</button>
-                    <button type="button" class="btn btn-primary pull-right" id="admin_checkout" ng-click="paTrialOverview.checkoutTrial('admin')">Admin Check Out</button>
+                    <button type="button" class="btn btn-primary pull-right" id="admin_sci_checkout" ng-click="paTrialOverview.checkoutTrial('scientificadmin')" ng-show="paTrialOverview.adminCheckoutAllowed && paTrialOverview.scientificCheckoutAllowed">Admin/Scientific Check Out</button>
+                    <button type="button" class="btn btn-primary pull-right" id="admin_sci_checkin" ng-click="paTrialOverview.checkinTrial('scientificadmin')" ng-show="!paTrialOverview.adminCheckoutAllowed || !paTrialOverview.scientificCheckoutAllowed">Admin/Scientific Check In</button>
+
+                    <button type="button" class="btn btn-primary pull-right" id="scientific_checkout" ng-click="paTrialOverview.checkoutTrial('scientific')" ng-show="paTrialOverview.scientificCheckoutAllowed">Scientific Check Out</button>
+                    <button type="button" class="btn btn-primary pull-right" id="scientific_checkin" ng-click="paTrialOverview.checkinTrial('scientific')" ng-show="!paTrialOverview.scientificCheckoutAllowed">Scientific Check In</button>
+
+                    <button type="button" class="btn btn-primary pull-right" id="admin_checkout" ng-click="paTrialOverview.checkoutTrial('admin')" ng-show="paTrialOverview.adminCheckoutAllowed">Admin Check Out</button>
+                    <button type="button" class="btn btn-primary pull-right" id="admin_checkin" ng-click="paTrialOverview.checkinTrial('admin')" ng-show="!paTrialOverview.adminCheckoutAllowed">Admin Check In</button>
+
                     <button type="button" class="btn btn-warning pull-right" id="back_to_search" ng-click="paTrialOverview.backToPATrialSearch()">
                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Search Results
                     </button>

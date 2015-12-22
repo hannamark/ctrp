@@ -112,11 +112,10 @@ class TrialsController < ApplicationController
 
   def checkout_trial
 
-    checkout_types = ["admin", "scientific"]
+    available_checkout_types = ["admin", "scientific", "scientificadmin"]
     checkout_type = params[:type].downcase
-    success = false
 
-    if params.has_key?(:trial_id) and checkout_types.include? (checkout_type) and
+    if params.has_key?(:trial_id) and available_checkout_types.include? (checkout_type) and
         @current_user != nil
 
       @trial = Trial.where("id = ?", params[:trial_id])
@@ -124,36 +123,44 @@ class TrialsController < ApplicationController
 
       if checkout_type == "admin"
         @trial.update_all(admin_checkout: checkout_json)
-      else
+
+      elsif checkout_type == "scientificadmin"
+        @trial.update_all(admin_checkout: checkout_json, scientific_checkout: checkout_json)
+
+      elsif checkout_type == "scientific"
         @trial.update_all(scientific_checkout: checkout_json)
       end
-      success = true
     end
 
     respond_to do |format|
-      format.json { render :json => {:result => success} }
+      format.json { render :json => {:result => @trial} }
     end
   end
 
 
   def checkin_trial
-    checkin_types = ["admin", "scientific"]
+    available_checkin_types = ["admin", "scientific", "scientificadmin"]
     checkin_type = params[:type].downcase
-    success = false
 
-    if params.has_key?(:trial_id) and checkin_types.include? (checkin_type)
+    if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type) and
+        @current_user != nil
+
       @trial = Trial.where("id = ?", params[:trial_id])
 
       if checkin_type == "admin"
         @trial.update_all(admin_checkout: nil)
-      else
+
+      elsif checkin_type == "scientificadmin"
+        @trial.update_all(admin_checkout: nil, scientific_checkout: nil)
+
+      elsif checkin_type == "scientific"
         @trial.update_all(scientific_checkout: nil)
       end
-      success = true
+
     end
 
     respond_to do |format|
-      format.json { render :json => {:result => success} }
+      format.json { render :json => {:result => @trial} }
     end
 
   end
