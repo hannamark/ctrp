@@ -238,6 +238,14 @@
             return LocalCacheService.getCacheWithKey('username') || '';
         };
 
+        /**
+         * This is to replace the *getLoggedInUsername* method
+         * @return {[type]} [description]
+         */
+        this.currentUser = function () {
+            return LocalCacheService.getCacheWithKey('username') || '';
+        };
+
         this.getUserDetailsByUsername = function (username) {
             var username2 = LocalCacheService.getCacheWithKey('username');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username2 + '.json');
@@ -368,7 +376,7 @@
             var writeModesArray = LocalCacheService.getCacheWithKey('write_modes');
             var objIndex = _.findIndex(writeModesArray, queryObj);
 
-            return objIndex > -1;            
+            return objIndex > -1;
 
             // var writeModeObj = writeModesArray[objIndex];
             // var writeModeObj = _.findWhere(writeModesArray, queryObj);
