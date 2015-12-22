@@ -1,6 +1,6 @@
 
 /**
- * Created by schintal, Deember 2nd, 2015
+ * Created by schintal, Deember 22nd, 2015
  */
 
 (function() {
@@ -16,7 +16,6 @@
         //console.log("2curTrial =" + JSON.stringify(vm.curTrial));
         vm.studySourceArr = studySourceObj;
         vm.addedFses = [];
-        vm.selectedSponsorArray = [];
         vm.selectedFsArray = [];
 
         vm.updateTrial = function () {
