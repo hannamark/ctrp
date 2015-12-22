@@ -417,7 +417,7 @@
                 newStatus.comment = vm.status_comment;
                 newStatus.why_stopped = vm.why_stopped;
                 newStatus._destroy = false;
-                vm.addedStatuses.push(newStatus);
+                TrialService.addStatus(vm.addedStatuses, newStatus);
                 vm.tsNum++;
                 vm.status_date = null;
                 vm.trial_status_id = null;
@@ -853,7 +853,7 @@
                 statusWrapper.comment = vm.curTrial.trial_status_wrappers[i].comment;
                 statusWrapper.why_stopped = vm.curTrial.trial_status_wrappers[i].why_stopped;
                 statusWrapper._destroy = false;
-                vm.addedStatuses.push(statusWrapper);
+                TrialService.addStatus(vm.addedStatuses, statusWrapper);
                 vm.tsNum++;
                 vm.validateStatus();
             }

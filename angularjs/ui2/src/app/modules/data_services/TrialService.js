@@ -104,6 +104,7 @@
             getAcceptedFileTypes: getAcceptedFileTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
+            addStatus: addStatus,
             validateStatus: validateStatus,
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial
@@ -856,7 +857,26 @@
         }
 
         /**
+         * Insert newStatus into statusArr ordered by status_date
          *
+         * @param statusArr
+         * @param newStatus
+         */
+        function addStatus(statusArr, newStatus) {
+            var idx = statusArr.length;
+            for (var i = 0; i < statusArr.length; i++) {
+                var newDate = new Date(newStatus.status_date);
+                var arrayDate = new Date(statusArr[i].status_date);
+                if (newDate < arrayDate) {
+                    idx = i;
+                    break;
+                }
+            }
+            statusArr.splice(idx, 0, newStatus);
+        }
+
+        /**
+         * Get validation warnings/errors for trial statuses
          *
          * @param statuses
          */
