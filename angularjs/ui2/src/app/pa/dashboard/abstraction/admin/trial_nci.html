@@ -14,10 +14,11 @@
                 <div class="form-group">
                     <label for="studySource" class="control-label col-xs-12 col-sm-3">Study Source: </label>
                     <div class="col-xs-12 col-sm-9">
-                        <select class="form-control input-sm" id="study_source" ng-model="trialNciView.study_source">
+                        <select class="form-control input-sm" id="study_source" ng-model="trialNciView.curTrial.study_source_id" ng-options="studySource.id as studySource.name for studySource in trialNciView.studySourceArr">
                             <option value="">-Select a Study Source-</option>
                             <option ng-repeat="studySource in trialNciView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
                         </select>
+
                     </div>
                 </div>
 
