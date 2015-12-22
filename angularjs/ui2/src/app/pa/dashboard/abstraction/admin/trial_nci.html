@@ -1,5 +1,5 @@
 <div class="row">
-    <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
+    <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialNciView.updateTrial">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
@@ -12,7 +12,7 @@
                     <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span></s>
                 </p> -->
                 <div class="form-group">
-                    <label for="studySource" class="control-label col-xs-12 col-sm-3">Study Source: </label>
+                    <label for="study_source" class="control-label col-xs-12 col-sm-3">Study Source: </label>
                     <div class="col-xs-12 col-sm-9">
                         <select class="form-control input-sm" id="study_source" ng-model="trialNciView.curTrial.study_source_id" ng-options="studySource.id as studySource.name for studySource in trialNciView.studySourceArr">
                             <option value="">-Select a Study Source-</option>
@@ -44,44 +44,6 @@
                     </label>
                 </div>
 
-                <p>
-                    <strong>NCI Trial ID: </strong>
-                    <!-- get data from parent controller view -->
-                    <span>{{paTrialOverview.trialDetailObj.nci_id}}</span>
-                </p>
-
-
-                <!-- <p>
-                    <s>
-                        <strong>Lead Organization Trial ID: </strong>
-                        <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
-                    </s>
-                </p>
-
-                <p>
-                    <s>
-                        <strong>ClinicalTrials.gov Identifier: </strong>
-                        <span>{{paTrialOverview.trialDetailObj.other_ids[0].protocol_id}}</span>
-                    </s>
-                </p> -->
-
-                <p>
-                    <strong>Last Verification Date: </strong>
-                    <span></span>
-                </p>
-
-                <!-- <p>
-                    <s><strong>Official Title: </strong>
-                    <span>{{paTrialOverview.trialDetailObj.official_title}}</span></s>
-                </p>
-
-                <p>
-                    <s>
-                        <strong>Submission Source:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
-                    </s>
-                </p> -->
-
                 <hr />
             </div>
             <!-- end of first row in the accordion body -->
@@ -89,7 +51,6 @@
             <!-- second row in the accordion body -->
             <div class="row">
                 <div class="col-xs-12 pull-left">
-                    <form name="abstraction_form" class="form" role="form" novalidate>
                         <!-- first form-group -->
                         <div class="form-group">
                             <label for="processing_priority" class="control-label col-xs-12 col-sm-3">Processing Priority:</label>
@@ -124,7 +85,6 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
                 </div>
             </div>
         </uib-accordion-group>
