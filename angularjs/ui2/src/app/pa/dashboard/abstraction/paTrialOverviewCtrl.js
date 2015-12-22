@@ -9,9 +9,9 @@
     .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
-        '$scope', 'TrialService', '$timeout', 'Common', 'MESSAGES'];
+        '$scope', 'TrialService', '$timeout', 'Common', 'MESSAGES', 'UserService'];
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
-            $scope, TrialService, $timeout, Common, MESSAGES) {
+            $scope, TrialService, $timeout, Common, MESSAGES, UserService) {
 
         var vm = this;
         vm.accordionOpen = true; //default open accordion
@@ -24,7 +24,10 @@
         vm.checkoutTrial = checkoutTrial;
         vm.checkinTrial = checkinTrial;
         vm.adminCheckoutAllowed = false;
+        vm.adminCheckoutBtnDisabled = false;
         vm.scientificCheckoutAllowed = false;
+        vm.scientificCheckoutBtnDisabled = false;
+        vm.curUser = UserService.currentUser();
 
         activate();
 
@@ -99,14 +102,23 @@
         }
 
         function watchCheckoutButton() {
+
             $scope.$watch(function() {return vm.trialDetailObj.admin_checkout;},
                 function(newVal) {
                     vm.adminCheckoutAllowed = !newVal;
+
+                    if (!!vm.trialDetailObj.admin_checkout) {
+                        vm.adminCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.admin_checkout.by;
+                    }
                 });
 
             $scope.$watch(function() {return vm.trialDetailObj.scientific_checkout;},
                 function(newVal) {
                     vm.scientificCheckoutAllowed = !newVal;
+
+                    if (!!vm.trialDetailObj.scientific_checkout) {
+                        vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.scientific_checkout.by;
+                    }
                 });
         }
 
