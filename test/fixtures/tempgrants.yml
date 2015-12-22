@@ -1,0 +1,31 @@
+# == Schema Information
+#
+# Table name: tempgrants
+#
+#  id                :integer          not null, primary key
+#  serial_number     :integer
+#  institution_name  :string
+#  project_title     :string
+#  funding_mechanism :string
+#  institute_code    :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  serial_number: 
+  institution_name: MyString
+  ,: MyString
+  project_title: 
+  funding_mechanism: 
+  institute_code: MyString
+
+two:
+  serial_number: 
+  institution_name: MyString
+  ,: MyString
+  project_title: 
+  funding_mechanism: 
+  institute_code: MyString

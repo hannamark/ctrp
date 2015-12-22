@@ -68,6 +68,12 @@ class TrialsController < ApplicationController
     end
   end
 
+  # Get
+  def get_grants_serialnumber
+    @tempgrants=Tempgrants.all
+    @tempgrants=@tempgrants.where("funding_mechanism = ? AND institute_code = ?", params[:funding_mechanism], params[:institute_code])
+  end
+
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?

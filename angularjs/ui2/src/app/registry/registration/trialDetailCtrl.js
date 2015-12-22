@@ -10,12 +10,12 @@
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
-        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams', 'acceptedFileTypesObj'];
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams', 'acceptedFileTypesObj','OrgService'];
 
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope, $window,
                              Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
-                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams, acceptedFileTypesObj) {
+                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams, acceptedFileTypesObj,OrgService) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
@@ -222,6 +222,26 @@
                 vm.updateTrial('draft');
             }
         };
+
+        $scope.typeAheadNameSearch = function () {
+
+
+            if (vm.funding_mechanism && vm.institute_code)
+            {
+                var queryObj = {
+                    funding_mechanism: vm.funding_mechanism,
+                    institute_code: vm.institute_code
+                };
+                return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
+                    return res.tempgrants.map(function (tempgrant) {
+                        return tempgrant.serial_number;
+                    });
+
+                });
+            }
+
+        }; //typeAheadNameSearch
+
 
         vm.collapseAccordion = function() {
             vm.accordions = [false, false, false, false, false, false, false, false, false, false, false, false];

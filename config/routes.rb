@@ -119,10 +119,12 @@ Rails.application.routes.draw do
       resources :responsible_parties
       resources :trials do
         collection do
-          get 'search'
+          get  'search'
           post 'search'
-          get 'search_pa'
+          get  'search_pa'
           post 'search_pa'
+          get  'get_grants_serialnumber'
+          post 'get_grants_serialnumber'
         end
       end
       resources :protocol_id_origins

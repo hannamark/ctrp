@@ -262,6 +262,7 @@ class Trial < ActiveRecord::Base
   end
 
   #scopes for search API
+  #scope :matches_grant, -> (column, value) {Tempgrant.where}
   scope :matches, -> (column, value) { where("trials.#{column} = ?", "#{value}") }
 
   scope :matches_wc, -> (column, value) {

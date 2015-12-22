@@ -417,7 +417,11 @@
                                             </td>
                                             <td class="col-md-3">
                                                 <div>
-                                                    <input restriction-field class="form-control input-sm" id="serial_number" ng-model="trialDetailView.serial_number" />
+                                                    <!--input restriction-field class="form-control input-sm" id="serial_number" ng-model="trialDetailView.serial_number" /-->
+                                                    <input tabindex="12" type="text" id="serial_number" class="form-control input-sm"
+                                                           autocomplete="off" placeholder="Organization Name" ng-model="trialDetailView.serial_number" auto-focus
+                                                           uib-typeahead="tempgrant for tempgrant in typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
+                                                           typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
                                                 </div>
                                             </td>
                                             <td class="col-md-4">
