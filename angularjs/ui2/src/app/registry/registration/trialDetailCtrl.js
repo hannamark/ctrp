@@ -269,6 +269,7 @@
                     } else {
                         vm.tsNum++;
                     }
+                    vm.validateStatus();
                 }
             } else if (type == 'ind_ide') {
                 if (index < vm.addedIndIdes.length) {
@@ -411,15 +412,17 @@
                 _.each(vm.trialStatusArr, function (status) {
                     if (status.id == vm.trial_status_id) {
                         newStatus.trial_status_name = status.name;
+                        newStatus.trial_status_code = status.code;
                     }
                 });
                 newStatus.comment = vm.status_comment;
                 newStatus.why_stopped = vm.why_stopped;
                 newStatus._destroy = false;
-                vm.addedStatuses.push(newStatus);
+                TrialService.addStatus(vm.addedStatuses, newStatus);
                 vm.tsNum++;
                 vm.status_date = null;
                 vm.trial_status_id = null;
+                vm.status_comment = null;
                 vm.why_stopped = null;
                 vm.validateStatus();
             } else {
@@ -624,10 +627,25 @@
 
         // Validate Trials Stautuses
         vm.validateStatus = function() {
-            TrialService.validateStatus({"statuses": vm.addedStatuses}).then(function(response) {
-                console.log(response);
+            // Remove statuses with _destroy is true
+            var noDestroyStatusArr = [];
+            for (var i = 0; i < vm.addedStatuses.length; i++) {
+                if (!vm.addedStatuses[i]._destroy) {
+                    noDestroyStatusArr.push(vm.addedStatuses[i]);
+                }
+            }
+
+            TrialService.validateStatus({"statuses": noDestroyStatusArr}).then(function(response) {
+                vm.statusValidationMsgs = response.validation_msgs;
+
+                // Add empty object to positions where _destroy is true
+                for (var i = 0; i < vm.addedStatuses.length; i++) {
+                    if (vm.addedStatuses[i]._destroy) {
+                        vm.statusValidationMsgs.splice(i, 0, {});
+                    }
+                }
             }).catch(function(err) {
-                console.log("error in validating trial status: " + err);
+                console.log("Error in validating trial status: " + err);
             });
         };
 
@@ -845,14 +863,16 @@
                 _.each(vm.trialStatusArr, function (status) {
                     if (status.id == vm.curTrial.trial_status_wrappers[i].trial_status_id) {
                         statusWrapper.trial_status_name = status.name;
+                        statusWrapper.trial_status_code = status.code;
                     }
                 });
                 statusWrapper.comment = vm.curTrial.trial_status_wrappers[i].comment;
                 statusWrapper.why_stopped = vm.curTrial.trial_status_wrappers[i].why_stopped;
                 statusWrapper._destroy = false;
-                vm.addedStatuses.push(statusWrapper);
+                TrialService.addStatus(vm.addedStatuses, statusWrapper);
                 vm.tsNum++;
             }
+            vm.validateStatus();
         }
 
         function appendIndIdes() {
