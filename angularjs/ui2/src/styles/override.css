@@ -749,3 +749,8 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     background-color: #337ab7 !important;
     font-size: 18px !important;
 }
+
+.add-association-error {
+    color: #a94442;
+    margin-bottom: 10px;
+}

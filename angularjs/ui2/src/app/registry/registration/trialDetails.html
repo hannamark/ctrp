@@ -123,6 +123,11 @@
                                     </tr>
                                     </tbody>
                                 </table>
+
+                                <div class="add-association-error" ng-show="trialDetailView.showAddOtherIdError">
+                                    {{trialDetailView.addOtherIdError}}
+                                </div>
+
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedOtherIds.length > 0">
                                     <thead>
                                         <th>Protocol ID Type</th>
@@ -446,6 +451,10 @@
                                     Grant is required
                                 </span>
 
+                                <div class="add-association-error" ng-show="trialDetailView.showAddGrantError">
+                                    Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code
+                                </div>
+
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedGrants.length > 0">
                                     <thead>
                                         <th>Funding Mechanism</th>
@@ -536,6 +545,10 @@
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ts_dummy)">
                                     Trial Status is required
                                 </span>
+
+                                <div class="add-association-error" ng-show="trialDetailView.showAddStatusError">
+                                    Please provide a Status Date and select a Status
+                                </div>
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedStatuses.length > 0">
                                     <thead>
@@ -772,6 +785,10 @@
                                     IND/IDE is required
                                 </span>
 
+                                <div class="add-association-error" ng-show="trialDetailView.showAddIndIdeError">
+                                    Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type
+                                </div>
+
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedIndIdes.length > 0">
                                     <thead>
                                         <th>IND/IDE Types</th>
@@ -899,6 +916,10 @@
                                         </tr>
                                     </tbody>
                                 </table>
+
+                                <div class="add-association-error" ng-show="trialDetailView.showAddAuthorityError">
+                                    Please select a Country and Organization
+                                </div>
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedAuthorities.length > 0">
                                     <thead>
