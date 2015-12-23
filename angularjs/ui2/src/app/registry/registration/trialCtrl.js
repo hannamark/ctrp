@@ -56,6 +56,8 @@
             });
 
             if (isEmptySearch  && newSearchFlag === 'fromStart') {
+                vm.gridOptions.data = [];
+                vm.gridOptions.totalItems = null;
                 vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
             } else {
                 vm.searchWarningMessage = '';
