@@ -38,7 +38,7 @@
 
                 <p>
                     <strong>Last Verification Date: </strong>
-                    <span></span>
+                    <span>{{paTrialOverview.trialDetailObj.verification_date | date: "dd-MMM-yyyy H:mm"}}</span>
                 </p>
 
                 <!-- <p>
@@ -65,10 +65,10 @@
                         <div class="form-group">
                             <label for="processing_priority" class="control-label col-xs-12 col-sm-3">Processing Priority:</label>
                             <div class="input-group col-xs-12 col-sm-4">
-                                <select name="priority_selection" id="processing_priority" class="form-control input-sm">
-                                    <option value="1">1 - High</option>
-                                    <option value="2">2 - Normal</option>
-                                    <option value="3">3 - Low</option>
+                                <select name="priority_selection" id="processing_priority" class="form-control input-sm" ng-model="trialIdView.trialProcessingObj.priority">
+                                    <option value="1 - High">1 - High</option>
+                                    <option value="2 - Normal">2 - Normal</option>
+                                    <option value="3 - Low">3 - Low</option>
                                 </select>
                             </div>
                             <div class="col-sm-offset-4"></div>
@@ -77,23 +77,23 @@
 
                         <!-- second form-group -->
                         <div class="form-group">
-                            <label for="trial_processing_comment" class="col-xs-12">Trial Processing Comments:</label>
+                            <label for="trial_processing_comment" class="col-xs-12">Trial Processing Comments <small>(maximum: 4,000 characters)</small>:</label>
                         </div>
                         <!-- end of second form-group -->
 
                         <!-- third row in the form -->
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5"></textarea>
+                                <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5" ng-maxlength="4000" ng-model="trialIdView.trialProcessingObj.comment"></textarea>
                             </div>
                         </div>
                         <!-- end of third row -->
 
                         <div class="form-group no-bottom-margin">
                             <div class="btn-toolbar">
-                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing">Save</button>
-                                <button type="button" class="btn btn-warning pull-right" id="cancel_processing">
-                                    <i class="glyphicon glyphicon-remove"></i> Cancel
+                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialIdView.saveProcessingInfo()" ng-disabled="!abstraction_form.$valid">Save</button>
+                                <button type="button" class="btn btn-warning pull-right" id="cancel_processing" ng-click="trialIdView.resetView()">
+                                    <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
                             </div>
                         </div>
