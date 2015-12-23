@@ -64,12 +64,7 @@
             } else {
                 vm.searchWarningMessage = '';
             }
-
-            console.log('search params are  ' + JSON.stringify(vm.searchParams));
-            console.log('isEmptySearch is ' + isEmptySearch);
-
-            // vm.searchParams.name = vm.searchParams.name || '*';
-            //console.log('searching params: ' + JSON.stringify(vm.searchParams));
+            
             if (!isEmptySearch) { //skip searching if no search parameters supplied by user
                 FamilyService.searchFamilies(vm.searchParams).then(function (data) {
                     console.log('received search results: ' + JSON.stringify(data.data));
