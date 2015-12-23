@@ -13,6 +13,7 @@
     function trialIdentificationCtrl($scope) {
         var vm = this;
         // vm.trialProcessingObj = {priority: '2 - Normal', comment: ''};
+        //get the processing info from parent scope
         vm.trialProcessingObj = {
             priority: $scope.$parent.paTrialOverview.trialDetailObj.process_priority || '2 - Normal',
             comment: $scope.$parent.paTrialOverview.trialDetailObj.process_comment
