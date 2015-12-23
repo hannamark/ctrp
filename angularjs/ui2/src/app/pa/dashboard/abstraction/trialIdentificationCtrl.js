@@ -12,6 +12,24 @@
 
     function trialIdentificationCtrl($scope) {
         var vm = this;
+        // vm.trialProcessingObj = {priority: '2 - Normal', comment: ''};
+        vm.trialProcessingObj = {
+            priority: $scope.$parent.paTrialOverview.trialDetailObj.process_priority || '2 - Normal',
+            comment: $scope.$parent.paTrialOverview.trialDetailObj.process_comment
+        };
+        vm.saveProcessingInfo = saveProcessingInfo;
+        vm.resetView = resetView;
+
+        /* implementations below */
+        function saveProcessingInfo() {
+            console.log('processing info: ', vm.trialProcessingObj);
+        }
+
+        function resetView() {
+            vm.trialProcessingObj.comment = '';
+            vm.trialProcessingObj.priority = '2 - Normal';
+        }
+
     } //trialIdentificationCtrl
 
 })();
