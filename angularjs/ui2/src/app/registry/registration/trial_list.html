@@ -7,6 +7,12 @@
         </div>
         <div class="row">
             <form class="form form-horizontal" role="form">
+                <div class="row" ng-hide="trialView.searchWarningMessage === ''" ng-cloak>
+                    <div class="alert alert-warning fade in">
+                        <strong>{{trialView.searchWarningMessage}}</strong>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
@@ -109,7 +115,7 @@
             </form>
         </div>
 
-        <div class="row" ng-class="{'top-offset-xs': trialView.gridOptions.totalItems }">
+        <div class="row" ng-class="{'top-offset-xs': trialView.gridOptions.totalItems }" ng-if="trialView.searchWarningMessage.length === 0">
             <div class="col-xs-12">
                 <div class="row" ng-if="trialView.gridOptions.totalItems != null">
                     <p><h4>Trial Search Results: {{trialView.gridOptions.totalItems}} found</h4></p>
