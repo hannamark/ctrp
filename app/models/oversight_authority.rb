@@ -20,4 +20,7 @@ class OversightAuthority < ActiveRecord::Base
   include BasicConcerns
 
   belongs_to :trial
+
+  validates :country, presence: true
+  validates :organization, presence: true
 end
