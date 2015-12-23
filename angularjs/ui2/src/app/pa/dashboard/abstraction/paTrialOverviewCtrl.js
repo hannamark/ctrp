@@ -119,7 +119,8 @@
                     vm.adminCheckoutAllowed = !newVal;
 
                     if (!!vm.trialDetailObj.admin_checkout) {
-                        vm.adminCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.admin_checkout.by;
+                        vm.adminCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.admin_checkout.by &&
+                            UserService.getUserRole() !== 'ROLE_SUPER';
                     }
                 });
 
@@ -128,7 +129,8 @@
                     vm.scientificCheckoutAllowed = !newVal;
 
                     if (!!vm.trialDetailObj.scientific_checkout) {
-                        vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.scientific_checkout.by;
+                        vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.scientific_checkout.by &&
+                            UserService.getUserRole() !== 'ROLE_SUPER';
                     }
                 });
         } //watchCheckoutButtons
