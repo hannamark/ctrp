@@ -65,6 +65,12 @@
         vm.showInvestigator = false;
         vm.showInvSearchBtn = true;
         vm.why_stopped_disabled = true;
+        vm.showAddOtherIdError = false;
+        vm.addOtherIdError = '';
+        vm.showAddGrantError = false;
+        vm.showAddStatusError = false;
+        vm.showAddIndIdeError = false;
+        vm.showAddAnthorityError = false;
         vm.otherDocNum = 1;
         vm.fsNum = 0;
         vm.grantNum = 0;
@@ -377,8 +383,11 @@
                 vm.addedOtherIds.push(newId);
                 vm.protocol_id_origin_id = null;
                 vm.protocol_id = null;
+                vm.addOtherIdError = '';
+                vm.showAddOtherIdError = false;
             } else {
-                alert(errorMsg);
+                vm.addOtherIdError = errorMsg;
+                vm.showAddOtherIdError = true;
             }
         };
 
@@ -397,8 +406,9 @@
                 vm.institute_code = null;
                 vm.serial_number = null;
                 vm.nci = null;
+                vm.showAddGrantError = false;
             } else {
-                alert('Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code');
+                vm.showAddGrantError = true;
             }
         };
 
@@ -424,9 +434,10 @@
                 vm.trial_status_id = null;
                 vm.status_comment = null;
                 vm.why_stopped = null;
+                vm.showAddStatusError = false;
                 vm.validateStatus();
             } else {
-                alert('Please provide a Status Date and select a Status');
+                vm.showAddStatusError = true;
             }
         };
 
@@ -455,8 +466,9 @@
                 vm.nih_nci = null;
                 vm.grantorArr = [];
                 vm.nihNciArr = [];
+                vm.showAddIndIdeError = false;
             } else {
-                alert('Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type');
+                vm.showAddIndIdeError = true;
             }
         };
 
@@ -472,8 +484,9 @@
                 vm.authority_country = null;
                 vm.authority_org = null;
                 vm.authorityOrgArr = [];
+                vm.showAddAuthorityError = false;
             } else {
-                alert('Please select a Country and Organization');
+                vm.showAddAuthorityError = true;
             }
         };
 
