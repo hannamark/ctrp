@@ -114,6 +114,11 @@ Rails.application.routes.draw do
       post 'change_password' => 'registrations#update', :as => :update_registration
     end
 
+    scope '/pa' do
+      get 'nih_nci_div_pa' => 'util#get_nih_nci_div_pa'
+      get 'nih_nci_prog_pa' => 'util#get_nih_nci_prog_pa'
+    end
+
     scope '/registry' do
       resources :study_sources
       resources :phases
@@ -149,6 +154,7 @@ Rails.application.routes.draw do
       get 'institute_codes' => 'util#get_institute_codes'
       get 'nci' => 'util#get_nci'
       get 'nih' => 'util#get_nih'
+
       get 'accepted_file_types' => 'util#get_accepted_file_types'
     end
   end
