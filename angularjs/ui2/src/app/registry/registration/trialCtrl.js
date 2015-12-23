@@ -20,6 +20,7 @@
         vm.primaryPurposeArr = primaryPurposeObj;
         vm.trialStatusArr = trialStatusObj;
         vm.gridScope=vm;
+        vm.searchWarningMessage = '';
         var fromStateName = $state.fromState.name || '';
 
         //ui-grid plugin options
@@ -41,12 +42,33 @@
                 vm.searchParams.start = 1; //from first page
             }
 
-            TrialService.searchTrials(vm.searchParams).then(function (data) {
-                vm.gridOptions.data = data.trials;
-                vm.gridOptions.totalItems = data.total;
-            }).catch(function (err) {
-                console.log('search trial failed');
+            /**
+             * If not, it should throw a warning to the user to select atleast one parameter.
+             * Right now, ignoring the alias parameter as it is set to true by default.
+             * To refactor and look at default parameters instead of hardcoding -- radhika
+             */
+            var isEmptySearch = true;
+            var excludedKeys = ['sort', 'order', 'rows', 'start','wc_search'];
+            Object.keys(vm.searchParams).forEach(function (key) {
+                if (excludedKeys.indexOf(key) === -1 && vm.searchParams[key] !== '') {
+                    isEmptySearch = false;
+                }
             });
+
+            if (isEmptySearch  && newSearchFlag === 'fromStart') {
+                vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
+            } else {
+                vm.searchWarningMessage = '';
+            }
+
+            if (!isEmptySearch) {
+                TrialService.searchTrials(vm.searchParams).then(function (data) {
+                    vm.gridOptions.data = data.trials;
+                    vm.gridOptions.totalItems = data.total;
+                }).catch(function (err) {
+                    console.log('search trial failed');
+                });
+            }
         };
 
         vm.resetSearch = function() {
@@ -56,6 +78,7 @@
 
             vm.gridOptions.data = [];
             vm.gridOptions.totalItems = null;
+            vm.searchWarningMessage = '';
         };
 
         $scope.capitalizeFirst = function(str) {
