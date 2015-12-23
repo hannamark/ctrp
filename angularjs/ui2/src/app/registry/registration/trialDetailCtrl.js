@@ -902,7 +902,7 @@
                         indIde.holder_type_name = holderType.name;
                     }
                 });
-                indIde.nih_nci = vm.curTrial.ind_ides[i].id.nih_nci;
+                indIde.nih_nci = vm.curTrial.ind_ides[i].nih_nci;
                 indIde.expanded_access = vm.curTrial.ind_ides[i].expanded_access;
                 indIde.expanded_access_type_id = vm.curTrial.ind_ides[i].expanded_access_type_id;
                 // For displaying name in the table
