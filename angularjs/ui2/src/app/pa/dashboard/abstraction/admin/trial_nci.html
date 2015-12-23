@@ -51,31 +51,49 @@
             <!-- second row in the accordion body -->
             <div class="row">
                 <div class="col-xs-12 pull-left">
+
+                    <div class="form-group">
+                        <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Division/Department Identifier: </label>
+                        <div class="col-xs-12 col-sm-9">
+                            <select class="form-control input-sm" id="nih_nci_div" ng-model="trialNciView.curTrial.nih_nci_div">
+                                (CCR, CTEP, DCP, NHLBI
+                                <option value="">-Select a NIH/NCI Division/Department Identifier-</option>
+                                <option value="CCR">CCR</option>
+                                <option value="CTEP">CTEP</option>
+                                <option value="DCP">DCP</option>
+                                <option value="NHBLI">NHBLI</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Program Id: </label>
+                        <div class="col-xs-12 col-sm-9">
+                            <select class="form-control input-sm" id="nih_nci_prog" ng-model="trialNciView.curTrial.nih_nci_prog">
+                                <option value="">-Select a NIH/NCI Program ID-</option>
+                                <option value="BIQSFP">BIQSFP</option>
+                                <option value="SPORE">SPORE</option>
+                                <option value="Steering Committee Reviewed">Steering Committee Reviewed</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+
                         <!-- first form-group -->
                         <div class="form-group">
-                            <label for="processing_priority" class="control-label col-xs-12 col-sm-3">Processing Priority:</label>
-                            <div class="input-group col-xs-12 col-sm-4">
-                                <select name="priority_selection" id="processing_priority" class="form-control input-sm">
-                                    <option value="2">2 - Normal</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-offset-4"></div>
+                            <label for="trial_processing_comment" class="col-xs-12">Comments:</label>
                         </div>
                         <!-- end of first form-group -->
 
-                        <!-- second form-group -->
-                        <div class="form-group">
-                            <label for="trial_processing_comment" class="col-xs-12">Trial Processing Comments:</label>
-                        </div>
-                        <!-- end of second form-group -->
-
-                        <!-- third row in the form -->
+                        <!-- second row in the form -->
                         <div class="form-group">
                             <div class="col-xs-12">
                                 <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5"></textarea>
                             </div>
                         </div>
-                        <!-- end of third row -->
+                        <!-- end of second row -->
 
                         <div class="form-group no-bottom-margin">
                             <div class="btn-toolbar">
