@@ -74,21 +74,48 @@ Scenario Outline: #5 As a PO user, I am able to search with multiple Parameters
     |                               |       |Cancer Center          |     |Active       |     |true   |
     |NRG Oncology                   |       |NCTN                   |     |             |     |true   |
     
-
- Scenario:#6 As a curator, I can Search Family when the Exact Search box is checked
-      And Exact Search box is selected in Family Search
-      When I have entered the "exact" Family name
-      Then the Family Name will be displayed on the Family search results table
-
-Scenario:#7  As a curator, I can Search Family when the Exact Search box is NOT checked
-      And Exact Search box is Not selected in Family Search
-      When I have entered the "partial" Family name
-      Then the Family Name will be displayed on the Family search results table
-
-Scenario:#8 As a curator, I can Search Family when the Exact Search box is checked
+    
+      Scenario:#6 As a curator, I can Search Family when the Exact Search box is checked
+    Given I am logged in to CTRP PO application
+    And I have selected the option to Search Families
     And Exact Search box is selected in Family Search
-    When I have not entered the exact Family name
-    Then the Family Name will not be displayed on the Family search results table
+     When I have entered the "exact" Family name
+     Then the "exact" Family Name will be displayed on the Family search results table 
+     
+     Scenario:#7  As a curator, I can Search Family when the Exact Search box is NOT checked
+    Given I am logged in to CTRP PO application
+    And I have selected the option to Search Families
+    And Exact Search box is Not seleted in Family Search
+     When I have entered the "partial" Family name
+     Then the Family Name will be displayed on the Family search results table 
+    
+     
+       Scenario: #8 Rules for Search Families
+    Given I am logged in to CTRP PO application
+    And I am on the search Family screen
+    When I have completed a family search 
+    Then Only Active Organization count will be displayed on the Family Search Member Size Results
+    When I have selected a family name from the family search results table
+    Then All affiliated organizations will be displayed
+    And Only Active Organization count will be displayed for the Membership size on the Edit Family screen
+    And Inactive Organization count will not be included in the Membership size 
+    And Expired Organization count will not be included in the Membership size
+    And the organization type will be displayed at the botton of the organizations list
+       
+      |Inactive Relationship |
+      |Expired Relationship  |
 
+    And Organizations information types will be displayed
+    
+      |CTRP ID        |
+      |CTEP ID        |
+      |Organization   |
+      |Relationship   |
+      |Effective Date |
+      |Expiration Date|
+
+    And Expiration date will be displayed for Inactive Organizations
+    And Expirattion date will be displayed for Expired Relationships
+  
 
 

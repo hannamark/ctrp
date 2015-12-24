@@ -108,6 +108,8 @@
             getFundingMechanisms: getFundingMechanisms,
             getInstituteCodes: getInstituteCodes,
             getNci: getNci,
+            getNciDiv: getNciDiv,
+            getNciProg: getNciProg,
             getTrialStatuses: getTrialStatuses,
             getMilestones: getMilestones,
             getProcessingStatuses: getProcessingStatuses,
@@ -239,6 +241,13 @@
 
         function getNih() {
             return PromiseTimeoutService.getData(URL_CONFIGS.NIH);
+        }
+        function getNciDiv() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.NCI_DIV_PA);
+        }
+
+        function getNciProg() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.NCI_PROG_PA);
         }
 
         function getExpandedAccessTypes() {

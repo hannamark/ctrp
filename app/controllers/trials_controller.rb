@@ -112,48 +112,55 @@ class TrialsController < ApplicationController
 
   def checkout_trial
 
-    checkout_types = ["admin", "scientific"]
+    available_checkout_types = ["admin", "scientific", "scientificadmin"]
     checkout_type = params[:type].downcase
-    success = false
 
-    if params.has_key?(:trial_id) and checkout_types.include? (checkout_type) and
+    if params.has_key?(:trial_id) and available_checkout_types.include? (checkout_type) and
         @current_user != nil
 
-      @trial = Trial.where("id = ?", params[:trial_id])
+      @trial = Trial.find(params[:trial_id])
       checkout_json = {"by": @current_user.username, "date": Time.now}.to_json
 
       if checkout_type == "admin"
-        @trial.update_all(admin_checkout: checkout_json)
-      else
-        @trial.update_all(scientific_checkout: checkout_json)
+        @trial.update_attribute('admin_checkout', checkout_json)
+
+      elsif checkout_type == "scientificadmin"
+        @trial.update_attributes('admin_checkout': checkout_json, 'scientific_checkout': checkout_json)
+
+      elsif checkout_type == "scientific"
+        @trial.update_attribute('scientific_checkout', checkout_json)
       end
-      success = true
     end
 
     respond_to do |format|
-      format.json { render :json => {:result => success} }
+      format.json { render :json => {:result => @trial} }
     end
   end
 
 
   def checkin_trial
-    checkin_types = ["admin", "scientific"]
+    available_checkin_types = ["admin", "scientific", "scientificadmin"]
     checkin_type = params[:type].downcase
-    success = false
 
-    if params.has_key?(:trial_id) and checkin_types.include? (checkin_type)
-      @trial = Trial.where("id = ?", params[:trial_id])
+    if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type) and
+        @current_user != nil
+
+      @trial = Trial.find(params[:trial_id])
 
       if checkin_type == "admin"
-        @trial.update_all(admin_checkout: nil)
-      else
-        @trial.update_all(scientific_checkout: nil)
+        @trial.update_attribute('admin_checkout', nil)
+
+      elsif checkin_type == "scientificadmin"
+        @trial.update_attributes('admin_checkout': nil, 'scientific_checkout': nil)
+
+      elsif checkin_type == "scientific"
+        @trial.update_attribute('scientific_checkout', nil)
+
       end
-      success = true
     end
 
     respond_to do |format|
-      format.json { render :json => {:result => success} }
+      format.json { render :json => {:result => @trial} }
     end
 
   end
@@ -234,7 +241,22 @@ class TrialsController < ApplicationController
 
 
   def validate_status
+    @validation_msgs = []
     transition_matrix = JSON.parse(AppSetting.find_by_code('TRIAL_STATUS_TRANSITION').big_value)
+    statuses = params['statuses']
+
+    if statuses.present? && statuses.size > 0
+      statuses.each_with_index do |e, i|
+        if i == 0
+          from_status_code = 'STATUSZERO'
+        else
+          from_status_code = statuses[i - 1]['trial_status_code']
+        end
+        to_status_code = statuses[i]['trial_status_code']
+        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code])
+        @validation_msgs.append(validation_msg)
+      end
+    end
   end
 
   private
@@ -253,6 +275,7 @@ class TrialsController < ApplicationController
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                     :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
                                     :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
+                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
@@ -263,5 +286,24 @@ class TrialsController < ApplicationController
                                     oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                     trial_documents_attributes: [:id, :_destroy],
                                     submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy])
+    end
+
+    # Convert status code to name in validation messages
+    def convert_validation_msg (msg)
+      if msg.has_key?('warnings')
+        msg['warnings'].each do |warning|
+          statusObj = TrialStatus.find_by_code(warning['status']) if warning.has_key?('status')
+          warning['status'] = statusObj.name if statusObj.present?
+        end
+      end
+
+      if msg.has_key?('errors')
+        msg['errors'].each do |error|
+          statusObj = TrialStatus.find_by_code(error['status']) if error.has_key?('status')
+          error['status'] = statusObj.name if statusObj.present?
+        end
+      end
+
+      return msg
     end
 end

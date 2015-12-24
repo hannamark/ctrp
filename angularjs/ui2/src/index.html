@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html ng-app="ctrp.app.main">
     <head>
+        <ng-include src="'header.env.vars'"></ng-include>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
         <title ng-bind="title"></title>
-        <base href="/">
+
         <!--<style>.ng-hide { display: none!important; }</style>-->
 
         <!-- build:css styles/lib.css -->
@@ -144,6 +145,7 @@
         <script src="app/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js"></script>
         <script src="app/modules/widgets/buttons/ctrp.widgets.backButton.directive.js"></script>
         <script src="app/modules/validators/ctrp.module.validators.js"></script>
+        <script src="app/modules/validators/ctrp.validateTrialStatus.directive.js"></script>
         <script src="app/modules/validators/ctrp.validateFormSubmission.directive.js"></script>
         <script src="app/modules/validators/ctrp.validateFileType.directive.js"></script>
         <script src="app/modules/validators/ctrp.dateLaterThan.directive.js"></script>

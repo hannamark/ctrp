@@ -123,6 +123,11 @@
                                     </tr>
                                     </tbody>
                                 </table>
+
+                                <div class="add-association-error" ng-show="trialDetailView.showAddOtherIdError">
+                                    {{trialDetailView.addOtherIdError}}
+                                </div>
+
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedOtherIds.length > 0">
                                     <thead>
                                         <th>Protocol ID Type</th>
@@ -446,6 +451,10 @@
                                     Grant is required
                                 </span>
 
+                                <div class="add-association-error" ng-show="trialDetailView.showAddGrantError">
+                                    Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code
+                                </div>
+
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedGrants.length > 0">
                                     <thead>
                                         <th>Funding Mechanism</th>
@@ -532,9 +541,14 @@
                                 </table>
 
                                 <input type="hidden" name="ts_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.tsNum === 0">
+                                <input type="hidden" name="ts_dummy2" ng-model="trialDetailView.statusValidationMsgs" validate-trial-status>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ts_dummy)">
                                     Trial Status is required
                                 </span>
+
+                                <div class="add-association-error" ng-show="trialDetailView.showAddStatusError">
+                                    Please provide a Status Date and select a Status
+                                </div>
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedStatuses.length > 0">
                                     <thead>
@@ -542,14 +556,29 @@
                                         <th>Status</th>
                                         <th>Comment</th>
                                         <th>Why Study Stopped</th>
+                                        <th>Errors/Warnings</th>
                                         <th></th>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="status in trialDetailView.addedStatuses track by $index" ng-class="status._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                            <td class="col-md-2">{{status.status_date}}</td>
-                                            <td class="col-md-3">{{status.trial_status_name}}</td>
-                                            <td class="col-md-3">{{status.comment}}</td>
-                                            <td class="col-md-3">{{status.why_stopped}}</td>
+                                            <td class="col-md-1">{{status.status_date}}</td>
+                                            <td class="col-md-2">{{status.trial_status_name}}</td>
+                                            <td class="col-md-2">{{status.comment}}</td>
+                                            <td class="col-md-2">{{status.why_stopped}}</td>
+                                            <td class="col-md-4">
+                                                <div class="text-danger" ng-repeat="error in trialDetailView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
+                                                    ERROR: Interim status [{{error.status}}] is missing
+                                                </div>
+                                                <div class="text-danger" ng-repeat="error in trialDetailView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message')">
+                                                    ERROR: {{error.message}}
+                                                </div>
+                                                <div class="text-warning" ng-repeat="warning in trialDetailView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('status')">
+                                                    WARNING: Interim status [{{warning.status}}] is missing
+                                                </div>
+                                                <div class="text-warning" ng-repeat="warning in trialDetailView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
+                                                    WARNING: {{warning.message}}
+                                                </div>
+                                            </td>
                                             <td class="col-md-1" style="vertical-align: middle">
                                                 <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
                                                     <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
@@ -756,6 +785,10 @@
                                     IND/IDE is required
                                 </span>
 
+                                <div class="add-association-error" ng-show="trialDetailView.showAddIndIdeError">
+                                    Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type
+                                </div>
+
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedIndIdes.length > 0">
                                     <thead>
                                         <th>IND/IDE Types</th>
@@ -883,6 +916,10 @@
                                         </tr>
                                     </tbody>
                                 </table>
+
+                                <div class="add-association-error" ng-show="trialDetailView.showAddAuthorityError">
+                                    Please select a Country and Organization
+                                </div>
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedAuthorities.length > 0">
                                     <thead>

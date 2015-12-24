@@ -25,6 +25,9 @@ class TrialStatusWrapper < ActiveRecord::Base
   belongs_to :trial_status
   belongs_to :trial
 
+  validates :status_date, presence: true
+  validates :trial_status, presence: true
+
   scope :by_value, ->  (value) {
      joins(:trial_status).where("trial_status_wrappers.trial_status_id = trial_statuses.id and trial_statuses.code = ?","#{value.to_s}")
    }

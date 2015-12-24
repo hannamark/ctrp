@@ -30,4 +30,9 @@ class IndIde < ActiveRecord::Base
   belongs_to :expanded_access_type
   belongs_to :holder_type
   belongs_to :trial
+
+  validates :ind_ide_type, presence: true
+  validates :grantor, presence: true
+  validates :holder_type, presence: true
+  validates :ind_ide_number, presence: true
 end

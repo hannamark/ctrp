@@ -8,9 +8,9 @@
     angular.module('ctrp.module.dataservices')
         .factory('TrialService', TrialService);
 
-    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST'];
+    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST', 'DateService'];
 
-    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload, HOST) {
+    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload, HOST, DateService) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -104,6 +104,7 @@
             getAcceptedFileTypes: getAcceptedFileTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
+            addStatus: addStatus,
             validateStatus: validateStatus,
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial
@@ -856,7 +857,30 @@
         }
 
         /**
+         * Insert newStatus into statusArr ordered by status_date
          *
+         * @param statusArr
+         * @param newStatus
+         */
+        function addStatus(statusArr, newStatus) {
+            var idx = statusArr.length;
+
+            for (var i = 0; i < statusArr.length; i++) {
+                var newDateStr = DateService.convertLocaleDateToISODateStr(newStatus.status_date);
+                var newDate = new Date(newDateStr);
+                var arrayDateStr = DateService.convertLocaleDateToISODateStr(statusArr[i].status_date);
+                var arrayDate = new Date(arrayDateStr);
+
+                if (newDate.getTime() < arrayDate.getTime()) {
+                    idx = i;
+                    break;
+                }
+            }
+            statusArr.splice(idx, 0, newStatus);
+        }
+
+        /**
+         * Get validation warnings/errors for trial statuses
          *
          * @param statuses
          */
