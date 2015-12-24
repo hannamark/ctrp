@@ -14,10 +14,14 @@
         var vm = this;
         vm.curTrial = trialDetailObj;
         console.log("nciDivObj  =" + JSON.stringify(nciDivObj));
+        vm.nciDivArr = nciDivObj;
         console.log("nciProgObj  =" + JSON.stringify(nciProgObj));
+        vm.nciProgArr = nciProgObj;
         vm.studySourceArr = studySourceObj;
         vm.addedFses = [];
         vm.selectedFsArray = [];
+        //vm.nih_nci_div = trialDetailObj.nih_nci_div;
+        //vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
             console.log("3curTrial =" + JSON.stringify(vm.curTrial));
