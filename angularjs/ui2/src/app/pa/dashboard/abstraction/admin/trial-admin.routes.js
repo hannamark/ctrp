@@ -26,13 +26,19 @@
                     section: 'pa',
                 resolve: {
                     TrialService: 'TrialService',
-                    //PATrialService: 'PATrialService',
+                    PATrialService: 'PATrialService',
                     trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
                     },
                     studySourceObj: function(TrialService) {
                         return TrialService.getStudySources();
-                        }
+                    },
+                    nciDivObj: function(PATrialService) {
+                        return PATrialService.getNciDiv();
+                    },
+                    nciProgObj: function(PATrialService) {
+                        return PATrialService.getNciProg();
+                    },
                     },
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
