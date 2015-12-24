@@ -56,14 +56,11 @@
                         <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Division/Department Identifier: </label>
                         <div class="col-xs-12 col-sm-9">
                             <select class="form-control input-sm" id="nih_nci_div" ng-model="trialNciView.curTrial.nih_nci_div">
-                                (CCR, CTEP, DCP, NHLBI
                                 <option value="">-Select a NIH/NCI Division/Department Identifier-</option>
-                                <option value="CCR">CCR</option>
-                                <option value="CTEP">CTEP</option>
-                                <option value="DCP">DCP</option>
-                                <option value="NHBLI">NHBLI</option>
+                                <option ng-repeat="nci in trialNciView.nciDivArr" value="{{nci.code}}">
+                                    {{nci.code}}
+                                </option>
                             </select>
-
                         </div>
                     </div>
 
@@ -72,9 +69,9 @@
                         <div class="col-xs-12 col-sm-9">
                             <select class="form-control input-sm" id="nih_nci_prog" ng-model="trialNciView.curTrial.nih_nci_prog">
                                 <option value="">-Select a NIH/NCI Program ID-</option>
-                                <option value="BIQSFP">BIQSFP</option>
-                                <option value="SPORE">SPORE</option>
-                                <option value="Steering Committee Reviewed">Steering Committee Reviewed</option>
+                                <option ng-repeat="nci in trialNciView.nciProgArr" value="{{nci.code}}">
+                                    {{nci.code}}
+                                </option>
                             </select>
 
                         </div>
