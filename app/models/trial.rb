@@ -303,6 +303,10 @@ class Trial < ActiveRecord::Base
 
   scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
 
+  scope :with_nci_div, -> (value) {where("nih_nci_div = ?", "#{value}") }
+
+  scope :with_nci_prog, -> (value) {where("nih_nci_prog = ?", "#{value}") }
+
   scope :with_pi_lname, -> (value) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
