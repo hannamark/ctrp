@@ -174,7 +174,7 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if  params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_source].present?
+    if  params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_source].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
@@ -232,7 +232,14 @@ class TrialsController < ApplicationController
         Rails.logger.info "Science Checkout"
         @trials = @trials.select{|trial| !trial.scientific_checkout.nil?}
       end
-
+      if  params[:nih_nci_div].present?
+        Rails.logger.debug "nci_div selected"
+        @trials = @trials.with_nci_div(params[:nih_nci_div]) if params[:nih_nci_div].present?
+      end
+      if  params[:nih_nci_prog].present?
+        Rails.logger.debug "nih_nci_prog selected"
+        @trials = @trials.with_nci_prog(params[:nih_nci_prog]) if params[:nih_nci_prog].present?
+      end
     else
       @trials = []
     end
