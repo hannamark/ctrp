@@ -88,3 +88,7 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'roo'
 gem 'roo-xls'
 
+gem 'nokogiri'
+
+gem 'cobravsmongoose'
+
