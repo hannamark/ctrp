@@ -220,5 +220,24 @@ var projectMethodsRegistry = function() {
             }
         });
     };
+
+    /*****************************************************************
+     * Method: Verify the warning message
+     * @param warningText
+     *****************************************************************/
+    this.verifyTrialValidationMessage = function(warningText) {
+        return addTrial.addTrialValidationMessage.filter(function(name) {
+            return name.getText().then(function(text) {
+                //  console.log('value of text : ' + text + 'and value of searched string' + warningText + '.');
+                return text === warningText ;
+            });
+        }).then(function(filteredElements) {
+            // Only the elements that passed the filter will be here. This is an array.
+            // console.log(filteredElements);
+            if(filteredElements.length > 0) {
+                return 'true';}
+            else {return 'false';}
+        });
+    };
 };
 module.exports = projectMethodsRegistry;

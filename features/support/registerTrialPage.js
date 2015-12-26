@@ -105,6 +105,9 @@ var registerTrial = function(){
     /**Person Search Model**/
     this.addTrialPersonSearchModel = element.all(by.id('person_search_modal'));
 
+    /**Validation message**/
+    this.addTrialValidationMessage = element.all(by.css('.add-association-error'));
+
     var helper = new helperFunctions();
 
     /********** Trial Identifiers **********/

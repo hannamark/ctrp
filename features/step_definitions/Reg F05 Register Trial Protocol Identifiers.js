@@ -91,7 +91,8 @@ module.exports = function() {
         addTrial.clickAddTrialAddProtocolButton();
 
         /*Verify second clinical.gov id is not allowed **/
-        helper.alertDialog('accept', 'ClinicalTrials.gov Identifier already exists' );
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage('ClinicalTrials.gov Identifier already exists')).to.become('true');
+      //  helper.alertDialog('accept', 'ClinicalTrials.gov Identifier already exists' );
         projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('ClinicalTrials.gov Identifier', 'NCT98745632');
 
         /*Verify first clinical.gov id is added and second is not added **/
@@ -134,7 +135,8 @@ module.exports = function() {
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('NCT55556666');
         addTrial.clickAddTrialAddProtocolButton();
-        helper.alertDialog('accept', arg1 + ' NCT55556666 already exists' );
+       // helper.alertDialog('accept', arg1 + ' NCT55556666 already exists' );
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1 + ' NCT55556666 already exists')).to.become('true');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT55556666')).to.become('true');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT44442222')).to.become('true');
         browser.sleep(25).then(callback);
@@ -147,7 +149,8 @@ module.exports = function() {
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('NCT2222556');
         addTrial.clickAddTrialAddProtocolButton();
-        helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage('The format must be "NCT" followed by 8 numeric characters')).to.become('true');
+       // helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT2222556')).to.become('false');
 
         /**** Check for 8 characters without NCT *****/
@@ -155,7 +158,7 @@ module.exports = function() {
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('LLT2222556');
         addTrial.clickAddTrialAddProtocolButton();
-        helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage('The format must be "NCT" followed by 8 numeric characters')).to.become('true');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('LLT2222556')).to.become('false');
 
         /**** Check for 8 characters with just numbers *****/
@@ -163,7 +166,7 @@ module.exports = function() {
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('12322225568');
         addTrial.clickAddTrialAddProtocolButton();
-        helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage('The format must be "NCT" followed by 8 numeric characters')).to.become('true');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('12322225568')).to.become('false');
 
         /**** Check for 8 characters with just characters *****/
@@ -171,7 +174,7 @@ module.exports = function() {
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('NCTAQWERTYU');
         addTrial.clickAddTrialAddProtocolButton();
-        helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage('The format must be "NCT" followed by 8 numeric characters')).to.become('true');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCTAQWERTYU')).to.become('false');
 
         /**** Check for 9 characters *****/
@@ -179,7 +182,7 @@ module.exports = function() {
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('NCT222255699');
         addTrial.clickAddTrialAddProtocolButton();
-        helper.alertDialog('accept', 'The format must be "NCT" followed by 8 numeric characters');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage('The format must be "NCT" followed by 8 numeric characters')).to.become('true');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT222255699')).to.become('false');
         browser.sleep(25).then(callback);
     });
