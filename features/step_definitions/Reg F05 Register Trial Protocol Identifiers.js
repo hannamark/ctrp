@@ -102,28 +102,6 @@ module.exports = function() {
 
     });
 
-  /*  this.Given(/^I should be allowed to enter more than one "([^"]*)" with unique IDs$/, function (arg1, callback) {
-            addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
-            addTrial.setAddTrialProtocolID('NCT00798');
-        //addTrial.setAddTrialProtocolID('NCT00798');
-            addTrial.clickAddTrialAddProtocolButton();
-            addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
-            addTrial.setAddTrialProtocolID('NCT0079822');
-        //addTrial.setAddTrialProtocolID('NCT0079822');
-            addTrial.clickAddTrialAddProtocolButton();
-            addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
-            addTrial.setAddTrialProtocolID('NCT00798');
-       // addTrial.setAddTrialProtocolID('NCT00798');
-            addTrial.clickAddTrialAddProtocolButton();
-            helper.alertDialog('accept', arg1 + ' NCT00798 already exists' );
-       // helper.alertDialog('accept', arg1 + ' NCT00798 already exists' );
-        expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT00798')).to.become('true');
-      //  expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT00798')).to.become('true');
-        expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT0079822')).to.become('true');
-     //   expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT0079822')).to.become('true');
-        browser.sleep(25).then(callback);
-    }); */
-
 
     this.Given(/^I should be allowed to enter more than one "([^"]*)" with unique IDs$/, function (arg1, callback) {
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
