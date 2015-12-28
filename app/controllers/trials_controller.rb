@@ -115,8 +115,7 @@ class TrialsController < ApplicationController
     available_checkout_types = ["admin", "scientific", "scientificadmin"]
     checkout_type = params[:type].downcase
 
-    if params.has_key?(:trial_id) and available_checkout_types.include? (checkout_type) and
-        @current_user != nil
+    if params.has_key?(:trial_id) and available_checkout_types.include? (checkout_type)
 
       @trial = Trial.find(params[:trial_id])
       checkout_json = {"by": @current_user.username, "date": Time.now}.to_json
@@ -142,8 +141,7 @@ class TrialsController < ApplicationController
     available_checkin_types = ["admin", "scientific", "scientificadmin"]
     checkin_type = params[:type].downcase
 
-    if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type) and
-        @current_user != nil
+    if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type)
 
       @trial = Trial.find(params[:trial_id])
 
