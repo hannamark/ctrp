@@ -26,6 +26,10 @@ class TrialsController < ApplicationController
   # POST /trials
   # POST /trials.json
   def create
+    puts "*************"
+    puts params
+    puts "*************"
+
     @trial = Trial.new(trial_params)
 
     @trial.created_by = @current_user.username unless @current_user.nil?

@@ -14,8 +14,14 @@ namespace "ws" do
         post '/' => 'api_people#create'
         put  '/:id' =>  'api_people#update'
         put  '/:id/status' =>  'api_people#change_status'
+      end
 
-
+      scope '/trials' do
+        get '/' => 'api_trials#index'
+        get '/:id' =>  'api_trials#show'
+        post '/' => 'api_trials#create'
+        put  '/:id' =>  'api_trials#update'
+        put  '/:id/status' =>  'api_trials#change_status'
       end
 
     end

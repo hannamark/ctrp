@@ -9,6 +9,7 @@ class Ws::ApiPeopleController < Ws::BaseApiController
     case
       when request.content_type == "application/xml"
         @object = Hash.from_xml(string)
+        puts @object
         #doc = Nokogiri::XML(string)
         #@object=Hash.from_xml(doc.to_s)
 
@@ -22,9 +23,10 @@ class Ws::ApiPeopleController < Ws::BaseApiController
 
     puts personkeys
 
-    puts personkeys["contact"].select {|h1| h1['type']=='EMAIL'}.first['__content__']
+    puts personkeys["contact"].select {|h1| h1['type']=='EMAIL'}#.first['__content__']
 
       if personkeys.assoc("contact").length > 0
+        puts "hello"
         #personkeys.store(:key, "email") if @object["person"]["contact"][0]["type"] == "EMAIL"
         #personkeys["email"] = @object["person"]["contact"][0]["value"] if @object["person"]["contact"][0]["type"] == "EMAIL"
         #personkeys.store(:key, "email") if @object["person"]["contact"][0]["type"] == "PHONE"
@@ -62,6 +64,7 @@ class Ws::ApiPeopleController < Ws::BaseApiController
     end
 
     if personkeys.has_key?("status")
+      puts SourceStatus.find_by_name(personkeys["status"])
       personkeys["source_status_id"]=SourceStatus.find_by_name(personkeys["status"]).id
       personkeys.delete("status")
     end
@@ -100,6 +103,8 @@ class Ws::ApiPeopleController < Ws::BaseApiController
   end
 
   def create
+    puts "**************"
+    puts @object["person"]
     @person= Person.new(@object["person"])
     #@person.assign_attributes(@json['person'])
     if @person.save
