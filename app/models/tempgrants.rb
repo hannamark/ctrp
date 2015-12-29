@@ -11,6 +11,11 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
+# Indexes
+#
+#  index_tempgrants_on_funding_mechanism  (funding_mechanism)
+#  index_tempgrants_on_institute_code     (institute_code)
+#
 
 class Tempgrants < ActiveRecord::Base
 end

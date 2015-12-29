@@ -71,7 +71,7 @@ class TrialsController < ApplicationController
   # Get
   def get_grants_serialnumber
     @tempgrants=Tempgrants.all
-    @tempgrants=@tempgrants.where("funding_mechanism = ? AND institute_code = ?", params[:funding_mechanism], params[:institute_code])
+    @tempgrants=@tempgrants.where("funding_mechanism = ? AND institute_code = ? AND CAST(serial_number AS TEXT)  LIKE ?", params[:funding_mechanism], params[:institute_code],"#{params[:serial_number]}%")
   end
 
   def search

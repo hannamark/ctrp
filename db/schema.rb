@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151220025357) do
+ActiveRecord::Schema.define(version: 20151229175016) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -839,20 +839,56 @@ ActiveRecord::Schema.define(version: 20151220025357) do
 
   add_index "sub_groups", ["trial_id"], name: "index_sub_groups_on_trial_id", using: :btree
 
+  create_table "submission_methods", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
+  create_table "submission_sources", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
+  create_table "submission_types", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
   create_table "submissions", force: :cascade do |t|
     t.integer  "submission_num"
     t.date     "submission_date"
     t.date     "amendment_date"
     t.integer  "amendment_reason_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
-    t.string   "uuid",                limit: 255
-    t.integer  "lock_version",                    default: 0
-    t.string   "amendment_num",       limit: 255
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.string   "uuid",                 limit: 255
+    t.integer  "lock_version",                     default: 0
+    t.string   "amendment_num",        limit: 255
+    t.string   "submitter",            limit: 255
+    t.integer  "submission_type_id"
+    t.integer  "submission_source_id"
+    t.integer  "submission_method_id"
+    t.integer  "organization_id"
   end
 
   add_index "submissions", ["amendment_reason_id"], name: "index_submissions_on_amendment_reason_id", using: :btree
+  add_index "submissions", ["organization_id"], name: "index_submissions_on_organization_id", using: :btree
+  add_index "submissions", ["submission_method_id"], name: "index_submissions_on_submission_method_id", using: :btree
+  add_index "submissions", ["submission_source_id"], name: "index_submissions_on_submission_source_id", using: :btree
+  add_index "submissions", ["submission_type_id"], name: "index_submissions_on_submission_type_id", using: :btree
   add_index "submissions", ["trial_id"], name: "index_submissions_on_trial_id", using: :btree
 
   create_table "tempgrants", force: :cascade do |t|
@@ -864,6 +900,9 @@ ActiveRecord::Schema.define(version: 20151220025357) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
+
+  add_index "tempgrants", ["funding_mechanism"], name: "index_tempgrants_on_funding_mechanism", using: :btree
+  add_index "tempgrants", ["institute_code"], name: "index_tempgrants_on_institute_code", using: :btree
 
   create_table "trial_co_lead_orgs", force: :cascade do |t|
     t.integer  "trial_id"
@@ -1159,6 +1198,10 @@ ActiveRecord::Schema.define(version: 20151220025357) do
   add_foreign_key "site_rec_status_wrappers", "site_recruitment_statuses"
   add_foreign_key "sub_groups", "trials"
   add_foreign_key "submissions", "amendment_reasons"
+  add_foreign_key "submissions", "organizations"
+  add_foreign_key "submissions", "submission_methods"
+  add_foreign_key "submissions", "submission_sources"
+  add_foreign_key "submissions", "submission_types"
   add_foreign_key "submissions", "trials"
   add_foreign_key "trial_co_lead_orgs", "organizations"
   add_foreign_key "trial_co_lead_orgs", "trials"
@@ -1267,6 +1310,9 @@ ActiveRecord::Schema.define(version: 20151220025357) do
   create_sequence "study_classifications_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "study_sources_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "sub_groups_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "submission_methods_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "submission_sources_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "submission_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "submissions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "tempgrants_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_co_lead_orgs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

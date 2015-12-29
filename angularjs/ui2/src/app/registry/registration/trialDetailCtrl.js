@@ -224,13 +224,13 @@
         };
 
         $scope.typeAheadNameSearch = function () {
-
-
+            
             if (vm.funding_mechanism && vm.institute_code)
             {
                 var queryObj = {
                     funding_mechanism: vm.funding_mechanism,
-                    institute_code: vm.institute_code
+                    institute_code: vm.institute_code,
+                    serial_number: vm.serial_number
                 };
                 return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
                     return res.tempgrants.map(function (tempgrant) {

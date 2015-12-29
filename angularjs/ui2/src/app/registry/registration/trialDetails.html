@@ -415,13 +415,25 @@
                                                     </select>
                                                 </div>
                                             </td>
+
+                                            <td class="col-md-2">
+                                                <div>
+                                                    <select restriction-field class="form-control input-sm" id="serial_number" ng-model="trialDetailView.serial_number">
+                                                        <option value="">-Select-</option>
+                                                        <option ng-repeat="institute in trialDetailView.instituteCodeArr" value="{{institute.code}}">
+                                                            {{institute.code}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </td>
+
                                             <td class="col-md-3">
                                                 <div>
                                                     <!--input restriction-field class="form-control input-sm" id="serial_number" ng-model="trialDetailView.serial_number" /-->
-                                                    <input tabindex="12" type="text" id="serial_number" class="form-control input-sm"
+                                                    <input tabindex="12" type="text" id="serial_number1" class="form-control input-sm"
                                                            autocomplete="off" placeholder="Organization Name" ng-model="trialDetailView.serial_number" auto-focus
                                                            uib-typeahead="tempgrant for tempgrant in typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
-                                                           typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
+                                                           typeahead-min-length="2" typeahead-wait-ms="50" typeahead-no-results="noResults" />
                                                 </div>
                                             </td>
                                             <td class="col-md-4">
