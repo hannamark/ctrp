@@ -35,6 +35,15 @@
                             milestoneObj: function(PATrialService) {
                                 return PATrialService.getMilestones();
                             },
+                            researchCategoriesObj: function(PATrialService) {
+                                return PATrialService.getResearchCategories();
+                            },
+                            nciDivObj: function(PATrialService) {
+                                return PATrialService.getNciDiv();
+                            },
+                            nciProgObj: function(PATrialService) {
+                                return PATrialService.getNciProg();
+                            },
                             processingStatusObj: function(PATrialService) {
                                 return PATrialService.getProcessingStatuses();
                             }

@@ -99,6 +99,7 @@ var projectMethodsRegistry = function() {
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createOrgforTrial = function(trialOrgName,trialType,indexOfOrgModel){
        addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
+        searchOrg.clickExactSearch('true');
             searchOrg.setOrgName(trialOrgName + moment().format('MMMDoYY h'));
             cukeOrganization = searchOrg.orgName.getAttribute('value');
             searchOrg.clickSearchButton();
@@ -126,15 +127,15 @@ var projectMethodsRegistry = function() {
                         });
                         addOrg.setAddAlias('shAlias');
                         addOrg.clickSaveAlias();
-                        addOrg.setAddAddress('9609 Medical Center Drive');
-                        addOrg.setAddAddress2('9609 Medical Center Drive');
-                        selectValue.selectCountry('Benin');
-                        selectValue.selectState('Donga');
-                        addOrg.setAddCity('searchCity');
-                        addOrg.setAddPostalCode('46578');
-                        addOrg.setAddEmail('searchOrg@email.com');
-                        addOrg.setAddPhone('222-487-8956');
-                        addOrg.setAddFax('222-487-4242');
+                        addOrg.setAddAddress('9609 MedicalTrial Center Drive');
+                        addOrg.setAddAddress2('9609 MedicalTrial Center Drive');
+                        selectValue.selectCountry('Poland');
+                        selectValue.selectState('Lubuskie');
+                        addOrg.setAddCity('searchTrialCity');
+                        addOrg.setAddPostalCode('55578');
+                        addOrg.setAddEmail('searchTrialOrg@email.com');
+                        addOrg.setAddPhone('545-487-8956');
+                        addOrg.setAddFax('898-487-4242');
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                         login.login('ctrptrialsubmitter', 'Welcome01');
@@ -147,6 +148,7 @@ var projectMethodsRegistry = function() {
                             login.clickWriteMode('On');
                             self.selectTrials(trialType);//selectTrials(trialType);
                             addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
+                            searchOrg.clickExactSearch('true');
                             cukeOrganization.then(function (value) {
                                 console.log('Add org Name' + value);
                                 searchOrg.setOrgName(value);
@@ -161,7 +163,7 @@ var projectMethodsRegistry = function() {
     };
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
-     * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one
+     * Method: This will create Person for Trial, it creates a new org then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createPersonforTrial = function(trialPersonName, trialType,indexOfPersonModel){
         addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);
@@ -219,6 +221,37 @@ var projectMethodsRegistry = function() {
                 });
             }
         });
+    };
+
+    /*****************************************************************
+     * Method: Verify the warning message
+     * @param warningText
+     *****************************************************************/
+    this.verifyTrialValidationMessage = function(warningText) {
+        return addTrial.addTrialValidationMessage.filter(function(name) {
+            return name.getText().then(function(text) {
+                //  console.log('value of text : ' + text + 'and value of searched string' + warningText + '.');
+                return text === warningText ;
+            });
+        }).then(function(filteredElements) {
+            // Only the elements that passed the filter will be here. This is an array.
+            // console.log(filteredElements);
+            if(filteredElements.length > 0) {
+                return 'true';}
+            else {return 'false';}
+        });
+    };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will add Organization for Trial
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.selectOrgforTrial = function(trialOrgName,indexOfOrgModel) {
+        addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
+        searchOrg.clickExactSearch('true');
+        searchOrg.setOrgName(trialOrgName);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
     };
 };
 module.exports = projectMethodsRegistry;

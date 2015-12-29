@@ -52,7 +52,7 @@ var registerTrial = function(){
     this.addTrialInvestigatorAffiliation = element(by.css('input[name="inv_aff_name1"]'));
 
     /** Data Table 4 Information **/
-    this.addTrialDataTable4FundingSource = element();
+    this.addTrialDataTable4FundingSourceValues = element.all(by.css('div[ng-repeat="fs in trialDetailView.addedFses track by $index"]')).all(by.css('input[disabled]'));
     this.addTrialDataTable4ProgramCode = element(by.model('trialDetailView.curTrial.program_code'));
 
     /** NIH Grant Information **/
@@ -104,6 +104,9 @@ var registerTrial = function(){
 
     /**Person Search Model**/
     this.addTrialPersonSearchModel = element.all(by.id('person_search_modal'));
+
+    /**Validation message**/
+    this.addTrialValidationMessage = element.all(by.css('.add-association-error'));
 
     var helper = new helperFunctions();
 
@@ -255,8 +258,20 @@ var registerTrial = function(){
 
     /**********  Data Table 4 Information **********/
 
+    this.getVerifyAddTrialFundingSource = function(trialFundingSource){
+        this.addTrialDataTable4FundingSourceValues.getAttribute('value').then(function(value){
+            console.log('****Funding Src Org****');
+            console.log(value);
+        });
+        expect(this.addTrialDataTable4FundingSourceValues.getAttribute('value')).to.eventually.eql(trialFundingSource);
+    };
+
     this.setAddTrialDataTable4ProgramCode = function(trialDataTable4ProgramCode)  {
         helper.setValue(this.addTrialDataTable4ProgramCode ,trialDataTable4ProgramCode,"Add Trial by Data Table4 Program code field");
+    };
+
+    this.getVerifyAddTrialDataTable4ProgramCode = function(trialDataTable4ProgramCode){
+        helper.getVerifyValue(this.addTrialDataTable4ProgramCode,trialDataTable4ProgramCode,"Add Trial by Data Table4 Program code field");
     };
 
     /**********  NIH Grant Information **********/

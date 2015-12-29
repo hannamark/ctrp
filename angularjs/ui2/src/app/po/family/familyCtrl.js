@@ -64,7 +64,7 @@
             } else {
                 vm.searchWarningMessage = '';
             }
-            
+
             if (!isEmptySearch) { //skip searching if no search parameters supplied by user
                 FamilyService.searchFamilies(vm.searchParams).then(function (data) {
                     console.log('received search results: ' + JSON.stringify(data.data));
@@ -82,7 +82,6 @@
 
         vm.resetSearch = function() {
             vm.searchParams = FamilyService.getInitialFamilySearchParams();
-            var temp = vm.searchParams.wc_search;
             var excludedKeys = ['wc_search'];
             Object.keys(vm.searchParams).forEach(function(key, index) {
                 if (excludedKeys.indexOf(key) === -1) {
@@ -90,7 +89,7 @@
                     vm.searchParams[key] = angular.isArray(vm.searchParams[key]) ? [] : '';
                 }
             });
-            vm.searchParams['wc_search'] = temp;
+            vm.searchParams['wc_search'] = true;
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
             vm.searchWarningMessage = '';

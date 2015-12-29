@@ -13,7 +13,7 @@
         .controller('advancedOrgSearchForm2ModalCtrl', advancedOrgSearchForm2ModalCtrl)
         .directive('ctrpOrgAdvSearchModalButton', ctrpOrgAdvSearchModalButton);
 
-    advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', '$modalInstance', 'maxRowSelectable']; //for modal controller
+    advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', '$uibModalInstance', 'maxRowSelectable']; //for modal controller
     ctrpOrgAdvSearchModalButton.$inject = ['$uibModal', '$compile', '_', '$timeout', 'Common']; //modal button directive
 
 
@@ -126,9 +126,9 @@
      * Adv org search modal controller
      *
      * @param $scope
-     * @param $modalInstance
+     * @param $uibModalInstance
      */
-    function advancedOrgSearchForm2ModalCtrl($scope, $modalInstance, maxRowSelectable) {
+    function advancedOrgSearchForm2ModalCtrl($scope, $uibModalInstance, maxRowSelectable) {
         var vm = this;
         vm.maxRowSelectable = maxRowSelectable || 'undefined'; //to be passed to the adv org search form
         //console.log('in Modal, received promise maxRowSelectable: ' + vm.maxRowSelectable);
@@ -136,11 +136,11 @@
         $scope.selectedOrgsArray = [];  // orgs selected in the modal
 
         vm.cancel = function() {
-            $modalInstance.dismiss('canceled');
+            $uibModalInstance.dismiss('canceled');
         }; //cancel
 
         vm.confirmSelection = function() {
-            $modalInstance.close($scope.selectedOrgsArray);
+            $uibModalInstance.close($scope.selectedOrgsArray);
         }; //confirmSelection
 
 
@@ -162,7 +162,8 @@
 
         function watchSelectedOrgs() {
             $scope.$watchCollection('selectedOrgsArray', function(newVal, oldVal) {
-                console.log('In Org search modal, selectedOrgsArray.length: ' + $scope.selectedOrgsArray.length);
+                //TODO: do something here if necessary
+                // console.log('In Org search modal, selectedOrgsArray.length: ' + $scope.selectedOrgsArray.length);
             }, true);
 
         } //watchSelectedOrgs
