@@ -3,17 +3,15 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
 
 As a CTRP User, I can enter FDAAA required data elements for a trial
 
-
-  Scenario Outline:#1 I can select the Trial's information for FDAAA required Regulatory Information for an FDA Regulated Interventional trial
-    Given I have selected the option to register a trial <trialType>
+Scenario Outline:#1 I can select the Trial's information for FDAAA required Regulatory Information for an FDA Regulated Interventional trial
+    Given I have selected the option to register a trial <TrialType>
     And I am on the Register Trial Regulatory Information screen
-    And I have noted that "The information in this section is REQUIRED to enable "upload from NCI CTRP" IN ClinicalTrials.gov"
+    And I have noted that the information in this section is required to enable "upload from NCI CTRP" IN ClinicalTrials.gov
     When I have selected the Responsible Party type as:
      
       |Sponsor               |
       |Principal Investigator|
       |Sponsor Investigator  |
-
     
      And I have selected one or more of the Trial Oversight Authority Country and Organization Names from the provided list
      And I have selected"yes" or "No"for FDA Regulated Intervention Indicator
@@ -24,7 +22,7 @@ As a CTRP User, I can enter FDAAA required data elements for a trial
   Examples: 
   
   
-      |trialType                |
+      |TrialType                |
       |National                 |
       |Externally Peer-reviewed |
       |Institutional            |
@@ -44,7 +42,7 @@ As a CTRP User, I can enter FDAAA required data elements for a trial
       |Institutional            |
    
      Scenario Outline:#2 When the Responsible Party is the Principal Investigator rule
-    Given I have selected the option to Register a Trial <TrialType>
+    Given I have selected the option to register a trial <TrialType>
      When I select the Responsible Party type as the Principal Investigator
      Then the Principal Investigator selected will be recorded as the Responsible Party Investigator
      And the Investigator Title will be displayed as Principal Investigator
@@ -52,7 +50,7 @@ As a CTRP User, I can enter FDAAA required data elements for a trial
      And the Investigator Affiliation will be the Principal Investigator's organization affiliation
      And the Investigation Affiliation can be changed
      
-     Examples: 
+      Examples: 
   
   
       |TrialType                |
@@ -60,7 +58,35 @@ As a CTRP User, I can enter FDAAA required data elements for a trial
       |Externally Peer-reviewed |
       |Institutional            |
      
-     Scenario Outline:#3 When the Responsible Party is the Sponsor-Investigator
+       Scenario Outline:#3 Principal Investigator Rule
+    Given I have selected the option to register a trial <TrialType>
+     When I have selected the Responsible Party type as the Principal Investigator
+     Then The fields type must be entered
+      
+            
+      |The Investigator            |
+      |The Investigator Title      |
+      |The Investigator Affiliation|
+     
+      When the fields type is not entered 
+      Then the error type will be displayed
+      
+      
+      |The Investigator is Required            |
+      |The Investigator Title is required      |
+      |The Investigator Affiliation is required|
+
+
+Examples: 
+  
+  
+      |TrialType                |
+      |National                 |
+      |Externally Peer-reviewed |
+      |Institutional            |
+     
+
+    Scenario Outline:#4 When the Responsible Party is the Sponsor-Investigator
     Given I have selected the option to Register a Trial <TrialType>
      When I select the Responsible Party type as the Sponsor-Investigator
     And I have performed a person search in Search Persons
@@ -79,8 +105,34 @@ As a CTRP User, I can enter FDAAA required data elements for a trial
      |Extenally Peer-Reviewed  |
      |Institutional            |
 
+  Scenario Outline: #5 The Sponsor-Investigator Rules
+    Given I have selected the option to Register a Trial <TrialType>
+     When I have selected the Responsible Party as the Sponsor-Investigator
+     Then The field type must be entered
+        
+      |Investigator            |
+      |Investigator Title      |
+      |Investigator Affiliation|
+      
+      When the Field type is not entered
+      Then the errot type will be displayed
+      
+      
+      |Investigator is required            |
+      |Investigator Title is required      |
+      |Investigator Affiliation is required|
+
+
+     
+Examples: 
+
+
+     |<TrialType>              |
+     |National                 |
+     |Extenally Peer-Reviewed  |
+     |Institutional            |
  
- Scenario Outline:#4 I can select the Trial's information for FDAAA required Regulatory Information for a non FDA Regulated Interventional trial
+ Scenario Outline:#6 I can select the Trial's information for FDAAA required Regulatory Information for a non FDA Regulated Interventional trial
    	 Given I have selected the option to register a trial <TrialType>
      And I am on the Register Trial Regulatory Information screen
      When I have selected"No"for FDA Regulated Intervention Indicator
