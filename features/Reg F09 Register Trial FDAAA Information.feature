@@ -4,9 +4,9 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
   As a CTRP User, I can enter FDAAA required data elements for a trial
 
   Scenario Outline:#1 I can select the Trial's information for FDAAA required Regulatory Information for an FDA Regulated Interventional trial
-    Given I have selected the option to register a trial <TrialType>
+    Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Regulatory Information screen
-    And I have noted that the information in this section is required to enable "upload from NCI CTRP" IN ClinicalTrials.gov
+    And I have noted that "The information in this section is REQUIRED to enable "upload from NCI CTRP" IN ClinicalTrials.gov"
     When I have selected the Responsible Party type as:
 
       |Sponsor               |
@@ -29,7 +29,7 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
     Examples:
 
 
-      |TrialType                |
+      |trialType                |
       |National                 |
       |Externally Peer-reviewed |
       |Institutional            |
