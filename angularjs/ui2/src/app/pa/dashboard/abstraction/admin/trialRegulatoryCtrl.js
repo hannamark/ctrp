@@ -8,13 +8,14 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialRegFdaCtrl', trialRegFdaCtrl);
 
-    trialRegFdaCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'responsiblePartyObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialRegFdaCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'responsiblePartyObj', 'countryList']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialRegFdaCtrl(TrialService, $scope, toastr, trialDetailObj, responsiblePartyObj){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialRegFdaCtrl(TrialService, $scope, toastr, trialDetailObj, responsiblePartyObj, countryList){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.responsiblePartyArr = responsiblePartyObj;
-        
+        vm.countryArr = countryList;
+
         vm.updateTrial = function() {
             // Prevent multiple submissions
             vm.disableBtn = true;

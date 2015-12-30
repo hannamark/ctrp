@@ -33,6 +33,10 @@
                     responsiblePartyObj: function(TrialService) {
                         return TrialService.getResponsibleParties();
                     },
+                    GeoLocationService : 'GeoLocationService',
+                    countryList: function(GeoLocationService) {
+                        return GeoLocationService.getCountryList();
+                    },
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
