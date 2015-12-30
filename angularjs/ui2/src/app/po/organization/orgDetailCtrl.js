@@ -49,12 +49,9 @@
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
                 if (vm.curOrg.new) {
-                    //vm.clearForm();
                     $state.go('main.orgDetail', {orgId: response.id});
                 } else {
-                    // vm.curOrg = response;
-                    vm.curOrg.updated_by = response.updated_by;
-                    vm.curOrg.updated_at = response.updated_at;
+                    vm.curOrg = response;
                 }
                 vm.curOrg.new = false;
                 toastr.clear();
@@ -306,7 +303,7 @@
                 });
 
                 modalInstance.result.then(function (selectedItem) {
-                    console.log("about to delete the orgDetail " + vm.curOrg.id);
+                    // console.log("about to delete the orgDetail " + vm.curOrg.id);
                     $state.go('main.organizations');
                 }, function () {
                     console.log("operation canceled")
