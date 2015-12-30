@@ -20,17 +20,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  serial_number: 
+  serial_number: MyString
   institution_name: MyString
-  ,: MyString
-  project_title: 
-  funding_mechanism: 
+  project_title: MyString
+  funding_mechanism: MyString
   institute_code: MyString
 
 two:
-  serial_number: 
+  serial_number: MyString
   institution_name: MyString
-  ,: MyString
-  project_title: 
-  funding_mechanism: 
+  project_title: MyString
+  funding_mechanism: MyString
   institute_code: MyString
