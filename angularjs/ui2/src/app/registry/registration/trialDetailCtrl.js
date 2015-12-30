@@ -10,12 +10,12 @@
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
-        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams', 'acceptedFileTypesObj','OrgService'];
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams', 'acceptedFileTypesObj','OrgService','$http'];
 
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope, $window,
                              Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
-                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams, acceptedFileTypesObj,OrgService) {
+                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams, acceptedFileTypesObj,OrgService,$http) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
@@ -223,24 +223,33 @@
             }
         };
 
-        $scope.typeAheadNameSearch = function () {
-            
-            if (vm.funding_mechanism && vm.institute_code)
-            {
+
+        $scope.refreshGrants = function(serial_number) {
+
+            if (vm.funding_mechanism && vm.institute_code) {
                 var queryObj = {
                     funding_mechanism: vm.funding_mechanism,
                     institute_code: vm.institute_code,
-                    serial_number: vm.serial_number
+                    serial_number: serial_number
                 };
                 return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
-                    return res.tempgrants.map(function (tempgrant) {
+                    var snums=[];
+                    var uniquesnums= [];
+
+                    snums= res.tempgrants.map(function (tempgrant) {
                         return tempgrant.serial_number;
                     });
+                     uniquesnums = snums.filter(function (name) {
+                        return uniquesnums.indexOf(name) === -1;
+                    });
+
+                    $scope.addresses = uniquesnums;
+                    console.log($scope.addresses);
 
                 });
-            }
 
-        }; //typeAheadNameSearch
+            }
+        }
 
 
         vm.collapseAccordion = function() {
@@ -416,6 +425,7 @@
                 vm.institute_code = null;
                 vm.serial_number = null;
                 vm.nci = null;
+                $scope.addresses=null;
             } else {
                 alert('Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code');
             }

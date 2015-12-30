@@ -13,6 +13,6 @@
         'ctrp.module.routes',
 
         /* 3rd-party modules */
-
+        'ui.select'
     ]);
 })();
