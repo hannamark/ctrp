@@ -1,0 +1,17 @@
+
+
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-3">Responsible Party:</label>
+        <div class=" col-xs-12 col-sm-6">
+            <select restriction-field class="form-control input-sm" id="responsible_party" name="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id"
+                    ng-options="responsibleParty.id as responsibleParty.name for responsibleParty in trialDetailView.responsiblePartyArr"
+                    ng-change="trialDetailView.watchOption('responsible_party')" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
+                <option value="">-Select a Responsible Party-</option>
+            </select>
+        </div>
+    </div>
+
+
+
+
