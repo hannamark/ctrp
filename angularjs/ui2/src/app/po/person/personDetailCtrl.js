@@ -69,21 +69,6 @@
             });
         }; // updatePerson
 
-        /*vm.clearForm1 = function() {
-            alert('clear ');
-            $scope.person_form.$setPristine();
-            vm.curPerson = angular.copy(vm.masterCopy);
-            //default context to ctrp
-            vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
-            vm.savedSelection = [];
-            populatePoAffiliations();
-        };
-
-        vm.clearForm = function() {
-            alert('jjjjj');
-            angular.copy(vm.masterCopy,vm.curPerson);
-        };*/
-
         vm.resetForm = function() {
             angular.copy(vm.masterCopy, vm.curPerson);
             vm.savedSelection = [];
