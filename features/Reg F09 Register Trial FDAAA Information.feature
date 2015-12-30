@@ -149,5 +149,19 @@ Examples:
       |Externally Peer-reviewed |
       |Institutional            |
      
+Scenario Outline:#7 Rules for Duplicate Trial Oversight Authority Country and Organization Names
+    Given I have selected the option to register a trial <TrialType>
+    And I am on the Register Trial Regulatory Information screen
+    And I have selected one or more of the Trial Oversight Authority Country and Organization Names from the provided list
+    And adding duplicate Trial Oversight Authority and Organization Names should not be allowed
+    When I add a duplicate Trial Oversight Authority and Organization Names
+     Then the Register Trial Regulatory Information section will indicate duplicate errors during Trial Review
 
+  Examples: 
+  
+  
+      |TrialType                |
+      |National                 |
+      |Externally Peer-reviewed |
+      |Institutional            |
 
