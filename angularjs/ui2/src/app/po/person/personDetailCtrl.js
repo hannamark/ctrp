@@ -57,8 +57,6 @@
                     $state.go('main.personDetail', {personId: response.data.id});
                 } else {
                     vm.curPerson = response.data;
-                    // vm.curPerson.updated_by = response.data.updated_by;
-                    // vm.curPerson.updated_at = response.data.updated_at;
                 }
                 vm.curPerson.new = false;
                 toastr.clear();
@@ -70,21 +68,6 @@
                 console.log("error in updating person " + JSON.stringify(newPerson));
             });
         }; // updatePerson
-
-        /*vm.clearForm1 = function() {
-            alert('clear ');
-            $scope.person_form.$setPristine();
-            vm.curPerson = angular.copy(vm.masterCopy);
-            //default context to ctrp
-            vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
-            vm.savedSelection = [];
-            populatePoAffiliations();
-        };
-
-        vm.clearForm = function() {
-            alert('jjjjj');
-            angular.copy(vm.masterCopy,vm.curPerson);
-        };*/
 
         vm.resetForm = function() {
             angular.copy(vm.masterCopy, vm.curPerson);
