@@ -7,20 +7,20 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   before_filter only: [:create,:update] do
     string = request.body.read
     begin
-    bad_doc = Nokogiri::XML(string) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
+      bad_doc = Nokogiri::XML(string) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
     rescue Nokogiri::XML::SyntaxError => e
-    puts "caught exception: #{e}"
+      puts "caught exception: #{e}"
     end
 
     if request.content_type == "application/xml"
-        @object = Hash.from_xml(string)
-        puts "before raw input"
-        puts @object
-        puts "after raw output"
+      @object = Hash.from_xml(string)
+      puts "before raw input"
+      puts @object
+      puts "after raw output"
       #doc = Nokogiri::XML(string)
       #@object=Hash.from_xml(doc.to_s)
-      else
-        render nothing: true, status: :bad_request
+    else
+      render nothing: true, status: :bad_request
     end
 
     trialkeys = @object["CompleteTrialRegistration"]
@@ -29,10 +29,6 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     puts trialkeys["leadOrgTrialID"]
 
 
-    if trialkeys.has_key?("leadOrgTrialID")
-      errors ={"leadOrgTrialID" => "please verify its not existed"}
-      render xml: errors, status: :bad_request
-    end
 
 
     if trialkeys.assoc("ind").length > 0 || trialkeys.assoc("ide").length > 0
@@ -63,7 +59,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
       grants_len = trialkeys.assoc("grant").length
 
       for i in 0..grants_len
-#        puts trialkeys["grant"][i]["fundingMechanism"]
+        puts trialkeys["grant"][i]["fundingMechanism"]
       end
 
       trialkeys["leadOrgTrialID"]
@@ -75,19 +71,53 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
 
 
+    if personkeys.assoc("contact").length > 0
+      puts "hello"
+      #personkeys.store(:key, "email") if @object["person"]["contact"][0]["type"] == "EMAIL"
+      #personkeys["email"] = @object["person"]["contact"][0]["value"] if @object["person"]["contact"][0]["type"] == "EMAIL"
+      #personkeys.store(:key, "email") if @object["person"]["contact"][0]["type"] == "PHONE"
+      #personkeys["email"] = @object["person"]["contact"][0]["value"] if @object["person"]["contact"][0]["type"] == "EMAIL"
+      #puts  personkeys["contact"].select {|h1| h1['type']=='PHONE'}.first['value']
+      #puts personkeys["contact"].select {|h1| h1['type']=='EMAIL'}.first['value']
 
-=begin
-mapping = {"lead_protocol_id"=>"lead_protocol_id",
-           "pilot"=>"pilot", "grant_question"=>"Yes", "ind_ide_question"=>"Yes", "study_source_id"=>2,
-           "official_title"=>"Offtitle", "phase_id"=>1, "research_category_id"=>2, "primary_purpose_id"=>3, "primary_purpose_other"=>"",
-           "secondary_purpose_id"=>1, "secondary_purpose_other"=>"", "accrual_disease_term_id"=>1, "start_date"=>"2015-12-03T05:00:00.000Z",
-           "primary_comp_date"=>"2015-12-10T05:00:00.000Z", "comp_date"=>"2015-12-26T05:00:00.000Z", "comp_date_qual"=>"Actual",
-           "primary_comp_date_qual"=>"Anticipated", "start_date_qual"=>"Anticipated", "responsible_party_id"=>1, "investigator_title"=>"",
-           "intervention_indicator"=>"Yes", "sec801_indicator"=>"Yes", "lead_org_id"=>8352734, "pi_id"=>28186245, "sponsor_id"=>595150, "investigator_id"=>nil, "investigator_aff_id"=>nil
-}
-=end
-    #mappings = {"firstName" => "fname", "lastName" => "lname","middleName" => "mname", "prefix" => "prefix", "suffix" => "suffix", "email" => "email", "fax" => "fax", "phone" => "phone"}
-    #personkeys.keys.each { |k| personkeys[ mappings[k] ] = personkeys.delete(k) if mappings[k] }
+      if personkeys["contact"].find {|h1| h1['type']=='EMAIL'}
+        #personkeys.store(:key, "email")
+        personkeys["email"] = personkeys["contact"].select {|h1| h1['type']=='EMAIL'}.first['value'] if personkeys["contact"].select {|h1| h1['type']=='EMAIL'}.first['value']
+        personkeys["email"] = personkeys["contact"].select {|h1| h1['type']=='EMAIL'}.first['__content__'] if personkeys["contact"].select {|h1| h1['type']=='EMAIL'}.first['__content__']
+
+      end
+      if personkeys["contact"].find {|h1| h1['type']=='PHONE'}
+        #personkeys.store(:key, "phone")
+        personkeys["phone"] = personkeys["contact"].select {|h1| h1['type']=='PHONE'}.first['value'] if personkeys["contact"].select {|h1| h1['type']=='PHONE'}.first['value']
+        personkeys["phone"] = personkeys["contact"].select {|h1| h1['type']=='PHONE'}.first['__content__'] if personkeys["contact"].select {|h1| h1['type']=='PHONE'}.first['__content__']
+
+      end
+      #if personkeys["contact"].find {|h1| h1['type']=='FAX'}
+      #personkeys.store(:key, "fax")
+      #personkeys["fax"] = personkeys["contact"].select {|h1| h1['type']=='FAX'}.first['value']
+      #end
+
+    end
+
+
+
+    if personkeys.has_key?("address")
+      personkeys.delete("address")
+    end
+
+    if personkeys.has_key?("contact")
+      personkeys.delete("contact")
+    end
+
+    if personkeys.has_key?("status")
+      puts SourceStatus.find_by_name(personkeys["status"])
+      personkeys["source_status_id"]=SourceStatus.find_by_name(personkeys["status"]).id
+      personkeys.delete("status")
+    end
+
+
+    mappings = {"firstName" => "fname", "lastName" => "lname","middleName" => "mname", "prefix" => "prefix", "suffix" => "suffix", "email" => "email", "fax" => "fax", "phone" => "phone"}
+    personkeys.keys.each { |k| personkeys[ mappings[k] ] = personkeys.delete(k) if mappings[k] }
 
 
 
@@ -110,39 +140,31 @@ mapping = {"lead_protocol_id"=>"lead_protocol_id",
 
   def show
     if request.content_type == "application/json"
-      render json: @trial
+      render json: @person
     elsif request.content_type == "application/xml"
-      render xml: @trial
+      render xml: @person
     else
-      render json: @trial
+      render json: @person
     end
   end
 
   def create
 
+#    @object[""]
+    puts "**************"
 
 
     puts @object["trial"]
-
-    @object= {
-     "trial"=>{"lead_protocol_id"=>"nci", "pilot"=>"No", "grant_question"=>"Yes", "ind_ide_question"=>"Yes", "study_source_id"=>2,
-               "official_title"=>"Offtitle", "phase_id"=>1, "research_category_id"=>2, "primary_purpose_id"=>3, "primary_purpose_other"=>"",
-               "secondary_purpose_id"=>1, "secondary_purpose_other"=>"", "accrual_disease_term_id"=>1, "start_date"=>"2015-12-03T05:00:00.000Z",
-               "primary_comp_date"=>"2015-12-10T05:00:00.000Z", "comp_date"=>"2015-12-26T05:00:00.000Z", "comp_date_qual"=>"Actual",
-               "primary_comp_date_qual"=>"Anticipated", "start_date_qual"=>"Anticipated", "responsible_party_id"=>1, "investigator_title"=>"",
-               "intervention_indicator"=>"Yes", "sec801_indicator"=>"Yes", "lead_org_id"=>8352734, "pi_id"=>28186245, "sponsor_id"=>595150, "investigator_id"=>nil, "investigator_aff_id"=>nil
-     }
-    }
-    @trial= Trial.new(@object["trial"])
+    @person= Trial.new(@object["trial"])
     #@person.assign_attributes(@json['person'])
     if @trial.save
       if request.content_type == "application/json"
         puts "**********"
         print response
         puts "***********"
-        render json: @trial
+        render json: @person
       elsif request.content_type == "application/xml"
-        render xml: @trial
+        render xml: @person
       else
 
       end
@@ -150,7 +172,7 @@ mapping = {"lead_protocol_id"=>"lead_protocol_id",
       render nothing: true, status: :bad_request
     end
 
-    #end
+#end
   end
 
 
