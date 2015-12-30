@@ -49,7 +49,8 @@
     "angular-local-storage": "~0.2.3",
     "bootstrap": "3.3.4",
     "phoneformat": "phoneformat.js#~1.0.3",
-    "angular-json-tree": "*"
+    "angular-json-tree": "*",
+    "ui-select": "angular-ui-select#~0.13.2"
   },
   "devDependencies": {
     "bardjs": "~0.1.8",
