@@ -51,14 +51,14 @@
             newPerson.person = vm.curPerson;
 
             PersonService.upsertPerson(newPerson).then(function (response) {
-                console.log('response: ' + JSON.stringify(response));
                 //vm.savedSelection = [];
                 if (newPerson.new) {
                     //vm.clearForm();
                     $state.go('main.personDetail', {personId: response.data.id});
                 } else {
-                    vm.curPerson.updated_by = response.data.updated_by;
-                    vm.curPerson.updated_at = response.data.updated_at;
+                    vm.curPerson = response.data;
+                    // vm.curPerson.updated_by = response.data.updated_by;
+                    // vm.curPerson.updated_at = response.data.updated_at;
                 }
                 vm.curPerson.new = false;
                 toastr.clear();
@@ -370,23 +370,20 @@
 
 
         //Function that checks if a user name - based on First & Last names is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the person/unique Rails end point.
-        $scope.checkForNameUniqueness = function(){
-
+        $scope.checkForNameUniqueness = function() {
             var ID = 0;
-            if(angular.isObject(personDetailObj))
+            if(angular.isObject(personDetailObj)) {
                 ID = vm.curPerson.id;
+            }
 
             var searchParams = {"person_fname": vm.curPerson.fname, "person_lname": vm.curPerson.lname, "source_context_id": vm.curPerson.source_context_id, "person_exists": angular.isObject(personDetailObj), "person_id": ID};
-            vm.showUniqueWarning = false
+            vm.showUniqueWarning = false;
 
             var result = PersonService.checkUniquePerson(searchParams).then(function (response) {
                 vm.name_unqiue = response.name_unique;
-
-                if(!response.name_unique && vm.curPerson.lname.length > 0 && vm.curPerson.fname.length > 0)
-                    vm.showUniqueWarning = true
-
-                console.log("Is person name unique: " +  vm.name_unqiue);
-                console.log(JSON.stringify(response));
+                if(!response.name_unique && vm.curPerson.lname.length > 0 && vm.curPerson.fname.length > 0) {
+                    vm.showUniqueWarning = true;
+                }
             }).catch(function (err) {
                 console.log("error in checking for duplicate person name " + JSON.stringify(err));
             });
