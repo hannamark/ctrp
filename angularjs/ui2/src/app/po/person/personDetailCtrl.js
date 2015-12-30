@@ -57,8 +57,6 @@
                     $state.go('main.personDetail', {personId: response.data.id});
                 } else {
                     vm.curPerson = response.data;
-                    // vm.curPerson.updated_by = response.data.updated_by;
-                    // vm.curPerson.updated_at = response.data.updated_at;
                 }
                 vm.curPerson.new = false;
                 toastr.clear();
