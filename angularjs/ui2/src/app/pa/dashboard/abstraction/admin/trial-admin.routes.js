@@ -24,6 +24,16 @@
                 templateUrl: 'app/pa/dashboard/abstraction/admin/trial_regulatory_fda.html',
                 controller: 'trialRegFdaCtrl as trialDetailView',
                 section: 'pa',
+                resolve: {
+                    TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    responsiblePartyObj: function(TrialService) {
+                        return TrialService.getResponsibleParties();
+                    },
+                },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Regulatory Details'
