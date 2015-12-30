@@ -420,11 +420,24 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td class="col-md-3">
+
+                                            <td class="col-md-2">
                                                 <div>
-                                                    <input restriction-field class="form-control input-sm" id="serial_number" ng-model="trialDetailView.serial_number" />
+                                                <ui-select ng-model="trialDetailView.serial_number"
+                                                       ng-disabled="enabled"
+                                                       reset-search-input="false"
+                                                       style="width: 300px;">
+                                                <ui-select-match placeholder="Enter serial number...">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="tempgrant in addresses"
+                                                                   refresh="refreshGrants($select.search)"
+                                                                   refresh-delay="1">
+                                                    <div ng-bind-html="serial_number | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                                </ui-select>
                                                 </div>
                                             </td>
+
+
                                             <td class="col-md-4">
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="nci" ng-model="trialDetailView.nci">

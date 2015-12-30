@@ -107,7 +107,8 @@
             addStatus: addStatus,
             validateStatus: validateStatus,
             uploadDocument: uploadDocument,
-            deleteTrial: deleteTrial
+            deleteTrial: deleteTrial,
+            getGrantsSerialNumber: getGrantsSerialNumber
         };
 
         return services;
@@ -165,6 +166,12 @@
             }
         } //searchTrials
 
+        function getGrantsSerialNumber(searchParams) {
+            console.log("%%%%%%%%%%%%%%%%%%%%%%   "+searchParams);
+            if (!!searchParams) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);
+            }
+        } //searchTrials
         /**
          * get initial paramater object for trials search
          * @return initTrialSearchParams

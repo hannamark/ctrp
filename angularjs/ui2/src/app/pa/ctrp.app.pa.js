@@ -14,6 +14,6 @@
 	'ctrpApp.widgets',
 
         /* 3rd-party modules */
-
+        'ui.select'
     ]);
 })();
