@@ -9,9 +9,9 @@
         .controller('gsaModalCtrl', gsaModalCtrl);
 
     gsaModalCtrl.$inject = ['$state', '$sce', 'LocalCacheService',
-                            'UserService', 'gsaObj', '$modalInstance'];
+                            'UserService', 'gsaObj', '$modalInstance', '$rootScope'];
 
-    function gsaModalCtrl($state, $sce, LocalCacheService, UserService, gsaObj, $modalInstance) {
+    function gsaModalCtrl($state, $sce, LocalCacheService, UserService, gsaObj, $modalInstance, $rootScope) {
         var vm = this;
         vm.userType = UserService.getUserType();
         vm.accept = function() {
@@ -26,8 +26,10 @@
             console.log('REJECT');
             LocalCacheService.cacheItem('gsaFlag', 'Reject');
             $modalInstance.dismiss('cancel');
-            $state.fromState.name = 'gsaReject';
             UserService.logout();
+
+            /* Notify user controller that GSA notice was rejected */
+            $rootScope.$broadcast('gsaReject');
         };
 
         vm.renderGSAHtml = function() {
