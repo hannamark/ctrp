@@ -542,9 +542,14 @@ h4 {
 .form-horizontal .form-group {
     margin-right: -5px;
     margin-left: -5px;
+    margin-bottom: 12px;
 }
 .form-horizontal .has-feedback .form-control-feedback {
     right: 5px;
+}
+
+.form-horizontal .control-label {
+  text-align: left;
 }
 
 .input-group-addon {

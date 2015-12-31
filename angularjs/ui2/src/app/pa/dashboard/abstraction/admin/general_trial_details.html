@@ -5,20 +5,20 @@
         General Trial Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
       </uib-accordion-heading>
       <div class="row">
-        <form name="general_trial_details_form" role="form" class="form" novalidate>
+        <form name="general_trial_details_form" role="form" class="form-horizontal" novalidate>
           <!-- fieldset for Title -->
           <fieldset class="sub-bordered">
             <legend class="sub-bordered">Title</legend>
-            <div class="row">
-              <label for="acronym" class="control-label col-xs-12 col-sm-3">Acronym</label>
-              <div class="col-xs-12 col-sm-9">
-                <input type="text" id="acronym" name="trial_acronym" class="form-control input-sm">
+            <div class="form-group">
+              <label for="acronym" class="control-label col-xs-12 col-sm-2">Acronym</label>
+              <div class="col-xs-12 col-sm-10">
+                <input type="text" id="acronym" name="trial_acronym" class="form-control">
               </div>
             </div>
 
-            <div class="row">
-              <label for="official_title" class="control-label col-xs-12 col-sm-3">Official Title</label>
-              <div class="col-xs-12 col-sm-9">
+            <div class="form-group">
+              <label for="official_title" class="control-label col-xs-12 col-sm-2">Official Title</label>
+              <div class="col-xs-12 col-sm-10">
                 <textarea name="trial_official_title" id="official_title" rows="5" class="form-control"></textarea>
               </div>
             </div>
@@ -27,17 +27,100 @@
           <!-- fieldset for Alternate Titles -->
           <fieldset class="sub-bordered">
             <legend class="sub-bordered">Alternate Titles</legend>
+            <!-- category -->
+            <div class="form-group">
+              <div class="col-xs-12 col-sm-6">
+                <label for="category" class="control-label col-xs-12 col-sm-2">Category</label>
+                <div class="col-xs-12 col-sm-10">
+                  <select name="category" id="category" class="form-control">
+                    <option value="Spelling">Spelling/Format</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <textarea name="alternate_title_category" id="alternate_title1" rows="1" class="form-control" ng-maxlength="4000"></textarea>
+              </div>
+            </div>
+
+            <!-- source -->
+            <div class="form-group">
+              <div class="col-xs-12 col-sm-6">
+                <label for="source" class="control-label col-xs-12 col-sm-2">Source</label>
+                <div class="col-xs-12 col-sm-10">
+                  <select name="source" id="source" class="form-control">
+                    <option value="values...">....</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <textarea name="alternate_title_source" id="alternate_title2" rows="1" class="form-control" ng-maxlength="4000"></textarea>
+              </div>
+            </div>
+
+            <!-- button -->
+            <div class="form-group">
+              <div class="col-xs-12">
+                <button class="btn btn-default">Add Alternate Title</button>
+              </div>
+            </div>
 
           </fieldset>
 
           <!-- fieldset for Trial Description -->
           <fieldset class="sub-bordered">
             <legend class="sub-bordered">Trial Description</legend>
+            <label for="keywords" class="control-label col-xs-12 col-sm-2">Keywords</label>
+            <div class="col-xs-12 col-sm-10">
+              <textarea name="keywords" id="keywords" rows="5" class="form-control" ng-maxlength="4000"></textarea>
+            </div>
           </fieldset>
 
           <!--fielset for Other Trial Identifiers -->
           <fieldset class="sub-bordered">
             <legend class="sub-bordered">Other Trial Identifiers</legend>
+            <!-- form group for adding other identifier -->
+            <div class="form-group">
+              <label for="other_identifier" class="control-label col-xs-12 col-sm-2">Other Identifier</label>
+              <div class="col-xs-12 col-sm-10">
+                <div class="col-xs-12 col-sm-3">
+                  <select name="other_ids" id="other_identifier" class="form-control">
+                    <option value="DCP Identifier">DCP Identifier</option>
+                  </select>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <input type="text" id="identifier_name" class="form-control">
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                  <button class="btn btn-default">Add Other Identifier</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- form group for displaying the added other identifiers -->
+            <div class="form-group">
+              <table class="table table-bordered table-striped table-hover">
+                <thead style="background-color: #d9edf7">
+                  <th>Identifier Type</th>
+                  <th>Value</th>
+                  <th>Action</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Lead Organization Trial ID</td>
+                    <td>AALL0932</td>
+                    <td><button class="btn btn-default">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>ClinicalTrials.gov Identifier</td>
+                    <td>NCT01143423</td>
+                    <td>
+                      <button class="btn btn-default">Edit</button>
+                      <button class="btn btn-default">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </fieldset>
 
           <!--fieldset for Lead Organization/Principal Investigator -->
