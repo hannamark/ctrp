@@ -113,14 +113,14 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
       end
     else
-      validate_errors.store("tns:accrualDiseaseTerminology","this node has to be included in the request;");
+      validate_errors.store("tns:accrualDiseaseTerminology","accrualDiseaseTerminology expected;");
       #render xml: errors, status: :bad_request
     end
 
     #title official_title
 
     if !trialkeys.has_key?("title")
-      validate_errors.store("tns:title","this node has to be included in the request;");
+      validate_errors.store("tns:title","title expected;");
       #render xml: errors, status: :bad_request
     else
       if trialkeys["title"].nil?
@@ -128,7 +128,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         #render xml: errors, status: :bad_request
       else
         @trialMasterMap["official_title"]=trialkeys["title"]
-      trialkeys.delete("title")
+      #trialkeys.delete("title")
       end
     end
 
@@ -259,10 +259,13 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     #############################################################################################################################
 
   ####Funding Sources
+       trial_funding_sources=Array.new
 
+if trialkeys.has_key?("summary4FundingSponsor")
+
+  if trialkeys["summary4FundingSponsor"].kind_of?(Array)
     if trialkeys["summary4FundingSponsor"].length > 0
      len=trialkeys["summary4FundingSponsor"].length
-     trial_funding_sources=Array.new
      #puts len
       for i in 0..len-1
        if trialkeys["summary4FundingSponsor"][i].has_key?("existingOrganization")
@@ -273,7 +276,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
           myHash.store("organization_id",poID);
           trial_funding_sources.push(myHash);
          else
-           validate_errors.store("tns:summary4FundingSponsor","org not existed"+poID)
+           validate_errors.store("tns:summary4FundingSponsor","org not existed "+poID)
            break;
          end
        else
@@ -285,7 +288,30 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     end
 
+    else
+      if trialkeys["summary4FundingSponsor"].has_key?("existingOrganization")
+        poID=trialkeys["summary4FundingSponsor"]["existingOrganization"]["poID"]
+        count = Organization.where("ctrp_id=?", poID).where("source_context_id=? and source_status_id=?", SourceContext.find_by_name("CTRP").id,SourceStatus.find_by_name("Active").id).count;
+        if count > 0
+          myHash= Hash.new();
+          myHash.store("organization_id",poID);
+          trial_funding_sources.push(myHash);
+        else
+          validate_errors.store("tns:summary4FundingSponsor","org not existed "+poID)
+          break;
+        end
+      else
+        validate_errors.store("tns:summary4FundingSponsor","missing existingOrganization")
+        break;
+      end
+
+    end
+
     @trialMasterMap.store("trial_funding_sources_attributes",trial_funding_sources);
+else
+  validate_errors.store("tns:summary4FundingSponsor","summary4FundingSponsor expected;")
+
+end
 
 ### Program Code
 
@@ -297,8 +323,10 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     ################################################################################################################################
 #### Grants
     grants=Array.new
-if trialkeys["grant"].kind_of?(Array)
-    if trialkeys["grant"].length > 0
+
+       if trialkeys.has_key?("grant")
+        if trialkeys["grant"].kind_of?(Array)
+        if trialkeys["grant"].length > 0
       len=trialkeys["grant"].length
 
       puts "grants length *********>>>>>>>> "
@@ -348,32 +376,91 @@ else
 end
 end
     @trialMasterMap.store("grants_attributes",grants);
+       else
+         validate_errors.store("tns:grant","grant expected;")
+
+       end
+
 
 
 
     ##########################Trial Status && Trial Dates########################################################################################################
 
-    #<tns:trialStatus>In Review</tns:trialStatus>
-
-    #<tns:whyStopped></tns:whyStopped>
-
-    #<tns:trialStatusDate>2015-12-23</tns:trialStatusDate>
-
-#if trialkeys.has_key?("trialStatus")
-
- #     @trialMasterMap.store("lead_protocol_id",trialkeys["trialStatus"])
-
-  #  end
 
 
-#    <tns:trialStartDate type="Anticipated">2015-12-27</tns:trialStartDate>
+       trial_status_wrapper=Array.new();
+       trial_status_map=Hash.new();
+       if trialkeys.has_key?("trialStatus")
+         if TrialStatus.find_by_name(trialkeys["trialStatus"])
+           trial_status_map["trial_status_id"]=TrialStatus.find_by_name(trialkeys["trialStatus"]).id
+           trialkeys.delete("trialStatus")
+         else
+           @trialstatusses = TrialStatus.pluck(:name);
+           validate_errors.store("tns:trialStatus","Invalid value:following are valid values;")
+           validate_errors.store("tns:trialStatus:validvalues",@trialstatusses);
+         end
+       end
 
- #   <tns:primaryCompletionDate type="Anticipated">2016-07-15</tns:primaryCompletionDate>
+       if trialkeys.has_key?("trialStatusDate")
+           trial_status_map["status_date"]=trialkeys["trialStatusDate"]
+           trialkeys.delete("trialStatusDate")
+       end
+        if trialkeys.has_key?("whyStopped")
+           trial_status_map["why_stopped"]=trialkeys["whyStopped"]
+           trialkeys.delete("whyStopped")
+       end
 
-  #  <tns:completionDate type="Anticipated">2016-07-15</tns:completionDate>
+       trial_status_wrapper.push(trial_status_map);
+       @trialMasterMap.store("trial_status_wrappers_attributes",trial_status_wrapper) if !trial_status_map.empty?
+
+    # ##"start_date_qual"=>"Actual", "primary_comp_date_qual"=>"Actual",
+    # ##"comp_date_qual"=>"Actual", "primary_comp_date"=>"2015-12-26T05:00:00.000Z",
+    # ##"start_date"=>"2015-12-01T05:00:00.000Z", "comp_date"=>"2015-12-09T05:00:00.000Z",
+
+    #    <tns:trialStartDate type="Anticipated">2015-12-27</tns:trialStartDate>
+
+    #   <tns:primaryCompletionDate type="Anticipated">2016-07-15</tns:primaryCompletionDate>
+
+    #  <tns:completionDate type="Anticipated">2016-07-15</tns:completionDate>
 
 
+       if trialkeys.has_key?("trialStartDate")
+         if !trialkeys["trialStartDate"].kind_of?(Array) && ( trialkeys["trialStartDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["trialStartDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
+           @trialMasterMap["start_date_qual"]=trialkeys["trialStartDate"]["type"];
+           @trialMasterMap["start_date"]=trialkeys["trialStartDate"]["__content__"];
+         else
+           validate_errors.store("tns:trialStartDate","exactly one trialStartDate expected; or valid types are Anticipated and Actual ")
 
+         end
+       else
+         validate_errors.store("tns:trialStartDate","trialStartDate expected;")
+       end
+
+
+       if trialkeys.has_key?("primaryCompletionDate")
+         if !trialkeys["primaryCompletionDate"].kind_of?(Array) && ( trialkeys["primaryCompletionDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["primaryCompletionDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
+           @trialMasterMap["primary_comp_date_qual"]=trialkeys["primaryCompletionDate"]["type"];
+           @trialMasterMap["primary_comp_date"]=trialkeys["primaryCompletionDate"]["__content__"];
+         else
+           validate_errors.store("tns:primaryCompletionDate","exactly one primaryCompletionDate expected; or valid types are Anticipated and Actual ")
+
+         end
+       else
+         validate_errors.store("tns:primaryCompletionDate","primaryCompletionDate expected;")
+       end
+
+
+       if trialkeys.has_key?("completionDate")
+         if !trialkeys["completionDate"].kind_of?(Array) && ( trialkeys["completionDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["completionDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
+           @trialMasterMap["comp_date_qual"]=trialkeys["trialStartDate"]["type"];
+           @trialMasterMap["comp_date"]=trialkeys["trialStartDate"]["__content__"];
+         else
+           validate_errors.store("tns:completionDate","exactly one completionDate expected; or valid types are Anticipated and Actual ")
+
+         end
+       else
+         validate_errors.store("tns:completionDate","completionDate expected;")
+       end
 
 
 
@@ -382,12 +469,8 @@ end
 
        render xml: validate_errors, status: :bad_request if !validate_errors.empty?
 
-
-
-
-
-
-  end
+    end
+    puts "************* Master Map ****************"
     puts @trialMasterMap
 end # end of before_create
 
