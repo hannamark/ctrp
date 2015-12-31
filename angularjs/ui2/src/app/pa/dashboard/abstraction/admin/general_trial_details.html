@@ -1,0 +1,63 @@
+<div class="row">
+  <uib-accordion close-others="false">
+    <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+      <uib-accordion-heading>
+        General Trial Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+      </uib-accordion-heading>
+      <div class="row">
+        <form name="general_trial_details_form" role="form" class="form" novalidate>
+          <!-- fieldset for Title -->
+          <fieldset class="sub-bordered">
+            <legend class="sub-bordered">Title</legend>
+            <div class="row">
+              <label for="acronym" class="control-label col-xs-12 col-sm-3">Acronym</label>
+              <div class="col-xs-12 col-sm-9">
+                <input type="text" id="acronym" name="trial_acronym" class="form-control input-sm">
+              </div>
+            </div>
+
+            <div class="row">
+              <label for="official_title" class="control-label col-xs-12 col-sm-3">Official Title</label>
+              <div class="col-xs-12 col-sm-9">
+                <textarea name="trial_official_title" id="official_title" rows="5" class="form-control"></textarea>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- fieldset for Alternate Titles -->
+          <fieldset class="sub-bordered">
+            <legend class="sub-bordered">Alternate Titles</legend>
+
+          </fieldset>
+
+          <!-- fieldset for Trial Description -->
+          <fieldset class="sub-bordered">
+            <legend class="sub-bordered">Trial Description</legend>
+          </fieldset>
+
+          <!--fielset for Other Trial Identifiers -->
+          <fieldset class="sub-bordered">
+            <legend class="sub-bordered">Other Trial Identifiers</legend>
+          </fieldset>
+
+          <!--fieldset for Lead Organization/Principal Investigator -->
+          <fielset class="sub-bordered">
+            <legend class="sub-bordered">Lead Organization/Principal Investigator</legend>
+          </fielset>
+
+          <!-- fieldset for Spnsor -->
+          <fieldset class="sub-bordered">
+            <legend class="sub-bordered">Sponsor</legend>
+          </fieldset>
+
+          <!-- fieldset for Central Contact -->
+          <fieldset class="sub-bordered">
+            <legend class="sub-bordered">Central Contact</legend>
+          </fieldset>
+
+        </form>
+      </div>
+
+    </uib-accordion-group>
+  </uib-accordion>
+</div>
