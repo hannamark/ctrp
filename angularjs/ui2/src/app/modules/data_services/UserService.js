@@ -8,10 +8,10 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope'];
 
     function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope) {
 
         var appVersion = '';
         var appRelMilestone = '';
@@ -178,6 +178,7 @@
          * Log out user from backend as well as removing local cache
          */
         this.logout = function () {
+            var self = this;
 
             var username = LocalCacheService.getCacheWithKey('username');
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: 'Angular'})

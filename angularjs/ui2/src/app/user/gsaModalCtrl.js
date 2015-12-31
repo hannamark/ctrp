@@ -26,6 +26,7 @@
             console.log('REJECT');
             LocalCacheService.cacheItem('gsaFlag', 'Reject');
             $modalInstance.dismiss('cancel');
+            $state.fromState.name = 'gsaReject';
             UserService.logout();
         };
 

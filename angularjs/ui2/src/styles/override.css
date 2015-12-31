@@ -361,11 +361,17 @@ header img {
 }
 
 /* large modal window */
+@media (min-width: 1096px) {
+    .modal-lg {
+        width: 1024px;
+    }
+}
+
 @media screen and (min-width: 768px) {
     #adv-org-search-modal  {
         top: 5%;
         right: 50%;
-        max-width: 920px;
+        max-width: 1024px;
         max-height: 1080px;
     }
 
