@@ -28,7 +28,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
 
     if !errors.empty?
-    render xml:errors, status: :bad_request
+    #render xml:errors, status: :bad_request and return
     end
 
     ###############Pre Baci validation such as CompleteTrialRegistartion, category node existence checking #####################
@@ -36,13 +36,13 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     if !@object.has_key?("CompleteTrialRegistration")
       errors.store("tns:CompleteTrialRegistration","this node has to be included in the request; Parent node for this request");
-      render xml: errors, status: :bad_request
+      #render xml: errors, status: :bad_request and return
 
     else
       trialkeys = @object["CompleteTrialRegistration"]
       if !trialkeys.has_key?("category")
         errors.store("tns:category","this node has to be included in the request;");
-        render xml: errors, status: :bad_request
+       # render xml: errors, status: :bad_request and return
 
       else
         @study_sources = StudySource.pluck(:name);
@@ -50,21 +50,27 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         if !@study_sources.collect {|el| el.downcase }.include? trialkeys["category"].downcase
         errors.store("tns:category","Invalid value:following are valid values");
         errors.store("tns:category:validvalues",@study_sources);
-        render xml: errors, status: :bad_request
+        #render xml: errors, status: :bad_request and return
         else
           @trialMasterMap["study_source_id"]=StudySource.find_by_name(trialkeys["category"]).id
         end
 
       end
 
+      if !trialkeys.has_key?("leadOrgTrialID")
+        errors.store("leadOrgTrialID", "please verify its not existed")
+      else
+        @trialMasterMap.store("lead_protocol_id",trialkeys["leadOrgTrialID"])
+
+      end
+
     end
 
-    puts errors
 
     if !errors.empty?
       render xml: errors, status: :bad_request
-    end
-
+    else
+       validate_errors = Hash.new();
     #############################################################################################################################
 
 
@@ -72,7 +78,6 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     ##################################################### VALIDATE Data #########################################################
 
-    validate_errors =Hash.new
 
 
     ###############============>>>>>>> TrailDetails   <<<<<<<<<<<<<<<<=================###################
@@ -85,13 +90,13 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         trialkeys.delete("phase")
       else
         @phases = Phase.pluck(:name);
-        errors.store("tns:phase","Invalid value:following are valid values;")
-        errors.store("tns:phase:validvalues",@phases);
-        render xml: errors, status: :bad_request
+        validate_errors.store("tns:phase","Invalid value:following are valid values;")
+        validate_errors.store("tns:phase:validvalues",@phases);
+        #render xml: errors, status: :bad_request
       end
     else
       validate_errors.store("tns:phase","this node has to be included in the request;");
-      render xml: errors, status: :bad_request
+      #render xml: errors, status: :bad_request
     end
 
     #accrualDiseaseTerminology  accrual_disease_term_id
@@ -104,37 +109,28 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         @accrualdiseaseterms = AccrualDiseaseTerm.pluck(:name);
         validate_errors.store("tns:accrualDiseaseTerminology","Invalid value:following are valid values;")
         validate_errors.store("tns:accrualDiseaseTerminology:validvalues",@accrualdiseaseterms);
-        render xml: errors, status: :bad_request
+        #render xml: errors, status: :bad_request
 
       end
     else
       validate_errors.store("tns:accrualDiseaseTerminology","this node has to be included in the request;");
-      render xml: errors, status: :bad_request
+      #render xml: errors, status: :bad_request
     end
 
     #title official_title
 
     if !trialkeys.has_key?("title")
       validate_errors.store("tns:title","this node has to be included in the request;");
-      render xml: errors, status: :bad_request
+      #render xml: errors, status: :bad_request
     else
       if trialkeys["title"].nil?
         validate_errors.store("tns:title","Title can not be null");
-        render xml: errors, status: :bad_request
+        #render xml: errors, status: :bad_request
       else
         @trialMasterMap["official_title"]=trialkeys["title"]
       trialkeys.delete("title")
       end
     end
-
-
-    if !validate_errors.empty?
-      #render xml: errors, status: :bad_request
-
-    end
-
-
-
 
     #Primary Purpose
     if trialkeys.has_key?("primaryPurpose")
@@ -145,15 +141,14 @@ class Ws::ApiTrialsController < Ws::BaseApiController
           if trialkeys.has_key?("primaryPurposeOtherDescription")
             @trialMasterMap["primary_purpose_other"]= trialkeys["primaryPurposeOtherDescription"]
           else
-            errors.store("tns:primaryPurposeOtherDescription","When primaryPurpose is other; primaryPurposeOtherDescription expected with minimum length of 1");
+            validate_errors.store("tns:primaryPurposeOtherDescription","When primaryPurpose is other; primaryPurposeOtherDescription expected with minimum length of 1");
           end
         end
         trialkeys.delete("primaryPurpose")
       else
         @primarypurposes = PrimaryPurpose.pluck(:name);
-        errors.store("tns:primaryPurpose","Invalid value:following are valid values;")
-        errors.store("tns:primaryPurpose:validvalues",@primarypurposes);
-        #render xml: validate_errors, status: :bad_request
+        validate_errors.store("tns:primaryPurpose","Invalid value:following are valid values;")
+        validate_errors.store("tns:primaryPurpose:validvalues",@primarypurposes);
 
       end
 
@@ -167,9 +162,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     ###############============>>>>>>> TrailDetails Ending   <<<<<<<<<<<<<<<<=================###################
 
 
-    #if trialkeys.assoc("title").length > 0
-     # render xml: errors, status: :bad_request
-    #end
+
 
 
 
@@ -186,17 +179,17 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
         @trialMasterMap["lead_org_id"]=lead_org
       else
-        errors.store("tns:poID","given poID not existed Org in CTRP 5.X ; expected active and CTRP org")
+        validate_errors.store("tns:poID","given poID not existed Org in CTRP 5.X ; expected active and CTRP org")
 
       end
 
       else
-        errors.store("tns:poID","poID node missing; this node is exoected")
+        validate_errors.store("tns:poID","poID node missing; this node is exoected")
       end
 
     else
 
-      errors.store("tns:leadOrganization","Lead organization expected; with existingOrganization with active status and CTRP Context")
+      validate_errors.store("tns:leadOrganization","Lead organization expected; with existingOrganization with active status and CTRP Context")
 
 #        render xml: errors, status: :bad_request
       end
@@ -212,17 +205,17 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
           @trialMasterMap["sponsor_id"]=sponsor
         else
-          errors.store("tns:sponsor","given sponsor not existed Org in CTRP 5.X ; expected active and CTRP org")
+          validate_errors.store("tns:sponsor","given sponsor not existed Org in CTRP 5.X ; expected active and CTRP org")
 
         end
 
       else
-        errors.store("tns:sponsor","sponsor node missing; this node is exoected")
+        validate_errors.store("tns:sponsor","sponsor node missing; this node is exoected")
       end
 
     else
 
-      errors.store("tns:sponsor","sponsor organization expected; with existingOrganization with active status and CTRP Context")
+      validate_errors.store("tns:sponsor","sponsor organization expected; with existingOrganization with active status and CTRP Context")
 
 #        render xml: errors, status: :bad_request
     end
@@ -242,17 +235,17 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
           @trialMasterMap["pi_id"]=pi
         else
-          errors.store("tns:pi","given pi not existed Person in CTRP 5.X ; expected active and CTRP org")
+          validate_errors.store("tns:pi","given pi not existed Person in CTRP 5.X ; expected active and CTRP org")
 
         end
 
       else
-        errors.store("tns:pi","pi node missing; this node is exoected")
+        validate_errors.store("tns:pi","pi node missing; this node is exoected")
       end
 
     else
 
-      errors.store("tns:pi","pi person expected; with existingPerson with active status and CTRP Context")
+      validate_errors.store("tns:pi","pi person expected; with existingPerson with active status and CTRP Context")
 
 #        render xml: errors, status: :bad_request
     end
@@ -280,11 +273,11 @@ class Ws::ApiTrialsController < Ws::BaseApiController
           myHash.store("organization_id",poID);
           trial_funding_sources.push(myHash);
          else
-           errors.store("tns:summary4FundingSponsor","org not existed"+poID)
+           validate_errors.store("tns:summary4FundingSponsor","org not existed"+poID)
            break;
          end
        else
-         errors.store("tns:summary4FundingSponsor","One or more of these nodes are missing existingOrganization")
+         validate_errors.store("tns:summary4FundingSponsor","One or more of these nodes are missing existingOrganization")
          break;
        end
 
@@ -330,7 +323,7 @@ if trialkeys["grant"].kind_of?(Array)
           grants.push(myHash);
 
         else
-          errors.store("tns:grant"," For each grant fundingMechanism, nihInstitutionCode, serialNumber, nciDivisionProgramCode expected;")
+          validate_errors.store("tns:grant"," For each grant fundingMechanism, nihInstitutionCode, serialNumber, nciDivisionProgramCode expected;")
           break;
         end
 
@@ -387,27 +380,23 @@ end
     ##################################################################################################################################
 
 
-
-    if !trialkeys.has_key?("leadOrgTrialID")
-      errors ={"leadOrgTrialID" => "please verify its not existed"}
-#      render xml: errors, status: :bad_request
-    else
-      @trialMasterMap.store("lead_protocol_id",trialkeys["leadOrgTrialID"])
-
-    end
+       render xml: validate_errors, status: :bad_request if !validate_errors.empty?
 
 
-    puts @trialMasterMap
+
+
 
 
   end
-
-
+    puts @trialMasterMap
+end # end of before_create
 
 
   def index
     #render json: Project.where('owner_id = ?', @user.id)
   end
+
+
 
   def show
     if request.content_type == "application/json"
@@ -422,26 +411,10 @@ end
     end
   end
 
+
+
   def create
-
-
     puts @trialMasterMap
-
-    puts @object["trial"]
-
-=begin
-    @object= {
-     "trial"=>{"lead_protocol_id"=>"nci", "pilot"=>"No", "grant_question"=>"Yes", "ind_ide_question"=>"Yes", "study_source_id"=>2,
-               "official_title"=>"Offtitle", "phase_id"=>1, "research_category_id"=>2, "primary_purpose_id"=>3, "primary_purpose_other"=>"",
-               "secondary_purpose_id"=>1, "secondary_purpose_other"=>"", "accrual_disease_term_id"=>1, "start_date"=>"2015-12-03T05:00:00.000Z",
-               "primary_comp_date"=>"2015-12-10T05:00:00.000Z", "comp_date"=>"2015-12-26T05:00:00.000Z", "comp_date_qual"=>"Actual",
-               "primary_comp_date_qual"=>"Anticipated", "start_date_qual"=>"Anticipated", "responsible_party_id"=>1, "investigator_title"=>"",
-               "intervention_indicator"=>"Yes", "sec801_indicator"=>"Yes", "lead_org_id"=>8352734, "pi_id"=>28186245, "sponsor_id"=>595150, "investigator_id"=>nil, "investigator_aff_id"=>nil
-     }
-    }
-=end
-
-
     @trial= Trial.new(@trialMasterMap)
     #@person.assign_attributes(@json['person'])
     if @trial.save
