@@ -63,7 +63,7 @@ Scenario:  #2 I can Delete Data Table 4 Anatomic Sites for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Data Table 4 Anatomic Sites screen
-when I have selected the Delete check box for an individual anatomic site 
+When I have selected the Delete check box for an individual anatomic site 
 And have clicked on Delete button
 And the message displays 'click OK to remove selected Anatomic site(s) form the study. Click Cancel to abort'
 And I have clicked on  OK
