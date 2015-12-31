@@ -36,13 +36,13 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     if !@object.has_key?("CompleteTrialRegistration")
       errors.store("tns:CompleteTrialRegistration","this node has to be included in the request; Parent node for this request");
-      #render xml: errors, status: :bad_request
+      render xml: errors, status: :bad_request
 
     else
       trialkeys = @object["CompleteTrialRegistration"]
       if !trialkeys.has_key?("category")
         errors.store("tns:category","this node has to be included in the request;");
-       # render xml: errors, status: :bad_request
+        render xml: errors, status: :bad_request
 
       else
         @study_sources = StudySource.pluck(:name);
@@ -50,7 +50,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         if !@study_sources.collect {|el| el.downcase }.include? trialkeys["category"].downcase
         errors.store("tns:category","Invalid value:following are valid values");
         errors.store("tns:category:validvalues",@study_sources);
-        #render xml: errors, status: :bad_request
+        render xml: errors, status: :bad_request
         else
           @trialMasterMap["study_source_id"]=StudySource.find_by_name(trialkeys["category"]).id
         end
@@ -265,94 +265,145 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     #############################################################################################################################
 
+  ####Funding Sources
 
-    #puts trialkeys
+    if trialkeys["summary4FundingSponsor"].length > 0
+     len=trialkeys["summary4FundingSponsor"].length
+     trial_funding_sources=Array.new
+     #puts len
+      for i in 0..len-1
+       if trialkeys["summary4FundingSponsor"][i].has_key?("existingOrganization")
+         poID=trialkeys["summary4FundingSponsor"][i]["existingOrganization"]["poID"]
+         count = Organization.where("ctrp_id=?", poID).where("source_context_id=? and source_status_id=?", SourceContext.find_by_name("CTRP").id,SourceStatus.find_by_name("Active").id).count;
+         if count > 0
+          myHash= Hash.new();
+          myHash.store("organization_id",poID);
+          trial_funding_sources.push(myHash);
+         else
+           errors.store("tns:summary4FundingSponsor","org not existed"+poID)
+           break;
+         end
+       else
+         errors.store("tns:summary4FundingSponsor","One or more of these nodes are missing existingOrganization")
+         break;
+       end
 
-    puts "#######################"
-    puts @trialMasterMap
-
-
-    if trialkeys.has_key?("leadOrgTrialID")
-      errors ={"leadOrgTrialID" => "please verify its not existed"}
-#      render xml: errors, status: :bad_request
-    end
-
-
-    if trialkeys.assoc("ind").length > 0 || trialkeys.assoc("ide").length > 0
-
-
-    else
-
-      puts "no ind present or no ide info"
-
-    end
-
-    if trialkeys.assoc("pi").length > 0
-
-    else
-
-      puts "no principal investigator"
-
-    end
-
-
-
-    #############
-
-
-
-
-    if trialkeys.assoc("grant").length > 0
-      #  <tns:fundingMechanism>P30</tns:fundingMechanism>
-      #  <tns:nihInstitutionCode>CA</tns:nihInstitutionCode>
-      #  <tns:serialNumber>36727</tns:serialNumber>
-      #  <tns:nciDivisionProgramCode>OD</tns:nciDivisionProgramCode>
-      #  <tns:fundingPercentage>100.0</tns:fundingPercentage>
-      # {"funding_mechanism"=>"B08", "institute_code"=>"AE", "serial_number"=>"456", "nci"=>"CCT/CTB", "_destroy"=>false}],
-
-      grants_len = trialkeys.assoc("grant").length
-
-      for i in 0..grants_len
-#        puts trialkeys["grant"][i]["fundingMechanism"]
       end
 
-      trialkeys["leadOrgTrialID"]
+    end
 
+    @trialMasterMap.store("trial_funding_sources_attributes",trial_funding_sources);
+
+### Program Code
+
+    if trialkeys.has_key?("programCode")
+     @trialMasterMap.store("program_code",trialkeys["programCode"]);
+    end
+
+
+    ################################################################################################################################
+#### Grants
+    grants=Array.new
+if trialkeys["grant"].kind_of?(Array)
+    if trialkeys["grant"].length > 0
+      len=trialkeys["grant"].length
+
+      puts "grants length *********>>>>>>>> "
+
+      puts trialkeys["grant"]
+
+      puts len
+      for i in 0..len-1
+        if trialkeys["grant"][i].has_key?("fundingMechanism") #&& trialkeys["grant"][i].has_key?("nihInstitutionCode") && trialkeys["grant"][i].has_key?("serialNumber") && trialkeys["grant"][i].has_key?("nciDivisionProgramCode")
+
+          fundingMechanism=trialkeys["grant"][i]["fundingMechanism"]
+          nihInstitutionCode=trialkeys["grant"][i]["nihInstitutionCode"]
+          serialNumber=trialkeys["grant"][i]["serialNumber"]
+          nciDivisionProgramCode=trialkeys["grant"][i]["nciDivisionProgramCode"]
+
+          myHash= Hash.new();
+          myHash.store("funding_mechanism",fundingMechanism);
+          myHash.store("institute_code",nihInstitutionCode);
+          myHash.store("serial_number",serialNumber);
+          myHash.store("nci",nciDivisionProgramCode);
+
+          grants.push(myHash);
+
+        else
+          errors.store("tns:grant"," For each grant fundingMechanism, nihInstitutionCode, serialNumber, nciDivisionProgramCode expected;")
+          break;
+        end
+
+      end
+
+    end
+else
+  if trialkeys["grant"].has_key?("fundingMechanism") && trialkeys["grant"].has_key?("nihInstitutionCode") && trialkeys["grant"].has_key?("serialNumber") && trialkeys["grant"].has_key?("nciDivisionProgramCode")
+
+    fundingMechanism=trialkeys["grant"]["fundingMechanism"]
+    nihInstitutionCode=trialkeys["grant"]["nihInstitutionCode"]
+    serialNumber=trialkeys["grant"]["serialNumber"]
+    nciDivisionProgramCode=trialkeys["grant"]["nciDivisionProgramCode"]
+
+    myHash= Hash.new();
+    myHash.store("funding_mechanism",fundingMechanism);
+    myHash.store("institute_code",nihInstitutionCode);
+    myHash.store("serial_number",serialNumber);
+    myHash.store("nci",nciDivisionProgramCode);
+
+    grants.push(myHash);
+end
+end
+    @trialMasterMap.store("grants_attributes",grants);
+
+
+
+    ##########################Trial Status && Trial Dates########################################################################################################
+
+    #<tns:trialStatus>In Review</tns:trialStatus>
+
+    #<tns:whyStopped></tns:whyStopped>
+
+    #<tns:trialStatusDate>2015-12-23</tns:trialStatusDate>
+
+#if trialkeys.has_key?("trialStatus")
+
+ #     @trialMasterMap.store("lead_protocol_id",trialkeys["trialStatus"])
+
+  #  end
+
+
+#    <tns:trialStartDate type="Anticipated">2015-12-27</tns:trialStartDate>
+
+ #   <tns:primaryCompletionDate type="Anticipated">2016-07-15</tns:primaryCompletionDate>
+
+  #  <tns:completionDate type="Anticipated">2016-07-15</tns:completionDate>
+
+
+
+
+
+
+    ##################################################################################################################################
+
+
+
+    if !trialkeys.has_key?("leadOrgTrialID")
+      errors ={"leadOrgTrialID" => "please verify its not existed"}
+#      render xml: errors, status: :bad_request
     else
-
-      puts "no grant information"
+      @trialMasterMap.store("lead_protocol_id",trialkeys["leadOrgTrialID"])
 
     end
 
 
-
-=begin
-mapping = {"lead_protocol_id"=>"lead_protocol_id",
-           "pilot"=>"pilot", "grant_question"=>"Yes", "ind_ide_question"=>"Yes", "study_source_id"=>2,
-           "official_title"=>"Offtitle", "phase_id"=>1, "research_category_id"=>2, "primary_purpose_id"=>3, "primary_purpose_other"=>"",
-           "secondary_purpose_id"=>1, "secondary_purpose_other"=>"", "accrual_disease_term_id"=>1, "start_date"=>"2015-12-03T05:00:00.000Z",
-           "primary_comp_date"=>"2015-12-10T05:00:00.000Z", "comp_date"=>"2015-12-26T05:00:00.000Z", "comp_date_qual"=>"Actual",
-           "primary_comp_date_qual"=>"Anticipated", "start_date_qual"=>"Anticipated", "responsible_party_id"=>1, "investigator_title"=>"",
-           "intervention_indicator"=>"Yes", "sec801_indicator"=>"Yes", "lead_org_id"=>8352734, "pi_id"=>28186245, "sponsor_id"=>595150, "investigator_id"=>nil, "investigator_aff_id"=>nil
-}
-=end
-    #mappings = {"firstName" => "fname", "lastName" => "lname","middleName" => "mname", "prefix" => "prefix", "suffix" => "suffix", "email" => "email", "fax" => "fax", "phone" => "phone"}
-    #personkeys.keys.each { |k| personkeys[ mappings[k] ] = personkeys.delete(k) if mappings[k] }
-
+    puts @trialMasterMap
 
 
   end
 
 
-  #before_filter only: :update do
-  # unless @json.has_key?('person')
-  #  render nothing: true, status: :bad_request
-  #end
-  # end
 
-  #before_filter only: :create do
-  # @person = Person.find_by_name(@json['project']['name'])
-  #end
 
   def index
     #render json: Project.where('owner_id = ?', @user.id)
@@ -389,7 +440,7 @@ mapping = {"lead_protocol_id"=>"lead_protocol_id",
      }
     }
 =end
-@trialMasterMap["lead_protocol_id"]="nci"
+
 
     @trial= Trial.new(@trialMasterMap)
     #@person.assign_attributes(@json['person'])
