@@ -5,9 +5,7 @@ angularjs/ui2/.tmp
 build/
 
 #Ignore the host url in the constant file
-src/app/modules/ctrp.module.constants.dev.js
-src/app/modules/ctrp.module.constants.prod.js
-
+src/app/modules/ctrp.module.constants.host.js
 
 #Ignore the gulp config file
 ./gulp.config.js
