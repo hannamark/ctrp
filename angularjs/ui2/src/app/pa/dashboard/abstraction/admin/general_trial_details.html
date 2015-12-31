@@ -69,11 +69,58 @@
           <!-- fieldset for Trial Description -->
           <fieldset class="sub-bordered">
             <legend class="sub-bordered">Trial Description</legend>
+            <label for="keywords" class="control-label col-xs-12 col-sm-2">Keywords</label>
+            <div class="col-xs-12 col-sm-10">
+              <textarea name="keywords" id="keywords" rows="5" class="form-control" ng-maxlength="4000"></textarea>
+            </div>
           </fieldset>
 
           <!--fielset for Other Trial Identifiers -->
           <fieldset class="sub-bordered">
             <legend class="sub-bordered">Other Trial Identifiers</legend>
+            <!-- form group for adding other identifier -->
+            <div class="form-group">
+              <label for="other_identifier" class="control-label col-xs-12 col-sm-2">Other Identifier</label>
+              <div class="col-xs-12 col-sm-10">
+                <div class="col-xs-12 col-sm-3">
+                  <select name="other_ids" id="other_identifier" class="form-control">
+                    <option value="DCP Identifier">DCP Identifier</option>
+                  </select>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <input type="text" id="identifier_name" class="form-control">
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                  <button class="btn btn-default">Add Other Identifier</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- form group for displaying the added other identifiers -->
+            <div class="form-group">
+              <table class="table table-bordered table-striped table-hover">
+                <thead style="background-color: #d9edf7">
+                  <th>Identifier Type</th>
+                  <th>Value</th>
+                  <th>Action</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Lead Organization Trial ID</td>
+                    <td>AALL0932</td>
+                    <td><button class="btn btn-default">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>ClinicalTrials.gov Identifier</td>
+                    <td>NCT01143423</td>
+                    <td>
+                      <button class="btn btn-default">Edit</button>
+                      <button class="btn btn-default">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </fieldset>
 
           <!--fieldset for Lead Organization/Principal Investigator -->
