@@ -229,6 +229,35 @@
             }
         };
 
+
+        $scope.refreshGrants = function(serial_number) {
+
+            if (vm.funding_mechanism && vm.institute_code) {
+                var queryObj = {
+                    funding_mechanism: vm.funding_mechanism,
+                    institute_code: vm.institute_code,
+                    serial_number: serial_number
+                };
+                return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
+                    var snums=[];
+                    var uniquesnums= [];
+
+                    snums= res.tempgrants.map(function (tempgrant) {
+                        return tempgrant.serial_number;
+                    });
+                     uniquesnums = snums.filter(function (name) {
+                        return uniquesnums.indexOf(name) === -1;
+                    });
+
+                    $scope.addresses = uniquesnums;
+                    console.log($scope.addresses);
+
+                });
+
+            }
+        }
+
+
         vm.collapseAccordion = function() {
             vm.accordions = [false, false, false, false, false, false, false, false, false, false, false, false];
             vm.collapsed = true;
@@ -407,6 +436,7 @@
                 vm.serial_number = null;
                 vm.nci = null;
                 vm.showAddGrantError = false;
+                $scope.addresses=null;
             } else {
                 vm.showAddGrantError = true;
             }
@@ -721,7 +751,8 @@
         function adjustProtocolIdOriginArr() {
             for (var i = vm.protocolIdOriginArr.length - 1; i >= 0; i--) {
                 if (vm.protocolIdOriginArr[i].code === 'CTEP' || vm.protocolIdOriginArr[i].code === 'DCP'
-                    || vm.protocolIdOriginArr[i].code === 'CCR' || vm.protocolIdOriginArr[i].code === 'DNCI') {
+                    || vm.protocolIdOriginArr[i].code === 'CCR' || vm.protocolIdOriginArr[i].code === 'DNCI'
+                    || vm.protocolIdOriginArr[i].code === 'CDR') {
                     vm.protocolIdOriginArr.splice(i, 1);
                 }
             }

@@ -82,7 +82,10 @@ GEM
       currencies (~> 0.4.2)
       i18n_data (~> 0.7.0)
     currencies (0.4.2)
+    dbi (0.4.5)
+      deprecated (= 2.0.1)
     debug_inspector (0.0.2)
+    deprecated (2.0.1)
     devise (3.5.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -233,6 +236,7 @@ GEM
       spreadsheet (> 0.9.0)
     ruby-ole (1.2.11.8)
     rubyzip (1.1.7)
+    rufus-scheduler (3.1.10)
     safe_yaml (1.0.4)
     sass (3.4.14)
     sass-rails (5.0.3)
@@ -295,6 +299,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   coffee-script-source (= 1.8.0)
   countries
+  dbi
   devise
   devise_ldap_authenticatable
   jbuilder (~> 2.0)
@@ -311,6 +316,7 @@ DEPENDENCIES
   rest-client
   roo
   roo-xls
+  rufus-scheduler
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   spring
@@ -319,3 +325,6 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
   wicked
+
+BUNDLED WITH
+   1.10.5

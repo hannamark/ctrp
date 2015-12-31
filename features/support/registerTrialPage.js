@@ -43,16 +43,11 @@ var registerTrial = function(){
     this.addTrialLeadOrganization = element(by.css('input[name="lead_org_name"]'));
     this.addTrialPrincipalInvestigator = element(by.css('input[name="pi_name1"]'));
 
-    /** Sponsor/Responsible Party **/
+    /** Sponsor **/
     this.addTrialSponsor = element(by.css('input[name="sponsor_name"]'));
-    this.addTrialResponsibleParty = element(by.model('trialDetailView.curTrial.responsible_party_id'));
-    this.addTrialResponsiblePartyList = element(by.model('trialDetailView.curTrial.responsible_party_id')).all(by.css('option[label]'));
-    this.addTrialInvestigator = element(by.css('input[name="investigator_name1"]'));
-    this.addTrialInvestigatorTitle = element(by.model('trialDetailView.curTrial.investigator_title'));
-    this.addTrialInvestigatorAffiliation = element(by.css('input[name="inv_aff_name1"]'));
 
     /** Data Table 4 Information **/
-    this.addTrialDataTable4FundingSource = element();
+    this.addTrialDataTable4FundingSourceValues = element.all(by.css('div[ng-repeat="fs in trialDetailView.addedFses track by $index"]')).all(by.css('input[disabled]'));
     this.addTrialDataTable4ProgramCode = element(by.model('trialDetailView.curTrial.program_code'));
 
     /** NIH Grant Information **/
@@ -86,6 +81,12 @@ var registerTrial = function(){
     this.addTrialAddIND_IDEButton = element(by.css('button[ng-click="trialDetailView.addIndIde()"]'));
 
     /** Regulatory Information **/
+    this.addTrialRegulatoryInformationText = element(by.css('.control-label.col-xs-12.col-sm-7'));
+    this.addTrialResponsibleParty = element(by.model('trialDetailView.curTrial.responsible_party_id'));
+    this.addTrialResponsiblePartyList = element(by.model('trialDetailView.curTrial.responsible_party_id')).all(by.css('option[label]'));
+    this.addTrialInvestigator = element(by.css('input[name="investigator_name1"]'));
+    this.addTrialInvestigatorTitle = element(by.model('trialDetailView.curTrial.investigator_title'));
+    this.addTrialInvestigatorAffiliation = element(by.css('input[name="inv_aff_name1"]'));
     this.addTrialOversightAuthorityCountry = element(by.model('trialDetailView.authority_country'));
     this.addTrialOversightAuthorityOrganization = element(by.model('trialDetailView.authority_org'));
     this.addTrialAddOversightAuthorityButton = element(by.css('button[ng-click="trialDetailView.addAuthority()"]'));
@@ -104,6 +105,9 @@ var registerTrial = function(){
 
     /**Person Search Model**/
     this.addTrialPersonSearchModel = element.all(by.id('person_search_modal'));
+
+    /**Validation message**/
+    this.addTrialValidationMessage = element.all(by.css('.add-association-error'));
 
     var helper = new helperFunctions();
 
@@ -229,34 +233,22 @@ var registerTrial = function(){
         helper.getVerifyValue(this.addTrialSponsor,trialSponsor,"Add Trial by Sponsor field");
     };
 
-    this.selectAddTrialResponsibleParty = function(trialResponsibleParty)  {
-        helper.selectValueFromList(this.addTrialResponsibleParty,trialResponsibleParty,"Add Trial by Responsible Party field");
-    };
-
-    this.getVerifyAddTrialResponsibleParty = function(trialResponsibleParty)  {
-        helper.getVerifyListValue(this.addTrialResponsibleParty,trialResponsibleParty,"Add Trial by Responsible Party field");
-    };
-
-    this.getVerifyAddTrialInvestigator = function(trialInvestigator){
-        helper.getVerifyValue(this.addTrialInvestigator,trialInvestigator,"Add Trial by Investigator field");
-    };
-
-    this.setAddTrialInvestigatorTitle = function(trialInvestigatorTitle)  {
-        helper.setValue(this.addTrialInvestigatorTitle ,trialInvestigatorTitle,"Add Trial by Investigator Title field");
-    };
-
-    this.getVerifyAddTrialInvestigatorTitle= function(trialInvestigatorTitle)  {
-        helper.getVerifyValue(this.addTrialInvestigatorTitle,trialInvestigatorTitle,"Add Trial by Investigator Title field");
-    };
-
-    this.getVerifyAddTrialInvestigatorAffiliation = function(trialInvestigatorAffiliation){
-        helper.getVerifyValue(this.addTrialInvestigatorAffiliation,trialInvestigatorAffiliation,"Add Trial by Investigator Affiliation field");
-    };
-
     /**********  Data Table 4 Information **********/
+
+    this.getVerifyAddTrialFundingSource = function(trialFundingSource){
+        this.addTrialDataTable4FundingSourceValues.getAttribute('value').then(function(value){
+            console.log('****Funding Src Org****');
+            console.log(value);
+        });
+        expect(this.addTrialDataTable4FundingSourceValues.getAttribute('value')).to.eventually.eql(trialFundingSource);
+    };
 
     this.setAddTrialDataTable4ProgramCode = function(trialDataTable4ProgramCode)  {
         helper.setValue(this.addTrialDataTable4ProgramCode ,trialDataTable4ProgramCode,"Add Trial by Data Table4 Program code field");
+    };
+
+    this.getVerifyAddTrialDataTable4ProgramCode = function(trialDataTable4ProgramCode){
+        helper.getVerifyValue(this.addTrialDataTable4ProgramCode,trialDataTable4ProgramCode,"Add Trial by Data Table4 Program code field");
     };
 
     /**********  NIH Grant Information **********/
@@ -356,6 +348,35 @@ var registerTrial = function(){
     };
 
     /********** Regulatory Information **********/
+
+    this.getVerifyAddTrialRegulatoryInformationText = function(trialRegulatoryInformationText){
+        helper.getVerifyheader(this.addTrialRegulatoryInformationText,trialRegulatoryInformationText,"Add Trial by Regulatory Information Header Text field");
+    };
+
+
+    this.selectAddTrialResponsibleParty = function(trialResponsibleParty)  {
+        helper.selectValueFromList(this.addTrialResponsibleParty,trialResponsibleParty,"Add Trial by Responsible Party field");
+    };
+
+    this.getVerifyAddTrialResponsibleParty = function(trialResponsibleParty)  {
+        helper.getVerifyListValue(this.addTrialResponsibleParty,trialResponsibleParty,"Add Trial by Responsible Party field");
+    };
+
+    this.getVerifyAddTrialInvestigator = function(trialInvestigator){
+        helper.getVerifyValue(this.addTrialInvestigator,trialInvestigator,"Add Trial by Investigator field");
+    };
+
+    this.setAddTrialInvestigatorTitle = function(trialInvestigatorTitle)  {
+        helper.setValue(this.addTrialInvestigatorTitle ,trialInvestigatorTitle,"Add Trial by Investigator Title field");
+    };
+
+    this.getVerifyAddTrialInvestigatorTitle= function(trialInvestigatorTitle)  {
+        helper.getVerifyValue(this.addTrialInvestigatorTitle,trialInvestigatorTitle,"Add Trial by Investigator Title field");
+    };
+
+    this.getVerifyAddTrialInvestigatorAffiliation = function(trialInvestigatorAffiliation){
+        helper.getVerifyValue(this.addTrialInvestigatorAffiliation,trialInvestigatorAffiliation,"Add Trial by Investigator Affiliation field");
+    };
 
     this.selectAddTrialOversightAuthorityCountry = function(trialOversightAuthorityCountry)  {
         helper.selectValueFromList(this.addTrialOversightAuthorityCountry,trialOversightAuthorityCountry,"Add Trial by Trial Oversight Authority Country field");

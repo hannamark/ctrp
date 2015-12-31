@@ -63,7 +63,7 @@ config/ldap.yml
 # Robots.txt We want this set to disallow on EC2 server. This file is set to disallow out there.
 robots.txt
 
-# Ignore stuff in ui2
-/angularjs/ui2/.tmp
-/angularjs/ui2/src/bower_components
-/angularjs/node_modules
+# Ignore Node and Bower packages
+angularjs/ui2/node_modules/
+angularjs/ui2/src/bower_components/
+angularjs/ui2/.tmp
