@@ -18,17 +18,3 @@
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  serial_number: MyString
-  institution_name: MyString
-  project_title: MyString
-  funding_mechanism: MyString
-  institute_code: MyString
-
-two:
-  serial_number: MyString
-  institution_name: MyString
-  project_title: MyString
-  funding_mechanism: MyString
-  institute_code: MyString
