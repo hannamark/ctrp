@@ -8,14 +8,6 @@ Rails.application.routes.draw do
 namespace "ws" do
   scope '/api' do
     scope '/v1' do
-      scope '/people' do
-        get '/' => 'api_people#index'
-        get '/:id' =>  'api_people#show'
-        post '/' => 'api_people#create'
-        put  '/:id' =>  'api_people#update'
-        put  '/:id/status' =>  'api_people#change_status'
-      end
-
       scope '/trials' do
         get '/' => 'api_trials#index'
         get '/:id' =>  'api_trials#show'
