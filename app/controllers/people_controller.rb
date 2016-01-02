@@ -28,7 +28,11 @@ class PeopleController < ApplicationController
   # POST /people
   # POST /people.json
   def create
-    print "hello request type is :: " + request.content_type
+    if request.nil? || request.content_type.nil?
+      print "request.content_type is nil"
+    else
+      print "hello request type is :: " + request.content_type
+    end
     @person = Person.new(person_params)
     @person.created_by = @current_user.username unless @current_user.nil?
     @person.updated_by = @person.created_by
@@ -49,7 +53,11 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1
   # PATCH/PUT /people/1.json
   def update
-    print "hello request type is :: " + request.content_type
+    if request.nil? || request.content_type.nil?
+      print "request.content_type is nil"
+    else
+      print "hello request type is :: " + request.content_type
+    end
 
     @person.updated_by = @current_user.username unless @current_user.nil?
 
