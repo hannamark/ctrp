@@ -11,6 +11,7 @@ var loginPage = require('../support/LoginPage');
 var trialMenuItemList = require('../support/trialCommonBar');
 var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 
 
 module.exports = function() {
@@ -18,11 +19,11 @@ module.exports = function() {
     var trialMenuItem = new trialMenuItemList();
     var addTrial = new addTrialPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
+    var commonFunctions = new abstractionCommonMethods();
 
     this.Given(/^I am logged into the CTRP Registration application$/, function (callback) {
         browser.get('ui/#/main/sign_in');
-        login.login('ctrptrialsubmitter', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
         trialMenuItem.clickHomeSearchTrial();
         login.clickWriteMode('On');
         browser.sleep(25).then(callback);
@@ -31,8 +32,7 @@ module.exports = function() {
     this.Given(/^I have selected the option to register a trial (.*)$/, function (trialType, callback) {
         typeOfTrial = trialType;
         browser.get('ui/#/main/sign_in');
-        login.login('ctrptrialsubmitter', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
         trialMenuItem.clickHomeSearchTrial();
         login.clickWriteMode('On');
         projectFunctionsRegistry.selectTrials(trialType);

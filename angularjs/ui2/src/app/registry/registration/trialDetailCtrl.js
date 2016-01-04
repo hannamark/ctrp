@@ -65,6 +65,12 @@
         vm.showInvestigator = false;
         vm.showInvSearchBtn = true;
         vm.why_stopped_disabled = true;
+        vm.showAddOtherIdError = false;
+        vm.addOtherIdError = '';
+        vm.showAddGrantError = false;
+        vm.showAddStatusError = false;
+        vm.showAddIndIdeError = false;
+        vm.showAddAnthorityError = false;
         vm.otherDocNum = 1;
         vm.fsNum = 0;
         vm.grantNum = 0;
@@ -190,6 +196,7 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
+                alert('hello123');
                 if (response.server_response.status < 300) {
                     var docCount = uploadDocuments(response.id);
                     // Poll docUploadedCount every 100 ms until upload finishes
@@ -222,6 +229,35 @@
                 vm.updateTrial('draft');
             }
         };
+
+
+        $scope.refreshGrants = function(serial_number) {
+
+            if (vm.funding_mechanism && vm.institute_code) {
+                var queryObj = {
+                    funding_mechanism: vm.funding_mechanism,
+                    institute_code: vm.institute_code,
+                    serial_number: serial_number
+                };
+                return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
+                    var snums=[];
+                    var uniquesnums= [];
+
+                    snums= res.tempgrants.map(function (tempgrant) {
+                        return tempgrant.serial_number;
+                    });
+                     uniquesnums = snums.filter(function (name) {
+                        return uniquesnums.indexOf(name) === -1;
+                    });
+
+                    $scope.addresses = uniquesnums;
+                    console.log($scope.addresses);
+
+                });
+
+            }
+        }
+
 
         vm.collapseAccordion = function() {
             vm.accordions = [false, false, false, false, false, false, false, false, false, false, false, false];
@@ -269,6 +305,7 @@
                     } else {
                         vm.tsNum++;
                     }
+                    vm.validateStatus();
                 }
             } else if (type == 'ind_ide') {
                 if (index < vm.addedIndIdes.length) {
@@ -376,8 +413,11 @@
                 vm.addedOtherIds.push(newId);
                 vm.protocol_id_origin_id = null;
                 vm.protocol_id = null;
+                vm.addOtherIdError = '';
+                vm.showAddOtherIdError = false;
             } else {
-                alert(errorMsg);
+                vm.addOtherIdError = errorMsg;
+                vm.showAddOtherIdError = true;
             }
         };
 
@@ -396,8 +436,10 @@
                 vm.institute_code = null;
                 vm.serial_number = null;
                 vm.nci = null;
+                vm.showAddGrantError = false;
+                $scope.addresses=null;
             } else {
-                alert('Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code');
+                vm.showAddGrantError = true;
             }
         };
 
@@ -411,19 +453,22 @@
                 _.each(vm.trialStatusArr, function (status) {
                     if (status.id == vm.trial_status_id) {
                         newStatus.trial_status_name = status.name;
+                        newStatus.trial_status_code = status.code;
                     }
                 });
                 newStatus.comment = vm.status_comment;
                 newStatus.why_stopped = vm.why_stopped;
                 newStatus._destroy = false;
-                vm.addedStatuses.push(newStatus);
+                TrialService.addStatus(vm.addedStatuses, newStatus);
                 vm.tsNum++;
                 vm.status_date = null;
                 vm.trial_status_id = null;
+                vm.status_comment = null;
                 vm.why_stopped = null;
+                vm.showAddStatusError = false;
                 vm.validateStatus();
             } else {
-                alert('Please provide a Status Date and select a Status');
+                vm.showAddStatusError = true;
             }
         };
 
@@ -452,8 +497,9 @@
                 vm.nih_nci = null;
                 vm.grantorArr = [];
                 vm.nihNciArr = [];
+                vm.showAddIndIdeError = false;
             } else {
-                alert('Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type');
+                vm.showAddIndIdeError = true;
             }
         };
 
@@ -469,8 +515,9 @@
                 vm.authority_country = null;
                 vm.authority_org = null;
                 vm.authorityOrgArr = [];
+                vm.showAddAuthorityError = false;
             } else {
-                alert('Please select a Country and Organization');
+                vm.showAddAuthorityError = true;
             }
         };
 
@@ -624,10 +671,25 @@
 
         // Validate Trials Stautuses
         vm.validateStatus = function() {
-            TrialService.validateStatus({"statuses": vm.addedStatuses}).then(function(response) {
-                console.log(response);
+            // Remove statuses with _destroy is true
+            var noDestroyStatusArr = [];
+            for (var i = 0; i < vm.addedStatuses.length; i++) {
+                if (!vm.addedStatuses[i]._destroy) {
+                    noDestroyStatusArr.push(vm.addedStatuses[i]);
+                }
+            }
+
+            TrialService.validateStatus({"statuses": noDestroyStatusArr}).then(function(response) {
+                vm.statusValidationMsgs = response.validation_msgs;
+
+                // Add empty object to positions where _destroy is true
+                for (var i = 0; i < vm.addedStatuses.length; i++) {
+                    if (vm.addedStatuses[i]._destroy) {
+                        vm.statusValidationMsgs.splice(i, 0, {});
+                    }
+                }
             }).catch(function(err) {
-                console.log("error in validating trial status: " + err);
+                console.log("Error in validating trial status: " + err);
             });
         };
 
@@ -690,7 +752,8 @@
         function adjustProtocolIdOriginArr() {
             for (var i = vm.protocolIdOriginArr.length - 1; i >= 0; i--) {
                 if (vm.protocolIdOriginArr[i].code === 'CTEP' || vm.protocolIdOriginArr[i].code === 'DCP'
-                    || vm.protocolIdOriginArr[i].code === 'CCR' || vm.protocolIdOriginArr[i].code === 'DNCI') {
+                    || vm.protocolIdOriginArr[i].code === 'CCR' || vm.protocolIdOriginArr[i].code === 'DNCI'
+                    || vm.protocolIdOriginArr[i].code === 'CDR') {
                     vm.protocolIdOriginArr.splice(i, 1);
                 }
             }
@@ -845,14 +908,16 @@
                 _.each(vm.trialStatusArr, function (status) {
                     if (status.id == vm.curTrial.trial_status_wrappers[i].trial_status_id) {
                         statusWrapper.trial_status_name = status.name;
+                        statusWrapper.trial_status_code = status.code;
                     }
                 });
                 statusWrapper.comment = vm.curTrial.trial_status_wrappers[i].comment;
                 statusWrapper.why_stopped = vm.curTrial.trial_status_wrappers[i].why_stopped;
                 statusWrapper._destroy = false;
-                vm.addedStatuses.push(statusWrapper);
+                TrialService.addStatus(vm.addedStatuses, statusWrapper);
                 vm.tsNum++;
             }
+            vm.validateStatus();
         }
 
         function appendIndIdes() {
@@ -869,7 +934,7 @@
                         indIde.holder_type_name = holderType.name;
                     }
                 });
-                indIde.nih_nci = vm.curTrial.ind_ides[i].id.nih_nci;
+                indIde.nih_nci = vm.curTrial.ind_ides[i].nih_nci;
                 indIde.expanded_access = vm.curTrial.ind_ides[i].expanded_access;
                 indIde.expanded_access_type_id = vm.curTrial.ind_ides[i].expanded_access_type_id;
                 // For displaying name in the table

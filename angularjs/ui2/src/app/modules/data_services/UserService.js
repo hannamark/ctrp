@@ -8,10 +8,10 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope'];
 
     function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope) {
 
         var appVersion = '';
         var appRelMilestone = '';
@@ -178,6 +178,7 @@
          * Log out user from backend as well as removing local cache
          */
         this.logout = function () {
+            var self = this;
 
             var username = LocalCacheService.getCacheWithKey('username');
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: 'Angular'})
@@ -235,6 +236,14 @@
          * Get the logged in username from browser cache
          */
         this.getLoggedInUsername = function () {
+            return LocalCacheService.getCacheWithKey('username') || '';
+        };
+
+        /**
+         * This is to replace the *getLoggedInUsername* method
+         * @return {[type]} [description]
+         */
+        this.currentUser = function () {
             return LocalCacheService.getCacheWithKey('username') || '';
         };
 
@@ -368,7 +377,7 @@
             var writeModesArray = LocalCacheService.getCacheWithKey('write_modes');
             var objIndex = _.findIndex(writeModesArray, queryObj);
 
-            return objIndex > -1;            
+            return objIndex > -1;
 
             // var writeModeObj = writeModesArray[objIndex];
             // var writeModeObj = _.findWhere(writeModesArray, queryObj);

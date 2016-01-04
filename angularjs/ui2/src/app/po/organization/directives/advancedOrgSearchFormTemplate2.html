@@ -12,8 +12,8 @@
             <div class="form-group">
                 <label for="organization_name" class="col-xs-12 col-sm-3 control-label">Name:</label>
                 <div class="col-xs-12 col-sm-5">
-                    <!--<input type="text" id="organization_name" class="form-control"
-                           placeholder="Organization Name" ng-model="searchParams.name" auto-focus/>-->
+                    <!-- <input type="text" id="organization_name" class="form-control"
+                           placeholder="Organization Name" ng-model="searchParams.name" auto-focus/> -->
 
                     <input tabindex="12" type="text" id="organization_name" class="form-control input-sm"
                             autocomplete="off" placeholder="Organization Name" ng-model="searchParams.name" auto-focus
@@ -37,7 +37,7 @@
 
             <div class="form-group">
                 <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status: </label>
-                <div ng-if="sourceStatuses.length === 1">
+                <div ng-if="sourceStatuses.length > 1">
                     <div class="col-xs-12 col-sm-3">
                         <select tabindex="17" class="form-control input-sm" id="source_status" ng-model="searchParams.source_status">
                             <option value="">Select a Status</option>
@@ -45,7 +45,7 @@
                         </select>
                     </div>
                 </div>
-                <div ng-if="sourceStatuses.length > 1">
+                <div ng-if="sourceStatuses.length === 1">
                     <div class="col-xs-12 col-sm-3">
                         <p class="form-control-static">{{sourceStatuses[0].name}}</p>
                     </div>
@@ -104,27 +104,6 @@
 
         </div>
         <div class="col-xs-12 col-md-6">
-            <!-- PO ID -->
-            <div class="form-group">
-                <!--source context-->
-                <label for="source_id" class="control-label col-xs-12 col-sm-3">Source Context: </label>
-                <div ng-if="sourceContexts.length === 1">
-                    <div class="col-xs-12 col-sm-9">
-                        <select tabindex="15" class="form-control input-sm" id="source_context" ng-model="searchParams.source_context">
-                            <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
-                            <option ng-repeat="context in sourceContexts" value="{{context.name}}">{{context.name}}</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- source context ends -->
-                <div  ng-if="sourceContexts.length > 1">
-                    <div class="col-xs-12 col-sm-9">
-                        <p class="form-control-static">{{sourceContexts[0].name}}</p>
-                    </div>
-                </div>
-            </div>
-            <!-- PO ID ends -->
-
             <!--source status-->
             <div class="form-group">
                 <label for="family_name" class="control-label col-xs-12 col-sm-3">Family Name:</label>
@@ -142,6 +121,27 @@
                     </div>
                 </div>
             -->
+
+            <!-- PO ID -->
+            <div class="form-group">
+                <!--source context-->
+                <label for="source_id" class="control-label col-xs-12 col-sm-3">Source Context: </label>
+                <div ng-if="sourceContexts.length > 1">
+                    <div class="col-xs-12 col-sm-9">
+                        <select tabindex="15" class="form-control input-sm" id="source_context" ng-model="searchParams.source_context">
+                            <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
+                            <option ng-repeat="context in sourceContexts" value="{{context.name}}">{{context.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- source context ends -->
+                <div  ng-if="sourceContexts.length === 1">
+                    <div class="col-xs-12 col-sm-9">
+                        <p class="form-control-static">{{sourceContexts[0].name}}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- PO ID ends -->
 
             <div class="form-group">
                 <label for="postal_code" class="control-label col-xs-12 col-sm-3">Postal Code:</label>

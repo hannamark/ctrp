@@ -40,6 +40,7 @@
             'A_TRIAL': '/ctrp/registry/trials/',
             'SEARCH_TRIAL': '/ctrp/registry/trials/search.json',
             'SEARCH_TRIAL_PA': '/ctrp/registry/trials/search_pa.json',
+            'GET_GRANTS_SERIALNUMBER': '/ctrp/registry/trials/get_grants_serialnumber',
             'STUDY_SOURCES': '/ctrp/registry/study_sources.json',
             'PROTOCOL_ID_ORIGINS': '/ctrp/registry/protocol_id_origins.json',
             'PHASES': '/ctrp/registry/phases.json',
@@ -54,6 +55,8 @@
             'TRIAL_STATUSES': '/ctrp/registry/trial_statuses.json',
             'ACCEPTED_FILE_TYPES': '/ctrp/registry/accepted_file_types.json',
             'VALIDATE_TRIAL_STATUS': '/ctrp/registry/trials/validate_status.json',
+            'NCI_DIV_PA': '/ctrp/pa/nih_nci_div_pa.json',
+            'NCI_PROG_PA': '/ctrp/pa/nih_nci_prog_pa.json',
 
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
@@ -73,6 +76,11 @@
               'WITH_ID': '/ctrp/comments/{:id}.json',  //GET, DELETE, and PATCH or PUT
               'CREATE': '/ctrp/comments.json'
             },
+
+            //for PA
+            'PA': {
+                'TRIALS_CHECKOUT_IN': '/ctrp/pa/trial/{:trialId}/{:checkWhat}/{:checkoutType}.json'
+            }
         })
         .constant('MESSAGES', {
             'STATES_AVAIL': 'states_or_provinces_available',

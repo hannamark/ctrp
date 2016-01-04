@@ -9,11 +9,11 @@
 
     paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal',
                          'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'
-    ,'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj'];
+    ,'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj', 'nciProgObj'];
 
     function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal,
                          studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
-                         PATrialService, milestoneObj, processingStatusObj, protocolIdOriginObj) {
+                         PATrialService, milestoneObj, processingStatusObj, protocolIdOriginObj, researchCategoriesObj, nciDivObj, nciProgObj) {
 
         var vm = this;
         var fromStateName = $state.fromState.name || '';
@@ -26,6 +26,9 @@
         vm.milestoneArr = milestoneObj;
         vm.processingStatusArr = processingStatusObj;
         vm.protocolIdOriginArr = protocolIdOriginObj;
+        vm.researchCategoriesArr = researchCategoriesObj;
+        vm.nciDivArr = nciDivObj;
+        vm.nciProgArr = nciProgObj;
         vm.gridScope=vm;
 
         //ui-grid plugin options

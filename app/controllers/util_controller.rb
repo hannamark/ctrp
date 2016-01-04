@@ -28,6 +28,14 @@ class UtilController < ActionController::Base
     @nih = AppSetting.find_by_code('NIH').big_value.split(';')
   end
 
+  def get_nih_nci_div_pa
+    @nih_nci_div_pa = AppSetting.find_by_code('NIH_NCI_DIV_PA').big_value.split(',')
+  end
+
+  def get_nih_nci_prog_pa
+    @nih_nci_prog_pa = AppSetting.find_by_code('NIH_NCI_PROG_PA').big_value.split(';')
+  end
+
   def get_accepted_file_types
     @file_extensions = AppSetting.find_by_code('ACCEPTED_FILE_TYPES').value
     @file_types = AppSetting.find_by_code('ACCEPTED_FILE_TYPES').big_value

@@ -80,6 +80,8 @@
 #  anatomic_site_id         :integer
 #  num_of_arms              :integer
 #  verification_date        :date
+#  sampling_method          :string(255)
+#  study_pop_desc           :text
 #
 # Indexes
 #

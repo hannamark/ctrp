@@ -11,8 +11,9 @@
         'ctrp.app.pa.dashboard',
         'ctrp.app.pa.search',
         'ctrp.module.routes',
+	'ctrpApp.widgets',
 
         /* 3rd-party modules */
-
+        'ui.select'
     ]);
 })();

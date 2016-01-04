@@ -15,11 +15,11 @@
         .controller('advancedPersonSearchModalCtrl', advancedPersonSearchModalCtrl)
         .directive('ctrpPersonAdvSearchModalButton', ctrpPersonAdvSearchModalButton);
 
-    advancedPersonSearchModalCtrl.$inject = ['$scope', '$modalInstance', 'maxRowSelectable']; //for modal controller
-    ctrpPersonAdvSearchModalButton.$inject = ['$modal', '$compile', '_', '$timeout', 'Common']; //modal button directive
+    advancedPersonSearchModalCtrl.$inject = ['$scope', '$uibModalInstance', 'maxRowSelectable']; //for modal controller
+    ctrpPersonAdvSearchModalButton.$inject = ['$uibModal', '$compile', '_', '$timeout', 'Common']; //modal button directive
 
 
-    function ctrpPersonAdvSearchModalButton($modal, $compile, _, $timeout, Common) {
+    function ctrpPersonAdvSearchModalButton($uibModal, $compile, _, $timeout, Common) {
 
         var directiveObj = {
             restrict: 'E',
@@ -58,7 +58,7 @@
             $scope.searchPerson = function(size) {
                 if (modalOpened) return; //prevent modal open twice in single click
 
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'app/po/person/directives/advanced_person_search_form_modal.html',
                     controller: 'advancedPersonSearchModalCtrl as advPersonSearchModalView',
@@ -130,9 +130,9 @@
      * Adv person search modal controller
      *
      * @param $scope
-     * @param $modalInstance
+     * @param $uibModalInstance
      */
-    function advancedPersonSearchModalCtrl($scope, $modalInstance, maxRowSelectable) {
+    function advancedPersonSearchModalCtrl($scope, $uibModalInstance, maxRowSelectable) {
         var vm = this;
         vm.maxRowSelectable = maxRowSelectable; //to be passed to the adv person search form
 
@@ -141,11 +141,11 @@
         $scope.selectedPersonsArray = [];  // persons selected in the modal
 
         vm.cancel = function() {
-            $modalInstance.dismiss('canceled');
+            $uibModalInstance.dismiss('canceled');
         }; //cancel
 
         vm.confirmSelection = function() {
-            $modalInstance.close($scope.selectedPersonsArray);
+            $uibModalInstance.close($scope.selectedPersonsArray);
         }; //confirmSelection
 
 

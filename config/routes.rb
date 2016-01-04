@@ -4,6 +4,23 @@ Rails.application.routes.draw do
 
   resources :trial_documents
 
+
+namespace "ws" do
+  scope '/api' do
+    scope '/v1' do
+      scope '/trials' do
+        get '/' => 'api_trials#index'
+        get '/:id' =>  'api_trials#show'
+        post '/' => 'api_trials#create'
+        put  '/:id' =>  'api_trials#update'
+        put  '/:id/status' =>  'api_trials#change_status'
+      end
+
+    end
+  end
+end
+
+
   scope "/ctrp" do
     devise_for :users
     root 'ctrp#index'
@@ -53,6 +70,10 @@ Rails.application.routes.draw do
     resources :family_relationships
 
     resources :family_memberships
+
+    resources :pa_trials
+    get '/pa/trial/:trial_id/checkout/:type', to: 'trials#checkout_trial'
+    get '/pa/trial/:trial_id/checkin/:type', to: 'trials#checkin_trial'
 
     resources :comments
     get '/instance/:uuid/comments/count(/:field)', to: 'comments#count'
@@ -110,6 +131,11 @@ Rails.application.routes.draw do
       post 'change_password' => 'registrations#update', :as => :update_registration
     end
 
+    scope '/pa' do
+      get 'nih_nci_div_pa' => 'util#get_nih_nci_div_pa'
+      get 'nih_nci_prog_pa' => 'util#get_nih_nci_prog_pa'
+    end
+
     scope '/registry' do
       resources :study_sources
       resources :phases
@@ -119,13 +145,15 @@ Rails.application.routes.draw do
       resources :responsible_parties
       resources :trials do
         collection do
-          get 'search'
+          get  'search'
           post 'search'
-          get 'search_pa'
+          get  'search_pa'
           post 'search_pa'
-          post 'validate_status'
+          get  'get_grants_serialnumber'
+          post 'get_grants_serialnumber'
         end
       end
+
       resources :protocol_id_origins
       resources :holder_types
       resources :expanded_access_types
@@ -139,10 +167,12 @@ Rails.application.routes.draw do
         end
       end
 
+
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'
       get 'nci' => 'util#get_nci'
       get 'nih' => 'util#get_nih'
+
       get 'accepted_file_types' => 'util#get_accepted_file_types'
     end
   end

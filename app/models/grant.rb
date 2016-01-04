@@ -22,4 +22,9 @@ class Grant < ActiveRecord::Base
   include BasicConcerns
 
   belongs_to :trial
+
+  validates :funding_mechanism, presence: true
+  validates :institute_code, presence: true
+  validates :nci, presence: true
+  validates :serial_number, presence: true
 end

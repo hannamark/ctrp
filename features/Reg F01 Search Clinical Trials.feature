@@ -139,3 +139,45 @@ When I have selected or entered multiple search criteria
 And selected a search option
 Then the search results will display the trials that match all the search criteria selected
 
+  Scenario: #14 Search Trials selections rules
+     Given I am logged into the CTRP Reistration application
+     And I am on the Search Trials screen
+     And I should be allowed to select more than one Phase Type 
+     	
+      |0      |
+      |I      |
+      |I/II   |
+      |II     |
+      |II/III |
+      |III    |
+      |IV     |
+      |N/A    |
+	 And I should be allowed to select more than one Organization Type
+      
+      |Lead Organization|
+      |Sponsor          |
+      And I should be allowed to select more than one Study Source type
+      
+      |National                  |
+      |Externally Peer-Reviewed  |
+      |Institutional             |
+      |Expanded Access           |
+      |Industrial                |
+      |Other                     |
+
+     And I should be allowed to select more than one Purpose
+      
+      |Treatment                |
+      |Prevention               |
+      |Supportive Care          |
+      |Screening                |
+      |Diagnostic               |
+      |Health Services Research |
+      |Basic science            |
+      |Other                    |
+
+     When I have clicked on the search button
+     Then the search results will display the trials that match the search criteria selected
+
+
+

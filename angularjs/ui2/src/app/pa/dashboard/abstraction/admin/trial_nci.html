@@ -1,4 +1,5 @@
 <div class="row">
+    <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialNciView.updateTrial">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
@@ -6,57 +7,42 @@
             </uib-accordion-heading>
             <!-- first row in the accordion body -->
             <div class="row">
-                <!-- <p>
+                 <!-- <p>
                     <s><strong>Clinical Research Category:</strong>
                     <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span></s>
                 </p> -->
                 <div class="form-group">
-                    <label for="studySource" class="control-label col-xs-12 col-sm-3">Study Source: </label>
+                    <label for="study_source" class="control-label col-xs-12 col-sm-3">Study Source: </label>
                     <div class="col-xs-12 col-sm-9">
-                        <select class="form-control input-sm" id="study_source" ng-model="trialNciView.study_source">
+                        <select class="form-control input-sm" id="study_source" ng-model="trialNciView.curTrial.study_source_id" ng-options="studySource.id as studySource.name for studySource in trialNciView.studySourceArr">
                             <option value="">-Select a Study Source-</option>
                             <option ng-repeat="studySource in trialNciView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
                         </select>
+
                     </div>
                 </div>
 
-                <p>
-                    <strong>NCI Trial ID: </strong>
-                    <!-- get data from parent controller view -->
-                    <span>{{paTrialOverview.trialDetailObj.nci_id}}</span>
-                </p>
 
+                <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
+                    <label class="control-label col-xs-12 col-sm-3">Data Table 4 Funding Source:</label>
+                    <div class="col-xs-12 col-sm-9" ng-hide="['update'].indexOf(trialNciView.curTrial.edit_type) > -1">
+                        <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialNciView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
+                        <input type="hidden" name="fs_dummy" ng-model="trialNciView.dummyField" ng-required="trialNciView.fsNum === 0">
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)">
+                                    Funding Source is required
+                                </span>
+                    </div>
+                </div>
 
-                <!-- <p>
-                    <s>
-                        <strong>Lead Organization Trial ID: </strong>
-                        <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
-                    </s>
-                </p>
-
-                <p>
-                    <s>
-                        <strong>ClinicalTrials.gov Identifier: </strong>
-                        <span>{{paTrialOverview.trialDetailObj.other_ids[0].protocol_id}}</span>
-                    </s>
-                </p> -->
-
-                <p>
-                    <strong>Last Verification Date: </strong>
-                    <span></span>
-                </p>
-
-                <!-- <p>
-                    <s><strong>Official Title: </strong>
-                    <span>{{paTrialOverview.trialDetailObj.official_title}}</span></s>
-                </p>
-
-                <p>
-                    <s>
-                        <strong>Submission Source:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
-                    </s>
-                </p> -->
+                <div ng-repeat="fs in trialNciView.addedFses track by $index" class="form-group">
+                    <div class="col-xs-12 col-sm-3"></div>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" class="form-control input-sm" ng-class="fs._destroy == true ? 'deleted-text animated-item' : 'animated-item'" disabled value="{{fs.organization_name}}"/>
+                    </div>
+                    <label restriction-field class="col-xs-12 col-sm-1 btn btn-default" ng-click="trialNciView.toggleSelection($index, 'funding_source')" ng-hide="['update'].indexOf(trialNciView.curTrial.edit_type) > -1">
+                        <i ng-class="fs._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                    </label>
+                </div>
 
                 <hr />
             </div>
@@ -65,46 +51,60 @@
             <!-- second row in the accordion body -->
             <div class="row">
                 <div class="col-xs-12 pull-left">
-                    <form name="abstraction_form" class="form" role="form" novalidate>
+
+                    <div class="form-group">
+                        <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Division/Department Identifier: </label>
+                        <div class="col-xs-12 col-sm-9">
+                            <select class="form-control input-sm" id="nih_nci_div" ng-model="trialNciView.curTrial.nih_nci_div">
+                                <option value="">-Select a NIH/NCI Division/Department Identifier-</option>
+                                <option ng-repeat="nci in trialNciView.nciDivArr" value="{{nci.code}}">
+                                    {{nci.code}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Program Id: </label>
+                        <div class="col-xs-12 col-sm-9">
+                            <select class="form-control input-sm" id="nih_nci_prog" ng-model="trialNciView.curTrial.nih_nci_prog">
+                                <option value="">-Select a NIH/NCI Program ID-</option>
+                                <option ng-repeat="nci in trialNciView.nciProgArr" value="{{nci.code}}">
+                                    {{nci.code}}
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+
+
                         <!-- first form-group -->
                         <div class="form-group">
-                            <label for="processing_priority" class="control-label col-xs-12 col-sm-3">Processing Priority:</label>
-                            <div class="input-group col-xs-12 col-sm-4">
-                                <select name="priority_selection" id="processing_priority" class="form-control input-sm">
-                                    <option value="2">2 - Normal</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-offset-4"></div>
+                            <label for="trial_processing_comment" class="col-xs-12">Comments:</label>
                         </div>
                         <!-- end of first form-group -->
 
-                        <!-- second form-group -->
-                        <div class="form-group">
-                            <label for="trial_processing_comment" class="col-xs-12">Trial Processing Comments:</label>
-                        </div>
-                        <!-- end of second form-group -->
-
-                        <!-- third row in the form -->
+                        <!-- second row in the form -->
                         <div class="form-group">
                             <div class="col-xs-12">
                                 <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5"></textarea>
                             </div>
                         </div>
-                        <!-- end of third row -->
+                        <!-- end of second row -->
 
                         <div class="form-group no-bottom-margin">
                             <div class="btn-toolbar">
-                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing">Save</button>
+                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialNciView.updateTrial()">Save</button>
                                 <button type="button" class="btn btn-warning pull-right" id="cancel_processing">
                                     <i class="glyphicon glyphicon-remove"></i> Cancel
                                 </button>
                             </div>
                         </div>
-                    </form>
                 </div>
             </div>
         </uib-accordion-group>
     </uib-accordion>
+    </form>
 </div>
 
 <!-- end of row -->

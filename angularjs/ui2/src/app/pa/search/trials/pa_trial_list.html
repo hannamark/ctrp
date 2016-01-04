@@ -20,7 +20,7 @@
                             <label for="protocol_origin_type" class="control-label col-xs-12 col-sm-3">Identifier Type: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <select class="form-control input-sm" id="protocol_origin_type" ng-model="trialView.searchParams.protocol_origin_type">
-                                    <option value="">-Select a Identifier Type-</option>
+                                    <option value="">-Select an Identifier Type-</option>
                                     <option ng-repeat="protocol_origin_type in trialView.protocolIdOriginArr" value="{{protocol_origin_type.code}}">{{protocol_origin_type.name}}</option>
                                 </select>
                             </div>
@@ -131,6 +131,36 @@
                                 <select class="form-control input-sm" id="milestone" ng-model="trialView.searchParams.milestone">
                                     <option value="">-Select a Milestone-</option>
                                     <option ng-repeat="milestone in trialView.milestoneArr" value="{{milestone.code}}">{{milestone.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Research Category: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="research_category" ng-model="trialView.searchParams.research_category">
+                                    <option value="">-Select a Research Category -</option>
+                                    <option ng-repeat="rc in trialView.researchCategoriesArr" value="{{rc.code}}">{{rc.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">NIH/NCI Div/Dept Identifier: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="nih_nci_div" ng-model="trialView.searchParams.nih_nci_div">
+                                    <option value="">-Select a NIH/NCI Div/Dept -</option>
+                                    <option ng-repeat="nd in trialView.nciDivArr" value="{{nd.code}}">{{nd.code}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">NIH/NCI Program Identifier: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="nih_nci_prog" ng-model="trialView.searchParams.nih_nci_prog">
+                                    <option value="">-Select a NIH/NCI Program -</option>
+                                    <option ng-repeat="np in trialView.nciProgArr" value="{{np.code}}">{{np.code}}</option>
                                 </select>
                             </div>
                         </div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217214200) do
+ActiveRecord::Schema.define(version: 20160104163124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -891,6 +891,19 @@ ActiveRecord::Schema.define(version: 20151217214200) do
   add_index "submissions", ["submission_type_id"], name: "index_submissions_on_submission_type_id", using: :btree
   add_index "submissions", ["trial_id"], name: "index_submissions_on_trial_id", using: :btree
 
+  create_table "tempgrants", force: :cascade do |t|
+    t.integer  "serial_number"
+    t.string   "institution_name"
+    t.string   "project_title"
+    t.string   "funding_mechanism"
+    t.string   "institute_code"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "tempgrants", ["funding_mechanism"], name: "index_tempgrants_on_funding_mechanism", using: :btree
+  add_index "tempgrants", ["institute_code"], name: "index_tempgrants_on_institute_code", using: :btree
+
   create_table "trial_co_lead_orgs", force: :cascade do |t|
     t.integer  "trial_id"
     t.integer  "organization_id"
@@ -1045,6 +1058,8 @@ ActiveRecord::Schema.define(version: 20151217214200) do
     t.integer  "anatomic_site_id"
     t.integer  "num_of_arms"
     t.date     "verification_date"
+    t.string   "sampling_method",          limit: 255
+    t.text     "study_pop_desc"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
@@ -1301,6 +1316,7 @@ ActiveRecord::Schema.define(version: 20151217214200) do
   create_sequence "submission_sources_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "submission_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "submissions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "tempgrants_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_co_lead_orgs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_co_pis_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_documents_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

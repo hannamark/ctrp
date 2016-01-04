@@ -23,6 +23,9 @@ class OtherId < ActiveRecord::Base
   belongs_to :protocol_id_origin
   belongs_to :trial
 
+  validates :protocol_id, presence: true
+  validates :protocol_id_origin, presence: true
+
   scope :by_value, ->  (value) {
     joins(:protocol_id_origin).where("other_ids.protocol_id_origin_id = protocol_id_origins.id and protocol_id_origins.code = ?","#{value.to_s}")
   }

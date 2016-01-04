@@ -24,6 +24,12 @@
           10 : 'Oct', 11 : 'Nov', 12 : 'Dec'
         };
 
+        var reverseMonthsDict = {
+            'Jan' : 1, 'Feb' : 2, 'Mar' : 3, 'Apr' : 4,
+            'May' : 5, 'Jun' : 6, 'Jul' : 7, 'Aug' : 8, 'Sep' : 9,
+            'Oct' : 10, 'Nov' : 11, 'Dec' : 12
+        };
+
         //'MMMM dd, yyyy',
         var formats = ['MMMM dd, yyyy', 'dd-MMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
 
@@ -71,6 +77,23 @@
             return dateStr;
         }; //convertISODateToLocale
 
+        /**
+         * Convert Locale Date String to ISO Date String
+         *
+         * @param localeDate
+         * @returns {string}
+         */
+        this.convertLocaleDateToISODateStr = function(localeDate) {
+            var dateStr = '';
+            if (!!localeDate) {
+                var splits = localeDate.split('-');
+                var year = splits[2];
+                var month = reverseMonthsDict[splits[1]];
+                var day = splits[0];
+                dateStr = year + '-' + month + '-' + day;
+            }
+            return dateStr;
+        };
 
         /**
          *

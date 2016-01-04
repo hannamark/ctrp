@@ -7,6 +7,12 @@
         </div>
         <div class="row">
             <form class="form form-horizontal" role="form">
+                <div class="row" ng-hide="trialView.searchWarningMessage === ''" ng-cloak>
+                    <div class="alert alert-warning fade in">
+                        <strong>{{trialView.searchWarningMessage}}</strong>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">

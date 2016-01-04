@@ -205,7 +205,6 @@
             $scope.resetSearch = function () {
                 // $scope.states.length = 0;
                 $scope.searchParams = PersonService.getInitialPersonSearchParams();
-                var temp = $scope.searchParams.wc_search;
                 $scope.gridOptions.data = [];
                 $scope.gridOptions.totalItems = null;
                 var excludedKeys = ['wc_search'];
@@ -215,7 +214,7 @@
                         $scope.searchParams[key] = angular.isArray($scope.searchParams[key]) ? [] : '';
                     }
                 });
-                $scope.searchParams['wc_search'] = temp;
+                $scope.searchParams['wc_search'] = true;
                 $scope.searchWarningMessage = '';
                 if (angular.isDefined($scope.$parent.personSearchResults)) {
                     $scope.$parent.personSearchResults = {};

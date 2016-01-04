@@ -16,6 +16,7 @@ var selectList = require('../support/CommonSelectList');
 var moment = require('moment');
 var loginPage = require('../support/LoginPage');
 var projectFunctionsPage= require('../support/projectMethods');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 
 
 module.exports = function() {
@@ -35,12 +36,12 @@ module.exports = function() {
     var suffixEditTo = 'Kt Edited';
     var orgEffectiveDate = '08-Oct-2015';
     var orgExpirationDate = '25-Oct-2020';
+    var commonFunctions = new abstractionCommonMethods();
 
 
     this.Given(/^I know which Person record I want to edit$/, function (callback) {
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
@@ -165,8 +166,7 @@ module.exports = function() {
 
     this.Given(/^I know which Person with affiliated Organization record I want to edit$/, function (callback) {
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
         browser.driver.wait(function(){
             console.log('wait here');
             return true;

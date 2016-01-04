@@ -108,6 +108,8 @@
             getFundingMechanisms: getFundingMechanisms,
             getInstituteCodes: getInstituteCodes,
             getNci: getNci,
+            getNciDiv: getNciDiv,
+            getNciProg: getNciProg,
             getTrialStatuses: getTrialStatuses,
             getMilestones: getMilestones,
             getProcessingStatuses: getProcessingStatuses,
@@ -117,7 +119,9 @@
             checkOtherId: checkOtherId,
             deleteTrial: deleteTrial,
             setCurrentTrial: setCurrentTrial,
-            getCurrentTrialFromCache: getCurrentTrialFromCache
+            getCurrentTrialFromCache: getCurrentTrialFromCache,
+            checkoutTrial: checkoutTrial,
+            checkinTrial: checkinTrial
         };
 
         return services;
@@ -238,6 +242,13 @@
         function getNih() {
             return PromiseTimeoutService.getData(URL_CONFIGS.NIH);
         }
+        function getNciDiv() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.NCI_DIV_PA);
+        }
+
+        function getNciProg() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.NCI_PROG_PA);
+        }
 
         function getExpandedAccessTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
@@ -299,5 +310,20 @@
         function getCurrentTrialFromCache() {
             return LocalCacheService.getCacheWithKey('current_trial_object');
         }
+
+        function checkoutTrial(trialId, checkoutType) {
+            var url = URL_CONFIGS.PA.TRIALS_CHECKOUT_IN.replace('{:trialId}', trialId);
+            url = url.replace('{:checkWhat}', 'checkout');
+            url = url.replace('{:checkoutType}', checkoutType);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        function checkinTrial(trialId, checkinType) {
+            var url = URL_CONFIGS.PA.TRIALS_CHECKOUT_IN.replace('{:trialId}', trialId);
+            url = url.replace('{:checkWhat}', 'checkin');
+            url = url.replace('{:checkoutType}', checkinType);
+            return PromiseTimeoutService.getData(url);
+        }
+
     }
 })();

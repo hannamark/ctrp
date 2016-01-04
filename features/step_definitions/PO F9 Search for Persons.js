@@ -15,6 +15,7 @@ var selectList = require('../support/CommonSelectList');
 var moment = require('moment');
 var loginPage = require('../support/LoginPage');
 var projectFunctionsPage= require('../support/projectMethods');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 
 
 module.exports = function() {
@@ -25,11 +26,11 @@ module.exports = function() {
     var searchOrg = new orgPage();
     var selectItem =new selectList();
     var projectFunctions = new projectFunctionsPage();
+    var commonFunctions = new abstractionCommonMethods();
 
     this.Given(/^I know multiple parameters of the person I wish to search for$/, function (table, callback) {
         browser.get('ui/#/main/sign_in');
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
