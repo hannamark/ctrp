@@ -121,21 +121,19 @@ var abstractionCommonMethods = function(){
         login.loginPageVerification.getText().then (function(text){
             var passTxtA = ''+text+'';
             crntTxtLoginPg =  ''+passTxtA+'';
+            if (crntTxtLoginPg === loginTxtVerif){
+                console.log('Login Home Page Successfully Loaded on the Browser:['+crntTxtLoginPg+']');
+                expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
+                expect(login.loginVerifyText.getText()).to.eventually.equal(loginCredTxtVerif);
+                expect(login.loginNewUsrSign.getText()).to.eventually.equal(loginNwUsrSngVerif);
+            } else {
+                console.log('Unable to load home page on the Browser:['+crntTxtLoginPg+']');
+                expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
+                expect(login.loginVerifyText.getText()).to.eventually.equal(loginCredTxtVerif);
+                expect(login.loginNewUsrSign.getText()).to.eventually.equal(loginNwUsrSngVerif);
+            };
+
         });
-        var crntTxtLoginCrd = login.loginVerifyText.getText();
-        var crntTxtNwUsr = login.loginNewUsrSign.getText();
-        console.log('App URL:['+BrwsrVal+']');
-
-        if (!BrwsrVal === null){
-            expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
-            expect(login.loginVerifyText.getText()).to.eventually.equal(loginCredTxtVerif);
-            expect(login.loginNewUsrSign.getText()).to.eventually.equal(loginNwUsrSngVerif);
-
-            console.log('crntTxtLoginPg:['+crntTxtLoginPg+']');
-            console.log('crntTxtLoginCrd:['+crntTxtLoginCrd+']');
-            console.log('crntTxtNwUsr:['+crntTxtNwUsr+']');
-
-        };
         //ctrp abstractor user
         if (usrID === 'ctrpabstractor'){
             login.login(configuration.abstractorUID, configuration.abstractorPWD);
