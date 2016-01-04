@@ -113,8 +113,6 @@
                     $scope.savedSelection.length = 0;
                 }
             }
-
-
         } //orgAdvSearchModalButtonController
     } //ctrpOrgAdvSearchModalButton
 
