@@ -30,8 +30,8 @@
             <!-- category -->
             <div class="form-group">
               <div class="col-xs-12 col-sm-6">
-                <label for="category" class="control-label col-xs-12 col-sm-2">Category</label>
-                <div class="col-xs-12 col-sm-10">
+                <label for="category" class="control-label col-xs-12 col-sm-3">Category</label>
+                <div class="col-xs-12 col-sm-9">
                   <select name="category" id="category" class="form-control">
                     <option value="Spelling">Spelling/Format</option>
                   </select>
@@ -45,8 +45,8 @@
             <!-- source -->
             <div class="form-group">
               <div class="col-xs-12 col-sm-6">
-                <label for="source" class="control-label col-xs-12 col-sm-2">Source</label>
-                <div class="col-xs-12 col-sm-10">
+                <label for="source" class="control-label col-xs-12 col-sm-3">Source</label>
+                <div class="col-xs-12 col-sm-9">
                   <select name="source" id="source" class="form-control">
                     <option value="values...">....</option>
                   </select>
@@ -131,10 +131,11 @@
               <label for="lead_org" class="control-label col-xs-12 col-sm-2">Lead Organization</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="lead_org" name="lead_organization" disabled class="form-control" placeholder="Lead Organization">
+                  <input type="text" id="lead_org" name="lead_organization" ng-model="generalTrialDetailView.leadOrg[0].name" disabled class="form-control" placeholder="Lead Organization">
                 </div>
                 <div class="col-xs-12 col-sm-6">
-                  <button class="btn btn-primary">Look Up Organization</button>
+                  <!-- <button class="btn btn-primary">Look Up Organization</button> -->
+                  <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.leadOrg"></ctrp-org-adv-search-modal-button>
                 </div>
               </div>
             </div>
