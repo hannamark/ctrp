@@ -82,7 +82,7 @@ var projectMethodsRegistry = function() {
     this.verifyAddTrialOtherTrialIdentifierTable = function (anyItemInTable) {
         return addTrial.addTrialVerifyOtherTrialIdentifierTable.filter(function(name) {
             return name.getText().then(function(text) {
-                console.log('text is' + text + 'Itemto be verified' + anyItemInTable);
+                console.log('text is' + text + 'Item to be verified' + anyItemInTable);
                 return text === anyItemInTable ;
             });
         }).then(function(filteredElements) {
@@ -93,6 +93,31 @@ var projectMethodsRegistry = function() {
             else {return 'false';}
         });
     };
+
+    /*****************************************************************
+     * Method: Verify Trial Oversight Authority Country Organization
+     * @param country
+     * @param organization
+     *****************************************************************/
+    this.verifyAddTrialOversightCountryOrganization = function (country, organization) {
+        return addTrial.addTrialVerifyOversightCountryOrganization.getText().filter(function (row) {
+            // Get the second column's text.
+            return row.$$('td').get(0).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === country;
+            });
+        }).then(function (rows) {
+                console.log('value of row' + rows);
+                expect(rows[0].element(by.binding('authority.organization')).getText()).to.eventually.equal(organization);
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
+
+
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one
