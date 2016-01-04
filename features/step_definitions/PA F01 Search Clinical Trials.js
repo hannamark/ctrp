@@ -47,7 +47,6 @@ module.exports = function() {
 
     this.Given(/^I am logged into the CTRP Protocol Abstraction application$/, function (callback) {
         commonFunctions.onPrepareLoginTest('ctrpabstractor');
-
         browser.sleep(25).then(callback);
     });
 
