@@ -196,6 +196,7 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
+                alert('hello123');
                 if (response.server_response.status < 300) {
                     var docCount = uploadDocuments(response.id);
                     // Poll docUploadedCount every 100 ms until upload finishes

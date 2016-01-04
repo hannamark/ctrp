@@ -67,3 +67,4 @@ robots.txt
 angularjs/ui2/node_modules/
 angularjs/ui2/src/bower_components/
 angularjs/ui2/.tmp
+public/ctrp/ui2/
