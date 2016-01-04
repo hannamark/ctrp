@@ -12,7 +12,7 @@
             <div class="form-group">
               <label for="acronym" class="control-label col-xs-12 col-sm-2">Acronym</label>
               <div class="col-xs-12 col-sm-10">
-                <input type="text" id="acronym" name="trial_acronym" class="form-control">
+                <input type="text" id="acronym" name="trial_acronym" class="form-control" placeholder="Acronym">
               </div>
             </div>
 
@@ -30,8 +30,8 @@
             <!-- category -->
             <div class="form-group">
               <div class="col-xs-12 col-sm-6">
-                <label for="category" class="control-label col-xs-12 col-sm-2">Category</label>
-                <div class="col-xs-12 col-sm-10">
+                <label for="category" class="control-label col-xs-12 col-sm-3">Category</label>
+                <div class="col-xs-12 col-sm-9">
                   <select name="category" id="category" class="form-control">
                     <option value="Spelling">Spelling/Format</option>
                   </select>
@@ -45,8 +45,8 @@
             <!-- source -->
             <div class="form-group">
               <div class="col-xs-12 col-sm-6">
-                <label for="source" class="control-label col-xs-12 col-sm-2">Source</label>
-                <div class="col-xs-12 col-sm-10">
+                <label for="source" class="control-label col-xs-12 col-sm-3">Source</label>
+                <div class="col-xs-12 col-sm-9">
                   <select name="source" id="source" class="form-control">
                     <option value="values...">....</option>
                   </select>
@@ -131,10 +131,11 @@
               <label for="lead_org" class="control-label col-xs-12 col-sm-2">Lead Organization</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="lead_org" name="lead_organization" disabled class="form-control">
+                  <input type="text" id="lead_org" name="lead_organization" ng-model="generalTrialDetailView.leadOrg[0].name" disabled class="form-control" placeholder="Lead Organization">
                 </div>
                 <div class="col-xs-12 col-sm-6">
-                  <button class="btn btn-primary">Look Up Organization</button>
+                  <!-- <button class="btn btn-primary">Look Up Organization</button> -->
+                  <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.leadOrg"></ctrp-org-adv-search-modal-button>
                 </div>
               </div>
             </div>
@@ -144,7 +145,7 @@
               <label for="pi" class="control-label col-xs-12 col-sm-2">Principal Investigator</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="pi" name="principal_investigator" disabled class="form-control">
+                  <input type="text" id="pi" name="principal_investigator" disabled class="form-control" placeholder="Principal Investigator">
                 </div>
                 <div class="col-xs-12 col-sm-6">
                   <button class="btn btn-primary">Look Up Person</button>
@@ -160,7 +161,7 @@
               <label for="sponsor" class="control-label col-xs-12 col-sm-2">Sponsor</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="sponsor" name="sponsor" disabled class="form-control">
+                  <input type="text" id="sponsor" name="sponsor" disabled class="form-control" placeholder="Sponsor">
                 </div>
                 <div class="col-xs-12 col-sm-6">
                   <button class="btn btn-primary">Look Up Sponsor</button>
@@ -177,7 +178,7 @@
               <label for="generic_contact" class="control-label col-xs-12 col-sm-2">Generic Contact</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="generic_contact" name="generic_contact" disabled class="form-control">
+                  <input type="text" id="generic_contact" name="generic_contact" disabled class="form-control" placeholder="Generic Contact">
                 </div>
                 <div class="col-xs-12 col-sm-6">
                   <button class="btn btn-primary">Look Up Person</button>
@@ -191,7 +192,7 @@
               <label for="email" class="control-label col-xs-12 col-sm-2">Email Address</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="email" id="email" name="email" class="form-control">
+                  <input type="email" id="email" name="email" class="form-control" placeholder="Email">
                 </div>
               </div>
             </div>
@@ -201,7 +202,7 @@
               <label for="phone" class="control-label col-xs-12 col-sm-2">Phone Number</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="phone" name="phone" class="form-control">
+                  <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone">
                 </div>
               </div>
             </div>
