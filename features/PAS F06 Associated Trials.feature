@@ -20,7 +20,7 @@ And I have selected a trial
 And I am on the associated Trial screen
 When I select Save 
 And any of the following are Null
-| Brief Title|
+|Brief Title|
 |Brief Summary|
 Then a warning message will appear for the null values with the message “Please enter the missing Trial Identifier information” 
 
@@ -44,7 +44,7 @@ Then the Associated Trial will be removed from the trial
 When I have clicked the Select All button
 Then the Delete check box is checked for all entries
 When I have clicked on Delete button
-And the message displays 'click OK to remove selected Associated Trial from the study. Click Cancel to abort'
+Then the message displays 'click OK to remove selected Associated Trial from the study. Click Cancel to abort'
 When I click on the OK button 
 Then the Associated Trial(s) is removed from the trial record
 And the message ‘Record(s) deleted’ displays

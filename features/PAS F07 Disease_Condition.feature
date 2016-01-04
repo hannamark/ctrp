@@ -13,7 +13,6 @@ When I have started entering a term
 Then a list of type ahead terms display
 When I Select a term in the list
 And click the search icon 
-
 Then a list of Preferred Terms that contain the entered term display
 And a message displays with the number of results for the term entered
 When I select a term for the list 
