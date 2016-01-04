@@ -1,11 +1,11 @@
 @PA @global
-Feature:  PAS F03 Add and Edit Observational Trial Design 
-As a CTRP Scientific Abstractor, I can add and edit Non-Interventional Trial Design 
+Feature:  PAS F13 Add and Edit Ancillary Correlative Trial Design 
+As a CTRP Scientific Abstractor, I can add and edit Ancillary Correlative Trial Design 
 
-Scenario: #1 I can add and edit Observational Trial Design for a trial
+Scenario: #1 I can add and edit Ancillary Correlative Trial Design for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
-And I am on the Observational Trial Design screen
+And I am on the Ancillary Correlative Trial Design screen
 And I can select a different value for Primary Purpose:
       |Primary Purpose         |
       |Treatment               |
@@ -53,12 +53,12 @@ And I can enter a value for Bio-specimen Description
 And I can enter a numeric value for Number of Groups/Cohorts
 And I can enter a numeric value for Target Enrollment
 When I select Save
-Then the Observational Trial Design for the trial will be associated with the trial
+Then the Ancillary Correlative Trial Design for the trial will be associated with the trial
 
 Scenario: #2 Clinical Research Category, Primary Purpose, Trial Phase, Study Model, Number of Groups/Cohorts, Target Enrollment not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
-And I am on the Observational Trial Design screen
+And I am on the Ancillary Correlative Trial Design screen
 And any of the following <field name> are null 
 |field name                |
 |Clinical Research Category|
@@ -73,7 +73,7 @@ Then a warning message will appear for the null values with the message “<fiel
 Scenario:  #3 Primary Purpose of Other
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
-And I am on the Observational Trial Design screen
+And I am on the Ancillary Correlative Trial Design screen
 When I have selected Other for Primary Purpose
 Then a required text box appears
 
@@ -91,14 +91,14 @@ Scenario:  #4 Character display for Primary Purpose of Other
 Scenario:  #5 Study Model of Other
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
-And I am on the Observational Trial Design screen
+And I am on the Ancillary Correlative Trial Design screen
 When I have selected Other for Study Model
 Then a required text box appears
 
 Scenario:  #6 Character display for Study Model of Other
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
-      And I am on the Observational Trial Design screen
+      And I am on the Ancillary Correlative Trial Design screen
       And the 'If Study Model is 'Other', describe' box displays
      When I am entering text
      Then information text appears to display the number of characters available to enter into the field
@@ -109,7 +109,7 @@ Scenario:  #6 Character display for Study Model of Other
 Scenario:  #7 Character display for Bio-Specimen Description
  Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
- And I am on the Observational Trial Design screen
+ And I am on the Ancillary Correlative Trial Design screen
  When I am entering text in Bio-Specimen Description
  Then information text appears to display the number of characters available to enter into the field
   |800 characters left | 
@@ -119,18 +119,18 @@ Scenario:  #7 Character display for Bio-Specimen Description
 Scenario:  #8 Update  Clinical Research Category with Interventional
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
-      And I am on the Observational Trial Design screen
+      And I am on the Ancillary Correlative Trial Design screen
      When I select Interventional for Clinical Research Category
       And I select Save
      Then Clinical Research Category is updated
-      And the following <common fields> are populated with the values from Observational Trial Design 
+      And the following <common fields> are populated with the values from Ancillary Correlative Trial Design 
 |common fields           |
 |Primary Purpose  |
 |Phase            |
 |Is this a pilot  |
 |Target enrollment|
-And the  <Observational fields> are not displayed
-|Observational fields|
+And the  <Ancillary Correlative fields> are not displayed
+|Ancillary Correlative fields|
 |Study Model|
 |Time Perspective|
 |Bio-speciment Retention|
@@ -146,14 +146,14 @@ And the <Interventional fields> are displayed
 |Final Enrollment for ClinicalTrial.gov|
 |Accruals|
 
-Scenario:  #9 Update  Clinical Research Category with Ancillary Correlative
+Scenario:  #9 Update  Clinical Research Category with Observational
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
-      And I am on the Observational Trial Design screen
-     When I select Ancillary Correlative for Clinical Research Category
+      And I am on the Ancillary Correlative Trial Design screen
+     When I select Observational for Clinical Research Category
       And I select Save
      Then Clinical Research Category is updated
-      And the following <common fields> are populated with the values from Observational Trial Design 
+      And the following <common fields> are populated with the values from Ancillary Correlative Trial Design 
 |common fields           |
 |Primary Purpose  |
 |Phase            |
@@ -168,17 +168,17 @@ Scenario:  #9 Update  Clinical Research Category with Ancillary Correlative
     Scenario:  #10 Update  Clinical Research Category with Expanded Access
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
-      And I am on the Observational Trial Design screen
+      And I am on the Ancillary Correlative Trial Design screen
      When I select Expanded Access for Clinical Research Category
       And I select Save
      Then Clinical Research Category is updated
-      And the following <common fields> are populated with the values from Observational Trial Design 
+      And the following <common fields> are populated with the values from Ancillary Correlative Trial Design 
 |common fields           |
 |Primary Purpose  |
 |Phase            |
 |Is this a pilot  |
 |Target enrollment|
-And the  <Observational fields> are not displayed
+And the  <Ancillary Correlative fields> are not displayed
 |Observational fields|
 |Study Model|
 |Time Perspective|
@@ -206,17 +206,15 @@ And the <Interventional fields> are displayed
 Scenario:  #11 I can Cancel Trial Design screen for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
-And I am on the Observational Trial Design screen
+And I am on the Ancillary Correlative Trial Design screen
 When I have selected Cancel
 Then the information entered or edited on the Observational Trial Design screen will not be saved to the trial record
 And the screen will be refreshed with the data since the last save.
 
-
-
 Scenario:  #12 I can Reset Trial Description screen for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
-And I am on the Observational Trial Design screen
+And I am on the Ancillary Correlative Trial Design screen
 When I have selected Reset
 Then the information entered or edited on the Non-interventional Trial Design screen will not be saved to the trial record
 And the screen will be refreshed with the data since the last save.
