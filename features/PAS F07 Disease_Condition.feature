@@ -104,7 +104,7 @@ And I have selected a trial
 And I am on the Disease and Condition screen
 And I have not checked the 'Primary' box for any of the displayed diseases 
 When I have selected Save
-Then a warning message will appear for the null values with the message “One disease must be selected as primary" 
+Then a warning message will appear for the null values with the message One disease must be selected as primary
 When I select multiple entries of the displayed diseases
 And I select the Save button
-Then a warning message displays with the message “Only one disease can be selected as primary"
+Then a warning message displays with the message Only one disease can be selected as primary

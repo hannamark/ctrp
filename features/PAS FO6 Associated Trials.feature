@@ -7,7 +7,8 @@ And I have selected a trial
 And I am on the Add/Edit Associated Trial screen
 And I am on the Trial Search screen 
 And I have selected an Identifier Type 
-|CTRP |
+|Identifier Type|
+|TRP |
 |CT.gov|
 Then ‘Trial Type’ and ‘Official Title’ is displayed
 When I have selected Save
