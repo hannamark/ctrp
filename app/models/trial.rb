@@ -231,7 +231,11 @@ class Trial < ActiveRecord::Base
     end
     # And the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�
     latest_trial_status = trial_status_wrappers.empty? ? nil:trial_status_wrappers.last.trial_status.name
-    if ['Complete','Administratively Complete'].include? latest_processing_status
+    if latest_trial_status.nil?
+      send_trial_flag = false
+      return send_trial_flag
+    end
+    if ['Complete','Administratively Complete'].include? latest_trial_status
       send_trial_flag = false
       return send_trial_flag
     end
