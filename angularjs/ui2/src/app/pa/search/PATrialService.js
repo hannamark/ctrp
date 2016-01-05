@@ -242,12 +242,24 @@
         function getNih() {
             return PromiseTimeoutService.getData(URL_CONFIGS.NIH);
         }
+
         function getNciDiv() {
             return PromiseTimeoutService.getData(URL_CONFIGS.NCI_DIV_PA);
         }
 
         function getNciProg() {
             return PromiseTimeoutService.getData(URL_CONFIGS.NCI_PROG_PA);
+        }
+
+        function getSubmissionType() {
+            //(original/update/amendment
+            var submission_types = [{"code":"Original"},{"code":"Update"},{"code":"Amendment"}];
+            return submission_types;
+        }
+
+        function getSubmissionMethods() {
+            var submission_methods = [{"code":"CCR"},{"code":"CTEP"},{"code":"DCP"},{"code":"NHBLI"}];
+            return submission_methods;
         }
 
         function getExpandedAccessTypes() {
