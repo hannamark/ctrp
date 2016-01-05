@@ -40,7 +40,7 @@ module.exports = function() {
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
-        }, 4000).then(function() {
+        }, 40).then(function() {
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode('On');
             projectFunctions.createOrganization('org4Fam', 'alss', 'add1', 'add2', 'United States', 'Maryland', 'city', '20908', 'em@eml.com', '222-222-7878', '5555');
@@ -116,7 +116,7 @@ module.exports = function() {
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
-        }, 4000).then(function() {
+        }, 40).then(function() {
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode('On');
             projectFunctions.createOrganization('org4Fam', 'alss', 'add1', 'add2', 'United States', 'Maryland', 'city', '20908', 'em@eml.com', '222-222-7878', '5555');

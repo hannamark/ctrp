@@ -33,7 +33,7 @@ module.exports = function() {
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
-        }, 4000)
+        }, 40)
             .then(function(){
                 menuItem.clickHomeEnterOrganizations();
                 login.clickWriteMode('On');

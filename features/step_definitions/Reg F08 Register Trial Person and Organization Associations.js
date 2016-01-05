@@ -138,7 +138,7 @@ module.exports = function() {
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
-        }, 4000).then(function() {
+        }, 40).then(function() {
             cukeOrganization.then(function(value) {
                 console.log(value.split());
                 addTrial.getVerifyAddTrialFundingSource(value.split());
