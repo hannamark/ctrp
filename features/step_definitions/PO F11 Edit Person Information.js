@@ -45,7 +45,7 @@ module.exports = function() {
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
-        }, 4000).then(function() {
+        }, 40).then(function() {
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode('On');
             projectFunctions.createPerson('Mr', 'SScuke', 'Shia', 'Singh', 'Kt', 'singh@cukePR.com', '222-444-5555');
@@ -170,7 +170,7 @@ module.exports = function() {
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
-        }, 4000)
+        }, 40)
             .then(function(){
                 menuItem.clickHomeEnterOrganizations();
                 login.clickWriteMode('On');

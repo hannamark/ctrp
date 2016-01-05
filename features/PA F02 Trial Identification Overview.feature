@@ -20,11 +20,11 @@ And the Trail Overview for a Trial will include the following fields:
 |Lead Organization|
 |Lead Organization Trail ID|
 |Amendment Number|
-|Trial Category|
 |Submission Source|
 |Principal Investigator|
 |Last Submitter|
 |Last Submitter Organization|
+|Clinical Research Category|
 |Amendment Date|
 |Last Updated by - last user to update the trial|
 |Last Updated Date – last date any data for a trial was updated|
