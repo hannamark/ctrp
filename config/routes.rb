@@ -4,6 +4,23 @@ Rails.application.routes.draw do
 
   resources :trial_documents
 
+
+namespace "ws" do
+  scope '/api' do
+    scope '/v1' do
+      scope '/trials' do
+        get '/' => 'api_trials#index'
+        get '/:id' =>  'api_trials#show'
+        post '/' => 'api_trials#create'
+        put  '/:id' =>  'api_trials#update'
+        put  '/:id/status' =>  'api_trials#change_status'
+      end
+
+    end
+  end
+end
+
+
   scope "/ctrp" do
     devise_for :users
     root 'ctrp#index'

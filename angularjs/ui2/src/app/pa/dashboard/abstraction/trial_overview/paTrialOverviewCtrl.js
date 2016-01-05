@@ -46,8 +46,8 @@
          */
         function getTrialDetail() {
             TrialService.getTrialById(vm.trialId).then(function(data) {
-                data.admin_checkout = JSON.parse(data.admin_checkout);
-                data.scientific_checkout = JSON.parse(data.scientific_checkout);
+                data.admin_checkout = JSON.parse(data.admin_checkout || '{}');
+                data.scientific_checkout = JSON.parse(data.scientific_checkout || '{}');
                 vm.trialDetailObj = data;
                 delete vm.trialDetailObj.server_response;
                 PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data

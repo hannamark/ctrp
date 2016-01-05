@@ -18,8 +18,10 @@ var LoginPage = function(){
     this.logoutButton = element(by.css('a[ng-click="headerView.logOut()"]'));
     this.rejectButton = element(by.buttonText('Reject'));
     this.acceptButton = element(by.buttonText('Accept'));
+    this.loginPageVerification = element(by.css('.ng-binding.ng-scope'));
+    this.loginVerifyText = element(by.css('.panel-title'));
+    this.loginNewUsrSign = element(by.css('.pad-height'));
     this.loginUser = element(by.css('.ng-binding:nth-child(1)'));
-    var loginPageVerifyText = element(by.css('.panel-title'));
     var writeMode =  element(by.css('.md-thumb'));
     var params = browser.params;
     var login = new helper();

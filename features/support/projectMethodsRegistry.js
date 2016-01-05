@@ -82,7 +82,7 @@ var projectMethodsRegistry = function() {
     this.verifyAddTrialOtherTrialIdentifierTable = function (anyItemInTable) {
         return addTrial.addTrialVerifyOtherTrialIdentifierTable.filter(function(name) {
             return name.getText().then(function(text) {
-                console.log('text is' + text + 'Itemto be verified' + anyItemInTable);
+                console.log('text is' + text + 'Item to be verified' + anyItemInTable);
                 return text === anyItemInTable ;
             });
         }).then(function(filteredElements) {
@@ -93,6 +93,31 @@ var projectMethodsRegistry = function() {
             else {return 'false';}
         });
     };
+
+    /*****************************************************************
+     * Method: Verify Trial Oversight Authority Country Organization
+     * @param country
+     * @param organization
+     *****************************************************************/
+    this.verifyAddTrialOversightCountryOrganization = function (country, organization) {
+        return addTrial.addTrialVerifyOversightCountryOrganization.getText().filter(function (row) {
+            // Get the second column's text.
+            return row.$$('td').get(0).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === country;
+            });
+        }).then(function (rows) {
+                console.log('value of row' + rows);
+                expect(rows[0].element(by.binding('authority.organization')).getText()).to.eventually.equal(organization);
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
+
+
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one
@@ -116,7 +141,7 @@ var projectMethodsRegistry = function() {
                     browser.driver.wait(function () {
                         console.log('wait here');
                         return true;
-                    }, 4000).then(function () {
+                    }, 40).then(function () {
                         menuItem.clickHomeEnterOrganizations();
                         login.clickWriteMode('On');
                         menuItem.clickOrganizations();
@@ -143,11 +168,18 @@ var projectMethodsRegistry = function() {
                         browser.driver.wait(function () {
                             console.log('wait here');
                             return true;
-                        }, 4000).then(function () {
+                        }, 40).then(function () {
                             trialMenuItem.clickHomeSearchTrial();
                             login.clickWriteMode('On');
                             self.selectTrials(trialType);//selectTrials(trialType);
-                            addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
+                            /* Since adding Org when Responsible Party is set to 'Principal Investigator' is hidden so adding a step to select the Responsible party first*/
+                            if (indexOfOrgModel === '3') {
+                                addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+                                addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
+                            }
+                            else {
+                                addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
+                            }
                             searchOrg.clickExactSearch('true');
                             cukeOrganization.then(function (value) {
                                 console.log('Add org Name' + value);
@@ -163,13 +195,17 @@ var projectMethodsRegistry = function() {
     };
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
-     * Method: This will create Person for Trial, it creates a new org then checks if it exist then use the same one
+     * Method: This will create Person for Trial, it creates a new person then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createPersonforTrial = function(trialPersonName, trialType,indexOfPersonModel){
         addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);
+        searchOrg.clickExactSearch('true');
         searchPeople.setPersonFirstName(trialPersonName + moment().format('MMMDoYY h'));
         cukePerson = searchPeople.personFirstName.getAttribute('value');
+        searchPeople.setPersonOrgAffiliation('trialPerAffOrg' + moment().format('MMMDoYY h'));
+        cukeOrganization = searchPeople.personOrgAffiliation.getAttribute('value');
         searchPeople.clickSearch();
+        /** This will check if Person exists or not **/
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
             if(state === true) {
                 console.log('Person exists');
@@ -183,7 +219,7 @@ var projectMethodsRegistry = function() {
                 browser.driver.wait(function () {
                     console.log('wait here');
                     return true;
-                }, 4000).then(function () {
+                }, 40).then(function () {
                     menuItem.clickHomeEnterOrganizations();
                     login.clickWriteMode('On');
                     menuItem.clickPeople();
@@ -199,24 +235,71 @@ var projectMethodsRegistry = function() {
                     addPeople.setAddPersonEmail('email@eml.com');
                     addPeople.setAddPersonPhone('222-444-5555');
                     addPeople.clickSave();
-                   // orgSourceId = addOrg.addOrgCTRPID.getText();
-                    login.login('ctrptrialsubmitter', 'Welcome01');
-                    login.accept();
-                    browser.driver.wait(function () {
-                        console.log('wait here');
-                        return true;
-                    }, 4000).then(function () {
-                        trialMenuItem.clickHomeSearchTrial();
-                        login.clickWriteMode('On');
-                        self.selectTrials(trialType);//selectTrials(trialType);
-                        addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);
-                        cukePerson.then(function (value) {
-                            console.log('Add person Name' + value);
-                            searchPeople.setPersonFirstName(value);
+                    searchOrg.clickOrgSearchModel();
+                    cukeOrganization.then(function (value) {
+                        console.log('Add org Name' + value);
+                        searchOrg.setOrgName(value);
+                    });
+                 //   searchOrg.setOrgName('trialPerAffOrg' + moment().format('MMMDoYY h'));
+                 //   cukeOrganization = searchOrg.orgName.getAttribute('value');
+                    searchOrg.clickSearchButton();
+                    return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                        if (state === true) {
+                            console.log('Organization exists');
+                            searchOrg.selectOrgModelItem();
+                            searchOrg.clickOrgModelConfirm();
+                        }
+                        else {
+                            searchOrg.clickOrgModelClose();
+                            menuItem.clickOrganizations();
+                            menuItem.clickAddOrganizations();
+                            cukeOrganization.then(function (value) {
+                                console.log('Add org Name' + value);
+                                addOrg.setAddOrgName(value);
+                            });
+                            addOrg.setAddAlias('shAlias');
+                            addOrg.clickSaveAlias();
+                            addOrg.setAddAddress('9609 Aff PerOrg MedicalTrial Center Drive');
+                            addOrg.setAddAddress2('9609 Aff PerOrg II MedicalTrial Center Drive');
+                            selectValue.selectCountry('Togo');
+                            selectValue.selectState('Centre');
+                            addOrg.setAddCity('searchTrialCity');
+                            addOrg.setAddPostalCode('55578');
+                            addOrg.setAddEmail('searchTrialOrg@email.com');
+                            addOrg.setAddPhone('545-487-8956');
+                            addOrg.setAddFax('898-487-4242');
+                            addOrg.clickSave();
+                            menuItem.clickPeople();
+                            menuItem.clickListPeople();
+                            searchPeople.setPersonFirstName(cukePerson);
+                            searchPeople.clickSearch();
+                            element(by.linkText(cukePerson)).click();
+                            searchOrg.clickOrgSearchModel();
+                            searchOrg.setOrgName(cukeOrganization);
+                            searchOrg.clickSearchButton();
+                            searchOrg.selectOrgModelItem();
+                            searchOrg.clickOrgModelConfirm();
+                        }
+                        addPeople.clickSave();
+                        login.login('ctrptrialsubmitter', 'Welcome01');
+                        login.accept();
+                        browser.driver.wait(function () {
+                            console.log('wait here');
+                            return true;
+                        }, 40).then(function () {
+                            trialMenuItem.clickHomeSearchTrial();
+                            login.clickWriteMode('On');
+                            self.selectTrials(trialType);//selectTrials(trialType);
+                            addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);
+                            searchOrg.clickExactSearch('true');
+                            cukePerson.then(function (value) {
+                                console.log('Add person Name' + value);
+                                searchPeople.setPersonFirstName(value);
+                            });
+                            searchOrg.clickSearchButton();
+                            searchOrg.selectOrgModelItem();
+                            searchOrg.clickOrgModelConfirm();
                         });
-                        searchOrg.clickSearchButton();
-                        searchOrg.selectOrgModelItem();
-                        searchOrg.clickOrgModelConfirm();
                     });
                 });
             }
@@ -243,12 +326,38 @@ var projectMethodsRegistry = function() {
     };
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
-     * Method: This will add Organization for Trial
+     * Method: This will add already existing\created Organization for Trial
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.selectOrgforTrial = function(trialOrgName,indexOfOrgModel) {
-        addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
+        /* Since adding Org when Responsible Party is set to 'Principal Investigator' is hidden so adding a step to select the Responsible party first*/
+        if (indexOfOrgModel === '3') {
+            addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+            addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
+        }
+        else {
+            addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
+        }
         searchOrg.clickExactSearch('true');
         searchOrg.setOrgName(trialOrgName);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+    };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will add already existing\created Person for Trial
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.selectPerForTrial = function(trialPerName,indexOfPerModel) {
+        /* Since adding Org when Responsible Party is set to 'Principal Investigator' is hidden so adding a step to select the Responsible party first*/
+        if (indexOfPerModel === '3') {
+            addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+            addTrial.clickAddTrialPersonSearchModel(indexOfPerModel);
+        }
+        else {
+            addTrial.clickAddTrialPersonSearchModel(indexOfPerModel);
+        }
+        searchOrg.clickExactSearch('true');
+        searchPeople.setPersonFirstName(trialPerName);
         searchOrg.clickSearchButton();
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();

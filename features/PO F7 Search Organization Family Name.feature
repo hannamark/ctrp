@@ -80,12 +80,12 @@ Feature: PO F7 Search Organization Family Name
     And I have selected the option to Search Families
     And Exact Search box is selected in Family Search
     When I have entered the "exact" Family name
-    Then the "exact" Family Name will be displayed on the Family search results table
+    Then the Family Name will be displayed on the Family search results table
 
   Scenario:#7  As a curator, I can Search Family when the Exact Search box is NOT checked
     Given I am logged in to CTRP PO application
     And I have selected the option to Search Families
-    And Exact Search box is Not seleted in Family Search
+    And Exact Search box is Not selected in Family Search
     When I have entered the "partial" Family name
     Then the Family Name will be displayed on the Family search results table
 

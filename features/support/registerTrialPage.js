@@ -90,9 +90,10 @@ var registerTrial = function(){
     this.addTrialOversightAuthorityCountry = element(by.model('trialDetailView.authority_country'));
     this.addTrialOversightAuthorityOrganization = element(by.model('trialDetailView.authority_org'));
     this.addTrialAddOversightAuthorityButton = element(by.css('button[ng-click="trialDetailView.addAuthority()"]'));
-    this.addTrialFDARegulatedInterventionIndicator = element(by.model('trialDetailView.curTrial.intervention_indicator'));
-    this.addTrialSection801Indicator = element(by.model('trialDetailView.curTrial.sec801_indicator'));
-    this.addTrialDataMonitoringCommitteeAppointedIndicator = element(by.model('trialDetailView.curTrial.data_monitor_indicator'));
+    this.addTrialVerifyOversightCountryOrganization = element.all(by.css('tr[ng-repeat="authority in trialDetailView.addedAuthorities track by $index"]'));
+    this.addTrialFDARegulatedInterventionIndicator = element.all(by.model('trialDetailView.curTrial.intervention_indicator'));
+    this.addTrialSection801Indicator = element.all(by.model('trialDetailView.curTrial.sec801_indicator'));
+    this.addTrialDataMonitoringCommitteeAppointedIndicator = element.all(by.model('trialDetailView.curTrial.data_monitor_indicator'));
 
 
     /**buttons**/
@@ -386,7 +387,7 @@ var registerTrial = function(){
         helper.selectValueFromList(this.addTrialOversightAuthorityOrganization,trialOversightAuthorityOrganization,"Add Trial by Trial Oversight Authority Organization field");
     };
 
-    this.clickAddTrialAddOversightAuthorityButton = function(){
+    this.clickAddTrialAddOversightAuthorityButton = function() {
         helper.clickButton(this.addTrialAddOversightAuthorityButton,"Add Trial Oversight Authority Add button");
     };
 

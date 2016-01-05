@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151229175016) do
+ActiveRecord::Schema.define(version: 20160104163124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1058,6 +1058,8 @@ ActiveRecord::Schema.define(version: 20151229175016) do
     t.integer  "anatomic_site_id"
     t.integer  "num_of_arms"
     t.date     "verification_date"
+    t.string   "sampling_method",          limit: 255
+    t.text     "study_pop_desc"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree

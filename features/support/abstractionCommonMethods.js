@@ -27,9 +27,10 @@ var poMenuItemList = require('../support/PoCommonBar');
 
 var abstractionCommonMethods = function(){
     /*******
-     * Methods Description: Abstraction common helper methods
-     *
-     *
+     * Methods Description: Common methods to login as following user(s)
+     * ctrpcurator
+     * ctrpabstractor
+     * ctrptrialsubmitter
      *******/
     var login = new loginPage();
     var helper = new helperFunctions();
@@ -37,6 +38,11 @@ var abstractionCommonMethods = function(){
     var abstractPageMenu = new abstractionPageMenu();
     var poHome = new poMenuItemList();
     var reader;
+
+    var loginTxtVerif = 'CTRP Sign In';
+    var loginCredTxtVerif = 'Please sign in to continue.';
+    var loginNwUsrSngVerif = 'New User? Sign Up';
+    var crntTxtLoginPg = '';
 
     /*****************************************
      * Check for the various File API support.
@@ -108,8 +114,26 @@ var abstractionCommonMethods = function(){
         console.log(configuration.curatorPWD);
         console.log(configuration.trialSubmitterUID);
         console.log(configuration.trialSubmitterPWD);
-
+        //App URL
         browser.get(configuration.uiUrl);
+        //Verify Homepage
+        var BrwsrVal = browser.getCurrentUrl();
+        login.loginPageVerification.getText().then (function(text){
+            var passTxtA = ''+text+'';
+            crntTxtLoginPg =  ''+passTxtA+'';
+            if (crntTxtLoginPg === loginTxtVerif){
+                console.log('Login Home Page Successfully Loaded on the Browser:['+crntTxtLoginPg+']');
+                expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
+                expect(login.loginVerifyText.getText()).to.eventually.equal(loginCredTxtVerif);
+                expect(login.loginNewUsrSign.getText()).to.eventually.equal(loginNwUsrSngVerif);
+            } else {
+                console.log('Unable to load home page on the Browser:['+crntTxtLoginPg+']');
+                expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
+                expect(login.loginVerifyText.getText()).to.eventually.equal(loginCredTxtVerif);
+                expect(login.loginNewUsrSign.getText()).to.eventually.equal(loginNwUsrSngVerif);
+            };
+
+        });
         //ctrp abstractor user
         if (usrID === 'ctrpabstractor'){
             login.login(configuration.abstractorUID, configuration.abstractorPWD);
@@ -117,21 +141,21 @@ var abstractionCommonMethods = function(){
             helper.wait_for(5000);
             expect(abstractPageMenu.homeSearchTrials.isDisplayed()).to.eventually.equal(true);
             expect(abstractPageMenu.homeAbstractionDashboards.isDisplayed()).to.eventually.equal(true);
-        }
+        };
         //ctrp curator user
         if (usrID === 'ctrpcurator'){
             login.login(configuration.curatorUID, configuration.curatorPWD);
             login.accept();
             helper.wait_for(5000);
             expect(poHome.homeEnterOrganizations.isDisplayed()).to.eventually.equal(true);
-        }
+        };
         //ctrp trial submitter user
         if (usrID === 'ctrptrialsubmitter'){
             login.login(configuration.trialSubmitterUID, configuration.trialSubmitterPWD);
             login.accept();
             helper.wait_for(5000);
             expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
-        }
+        };
     };
 
     /*****************************************
@@ -166,7 +190,7 @@ var abstractionCommonMethods = function(){
             login.login(configuration.curatorUID, configuration.curatorPWD);
             login.reject();
             helper.wait_for(5000);
-            expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(false);
+            expect(poHome.homeEnterOrganizations.isDisplayed()).to.eventually.equal(false);
         }
         //ctrp trial submitter user
         if (usrID === 'ctrptrialsubmitter'){

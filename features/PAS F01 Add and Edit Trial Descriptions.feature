@@ -6,10 +6,10 @@ Scenario: #1 I can add and edit Trial Description for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Trial Description screen
-And I have entered a value for “Brief Title”
-And I have entered a value for “Brief Summary”
-And I have entered a value for “Detailed Description”
-And I have entered a value for “Objectives”
+And I have entered a value for Brief Title
+And I have entered a value for Brief Summary
+And I have entered a value for Detailed Description
+And I have entered a value for Objectives
 When I select Save
 Then the Trial Description for the trial will be associated with the trial
 
@@ -17,7 +17,8 @@ Scenario: #2 Brief Title and/or Summary not null
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Trial Description screen
-And any of the following are null 
+And any of the following <field name> are null 
+|Field Name|
 |Brief Title|
 |Brief Summary|
 When I select Save
@@ -45,6 +46,8 @@ And I am on the Trial Description Screen
 And I am entering into “Brief Title”
 Then information text appears below the Brief Title field will display the number of characters available to enter into the field.  
 |300 characters left|
+When 300 characters have been entered
+Then no additional text can be entered
 
 Scenario: #6  Brief Summary field character count
 Given I am logged into the CTRP Protocol Abstraction application
@@ -59,6 +62,8 @@ And I am on the Trial Description Screen
 And I am entering into “Detailed Description”
 Then information text appears below the Detailed Description field will display the number of characters available to enter into the field.  
 |32000 characters left|
+When 32000 characters have been entered
+Then no additional text can be entered
 
 Scenario:  #8  Objectives field character count
 Given I am logged into the CTRP Protocol Abstraction application
@@ -66,6 +71,8 @@ And I am on the Trial Description Screen
 And I am entering into “Objectives”
 Then information text appears below the Objectives field will display the number of characters available to enter into the field.  
 |32000 characters left|
+When 32000 characters have been entered
+Then no additional text can be entered
 
 Scenario:  #9   Mandatory at Abstraction Validation for Brief Title
 Given I am logged into the CTRP Protocol Abstraction application

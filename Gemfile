@@ -92,3 +92,7 @@ gem 'roo-xls'
 gem 'rufus-scheduler'
 gem 'dbi'
 
+gem 'nokogiri'
+
+gem 'cobravsmongoose'
+
