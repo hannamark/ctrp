@@ -14,6 +14,7 @@
       vm.generalTrialDetailsObj = {};
       vm.saveGeneralTrialDetails = saveGeneralTrialDetails;
       vm.resetGeneralTrialDetails = resetGeneralTrialDetails;
+      vm.leadOrg = [];
 
       activate();
 

@@ -46,10 +46,11 @@ Then the selected value(s) for NIH/NCI Program Identifier will be associated wit
 Scenario: #7 I can view and edit the “Send Trial Information to ClinicalTrials.gov?”
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
-And the Trial is sponsored by NCI
-And the Trial Lead Organization is not NCI-CCR
-And the Trial processing status is “Verification Pending”, Abstracted, No Response”, or “Abstracted, Response” 
+And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
+And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
+And the Trial processing status is “Verification Pending”, "Abstracted", "No Response”, or “Abstracted, Response” 
 And the Trial Overall Status is not “Complete”, “Administratively Complete” or “Terminated”  
+And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
 When I select the radio button for Yes or No for “Send Trial Information to ClinicalTrials.gov?” 
 Then the selected value for “Send Trial Information to ClinicalTrials.gov?” will be Yes or No
 
@@ -72,13 +73,26 @@ When select Cancel
 Then the information entered or edited on the NCI Specific Information screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
-Scenario: #11 I cannot view the “Send Trial Information to ClinicalTrials.gov?”
+Scenario Outline: #11 I cannot view the “Send Trial Information to ClinicalTrials.gov?”
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
-And the Trial is not sponsored by NCI
-Or the Trial Lead Organization is NCI-CCR
-Or the Trial processing status is not “Verification Pending”, Abstracted, No Response”, or “Abstracted, Response” 
-Or the Trial Overall Status is “Complete”, “Administratively Complete” or “Terminated”  
-And the Trail has been included in the prior nights XML Batch Upload with the Overall Status of “Complete”, “Administratively Complete” or “Terminated”  
+When the follow <conditions> exist
 Then the label and element for “Send Trial Information to ClinicalTrials.gov?” will not be visible
+
+Examples:
+
+|<Conditions>|
+|Trial is not sponsored by "National Cancer Institute" |
+|Trial Lead Organization is "NCI - Center for Cancer Research"|
+|Trial processing status is not “Verification Pending”|
+|Trial processing status is not "Abstracted| 
+|Trial processing status is not “No Response”|
+|Trial processing status is not “Abstracted, Response”|
+|Trial Overall Status is “Complete”|
+|Trial Overall Status is “Administratively Complete”|
+|Trial Overall Status is “Terminated”| 
+|Trial Research Category is not "Interventional"|
+
+
+
 
