@@ -924,7 +924,7 @@ module.exports = function() {
             browser.driver.wait(function() {
                 console.log('wait here');
                 return true;
-            }, 4000).then(function() {
+            }, 40).then(function() {
                 orgSourceId.then(function(value) {
                     console.log('This is the CTRP ID of added Org' + value);
                     var splitOrgSrcID = value.slice(0,7);

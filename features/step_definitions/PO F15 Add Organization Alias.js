@@ -33,7 +33,7 @@ module.exports = function() {
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
-        }, 4000).then(function(){
+        }, 40).then(function(){
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode('On');
             projectFunctions.createOrganization('shiOrg','alias','add1','add2','United States','Florida','avenue','24567','s@s.com','222-4444-555','444-6666-555');

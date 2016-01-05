@@ -165,7 +165,6 @@
             /* resetSearch */
             $scope.resetSearch = function () {
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
-                var temp = $scope.searchParams.wc_search;
                 var excludedKeys = ['alias','wc_search'];
                 Object.keys($scope.searchParams).forEach(function (key) {
 
@@ -177,7 +176,7 @@
                 });
 
                 $scope.searchParams['alias'] = true;
-                $scope.searchParams['wc_search'] = temp;
+                $scope.searchParams['wc_search'] = true;
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];

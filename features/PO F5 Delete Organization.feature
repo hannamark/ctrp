@@ -1,5 +1,5 @@
-  @PO @Global
-  Feature: PO F5 Delete Organization
+@PO @Global
+Feature: PO F5 Delete Organization
 
   Scenario: As a PO Curator, I can Delete an Organization with no Trial Records
     Given I know which organization I want to delete

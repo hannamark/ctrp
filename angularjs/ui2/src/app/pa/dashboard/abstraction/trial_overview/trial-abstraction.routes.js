@@ -12,7 +12,7 @@
             .state('main.pa.trialOverview', {
                 /* this is the parent state for the states below */
                     url: '/trial/:trialId',
-                    templateUrl: 'app/pa/dashboard/abstraction/trial_overview.html',
+                    templateUrl: 'app/pa/dashboard/abstraction/trial_overview/trial_overview.html',
                     // controller: 'paTrialOverviewCtrl',
                     section: 'pa',
                     ncyBreadcrumb: {
@@ -22,7 +22,7 @@
                 })
                 .state('main.pa.trialOverview.trialIdentification', {
                     url: '/identification',
-                    templateUrl: 'app/pa/dashboard/abstraction/trial_identification.html',
+                    templateUrl: 'app/pa/dashboard/abstraction/trial_overview/trial_identification.html',
                     controller: 'trialIdentificationCtrl as trialIdView',
                     section: 'pa',
                     ncyBreadcrumb: {
@@ -32,7 +32,7 @@
                 })
                 .state('main.pa.trialOverview.trialHistory', {
                     url: '/history',
-                    templateUrl: 'app/pa/dashboard/abstraction/trial_history.html',
+                    templateUrl: 'app/pa/dashboard/abstraction/trial_overview/trial_history.html',
                     section: 'pa',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
@@ -41,7 +41,7 @@
                 })
                 .state('main.pa.trialOverview.trialMilestones', {
                     url: '/milestones',
-                    templateUrl: 'app/pa/dashboard/abstraction/trial_milestones.html',
+                    templateUrl: 'app/pa/dashboard/abstraction/trial_overview/trial_milestones.html',
                     section: 'pa',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
@@ -50,7 +50,7 @@
                 })
                 .state('main.pa.trialOverview.onHoldInfo', {
                     url: '/on-hold-info',
-                    templateUrl: 'app/pa/dashboard/abstraction/on_hold_info.html',
+                    templateUrl: 'app/pa/dashboard/abstraction/trial_overview/on_hold_info.html',
                     section: 'pa',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
@@ -59,7 +59,7 @@
                 })
                 .state('main.pa.trialOverview.viewTSR', {
                     url: '/view-tsr',
-                    templateUrl: 'app/pa/dashboard/abstraction/view_TSR.html',
+                    templateUrl: 'app/pa/dashboard/abstraction/trial_overview/view_TSR.html',
                     controller: function($scope, $state) {
                         console.log('trialId from trialOverview controller: ', $scope.$parent.paTrialOverview.trialId);
                         var curTrialId = $scope.$parent.paTrialOverview.trialId;
@@ -76,7 +76,7 @@
                 })
                 .state('main.pa.trialOverview.assignOwnership', {
                     url: '/assign-ownership',
-                    templateUrl: 'app/pa/dashboard/abstraction/assign_ownership.html',
+                    templateUrl: 'app/pa/dashboard/abstraction/trial_overview/assign_ownership.html',
                     section: 'pa',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
@@ -85,7 +85,7 @@
                 })
                 .state('main.pa.trialOverview.checkoutHistory', {
                     url: '/check-out-history',
-                    templateUrl: 'app/pa/dashboard/abstraction/check_out_history.html',
+                    templateUrl: 'app/pa/dashboard/abstraction/trial_overview/check_out_history.html',
                     section: 'pa',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
@@ -94,7 +94,7 @@
                 })
                 .state('main.pa.trialOverview.jsonRawData', {
                     url: '/raw-json-trial-data',
-                    templateUrl: 'app/pa/dashboard/abstraction/raw_json_trial_data.html',
+                    templateUrl: 'app/pa/dashboard/abstraction/trial_overview/raw_json_trial_data.html',
                     section: 'pa',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',

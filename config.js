@@ -15,7 +15,7 @@ exports.config = {
     },
 
     baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
-  //     baseUrl: 'http://localhost/ctrp/',
+    //     baseUrl: 'http://localhost/ctrp/',
 
     params: {
         login: {
@@ -41,29 +41,30 @@ exports.config = {
     getPageTimeout: 50000,
 
     specs: [
-         //PO F2-F15
-           'features/PO\ F2\ Search\ for\ Organizations.feature',
-           'features/PO\ F3\ Create\ an\ Organization.feature',
-           'features/PO\ F4\ Edit\ Organization\ Information.feature',
-           'features/PO\ F5\ Delete\ Organization.feature',
-           'features/PO\ F6\ Curator\ review\ of\ a\ Pending\ Organization.feature',
-           'features/PO\ F7\ Create\ Organization\ Family\ Name.feature',
-           'features/PO\ F7\ Edit\ Organization\ Family\ Name.feature',
-           'features/PO\ F7\ Search\ Organization\ Family\ Name.feature',
-           'features/PO\ F8\ Associate\ an\ Organization\ with\ a\ Family.feature',
-           'features/PO\ F9\ Search\ for\ Persons.feature',
-           'features/PO\ F10\ Create\ a\ Person\ Record.feature',
-           'features/PO\ F11\ Edit\ Person\ Information.feature',
-           'features/PO\ F12\ Delete\ Person\ record.feature',
-           'features/PO\ F13 Curator\ review\ of\ a\ Pending\ Person\ Record.feature',
-           'features/PO\ F14\ Change\ a\ Person\'s\ Affiliated\ Organization.feature',
-           'features/PO\ F15\ Add\ Organization\ Alias.feature',
-        //Registry Features
-           'features/Reg\ F04\ Register\ Trial\ Study\ Source.feature',
-           'features/Reg\ F05\ Register\ Trial\ Protocol\ Identifiers.feature',
-           'features/Reg\ F06\ Register\ Trial\ Details.feature'
-     // 'features/PO*.feature'
-     // 'features/test.feature'
+        //PO F2-F15
+        'features/PO\ F2\ Search\ for\ Organizations.feature',
+        'features/PO\ F3\ Create\ an\ Organization.feature',
+        'features/PO\ F4\ Edit\ Organization\ Information.feature',
+        'features/PO\ F5\ Delete\ Organization.feature',
+        'features/PO\ F6\ Curator\ review\ of\ a\ Pending\ Organization.feature',
+        'features/PO\ F7\ Create\ Organization\ Family\ Name.feature',
+        'features/PO\ F7\ Edit\ Organization\ Family\ Name.feature',
+        'features/PO\ F7\ Search\ Organization\ Family\ Name.feature',
+        'features/PO\ F8\ Associate\ an\ Organization\ with\ a\ Family.feature',
+        'features/PO\ F9\ Search\ for\ Persons.feature',
+        'features/PO\ F10\ Create\ a\ Person\ Record.feature',
+        'features/PO\ F11\ Edit\ Person\ Information.feature',
+        'features/PO\ F12\ Delete\ Person\ record.feature',
+        'features/PO\ F13 Curator\ review\ of\ a\ Pending\ Person\ Record.feature',
+        'features/PO\ F14\ Change\ a\ Person\'s\ Affiliated\ Organization.feature',
+        'features/PO\ F15\ Add\ Organization\ Alias.feature',
+
+        /************* Registry Features ************/
+        'features/Reg\ F04\ Register\ Trial\ Study\ Source.feature',
+        'features/Reg\ F05\ Register\ Trial\ Protocol\ Identifiers.feature',
+        'features/Reg\ F06\ Register\ Trial\ Details.feature',
+        'features/Reg\ F07\ Register\ Trial\ Study\ Design.feature',
+        'features/Reg\ F08\ Register\ Trial\ Person\ and\ Organization\ Associations.feature'
     ],
 
     cucumberOpts: {
@@ -73,14 +74,14 @@ exports.config = {
         resultJsonOutputFile: 'true'
         //  tags: '@runthis'
         /*     "@runThat",
-        resultJsonOutputFile: 'true',
-        tags: '@runthis'
-        /*     "@runThat",
+         resultJsonOutputFile: 'true',
+         tags: '@runthis'
+         /*     "@runThat",
          "~@ignoreThis"]*/// or summary
         // tags: '@runthis'
         //    tags: '@runthis'
         /*     "@runThat",
-        "~@ignoreThis"]*/// or summary
+         "~@ignoreThis"]*/// or summary
     }
 };
 

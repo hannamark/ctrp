@@ -45,7 +45,7 @@ module.exports = function() {
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
-        }, 4000).then(function(){
+        }, 40).then(function(){
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode('On');
             menuItem.clickOrganizations();
@@ -289,7 +289,7 @@ module.exports = function() {
         browser.driver.wait(function(){
             console.log('wait here');
             return true;
-        }, 4000).then(function(){
+        }, 40).then(function(){
             expect(projectFunctions.verifyWarningMessage('Warning: Organization exists in the database. Please verify and create a new Organization record.')).to.become('true').and.notify(callback);
         });
         // browser.sleep(25).then(callback);

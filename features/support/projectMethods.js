@@ -634,7 +634,7 @@ var projectMethods = function() {
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
-        }, 4000).then(function() {
+        }, 40).then(function() {
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode('On');
             menuItem.clickOrganizations();
@@ -655,7 +655,7 @@ var projectMethods = function() {
                     browser.driver.wait(function() {
                         console.log('wait here');
                         return true;
-                    }, 4000).then(function() {
+                    }, 40).then(function() {
                         menuItem.clickOrganizations();
                         menuItem.clickAddOrganizations();
                         orgSearch.then(function(value){
@@ -706,7 +706,7 @@ var projectMethods = function() {
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
-        }, 4000).then(function() {
+        }, 40).then(function() {
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode('On');
             menuItem.clickOrganizations();
@@ -726,7 +726,7 @@ var projectMethods = function() {
                     browser.driver.wait(function() {
                         console.log('wait here');
                         return true;
-                    }, 4000).then(function() {
+                    }, 40).then(function() {
                         menuItem.clickOrganizations();
                         menuItem.clickAddOrganizations();
                         cukeOrganization.then(function(value){
@@ -762,7 +762,7 @@ var projectMethods = function() {
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
-        }, 4000).then(function() {
+        }, 40).then(function() {
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode('On');
             menuItem.clickPeople();
@@ -784,7 +784,7 @@ var projectMethods = function() {
                     browser.driver.wait(function() {
                         console.log('wait here');
                         return true;
-                    }, 4000).then(function() {
+                    }, 40).then(function() {
                         menuItem.clickPeople();
                         menuItem.clickAddPerson();
                         addPeople.setAddPersonPrefix('prefix');

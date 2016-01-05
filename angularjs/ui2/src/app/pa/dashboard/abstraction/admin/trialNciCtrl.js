@@ -8,15 +8,20 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialNciCtrl', trialNciCtrl);
 
-    trialNciCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'studySourceObj'];
+    trialNciCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialNciCtrl(TrialService, $scope, toastr, trialDetailObj, studySourceObj) {
+    function trialNciCtrl(TrialService, $scope, toastr, trialDetailObj, studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
-        //console.log("2curTrial =" + JSON.stringify(vm.curTrial));
+        console.log("nciDivObj  =" + JSON.stringify(nciDivObj));
+        vm.nciDivArr = nciDivObj;
+        console.log("nciProgObj  =" + JSON.stringify(nciProgObj));
+        vm.nciProgArr = nciProgObj;
         vm.studySourceArr = studySourceObj;
         vm.addedFses = [];
         vm.selectedFsArray = [];
+        //vm.nih_nci_div = trialDetailObj.nih_nci_div;
+        //vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
             console.log("3curTrial =" + JSON.stringify(vm.curTrial));

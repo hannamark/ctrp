@@ -420,11 +420,24 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td class="col-md-3">
+
+                                            <td class="col-md-2">
                                                 <div>
-                                                    <input restriction-field class="form-control input-sm" id="serial_number" ng-model="trialDetailView.serial_number" />
+                                                <ui-select ng-model="trialDetailView.serial_number"
+                                                       ng-disabled="enabled"
+                                                       reset-search-input="false"
+                                                       style="width: 300px;">
+                                                <ui-select-match placeholder="Enter serial number...">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="tempgrant in addresses"
+                                                                   refresh="refreshGrants($select.search)"
+                                                                   refresh-delay="1">
+                                                    <div ng-bind-html="serial_number | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                                </ui-select>
                                                 </div>
                                             </td>
+
+
                                             <td class="col-md-4">
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="nci" ng-model="trialDetailView.nci">
@@ -871,7 +884,7 @@
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedIaArray[0].name.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <input type="hidden" name="inv_aff_name" ng-model="trialDetailView.selectedIaArray[0]" ng-required="trialDetailView.showInvestigator">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name)">
-                                    Investigator Affilication is required
+                                    Investigator Affiliation is required
                                 </span>
                             </div>
                             <div class="col-xs-12 col-sm-3" ng-show="!trialDetailView.showInvSearchBtn && ['update'].indexOf(trialDetailView.curTrial.edit_type) < 0">

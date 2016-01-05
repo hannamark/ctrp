@@ -80,6 +80,8 @@
 #  anatomic_site_id         :integer
 #  num_of_arms              :integer
 #  verification_date        :date
+#  sampling_method          :string(255)
+#  study_pop_desc           :text
 #
 # Indexes
 #
@@ -262,6 +264,7 @@ class Trial < ActiveRecord::Base
   end
 
   #scopes for search API
+  #scope :matches_grant, -> (column, value) {Tempgrant.where}
   scope :matches, -> (column, value) { where("trials.#{column} = ?", "#{value}") }
 
   scope :matches_wc, -> (column, value) {
@@ -302,6 +305,10 @@ class Trial < ActiveRecord::Base
   scope :with_research_category, -> (value) { joins(:research_category).where("research_categories.code = ?", "#{value}") }
 
   scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
+
+  scope :with_nci_div, -> (value) {where("nih_nci_div = ?", "#{value}") }
+
+  scope :with_nci_prog, -> (value) {where("nih_nci_prog = ?", "#{value}") }
 
   scope :with_pi_lname, -> (value) {
     str_len = value.length
