@@ -144,14 +144,14 @@
                             <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
                             <div class="col-xs-12 col-sm-9">
                                 <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
-                                <div class="row animated-item top-offset-tiny" ng-show="personDetailView.savedSelection.length > 0">
+                                <div class="row animated-item top-offset-tiny table-responsive" ng-show="personDetailView.savedSelection.length > 0">
                                     <input type="text" ng-model="personDetailView.selectedOrgFilter" restriction-field class="form-control input-sm" placeholder="Filter selected organizations"/>
                                     <table class="table table-bordered table-striped table-condensed">
                                         <thead>
                                         <th width="6%">CTRP ID</th>
-                                        <th width="57%">Organization</th>
-                                        <th width="18%">Effective Date</th>
-                                        <th width="18%">Expiration Date</th>
+                                        <th width="49%">Organization</th>
+                                        <th width="22%">Effective Date</th>
+                                        <th width="22%">Expiration Date</th>
                                         <th width="1%"></th>
                                         </thead>
                                         <tbody>

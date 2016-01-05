@@ -78,16 +78,16 @@
                        <button class="btn btn-danger" ng-click="familyDetailView.batchSelect('removeAll')" ng-show="familyDetailView.savedSelection.length > 0">
                            <i class="glyphicon glyphicon-remove"></i> Remove All Family Members
                        </button> -->
-                       <div class="row animated-item top-offset-tiny" ng-show="familyDetailView.savedSelection.length > 0">
+                       <div class="row animated-item top-offset-tiny table-responsive" ng-show="familyDetailView.savedSelection.length > 0">
                            <input type="text" ng-model="familyDetailView.selectedOrgFilter" restriction-field class="form-control input-sm" placeholder="Filter selected organizations"/>
                            <table class="table table-bordered table-striped table-condensed">
                                <thead>
                                    <th width="6%"><nobr>CTRP ID</nobr></th>
                                    <th width="6%"><nobr>CTEP ID</nobr></th>
-                                   <th width="29%">Organization</th>
+                                   <th width="21%">Organization</th>
                                    <th width="22%">Relationship</th>
-                                   <th width="18%">Effective Date</th>
-                                   <th width="18%">Expiration Date</th>
+                                   <th width="22%">Effective Date</th>
+                                   <th width="22%">Expiration Date</th>
                                    <th width="1%"></th>
                                </thead>
                                <tbody>
