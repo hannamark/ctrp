@@ -58,7 +58,7 @@ class TrialsControllerTest < ActionController::TestCase
 
   test "should search trial by Phase" do
     phase = phases(:one)
-    test_response = post :search, phase: phase.code, format: 'json'
+    test_response = post :search, phases: [phase], format: 'json'
     search_result = JSON.parse(test_response.body)
     assert_equal phase.name, search_result['trials'][0]['phase']
   end
@@ -103,7 +103,7 @@ class TrialsControllerTest < ActionController::TestCase
 
   test "should search trial by Purpose" do
     purpose = primary_purposes(:one)
-    test_response = post :search, purpose: purpose.code, format: 'json'
+    test_response = post :search, purposes: [purpose], format: 'json'
     search_result = JSON.parse(test_response.body)
     assert_equal purpose.name, search_result['trials'][0]['purpose']
   end
@@ -124,7 +124,7 @@ class TrialsControllerTest < ActionController::TestCase
 
   test "should search trial by Lead Organization" do
     ['Test Org 3', 'Test*', '*3', '*Org*'].each do |x|
-      test_response = post :search, org_type: 'Lead Organization', org: x, format: 'json'
+      test_response = post :search, org_types: ['Lead Organization'], org: x, format: 'json'
       search_result = JSON.parse(test_response.body)
       assert_equal 'Test Org 3', search_result['trials'][0]['lead_org']
     end
@@ -133,7 +133,7 @@ class TrialsControllerTest < ActionController::TestCase
 
   test "should search trial by Sponsor" do
     ['Test Org 4', 'Test*', '*4', '*Org*'].each do |x|
-      test_response = post :search, org_type: 'Sponsor', org: x, format: 'json'
+      test_response = post :search, org_types: ['Sponsor'], org: x, format: 'json'
       search_result = JSON.parse(test_response.body)
       assert_equal 'Test Org 4', search_result['trials'][0]['sponsor']
     end
@@ -149,7 +149,7 @@ class TrialsControllerTest < ActionController::TestCase
 
   test "should search trial by Study Source" do
     study_source = study_sources(:one)
-    test_response = post :search, study_source: study_source.code, format: 'json'
+    test_response = post :search, study_sources: [study_source], format: 'json'
     search_result = JSON.parse(test_response.body)
     assert_equal study_source.name, search_result['trials'][0]['study_source']
   end

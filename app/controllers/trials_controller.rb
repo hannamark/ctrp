@@ -195,7 +195,7 @@ class TrialsController < ApplicationController
         end
       end
       @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
-      @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
+      @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
       # PA fields
       if params[:research_category].present?
