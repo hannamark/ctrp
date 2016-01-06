@@ -542,10 +542,6 @@ h4 {
     right: 5px;
 }
 
-.form-horizontal .control-label {
-  text-align: left;
-}
-
 .input-group-addon {
     line-height: 1;
     padding: 3px 3px 3px 4px;
