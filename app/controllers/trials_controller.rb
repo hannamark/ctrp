@@ -268,7 +268,7 @@ class TrialsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trial_params
-      params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id,
+      params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
                                     :primary_purpose_other, :secondary_purpose_other, :investigator_title,
                                     :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date,
                                     :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question,
