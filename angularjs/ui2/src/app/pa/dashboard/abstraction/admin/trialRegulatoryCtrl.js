@@ -58,6 +58,20 @@
 
         }
 
+        // Delete the associations
+        vm.toggleSelection = function (index, type) {
+             if (type == 'authority') {
+                if (index < vm.addedAuthorities.length) {
+                    vm.addedAuthorities[index]._destroy = !vm.addedAuthorities[index]._destroy;
+                    if (vm.addedAuthorities[index]._destroy) {
+                        vm.toaNum--;
+                    } else {
+                        vm.toaNum++;
+                    }
+                }
+            }
+        };// toggleSelection
+
 
         // Add Oversight Authority to a temp array
         vm.addAuthority = function () {
@@ -123,7 +137,7 @@
                     vm.selectedInvArray = [];
                     vm.selectedIaArray = [];
                 }
-            } else if (type == 'authority_country') {
+            }  else if (type == 'authority_country') {
                 vm.authority_org = '';
                 vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.authority_country);
             }
