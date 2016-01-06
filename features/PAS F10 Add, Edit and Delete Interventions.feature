@@ -41,6 +41,12 @@ And the selected intervention name will be added to the Intervention name field
 And other names will be added in the other Names field
 When I click on the save button to add the Intervention
 Then the intervention type will be added
+When an Intervention name is not entered
+And I have clicked on the Search Button
+Then an error type will be displayed
+
+      |Message.Please enter at least one search criteria  |
+
 
   Scenario: #2 Add Intervention Rules
     Given I am on the Add Intervention screen
