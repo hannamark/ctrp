@@ -85,12 +85,12 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_source].present?
+    if params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
-      @trials = @trials.with_phase(params[:phase]) if params[:phase].present?
-      @trials = @trials.with_purpose(params[:purpose]) if params[:purpose].present?
+      @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
+      @trials = @trials.with_purposes(params[:purposes]) if params[:purposes].present?
       @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
       if params[:pi].present?
         splits = params[:pi].split(',').map(&:strip)
@@ -106,8 +106,8 @@ class TrialsController < ApplicationController
           @trials = @trials.with_any_org(params[:org])
         end
       end
-      @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
-      @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
+      @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
+      @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
       # TODO further add another scope
       if params[:trial_status].present?

@@ -300,11 +300,62 @@ class Trial < ActiveRecord::Base
 
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 
+  scope :with_phases, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "phases.code = ?"
+      else
+        q += " OR phases.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:phase).where(conditions)
+  }
+
   scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
+
+  scope :with_purposes, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "primary_purposes.code = ?"
+      else
+        q += " OR primary_purposes.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:primary_purpose).where(conditions)
+  }
 
   scope :with_research_category, -> (value) { joins(:research_category).where("research_categories.code = ?", "#{value}") }
 
   scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
+
+  scope :with_study_sources, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "study_sources.code = ?"
+      else
+        q += " OR study_sources.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:study_source).where(conditions)
+  }
 
   scope :with_nci_div, -> (value) {where("nih_nci_div = ?", "#{value}") }
 
@@ -379,15 +430,30 @@ class Trial < ActiveRecord::Base
     end
   }
 
-  scope :sort_by_col, -> (column, order) {
+  scope :sort_by_col, -> (params) {
+    column = params[:sort]
+    order = params[:order]
+
     if column == 'id'
       order("#{column} #{order}")
     elsif column == 'phase'
-      joins("LEFT JOIN phases ON phases.id = trials.phase_id").order("phases.name #{order}").group(:'phases.name')
+      if params[:phases].present?
+        order("phases.name #{order}").group(:'phases.name')
+      else
+        joins("LEFT JOIN phases ON phases.id = trials.phase_id").order("phases.name #{order}").group(:'phases.name')
+      end
     elsif column == 'purpose'
-      joins("LEFT JOIN primary_purposes ON primary_purposes.id = trials.primary_purpose_id").order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      if params[:purposes].present?
+        order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      else
+        joins("LEFT JOIN primary_purposes ON primary_purposes.id = trials.primary_purpose_id").order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      end
     elsif column == 'study_source'
-      joins("LEFT JOIN study_sources ON study_sources.id = trials.study_source_id").order("study_sources.name #{order}").group(:'study_sources.name')
+      if params[:study_sources].present?
+        order("study_sources.name #{order}").group(:'study_sources.name')
+      else
+        joins("LEFT JOIN study_sources ON study_sources.id = trials.study_source_id").order("study_sources.name #{order}").group(:'study_sources.name')
+      end
     elsif column == 'pi'
       joins("LEFT JOIN people ON people.id = trials.pi_id").order("people.lname #{order}").group(:'people.lname')
     elsif column == 'lead_org'
