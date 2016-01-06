@@ -108,12 +108,6 @@ class TrialsController < ApplicationController
       end
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
-
-      # TODO further add another scope
-      if params[:trial_status].present?
-        Rails.logger.info "params trial_status = #{params[:trial_status].inspect}"
-        @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
-      end
     else
       @trials = []
     end
