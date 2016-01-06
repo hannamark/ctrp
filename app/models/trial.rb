@@ -346,11 +346,62 @@ class Trial < ActiveRecord::Base
 
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 
+  scope :with_phases, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "phases.code = ?"
+      else
+        q += " OR phases.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:phase).where(conditions)
+  }
+
   scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
+
+  scope :with_purposes, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "primary_purposes.code = ?"
+      else
+        q += " OR primary_purposes.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:primary_purpose).where(conditions)
+  }
 
   scope :with_research_category, -> (value) { joins(:research_category).where("research_categories.code = ?", "#{value}") }
 
   scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
+
+  scope :with_study_sources, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "study_sources.code = ?"
+      else
+        q += " OR study_sources.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:study_source).where(conditions)
+  }
 
   scope :with_nci_div, -> (value) {where("nih_nci_div = ?", "#{value}") }
 
@@ -382,64 +433,87 @@ class Trial < ActiveRecord::Base
     end
   }
 
-  scope :with_lead_org, -> (value) {
+  scope :with_org, -> (value, type) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
-      joins(:lead_org).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
+      value_exp = "%#{value[1..str_len - 1]}"
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins(:lead_org).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
+      value_exp = "#{value[0..str_len - 2]}%"
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins(:lead_org).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
+      value_exp = "%#{value[1..str_len - 2]}%"
     else
-      joins(:lead_org).where("organizations.name ilike ?", "#{value}")
+      value_exp = "#{value}"
     end
-  }
 
-  scope :with_sponsor, -> (value) {
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      joins(:sponsor).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins(:sponsor).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins(:sponsor).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
-    else
-      joins(:sponsor).where("organizations.name ilike ?", "#{value}")
-    end
-  }
-
-  scope :with_any_org, -> (value) {
     #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
     #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
     join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id"
-    where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      joins(join_clause).where(where_clause, "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins(join_clause).where(where_clause, "#{value[0..str_len - 2]}%", "#{value[0..str_len - 2]}%")
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins(join_clause).where(where_clause, "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
+    where_clause = ""
+    conditions = []
+
+    if type.present?
+      type.each_with_index { |e, i|
+        where_clause += " OR " if i > 0
+        if e == 'Lead Organization'
+          where_clause += "lead_orgs.name ilike ?"
+        elsif e == 'Sponsor'
+          where_clause += "sponsors.name ilike ?"
+        end
+        conditions.push(value_exp)
+      }
     else
-      joins(join_clause).where(where_clause, "#{value}", "#{value}")
+      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
+      conditions.push(value_exp)
+      conditions.push(value_exp)
     end
+
+    conditions.insert(0, where_clause)
+
+    joins(join_clause).where(conditions)
   }
 
-  scope :sort_by_col, -> (column, order) {
+  scope :sort_by_col, -> (params) {
+    column = params[:sort]
+    order = params[:order]
+
     if column == 'id'
       order("#{column} #{order}")
     elsif column == 'phase'
-      joins("LEFT JOIN phases ON phases.id = trials.phase_id").order("phases.name #{order}").group(:'phases.name')
+      if params[:phases].present?
+        order("phases.name #{order}").group(:'phases.name')
+      else
+        joins("LEFT JOIN phases ON phases.id = trials.phase_id").order("phases.name #{order}").group(:'phases.name')
+      end
     elsif column == 'purpose'
-      joins("LEFT JOIN primary_purposes ON primary_purposes.id = trials.primary_purpose_id").order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      if params[:purposes].present?
+        order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      else
+        joins("LEFT JOIN primary_purposes ON primary_purposes.id = trials.primary_purpose_id").order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      end
     elsif column == 'study_source'
-      joins("LEFT JOIN study_sources ON study_sources.id = trials.study_source_id").order("study_sources.name #{order}").group(:'study_sources.name')
+      if params[:study_sources].present?
+        order("study_sources.name #{order}").group(:'study_sources.name')
+      else
+        joins("LEFT JOIN study_sources ON study_sources.id = trials.study_source_id").order("study_sources.name #{order}").group(:'study_sources.name')
+      end
     elsif column == 'pi'
-      joins("LEFT JOIN people ON people.id = trials.pi_id").order("people.lname #{order}").group(:'people.lname')
+      if params[:pi].present?
+        order("people.lname #{order}").group(:'people.lname')
+      else
+        joins("LEFT JOIN people ON people.id = trials.pi_id").order("people.lname #{order}").group(:'people.lname')
+      end
     elsif column == 'lead_org'
-      joins("LEFT JOIN organizations ON organizations.id = trials.lead_org_id").order("organizations.name #{order}").group(:'organizations.name')
+      if params[:org].present?
+        order("lead_orgs.name #{order}").group(:'lead_orgs.name')
+      else
+        joins("LEFT JOIN organizations ON organizations.id = trials.lead_org_id").order("organizations.name #{order}").group(:'organizations.name')
+      end
     elsif column == 'sponsor'
-      joins("LEFT JOIN organizations ON organizations.id = trials.sponsor_id").order("organizations.name #{order}").group(:'organizations.name')
+      if params[:org].present?
+        order("sponsors.name #{order}").group(:'sponsors.name')
+      else
+        joins("LEFT JOIN organizations ON organizations.id = trials.sponsor_id").order("organizations.name #{order}").group(:'organizations.name')
+      end
     else
       order("LOWER(trials.#{column}) #{order}")
     end
