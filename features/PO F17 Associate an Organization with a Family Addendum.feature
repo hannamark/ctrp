@@ -1,5 +1,5 @@
 @PO @Global
-Feature: PO F08 Associate an Organization with a Family
+Feature: PO F17 Associate an Organization with a Family Addendum
 
 Scenario: As a PO Curator, I can Assign an organization to a Family
 Given I know which organization I wish to assign to an Organization Family
@@ -10,9 +10,9 @@ And the Family Search Results type will be displayed
       |Family Name      |
       |Family Status    |
       |Family Type      |
-       
+      |Membership Size  |
 
-
+And Membership size column will only display the total count of active associated organizations
 When I select a Family to edit
 And I select the option to Add Family Membership
 And I Search Organizations and select an Organization
@@ -31,6 +31,5 @@ And I select a Family to edit
 And the Family Organizations are displayed
 When I select the option to remove an organization from a Family
 Then the Family will be updated and the selected organization removed
-
 
 
