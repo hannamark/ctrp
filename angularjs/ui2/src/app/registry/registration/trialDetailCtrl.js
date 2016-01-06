@@ -250,7 +250,8 @@
                         return uniquesnums.indexOf(name) === -1;
                     });
 
-                    $scope.addresses = uniquesnums;
+                    $scope.addresses = ['123414', '2308408924', '2304825', '908098080'];
+                    //$scope.addresses = uniquesnums;
                     console.log($scope.addresses);
 
                 });
