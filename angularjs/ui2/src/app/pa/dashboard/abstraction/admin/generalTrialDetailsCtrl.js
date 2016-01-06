@@ -19,8 +19,6 @@
       vm.leadOrg = [];
       vm.protocolIdOriginArr = protocolIdOriginObj;
 
-      console.log('protocolIdOriginArr: ', vm.protocolIdOriginArr);
-
       activate();
 
       function activate() {
@@ -63,10 +61,7 @@
               id.identifierName = otherIdentifierNameObj.name;
               return id;
           });
-          console.log('new other_ids: ', vm.generalTrialDetailsObj.other_ids);
       }
-
-
     } //generalTrialDetailCtrl
 
 })();
