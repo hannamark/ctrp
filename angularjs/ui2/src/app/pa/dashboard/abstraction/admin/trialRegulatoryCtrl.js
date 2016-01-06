@@ -17,7 +17,7 @@
         vm.countryArr = countryList;
         vm.showInvestigator = false;
         vm.showInvSearchBtn = true;
-
+        vm.addedAuthorities = [];
 
         vm.updateTrial = function() {
             // Prevent multiple submissions
@@ -34,7 +34,83 @@
             } else {
                 vm.curTrial.investigator_aff_id = null;
             }
+
+            if (vm.addedAuthorities.length > 0) {
+                vm.curTrial.oversight_authorities_attributes = [];
+                _.each(vm.addedAuthorities, function (authority) {
+                    vm.curTrial.oversight_authorities_attributes.push(authority);
+                });
+            }
+
+            // An outer param wrapper is needed for nested attributes to work
+            var outerTrial = {};
+            outerTrial.new = vm.curTrial.new;
+            outerTrial.id = vm.curTrial.id;
+            outerTrial.trial = vm.curTrial;
+
+
+            TrialService.upsertTrial(outerTrial).then(function(response) {
+                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+            }).catch(function(err) {
+                console.log("error in updating trial " + JSON.stringify(outerTrial));
+            });
+
+
         }
+
+        // Delete the associations
+        vm.toggleSelection = function (index, type) {
+             if (type == 'authority') {
+                if (index < vm.addedAuthorities.length) {
+                    vm.addedAuthorities[index]._destroy = !vm.addedAuthorities[index]._destroy;
+                    if (vm.addedAuthorities[index]._destroy) {
+                        vm.toaNum--;
+                    } else {
+                        vm.toaNum++;
+                    }
+                }
+            }
+        };// toggleSelection
+
+
+        // Add Oversight Authority to a temp array
+        vm.addAuthority = function () {
+            if (vm.authority_country && vm.authority_org) {
+                var newAuthority = {};
+                newAuthority.country = vm.authority_country;
+                newAuthority.organization = vm.authority_org;
+                newAuthority._destroy = false;
+                vm.addedAuthorities.push(newAuthority);
+                vm.toaNum++;
+                vm.authority_country = null;
+                vm.authority_org = null;
+                vm.authorityOrgArr = [];
+                vm.showAddAuthorityError = false;
+            } else {
+                vm.showAddAuthorityError = true;
+            }
+        };
+
+        // If the responsible party is PI, the Investigator field changes with PI field
+        $scope.$watch(function() {
+            return vm.selectedPiArray;
+        }, function(newValue, oldValue) {
+            var piOption = vm.responsiblePartyArr.filter(findPiOption);
+            if (piOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.selectedInvArray = vm.selectedPiArray;
+            }
+        });
+
+        // If the responsible party is Sponsor Investigator, the Investigator Affiliation field changes with Sponsor field
+        $scope.$watch(function() {
+            return vm.selectedSponsorArray;
+        }, function(newValue, oldValue) {
+            var siOption = vm.responsiblePartyArr.filter(findSiOption);
+            if (siOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.selectedIaArray = vm.selectedSponsorArray;
+            }
+        });
+
 
         vm.watchOption = function(type) {
 
@@ -61,6 +137,9 @@
                     vm.selectedInvArray = [];
                     vm.selectedIaArray = [];
                 }
+            }  else if (type == 'authority_country') {
+                vm.authority_org = '';
+                vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.authority_country);
             }
 
         };
@@ -69,7 +148,7 @@
 
         /****************** implementations below ***************/
         function activate() {
-            
+            appendAuthorities();
         }
 
         // Return true if the option is "Principal Investigator"
@@ -89,6 +168,19 @@
                 return false;
             }
         }
+
+        function appendAuthorities() {
+            for (var i = 0; i < vm.curTrial.oversight_authorities.length; i++) {
+                var authority = {};
+                authority.id = vm.curTrial.oversight_authorities[i].id;
+                authority.country = vm.curTrial.oversight_authorities[i].country;
+                authority.organization = vm.curTrial.oversight_authorities[i].organization;
+                authority._destroy = false;
+                vm.addedAuthorities.push(authority);
+                vm.toaNum++;
+            }
+        }
+
 
     } //trialNciCtrl
 

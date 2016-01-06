@@ -16,12 +16,15 @@
         console.log("nciDivObj  =" + JSON.stringify(nciDivObj));
         vm.nciDivArr = nciDivObj;
         console.log("nciProgObj  =" + JSON.stringify(nciProgObj));
+        console.log("trial  =" + JSON.stringify(trialDetailObj));
+        console.log("nci-div  =" + JSON.stringify(trialDetailObj["nih_nci_div"]));
+        console.log("nci-prog  =" + JSON.stringify(trialDetailObj["nih_nci_prog"]));
         vm.nciProgArr = nciProgObj;
         vm.studySourceArr = studySourceObj;
         vm.addedFses = [];
         vm.selectedFsArray = [];
-        //vm.nih_nci_div = trialDetailObj.nih_nci_div;
-        //vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
+        vm.nih_nci_div = trialDetailObj.nih_nci_div;
+        vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
             console.log("3curTrial =" + JSON.stringify(vm.curTrial));

@@ -217,6 +217,36 @@ class Trial < ActiveRecord::Base
   before_create :save_history
   before_save :check_indicator
 
+
+  def set_send_trial_info_flag
+    send_trial_flag = false
+    latest_processing_status = processing_status_wrappers.empty? ? nil:processing_status_wrappers.last.processing_status.name
+    if latest_processing_status.nil?
+      send_trial_flag = false
+      return send_trial_flag
+    end
+    # And the Trial processing status is �Verification Pending�, "Abstracted", "No Response�, or �Abstracted, Response�
+    if ['Verification Pending','Abstracted', 'Abstraction Verified Response', 'Abstraction Verified No Response'].include? latest_processing_status
+      send_trial_flag = true
+    end
+    # And the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�
+    latest_trial_status = trial_status_wrappers.empty? ? nil:trial_status_wrappers.last.trial_status.name
+    if latest_trial_status.nil?
+      send_trial_flag = false
+      return send_trial_flag
+    end
+    if ['Complete','Administratively Complete'].include? latest_trial_status
+      send_trial_flag = false
+      return send_trial_flag
+    end
+    # And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
+    # ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
+    if !self.research_category.nil? && self.research_category.name == 'Interventional'
+      send_trial_flag = true
+    end
+    return send_trial_flag
+  end
+
   private
 
   def generate_status
