@@ -220,6 +220,22 @@ class Trial < ActiveRecord::Base
 
   def set_send_trial_info_flag
     send_trial_flag = false
+
+    #And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
+    if self.sponsor.name == "National Cancer Institute"
+      send_trial_flag = true
+    else
+      send_trial_flag = false
+      return send_trial_flag
+    end
+
+    # And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
+    if self.lead_org != "NCI - Center for Cancer Research"
+      send_trial_flag = true
+    else
+      send_trial_flag = false
+      return send_trial_flag
+    end
     latest_processing_status = processing_status_wrappers.empty? ? nil:processing_status_wrappers.last.processing_status.name
     if latest_processing_status.nil?
       send_trial_flag = false
