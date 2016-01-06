@@ -1,5 +1,5 @@
 @PO @Global
-Feature: PO F8 Associate an Organization with a Family Addendum
+Feature: PO F17 Associate an Organization with a Family Addendum
 
 Scenario: As a PO Curator, I can Assign an organization to a Family
 Given I know which organization I wish to assign to an Organization Family
