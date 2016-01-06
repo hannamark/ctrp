@@ -41,7 +41,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-3 col-md-2">
-      <ul class="nav nav-pills nav-stacked">
+      <ul class="nav nav-stacked">
         <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
         <br/><br/>
         <li><a href="/ctrp/ui#/main/sign_in">CTRP Main</a></li>
@@ -125,17 +125,29 @@
                     <% if user.approved == false %>
                         <td colspan="3">NOT APPROVED</td>
                       <td colspan="3">
+                        <!--
                         <%= button_to [:approve, user.becomes(User)] do %>
-                            <strong  class="btn btn-sm btn-primary">Approve</strong>
+                            <strong class="btn btn-sm btn-primary">Approve</strong>
+                        <% end %>
+                        -->
+
+                        <%= form_tag [:approve, user.becomes(User)] do %>
+                            <button class="btn btn-sm btn-primary" type="submit">Approve</button>
                         <% end %>
                       </td>
                     <% end %>
                     <% if user.approved == true %>
                         <td colspan="3">APPROVED</td>
                         <td colspan="3">
-                          <%= button_to [:disapprove, user.becomes(User)] do %>
-                              <strong class="btn btn-sm btn-danger">Disable</strong>
-                          <% end %>
+                            <!--
+                            <%= button_to [:disapprove, user.becomes(User)] do %>
+                                <strong class="btn btn-sm btn-danger">Disable</strong>
+                            <% end %>
+                            -->
+
+                            <%= form_tag [:disapprove, user.becomes(User)] do %>
+                                <button class="btn btn-sm btn-danger" type="submit">Disable</button>
+                            <% end %>
                         </td>
                     <% end %>
                   </tr>
