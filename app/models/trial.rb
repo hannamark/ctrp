@@ -387,47 +387,43 @@ class Trial < ActiveRecord::Base
     end
   }
 
-  scope :with_lead_org, -> (value) {
+  scope :with_org, -> (value, type) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
-      joins(:lead_org).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
+      value_exp = "%#{value[1..str_len - 1]}"
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins(:lead_org).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
+      value_exp = "#{value[0..str_len - 2]}%"
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins(:lead_org).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
+      value_exp = "%#{value[1..str_len - 2]}%"
     else
-      joins(:lead_org).where("organizations.name ilike ?", "#{value}")
+      value_exp = "#{value}"
     end
-  }
 
-  scope :with_sponsor, -> (value) {
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      joins(:sponsor).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins(:sponsor).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins(:sponsor).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
-    else
-      joins(:sponsor).where("organizations.name ilike ?", "#{value}")
-    end
-  }
-
-  scope :with_any_org, -> (value) {
     #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
     #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
     join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id"
-    where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      joins(join_clause).where(where_clause, "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins(join_clause).where(where_clause, "#{value[0..str_len - 2]}%", "#{value[0..str_len - 2]}%")
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins(join_clause).where(where_clause, "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
+    where_clause = ""
+    conditions = []
+
+    if type.present?
+      type.each_with_index { |e, i|
+        where_clause += " OR " if i > 0
+        if e == 'Lead Organization'
+          where_clause += "lead_orgs.name ilike ?"
+        elsif e == 'Sponsor'
+          where_clause += "sponsors.name ilike ?"
+        end
+        conditions.push(value_exp)
+      }
     else
-      joins(join_clause).where(where_clause, "#{value}", "#{value}")
+      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
+      conditions.push(value_exp)
+      conditions.push(value_exp)
     end
+
+    conditions.insert(0, where_clause)
+
+    joins(join_clause).where(conditions)
   }
 
   scope :sort_by_col, -> (params) {
@@ -462,21 +458,13 @@ class Trial < ActiveRecord::Base
       end
     elsif column == 'lead_org'
       if params[:org].present?
-        if params[:org_type].present?
-          order("organizations.name #{order}").group(:'organizations.name')
-        else
-          order("lead_orgs.name #{order}").group(:'lead_orgs.name')
-        end
+        order("lead_orgs.name #{order}").group(:'lead_orgs.name')
       else
         joins("LEFT JOIN organizations ON organizations.id = trials.lead_org_id").order("organizations.name #{order}").group(:'organizations.name')
       end
     elsif column == 'sponsor'
       if params[:org].present?
-        if params[:org_type].present?
-          order("organizations.name #{order}").group(:'organizations.name')
-        else
-          order("sponsors.name #{order}").group(:'sponsors.name')
-        end
+        order("sponsors.name #{order}").group(:'sponsors.name')
       else
         joins("LEFT JOIN organizations ON organizations.id = trials.sponsor_id").order("organizations.name #{order}").group(:'organizations.name')
       end

@@ -97,15 +97,7 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
-      if params[:org].present?
-        if params[:org_type] == 'Lead Organization'
-          @trials = @trials.with_lead_org(params[:org])
-        elsif params[:org_type] == 'Sponsor'
-          @trials = @trials.with_sponsor(params[:org])
-        else
-          @trials = @trials.with_any_org(params[:org])
-        end
-      end
+      @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
     else

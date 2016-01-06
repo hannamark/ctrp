@@ -46,12 +46,10 @@
                         <div class="form-group">
                             <label for="org_type" class="control-label col-xs-12 col-sm-4">Organization Type: </label>
                             <div class="col-xs-12 col-sm-8">
-                                <select class="form-control input-sm" id="org_type" ng-model="trialView.searchParams.org_type">
-                                    <option value="">-Select an Organization Type-</option>
-                                    <option value="Lead Organization">Lead Organization</option>
-                                    <option value="Sponsor">Sponsor</option>
-                                    <!--<option value="Participating Site">Participating Site</option>-->
-                                </select>
+                                <ui-select multiple id="org_type" ng-model="trialView.searchParams.org_types">
+                                    <ui-select-match placeholder="-Select Organization Types-">{{$item}}</ui-select-match>
+                                    <ui-select-choices repeat="orgType in ['Lead Organization', 'Sponsor']">{{orgType}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
