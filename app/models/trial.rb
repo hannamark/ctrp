@@ -455,11 +455,31 @@ class Trial < ActiveRecord::Base
         joins("LEFT JOIN study_sources ON study_sources.id = trials.study_source_id").order("study_sources.name #{order}").group(:'study_sources.name')
       end
     elsif column == 'pi'
-      joins("LEFT JOIN people ON people.id = trials.pi_id").order("people.lname #{order}").group(:'people.lname')
+      if params[:pi].present?
+        order("people.lname #{order}").group(:'people.lname')
+      else
+        joins("LEFT JOIN people ON people.id = trials.pi_id").order("people.lname #{order}").group(:'people.lname')
+      end
     elsif column == 'lead_org'
-      joins("LEFT JOIN organizations ON organizations.id = trials.lead_org_id").order("organizations.name #{order}").group(:'organizations.name')
+      if params[:org].present?
+        if params[:org_type].present?
+          order("organizations.name #{order}").group(:'organizations.name')
+        else
+          order("lead_orgs.name #{order}").group(:'lead_orgs.name')
+        end
+      else
+        joins("LEFT JOIN organizations ON organizations.id = trials.lead_org_id").order("organizations.name #{order}").group(:'organizations.name')
+      end
     elsif column == 'sponsor'
-      joins("LEFT JOIN organizations ON organizations.id = trials.sponsor_id").order("organizations.name #{order}").group(:'organizations.name')
+      if params[:org].present?
+        if params[:org_type].present?
+          order("organizations.name #{order}").group(:'organizations.name')
+        else
+          order("sponsors.name #{order}").group(:'sponsors.name')
+        end
+      else
+        joins("LEFT JOIN organizations ON organizations.id = trials.sponsor_id").order("organizations.name #{order}").group(:'organizations.name')
+      end
     else
       order("LOWER(trials.#{column}) #{order}")
     end
