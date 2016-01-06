@@ -7,58 +7,61 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('generalTrialDetailsCtrl', generalTrialDetailsCtrl);
 
-    generalTrialDetailsCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES'];
+    generalTrialDetailsCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
+            'protocolIdOriginObj', '_'];
 
-    function generalTrialDetailsCtrl($scope, TrialService, MESSAGES) {
+    function generalTrialDetailsCtrl($scope, TrialService, MESSAGES,
+        protocolIdOriginObj, _) {
       var vm = this;
       vm.generalTrialDetailsObj = {};
       vm.saveGeneralTrialDetails = saveGeneralTrialDetails;
       vm.resetGeneralTrialDetails = resetGeneralTrialDetails;
       vm.leadOrg = [];
+      vm.protocolIdOriginArr = protocolIdOriginObj;
 
       activate();
 
       function activate() {
-
+          getTrialDetailCopy();
+          watchTrialDetailObj();
       }
 
       /**
        * Get trial detail object from parent scope
        */
-      function getTrialDetailObj() {
+      function watchTrialDetailObj() {
           $scope.$on(MESSAGES.TRIAL_DETAIL_SAVED, function() {
-              //get the processing info from parent scope
-              // TODO:
-              vm.generalTrialDetailsObj = {
-
-              };
-              // vm.trialProcessingObj = {
-              //     trialId: $scope.$parent.paTrialOverview.trialDetailObj.id,
-              //     priority: $scope.$parent.paTrialOverview.trialDetailObj.process_priority || '2 - Normal',
-              //     comment: $scope.$parent.paTrialOverview.trialDetailObj.process_comment
-              // };
+              getTrialDetailCopy();
           });
-      } //getTrialDetailObj
-
+      } //watchTrialDetailObj
 
       /* implementations below */
       function saveGeneralTrialDetails() {
 
-          var updatedTrial = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
-          // TODO:
-          //updatedTrial.process_priority = vm.trialProcessingObj.priority;
-          // updatedTrial.process_comment = vm.trialProcessingObj.comment;
-
-          TrialService.upsertTrial(updatedTrial).then(function(res) {
-              console.log('priority and commented updated: ', res);
+          TrialService.upsertTrial(vm.generalTrialDetailCtrl).then(function(res) {
+              console.log('updated general trial details');
           });
       }
 
       function resetGeneralTrialDetails() {
-          vm.generalTrialDetailsObj = {};
+          vm.generalTrialDetailsObj = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
       }
 
-
+      /**
+       * get a data clone of the trial detail object from parent scope
+       * @return {[type]} [description]
+       */
+      function getTrialDetailCopy() {
+          vm.generalTrialDetailsObj = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
+          vm.leadOrg[0] = vm.generalTrialDetailsObj.lead_org;
+          // transform the other_ids array
+          vm.generalTrialDetailsObj.other_ids = _.map(vm.generalTrialDetailsObj.other_ids, function(id, idx) {
+              //append the identifier name to this 'other_identifier'
+              var otherIdentifierNameObj = _.findWhere(vm.protocolIdOriginArr, {id: id.protocol_id_origin_id});
+              id.identifierName = otherIdentifierNameObj.name;
+              return id;
+          });
+      }
     } //generalTrialDetailCtrl
 
 })();
