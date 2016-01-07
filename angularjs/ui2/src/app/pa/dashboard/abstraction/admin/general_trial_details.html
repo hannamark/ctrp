@@ -133,7 +133,7 @@
               <label for="lead_org" class="control-label col-xs-12 col-sm-2">Lead Organization</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="lead_org" name="lead_organization" ng-model="generalTrialDetailView.leadOrg[0].name" disabled class="form-control" placeholder="Lead Organization" required>
+                  <input type="text" id="lead_org" name="lead_organization" value="{{generalTrialDetailView.leadOrg[0].name}}" ng-model="generalTrialDetailView.leadOrg[0].name" disabled class="form-control" placeholder="Lead Organization" required>
                   <span class="form-control-feedback" ng-show="generalTrialDetailView.leadOrg.length == 0" ng-class="general_trial_details_form.lead_organization.$dirty &&
                       !ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.lead_organization) ?
                       'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
