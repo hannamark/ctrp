@@ -18,6 +18,7 @@
       vm.resetGeneralTrialDetails = resetGeneralTrialDetails;
       vm.addOtherIdentifier = addOtherIdentifier;
       vm.deleteOtherIdentifier = deleteOtherIdentifier;
+      vm.updateOtherId = updateOtherId;
       vm.leadOrg = [];
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -107,6 +108,13 @@
       function deleteOtherIdentifier(idx) {
           if (idx < vm.generalTrialDetailsObj.other_ids.length) {
               vm.generalTrialDetailsObj.other_ids[idx]._destroy = !vm.generalTrialDetailsObj.other_ids[idx]._destroy;
+          }
+      }
+
+      function updateOtherId(protocolIdVal, index) {
+          console.log('updating other id...');
+          if (index < vm.generalTrialDetailsObj.other_ids.length) {
+              vm.generalTrialDetailsObj.other_ids[index].protocol_id = protocolIdVal;
           }
       }
 
