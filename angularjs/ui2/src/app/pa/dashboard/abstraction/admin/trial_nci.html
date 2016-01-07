@@ -53,6 +53,13 @@
                 <div class="col-xs-12 pull-left">
 
                     <div class="form-group">
+                        <label for="program_code" class="control-label col-xs-12 col-sm-2">Program Code</label>
+                        <div class="col-xs-12 col-sm-10">
+                            <input type="text" id="program_code" name="trial_program_code" class="form-control" ng-model="trialNciView.curTrial.program_code" placeholder="Program Code">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Division/Department Identifier: </label>
                         <div class="col-xs-12 col-sm-9">
                             <select class="form-control input-sm" id="nih_nci_div" ng-model="trialNciView.curTrial.nih_nci_div">
