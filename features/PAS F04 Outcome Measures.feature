@@ -45,24 +45,41 @@ And I have selected another value for Safety Issue
 |No|
 When I have selected Save
 Then the Outcome Measure for the trial will be associated with the trial
-And <Updated Message> displays
-|Updated Message|
-|Record Updated|
+And the message Record Updated displays
 
-Scenario:  #3 Outcome Measure information not null   
+Scenario:  #3 Outcome Measure type is not null   
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Outcome Measure screen
 When I select Save 
-And any of the following <Field Name> are Null
-| Field Name|
-|Outcome Measure Type|
-|Title|
-|Time Frame|
-|Safety Issue|
-Then a warning message will appear for the null values with the message <field Name> must be entered
+And Outcome Measure Type is Null
+Then a warning message will appear 'Outcome Measure Type must be entered'
 
-Scenario:  #4  Reorder Outcome Measures
+Scenario:  #4 title is not null   
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial
+And I am on the Outcome Measure screen
+When I select Save 
+And Title is Null
+Then a warning message will appear 'Title must be entered'
+
+Scenario:  #5 Time Frame is not null   
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial
+And I am on the Outcome Measure screen
+When I select Save 
+And Time Frame is Null
+Then a warning message will appear 'Time Frame must be entered'
+
+Scenario:  #6 Safety Issue is not null   
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial
+And I am on the Outcome Measure screen
+When I select Save 
+And Safety Issue is Null
+Then a warning message will appear 'Safety Issue must be entered'
+
+Scenario:  #7  Reorder Outcome Measures
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Outcome Measure Screen
 And I am viewing the Outcome Measures table
@@ -70,7 +87,7 @@ When I click on a record
 And drag it to a new sequence location in the table
 Then the order of the outcome measures changes
 
-Scenario:  #5  Copy Outcome Measures
+Scenario:  #8  Copy Outcome Measures
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Outcome Measure Screen
 And I am viewing the Outcome Measures table
@@ -82,7 +99,7 @@ When I click Save
 Then the Outcome Measure for the trial will be associated with the trial
 And all fields can be updated.
 
-Scenario:  #6 I can reset Outcome Measures for a Trial
+Scenario:  #9 I can reset Outcome Measures for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 When I select Add
@@ -93,7 +110,7 @@ Then the information entered on the Outcome Measures screen will not be saved to
 And the screen will be refreshed with the data since the last save 
 When I select Edit
 
-Scenario:  #7 I can delete Outcome Measure for a Trial
+Scenario:  #10 I can delete Outcome Measure for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Outcome Measures screen
@@ -106,7 +123,7 @@ When I select Delete
 Then the information for the Outcome Measures will be deleted
 And the Outcome Measures will not be saved to the trial record
 
-Scenario:  #8 I can Cancel  Outcome Measure for a Trial
+Scenario:  #11 I can Cancel  Outcome Measure for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Outcome Measures screen
@@ -121,7 +138,7 @@ When I select Delete
 Then the information for the Outcome Measures will be deleted
 And the Outcome Measures will not be saved to the trial record
 
-Scenario: #9  Title field character count
+Scenario: #12  Title field character count
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Outcome Measure Screen
 When I am entering into Title
@@ -130,7 +147,7 @@ Then information text appears below the Brief Title field to display the number 
 When 254 characters have been entered
 Then no additional text can be entered
 
-Scenario: #10  Time Frame field character count
+Scenario: #13  Time Frame field character count
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Outcome Measure Screen
 When I am entering into Time Frame field 
@@ -139,7 +156,7 @@ Then information text appears below the Time Frame field to display the number o
 When 254 characters have been entered
 Then no additional text can be entered 
 
-Scenario:  #11 Description field character count
+Scenario:  #14 Description field character count
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Outcome Measure Screen
 When I am entering into Description
