@@ -20,7 +20,7 @@ And the Trail Overview for a Trial will include the following fields:
 |Lead Organization|
 |Lead Organization Trail ID|
 |Amendment Number|
-|Submission Source|
+|Submission Method|
 |Principal Investigator|
 |Last Submitter|
 |Last Submitter Organization|
