@@ -21,7 +21,7 @@
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.accordions = [true, true, true, true, true, true, true, true, true, true, true, true];
         vm.collapsed = false;
-        vm.studySourceCode = studySourceCode;
+        vm.studySourceCode = studySourceCode.toUpperCase();
         vm.isExp = false;
         vm.studySourceArr = studySourceObj;
         vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -197,7 +197,6 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                alert('hello123');
                 if (response.server_response.status < 300) {
                     var docCount = uploadDocuments(response.id);
                     // Poll docUploadedCount every 100 ms until upload finishes
