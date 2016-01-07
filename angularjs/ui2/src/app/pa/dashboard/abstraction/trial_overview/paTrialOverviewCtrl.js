@@ -10,15 +10,15 @@
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
         '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES',
-        '$scope', 'TrialService', 'UserService'];
+        '$scope', 'TrialService', 'UserService', 'curTrial'];
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES,
-            $scope, TrialService, UserService) {
+            $scope, TrialService, UserService, curTrial) {
 
         var vm = this;
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
-        vm.trialDetailObj = {};
+        vm.trialDetailObj = curTrial;
         vm.isPanelOpen = true;
         vm.togglePanelOpen = togglePanelOpen;
         vm.backToPATrialSearch = backToPATrialSearch;
@@ -34,40 +34,9 @@
         activate();
 
         function activate() {
-            $timeout(function() {
-                getTrialDetail();
-                watchCheckoutButtons();
-            }, 500);
+            updateTrialDetailObj(vm.trialDetailObj);
+            watchCheckoutButtons();
         } //activate
-
-        /**
-         * Promise call to get the trial detail object
-         * @return {[type]} [description]
-         */
-        function getTrialDetail() {
-            TrialService.getTrialById(vm.trialId).then(function(data) {
-                data.admin_checkout = JSON.parse(data.admin_checkout);
-                data.scientific_checkout = JSON.parse(data.scientific_checkout);
-                vm.trialDetailObj = data;
-                delete vm.trialDetailObj.server_response;
-                console.log('got trial detail obj: ', vm.trialDetailObj);
-
-                $scope.trialDetailObj = vm.trialDetailObj;
-                var firstName = vm.trialDetailObj.pi.fname || '';
-                var middleName = vm.trialDetailObj.pi.mname || '';
-                var lastName = vm.trialDetailObj.pi.lname || '';
-                vm.trialDetailObj.pi.fullName = firstName + ' ' + middleName + ' ' + lastName;
-
-                PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
-                Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
-            }).catch(function(error) {
-                console.log('error in fetching trial detail object');
-            }).finally(function() {
-                console.log('completed the promise call');
-                vm.loadingTrialDetail = false;
-            });
-        } //getTrialDetail
-
 
         function togglePanelOpen() {
             vm.isPanelOpen = !vm.isPanelOpen;
@@ -100,8 +69,10 @@
          */
         function updateTrialDetailObj(data) {
             console.log('in updating trial detail obj, admin_checkout: ' + data.admin_checkout + ', scientific_checkout: ' + data.scientific_checkout);
+            delete vm.trialDetailObj.server_response;
             vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
+
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
             $scope.trialDetailObj = vm.trialDetailObj;
