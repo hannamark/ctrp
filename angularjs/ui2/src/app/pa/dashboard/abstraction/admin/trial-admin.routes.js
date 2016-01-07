@@ -46,7 +46,7 @@
             .state('main.pa.trialOverview.regulatoryInd', {
                 url: '/regInd',
                 templateUrl: 'app/pa/dashboard/abstraction/admin/trial_regulatory_ind.html',
-                controller: 'trialRegFdaCtrl as trialDetailView',
+                controller: 'trialRegIndCtrl as trialDetailView',
                 section: 'pa',
                 resolve: {
                     TrialService: 'TrialService',
@@ -54,12 +54,11 @@
                     trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
                     },
-                    responsiblePartyObj: function(TrialService) {
-                        return TrialService.getResponsibleParties();
+                    nciObj: function(TrialService) {
+                        return TrialService.getNci();
                     },
-                    GeoLocationService : 'GeoLocationService',
-                    countryList: function(GeoLocationService) {
-                        return GeoLocationService.getCountryList();
+                    holderTypeObj: function(TrialService) {
+                        return TrialService.getHolderTypes();
                     },
                 },
                 ncyBreadcrumb: {
