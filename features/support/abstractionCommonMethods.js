@@ -43,6 +43,7 @@ var abstractionCommonMethods = function(){
     var loginCredTxtVerif = 'Please sign in to continue.';
     var loginNwUsrSngVerif = 'New User? Sign Up';
     var crntTxtLoginPg = '';
+    var iteraCntLg = '';
 
     /*****************************************
      * Check for the various File API support.
@@ -118,22 +119,22 @@ var abstractionCommonMethods = function(){
         browser.get(configuration.uiUrl);
         //Verify Homepage
         var BrwsrVal = browser.getCurrentUrl();
-        login.loginPageVerification.getText().then (function(text){
-            var passTxtA = ''+text+'';
-            crntTxtLoginPg =  ''+passTxtA+'';
-            if (crntTxtLoginPg === loginTxtVerif){
-                console.log('Login Home Page Successfully Loaded on the Browser:['+crntTxtLoginPg+']');
-                expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
-                expect(login.loginVerifyText.getText()).to.eventually.equal(loginCredTxtVerif);
-                expect(login.loginNewUsrSign.getText()).to.eventually.equal(loginNwUsrSngVerif);
-            } else {
-                console.log('Unable to load home page on the Browser:['+crntTxtLoginPg+']');
-                expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
-                expect(login.loginVerifyText.getText()).to.eventually.equal(loginCredTxtVerif);
-                expect(login.loginNewUsrSign.getText()).to.eventually.equal(loginNwUsrSngVerif);
-            };
-
-        });
+        iteraCntLg = iteraCntLg + 1;
+        var getCrntCntLg = iteraCntLg + 1;
+        console.log('calculating count:'+getCrntCntLg+'')
+        if (getCrntCntLg == 11){
+            login.loginPageVerification.getText().then (function(text){
+                var passTxtA = ''+text+'';
+                crntTxtLoginPg =  ''+passTxtA+'';
+                if (crntTxtLoginPg === loginTxtVerif){
+                    console.log('System identified Login Home Page Successfully:['+crntTxtLoginPg+']');
+                    expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
+                } else {
+                    console.log('System Unable to identified Login home page:['+crntTxtLoginPg+']');
+                    expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
+                };
+            });
+        };
         //ctrp abstractor user
         if (usrID === 'ctrpabstractor'){
             login.login(configuration.abstractorUID, configuration.abstractorPWD);
@@ -200,7 +201,7 @@ var abstractionCommonMethods = function(){
             expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(false);
         }
 
-    }
+    };
 
 
 

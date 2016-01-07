@@ -542,10 +542,6 @@ h4 {
     right: 5px;
 }
 
-.form-horizontal .control-label {
-  text-align: left;
-}
-
 .input-group-addon {
     line-height: 1;
     padding: 3px 3px 3px 4px;
@@ -774,4 +770,11 @@ legend.sub-bordered {
     width:auto;
     padding:0 10px;
     border-bottom:none;
+}
+
+.editable-click, 
+a.editable-click,
+a.editable-click:hover {
+    text-decoration: none;
+    border-bottom: dashed 1px #0088cc;
 }

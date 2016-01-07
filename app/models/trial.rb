@@ -217,6 +217,52 @@ class Trial < ActiveRecord::Base
   before_create :save_history
   before_save :check_indicator
 
+
+  def set_send_trial_info_flag
+    send_trial_flag = false
+
+    #And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
+    if self.sponsor.name == "National Cancer Institute"
+      send_trial_flag = true
+    else
+      send_trial_flag = false
+      return send_trial_flag
+    end
+
+    # And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
+    if self.lead_org != "NCI - Center for Cancer Research"
+      send_trial_flag = true
+    else
+      send_trial_flag = false
+      return send_trial_flag
+    end
+    latest_processing_status = processing_status_wrappers.empty? ? nil:processing_status_wrappers.last.processing_status.name
+    if latest_processing_status.nil?
+      send_trial_flag = false
+      return send_trial_flag
+    end
+    # And the Trial processing status is �Verification Pending�, "Abstracted", "No Response�, or �Abstracted, Response�
+    if ['Verification Pending','Abstracted', 'Abstraction Verified Response', 'Abstraction Verified No Response'].include? latest_processing_status
+      send_trial_flag = true
+    end
+    # And the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�
+    latest_trial_status = trial_status_wrappers.empty? ? nil:trial_status_wrappers.last.trial_status.name
+    if latest_trial_status.nil?
+      send_trial_flag = false
+      return send_trial_flag
+    end
+    if ['Complete','Administratively Complete'].include? latest_trial_status
+      send_trial_flag = false
+      return send_trial_flag
+    end
+    # And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
+    # ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
+    if !self.research_category.nil? && self.research_category.name == 'Interventional'
+      send_trial_flag = true
+    end
+    return send_trial_flag
+  end
+
   private
 
   def generate_status
@@ -384,6 +430,49 @@ class Trial < ActiveRecord::Base
       joins(:pi).where("people.fname ilike ?", "%#{value[1..str_len - 2]}%")
     else
       joins(:pi).where("people.fname ilike ?", "#{value}")
+    end
+  }
+
+  scope :with_lead_org, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:lead_org).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:lead_org).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:lead_org).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:lead_org).where("organizations.name ilike ?", "#{value}")
+    end
+  }
+
+  scope :with_sponsor, -> (value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(:sponsor).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(:sponsor).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(:sponsor).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      joins(:sponsor).where("organizations.name ilike ?", "#{value}")
+    end
+  }
+
+  scope :with_any_org, -> (value) {
+    #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
+    #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id"
+    where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      joins(join_clause).where(where_clause, "%#{value[1..str_len - 1]}", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      joins(join_clause).where(where_clause, "#{value[0..str_len - 2]}%", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      joins(join_clause).where(where_clause, "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
+    else
+      joins(join_clause).where(where_clause, "#{value}", "#{value}")
     end
   }
 

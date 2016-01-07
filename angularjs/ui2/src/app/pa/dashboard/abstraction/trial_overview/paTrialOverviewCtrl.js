@@ -46,12 +46,11 @@
          */
         function getTrialDetail() {
             TrialService.getTrialById(vm.trialId).then(function(data) {
-                data.admin_checkout = JSON.parse(data.admin_checkout || '{}');
-                data.scientific_checkout = JSON.parse(data.scientific_checkout || '{}');
+                data.admin_checkout = JSON.parse(data.admin_checkout);
+                data.scientific_checkout = JSON.parse(data.scientific_checkout);
                 vm.trialDetailObj = data;
                 delete vm.trialDetailObj.server_response;
-                PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
-                Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
+                console.log('got trial detail obj: ', vm.trialDetailObj);
 
                 $scope.trialDetailObj = vm.trialDetailObj;
                 var firstName = vm.trialDetailObj.pi.fname || '';
@@ -59,6 +58,8 @@
                 var lastName = vm.trialDetailObj.pi.lname || '';
                 vm.trialDetailObj.pi.fullName = firstName + ' ' + middleName + ' ' + lastName;
 
+                PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
+                Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
             }).catch(function(error) {
                 console.log('error in fetching trial detail object');
             }).finally(function() {
@@ -98,6 +99,7 @@
          * @param  {JSON} data [updated trial detail object with the checkout/in records]
          */
         function updateTrialDetailObj(data) {
+            console.log('in updating trial detail obj, admin_checkout: ' + data.admin_checkout + ', scientific_checkout: ' + data.scientific_checkout);
             vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
@@ -116,9 +118,10 @@
 
             $scope.$watch(function() {return vm.trialDetailObj.admin_checkout;},
                 function(newVal) {
-                    vm.adminCheckoutAllowed = !newVal;
+                    vm.adminCheckoutAllowed = (newVal === null); // if not null, do not allow checkout again
 
-                    if (!!vm.trialDetailObj.admin_checkout) {
+                    if (!!newVal) {
+                        // ROLE_SUPER can override the checkout button
                         vm.adminCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.admin_checkout.by &&
                             UserService.getUserRole() !== 'ROLE_SUPER';
                     }
@@ -126,9 +129,10 @@
 
             $scope.$watch(function() {return vm.trialDetailObj.scientific_checkout;},
                 function(newVal) {
-                    vm.scientificCheckoutAllowed = !newVal;
+                    vm.scientificCheckoutAllowed = (newVal === null); // if not null, do not allow checkout again
 
-                    if (!!vm.trialDetailObj.scientific_checkout) {
+                    if (!!newVal) {
+                        // ROLE_SUPER can override the checkout button
                         vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.scientific_checkout.by &&
                             UserService.getUserRole() !== 'ROLE_SUPER';
                     }

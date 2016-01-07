@@ -38,7 +38,7 @@
             <div class="form-group">
                 <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status: </label>
                 <div ng-if="sourceStatuses.length > 1">
-                    <div class="col-xs-12 col-sm-3">
+                    <div class="col-xs-12 col-sm-4">
                         <select tabindex="17" class="form-control input-sm" id="source_status" ng-model="searchParams.source_status">
                             <option value="">Select a Status</option>
                             <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
@@ -46,17 +46,17 @@
                     </div>
                 </div>
                 <div ng-if="sourceStatuses.length === 1">
-                    <div class="col-xs-12 col-sm-3">
+                    <div class="col-xs-12 col-sm-4">
                         <p class="form-control-static">{{sourceStatuses[0].name}}</p>
                     </div>
                 </div>
                 <!--source id -->
                 <label for="source_id" class="control-label col-xs-12 col-sm-2">Source ID: </label>
-                <div class="col-xs-12 col-sm-4">
+                <div class="col-xs-12 col-sm-3">
                     <input tabindex="16" type="text" id="source_id" class="form-control input-sm" placeholder="Source ID" ng-model="searchParams.source_id"/>
                 </div>
+                <!-- source id ends -->
             </div>
-            <!-- source id ends -->
 
             <!--
                 <div class="form-group">
