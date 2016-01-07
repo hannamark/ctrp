@@ -94,7 +94,7 @@
                     if (!!newVal) {
                         // ROLE_SUPER can override the checkout button
                         vm.adminCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.admin_checkout.by &&
-                            UserService.getUserRole() !== 'ROLE_SUPER';
+                            UserService.getUserRole() !== 'ROLE_SUPER' && UserService.getUserRole() != "ROLE_ABSTRACTOR";
                     }
                 });
 
