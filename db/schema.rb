@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160104163124) do
+ActiveRecord::Schema.define(version: 20160107215951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1033,7 +1033,6 @@ ActiveRecord::Schema.define(version: 20160104163124) do
     t.string   "nih_nci_prog",             limit: 255
     t.string   "send_trial",               limit: 255
     t.string   "board_approval_num",       limit: 255
-    t.string   "board_affiliation",        limit: 255
     t.text     "brief_title"
     t.text     "brief_summary"
     t.text     "detailed_description"
@@ -1047,7 +1046,6 @@ ActiveRecord::Schema.define(version: 20160104163124) do
     t.integer  "assigned_to_id"
     t.integer  "owner_id"
     t.integer  "board_approval_status_id"
-    t.integer  "board_id"
     t.integer  "intervention_model_id"
     t.integer  "masking_id"
     t.integer  "allocation_id"
@@ -1060,14 +1058,16 @@ ActiveRecord::Schema.define(version: 20160104163124) do
     t.date     "verification_date"
     t.string   "sampling_method",          limit: 255
     t.text     "study_pop_desc"
+    t.string   "board_name",               limit: 255
+    t.integer  "board_affiliation_id"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
   add_index "trials", ["allocation_id"], name: "index_trials_on_allocation_id", using: :btree
   add_index "trials", ["anatomic_site_id"], name: "index_trials_on_anatomic_site_id", using: :btree
   add_index "trials", ["assigned_to_id"], name: "index_trials_on_assigned_to_id", using: :btree
+  add_index "trials", ["board_affiliation_id"], name: "index_trials_on_board_affiliation_id", using: :btree
   add_index "trials", ["board_approval_status_id"], name: "index_trials_on_board_approval_status_id", using: :btree
-  add_index "trials", ["board_id"], name: "index_trials_on_board_id", using: :btree
   add_index "trials", ["gender_id"], name: "index_trials_on_gender_id", using: :btree
   add_index "trials", ["intervention_model_id"], name: "index_trials_on_intervention_model_id", using: :btree
   add_index "trials", ["investigator_aff_id"], name: "index_trials_on_investigator_aff_id", using: :btree
@@ -1224,7 +1224,7 @@ ActiveRecord::Schema.define(version: 20160104163124) do
   add_foreign_key "trials", "genders"
   add_foreign_key "trials", "intervention_models"
   add_foreign_key "trials", "maskings"
-  add_foreign_key "trials", "organizations", column: "board_id"
+  add_foreign_key "trials", "organizations", column: "board_affiliation_id"
   add_foreign_key "trials", "organizations", column: "investigator_aff_id"
   add_foreign_key "trials", "organizations", column: "lead_org_id"
   add_foreign_key "trials", "organizations", column: "sponsor_id"

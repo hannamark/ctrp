@@ -55,7 +55,6 @@
 #  nih_nci_prog             :string(255)
 #  send_trial               :string(255)
 #  board_approval_num       :string(255)
-#  board_affiliation        :string(255)
 #  brief_title              :text
 #  brief_summary            :text
 #  detailed_description     :text
@@ -69,7 +68,6 @@
 #  assigned_to_id           :integer
 #  owner_id                 :integer
 #  board_approval_status_id :integer
-#  board_id                 :integer
 #  intervention_model_id    :integer
 #  masking_id               :integer
 #  allocation_id            :integer
@@ -82,6 +80,8 @@
 #  verification_date        :date
 #  sampling_method          :string(255)
 #  study_pop_desc           :text
+#  board_name               :string(255)
+#  board_affiliation_id     :integer
 #
 # Indexes
 #
@@ -89,8 +89,8 @@
 #  index_trials_on_allocation_id             (allocation_id)
 #  index_trials_on_anatomic_site_id          (anatomic_site_id)
 #  index_trials_on_assigned_to_id            (assigned_to_id)
+#  index_trials_on_board_affiliation_id      (board_affiliation_id)
 #  index_trials_on_board_approval_status_id  (board_approval_status_id)
-#  index_trials_on_board_id                  (board_id)
 #  index_trials_on_gender_id                 (gender_id)
 #  index_trials_on_intervention_model_id     (intervention_model_id)
 #  index_trials_on_investigator_aff_id       (investigator_aff_id)
@@ -143,7 +143,7 @@ class Trial < ActiveRecord::Base
   belongs_to :assigned_to, class_name: "User"
   belongs_to :owner, class_name: "User"
   belongs_to :board_approval_status
-  belongs_to :board, class_name: "Organization"
+  belongs_to :board_affiliation, class_name: "Organization"
   belongs_to :intervention_model
   belongs_to :masking
   belongs_to :allocation
