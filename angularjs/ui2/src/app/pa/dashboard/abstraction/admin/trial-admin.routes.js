@@ -14,12 +14,6 @@
                     templateUrl: 'app/pa/dashboard/abstraction/admin/general_trial_details.html',
                     controller: 'generalTrialDetailsCtrl as generalTrialDetailView',
                     section: 'pa',
-                    resolve: {
-                        TrialService: 'TrialService',
-                        protocolIdOriginObj: function(TrialService) {
-                            return TrialService.getProtocolIdOrigins();
-                        }
-                    },
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
                         label: 'General Details'
@@ -49,6 +43,31 @@
                     label: 'Regulatory Details'
                 }
             })
+            .state('main.pa.trialOverview.regulatoryInd', {
+                url: '/regInd',
+                templateUrl: 'app/pa/dashboard/abstraction/admin/trial_regulatory_ind.html',
+                controller: 'trialRegFdaCtrl as trialDetailView',
+                section: 'pa',
+                resolve: {
+                    TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    responsiblePartyObj: function(TrialService) {
+                        return TrialService.getResponsibleParties();
+                    },
+                    GeoLocationService : 'GeoLocationService',
+                    countryList: function(GeoLocationService) {
+                        return GeoLocationService.getCountryList();
+                    },
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Regulatory Details'
+                }
+            })
+
             .state('main.pa.trialOverview.nciInfo', {
                     url: '/nciInfo',
                     templateUrl: 'app/pa/dashboard/abstraction/admin/trial_nci.html',

@@ -13,8 +13,16 @@
                 /* this is the parent state for the states below */
                     url: '/trial/:trialId',
                     templateUrl: 'app/pa/dashboard/abstraction/trial_overview/trial_overview.html',
-                    // controller: 'paTrialOverviewCtrl',
+                    controller: 'paTrialOverviewCtrl as paTrialOverview',
                     section: 'pa',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        curTrial: function(TrialService, $stateParams) {
+                            var trialId = $stateParams.trialId;
+                            console.log('trialId: ' + trialId);
+                            return TrialService.getTrialById(trialId);
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.paTrialSearch',
                         label: 'Trial Overview'
