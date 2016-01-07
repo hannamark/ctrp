@@ -36,7 +36,7 @@
                     })
 
                     .state('main.addTrial', {
-                        url: '/new_trial/:studySourceCode',
+                        url: '/new-trial/:studySourceCode',
                         templateUrl: 'app/registry/registration/trialDetails.html',
                         controller: 'trialDetailCtrl as trialDetailView',
                         section: 'registry',
