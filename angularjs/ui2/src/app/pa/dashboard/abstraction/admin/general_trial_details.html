@@ -112,11 +112,16 @@
                   <th>Action</th>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="otherId in generalTrialDetailView.generalTrialDetailsObj.other_ids" class="animated-item" ng-class="otherId._destroy ? 'deleted-text' : ''">
+                  <tr ng-repeat="otherId in generalTrialDetailView.generalTrialDetailsObj.other_ids track by $index" class="animated-item" ng-class="otherId._destroy ? 'deleted-text' : ''">
                     <td>{{otherId.identifierName}}</td>
-                    <td>{{otherId.protocol_id}}</td>
                     <td>
-                        <button type="button" class="btn btn-default">Edit</button>
+                        <span in-place-edit="otherId.protocol_id" on-save="generalTrialDetailView.updateOtherId(otherId.protocol_id, $index)"
+                              template="app/pa/dashboard/abstraction/admin/other_identifier_edit_template.html" id="#other_id_edit">
+                              {{otherId.protocol_id}}
+                        </span>
+                    </td>
+                    <td>
+                        <!-- <button type="button" class="btn btn-default">Edit</button> -->
                         <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">Delete</button>
                     </td>
                   </tr>
