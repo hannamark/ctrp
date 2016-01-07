@@ -8,6 +8,7 @@ json.trials do
     json.sponsor trial.sponsor.present? ? trial.sponsor.name : nil
     json.study_source trial.study_source.present? ? trial.study_source.name : nil
     json.current_trial_status trial.trial_status_wrappers.present? ? trial.trial_status_wrappers.last.trial_status.name : nil
+    json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
     json.selected_trial_status = ""
     if params[:trial_status].present? && params[:trial_status_latest].present? && params[:trial_status_latest] == "NO"
       if trial.trial_status_wrappers.present?
