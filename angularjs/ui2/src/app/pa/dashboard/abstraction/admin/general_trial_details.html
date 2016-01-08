@@ -163,10 +163,11 @@
               <label for="pi" class="control-label col-xs-12 col-sm-2">Principal Investigator</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="pi" name="principal_investigator" disabled class="form-control" placeholder="Principal Investigator">
+                  <input type="text" id="pi" name="principal_investigator" disabled class="form-control" ng-model="generalTrialDetailView.principalInvestigator[0].fullName" placeholder="Principal Investigator">
                 </div>
                 <div class="col-xs-12 col-sm-6">
-                  <button class="btn btn-primary">Look Up Person</button>
+                  <!-- <button class="btn btn-primary">Look Up Person</button> -->
+                  <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.principalInvestigator"></ctrp-person-adv-search-modal-button>
                 </div>
               </div>
             </div>
@@ -191,38 +192,59 @@
           <!-- fieldset for Central Contact -->
           <fieldset class="sub-bordered">
             <legend class="sub-bordered">Central Contact</legend>
-            <!-- generic contact -->
+            <!-- Central contact -->
             <div class="form-group">
-              <label for="generic_contact" class="control-label col-xs-12 col-sm-2">Generic Contact</label>
-              <div class="col-xs-12 col-sm-10">
-                <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="generic_contact" name="generic_contact" disabled class="form-control" placeholder="Generic Contact">
+                <div class="row" style="margin-bottom: 7px;">
+                    <div class="col-sm-offset-3 col-sm-9 col-xs-12">
+                        <label class="radio-inline control-label">
+                          <input type="radio" name="contact_type" value="" ng-model="generalTrialDetailView.centralContactType">None
+                        </label>
+                        <label class="radio-inline control-label">
+                          <input type="radio" name="contact_type" value="PI" ng-model="generalTrialDetailView.centralContactType">PI
+                        </label>
+                        <label class="radio-inline control-label">
+                            <input type="radio" name="contact_type" value="Person" ng-model="generalTrialDetailView.centralContactType">Person
+                        </label>
+                        <label class="radio-inline control-label">
+                            <input type="radio" name="contact_type" value="General" ng-model="generalTrialDetailView.centralContactType">General
+                        </label>
+                    </div>
                 </div>
-                <div class="col-xs-12 col-sm-6">
-                  <button class="btn btn-primary">Look Up Person</button>
-                  <button class="btn btn-danger">Remove</button>
-                </div>
-              </div>
             </div>
-
-            <!-- Email Address -->
-            <div class="form-group">
-              <label for="email" class="control-label col-xs-12 col-sm-2">Email Address</label>
-              <div class="col-xs-12 col-sm-10">
-                <div class="col-xs-12 col-sm-6">
-                  <input type="email" id="email" name="email" class="form-control" placeholder="Email">
+            <div ng-hide="generalTrialDetailView.centralContactType == ''">
+              <div class="form-group">
+                <label for="generic_contact" class="control-label col-xs-12 col-sm-2">Central Contact</label>
+                <div class="col-xs-12 col-sm-10">
+                  <div class="col-xs-12 col-sm-6">
+                    <input type="text" id="generic_contact" name="generic_contact" ng-disabled="generalTrialDetailView.centralContactType != 'General'" class="form-control" ng-model="generalTrialDetailView.centralContact[0].fullName" placeholder="Central Contact">
+                  </div>
+                  <div class="col-xs-12 col-sm-6" ng-show="generalTrialDetailView.centralContactType == 'Person'">
+                    <!-- <button class="btn btn-primary">Look Up Person</button> -->
+                    <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.centralContact"></ctrp-person-adv-search-modal-button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Phone Number -->
-            <div class="form-group">
-              <label for="phone" class="control-label col-xs-12 col-sm-2">Phone Number</label>
-              <div class="col-xs-12 col-sm-10">
-                <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone">
+              <!-- Email Address -->
+              <div class="form-group">
+                <label for="email" class="control-label col-xs-12 col-sm-2">Email Address</label>
+                <div class="col-xs-12 col-sm-10">
+                  <div class="col-xs-12 col-sm-6">
+                    <input type="email" id="email" name="email" ng-model="generalTrialDetailView.centralContact[0].email" class="form-control" placeholder="Email">
+                  </div>
                 </div>
               </div>
+
+              <!-- Phone Number -->
+              <div class="form-group">
+                <label for="phone" class="control-label col-xs-12 col-sm-2">Phone Number</label>
+                <div class="col-xs-12 col-sm-10">
+                  <div class="col-xs-12 col-sm-6">
+                    <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.centralContact[0].phone" class="form-control" placeholder="Phone">
+                  </div>
+                </div>
+              </div>
+
             </div>
           </fieldset>
 

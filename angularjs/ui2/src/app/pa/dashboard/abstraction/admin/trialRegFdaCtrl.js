@@ -18,6 +18,7 @@
         vm.showInvestigator = false;
         vm.showInvSearchBtn = true;
         vm.addedAuthorities = [];
+        vm.indIdeNum = 0;
 
         vm.updateTrial = function() {
             // Prevent multiple submissions

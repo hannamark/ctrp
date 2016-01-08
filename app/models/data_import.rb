@@ -10,6 +10,8 @@ class DataImport
     Submission.delete_all
     ProcessingStatusWrapper.delete_all
     OtherId.delete_all
+    OversightAuthority.delete_all
+    IndIde.delete_all
     Trial.delete_all
   end
 
@@ -122,6 +124,7 @@ class DataImport
         else
           trial.responsible_party = responsible_party
         end
+        trial.ind_ide_question = "Yes"
         # randomly assign the rest of the data
         trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
         trial.lead_org = Organization.all[rand(0..13)]
