@@ -191,9 +191,27 @@
           <!-- fieldset for Central Contact -->
           <fieldset class="sub-bordered">
             <legend class="sub-bordered">Central Contact</legend>
-            <!-- generic contact -->
+            <!-- Central contact -->
             <div class="form-group">
-              <label for="generic_contact" class="control-label col-xs-12 col-sm-2">Generic Contact</label>
+                <div class="row" style="margin-bottom: 7px;">
+                    <div class="col-sm-offset-3 col-sm-9 col-xs-12">
+                        <label class="radio-inline control-label">
+                          <input type="radio" name="contact_type" value="None">None
+                        </label>
+                        <label class="radio-inline control-label">
+                          <input type="radio" name="contact_type" value="PI">PI
+                        </label>
+                        <label class="radio-inline control-label">
+                            <input type="radio" name="contact_type" value="Person">Person
+                        </label>
+                        <label class="radio-inline control-label">
+                            <input type="radio" name="contact_type" value="General">General
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+              <label for="generic_contact" class="control-label col-xs-12 col-sm-2">Central Contact</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
                   <input type="text" id="generic_contact" name="generic_contact" disabled class="form-control" placeholder="Generic Contact">

@@ -19,7 +19,11 @@
       vm.addOtherIdentifier = addOtherIdentifier;
       vm.deleteOtherIdentifier = deleteOtherIdentifier;
       vm.updateOtherId = updateOtherId;
-      vm.leadOrg = [];
+      vm.leadOrg = []; // TODO: insert it into the trial detail object
+      vm.principalInvestigator = []; // TODO:
+      vm.sponsors = []; // TODO:
+      vm.centralContacts = []; // TODO:
+      // vm.centralContactTypes = [{id: 0, 'None'}, {id: 1, 'PI'}, {id: 2, 'Person'}, {id: 3, 'General'}];
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
 
