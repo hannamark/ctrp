@@ -73,6 +73,30 @@
                 }
             })
 
+            .state('main.pa.trialOverview.funding', {
+                url: '/funding',
+                templateUrl: 'app/pa/dashboard/abstraction/admin/trial_funding.html',
+                controller: 'trialFundingCtrl as trialDetailView',
+                section: 'pa',
+                resolve: {
+                    TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    nciObj: function(TrialService) {
+                        return TrialService.getNci();
+                    },
+                    holderTypeObj: function(TrialService) {
+                        return TrialService.getHolderTypes();
+                    },
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Regulatory Details'
+                }
+            })
+
             .state('main.pa.trialOverview.nciInfo', {
                     url: '/nciInfo',
                     templateUrl: 'app/pa/dashboard/abstraction/admin/trial_nci.html',
