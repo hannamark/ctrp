@@ -1,4 +1,4 @@
-﻿@PA @global
+@PA @global
 Feature:  PAS F02 Add and Edit Interventional Trial Design 
 As a CTRP Scientific Abstractor, I can add and edit Interventional Trial Design 
 
@@ -17,7 +17,7 @@ As a CTRP Scientific Abstractor, I can add and edit Interventional Trial Design
       | Health Services Research | 
       | Basic Science            | 
       | Other                    | 
-          And I can select a different value for Secondary Purpose Type:
+   And I can select a different value for Secondary Purpose Type:
       | Secondary Purpose Type | 
       | Ancillary-Correlative  | 
       | Other                  | 
@@ -235,6 +235,8 @@ As a CTRP Scientific Abstractor, I can add and edit Interventional Trial Design
       And I am on the Trial Design screen
       And I am selecting a value for Masking 
      When the value of Masking is Single Blind 
+     Then Masking Role(s) displays for multiple selection
+     When the value of Masking is Double 
      Then Masking Role(s) displays for multiple selection
       | Masking Role(s)   | 
       | Subject           | 

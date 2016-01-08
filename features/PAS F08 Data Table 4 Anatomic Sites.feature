@@ -10,8 +10,7 @@ And I select Add
 And I have selected one or more items from the sorted <Anatomic Site> list 
 When I select Save
 Then the Data Table 4 Anatomic Sites for the trial will be associated with the trial
-
-|Anatomic Site|
+|Data Table 4 Anatomic Site|
 |Anus|
 |Bones and Joints|
 |Brain and Nervous System|
@@ -57,7 +56,6 @@ Then the Data Table 4 Anatomic Sites for the trial will be associated with the t
 |Thyroid|
 |Unknown Sites|
 |Urinary Bladder|
-
 
 Scenario:  #2 I can Delete Data Table 4 Anatomic Sites for a Trial
 Given I am logged into the CTRP Protocol Abstraction application

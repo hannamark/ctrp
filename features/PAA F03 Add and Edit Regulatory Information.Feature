@@ -99,3 +99,11 @@ Then the label should be displayed below the Trial Regulatory Information sectio
 |The information in this section is REQUIRED to enable "Upload from NCI CTRP" in ClinicalTrials.gov:|
 And ClinicalTrials.gov it a link to 
 |https://clinicaltrials.gov/|
+
+Scenario: #13 Can not have a duplicate trial Oversight Authority Country and Trial Oversight Authority Organization
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Regulatory Information screen
+And I have selected a Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
+And I have selected a Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
+When I select a Trial Oversight Authority Country and Trial Oversight Authority Organization that has already been associated with this trial
+Then a warning message will appear “The Trial Oversight Authority Country and Trial Oversight Authority Organization has already been selected.”

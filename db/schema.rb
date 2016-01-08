@@ -961,8 +961,8 @@ ActiveRecord::Schema.define(version: 20160107215951) do
     t.text     "why_stopped"
     t.integer  "trial_status_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "uuid",            limit: 255
     t.integer  "lock_version",                default: 0
     t.text     "comment"

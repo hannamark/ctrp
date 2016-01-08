@@ -290,7 +290,14 @@ var projectMethodsRegistry = function() {
                             trialMenuItem.clickHomeSearchTrial();
                             login.clickWriteMode('On');
                             self.selectTrials(trialType);//selectTrials(trialType);
-                            addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);
+                            /* Since adding Person when Responsible Party is set to 'Sponsor-Investigator' is hidden so adding a step to select the Responsible party first*/
+                            if (indexOfPersonModel === '1') {
+                                addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+                                addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);
+                            }
+                            else {
+                                addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);
+                            }
                             searchOrg.clickExactSearch('true');
                             cukePerson.then(function (value) {
                                 console.log('Add person Name' + value);
@@ -348,9 +355,9 @@ var projectMethodsRegistry = function() {
      * Method: This will add already existing\created Person for Trial
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.selectPerForTrial = function(trialPerName,indexOfPerModel) {
-        /* Since adding Org when Responsible Party is set to 'Principal Investigator' is hidden so adding a step to select the Responsible party first*/
-        if (indexOfPerModel === '3') {
-            addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+        /* Since adding Person when Responsible Party is set to 'Sponsor-Investigator' is hidden so adding a step to select the Responsible party first*/
+        if (indexOfPerModel === '1') {
+            addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
             addTrial.clickAddTrialPersonSearchModel(indexOfPerModel);
         }
         else {
