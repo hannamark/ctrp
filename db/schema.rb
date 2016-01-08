@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160107215951) do
+ActiveRecord::Schema.define(version: 20160108162338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -692,9 +692,11 @@ ActiveRecord::Schema.define(version: 20160107215951) do
     t.datetime "updated_at",                                   null: false
     t.string   "uuid",                 limit: 255
     t.integer  "lock_version",                     default: 0
+    t.integer  "submission_id"
   end
 
   add_index "processing_status_wrappers", ["processing_status_id"], name: "index_processing_status_wrappers_on_processing_status_id", using: :btree
+  add_index "processing_status_wrappers", ["submission_id"], name: "index_processing_status_wrappers_on_submission_id", using: :btree
   add_index "processing_status_wrappers", ["trial_id"], name: "index_processing_status_wrappers_on_trial_id", using: :btree
 
   create_table "processing_statuses", force: :cascade do |t|
@@ -1195,6 +1197,7 @@ ActiveRecord::Schema.define(version: 20160107215951) do
   add_foreign_key "po_affiliations", "people"
   add_foreign_key "po_affiliations", "po_affiliation_statuses"
   add_foreign_key "processing_status_wrappers", "processing_statuses"
+  add_foreign_key "processing_status_wrappers", "submissions"
   add_foreign_key "processing_status_wrappers", "trials"
   add_foreign_key "site_rec_status_wrappers", "participating_sites"
   add_foreign_key "site_rec_status_wrappers", "site_recruitment_statuses"
