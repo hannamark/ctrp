@@ -286,7 +286,7 @@ class Trial < ActiveRecord::Base
 
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
-      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self)
+      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: newSubmission)
     elsif self.edit_type == 'amend'
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
@@ -295,6 +295,9 @@ class Trial < ActiveRecord::Base
 
       srd = Milestone.find_by_code('SRD')
       MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
+
+      ams = ProcessingStatus.find_by_code('AMS')
+      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: ams, trial: self, submission: latest_submission)
     end
   end
 
