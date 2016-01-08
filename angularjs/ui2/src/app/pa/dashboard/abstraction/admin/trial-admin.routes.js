@@ -14,6 +14,12 @@
                     templateUrl: 'app/pa/dashboard/abstraction/admin/general_trial_details.html',
                     controller: 'generalTrialDetailsCtrl as generalTrialDetailView',
                     section: 'pa',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        protocolIdOriginObj: function(TrialService) {
+                            return TrialService.getProtocolIdOrigins();
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
                         label: 'General Details'

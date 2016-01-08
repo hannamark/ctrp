@@ -112,8 +112,8 @@
               <table class="table table-bordered table-striped table-hover">
                 <thead style="background-color: #d9edf7">
                   <th>Identifier Type</th>
-                  <th>Value</th>
-                  <th>Action</th>
+                  <th>Value (Click for editing)</th>
+                  <th class="text-center">Deletion</th>
                 </thead>
                 <tbody>
                   <tr ng-repeat="otherId in generalTrialDetailView.generalTrialDetailsObj.other_ids track by $index" class="animated-item" ng-class="otherId._destroy ? 'deleted-text' : ''">
@@ -124,9 +124,12 @@
                               {{otherId.protocol_id}}
                         </span>
                     </td>
-                    <td>
+                    <td class="text-center">
                         <!-- <button type="button" class="btn btn-default">Edit</button> -->
-                        <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">Delete</button>
+                        <!-- <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">Delete</button> -->
+                        <label class="btn btn-default" restriction-field ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">
+                            <i class="glyphicon" ng-class="otherId._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                        </label>
                     </td>
                   </tr>
                 </tbody>
