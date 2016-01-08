@@ -17,7 +17,20 @@
         vm.grantorArr = [];
         vm.holderTypeArr = holderTypeObj;
         vm.nihNciArr = [];
-       console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
+        vm.addedIndIdes = [];
+        console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
+
+        vm.updateTrial = function(updateType) {
+            // Prevent multiple submissions
+            vm.disableBtn = true;
+
+            if (vm.addedIndIdes.length > 0) {
+                vm.curTrial.ind_ides_attributes = [];
+                _.each(vm.addedIndIdes, function (indIde) {
+                    vm.curTrial.ind_ides_attributes.push(indIde);
+                });
+            }
+        }
 
         // Add IND/IDE to a temp array
         vm.addIndIde = function () {
@@ -49,6 +62,21 @@
                 vm.showAddIndIdeError = true;
             }
         };
+
+        // Delete the associations
+        vm.toggleSelection = function (index, type) {
+            if (type == 'ind_ide') {
+                if (index < vm.addedIndIdes.length) {
+                    vm.addedIndIdes[index]._destroy = !vm.addedIndIdes[index]._destroy;
+                    if (vm.addedIndIdes[index]._destroy) {
+                        vm.indIdeNum--;
+                    } else {
+                        vm.indIdeNum++;
+                    }
+                }
+            }
+        };// toggleSelection
+
 
         vm.watchOption = function(type) {
             if (type == 'ind_ide_type') {
@@ -107,7 +135,7 @@
                 return false;
             }
         }
-        
+
         function appendIndIdes() {
             for (var i = 0; i < vm.curTrial.ind_ides.length; i++) {
                 var indIde = {};
