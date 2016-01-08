@@ -30,6 +30,19 @@
                     vm.curTrial.ind_ides_attributes.push(indIde);
                 });
             }
+            // An outer param wrapper is needed for nested attributes to work
+            var outerTrial = {};
+            outerTrial.new = vm.curTrial.new;
+            outerTrial.id = vm.curTrial.id;
+            outerTrial.trial = vm.curTrial;
+
+
+            TrialService.upsertTrial(outerTrial).then(function(response) {
+                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+            }).catch(function(err) {
+                console.log("error in updating trial " + JSON.stringify(outerTrial));
+            });
+
         }
 
         // Add IND/IDE to a temp array
@@ -107,9 +120,6 @@
                 } else {
                     vm.nihNciArr = [];
                 }
-            } else if (type == 'authority_country') {
-                vm.authority_org = '';
-                vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.authority_country);
             }
         };
 
