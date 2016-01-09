@@ -46,7 +46,7 @@
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
-                    label: 'Regulatory Details'
+                    label: 'Regulatory FDA Details'
                 }
             })
             .state('main.pa.trialOverview.regulatoryInd', {
@@ -69,7 +69,7 @@
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
-                    label: 'Regulatory Details'
+                    label: 'Regulatory IND/IDE Details'
                 }
             })
 
@@ -87,13 +87,13 @@
                     nciObj: function(TrialService) {
                         return TrialService.getNci();
                     },
-                    holderTypeObj: function(TrialService) {
-                        return TrialService.getHolderTypes();
+                    fundingMechanismObj: function(TrialService) {
+                        return TrialService.getFundingMechanisms();
                     },
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
-                    label: 'Regulatory Details'
+                    label: 'Funding Details'
                 }
             })
 
