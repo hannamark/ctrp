@@ -12,7 +12,8 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
       |Principal Investigator|
       |Sponsor-Investigator  |
     And I have selected one or more of the Trial Oversight Authority Country and Organization Names from the provided list
-    And I have selected"yes" or "No"for FDA Regulated Intervention Indicator
+    And the FDA Regulated Intervention Indicator will be defaulted to the "N/A" setting
+    And I have the option to change the defaulted "NA" setting to either "yes" or "No"for FDA Regulated Intervention Indicator
     And I have select either "yes" or "No" for Section 801 Indicator
     And I have selected either "yes" or "No" for Data Monitoring Committee Appointed Indicator
     Then the Register Trial Regulatory Information section will not indicate any errors during Trial Review
