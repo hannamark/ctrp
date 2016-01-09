@@ -18,6 +18,7 @@
         vm.nihNciArr = [];
         vm.nciArr = nciObj;
         vm.instituteCodeArr = instituteCodeObj;
+        vm.addedGrants = [];
         vm.addedIndIdes = [];
         console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
 
@@ -39,6 +40,55 @@
             });
 
         }
+
+        $scope.refreshGrants = function(serial_number) {
+
+            if (vm.funding_mechanism && vm.institute_code) {
+                var queryObj = {
+                    funding_mechanism: vm.funding_mechanism,
+                    institute_code: vm.institute_code,
+                    serial_number: serial_number
+                };
+                return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
+                    var snums=[];
+                    var uniquesnums= [];
+
+                    snums= res.tempgrants.map(function (tempgrant) {
+                        return tempgrant.serial_number;
+                    });
+                    uniquesnums = snums.filter(function (name) {
+                        return uniquesnums.indexOf(name) === -1;
+                    });
+
+                    $scope.addresses = uniquesnums;
+                    console.log($scope.addresses);
+
+                });
+
+            }
+        }
+
+        // Add grant to a temp array
+        vm.addGrant = function () {
+            if (vm.funding_mechanism && vm.institute_code && vm.serial_number && vm.nci) {
+                var newGrant = {};
+                newGrant.funding_mechanism = vm.funding_mechanism;
+                newGrant.institute_code = vm.institute_code;
+                newGrant.serial_number = vm.serial_number;
+                newGrant.nci = vm.nci;
+                newGrant._destroy = false;
+                vm.addedGrants.push(newGrant);
+                vm.grantNum++;
+                vm.funding_mechanism = null;
+                vm.institute_code = null;
+                vm.serial_number = null;
+                vm.nci = null;
+                vm.showAddGrantError = false;
+                $scope.addresses=null;
+            } else {
+                vm.showAddGrantError = true;
+            }
+        };
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {
