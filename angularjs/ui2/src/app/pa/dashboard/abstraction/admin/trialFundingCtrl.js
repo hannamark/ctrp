@@ -8,15 +8,15 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialFundingCtrl', trialFundingCtrl);
 
-    trialFundingCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'nciObj', 'fundingMechanismObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialFundingCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'instituteCodeObj', 'fundingMechanismObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialFundingCtrl(TrialService, $scope, toastr, trialDetailObj, nciObj, fundingMechanismObj){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialFundingCtrl(TrialService, $scope, toastr, trialDetailObj, instituteCodeObj, fundingMechanismObj){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
-        vm.nciArr = nciObj;
         vm.grantorArr = [];
         vm.fundingMechanismArr = fundingMechanismObj;
         vm.nihNciArr = [];
+        vm.instituteCodeArr = instituteCodeObj;
         vm.addedIndIdes = [];
         console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
 

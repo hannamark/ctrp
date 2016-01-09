@@ -84,8 +84,8 @@
                     trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
                     },
-                    nciObj: function(TrialService) {
-                        return TrialService.getNci();
+                    instituteCodeObj: function(TrialService) {
+                        return TrialService.getInstituteCodes();
                     },
                     fundingMechanismObj: function(TrialService) {
                         return TrialService.getFundingMechanisms();
