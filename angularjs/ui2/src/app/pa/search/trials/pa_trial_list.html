@@ -79,6 +79,26 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Submission Type: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="submissionType" ng-model="trialView.searchParams.submission_type">
+                                    <option value="">-Select a Submission Type -</option>
+                                    <option ng-repeat="submissionType in trialView.submissionTypesArr" value="{{submissionType.code}}">{{submissionType.code}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Submission Method: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="submissionMethod" ng-model="trialView.searchParams.submission_method">
+                                    <option value="">-Select a Submission Method -</option>
+                                    <option ng-repeat="submissionMethod in trialView.submissionMethodsArr" value="{{submissionMethod.code}}">{{submissionMethod.code}}</option>
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
 
 

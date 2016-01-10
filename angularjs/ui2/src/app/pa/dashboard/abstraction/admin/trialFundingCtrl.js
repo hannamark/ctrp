@@ -20,11 +20,20 @@
         vm.instituteCodeArr = instituteCodeObj;
         vm.addedGrants = [];
         vm.addedIndIdes = [];
+        vm.showAddGrantError = false;
+        vm.grantNum = 0;
         console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
 
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
             vm.disableBtn = true;
+
+            if (vm.addedGrants.length > 0) {
+                vm.curTrial.grants_attributes = [];
+                _.each(vm.addedGrants, function (grant) {
+                    vm.curTrial.grants_attributes.push(grant);
+                });
+            }
 
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
@@ -92,6 +101,16 @@
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {
+            if (type == 'grant') {
+                if (index < vm.addedGrants.length) {
+                    vm.addedGrants[index]._destroy = !vm.addedGrants[index]._destroy;
+                    if (vm.addedGrants[index]._destroy) {
+                        vm.grantNum--;
+                    } else {
+                        vm.grantNum++;
+                    }
+                }
+            }
         };// toggleSelection
 
 
@@ -102,7 +121,21 @@
 
         /****************** implementations below ***************/
         function activate() {
+            appendGrants();
+        }
 
+        function appendGrants() {
+            for (var i = 0; i < vm.curTrial.grants.length; i++) {
+                var grant = {};
+                grant.id = vm.curTrial.grants[i].id;
+                grant.funding_mechanism = vm.curTrial.grants[i].funding_mechanism;
+                grant.institute_code = vm.curTrial.grants[i].institute_code;
+                grant.serial_number = vm.curTrial.grants[i].serial_number;
+                grant.nci = vm.curTrial.grants[i].nci;
+                grant._destroy = false;
+                vm.addedGrants.push(grant);
+                vm.grantNum++;
+            }
         }
 
 

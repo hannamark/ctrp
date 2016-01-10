@@ -9,11 +9,11 @@
 
     paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal',
                          'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'
-    ,'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj', 'nciProgObj'];
+    ,'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj', 'nciProgObj', 'submissionTypesObj','submissionMethodsObj'];
 
     function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal,
                          studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
-                         PATrialService, milestoneObj, processingStatusObj, protocolIdOriginObj, researchCategoriesObj, nciDivObj, nciProgObj) {
+                         PATrialService, milestoneObj, processingStatusObj, protocolIdOriginObj, researchCategoriesObj, nciDivObj, nciProgObj, submissionTypesObj, submissionMethodsObj) {
 
         var vm = this;
         var fromStateName = $state.fromState.name || '';
@@ -25,10 +25,15 @@
         vm.trialStatusArr = trialStatusObj;
         vm.milestoneArr = milestoneObj;
         vm.processingStatusArr = processingStatusObj;
+        //console.log("processing status = " + JSON.stringify(processingStatusObj));
         vm.protocolIdOriginArr = protocolIdOriginObj;
         vm.researchCategoriesArr = researchCategoriesObj;
         vm.nciDivArr = nciDivObj;
         vm.nciProgArr = nciProgObj;
+        //console.log("nciProgObj = " + JSON.stringify(nciProgObj));
+        vm.submissionTypesArr = submissionTypesObj;
+        //console.log("submissionTypesObj = " + JSON.stringify(submissionTypesObj));
+        vm.submissionMethodsArr = submissionMethodsObj;
         vm.gridScope=vm;
 
         //ui-grid plugin options
