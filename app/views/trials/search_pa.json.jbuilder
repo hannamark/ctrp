@@ -71,7 +71,7 @@ json.trials do
       json.submission_method ""
     end
     if !last_submission.nil? && !last_submission.submission_source.nil?
-      json.submission_source = last_submission.submission_source.name
+      json.submission_source  last_submission.submission_source.name
     else
       json.submission_source ""
     end
