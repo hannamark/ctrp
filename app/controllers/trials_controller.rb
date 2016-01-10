@@ -234,6 +234,11 @@ class TrialsController < ApplicationController
         Rails.logger.debug "nih_nci_prog selected"
         @trials = @trials.with_nci_prog(params[:nih_nci_prog]) if params[:nih_nci_prog].present?
       end
+      if params[:submission_type].present?
+        submission_type = SubmissionType.find_by_name(params[:submission_type])
+        Rails.logger.info "submission_type = #{submission_type.inspect}"
+        @trials = @trials.select{|trial| !trial.submissions.blank? &&  trial.submissions.last.submission_type == submission_type}
+      end
     else
       @trials = []
     end

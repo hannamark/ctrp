@@ -141,6 +141,7 @@ class DataImport
 
   def self.import_milestones
     missed_milestones = []
+    total_submission_types = SubmissionType.all.size
     spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-milestones_for_20_sample_trials_in_prod.xls'))
     spreadsheet.default_sheet = spreadsheet.sheets.first
     ((spreadsheet.first_row+1)..spreadsheet.last_row).each do |row|
@@ -154,6 +155,7 @@ class DataImport
           current_submission.submission_num = submission_num
           current_submission.amendment_num = rand(1..20)
           current_submission.amendment_date = Time.now
+          current_submission.submission_type = SubmissionType.all[rand(0..total_submission_types-1)]
           trial.submissions << current_submission
           trial.save!
         end
