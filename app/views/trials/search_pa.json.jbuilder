@@ -59,6 +59,22 @@ json.trials do
     end
     json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
     json.research_category trial.research_category.present? ? trial.research_category.name : nil
+    last_submission = trial.submissions.present? ? trial.submissions.last : nil
+    if !last_submission.nil? && !last_submission.submission_type.nil?
+      json.submission_type  last_submission.submission_type.name
+    else
+      json.submission_type ""
+    end
+    if !last_submission.nil? && !last_submission.submission_method.nil?
+      json.submission_method  last_submission.submission_method.name
+    else
+      json.submission_method ""
+    end
+    if !last_submission.nil? && !last_submission.submission_source.nil?
+      json.submission_source = last_submission.submission_source.name
+    else
+      json.submission_source ""
+    end
     json.url trial_url(trial, format: :json)
     json.actions trial.actions
   end
