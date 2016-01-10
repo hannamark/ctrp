@@ -134,6 +134,7 @@ end
     scope '/pa' do
       get 'nih_nci_div_pa' => 'util#get_nih_nci_div_pa'
       get 'nih_nci_prog_pa' => 'util#get_nih_nci_prog_pa'
+      resources :submission_methods
     end
 
     scope '/registry' do

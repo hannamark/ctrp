@@ -30,8 +30,8 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
     user ||= User.new
-    Rails.logger.info "In Cancancan's ability.rb's initialize method user = #{user.inspect}"
-    #Rails.logger.info "In Cancancan's ability.rb's initialize method user = #{current_user.inspect}"
+    Rails.logger.debug "In Cancancan's ability.rb's initialize method user = #{user.username}" unless user.blank?
+    Rails.logger.debug "In Cancancan's ability.rb's initialize method user = nil" if user.blank?
     if user.role == 'ROLE_SUPER'  && user.approved?
       can :manage, :all
       can :access, :rails_admin   # grant access to rails_admin

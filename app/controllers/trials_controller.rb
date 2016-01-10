@@ -239,6 +239,11 @@ class TrialsController < ApplicationController
         Rails.logger.info "submission_type = #{submission_type.inspect}"
         @trials = @trials.select{|trial| !trial.submissions.blank? &&  trial.submissions.last.submission_type == submission_type}
       end
+      if params[:submission_method].present?
+        submission_method = SubmissionMethod.find_by_code(params[:submission_method])
+        Rails.logger.info "submission_method = #{submission_method.inspect}"
+        @trials = @trials.select{|trial| !trial.submissions.blank? &&  trial.submissions.last.submission_method == submission_method}
+      end
     else
       @trials = []
     end

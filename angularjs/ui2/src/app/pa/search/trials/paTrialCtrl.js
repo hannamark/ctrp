@@ -32,8 +32,8 @@
         vm.nciProgArr = nciProgObj;
         //console.log("nciProgObj = " + JSON.stringify(nciProgObj));
         vm.submissionTypesArr = submissionTypesObj;
-        //console.log("submissionTypesObj = " + JSON.stringify(submissionTypesObj));
         vm.submissionMethodsArr = submissionMethodsObj;
+        console.log("submissionMethodsObj = " + JSON.stringify(submissionMethodsObj));
         vm.gridScope=vm;
 
         //ui-grid plugin options
