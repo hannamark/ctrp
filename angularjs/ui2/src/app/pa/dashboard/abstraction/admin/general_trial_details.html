@@ -247,11 +247,18 @@
               </div>
 
               <!-- Phone Number -->
-              <div class="form-group">
+              <div class="form-group has-feedback required" ng-class="{'has-error': (general_trial_details_form.phone.$error && ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.phone))}">
                 <label for="phone" class="control-label col-xs-12 col-sm-2">Phone Number</label>
                 <div class="col-xs-12 col-sm-10">
                   <div class="col-xs-12 col-sm-6">
-                    <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.centralContact[0].phone" class="form-control" placeholder="Phone">
+                    <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.centralContact[0].phone"
+                        class="form-control" placeholder="Phone", ng-change="generalTrialDetailView.isValidPhoneNumber()">
+                    <span ng-show="general_trial_details_form.phone.$viewValue.length" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                    <div class="has-error" ng-show="general_trial_details_form.phone.$viewValue.length && !generalTrialDetailView.isPhoneValid">
+                        <span class="help-block">
+                            Warning: Phone number invalid for the selected Country.
+                         </span>
+                    </div>
                   </div>
                 </div>
               </div>

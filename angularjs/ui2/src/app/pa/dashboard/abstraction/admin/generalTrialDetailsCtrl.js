@@ -19,6 +19,7 @@
       vm.addOtherIdentifier = addOtherIdentifier;
       vm.deleteOtherIdentifier = deleteOtherIdentifier;
       vm.updateOtherId = updateOtherId;
+      vm.isValidPhoneNumber = isValidPhoneNumber;
       vm.leadOrg = []; // TODO: insert it into the trial detail object
       vm.principalInvestigator = []; // TODO:
       vm.sponsors = []; // TODO:
@@ -189,6 +190,11 @@
         });
       }
 
+      function isValidPhoneNumber() {
+          console.log('is valid number: ', vm.centralContact[0].phone);
+          console.log(isValidNumberPO(vm.centralContact[0].phone, 'United States'));
+          vm.isPhoneValid = isValidNumberPO(vm.centralContact[0].phone, 'United States');
+      }
 
       /**
       * Use the Trial's PI as the central contact      *
