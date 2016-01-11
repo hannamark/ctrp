@@ -166,6 +166,7 @@
              if (angular.isArray(newVal) && newVal.length > 0) {
                  // console.log('new lead org: ', newVal[0]);
                  vm.generalTrialDetailsObj.lead_org = newVal[0];
+                 vm.generalTrialDetailsObj.lead_org_id = newVal[0].id; // update lead organization
              }
           });
       }
@@ -178,6 +179,7 @@
               var lastName = newVal[0].lname || '';
               vm.principalInvestigator[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
               vm.generalTrialDetailsObj.pi = vm.principalInvestigator[0];
+              vm.generalTrialDetailsObj.pi_id = vm.principalInvestigator[0].id; // update PI
           }
         });
       }
@@ -186,6 +188,7 @@
           $scope.$watchCollection(function() {return vm.sponsors;}, function(newVal, oldVal) {
              if (angular.isArray(newVal) && newVal.length > 0) {
                  vm.generalTrialDetailsObj.sponsor = newVal[0];
+                 vm.generalTrialDetailsObj.sponsor_id = newVal[0].id; // update sponsor
              }
           });
       }
