@@ -79,6 +79,33 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="onhold" class="control-label col-xs-12 col-sm-3">Trials on Hold: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <input type="checkbox" id="onhold" ng-model="trialView.searchParams.onhold">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Submission Type: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="submissionType" ng-model="trialView.searchParams.submission_type">
+                                    <option value="">-Select a Submission Type -</option>
+                                    <option ng-repeat="submissionType in trialView.submissionTypesArr" value="{{submissionType.code}}">{{submissionType.code}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Submission Method: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="submissionMethod" ng-model="trialView.searchParams.submission_method">
+                                    <option value="">-Select a Submission Method -</option>
+                                    <option ng-repeat="submissionMethod in trialView.submissionMethodsArr" value="{{submissionMethod.code}}">{{submissionMethod.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
 
 
@@ -116,7 +143,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Trial Status: </label>
+                            <label for="trial_status" class="control-label col-xs-12 col-sm-3">Trial Status: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <select class="form-control input-sm" id="trial_status" ng-model="trialView.searchParams.trial_status">
                                     <option value="">-Select a Trial Status-</option>
@@ -126,7 +153,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Milestone: </label>
+                            <label for="milestone" class="control-label col-xs-12 col-sm-3">Milestone: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <select class="form-control input-sm" id="milestone" ng-model="trialView.searchParams.milestone">
                                     <option value="">-Select a Milestone-</option>
@@ -136,7 +163,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Research Category: </label>
+                            <label for="checkout" class="control-label col-xs-12 col-sm-3">Trials I have checked out: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <input type="checkbox" id="checkout" ng-model="trialView.searchParams.checkout">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="research_category" class="control-label col-xs-12 col-sm-3">Research Category: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <select class="form-control input-sm" id="research_category" ng-model="trialView.searchParams.research_category">
                                     <option value="">-Select a Research Category -</option>
@@ -146,7 +180,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="purpose" class="control-label col-xs-12 col-sm-3">NIH/NCI Div/Dept Identifier: </label>
+                            <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Div/Dept Identifier: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <select class="form-control input-sm" id="nih_nci_div" ng-model="trialView.searchParams.nih_nci_div">
                                     <option value="">-Select a NIH/NCI Div/Dept -</option>
@@ -156,7 +190,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="purpose" class="control-label col-xs-12 col-sm-3">NIH/NCI Program Identifier: </label>
+                            <label for="nih_nci_prog" class="control-label col-xs-12 col-sm-3">NIH/NCI Program Identifier: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <select class="form-control input-sm" id="nih_nci_prog" ng-model="trialView.searchParams.nih_nci_prog">
                                     <option value="">-Select a NIH/NCI Program -</option>

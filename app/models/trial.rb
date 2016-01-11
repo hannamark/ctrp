@@ -278,7 +278,8 @@ class Trial < ActiveRecord::Base
       self.nci_id = new_id
 
       # New Submission
-      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self)
+      ori = SubmissionType.find_by_code('ORI')
+      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, submission_type: ori)
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
@@ -287,11 +288,18 @@ class Trial < ActiveRecord::Base
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
       ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: newSubmission)
+    elsif self.edit_type == 'update'
+      largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
+      new_sub_number = largest_sub_num.present? ? largest_sub_num + 1 : 1
+      upd = SubmissionType.find_by_code('UPD')
+      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, submission_type: upd)
     elsif self.edit_type == 'amend'
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
+      amd = SubmissionType.find_by_code('AMD')
       latest_submission = self.submissions.last
       latest_submission.submission_num = largest_sub_num.present? ? largest_sub_num + 1 : 1
+      latest_submission.submission_type = amd
 
       srd = Milestone.find_by_code('SRD')
       MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
