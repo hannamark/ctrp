@@ -53,10 +53,28 @@
 
       /* implementations below */
       function saveGeneralTrialDetails() {
+          var outerTrial = {};
           vm.generalTrialDetailsObj.central_contact = vm.centralContact[0]; // new field
           vm.generalTrialDetailsObj.other_ids_attributes = vm.generalTrialDetailsObj.other_ids; // for updating the attributes in Rails
-          TrialService.upsertTrial(vm.generalTrialDetailCtrl).then(function(res) {
-              console.log('updated general trial details');
+
+          outerTrial.new = false;
+          outerTrial.id = vm.generalTrialDetailsObj.id;
+          outerTrial.trial = vm.generalTrialDetailsObj;
+
+          TrialService.upsertTrial(outerTrial).then(function(res) {
+              console.log('central_contact: ', vm.generalTrialDetailsObj.central_contact);
+              console.log('updated general trial details: ', res);
+              vm.generalTrialDetailsObj.lock_version = res.lock_version;
+              // update the general trial details obj with server response
+              /*
+              Object.keys(res).forEach(function(key) {
+                 if (!vm.generalTrialDetailsObj.hasOwnProperty(key)) {
+                     vm.generalTrialDetailsObj[key] = res[key];
+                 }
+              });
+              */
+              PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
+              $scope.$emit('updatedInChildScope', {});
           });
       }
 
@@ -90,6 +108,7 @@
                   id._destroy = id._destroy || false; // default to false if not set
                   return id;
               });
+              console.log('updated trial lock version: ', vm.generalTrialDetailsObj.lock_version);
 
           }, 0);
       } //getTrialDetailCopy
@@ -153,8 +172,13 @@
 
       function watchPISelection() {
         $scope.$watchCollection(function() {return vm.principalInvestigator;}, function(newVal, oldVal) {
-          if (angular.isArray(newVal) && newVal.length > 0) {
-            vm.generalTrialDetailsObj.pi = newVal[0];
+            console.log('new PI: ', newVal);
+          if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullName) {
+              var firstName = newVal[0].fname || '';
+              var middleName = newVal[0].mname || '';
+              var lastName = newVal[0].lname || '';
+              vm.principalInvestigator[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
+              vm.generalTrialDetailsObj.pi = vm.principalInvestigator[0];
           }
         });
       }
