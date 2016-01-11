@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160108162338) do
+ActiveRecord::Schema.define(version: 20160111192227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -879,19 +879,18 @@ ActiveRecord::Schema.define(version: 20160108162338) do
     t.string   "uuid",                 limit: 255
     t.integer  "lock_version",                     default: 0
     t.string   "amendment_num",        limit: 255
-    t.string   "submitter",            limit: 255
     t.integer  "submission_type_id"
     t.integer  "submission_source_id"
     t.integer  "submission_method_id"
-    t.integer  "organization_id"
+    t.integer  "user_id"
   end
 
   add_index "submissions", ["amendment_reason_id"], name: "index_submissions_on_amendment_reason_id", using: :btree
-  add_index "submissions", ["organization_id"], name: "index_submissions_on_organization_id", using: :btree
   add_index "submissions", ["submission_method_id"], name: "index_submissions_on_submission_method_id", using: :btree
   add_index "submissions", ["submission_source_id"], name: "index_submissions_on_submission_source_id", using: :btree
   add_index "submissions", ["submission_type_id"], name: "index_submissions_on_submission_type_id", using: :btree
   add_index "submissions", ["trial_id"], name: "index_submissions_on_trial_id", using: :btree
+  add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
   create_table "tempgrants", force: :cascade do |t|
     t.integer  "serial_number"
@@ -957,6 +956,18 @@ ActiveRecord::Schema.define(version: 20160108162338) do
 
   add_index "trial_funding_sources", ["organization_id"], name: "index_trial_funding_sources_on_organization_id", using: :btree
   add_index "trial_funding_sources", ["trial_id"], name: "index_trial_funding_sources_on_trial_id", using: :btree
+
+  create_table "trial_ownerships", force: :cascade do |t|
+    t.integer  "trial_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
+  add_index "trial_ownerships", ["trial_id"], name: "index_trial_ownerships_on_trial_id", using: :btree
+  add_index "trial_ownerships", ["user_id"], name: "index_trial_ownerships_on_user_id", using: :btree
 
   create_table "trial_status_wrappers", force: :cascade do |t|
     t.date     "status_date"
@@ -1203,11 +1214,11 @@ ActiveRecord::Schema.define(version: 20160108162338) do
   add_foreign_key "site_rec_status_wrappers", "site_recruitment_statuses"
   add_foreign_key "sub_groups", "trials"
   add_foreign_key "submissions", "amendment_reasons"
-  add_foreign_key "submissions", "organizations"
   add_foreign_key "submissions", "submission_methods"
   add_foreign_key "submissions", "submission_sources"
   add_foreign_key "submissions", "submission_types"
   add_foreign_key "submissions", "trials"
+  add_foreign_key "submissions", "users"
   add_foreign_key "trial_co_lead_orgs", "organizations"
   add_foreign_key "trial_co_lead_orgs", "trials"
   add_foreign_key "trial_co_pis", "people"
@@ -1216,6 +1227,8 @@ ActiveRecord::Schema.define(version: 20160108162338) do
   add_foreign_key "trial_documents", "users", column: "added_by_id"
   add_foreign_key "trial_funding_sources", "organizations"
   add_foreign_key "trial_funding_sources", "trials"
+  add_foreign_key "trial_ownerships", "trials"
+  add_foreign_key "trial_ownerships", "users"
   add_foreign_key "trial_status_wrappers", "trial_statuses"
   add_foreign_key "trial_status_wrappers", "trials"
   add_foreign_key "trials", "accrual_disease_terms"
@@ -1324,6 +1337,7 @@ ActiveRecord::Schema.define(version: 20160108162338) do
   create_sequence "trial_co_pis_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_documents_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_funding_sources_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "trial_ownerships_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_status_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trials_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

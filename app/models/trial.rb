@@ -171,6 +171,8 @@ class Trial < ActiveRecord::Base
   has_many :diseases, -> { order 'diseases.id' }
   has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
   has_many :collaborators, -> { order 'collaborators.id' }
+  has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
+  has_many :users, through: :trial_ownerships
 
   attr_accessor :edit_type
 
