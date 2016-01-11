@@ -34,6 +34,7 @@ class TrialsController < ApplicationController
 
     @trial.created_by = @current_user.username unless @current_user.nil?
     @trial.updated_by = @trial.created_by
+    @trial.central_contacts.create(params[:central_contacts]) # TODO: update
 
     respond_to do |format|
       if @trial.save
@@ -50,6 +51,7 @@ class TrialsController < ApplicationController
   # PATCH/PUT /trials/1.json
   def update
     @trial.updated_by = @current_user.username unless @current_user.nil?
+    @trial.central_contacts.create(params[:central_contacts]) # TODO: update or create ??
 
     respond_to do |format|
       if @trial.update(trial_params)
@@ -297,7 +299,7 @@ class TrialsController < ApplicationController
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                     :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
                                     :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
-                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog,
+                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :central_contacts,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],

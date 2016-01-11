@@ -21,6 +21,7 @@
       vm.deleteOtherIdentifier = deleteOtherIdentifier;
       vm.updateOtherId = updateOtherId;
       vm.isValidPhoneNumber = isValidPhoneNumber;
+      vm.centralContactTypes = {'': 0, 'PI': 1, 'Person': 2, 'General': 3}; // TODO: fetch from server
       vm.leadOrg = []; // TODO: insert it into the trial detail object
       vm.principalInvestigator = []; // TODO:
       vm.sponsors = []; // TODO:
@@ -54,7 +55,7 @@
       /* implementations below */
       function saveGeneralTrialDetails() {
           var outerTrial = {};
-          vm.generalTrialDetailsObj.central_contact = vm.centralContact[0]; // new field
+          vm.generalTrialDetailsObj.central_contacts = vm.centralContact[0]; // new field
           vm.generalTrialDetailsObj.other_ids_attributes = vm.generalTrialDetailsObj.other_ids; // for updating the attributes in Rails
 
           outerTrial.new = false;
@@ -108,7 +109,6 @@
                   id._destroy = id._destroy || false; // default to false if not set
                   return id;
               });
-              console.log('updated trial lock version: ', vm.generalTrialDetailsObj.lock_version);
 
           }, 0);
       } //getTrialDetailCopy
@@ -172,7 +172,6 @@
 
       function watchPISelection() {
         $scope.$watchCollection(function() {return vm.principalInvestigator;}, function(newVal, oldVal) {
-            console.log('new PI: ', newVal);
           if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullName) {
               var firstName = newVal[0].fname || '';
               var middleName = newVal[0].mname || '';
@@ -193,15 +192,15 @@
 
       function watchCentralContact() {
         $scope.$watchCollection(function() {return vm.centralContact;}, function(newVal, oldVal) {
+            console.log('person id: ', newVal[0]);
           if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullName) {
+              vm.centralContact[0] = newVal[0];
               var firstName = newVal[0].fname || '';
               var middleName = newVal[0].mname || '';
               var lastName = newVal[0].lname || '';
               vm.centralContact[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
-
+              vm.centralContact[0].person_id = newVal[0].id;
           }
-          // new field in trial detial object
-          // vm.generalTrialDetailsObj.central_contact = vm.centralContact[0];
         });
       }
 
@@ -213,6 +212,8 @@
             // re-initialize the array of centralContact
             vm.centralContact = [].concat({});
           }
+          vm.centralContact[0].central_contact_type_id = vm.centralContactTypes[vm.centralContactType];
+          console.log('contact type id: ', vm.centralContact[0].central_contact_type_id);
         });
       }
 
