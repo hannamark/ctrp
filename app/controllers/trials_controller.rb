@@ -226,6 +226,10 @@ class TrialsController < ApplicationController
         Rails.logger.info "Science Checkout"
         @trials = @trials.select{|trial| !trial.scientific_checkout.nil?}
       end
+      if params[:checkout].present?
+        Rails.logger.info "Checkout"
+        @trials = @trials.select{|trial| !trial.admin_checkout.nil? || !trial.scientific_checkout.nil?}
+      end
       if  params[:nih_nci_div].present?
         Rails.logger.debug "nci_div selected"
         @trials = @trials.with_nci_div(params[:nih_nci_div]) if params[:nih_nci_div].present?
