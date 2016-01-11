@@ -51,14 +51,7 @@
 
       /* implementations below */
       function saveGeneralTrialDetails() {
-          // update or insert the new fields/values
-          /*
-          vm.generalTrialDetailsObj.sponsor = vm.sponsors[0];
-          vm.generalTrialDetailsObj.pi = vm.principalInvestigator[0];
-          vm.generalTrialDetailsObj.central_contact = vm.centralContact[0];
-          vm.generalTrialDetailsObj.lead_org = vm.leadOrg[0];
-          */
-
+          vm.generalTrialDetailsObj.central_contact = vm.centralContact[0]; // new field
           vm.generalTrialDetailsObj.other_ids_attributes = vm.generalTrialDetailsObj.other_ids; // for updating the attributes in Rails
           TrialService.upsertTrial(vm.generalTrialDetailCtrl).then(function(res) {
               console.log('updated general trial details');
@@ -71,7 +64,9 @@
           vm.sponsors = [];
           vm.centralContact = [];
           vm.centralContactType = '';
-          getTrialDetailCopy();
+          $timeout(function() {
+             getTrialDetailCopy();
+          }, 0);
           // vm.generalTrialDetailsObj = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
       }
 
@@ -82,7 +77,7 @@
       function getTrialDetailCopy() {
           $timeout(function() {
               vm.generalTrialDetailsObj = PATrialService.getCurrentTrialFromCache();
-              console.log('general trialDetailObj: ', vm.generalTrialDetailsObj);
+              // console.log('general trialDetailObj: ', vm.generalTrialDetailsObj);
               vm.leadOrg[0] = vm.generalTrialDetailsObj.lead_org;
               vm.sponsors[0] = vm.generalTrialDetailsObj.sponsor;
               vm.principalInvestigator = [].concat(vm.generalTrialDetailsObj.pi);
@@ -101,6 +96,8 @@
       /**
        * Add other identifier to the trial,
        * This function prevents adding duplicate other identifier
+       *
+       * @return {Void}
        */
       function addOtherIdentifier() {
           // parse to integer
@@ -138,7 +135,6 @@
       }
 
       function updateOtherId(protocolIdVal, index) {
-          console.log('updating other id...');
           if (index < vm.generalTrialDetailsObj.other_ids.length) {
               vm.generalTrialDetailsObj.other_ids[index].protocol_id = protocolIdVal;
           }
@@ -164,7 +160,6 @@
       function watchSponsor() {
           $scope.$watchCollection(function() {return vm.sponsors;}, function(newVal, oldVal) {
              if (angular.isArray(newVal) && newVal.length > 0) {
-                 console.log('new sponsor: ', newVal[0]);
                  vm.generalTrialDetailsObj.sponsor = newVal[0];
              }
           });
@@ -177,8 +172,6 @@
               var middleName = newVal[0].mname || '';
               var lastName = newVal[0].lname || '';
               vm.centralContact[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
-              console.log('central contact is: ', vm.centralContact);
-              vm.generalTrialDetailsObj.central_contact = vm.centralContact[0]; // new field
           }
           // new field in trial detial object
           // vm.generalTrialDetailsObj.central_contact = vm.centralContact[0];
