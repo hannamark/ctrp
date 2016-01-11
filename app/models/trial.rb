@@ -175,6 +175,7 @@ class Trial < ActiveRecord::Base
   has_many :users, through: :trial_ownerships
 
   attr_accessor :edit_type
+  attr_accessor :current_user
 
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
@@ -218,6 +219,7 @@ class Trial < ActiveRecord::Base
   before_save :generate_status
   before_create :save_history
   before_save :check_indicator
+  after_create :create_ownership
 
 
   def set_send_trial_info_flag
@@ -309,6 +311,11 @@ class Trial < ActiveRecord::Base
       ams = ProcessingStatus.find_by_code('AMS')
       ProcessingStatusWrapper.create(status_date: Date.today, processing_status: ams, trial: self, submission: latest_submission)
     end
+  end
+
+  def create_ownership
+    # New Trial Ownership
+    TrialOwnership.create(trial: self, user: self.current_user)
   end
 
   def save_history
