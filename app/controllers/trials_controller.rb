@@ -217,17 +217,17 @@ class TrialsController < ApplicationController
         @trials = @trials.select{|trial| trial.other_ids.by_value(params[:protocol_origin_type]).size>0}
       end
       if params[:admin_checkout].present?
-        Rails.logger.info "Admin Checkout"
+        Rails.logger.info "Admin Checkout Only selected"
         @trials = @trials.select{|trial| !trial.admin_checkout.nil?}
       else
-        Rails.logger.info "NO Admin Checkout"
+        Rails.logger.info "Only Admin Checkout parameter not selected"
       end
       if params[:scientific_checkout].present?
-        Rails.logger.info "Science Checkout"
+        Rails.logger.info "Science Checkout Only selected"
         @trials = @trials.select{|trial| !trial.scientific_checkout.nil?}
       end
       if params[:checkout].present?
-        Rails.logger.info "Checkout"
+        Rails.logger.info "Trial checkout by me selected"
         @trials = @trials.select{|trial| !trial.admin_checkout.nil? || !trial.scientific_checkout.nil?}
       end
       if  params[:nih_nci_div].present?
@@ -247,6 +247,13 @@ class TrialsController < ApplicationController
         submission_method = SubmissionMethod.find_by_code(params[:submission_method])
         Rails.logger.info "submission_method = #{submission_method.inspect}"
         @trials = @trials.select{|trial| !trial.submissions.blank? &&  trial.submissions.last.submission_method == submission_method}
+      end
+      if params[:onhold].present?
+        Rails.logger.info "Trials onhold selected"
+        onhold_status = ProcessingStatus.find_by_name("On-Hold")
+        unless onhold_status.nil?
+          @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && trial.processing_status_wrappers.last.processing_status == onhold_status}
+        end
       end
     else
       @trials = []

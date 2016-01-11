@@ -80,6 +80,13 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="onhold" class="control-label col-xs-12 col-sm-3">Trials on Hold: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <input type="checkbox" id="onhold" ng-model="trialView.searchParams.onhold">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="purpose" class="control-label col-xs-12 col-sm-3">Submission Type: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <select class="form-control input-sm" id="submissionType" ng-model="trialView.searchParams.submission_type">
