@@ -153,6 +153,7 @@ end
           post 'validate_status'
           get  'get_grants_serialnumber'
           post 'get_grants_serialnumber'
+          get  'get_central_contact_types'
         end
       end
 

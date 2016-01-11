@@ -505,6 +505,13 @@ grant26 = Tempgrants.find_or_create_by(serial_number:150295 , institution_name: 
 grant27 = Tempgrants.find_or_create_by(serial_number: 97131, institution_name:'UNIVERSITY OF WISCONSIN-MADISON', project_title: 'Modulation of IGF-II Imprinting in the Aging Prostate' ,funding_mechanism: 'R01', institute_code: 'CA')
 
 
+## Central Contact Types
+contact_type1 = CentralContactType.find_or_create_by(code: 'NONE', name: 'None')
+contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
+contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
+contact_type4 = CentralContactType.find_or_create_by(code: 'NON', name: 'General')
+
+
 ## Trials
 ## Delete existing Trial data
 if Trial.all.size == 0
