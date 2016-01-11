@@ -14,6 +14,12 @@
                     templateUrl: 'app/pa/dashboard/abstraction/admin/general_trial_details.html',
                     controller: 'generalTrialDetailsCtrl as generalTrialDetailView',
                     section: 'pa',
+                    resolve: {
+                        TrialService: 'TrialService',
+                        protocolIdOriginObj: function(TrialService) {
+                            return TrialService.getProtocolIdOrigins();
+                        }
+                    },
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
                         label: 'General Details'
@@ -40,7 +46,7 @@
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
-                    label: 'Regulatory Details'
+                    label: 'Regulatory FDA Details'
                 }
             })
             .state('main.pa.trialOverview.regulatoryInd', {
@@ -63,7 +69,34 @@
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
-                    label: 'Regulatory Details'
+                    label: 'Regulatory IND/IDE Details'
+                }
+            })
+
+            .state('main.pa.trialOverview.funding', {
+                url: '/funding',
+                templateUrl: 'app/pa/dashboard/abstraction/admin/trial_funding.html',
+                controller: 'trialFundingCtrl as trialDetailView',
+                section: 'pa',
+                resolve: {
+                    TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    nciObj: function(TrialService) {
+                        return TrialService.getNci();
+                    },
+                    instituteCodeObj: function(TrialService) {
+                        return TrialService.getInstituteCodes();
+                    },
+                    fundingMechanismObj: function(TrialService) {
+                        return TrialService.getFundingMechanisms();
+                    },
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Funding Details'
                 }
             })
 

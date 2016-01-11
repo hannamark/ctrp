@@ -10,10 +10,10 @@
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
         '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES',
-        '$scope', 'TrialService', 'UserService', 'curTrial'];
+        '$scope', 'TrialService', 'UserService', 'curTrial', '_'];
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES,
-            $scope, TrialService, UserService, curTrial) {
+            $scope, TrialService, UserService, curTrial, _) {
 
         var vm = this;
         vm.accordionOpen = true; //default open accordion
@@ -72,6 +72,19 @@
             delete vm.trialDetailObj.server_response;
             vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
+
+            if (!vm.trialDetailObj.pi.fullName) {
+                var firstName = vm.trialDetailObj.pi.fname || '';
+                var middleName = vm.trialDetailObj.pi.mname || '';
+                var lastName = vm.trialDetailObj.pi.lname || '';
+                vm.trialDetailObj.pi.fullName = firstName + ' ' + middleName + ' ' + lastName;
+            }
+            // sort the submissions by DESC submission_num
+            vm.trialDetailObj.submissions = _.sortBy(vm.trialDetailObj.submissions, function(s) {
+                return -s.submission_num; // DESC order
+            });
+            // extract the submitter for the last submission
+            vm.trialDetailObj.submitter = vm.trialDetailObj.submissions[0].submitter || '';
 
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
