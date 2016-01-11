@@ -176,14 +176,20 @@
           <!-- fieldset for Spnsor -->
           <fieldset class="sub-bordered">
             <legend class="sub-bordered">Sponsor</legend>
-            <div class="form-group">
+            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.sponsor)}">
               <label for="sponsor" class="control-label col-xs-12 col-sm-2">Sponsor</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="sponsor" name="sponsor" disabled class="form-control" placeholder="Sponsor">
+                  <input type="text" id="sponsor" name="sponsor" ng-model="generalTrialDetailView.sponsors[0].name" disabled class="form-control" placeholder="Sponsor" required>
+                  <!-- <input type="text" id="sponsor" name="sponsor" disabled class="form-control" placeholder="Sponsor"> -->
+                  <span class="form-control-feedback" ng-show="generalTrialDetailView.sponsors.length == 0" ng-class="general_trial_details_form.sponsor.$dirty &&
+                      !ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.sponsor) ?
+                      'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                  <span class="help-block" ng-show="general_trial_details_form.sponsor.$dirty && general_trial_details_form.sponsor.$error.required">Sponsor is Required</span>
                 </div>
                 <div class="col-xs-12 col-sm-6">
-                  <button class="btn btn-primary">Look Up Sponsor</button>
+                  <!-- <button class="btn btn-primary">Look Up Sponsor</button> -->
+                  <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.sponsors"></ctrp-org-adv-search-modal-button>
                 </div>
               </div>
             </div>
@@ -213,10 +219,13 @@
             </div>
             <div ng-hide="generalTrialDetailView.centralContactType == ''">
               <div class="form-group">
-                <label for="generic_contact" class="control-label col-xs-12 col-sm-2">Central Contact</label>
+                <label for="central_contact" class="control-label col-xs-12 col-sm-2">Central Contact</label>
                 <div class="col-xs-12 col-sm-10">
                   <div class="col-xs-12 col-sm-6">
-                    <input type="text" id="generic_contact" name="generic_contact" ng-disabled="generalTrialDetailView.centralContactType != 'General'" class="form-control" ng-model="generalTrialDetailView.centralContact[0].fullName" placeholder="Central Contact">
+                    <input type="text" id="central_contact" name="central_contact" placeholder="Central Contact"
+                        ng-disabled="generalTrialDetailView.centralContactType != 'General'"
+                        class="form-control" ng-model="generalTrialDetailView.centralContact[0].fullName"
+                        >
                   </div>
                   <div class="col-xs-12 col-sm-6" ng-show="generalTrialDetailView.centralContactType == 'Person'">
                     <!-- <button class="btn btn-primary">Look Up Person</button> -->
@@ -244,17 +253,16 @@
                   </div>
                 </div>
               </div>
-
             </div>
           </fieldset>
 
           <div class="form-group no-bottom-margin">
             <div class="col-sm-3"></div>
             <div class="btn-toolbar col-xs-12 col-sm-9">
-              <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field>
+              <button type="submit" class="btn btn-primary pull-right" id="save_btn" ng-click="generalTrialDetailView.saveUpdate()" restriction-field>
                 <i class="glyphicon glyphicon-ok"></i>  Save
               </button>
-              <button type="button" class="btn btn-warning pull-right" id="cancel_btn" restriction-field>
+              <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="generalTrialDetialView.cancelUpdate()" restriction-field>
                <i class="glyphicon glyphicon-remove"></i>  Cancel
               </button>
             </div>
