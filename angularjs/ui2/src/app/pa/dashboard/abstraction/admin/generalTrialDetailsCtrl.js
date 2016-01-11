@@ -13,6 +13,7 @@
     function generalTrialDetailsCtrl($scope, TrialService, PATrialService,
         MESSAGES, protocolIdOriginObj, _, $timeout) {
       var vm = this;
+      var _defaultCountry = 'United States'; // for phone number validation
       vm.generalTrialDetailsObj = {};
       vm.saveGeneralTrialDetails = saveGeneralTrialDetails;
       vm.resetGeneralTrialDetails = resetGeneralTrialDetails;
@@ -173,6 +174,7 @@
               var middleName = newVal[0].mname || '';
               var lastName = newVal[0].lname || '';
               vm.centralContact[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
+
           }
           // new field in trial detial object
           // vm.generalTrialDetailsObj.central_contact = vm.centralContact[0];
@@ -191,9 +193,7 @@
       }
 
       function isValidPhoneNumber() {
-          console.log('is valid number: ', vm.centralContact[0].phone);
-          console.log(isValidNumberPO(vm.centralContact[0].phone, 'United States'));
-          vm.isPhoneValid = isValidNumberPO(vm.centralContact[0].phone, 'United States');
+          vm.isPhoneValid = isValidNumberPO(vm.centralContact[0].phone, _defaultCountry);
       }
 
       /**
@@ -201,6 +201,11 @@
       */
       function _usePIAsCentralContact() {
         vm.centralContact = [].concat(angular.copy(vm.principalInvestigator));
+        var regex = new RegExp('-', 'g');
+        vm.centralContact[0].phone = vm.centralContact[0].phone.replace(regex, '');
+        vm.isPhoneValid = true;
+
+
       }
 
     } //generalTrialDetailCtrl
