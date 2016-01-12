@@ -78,7 +78,16 @@
                                 </select>
                             </div>
                         </div>
-
+                        
+                        <div class="form-group">
+                            <label for="purpose" class="control-label col-xs-12 col-sm-3">NIH/NCI Div/Dept Identifier: </label>
+                            <div class="col-xs-12 col-sm-9">
+                                <select class="form-control input-sm" id="nih_nci_div" ng-model="trialView.searchParams.nih_nci_div">
+                                    <option value="">-Select a NIH/NCI Div/Dept -</option>
+                                    <option ng-repeat="nd in trialView.nciDivArr" value="{{nd.code}}">{{nd.code}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
 
@@ -141,16 +150,6 @@
                                 <select class="form-control input-sm" id="research_category" ng-model="trialView.searchParams.research_category">
                                     <option value="">-Select a Research Category -</option>
                                     <option ng-repeat="rc in trialView.researchCategoriesArr" value="{{rc.code}}">{{rc.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="purpose" class="control-label col-xs-12 col-sm-3">NIH/NCI Div/Dept Identifier: </label>
-                            <div class="col-xs-12 col-sm-9">
-                                <select class="form-control input-sm" id="nih_nci_div" ng-model="trialView.searchParams.nih_nci_div">
-                                    <option value="">-Select a NIH/NCI Div/Dept -</option>
-                                    <option ng-repeat="nd in trialView.nciDivArr" value="{{nd.code}}">{{nd.code}}</option>
                                 </select>
                             </div>
                         </div>

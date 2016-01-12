@@ -459,6 +459,7 @@ body {
 
 .sidebar {
     margin-left: -20px;
+    padding:5px
 }
 
 .sidebar .panel-heading {
@@ -482,6 +483,10 @@ form {
 
 .control-label {
     color: #444;
+}
+
+.control-label.left {
+    text-align:left;
 }
 
 .form-control  {

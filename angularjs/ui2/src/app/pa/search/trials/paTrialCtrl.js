@@ -8,8 +8,8 @@
     angular.module('ctrp.app.pa').controller('paTrialCtrl', paTrialCtrl);
 
     paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal',
-                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'
-    ,'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj', 'nciProgObj'];
+                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj',
+                         'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj', 'nciProgObj'];
 
     function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal,
                          studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
@@ -33,11 +33,11 @@
 
         //ui-grid plugin options
         vm.gridOptions = PATrialService.getGridOptions();
-        vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-        vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+        //vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
+        //vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
         vm.gridOptions.onRegisterApi = function(gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
+            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
                 vm.searchParams.start = newPage;
                 vm.searchParams.rows = pageSize;
@@ -77,7 +77,7 @@
         /****************************** implementations **************************/
 
         function activate() {
-            if (fromStateName != 'main.pa.trialOverview') {
+            if (fromStateName !== 'main.pa.trialOverview') {
                 vm.resetSearch();
             } else {
                 vm.searchTrials(); //refresh search results
@@ -90,8 +90,8 @@
          * @param sortColumns
          */
         function sortChangedCallBack(grid, sortColumns) {
-            if (sortColumns.length == 0) {
-                console.log("removing sorting");
+            if (sortColumns.length === 0) {
+                console.log('removing sorting');
                 //remove sorting
                 vm.searchParams.sort = '';
                 vm.searchParams.order = '';
@@ -111,6 +111,6 @@
 
             //do the search with the updated sorting
             vm.searchTrials();
-        }; //sortChangedCallBack
+        } //sortChangedCallBack
     }
 })();

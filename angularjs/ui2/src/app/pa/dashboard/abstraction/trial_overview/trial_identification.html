@@ -59,25 +59,25 @@
 
             <!-- second row in the accordion body -->
             <div class="row">
-                <div class="col-xs-12 pull-left">
-                    <form name="abstraction_form" class="form" role="form" novalidate>
+                <form name="abstraction_form" class="form form-horizontal" role="form" novalidate>
+                    <div class="col-xs-12">
                         <!-- first form-group -->
                         <div class="form-group">
-                            <label for="processing_priority" class="control-label col-xs-12 col-sm-3">Processing Priority:</label>
-                            <div class="input-group col-xs-12 col-sm-4">
+                            <label for="processing_priority" class="control-label left col-xs-12 col-sm-2">Processing Priority:</label>
+                            <div class="col-xs-12 col-sm-4">
                                 <select name="priority_selection" id="processing_priority" class="form-control input-sm" ng-model="trialIdView.trialProcessingObj.priority">
                                     <option value="1 - High">1 - High</option>
                                     <option value="2 - Normal">2 - Normal</option>
                                     <option value="3 - Low">3 - Low</option>
                                 </select>
                             </div>
-                            <div class="col-sm-offset-4"></div>
+                            <div class="col-xs-12 col-sm-6"></div>
                         </div>
                         <!-- end of first form-group -->
 
                         <!-- second form-group -->
-                        <div class="form-group">
-                            <label for="trial_processing_comment" class="col-xs-12">Trial Processing Comments <small>(maximum: 4,000 characters)</small>:</label>
+                        <div class="form-group pull-left">
+                            <label for="trial_processing_comment" class="control-label col-xs-12">Trial Processing Comments <small>(maximum: 4,000 characters)</small>:</label>
                         </div>
                         <!-- end of second form-group -->
 
@@ -97,8 +97,8 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </uib-accordion-group>
     </uib-accordion>
