@@ -26,14 +26,11 @@ class TrialsController < ApplicationController
   # POST /trials
   # POST /trials.json
   def create
-    puts "*************"
-    puts params
-    puts "*************"
-
     @trial = Trial.new(trial_params)
 
     @trial.created_by = @current_user.username unless @current_user.nil?
     @trial.updated_by = @trial.created_by
+    @trial.current_user = @current_user
 
     respond_to do |format|
       if @trial.save
@@ -50,6 +47,7 @@ class TrialsController < ApplicationController
   # PATCH/PUT /trials/1.json
   def update
     @trial.updated_by = @current_user.username unless @current_user.nil?
+    @trial.current_user = @current_user
 
     respond_to do |format|
       if @trial.update(trial_params)

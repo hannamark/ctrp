@@ -171,8 +171,11 @@ class Trial < ActiveRecord::Base
   has_many :diseases, -> { order 'diseases.id' }
   has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
   has_many :collaborators, -> { order 'collaborators.id' }
+  has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
+  has_many :users, through: :trial_ownerships
 
   attr_accessor :edit_type
+  attr_accessor :current_user
 
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
@@ -216,6 +219,7 @@ class Trial < ActiveRecord::Base
   before_save :generate_status
   before_create :save_history
   before_save :check_indicator
+  after_create :create_ownership
 
 
   def set_send_trial_info_flag
@@ -279,7 +283,7 @@ class Trial < ActiveRecord::Base
 
       # New Submission
       ori = SubmissionType.find_by_code('ORI')
-      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, submission_type: ori)
+      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori)
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
@@ -292,13 +296,14 @@ class Trial < ActiveRecord::Base
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       new_sub_number = largest_sub_num.present? ? largest_sub_num + 1 : 1
       upd = SubmissionType.find_by_code('UPD')
-      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, submission_type: upd)
+      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, user: self.current_user, submission_type: upd)
     elsif self.edit_type == 'amend'
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       amd = SubmissionType.find_by_code('AMD')
       latest_submission = self.submissions.last
       latest_submission.submission_num = largest_sub_num.present? ? largest_sub_num + 1 : 1
+      latest_submission.user = self.current_user
       latest_submission.submission_type = amd
 
       srd = Milestone.find_by_code('SRD')
@@ -307,6 +312,11 @@ class Trial < ActiveRecord::Base
       ams = ProcessingStatus.find_by_code('AMS')
       ProcessingStatusWrapper.create(status_date: Date.today, processing_status: ams, trial: self, submission: latest_submission)
     end
+  end
+
+  def create_ownership
+    # New Trial Ownership
+    TrialOwnership.create(trial: self, user: self.current_user)
   end
 
   def save_history
