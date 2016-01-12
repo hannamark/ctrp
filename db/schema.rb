@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160111192227) do
+ActiveRecord::Schema.define(version: 20160112162106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -898,8 +898,9 @@ ActiveRecord::Schema.define(version: 20160111192227) do
     t.string   "project_title"
     t.string   "funding_mechanism"
     t.string   "institute_code"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "pi_full_name",      limit: 255
   end
 
   add_index "tempgrants", ["funding_mechanism"], name: "index_tempgrants_on_funding_mechanism", using: :btree
