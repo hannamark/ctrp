@@ -10,6 +10,7 @@
 #  institute_code    :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  pi_full_name      :string(255)
 #
 # Indexes
 #
