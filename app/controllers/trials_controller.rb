@@ -253,6 +253,15 @@ class TrialsController < ApplicationController
           @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && trial.processing_status_wrappers.last.processing_status == onhold_status}
         end
       end
+      if params[:myTrials].present?
+        Rails.logger.info "myTrials selected"
+        my_organization = @current_user.organization
+        #@trial = @trials.select{|trial| !trial.lead_.blank? && trial.organization == my_organization}
+        unless my_organization.nil?
+          Rails.logger.info "@currrent_user organization = #{@current_user.organization.inspect}"
+          @trials = @trials.with_lead_org(my_organization.name)
+        end
+      end
     else
       @trials = []
     end

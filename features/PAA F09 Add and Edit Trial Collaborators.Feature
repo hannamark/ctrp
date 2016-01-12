@@ -43,6 +43,6 @@ Then the information entered or edited on the Trial Collaborators screen will be
 Scenario: #5 Cancel Trial Collaborators
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Collaborators screen
-When select Cancel Collaborator
+When I select Reset Collaborator
 Then the information entered or edited on the Collaborators screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data

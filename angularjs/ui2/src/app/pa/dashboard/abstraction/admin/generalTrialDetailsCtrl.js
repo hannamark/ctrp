@@ -13,16 +13,19 @@
     function generalTrialDetailsCtrl($scope, TrialService, PATrialService,
         MESSAGES, protocolIdOriginObj, _, $timeout) {
       var vm = this;
+      var _defaultCountry = 'United States'; // for phone number validation
       vm.generalTrialDetailsObj = {};
       vm.saveGeneralTrialDetails = saveGeneralTrialDetails;
       vm.resetGeneralTrialDetails = resetGeneralTrialDetails;
       vm.addOtherIdentifier = addOtherIdentifier;
       vm.deleteOtherIdentifier = deleteOtherIdentifier;
       vm.updateOtherId = updateOtherId;
+      vm.isValidPhoneNumber = isValidPhoneNumber;
+      vm.centralContactTypes = {'': 0, 'PI': 1, 'Person': 2, 'General': 3}; // TODO: fetch from server
       vm.leadOrg = []; // TODO: insert it into the trial detail object
-      vm.principalInvestigator = [] // TODO:
+      vm.principalInvestigator = []; // TODO:
       vm.sponsors = []; // TODO:
-      vm.centralContact = []; // TODO:
+      vm.centralContact = [];
       vm.centralContactType = '';
       // vm.centralContactTypes = [{id: 0, 'None'}, {id: 1, 'PI'}, {id: 2, 'Person'}, {id: 3, 'General'}];
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
@@ -33,9 +36,11 @@
       function activate() {
           getTrialDetailCopy();
           watchTrialDetailObj();
+          watchLeadOrg();
           watchPISelection();
           watchCentralContactType();
           watchCentralContact();
+          watchSponsor();
       }
 
       /**
@@ -49,14 +54,40 @@
 
       /* implementations below */
       function saveGeneralTrialDetails() {
+          var outerTrial = {};
+          vm.generalTrialDetailsObj.central_contacts = vm.centralContact[0]; // new field
           vm.generalTrialDetailsObj.other_ids_attributes = vm.generalTrialDetailsObj.other_ids; // for updating the attributes in Rails
-          TrialService.upsertTrial(vm.generalTrialDetailCtrl).then(function(res) {
-              console.log('updated general trial details');
+
+          outerTrial.new = false;
+          outerTrial.id = vm.generalTrialDetailsObj.id;
+          outerTrial.trial = vm.generalTrialDetailsObj;
+
+          TrialService.upsertTrial(outerTrial).then(function(res) {
+              console.log('central_contact: ', vm.generalTrialDetailsObj.central_contact);
+              console.log('updated general trial details: ', res);
+              vm.generalTrialDetailsObj.lock_version = res.lock_version;
+              // update the general trial details obj with server response
+              /*
+              Object.keys(res).forEach(function(key) {
+                 if (!vm.generalTrialDetailsObj.hasOwnProperty(key)) {
+                     vm.generalTrialDetailsObj[key] = res[key];
+                 }
+              });
+              */
+              PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
+              $scope.$emit('updatedInChildScope', {});
           });
       }
 
       function resetGeneralTrialDetails() {
-          getTrialDetailCopy();
+          vm.leadOrg = [];
+          vm.principalInvestigator = [];
+          vm.sponsors = [];
+          vm.centralContact = [];
+          vm.centralContactType = '';
+          $timeout(function() {
+             getTrialDetailCopy();
+          }, 0);
           // vm.generalTrialDetailsObj = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
       }
 
@@ -66,9 +97,11 @@
        */
       function getTrialDetailCopy() {
           $timeout(function() {
-              vm.generalTrialDetailsObj = PATrialService.getCurrentTrialFromCache(); // angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
+              vm.generalTrialDetailsObj = PATrialService.getCurrentTrialFromCache();
+              // console.log('general trialDetailObj: ', vm.generalTrialDetailsObj);
               vm.leadOrg[0] = vm.generalTrialDetailsObj.lead_org;
-              vm.principalInvestigator = [vm.generalTrialDetailsObj.pi];
+              vm.sponsors[0] = vm.generalTrialDetailsObj.sponsor;
+              vm.principalInvestigator = [].concat(vm.generalTrialDetailsObj.pi);
               // transform the other_ids array
               vm.generalTrialDetailsObj.other_ids = _.map(vm.generalTrialDetailsObj.other_ids, function(id, idx) {
                   var otherIdentifierNameObj = _.findWhere(vm.protocolIdOriginArr, {id: id.protocol_id_origin_id});
@@ -84,6 +117,8 @@
       /**
        * Add other identifier to the trial,
        * This function prevents adding duplicate other identifier
+       *
+       * @return {Void}
        */
       function addOtherIdentifier() {
           // parse to integer
@@ -121,51 +156,84 @@
       }
 
       function updateOtherId(protocolIdVal, index) {
-          console.log('updating other id...');
           if (index < vm.generalTrialDetailsObj.other_ids.length) {
               vm.generalTrialDetailsObj.other_ids[index].protocol_id = protocolIdVal;
           }
       }
 
-      function watchPISelection() {
-        $scope.$watchCollection(function() {return vm.principalInvestigator;}, function(newVal, oldVal) {
-          if (angular.isArray(newVal) && newVal.length > 0) {
-            vm.generalTrialDetailsObj.pi = newVal[0];
-          }
-        });
+      function watchLeadOrg() {
+          $scope.$watchCollection(function() {return vm.leadOrg;}, function(newVal, oldVal) {
+             if (angular.isArray(newVal) && newVal.length > 0) {
+                 // console.log('new lead org: ', newVal[0]);
+                 vm.generalTrialDetailsObj.lead_org = newVal[0];
+                 vm.generalTrialDetailsObj.lead_org_id = newVal[0].id; // update lead organization
+             }
+          });
       }
 
-      function watchCentralContact() {
-        $scope.$watchCollection(function() {return vm.centralContact;}, function(newVal, oldVal) {
+      function watchPISelection() {
+        $scope.$watchCollection(function() {return vm.principalInvestigator;}, function(newVal, oldVal) {
           if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullName) {
               var firstName = newVal[0].fname || '';
               var middleName = newVal[0].mname || '';
               var lastName = newVal[0].lname || '';
-              vm.centralContact[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
+              vm.principalInvestigator[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
+              vm.generalTrialDetailsObj.pi = vm.principalInvestigator[0];
+              vm.generalTrialDetailsObj.pi_id = vm.principalInvestigator[0].id; // update PI
           }
-          // new field in trial detial object
-          vm.generalTrialDetailsObj.central_contact = vm.centralContact[0];
         });
       }
 
+      function watchSponsor() {
+          $scope.$watchCollection(function() {return vm.sponsors;}, function(newVal, oldVal) {
+             if (angular.isArray(newVal) && newVal.length > 0) {
+                 vm.generalTrialDetailsObj.sponsor = newVal[0];
+                 vm.generalTrialDetailsObj.sponsor_id = newVal[0].id; // update sponsor
+             }
+          });
+      }
+
+      function watchCentralContact() {
+        $scope.$watchCollection(function() {return vm.centralContact;}, function(newVal, oldVal) {
+            console.log('person id: ', newVal[0]);
+          if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullName) {
+              vm.centralContact[0] = newVal[0];
+              var firstName = newVal[0].fname || '';
+              var middleName = newVal[0].mname || '';
+              var lastName = newVal[0].lname || '';
+              vm.centralContact[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
+              vm.centralContact[0].person_id = newVal[0].id;
+          }
+        });
+      }
 
       function watchCentralContactType() {
         $scope.$watch(function() { return vm.centralContactType;}, function(newVal, oldVal) {
           if (newVal === 'PI') {
-            usePIAsCentralContact();
+            _usePIAsCentralContact();
           } else {
             // re-initialize the array of centralContact
-            vm.centralContact = [{}];
+            vm.centralContact = [].concat({});
           }
+          vm.centralContact[0].central_contact_type_id = vm.centralContactTypes[vm.centralContactType];
+          console.log('contact type id: ', vm.centralContact[0].central_contact_type_id);
         });
       }
 
+      function isValidPhoneNumber() {
+          vm.isPhoneValid = isValidNumberPO(vm.centralContact[0].phone, _defaultCountry);
+      }
 
       /**
       * Use the Trial's PI as the central contact      *
       */
-      function usePIAsCentralContact() {
+      function _usePIAsCentralContact() {
         vm.centralContact = [].concat(angular.copy(vm.principalInvestigator));
+        var regex = new RegExp('-', 'g');
+        vm.centralContact[0].phone = vm.centralContact[0].phone.replace(regex, '');
+        vm.isPhoneValid = true;
+
+
       }
 
     } //generalTrialDetailCtrl

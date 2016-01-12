@@ -474,13 +474,11 @@ grant2 = Tempgrants.find_or_create_by(serial_number:134759 , institution_name:'U
 grant3 = Tempgrants.find_or_create_by(serial_number:142845 , institution_name: 'MEHARRY MEDICAL COLLEGE', project_title:'Mechanisms for Benzo(a)pyrene-Induced Colon Cancer Exacerbation by Dietary Fat' ,funding_mechanism: 'R01', institute_code: 'CA')
 grant4 = Tempgrants.find_or_create_by(serial_number:133230 , institution_name: 'VANDERBILT UNIVERSITY', project_title:'The alpha2beta1 Integrin and Tumor Metastasis' ,funding_mechanism: 'R01', institute_code: 'CA')
 
-grant5 = Tempgrants.find_or_create_by(serial_number:136472 , institution_name: 'UNIVERSITY OF MINNESOTA', project_title:'NMR Structural Studies of Ubiquitin Receptor Protein Complexes' ,funding_mechanism: 'R01', institute_code: 'CA')
-
 grant6 = Tempgrants.find_or_create_by(serial_number:136921 , institution_name: 'UNIVERSITY OF NEBRASKA MEDICAL CENTER', project_title:'NMR Structural Studies of Ubiquitin Receptor Protein Complexes' ,funding_mechanism: 'R01', institute_code: 'CA')
 grant7 = Tempgrants.find_or_create_by(serial_number:128837 , institution_name: 'MEDICAL UNIVERSITY OF SOUTH CAROLINA', project_title:'Immunotherapy to prevent oral permalignant lesion recurrence and oral cancer.' ,funding_mechanism: 'R01', institute_code: 'CA')
 
 grant8 = Tempgrants.find_or_create_by(serial_number:129687 , institution_name: 'EMORY UNIVERSITY', project_title:'Molecular mechanisms of TRAIL resistance in glioblastoma' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant9 = Tempgrants.find_or_create_by(serial_number:136472 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'REST/NRSF-mediated medulloblastoma tumorigenesis' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant9 = Tempgrants.find_or_create_by(serial_number:136491 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'REST/NRSF-mediated medulloblastoma tumorigenesis' ,funding_mechanism: 'R01', institute_code: 'CA')
 
 grant10 = Tempgrants.find_or_create_by(serial_number:132840 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'Function of REV3L in limiting oncogenesis via DNA damage tolerance' ,funding_mechanism: 'R01', institute_code: 'CA')
 grant11 = Tempgrants.find_or_create_by(serial_number:138410 , institution_name: 'UNIVERSITY OF LOUISVILLE', project_title:'Regulation of miRNA in breast cancer' ,funding_mechanism: 'R01', institute_code: 'CA')
@@ -505,6 +503,13 @@ grant24 = Tempgrants.find_or_create_by(serial_number:131080 , institution_name: 
 grant25 = Tempgrants.find_or_create_by(serial_number:153978 , institution_name: 'MASSACHUSETTS GENERAL HOSPITAL', project_title:'Proliferation-promoting activities of pRB' ,funding_mechanism: 'F32', institute_code: 'CA')
 grant26 = Tempgrants.find_or_create_by(serial_number:150295 , institution_name: 'COLD SPRING HARBOR LABORATORY', project_title:'2010 Cold Spring Harbor Laboratory Conference on Systems Biology: Global Regulati' ,funding_mechanism: 'R13', institute_code: 'CA')
 grant27 = Tempgrants.find_or_create_by(serial_number: 97131, institution_name:'UNIVERSITY OF WISCONSIN-MADISON', project_title: 'Modulation of IGF-II Imprinting in the Aging Prostate' ,funding_mechanism: 'R01', institute_code: 'CA')
+
+
+## Central Contact Types
+contact_type1 = CentralContactType.find_or_create_by(code: 'NONE', name: 'None')
+contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
+contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
+contact_type4 = CentralContactType.find_or_create_by(code: 'NON', name: 'General')
 
 
 ## Trials

@@ -97,7 +97,7 @@ Then the information entered or edited on the General Trails Details screen will
 Scenario: #12 Cancel General Trials Details information
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
-When select Cancel
+When select Reset
 Then the information entered or edited on the General Trails Details screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
