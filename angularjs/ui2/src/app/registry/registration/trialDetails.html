@@ -434,10 +434,10 @@
                                                                          refresh-delay="0">
                                                         <div ng-bind-html="tempgrant.serial_number | highlight: $select.search"></div>
                                                             <small>
-                                                                <strong>Serial Number:</strong> {{tempgrant.serial_number}} <br />
+                                                                <!-- <strong>Serial Number:</strong> {{tempgrant.serial_number}} <br /> -->
                                                                 <strong>Organization:</strong> {{tempgrant.institution_name}} <br />
-                                                                <strong>Project Title:</strong> {{tempgrant.project_title}}
-                                                                <!-- <span ng-bind-html="'<br />' +tempgrant.project_title | highlight: $select.search"></span> -->
+                                                                <strong>Project Title:</strong> {{tempgrant.project_title}} <br />
+                                                                <strong>PI:</strong> {{tempgrant.pi_full_name}}
                                                             </small>
                                                       </ui-select-choices>
                                                     </ui-select>
