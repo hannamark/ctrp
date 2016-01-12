@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PAA F03 Add and Edit Regulatory Information
 
 As any CTRP PA User, I can add and edit Regulatory Information (FDAAA)
@@ -41,9 +41,11 @@ And I am on the Trial Regulatory Information screen
 When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
 And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
 And the FDA Regulated Intervention Indicator will be defaulted to the "N/A" setting
-And I have the option to change the defaulted "NA" setting to either "yes" or "No"for FDA Regulated Intervention Indicator
-And I have selected "Yes", "No", "NA" for Section 801 Indicator
-And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
+And the Section 801 Indicator will be defaulted to the "N/A" setting
+And the Data Monitoring Committee Appointed Indicator will be defaulted to the "N/A" setting
+And I can select "yes", "No", "NA" FDA Regulated Intervention Indicator
+And I can select "Yes", "No", "NA" for Section 801 Indicator
+And I can select "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
 Then the required Regulatory Information for the trial will be associated with the trial
 
 
@@ -63,7 +65,7 @@ And I am on the Trial Regulatory Information screen
 When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
 And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
 And I have selected "Yes" for FDA Regulated Intervention Indicator
-Then I can select "Yes" or "No" for Section 801 Indicator
+Then I have the option to select "Yes", "No" for Section 801 Indicator
 
 Scenario: #8 Save Regulatory Information
 Given I am logged into the CTRP Protocol Abstraction application
@@ -74,7 +76,7 @@ Then the information entered or edited on the Regulatory Information screen will
 Scenario: #9 Cancel Regulatory Information
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Register Trial Regulatory Information screen
-When select Cancel
+When I select Reset 
 Then the information entered or edited on the Regulatory Information screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
