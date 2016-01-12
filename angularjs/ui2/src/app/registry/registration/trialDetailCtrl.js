@@ -236,8 +236,8 @@
 
             if (vm.funding_mechanism && vm.institute_code) {
                 var queryObj = {
-                    funding_mechanism: 'R01', //vm.funding_mechanism,
-                    institute_code: 'CA', // vm.institute_code,
+                    funding_mechanism: vm.funding_mechanism,
+                    institute_code: vm.institute_code,
                     serial_number: serial_number
                 };
                 return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
