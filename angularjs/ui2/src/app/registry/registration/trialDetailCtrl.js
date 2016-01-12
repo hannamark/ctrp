@@ -244,7 +244,6 @@
                     var transformedGrantsObjs = [];
                     var unique = [];
 
-                    console.log('tempgrants: ' + JSON.stringify(res.tempgrants));
                     vm.grantsInputs.grantResults = res.tempgrants;
                     /*
                     transformedGrantsObjs = res.tempgrants.map(function (tempgrant) {
