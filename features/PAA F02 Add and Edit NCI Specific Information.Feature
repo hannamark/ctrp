@@ -69,7 +69,7 @@ Then the information entered or edited on the NCI Specific Information screen wi
 Scenario: #10 Cancel NCI Specific Information 
 Given I have selected a trial to abstract 
 And I am on the NCI Specific Information screen
-When select Cancel
+When I select Reset
 Then the information entered or edited on the NCI Specific Information screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
