@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160112162106) do
+ActiveRecord::Schema.define(version: 20160112221045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -995,24 +995,24 @@ ActiveRecord::Schema.define(version: 20160112162106) do
   end
 
   create_table "trials", force: :cascade do |t|
-    t.string   "nci_id",                   limit: 255
-    t.string   "lead_protocol_id",         limit: 255
+    t.string   "nci_id",                        limit: 255
+    t.string   "lead_protocol_id",              limit: 255
     t.text     "official_title"
-    t.string   "pilot",                    limit: 255
-    t.string   "primary_purpose_other",    limit: 255
-    t.string   "secondary_purpose_other",  limit: 255
-    t.string   "program_code",             limit: 255
-    t.string   "grant_question",           limit: 255
+    t.string   "pilot",                         limit: 255
+    t.string   "primary_purpose_other",         limit: 255
+    t.string   "secondary_purpose_other",       limit: 255
+    t.string   "program_code",                  limit: 255
+    t.string   "grant_question",                limit: 255
     t.date     "start_date"
-    t.string   "start_date_qual",          limit: 255
+    t.string   "start_date_qual",               limit: 255
     t.date     "primary_comp_date"
-    t.string   "primary_comp_date_qual",   limit: 255
+    t.string   "primary_comp_date_qual",        limit: 255
     t.date     "comp_date"
-    t.string   "comp_date_qual",           limit: 255
-    t.string   "ind_ide_question",         limit: 255
-    t.string   "intervention_indicator",   limit: 255
-    t.string   "sec801_indicator",         limit: 255
-    t.string   "data_monitor_indicator",   limit: 255
+    t.string   "comp_date_qual",                limit: 255
+    t.string   "ind_ide_question",              limit: 255
+    t.string   "intervention_indicator",        limit: 255
+    t.string   "sec801_indicator",              limit: 255
+    t.string   "data_monitor_indicator",        limit: 255
     t.json     "history"
     t.integer  "study_source_id"
     t.integer  "phase_id"
@@ -1023,30 +1023,30 @@ ActiveRecord::Schema.define(version: 20160112162106) do
     t.integer  "pi_id"
     t.integer  "sponsor_id"
     t.integer  "investigator_id"
-    t.datetime "created_at",                                       null: false
+    t.datetime "created_at",                                            null: false
     t.datetime "updated_at"
-    t.string   "uuid",                     limit: 255
-    t.integer  "lock_version",                         default: 0
+    t.string   "uuid",                          limit: 255
+    t.integer  "lock_version",                              default: 0
     t.integer  "research_category_id"
     t.integer  "accrual_disease_term_id"
-    t.string   "investigator_title",       limit: 255
+    t.string   "investigator_title",            limit: 255
     t.integer  "investigator_aff_id"
-    t.string   "created_by",               limit: 255
-    t.string   "updated_by",               limit: 255
+    t.string   "created_by",                    limit: 255
+    t.string   "updated_by",                    limit: 255
     t.boolean  "is_draft"
     t.text     "admin_checkout"
     t.text     "scientific_checkout"
     t.text     "check_in_comment"
-    t.string   "process_priority",         limit: 255
+    t.string   "process_priority",              limit: 255
     t.text     "process_comment"
     t.boolean  "receive_email"
-    t.string   "xml_required",             limit: 255
-    t.string   "acronym",                  limit: 255
+    t.string   "xml_required",                  limit: 255
+    t.string   "acronym",                       limit: 255
     t.text     "keywords"
-    t.string   "nih_nci_div",              limit: 255
-    t.string   "nih_nci_prog",             limit: 255
-    t.string   "send_trial",               limit: 255
-    t.string   "board_approval_num",       limit: 255
+    t.string   "nih_nci_div",                   limit: 255
+    t.string   "nih_nci_prog",                  limit: 255
+    t.string   "send_trial",                    limit: 255
+    t.string   "board_approval_num",            limit: 255
     t.text     "brief_title"
     t.text     "brief_summary"
     t.text     "detailed_description"
@@ -1054,7 +1054,7 @@ ActiveRecord::Schema.define(version: 20160112162106) do
     t.integer  "target_enrollment"
     t.integer  "final_enrollment"
     t.integer  "accruals"
-    t.string   "accept_vol",               limit: 255
+    t.string   "accept_vol",                    limit: 255
     t.integer  "min_age"
     t.integer  "max_age"
     t.integer  "assigned_to_id"
@@ -1070,10 +1070,14 @@ ActiveRecord::Schema.define(version: 20160112162106) do
     t.integer  "anatomic_site_id"
     t.integer  "num_of_arms"
     t.date     "verification_date"
-    t.string   "sampling_method",          limit: 255
+    t.string   "sampling_method",               limit: 255
     t.text     "study_pop_desc"
-    t.string   "board_name",               limit: 255
+    t.string   "board_name",                    limit: 255
     t.integer  "board_affiliation_id"
+    t.boolean  "masking_role_caregiver"
+    t.boolean  "masking_role_investigator"
+    t.boolean  "masking_role_outcome_assessor"
+    t.boolean  "masking_role_subject"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
