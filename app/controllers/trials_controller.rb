@@ -34,7 +34,6 @@ class TrialsController < ApplicationController
 
     @trial.created_by = @current_user.username unless @current_user.nil?
     @trial.updated_by = @trial.created_by
-    @trial.central_contacts.create(params[:central_contacts]) # TODO: update
 
     respond_to do |format|
       if @trial.save
@@ -51,7 +50,6 @@ class TrialsController < ApplicationController
   # PATCH/PUT /trials/1.json
   def update
     @trial.updated_by = @current_user.username unless @current_user.nil?
-    @trial.central_contacts.create(params[:central_contacts]) # TODO: update or create ??
 
     respond_to do |format|
       if @trial.update(trial_params)
@@ -78,14 +76,6 @@ class TrialsController < ApplicationController
   def get_grants_serialnumber
     @tempgrants=Tempgrants.all
     @tempgrants=@tempgrants.where("funding_mechanism = ? AND institute_code = ? AND CAST(serial_number AS TEXT)  LIKE ?", params[:funding_mechanism], params[:institute_code],"#{params[:serial_number]}%")
-  end
-
-  # return all central contact types
-  def get_central_contact_types
-    @contact_types = CentralContactType.all
-    respond_to do |format|
-      format.json { render :json => {:types => @contact_types} }
-    end
   end
 
   def search
@@ -265,6 +255,15 @@ class TrialsController < ApplicationController
           @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && trial.processing_status_wrappers.last.processing_status == onhold_status}
         end
       end
+      if params[:myTrials].present?
+        Rails.logger.info "myTrials selected"
+        my_organization = @current_user.organization
+        #@trial = @trials.select{|trial| !trial.lead_.blank? && trial.organization == my_organization}
+        unless my_organization.nil?
+          Rails.logger.info "@currrent_user organization = #{@current_user.organization.inspect}"
+          @trials = @trials.with_lead_org(my_organization.name)
+        end
+      end
     else
       @trials = []
     end
@@ -307,7 +306,7 @@ class TrialsController < ApplicationController
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                     :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
                                     :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
-                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :keywords, :central_contacts,
+                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
