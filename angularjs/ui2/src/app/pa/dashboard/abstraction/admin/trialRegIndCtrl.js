@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialRegIndCtrl', trialRegIndCtrl);
 
-    trialRegIndCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'nciObj', 'holderTypeObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialRegIndCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'nciObj', 'holderTypeObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialRegIndCtrl(TrialService, $scope, toastr, trialDetailObj, nciObj, holderTypeObj){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialRegIndCtrl(TrialService, $scope, $state, toastr, trialDetailObj, nciObj, holderTypeObj){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.nciArr = nciObj;
@@ -19,6 +19,10 @@
         vm.nihNciArr = [];
         vm.addedIndIdes = [];
         console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
+
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
 
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
