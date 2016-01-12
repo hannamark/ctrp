@@ -76,6 +76,14 @@ class TrialsController < ApplicationController
     @tempgrants=@tempgrants.where("funding_mechanism = ? AND institute_code = ? AND CAST(serial_number AS TEXT)  LIKE ?", params[:funding_mechanism], params[:institute_code],"#{params[:serial_number]}%")
   end
 
+  def get_central_contact_types
+    @central_contact_types = CentralContactType.all
+
+    respond_to do |format|
+      format.json { render :json => {:types => @central_contact_types} }
+    end
+  end
+
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?

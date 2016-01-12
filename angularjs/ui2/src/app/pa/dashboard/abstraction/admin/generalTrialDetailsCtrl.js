@@ -8,10 +8,10 @@
     .controller('generalTrialDetailsCtrl', generalTrialDetailsCtrl);
 
     generalTrialDetailsCtrl.$inject = ['$scope', 'TrialService', 'PATrialService',
-            'MESSAGES', 'protocolIdOriginObj', '_', '$timeout'];
+            'MESSAGES', 'protocolIdOriginObj', '_', '$timeout', 'centralContactTypes'];
 
     function generalTrialDetailsCtrl($scope, TrialService, PATrialService,
-        MESSAGES, protocolIdOriginObj, _, $timeout) {
+        MESSAGES, protocolIdOriginObj, _, $timeout, centralContactTypes) {
       var vm = this;
       var _defaultCountry = 'United States'; // for phone number validation
       vm.generalTrialDetailsObj = {};
@@ -21,15 +21,16 @@
       vm.deleteOtherIdentifier = deleteOtherIdentifier;
       vm.updateOtherId = updateOtherId;
       vm.isValidPhoneNumber = isValidPhoneNumber;
-      vm.centralContactTypes = {'': 0, 'PI': 1, 'Person': 2, 'General': 3}; // TODO: fetch from server
-      vm.leadOrg = []; // TODO: insert it into the trial detail object
-      vm.principalInvestigator = []; // TODO:
-      vm.sponsors = []; // TODO:
+      vm.leadOrg = [];
+      vm.principalInvestigator = [];
+      vm.sponsors = [];
       vm.centralContact = [];
-      vm.centralContactType = '';
+      vm.centralContactType = 'None'; // Int, TODO: get from the trial detial object
       // vm.centralContactTypes = [{id: 0, 'None'}, {id: 1, 'PI'}, {id: 2, 'Person'}, {id: 3, 'General'}];
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
+      vm.centralContactTypes = centralContactTypes.types;
+      console.log('contact types: ', vm.centralContactTypes);
 
       activate();
 
@@ -209,15 +210,37 @@
 
       function watchCentralContactType() {
         $scope.$watch(function() { return vm.centralContactType;}, function(newVal, oldVal) {
+            /*
+            var typeObjectIndex = _.findIndex(vm.centralContactTypes, {"id": parseInt(newVal)});
+            console.log('typeObjectIndex: ', typeObjectIndex);
+            console.log('newVal: ', newVal);
+            var typeObject = null;
+            if (typeObjectIndex > -1) {
+                typeObject = vm.centralContactTypes[typeObjectIndex];
+
+                if (typeObject.code === 'PI') {
+                    _usePIAsCentralContact();
+                } else {
+                    // re-initialize
+                    vm.centralContact = [].concat({});
+                }
+                vm.centralContact[0].central_contact_type_id = vm.centralContactTypes[vm.centralContactType];
+                console.log('contact type id: ', vm.centralContact[0].central_contact_type_id);
+            }
+            */
+
           if (newVal === 'PI') {
-            _usePIAsCentralContact();
-          } else {
-            // re-initialize the array of centralContact
-            vm.centralContact = [].concat({});
-          }
-          vm.centralContact[0].central_contact_type_id = vm.centralContactTypes[vm.centralContactType];
-          console.log('contact type id: ', vm.centralContact[0].central_contact_type_id);
-        });
+                _usePIAsCentralContact();
+            } else if (newVal === 'None') {
+                vm.centralContact = [].concat({"_destroy": true, "id": ''}); //TODO: retrieve the id for the central contact from trial detial obj
+            } else {
+                // re-initialize the array of centralContact
+                vm.centralContact = [].concat({});
+            }
+              var typeObject = _.findWhere(vm.centralContactTypes, {"name": newVal});
+              vm.centralContact[0].central_contact_type_id = !!typeObject ? typeObject.id : '';
+              console.log('contact type id: ', vm.centralContact[0].central_contact_type_id);
+          });
       }
 
       function isValidPhoneNumber() {
