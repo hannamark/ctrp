@@ -97,7 +97,7 @@
                         </div>
                         <!-- end of second row -->
 
-                        <div class="form-group no-bottom-margin" ng-if="trialNciView.curTrial.checkedout == true">
+                        <div class="form-group no-bottom-margin" ng-if="trialNciView.curTrial.admin_checkout != nil">
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialNciView.updateTrial()">Save</button>
                                 <button type="button" class="btn btn-warning pull-right" ng-click="trialNciView.reload()" ng-disabled="trialDetailView.disableBtn">
