@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature:  PAS F01 Add and Edit Trial descriptions 
 As a CTRP Scientific Abstractor, I can add and edit Trial Descriptions 
 
@@ -10,7 +10,7 @@ And I have entered a value for Brief Title
 And I have entered a value for Brief Summary
 And I have entered a value for Objectives
 And I have entered a value for Detailed Description
-When I select Save
+When I select the Save button 
 Then the Trial Description for the trial will be associated with the trial
 And the message Record Updated displays
 

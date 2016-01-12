@@ -1,5 +1,5 @@
-@PA @global
-Feature:  PAS F02 Add and Edit Interventional Trial Design 
+﻿@PA @global
+Feature:  PAS F02 Add and Edit an Interventional Trial Design 
 As a CTRP Scientific Abstractor, I can add and edit Interventional Trial Design 
 
   Scenario: #1 I can add and edit Interventional Trial Design for a trial
