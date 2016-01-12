@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160104163124) do
+ActiveRecord::Schema.define(version: 20160108162338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -692,9 +692,11 @@ ActiveRecord::Schema.define(version: 20160104163124) do
     t.datetime "updated_at",                                   null: false
     t.string   "uuid",                 limit: 255
     t.integer  "lock_version",                     default: 0
+    t.integer  "submission_id"
   end
 
   add_index "processing_status_wrappers", ["processing_status_id"], name: "index_processing_status_wrappers_on_processing_status_id", using: :btree
+  add_index "processing_status_wrappers", ["submission_id"], name: "index_processing_status_wrappers_on_submission_id", using: :btree
   add_index "processing_status_wrappers", ["trial_id"], name: "index_processing_status_wrappers_on_trial_id", using: :btree
 
   create_table "processing_statuses", force: :cascade do |t|
@@ -961,8 +963,8 @@ ActiveRecord::Schema.define(version: 20160104163124) do
     t.text     "why_stopped"
     t.integer  "trial_status_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "uuid",            limit: 255
     t.integer  "lock_version",                default: 0
     t.text     "comment"
@@ -1033,7 +1035,6 @@ ActiveRecord::Schema.define(version: 20160104163124) do
     t.string   "nih_nci_prog",             limit: 255
     t.string   "send_trial",               limit: 255
     t.string   "board_approval_num",       limit: 255
-    t.string   "board_affiliation",        limit: 255
     t.text     "brief_title"
     t.text     "brief_summary"
     t.text     "detailed_description"
@@ -1047,7 +1048,6 @@ ActiveRecord::Schema.define(version: 20160104163124) do
     t.integer  "assigned_to_id"
     t.integer  "owner_id"
     t.integer  "board_approval_status_id"
-    t.integer  "board_id"
     t.integer  "intervention_model_id"
     t.integer  "masking_id"
     t.integer  "allocation_id"
@@ -1060,14 +1060,16 @@ ActiveRecord::Schema.define(version: 20160104163124) do
     t.date     "verification_date"
     t.string   "sampling_method",          limit: 255
     t.text     "study_pop_desc"
+    t.string   "board_name",               limit: 255
+    t.integer  "board_affiliation_id"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
   add_index "trials", ["allocation_id"], name: "index_trials_on_allocation_id", using: :btree
   add_index "trials", ["anatomic_site_id"], name: "index_trials_on_anatomic_site_id", using: :btree
   add_index "trials", ["assigned_to_id"], name: "index_trials_on_assigned_to_id", using: :btree
+  add_index "trials", ["board_affiliation_id"], name: "index_trials_on_board_affiliation_id", using: :btree
   add_index "trials", ["board_approval_status_id"], name: "index_trials_on_board_approval_status_id", using: :btree
-  add_index "trials", ["board_id"], name: "index_trials_on_board_id", using: :btree
   add_index "trials", ["gender_id"], name: "index_trials_on_gender_id", using: :btree
   add_index "trials", ["intervention_model_id"], name: "index_trials_on_intervention_model_id", using: :btree
   add_index "trials", ["investigator_aff_id"], name: "index_trials_on_investigator_aff_id", using: :btree
@@ -1195,6 +1197,7 @@ ActiveRecord::Schema.define(version: 20160104163124) do
   add_foreign_key "po_affiliations", "people"
   add_foreign_key "po_affiliations", "po_affiliation_statuses"
   add_foreign_key "processing_status_wrappers", "processing_statuses"
+  add_foreign_key "processing_status_wrappers", "submissions"
   add_foreign_key "processing_status_wrappers", "trials"
   add_foreign_key "site_rec_status_wrappers", "participating_sites"
   add_foreign_key "site_rec_status_wrappers", "site_recruitment_statuses"
@@ -1224,7 +1227,7 @@ ActiveRecord::Schema.define(version: 20160104163124) do
   add_foreign_key "trials", "genders"
   add_foreign_key "trials", "intervention_models"
   add_foreign_key "trials", "maskings"
-  add_foreign_key "trials", "organizations", column: "board_id"
+  add_foreign_key "trials", "organizations", column: "board_affiliation_id"
   add_foreign_key "trials", "organizations", column: "investigator_aff_id"
   add_foreign_key "trials", "organizations", column: "lead_org_id"
   add_foreign_key "trials", "organizations", column: "sponsor_id"

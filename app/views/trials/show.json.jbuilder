@@ -1,4 +1,4 @@
-json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id,
+json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
               :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
               :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual, :comp_date, :comp_date_qual,
               :ind_ide_question, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
@@ -8,7 +8,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
               :actions, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment,
-              :nih_nci_div, :nih_nci_prog
+              :nih_nci_div, :nih_nci_prog, :central_contacts, :keywords
 
 json.trial_status_wrappers do
   json.array!(@trial.trial_status_wrappers) do |status|
@@ -26,7 +26,7 @@ end
 json.submissions do
   json.array!(@trial.submissions) do |submission|
     json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
-                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at
+                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at, :submitter
   end
 end
 

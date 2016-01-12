@@ -14,13 +14,13 @@ var helperFunctions = require('../support/helper');
 var trialCommonBar = function(){
 
     var homeSearchTrial = element(by.css('a[href="#/main/trials"]'));
-    this.homeRegisterTrial = element(by.css('a[href="#/main/new_trial/NAT"]'));
+    this.homeRegisterTrial = element(by.css('a[href="#/main/new-trial/nat"]'));
     this.mainTrialsLink = element(by.linkText('Trials')) ;
     this.searchTrialLink = element(by.linkText('Search Trials'));
     this.registerTrialLink = element(by.linkText('Register Trial'));
-    this.registerNationalTrial = element(by.css('a[href="#/main/new_trial/NAT"]'));//by.linkText('National')
-    this.registerExternallyPeerReviewedTrial = element(by.css('a[href="#/main/new_trial/EPR"]'));
-    this.registerInstitutional = element(by.css('a[href="#/main/new_trial/INS"]'));
+    this.registerNationalTrial = element(by.css('a[href="#/main/new-trial/nat"]'));//by.linkText('National')
+    this.registerExternallyPeerReviewedTrial = element(by.css('a[href="#/main/new-trial/epr"]'));
+    this.registerInstitutional = element(by.css('a[href="#/main/new-trial/ins"]'));
     var pageHeaderText = element(by.css('div.row > h4'));
 
     var helper = new helperFunctions();
@@ -57,7 +57,7 @@ var trialCommonBar = function(){
     };
 
     this.clickRegisterNationalTrialLink = function(){
-        browser.get('ui/#/main/new_trial/NAT');
+        browser.get('ui/#/main/new-trial/nat');
       //  http://ctrp-ci.nci.nih.gov/ctrp/ui/#/main/new_trial/NAT
       //  element(by.linkText('Register Trial')).sendKeys(protractor.Key.RIGHT);
       ////  browser.actions().mouseMove(element(by.linkText('Search Trials')).find()).perform();
@@ -71,13 +71,13 @@ var trialCommonBar = function(){
     };
 
     this.clickRegisterExternallyPeerReviewedTrialLink = function(){
-        browser.get('ui/#/main/new_trial/EPR');
+        browser.get('ui/#/main/new-trial/epr');
        // helper.clickLink(this.registerExternallyPeerReviewedTrial, "Register Externally Peer Reviewed Trial link");
         expect(pageHeaderText.getText()).to.eventually.equal(register_Trial_Header_Text);
     };
 
     this.clickRegisterInstitutionalTrialLink = function(){
-        browser.get('ui/#/main/new_trial/INS');
+        browser.get('ui/#/main/new-trial/ins');
        // helper.clickLink(this.registerInstitutional, "Register Institutional Trial link");
         expect(pageHeaderText.getText()).to.eventually.equal(register_Trial_Header_Text);
     };

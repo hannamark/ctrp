@@ -55,7 +55,6 @@
 #  nih_nci_prog             :string(255)
 #  send_trial               :string(255)
 #  board_approval_num       :string(255)
-#  board_affiliation        :string(255)
 #  brief_title              :text
 #  brief_summary            :text
 #  detailed_description     :text
@@ -69,7 +68,6 @@
 #  assigned_to_id           :integer
 #  owner_id                 :integer
 #  board_approval_status_id :integer
-#  board_id                 :integer
 #  intervention_model_id    :integer
 #  masking_id               :integer
 #  allocation_id            :integer
@@ -82,6 +80,8 @@
 #  verification_date        :date
 #  sampling_method          :string(255)
 #  study_pop_desc           :text
+#  board_name               :string(255)
+#  board_affiliation_id     :integer
 #
 # Indexes
 #
@@ -89,8 +89,8 @@
 #  index_trials_on_allocation_id             (allocation_id)
 #  index_trials_on_anatomic_site_id          (anatomic_site_id)
 #  index_trials_on_assigned_to_id            (assigned_to_id)
+#  index_trials_on_board_affiliation_id      (board_affiliation_id)
 #  index_trials_on_board_approval_status_id  (board_approval_status_id)
-#  index_trials_on_board_id                  (board_id)
 #  index_trials_on_gender_id                 (gender_id)
 #  index_trials_on_intervention_model_id     (intervention_model_id)
 #  index_trials_on_investigator_aff_id       (investigator_aff_id)
@@ -143,7 +143,7 @@ class Trial < ActiveRecord::Base
   belongs_to :assigned_to, class_name: "User"
   belongs_to :owner, class_name: "User"
   belongs_to :board_approval_status
-  belongs_to :board, class_name: "Organization"
+  belongs_to :board_affiliation, class_name: "Organization"
   belongs_to :intervention_model
   belongs_to :masking
   belongs_to :allocation
@@ -220,6 +220,22 @@ class Trial < ActiveRecord::Base
 
   def set_send_trial_info_flag
     send_trial_flag = false
+
+    #And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
+    if self.sponsor.name == "National Cancer Institute"
+      send_trial_flag = true
+    else
+      send_trial_flag = false
+      return send_trial_flag
+    end
+
+    # And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
+    if self.lead_org != "NCI - Center for Cancer Research"
+      send_trial_flag = true
+    else
+      send_trial_flag = false
+      return send_trial_flag
+    end
     latest_processing_status = processing_status_wrappers.empty? ? nil:processing_status_wrappers.last.processing_status.name
     if latest_processing_status.nil?
       send_trial_flag = false
@@ -262,7 +278,8 @@ class Trial < ActiveRecord::Base
       self.nci_id = new_id
 
       # New Submission
-      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self)
+      ori = SubmissionType.find_by_code('ORI')
+      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, submission_type: ori)
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
@@ -270,15 +287,25 @@ class Trial < ActiveRecord::Base
 
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
-      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self)
+      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: newSubmission)
+    elsif self.edit_type == 'update'
+      largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
+      new_sub_number = largest_sub_num.present? ? largest_sub_num + 1 : 1
+      upd = SubmissionType.find_by_code('UPD')
+      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, submission_type: upd)
     elsif self.edit_type == 'amend'
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
+      amd = SubmissionType.find_by_code('AMD')
       latest_submission = self.submissions.last
       latest_submission.submission_num = largest_sub_num.present? ? largest_sub_num + 1 : 1
+      latest_submission.submission_type = amd
 
       srd = Milestone.find_by_code('SRD')
       MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
+
+      ams = ProcessingStatus.find_by_code('AMS')
+      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: ams, trial: self, submission: latest_submission)
     end
   end
 
@@ -330,11 +357,62 @@ class Trial < ActiveRecord::Base
 
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 
+  scope :with_phases, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "phases.code = ?"
+      else
+        q += " OR phases.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:phase).where(conditions)
+  }
+
   scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
+
+  scope :with_purposes, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "primary_purposes.code = ?"
+      else
+        q += " OR primary_purposes.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:primary_purpose).where(conditions)
+  }
 
   scope :with_research_category, -> (value) { joins(:research_category).where("research_categories.code = ?", "#{value}") }
 
   scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
+
+  scope :with_study_sources, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "study_sources.code = ?"
+      else
+        q += " OR study_sources.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:study_source).where(conditions)
+  }
 
   scope :with_nci_div, -> (value) {where("nih_nci_div = ?", "#{value}") }
 
@@ -409,21 +487,87 @@ class Trial < ActiveRecord::Base
     end
   }
 
-  scope :sort_by_col, -> (column, order) {
+  scope :with_org, -> (value, type) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      value_exp = "%#{value[1..str_len - 1]}"
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      value_exp = "#{value[0..str_len - 2]}%"
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      value_exp = "%#{value[1..str_len - 2]}%"
+    else
+      value_exp = "#{value}"
+    end
+
+    #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
+    #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id"
+    where_clause = ""
+    conditions = []
+
+    if type.present?
+      type.each_with_index { |e, i|
+        where_clause += " OR " if i > 0
+        if e == 'Lead Organization'
+          where_clause += "lead_orgs.name ilike ?"
+        elsif e == 'Sponsor'
+          where_clause += "sponsors.name ilike ?"
+        end
+        conditions.push(value_exp)
+      }
+    else
+      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
+      conditions.push(value_exp)
+      conditions.push(value_exp)
+    end
+
+    conditions.insert(0, where_clause)
+
+    joins(join_clause).where(conditions)
+  }
+
+  scope :sort_by_col, -> (params) {
+    column = params[:sort]
+    order = params[:order]
+
     if column == 'id'
       order("#{column} #{order}")
     elsif column == 'phase'
-      joins("LEFT JOIN phases ON phases.id = trials.phase_id").order("phases.name #{order}").group(:'phases.name')
+      if params[:phases].present?
+        order("phases.name #{order}").group(:'phases.name')
+      else
+        joins("LEFT JOIN phases ON phases.id = trials.phase_id").order("phases.name #{order}").group(:'phases.name')
+      end
     elsif column == 'purpose'
-      joins("LEFT JOIN primary_purposes ON primary_purposes.id = trials.primary_purpose_id").order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      if params[:purposes].present?
+        order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      else
+        joins("LEFT JOIN primary_purposes ON primary_purposes.id = trials.primary_purpose_id").order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      end
     elsif column == 'study_source'
-      joins("LEFT JOIN study_sources ON study_sources.id = trials.study_source_id").order("study_sources.name #{order}").group(:'study_sources.name')
+      if params[:study_sources].present?
+        order("study_sources.name #{order}").group(:'study_sources.name')
+      else
+        joins("LEFT JOIN study_sources ON study_sources.id = trials.study_source_id").order("study_sources.name #{order}").group(:'study_sources.name')
+      end
     elsif column == 'pi'
-      joins("LEFT JOIN people ON people.id = trials.pi_id").order("people.lname #{order}").group(:'people.lname')
+      if params[:pi].present?
+        order("people.lname #{order}").group(:'people.lname')
+      else
+        joins("LEFT JOIN people ON people.id = trials.pi_id").order("people.lname #{order}").group(:'people.lname')
+      end
     elsif column == 'lead_org'
-      joins("LEFT JOIN organizations ON organizations.id = trials.lead_org_id").order("organizations.name #{order}").group(:'organizations.name')
+      if params[:org].present?
+        order("lead_orgs.name #{order}").group(:'lead_orgs.name')
+      else
+        joins("LEFT JOIN organizations ON organizations.id = trials.lead_org_id").order("organizations.name #{order}").group(:'organizations.name')
+      end
     elsif column == 'sponsor'
-      joins("LEFT JOIN organizations ON organizations.id = trials.sponsor_id").order("organizations.name #{order}").group(:'organizations.name')
+      if params[:org].present?
+        order("sponsors.name #{order}").group(:'sponsors.name')
+      else
+        joins("LEFT JOIN organizations ON organizations.id = trials.sponsor_id").order("organizations.name #{order}").group(:'organizations.name')
+      end
     else
       order("LOWER(trials.#{column}) #{order}")
     end

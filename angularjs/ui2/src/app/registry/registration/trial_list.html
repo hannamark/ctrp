@@ -25,10 +25,10 @@
                         <div class="form-group">
                             <label for="phase" class="control-label col-xs-12 col-sm-4">Phase: </label>
                             <div class="col-xs-12 col-sm-8">
-                                <select class="form-control input-sm" id="phase" ng-model="trialView.searchParams.phase">
-                                    <option value="">-Select a Phase-</option>
-                                    <option ng-repeat="phase in trialView.phaseArr" value="{{phase.code}}">{{phase.name}}</option>
-                                </select>
+                                <ui-select multiple id="phase" ng-model="trialView.searchParams.phases">
+                                    <ui-select-match placeholder="-Select Phases-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="phase in trialView.phaseArr">{{phase.name}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
@@ -46,22 +46,20 @@
                         <div class="form-group">
                             <label for="org_type" class="control-label col-xs-12 col-sm-4">Organization Type: </label>
                             <div class="col-xs-12 col-sm-8">
-                                <select class="form-control input-sm" id="org_type" ng-model="trialView.searchParams.org_type">
-                                    <option value="">-Select an Organization Type-</option>
-                                    <option value="Lead Organization">Lead Organization</option>
-                                    <option value="Sponsor">Sponsor</option>
-                                    <!--<option value="Participating Site">Participating Site</option>-->
-                                </select>
+                                <ui-select multiple id="org_type" ng-model="trialView.searchParams.org_types">
+                                    <ui-select-match placeholder="-Select Organization Types-">{{$item}}</ui-select-match>
+                                    <ui-select-choices repeat="orgType in ['Lead Organization', 'Sponsor']">{{orgType}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="study_source" class="control-label col-xs-12 col-sm-4">Study Source: </label>
                             <div class="col-xs-12 col-sm-8">
-                                <select class="form-control input-sm" id="study_source" ng-model="trialView.searchParams.study_source">
-                                    <option value="">-Select a Study Source-</option>
-                                    <option ng-repeat="studySource in trialView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
-                                </select>
+                                <ui-select multiple id="study_source" ng-model="trialView.searchParams.study_sources">
+                                    <ui-select-match placeholder="-Select Study Sources-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="studySource in trialView.studySourceArr">{{studySource.name}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
                     </div>
@@ -77,10 +75,10 @@
                         <div class="form-group">
                             <label for="purpose" class="control-label col-xs-12 col-sm-4">Purpose: </label>
                             <div class="col-xs-12 col-sm-8">
-                                <select class="form-control input-sm" id="purpose" ng-model="trialView.searchParams.purpose">
-                                    <option value="">-Select a Purpose-</option>
-                                    <option ng-repeat="purpose in trialView.primaryPurposeArr" value="{{purpose.code}}">{{purpose.name}}</option>
-                                </select>
+                                <ui-select multiple id="purpose" ng-model="trialView.searchParams.purposes">
+                                    <ui-select-match placeholder="-Select Purposes-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="purpose in trialView.primaryPurposeArr">{{purpose.name}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 

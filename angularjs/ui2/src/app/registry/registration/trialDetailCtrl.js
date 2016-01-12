@@ -21,7 +21,7 @@
         vm.curTrial = vm.curTrial.data || vm.curTrial;
         vm.accordions = [true, true, true, true, true, true, true, true, true, true, true, true];
         vm.collapsed = false;
-        vm.studySourceCode = studySourceCode;
+        vm.studySourceCode = studySourceCode.toUpperCase();
         vm.isExp = false;
         vm.studySourceArr = studySourceObj;
         vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -71,6 +71,7 @@
         vm.showAddStatusError = false;
         vm.showAddIndIdeError = false;
         vm.showAddAnthorityError = false;
+        vm.addAuthorityError = '';
         vm.otherDocNum = 1;
         vm.fsNum = 0;
         vm.grantNum = 0;
@@ -196,7 +197,6 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                alert('hello123');
                 if (response.server_response.status < 300) {
                     var docCount = uploadDocuments(response.id);
                     // Poll docUploadedCount every 100 ms until upload finishes
@@ -505,7 +505,9 @@
 
         // Add Oversight Authority to a temp array
         vm.addAuthority = function () {
-            if (vm.authority_country && vm.authority_org) {
+            var errorMsg = TrialService.checkAuthority(vm.authority_country, vm.authority_org, vm.addedAuthorities);
+
+            if (!errorMsg) {
                 var newAuthority = {};
                 newAuthority.country = vm.authority_country;
                 newAuthority.organization = vm.authority_org;
@@ -515,8 +517,10 @@
                 vm.authority_country = null;
                 vm.authority_org = null;
                 vm.authorityOrgArr = [];
+                vm.addAuthorityError = '';
                 vm.showAddAuthorityError = false;
             } else {
+                vm.addAuthorityError = errorMsg;
                 vm.showAddAuthorityError = true;
             }
         };

@@ -39,4 +39,5 @@ class Submission < ActiveRecord::Base
   belongs_to :submission_method
   belongs_to :organization
   has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
+  has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
 end

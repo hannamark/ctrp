@@ -85,6 +85,15 @@
                 {name: 'current_processing_status', enableSorting: true, minWidth: '160', width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
+                {name: 'submission_type', enableSorting: true, minWidth: '150', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'submission_method', enableSorting: true, minWidth: '150', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'submission_source', enableSorting: true, minWidth: '150', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
                 {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '2%',
                     cellTemplate: '<button restriction-field ng-repeat="action in row.entity.actions" type="button" class="btn btn-primary" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)"><i class="glyphicon"></i> {{action}} </button>'
                 }
@@ -114,6 +123,8 @@
             getMilestones: getMilestones,
             getProcessingStatuses: getProcessingStatuses,
             getHolderTypes: getHolderTypes,
+            getSubmissionTypes: getSubmissionTypes,
+            getSubmissionMethods: getSubmissionMethods,
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
             checkOtherId: checkOtherId,
@@ -251,15 +262,15 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.NCI_PROG_PA);
         }
 
-        function getSubmissionType() {
+        function getSubmissionTypes() {
             //(original/update/amendment
+            // TODO: check if hardcoding is OK
             var submission_types = [{"code":"Original"},{"code":"Update"},{"code":"Amendment"}];
             return submission_types;
         }
 
         function getSubmissionMethods() {
-            var submission_methods = [{"code":"CCR"},{"code":"CTEP"},{"code":"DCP"},{"code":"NHBLI"}];
-            return submission_methods;
+            return PromiseTimeoutService.getData(URL_CONFIGS.SUBMISSION_METHODS);
         }
 
         function getExpandedAccessTypes() {

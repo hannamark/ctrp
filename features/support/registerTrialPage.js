@@ -94,6 +94,7 @@ var registerTrial = function(){
     this.addTrialFDARegulatedInterventionIndicator = element.all(by.model('trialDetailView.curTrial.intervention_indicator'));
     this.addTrialSection801Indicator = element.all(by.model('trialDetailView.curTrial.sec801_indicator'));
     this.addTrialDataMonitoringCommitteeAppointedIndicator = element.all(by.model('trialDetailView.curTrial.data_monitor_indicator'));
+    this.addTrialDuplicateCountryOrganizationMessage = element(by.binding('trialDetailView.addAuthorityError'));
 
 
     /**buttons**/
@@ -402,6 +403,37 @@ var registerTrial = function(){
     this.selectAddTrialDataMonitoringCommitteeAppointedIndicator= function(trialDataMonitoringCommitteeAppointedIndicator)  {
         helper.clickRadioButton(this.addTrialDataMonitoringCommitteeAppointedIndicator,trialDataMonitoringCommitteeAppointedIndicator,"Add Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
     };
+
+    this.verifyAddTrialFDARegulatedInterventionIndicator = function(trialFDARegulatedInterventionIndicator, result)  {
+        if (trialFDARegulatedInterventionIndicator === '0') {
+            expect(this.addTrialFDARegulatedInterventionIndicator.get(0).isSelected()).to.eventually.equal(result);
+        }
+        else if (trialFDARegulatedInterventionIndicator === '1') {
+            expect(this.addTrialFDARegulatedInterventionIndicator.get(1).isSelected()).to.eventually.equal(result);
+        }
+    };
+
+    this.verifyAddTrialSection801Indicator = function(trialSection801Indicator, result)  {
+        if (trialSection801Indicator === '0') {
+            expect(this.addTrialSection801Indicator.get(0).isSelected()).to.eventually.equal(result);
+        }
+        else if (trialSection801Indicator === '1') {
+            expect(this.addTrialSection801Indicator.get(1).isSelected()).to.eventually.equal(result);
+        }
+    };
+
+    this.verifyAddTrialDataMonitoringCommitteeAppointedIndicator= function(trialDataMonitoringCommitteeAppointedIndicator, result)  {
+        if (trialDataMonitoringCommitteeAppointedIndicator === '0') {
+            expect(this.addTrialDataMonitoringCommitteeAppointedIndicator.get(0).isSelected()).to.eventually.equal(result);
+        }
+        else if (trialDataMonitoringCommitteeAppointedIndicator === '1') {
+            expect(this.addTrialDataMonitoringCommitteeAppointedIndicator.get(1).isSelected()).to.eventually.equal(result);
+        }
+    };
+
+    this.verifyAddTrialDuplicateCountryOrganizationMessage = function(duplicateCountryOrgName)  {
+            expect(this.addTrialDuplicateCountryOrganizationMessage.getText()).to.eventually.equal(duplicateCountryOrgName + ' already exists');
+        };
 
     /*************** Buttons ****************/
 

@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+  #load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -34,6 +34,7 @@ class TrialsController < ApplicationController
 
     @trial.created_by = @current_user.username unless @current_user.nil?
     @trial.updated_by = @trial.created_by
+    @trial.central_contacts.create(params[:central_contacts]) # TODO: update
 
     respond_to do |format|
       if @trial.save
@@ -50,6 +51,7 @@ class TrialsController < ApplicationController
   # PATCH/PUT /trials/1.json
   def update
     @trial.updated_by = @current_user.username unless @current_user.nil?
+    @trial.central_contacts.create(params[:central_contacts]) # TODO: update or create ??
 
     respond_to do |format|
       if @trial.update(trial_params)
@@ -78,6 +80,14 @@ class TrialsController < ApplicationController
     @tempgrants=@tempgrants.where("funding_mechanism = ? AND institute_code = ? AND CAST(serial_number AS TEXT)  LIKE ?", params[:funding_mechanism], params[:institute_code],"#{params[:serial_number]}%")
   end
 
+  # return all central contact types
+  def get_central_contact_types
+    @contact_types = CentralContactType.all
+    respond_to do |format|
+      format.json { render :json => {:types => @contact_types} }
+    end
+  end
+
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
@@ -85,35 +95,21 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_source].present?
+    if params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
-      @trials = @trials.with_phase(params[:phase]) if params[:phase].present?
-      @trials = @trials.with_purpose(params[:purpose]) if params[:purpose].present?
+      @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
+      @trials = @trials.with_purposes(params[:purposes]) if params[:purposes].present?
       @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
       if params[:pi].present?
         splits = params[:pi].split(',').map(&:strip)
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
-      if params[:org].present?
-        if params[:org_type] == 'Lead Organization'
-          @trials = @trials.with_lead_org(params[:org])
-        elsif params[:org_type] == 'Sponsor'
-          @trials = @trials.with_sponsor(params[:org])
-        else
-          @trials = @trials.with_any_org(params[:org])
-        end
-      end
-      @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
-      @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
-
-      # TODO further add another scope
-      if params[:trial_status].present?
-        Rails.logger.info "params trial_status = #{params[:trial_status].inspect}"
-        @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
-      end
+      @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
+      @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
+      @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
     else
       @trials = []
     end
@@ -209,7 +205,7 @@ class TrialsController < ApplicationController
         end
       end
       @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
-      @trials = @trials.sort_by_col(params[:sort], params[:order]).group(:'trials.id').page(params[:start]).per(params[:rows])
+      @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
       # PA fields
       if params[:research_category].present?
@@ -231,14 +227,18 @@ class TrialsController < ApplicationController
         @trials = @trials.select{|trial| trial.other_ids.by_value(params[:protocol_origin_type]).size>0}
       end
       if params[:admin_checkout].present?
-        Rails.logger.info "Admin Checkout"
+        Rails.logger.info "Admin Checkout Only selected"
         @trials = @trials.select{|trial| !trial.admin_checkout.nil?}
       else
-        Rails.logger.info "NO Admin Checkout"
+        Rails.logger.info "Only Admin Checkout parameter not selected"
       end
       if params[:scientific_checkout].present?
-        Rails.logger.info "Science Checkout"
+        Rails.logger.info "Science Checkout Only selected"
         @trials = @trials.select{|trial| !trial.scientific_checkout.nil?}
+      end
+      if params[:checkout].present?
+        Rails.logger.info "Trial checkout by me selected"
+        @trials = @trials.select{|trial| !trial.admin_checkout.nil? || !trial.scientific_checkout.nil?}
       end
       if  params[:nih_nci_div].present?
         Rails.logger.debug "nci_div selected"
@@ -247,6 +247,23 @@ class TrialsController < ApplicationController
       if  params[:nih_nci_prog].present?
         Rails.logger.debug "nih_nci_prog selected"
         @trials = @trials.with_nci_prog(params[:nih_nci_prog]) if params[:nih_nci_prog].present?
+      end
+      if params[:submission_type].present?
+        submission_type = SubmissionType.find_by_name(params[:submission_type])
+        Rails.logger.info "submission_type = #{submission_type.inspect}"
+        @trials = @trials.select{|trial| !trial.submissions.blank? &&  trial.submissions.last.submission_type == submission_type}
+      end
+      if params[:submission_method].present?
+        submission_method = SubmissionMethod.find_by_code(params[:submission_method])
+        Rails.logger.info "submission_method = #{submission_method.inspect}"
+        @trials = @trials.select{|trial| !trial.submissions.blank? &&  trial.submissions.last.submission_method == submission_method}
+      end
+      if params[:onhold].present?
+        Rails.logger.info "Trials onhold selected"
+        onhold_status = ProcessingStatus.find_by_name("On-Hold")
+        unless onhold_status.nil?
+          @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && trial.processing_status_wrappers.last.processing_status == onhold_status}
+        end
       end
     else
       @trials = []
@@ -282,7 +299,7 @@ class TrialsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trial_params
-      params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id,
+      params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
                                     :primary_purpose_other, :secondary_purpose_other, :investigator_title,
                                     :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date,
                                     :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question,
@@ -290,7 +307,7 @@ class TrialsController < ApplicationController
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                     :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
                                     :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
-                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog,
+                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :keywords, :central_contacts,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
