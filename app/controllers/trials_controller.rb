@@ -97,6 +97,9 @@ class TrialsController < ApplicationController
       end
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
+      @trials = @trials.with_owner(@current_user.username) if params[:searchType] == 'My Trials'
+      @trials = @trials.is_not_draft if params[:searchType] == 'All Trials'
+      @trials = @trials.is_draft(@current_user.username) if params[:searchType] == 'Saved Drafts'
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
     else
       @trials = []
