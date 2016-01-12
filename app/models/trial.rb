@@ -539,6 +539,18 @@ class Trial < ActiveRecord::Base
     joins(join_clause).where(conditions)
   }
 
+  scope :with_owner, -> (value) {
+    joins(:users).where("users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)", value, false, nil)
+  }
+
+  scope :is_not_draft, -> {
+    where("trials.is_draft = ? OR trials.is_draft IS ?", false, nil)
+  }
+
+  scope :is_draft, -> (value) {
+    joins(:users).where("users.username = ? AND trials.is_draft = ?", value, true)
+  }
+
   scope :sort_by_col, -> (params) {
     column = params[:sort]
     order = params[:order]
