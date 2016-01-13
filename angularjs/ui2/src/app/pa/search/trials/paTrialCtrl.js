@@ -36,6 +36,7 @@
         vm.submissionMethodsArr = submissionMethodsObj;
         console.log("submissionMethodsObj = " + JSON.stringify(submissionMethodsObj));
         vm.gridScope=vm;
+        vm.searching = false;
 
         //ui-grid plugin options
         vm.gridOptions = PATrialService.getGridOptions();
@@ -52,11 +53,15 @@
         }; //gridOptions
 
         vm.searchTrials = function() {
+            vm.searching = true;
             PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;
             }).catch(function (err) {
                 console.log('search trial failed');
+            }).finally(function() {
+                console.log('finished search');
+                vm.searching = false;
             });
         };
 

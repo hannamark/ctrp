@@ -23,6 +23,7 @@
         vm.familyTypeArr.sort(Common.a2zComparator());
         vm.gridScope=vm;
         vm.searchWarningMessage = '';
+        vm.searching = false;
 
         //ui-grid plugin options
         vm.gridOptions = FamilyService.getGridOptions();
@@ -66,6 +67,8 @@
             }
 
             if (!isEmptySearch) { //skip searching if no search parameters supplied by user
+                vm.searching = true;
+
                 FamilyService.searchFamilies(vm.searchParams).then(function (data) {
                     console.log('received search results: ' + JSON.stringify(data.data));
                     vm.gridOptions.data = data.data.families; //prepareGridData(data.data.orgs); //data.data.orgs;
@@ -75,6 +78,9 @@
                     vm.gridOptions.totalItems = data.data.total;
                 }).catch(function (err) {
                     console.log('search people failed');
+                }).finally(function() {
+                    console.log('search finished');
+                    vm.searching = false;
                 });
             }
         }; //searchPeople

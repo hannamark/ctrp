@@ -100,8 +100,7 @@
                         </div>
 
                         <div class="form-group">
-
-                            <label class="control-label col-xs-12 col-sm-3">My trials: </label>
+                            <div class="col-xs-12 col-sm-3"></div>
                             <div class="col-xs-12 col-sm-3">
                                 <div>
                                     <label for="onhold">
@@ -206,10 +205,10 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="trialView.searchTrials()">
+                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="trialView.searchTrials()" ng-disabled="trialView.searching">
                                 <i class="glyphicon glyphicon-search"></i> Search
                             </button>
-                            <button class="btn btn-warning pull-right" id="reset_btn" ng-click="trialView.resetSearch()">
+                            <button class="btn btn-warning pull-right" id="reset_btn" ng-click="trialView.resetSearch()" ng-disabled="trialView.searching">
                                 <i class="glyphicon glyphicon-remove"></i> Clear
                             </button>
                         </div>
@@ -218,6 +217,11 @@
             </form>
         </div>
 
+        <div class="row">
+            <div class="col-xs-12">
+                <span us-spinner="{radius: 20, length: 15}" spinner-on="trialView.searching"></span>
+            </div>
+        </div>
         <div class="row" ng-class="{'top-offset-xs': trialView.gridOptions.totalItems }">
             <div class="col-xs-12">
                 <div class="row" ng-if="trialView.gridOptions.totalItems != null">

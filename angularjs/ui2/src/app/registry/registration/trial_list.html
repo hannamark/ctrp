@@ -101,16 +101,22 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="trialView.searchTrials('fromStart')">
+                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="trialView.searchTrials('fromStart')" ng-disabled="trialView.searching">
                                 <i class="glyphicon glyphicon-search"></i> Search
                             </button>
-                            <button class="btn btn-warning pull-right" id="reset_btn" ng-click="trialView.resetSearch()">
+                            <button class="btn btn-warning pull-right" id="reset_btn" ng-click="trialView.resetSearch()" ng-disabled="trialView.searching">
                                 <i class="glyphicon glyphicon-remove"></i> Clear
                             </button>
                         </div>
                     </div>
                 </div>
             </form>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <span us-spinner="{radius: 20, length: 15}" spinner-on="trialView.searching"></span>
+            </div>
         </div>
 
         <div class="row" ng-class="{'top-offset-xs': trialView.gridOptions.totalItems }">

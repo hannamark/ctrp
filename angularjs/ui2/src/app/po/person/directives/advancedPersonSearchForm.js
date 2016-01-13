@@ -81,6 +81,7 @@
             $scope.startDateOpened = ''; //false;
             $scope.endDateOpened = ''; // false;
             $scope.searchWarningMessage = '';
+            $scope.searching = false;
             console.log('in person search form directive');
 
 
@@ -122,6 +123,8 @@
                 }
 
                 if(!isEmptySearch) { //skip searching if empty search
+                    $scope.searching = true;
+
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
                         // console.log('received data for person search: ' + JSON.stringify(data));
                         if ($scope.showGrid && data.data.people) {
@@ -145,6 +148,9 @@
                         $scope.$parent.personSearchResults = data.data; //{people: [], total, }
                     }).catch(function (err) {
                         console.log('search people failed');
+                    }).finally(function() {
+                        console.log('search finished');
+                        $scope.searching = false;
                     });
                 }
             }; //searchPeople
