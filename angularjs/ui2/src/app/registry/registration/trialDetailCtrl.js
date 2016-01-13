@@ -243,7 +243,7 @@
                 return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
                     var transformedGrantsObjs = [];
                     var unique = [];
-
+                    console.log('res is: ', res);
                     vm.grantsInputs.grantResults = res.tempgrants;
                     /*
                     transformedGrantsObjs = res.tempgrants.map(function (tempgrant) {

@@ -40,7 +40,7 @@
             'A_TRIAL': '/ctrp/registry/trials/',
             'SEARCH_TRIAL': '/ctrp/registry/trials/search.json',
             'SEARCH_TRIAL_PA': '/ctrp/registry/trials/search_pa.json',
-            'GET_GRANTS_SERIALNUMBER': '/ctrp/registry/trials/get_grants_serialnumber',
+            'GET_GRANTS_SERIALNUMBER': '/ctrp/registry/trials/get_grants_serialnumber.json',
             'STUDY_SOURCES': '/ctrp/registry/study_sources.json',
             'PROTOCOL_ID_ORIGINS': '/ctrp/registry/protocol_id_origins.json',
             'PHASES': '/ctrp/registry/phases.json',
