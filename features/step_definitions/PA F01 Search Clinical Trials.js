@@ -33,10 +33,8 @@ module.exports = function() {
     var pageMenu = new abstractionPageMenu();
     var pageSearchTrail = new abstractionTrialSearchPage();
 
-
     /*
      Scenario: #1 I can search for clinical trials registered in CTRP
-
              Given I am logged into the CTRP Protocol Abstraction application
              And I am on the Search Clinical Trials Screen
              When I select one or more of the values to search all trials
@@ -51,23 +49,38 @@ module.exports = function() {
     });
 
     this.Given(/^I am on the Search Clinical Trials Screen$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        pageMenu.homeSearchTrials.click();
+        commonFunctions.verifySearchTrialsPAScreen();
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I select one or more of the values to search all trials$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        data = table.raw();
+        console.log('value of table' + data);
+        pageSearchTrail.setSearchTrialProtocolID('*');
+        pageSearchTrail.clickSearchTrialSearchButton();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^CTRP will then display the results for all the Clinical Trials Search Results$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        helper.wait_for(9000);
+        browser.sleep(25).then(callback);
     });
 
+    /*
+     Scenario: #2 I can search for clinical trials by Official Title
+         Given I am logged into the CTRP Protocol Abstraction application
+         And I am on the Search Clinical Trials Screen
+         When I enter text in the official title selection
+         And select a search option
+         Then the search results will display all trials that contain the official title search text
+         And the alternative title text
+     */
+
     this.When(/^I enter text in the official title selection$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        pageSearchTrail.setSearchTrialOfficialTitle('test');
+        pageSearchTrail.clickSearchTrialSearchButton();
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^select a search option$/, function (callback) {

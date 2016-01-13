@@ -12,46 +12,40 @@
                 </p> -->
 
                 <p>
-                    <strong>NCI Trial ID: </strong>
+                    <strong>NCI ID: </strong>
                     <!-- get data from parent controller view -->
                     <span>{{paTrialOverview.trialDetailObj.nci_id}}</span>
                 </p>
 
                 <p>
-                    <strong>ClinicalTrials.gov XML required? </strong>
-                    <span>{{paTrialOverview.trialDetailObj.xml_required}}</span>
-                </p>
-
-                <!-- <p>
-                    <s>
-                        <strong>Lead Organization Trial ID: </strong>
-                        <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
-                    </s>
+                    <strong>NCT ID:</strong>
+                    <span><a href="https://clinicaltrials.gov/ct2/show/{{paTrialOverview.trialDetailObj.nct_trial_id}}" target="_blank">{{paTrialOverview.trialDetailObj.nct_trial_id}}<i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a></span>
                 </p>
 
                 <p>
-                    <s>
-                        <strong>ClinicalTrials.gov Identifier: </strong>
-                        <span>{{paTrialOverview.trialDetailObj.other_ids[0].protocol_id}}</span>
-                    </s>
-                </p> -->
+                    <strong>Lead Organization Trial ID: </strong>
+                    <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
+                </p>
+
+                <p>
+                    <strong>Abbreviated Trial?</strong>
+                    <span></span>
+                </p>
 
                 <p>
                     <strong>Last Verification Date: </strong>
                     <span>{{paTrialOverview.trialDetailObj.verification_date | date: "dd-MMM-yyyy H:mm"}}</span>
                 </p>
 
-                <!-- <p>
-                    <s><strong>Official Title: </strong>
-                    <span>{{paTrialOverview.trialDetailObj.official_title}}</span></s>
+                <p>
+                    <strong>Official Title: </strong>
+                    <span>{{paTrialOverview.trialDetailObj.official_title}}</span>
                 </p>
 
                 <p>
-                    <s>
-                        <strong>Submission Source:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
-                    </s>
-                </p> -->
+                    <strong>Submission Source:</strong>
+                    <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
+                </p>
 
                 <hr />
             </div>

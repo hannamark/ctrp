@@ -7,6 +7,7 @@
 
 //Common dependencies
 var chai = require('chai');
+var protractor = require('protractor');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
@@ -22,8 +23,10 @@ var testConfiguration = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/
 var trialMenuItemList = require('../support/trialCommonBar');
 //Abstraction Common Bar
 var abstractionPageMenu = require('../support/abstractionCommonBar');
-//PO Common Bar
+//PA Common Bar
 var poMenuItemList = require('../support/PoCommonBar');
+//Abstraction PA Search Trial Page
+var paSearchTrialPage = require('../support/abstractionSearchTrialPage');
 
 var abstractionCommonMethods = function(){
     /*******
@@ -36,6 +39,7 @@ var abstractionCommonMethods = function(){
     var helper = new helperFunctions();
     var trialHome = new trialMenuItemList();
     var abstractPageMenu = new abstractionPageMenu();
+    var paSearch = new paSearchTrialPage();
     var poHome = new poMenuItemList();
     var reader;
 
@@ -44,6 +48,38 @@ var abstractionCommonMethods = function(){
     var loginNwUsrSngVerif = 'New User? Sign Up';
     var crntTxtLoginPg = '';
     var iteraCntLg = '';
+    var searchTrialsTxt = 'Search Trials * for wild card';
+
+    /*****************************************
+     * Verify Search Trials(PA) screen
+     *****************************************/
+    this.verifySearchTrialsPAScreen = function(){
+        expect(paSearch.searchTrialProtocolID.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialOfficialTitle.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialIdentifiertype.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialPurpose.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialPhase.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialPrincipalInvestigator.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialPilotTrial.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialOrganization.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialOrganizationType.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialTrialStatus.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialStudySource.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialMilestone.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialProcessingStatus.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialResearchCategory.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialNIHNCIDivDeptIdentifier.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialNIHNCIProgramIdentifier.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialSearchButton.isDisplayed()).to.eventually.equal(true);
+        expect(paSearch.searchTrialClearButton.isDisplayed()).to.eventually.equal(true);
+    };
+
+    /*****************************************
+     * Click on the link Text
+     *****************************************/
+    this.clickLinkText = function(lnkTxt){
+        element(by.linkText(''+ lnkTxt +'')).click();
+    }
 
     /*****************************************
      * Check for the various File API support.
@@ -122,7 +158,7 @@ var abstractionCommonMethods = function(){
         iteraCntLg = iteraCntLg + 1;
         var getCrntCntLg = iteraCntLg + 1;
         console.log('calculating count:'+getCrntCntLg+'')
-        if (getCrntCntLg == 11){
+        if (getCrntCntLg == 'do not validate'){
             login.loginPageVerification.getText().then (function(text){
                 var passTxtA = ''+text+'';
                 crntTxtLoginPg =  ''+passTxtA+'';
