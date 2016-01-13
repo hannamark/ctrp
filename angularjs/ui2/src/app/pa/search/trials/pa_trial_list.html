@@ -62,10 +62,10 @@
                         <div class="form-group">
                             <label for="phase" class="control-label col-xs-12 col-sm-3">Study Source: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <select class="form-control input-sm" id="study_source" ng-model="trialView.searchParams.study_source">
-                                    <option value="">-Select a Study Source-</option>
-                                    <option ng-repeat="studySource in trialView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
-                                </select>
+                                <ui-select multiple id="study_source" ng-model="trialView.searchParams.study_sources">
+                                    <ui-select-match placeholder="-Select Study Sources-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="studySource in trialView.studySourceArr">{{studySource.name}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
