@@ -49,8 +49,11 @@ json.last_amendment_num @trial.milestone_wrappers.present? ?
 json.last_amendment_date @trial.milestone_wrappers.present? ?
     @trial.milestone_wrappers.last.submission.amendment_date : nil
 
-json.submission_method @trial.submissions.nil? ?
-    '' : @trial.submissions.last.submission_method.name
+json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
+
+#send_trial_flag = @trial.set_send_trial_info_flag
+
+#json.send_trial_flag send_trial_flag ? "Yes":"No"
 
 #json.admin_checkout @trial.admin_checkout
 
