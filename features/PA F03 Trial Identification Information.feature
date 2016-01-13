@@ -14,8 +14,9 @@ And I have selected a trial
 And I have selected Trail Identification Overview
 Then the Trail Identification Overview and the Trial Identification Information will be displayed 
 And the Trial Identification Information for a Trial will include the following fields:
-|Lead Organization trial identifier|
-|Other Trial Identifiers (source and ID)|
+|NCI ID|
+|Lead Organization Trial ID (Lead Protocol ID)|
+|Other Trial Identifiers (source: Protocol_ID_Source_ID and ID: Protocol_ID)|
 |Last Verification Date|
 |Submission Source|
 |Official Title|
