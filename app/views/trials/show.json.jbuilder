@@ -45,6 +45,9 @@ json.last_amendment_num @trial.milestone_wrappers.present? ?
 json.last_amendment_date @trial.milestone_wrappers.present? ?
     @trial.milestone_wrappers.last.submission.amendment_date : nil
 
+json.submission_method @trial.submissions.nil? ?
+    '' : @trial.submissions.last.submission_method.name
+
 #json.admin_checkout @trial.admin_checkout
 
 #json.scientific_checkout @trial.scientific_checkout
