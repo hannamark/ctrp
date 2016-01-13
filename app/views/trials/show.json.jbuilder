@@ -45,6 +45,10 @@ json.last_amendment_num @trial.milestone_wrappers.present? ?
 json.last_amendment_date @trial.milestone_wrappers.present? ?
     @trial.milestone_wrappers.last.submission.amendment_date : nil
 
+#json.admin_checkout @trial.admin_checkout
+
+#json.scientific_checkout @trial.scientific_checkout
+
 #extract NCT Trial ID, if present
 if @trial.other_ids.present?
   other_ids = @trial.other_ids

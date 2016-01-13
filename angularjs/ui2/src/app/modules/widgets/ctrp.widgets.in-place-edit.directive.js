@@ -12,9 +12,9 @@
     angular.module('ctrpApp.widgets')
     .directive('inPlaceEdit', inPlaceEdit);
 
-    inPlaceEdit.$inject = ['$timeout', '$compile', 'MESSAGES', 'UserService'];
+    inPlaceEdit.$inject = ['$timeout', '$compile', 'MESSAGES', 'UserService', '$document'];
 
-    function inPlaceEdit($timeout, $compile, MESSAGES, UserService) {
+    function inPlaceEdit($timeout, $compile, MESSAGES, UserService, $document) {
       var defaultTemplateUrl = 'app/modules/widgets/ctrp.widgets.in-place-edit.default_template.html';
       var directiveObj = {
         restrict: 'A',
@@ -57,7 +57,17 @@
           prevValue = scope.model;
 
           $timeout(function() {
-            element.find('textarea')[0].focus();
+            // element.find('textarea')[0].focus();
+            var field = element.find('textarea')[0];
+            if (field) {
+                field.focus();
+            }
+            // if 'id' attribute is specified, use it to focus on the field
+            // e.g. id="#edit_field"
+            if (attrs.id) {
+                $document[0].querySelector(attrs.id).focus();
+            }
+            // element.find('input')[0].focus();
           }, 0, false);
         }
 

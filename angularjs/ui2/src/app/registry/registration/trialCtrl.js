@@ -21,6 +21,7 @@
         vm.trialStatusArr = trialStatusObj;
         vm.gridScope=vm;
         vm.searchWarningMessage = '';
+        vm.searching = false;
         var fromStateName = $state.fromState.name || '';
 
         //ui-grid plugin options
@@ -37,10 +38,12 @@
             });
         }; //gridOptions
 
-        vm.searchTrials = function(newSearchFlag) {
+        vm.searchTrials = function(newSearchFlag, searchType) {
             if (newSearchFlag === 'fromStart') {
                 vm.searchParams.start = 1; //from first page
             }
+
+            vm.searchParams.searchType = searchType || vm.searchParams.searchType;
 
             /**
              * If not, it should throw a warning to the user to select atleast one parameter.
@@ -48,14 +51,14 @@
              * To refactor and look at default parameters instead of hardcoding -- radhika
              */
             var isEmptySearch = true;
-            var excludedKeys = ['sort', 'order', 'rows', 'start','wc_search'];
+            var excludedKeys = ['sort', 'order', 'rows', 'start', 'wc_search', 'searchType'];
             Object.keys(vm.searchParams).forEach(function (key) {
-                if (excludedKeys.indexOf(key) === -1 && vm.searchParams[key] !== '') {
+                if (excludedKeys.indexOf(key) === -1 && vm.searchParams[key] !== '' && vm.searchParams[key].length !== 0) {
                     isEmptySearch = false;
                 }
             });
 
-            if (isEmptySearch  && newSearchFlag === 'fromStart') {
+            if (isEmptySearch && newSearchFlag === 'fromStart') {
                 vm.gridOptions.data = [];
                 vm.gridOptions.totalItems = null;
                 vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
@@ -64,11 +67,16 @@
             }
 
             if (!isEmptySearch) {
+                vm.searching = true;
+
                 TrialService.searchTrials(vm.searchParams).then(function (data) {
                     vm.gridOptions.data = data.trials;
                     vm.gridOptions.totalItems = data.total;
                 }).catch(function (err) {
                     console.log('search trial failed');
+                }).finally(function() {
+                    console.log('search finished');
+                    vm.searching = false;
                 });
             }
         };

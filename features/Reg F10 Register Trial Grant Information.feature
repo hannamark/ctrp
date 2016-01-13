@@ -72,3 +72,18 @@ Examples:
       |Externally Peer-Reviewed  |
       |Institutional             |
 
+    Scenario:#5 Grant Information Validation check rule
+    Given I am on the NIH Grant Information (for NIH funded Trials)
+    And I have NOT entered ALL Grant NIH Information type
+    
+      |Funding Mechanism  |
+      |Institute Code  |
+      |Serial Number  |
+      |NCI Division/Program Code  |
+
+    
+     When I have clicked on the ADD button to add a grant
+     Then A message will be displayed "Please select a Funding Mechanisn, Istitute Code, enter a Serial Number and select a NCI Division/Program Code"
+
+
+

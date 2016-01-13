@@ -2,86 +2,90 @@
 #
 # Table name: trials
 #
-#  id                       :integer          not null, primary key
-#  nci_id                   :string(255)
-#  lead_protocol_id         :string(255)
-#  official_title           :text
-#  pilot                    :string(255)
-#  primary_purpose_other    :string(255)
-#  secondary_purpose_other  :string(255)
-#  program_code             :string(255)
-#  grant_question           :string(255)
-#  start_date               :date
-#  start_date_qual          :string(255)
-#  primary_comp_date        :date
-#  primary_comp_date_qual   :string(255)
-#  comp_date                :date
-#  comp_date_qual           :string(255)
-#  ind_ide_question         :string(255)
-#  intervention_indicator   :string(255)
-#  sec801_indicator         :string(255)
-#  data_monitor_indicator   :string(255)
-#  history                  :json
-#  study_source_id          :integer
-#  phase_id                 :integer
-#  primary_purpose_id       :integer
-#  secondary_purpose_id     :integer
-#  responsible_party_id     :integer
-#  lead_org_id              :integer
-#  pi_id                    :integer
-#  sponsor_id               :integer
-#  investigator_id          :integer
-#  created_at               :datetime         not null
-#  updated_at               :datetime
-#  uuid                     :string(255)
-#  lock_version             :integer          default(0)
-#  research_category_id     :integer
-#  accrual_disease_term_id  :integer
-#  investigator_title       :string(255)
-#  investigator_aff_id      :integer
-#  created_by               :string(255)
-#  updated_by               :string(255)
-#  is_draft                 :boolean
-#  admin_checkout           :text
-#  scientific_checkout      :text
-#  check_in_comment         :text
-#  process_priority         :string(255)
-#  process_comment          :text
-#  receive_email            :boolean
-#  xml_required             :string(255)
-#  acronym                  :string(255)
-#  keywords                 :text
-#  nih_nci_div              :string(255)
-#  nih_nci_prog             :string(255)
-#  send_trial               :string(255)
-#  board_approval_num       :string(255)
-#  board_affiliation        :string(255)
-#  brief_title              :text
-#  brief_summary            :text
-#  detailed_description     :text
-#  objective                :text
-#  target_enrollment        :integer
-#  final_enrollment         :integer
-#  accruals                 :integer
-#  accept_vol               :string(255)
-#  min_age                  :integer
-#  max_age                  :integer
-#  assigned_to_id           :integer
-#  owner_id                 :integer
-#  board_approval_status_id :integer
-#  board_id                 :integer
-#  intervention_model_id    :integer
-#  masking_id               :integer
-#  allocation_id            :integer
-#  study_classification_id  :integer
-#  gender_id                :integer
-#  min_age_unit_id          :integer
-#  max_age_unit_id          :integer
-#  anatomic_site_id         :integer
-#  num_of_arms              :integer
-#  verification_date        :date
-#  sampling_method          :string(255)
-#  study_pop_desc           :text
+#  id                            :integer          not null, primary key
+#  nci_id                        :string(255)
+#  lead_protocol_id              :string(255)
+#  official_title                :text
+#  pilot                         :string(255)
+#  primary_purpose_other         :string(255)
+#  secondary_purpose_other       :string(255)
+#  program_code                  :string(255)
+#  grant_question                :string(255)
+#  start_date                    :date
+#  start_date_qual               :string(255)
+#  primary_comp_date             :date
+#  primary_comp_date_qual        :string(255)
+#  comp_date                     :date
+#  comp_date_qual                :string(255)
+#  ind_ide_question              :string(255)
+#  intervention_indicator        :string(255)
+#  sec801_indicator              :string(255)
+#  data_monitor_indicator        :string(255)
+#  history                       :json
+#  study_source_id               :integer
+#  phase_id                      :integer
+#  primary_purpose_id            :integer
+#  secondary_purpose_id          :integer
+#  responsible_party_id          :integer
+#  lead_org_id                   :integer
+#  pi_id                         :integer
+#  sponsor_id                    :integer
+#  investigator_id               :integer
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime
+#  uuid                          :string(255)
+#  lock_version                  :integer          default(0)
+#  research_category_id          :integer
+#  accrual_disease_term_id       :integer
+#  investigator_title            :string(255)
+#  investigator_aff_id           :integer
+#  created_by                    :string(255)
+#  updated_by                    :string(255)
+#  is_draft                      :boolean
+#  admin_checkout                :text
+#  scientific_checkout           :text
+#  check_in_comment              :text
+#  process_priority              :string(255)
+#  process_comment               :text
+#  receive_email                 :boolean
+#  xml_required                  :string(255)
+#  acronym                       :string(255)
+#  keywords                      :text
+#  nih_nci_div                   :string(255)
+#  nih_nci_prog                  :string(255)
+#  send_trial                    :string(255)
+#  board_approval_num            :string(255)
+#  brief_title                   :text
+#  brief_summary                 :text
+#  detailed_description          :text
+#  objective                     :text
+#  target_enrollment             :integer
+#  final_enrollment              :integer
+#  accruals                      :integer
+#  accept_vol                    :string(255)
+#  min_age                       :integer
+#  max_age                       :integer
+#  assigned_to_id                :integer
+#  owner_id                      :integer
+#  board_approval_status_id      :integer
+#  intervention_model_id         :integer
+#  masking_id                    :integer
+#  allocation_id                 :integer
+#  study_classification_id       :integer
+#  gender_id                     :integer
+#  min_age_unit_id               :integer
+#  max_age_unit_id               :integer
+#  anatomic_site_id              :integer
+#  num_of_arms                   :integer
+#  verification_date             :date
+#  sampling_method               :string(255)
+#  study_pop_desc                :text
+#  board_name                    :string(255)
+#  board_affiliation_id          :integer
+#  masking_role_caregiver        :boolean
+#  masking_role_investigator     :boolean
+#  masking_role_outcome_assessor :boolean
+#  masking_role_subject          :boolean
 #
 # Indexes
 #
@@ -89,8 +93,8 @@
 #  index_trials_on_allocation_id             (allocation_id)
 #  index_trials_on_anatomic_site_id          (anatomic_site_id)
 #  index_trials_on_assigned_to_id            (assigned_to_id)
+#  index_trials_on_board_affiliation_id      (board_affiliation_id)
 #  index_trials_on_board_approval_status_id  (board_approval_status_id)
-#  index_trials_on_board_id                  (board_id)
 #  index_trials_on_gender_id                 (gender_id)
 #  index_trials_on_intervention_model_id     (intervention_model_id)
 #  index_trials_on_investigator_aff_id       (investigator_aff_id)
@@ -143,7 +147,7 @@ class Trial < ActiveRecord::Base
   belongs_to :assigned_to, class_name: "User"
   belongs_to :owner, class_name: "User"
   belongs_to :board_approval_status
-  belongs_to :board, class_name: "Organization"
+  belongs_to :board_affiliation, class_name: "Organization"
   belongs_to :intervention_model
   belongs_to :masking
   belongs_to :allocation
@@ -171,8 +175,11 @@ class Trial < ActiveRecord::Base
   has_many :diseases, -> { order 'diseases.id' }
   has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
   has_many :collaborators, -> { order 'collaborators.id' }
+  has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
+  has_many :users, through: :trial_ownerships
 
   attr_accessor :edit_type
+  attr_accessor :current_user
 
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
@@ -182,6 +189,9 @@ class Trial < ActiveRecord::Base
   accepts_nested_attributes_for :oversight_authorities, allow_destroy: true
   accepts_nested_attributes_for :trial_documents, allow_destroy: true
   accepts_nested_attributes_for :submissions, allow_destroy: true
+
+  accepts_nested_attributes_for :central_contacts, allow_destroy: true
+  accepts_nested_attributes_for :alternate_titles, allow_destroy: true
 
   # Array of actions can be taken on this Trial
   def actions
@@ -216,10 +226,27 @@ class Trial < ActiveRecord::Base
   before_save :generate_status
   before_create :save_history
   before_save :check_indicator
+  after_create :create_ownership
 
 
   def set_send_trial_info_flag
     send_trial_flag = false
+
+    #And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
+    if self.sponsor.name == "National Cancer Institute"
+      send_trial_flag = true
+    else
+      send_trial_flag = false
+      return send_trial_flag
+    end
+
+    # And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
+    if self.lead_org != "NCI - Center for Cancer Research"
+      send_trial_flag = true
+    else
+      send_trial_flag = false
+      return send_trial_flag
+    end
     latest_processing_status = processing_status_wrappers.empty? ? nil:processing_status_wrappers.last.processing_status.name
     if latest_processing_status.nil?
       send_trial_flag = false
@@ -262,7 +289,8 @@ class Trial < ActiveRecord::Base
       self.nci_id = new_id
 
       # New Submission
-      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self)
+      ori = SubmissionType.find_by_code('ORI')
+      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori)
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
@@ -270,16 +298,32 @@ class Trial < ActiveRecord::Base
 
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
-      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self)
+      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: newSubmission)
+    elsif self.edit_type == 'update'
+      largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
+      new_sub_number = largest_sub_num.present? ? largest_sub_num + 1 : 1
+      upd = SubmissionType.find_by_code('UPD')
+      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, user: self.current_user, submission_type: upd)
     elsif self.edit_type == 'amend'
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
+      amd = SubmissionType.find_by_code('AMD')
       latest_submission = self.submissions.last
       latest_submission.submission_num = largest_sub_num.present? ? largest_sub_num + 1 : 1
+      latest_submission.user = self.current_user
+      latest_submission.submission_type = amd
 
       srd = Milestone.find_by_code('SRD')
       MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
+
+      ams = ProcessingStatus.find_by_code('AMS')
+      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: ams, trial: self, submission: latest_submission)
     end
+  end
+
+  def create_ownership
+    # New Trial Ownership
+    TrialOwnership.create(trial: self, user: self.current_user)
   end
 
   def save_history
@@ -330,11 +374,62 @@ class Trial < ActiveRecord::Base
 
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 
+  scope :with_phases, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "phases.code = ?"
+      else
+        q += " OR phases.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:phase).where(conditions)
+  }
+
   scope :with_purpose, -> (value) { joins(:primary_purpose).where("primary_purposes.code = ?", "#{value}") }
+
+  scope :with_purposes, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "primary_purposes.code = ?"
+      else
+        q += " OR primary_purposes.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:primary_purpose).where(conditions)
+  }
 
   scope :with_research_category, -> (value) { joins(:research_category).where("research_categories.code = ?", "#{value}") }
 
   scope :with_study_source, -> (value) { joins(:study_source).where("study_sources.code = ?", "#{value}") }
+
+  scope :with_study_sources, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "study_sources.code = ?"
+      else
+        q += " OR study_sources.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:study_source).where(conditions)
+  }
 
   scope :with_nci_div, -> (value) {where("nih_nci_div = ?", "#{value}") }
 
@@ -409,21 +504,99 @@ class Trial < ActiveRecord::Base
     end
   }
 
-  scope :sort_by_col, -> (column, order) {
+  scope :with_org, -> (value, type) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      value_exp = "%#{value[1..str_len - 1]}"
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      value_exp = "#{value[0..str_len - 2]}%"
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      value_exp = "%#{value[1..str_len - 2]}%"
+    else
+      value_exp = "#{value}"
+    end
+
+    #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
+    #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id"
+    where_clause = ""
+    conditions = []
+
+    if type.present?
+      type.each_with_index { |e, i|
+        where_clause += " OR " if i > 0
+        if e == 'Lead Organization'
+          where_clause += "lead_orgs.name ilike ?"
+        elsif e == 'Sponsor'
+          where_clause += "sponsors.name ilike ?"
+        end
+        conditions.push(value_exp)
+      }
+    else
+      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
+      conditions.push(value_exp)
+      conditions.push(value_exp)
+    end
+
+    conditions.insert(0, where_clause)
+
+    joins(join_clause).where(conditions)
+  }
+
+  scope :with_owner, -> (value) {
+    joins(:users).where("users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)", value, false, nil)
+  }
+
+  scope :is_not_draft, -> {
+    where("trials.is_draft = ? OR trials.is_draft IS ?", false, nil)
+  }
+
+  scope :is_draft, -> (value) {
+    joins(:users).where("users.username = ? AND trials.is_draft = ?", value, true)
+  }
+
+  scope :sort_by_col, -> (params) {
+    column = params[:sort]
+    order = params[:order]
+
     if column == 'id'
       order("#{column} #{order}")
     elsif column == 'phase'
-      joins("LEFT JOIN phases ON phases.id = trials.phase_id").order("phases.name #{order}").group(:'phases.name')
+      if params[:phases].present?
+        order("phases.name #{order}").group(:'phases.name')
+      else
+        joins("LEFT JOIN phases ON phases.id = trials.phase_id").order("phases.name #{order}").group(:'phases.name')
+      end
     elsif column == 'purpose'
-      joins("LEFT JOIN primary_purposes ON primary_purposes.id = trials.primary_purpose_id").order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      if params[:purposes].present?
+        order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      else
+        joins("LEFT JOIN primary_purposes ON primary_purposes.id = trials.primary_purpose_id").order("primary_purposes.name #{order}").group(:'primary_purposes.name')
+      end
     elsif column == 'study_source'
-      joins("LEFT JOIN study_sources ON study_sources.id = trials.study_source_id").order("study_sources.name #{order}").group(:'study_sources.name')
+      if params[:study_sources].present?
+        order("study_sources.name #{order}").group(:'study_sources.name')
+      else
+        joins("LEFT JOIN study_sources ON study_sources.id = trials.study_source_id").order("study_sources.name #{order}").group(:'study_sources.name')
+      end
     elsif column == 'pi'
-      joins("LEFT JOIN people ON people.id = trials.pi_id").order("people.lname #{order}").group(:'people.lname')
+      if params[:pi].present?
+        order("people.lname #{order}").group(:'people.lname')
+      else
+        joins("LEFT JOIN people ON people.id = trials.pi_id").order("people.lname #{order}").group(:'people.lname')
+      end
     elsif column == 'lead_org'
-      joins("LEFT JOIN organizations ON organizations.id = trials.lead_org_id").order("organizations.name #{order}").group(:'organizations.name')
+      if params[:org].present?
+        order("lead_orgs.name #{order}").group(:'lead_orgs.name')
+      else
+        joins("LEFT JOIN organizations ON organizations.id = trials.lead_org_id").order("organizations.name #{order}").group(:'organizations.name')
+      end
     elsif column == 'sponsor'
-      joins("LEFT JOIN organizations ON organizations.id = trials.sponsor_id").order("organizations.name #{order}").group(:'organizations.name')
+      if params[:org].present?
+        order("sponsors.name #{order}").group(:'sponsors.name')
+      else
+        joins("LEFT JOIN organizations ON organizations.id = trials.sponsor_id").order("organizations.name #{order}").group(:'organizations.name')
+      end
     else
       order("LOWER(trials.#{column}) #{order}")
     end

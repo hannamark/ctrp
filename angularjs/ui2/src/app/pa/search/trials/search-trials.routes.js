@@ -44,6 +44,12 @@
                             nciProgObj: function(PATrialService) {
                                 return PATrialService.getNciProg();
                             },
+                            submissionTypesObj: function(PATrialService) {
+                                return PATrialService.getSubmissionTypes();
+                            },
+                            submissionMethodsObj: function(PATrialService) {
+                                return PATrialService.getSubmissionMethods();
+                            },
                             processingStatusObj: function(PATrialService) {
                                 return PATrialService.getProcessingStatuses();
                             }

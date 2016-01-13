@@ -459,6 +459,7 @@ body {
 
 .sidebar {
     margin-left: -20px;
+    padding:5px;
 }
 
 .sidebar .panel-heading {
@@ -482,6 +483,10 @@ form {
 
 .control-label {
     color: #444;
+}
+
+.control-label.left {
+    text-align: left;
 }
 
 .form-control  {
@@ -770,4 +775,11 @@ legend.sub-bordered {
     width:auto;
     padding:0 10px;
     border-bottom:none;
+}
+
+.editable-click,
+a.editable-click,
+a.editable-click:hover {
+    text-decoration: none;
+    border-bottom: dashed 1px #0088cc;
 }

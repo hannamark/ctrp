@@ -8,9 +8,11 @@
     angular.module('ctrp.module.dataservices')
         .factory('TrialService', TrialService);
 
-    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST', 'DateService'];
+    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope',
+        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http'];
 
-    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload, HOST, DateService) {
+    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope,
+            PromiseTimeoutService, Upload, HOST, DateService, $http) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -104,6 +106,7 @@
             getAcceptedFileTypes: getAcceptedFileTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
+            checkAuthority: checkAuthority,
             addStatus: addStatus,
             validateStatus: validateStatus,
             uploadDocument: uploadDocument,
@@ -167,11 +170,8 @@
         } //searchTrials
 
         function getGrantsSerialNumber(searchParams) {
-            console.log("%%%%%%%%%%%%%%%%%%%%%%   "+searchParams);
-            if (!!searchParams) {
-                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);
-            }
-        } //searchTrials
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);            
+        } // getGrantsSerialNumber
         /**
          * get initial paramater object for trials search
          * @return initTrialSearchParams
@@ -828,6 +828,24 @@
             if ((protocolIdOriginCode === 'NCT' || protocolIdOriginCode === 'ONCT') && !/^NCT\d{8}$/.test(protocolId)) {
                 errorMsg = 'The format must be "NCT" followed by 8 numeric characters';
                 return errorMsg;
+            }
+
+            return errorMsg;
+        }
+
+        // Validation logic for Trial Oversight Authority Country/Organization
+        function checkAuthority(authorityCountry, authorityOrg, addedAuthorities) {
+            var errorMsg = '';
+
+            if (!authorityCountry || !authorityOrg) {
+                errorMsg = 'Please select a Country and Organization';
+                return errorMsg;
+            }
+            for (var i = 0; i < addedAuthorities.length; i++) {
+                if (addedAuthorities[i].country === authorityCountry && addedAuthorities[i].organization === authorityOrg) {
+                    errorMsg = addedAuthorities[i].country + ' ' + addedAuthorities[i].organization + ' already exists';
+                    return errorMsg;
+                }
             }
 
             return errorMsg;

@@ -43,9 +43,7 @@
             var updatedTrial = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
             updatedTrial.process_priority = vm.trialProcessingObj.priority;
             updatedTrial.process_comment = vm.trialProcessingObj.comment;
-            // updatedTrial.id = vm.trialProcessingObj.trialId;
-            // updatedTrial.trial =
-
+            
             TrialService.upsertTrial(updatedTrial).then(function(res) {
                 console.log('priority and commented updated: ', res);
             });

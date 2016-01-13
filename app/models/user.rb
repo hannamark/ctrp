@@ -55,6 +55,8 @@ class  User < ActiveRecord::Base
    #      :confirmable, :lockable, :timeoutable, :omniauthable
   devise   :timeoutable,  :validatable
   belongs_to :organization
+  has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
+  has_many :trials, through: :trial_ownerships
 
   scope :approved, -> { where(approved: true) }
   scope :not_approved, -> { where(approved: false) }

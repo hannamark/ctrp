@@ -10,15 +10,15 @@
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
         '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES',
-        '$scope', 'TrialService', 'UserService'];
+        '$scope', 'TrialService', 'UserService', 'curTrial', '_'];
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES,
-            $scope, TrialService, UserService) {
+            $scope, TrialService, UserService, curTrial, _) {
 
         var vm = this;
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
-        vm.trialDetailObj = {};
+        vm.trialDetailObj = curTrial;
         vm.isPanelOpen = true;
         vm.togglePanelOpen = togglePanelOpen;
         vm.backToPATrialSearch = backToPATrialSearch;
@@ -34,40 +34,10 @@
         activate();
 
         function activate() {
-            $timeout(function() {
-                getTrialDetail();
-                watchCheckoutButtons();
-            }, 500);
+            updateTrialDetailObj(vm.trialDetailObj);
+            watchCheckoutButtons();
+            watchUpdatesInChildrenScope();
         } //activate
-
-        /**
-         * Promise call to get the trial detail object
-         * @return {[type]} [description]
-         */
-        function getTrialDetail() {
-            TrialService.getTrialById(vm.trialId).then(function(data) {
-                data.admin_checkout = JSON.parse(data.admin_checkout);
-                data.scientific_checkout = JSON.parse(data.scientific_checkout);
-                vm.trialDetailObj = data;
-                delete vm.trialDetailObj.server_response;
-                console.log('got trial detail obj: ', vm.trialDetailObj);
-
-                $scope.trialDetailObj = vm.trialDetailObj;
-                var firstName = vm.trialDetailObj.pi.fname || '';
-                var middleName = vm.trialDetailObj.pi.mname || '';
-                var lastName = vm.trialDetailObj.pi.lname || '';
-                vm.trialDetailObj.pi.fullName = firstName + ' ' + middleName + ' ' + lastName;
-
-                PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
-                Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
-            }).catch(function(error) {
-                console.log('error in fetching trial detail object');
-            }).finally(function() {
-                console.log('completed the promise call');
-                vm.loadingTrialDetail = false;
-            });
-        } //getTrialDetail
-
 
         function togglePanelOpen() {
             vm.isPanelOpen = !vm.isPanelOpen;
@@ -100,8 +70,24 @@
          */
         function updateTrialDetailObj(data) {
             console.log('in updating trial detail obj, admin_checkout: ' + data.admin_checkout + ', scientific_checkout: ' + data.scientific_checkout);
+            delete vm.trialDetailObj.server_response;
             vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
+
+            if (!vm.trialDetailObj.pi.fullName) {
+                var firstName = vm.trialDetailObj.pi.fname || '';
+                var middleName = vm.trialDetailObj.pi.mname || '';
+                var lastName = vm.trialDetailObj.pi.lname || '';
+                vm.trialDetailObj.pi.fullName = firstName + ' ' + middleName + ' ' + lastName;
+            }
+            // sort the submissions by DESC submission_num
+            vm.trialDetailObj.submissions = _.sortBy(vm.trialDetailObj.submissions, function(s) {
+                return -s.submission_num; // DESC order
+            });
+            // extract the submitter for the last submission
+            vm.trialDetailObj.submitter = vm.trialDetailObj.submissions[0].submitter || '';
+            // vm.trialDetialObj.lock_version = data.lock_version || '';
+            console.log('lock version: ', data.lock_version);
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
             $scope.trialDetailObj = vm.trialDetailObj;
@@ -123,7 +109,7 @@
                     if (!!newVal) {
                         // ROLE_SUPER can override the checkout button
                         vm.adminCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.admin_checkout.by &&
-                            UserService.getUserRole() !== 'ROLE_SUPER';
+                            UserService.getUserRole() !== 'ROLE_SUPER' && UserService.getUserRole() != "ROLE_ABSTRACTOR";
                     }
                 });
 
@@ -156,6 +142,18 @@
           });
         } //showToastr
 
-    };
+        function watchUpdatesInChildrenScope() {
+            $scope.$on('updatedInChildScope', function() {
+                vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+            });
+        }
+
+        function _getUpdatedTrialDetailObj() {
+            TrialService.getTrialById(vm.trialDetailObj.id).then(function(res) {
+                console.log('updated trialDetail obj: ', res);
+            });
+        }
+
+    }
 
 })();

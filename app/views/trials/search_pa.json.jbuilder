@@ -8,6 +8,7 @@ json.trials do
     json.sponsor trial.sponsor.present? ? trial.sponsor.name : nil
     json.study_source trial.study_source.present? ? trial.study_source.name : nil
     json.current_trial_status trial.trial_status_wrappers.present? ? trial.trial_status_wrappers.last.trial_status.name : nil
+    json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
     json.selected_trial_status = ""
     if params[:trial_status].present? && params[:trial_status_latest].present? && params[:trial_status_latest] == "NO"
       if trial.trial_status_wrappers.present?
@@ -58,6 +59,22 @@ json.trials do
     end
     json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
     json.research_category trial.research_category.present? ? trial.research_category.name : nil
+    last_submission = trial.submissions.present? ? trial.submissions.last : nil
+    if !last_submission.nil? && !last_submission.submission_type.nil?
+      json.submission_type  last_submission.submission_type.name
+    else
+      json.submission_type ""
+    end
+    if !last_submission.nil? && !last_submission.submission_method.nil?
+      json.submission_method  last_submission.submission_method.name
+    else
+      json.submission_method ""
+    end
+    if !last_submission.nil? && !last_submission.submission_source.nil?
+      json.submission_source  last_submission.submission_source.name
+    else
+      json.submission_source ""
+    end
     json.url trial_url(trial, format: :json)
     json.actions trial.actions
   end

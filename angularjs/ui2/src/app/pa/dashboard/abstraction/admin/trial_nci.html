@@ -51,7 +51,12 @@
             <!-- second row in the accordion body -->
             <div class="row">
                 <div class="col-xs-12 pull-left">
-
+                    <div class="form-group">
+                        <label for="program_code" class="control-label col-xs-12 col-sm-2">Program Code</label>
+                        <div class="col-xs-12 col-sm-10">
+                            <input type="text" id="program_code" name="trial_program_code" class="form-control" ng-model="trialNciView.curTrial.program_code" placeholder="Program Code">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Division/Department Identifier: </label>
                         <div class="col-xs-12 col-sm-9">
@@ -92,11 +97,12 @@
                         </div>
                         <!-- end of second row -->
 
+                        <!--div class="form-group no-bottom-margin" ng-if="trialNciView.curTrial.admin_checkout != nil"-->
                         <div class="form-group no-bottom-margin">
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialNciView.updateTrial()">Save</button>
-                                <button type="button" class="btn btn-warning pull-right" id="cancel_processing">
-                                    <i class="glyphicon glyphicon-remove"></i> Cancel
+                                <button type="button" class="btn btn-warning pull-right" ng-click="trialNciView.reload()" ng-disabled="trialDetailView.disableBtn">
+                                    <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
                             </div>
                         </div>

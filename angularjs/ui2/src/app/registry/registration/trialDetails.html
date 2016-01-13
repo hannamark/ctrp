@@ -423,15 +423,22 @@
 
                                             <td class="col-md-2">
                                                 <div>
-                                                    <ui-select ng-model="trialDetailView.serial_number"
-                                                               ng-disabled="enabled"
+                                                    <ui-select autofocus=true ng-model="trialDetailView.serial_number"
+                                                               theme="select2"
+                                                               ng-disabled="grantsInputs.disabled"
                                                                reset-search-input="false"
                                                                style="width: 300px;">
-                                                      <ui-select-match placeholder="Enter serial number...">{{$select.selected}}</ui-select-match>
-                                                      <ui-select-choices repeat="tempgrant in addresses"
+                                                      <ui-select-match placeholder="Enter serial number...">{{$select.selected.serial_number}}</ui-select-match>
+                                                      <ui-select-choices repeat="tempgrant in trialDetailView.grantsInputs.grantResults | propsFilter: {serial_number: $select.search, institution_name: $select.search}"
                                                                          refresh="refreshGrants($select.search)"
-                                                                         refresh-delay="1">
-                                                        <div ng-bind-html="tempgrant | highlight: $select.search"></div>
+                                                                         refresh-delay="0">
+                                                        <div ng-bind-html="tempgrant.serial_number | highlight: $select.search"></div>
+                                                            <small>
+                                                                <strong>Serial Number:</strong> {{tempgrant.serial_number}} <br />
+                                                                <strong>Organization:</strong> {{tempgrant.institution_name}} <br />
+                                                                <strong>Project Title:</strong> {{tempgrant.project_title}} <br />
+                                                                <strong>PI:</strong> {{tempgrant.pi_full_name}}
+                                                            </small>
                                                       </ui-select-choices>
                                                     </ui-select>
                                                 </div>
@@ -931,7 +938,7 @@
                                 </table>
 
                                 <div class="add-association-error" ng-show="trialDetailView.showAddAuthorityError">
-                                    Please select a Country and Organization
+                                    {{trialDetailView.addAuthorityError}}
                                 </div>
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedAuthorities.length > 0">

@@ -20,7 +20,7 @@ And the Trail Overview for a Trial will include the following fields:
 |Lead Organization|
 |Lead Organization Trail ID|
 |Amendment Number|
-|Submission Source|
+|Submission Method|
 |Principal Investigator|
 |Last Submitter|
 |Last Submitter Organization|
@@ -120,4 +120,12 @@ And I have selected a trial
 And the Trail Identification Overview and is displayed 
 And I select the NCT ID
 Then an new browser window is openend displaying the trail record in ClinicalTrials.gov
-|https://clinicaltrials.gov/ct2/show/NCT01783171 where NCT01783171 is the NCT ID| 
+|https://clinicaltrials.gov/ct2/show/NCT01783171 where NCT01783171 is the NCT ID|
+
+Scenario: #11 I can view the last submitter account information
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial 
+And the Trail Identification Overview and is displayed 
+And I select the last submitter 
+Then the last submitter account information will be displayed
+

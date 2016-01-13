@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialNciCtrl', trialNciCtrl);
 
-    trialNciCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialNciCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialNciCtrl(TrialService, $scope, toastr, trialDetailObj, studySourceObj, nciDivObj, nciProgObj) {
+    function trialNciCtrl(TrialService, $scope, $state, toastr, trialDetailObj, studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         console.log("nciDivObj  =" + JSON.stringify(nciDivObj));
@@ -49,6 +49,11 @@
 
 
         } //updateTrial
+
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
+
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {

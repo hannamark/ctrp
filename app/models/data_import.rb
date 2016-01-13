@@ -10,11 +10,15 @@ class DataImport
     Submission.delete_all
     ProcessingStatusWrapper.delete_all
     OtherId.delete_all
+    OversightAuthority.delete_all
+    IndIde.delete_all
     Trial.delete_all
   end
 
   def self.import_trials
     begin
+      total_organizations  = Organization.all.size
+      total_persons  = Person.all.size
       trial_spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-trials-random-2014.xls'))
       trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
       ((trial_spreadsheet.first_row+1)..trial_spreadsheet.last_row).each do |row|
@@ -122,12 +126,13 @@ class DataImport
         else
           trial.responsible_party = responsible_party
         end
+        trial.ind_ide_question = "Yes"
         # randomly assign the rest of the data
         trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
-        trial.lead_org = Organization.all[rand(0..13)]
+        trial.lead_org = Organization.all[rand(0..total_organizations-1)]
         trial.pilot = "Yes"
-        trial.pi = Person.all[rand(0..11)]
-        trial.investigator = Person.all[rand(0..11)]
+        trial.pi = Person.all[rand(0..total_persons-1)]
+        trial.investigator = Person.all[rand(0..total_persons-1)]
         trial.save!
         #puts "trial = #{trial.inspect}"
       end
@@ -138,6 +143,9 @@ class DataImport
 
   def self.import_milestones
     missed_milestones = []
+    total_submission_types = SubmissionType.all.size
+    total_submission_methods = SubmissionMethod.all.size
+    total_submission_sources = SubmissionSource.all.size
     spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-milestones_for_20_sample_trials_in_prod.xls'))
     spreadsheet.default_sheet = spreadsheet.sheets.first
     ((spreadsheet.first_row+1)..spreadsheet.last_row).each do |row|
@@ -151,6 +159,9 @@ class DataImport
           current_submission.submission_num = submission_num
           current_submission.amendment_num = rand(1..20)
           current_submission.amendment_date = Time.now
+          current_submission.submission_type = SubmissionType.all[rand(0..total_submission_types-1)]
+          current_submission.submission_method = SubmissionMethod.all[rand(0..total_submission_methods-1)]
+          current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
           trial.submissions << current_submission
           trial.save!
         end

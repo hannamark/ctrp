@@ -88,64 +88,55 @@ And I enter the Central Contact Name
 And I enter either a Central Contact Phone Number or Central Contact E-Mail Address or both
 Then the selected Central Contact, Phone # and e-mail address will be Central contact for the trial
 
-Scenario: #11 I can associate a stored General Central Contact for the trial
-Given I have selected a trial to abstract 
-And I am on the General Trial Details screen
-And I am in the Central Contact section
-And I select the radio button for General Contact
-And I select the Contact Lookup 
-And I select the Contact for the list of General Contacts 
-Then the selected Central Contact, Phone # and e-mail address will be Central contact for the trial
-
-Scenario: #12 Save General Trials Details information
+Scenario: #11 Save General Trials Details information
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When select save 
 Then the information entered or edited on the General Trails Details screen will be saved to the trial record
 
-Scenario: #13 Cancel General Trials Details information
+Scenario: #12 Cancel General Trials Details information
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
-When select Cancel
+When select Reset
 Then the information entered or edited on the General Trails Details screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
-Scenario: #14 Protocol ID not null
+Scenario: #13 Protocol ID not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I select save
 And the protocol ID is Null
 Then a warning message will appear “Please enter the Protocol Identifier”
 
-Scenario: #15 Official Title not null
+Scenario: #14 Official Title not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I select save
 And the Official Title is Null
 Then a warning message will appear “Please enter the Official Title”
 
-Scenario: #16 Lead Organization is not null
+Scenario: #15 Lead Organization is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I select save
 And the Lead Organization is Null
 Then a warning message will appear “Please enter the Lead Organization”
 
-Scenario: #17 Principal Investigator is not null
+Scenario: #16 Principal Investigator is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I select save
 And the Principal Investigator is Null
 Then a warning message will appear “Please enter the Principal Investigator”
 
-Scenario: #18 Sponsor is not null
+Scenario: #17 Sponsor is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I select save
 And the Sponsor is Null
 Then a warning message will appear “Please enter the Sponsor”
 
-Scenario: # 19 e-mail address format
+Scenario: # 18 e-mail address format
 Given I know which e-mail address I want to edit
 And I am logged in to CTRP application
 And I have selected e-mail address field 
@@ -153,12 +144,5 @@ And I change the e-mail address in the format "text"@"text"."text"
 When I change the e-mail address and the format is not "text"@"text"."text"
 Then the system displays a warning message that says "The E-mail address is incorrect"
 
-Scenario: #20 Organization lookup for Lead Organization on a clinical trial
-Given I have selected a trial to abstract 
-And I am on the General Trial Details screen
-And I have performed an organization look-up
-Then a can pick from a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, IRB) 
-And if the organization is not listed, I can as a  as the trial's Lead Organization
-Then the selected organization will be associated to the trial as Lead Organization
 
 

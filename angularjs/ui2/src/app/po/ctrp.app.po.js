@@ -9,6 +9,7 @@
         'ngTouch',
         'ngAnimate',
         'ngSanitize',
+        'angularSpinner',
 
         /* Cross-app modules */
         'ctrp.module.routes',

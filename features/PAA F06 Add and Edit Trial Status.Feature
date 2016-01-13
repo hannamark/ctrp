@@ -24,11 +24,11 @@ And I have selected a trial status from the list of:
 |Approved for marketing – Only when a Clinical Research Category is expanded access and this treatment has been approved for sale to the public.|
 And I have entered or selected a Current Trial Status Date
 And I have entered or selected a Trial Start Date
-And I have selected the Trial Start Date Type of “Actual” or “Anticipated”
+And I have selected the Trial Start Date Type of “Actual” , “Anticipated”
 And I have entered or selected a Primary Completion Date
-And I have selected the Primary Completion Date Type of “Actual” or “Anticipated”
+And I have selected the Primary Completion Date Type of “Actual” , “Anticipated”, "NA"
 And I have entered or selected a Completion Date
-And I have selected the Completion Date Type of “Actual” or “Anticipated”
+And I have selected the Completion Date Type of “Actual” , “Anticipated”
 And have entered or edited the Trial On Hold Reason Comments when the trial status is:
 |Administratively Complete|
 |Withdrawn|
@@ -47,11 +47,11 @@ Given I have selected trail
 And I have selected a trial status 
 And I have entered or selected a Current Trial Status Date
 And I have entered or selected a Trial Start Date
-And I have selected the Trial Start Date Type of “Actual” or “Anticipated”
+And I have selected the Trial Start Date Type of “Actual” , “Anticipated”
 And I have entered or selected a Primary Completion Date
-And I have selected the Primary Completion Date Type of “Actual” or “Anticipated”
+And I have selected the Primary Completion Date Type of “Actual” , “Anticipated” , "NA"
 And I have entered or selected a Completion Date
-And I have selected the Completion Date Type of “Actual” or “Anticipated”
+And I have selected the Completion Date Type of “Actual” , “Anticipated”
 And have entered or edited the Trial Status Comments
 And have entered or edited the Trial On Hold Reason Comments with the trial status is:
 |Administratively Complete|
@@ -67,7 +67,7 @@ And a warning will be displayed for the incorrect status transitions, dates and 
 Scenario: #3 Cancel Trial Status
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status screen
-When select Cancel
+When I select Reset
 Then the information entered or edited on the Trial Status screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
@@ -130,3 +130,22 @@ Then the trial status’ will not be selectable:
 |No longer available|
 |Temporarily not available|
 |Approved for marketing|
+
+
+Scenario: #11 Selection of Primary Completion Date Type "NA" - DCP
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Status Screen
+Given I have selected trail
+And I have selected the Primary Completion Date Type  "NA"
+And the trial does not have a DCP Trial Identifier
+And I select Save
+Then a warning will be displayed "Primary Completion Date Type of "NA" is only available for DCP Trials"
+
+Scenario: #12 Selection of Primary Completion Date Type "NA" - Non Intervential
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Status Screen
+Given I have selected trail
+And I have selected the Primary Completion Date Type  "NA"
+And the trial is Intervential
+And I select Save
+Then a warning will be displayed "Primary Completion Date Type of "NA" is only available for Non-Interventional Trials"

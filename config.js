@@ -64,7 +64,8 @@ exports.config = {
         'features/Reg\ F05\ Register\ Trial\ Protocol\ Identifiers.feature',
         'features/Reg\ F06\ Register\ Trial\ Details.feature',
         'features/Reg\ F07\ Register\ Trial\ Study\ Design.feature',
-        'features/Reg\ F08\ Register\ Trial\ Person\ and\ Organization\ Associations.feature'
+        'features/Reg\ F08\ Register\ Trial\ Person\ and\ Organization\ Associations.feature',
+        'features/Reg\ F09\ Register\ Trial\ FDAAA\ Information.feature'
     ],
 
     cucumberOpts: {

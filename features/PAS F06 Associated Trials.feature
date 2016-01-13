@@ -21,7 +21,7 @@ And I have selected the <Clinical Research Category>
 And I have entered a value for Official Title
 When I have selected the Save button
 Then the selected study displays on the Associated Trials screen
-And the Message 'Record Created' displays
+And the Message Record Created displays
 And the Associated Trial will be associated with the trial
 
 Scenario: #2 I can add an Associated Trial for a trial with Trial Search
@@ -64,20 +64,25 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add/Edit Associated Trial screen
 When I select Save 
-And any of the following <field name> are Null
-|field name|
-|Brief Title|
-|Identifier Type|
-Then a warning message will appear for the null values with the message “<field name> is required” 
+And the Brief Title is Null
+Then a warning message will appear "Brief title is required” 
 
-Scenario: #5 Official Title character count
+Scenario:  #5 Identifier Type not null   
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial
+And I am on the Add/Edit Associated Trial screen
+When I select Save 
+And the Identifier Type is Null
+Then a warning message will appear "Identifier Type is required” 
+
+Scenario: #6 Official Title character count
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Associated Trial Screen
 When I enter a value for Official Title
 Then information text appears below the Official Title field to display the number of characters available to enter into the field.  
 |3000 characters left|
 
-Scenario: #6 Deleted Associated Trials
+Scenario: #7 Deleted Associated Trials
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Associated Trials screen
@@ -101,7 +106,7 @@ When I have clicked on the cancel button
 Then the Associated Trial is not removed 
 And no message displays
 
-Scenario: #7 Cancel Associated Trial for a trial
+Scenario: #8 Cancel Associated Trial for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
 And I am on the Add/Edit Associated Trial screen

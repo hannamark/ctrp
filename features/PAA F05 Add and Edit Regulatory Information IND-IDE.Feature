@@ -1,11 +1,18 @@
 @PA @global
-Feature: PAA F05 Add and Edit Regulatory Information IND-IDE
+Feature: PAA F05 Add and Delete Regulatory Information IND-IDE
 
-As any CTRP PA User, I can add and edit Regulatory Information (IND/IDE)
+As any CTRP PA User, I can add and delete Regulatory Information (IND/IDE)
 
-Scenario: #1 I can add and edit Regulatory IND or IDE Information for a Trial
+Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
+When I have selected "No" for the question "Does this trial have an associated IND or IDE?"
+Then the IND/IDE Information section will allow the entry of an IND/IDE for this trial
+
+Scenario: #2 I can add and edit Regulatory IND or IDE Information for a Trial
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Regulatory Information (IND/IDE) screen
+And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
 When I have selected the IND/IDE Type from a list
 |IND|
 |IDE|
@@ -67,34 +74,37 @@ And I have selected the NIH Institution or NCI Division/Program Code from a list
 |N/A|
 Then the IND/IDE Information for the trial will be associated with the trial
 
-Scenario: #2 I can add and edit Regulatory IND and IDE information for multiple IND or IDE registrations for a trial
+Scenario: #3 I can add and edit Regulatory IND and IDE information for multiple IND or IDE registrations for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
+And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
 When I have entered the information for an IND or IDE
 Then I will be able to select "Add IND/IDE" and enter the information for multiple IND/IDEs
 
-Scenario: #3 I can remove Regulatory IND and IDE information for one or more IND or IDE registrations for a trial
+Scenario: #4 I can remove Regulatory IND and IDE information for one or more IND or IDE registrations for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
+And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
 When I have selected the IND or IDE
 Then I will be able to remove the IND or IDE information for one or more INDs or IDEs
 
-Scenario: #4 Save Regulatory Information
+Scenario: #5 Save Regulatory Information
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Register Trial Regulatory Information (IND/IDE) screen
 When select save 
 Then the information entered or edited on the Regulatory Information (IND/IDE) screen will be saved to the trial record
 
-Scenario: #5 Cancel Regulatory Information
+Scenario: #6 Cancel Regulatory Information
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Register Trial Regulatory Information (IND/IDE) screen
-When select Cancel
+When I select Reset
 Then the information entered or edited on the Regulatory Information (IND/IDE) screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
-Scenario: #6 Regulatory IND or IDE Information must be complete 
+Scenario: #7 Regulatory IND or IDE Information must be complete 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
+And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
 When I have not selected values the IND/IDE Type 
 And I have not entered the IND/IDE number
 And I have not selected the IND/IDE Grantor
