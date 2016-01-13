@@ -195,6 +195,9 @@ SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
 SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
 SiteRecruitmentStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
 
+Gender.find_or_create_by(code: 'M', name: 'Male')
+Gender.find_or_create_by(code: 'F', name: 'Female')
+Gender.find_or_create_by(code: 'B', name: 'Both')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
