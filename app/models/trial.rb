@@ -271,6 +271,19 @@ class Trial < ActiveRecord::Base
     return send_trial_flag
   end
 
+  def pa_editable_check
+    pa_editable = false
+    Rails.logger.info "1current_user = #{self.current_user.inspect}"
+    if ["ROLE_ADMIN", "ROLE_SUPER"].include?(self.current_user.role)
+      pa_editable = true
+    elsif ["ROLE_ABSTRACTOR", "ROLE_ABTRACTOR_SU"].include?(self.current_user.role)
+      if self.admin_checkout || self.scientific_checkout
+        pa_editable = true
+      end
+    end
+    pa_editable
+  end
+
   private
 
   def generate_status

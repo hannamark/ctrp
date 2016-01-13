@@ -55,6 +55,8 @@ send_trial_flag = @trial.set_send_trial_info_flag
 
 json.send_trial_flag send_trial_flag ? "Yes":"No"
 
+json.pa_editable @trial.pa_editable_check
+
 #json.admin_checkout @trial.admin_checkout
 
 #json.scientific_checkout @trial.scientific_checkout

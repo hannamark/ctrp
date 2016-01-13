@@ -12,6 +12,7 @@ class TrialsController < ApplicationController
   # GET /trials/1
   # GET /trials/1.json
   def show
+    @trial.current_user = @current_user
   end
 
   # GET /trials/new
@@ -21,6 +22,7 @@ class TrialsController < ApplicationController
 
   # GET /trials/1/edit
   def edit
+    @trial.current_user = @current_user
   end
 
   # POST /trials
