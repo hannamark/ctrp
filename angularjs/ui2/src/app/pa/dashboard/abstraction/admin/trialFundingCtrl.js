@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialFundingCtrl', trialFundingCtrl);
 
-    trialFundingCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'instituteCodeObj', 'fundingMechanismObj', 'nciObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialFundingCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'instituteCodeObj', 'fundingMechanismObj', 'nciObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialFundingCtrl(TrialService, $scope, toastr, trialDetailObj, instituteCodeObj, fundingMechanismObj, nciObj){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialFundingCtrl(TrialService, $scope, $state, toastr, trialDetailObj, instituteCodeObj, fundingMechanismObj, nciObj){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.grantorArr = [];
@@ -23,6 +23,10 @@
         vm.showAddGrantError = false;
         vm.grantNum = 0;
         console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
+
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
 
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions

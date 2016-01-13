@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  #before_filter :wrapper_authenticate_user unless Rails.env.test?
-  #load_and_authorize_resource unless Rails.env.test?
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -26,15 +26,11 @@ class TrialsController < ApplicationController
   # POST /trials
   # POST /trials.json
   def create
-    puts "*************"
-    puts params
-    puts "*************"
-
     @trial = Trial.new(trial_params)
 
     @trial.created_by = @current_user.username unless @current_user.nil?
     @trial.updated_by = @trial.created_by
-    @trial.central_contacts.create(params[:central_contacts]) # TODO: update
+    @trial.current_user = @current_user
 
     respond_to do |format|
       if @trial.save
@@ -51,7 +47,7 @@ class TrialsController < ApplicationController
   # PATCH/PUT /trials/1.json
   def update
     @trial.updated_by = @current_user.username unless @current_user.nil?
-    @trial.central_contacts.create(params[:central_contacts]) # TODO: update or create ??
+    @trial.current_user = @current_user
 
     respond_to do |format|
       if @trial.update(trial_params)
@@ -80,11 +76,11 @@ class TrialsController < ApplicationController
     @tempgrants=@tempgrants.where("funding_mechanism = ? AND institute_code = ? AND CAST(serial_number AS TEXT)  LIKE ?", params[:funding_mechanism], params[:institute_code],"#{params[:serial_number]}%")
   end
 
-  # return all central contact types
   def get_central_contact_types
-    @contact_types = CentralContactType.all
+    @central_contact_types = CentralContactType.all
+
     respond_to do |format|
-      format.json { render :json => {:types => @contact_types} }
+      format.json { render :json => {:types => @central_contact_types} }
     end
   end
 
@@ -109,6 +105,9 @@ class TrialsController < ApplicationController
       end
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
+      @trials = @trials.with_owner(@current_user.username) if params[:searchType] == 'My Trials'
+      @trials = @trials.is_not_draft if params[:searchType] == 'All Trials'
+      @trials = @trials.is_draft(@current_user.username) if params[:searchType] == 'Saved Drafts'
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
     else
       @trials = []
@@ -178,7 +177,7 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if  params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_source].present?
+    if  params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
@@ -204,7 +203,7 @@ class TrialsController < ApplicationController
           @trials = @trials.with_any_org(params[:org])
         end
       end
-      @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
+      @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
       # PA fields
@@ -265,6 +264,15 @@ class TrialsController < ApplicationController
           @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && trial.processing_status_wrappers.last.processing_status == onhold_status}
         end
       end
+      if params[:myTrials].present?
+        Rails.logger.info "myTrials selected"
+        my_organization = @current_user.organization
+        #@trial = @trials.select{|trial| !trial.lead_.blank? && trial.organization == my_organization}
+        unless my_organization.nil?
+          Rails.logger.info "@currrent_user organization = #{@current_user.organization.inspect}"
+          @trials = @trials.with_lead_org(my_organization.name)
+        end
+      end
     else
       @trials = []
     end
@@ -307,7 +315,7 @@ class TrialsController < ApplicationController
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                     :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
                                     :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
-                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :keywords, :central_contacts,
+                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],

@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialRegFdaCtrl', trialRegFdaCtrl);
 
-    trialRegFdaCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'responsiblePartyObj', 'countryList']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialRegFdaCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'responsiblePartyObj', 'countryList']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialRegFdaCtrl(TrialService, $scope, toastr, trialDetailObj, responsiblePartyObj, countryList){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialRegFdaCtrl(TrialService, $scope, $state, toastr,  trialDetailObj, responsiblePartyObj, countryList){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.responsiblePartyArr = responsiblePartyObj;
@@ -19,6 +19,10 @@
         vm.showInvSearchBtn = true;
         vm.addedAuthorities = [];
         vm.indIdeNum = 0;
+
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
 
         vm.updateTrial = function() {
             // Prevent multiple submissions

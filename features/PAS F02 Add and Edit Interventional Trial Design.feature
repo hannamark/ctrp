@@ -1,12 +1,12 @@
-@PA @global
-Feature:  PAS F02 Add and Edit Interventional Trial Design 
+﻿@PA @global
+Feature:  PAS F02 Add and Edit an Interventional Trial Design 
 As a CTRP Scientific Abstractor, I can add and edit Interventional Trial Design 
 
   Scenario: #1 I can add and edit Interventional Trial Design for a trial
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected an Interventional trial
-       And I am on the Trial Design screen
-        And I can view a value for Clinical Research Category of interventional
+      And I am on the Trial Design screen
+        And the value for Clinical Research Category is defaulted to interventional
          And I can select a different value for Primary Purpose:
       | Primary Purpose          | 
       | Treatment                | 
@@ -99,11 +99,6 @@ As a CTRP Scientific Abstractor, I can add and edit Interventional Trial Design
       And I am on the Trial Design screen
       And Clinical Research Category is Interventional
       When I change Clinical Research Category to Observational
-      |Clinical Research Category|
-      | Interventional             | 
-      | Expanded Access            | 
-      | Observational              | 
-      | Ancillary Correlative |
      And I select Save
      Then Clinical Research Category is updated with Observational
       And the Primary Purpose displays with the previous saved value 

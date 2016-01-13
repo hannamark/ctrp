@@ -132,7 +132,8 @@
             setCurrentTrial: setCurrentTrial,
             getCurrentTrialFromCache: getCurrentTrialFromCache,
             checkoutTrial: checkoutTrial,
-            checkinTrial: checkinTrial
+            checkinTrial: checkinTrial,
+            getCentralContactTypes: getCentralContactTypes
         };
 
         return services;
@@ -346,6 +347,14 @@
             url = url.replace('{:checkWhat}', 'checkin');
             url = url.replace('{:checkoutType}', checkinType);
             return PromiseTimeoutService.getData(url);
+        }
+
+        /**
+         * Get the list of central contact types
+         * @return {Promise -> resolve to an Array}
+         */
+        function getCentralContactTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIALS_CENTRAL_CONTACT_TYPES);
         }
 
     }

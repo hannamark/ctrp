@@ -58,7 +58,7 @@ Then the information entered or edited on the Trial Related Documents screen wil
 Scenario: #6 Cancel Regulatory Information
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Register Trial Related Documents screen
-When select Cancel documents
+When I select Reset documents
 Then the information entered or edited on the Trial Related Documents screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 

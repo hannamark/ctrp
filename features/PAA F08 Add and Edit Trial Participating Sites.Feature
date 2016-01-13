@@ -62,7 +62,7 @@ Then the information entered or edited on the Participating Site screen will be 
 Scenario: #5 Cancel participating site information for a trial 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
-When select Cancel participating sites
+When I select Reset participating sites
 Then the information entered or edited on the Participating Site screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 

@@ -17,6 +17,8 @@ class DataImport
 
   def self.import_trials
     begin
+      total_organizations  = Organization.all.size
+      total_persons  = Person.all.size
       trial_spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-trials-random-2014.xls'))
       trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
       ((trial_spreadsheet.first_row+1)..trial_spreadsheet.last_row).each do |row|
@@ -127,10 +129,10 @@ class DataImport
         trial.ind_ide_question = "Yes"
         # randomly assign the rest of the data
         trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
-        trial.lead_org = Organization.all[rand(0..13)]
+        trial.lead_org = Organization.all[rand(0..total_organizations-1)]
         trial.pilot = "Yes"
-        trial.pi = Person.all[rand(0..11)]
-        trial.investigator = Person.all[rand(0..11)]
+        trial.pi = Person.all[rand(0..total_persons-1)]
+        trial.investigator = Person.all[rand(0..total_persons-1)]
         trial.save!
         #puts "trial = #{trial.inspect}"
       end

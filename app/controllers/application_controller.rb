@@ -88,7 +88,7 @@ class ApplicationController < ActionController::Base
       user = User.find_by_id(user_id)
       authenticate_user(user)
     end
-    Rails.logger.info "End of wrapper_authenticate_user"
+    #Rails.logger.info "End of wrapper_authenticate_user"
   end
 
   def authenticate_user(user)
@@ -108,13 +108,13 @@ class ApplicationController < ActionController::Base
 
 
   def set_current_user(user)
-    Rails.logger.info "\n\nIN set_current_user Setting current user to #{user.inspect}"
+    Rails.logger.debug "\nApplication Controller, set_current_user, user=#{user.username}, role=#{user.role}" unless user.blank?
     @current_user = user
     set_devise_methods(user)
   end
 
   def set_devise_methods(user)
-    Rails.logger.info "\n In Application Controller, set_devise_methods, Setting current user to #{user.inspect}"
+    Rails.logger.debug "\nApplication Controller, set_devise_methods, user=#{user.username}, role=#{user.role}" unless user.blank?
     if user.is_a?(LdapUser)
       current_ldap_user = user
     elsif user.is_a?(LocalUser)

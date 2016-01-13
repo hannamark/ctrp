@@ -202,10 +202,10 @@
             <div class="form-group">
                 <div class="row" style="margin-bottom: 7px;">
                     <div class="col-sm-offset-3 col-sm-9 col-xs-12">
-                        <label class="radio-inline control-label">
-                          <input type="radio" name="contact_type" value="" ng-model="generalTrialDetailView.centralContactType">None
+                        <label ng-repeat="type in generalTrialDetailView.centralContactTypes track by $index" for="contact_type_{{$index}}" class="radio-inline control-label">
+                          <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="generalTrialDetailView.centralContactType">{{type.name}}
                         </label>
-                        <label class="radio-inline control-label">
+                        <!-- <label class="radio-inline control-label">
                           <input type="radio" name="contact_type" value="PI" ng-model="generalTrialDetailView.centralContactType">PI
                         </label>
                         <label class="radio-inline control-label">
@@ -213,11 +213,11 @@
                         </label>
                         <label class="radio-inline control-label">
                             <input type="radio" name="contact_type" value="General" ng-model="generalTrialDetailView.centralContactType">General
-                        </label>
+                        </label> -->
                     </div>
                 </div>
             </div>
-            <div ng-hide="generalTrialDetailView.centralContactType == ''">
+            <div ng-hide="generalTrialDetailView.centralContactType == 'None'">
               <div class="form-group">
                 <label for="central_contact" class="control-label col-xs-12 col-sm-2">Central Contact</label>
                 <div class="col-xs-12 col-sm-10">

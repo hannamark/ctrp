@@ -80,7 +80,8 @@
 
             //for PA
             'PA': {
-                'TRIALS_CHECKOUT_IN': '/ctrp/pa/trial/{:trialId}/{:checkWhat}/{:checkoutType}.json'
+                'TRIALS_CHECKOUT_IN': '/ctrp/pa/trial/{:trialId}/{:checkWhat}/{:checkoutType}.json',
+                'TRIALS_CENTRAL_CONTACT_TYPES': '/ctrp/registry/trials/get_central_contact_types.json',
             }
         })
         .constant('MESSAGES', {
