@@ -16,6 +16,7 @@
             $scope, TrialService, UserService, curTrial, _) {
 
         var vm = this;
+        console.log('curTrial: ', curTrial);
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         vm.trialDetailObj = curTrial;
