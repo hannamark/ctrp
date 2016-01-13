@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+  #load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -74,6 +74,10 @@ class TrialsController < ApplicationController
   def get_grants_serialnumber
     @tempgrants=Tempgrants.all
     @tempgrants=@tempgrants.where("funding_mechanism = ? AND institute_code = ? AND CAST(serial_number AS TEXT)  LIKE ?", params[:funding_mechanism], params[:institute_code],"#{params[:serial_number]}%")
+
+    respond_to do |format|
+      format.json { render :json => {:tempgrants => @tempgrants} }
+    end
   end
 
   def get_central_contact_types

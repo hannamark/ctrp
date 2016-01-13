@@ -8,9 +8,11 @@
     angular.module('ctrp.module.dataservices')
         .factory('TrialService', TrialService);
 
-    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST', 'DateService'];
+    TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope',
+        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http'];
 
-    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope, PromiseTimeoutService, Upload, HOST, DateService) {
+    function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope,
+            PromiseTimeoutService, Upload, HOST, DateService, $http) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -168,10 +170,7 @@
         } //searchTrials
 
         function getGrantsSerialNumber(searchParams) {
-            console.log("searchParams: ", searchParams);
-            if (!!searchParams) {
-                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);
-            }
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);            
         } // getGrantsSerialNumber
         /**
          * get initial paramater object for trials search
