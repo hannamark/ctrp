@@ -509,7 +509,7 @@ grant27 = Tempgrants.find_or_create_by(serial_number: 97131, institution_name:'U
 contact_type1 = CentralContactType.find_or_create_by(code: 'NONE', name: 'None')
 contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
 contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
-contact_type4 = CentralContactType.find_or_create_by(code: 'NON', name: 'General')
+contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
 
 
 ## Trials
