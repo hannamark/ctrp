@@ -8,8 +8,9 @@
     angular.module('ctrp.app.pa').controller('paTrialCtrl', paTrialCtrl);
 
     paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal',
-                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'
-    ,'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj', 'nciProgObj', 'submissionTypesObj','submissionMethodsObj'];
+
+                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj',
+                         'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj', 'nciProgObj', 'submissionTypesObj','submissionMethodsObj'];
 
     function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal,
                          studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
@@ -35,14 +36,15 @@
         vm.submissionMethodsArr = submissionMethodsObj;
         console.log("submissionMethodsObj = " + JSON.stringify(submissionMethodsObj));
         vm.gridScope=vm;
+        vm.searching = false;
 
         //ui-grid plugin options
         vm.gridOptions = PATrialService.getGridOptions();
-        vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-        vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+        //vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
+        //vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
         vm.gridOptions.onRegisterApi = function(gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack)
+            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
                 vm.searchParams.start = newPage;
                 vm.searchParams.rows = pageSize;
@@ -51,11 +53,15 @@
         }; //gridOptions
 
         vm.searchTrials = function() {
+            vm.searching = true;
             PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;
             }).catch(function (err) {
                 console.log('search trial failed');
+            }).finally(function() {
+                console.log('finished search');
+                vm.searching = false;
             });
         };
 
@@ -82,7 +88,7 @@
         /****************************** implementations **************************/
 
         function activate() {
-            if (fromStateName != 'main.pa.trialOverview') {
+            if (fromStateName !== 'main.pa.trialOverview') {
                 vm.resetSearch();
             } else {
                 vm.searchTrials(); //refresh search results
@@ -95,8 +101,8 @@
          * @param sortColumns
          */
         function sortChangedCallBack(grid, sortColumns) {
-            if (sortColumns.length == 0) {
-                console.log("removing sorting");
+            if (sortColumns.length === 0) {
+                console.log('removing sorting');
                 //remove sorting
                 vm.searchParams.sort = '';
                 vm.searchParams.order = '';
@@ -116,6 +122,6 @@
 
             //do the search with the updated sorting
             vm.searchTrials();
-        }; //sortChangedCallBack
+        } //sortChangedCallBack
     }
 })();

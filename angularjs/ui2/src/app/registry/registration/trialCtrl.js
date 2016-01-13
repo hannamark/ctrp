@@ -21,6 +21,7 @@
         vm.trialStatusArr = trialStatusObj;
         vm.gridScope=vm;
         vm.searchWarningMessage = '';
+        vm.searching = false;
         var fromStateName = $state.fromState.name || '';
 
         //ui-grid plugin options
@@ -66,11 +67,16 @@
             }
 
             if (!isEmptySearch) {
+                vm.searching = true;
+
                 TrialService.searchTrials(vm.searchParams).then(function (data) {
                     vm.gridOptions.data = data.trials;
                     vm.gridOptions.totalItems = data.total;
                 }).catch(function (err) {
                     console.log('search trial failed');
+                }).finally(function() {
+                    console.log('search finished');
+                    vm.searching = false;
                 });
             }
         };

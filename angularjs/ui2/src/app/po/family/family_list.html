@@ -75,16 +75,22 @@
                     </div>
                     <div class="col-xs-12">
                         <div class="btn-toolbar">
-                            <button tabindex="26" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="familyView.searchFamilies('fromStart')">
+                            <button tabindex="26" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="familyView.searchFamilies('fromStart')" ng-disabled="familyView.searching">
                                 <i class="glyphicon glyphicon-search"></i> Search
                             </button>
-                            <button tabindex="25" class="btn btn-warning pull-right" id="reset_btn" ng-click="familyView.resetSearch()">
+                            <button tabindex="25" class="btn btn-warning pull-right" id="reset_btn" ng-click="familyView.resetSearch()" ng-disabled="familyView.searching">
                                 <i class="glyphicon glyphicon-remove"></i> Clear
                             </button>
                         </div>
                     </div>
                 </div>
             </form>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <span us-spinner="{radius: 20, length: 15}" spinner-on="familyView.searching"></span>
+            </div>
         </div>
 
         <!-- list of families -->

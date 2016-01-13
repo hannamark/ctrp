@@ -48,10 +48,10 @@
                 {name: 'official_title', enableSorting: true, minWidth: '150', width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phase', enableSorting: true, minWidth: '40', width: '1%'},
+                {name: 'phase', enableSorting: true, minWidth: '75', width: '6%'},
                 {name: 'purpose', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
-                {name: 'pilot', enableSorting: true, minWidth: '40', width: '1%'},
+                {name: 'pilot', enableSorting: true, minWidth: '75', width: '6%'},
                 {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '5%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -64,7 +64,7 @@
                 {name: 'study_source', enableSorting: true, minWidth: '150', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_trial_status', enableSorting: true, minWidth: '150', width: '4%',
+                {name: 'current_trial_status', enableSorting: true, minWidth: '160', width: '7%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'current_milestone', enableSorting: true, minWidth: '170', width: '4%',
@@ -82,7 +82,7 @@
                 {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_processing_status', enableSorting: true, minWidth: '150', width: '3%',
+                {name: 'current_processing_status', enableSorting: true, minWidth: '160', width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'submission_type', enableSorting: true, minWidth: '150', width: '3%',

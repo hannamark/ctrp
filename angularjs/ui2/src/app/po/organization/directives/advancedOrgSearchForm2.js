@@ -55,6 +55,7 @@
             $scope.searchWarningMessage = '';
             $scope.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
             $scope.dateFormat = DateService.getFormats()[1];
+            $scope.searching = false;
 
             console.log('current state name: ', curStateName);
 
@@ -130,6 +131,8 @@
                 }
 
                 if(!isEmptySearch) {
+                    $scope.searching = true;
+
                     //for trial-related org search, use only 'Active' source status
                     if (curStateName.indexOf('trial') > -1) {
                         $scope.searchParams.source_status = 'Active';
@@ -157,6 +160,9 @@
 
                     }).catch(function (error) {
                         console.log("error in retrieving orgs: " + JSON.stringify(error));
+                    }).finally(function() {
+                        console.log('search finished');
+                        $scope.searching = false;
                     });
                 }
             }; //searchOrgs
