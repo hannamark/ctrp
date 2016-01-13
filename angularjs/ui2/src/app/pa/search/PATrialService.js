@@ -48,10 +48,10 @@
                 {name: 'official_title', enableSorting: true, minWidth: '150', width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phase', enableSorting: true, minWidth: '40', width: '1%'},
+                {name: 'phase', enableSorting: true, minWidth: '75', width: '6%'},
                 {name: 'purpose', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
-                {name: 'pilot', enableSorting: true, minWidth: '40', width: '1%'},
+                {name: 'pilot', enableSorting: true, minWidth: '75', width: '6%'},
                 {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '5%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -64,7 +64,7 @@
                 {name: 'study_source', enableSorting: true, minWidth: '150', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_trial_status', enableSorting: true, minWidth: '150', width: '4%',
+                {name: 'current_trial_status', enableSorting: true, minWidth: '160', width: '7%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'current_milestone', enableSorting: true, minWidth: '170', width: '4%',
@@ -82,7 +82,16 @@
                 {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_processing_status', enableSorting: true, minWidth: '150', width: '3%',
+                {name: 'current_processing_status', enableSorting: true, minWidth: '160', width: '8%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'submission_type', enableSorting: true, minWidth: '150', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'submission_method', enableSorting: true, minWidth: '150', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'submission_source', enableSorting: true, minWidth: '150', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '2%',
@@ -114,6 +123,8 @@
             getMilestones: getMilestones,
             getProcessingStatuses: getProcessingStatuses,
             getHolderTypes: getHolderTypes,
+            getSubmissionTypes: getSubmissionTypes,
+            getSubmissionMethods: getSubmissionMethods,
             getNih: getNih,
             getExpandedAccessTypes: getExpandedAccessTypes,
             checkOtherId: checkOtherId,
@@ -121,7 +132,8 @@
             setCurrentTrial: setCurrentTrial,
             getCurrentTrialFromCache: getCurrentTrialFromCache,
             checkoutTrial: checkoutTrial,
-            checkinTrial: checkinTrial
+            checkinTrial: checkinTrial,
+            getCentralContactTypes: getCentralContactTypes
         };
 
         return services;
@@ -251,15 +263,15 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.NCI_PROG_PA);
         }
 
-        function getSubmissionType() {
+        function getSubmissionTypes() {
             //(original/update/amendment
+            // TODO: check if hardcoding is OK
             var submission_types = [{"code":"Original"},{"code":"Update"},{"code":"Amendment"}];
             return submission_types;
         }
 
         function getSubmissionMethods() {
-            var submission_methods = [{"code":"CCR"},{"code":"CTEP"},{"code":"DCP"},{"code":"NHBLI"}];
-            return submission_methods;
+            return PromiseTimeoutService.getData(URL_CONFIGS.SUBMISSION_METHODS);
         }
 
         function getExpandedAccessTypes() {
@@ -335,6 +347,14 @@
             url = url.replace('{:checkWhat}', 'checkin');
             url = url.replace('{:checkoutType}', checkinType);
             return PromiseTimeoutService.getData(url);
+        }
+
+        /**
+         * Get the list of central contact types
+         * @return {Promise -> resolve to an Array}
+         */
+        function getCentralContactTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIALS_CENTRAL_CONTACT_TYPES);
         }
 
     }

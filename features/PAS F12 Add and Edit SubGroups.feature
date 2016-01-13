@@ -23,18 +23,23 @@ And I have changed the value for Description
 When I have selected Save
 Then the Updated Sub-group information will be associated with the trial
 
-Scenario:  #3 Sub-group information not null   
+Scenario:  #3 Sub-group label not null   
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add/Edit Sub-group Information screen
 When I select Save 
-And any of the following <fields> are Null:
-|fields|
-|Label|
-|Description |
-Then a warning message will appear for the null values with the message <fields> is required
+And Label is Null
+Then a warning message will appear 'Label is required'
 
-Scenario: #4 Label field character count
+Scenario:  #4 Sub-group Description not null   
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial
+And I am on the Add/Edit Sub-group Information screen
+When I select Save 
+And Description is Null
+Then a warning message will appear 'Description is required'
+
+Scenario: #5 Label field character count
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add/Edit Sub-group Information screen
@@ -44,7 +49,7 @@ Then information text appears below the Label field to display the number of cha
 When 200 characters have been entered
 Then no additional text can be entered
 
-Scenario: #5 Description field character count
+Scenario: #6 Description field character count
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add/Edit Sub-group Information screen
@@ -54,14 +59,14 @@ Then information text appears below the Description field to display the number 
 When 200 characters have been entered
 Then no additional text can be entered
 
-Scenario:  #6  Reorder Sub-groups Information
+Scenario:  #7  Reorder Sub-groups Information
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Sub-groups Information Screen
 When I click on a record and drag it to a new sequence location in the table
 Then the order of the Sub-group Information changes
 
-Scenario:  #7 I can Reset Sub-group Information for a Trial
+Scenario:  #8 I can Reset Sub-group Information for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add Edit Sub-group Information screen
@@ -69,7 +74,7 @@ When I have selected Reset button
 Then the information entered or edited on the Add/Edit Sub-group Informtion screen will not be saved to the trial record
 And the screen will be refreshed with the data since the last save.
 
-Scenario:  #8 I can Cancel Sub-group Information for a Trial
+Scenario:  #9 I can Cancel Sub-group Information for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add Edit Sub-group Information screen
@@ -77,7 +82,7 @@ When I have selected Cancel button
 Then the information entered or edited on the Add/Edit Sub-group Informtion screen will not be saved to the trial record
 And the Subgroups Information screen will display
 
-Scenario:  #8 I can delete  a Sub-groups Stratification Criteria for a Trial
+Scenario:  #10 I can delete  a Sub-groups Stratification Criteria for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Sub-group Information screen

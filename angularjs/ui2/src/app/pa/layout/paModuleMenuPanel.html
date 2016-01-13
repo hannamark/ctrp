@@ -1,4 +1,4 @@
-<div class="sidebar" ng-controller="paModuleMenuPanel as paMenuPanel">
+<div class="sidebar drop-shadow" ng-controller="paModuleMenuPanel as paMenuPanel">
     <!-- <span flex class="animated-item" ng-hide="paMenuPanel.nciTrialId==''"><strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong></span> -->
   <uib-accordion close-others="false">
       <div class="panel panel-default animated-item" ng-hide="paMenuPanel.nciTrialId==''">
@@ -31,7 +31,7 @@
               <li><a href="">Regulatory Information - Human Subject Safety</a></li>
               <li><a ui-sref="main.pa.trialOverview.regulatoryInd">Regulatory Information - IND/IDE</a></li>
               <li><a href="">Trial Status</a></li>
-              <li><a href="">Trial Funding</a></li>
+              <li><a ui-sref="main.pa.trialOverview.funding">Trial Funding</a></li>
               <li><a href="">Participating Sites</a></li>
               <li><a href="">Collaborators</a></li>
               <li><a href="">Trial Related Documents</a></li>

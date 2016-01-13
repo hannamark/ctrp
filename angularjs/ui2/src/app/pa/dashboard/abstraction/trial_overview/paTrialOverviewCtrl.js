@@ -36,6 +36,7 @@
         function activate() {
             updateTrialDetailObj(vm.trialDetailObj);
             watchCheckoutButtons();
+            watchUpdatesInChildrenScope();
         } //activate
 
         function togglePanelOpen() {
@@ -85,7 +86,8 @@
             });
             // extract the submitter for the last submission
             vm.trialDetailObj.submitter = vm.trialDetailObj.submissions[0].submitter || '';
-
+            // vm.trialDetialObj.lock_version = data.lock_version || '';
+            console.log('lock version: ', data.lock_version);
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
             $scope.trialDetailObj = vm.trialDetailObj;
@@ -140,6 +142,18 @@
           });
         } //showToastr
 
-    };
+        function watchUpdatesInChildrenScope() {
+            $scope.$on('updatedInChildScope', function() {
+                vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+            });
+        }
+
+        function _getUpdatedTrialDetailObj() {
+            TrialService.getTrialById(vm.trialDetailObj.id).then(function(res) {
+                console.log('updated trialDetail obj: ', res);
+            });
+        }
+
+    }
 
 })();

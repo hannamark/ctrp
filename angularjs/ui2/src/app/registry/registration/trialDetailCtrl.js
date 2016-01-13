@@ -10,12 +10,12 @@
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
-        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams', 'acceptedFileTypesObj'];
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams', 'acceptedFileTypesObj', '_'];
 
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope, $window,
                              Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
-                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams, acceptedFileTypesObj) {
+                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams, acceptedFileTypesObj, _) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
@@ -89,6 +89,7 @@
         vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
         vm.docUploadedCount = 0;
         vm.disableBtn = false;
+        vm.grantsInputs = {grantResults: [], disabled: true};
 
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
@@ -233,25 +234,30 @@
 
         $scope.refreshGrants = function(serial_number) {
 
-            if (vm.funding_mechanism && vm.institute_code) {
+            if (vm.funding_mechanism && vm.institute_code && !!serial_number) {
                 var queryObj = {
-                    funding_mechanism: vm.funding_mechanism,
-                    institute_code: vm.institute_code,
-                    serial_number: serial_number
+                    "funding_mechanism": vm.funding_mechanism,
+                    "institute_code": vm.institute_code,
+                    "serial_number": serial_number
                 };
                 return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
-                    var snums=[];
-                    var uniquesnums= [];
-
-                    snums= res.tempgrants.map(function (tempgrant) {
-                        return tempgrant.serial_number;
+                    var transformedGrantsObjs = [];
+                    var unique = [];
+                    console.log('res is: ', res);
+                    vm.grantsInputs.grantResults = res.tempgrants;
+                    /*
+                    transformedGrantsObjs = res.tempgrants.map(function (tempgrant) {
+                        return tempgrant; //.serial_number;
                     });
-                     uniquesnums = snums.filter(function (name) {
-                        return uniquesnums.indexOf(name) === -1;
+                     unique = transformedGrantsObjs.filter(function (g) {
+                        return _.findIndex(unique, {serial_number: g.serial_number}) === -1;
                     });
 
-                    $scope.addresses = uniquesnums;
-                    console.log($scope.addresses);
+                    console.log('unique: ', unique);
+
+                    vm.grantsInputs.grantResults = transformedGrantsObjs; // unique; //['13467']; // uniquesnums;
+                    console.log(vm.grantsInputs.grantResults);
+                    */
 
                 });
 
@@ -437,7 +443,7 @@
                 vm.serial_number = null;
                 vm.nci = null;
                 vm.showAddGrantError = false;
-                $scope.addresses=null;
+                vm.grantsInputs.grantResults= [];
             } else {
                 vm.showAddGrantError = true;
             }

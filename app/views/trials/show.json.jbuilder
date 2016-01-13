@@ -1,4 +1,4 @@
-json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
+json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id,
               :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
               :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual, :comp_date, :comp_date_qual,
               :ind_ide_question, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
@@ -26,7 +26,7 @@ end
 json.submissions do
   json.array!(@trial.submissions) do |submission|
     json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
-                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at, :submitter
+                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at
   end
 end
 
@@ -44,6 +44,10 @@ json.last_amendment_num @trial.milestone_wrappers.present? ?
 
 json.last_amendment_date @trial.milestone_wrappers.present? ?
     @trial.milestone_wrappers.last.submission.amendment_date : nil
+
+#json.admin_checkout @trial.admin_checkout
+
+#json.scientific_checkout @trial.scientific_checkout
 
 #extract NCT Trial ID, if present
 if @trial.other_ids.present?

@@ -50,7 +50,7 @@ Then the information entered or edited on the Regulatory Information - Human Sub
 Scenario: #5 Cancel Regulatory Information
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Register Trial Regulatory Information - Human Subject Safety screen
-When select Cancel
+When I select Reset
 Then the information entered or edited on the Regulatory Information - Human Subject Safety screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 

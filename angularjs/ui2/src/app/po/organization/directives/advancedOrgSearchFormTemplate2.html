@@ -224,10 +224,10 @@
         </div>
         <div class="col-xs-12">
             <div class="btn-toolbar">
-                <button tabindex="33" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchOrgs('fromStart')">
+                <button tabindex="33" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchOrgs('fromStart')" ng-disabled="searching">
                     <i class="glyphicon glyphicon-search"></i> Search
                 </button>
-                <button tabindex="32" class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()">
+                <button tabindex="32" class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()" ng-disabled="searching">
                     <i class="glyphicon glyphicon-remove"></i> Clear
                 </button>
             </div>
@@ -235,6 +235,12 @@
     </div>
 </form>
 <!--<strong>Search Parameters:</strong> {{searchParams}}-->
+
+<div class="row">
+    <div class="col-xs-12">
+        <span us-spinner="{radius: 20, length: 15}" spinner-on="searching"></span>
+    </div>
+</div>
 
 <!-- use the ui-grid to present the organization search results, if showgrid is set to 'true' -->
 <div class="row" ng-class="{'top-offset-xs': gridOptions.totalItems != null }" ng-if="searchWarningMessage.length === 0">

@@ -134,6 +134,7 @@ end
     scope '/pa' do
       get 'nih_nci_div_pa' => 'util#get_nih_nci_div_pa'
       get 'nih_nci_prog_pa' => 'util#get_nih_nci_prog_pa'
+      resources :submission_methods
     end
 
     scope '/registry' do
@@ -152,6 +153,7 @@ end
           post 'validate_status'
           get  'get_grants_serialnumber'
           post 'get_grants_serialnumber'
+          get  'get_central_contact_types'
         end
       end
 

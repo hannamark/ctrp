@@ -101,16 +101,27 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="trialView.searchTrials('fromStart')">
+                            <button type="submit" class="btn btn-primary pull-right dropdown-toggle" id="submission_btn" data-toggle="dropdown" ng-disabled="trialView.searching">
                                 <i class="glyphicon glyphicon-search"></i> Search
                             </button>
-                            <button class="btn btn-warning pull-right" id="reset_btn" ng-click="trialView.resetSearch()">
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a ui-sref="main.trials" ng-click="trialView.searchTrials('fromStart', 'My Trials')">My Trials</a></li>
+                                <li><a ui-sref="main.trials" ng-click="trialView.searchTrials('fromStart', 'All Trials')">All Trials</a></li>
+                                <li><a ui-sref="main.trials" ng-click="trialView.searchTrials('fromStart', 'Saved Drafts')">Saved Drafts</a></li>
+                            </ul>
+                            <button class="btn btn-warning pull-right" id="reset_btn" ng-click="trialView.resetSearch()" ng-disabled="trialView.searching">
                                 <i class="glyphicon glyphicon-remove"></i> Clear
                             </button>
                         </div>
                     </div>
                 </div>
             </form>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <span us-spinner="{radius: 20, length: 15}" spinner-on="trialView.searching"></span>
+            </div>
         </div>
 
         <div class="row" ng-class="{'top-offset-xs': trialView.gridOptions.totalItems }">
