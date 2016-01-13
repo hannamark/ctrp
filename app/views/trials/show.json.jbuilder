@@ -16,12 +16,16 @@ json.trial_status_wrappers do
   end
 end
 
-# # get the ClinicalTrial.gov Identifier:
-# json.other_ids do
-#     json.array!(@trial.other_ids) do |other_id|
-#         json.extract! other_id, :protocol_id_origin_id
-#     end
-# end
+## append the protocol_id_origin.name
+unless @trial.other_ids.empty?
+  oids_hash = []
+  @trial.other_ids.each do |o|
+    oid_hash = Hash.new
+    oid_hash = {"name" => o.protocol_id_origin.name, "other_id_obj" => o}
+    oids_hash << oid_hash
+  end
+  json.other_ids_hash oids_hash
+end
 
 json.submissions do
   json.array!(@trial.submissions) do |submission|
