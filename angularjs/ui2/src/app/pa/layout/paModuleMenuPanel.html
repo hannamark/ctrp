@@ -1,77 +1,84 @@
 <div class="sidebar drop-shadow" ng-controller="paModuleMenuPanel as paMenuPanel">
     <!-- <span flex class="animated-item" ng-hide="paMenuPanel.nciTrialId==''"><strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong></span> -->
   <uib-accordion close-others="false">
+<!--
       <div class="panel panel-default animated-item" ng-hide="paMenuPanel.nciTrialId==''">
-          <div class="panel-heading" style="color: #fff">
+          <div class="panel-heading white-heading">
               <strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong>
           </div>
       </div>
-      <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialOverviewOpen">
+-->
+      <uib-accordion-group ng-hide="paMenuPanel.nciTrialId==''" is-open="paMenuPanel.menuAccordions.trialGlobalOpen">
           <uib-accordion-heading>
-              <strong>Trial Overview</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialOverviewOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialOverviewOpen}"></i>
+              <strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialGlobalOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialGlobalOpen}"></i>
           </uib-accordion-heading>
-          <ul class="nav nav-pills nav-stacked">
-              <li><a ui-sref="main.pa.trialOverview.trialIdentification">Trial Identification</a></li>
-              <li><a ui-sref="main.pa.trialOverview.trialHistory">Trial History</a></li>
-              <li><a ui-sref="main.pa.trialOverview.trialMilestones">Trial Milestones</a></li>
-              <li><a ui-sref="main.pa.trialOverview.onHoldInfo">On Hold Info</a></li>
-              <li><a ui-sref="main.pa.trialOverview.viewTSR">View TSR <i class="glyphicon glyphicon-new-window" style="padding-left: 10px"></i></a></li>
-              <li><a ui-sref="main.pa.trialOverview.assignOwnership">Assign Ownership</a></li>
-              <li><a ui-sref="main.pa.trialOverview.checkoutHistory">Check Out History</a></li>
-              <li><a ui-sref="main.pa.trialOverview.jsonRawData">Raw JSON Data</a></li>
-          </ul>
-      </uib-accordion-group>
-      <uib-accordion-group is-open="paMenuPanel.menuAccordions.adminDataOpen">
-          <uib-accordion-heading>
-              <strong>Admin Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.adminDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.adminDataOpen}"></i>
-          </uib-accordion-heading>
-          <ul class="nav nav-pills nav-stacked">
-              <li><a ui-sref="main.pa.trialOverview.generalTrialDetails">General Trial Details</a></li>
-              <li><a ui-sref="main.pa.trialOverview.regulatoryFda">Regulatory Information - FDAAA</a></li>
-              <li><a href="">Regulatory Information - Human Subject Safety</a></li>
-              <li><a ui-sref="main.pa.trialOverview.regulatoryInd">Regulatory Information - IND/IDE</a></li>
-              <li><a href="">Trial Status</a></li>
-              <li><a ui-sref="main.pa.trialOverview.funding">Trial Funding</a></li>
-              <li><a href="">Participating Sites</a></li>
-              <li><a href="">Collaborators</a></li>
-              <li><a href="">Trial Related Documents</a></li>
-              <li><a ui-sref="main.pa.trialOverview.nciInfo">NCI specific information</a></li>
-          </ul>
-      </uib-accordion-group>
-      <uib-accordion-group is-open="paMenuPanel.menuAccordions.scientificDataOpen">
-          <uib-accordion-heading>
-              <strong>Scientific Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.scientificDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.scientificDataOpen}"></i>
-          </uib-accordion-heading>
-          <ul class="nav nav-pills nav-stacked">
-              <li><a href="">Trial Design</a></li>
-              <li><a href="">Trial Description</a></li>
-              <li><a href="">Design Details</a></li>
-              <li><a href="">Outcome Measures</a></li>
-              <li><a href="">Eligibility Criteria</a></li>
-              <li><a href="">Associated Trials</a></li>
-              <li><a href="">Disease/Condition</a></li>
-              <li><a href="">Data Table 4 Anatomic Sites</a></li>
-              <li><a href="">Bio Markers</a></li>
-              <li><a href="">Interventions</a></li>
-              <li><a href="">Arms</a></li>
-              <li><a href="">Sub-Groups</a></li>
-          </ul>
-      </uib-accordion-group>
-      <uib-accordion-group is-open="paMenuPanel.menuAccordions.completeOpen">
-          <uib-accordion-heading>
-              <strong>Complete</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.completeOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.completeOpen}"></i>
-          </uib-accordion-heading>
-          <!--
-          <ul class="nav nav-pills nav-stacked">
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-          </ul>
-          -->
+          <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialOverviewOpen">
+              <uib-accordion-heading>
+                  <strong>Trial Overview</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialOverviewOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialOverviewOpen}"></i>
+              </uib-accordion-heading>
+              <ul class="nav nav-pills nav-stacked">
+                  <li><a ui-sref="main.pa.trialOverview.trialIdentification">Trial Identification</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.trialHistory">Trial History</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.trialMilestones">Trial Milestones</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.onHoldInfo">On Hold Info</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.viewTSR">View TSR <i class="glyphicon glyphicon-new-window" style="padding-left: 10px"></i></a></li>
+                  <li><a ui-sref="main.pa.trialOverview.assignOwnership">Assign Ownership</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.checkoutHistory">Check Out History</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.jsonRawData">Raw JSON Data</a></li>
+              </ul>
+          </uib-accordion-group>
+          <uib-accordion-group is-open="paMenuPanel.menuAccordions.adminDataOpen">
+              <uib-accordion-heading>
+                  <strong>Admin Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.adminDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.adminDataOpen}"></i>
+              </uib-accordion-heading>
+              <ul class="nav nav-pills nav-stacked">
+                  <li><a ui-sref="main.pa.trialOverview.generalTrialDetails">General Trial Details</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.regulatoryFda">Regulatory Information - FDAAA</a></li>
+                  <li><a href="">Regulatory Information - Human Subject Safety</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.regulatoryInd">Regulatory Information - IND/IDE</a></li>
+                  <li><a href="">Trial Status</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.funding">Trial Funding</a></li>
+                  <li><a href="">Participating Sites</a></li>
+                  <li><a href="">Collaborators</a></li>
+                  <li><a href="">Trial Related Documents</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.nciInfo">NCI specific information</a></li>
+              </ul>
+          </uib-accordion-group>
+          <uib-accordion-group is-open="paMenuPanel.menuAccordions.scientificDataOpen">
+              <uib-accordion-heading>
+                  <strong>Scientific Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.scientificDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.scientificDataOpen}"></i>
+              </uib-accordion-heading>
+              <ul class="nav nav-pills nav-stacked">
+                  <li><a href="">Trial Design</a></li>
+                  <li><a href="">Trial Description</a></li>
+                  <li><a href="">Design Details</a></li>
+                  <li><a href="">Outcome Measures</a></li>
+                  <li><a href="">Eligibility Criteria</a></li>
+                  <li><a href="">Associated Trials</a></li>
+                  <li><a href="">Disease/Condition</a></li>
+                  <li><a href="">Data Table 4 Anatomic Sites</a></li>
+                  <li><a href="">Bio Markers</a></li>
+                  <li><a href="">Interventions</a></li>
+                  <li><a href="">Arms</a></li>
+                  <li><a href="">Sub-Groups</a></li>
+              </ul>
+          </uib-accordion-group>
+          <uib-accordion-group is-open="paMenuPanel.menuAccordions.completeOpen">
+              <uib-accordion-heading>
+                  <strong>Complete</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.completeOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.completeOpen}"></i>
+              </uib-accordion-heading>
+              <!--
+              <ul class="nav nav-pills nav-stacked">
+                  <li><a href=""></a></li>
+                  <li><a href=""></a></li>
+                  <li><a href=""></a></li>
+                  <li><a href=""></a></li>
+                  <li><a href=""></a></li>
+                  <li><a href=""></a></li>
+                  <li><a href=""></a></li>
+              </ul>
+              -->
+          </uib-accordion-group>
       </uib-accordion-group>
   </uib-accordion>
 </div>

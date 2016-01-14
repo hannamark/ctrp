@@ -129,7 +129,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group no-bottom-margin">
+                    <div class="form-group no-bottom-margin" ng-if="trialDetailView.curTrial.pa_editable">
                         <div class="btn-toolbar">
                             <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialDetailView.updateTrial()">Save</button>
                             <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" ng-disabled="trialDetailView.disableBtn">

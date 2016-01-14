@@ -21,10 +21,15 @@
       vm.deleteOtherIdentifier = deleteOtherIdentifier;
       vm.updateOtherId = updateOtherId;
       vm.isValidPhoneNumber = isValidPhoneNumber;
+      vm.addAltTitle = addAltTitle;
+      vm.updateAlternateTitle = updateAlternateTitle;
+      vm.deleteAltTitle = deleteAltTitle;
       vm.leadOrg = [];
       vm.principalInvestigator = [];
       vm.sponsors = [];
       vm.centralContact = [];
+      vm.alternateTitles = []; // TODO: populate with those already saved with the current trial
+      vm.curAlternateTitleObj = {category: '', source: '', title: '', _destroy: false};
       vm.centralContactType = 'None'; // Int, TODO: get from the trial detial object
       // vm.centralContactTypes = [{id: 0, 'None'}, {id: 1, 'PI'}, {id: 2, 'Person'}, {id: 3, 'General'}];
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
@@ -255,8 +260,42 @@
         var regex = new RegExp('-', 'g');
         vm.centralContact[0].phone = vm.centralContact[0].phone.replace(regex, '');
         vm.isPhoneValid = true;
+      }
 
 
+      /**
+       * Add alternative titles
+       * Return {Void}
+       */
+      function addAltTitle() {
+          console.log('adding alt title: ', vm.curAlternateTitleObj);
+          vm.alternateTitles.push(angular.copy(vm.curAlternateTitleObj));
+          // clean up the values
+          vm.curAlternateTitleObj.title = '';
+          vm.curAlternateTitleObj._destroy = false;
+      }
+
+      /**
+       * Update alternative title in the array at the position idx
+       * @param  {String} newTitle [new alternative title]
+       * @param  {Int} idx      [index of the title in the array]
+       * @return {Void}
+       */
+      function updateAlternateTitle(newTitle, idx) {
+          if (idx < vm.alternateTitles.length) {
+              vm.alternateTitles[idx].title = newTitle;
+          }
+      }
+
+      /**
+       * Delete alternative title at position idx in the array
+       * @param  {Int} idx      [index of the title in the array]
+       * @return {Void}
+       */
+      function deleteAltTitle(idx) {
+          if (idx < vm.alternateTitles.length) {
+              vm.alternateTitles[idx]._destroy = !vm.alternateTitles[idx]._destroy;
+          }
       }
 
     } //generalTrialDetailCtrl
