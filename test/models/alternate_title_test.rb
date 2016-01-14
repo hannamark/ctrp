@@ -4,6 +4,7 @@
 #
 #  id           :integer          not null, primary key
 #  category     :string(255)
+#  source     :string(255)
 #  title        :text
 #  trial_id     :integer
 #  created_at   :datetime         not null
