@@ -28,7 +28,6 @@
       vm.principalInvestigator = [];
       vm.sponsors = [];
       vm.centralContact = [];
-      vm.alternateTitles = []; // TODO: populate with those already saved with the current trial
       vm.curAlternateTitleObj = {category: '', source: '', title: '', _destroy: false};
       vm.centralContactType = 'None'; // Int, TODO: get from the trial detial object
       // vm.centralContactTypes = [{id: 0, 'None'}, {id: 1, 'PI'}, {id: 2, 'Person'}, {id: 3, 'General'}];
@@ -63,6 +62,7 @@
           var outerTrial = {};
           vm.generalTrialDetailsObj.central_contacts = vm.centralContact[0]; // new field
           vm.generalTrialDetailsObj.other_ids_attributes = vm.generalTrialDetailsObj.other_ids; // for updating the attributes in Rails
+          vm.generalTrialDetailsObj.alternate_titles_attributes = vm.generalTrialDetailsObj.alternate_titles;
 
           outerTrial.new = false;
           outerTrial.id = vm.generalTrialDetailsObj.id;
@@ -71,17 +71,12 @@
           TrialService.upsertTrial(outerTrial).then(function(res) {
               console.log('central_contact: ', vm.generalTrialDetailsObj.central_contact);
               console.log('updated general trial details: ', res);
-              vm.generalTrialDetailsObj.lock_version = res.lock_version;
-              // update the general trial details obj with server response
-              /*
-              Object.keys(res).forEach(function(key) {
-                 if (!vm.generalTrialDetailsObj.hasOwnProperty(key)) {
-                     vm.generalTrialDetailsObj[key] = res[key];
-                 }
-              });
-              */
+              // vm.generalTrialDetailsObj.lock_version = res.lock_version;
+
               PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
               $scope.$emit('updatedInChildScope', {});
+
+              getTrialDetailCopy();
           });
       }
 
@@ -116,7 +111,7 @@
                   return id;
               });
 
-          }, 0);
+          }, 1);
       } //getTrialDetailCopy
 
 
@@ -137,13 +132,13 @@
               return;
           }
           var otherIdentifierNameObj = _.findWhere(vm.protocolIdOriginArr, {'id': vm.otherIdentifier.protocol_id_origin_id});
-          vm.otherIdentifier.id = vm.generalTrialDetailsObj.id; // trial Id
-          vm.otherIdentifier.trialId = vm.generalTrialDetailsObj.id;
+          // vm.otherIdentifier.id = vm.generalTrialDetailsObj.id; // trial Id
+          vm.otherIdentifier.trial_id = vm.generalTrialDetailsObj.id;
           vm.otherIdentifier.identifierName = otherIdentifierNameObj.name;
           vm.otherIdentifier._destroy = false;
-
           vm.generalTrialDetailsObj.other_ids.unshift(angular.copy(vm.otherIdentifier));
-          //clean up
+
+          // clean up
           vm.otherIdentifier.protocol_id = ''; // empty it
           vm.otherIdentifier.identifierName = '';
       } // addOtherIdentifier
@@ -268,8 +263,7 @@
        * Return {Void}
        */
       function addAltTitle() {
-          console.log('adding alt title: ', vm.curAlternateTitleObj);
-          vm.alternateTitles.push(angular.copy(vm.curAlternateTitleObj));
+          vm.generalTrialDetailsObj.alternate_titles.push(angular.copy(vm.curAlternateTitleObj));
           // clean up the values
           vm.curAlternateTitleObj.title = '';
           vm.curAlternateTitleObj._destroy = false;
@@ -282,8 +276,8 @@
        * @return {Void}
        */
       function updateAlternateTitle(newTitle, idx) {
-          if (idx < vm.alternateTitles.length) {
-              vm.alternateTitles[idx].title = newTitle;
+          if (idx < vm.generalTrialDetailsObj.alternate_titles.length) {
+              vm.generalTrialDetailsObj.alternate_titles[idx].title = newTitle;
           }
       }
 
@@ -293,8 +287,8 @@
        * @return {Void}
        */
       function deleteAltTitle(idx) {
-          if (idx < vm.alternateTitles.length) {
-              vm.alternateTitles[idx]._destroy = !vm.alternateTitles[idx]._destroy;
+          if (idx < vm.generalTrialDetailsObj.alternate_titles.length) {
+              vm.generalTrialDetailsObj.alternate_titles[idx]._destroy = !vm.generalTrialDetailsObj.alternate_titles[idx]._destroy;
           }
       }
 

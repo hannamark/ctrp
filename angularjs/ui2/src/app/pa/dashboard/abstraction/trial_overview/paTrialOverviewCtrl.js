@@ -18,6 +18,7 @@
         var vm = this;
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
+        console.log('curTrial: ', curTrial);
         vm.trialDetailObj = curTrial;
         vm.isPanelOpen = true;
         vm.togglePanelOpen = togglePanelOpen;

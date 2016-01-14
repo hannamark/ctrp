@@ -67,7 +67,7 @@
             </div>
 
             <!-- form group for displaying the alternative titles -->
-            <div class="form-group" ng-show="generalTrialDetailView.alternateTitles.length > 0">
+            <div class="form-group" ng-show="generalTrialDetailView.generalTrialDetailsObj.alternate_titles.length > 0">
               <table class="table table-bordered table-striped table-hover">
                 <thead style="background-color: #d9edf7">
                   <th>Category</th>
@@ -76,7 +76,7 @@
                   <th class="text-center">Deletion</th>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="title in generalTrialDetailView.alternateTitles track by $index" class="animated-item" ng-class="title._destroy ? 'deleted-text' : ''">
+                  <tr ng-repeat="title in generalTrialDetailView.generalTrialDetailsObj.alternate_titles track by $index" class="animated-item" ng-class="title._destroy ? 'deleted-text' : ''">
                     <td class="col-sm-2">{{title.category}}</td>
                     <td class="col-sm-2">{{title.source}}</td>
                     <td class="col-sm-7">
