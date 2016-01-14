@@ -234,7 +234,7 @@
 
         $scope.refreshGrants = function(serial_number) {
 
-            if (vm.funding_mechanism && vm.institute_code && !!serial_number) {
+            if (vm.funding_mechanism && vm.institute_code && serial_number.length > 1) {
                 var queryObj = {
                     "funding_mechanism": vm.funding_mechanism,
                     "institute_code": vm.institute_code,
@@ -243,7 +243,7 @@
                 return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
                     var transformedGrantsObjs = [];
                     var unique = [];
-
+                    console.log('res is: ', res);
                     vm.grantsInputs.grantResults = res.tempgrants;
                     /*
                     transformedGrantsObjs = res.tempgrants.map(function (tempgrant) {

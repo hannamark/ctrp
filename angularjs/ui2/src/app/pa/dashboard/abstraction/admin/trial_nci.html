@@ -85,6 +85,20 @@
 
                         <!-- first form-group -->
                         <div class="form-group">
+                                <label for="send_trial_flag" class="control-label col-xs-12 col-sm-3">Send Trial Information to ClinicalTrials.gov?</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="send_trial_flag" ng-model="trialNciView.curTrial.send_trial_flag" value="No"> No
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="send_trial_flag" ng-model="trialNciView.curTrial.send_trial_flag" value="Yes"> Yes
+                                    </label>
+                                </div>
+                        </div>
+                        <!-- end of first form-group -->
+
+                        <!-- first form-group -->
+                        <div class="form-group">
                             <label for="trial_processing_comment" class="col-xs-12">Comments:</label>
                         </div>
                         <!-- end of first form-group -->
@@ -98,7 +112,7 @@
                         <!-- end of second row -->
 
                         <!--div class="form-group no-bottom-margin" ng-if="trialNciView.curTrial.admin_checkout != nil"-->
-                        <div class="form-group no-bottom-margin">
+                        <div class="form-group no-bottom-margin" ng-if="trialNciView.curTrial.pa_editable">
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialNciView.updateTrial()">Save</button>
                                 <button type="button" class="btn btn-warning pull-right" ng-click="trialNciView.reload()" ng-disabled="trialDetailView.disableBtn">

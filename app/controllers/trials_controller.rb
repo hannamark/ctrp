@@ -12,6 +12,7 @@ class TrialsController < ApplicationController
   # GET /trials/1
   # GET /trials/1.json
   def show
+    @trial.current_user = @current_user
   end
 
   # GET /trials/new
@@ -21,6 +22,7 @@ class TrialsController < ApplicationController
 
   # GET /trials/1/edit
   def edit
+    @trial.current_user = @current_user
   end
 
   # POST /trials
@@ -74,6 +76,10 @@ class TrialsController < ApplicationController
   def get_grants_serialnumber
     @tempgrants=Tempgrants.all
     @tempgrants=@tempgrants.where("funding_mechanism = ? AND institute_code = ? AND CAST(serial_number AS TEXT)  LIKE ?", params[:funding_mechanism], params[:institute_code],"#{params[:serial_number]}%")
+
+    respond_to do |format|
+      format.json { render :json => {:tempgrants => @tempgrants} }
+    end
   end
 
   def get_central_contact_types
