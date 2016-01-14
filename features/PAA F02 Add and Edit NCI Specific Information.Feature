@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PAA F02 Add and Edit NCI Specific Information
 
 As any CTRP PA User, I can enter NCI Specific Information
@@ -94,5 +94,16 @@ Examples:
 |Trial Research Category is not "Interventional"|
 
 
+Scenario: #12 Study Source is not null 
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the NCI Specific Information screen 
+And I have not selected a Study Source            | 
+When I select Save
+Then a warning message will appear "Study Source is required”
 
-
+Scenario: #13 Funding Source is not null 
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the NCI Specific Information screen 
+And I have not selected a Funding Source            | 
+When I select Save
+Then a warning message will appear "Funding Source is required”

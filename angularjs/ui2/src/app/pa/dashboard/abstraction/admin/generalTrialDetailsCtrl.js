@@ -14,6 +14,7 @@
         MESSAGES, protocolIdOriginObj, _, $timeout, centralContactTypes) {
       var vm = this;
       var _defaultCountry = 'United States'; // for phone number validation
+      var _curCentralContactId = ''; // for comparing with the new central contact id
       vm.generalTrialDetailsObj = {};
       vm.saveGeneralTrialDetails = saveGeneralTrialDetails;
       vm.resetGeneralTrialDetails = resetGeneralTrialDetails;
@@ -27,10 +28,14 @@
       vm.leadOrg = [];
       vm.principalInvestigator = [];
       vm.sponsors = [];
-      vm.centralContact = [];
-      vm.alternateTitles = []; // TODO: populate with those already saved with the current trial
+
+      // TODO: the categories and sources come from app settings
+      vm.altTitleCategories = [{id: 1, title: 'Spelling/Format'}, {id: 2, title: 'Other'}];
+      vm.altTitleSources = [{id: 1, title: 'Protocol'}, {id: 2, title: 'Complete Sheet'},
+                            {id: 3, title: 'IRB'}, {id: 4, title: 'Other'}];
+
       vm.curAlternateTitleObj = {category: '', source: '', title: '', _destroy: false};
-      vm.centralContactType = 'None'; // Int, TODO: get from the trial detial object
+      vm.centralContactType = ''; // from the first central contact type id
       // vm.centralContactTypes = [{id: 0, 'None'}, {id: 1, 'PI'}, {id: 2, 'Person'}, {id: 3, 'General'}];
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
@@ -61,8 +66,17 @@
       /* implementations below */
       function saveGeneralTrialDetails() {
           var outerTrial = {};
-          vm.generalTrialDetailsObj.central_contacts = vm.centralContact[0]; // new field
+          if (JSON.stringify(vm.generalTrialDetailsObj.central_contacts[0]) !== '{}') {
+              vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts; // new field
+          }
+          // reset the central_contact_id if changed
+          if (_curCentralContactId != vm.generalTrialDetailsObj.central_contacts[0].id) {
+              vm.generalTrialDetailsObj.central_contacts[0].id = _curCentralContactId;
+          }
+
           vm.generalTrialDetailsObj.other_ids_attributes = vm.generalTrialDetailsObj.other_ids; // for updating the attributes in Rails
+          vm.generalTrialDetailsObj.alternate_titles_attributes = vm.generalTrialDetailsObj.alternate_titles;
+          vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts;
 
           outerTrial.new = false;
           outerTrial.id = vm.generalTrialDetailsObj.id;
@@ -71,17 +85,12 @@
           TrialService.upsertTrial(outerTrial).then(function(res) {
               console.log('central_contact: ', vm.generalTrialDetailsObj.central_contact);
               console.log('updated general trial details: ', res);
-              vm.generalTrialDetailsObj.lock_version = res.lock_version;
-              // update the general trial details obj with server response
-              /*
-              Object.keys(res).forEach(function(key) {
-                 if (!vm.generalTrialDetailsObj.hasOwnProperty(key)) {
-                     vm.generalTrialDetailsObj[key] = res[key];
-                 }
-              });
-              */
+              // vm.generalTrialDetailsObj.lock_version = res.lock_version;
+
               PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
               $scope.$emit('updatedInChildScope', {});
+
+              getTrialDetailCopy();
           });
       }
 
@@ -89,7 +98,7 @@
           vm.leadOrg = [];
           vm.principalInvestigator = [];
           vm.sponsors = [];
-          vm.centralContact = [];
+         // vm.centralContact = [];
           vm.centralContactType = '';
           $timeout(function() {
              getTrialDetailCopy();
@@ -104,10 +113,17 @@
       function getTrialDetailCopy() {
           $timeout(function() {
               vm.generalTrialDetailsObj = PATrialService.getCurrentTrialFromCache();
-              // console.log('general trialDetailObj: ', vm.generalTrialDetailsObj);
               vm.leadOrg[0] = vm.generalTrialDetailsObj.lead_org;
               vm.sponsors[0] = vm.generalTrialDetailsObj.sponsor;
               vm.principalInvestigator = [].concat(vm.generalTrialDetailsObj.pi);
+
+              if (vm.generalTrialDetailsObj.central_contacts.length > 0) {
+                  _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id || '';
+                  var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
+                  vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: _centralContactTypeId})).name || 'None';
+              }
+              console.log('vm.generalTrialDetailsObj.alternate_titles: ', vm.generalTrialDetailsObj.alternate_titles);
+
               // transform the other_ids array
               vm.generalTrialDetailsObj.other_ids = _.map(vm.generalTrialDetailsObj.other_ids, function(id, idx) {
                   var otherIdentifierNameObj = _.findWhere(vm.protocolIdOriginArr, {id: id.protocol_id_origin_id});
@@ -116,7 +132,7 @@
                   return id;
               });
 
-          }, 0);
+          }, 1);
       } //getTrialDetailCopy
 
 
@@ -137,13 +153,13 @@
               return;
           }
           var otherIdentifierNameObj = _.findWhere(vm.protocolIdOriginArr, {'id': vm.otherIdentifier.protocol_id_origin_id});
-          vm.otherIdentifier.id = vm.generalTrialDetailsObj.id; // trial Id
-          vm.otherIdentifier.trialId = vm.generalTrialDetailsObj.id;
+          // vm.otherIdentifier.id = vm.generalTrialDetailsObj.id; // trial Id
+          vm.otherIdentifier.trial_id = vm.generalTrialDetailsObj.id;
           vm.otherIdentifier.identifierName = otherIdentifierNameObj.name;
           vm.otherIdentifier._destroy = false;
-
           vm.generalTrialDetailsObj.other_ids.unshift(angular.copy(vm.otherIdentifier));
-          //clean up
+
+          // clean up
           vm.otherIdentifier.protocol_id = ''; // empty it
           vm.otherIdentifier.identifierName = '';
       } // addOtherIdentifier
@@ -200,65 +216,48 @@
       }
 
       function watchCentralContact() {
-        $scope.$watchCollection(function() {return vm.centralContact;}, function(newVal, oldVal) {
-            console.log('person id: ', newVal[0]);
+        $scope.$watchCollection(function() {return vm.generalTrialDetailsObj.central_contacts;}, function(newVal, oldVal) {
           if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullName) {
-              vm.centralContact[0] = newVal[0];
+              vm.generalTrialDetailsObj.central_contacts[0] = newVal[0];
               var firstName = newVal[0].fname || '';
               var middleName = newVal[0].mname || '';
               var lastName = newVal[0].lname || '';
-              vm.centralContact[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
-              vm.centralContact[0].person_id = newVal[0].id;
+              vm.generalTrialDetailsObj.central_contacts[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
+              vm.generalTrialDetailsObj.central_contacts[0].person_id = newVal[0].id;
           }
         });
       }
 
       function watchCentralContactType() {
         $scope.$watch(function() { return vm.centralContactType;}, function(newVal, oldVal) {
-            /*
-            var typeObjectIndex = _.findIndex(vm.centralContactTypes, {"id": parseInt(newVal)});
-            console.log('typeObjectIndex: ', typeObjectIndex);
-            console.log('newVal: ', newVal);
-            var typeObject = null;
-            if (typeObjectIndex > -1) {
-                typeObject = vm.centralContactTypes[typeObjectIndex];
-
-                if (typeObject.code === 'PI') {
-                    _usePIAsCentralContact();
-                } else {
-                    // re-initialize
-                    vm.centralContact = [].concat({});
-                }
-                vm.centralContact[0].central_contact_type_id = vm.centralContactTypes[vm.centralContactType];
-                console.log('contact type id: ', vm.centralContact[0].central_contact_type_id);
-            }
-            */
 
           if (newVal === 'PI') {
                 _usePIAsCentralContact();
-            } else if (newVal === 'None') {
-                vm.centralContact = [].concat({"_destroy": true, "id": ''}); //TODO: retrieve the id for the central contact from trial detial obj
+            } else if (newVal === 'None' && !!vm.generalTrialDetailsObj.central_contacts &&
+                    vm.generalTrialDetailsObj.central_contacts.length > 0) {
+
+                vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
             } else {
-                // re-initialize the array of centralContact
-                vm.centralContact = [].concat({});
+                vm.generalTrialDetailsObj.central_contacts = [].concat({});
             }
               var typeObject = _.findWhere(vm.centralContactTypes, {"name": newVal});
-              vm.centralContact[0].central_contact_type_id = !!typeObject ? typeObject.id : '';
-              console.log('contact type id: ', vm.centralContact[0].central_contact_type_id);
+              vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id = !!typeObject ? typeObject.id : '';
+              // console.log('contact type id: ', vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id);
           });
       }
 
       function isValidPhoneNumber() {
-          vm.isPhoneValid = isValidNumberPO(vm.centralContact[0].phone, _defaultCountry);
+          vm.isPhoneValid = isValidNumberPO(vm.generalTrialDetailsObj.central_contacts[0].phone, _defaultCountry);
       }
 
       /**
       * Use the Trial's PI as the central contact      *
       */
       function _usePIAsCentralContact() {
-        vm.centralContact = [].concat(angular.copy(vm.principalInvestigator));
+        vm.generalTrialDetailsObj.central_contacts = [].concat(angular.copy(vm.principalInvestigator));
+        vm.generalTrialDetailsObj.central_contacts[0]._destroy = false;
         var regex = new RegExp('-', 'g');
-        vm.centralContact[0].phone = vm.centralContact[0].phone.replace(regex, '');
+        vm.generalTrialDetailsObj.central_contacts[0].phone = vm.generalTrialDetailsObj.central_contacts[0].phone.replace(regex, '');
         vm.isPhoneValid = true;
       }
 
@@ -268,11 +267,14 @@
        * Return {Void}
        */
       function addAltTitle() {
-          console.log('adding alt title: ', vm.curAlternateTitleObj);
-          vm.alternateTitles.push(angular.copy(vm.curAlternateTitleObj));
-          // clean up the values
-          vm.curAlternateTitleObj.title = '';
-          vm.curAlternateTitleObj._destroy = false;
+          var _clonedAltTitle = {
+              title: vm.curAlternateTitleObj.title,
+              source: vm.curAlternateTitleObj.source.title,
+              category: vm.curAlternateTitleObj.category.title,
+              _destroy: false
+          };
+          vm.curAlternateTitleObj.title = ''; // clear up
+          vm.generalTrialDetailsObj.alternate_titles.unshift(_clonedAltTitle);
       }
 
       /**
@@ -282,8 +284,8 @@
        * @return {Void}
        */
       function updateAlternateTitle(newTitle, idx) {
-          if (idx < vm.alternateTitles.length) {
-              vm.alternateTitles[idx].title = newTitle;
+          if (idx < vm.generalTrialDetailsObj.alternate_titles.length) {
+              vm.generalTrialDetailsObj.alternate_titles[idx].title = newTitle;
           }
       }
 
@@ -293,8 +295,8 @@
        * @return {Void}
        */
       function deleteAltTitle(idx) {
-          if (idx < vm.alternateTitles.length) {
-              vm.alternateTitles[idx]._destroy = !vm.alternateTitles[idx]._destroy;
+          if (idx < vm.generalTrialDetailsObj.alternate_titles.length) {
+              vm.generalTrialDetailsObj.alternate_titles[idx]._destroy = !vm.generalTrialDetailsObj.alternate_titles[idx]._destroy;
           }
       }
 
