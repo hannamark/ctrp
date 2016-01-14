@@ -334,7 +334,7 @@ class Trial < ActiveRecord::Base
 
   def create_ownership
     # New Trial Ownership
-    TrialOwnership.create(trial: self, user: self.current_user)
+    TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
   end
 
   def save_history

@@ -133,8 +133,8 @@ class DataImport
         trial.pilot = "Yes"
         trial.pi = Person.all[rand(0..total_persons-1)]
         trial.investigator = Person.all[rand(0..total_persons-1)]
-        trial.save!
-        #puts "trial = #{trial.inspect}"
+
+        # Randomly assign a owner
         trial_submitters = [User.find_by_username("ctrptrialsubmitter"),
                             User.find_by_username("ctrptrialsubmitter2"),
                             User.find_by_username("ctrptrialsubmitter3")]
@@ -142,7 +142,8 @@ class DataImport
         trial_owner.trial = trial
         trial_owner.user = trial_submitters[rand(0..2)]
         trial.trial_ownerships << trial_owner
-        #puts "trial_ownerships = #{trial.trial_ownerships.inspect}"
+
+        trial.save!
       end
     rescue Exception => e
       puts "Exception thrown while reading Trial spreadsheet #{e.inspect}"
