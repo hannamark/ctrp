@@ -272,8 +272,9 @@ class Trial < ActiveRecord::Base
   end
 
   def pa_editable_check
+    return false if self.current_user.nil?
     pa_editable = false
-    Rails.logger.info "1current_user = #{self.current_user.inspect}"
+    Rails.logger.info "current_user = #{self.current_user.inspect}"
     if ["ROLE_ADMIN", "ROLE_SUPER"].include?(self.current_user.role)
       pa_editable = true
     elsif ["ROLE_ABSTRACTOR", "ROLE_ABTRACTOR_SU"].include?(self.current_user.role)
