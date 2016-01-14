@@ -87,6 +87,10 @@
             });
             // extract the submitter for the last submission
             vm.trialDetailObj.submitter = vm.trialDetailObj.submissions[0].submitter || '';
+
+            if (!vm.trialDetailObj.central_contacts) {
+                vm.trialDetailObj.central_contacts = [].concat({});
+            }
             // vm.trialDetialObj.lock_version = data.lock_version || '';
             console.log('lock version: ', data.lock_version);
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
