@@ -56,7 +56,8 @@ var registerTrial = function(){
     this.addTrialInstituteCode = element(by.model('trialDetailView.institute_code'));
     this.addTrialSerialNumberBox = element(by.binding('$select.placeholder')); //element(by.css('span[aria-label="Select box activate"]'));//element(by.model('trialDetailView.serial_number'));
     this.addTrialSerialNumberField = element(by.css('input[ng-model="$select.search"]'));
-    this.addTrialSerialNumberSelect= element(by.css('.ui-select-choices-row.select2-highlighted'));
+    this.addTrialSerialNumberSelect = element(by.css('.ui-select-choices-row.select2-highlighted'));
+    this.addTrialSerialNumberVerify = element(by.css('.select2-choice.ui-select-match'));
     this.addTrialNCIDivisionProgramCode = element(by.model('trialDetailView.nci'));
     this.addTrialAddGrantInfoButton = element(by.css('button[ng-click="trialDetailView.addGrant()"]'));
     this.addTrialVerifyGrantTable = element.all(by.css('tr[ng-repeat="grant in trialDetailView.addedGrants track by $index"]'));

@@ -98,7 +98,7 @@ module.exports = function() {
         //menuItemList.clickHomeEnterOrganizations();
         //trialMenuItem.clickHomeSearchTrial();
         //login.clickWriteMode('On');
-        browser.sleep(5).then(callback);
+        callback();
     });
 
     this.Given(/^I want to test the Login page second time$/, function (callback) {
@@ -109,26 +109,33 @@ module.exports = function() {
       //  trialMenuItem.clickHomeSearchTrial();
         projectFunctionsRegistry.selectTrials('National');
         login.clickWriteMode('On');
-        browser.sleep(5000).then(callback);
+        browser.sleep(210).then(callback);
+     //   callback();
     });
 
     this.Given(/^Test with same login second time$/, function (callback) {
-        login.login('ctrpcurator', 'Welcome01');
-        login.accept();
-        menuItemList.clickHomeEnterOrganizations();
-        login.clickWriteMode('On');
-        menuItemList.clickOrganizations();
-        menuItemList.clickListFamily();
-        browser.sleep(5000).then(callback);
+        element(by.model('trialDetailView.curTrial.official_title')).sendKeys('12345');
+        //login.login('ctrpcurator', 'Welcome01');
+        //login.accept();
+        //menuItemList.clickHomeEnterOrganizations();
+        //login.clickWriteMode('On');
+        //menuItemList.clickOrganizations();
+        //menuItemList.clickListFamily();
+        browser.sleep(210).then(callback);
+       // callback();
     });
 
     this.Then(/^Test with different login second time$/, function (callback) {
-        login.login('ctrptrialsubmitter', 'Welcome01');
-        login.accept();
-        menuItemList.clickHomeEnterOrganizations();
-        trialMenuItem.clickHomeSearchTrial();
-        login.clickWriteMode('On');
-        browser.sleep(5000).then(callback);
+        element(by.model('trialDetailView.curTrial.official_title')).clear();
+        element(by.model('trialDetailView.curTrial.official_title')).sendKeys('bhjnbjibn eruhf');
+        expect(element(by.model('trialDetailView.curTrial.official_title')).getAttribute('value')).to.eventually.equal('xyx').and.notify(callback);
+        //login.login('ctrptrialsubmitter', 'Welcome01');
+        //login.accept();
+        //menuItemList.clickHomeEnterOrganizations();
+        //trialMenuItem.clickHomeSearchTrial();
+        //login.clickWriteMode('On');
+       // browser.sleep(50).then(callback);
+       // callback();
     });
 
 }
