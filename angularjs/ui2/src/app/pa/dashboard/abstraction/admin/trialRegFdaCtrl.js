@@ -80,7 +80,9 @@
 
         // Add Oversight Authority to a temp array
         vm.addAuthority = function () {
-            if (vm.authority_country && vm.authority_org) {
+            var errorMsg = TrialService.checkAuthority(vm.authority_country, vm.authority_org, vm.addedAuthorities);
+
+            if (!errorMsg) {
                 var newAuthority = {};
                 newAuthority.country = vm.authority_country;
                 newAuthority.organization = vm.authority_org;
@@ -90,8 +92,10 @@
                 vm.authority_country = null;
                 vm.authority_org = null;
                 vm.authorityOrgArr = [];
+                vm.addAuthorityError = '';
                 vm.showAddAuthorityError = false;
             } else {
+                vm.addAuthorityError = errorMsg;
                 vm.showAddAuthorityError = true;
             }
         };

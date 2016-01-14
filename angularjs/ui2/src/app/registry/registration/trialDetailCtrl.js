@@ -716,6 +716,9 @@
                 vm.curTrial.pilot = 'No';
                 vm.curTrial.grant_question = 'Yes';
                 vm.curTrial.ind_ide_question = 'Yes';
+                vm.curTrial.intervention_indicator = 'N/A';
+                vm.curTrial.sec801_indicator = 'N/A';
+                vm.curTrial.data_monitor_indicator = 'N/A';
                 populateStudySource();
             } else {
                 appendEditType();

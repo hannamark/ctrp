@@ -51,7 +51,7 @@ var abstractionSearchTrialPage = function(){
     this.searchTrialLabelNIHNCIDivDeptIdentifier = element(by.model('trialView.searchParams.nih_nci_div'));
     this.searchTrialLabelNIHNCIProgramIdentifier = element(by.model('trialView.searchParams.nih_nci_prog'));
 
-    this.searchResultTable = element(by.css('.grid.ui-grid.ng-isolate-scope.grid1452616452614')).all(by.repeater('ngRepeatolRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name'));
+    //this.searchResultTable = element(by.css('.grid.ui-grid.ng-isolate-scope.grid1452616452614')).all(by.repeater('ngRepeatolRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name'));
 
 
 

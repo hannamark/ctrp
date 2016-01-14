@@ -34,10 +34,7 @@ module.exports = function() {
     var pageSearchTrail = new abstractionTrialSearchPage();
     var searchTableHeader = '';
 
-    this.Given(/^I am logged into the CTRP PA application$/, function (callback) {
-        commonFunctions.onPrepareLoginTest('ctrpabstractor');
-        browser.sleep(25).then(callback);
-    });
+
 
     /*
      Scenario: #1 I can view and edit the value for Study Source
@@ -50,18 +47,24 @@ module.exports = function() {
 
     //Given I am logged into the CTRP PA application
 
+    this.Given(/^I am logged into the CTRP PA application$/, function (callback) {
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        browser.sleep(25).then(callback);
+    });
+
     this.Given(/^I am on the NCI Specific Information screen$/, function (callback) {
         pageMenu.homeSearchTrials.click();
         commonFunctions.verifySearchTrialsPAScreen();
         login.clickWriteMode('On');
         pageSearchTrail.setSearchTrialProtocolID('*');
         pageSearchTrail.clickSearchTrialSearchButton();
+        //function tableHeader() {
+        //    return tblHDR = pageSearchTrail.searchResultTable.getText();
+        //}
+        //searchTableHeader = tableHeader();
+        //console.log('Search result table header(s):['+searchTableHeader+']')
         browser.sleep(25).then(callback);
-        function tableHeader() {
-            return tblHDR = pageSearchTrail.searchResultTable.getText();
-        }
-        searchTableHeader = tableHeader();
-        console.log('Search result table header(s):['+searchTableHeader+']')
+
     });
 
     this.Given(/^see the value for Study Source$/, function (callback) {
