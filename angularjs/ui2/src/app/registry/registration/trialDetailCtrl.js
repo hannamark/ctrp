@@ -982,6 +982,7 @@
                 document.file_name = vm.curTrial.trial_documents[i].file_name;
                 document.document_type = vm.curTrial.trial_documents[i].document_type;
                 document.document_subtype = vm.curTrial.trial_documents[i].document_subtype;
+                document.is_latest = vm.curTrial.trial_documents[i].is_latest;
                 document._destroy = vm.curTrial.trial_documents[i]._destroy;
                 vm.addedDocuments.push(document);
 

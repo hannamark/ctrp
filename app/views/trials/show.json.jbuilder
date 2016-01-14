@@ -16,6 +16,12 @@ json.trial_status_wrappers do
   end
 end
 
+json.trial_documents do
+  json.array!(@trial.trial_documents) do |document|
+    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at
+  end
+end
+
 ## append the protocol_id_origin.name
 unless @trial.other_ids.empty?
   oids_hash = []
