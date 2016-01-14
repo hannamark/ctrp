@@ -28,7 +28,12 @@
       vm.leadOrg = [];
       vm.principalInvestigator = [];
       vm.sponsors = [];
-      // vm.centralContact = [];
+
+      // TODO: the categories and sources come from app settings
+      vm.altTitleCategories = [{id: 1, title: 'Spelling/Format'}, {id: 2, title: 'Other'}];
+      vm.altTitleSources = [{id: 1, title: 'Protocol'}, {id: 2, title: 'Complete Sheet'},
+                            {id: 3, title: 'IRB'}, {id: 4, title: 'Other'}];
+
       vm.curAlternateTitleObj = {category: '', source: '', title: '', _destroy: false};
       vm.centralContactType = ''; // from the first central contact type id
       // vm.centralContactTypes = [{id: 0, 'None'}, {id: 1, 'PI'}, {id: 2, 'Person'}, {id: 3, 'General'}];
@@ -261,7 +266,7 @@
        * Return {Void}
        */
       function addAltTitle() {
-          vm.generalTrialDetailsObj.alternate_titles.push(angular.copy(vm.curAlternateTitleObj));
+          vm.generalTrialDetailsObj.alternate_titles.unshift(angular.copy(vm.curAlternateTitleObj));
           // clean up the values
           vm.curAlternateTitleObj.title = '';
           vm.curAlternateTitleObj._destroy = false;
