@@ -217,7 +217,12 @@
             </form>
         </div>
 
-        <div class="row" ng-class="{'top-offset-xs': trialView.gridOptions.totalItems }">
+        <div class="row">
+            <div class="col-xs-12">
+                <span us-spinner="{radius: 20, length: 15}" spinner-on="trialView.searching"></span>
+            </div>
+        </div>
+            <div class="row" ng-class="{'top-offset-xs': trialView.gridOptions.totalItems }">
             <div class="col-xs-12">
                 <div class="row" ng-if="trialView.gridOptions.totalItems != null">
                     <p><h4>Trial Search Results: {{trialView.gridOptions.totalItems}} found</h4></p>
