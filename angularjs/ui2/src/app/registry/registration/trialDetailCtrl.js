@@ -234,7 +234,7 @@
 
         $scope.refreshGrants = function(serial_number) {
 
-            if (vm.funding_mechanism && vm.institute_code && !!serial_number) {
+            if (vm.funding_mechanism && vm.institute_code && serial_number.length > 1) {
                 var queryObj = {
                     "funding_mechanism": vm.funding_mechanism,
                     "institute_code": vm.institute_code,
@@ -433,7 +433,7 @@
                 var newGrant = {};
                 newGrant.funding_mechanism = vm.funding_mechanism;
                 newGrant.institute_code = vm.institute_code;
-                newGrant.serial_number = vm.serial_number;
+                newGrant.serial_number = vm.serial_number.serial_number;
                 newGrant.nci = vm.nci;
                 newGrant._destroy = false;
                 vm.addedGrants.push(newGrant);

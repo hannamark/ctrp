@@ -89,7 +89,7 @@ var LoginPage = function(){
 
     this.accept = function(){
         this.acceptButton.isPresent().then(function(retVal){
-            console.log('value of ret val : ' + retVal);
+            console.log('Accept Button is Present : ' + retVal);
             if (retVal === true) {
                 element(by.buttonText('Accept')).click();// element(by.css('.container.ng-scope>button:nth-child(2)')).click();
             }

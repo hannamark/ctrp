@@ -183,6 +183,22 @@ SubmissionMethod.find_or_create_by(code: 'PDQ', name: 'PDQ')
 SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
 SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
 
+SiteRecruitmentStatus.find_or_create_by(code: 'CAC' ,name: 'Closed to Accrual')
+SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
+SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Completed')
+SiteRecruitmentStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
+SiteRecruitmentStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
+SiteRecruitmentStatus.find_or_create_by(code: 'ACT', name: 'Active')
+SiteRecruitmentStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation')
+SiteRecruitmentStatus.find_or_create_by(code: 'APP', name: 'Approved')
+SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
+SiteRecruitmentStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
+
+Gender.find_or_create_by(code: 'M', name: 'Male')
+Gender.find_or_create_by(code: 'F', name: 'Female')
+Gender.find_or_create_by(code: 'B', name: 'Both')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -509,7 +525,7 @@ grant27 = Tempgrants.find_or_create_by(serial_number: 97131, institution_name:'U
 contact_type1 = CentralContactType.find_or_create_by(code: 'NONE', name: 'None')
 contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
 contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
-contact_type4 = CentralContactType.find_or_create_by(code: 'NON', name: 'General')
+contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
 
 
 ## Trials

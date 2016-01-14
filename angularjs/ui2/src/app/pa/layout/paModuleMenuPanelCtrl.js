@@ -14,12 +14,14 @@
     function paModuleMenuPanel($scope, MESSAGES, PATrialService) {
         var vm = this;
         var currentTrialDetailObj = {};
+        var menuOpen = true;
         vm.nciTrialId = '';
         vm.menuAccordions = {
-            "trialOverviewOpen": true,
-            "adminDataOpen": true,
-            "scientificDataOpen": true,
-            "completeOpen": true
+            'trialGlobalOpen': true,
+            'trialOverviewOpen': true,
+            'adminDataOpen': true,
+            'scientificDataOpen': true,
+            'completeOpen': true
         };
 
         activate();
