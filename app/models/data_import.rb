@@ -135,6 +135,14 @@ class DataImport
         trial.investigator = Person.all[rand(0..total_persons-1)]
         trial.save!
         #puts "trial = #{trial.inspect}"
+        trial_submitters = [User.find_by_username("ctrptrialsubmitter"),
+                            User.find_by_username("ctrptrialsubmitter2"),
+                            User.find_by_username("ctrptrialsubmitter3")]
+        trial_owner = TrialOwnership.new
+        trial_owner.trial = trial
+        trial_owner.user = trial_submitters[rand(0..2)]
+        trial.trial_ownerships << trial_owner
+        #puts "trial_ownerships = #{trial.trial_ownerships.inspect}"
       end
     rescue Exception => e
       puts "Exception thrown while reading Trial spreadsheet #{e.inspect}"
