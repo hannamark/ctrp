@@ -51,7 +51,7 @@
                       <select name="source" id="source" class="form-control input-sm"
                           ng-model="generalTrialDetailView.curAlternateTitleObj.source"
                           ng-options="source.title for source in generalTrialDetailView.altTitleSources">
-                          <option value="">Select a source</option>                        
+                          <option value="">Select a source</option>
                       </select>
                     </div>
                 </div>
@@ -63,7 +63,10 @@
 
                 <!-- button -->
                 <div class="col-xs-12 col-sm-1">
-                    <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addAltTitle()" ng-disabled="generalTrialDetailView.curAlternateTitleObj.title == ''"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                    <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addAltTitle()" ng-disabled="generalTrialDetailView.curAlternateTitleObj.title == '' ||
+                    generalTrialDetailView.curAlternateTitleObj.source.title == '' ||
+                    generalTrialDetailView.curAlternateTitleObj.category.title == ''">
+                    <i class="glyphicon glyphicon-plus"></i> Add</button>
                 </div>
             </div>
 

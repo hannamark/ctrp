@@ -122,6 +122,7 @@
                   var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
                   vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: _centralContactTypeId})).name || 'None';
               }
+              console.log('vm.generalTrialDetailsObj.alternate_titles: ', vm.generalTrialDetailsObj.alternate_titles);
 
               // transform the other_ids array
               vm.generalTrialDetailsObj.other_ids = _.map(vm.generalTrialDetailsObj.other_ids, function(id, idx) {
@@ -266,10 +267,14 @@
        * Return {Void}
        */
       function addAltTitle() {
-          vm.generalTrialDetailsObj.alternate_titles.unshift(angular.copy(vm.curAlternateTitleObj));
-          // clean up the values
-          vm.curAlternateTitleObj.title = '';
-          vm.curAlternateTitleObj._destroy = false;
+          var _clonedAltTitle = {
+              title: vm.curAlternateTitleObj.title,
+              source: vm.curAlternateTitleObj.source.title,
+              category: vm.curAlternateTitleObj.category.title,
+              _destroy: false
+          };
+          vm.curAlternateTitleObj.title = ''; // clear up
+          vm.generalTrialDetailsObj.alternate_titles.unshift(_clonedAltTitle);
       }
 
       /**
