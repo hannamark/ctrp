@@ -973,6 +973,10 @@
                                     <input type="radio" restriction-field name="interventin_indicator" ng-model="trialDetailView.curTrial.intervention_indicator"
                                            value="Yes" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> Yes
                                 </label>
+                                <label class="radio-inline">
+                                    <input type="radio" restriction-field name="interventin_indicator" ng-model="trialDetailView.curTrial.intervention_indicator"
+                                           value="N/A" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> N/A
+                                </label>
                             </div>
                         </div>
 
@@ -987,6 +991,10 @@
                                     <input type="radio" restriction-field name="sec801_indicator" ng-model="trialDetailView.curTrial.sec801_indicator"
                                            value="Yes" ng-disabled="trialDetailView.curTrial.intervention_indicator === 'No' || ['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> Yes
                                 </label>
+                                <label class="radio-inline">
+                                    <input type="radio" restriction-field name="sec801_indicator" ng-model="trialDetailView.curTrial.sec801_indicator"
+                                           value="N/A" ng-disabled="trialDetailView.curTrial.intervention_indicator === 'No' || ['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> N/A
+                                </label>
                             </div>
                         </div>
 
@@ -1000,6 +1008,10 @@
                                 <label class="radio-inline">
                                     <input type="radio" name="data_monitor_indicator" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator"
                                            value="Yes" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> Yes
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="data_monitor_indicator" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator"
+                                           value="N/A" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> N/A
                                 </label>
                             </div>
                         </div>
