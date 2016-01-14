@@ -323,7 +323,7 @@ class TrialsController < ApplicationController
                                     :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
                                     :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :keywords,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
-                                    alternate_titles_attributes: [:id, :category, :title, :_destroy],
+                                    alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
                                     central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
