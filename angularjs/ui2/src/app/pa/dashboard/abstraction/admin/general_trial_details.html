@@ -29,47 +29,71 @@
           <!-- fieldset for Alternate Titles -->
           <fieldset class="sub-bordered">
             <legend class="sub-bordered">Alternate Titles</legend>
-            <!-- category -->
             <div class="form-group">
-              <div class="col-xs-12 col-sm-6">
-                <label for="category" class="control-label col-xs-12 col-sm-3">Category</label>
-                <div class="col-xs-12 col-sm-9">
-                  <select name="category" id="category" class="form-control">
-                    <option value="Spelling/Formatting Correction">Spelling/Format</option>
-                    <option value="Other">Other</option>
-                  </select>
+
+                <!-- category -->
+                <div class="col-xs-12 col-sm-4">
+                    <label for="category" class="control-label col-xs-12 col-sm-3">Category</label>
+                    <div class="col-xs-12 col-sm-9">
+                      <select name="category" id="category" class="form-control input-sm" ng-model="generalTrialDetailView.curAlternateTitleObj.category">
+                        <option value="Spelling/Formatting Correction">Spelling/Format</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
                 </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <textarea name="alternate_title_category" id="alternate_title1" rows="1" class="form-control" ng-maxlength="4000"></textarea>
-              </div>
-            </div>
 
-            <!-- source -->
-            <div class="form-group">
-              <div class="col-xs-12 col-sm-6">
-                <label for="source" class="control-label col-xs-12 col-sm-3">Source</label>
-                <div class="col-xs-12 col-sm-9">
-                  <select name="source" id="source" class="form-control" ng-model="generalTrialDetailView.generalTrialDetailsObj.source">
-                    <option value="Protocol" ng-selected="true">Protocol</option>
-                    <option value="Complete Sheet">Complete Sheet</option>
-                    <option value="IRB">IRB</option>
-                    <option value="Other">Other</option>
-                  </select>
+                <!-- source -->
+                <div class="col-xs-12 col-sm-4">
+                    <label for="source" class="control-label col-xs-12 col-sm-3">Source</label>
+                    <div class="col-xs-12 col-sm-9">
+                      <select name="source" id="source" class="form-control input-sm" ng-model="generalTrialDetailView.curAlternateTitleObj.source">
+                        <option value="Protocol" ng-selected="true">Protocol</option>
+                        <option value="Complete Sheet">Complete Sheet</option>
+                        <option value="IRB">IRB</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
                 </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <textarea name="alternate_title_source" id="alternate_title2" rows="1" class="form-control" ng-maxlength="4000"></textarea>
-              </div>
+
+                <!-- title -->
+                <div class="col-xs-12 col-sm-3">
+                    <input type="text" name="alternate_title" id="alternate_title" class="form-control input-sm" ng-model="generalTrialDetailView.curAlternateTitleObj.title" placeholder="Alternate Title">
+                </div>
+
+                <!-- button -->
+                <div class="col-xs-12 col-sm-1">
+                    <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addAltTitle()" ng-disabled="generalTrialDetailView.curAlternateTitleObj.title == ''"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                </div>
             </div>
 
-            <!-- button -->
-            <div class="form-group">
-              <div class="col-xs-12">
-                <button class="btn btn-default">Add Alternate Title</button>
-              </div>
+            <!-- form group for displaying the alternative titles -->
+            <div class="form-group" ng-show="generalTrialDetailView.alternateTitles.length > 0">
+              <table class="table table-bordered table-striped table-hover">
+                <thead style="background-color: #d9edf7">
+                  <th>Category</th>
+                  <th>Source</th>
+                  <th>Title</th>
+                  <th class="text-center">Deletion</th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="title in generalTrialDetailView.alternateTitles track by $index" class="animated-item" ng-class="title._destroy ? 'deleted-text' : ''">
+                    <td class="col-sm-2">{{title.category}}</td>
+                    <td class="col-sm-2">{{title.source}}</td>
+                    <td class="col-sm-7">
+                        <span in-place-edit="title.title" on-save="generalTrialDetailView.updateAlternateTitle(title.title, $index)"
+                              template="app/pa/dashboard/abstraction/admin/other_identifier_edit_template.html" id="#other_id_edit">
+                              {{title.title}}
+                        </span>
+                    </td>
+                    <td class="text-center" class="col-sm-1">
+                        <label class="btn btn-default" restriction-field ng-click="generalTrialDetailView.deleteAltTitle($index)">
+                            <i class="glyphicon" ng-class="title._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                        </label>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
           </fieldset>
 
           <!-- fieldset for Keywords -->
@@ -102,13 +126,13 @@
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <!-- otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''}; -->
-                  <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addOtherIdentifier()" ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == ''">Add Other Identifier</button>
+                  <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addOtherIdentifier()" ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == ''"><i class="glyphicon glyphicon-plus"></i> Add</button>
                 </div>
               </div>
             </div>
 
             <!-- form group for displaying the added other identifiers -->
-            <div class="form-group">
+            <div class="form-group" ng-show="generalTrialDetailView.generalTrialDetailsObj.other_ids.length > 0">
               <table class="table table-bordered table-striped table-hover">
                 <thead style="background-color: #d9edf7">
                   <th>Identifier Type</th>

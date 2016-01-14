@@ -7,7 +7,6 @@
 
 //Common dependencies
 var chai = require('chai');
-var protractor = require('protractor');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
@@ -64,7 +63,7 @@ var abstractionCommonMethods = function(){
         expect(paSearch.searchTrialOrganization.isDisplayed()).to.eventually.equal(true);
         expect(paSearch.searchTrialOrganizationType.isDisplayed()).to.eventually.equal(true);
         expect(paSearch.searchTrialTrialStatus.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialStudySource.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialStudySource.isDisplayed()).to.eventually.equal(true);
         expect(paSearch.searchTrialMilestone.isDisplayed()).to.eventually.equal(true);
         expect(paSearch.searchTrialProcessingStatus.isDisplayed()).to.eventually.equal(true);
         expect(paSearch.searchTrialResearchCategory.isDisplayed()).to.eventually.equal(true);
@@ -158,7 +157,7 @@ var abstractionCommonMethods = function(){
         iteraCntLg = iteraCntLg + 1;
         var getCrntCntLg = iteraCntLg + 1;
         console.log('calculating count:'+getCrntCntLg+'')
-        if (getCrntCntLg == 'do not validate'){
+        if (getCrntCntLg == '11'){
             login.loginPageVerification.getText().then (function(text){
                 var passTxtA = ''+text+'';
                 crntTxtLoginPg =  ''+passTxtA+'';
