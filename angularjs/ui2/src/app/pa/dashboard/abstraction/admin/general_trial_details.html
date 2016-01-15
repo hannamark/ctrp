@@ -128,7 +128,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <!-- otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''}; -->
-                  <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addOtherIdentifier()" ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == ''"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                  <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addOtherIdentifier()" ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == '' || !generalTrialDetailView.otherIdentifier.protocol_id_origin_id"><i class="glyphicon glyphicon-plus"></i> Add</button>
                 </div>
               </div>
               <div class="add-association-error" ng-show="generalTrialDetailView.otherIdErrorMsg.length > 0">
