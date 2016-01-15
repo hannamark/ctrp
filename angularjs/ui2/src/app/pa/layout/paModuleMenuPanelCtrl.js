@@ -16,8 +16,9 @@
         var currentTrialDetailObj = {};
         var menuOpen = true;
         vm.nciTrialId = '';
+        vm.trialGlobalOpen = true;
+        vm.toggleGlobal = toggleGlobal;
         vm.menuAccordions = {
-            'trialGlobalOpen': true,
             'trialOverviewOpen': true,
             'adminDataOpen': true,
             'scientificDataOpen': true,
@@ -35,6 +36,14 @@
                 console.log('nciTrialId: ', vm.nciTrialId);
             });
         } //activate
+
+        function toggleGlobal() {
+            console.log('toggling, vm.trialGlobalOpen: ', vm.trialGlobalOpen);
+            // vm.trialGlobalOpen = !vm.trialGlobalOpen;
+            Object.keys(vm.menuAccordions).forEach(function(key) {
+                vm.menuAccordions[key] = !vm.trialGlobalOpen;
+            });
+        }
 
 
         /*
