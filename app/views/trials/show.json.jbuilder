@@ -36,7 +36,7 @@ end
 json.submissions do
   json.array!(@trial.submissions) do |submission|
     json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
-                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at, :user_id
+                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at, :user_id, :submission_source_id
   end
 end
 
@@ -58,6 +58,8 @@ json.last_amendment_date @trial.milestone_wrappers.present? ?
 json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
 
 json.submitter @trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : Person.find(@trial.submissions.last.user_id))
+
+json.last_submission_source @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_source_id.nil? ? '' : SubmissionSource.find(@trial.submissions.last.submission_source_id))
 
 send_trial_flag = @trial.set_send_trial_info_flag
 
