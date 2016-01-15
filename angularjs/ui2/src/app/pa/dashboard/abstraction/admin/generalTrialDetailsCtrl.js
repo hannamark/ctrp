@@ -36,11 +36,9 @@
 
       vm.curAlternateTitleObj = {category: '', source: '', title: '', _destroy: false};
       vm.centralContactType = ''; // from the first central contact type id
-      // vm.centralContactTypes = [{id: 0, 'None'}, {id: 1, 'PI'}, {id: 2, 'Person'}, {id: 3, 'General'}];
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
       vm.centralContactTypes = centralContactTypes.types;
-      console.log('contact types: ', vm.centralContactTypes);
 
       activate();
 
