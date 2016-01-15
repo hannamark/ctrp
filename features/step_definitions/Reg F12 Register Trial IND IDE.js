@@ -15,6 +15,22 @@ module.exports = function() {
     var projectFunctions = new projectFunctionsPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
 
+    /*********************
+     * Validation message *
+     *********************/
+    var FDAIND_IDERequired = 'IND/IDE is required';
+
+    this.Given(/^I am on the Register Trial IND\/IDE Information screen$/, function (callback) {
+        callback();
+    });
+
+    this.Then(/^the IND\/IDE Information section for the trial registration will not indicate any errors during trial review$/, function (callback) {
+        addTrial.clickAddTrialReviewButton();
+        addTrial.verifyAddTrialFDAIND_IDEOption('1', true);
+        expect(addTrial.addTrialFDAIND_IDETypes.isDisplayed()).to.become(false);
+        expect(projectFunctions.verifyWarningMessage(FDAIND_IDERequired)).to.become('false');
+        browser.sleep(5000).then(callback);
+    });
 
 
 

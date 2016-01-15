@@ -51,6 +51,7 @@ var registerTrial = function(){
     this.addTrialDataTable4ProgramCode = element(by.model('trialDetailView.curTrial.program_code'));
 
     /** NIH Grant Information **/
+    this.addTrialFundedByNCIQuestion = element(by.css('div[is-open="trialDetailView.accordions[6]"]')).all(by.css('.control-label.col-xs-12.col-sm-3'));
     this.addTrialFundedByNCIOption = element.all(by.model('trialDetailView.curTrial.grant_question'));
     this.addTrialFundingMechanism = element(by.model('trialDetailView.funding_mechanism'));
     this.addTrialInstituteCode = element(by.model('trialDetailView.institute_code'));
@@ -77,6 +78,8 @@ var registerTrial = function(){
     this.addTrialCompletionDateOption = element(by.model('trialDetailView.curTrial.comp_date_qual'));
 
     /** FDA IND/IDE Information **/
+    this.addTrialFDAIND_IDETypesQuestion = element(by.css('div[is-open="trialDetailView.accordions[9]"]')).all(by.css('.control-label.col-xs-12.col-sm-3'));
+    this.addTrialFDAIND_IDEOption = element.all(by.model('trialDetailView.curTrial.ind_ide_question'));
     this.addTrialFDAIND_IDETypes = element(by.model('trialDetailView.ind_ide_type'));
     this.addTrialFDAIND_IDENumber = element(by.model('trialDetailView.ind_ide_number'));
     this.addTrialFDAIND_IDEGrantor = element(by.model('trialDetailView.grantor'));
@@ -339,6 +342,10 @@ var registerTrial = function(){
 
     /********** FDA IND/IDE Information **********/
 
+    this.selectAddTrialFDAIND_IDEOption = function(trialFDAIND_IDEOption)  {
+        helper.clickRadioButton(this.addTrialFDAIND_IDEOption,trialFDAIND_IDEOption,"Add Trial funded by FDA_IND option field");
+    };
+
     this.selectAddTrialFDAIND_IDETypes = function(trialFDAIND_IDETypes)  {
         helper.selectValueFromList(this.addTrialFDAIND_IDETypes,trialFDAIND_IDETypes,"Add Trial by IND/IDE Types field");
     };
@@ -361,6 +368,15 @@ var registerTrial = function(){
 
     this.clickAddTrialAddIND_IDEButton = function(){
         helper.clickButton(this.addTrialAddIND_IDEButton,"Add Trial FDA IND/IDE Add button");
+    };
+
+    this.verifyAddTrialFDAIND_IDEOption = function(trialFDAIND_IDEOption, result)  {
+        if (trialFDAIND_IDEOption === '0') {
+            expect(this.addTrialFDAIND_IDEOption.get(0).isSelected()).to.eventually.equal(result);
+        }
+        else if (trialFDAIND_IDEOption === '1') {
+            expect(this.addTrialFDAIND_IDEOption.get(1).isSelected()).to.eventually.equal(result);
+        }
     };
 
     /********** Regulatory Information **********/

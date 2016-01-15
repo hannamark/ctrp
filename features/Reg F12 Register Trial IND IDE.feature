@@ -3,13 +3,14 @@ Feature: Reg F12 Register Trial IND IDE
 
 As a CTRP User, I can indicate if a trial has an associated IND or IDE and if so, enter information about the IND or IDE
 
-Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
-Given I have selected the option to register a trial <TrialType>
+Scenario Outline: #1 I can indicate that the trial does not have an associated IND or IDE
+Given I have selected the option to register a trial <trialType>
 And I am on the Register Trial IND/IDE Information screen
-When I have selected "No" for the question "Does this trial have an associated IND or IDE?"
+When I have selected "No" for the question "Does this trial have an associated IND/IDE?"
 Then the IND/IDE Information section for the trial registration will not indicate any errors during trial review
-      
-      |TrialType                 |
+
+Examples:
+      |trialType                 |
       |National                  |
       |Externally Peer-Reviewed  |
       |Institutional             |
@@ -17,7 +18,7 @@ Then the IND/IDE Information section for the trial registration will not indicat
 Scenario: #2 I can enter the IND or IDE information for a trial
 Given I have selected the option to register a trial <TrialType>
 And I am on the Register Trial IND/IDE Information screen
-And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
+And I have selected "Yes" for the question "Does this trial have an associated IND/IDE?"
 When I have selected the IND/IDE Type:
   
       |IND|
@@ -56,7 +57,7 @@ Then the IND/IDE Information for the trial registration will not indicate any er
 Scenario: #3 I can enter the IND and IDE information for multiple IND or IDE registrations for a trial
 Given I have selected the option to register a trial <TrialType>
 And I am on the Register Trial IND/IDE Information screen
-And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
+And I have selected "Yes" for the question "Does this trial have an associated IND/IDE?"
 When I have entered the information for an IND/IDE Type
         |IND|
         |IED|

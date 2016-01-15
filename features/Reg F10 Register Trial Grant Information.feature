@@ -6,7 +6,7 @@ Feature: Reg F10 Register Trial Grant Information
   Scenario Outline: #1 I can indicate that the trial does not have an associated grant
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Grant Information screen
-    When I have selected "No" for the question "Is this trial funded by a NCI Grant?"
+    When I have selected "No" for the question "Is this trial funded by an NCI grant?"
     Then the Register Trial Grant Information section will not indicate any errors during Trial Review
 
     Examples:
@@ -20,7 +20,7 @@ Feature: Reg F10 Register Trial Grant Information
   Scenario Outline: #2 I can enter the NCI Grant information for a trial using a Grant Serial Number look-up
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Grant Information screen
-    And I have selected "Yes" for the question "Is this trial funded by a NCI Grant?"
+    And I have selected "Yes" for the question "Is this trial funded by an NCI grant?"
     When I have selected the Funding Mechanism from a list
     And I have selected the Institute Code from a list
     And I have selected the NCI Division/Program Code from a list
@@ -41,7 +41,7 @@ Feature: Reg F10 Register Trial Grant Information
   Scenario Outline: #3 I can enter the NCI Grant information for multiple Grants for a trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Grant Information screen
-    And I have selected "Yes" for the question "Is this trial funded by a NCI Grant?"
+    And I have selected "Yes" for the question "Is this trial funded by an NCI grant?"
     When I have entered the information for a NCI Grant
     Then I will be able to select "Add Grant" and enter the information for multiple Grants
 

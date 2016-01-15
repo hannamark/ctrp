@@ -44,14 +44,38 @@ module.exports = function() {
     });
 
     this.When(/^I have selected "([^"]*)" for the question "([^"]*)"$/, function (arg1, arg2, callback) {
-        addTrial.verifyAddTrialFundedByNCIOption('0', true);
-        addTrial.verifyAddTrialFundedByNCIOption('1', false);
-        if (arg1 === 'No') {
-            addTrial.selectAddTrialFundedByNCIOption('1');
-        }
-        else if (arg1 === 'Yes') {
-            addTrial.selectAddTrialFundedByNCIOption('0');
-        }
+        addTrial.addTrialFundedByNCIQuestion.getText().then(function(value) {
+            console.log('value of Question1');
+            console.log(value);
+            console.log('provided Question1');
+            console.log(arg2);
+            if (value.toString() === arg2) {
+                addTrial.verifyAddTrialFundedByNCIOption('0', true);
+                addTrial.verifyAddTrialFundedByNCIOption('1', false);
+                if (arg1 === 'No') {
+                    addTrial.selectAddTrialFundedByNCIOption('1');
+                }
+                else if (arg1 === 'Yes') {
+                    addTrial.selectAddTrialFundedByNCIOption('0');
+                }
+            }
+        });
+        addTrial.addTrialFDAIND_IDETypesQuestion.getText().then(function(value) {
+            console.log('value of Question2');
+            console.log(value);
+            console.log('provided Question2');
+            console.log(arg2);
+            if (value.toString() === arg2) {
+                addTrial.verifyAddTrialFDAIND_IDEOption('0', true);
+                addTrial.verifyAddTrialFDAIND_IDEOption('1', false);
+                if (arg1 === 'No') {
+                    addTrial.selectAddTrialFDAIND_IDEOption('1');
+                }
+                else if (arg1 === 'Yes') {
+                    addTrial.selectAddTrialFDAIND_IDEOption('0');
+                }
+            }
+        });
         browser.sleep(25).then(callback);
     });
 
