@@ -63,9 +63,7 @@
 
                 <!-- button -->
                 <div class="col-xs-12 col-sm-1">
-                    <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addAltTitle()" ng-disabled="generalTrialDetailView.curAlternateTitleObj.title == '' ||
-                    generalTrialDetailView.curAlternateTitleObj.source.title == '' ||
-                    generalTrialDetailView.curAlternateTitleObj.category.title == ''">
+                    <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addAltTitle()" ng-disabled="generalTrialDetailView.curAlternateTitleObj.title == '' || !generalTrialDetailView.curAlternateTitleObj.source.title || !generalTrialDetailView.curAlternateTitleObj.category.title">
                     <i class="glyphicon glyphicon-plus"></i> Add</button>
                 </div>
             </div>
