@@ -1,4 +1,4 @@
-﻿@PA @global
+@PA @global
 Feature:  PAS F01 Add and Edit Trial descriptions 
 As a CTRP Scientific Abstractor, I can add and edit Trial Descriptions 
 
@@ -21,7 +21,7 @@ And I am on the Trial Description screen
 And information text appears above the Brief Title field as 'Mandatory at Abstraction Validation'
 When Brief Title is null 
 And I select Save
-Then a warning message will appear with the message “Brief Title is required”
+Then an error message will appear with the message “Brief Title is required”
 
 Scenario: #3 Brief Summary is not null 
 Given I am logged into the CTRP Protocol Abstraction application
@@ -30,7 +30,7 @@ And I am on the Trial Description screen
 And information text appears above the Brief Summary field as 'Mandatory at Abstraction Validation'
 When Brief Summary is null 
 And I select Save
-Then a warning message will appear with the message “Summary is required”
+Then an error message will appear with the message “Summary is required”
 
 Scenario:  #4 I can reset Trial Description screen for a Trial
 Given I am logged into the CTRP Protocol Abstraction application

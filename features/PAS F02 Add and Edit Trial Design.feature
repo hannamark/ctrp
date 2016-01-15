@@ -87,10 +87,10 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
       And the Clinical research Category is Interventional
      When The Trial Design field <TrialDesignField> is not entered
       And I have seleted the save Button
-     Then An warning message <TrialDesignWarningMessage> will be displayed  
+     Then An error message <TrialDesignErrorMessage> will be displayed  
     Examples: 
   
-      | <TrialDesignField> | <TrialDesignWarning Message>       | 
+      | <TrialDesignField> | <TrialDesignErrorMessage>       | 
       | Primary Purpose    | Primary Purpose must be entered    | 
       | Trial Phase        | Trial Phase must be entered        | 
       | Intervention Model | Intervention Model must be entered | 
@@ -180,10 +180,10 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
       And the Clinical research Category is Observational or Ancillary Correlative 
      When The Trial Design field <TrialDesignField> is not entered
       And I have seleted the save Button
-     Then a warning message <TrialDesignWarningMessage> will be displayed  
+     Then an error message <TrialDesignErrorMessage> will be displayed  
     Examples: 
   
-      | <TrialDesignField> | <TrialDesignWarning Message>       | 
+      | <TrialDesignField> | <TrialDesignErrorMessage>       | 
       | Primary Purpose    | Primary Purpose must be entered    | 
       | Trial Phase        | Trial Phase must be entered        | 
       | Intervention Model | Intervention Model must be entered | 

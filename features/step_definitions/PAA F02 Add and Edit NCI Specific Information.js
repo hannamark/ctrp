@@ -2,6 +2,8 @@
  * Author: Shamim Ahmed
  * Date: 01/08/2015
  * Feature: PAA F02 Add and Edit NCI Specific Information
+ *
+ * Note: In the PA search screen it has dependency on the seed data
  */
 
 //Common dependencies
@@ -33,8 +35,9 @@ module.exports = function() {
     var pageMenu = new abstractionPageMenu();
     var pageSearchTrail = new abstractionTrialSearchPage();
     var searchTableHeader = '';
-
-
+    var nciID = 'NCI-2014-00894'; //A Phase II Study of Ziv-aflibercept
+    var leadProtocolID = 'CTRP_01_4345';
+    var searchResultCountText = 'Trial Search Results';
 
     /*
      Scenario: #1 I can view and edit the value for Study Source
@@ -44,8 +47,6 @@ module.exports = function() {
      When I select a different Study Source value of National, Externally Peer-Reviewed, Institutional, Industrial, or Other
      Then the selected value for Study Source will be associated with the trial
      */
-
-    //Given I am logged into the CTRP PA application
 
     this.Given(/^I am logged into the CTRP PA application$/, function (callback) {
         commonFunctions.onPrepareLoginTest('ctrpabstractor');
@@ -58,6 +59,16 @@ module.exports = function() {
         login.clickWriteMode('On');
         pageSearchTrail.setSearchTrialProtocolID('*');
         pageSearchTrail.clickSearchTrialSearchButton();
+        var gar = 1 ;
+        if (gar == 1){
+            console.log('gar'+gar+'')
+        }
+        helper.wait_for(1000);
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickLinkText(leadProtocolID); //CTRP_01_4345
+        helper.wait_for(9000);
+
+
         //function tableHeader() {
         //    return tblHDR = pageSearchTrail.searchResultTable.getText();
         //}

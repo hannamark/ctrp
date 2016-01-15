@@ -183,22 +183,6 @@ SubmissionMethod.find_or_create_by(code: 'PDQ', name: 'PDQ')
 SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
 SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
 
-SiteRecruitmentStatus.find_or_create_by(code: 'CAC' ,name: 'Closed to Accrual')
-SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
-SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Completed')
-SiteRecruitmentStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
-SiteRecruitmentStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
-SiteRecruitmentStatus.find_or_create_by(code: 'ACT', name: 'Active')
-SiteRecruitmentStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation')
-SiteRecruitmentStatus.find_or_create_by(code: 'APP', name: 'Approved')
-SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
-SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
-SiteRecruitmentStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
-
-Gender.find_or_create_by(code: 'M', name: 'Male')
-Gender.find_or_create_by(code: 'F', name: 'Female')
-Gender.find_or_create_by(code: 'B', name: 'Both')
-
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -431,6 +415,8 @@ if Organization.all.size == 0
   org23 = Organization.find_or_create_by(id: 33699872, source_id: 'NVRF', name: 'Nevada Cancer Research Foundation CCOP', phone:'702-541-1815', source_status: source_act, source_context: ctrp,  email: "rludlum@lasvegashealth.com",  address: '1 Rancho Drive', city: 'Las Vegas', state_province:'Nevada', country:usa, postal_code:"926344")
   org24 = Organization.find_or_create_by(id: 8149074, source_id: 'WA002', name: 'Harborview Medical Center', phone:'865-541-1816', source_status: source_act, source_context: ctrp, email: "dbrown@seattlehealth.com", address: '23 Wheeling Drive', city: 'Seattle', state_province:'Washington', country:usa, postal_code:"123683") #no source id
 
+  org25 = Organization.find_or_create_by(id: 23170023,  name: 'National Cancer Institute', phone:'301-555-0000', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '9609 Medical Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20850") #no source id
+  org25 = Organization.find_or_create_by(id: 16108126,  name: 'NCI - Center for Cancer Research', phone:'301-496-4365', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '31 Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20892") #no source id
 
   family1 = Family.create(name: 'Masonic Cancer Center')
   if !family1.new_record?
@@ -486,46 +472,41 @@ family5 = Family.find_or_create_by(name: 'NRG Oncology',family_status_id:1,famil
 family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2,family_type_id:1)#Cancer Center
 
 ##Grants - Temporary grant information stored in seeds. WIll be replaced by nightly import of Grants information
-grant2 = Tempgrants.find_or_create_by(serial_number:134759 , institution_name:'UNIVERSITY OF MINNESOTA' , project_title:'Transposon-based screens for colorectal cancer genes' ,funding_mechanism:'R01' , institute_code: 'CA', pi_full_name: 'KYLIE WALTERS')
-grant3 = Tempgrants.find_or_create_by(serial_number:142845 , institution_name: 'MEHARRY MEDICAL COLLEGE', project_title:'Mechanisms for Benzo(a)pyrene-Induced Colon Cancer Exacerbation by Dietary Fat' ,funding_mechanism: 'R01', institute_code: 'CA',  pi_full_name: 'M. Rita		Young')
-grant4 = Tempgrants.find_or_create_by(serial_number:133230 , institution_name: 'VANDERBILT UNIVERSITY', project_title:'The alpha2beta1 Integrin and Tumor Metastasis' ,funding_mechanism: 'R01', institute_code: 'CA',  pi_full_name: 'CHUNHAI HAO')
+grant2 = Tempgrants.find_or_create_by(serial_number:134759 , institution_name:'UNIVERSITY OF MINNESOTA' , project_title:'Transposon-based screens for colorectal cancer genes' ,funding_mechanism:'R01' , institute_code: 'CA')
+grant3 = Tempgrants.find_or_create_by(serial_number:142845 , institution_name: 'MEHARRY MEDICAL COLLEGE', project_title:'Mechanisms for Benzo(a)pyrene-Induced Colon Cancer Exacerbation by Dietary Fat' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant4 = Tempgrants.find_or_create_by(serial_number:133230 , institution_name: 'VANDERBILT UNIVERSITY', project_title:'The alpha2beta1 Integrin and Tumor Metastasis' ,funding_mechanism: 'R01', institute_code: 'CA')
 
-grant6 = Tempgrants.find_or_create_by(serial_number:136921 , institution_name: 'UNIVERSITY OF NEBRASKA MEDICAL CENTER', project_title:'NMR Structural Studies of Ubiquitin Receptor Protein Complexes' ,funding_mechanism: 'R01', institute_code: 'CA', pi_full_name: 'SADHAN MAJUMDER')
-grant7 = Tempgrants.find_or_create_by(serial_number:128837 , institution_name: 'MEDICAL UNIVERSITY OF SOUTH CAROLINA', project_title:'Immunotherapy to prevent oral permalignant lesion recurrence and oral cancer.' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'RICHARD WOOD')
+grant5 = Tempgrants.find_or_create_by(serial_number:136472 , institution_name: 'UNIVERSITY OF MINNESOTA', project_title:'NMR Structural Studies of Ubiquitin Receptor Protein Complexes' ,funding_mechanism: 'R01', institute_code: 'CA')
 
-grant8 = Tempgrants.find_or_create_by(serial_number:129687 , institution_name: 'EMORY UNIVERSITY', project_title:'Molecular mechanisms of TRAIL resistance in glioblastoma' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'CAROLYN KLINGE')
-grant9 = Tempgrants.find_or_create_by(serial_number:136491 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'REST/NRSF-mediated medulloblastoma tumorigenesis' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'JASON LEWIS')
+grant6 = Tempgrants.find_or_create_by(serial_number:136921 , institution_name: 'UNIVERSITY OF NEBRASKA MEDICAL CENTER', project_title:'NMR Structural Studies of Ubiquitin Receptor Protein Complexes' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant7 = Tempgrants.find_or_create_by(serial_number:128837 , institution_name: 'MEDICAL UNIVERSITY OF SOUTH CAROLINA', project_title:'Immunotherapy to prevent oral permalignant lesion recurrence and oral cancer.' ,funding_mechanism: 'R01', institute_code: 'CA')
 
-grant10 = Tempgrants.find_or_create_by(serial_number:132840 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'Function of REV3L in limiting oncogenesis via DNA damage tolerance' ,funding_mechanism: 'R01', institute_code: 'CA', pi_full_name: 'XIZENG WU')
-grant11 = Tempgrants.find_or_create_by(serial_number:138410 , institution_name: 'UNIVERSITY OF LOUISVILLE', project_title:'Regulation of miRNA in breast cancer' ,funding_mechanism: 'R01', institute_code: 'CA', pi_full_name: 'CONSTANCE BRINCKERHOFF')
+grant8 = Tempgrants.find_or_create_by(serial_number:129687 , institution_name: 'EMORY UNIVERSITY', project_title:'Molecular mechanisms of TRAIL resistance in glioblastoma' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant9 = Tempgrants.find_or_create_by(serial_number:136472 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'REST/NRSF-mediated medulloblastoma tumorigenesis' ,funding_mechanism: 'R01', institute_code: 'CA')
 
-grant12 = Tempgrants.find_or_create_by(serial_number:138468 , institution_name: 'SLOAN-KETTERING INST CAN RESEARCH', project_title:'PET Imaging of Cancer with pH (Low) Insertion Peptide (pHLIP)' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'REBECCA CROWLEY')
-grant13 = Tempgrants.find_or_create_by(serial_number: 142587, institution_name: 'UNIVERSITY OF ALABAMA AT BIRMINGHAM', project_title:'Phase-sensitive x-ray breast tomosynthesis' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'Fese Mokube')
+grant10 = Tempgrants.find_or_create_by(serial_number:132840 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'Function of REV3L in limiting oncogenesis via DNA damage tolerance' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant11 = Tempgrants.find_or_create_by(serial_number:138410 , institution_name: 'UNIVERSITY OF LOUISVILLE', project_title:'Regulation of miRNA in breast cancer' ,funding_mechanism: 'R01', institute_code: 'CA')
 
-grant14 = Tempgrants.find_or_create_by(serial_number: 77267, institution_name: 'DARTMOUTH COLLEGE', project_title:'Invasive Behavior of Tumor Cells Producing Collagenase-1' ,funding_mechanism: 'R01', institute_code: 'CA', pi_full_name: 'Chiswili Chabu')
-grant15 = Tempgrants.find_or_create_by(serial_number:132672 , institution_name: 'UNIVERSITY OF PITTSBURGH AT PITTSBURGH', project_title:'Continued Development and Evaluation of caTIES' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'Christine Ambrosone')
-grant16 = Tempgrants.find_or_create_by(serial_number: 144563, institution_name: 'INDIANA UNIVERSITY BLOOMINGTON', project_title:'Studies Toward the Total Synthesis of Leiodelide' ,funding_mechanism: 'F31', institute_code: 'CA',pi_full_name: 'Deborah Lang')
+grant12 = Tempgrants.find_or_create_by(serial_number:138468 , institution_name: 'SLOAN-KETTERING INST CAN RESEARCH', project_title:'PET Imaging of Cancer with pH (Low) Insertion Peptide (pHLIP)' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant13 = Tempgrants.find_or_create_by(serial_number: 142587, institution_name: 'UNIVERSITY OF ALABAMA AT BIRMINGHAM', project_title:'Phase-sensitive x-ray breast tomosynthesis' ,funding_mechanism: 'R01', institute_code: 'CA')
 
-grant17 = Tempgrants.find_or_create_by(serial_number:142118 , institution_name: 'YALE UNIVERSITY', project_title:'Live analysis of tumor-host cells interactions' ,funding_mechanism: 'F32', institute_code: 'CA',pi_full_name: 'Jonna Frasor')
-grant18 = Tempgrants.find_or_create_by(serial_number:139426 , institution_name: 'ROSWELL PARK CANCER INSTITUTE CORP', project_title:'Genome-Wide Predictors of Treatment-Related Toxicities' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'LIANG ZHU')
-grant19 = Tempgrants.find_or_create_by(serial_number:130202 , institution_name: 'UNIVERSITY OF CHICAGO', project_title:'Pax3, Melanocyte Stem Cells and Melanoma' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'LESLIE GUNATILAKA')
-grant20 = Tempgrants.find_or_create_by(serial_number:130932 , institution_name: 'UNIVERSITY OF ILLINOIS AT CHICAGO', project_title:'Crosstalk between estrogen receptor and NFkB in target gene regulation' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'JESSE MARTINEZ')
+grant14 = Tempgrants.find_or_create_by(serial_number: 77267, institution_name: 'DARTMOUTH COLLEGE', project_title:'Invasive Behavior of Tumor Cells Producing Collagenase-1' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant15 = Tempgrants.find_or_create_by(serial_number:132672 , institution_name: 'UNIVERSITY OF PITTSBURGH AT PITTSBURGH', project_title:'Continued Development and Evaluation of caTIES' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant16 = Tempgrants.find_or_create_by(serial_number: 144563, institution_name: 'INDIANA UNIVERSITY BLOOMINGTON', project_title:'Studies Toward the Total Synthesis of Leiodelide' ,funding_mechanism: 'F31', institute_code: 'CA')
 
-grant21 = Tempgrants.find_or_create_by(serial_number: 131421, institution_name: 'ALBERT EINSTEIN COLLEGE OF MEDICINE', project_title:'Role of Skp2-cyclin A Interaction in Normal Physiology and Cancer' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'Cecile	A	Lengacher')
-grant22 = Tempgrants.find_or_create_by(serial_number:90265 , institution_name: 'UNIVERSITY OF ARIZONA', project_title:'Anticancer Agents from Plant- and Lichen-Associated Fungi of the Sonoran Desert' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'Neetu Singh')
+grant17 = Tempgrants.find_or_create_by(serial_number:142118 , institution_name: 'YALE UNIVERSITY', project_title:'Live analysis of tumor-host cells interactions' ,funding_mechanism: 'F32', institute_code: 'CA')
+grant18 = Tempgrants.find_or_create_by(serial_number:139426 , institution_name: 'ROSWELL PARK CANCER INSTITUTE CORP', project_title:'Genome-Wide Predictors of Treatment-Related Toxicities' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant19 = Tempgrants.find_or_create_by(serial_number:130202 , institution_name: 'UNIVERSITY OF CHICAGO', project_title:'Pax3, Melanocyte Stem Cells and Melanoma' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant20 = Tempgrants.find_or_create_by(serial_number:130932 , institution_name: 'UNIVERSITY OF ILLINOIS AT CHICAGO', project_title:'Crosstalk between estrogen receptor and NFkB in target gene regulation' ,funding_mechanism: 'R01', institute_code: 'CA')
 
-grant23 = Tempgrants.find_or_create_by(serial_number:129688 , institution_name: 'UNIVERSITY OF ARIZONA', project_title:'Mechanisms of colon cancer chemoprevention by ursodeoxycholic acid' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'DAVID STEWART')
-grant24 = Tempgrants.find_or_create_by(serial_number:131080 , institution_name: 'UNIVERSITY OF SOUTH FLORIDA', project_title:'MBSR Symptom Cluster Trial for Breast Cancer Survivors' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'DAVID JARRARD')
-grant25 = Tempgrants.find_or_create_by(serial_number:153978 , institution_name: 'MASSACHUSETTS GENERAL HOSPITAL', project_title:'Proliferation-promoting activities of pRB' ,funding_mechanism: 'F32', institute_code: 'CA',pi_full_name: 'BARRY SLECKMAN')
-grant26 = Tempgrants.find_or_create_by(serial_number:150295 , institution_name: 'COLD SPRING HARBOR LABORATORY', project_title:'2010 Cold Spring Harbor Laboratory Conference on Systems Biology: Global Regulati' ,funding_mechanism: 'R13', institute_code: 'CA',pi_full_name: 'XIONGBIU LU')
-grant27 = Tempgrants.find_or_create_by(serial_number: 97131, institution_name:'UNIVERSITY OF WISCONSIN-MADISON', project_title: 'Modulation of IGF-II Imprinting in the Aging Prostate' ,funding_mechanism: 'R01', institute_code: 'CA',pi_full_name: 'Rafael Fridman')
+grant21 = Tempgrants.find_or_create_by(serial_number: 131421, institution_name: 'ALBERT EINSTEIN COLLEGE OF MEDICINE', project_title:'Role of Skp2-cyclin A Interaction in Normal Physiology and Cancer' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant22 = Tempgrants.find_or_create_by(serial_number:90265 , institution_name: 'UNIVERSITY OF ARIZONA', project_title:'Anticancer Agents from Plant- and Lichen-Associated Fungi of the Sonoran Desert' ,funding_mechanism: 'R01', institute_code: 'CA')
 
-
-## Central Contact Types
-contact_type1 = CentralContactType.find_or_create_by(code: 'NONE', name: 'None')
-contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
-contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
-contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
+grant23 = Tempgrants.find_or_create_by(serial_number:129688 , institution_name: 'UNIVERSITY OF ARIZONA', project_title:'Mechanisms of colon cancer chemoprevention by ursodeoxycholic acid' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant24 = Tempgrants.find_or_create_by(serial_number:131080 , institution_name: 'UNIVERSITY OF SOUTH FLORIDA', project_title:'MBSR Symptom Cluster Trial for Breast Cancer Survivors' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant25 = Tempgrants.find_or_create_by(serial_number:153978 , institution_name: 'MASSACHUSETTS GENERAL HOSPITAL', project_title:'Proliferation-promoting activities of pRB' ,funding_mechanism: 'F32', institute_code: 'CA')
+grant26 = Tempgrants.find_or_create_by(serial_number:150295 , institution_name: 'COLD SPRING HARBOR LABORATORY', project_title:'2010 Cold Spring Harbor Laboratory Conference on Systems Biology: Global Regulati' ,funding_mechanism: 'R13', institute_code: 'CA')
+grant27 = Tempgrants.find_or_create_by(serial_number: 97131, institution_name:'UNIVERSITY OF WISCONSIN-MADISON', project_title: 'Modulation of IGF-II Imprinting in the Aging Prostate' ,funding_mechanism: 'R01', institute_code: 'CA')
 
 
 ## Trials
@@ -547,8 +528,6 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true},
                {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
                {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "approve" => true},
                {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
