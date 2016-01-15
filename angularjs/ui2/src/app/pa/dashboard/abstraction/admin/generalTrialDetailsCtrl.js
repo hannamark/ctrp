@@ -24,6 +24,7 @@
       vm.isValidPhoneNumber = isValidPhoneNumber;
       vm.addAltTitle = addAltTitle;
       vm.updateAlternateTitle = updateAlternateTitle;
+      vm.updateLeadProtocolId = updateLeadProtocolId;
       vm.deleteAltTitle = deleteAltTitle;
       vm.leadOrg = [];
       vm.principalInvestigator = [];
@@ -296,6 +297,10 @@
           if (idx < vm.generalTrialDetailsObj.alternate_titles.length) {
               vm.generalTrialDetailsObj.alternate_titles[idx]._destroy = !vm.generalTrialDetailsObj.alternate_titles[idx]._destroy;
           }
+      }
+
+      function updateLeadProtocolId() {
+          console.log('updating lead protocol id: ', vm.generalTrialDetailsObj.lead_protocol_id);
       }
 
     } //generalTrialDetailCtrl
