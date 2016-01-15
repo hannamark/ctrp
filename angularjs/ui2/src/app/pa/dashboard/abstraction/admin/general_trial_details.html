@@ -133,6 +133,7 @@
                   <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addOtherIdentifier()" ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == ''"><i class="glyphicon glyphicon-plus"></i> Add</button>
                 </div>
               </div>
+              <span class="form-control-feedback" ng-show="generalTrialDetailView.otherIdErrorMsg.length > 0">{{generalTrialDetailView.otherIdErrorMsg}}</span>
             </div>
 
             <!-- form group for displaying the added other identifiers -->
