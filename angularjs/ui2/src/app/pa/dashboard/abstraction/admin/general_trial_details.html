@@ -133,10 +133,11 @@
                   <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addOtherIdentifier()" ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == ''"><i class="glyphicon glyphicon-plus"></i> Add</button>
                 </div>
               </div>
+              <span class="form-control-feedback" ng-show="generalTrialDetailView.otherIdErrorMsg.length > 0">{{generalTrialDetailView.otherIdErrorMsg}}</span>
             </div>
 
             <!-- form group for displaying the added other identifiers -->
-            <div class="form-group" ng-show="generalTrialDetailView.generalTrialDetailsObj.other_ids.length > 0">
+            <div class="form-group">
               <table class="table table-bordered table-striped table-hover">
                 <thead style="background-color: #d9edf7">
                   <th>Identifier Type</th>
@@ -144,6 +145,16 @@
                   <th class="text-center">Deletion</th>
                 </thead>
                 <tbody>
+                      <tr>
+                          <td>Lead Organization Trial ID</td>
+                          <td>
+                              <span in-place-edit="generalTrialDetailView.leadProtocolId" on-save="generalTrialDetailView.updateLeadProtocolId()"
+                                    template="app/pa/dashboard/abstraction/admin/other_identifier_edit_template.html" id="#other_id_edit">
+                                    {{generalTrialDetailView.leadProtocolId}}
+                              </span>
+                          </td>
+                          <td class="text-center">--</td>
+                      </tr>
                   <tr ng-repeat="otherId in generalTrialDetailView.generalTrialDetailsObj.other_ids track by $index" class="animated-item" ng-class="otherId._destroy ? 'deleted-text' : ''">
                     <td>{{otherId.identifierName}}</td>
                     <td>

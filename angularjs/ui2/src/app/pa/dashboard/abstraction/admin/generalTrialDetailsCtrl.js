@@ -24,10 +24,13 @@
       vm.isValidPhoneNumber = isValidPhoneNumber;
       vm.addAltTitle = addAltTitle;
       vm.updateAlternateTitle = updateAlternateTitle;
+      vm.updateLeadProtocolId = updateLeadProtocolId;
       vm.deleteAltTitle = deleteAltTitle;
       vm.leadOrg = [];
       vm.principalInvestigator = [];
       vm.sponsors = [];
+      vm.leadProtocolId = '';
+      vm.otherIdErrorMsg = '';
 
       // TODO: the categories and sources come from app settings
       vm.altTitleCategories = [{id: 1, title: 'Spelling/Format'}, {id: 2, title: 'Other'}];
@@ -40,6 +43,7 @@
       vm.protocolIdOriginArr = protocolIdOriginObj;
       vm.centralContactTypes = centralContactTypes.types;
 
+      console.log('protocolIdOriginArr: ', vm.protocolIdOriginArr);
       activate();
 
       function activate() {
@@ -114,6 +118,7 @@
               vm.leadOrg[0] = vm.generalTrialDetailsObj.lead_org;
               vm.sponsors[0] = vm.generalTrialDetailsObj.sponsor;
               vm.principalInvestigator = [].concat(vm.generalTrialDetailsObj.pi);
+              vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
 
               if (vm.generalTrialDetailsObj.central_contacts.length > 0) {
                   _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id || '';
@@ -155,11 +160,25 @@
           vm.otherIdentifier.trial_id = vm.generalTrialDetailsObj.id;
           vm.otherIdentifier.identifierName = otherIdentifierNameObj.name;
           vm.otherIdentifier._destroy = false;
-          vm.generalTrialDetailsObj.other_ids.unshift(angular.copy(vm.otherIdentifier));
+          if (otherIdentifierNameObj.code === 'NCT' ||
+                otherIdentifierNameObj.code === 'ONCT') {
+              // force to upper case
+              vm.otherIdentifier.protocol_id = vm.otherIdentifier.protocol_id.toUpperCase();
+          }
+          // validation on other identifier
+          var errorMsg = TrialService.checkOtherId(vm.otherIdentifier.protocol_id_origin_id,
+                otherIdentifierNameObj.code, vm.otherIdentifier.protocol_id,
+                vm.generalTrialDetailsObj.other_ids);
 
-          // clean up
-          vm.otherIdentifier.protocol_id = ''; // empty it
-          vm.otherIdentifier.identifierName = '';
+          if (!errorMsg) {
+              vm.generalTrialDetailsObj.other_ids.unshift(angular.copy(vm.otherIdentifier));
+              // clean up
+              vm.otherIdentifier.protocol_id = ''; // empty it
+              vm.otherIdentifier.identifierName = '';
+              vm.otherIdErrorMsg = '';
+          } else {
+              vm.otherIdErrorMsg = errorMsg;
+          }
       } // addOtherIdentifier
 
 
@@ -295,6 +314,14 @@
       function deleteAltTitle(idx) {
           if (idx < vm.generalTrialDetailsObj.alternate_titles.length) {
               vm.generalTrialDetailsObj.alternate_titles[idx]._destroy = !vm.generalTrialDetailsObj.alternate_titles[idx]._destroy;
+          }
+      }
+
+      function updateLeadProtocolId() {
+          if (!vm.leadProtocolId) {
+              vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
+          } else {
+              vm.generalTrialDetailsObj.lead_protocol_id = vm.leadProtocolId.trim();
           }
       }
 
