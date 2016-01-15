@@ -153,6 +153,7 @@
           var otherIdExists = _.findIndex(vm.generalTrialDetailsObj.other_ids, condition) > -1;
           if (otherIdExists) {
               // if the identifier exists, return
+              vm.otherIdErrorMsg = 'Identifier already exists';
               return;
           }
           var otherIdentifierNameObj = _.findWhere(vm.protocolIdOriginArr, {'id': vm.otherIdentifier.protocol_id_origin_id});
