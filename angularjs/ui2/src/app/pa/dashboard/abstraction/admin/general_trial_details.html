@@ -35,9 +35,11 @@
                 <div class="col-xs-12 col-sm-4">
                     <label for="category" class="control-label col-xs-12 col-sm-3">Category</label>
                     <div class="col-xs-12 col-sm-9">
-                      <select name="category" id="category" class="form-control input-sm" ng-model="generalTrialDetailView.curAlternateTitleObj.category">
-                        <option value="Spelling/Formatting Correction">Spelling/Format</option>
-                        <option value="Other">Other</option>
+                      <select name="category" id="category"
+                          class="form-control input-sm"
+                          ng-model="generalTrialDetailView.curAlternateTitleObj.category"
+                          ng-options="cat.title for cat in generalTrialDetailView.altTitleCategories">
+                          <option value="">Select a category</option>
                       </select>
                     </div>
                 </div>
@@ -46,11 +48,10 @@
                 <div class="col-xs-12 col-sm-4">
                     <label for="source" class="control-label col-xs-12 col-sm-3">Source</label>
                     <div class="col-xs-12 col-sm-9">
-                      <select name="source" id="source" class="form-control input-sm" ng-model="generalTrialDetailView.curAlternateTitleObj.source">
-                        <option value="Protocol" ng-selected="true">Protocol</option>
-                        <option value="Complete Sheet">Complete Sheet</option>
-                        <option value="IRB">IRB</option>
-                        <option value="Other">Other</option>
+                      <select name="source" id="source" class="form-control input-sm"
+                          ng-model="generalTrialDetailView.curAlternateTitleObj.source"
+                          ng-options="source.title for source in generalTrialDetailView.altTitleSources">
+                          <option value="">Select a source</option>
                       </select>
                     </div>
                 </div>
@@ -62,12 +63,15 @@
 
                 <!-- button -->
                 <div class="col-xs-12 col-sm-1">
-                    <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addAltTitle()" ng-disabled="generalTrialDetailView.curAlternateTitleObj.title == ''"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                    <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addAltTitle()" ng-disabled="generalTrialDetailView.curAlternateTitleObj.title == '' ||
+                    generalTrialDetailView.curAlternateTitleObj.source.title == '' ||
+                    generalTrialDetailView.curAlternateTitleObj.category.title == ''">
+                    <i class="glyphicon glyphicon-plus"></i> Add</button>
                 </div>
             </div>
 
             <!-- form group for displaying the alternative titles -->
-            <div class="form-group" ng-show="generalTrialDetailView.alternateTitles.length > 0">
+            <div class="form-group" ng-show="generalTrialDetailView.generalTrialDetailsObj.alternate_titles.length > 0">
               <table class="table table-bordered table-striped table-hover">
                 <thead style="background-color: #d9edf7">
                   <th>Category</th>
@@ -76,7 +80,7 @@
                   <th class="text-center">Deletion</th>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="title in generalTrialDetailView.alternateTitles track by $index" class="animated-item" ng-class="title._destroy ? 'deleted-text' : ''">
+                  <tr ng-repeat="title in generalTrialDetailView.generalTrialDetailsObj.alternate_titles track by $index" class="animated-item" ng-class="title._destroy ? 'deleted-text' : ''">
                     <td class="col-sm-2">{{title.category}}</td>
                     <td class="col-sm-2">{{title.source}}</td>
                     <td class="col-sm-7">
@@ -248,12 +252,12 @@
                   <div class="col-xs-12 col-sm-6">
                     <input type="text" id="central_contact" name="central_contact" placeholder="Central Contact"
                         ng-disabled="generalTrialDetailView.centralContactType != 'General'"
-                        class="form-control" ng-model="generalTrialDetailView.centralContact[0].fullName"
+                        class="form-control" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].fullName"
                         >
                   </div>
                   <div class="col-xs-12 col-sm-6" ng-show="generalTrialDetailView.centralContactType == 'Person'">
                     <!-- <button class="btn btn-primary">Look Up Person</button> -->
-                    <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.centralContact"></ctrp-person-adv-search-modal-button>
+                    <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button>
                   </div>
                 </div>
               </div>
@@ -264,7 +268,7 @@
                 <label for="email" class="control-label col-xs-12 col-sm-2">Email Address</label>
                 <div class="col-xs-12 col-sm-10">
                   <div class="col-xs-12 col-sm-6">
-                    <input type="email" id="email" name="email" ng-model="generalTrialDetailView.centralContact[0].email" class="form-control" placeholder="Email">
+                    <input type="email" id="email" name="email" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].email" class="form-control" placeholder="Email">
                     <span class="form-control-feedback" ng-show="general_trial_details_form.email.$viewValue.length" ng-class="!(general_trial_details_form.email.$error && ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                   </div>
                 </div>
@@ -275,7 +279,7 @@
                 <label for="phone" class="control-label col-xs-12 col-sm-2">Phone Number</label>
                 <div class="col-xs-12 col-sm-10">
                   <div class="col-xs-12 col-sm-6">
-                    <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.centralContact[0].phone"
+                    <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone"
                         class="form-control" placeholder="Phone", ng-change="generalTrialDetailView.isValidPhoneNumber()">
                     <span ng-show="general_trial_details_form.phone.$viewValue.length" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                     <div class="has-error" ng-show="general_trial_details_form.phone.$viewValue.length && !generalTrialDetailView.isPhoneValid">
@@ -292,11 +296,11 @@
           <div class="form-group no-bottom-margin">
             <div class="col-sm-3"></div>
             <div class="btn-toolbar col-xs-12 col-sm-9">
-              <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field>
+              <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field="ROLE_ABSTRACTOR, ROLE_SUPER">
                 <i class="glyphicon glyphicon-ok"></i>  Save
               </button>
               <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="generalTrialDetailView.resetGeneralTrialDetails()" restriction-field>
-               <i class="glyphicon glyphicon-remove"></i>  Cancel
+               <i class="glyphicon glyphicon-remove"></i>  Reset
               </button>
             </div>
           </div>

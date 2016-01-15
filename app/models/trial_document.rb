@@ -27,4 +27,10 @@ class TrialDocument < ActiveRecord::Base
   belongs_to :trial
 
   mount_uploader :file, TrialDocumentUploader
+
+  # Return true if this is the latest document uploaded in its document type
+  def is_latest
+    latest_doc = TrialDocument.where("trial_id = ? AND document_type = ?", self.trial_id, self.document_type).order(:id).last
+    return latest_doc.id == self.id
+  end
 end
