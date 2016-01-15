@@ -91,6 +91,12 @@
             if (!vm.trialDetailObj.central_contacts) {
                 vm.trialDetailObj.central_contacts = [].concat({});
             }
+
+            if (!!data.admin_checkout || !!data.scientific_checkout) {
+                vm.trialDetailObj.pa_editable = true;
+            } else {
+                vm.trialDetailObj.pa_editable = false;
+            }
             // vm.trialDetailObj.lock_version = data.lock_version || '';
             console.log('lock version: ', data.lock_version);
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
