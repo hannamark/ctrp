@@ -137,7 +137,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
 Given I have selected trail
 And I have selected the Primary Completion Date Type  "NA"
-And the trial does not have a DCP Trial Identifier
+And the trial does not have a DCP Trial Identifier 
 And I select Save
 Then a warning will be displayed "Primary Completion Date Type of "NA" is only available for DCP Trials"
 
@@ -149,3 +149,21 @@ And I have selected the Primary Completion Date Type  "NA"
 And the trial is Intervential
 And I select Save
 Then a warning will be displayed "Primary Completion Date Type of "NA" is only available for Non-Interventional Trials"
+
+Scenario: #13 Selection of Primary Completion Date - DCP
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Status Screen
+Given I have selected trail
+And I have not entered a Primary Completion Date
+And the trial does not have a DCP Trial Identifier 
+And I select Save
+Then a warning will be displayed "Primary Completion Date is Required"
+
+Scenario: #14 Selection of Primary Completion Date Non Intervential
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Status Screen
+Given I have selected trail
+And I have not entered a Primary Completion Date
+And the trial is Intervential
+And I select Save
+Then a warning will be displayed "Primary Completion Date is required"

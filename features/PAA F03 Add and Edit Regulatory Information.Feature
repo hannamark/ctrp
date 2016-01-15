@@ -119,3 +119,18 @@ And I have selected a Trial Oversight Authority Country from a list of all Trial
 And I have selected a Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
 When I select a Trial Oversight Authority Country and Trial Oversight Authority Organization that has already been associated with this trial
 Then a warning message will appear �The Trial Oversight Authority Country and Trial Oversight Authority Organization has already been selected.�
+
+Scenario: #15 Warning for null fields on the Trial Regulatory Information screen
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Regulatory Information screen
+When I select save
+And any of the following fields <fields> are null
+The the following Warning messages <Warning message> will appear and the information associated with the trial will be associated with the trial
+
+Examples:
+|<Field>                             |<Warning Message>               |
+|Responsible Party Type              |Responsible Party Typeis required for Upload to ClinicalTrials.gov|
+|Trial Oversight Authority Country   |Trial Oversight Authority Country is required for Upload to ClinicalTrials.gov|
+|Trial Oversight Authority           |Trial Oversight Authority is required for Upload to ClinicalTrials.gov|
+|FDA Regulated Intervention Indicator|FDA Regulated Intervention Indicator is required for Upload to ClinicalTrials.gov|
+|Section 801 Indicator               |Section 801 Indicator is required for Upload to ClinicalTrials.gov|
