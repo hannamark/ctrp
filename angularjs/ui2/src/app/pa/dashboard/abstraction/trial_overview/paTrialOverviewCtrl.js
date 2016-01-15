@@ -125,7 +125,7 @@
                     if (!!newVal) {
                         // ROLE_SUPER can override the checkout button
                         vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.scientific_checkout.by &&
-                            UserService.getUserRole() !== 'ROLE_SUPER';
+                            UserService.getUserRole() !== 'ROLE_SUPER' && UserService.getUserRole() != "ROLE_ABSTRACTOR";;
                     }
                 });
         } //watchCheckoutButtons
