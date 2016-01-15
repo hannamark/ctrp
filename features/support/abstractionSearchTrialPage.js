@@ -24,7 +24,7 @@ var abstractionSearchTrialPage = function(){
     this.searchTrialOrganization = element(by.model('trialView.searchParams.org'));
     this.searchTrialOrganizationType = element(by.model('trialView.searchParams.org_type'));
     this.searchTrialTrialStatus = element(by.model('trialView.searchParams.trial_status'));
-    this.searchTrialStudySource = element(by.model('trialView.searchParams.study_source'));
+    //this.searchTrialStudySource = element(by.model('trialView.searchParams.study_source')); // need to update the model name
     this.searchTrialMilestone = element(by.model('trialView.searchParams.milestone'));
     this.searchTrialProcessingStatus = element(by.id('processingStatus'));
     this.searchTrialResearchCategory = element(by.model('trialView.searchParams.research_category'));
@@ -52,6 +52,8 @@ var abstractionSearchTrialPage = function(){
     this.searchTrialLabelNIHNCIProgramIdentifier = element(by.model('trialView.searchParams.nih_nci_prog'));
 
     //this.searchResultTable = element(by.css('.grid.ui-grid.ng-isolate-scope.grid1452616452614')).all(by.repeater('ngRepeatolRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name'));
+
+    this.trialSearchPageResultCount = element(by.css('div.row > h4:nth-child(2)'));
 
 
 

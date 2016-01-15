@@ -48,6 +48,7 @@ var abstractionCommonMethods = function(){
     var crntTxtLoginPg = '';
     var iteraCntLg = '';
     var searchTrialsTxt = 'Search Trials * for wild card';
+    var rsltCountValRT = '';
 
     /*****************************************
      * Verify Search Trials(PA) screen
@@ -79,6 +80,28 @@ var abstractionCommonMethods = function(){
     this.clickLinkText = function(lnkTxt){
         element(by.linkText(''+ lnkTxt +'')).click();
     }
+
+    /*****************************************
+     * Verify Search Result Text
+     *****************************************/
+    this.verifyPASearchResultCount = function(txtToVerify){
+        paSearch.trialSearchPageResultCount.getText().then(function(value){
+           var rsltCnt = value;
+            console.log('rsltCnt['+rsltCnt+'');
+            function RetrsltCnt(){
+                return rsltCnt;
+            }
+            rsltCountValRT = RetrsltCnt();
+        });
+        var spltValRsltCnt = rsltCountValRT.split(':');
+        var rsltCntTxt = spltValRsltCnt[0];
+        console.log('rsltCntTxt['+rsltCntTxt+'');
+        var rsltCntInt = spltValRsltCnt[1];
+        console.log('rsltCntInt['+rsltCntInt+'');
+        var buildRsltCntStrng = ''+txtToVerify+': '+rsltCntInt+'';
+        console.log('buildRsltCntStrng['+buildRsltCntStrng+'');
+        expect(paSearch.trialSearchPageResultCount.getText()).to.eventually.equal(txtToVerify);
+    };
 
     /*****************************************
      * Check for the various File API support.
@@ -157,19 +180,19 @@ var abstractionCommonMethods = function(){
         iteraCntLg = iteraCntLg + 1;
         var getCrntCntLg = iteraCntLg + 1;
         console.log('calculating count:'+getCrntCntLg+'')
-        if (getCrntCntLg == '11'){
-            login.loginPageVerification.getText().then (function(text){
-                var passTxtA = ''+text+'';
-                crntTxtLoginPg =  ''+passTxtA+'';
-                if (crntTxtLoginPg === loginTxtVerif){
-                    console.log('System identified Login Home Page Successfully:['+crntTxtLoginPg+']');
-                    expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
-                } else {
-                    console.log('System Unable to identified Login home page:['+crntTxtLoginPg+']');
-                    expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
-                };
-            });
-        };
+        //if (getCrntCntLg == '010101'){
+        //    login.loginPageVerification.getText().then (function(text){
+        //        var passTxtA = ''+text+'';
+        //        crntTxtLoginPg =  ''+passTxtA+'';
+        //        if (crntTxtLoginPg === loginTxtVerif){
+        //            console.log('System identified Login Home Page Successfully:['+crntTxtLoginPg+']');
+        //            expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
+        //        } else {
+        //            console.log('System Unable to identified Login home page:['+crntTxtLoginPg+']');
+        //            expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
+        //        };
+        //    });
+        //};
         //ctrp abstractor user
         if (usrID === 'ctrpabstractor'){
             login.login(configuration.abstractorUID, configuration.abstractorPWD);
