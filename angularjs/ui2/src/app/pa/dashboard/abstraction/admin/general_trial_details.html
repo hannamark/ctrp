@@ -136,7 +136,7 @@
             </div>
 
             <!-- form group for displaying the added other identifiers -->
-            <div class="form-group" ng-show="generalTrialDetailView.generalTrialDetailsObj.lead_protocol_id">
+            <div class="form-group">
               <table class="table table-bordered table-striped table-hover">
                 <thead style="background-color: #d9edf7">
                   <th>Identifier Type</th>
@@ -147,9 +147,9 @@
                       <tr>
                           <td>Lead Organization Trial ID</td>
                           <td>
-                              <span in-place-edit="generalTrialDetailView.generalTrialDetailsObj.lead_protocol_id" on-save="generalTrialDetailView.updateLeadProtocolId()"
+                              <span in-place-edit="generalTrialDetailView.leadProtocolId" on-save="generalTrialDetailView.updateLeadProtocolId()"
                                     template="app/pa/dashboard/abstraction/admin/other_identifier_edit_template.html" id="#other_id_edit">
-                                    {{generalTrialDetailView.generalTrialDetailsObj.lead_protocol_id}}
+                                    {{generalTrialDetailView.leadProtocolId}}
                               </span>
                           </td>
                           <td class="text-center">--</td>

@@ -29,6 +29,7 @@
       vm.leadOrg = [];
       vm.principalInvestigator = [];
       vm.sponsors = [];
+      vm.leadProtocolId = '';
 
       // TODO: the categories and sources come from app settings
       vm.altTitleCategories = [{id: 1, title: 'Spelling/Format'}, {id: 2, title: 'Other'}];
@@ -115,6 +116,7 @@
               vm.leadOrg[0] = vm.generalTrialDetailsObj.lead_org;
               vm.sponsors[0] = vm.generalTrialDetailsObj.sponsor;
               vm.principalInvestigator = [].concat(vm.generalTrialDetailsObj.pi);
+              vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
 
               if (vm.generalTrialDetailsObj.central_contacts.length > 0) {
                   _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id || '';
@@ -300,7 +302,11 @@
       }
 
       function updateLeadProtocolId() {
-          console.log('updating lead protocol id: ', vm.generalTrialDetailsObj.lead_protocol_id);
+          if (!vm.leadProtocolId) {
+              vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
+          } else {
+              vm.generalTrialDetailsObj.lead_protocol_id = vm.leadProtocolId.trim();
+          }
       }
 
     } //generalTrialDetailCtrl
