@@ -18,7 +18,7 @@ And the Trail Overview for a Trial will include the following fields:
 |Brief Title|
 |NCT ID|
 |Lead Organization|
-|Lead Organization Trail ID|
+|Lead Organization Trial ID|
 |Amendment Number|
 |Submission Method|
 |Principal Investigator|
