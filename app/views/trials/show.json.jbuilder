@@ -8,11 +8,17 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
               :actions, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment,
-              :nih_nci_div, :nih_nci_prog
+              :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts
 
 json.trial_status_wrappers do
   json.array!(@trial.trial_status_wrappers) do |status|
     json.extract! status, :trial_id, :id, :status_date, :why_stopped, :trial_status_id, :trial_status, :comment, :created_at, :updated_at
+  end
+end
+
+json.trial_documents do
+  json.array!(@trial.trial_documents) do |document|
+    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at
   end
 end
 
@@ -30,7 +36,7 @@ end
 json.submissions do
   json.array!(@trial.submissions) do |submission|
     json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
-                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at
+                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at, :user_id
   end
 end
 
@@ -50,6 +56,8 @@ json.last_amendment_date @trial.milestone_wrappers.present? ?
     @trial.milestone_wrappers.last.submission.amendment_date : nil
 
 json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
+
+json.submitter @trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : Person.find(@trial.submissions.last.user_id))
 
 send_trial_flag = @trial.set_send_trial_info_flag
 

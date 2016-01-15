@@ -127,6 +127,7 @@ Given I have selected a trial to abstract
 And I am on the General Trial Details screen
 When I select save
 And the Principal Investigator is Null
+And the Study Source is "National", "Externally-Peer-Reviewed" "Instutional"
 Then a warning message will appear “Please enter the Principal Investigator”
 
 Scenario: #17 Sponsor is not null

@@ -716,6 +716,9 @@
                 vm.curTrial.pilot = 'No';
                 vm.curTrial.grant_question = 'Yes';
                 vm.curTrial.ind_ide_question = 'Yes';
+                vm.curTrial.intervention_indicator = 'N/A';
+                vm.curTrial.sec801_indicator = 'N/A';
+                vm.curTrial.data_monitor_indicator = 'N/A';
                 populateStudySource();
             } else {
                 appendEditType();
@@ -979,6 +982,7 @@
                 document.file_name = vm.curTrial.trial_documents[i].file_name;
                 document.document_type = vm.curTrial.trial_documents[i].document_type;
                 document.document_subtype = vm.curTrial.trial_documents[i].document_subtype;
+                document.is_latest = vm.curTrial.trial_documents[i].is_latest;
                 document._destroy = vm.curTrial.trial_documents[i]._destroy;
                 vm.addedDocuments.push(document);
 

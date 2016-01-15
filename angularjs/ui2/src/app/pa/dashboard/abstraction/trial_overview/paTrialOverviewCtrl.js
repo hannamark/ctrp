@@ -18,6 +18,7 @@
         var vm = this;
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
+        console.log('curTrial: ', curTrial);
         vm.trialDetailObj = curTrial;
         vm.isPanelOpen = true;
         vm.togglePanelOpen = togglePanelOpen;
@@ -75,18 +76,22 @@
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
             if (!vm.trialDetailObj.pi.fullName) {
-                var firstName = vm.trialDetailObj.pi.fname || '';
-                var middleName = vm.trialDetailObj.pi.mname || '';
-                var lastName = vm.trialDetailObj.pi.lname || '';
-                vm.trialDetailObj.pi.fullName = firstName + ' ' + middleName + ' ' + lastName;
+                vm.trialDetailObj.pi.fullName = _extractFullName(vm.trialDetailObj.pi);
             }
             // sort the submissions by DESC submission_num
             vm.trialDetailObj.submissions = _.sortBy(vm.trialDetailObj.submissions, function(s) {
                 return -s.submission_num; // DESC order
             });
             // extract the submitter for the last submission
-            vm.trialDetailObj.submitter = vm.trialDetailObj.submissions[0].submitter || '';
-            // vm.trialDetialObj.lock_version = data.lock_version || '';
+            // vm.trialDetailObj.submitter = vm.trialDetailObj.submissions[0].submitter || '';
+            if (!!vm.trialDetailObj.submitter) {
+                vm.trialDetailObj.submitterName = _extractFullName(vm.trialDetailObj.submitter);
+            }
+
+            if (!vm.trialDetailObj.central_contacts) {
+                vm.trialDetailObj.central_contacts = [].concat({});
+            }
+            // vm.trialDetailObj.lock_version = data.lock_version || '';
             console.log('lock version: ', data.lock_version);
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
@@ -152,6 +157,21 @@
             TrialService.getTrialById(vm.trialDetailObj.id).then(function(res) {
                 console.log('updated trialDetail obj: ', res);
             });
+        }
+
+        /**
+         * extract the person object's full name
+         * @param  {JSON} personObj [a Person object in json]
+         * @return {String}
+         */
+        function _extractFullName(personObj) {
+            var fullName = '';
+            var firstName = personObj.fname || '';
+            var middleName = personObj.mname || '';
+            var lastName = personObj.lname || '';
+
+            fullName = firstName + ' ' + middleName + ' ' + lastName;
+            return fullName;
         }
 
     }

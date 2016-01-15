@@ -60,10 +60,12 @@
                         <strong>Submission Method:</strong>
                         <span>{{paTrialOverview.trialDetailObj.submission_method}}</span>
                     </p>
-                    <!-- <p>
+
+                    <p>
                         <strong>Amendment Number:</strong>
                         <span>{{paTrialOverview.trialDetailObj.last_amendment_num}}</span>
-                    </p> -->
+                    </p>
+
                     <p>
                         <strong>Amendment Date:</strong>
                         <span>{{paTrialOverview.trialDetailObj.last_amendment_date | date: "dd-MMM-yyyy H:mm"}}</span>
@@ -81,8 +83,13 @@
                     </p>
 
                     <p>
+                        <strong>Clinical Research Category:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span>
+                    </p>
+
+                    <p>
                         <strong>Last Submitter:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.submitter}}</span>
+                        <span>{{paTrialOverview.trialDetailObj.submitterName}}</span>
                     </p>
 
                     <p>
