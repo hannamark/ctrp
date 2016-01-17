@@ -29,10 +29,10 @@
                         <div class="form-group">
                             <label for="phase" class="control-label col-xs-12 col-sm-3">Phase: </label>
                             <div class="col-xs-12 col-sm-6">
-                                <select class="form-control input-sm" id="phase" ng-model="trialView.searchParams.phase">
-                                    <option value="">-Select a Phase-</option>
-                                    <option ng-repeat="phase in trialView.phaseArr" value="{{phase.code}}">{{phase.name}}</option>
-                                </select>
+                                <ui-select multiple id="phase" ng-model="trialView.searchParams.phases">
+                                    <ui-select-match placeholder="-Select Phases-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="phase in trialView.phaseArr">{{phase.name}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
