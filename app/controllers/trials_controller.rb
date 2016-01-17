@@ -225,7 +225,14 @@ class TrialsController < ApplicationController
       end
       if params[:processing_status].present? #&& params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
         Rails.logger.debug " Before params[:processing_status] = #{params[:processing_status].inspect}"
-        @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && trial.processing_status_wrappers.last.processing_status.code == params[:processing_status]}
+        search_process_status_ids = []
+        params[:processing_status].each do |p|
+          Rails.logger.debug " processing_status =#{p["name"]}"
+          ps = ProcessingStatus.find_by_name(p["name"])
+          next if ps.nil?
+          search_process_status_ids << ps.id
+        end
+        @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && search_process_status_ids.include?(trial.processing_status_wrappers.last.processing_status_id)}
         Rails.logger.debug "After @trials = #{@trials.inspect}"
       end
       if params[:protocol_origin_type].present?

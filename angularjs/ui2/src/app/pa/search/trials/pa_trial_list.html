@@ -72,10 +72,10 @@
                         <div class="form-group">
                             <label for="purpose" class="control-label col-xs-12 col-sm-3">Processing Status: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <select class="form-control input-sm" id="processingStatus" ng-model="trialView.searchParams.processing_status">
-                                    <option value="">-Select a Processing Status -</option>
-                                    <option ng-repeat="processingStatus in trialView.processingStatusArr" value="{{processingStatus.code}}">{{processingStatus.name}}</option>
-                                </select>
+                                <ui-select multiple id="processingStatus" ng-model="trialView.searchParams.processing_status">
+                                    <ui-select-match placeholder="-Select Processing Status-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="processingStatus in trialView.processingStatusArr">{{processingStatus.name}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
