@@ -70,7 +70,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="purpose" class="control-label col-xs-12 col-sm-3">Processing Status: </label>
+                            <label for="processingStatus" class="control-label col-xs-12 col-sm-3">Processing Status: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <ui-select multiple id="processingStatus" ng-model="trialView.searchParams.processing_status">
                                     <ui-select-match placeholder="-Select Processing Status-">{{$item.name}}</ui-select-match>
@@ -121,10 +121,10 @@
                         <div class="form-group">
                             <label for="purpose" class="control-label col-xs-12 col-sm-3">Purpose: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <select class="form-control input-sm" id="purpose" ng-model="trialView.searchParams.purpose">
-                                    <option value="">-Select a Purpose-</option>
-                                    <option ng-repeat="purpose in trialView.primaryPurposeArr" value="{{purpose.code}}">{{purpose.name}}</option>
-                                </select>
+                                <ui-select multiple id="purpose" ng-model="trialView.searchParams.purposes">
+                                    <ui-select-match placeholder="-Select Purposes-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="purpose in trialView.primaryPurposeArr">{{purpose.name}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
