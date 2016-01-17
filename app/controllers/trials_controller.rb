@@ -261,14 +261,26 @@ class TrialsController < ApplicationController
         @trials = @trials.with_nci_prog(params[:nih_nci_prog]) if params[:nih_nci_prog].present?
       end
       if params[:submission_type].present?
-        submission_type = SubmissionType.find_by_name(params[:submission_type])
-        Rails.logger.info "submission_type = #{submission_type.inspect}"
-        @trials = @trials.select{|trial| !trial.submissions.blank? &&  trial.submissions.last.submission_type == submission_type}
+        Rails.logger.debug " Before params[:submission_type] = #{params[:submission_type].inspect}"
+        search_ids = []
+        params[:submission_type].each do |s|
+          Rails.logger.debug " submission_type =#{s["name"]}"
+          sn = SubmissionType.find_by_name(s["name"])
+          next if sn.nil?
+          search_ids << sn.id
+        end
+        @trials = @trials.select{|trial| !trial.submissions.blank? &&  search_ids.include?(trial.submissions.last.submission_type.id)}
       end
       if params[:submission_method].present?
-        submission_method = SubmissionMethod.find_by_code(params[:submission_method])
-        Rails.logger.info "submission_method = #{submission_method.inspect}"
-        @trials = @trials.select{|trial| !trial.submissions.blank? &&  trial.submissions.last.submission_method == submission_method}
+        Rails.logger.debug " Before params[:submission_method] = #{params[:submission_method].inspect}"
+        search_ids = []
+        params[:submission_method].each do |s|
+          Rails.logger.debug " submission_type =#{s["name"]}"
+          sn = SubmissionMethod.find_by_name(s["name"])
+          next if sn.nil?
+          search_ids << sn.id
+        end
+        @trials = @trials.select{|trial| !trial.submissions.blank? && search_ids.include?(trial.submissions.last.submission_method.id)}
       end
       if params[:onhold].present?
         Rails.logger.info "Trials onhold selected"

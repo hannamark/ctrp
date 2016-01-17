@@ -266,7 +266,7 @@
         function getSubmissionTypes() {
             //(original/update/amendment
             // TODO: check if hardcoding is OK
-            var submission_types = [{"code":"Original"},{"code":"Update"},{"code":"Amendment"}];
+            var submission_types = [{"name":"Original"},{"name":"Update"},{"name":"Amendment"}];
             return submission_types;
         }
 
