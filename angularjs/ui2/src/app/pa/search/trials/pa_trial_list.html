@@ -129,14 +129,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="official_title" class="control-label col-xs-12 col-sm-3">PI: </label>
+                            <label for="principal_investigator" class="control-label col-xs-12 col-sm-3">PI: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <input type="text" id="pi" class="form-control input-sm" placeholder="Principal Investigator" ng-model="trialView.searchParams.pi" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="official_title" class="control-label col-xs-12 col-sm-3">Organization: </label>
+                            <label for="organization" class="control-label col-xs-12 col-sm-3">Organization: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <input type="text" id="org" class="form-control input-sm" placeholder="Organization" ng-model="trialView.searchParams.org" />
                             </div>
@@ -145,10 +145,10 @@
                         <div class="form-group">
                             <label for="trial_status" class="control-label col-xs-12 col-sm-3">Trial Status: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <select class="form-control input-sm" id="trial_status" ng-model="trialView.searchParams.trial_status">
-                                    <option value="">-Select a Trial Status-</option>
-                                    <option ng-repeat="trialStatus in trialView.trialStatusArr" value="{{trialStatus.code}}">{{trialStatus.name}}</option>
-                                </select>
+                                <ui-select multiple id="trialStatus" ng-model="trialView.searchParams.trial_status">
+                                    <ui-select-match placeholder="-Select Trial Status-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="trialStatus in trialView.trialStatusArr">{{trialStatus.name}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
