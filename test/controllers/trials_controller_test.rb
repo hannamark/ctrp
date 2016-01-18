@@ -64,14 +64,16 @@ class TrialsControllerTest < ActionController::TestCase
   end
 
   test "should search trial by Milestone" do
+    @trial = trials(:three)
     milestone = milestones(:one)
     #puts "milestone = #{milestone.inspect}"
     #puts "@trial = #{@trial.inspect}"
     #puts "@trial milestones = #{@trial.milestone_wrappers.inspect}"
-    test_response = get :search_pa, official_title: "*", milestone: milestone.code, format: 'json'
+
+    test_response = get :search_pa, official_title: "*", milestone: [milestone], format: 'json'
     search_result = JSON.parse(test_response.body)
     #puts "search_result = #{search_result.inspect}"
-    assert_equal milestone.name, search_result['trials'][0]['selected_milestone']
+    assert_equal milestone.name, search_result['trials'][0]['current_milestone']
   end
 
   test "should search trial by TrialStatus" do
