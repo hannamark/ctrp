@@ -182,20 +182,20 @@
                         <div class="form-group">
                             <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Div/Dept Identifier: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <select class="form-control input-sm" id="nih_nci_div" ng-model="trialView.searchParams.nih_nci_div">
-                                    <option value="">-Select a NIH/NCI Div/Dept -</option>
-                                    <option ng-repeat="nd in trialView.nciDivArr" value="{{nd.code}}">{{nd.code}}</option>
-                                </select>
+                                <ui-select multiple id="nih_nci_div" ng-model="trialView.searchParams.nih_nci_div">
+                                    <ui-select-match placeholder="-Select  NIH/NCI Div/Dept -">{{$item.code}}</ui-select-match>
+                                    <ui-select-choices repeat="nd in trialView.nciDivArr">{{nd.code}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="nih_nci_prog" class="control-label col-xs-12 col-sm-3">NIH/NCI Program Identifier: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <select class="form-control input-sm" id="nih_nci_prog" ng-model="trialView.searchParams.nih_nci_prog">
-                                    <option value="">-Select a NIH/NCI Program -</option>
-                                    <option ng-repeat="np in trialView.nciProgArr" value="{{np.code}}">{{np.code}}</option>
-                                </select>
+                                <ui-select multiple id="nih_nci_prog" ng-model="trialView.searchParams.nih_nci_prog">
+                                    <ui-select-match placeholder="-Select  NIH/NCI Div/Dept -">{{$item.code}}</ui-select-match>
+                                    <ui-select-choices repeat="nc in trialView.nciProgArr">{{nc.code}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 

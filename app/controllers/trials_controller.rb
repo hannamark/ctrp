@@ -276,12 +276,22 @@ class TrialsController < ApplicationController
         @trials = @trials.select{|trial| !trial.admin_checkout.nil? || !trial.scientific_checkout.nil?}
       end
       if  params[:nih_nci_div].present?
-        Rails.logger.debug "nci_div selected"
-        @trials = @trials.with_nci_div(params[:nih_nci_div]) if params[:nih_nci_div].present?
+        Rails.logger.debug " Before params[:nih_nci_div] = #{params[:nih_nci_div].inspect}"
+        search_codes = []
+        params[:nih_nci_div].each do |c|
+          Rails.logger.debug " nih_nci_div =#{c["code"]}"
+          search_codes << c["code"]
+        end
+        @trials = @trials.where(nih_nci_div: search_codes)
       end
       if  params[:nih_nci_prog].present?
-        Rails.logger.debug "nih_nci_prog selected"
-        @trials = @trials.with_nci_prog(params[:nih_nci_prog]) if params[:nih_nci_prog].present?
+        Rails.logger.debug " Before params[:nih_nci_prog] = #{params[:nih_nci_prog].inspect}"
+        search_codes = []
+        params[:nih_nci_prog].each do |c|
+          Rails.logger.debug " nih_nci_prog =#{c["code"]}"
+          search_codes << c["code"]
+        end
+        @trials =  @trials.where(nih_nci_prog: search_codes)
       end
       if params[:submission_type].present?
         Rails.logger.debug " Before params[:submission_type] = #{params[:submission_type].inspect}"
