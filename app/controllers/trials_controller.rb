@@ -227,9 +227,16 @@ class TrialsController < ApplicationController
         end
         @trials = @trials.select{|trial| !trial.trial_status_wrappers.blank? && search_ids.include?(trial.trial_status_wrappers.last.trial_status.id)}
       end
-      ## Enable this section, if the Radio button on the UI will be used.
-      if params[:milestone].present? #&& params[:milestone_latest].present? && params[:milestone_latest] == "YES"
-        @trials = @trials.select{|trial| !trial.milestone_wrappers.blank? &&  trial.milestone_wrappers.last.milestone.code == params[:milestone]}
+      if params[:milestone].present?
+        Rails.logger.debug " Before params[:milestone] = #{params[:milestone].inspect}"
+        search_ids = []
+        params[:milestone].each do |s|
+          Rails.logger.debug "milestone =#{s["name"]}"
+          sn = Milestone.find_by_name(s["name"])
+          next if sn.nil?
+          search_ids << sn.id
+        end
+        @trials = @trials.select{|trial| !trial.milestone_wrappers.blank? &&  search_ids.include?(trial.milestone_wrappers.last.milestone.id)}
       end
       if params[:processing_status].present? #&& params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
         Rails.logger.debug " Before params[:processing_status] = #{params[:processing_status].inspect}"

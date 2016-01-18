@@ -155,10 +155,10 @@
                         <div class="form-group">
                             <label for="milestone" class="control-label col-xs-12 col-sm-3">Milestone: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <select class="form-control input-sm" id="milestone" ng-model="trialView.searchParams.milestone">
-                                    <option value="">-Select a Milestone-</option>
-                                    <option ng-repeat="milestone in trialView.milestoneArr" value="{{milestone.code}}">{{milestone.name}}</option>
-                                </select>
+                                <ui-select multiple id="milestone" ng-model="trialView.searchParams.milestone">
+                                    <ui-select-match placeholder="-Select Milestone-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="milestone in trialView.milestoneArr">{{milestone.name}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
