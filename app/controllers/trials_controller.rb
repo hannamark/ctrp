@@ -214,7 +214,15 @@ class TrialsController < ApplicationController
 
       # PA fields
       if params[:research_category].present?
-        @trials = @trials.with_research_category(params[:research_category])
+        Rails.logger.debug " Before params[:research_category] = #{params[:research_category].inspect}"
+        search_ids = []
+        params[:research_category].each do |s|
+          Rails.logger.debug "research_category =#{s["name"]}"
+          sn = ResearchCategory.find_by_name(s["name"])
+          next if sn.nil?
+          search_ids << sn.id
+        end
+        @trials = @trials.select{|trial| !trial.research_category.blank? && search_ids.include?(trial.research_category_id)}
       end
       if params[:trial_status].present?# && params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
         Rails.logger.debug " Before params[:trial_status] = #{params[:trial_status].inspect}"
