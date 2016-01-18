@@ -282,7 +282,7 @@ class TrialsController < ApplicationController
           Rails.logger.debug " nih_nci_div =#{c["code"]}"
           search_codes << c["code"]
         end
-        @trials = @trials.where(nih_nci_div: search_codes)
+        @trials = @trials.where(nih_nci_div: search_codes) unless @trials.blank?
       end
       if  params[:nih_nci_prog].present?
         Rails.logger.debug " Before params[:nih_nci_prog] = #{params[:nih_nci_prog].inspect}"
@@ -291,7 +291,7 @@ class TrialsController < ApplicationController
           Rails.logger.debug " nih_nci_prog =#{c["code"]}"
           search_codes << c["code"]
         end
-        @trials =  @trials.where(nih_nci_prog: search_codes)
+        @trials =  @trials.where(nih_nci_prog: search_codes) unless @trials.blank?
       end
       if params[:submission_type].present?
         Rails.logger.debug " Before params[:submission_type] = #{params[:submission_type].inspect}"
