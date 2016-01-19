@@ -48,7 +48,6 @@
             $state.go('main.paTrialSearch');
         } //backToPATrialSearch
 
-
         function checkoutTrial(checkoutType) {
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
                 console.log('checkout result: ', res.result);
@@ -99,6 +98,7 @@
             }
             // vm.trialDetailObj.lock_version = data.lock_version || '';
             console.log('lock version: ', data.lock_version);
+            vm.trialDetailObj.lock_version = data.lock_version;
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
             $scope.trialDetailObj = vm.trialDetailObj;

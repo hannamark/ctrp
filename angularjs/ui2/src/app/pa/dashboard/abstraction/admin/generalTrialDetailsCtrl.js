@@ -7,10 +7,10 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('generalTrialDetailsCtrl', generalTrialDetailsCtrl);
 
-    generalTrialDetailsCtrl.$inject = ['$scope', 'TrialService', 'PATrialService',
+    generalTrialDetailsCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
             'MESSAGES', 'protocolIdOriginObj', '_', '$timeout', 'centralContactTypes'];
 
-    function generalTrialDetailsCtrl($scope, TrialService, PATrialService,
+    function generalTrialDetailsCtrl($scope, TrialService, PATrialService, toastr,
         MESSAGES, protocolIdOriginObj, _, $timeout, centralContactTypes) {
       var vm = this;
       var _defaultCountry = 'United States'; // for phone number validation
@@ -91,6 +91,11 @@
               PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
               $scope.$emit('updatedInChildScope', {});
 
+              toastr.clear();
+              toastr.success('Trial general details has been updated', 'Successful!', {
+                  extendedTimeOut: 1000,
+                  timeOut: 0
+              });
               getTrialDetailCopy();
           });
       }
@@ -157,7 +162,7 @@
               vm.otherIdErrorMsg = 'Identifier already exists';
               return;
           }
-          
+
           var otherIdentifierNameObj = _.findWhere(vm.protocolIdOriginArr, {'id': vm.otherIdentifier.protocol_id_origin_id});
           // vm.otherIdentifier.id = vm.generalTrialDetailsObj.id; // trial Id
           vm.otherIdentifier.trial_id = vm.generalTrialDetailsObj.id;

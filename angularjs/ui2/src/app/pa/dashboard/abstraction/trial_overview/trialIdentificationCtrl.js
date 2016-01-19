@@ -8,9 +8,11 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialIdentificationCtrl', trialIdentificationCtrl);
 
-    trialIdentificationCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES', '$timeout', '_'];
+    trialIdentificationCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
+        '$timeout', '_', 'PATrialService', 'toastr'];
 
-    function trialIdentificationCtrl($scope, TrialService, MESSAGES, $timeout, _) {
+    function trialIdentificationCtrl($scope, TrialService, MESSAGES,
+        $timeout, _, PATrialService, toastr) {
         var vm = this;
         vm.trialProcessingObj = {comment: '', priority: ''};
         vm.saveProcessingInfo = saveProcessingInfo;
@@ -49,14 +51,20 @@
         /* implementations below */
         function saveProcessingInfo() {
             //console.log('processing info: ', vm.trialProcessingObj);
-
-            var updatedTrial = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
+            var updatedTrial = PATrialService.getCurrentTrialFromCache();
+            console.log('processing, lock_version: ' + updatedTrial.lock_version);
+            //angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
             updatedTrial.process_priority = vm.trialProcessingObj.priority.name;
             updatedTrial.process_comment = vm.trialProcessingObj.comment;
             console.log('updated trial: ', updatedTrial);
 
             TrialService.upsertTrial(updatedTrial).then(function(res) {
                 console.log('priority and commented updated: ', res);
+                toastr.clear();
+                toastr.success('Trial processing information has been recorded', 'Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
             });
         }
 
