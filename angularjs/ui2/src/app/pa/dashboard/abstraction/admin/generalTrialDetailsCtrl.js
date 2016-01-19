@@ -30,7 +30,6 @@
       vm.principalInvestigator = [];
       vm.sponsors = [];
       vm.leadProtocolId = '';
-      vm.otherIdErrorMsg = '';
 
       // TODO: the categories and sources come from app settings
       vm.altTitleCategories = [{id: 1, title: 'Spelling/Format'}, {id: 2, title: 'Other'}];
@@ -146,16 +145,19 @@
        * @return {Void}
        */
       function addOtherIdentifier() {
+          vm.otherIdErrorMsg = '';
+
           // parse to integer
           vm.otherIdentifier.protocol_id_origin_id = parseInt(vm.otherIdentifier.protocol_id_origin_id);
           // boolean
-          var condition = {'protocol_id_origin_id': vm.otherIdentifier.protocol_id_origin_id, '_destroy': undefined || false};
+          var condition = {'protocol_id_origin_id': vm.otherIdentifier.protocol_id_origin_id};
           var otherIdExists = _.findIndex(vm.generalTrialDetailsObj.other_ids, condition) > -1;
           if (otherIdExists) {
               // if the identifier exists, return
               vm.otherIdErrorMsg = 'Identifier already exists';
               return;
           }
+          
           var otherIdentifierNameObj = _.findWhere(vm.protocolIdOriginArr, {'id': vm.otherIdentifier.protocol_id_origin_id});
           // vm.otherIdentifier.id = vm.generalTrialDetailsObj.id; // trial Id
           vm.otherIdentifier.trial_id = vm.generalTrialDetailsObj.id;
@@ -180,6 +182,7 @@
           } else {
               vm.otherIdErrorMsg = errorMsg;
           }
+
       } // addOtherIdentifier
 
 
