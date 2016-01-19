@@ -86,6 +86,11 @@
 #  masking_role_investigator     :boolean
 #  masking_role_outcome_assessor :boolean
 #  masking_role_subject          :boolean
+#  study_model_other             :string(255)
+#  time_perspective_other        :string(255)
+#  study_model_id                :integer
+#  time_perspective_id           :integer
+#  biospecimen_retention_id      :integer
 #
 # Indexes
 #
@@ -93,6 +98,7 @@
 #  index_trials_on_allocation_id             (allocation_id)
 #  index_trials_on_anatomic_site_id          (anatomic_site_id)
 #  index_trials_on_assigned_to_id            (assigned_to_id)
+#  index_trials_on_biospecimen_retention_id  (biospecimen_retention_id)
 #  index_trials_on_board_affiliation_id      (board_affiliation_id)
 #  index_trials_on_board_approval_status_id  (board_approval_status_id)
 #  index_trials_on_gender_id                 (gender_id)
@@ -112,7 +118,9 @@
 #  index_trials_on_secondary_purpose_id      (secondary_purpose_id)
 #  index_trials_on_sponsor_id                (sponsor_id)
 #  index_trials_on_study_classification_id   (study_classification_id)
+#  index_trials_on_study_model_id            (study_model_id)
 #  index_trials_on_study_source_id           (study_source_id)
+#  index_trials_on_time_perspective_id       (time_perspective_id)
 #
 
 require 'test_helper'
