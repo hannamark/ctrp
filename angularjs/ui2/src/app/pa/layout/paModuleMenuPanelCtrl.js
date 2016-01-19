@@ -14,12 +14,15 @@
     function paModuleMenuPanel($scope, MESSAGES, PATrialService) {
         var vm = this;
         var currentTrialDetailObj = {};
+        var menuOpen = true;
         vm.nciTrialId = '';
+        vm.trialGlobalOpen = true;
+        vm.toggleGlobal = toggleGlobal;
         vm.menuAccordions = {
-            "trialOverviewOpen": true,
-            "adminDataOpen": true,
-            "scientificDataOpen": true,
-            "completeOpen": true
+            'trialOverviewOpen': true,
+            'adminDataOpen': true,
+            'scientificDataOpen': true,
+            'completeOpen': true
         };
 
         activate();
@@ -33,6 +36,14 @@
                 console.log('nciTrialId: ', vm.nciTrialId);
             });
         } //activate
+
+        function toggleGlobal() {
+            console.log('toggling, vm.trialGlobalOpen: ', vm.trialGlobalOpen);
+            // vm.trialGlobalOpen = !vm.trialGlobalOpen;
+            Object.keys(vm.menuAccordions).forEach(function(key) {
+                vm.menuAccordions[key] = !vm.trialGlobalOpen;
+            });
+        }
 
 
         /*

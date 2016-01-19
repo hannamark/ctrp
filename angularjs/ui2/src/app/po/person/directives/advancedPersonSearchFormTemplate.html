@@ -171,16 +171,22 @@
         </div>
         <div class="col-xs-12">
             <div class="btn-toolbar">
-                <button tabindex="30" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchPeople('fromStart')">
+                <button tabindex="30" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchPeople('fromStart')" ng-disabled="searching">
                     <i class="glyphicon glyphicon-search"></i> Search
                 </button>
-                <button tabindex="29" class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()">
+                <button tabindex="29" class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()" ng-disabled="searching">
                     <i class="glyphicon glyphicon-remove"></i> Clear
                 </button>
             </div>
         </div>
     </div>
 </form>
+
+<div class="row">
+    <div class="col-xs-12">
+        <span us-spinner="{radius: 20, length: 15}" spinner-on="searching"></span>
+    </div>
+</div>
 
 <!-- list of people -->
 <div class="row" ng-class="{'top-offset-xs': gridOptions.totalItems != null }" ng-if="searchWarningMessage.length === 0">

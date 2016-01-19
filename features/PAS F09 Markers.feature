@@ -91,81 +91,42 @@ When the Record Status is Pending
 Then the Record Status displays as Pending
 And a record is added to the New Marker Requests screen
 
-Scenario:  #2 Evaluation Type is not null
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Markers screen
-When I select Save
-And Evaluation Type is null
-Then a warning message will appear 'Evaluation Type is required'
+Scenario:  #2 Marker Mandatory Fields Rules
+Given I am on the Markers screen
+When the Marker <MarkerField> is not entered 
+And I select Save
+Then an error message <MarkerErrorMessage> will be displayed
 
-Scenario:  #3 Name is not null
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Markers screen
-When I select Save
-And Name is null
-|fields|
-|Assay Type|
-|Biomarker Use|
-|Biomarker Purpose|
-|Specimen Type|
-Then a warning message will appear 'Name is required'
+|<MarkerField>     |  <MarkerErrorMessage>|
+| Evaluation Type  | Evaluation Type must be entered|
+|   Name           |   Name must be entered|
+|  Assay Type      |   Assay Type must be entered|
+|Biomarker Use     |   Biomarker Use must be entered|
+|Biomarker Purpose | Biomarker Purpose must be entered|
+|Specimen Type     |  Specimen Type must be entered|
 
-Scenario:  #4 Assay Type is not null
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Markers screen
-When I select Save
-And Assay Type is null
-Then a warning message will appear 'Assay Type is required'
-
-Scenario:  #5 Biomarker Use is not null
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Markers screen
-When I select Save
-And Biomarker Use is null
-Then a warning message will appear 'Biomarker Use is required'
-
-Scenario:  #6 Biomarker Purpose is not null
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Markers screen
-When I select Save
-And Biomarker Purpose is null
-Then a warning message will appear 'Biomarker Purpose is required'
-
-Scenario:  #7 Specimen Type is not null
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Markers screen
-When I select Save
-And Specimen Type is null
-Then a warning message will appear 'Specimen Type is required'
-
-Scenario:#8 Selection of Other for Evaluation Type
+Scenario:#3 Selection of Other for Evaluation Type
  Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
  And I am on the Add Marker screen
  When I have selected Other for Evaluation Type
 Then a required text box appears 
 
-Scenario:#9 Selection of Other for Assay Type
+Scenario:#4 Selection of Other for Assay Type
  Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
  And I am on the Add Marker screen
  When I have selected Other for Assay Type
 Then a required text box appears 
 
-Scenario:#10 Selection of Other for Specimen Type
+Scenario:#5 Selection of Other for Specimen Type
  Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
  And I am on the Add Marker screen
  When I have selected Other for Specimen Type
 Then a required text box appears 
 
-Scenario:  #11 Select Name from caDSR
+Scenario:  #6 Select Name from caDSR
  Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
  And I am on the Add Marker screen
@@ -184,7 +145,7 @@ And Public ID displays in the results table
 When I select the Select button
 Then the selected marker displays on Add Marker screen
 
-Scenario:  #12 Select Search Scope in caDSR Marker Search screen
+Scenario:  #7 Select Search Scope in caDSR Marker Search screen
 Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
  And I am on the Add Marker screen
@@ -197,7 +158,7 @@ When I have selected Synonym for Search Scope
 And I select the Search button
 Then a results table displays with markers with the Search Term in the Marker Synonym field
 
-Scenario:  #13 Highlight Query Text in caDSR Marker Search screen
+Scenario:  #8 Highlight Query Text in caDSR Marker Search screen
 Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
  And I am on the Add Marker screen
@@ -207,7 +168,7 @@ When I select Highlight Query Text = No
 And I select the search button
 Then the Search Term in th ePermissable Value field is not highlighted 
 
-Scenario:  #14 Enter Public ID in caDSR Marker Search screen
+Scenario:  #9 Enter Public ID in caDSR Marker Search screen
 Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
  And I am on the Add Marker screen
@@ -220,7 +181,7 @@ When I enter and Publid ID
 And there is no match in caDSR
 Then a 'Nothing found to display' message is displayed
 
-Scenario:  #15  Create new marker with attributes of existing marker
+Scenario:  #10  Create new marker with attributes of existing marker
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add Marker screen
@@ -234,7 +195,7 @@ Then the new marker will be associated to the trial
 And the Markers screen displays
 And a 'Record Created' message is displayed
 
-Scenario:  #16 Edit Marker Attributes  
+Scenario:  #11 Edit Marker Attributes  
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add Marker screen
@@ -249,7 +210,7 @@ And I have selected the Save button
 Then the updated marker will be associated to the trial
 And the Markers screen displays
   
-Scenario:  #17 Edit Attributes for Multiple Markers 
+Scenario:  #12 Edit Attributes for Multiple Markers 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Marker screen
@@ -277,7 +238,7 @@ And the updated markers are associated to the trial
 And the Markers screen displays
 And a 'Record(s) Updated' message is displayed
 
-Scenario:  #18 I can Delete Markers for a Trial
+Scenario:  #13 I can Delete Markers for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Markers screen
@@ -301,16 +262,7 @@ And 'Record(s) deleted' message is not displayed
 When Marker Status = pending
 Then the marker is removed from the New Marker Requests screen
 
-Scenario: #19 I can cancel from Add Marker
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Marker Screen
-And I select Add
-And I have selected one or more items from the Marker list 
-When I select Cancel 
-Then the Marker screen displays
-And the selected Marker will not be associated to the trial record 
-
- Scenario:  #20 I can Reset Add Markers screen for a Trial
+ Scenario:  #14 I can Reset Add Markers screen for a Trial
  Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
 And I am on the Add Markers screen

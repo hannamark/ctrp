@@ -423,15 +423,23 @@
 
                                             <td class="col-md-2">
                                                 <div>
-                                                    <ui-select ng-model="trialDetailView.serial_number"
-                                                               ng-disabled="enabled"
+                                                    <ui-select autofocus=true ng-model="trialDetailView.serial_number"
+                                                               theme="select2"
+                                                               ng-disabled="grantsInputs.disabled"
                                                                reset-search-input="false"
                                                                style="width: 300px;">
-                                                      <ui-select-match placeholder="Enter serial number...">{{$select.selected}}</ui-select-match>
-                                                      <ui-select-choices repeat="tempgrant in addresses"
+                                                      <ui-select-match placeholder="Enter serial number...">{{$select.selected.serial_number}}</ui-select-match>
+                                                      <ui-select-choices repeat="tempgrant in trialDetailView.grantsInputs.grantResults | propsFilter: {serial_number: $select.search, institution_name: $select.search}"
                                                                          refresh="refreshGrants($select.search)"
-                                                                         refresh-delay="1">
-                                                        <div ng-bind-html="tempgrant | highlight: $select.search"></div>
+                                                                         refresh-delay="0">
+                                                        <div ng-bind-html="tempgrant.serial_number | highlight: $select.search"></div>
+                                                            <small>
+                                                                <strong>Serial Number:</strong> {{tempgrant.serial_number}} <br />
+                                                                <strong>Organization:</strong> {{tempgrant.institution_name}} <br />
+                                                                <strong>Project Title:</strong> {{tempgrant.project_title}} <br />
+                                                                <strong>PI:</strong> {{tempgrant.pi_full_name}}
+                                                            </small>
+                                                            <!-- <span>{{tempgrant.serial_number}} - {{tempgrant.institution_name}}; {{tempgrant.project_title}}; {{tempgrant.pi_full_name}}</span> -->
                                                       </ui-select-choices>
                                                     </ui-select>
                                                 </div>
@@ -474,7 +482,7 @@
                                         <th>Institute Code</th>
                                         <th>Serial Number</th>
                                         <th>NCI Division/Program Code</th>
-                                        <th></th>
+                                        <th>Delete</th>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="grant in trialDetailView.addedGrants track by $index" ng-class="grant._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
@@ -966,6 +974,10 @@
                                     <input type="radio" restriction-field name="interventin_indicator" ng-model="trialDetailView.curTrial.intervention_indicator"
                                            value="Yes" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> Yes
                                 </label>
+                                <label class="radio-inline">
+                                    <input type="radio" restriction-field name="interventin_indicator" ng-model="trialDetailView.curTrial.intervention_indicator"
+                                           value="N/A" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> N/A
+                                </label>
                             </div>
                         </div>
 
@@ -980,6 +992,10 @@
                                     <input type="radio" restriction-field name="sec801_indicator" ng-model="trialDetailView.curTrial.sec801_indicator"
                                            value="Yes" ng-disabled="trialDetailView.curTrial.intervention_indicator === 'No' || ['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> Yes
                                 </label>
+                                <label class="radio-inline">
+                                    <input type="radio" restriction-field name="sec801_indicator" ng-model="trialDetailView.curTrial.sec801_indicator"
+                                           value="N/A" ng-disabled="trialDetailView.curTrial.intervention_indicator === 'No' || ['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> N/A
+                                </label>
                             </div>
                         </div>
 
@@ -993,6 +1009,10 @@
                                 <label class="radio-inline">
                                     <input type="radio" name="data_monitor_indicator" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator"
                                            value="Yes" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> Yes
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="data_monitor_indicator" restriction-field ng-model="trialDetailView.curTrial.data_monitor_indicator"
+                                           value="N/A" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> N/A
                                 </label>
                             </div>
                         </div>
@@ -1018,7 +1038,7 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Document'" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Document' && document.is_latest" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1042,7 +1062,7 @@
                                 </div>
                             </div>
 
-                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Change Memo Document'" class="form-group">
+                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Change Memo Document' && document.is_latest" class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3"></label>
                                 <div class="col-xs-12 col-sm-9">
                                     <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1065,7 +1085,7 @@
                                 </div>
                             </div>
 
-                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Highlighted Document'" class="form-group">
+                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Highlighted Document' && document.is_latest" class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3"></label>
                                 <div class="col-xs-12 col-sm-9">
                                     <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1089,7 +1109,7 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'IRB Approval'" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'IRB Approval' && document.is_latest" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1108,7 +1128,7 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'List of Participating Sites'" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'List of Participating Sites' && document.is_latest" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1131,7 +1151,7 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Informed Consent'" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Informed Consent' && document.is_latest" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>

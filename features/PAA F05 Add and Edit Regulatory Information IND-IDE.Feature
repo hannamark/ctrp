@@ -115,3 +115,15 @@ And I have not selected the NIH Institution or NCI Division/Program Code when th
 And selected Save
 Then the system will display a warning that each of values that were not entered must be entered in order to associate the IND/IDE Information for the trial 
 
+Examples:
+|Does this trial have an associated IND or IDE?|IND/IDE Type |IND/IDE number|IND/IDE Grantor|IND/IDE Holder Type |NIH Institution/NCI Division/Program Code|Message|
+|No|null|null|null|null|null|null|
+|Yes|IND|77782|CDER|Investigator|null|null|
+|Yes|IND|77782|CDER|NCI|CTEP|null|
+|Yes|IND|77782|CDER|NIH|NLM|null| 
+|Yes|IND|77782|CDER|NCI|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
+|Yes|IND|77782|CDER|null|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
+|Yes|IND|77782|CDER|null|null|Warning - The NIH  is Required|
+|Yes|IND|77782|null|NCI|null|Warning - The IND/IDE Holder Type is Required|
+|Yes|IND|null|CDER|NCI|CTEP|Warning - IND/IDE number is Required|
+|Yes|null|77782|CDER|NCI|CTEP|Warning - IND/IDE Type is Required|

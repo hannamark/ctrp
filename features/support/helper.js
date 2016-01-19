@@ -74,7 +74,10 @@ var helper = function() {
         this.wait(fieldName, errorMessage);
         fieldName.element(by.cssContainingText('option', fieldValue)).click();
         console.log(errorMessage + ' ' + fieldValue + " Value selected");
-        expect(fieldName.$('option:checked').getText()).to.eventually.equal(fieldValue);
+        fieldName.$('option:checked').getText().then(function (value){
+            console.log('Value of item selected in list : ' + value.trim());
+            expect(value.trim()).to.equal(fieldValue);
+        });
     };
 
     this.selectValue = function (fieldName, fieldValue, errorMessage) {

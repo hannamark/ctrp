@@ -16,8 +16,12 @@
                     section: 'pa',
                     resolve: {
                         TrialService: 'TrialService',
+                        PATrialService: 'PATrialService',
                         protocolIdOriginObj: function(TrialService) {
                             return TrialService.getProtocolIdOrigins();
+                        },
+                        centralContactTypes: function(PATrialService) {
+                            return PATrialService.getCentralContactTypes();
                         }
                     },
                     ncyBreadcrumb: {

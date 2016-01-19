@@ -11,52 +11,63 @@
                     <s><strong>Clinical Research Category:</strong>
                     <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span></s>
                 </p> -->
-                <div class="form-group">
-                    <label for="study_source" class="control-label col-xs-12 col-sm-3">Study Source: </label>
-                    <div class="col-xs-12 col-sm-9">
-                        <select class="form-control input-sm" id="study_source" ng-model="trialNciView.curTrial.study_source_id" ng-options="studySource.id as studySource.name for studySource in trialNciView.studySourceArr">
-                            <option value="">-Select a Study Source-</option>
-                            <option ng-repeat="studySource in trialNciView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
-                        </select>
+                <fieldset class="sub-bordered">
+                    <legend class="sub-bordered">Study Source:</legend>
+                    <div class="form-group">
+                        <label for="study_source" class="control-label col-xs-12 col-sm-3">Study Source: </label>
+                        <div class="col-xs-12 col-sm-9">
+                            <select class="form-control input-sm" id="study_source" ng-model="trialNciView.curTrial.study_source_id" ng-options="studySource.id as studySource.name for studySource in trialNciView.studySourceArr">
+                                <option value="">-Select a Study Source-</option>
+                                <option ng-repeat="studySource in trialNciView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
+                            </select>
 
+                        </div>
                     </div>
-                </div>
+                </fieldset>
 
-
-                <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
-                    <label class="control-label col-xs-12 col-sm-3">Data Table 4 Funding Source:</label>
-                    <div class="col-xs-12 col-sm-9" ng-hide="['update'].indexOf(trialNciView.curTrial.edit_type) > -1">
-                        <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialNciView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
-                        <input type="hidden" name="fs_dummy" ng-model="trialNciView.dummyField" ng-required="trialNciView.fsNum === 0">
-                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)">
-                                    Funding Source is required
-                                </span>
+                <fieldset class="sub-bordered">
+                    <legend class="sub-bordered">Funding Source:</legend>
+                    <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
+                        <label class="control-label col-xs-12 col-sm-3">Data Table 4 Funding Source:</label>
+                        <div class="col-xs-12 col-sm-9" ng-hide="['update'].indexOf(trialNciView.curTrial.edit_type) > -1">
+                            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialNciView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
+                            <input type="hidden" name="fs_dummy" ng-model="trialNciView.dummyField" ng-required="trialNciView.fsNum === 0">
+                                    <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)">
+                                        Funding Source is required
+                                    </span>
+                        </div>
                     </div>
-                </div>
 
-                <div ng-repeat="fs in trialNciView.addedFses track by $index" class="form-group">
-                    <div class="col-xs-12 col-sm-3"></div>
-                    <div class="col-xs-12 col-sm-6">
-                        <input type="text" class="form-control input-sm" ng-class="fs._destroy == true ? 'deleted-text animated-item' : 'animated-item'" disabled value="{{fs.organization_name}}"/>
+
+
+                    <div ng-repeat="fs in trialNciView.addedFses track by $index" class="form-group">
+                        <div class="col-xs-12 col-sm-3"></div>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" class="form-control input-sm" ng-class="fs._destroy == true ? 'deleted-text animated-item' : 'animated-item'" disabled value="{{fs.organization_name}}"/>
+                        </div>
+                        <label restriction-field class="col-xs-12 col-sm-1 btn btn-default" ng-click="trialNciView.toggleSelection($index, 'funding_source')" ng-hide="['update'].indexOf(trialNciView.curTrial.edit_type) > -1">
+                            <i ng-class="fs._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                        </label>
                     </div>
-                    <label restriction-field class="col-xs-12 col-sm-1 btn btn-default" ng-click="trialNciView.toggleSelection($index, 'funding_source')" ng-hide="['update'].indexOf(trialNciView.curTrial.edit_type) > -1">
-                        <i ng-class="fs._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                    </label>
-                </div>
-
+                </fieldset>
                 <hr />
             </div>
             <!-- end of first row in the accordion body -->
 
             <!-- second row in the accordion body -->
             <div class="row">
-                <div class="col-xs-12 pull-left">
+                <!--div class="col-xs-12 pull-left"-->
+                <fieldset class="sub-bordered">
+                    <legend class="sub-bordered">Program Code:</legend>
                     <div class="form-group">
-                        <label for="program_code" class="control-label col-xs-12 col-sm-2">Program Code</label>
-                        <div class="col-xs-12 col-sm-10">
+                        <label for="program_code" class="control-label col-xs-12 col-sm-3">Program Code</label>
+                        <div class="col-xs-12 col-sm-9">
                             <input type="text" id="program_code" name="trial_program_code" class="form-control" ng-model="trialNciView.curTrial.program_code" placeholder="Program Code">
                         </div>
                     </div>
+                 </fieldset>
+                <fieldset class="sub-bordered">
+                    <legend class="sub-bordered">NIH/NCI Identifiers:</legend>
                     <div class="form-group">
                         <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Division/Department Identifier: </label>
                         <div class="col-xs-12 col-sm-9">
@@ -81,7 +92,24 @@
 
                         </div>
                     </div>
+                </fieldset>
 
+                        <!-- first form-group -->
+                <fieldset class="sub-bordered">
+                    <legend class="sub-bordered">Send Trial Information to ClinicalTrials.gov:</legend>
+                        <div class="form-group">
+                                <label for="send_trial_flag" class="control-label col-xs-12 col-sm-6">Send Trial Information to ClinicalTrials.gov?</label>
+                                <div class="col-xs-12 col-sm-3">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="send_trial_flag" ng-model="trialNciView.curTrial.send_trial_flag" value="No"> No
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="send_trial_flag" ng-model="trialNciView.curTrial.send_trial_flag" value="Yes"> Yes
+                                    </label>
+                                </div>
+                        </div>
+                 </fieldset>
+                        <!-- end of first form-group -->
 
                         <!-- first form-group -->
                         <div class="form-group">
@@ -97,15 +125,16 @@
                         </div>
                         <!-- end of second row -->
 
-                        <div class="form-group no-bottom-margin">
+                        <!--div class="form-group no-bottom-margin" ng-if="trialNciView.curTrial.admin_checkout != nil"-->
+                        <div class="form-group no-bottom-margin" ng-if="trialNciView.curTrial.pa_editable">
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialNciView.updateTrial()">Save</button>
-                                <button type="button" class="btn btn-warning pull-right" id="cancel_processing">
-                                    <i class="glyphicon glyphicon-remove"></i> Cancel
+                                <button type="button" class="btn btn-warning pull-right" ng-click="trialNciView.reload()" ng-disabled="trialDetailView.disableBtn">
+                                    <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
                             </div>
                         </div>
-                </div>
+                <!--/div-->
             </div>
         </uib-accordion-group>
     </uib-accordion>

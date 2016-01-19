@@ -51,12 +51,17 @@ var registerTrial = function(){
     this.addTrialDataTable4ProgramCode = element(by.model('trialDetailView.curTrial.program_code'));
 
     /** NIH Grant Information **/
-    this.addTrialFundedByNCIOption = element(by.model('trialDetailView.curTrial.grant_question'));
+    this.addTrialFundedByNCIQuestion = element(by.css('div[is-open="trialDetailView.accordions[6]"]')).all(by.css('.control-label.col-xs-12.col-sm-3'));
+    this.addTrialFundedByNCIOption = element.all(by.model('trialDetailView.curTrial.grant_question'));
     this.addTrialFundingMechanism = element(by.model('trialDetailView.funding_mechanism'));
     this.addTrialInstituteCode = element(by.model('trialDetailView.institute_code'));
-    this.addTrialSerialNumber = element(by.model('trialDetailView.serial_number'));
+    this.addTrialSerialNumberBox = element(by.binding('$select.placeholder')); //element(by.css('span[aria-label="Select box activate"]'));//element(by.model('trialDetailView.serial_number'));
+    this.addTrialSerialNumberField = element(by.css('input[ng-model="$select.search"]'));
+    this.addTrialSerialNumberSelect = element(by.css('.ui-select-choices-row.select2-highlighted'));
+    this.addTrialSerialNumberVerify = element(by.css('.select2-choice.ui-select-match'));
     this.addTrialNCIDivisionProgramCode = element(by.model('trialDetailView.nci'));
     this.addTrialAddGrantInfoButton = element(by.css('button[ng-click="trialDetailView.addGrant()"]'));
+    this.addTrialVerifyGrantTable = element.all(by.css('tr[ng-repeat="grant in trialDetailView.addedGrants track by $index"]'));
 
     /** Trial Status **/
     this.addTrialStatusDate = element(by.model('trialDetailView.status_date'));
@@ -73,6 +78,8 @@ var registerTrial = function(){
     this.addTrialCompletionDateOption = element(by.model('trialDetailView.curTrial.comp_date_qual'));
 
     /** FDA IND/IDE Information **/
+    this.addTrialFDAIND_IDETypesQuestion = element(by.css('div[is-open="trialDetailView.accordions[9]"]')).all(by.css('.control-label.col-xs-12.col-sm-3'));
+    this.addTrialFDAIND_IDEOption = element.all(by.model('trialDetailView.curTrial.ind_ide_question'));
     this.addTrialFDAIND_IDETypes = element(by.model('trialDetailView.ind_ide_type'));
     this.addTrialFDAIND_IDENumber = element(by.model('trialDetailView.ind_ide_number'));
     this.addTrialFDAIND_IDEGrantor = element(by.model('trialDetailView.grantor'));
@@ -268,7 +275,8 @@ var registerTrial = function(){
     };
 
     this.setAddTrialSerialNumber = function(trialSerialNumber)  {
-        helper.setValue(this.addTrialSerialNumber ,trialSerialNumber,"Add Trial by Serial Number field");
+        this.addTrialSerialNumberBox.click();
+        helper.setValue(this.addTrialSerialNumberField ,trialSerialNumber,"Add Trial by Serial Number field");
     };
 
     this.selectAddTrialNCIDivisionProgramCode = function(trialNCIDivisionProgramCode)  {
@@ -277,6 +285,15 @@ var registerTrial = function(){
 
     this.clickAddTrialAddGrantInfoButton = function(){
         helper.clickButton(this.addTrialAddGrantInfoButton,"Add Trial Grant Information Add button");
+    };
+
+    this.verifyAddTrialFundedByNCIOption = function(trialFundedByNCIOption, result)  {
+        if (trialFundedByNCIOption === '0') {
+            expect(this.addTrialFundedByNCIOption.get(0).isSelected()).to.eventually.equal(result);
+        }
+        else if (trialFundedByNCIOption === '1') {
+            expect(this.addTrialFundedByNCIOption.get(1).isSelected()).to.eventually.equal(result);
+        }
     };
 
     /**********  Trial Status **********/
@@ -325,6 +342,10 @@ var registerTrial = function(){
 
     /********** FDA IND/IDE Information **********/
 
+    this.selectAddTrialFDAIND_IDEOption = function(trialFDAIND_IDEOption)  {
+        helper.clickRadioButton(this.addTrialFDAIND_IDEOption,trialFDAIND_IDEOption,"Add Trial funded by FDA_IND option field");
+    };
+
     this.selectAddTrialFDAIND_IDETypes = function(trialFDAIND_IDETypes)  {
         helper.selectValueFromList(this.addTrialFDAIND_IDETypes,trialFDAIND_IDETypes,"Add Trial by IND/IDE Types field");
     };
@@ -347,6 +368,15 @@ var registerTrial = function(){
 
     this.clickAddTrialAddIND_IDEButton = function(){
         helper.clickButton(this.addTrialAddIND_IDEButton,"Add Trial FDA IND/IDE Add button");
+    };
+
+    this.verifyAddTrialFDAIND_IDEOption = function(trialFDAIND_IDEOption, result)  {
+        if (trialFDAIND_IDEOption === '0') {
+            expect(this.addTrialFDAIND_IDEOption.get(0).isSelected()).to.eventually.equal(result);
+        }
+        else if (trialFDAIND_IDEOption === '1') {
+            expect(this.addTrialFDAIND_IDEOption.get(1).isSelected()).to.eventually.equal(result);
+        }
     };
 
     /********** Regulatory Information **********/

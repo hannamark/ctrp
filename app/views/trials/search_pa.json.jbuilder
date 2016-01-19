@@ -9,35 +9,29 @@ json.trials do
     json.study_source trial.study_source.present? ? trial.study_source.name : nil
     json.current_trial_status trial.trial_status_wrappers.present? ? trial.trial_status_wrappers.last.trial_status.name : nil
     json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
-    json.selected_trial_status = ""
-    if params[:trial_status].present? && params[:trial_status_latest].present? && params[:trial_status_latest] == "NO"
-      if trial.trial_status_wrappers.present?
-        json.selected_trial_status = trial.trial_status_wrappers.by_value(params[:trial_status]).latest.trial_status.name
-      end
-    end
-    json.current_milestone trial.milestone_wrappers.present? ? trial.milestone_wrappers.last.milestone.name : nil
-    json.selected_milestone  ""
-    if params[:milestone].present?# && params[:milestone_latest].present? && params[:milestone_latest] == "NO"
-      if trial.milestone_wrappers.present?
-        selected_milestones = trial.milestone_wrappers.by_value(params[:milestone])
-        unless selected_milestones.blank?
-          json.selected_milestone selected_milestones.latest.milestone.name
-        end
-      end
-    end
+    current_milestone = trial.milestone_wrappers.present? ? trial.milestone_wrappers.last.milestone.name : nil
+    json.current_milestone current_milestone
     json.scientific_milestone  ""
     if  trial.milestone_wrappers.present?
-      science_milestones = trial.milestone_wrappers.select{|x| x.milestone.name.include?("Scientific")}
-      unless science_milestones.empty?
-        json.scientific_milestone science_milestones.last.milestone.name
+      if current_milestone.include?("Scientific")
+        json.scientific_milestone current_milestone
+      else
+        science_milestones = trial.milestone_wrappers.select{|x| x.milestone.name.include?("Scientific")}
+        unless science_milestones.empty?
+          json.scientific_milestone science_milestones.last.milestone.name
+        end
       end
     end
 
     json.admin_milestone  ""
     if  trial.milestone_wrappers.present?
-      admin_milestones = trial.milestone_wrappers.select{|x| x.milestone.name.include?("Admin")}
-      unless admin_milestones.empty?
-        json.admin_milestone admin_milestones.last.milestone.name
+      if current_milestone.include?("Admin")
+        json.admin_milestone current_milestone
+      else
+        admin_milestones = trial.milestone_wrappers.select{|x| x.milestone.name.include?("Admin")}
+        unless admin_milestones.empty?
+          json.admin_milestone admin_milestones.last.milestone.name
+        end
       end
     end
 
@@ -57,7 +51,7 @@ json.trials do
       end
       json.other_ids  other_ids_string
     end
-    json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
+    #json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
     json.research_category trial.research_category.present? ? trial.research_category.name : nil
     last_submission = trial.submissions.present? ? trial.submissions.last : nil
     if !last_submission.nil? && !last_submission.submission_type.nil?
@@ -75,6 +69,9 @@ json.trials do
     else
       json.submission_source ""
     end
+    json.nih_nci_div trial.nih_nci_div.present? ? trial.nih_nci_div : nil
+    json.nih_nci_prog trial.nih_nci_prog.present? ? trial.nih_nci_prog : nil
+
     json.url trial_url(trial, format: :json)
     json.actions trial.actions
   end

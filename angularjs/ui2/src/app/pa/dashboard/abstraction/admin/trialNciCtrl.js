@@ -8,12 +8,12 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialNciCtrl', trialNciCtrl);
 
-    trialNciCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialNciCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialNciCtrl(TrialService, $scope, toastr, trialDetailObj, studySourceObj, nciDivObj, nciProgObj) {
+    function trialNciCtrl(TrialService, $scope, $state, toastr, trialDetailObj, studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
-        console.log("nciDivObj  =" + JSON.stringify(nciDivObj));
+        console.log("trialDetailObj.send_trial_flag  =" + JSON.stringify(trialDetailObj.send_trial_flag));
         vm.nciDivArr = nciDivObj;
         console.log("nciProgObj  =" + JSON.stringify(nciProgObj));
         console.log("trial  =" + JSON.stringify(trialDetailObj));
@@ -49,6 +49,11 @@
 
 
         } //updateTrial
+
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
+
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {

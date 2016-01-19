@@ -36,7 +36,7 @@
                 <!-- column 1 -->
                 <div class="col-sm-4 col-xs-12">
                     <p>
-                        <strong>NCI Trial ID: </strong>
+                        <strong>NCI ID: </strong>
                         <span>{{paTrialOverview.trialDetailObj.nci_id}}</span>
                     </p>
                     <p>
@@ -51,18 +51,21 @@
                     <p>
                         <strong>Lead Organization:</strong>
                         <span><a ui-sref="main.orgDetail({orgId: paTrialOverview.trialDetailObj.lead_org.id})">
-                            {{paTrialOverview.trialDetailObj.lead_org.name}}
-                        </a></span>
+                                {{paTrialOverview.trialDetailObj.lead_org.name}}
+                            </a>
+                        </span>
                     </p>
 
                     <p>
-                        <strong>Submission Source:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
+                        <strong>Submission Method:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.submission_method}}</span>
                     </p>
-                    <!-- <p>
+
+                    <p>
                         <strong>Amendment Number:</strong>
                         <span>{{paTrialOverview.trialDetailObj.last_amendment_num}}</span>
-                    </p> -->
+                    </p>
+
                     <p>
                         <strong>Amendment Date:</strong>
                         <span>{{paTrialOverview.trialDetailObj.last_amendment_date | date: "dd-MMM-yyyy H:mm"}}</span>
@@ -80,8 +83,13 @@
                     </p>
 
                     <p>
+                        <strong>Clinical Research Category:</strong>
+                        <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span>
+                    </p>
+
+                    <p>
                         <strong>Last Submitter:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.submitter}}</span>
+                        <span>{{paTrialOverview.trialDetailObj.submitterName}}</span>
                     </p>
 
                     <p>
@@ -89,10 +97,10 @@
                         <span><a href=""></a></span>
                     </p>
 
-                    <p>
+                    <!-- <p>
                         <strong>Trial Category:</strong>
                         <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span>
-                    </p>
+                    </p> -->
 
                     <p>
                         <strong>Last Updated By:</strong>
@@ -138,6 +146,7 @@
             <!-- end of second row -->
 
             <!-- third row -->
+            <!--  ng-if="paTrialOverview.trialDetailObj.pa_editable" -->
             <div class="row text-center">
                 <div class="btn-toolbar">
                     <!-- scientific/admin checkout/in buttons -->

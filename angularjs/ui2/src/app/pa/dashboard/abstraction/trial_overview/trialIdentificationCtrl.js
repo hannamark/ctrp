@@ -12,9 +12,14 @@
 
     function trialIdentificationCtrl($scope, TrialService, MESSAGES) {
         var vm = this;
-        vm.trialProcessingObj = {};
+        vm.trialProcessingObj = {comment: '', priority: ''};
         vm.saveProcessingInfo = saveProcessingInfo;
         vm.resetView = resetView;
+        vm.priorities = [
+            {id: 1, name: 'High'},
+            {id: 2, name: 'Normal'},
+            {id: 3, name: 'Low'},
+        ];
 
         activate();
 
@@ -41,17 +46,19 @@
             //console.log('processing info: ', vm.trialProcessingObj);
 
             var updatedTrial = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
-            updatedTrial.process_priority = vm.trialProcessingObj.priority;
+            updatedTrial.process_priority = vm.trialProcessingObj.priority.name;
             updatedTrial.process_comment = vm.trialProcessingObj.comment;
-            
+            console.log('updated trial: ', updatedTrial);
+            /*
             TrialService.upsertTrial(updatedTrial).then(function(res) {
                 console.log('priority and commented updated: ', res);
             });
+            */
         }
 
         function resetView() {
-            vm.trialProcessingObj.comment = '';
-            vm.trialProcessingObj.priority = '2 - Normal';
+            vm.trialProcessingObj.comment = $scope.$parent.paTrialOverview.trialDetailObj.comment || '';
+            vm.trialProcessingObj.priority = $scope.$parent.paTrialOverview.trialDetailObj.priority || '';
         }
 
     } //trialIdentificationCtrl

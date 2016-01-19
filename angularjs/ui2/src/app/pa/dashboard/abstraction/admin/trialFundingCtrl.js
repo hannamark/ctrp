@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialFundingCtrl', trialFundingCtrl);
 
-    trialFundingCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'instituteCodeObj', 'fundingMechanismObj', 'nciObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialFundingCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'instituteCodeObj', 'fundingMechanismObj', 'nciObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialFundingCtrl(TrialService, $scope, toastr, trialDetailObj, instituteCodeObj, fundingMechanismObj, nciObj){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialFundingCtrl(TrialService, $scope, $state, toastr, trialDetailObj, instituteCodeObj, fundingMechanismObj, nciObj){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.grantorArr = [];
@@ -21,8 +21,14 @@
         vm.addedGrants = [];
         vm.addedIndIdes = [];
         vm.showAddGrantError = false;
+        vm.serial_number = null;
         vm.grantNum = 0;
+        vm.grantsInputs = {grantResults: [], disabled: true};
         console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
+
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
 
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
@@ -51,26 +57,31 @@
         }
 
         $scope.refreshGrants = function(serial_number) {
-
-            if (vm.funding_mechanism && vm.institute_code) {
+            console.log('firing....');
+            if (vm.funding_mechanism && vm.institute_code && serial_number.length > 1) {
                 var queryObj = {
-                    funding_mechanism: vm.funding_mechanism,
-                    institute_code: vm.institute_code,
-                    serial_number: serial_number
+                    "funding_mechanism": vm.funding_mechanism,
+                    "institute_code": vm.institute_code,
+                    "serial_number": serial_number
                 };
                 return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
-                    var snums=[];
-                    var uniquesnums= [];
+                    var transformedGrantsObjs = [];
+                    var unique = [];
+                    console.log('res is: ', res);
+                    vm.grantsInputs.grantResults = res.tempgrants;
+                    /*
+                     transformedGrantsObjs = res.tempgrants.map(function (tempgrant) {
+                     return tempgrant; //.serial_number;
+                     });
+                     unique = transformedGrantsObjs.filter(function (g) {
+                     return _.findIndex(unique, {serial_number: g.serial_number}) === -1;
+                     });
 
-                    snums= res.tempgrants.map(function (tempgrant) {
-                        return tempgrant.serial_number;
-                    });
-                    uniquesnums = snums.filter(function (name) {
-                        return uniquesnums.indexOf(name) === -1;
-                    });
+                     console.log('unique: ', unique);
 
-                    $scope.addresses = uniquesnums;
-                    console.log($scope.addresses);
+                     vm.grantsInputs.grantResults = transformedGrantsObjs; // unique; //['13467']; // uniquesnums;
+                     console.log(vm.grantsInputs.grantResults);
+                     */
 
                 });
 
@@ -83,7 +94,7 @@
                 var newGrant = {};
                 newGrant.funding_mechanism = vm.funding_mechanism;
                 newGrant.institute_code = vm.institute_code;
-                newGrant.serial_number = vm.serial_number;
+                newGrant.serial_number = vm.serial_number.serial_number;
                 newGrant.nci = vm.nci;
                 newGrant._destroy = false;
                 vm.addedGrants.push(newGrant);
@@ -93,11 +104,13 @@
                 vm.serial_number = null;
                 vm.nci = null;
                 vm.showAddGrantError = false;
-                $scope.addresses=null;
+                vm.grantsInputs.grantResults= [];
             } else {
                 vm.showAddGrantError = true;
             }
         };
+
+
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {

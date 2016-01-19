@@ -197,7 +197,7 @@ AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', des
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
-AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'S7', big_value: '')
+AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'S8', big_value: '')
 
 AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,zip,gz', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/zip, application/x-gzip')
 
@@ -415,6 +415,8 @@ if Organization.all.size == 0
   org23 = Organization.find_or_create_by(id: 33699872, source_id: 'NVRF', name: 'Nevada Cancer Research Foundation CCOP', phone:'702-541-1815', source_status: source_act, source_context: ctrp,  email: "rludlum@lasvegashealth.com",  address: '1 Rancho Drive', city: 'Las Vegas', state_province:'Nevada', country:usa, postal_code:"926344")
   org24 = Organization.find_or_create_by(id: 8149074, source_id: 'WA002', name: 'Harborview Medical Center', phone:'865-541-1816', source_status: source_act, source_context: ctrp, email: "dbrown@seattlehealth.com", address: '23 Wheeling Drive', city: 'Seattle', state_province:'Washington', country:usa, postal_code:"123683") #no source id
 
+  org25 = Organization.find_or_create_by(id: 23170023,  name: 'National Cancer Institute', phone:'301-555-0000', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '9609 Medical Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20850") #no source id
+  org25 = Organization.find_or_create_by(id: 16108126,  name: 'NCI - Center for Cancer Research', phone:'301-496-4365', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '31 Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20892") #no source id
 
   family1 = Family.create(name: 'Masonic Cancer Center')
   if !family1.new_record?
@@ -474,11 +476,13 @@ grant2 = Tempgrants.find_or_create_by(serial_number:134759 , institution_name:'U
 grant3 = Tempgrants.find_or_create_by(serial_number:142845 , institution_name: 'MEHARRY MEDICAL COLLEGE', project_title:'Mechanisms for Benzo(a)pyrene-Induced Colon Cancer Exacerbation by Dietary Fat' ,funding_mechanism: 'R01', institute_code: 'CA')
 grant4 = Tempgrants.find_or_create_by(serial_number:133230 , institution_name: 'VANDERBILT UNIVERSITY', project_title:'The alpha2beta1 Integrin and Tumor Metastasis' ,funding_mechanism: 'R01', institute_code: 'CA')
 
+grant5 = Tempgrants.find_or_create_by(serial_number:136472 , institution_name: 'UNIVERSITY OF MINNESOTA', project_title:'NMR Structural Studies of Ubiquitin Receptor Protein Complexes' ,funding_mechanism: 'R01', institute_code: 'CA')
+
 grant6 = Tempgrants.find_or_create_by(serial_number:136921 , institution_name: 'UNIVERSITY OF NEBRASKA MEDICAL CENTER', project_title:'NMR Structural Studies of Ubiquitin Receptor Protein Complexes' ,funding_mechanism: 'R01', institute_code: 'CA')
 grant7 = Tempgrants.find_or_create_by(serial_number:128837 , institution_name: 'MEDICAL UNIVERSITY OF SOUTH CAROLINA', project_title:'Immunotherapy to prevent oral permalignant lesion recurrence and oral cancer.' ,funding_mechanism: 'R01', institute_code: 'CA')
 
 grant8 = Tempgrants.find_or_create_by(serial_number:129687 , institution_name: 'EMORY UNIVERSITY', project_title:'Molecular mechanisms of TRAIL resistance in glioblastoma' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant9 = Tempgrants.find_or_create_by(serial_number:136491 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'REST/NRSF-mediated medulloblastoma tumorigenesis' ,funding_mechanism: 'R01', institute_code: 'CA')
+grant9 = Tempgrants.find_or_create_by(serial_number:136472 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'REST/NRSF-mediated medulloblastoma tumorigenesis' ,funding_mechanism: 'R01', institute_code: 'CA')
 
 grant10 = Tempgrants.find_or_create_by(serial_number:132840 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'Function of REV3L in limiting oncogenesis via DNA damage tolerance' ,funding_mechanism: 'R01', institute_code: 'CA')
 grant11 = Tempgrants.find_or_create_by(serial_number:138410 , institution_name: 'UNIVERSITY OF LOUISVILLE', project_title:'Regulation of miRNA in breast cancer' ,funding_mechanism: 'R01', institute_code: 'CA')
@@ -505,13 +509,6 @@ grant26 = Tempgrants.find_or_create_by(serial_number:150295 , institution_name: 
 grant27 = Tempgrants.find_or_create_by(serial_number: 97131, institution_name:'UNIVERSITY OF WISCONSIN-MADISON', project_title: 'Modulation of IGF-II Imprinting in the Aging Prostate' ,funding_mechanism: 'R01', institute_code: 'CA')
 
 
-## Central Contact Types
-contact_type1 = CentralContactType.find_or_create_by(code: 'NONE', name: 'None')
-contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
-contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
-contact_type4 = CentralContactType.find_or_create_by(code: 'NON', name: 'General')
-
-
 ## Trials
 ## Delete existing Trial data
 if Trial.all.size == 0
@@ -531,8 +528,6 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true},
                {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
                {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "approve" => true},
                {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},

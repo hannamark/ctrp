@@ -12,6 +12,7 @@ class TrialsController < ApplicationController
   # GET /trials/1
   # GET /trials/1.json
   def show
+    @trial.current_user = @current_user
   end
 
   # GET /trials/new
@@ -21,6 +22,7 @@ class TrialsController < ApplicationController
 
   # GET /trials/1/edit
   def edit
+    @trial.current_user = @current_user
   end
 
   # POST /trials
@@ -74,6 +76,18 @@ class TrialsController < ApplicationController
   def get_grants_serialnumber
     @tempgrants=Tempgrants.all
     @tempgrants=@tempgrants.where("funding_mechanism = ? AND institute_code = ? AND CAST(serial_number AS TEXT)  LIKE ?", params[:funding_mechanism], params[:institute_code],"#{params[:serial_number]}%")
+
+    respond_to do |format|
+      format.json { render :json => {:tempgrants => @tempgrants} }
+    end
+  end
+
+  def get_central_contact_types
+    @central_contact_types = CentralContactType.all
+
+    respond_to do |format|
+      format.json { render :json => {:types => @central_contact_types} }
+    end
   end
 
   def search
@@ -169,12 +183,12 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if  params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phase].present? || params[:purpose].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_source].present?
+    if  params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
-      @trials = @trials.with_phase(params[:phase]) if params[:phase].present?
-      @trials = @trials.with_purpose(params[:purpose]) if params[:purpose].present?
+      @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
+      @trials = @trials.with_purposes(params[:purposes]) if params[:purposes].present?
       @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
       if params[:pi].present?
         splits = params[:pi].split(',').map(&:strip)
@@ -195,23 +209,53 @@ class TrialsController < ApplicationController
           @trials = @trials.with_any_org(params[:org])
         end
       end
-      @trials = @trials.with_study_source(params[:study_source]) if params[:study_source].present?
+      @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
       # PA fields
       if params[:research_category].present?
-        @trials = @trials.with_research_category(params[:research_category])
+        Rails.logger.debug " Before params[:research_category] = #{params[:research_category].inspect}"
+        search_ids = []
+        params[:research_category].each do |s|
+          Rails.logger.debug "research_category =#{s["name"]}"
+          sn = ResearchCategory.find_by_name(s["name"])
+          next if sn.nil?
+          search_ids << sn.id
+        end
+        @trials = @trials.select{|trial| !trial.research_category.blank? && search_ids.include?(trial.research_category_id)}
       end
       if params[:trial_status].present?# && params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
-        @trials = @trials.select{|trial| trial.trial_status_wrappers.latest.trial_status.code == params[:trial_status]}
+        Rails.logger.debug " Before params[:trial_status] = #{params[:trial_status].inspect}"
+        search_ids = []
+        params[:trial_status].each do |s|
+          Rails.logger.debug "trial_status =#{s["name"]}"
+          sn = TrialStatus.find_by_name(s["name"])
+          next if sn.nil?
+          search_ids << sn.id
+        end
+        @trials = @trials.select{|trial| !trial.trial_status_wrappers.blank? && search_ids.include?(trial.trial_status_wrappers.last.trial_status.id)}
       end
-      ## Enable this section, if the Radio button on the UI will be used.
-      if params[:milestone].present? #&& params[:milestone_latest].present? && params[:milestone_latest] == "YES"
-        @trials = @trials.select{|trial| !trial.milestone_wrappers.blank? &&  trial.milestone_wrappers.last.milestone.code == params[:milestone]}
+      if params[:milestone].present?
+        Rails.logger.debug " Before params[:milestone] = #{params[:milestone].inspect}"
+        search_ids = []
+        params[:milestone].each do |s|
+          Rails.logger.debug "milestone =#{s["name"]}"
+          sn = Milestone.find_by_name(s["name"])
+          next if sn.nil?
+          search_ids << sn.id
+        end
+        @trials = @trials.select{|trial| !trial.milestone_wrappers.blank? &&  search_ids.include?(trial.milestone_wrappers.last.milestone.id)}
       end
       if params[:processing_status].present? #&& params[:trial_status_latest].present? && params[:trial_status_latest] == "YES"
         Rails.logger.debug " Before params[:processing_status] = #{params[:processing_status].inspect}"
-        @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && trial.processing_status_wrappers.last.processing_status.code == params[:processing_status]}
+        search_process_status_ids = []
+        params[:processing_status].each do |p|
+          Rails.logger.debug " processing_status =#{p["name"]}"
+          ps = ProcessingStatus.find_by_name(p["name"])
+          next if ps.nil?
+          search_process_status_ids << ps.id
+        end
+        @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && search_process_status_ids.include?(trial.processing_status_wrappers.last.processing_status_id)}
         Rails.logger.debug "After @trials = #{@trials.inspect}"
       end
       if params[:protocol_origin_type].present?
@@ -232,22 +276,44 @@ class TrialsController < ApplicationController
         @trials = @trials.select{|trial| !trial.admin_checkout.nil? || !trial.scientific_checkout.nil?}
       end
       if  params[:nih_nci_div].present?
-        Rails.logger.debug "nci_div selected"
-        @trials = @trials.with_nci_div(params[:nih_nci_div]) if params[:nih_nci_div].present?
+        Rails.logger.debug " Before params[:nih_nci_div] = #{params[:nih_nci_div].inspect}"
+        search_codes = []
+        params[:nih_nci_div].each do |c|
+          Rails.logger.debug " nih_nci_div =#{c["code"]}"
+          search_codes << c["code"]
+        end
+        @trials = @trials.where(nih_nci_div: search_codes) unless @trials.blank?
       end
       if  params[:nih_nci_prog].present?
-        Rails.logger.debug "nih_nci_prog selected"
-        @trials = @trials.with_nci_prog(params[:nih_nci_prog]) if params[:nih_nci_prog].present?
+        Rails.logger.debug " Before params[:nih_nci_prog] = #{params[:nih_nci_prog].inspect}"
+        search_codes = []
+        params[:nih_nci_prog].each do |c|
+          Rails.logger.debug " nih_nci_prog =#{c["code"]}"
+          search_codes << c["code"]
+        end
+        @trials =  @trials.where(nih_nci_prog: search_codes) unless @trials.blank?
       end
       if params[:submission_type].present?
-        submission_type = SubmissionType.find_by_name(params[:submission_type])
-        Rails.logger.info "submission_type = #{submission_type.inspect}"
-        @trials = @trials.select{|trial| !trial.submissions.blank? &&  trial.submissions.last.submission_type == submission_type}
+        Rails.logger.debug " Before params[:submission_type] = #{params[:submission_type].inspect}"
+        search_ids = []
+        params[:submission_type].each do |s|
+          Rails.logger.debug " submission_type =#{s["name"]}"
+          sn = SubmissionType.find_by_name(s["name"])
+          next if sn.nil?
+          search_ids << sn.id
+        end
+        @trials = @trials.select{|trial| !trial.submissions.blank? &&  search_ids.include?(trial.submissions.last.submission_type.id)}
       end
       if params[:submission_method].present?
-        submission_method = SubmissionMethod.find_by_code(params[:submission_method])
-        Rails.logger.info "submission_method = #{submission_method.inspect}"
-        @trials = @trials.select{|trial| !trial.submissions.blank? &&  trial.submissions.last.submission_method == submission_method}
+        Rails.logger.debug " Before params[:submission_method] = #{params[:submission_method].inspect}"
+        search_ids = []
+        params[:submission_method].each do |s|
+          Rails.logger.debug " submission_type =#{s["name"]}"
+          sn = SubmissionMethod.find_by_name(s["name"])
+          next if sn.nil?
+          search_ids << sn.id
+        end
+        @trials = @trials.select{|trial| !trial.submissions.blank? && search_ids.include?(trial.submissions.last.submission_method.id)}
       end
       if params[:onhold].present?
         Rails.logger.info "Trials onhold selected"
@@ -307,8 +373,10 @@ class TrialsController < ApplicationController
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                     :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
                                     :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
-                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog,
+                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :keywords,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
+                                    alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
+                                    central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
                                     trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id,

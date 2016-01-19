@@ -101,7 +101,7 @@ var projectMethodsRegistry = function() {
      *****************************************************************/
     this.verifyAddTrialOversightCountryOrganization = function (country, organization) {
         return addTrial.addTrialVerifyOversightCountryOrganization.getText().filter(function (row) {
-            // Get the second column's text.
+            // Get the first column's text.
             return row.$$('td').get(0).getText().then(function (rowName) {
                 // Filter rows matching the name you are looking for.
                 console.log('print row name' + rowName);
@@ -117,7 +117,35 @@ var projectMethodsRegistry = function() {
         );
     };
 
-
+    /*****************************************************************
+     * Method: Verify Trial Grant information value
+     * @param fundingMechanism
+     * @param instituteCode
+     * @param serialNumber
+     * @param programCode
+     *****************************************************************/
+    this.verifyAddTrialGrantInformation = function (fundingMechanism, instituteCode, serialNumber, programCode) {
+        return addTrial.addTrialVerifyGrantTable.getText().filter(function (row) {
+            // Get the first column's text.
+            return row.$$('td').get(0).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name');
+                console.log(rowName);
+                console.log('print funding name');
+                console.log(fundingMechanism);
+                return rowName === fundingMechanism;
+            });
+        }).then(function (rows) {
+                console.log('value of row' + rows);
+                expect(rows[0].element(by.binding('grant.institute_code')).getText()).to.eventually.equal(instituteCode);
+                expect(rows[0].element(by.binding('grant.serial_number')).getText()).to.eventually.equal(serialNumber);
+                expect(rows[0].element(by.binding('grant.nci')).getText()).to.eventually.equal(programCode);
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one

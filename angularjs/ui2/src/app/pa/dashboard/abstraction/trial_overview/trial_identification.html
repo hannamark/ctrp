@@ -12,28 +12,35 @@
                 </p> -->
 
                 <p>
-                    <strong>NCI Trial ID: </strong>
+                    <strong>NCI ID: </strong>
                     <!-- get data from parent controller view -->
                     <span>{{paTrialOverview.trialDetailObj.nci_id}}</span>
                 </p>
 
+                <!-- <p>
+                    <strong>NCT ID:</strong>
+                    <span><a href="https://clinicaltrials.gov/ct2/show/{{paTrialOverview.trialDetailObj.nct_trial_id}}" target="_blank">{{paTrialOverview.trialDetailObj.nct_trial_id}}<i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a></span>
+                </p> -->
+
                 <p>
-                    <strong>ClinicalTrials.gov XML required? </strong>
-                    <span>{{paTrialOverview.trialDetailObj.xml_required}}</span>
+                    <strong>Lead Organization Trial ID: </strong>
+                    <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
+                </p>
+
+                <p>
+                    <strong>Trial Identifiers: </strong>
+                    <ul>
+                        <li ng-repeat="id in paTrialOverview.trialDetailObj.other_ids_hash track by $index">
+                            {{id.name}}: {{id.other_id_obj.protocol_id}}
+                            <!-- <span ng-show="!$last">;</span> -->
+                        </li>
+
+                    </ul>
                 </p>
 
                 <!-- <p>
-                    <s>
-                        <strong>Lead Organization Trial ID: </strong>
-                        <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
-                    </s>
-                </p>
-
-                <p>
-                    <s>
-                        <strong>ClinicalTrials.gov Identifier: </strong>
-                        <span>{{paTrialOverview.trialDetailObj.other_ids[0].protocol_id}}</span>
-                    </s>
+                    <strong>Abbreviated Trial?</strong>
+                    <span></span>
                 </p> -->
 
                 <p>
@@ -41,17 +48,15 @@
                     <span>{{paTrialOverview.trialDetailObj.verification_date | date: "dd-MMM-yyyy H:mm"}}</span>
                 </p>
 
-                <!-- <p>
-                    <s><strong>Official Title: </strong>
-                    <span>{{paTrialOverview.trialDetailObj.official_title}}</span></s>
+                <p>
+                    <strong>Official Title: </strong>
+                    <span>{{paTrialOverview.trialDetailObj.official_title}}</span>
                 </p>
 
                 <p>
-                    <s>
-                        <strong>Submission Source:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
-                    </s>
-                </p> -->
+                    <strong>Submission Source:</strong>
+                    <span>{{paTrialOverview.trialDetailObj.last_submission_source.code}}</span>
+                </p>
 
                 <hr />
             </div>
@@ -59,37 +64,48 @@
 
             <!-- second row in the accordion body -->
             <div class="row">
-                <div class="col-xs-12 pull-left">
-                    <form name="abstraction_form" class="form" role="form" novalidate>
+                <form name="abstraction_form" class="form form-horizontal" role="form" novalidate>
+                    <div class="col-xs-12">
                         <!-- first form-group -->
                         <div class="form-group">
-                            <label for="processing_priority" class="control-label col-xs-12 col-sm-3">Processing Priority:</label>
-                            <div class="input-group col-xs-12 col-sm-4">
-                                <select name="priority_selection" id="processing_priority" class="form-control input-sm" ng-model="trialIdView.trialProcessingObj.priority">
+                            <label for="processing_priority" class="control-label left col-xs-12 col-sm-3">Processing Priority:</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <!-- <select name="priority_selection" id="processing_priority" class="form-control input-sm"
+                                    ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
+                                    ng-model="trialIdView.trialProcessingObj.priority">
                                     <option value="1 - High">1 - High</option>
                                     <option value="2 - Normal">2 - Normal</option>
                                     <option value="3 - Low">3 - Low</option>
+                                </select> -->
+                                <select name="priority_selection" id="processing_priority"
+                                    class="form-control input-sm"
+                                    ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
+                                    ng-model="trialIdView.trialProcessingObj.priority"
+                                    ng-options="priority.name for priority in trialIdView.priorities">
+                                    <option value="">
+                                        Select a priority
+                                    </option>
                                 </select>
                             </div>
-                            <div class="col-sm-offset-4"></div>
+                            <div class="col-xs-12 col-sm-5"></div>
                         </div>
                         <!-- end of first form-group -->
 
                         <!-- second form-group -->
-                        <div class="form-group">
-                            <label for="trial_processing_comment" class="col-xs-12">Trial Processing Comments <small>(maximum: 4,000 characters)</small>:</label>
+                        <div class="form-group pull-left">
+                            <label for="trial_processing_comment" class="control-label col-xs-12">Trial Processing Comments <small>(maximum: 4,000 characters)</small>:</label>
                         </div>
                         <!-- end of second form-group -->
 
                         <!-- third row in the form -->
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5" ng-maxlength="4000" ng-model="trialIdView.trialProcessingObj.comment"></textarea>
+                                <textarea class="form-control" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" name="processing_comment" id="trial_processing_comment" rows="5" ng-maxlength="4000" ng-model="trialIdView.trialProcessingObj.comment"></textarea>
                             </div>
                         </div>
                         <!-- end of third row -->
 
-                        <div class="form-group no-bottom-margin">
+                        <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialIdView.saveProcessingInfo()" ng-disabled="!abstraction_form.$valid">Save</button>
                                 <button type="button" class="btn btn-warning pull-right" id="cancel_processing" ng-click="trialIdView.resetView()">
@@ -97,8 +113,8 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </uib-accordion-group>
     </uib-accordion>

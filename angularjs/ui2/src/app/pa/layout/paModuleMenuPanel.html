@@ -1,11 +1,11 @@
-<div class="sidebar" ng-controller="paModuleMenuPanel as paMenuPanel">
+<div class="sidebar drop-shadow" ng-controller="paModuleMenuPanel as paMenuPanel">
     <!-- <span flex class="animated-item" ng-hide="paMenuPanel.nciTrialId==''"><strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong></span> -->
   <uib-accordion close-others="false">
-      <div class="panel panel-default animated-item" ng-hide="paMenuPanel.nciTrialId==''">
-          <div class="panel-heading" style="color: #fff">
-              <strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong>
-          </div>
-      </div>
+      <uib-accordion-group ng-hide="paMenuPanel.nciTrialId==''" is-open="paMenuPanel.trialGlobalOpen">
+          <uib-accordion-heading>
+              <strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong>  <i class="pull-right glyphicon" ng-click="paMenuPanel.toggleGlobal()" ng-class="{'glyphicon-chevron-down': paMenuPanel.trialGlobalOpen, 'glyphicon-chevron-right': !paMenuPanel.trialGlobalOpen}"></i>
+          </uib-accordion-heading>
+      </uib-accordion-group>
       <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialOverviewOpen">
           <uib-accordion-heading>
               <strong>Trial Overview</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialOverviewOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialOverviewOpen}"></i>
@@ -35,7 +35,7 @@
               <li><a href="">Participating Sites</a></li>
               <li><a href="">Collaborators</a></li>
               <li><a href="">Trial Related Documents</a></li>
-              <li><a ui-sref="main.pa.trialOverview.nciInfo">NCI specific information</a></li>
+              <li><a ui-sref="main.pa.trialOverview.nciInfo">NCI Specific Information</a></li>
           </ul>
       </uib-accordion-group>
       <uib-accordion-group is-open="paMenuPanel.menuAccordions.scientificDataOpen">

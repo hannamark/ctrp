@@ -1,8 +1,8 @@
-@PA @global
+Ôªø@PA @global
 Feature: PAA F02 Add and Edit NCI Specific Information
 
-As any CTRP PA User, I can enter NCI Specific Information 
-
+As any CTRP PA User, I can enter NCI Specific Information
+@runthis
 Scenario: #1 I can view and edit the value for Study Source
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
@@ -11,7 +11,7 @@ When I select a different Study Source value of National, Externally Peer-Review
 Then the selected value for Study Source will be associated with the trial
 
 Scenario: #2 I can associate one or more organizations as the Specific Funding Source for a clinical trial
-Given I have selected a trial to abstract 
+Given I have selected a trial to abstract
 And I am on the NCI Specific Information page screen
 And I have selected organization look-up
 When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed
@@ -43,16 +43,16 @@ And see the value for NIH/NCI Division/Department Identifier
 When I select one or more values from the for the NIH/NCI Program Identifier (BIQSFP, SPORE, Steering Committee Reviewed)
 Then the selected value(s) for NIH/NCI Program Identifier will be associated with the trial
 
-Scenario: #7 I can view and edit the ìSend Trial Information to ClinicalTrials.gov?î
+Scenario: #7 I can view and edit the ÔøΩSend Trial Information to ClinicalTrials.gov?ÔøΩ
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
 And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
 And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
-And the Trial processing status is ìVerification Pendingî, "Abstracted", "No Responseî, or ìAbstracted, Responseî 
-And the Trial Overall Status is not ìCompleteî, ìAdministratively Completeî or ìTerminatedî  
+And the Trial processing status is ÔøΩVerification PendingÔøΩ, "Abstracted", "No ResponseÔøΩ, or ÔøΩAbstracted, ResponseÔøΩ 
+And the Trial Overall Status is not ÔøΩCompleteÔøΩ, ÔøΩAdministratively CompleteÔøΩ or ÔøΩTerminatedÔøΩ  
 And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
-When I select the radio button for Yes or No for ìSend Trial Information to ClinicalTrials.gov?î 
-Then the selected value for ìSend Trial Information to ClinicalTrials.gov?î will be Yes or No
+When I select the radio button for Yes or No for ÔøΩSend Trial Information to ClinicalTrials.gov?ÔøΩ 
+Then the selected value for ÔøΩSend Trial Information to ClinicalTrials.gov?ÔøΩ will be Yes or No
 
 Scenario: #8 I can view and edit the NCI Specific Information Comments 
 Given I am logged into the CTRP PA application
@@ -73,26 +73,37 @@ When I select Reset
 Then the information entered or edited on the NCI Specific Information screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
-Scenario Outline: #11 I cannot view the ìSend Trial Information to ClinicalTrials.gov?î
+Scenario Outline: #11 I cannot view the ÔøΩSend Trial Information to ClinicalTrials.gov?ÔøΩ
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
 When the follow <conditions> exist
-Then the label and element for ìSend Trial Information to ClinicalTrials.gov?î will not be visible
+Then the label and element for ÔøΩSend Trial Information to ClinicalTrials.gov?ÔøΩ will not be visible
 
 Examples:
 
 |<Conditions>|
 |Trial is not sponsored by "National Cancer Institute" |
 |Trial Lead Organization is "NCI - Center for Cancer Research"|
-|Trial processing status is not ìVerification Pendingî|
+|Trial processing status is not ÔøΩVerification PendingÔøΩ|
 |Trial processing status is not "Abstracted| 
-|Trial processing status is not ìNo Responseî|
-|Trial processing status is not ìAbstracted, Responseî|
-|Trial Overall Status is ìCompleteî|
-|Trial Overall Status is ìAdministratively Completeî|
-|Trial Overall Status is ìTerminatedî| 
+|Trial processing status is not ÔøΩNo ResponseÔøΩ|
+|Trial processing status is not ÔøΩAbstracted, ResponseÔøΩ|
+|Trial Overall Status is ÔøΩCompleteÔøΩ|
+|Trial Overall Status is ÔøΩAdministratively CompleteÔøΩ|
+|Trial Overall Status is ÔøΩTerminatedÔøΩ| 
 |Trial Research Category is not "Interventional"|
 
 
+Scenario: #12 Study Source is not null 
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the NCI Specific Information screen 
+And I have not selected a Study Source            | 
+When I select Save
+Then a warning message will appear "Study Source is required‚Äù
 
-
+Scenario: #13 Funding Source is not null 
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the NCI Specific Information screen 
+And I have not selected a Funding Source            | 
+When I select Save
+Then a warning message will appear "Funding Source is required‚Äù

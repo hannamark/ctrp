@@ -1,4 +1,4 @@
-json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
+json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id,
               :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
               :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual, :comp_date, :comp_date_qual,
               :ind_ide_question, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
@@ -8,7 +8,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :acronym
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
               :actions, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment,
-              :nih_nci_div, :nih_nci_prog, :central_contacts, :keywords
+              :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts
 
 json.trial_status_wrappers do
   json.array!(@trial.trial_status_wrappers) do |status|
@@ -16,17 +16,27 @@ json.trial_status_wrappers do
   end
 end
 
-# # get the ClinicalTrial.gov Identifier:
-# json.other_ids do
-#     json.array!(@trial.other_ids) do |other_id|
-#         json.extract! other_id, :protocol_id_origin_id
-#     end
-# end
+json.trial_documents do
+  json.array!(@trial.trial_documents) do |document|
+    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at
+  end
+end
+
+## append the protocol_id_origin.name
+unless @trial.other_ids.empty?
+  oids_hash = []
+  @trial.other_ids.each do |o|
+    oid_hash = Hash.new
+    oid_hash = {"name" => o.protocol_id_origin.name, "other_id_obj" => o}
+    oids_hash << oid_hash
+  end
+  json.other_ids_hash oids_hash
+end
 
 json.submissions do
   json.array!(@trial.submissions) do |submission|
     json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
-                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at, :user
+                  :amendment_reason_id, :amendment_reason, :created_at, :updated_at, :user_id, :submission_source_id
   end
 end
 
@@ -44,6 +54,22 @@ json.last_amendment_num @trial.milestone_wrappers.present? ?
 
 json.last_amendment_date @trial.milestone_wrappers.present? ?
     @trial.milestone_wrappers.last.submission.amendment_date : nil
+
+json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
+
+json.submitter @trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : Person.find(@trial.submissions.last.user_id))
+
+json.last_submission_source @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_source_id.nil? ? '' : SubmissionSource.find(@trial.submissions.last.submission_source_id))
+
+send_trial_flag = @trial.set_send_trial_info_flag
+
+json.send_trial_flag send_trial_flag ? "Yes":"No"
+
+json.pa_editable @trial.pa_editable_check
+
+#json.admin_checkout @trial.admin_checkout
+
+#json.scientific_checkout @trial.scientific_checkout
 
 #extract NCT Trial ID, if present
 if @trial.other_ids.present?

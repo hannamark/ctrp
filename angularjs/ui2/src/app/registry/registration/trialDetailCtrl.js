@@ -10,12 +10,12 @@
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
-        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams', 'acceptedFileTypesObj'];
+        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams', 'acceptedFileTypesObj', '_'];
 
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope, $window,
                              Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
-                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams, acceptedFileTypesObj) {
+                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams, acceptedFileTypesObj, _) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
@@ -89,6 +89,7 @@
         vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
         vm.docUploadedCount = 0;
         vm.disableBtn = false;
+        vm.grantsInputs = {grantResults: [], disabled: true};
 
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
@@ -233,25 +234,30 @@
 
         $scope.refreshGrants = function(serial_number) {
 
-            if (vm.funding_mechanism && vm.institute_code) {
+            if (vm.funding_mechanism && vm.institute_code && serial_number.length > 1) {
                 var queryObj = {
-                    funding_mechanism: vm.funding_mechanism,
-                    institute_code: vm.institute_code,
-                    serial_number: serial_number
+                    "funding_mechanism": vm.funding_mechanism,
+                    "institute_code": vm.institute_code,
+                    "serial_number": serial_number
                 };
                 return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
-                    var snums=[];
-                    var uniquesnums= [];
-
-                    snums= res.tempgrants.map(function (tempgrant) {
-                        return tempgrant.serial_number;
+                    var transformedGrantsObjs = [];
+                    var unique = [];
+                    console.log('res is: ', res);
+                    vm.grantsInputs.grantResults = res.tempgrants;
+                    /*
+                    transformedGrantsObjs = res.tempgrants.map(function (tempgrant) {
+                        return tempgrant; //.serial_number;
                     });
-                     uniquesnums = snums.filter(function (name) {
-                        return uniquesnums.indexOf(name) === -1;
+                     unique = transformedGrantsObjs.filter(function (g) {
+                        return _.findIndex(unique, {serial_number: g.serial_number}) === -1;
                     });
 
-                    $scope.addresses = uniquesnums;
-                    console.log($scope.addresses);
+                    console.log('unique: ', unique);
+
+                    vm.grantsInputs.grantResults = transformedGrantsObjs; // unique; //['13467']; // uniquesnums;
+                    console.log(vm.grantsInputs.grantResults);
+                    */
 
                 });
 
@@ -427,7 +433,7 @@
                 var newGrant = {};
                 newGrant.funding_mechanism = vm.funding_mechanism;
                 newGrant.institute_code = vm.institute_code;
-                newGrant.serial_number = vm.serial_number;
+                newGrant.serial_number = vm.serial_number.serial_number;
                 newGrant.nci = vm.nci;
                 newGrant._destroy = false;
                 vm.addedGrants.push(newGrant);
@@ -437,7 +443,7 @@
                 vm.serial_number = null;
                 vm.nci = null;
                 vm.showAddGrantError = false;
-                $scope.addresses=null;
+                vm.grantsInputs.grantResults= [];
             } else {
                 vm.showAddGrantError = true;
             }
@@ -710,6 +716,9 @@
                 vm.curTrial.pilot = 'No';
                 vm.curTrial.grant_question = 'Yes';
                 vm.curTrial.ind_ide_question = 'Yes';
+                vm.curTrial.intervention_indicator = 'N/A';
+                vm.curTrial.sec801_indicator = 'N/A';
+                vm.curTrial.data_monitor_indicator = 'N/A';
                 populateStudySource();
             } else {
                 appendEditType();
@@ -973,6 +982,7 @@
                 document.file_name = vm.curTrial.trial_documents[i].file_name;
                 document.document_type = vm.curTrial.trial_documents[i].document_type;
                 document.document_subtype = vm.curTrial.trial_documents[i].document_subtype;
+                document.is_latest = vm.curTrial.trial_documents[i].is_latest;
                 document._destroy = vm.curTrial.trial_documents[i]._destroy;
                 vm.addedDocuments.push(document);
 

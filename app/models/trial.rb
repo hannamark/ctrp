@@ -2,86 +2,90 @@
 #
 # Table name: trials
 #
-#  id                       :integer          not null, primary key
-#  nci_id                   :string(255)
-#  lead_protocol_id         :string(255)
-#  official_title           :text
-#  pilot                    :string(255)
-#  primary_purpose_other    :string(255)
-#  secondary_purpose_other  :string(255)
-#  program_code             :string(255)
-#  grant_question           :string(255)
-#  start_date               :date
-#  start_date_qual          :string(255)
-#  primary_comp_date        :date
-#  primary_comp_date_qual   :string(255)
-#  comp_date                :date
-#  comp_date_qual           :string(255)
-#  ind_ide_question         :string(255)
-#  intervention_indicator   :string(255)
-#  sec801_indicator         :string(255)
-#  data_monitor_indicator   :string(255)
-#  history                  :json
-#  study_source_id          :integer
-#  phase_id                 :integer
-#  primary_purpose_id       :integer
-#  secondary_purpose_id     :integer
-#  responsible_party_id     :integer
-#  lead_org_id              :integer
-#  pi_id                    :integer
-#  sponsor_id               :integer
-#  investigator_id          :integer
-#  created_at               :datetime         not null
-#  updated_at               :datetime
-#  uuid                     :string(255)
-#  lock_version             :integer          default(0)
-#  research_category_id     :integer
-#  accrual_disease_term_id  :integer
-#  investigator_title       :string(255)
-#  investigator_aff_id      :integer
-#  created_by               :string(255)
-#  updated_by               :string(255)
-#  is_draft                 :boolean
-#  admin_checkout           :text
-#  scientific_checkout      :text
-#  check_in_comment         :text
-#  process_priority         :string(255)
-#  process_comment          :text
-#  receive_email            :boolean
-#  xml_required             :string(255)
-#  acronym                  :string(255)
-#  keywords                 :text
-#  nih_nci_div              :string(255)
-#  nih_nci_prog             :string(255)
-#  send_trial               :string(255)
-#  board_approval_num       :string(255)
-#  brief_title              :text
-#  brief_summary            :text
-#  detailed_description     :text
-#  objective                :text
-#  target_enrollment        :integer
-#  final_enrollment         :integer
-#  accruals                 :integer
-#  accept_vol               :string(255)
-#  min_age                  :integer
-#  max_age                  :integer
-#  assigned_to_id           :integer
-#  owner_id                 :integer
-#  board_approval_status_id :integer
-#  intervention_model_id    :integer
-#  masking_id               :integer
-#  allocation_id            :integer
-#  study_classification_id  :integer
-#  gender_id                :integer
-#  min_age_unit_id          :integer
-#  max_age_unit_id          :integer
-#  anatomic_site_id         :integer
-#  num_of_arms              :integer
-#  verification_date        :date
-#  sampling_method          :string(255)
-#  study_pop_desc           :text
-#  board_name               :string(255)
-#  board_affiliation_id     :integer
+#  id                            :integer          not null, primary key
+#  nci_id                        :string(255)
+#  lead_protocol_id              :string(255)
+#  official_title                :text
+#  pilot                         :string(255)
+#  primary_purpose_other         :string(255)
+#  secondary_purpose_other       :string(255)
+#  program_code                  :string(255)
+#  grant_question                :string(255)
+#  start_date                    :date
+#  start_date_qual               :string(255)
+#  primary_comp_date             :date
+#  primary_comp_date_qual        :string(255)
+#  comp_date                     :date
+#  comp_date_qual                :string(255)
+#  ind_ide_question              :string(255)
+#  intervention_indicator        :string(255)
+#  sec801_indicator              :string(255)
+#  data_monitor_indicator        :string(255)
+#  history                       :json
+#  study_source_id               :integer
+#  phase_id                      :integer
+#  primary_purpose_id            :integer
+#  secondary_purpose_id          :integer
+#  responsible_party_id          :integer
+#  lead_org_id                   :integer
+#  pi_id                         :integer
+#  sponsor_id                    :integer
+#  investigator_id               :integer
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime
+#  uuid                          :string(255)
+#  lock_version                  :integer          default(0)
+#  research_category_id          :integer
+#  accrual_disease_term_id       :integer
+#  investigator_title            :string(255)
+#  investigator_aff_id           :integer
+#  created_by                    :string(255)
+#  updated_by                    :string(255)
+#  is_draft                      :boolean
+#  admin_checkout                :text
+#  scientific_checkout           :text
+#  check_in_comment              :text
+#  process_priority              :string(255)
+#  process_comment               :text
+#  receive_email                 :boolean
+#  xml_required                  :string(255)
+#  acronym                       :string(255)
+#  keywords                      :text
+#  nih_nci_div                   :string(255)
+#  nih_nci_prog                  :string(255)
+#  send_trial                    :string(255)
+#  board_approval_num            :string(255)
+#  brief_title                   :text
+#  brief_summary                 :text
+#  detailed_description          :text
+#  objective                     :text
+#  target_enrollment             :integer
+#  final_enrollment              :integer
+#  accruals                      :integer
+#  accept_vol                    :string(255)
+#  min_age                       :integer
+#  max_age                       :integer
+#  assigned_to_id                :integer
+#  owner_id                      :integer
+#  board_approval_status_id      :integer
+#  intervention_model_id         :integer
+#  masking_id                    :integer
+#  allocation_id                 :integer
+#  study_classification_id       :integer
+#  gender_id                     :integer
+#  min_age_unit_id               :integer
+#  max_age_unit_id               :integer
+#  anatomic_site_id              :integer
+#  num_of_arms                   :integer
+#  verification_date             :date
+#  sampling_method               :string(255)
+#  study_pop_desc                :text
+#  board_name                    :string(255)
+#  board_affiliation_id          :integer
+#  masking_role_caregiver        :boolean
+#  masking_role_investigator     :boolean
+#  masking_role_outcome_assessor :boolean
+#  masking_role_subject          :boolean
 #
 # Indexes
 #
@@ -186,6 +190,9 @@ class Trial < ActiveRecord::Base
   accepts_nested_attributes_for :trial_documents, allow_destroy: true
   accepts_nested_attributes_for :submissions, allow_destroy: true
 
+  accepts_nested_attributes_for :central_contacts, allow_destroy: true
+  accepts_nested_attributes_for :alternate_titles, allow_destroy: true
+
   # Array of actions can be taken on this Trial
   def actions
     actions = []
@@ -226,24 +233,21 @@ class Trial < ActiveRecord::Base
     send_trial_flag = false
 
     #And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
-    if self.sponsor.name == "National Cancer Institute"
+    if !self.sponsor.nil? && self.sponsor.name == "National Cancer Institute"
       send_trial_flag = true
     else
-      send_trial_flag = false
-      return send_trial_flag
+      return false
     end
 
     # And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
     if self.lead_org != "NCI - Center for Cancer Research"
       send_trial_flag = true
     else
-      send_trial_flag = false
-      return send_trial_flag
+      return false
     end
     latest_processing_status = processing_status_wrappers.empty? ? nil:processing_status_wrappers.last.processing_status.name
     if latest_processing_status.nil?
-      send_trial_flag = false
-      return send_trial_flag
+      return false
     end
     # And the Trial processing status is �Verification Pending�, "Abstracted", "No Response�, or �Abstracted, Response�
     if ['Verification Pending','Abstracted', 'Abstraction Verified Response', 'Abstraction Verified No Response'].include? latest_processing_status
@@ -252,19 +256,33 @@ class Trial < ActiveRecord::Base
     # And the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�
     latest_trial_status = trial_status_wrappers.empty? ? nil:trial_status_wrappers.last.trial_status.name
     if latest_trial_status.nil?
-      send_trial_flag = false
-      return send_trial_flag
+      return false
     end
     if ['Complete','Administratively Complete'].include? latest_trial_status
-      send_trial_flag = false
-      return send_trial_flag
+      return false
     end
     # And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
     # ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
     if !self.research_category.nil? && self.research_category.name == 'Interventional'
       send_trial_flag = true
+    else
+      send_trial_flag = false
     end
     return send_trial_flag
+  end
+
+  def pa_editable_check
+    return false if self.current_user.nil?
+    pa_editable = false
+    Rails.logger.info "current_user = #{self.current_user.inspect}"
+    if ["ROLE_ADMIN", "ROLE_SUPER"].include?(self.current_user.role)
+      pa_editable = true
+    elsif ["ROLE_ABSTRACTOR", "ROLE_ABTRACTOR_SU"].include?(self.current_user.role)
+      if self.admin_checkout || self.scientific_checkout
+        pa_editable = true
+      end
+    end
+    pa_editable
   end
 
   private
@@ -316,7 +334,7 @@ class Trial < ActiveRecord::Base
 
   def create_ownership
     # New Trial Ownership
-    TrialOwnership.create(trial: self, user: self.current_user)
+    TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
   end
 
   def save_history

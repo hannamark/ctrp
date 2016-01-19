@@ -77,7 +77,7 @@ class UsersController < ApplicationController
       Rails.logger.debug "UserController, GSA, user_id = #{user_id.inspect}"
       user = User.find(user_id)
       @current_user = user
-      Rails.logger.debug "UserController, GSA, user = #{user.inspect}"
+      Rails.logger.debug "UserController, GSA, user = #{user.username.inspect}" unless user.nil?
     end
 
     Rails.logger.debug "IN GSA @current_user = #{@current_user}"

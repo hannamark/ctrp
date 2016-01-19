@@ -48,10 +48,10 @@
                 {name: 'official_title', enableSorting: true, minWidth: '150', width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'phase', enableSorting: true, minWidth: '40', width: '1%'},
+                {name: 'phase', enableSorting: true, minWidth: '75', width: '6%'},
                 {name: 'purpose', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
-                {name: 'pilot', enableSorting: true, minWidth: '40', width: '1%'},
+                {name: 'pilot', enableSorting: true, minWidth: '75', width: '6%'},
                 {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '5%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -64,40 +64,39 @@
                 {name: 'study_source', enableSorting: true, minWidth: '150', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_trial_status', enableSorting: true, minWidth: '150', width: '4%',
+                {name: 'current_trial_status', enableSorting: true, minWidth: '160', width: '7%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_milestone', enableSorting: true, minWidth: '170', width: '4%',
+                {name: 'current_milestone', enableSorting: true, minWidth: '200', width: '7%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'selected_milestone', enableSorting: true, minWidth: '170', width: '4%',
+                {name: 'scientific_milestone', enableSorting: true, minWidth: '250', width: '9%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'scientific_milestone', enableSorting: true, minWidth: '170', width: '4%',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'admin_milestone', enableSorting: true, minWidth: '170', width: '4%',
+                {name: 'admin_milestone', enableSorting: true, minWidth: '250', width: '9%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_processing_status', enableSorting: true, minWidth: '150', width: '3%',
+                {name: 'current_processing_status', enableSorting: true, minWidth: '225', width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'submission_type', enableSorting: true, minWidth: '150', width: '3%',
+                {name: 'submission_type', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'submission_method', enableSorting: true, minWidth: '150', width: '3%',
+                {name: 'submission_method', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'submission_source', enableSorting: true, minWidth: '150', width: '3%',
+                {name: 'submission_source', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '2%',
-                    cellTemplate: '<button restriction-field ng-repeat="action in row.entity.actions" type="button" class="btn btn-primary" ng-click="grid.appScope.takeTrialAction(action, row.entity.id)"><i class="glyphicon"></i> {{action}} </button>'
+                {name: 'nih_nci_div', enableSorting: true, minWidth: '100', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'nih_nci_prog', enableSorting: true, minWidth: '100', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }
-
             ]
         };
 
@@ -132,7 +131,8 @@
             setCurrentTrial: setCurrentTrial,
             getCurrentTrialFromCache: getCurrentTrialFromCache,
             checkoutTrial: checkoutTrial,
-            checkinTrial: checkinTrial
+            checkinTrial: checkinTrial,
+            getCentralContactTypes: getCentralContactTypes
         };
 
         return services;
@@ -265,7 +265,7 @@
         function getSubmissionTypes() {
             //(original/update/amendment
             // TODO: check if hardcoding is OK
-            var submission_types = [{"code":"Original"},{"code":"Update"},{"code":"Amendment"}];
+            var submission_types = [{"name":"Original"},{"name":"Update"},{"name":"Amendment"}];
             return submission_types;
         }
 
@@ -346,6 +346,14 @@
             url = url.replace('{:checkWhat}', 'checkin');
             url = url.replace('{:checkoutType}', checkinType);
             return PromiseTimeoutService.getData(url);
+        }
+
+        /**
+         * Get the list of central contact types
+         * @return {Promise -> resolve to an Array}
+         */
+        function getCentralContactTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIALS_CENTRAL_CONTACT_TYPES);
         }
 
     }

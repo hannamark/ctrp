@@ -14,8 +14,8 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
     And I have selected one or more of the Trial Oversight Authority Country and Organization Names from the provided list
     And the FDA Regulated Intervention Indicator will be defaulted to the "N/A" setting
     And I have the option to change the defaulted "NA" setting to either "yes" or "No"for FDA Regulated Intervention Indicator
-    And I have select either "yes" or "No" for Section 801 Indicator
-    And I have selected either "yes" or "No" for Data Monitoring Committee Appointed Indicator
+   And I have selected "Yes", "No", "NA" for Section 801 Indicator
+   And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
     Then the Register Trial Regulatory Information section will not indicate any errors during Trial Review
 
     Examples:
@@ -114,11 +114,16 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
   Scenario Outline:#5 I can select the Trial's information for FDAAA required Regulatory Information for a non FDA Regulated Interventional trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Regulatory Information screen
-    When I have selected"No"for FDA Regulated Intervention Indicator
-    Then I have noted that Section 801 Indicator is set to "No"
+    When I have selected "No" for FDA Regulated Intervention Indicator
+    And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
+    Then the required Regulatory Information for the trial will be associated with the trial
+    And the Section 801 Indicator will be set to "No"
     When I have selected "Yes" for FDA Regulated Intervention Indicator
+    And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
     Then I can select "Yes" or "No" for Section 801 Indicator
-
+    
+    
+   
     Examples:
       |trialType                |
       |National                 |

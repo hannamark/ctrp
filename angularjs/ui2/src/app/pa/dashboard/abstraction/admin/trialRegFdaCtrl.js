@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialRegFdaCtrl', trialRegFdaCtrl);
 
-    trialRegFdaCtrl.$inject = ['TrialService', '$scope', 'toastr', 'trialDetailObj', 'responsiblePartyObj', 'countryList']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialRegFdaCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'responsiblePartyObj', 'countryList']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialRegFdaCtrl(TrialService, $scope, toastr, trialDetailObj, responsiblePartyObj, countryList){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialRegFdaCtrl(TrialService, $scope, $state, toastr,  trialDetailObj, responsiblePartyObj, countryList){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.responsiblePartyArr = responsiblePartyObj;
@@ -19,6 +19,10 @@
         vm.showInvSearchBtn = true;
         vm.addedAuthorities = [];
         vm.indIdeNum = 0;
+
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
 
         vm.updateTrial = function() {
             // Prevent multiple submissions
@@ -76,7 +80,9 @@
 
         // Add Oversight Authority to a temp array
         vm.addAuthority = function () {
-            if (vm.authority_country && vm.authority_org) {
+            var errorMsg = TrialService.checkAuthority(vm.authority_country, vm.authority_org, vm.addedAuthorities);
+
+            if (!errorMsg) {
                 var newAuthority = {};
                 newAuthority.country = vm.authority_country;
                 newAuthority.organization = vm.authority_org;
@@ -86,8 +92,10 @@
                 vm.authority_country = null;
                 vm.authority_org = null;
                 vm.authorityOrgArr = [];
+                vm.addAuthorityError = '';
                 vm.showAddAuthorityError = false;
             } else {
+                vm.addAuthorityError = errorMsg;
                 vm.showAddAuthorityError = true;
             }
         };
