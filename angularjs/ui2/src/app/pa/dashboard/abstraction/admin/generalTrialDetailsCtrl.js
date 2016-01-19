@@ -71,7 +71,8 @@
               vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts; // new field
           }
           // reset the central_contact_id if changed
-          if (_curCentralContactId != vm.generalTrialDetailsObj.central_contacts[0].id) {
+          if (vm.generalTrialDetailsObj.central_contacts.length > 0 && 
+                _curCentralContactId != vm.generalTrialDetailsObj.central_contacts[0].id) {
               vm.generalTrialDetailsObj.central_contacts[0].id = _curCentralContactId;
           }
 
