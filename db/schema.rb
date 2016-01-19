@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160114193502) do
+ActiveRecord::Schema.define(version: 20160119195518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,15 @@ ActiveRecord::Schema.define(version: 20160114193502) do
   end
 
   create_table "biomarker_uses", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
+  create_table "biospecimen_retentions", force: :cascade do |t|
     t.string   "code",         limit: 255
     t.string   "name",         limit: 255
     t.datetime "created_at",                           null: false
@@ -821,6 +830,15 @@ ActiveRecord::Schema.define(version: 20160114193502) do
     t.integer  "lock_version",             default: 0
   end
 
+  create_table "study_models", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
   create_table "study_sources", force: :cascade do |t|
     t.string   "code",         limit: 255
     t.string   "name",         limit: 255
@@ -906,6 +924,15 @@ ActiveRecord::Schema.define(version: 20160114193502) do
 
   add_index "tempgrants", ["funding_mechanism"], name: "index_tempgrants_on_funding_mechanism", using: :btree
   add_index "tempgrants", ["institute_code"], name: "index_tempgrants_on_institute_code", using: :btree
+
+  create_table "time_perspectives", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
 
   create_table "trial_co_lead_orgs", force: :cascade do |t|
     t.integer  "trial_id"
@@ -1079,12 +1106,18 @@ ActiveRecord::Schema.define(version: 20160114193502) do
     t.boolean  "masking_role_investigator"
     t.boolean  "masking_role_outcome_assessor"
     t.boolean  "masking_role_subject"
+    t.string   "study_model_other",             limit: 255
+    t.string   "time_perspective_other",        limit: 255
+    t.integer  "study_model_id"
+    t.integer  "time_perspective_id"
+    t.integer  "biospecimen_retention_id"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
   add_index "trials", ["allocation_id"], name: "index_trials_on_allocation_id", using: :btree
   add_index "trials", ["anatomic_site_id"], name: "index_trials_on_anatomic_site_id", using: :btree
   add_index "trials", ["assigned_to_id"], name: "index_trials_on_assigned_to_id", using: :btree
+  add_index "trials", ["biospecimen_retention_id"], name: "index_trials_on_biospecimen_retention_id", using: :btree
   add_index "trials", ["board_affiliation_id"], name: "index_trials_on_board_affiliation_id", using: :btree
   add_index "trials", ["board_approval_status_id"], name: "index_trials_on_board_approval_status_id", using: :btree
   add_index "trials", ["gender_id"], name: "index_trials_on_gender_id", using: :btree
@@ -1104,7 +1137,9 @@ ActiveRecord::Schema.define(version: 20160114193502) do
   add_index "trials", ["secondary_purpose_id"], name: "index_trials_on_secondary_purpose_id", using: :btree
   add_index "trials", ["sponsor_id"], name: "index_trials_on_sponsor_id", using: :btree
   add_index "trials", ["study_classification_id"], name: "index_trials_on_study_classification_id", using: :btree
+  add_index "trials", ["study_model_id"], name: "index_trials_on_study_model_id", using: :btree
   add_index "trials", ["study_source_id"], name: "index_trials_on_study_source_id", using: :btree
+  add_index "trials", ["time_perspective_id"], name: "index_trials_on_time_perspective_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                       limit: 255, default: "",    null: false
@@ -1242,6 +1277,7 @@ ActiveRecord::Schema.define(version: 20160114193502) do
   add_foreign_key "trials", "age_units", column: "min_age_unit_id"
   add_foreign_key "trials", "allocations"
   add_foreign_key "trials", "anatomic_sites"
+  add_foreign_key "trials", "biospecimen_retentions"
   add_foreign_key "trials", "board_approval_statuses"
   add_foreign_key "trials", "genders"
   add_foreign_key "trials", "intervention_models"
@@ -1258,7 +1294,9 @@ ActiveRecord::Schema.define(version: 20160114193502) do
   add_foreign_key "trials", "responsible_parties"
   add_foreign_key "trials", "secondary_purposes"
   add_foreign_key "trials", "study_classifications"
+  add_foreign_key "trials", "study_models"
   add_foreign_key "trials", "study_sources"
+  add_foreign_key "trials", "time_perspectives"
   add_foreign_key "trials", "users", column: "assigned_to_id"
   add_foreign_key "trials", "users", column: "owner_id"
   create_sequence "accrual_disease_terms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1273,6 +1311,7 @@ ActiveRecord::Schema.define(version: 20160114193502) do
   create_sequence "associated_trials_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "biomarker_purposes_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "biomarker_uses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "biospecimen_retentions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "board_approval_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "central_contact_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "central_contacts_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1332,6 +1371,7 @@ ActiveRecord::Schema.define(version: 20160114193502) do
   create_sequence "source_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "specimen_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "study_classifications_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "study_models_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "study_sources_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "sub_groups_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "submission_methods_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1339,6 +1379,7 @@ ActiveRecord::Schema.define(version: 20160114193502) do
   create_sequence "submission_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "submissions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "tempgrants_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "time_perspectives_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_co_lead_orgs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_co_pis_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_documents_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
