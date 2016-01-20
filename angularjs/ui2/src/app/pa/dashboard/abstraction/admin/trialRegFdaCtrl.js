@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialRegFdaCtrl', trialRegFdaCtrl);
 
-    trialRegFdaCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'responsiblePartyObj', 'countryList']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialRegFdaCtrl.$inject = ['TrialService', PATrialService, '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'responsiblePartyObj', 'countryList']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialRegFdaCtrl(TrialService, $scope, $state, toastr,  trialDetailObj, responsiblePartyObj, countryList){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialRegFdaCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, responsiblePartyObj, countryList){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.responsiblePartyArr = responsiblePartyObj;
@@ -158,7 +158,26 @@
         /****************** implementations below ***************/
         function activate() {
             appendAuthorities();
+            getTrialDetailCopy();
+            watchTrialDetailObj();
         }
+
+        /**
+         * Get trial detail object from parent scope
+         */
+        function watchTrialDetailObj() {
+            $scope.$on(MESSAGES.TRIAL_DETAIL_SAVED, function() {
+                getTrialDetailCopy();
+            });
+        } //watchTrialDetailObj
+
+        function getTrialDetailCopy() {
+            $timeout(function() {
+                vm.curTrial = PATrialService.getCurrentTrialFromCache();
+                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+            }, 1);
+        } //getTrialDetailCopy
+
 
         // Return true if the option is "Principal Investigator"
         function findPiOption(option) {

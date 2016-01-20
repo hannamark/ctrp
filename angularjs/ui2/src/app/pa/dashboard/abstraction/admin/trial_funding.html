@@ -142,7 +142,7 @@
                             </div>
                         </div>
                     </fieldset>
-                    <div class="form-group no-bottom-margin">
+                    <div class="form-group no-bottom-margin" ng-if="trialDetailView.curTrial.pa_editable">
                         <div class="btn-toolbar">
                             <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field >Save</button>
                             <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" ng-disabled="trialDetailView.disableBtn">
