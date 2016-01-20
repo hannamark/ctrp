@@ -64,29 +64,23 @@
 
             <!-- second row in the accordion body -->
             <div class="row">
-                <form name="abstraction_form" class="form form-horizontal" role="form" novalidate>
+                <form name="abstraction_form" class="form form-horizontal" role="form" novalidate ctrp-submit="trialIdView.saveProcessingInfo()">
                     <div class="col-xs-12">
                         <!-- first form-group -->
-                        <div class="form-group">
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.abstraction_form.needsAttention(abstraction_form.priority_selection)}">
                             <label for="processing_priority" class="control-label left col-xs-12 col-sm-3">Processing Priority:</label>
                             <div class="col-xs-12 col-sm-4">
-                                <!-- <select name="priority_selection" id="processing_priority" class="form-control input-sm"
-                                    ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
-                                    ng-model="trialIdView.trialProcessingObj.priority">
-                                    <option value="1 - High">1 - High</option>
-                                    <option value="2 - Normal">2 - Normal</option>
-                                    <option value="3 - Low">3 - Low</option>
-                                </select> -->
                                 <select name="priority_selection" id="processing_priority"
                                     class="form-control input-sm"
                                     ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
                                     ng-model="trialIdView.trialProcessingObj.priority"
-                                    ng-options="priority.name for priority in trialIdView.priorities">
+                                    ng-options="priority.name for priority in trialIdView.priorities" required>
                                     <option value="">
                                         Select a priority
                                     </option>
                                 </select>
                             </div>
+                            <span class="help-block" ng-show="abstraction_form.priority_selection.$error.required">Priority is Required</span>
                             <div class="col-xs-12 col-sm-5"></div>
                         </div>
                         <!-- end of first form-group -->
@@ -107,7 +101,7 @@
 
                         <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                             <div class="btn-toolbar">
-                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialIdView.saveProcessingInfo()" ng-disabled="!abstraction_form.$valid">Save</button>
+                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-disabled="!abstraction_form.$valid">Save</button>
                                 <button type="button" class="btn btn-warning pull-right" id="cancel_processing" ng-click="trialIdView.resetView()">
                                     <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
