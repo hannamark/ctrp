@@ -357,6 +357,11 @@ class TrialsController < ApplicationController
     end
   end
 
+  def search_clinical_trials_gov
+    p '>>>>'
+    p params
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_trial

@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-xs-12 drop-shadow">
+        <div class="row">
+            <h4>Import ClinicalTrials.gov Trials</h4>
+        </div>
+        <div class="row">
+            <form class="form form-horizontal" role="form">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label for="nci_id" class="control-label col-xs-12 col-sm-3">ClinicalTrials.gov Identifier: </label>
+                            <div class="col-xs-12 col-sm-6">
+                                <input type="text" id="nci_id" class="form-control input-sm" ng-model="importTrialView.searchParams.nct_id" auto-focus/>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="importTrialView.searchTrials()">
+                                    <i class="glyphicon glyphicon-search"></i> Search Studies
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

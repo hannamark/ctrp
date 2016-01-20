@@ -154,6 +154,7 @@ end
           get  'get_grants_serialnumber'
           post 'get_grants_serialnumber'
           get  'get_central_contact_types'
+          get  'search_clinical_trials_gov'
         end
       end
 
