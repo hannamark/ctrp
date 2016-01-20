@@ -15,7 +15,7 @@
       var vm = this;
       console.log('centralContactTypes: ', centralContactTypes);
       var _defaultCountry = 'United States'; // for phone number validation
-      var _curCentralContactId = ''; // for comparing with the new central contact id
+      var _curCentralContactId = '1'; // None by default
       vm.generalTrialDetailsObj = {};
       vm.saveGeneralTrialDetails = saveGeneralTrialDetails;
       vm.resetGeneralTrialDetails = resetGeneralTrialDetails;
@@ -38,7 +38,7 @@
                             {id: 3, title: 'IRB'}, {id: 4, title: 'Other'}];
 
       vm.curAlternateTitleObj = {category: '', source: '', title: '', _destroy: false};
-      vm.centralContactType = ''; // from the first central contact type id
+      vm.centralContactType = ''; // default to none
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
       vm.centralContactTypes = centralContactTypes.types;
@@ -127,11 +127,11 @@
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
 
               if (vm.generalTrialDetailsObj.central_contacts.length > 0) {
-                  _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id || '';
+                  _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
                   var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
-                  vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: _centralContactTypeId})).name || 'None';
               }
-              console.log('vm.generalTrialDetailsObj.alternate_titles: ', vm.generalTrialDetailsObj.alternate_titles);
+
+              vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: parseInt(_curCentralContactId)})).name || 'None';
 
               // transform the other_ids array
               vm.generalTrialDetailsObj.other_ids = _.map(vm.generalTrialDetailsObj.other_ids, function(id, idx) {
