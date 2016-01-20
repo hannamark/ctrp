@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialRegIndCtrl', trialRegIndCtrl);
 
-    trialRegIndCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'nciObj', 'holderTypeObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialRegIndCtrl.$inject = ['TrialService', PATrialService, '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'nciObj', 'holderTypeObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialRegIndCtrl(TrialService, $scope, $state, toastr, trialDetailObj, nciObj, holderTypeObj){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialRegIndCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, nciObj, holderTypeObj){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.nciArr = nciObj;
@@ -132,7 +132,26 @@
         /****************** implementations below ***************/
         function activate() {
                 appendIndIdes();
+                getTrialDetailCopy();
+                watchTrialDetailObj();
         }
+
+        /**
+         * Get trial detail object from parent scope
+         */
+        function watchTrialDetailObj() {
+            $scope.$on(MESSAGES.TRIAL_DETAIL_SAVED, function() {
+                getTrialDetailCopy();
+            });
+        } //watchTrialDetailObj
+
+        function getTrialDetailCopy() {
+            $timeout(function() {
+                vm.curTrial = PATrialService.getCurrentTrialFromCache();
+                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+            }, 1);
+        } //getTrialDetailCopy
+
 
         function findNciOption(option) {
             if (option.code == 'NCI') {
