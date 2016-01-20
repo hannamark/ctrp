@@ -546,6 +546,12 @@ test_users.each do |u|
   end
 end
 
+## Central Contact Types
+contact_type1 = CentralContactType.find_or_create_by(code: 'NONE', name: 'None')
+contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
+contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
+contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
+
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 

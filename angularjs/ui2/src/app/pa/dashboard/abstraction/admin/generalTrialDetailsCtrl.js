@@ -13,6 +13,7 @@
     function generalTrialDetailsCtrl($scope, TrialService, PATrialService, toastr,
         MESSAGES, protocolIdOriginObj, _, $timeout, centralContactTypes) {
       var vm = this;
+      console.log('centralContactTypes: ', centralContactTypes);
       var _defaultCountry = 'United States'; // for phone number validation
       var _curCentralContactId = ''; // for comparing with the new central contact id
       vm.generalTrialDetailsObj = {};
@@ -71,7 +72,7 @@
               vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts; // new field
           }
           // reset the central_contact_id if changed
-          if (vm.generalTrialDetailsObj.central_contacts.length > 0 && 
+          if (vm.generalTrialDetailsObj.central_contacts.length > 0 &&
                 _curCentralContactId != vm.generalTrialDetailsObj.central_contacts[0].id) {
               vm.generalTrialDetailsObj.central_contacts[0].id = _curCentralContactId;
           }
