@@ -31,6 +31,7 @@
       vm.principalInvestigator = [];
       vm.sponsors = [];
       vm.leadProtocolId = '';
+      var otherIdsClone = [];
 
       // TODO: the categories and sources come from app settings
       vm.altTitleCategories = [{id: 1, title: 'Spelling/Format'}, {id: 2, title: 'Other'}];
@@ -140,7 +141,7 @@
                   id._destroy = id._destroy || false; // default to false if not set
                   return id;
               });
-
+              otherIdsClone = angular.copy(vm.generalTrialDetailsObj.other_ids); // back-up copy
           }, 1);
       } //getTrialDetailCopy
 
@@ -206,6 +207,12 @@
       }
 
       function updateOtherId(protocolIdVal, index) {
+
+          if (!protocolIdVal || protocolIdVal.trim() === '') {
+              vm.generalTrialDetailsObj.other_ids[index].protocol_id = otherIdsClone[index].protocol_id;
+              return;
+          }
+
           if (index < vm.generalTrialDetailsObj.other_ids.length) {
               vm.generalTrialDetailsObj.other_ids[index].protocol_id = protocolIdVal;
           }
@@ -329,7 +336,7 @@
       }
 
       function updateLeadProtocolId() {
-          if (!vm.leadProtocolId) {
+          if (!vm.leadProtocolId || vm.leadProtocolId.trim() === '') {
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
           } else {
               vm.generalTrialDetailsObj.lead_protocol_id = vm.leadProtocolId.trim();
