@@ -85,6 +85,7 @@
           outerTrial.new = false;
           outerTrial.id = vm.generalTrialDetailsObj.id;
           outerTrial.trial = vm.generalTrialDetailsObj;
+          console.log('outer trial: ', outerTrial.trial.central_contacts);
 
           TrialService.upsertTrial(outerTrial).then(function(res) {
               console.log('central_contact: ', vm.generalTrialDetailsObj.central_contact);
@@ -130,6 +131,7 @@
               if (vm.generalTrialDetailsObj.central_contacts.length > 0) {
                   _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
                   var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
+                  console.log('central contact type id: ' + _centralContactTypeId);
                   vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)})).name || 'None';
               }
 
@@ -275,6 +277,7 @@
                 vm.generalTrialDetailsObj.central_contacts = [].concat({});
             }
               var typeObject = _.findWhere(vm.centralContactTypes, {"name": newVal});
+              console.log('typeObject: ', typeObject);
               vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id = !!typeObject ? typeObject.id : '';
               // console.log('contact type id: ', vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id);
           });
