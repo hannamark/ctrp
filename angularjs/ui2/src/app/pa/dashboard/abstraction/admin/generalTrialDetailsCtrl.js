@@ -15,7 +15,7 @@
       var vm = this;
       console.log('centralContactTypes: ', centralContactTypes);
       var _defaultCountry = 'United States'; // for phone number validation
-      var _curCentralContactId = '1'; // None by default
+      var _curCentralContactId = '';
       vm.generalTrialDetailsObj = {};
       vm.saveGeneralTrialDetails = saveGeneralTrialDetails;
       vm.resetGeneralTrialDetails = resetGeneralTrialDetails;
@@ -39,7 +39,7 @@
                             {id: 3, title: 'IRB'}, {id: 4, title: 'Other'}];
 
       vm.curAlternateTitleObj = {category: '', source: '', title: '', _destroy: false};
-      vm.centralContactType = ''; // default to none
+      vm.centralContactType = ''; // default to None
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
       vm.centralContactTypes = centralContactTypes.types;
@@ -80,7 +80,7 @@
 
           vm.generalTrialDetailsObj.other_ids_attributes = vm.generalTrialDetailsObj.other_ids; // for updating the attributes in Rails
           vm.generalTrialDetailsObj.alternate_titles_attributes = vm.generalTrialDetailsObj.alternate_titles;
-          vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts;
+         // vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts;
 
           outerTrial.new = false;
           outerTrial.id = vm.generalTrialDetailsObj.id;
@@ -130,9 +130,8 @@
               if (vm.generalTrialDetailsObj.central_contacts.length > 0) {
                   _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
                   var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
+                  vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)})).name || 'None';
               }
-
-              vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: parseInt(_curCentralContactId)})).name || 'None';
 
               // transform the other_ids array
               vm.generalTrialDetailsObj.other_ids = _.map(vm.generalTrialDetailsObj.other_ids, function(id, idx) {
