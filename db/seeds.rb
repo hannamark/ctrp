@@ -13,6 +13,7 @@ require 'roo'
 #Organization.delete_all
 #Person.delete_all
 
+# Shenpei's test check in
 
 SourceContext.find_or_create_by(code: 'CTEP', name: 'CTEP')
 SourceContext.find_or_create_by(code: 'CTRP', name: 'CTRP')
