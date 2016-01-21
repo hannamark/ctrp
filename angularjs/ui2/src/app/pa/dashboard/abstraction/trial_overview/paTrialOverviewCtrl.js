@@ -86,9 +86,11 @@
             });
             // extract the submitter for the last submission
             // vm.trialDetailObj.submitter = vm.trialDetailObj.submissions[0].submitter || '';
+            /*
             if (!!vm.trialDetailObj.submitter) {
                 vm.trialDetailObj.submitterName = PersonService.extractFullName(vm.trialDetailObj.submitter);
             }
+            */
 
             if (!vm.trialDetailObj.central_contacts) {
                 vm.trialDetailObj.central_contacts = [].concat({});
