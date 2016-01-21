@@ -2,7 +2,7 @@
 Feature: PAA F02 Add and Edit NCI Specific Information
 
 As any CTRP PA User, I can enter NCI Specific Information
-@runthis
+
 Scenario: #1 I can view and edit the value for Study Source
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
@@ -13,7 +13,7 @@ Then the selected value for Study Source will be associated with the trial
 Scenario: #2 I can associate one or more organizations as the Specific Funding Source for a clinical trial
 Given I have selected a trial to abstract
 And I am on the NCI Specific Information page screen
-And I have selected organization look-up
+And I have selected funding source organization look-up
 When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed
 Then the selected organization will be associated to the trial as Specific Funding Source
 
