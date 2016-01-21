@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119195518) do
+ActiveRecord::Schema.define(version: 20160121193947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 20160119195518) do
     t.string   "uuid",                    limit: 255
     t.integer  "lock_version",                        default: 0
     t.string   "extension",               limit: 255
+    t.string   "fullname"
   end
 
   add_index "central_contacts", ["central_contact_type_id"], name: "index_central_contacts_on_central_contact_type_id", using: :btree

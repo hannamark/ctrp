@@ -58,7 +58,7 @@ json.last_amendment_date @trial.milestone_wrappers.present? ?
 json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
 
 ## get trial's last submitter
-submitter = @trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : @trial.submissions.last.user)
+submitter = @trial.submissions.empty? ? nil : (@trial.submissions.last.user_id.nil? ? nil : @trial.submissions.last.user)
 
 ## submitter's username
 json.submitter submitter.nil? ? '' : submitter.username
