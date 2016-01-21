@@ -28,8 +28,8 @@
       vm.updateLeadProtocolId = updateLeadProtocolId;
       vm.deleteAltTitle = deleteAltTitle;
 
-      vm.leadOrg = [];
-      vm.principalInvestigator = [];
+      vm.leadOrg = {name: '', array: []};
+      vm.principalInvestigator = {name: '', array: []};
       vm.sponsors = [];
       vm.leadProtocolId = '';
       var otherIdsClone = [];
@@ -113,8 +113,8 @@
       }
 
       function resetGeneralTrialDetails() {
-          vm.leadOrg = [];
-          vm.principalInvestigator = [];
+          vm.leadOrg = {name: '', array: []};
+          vm.principalInvestigator = {name: '', array: []};
           vm.sponsors = [];
          // vm.centralContact = [];
           vm.centralContactType = '';
@@ -131,9 +131,11 @@
       function getTrialDetailCopy() {
           $timeout(function() {
               vm.generalTrialDetailsObj = PATrialService.getCurrentTrialFromCache();
-              vm.leadOrg[0] = vm.generalTrialDetailsObj.lead_org;
+              vm.leadOrg.name = vm.generalTrialDetailsObj.lead_org.name;
+              vm.leadOrg.array = [].concat(angular.copy(vm.generalTrialDetailsObj.lead_org));
+              console.log('leadOrg: ', vm.leadOrg);
               vm.sponsors[0] = vm.generalTrialDetailsObj.sponsor;
-              vm.principalInvestigator = [].concat(vm.generalTrialDetailsObj.pi);
+              vm.principalInvestigator.array = [].concat(angular.copy(vm.generalTrialDetailsObj.pi));
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
 
               if (vm.generalTrialDetailsObj.central_contacts.length > 0) {
@@ -229,9 +231,10 @@
       }
 
       function watchLeadOrg() {
-          $scope.$watchCollection(function() {return vm.leadOrg;}, function(newVal, oldVal) {
+          $scope.$watchCollection(function() {return vm.leadOrg.array;}, function(newVal, oldVal) {
              if (angular.isArray(newVal) && newVal.length > 0) {
                  // console.log('new lead org: ', newVal[0]);
+                 vm.leadOrg.name = newVal[0].name;
                  vm.generalTrialDetailsObj.lead_org = newVal[0];
                  vm.generalTrialDetailsObj.lead_org_id = newVal[0].id; // update lead organization
              }
@@ -239,11 +242,11 @@
       }
 
       function watchPISelection() {
-        $scope.$watchCollection(function() {return vm.principalInvestigator;}, function(newVal, oldVal) {
-          if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullname) {
-              vm.principalInvestigator[0].fullname = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
-              vm.generalTrialDetailsObj.pi = vm.principalInvestigator[0];
-              vm.generalTrialDetailsObj.pi_id = vm.principalInvestigator[0].id; // update PI
+        $scope.$watchCollection(function() {return vm.principalInvestigator.array;}, function(newVal, oldVal) {
+          if (angular.isArray(newVal) && newVal.length > 0) {
+              vm.principalInvestigator.name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
+              vm.generalTrialDetailsObj.pi = vm.principalInvestigator.array[0];
+              vm.generalTrialDetailsObj.pi_id = vm.principalInvestigator.array[0].id; // update PI
           }
         });
       }
@@ -275,8 +278,6 @@
 
       function watchCentralContactType() {
         $scope.$watch(function() { return vm.centralContactType;}, function(newVal, oldVal) {
-          console.log('oldVal: ', oldVal);
-          console.log('newVal: ', newVal);
           if (!!oldVal) {
               // for changing central contact types,
               // if previous type is not null, reset all fields in central contact
@@ -303,10 +304,13 @@
       * Use the Trial's PI as the central contact      *
       */
       function _usePIAsCentralContact() {
-        vm.generalTrialDetailsObj.central_contacts = [].concat(angular.copy(vm.principalInvestigator));
+          console.log('array: ', vm.principalInvestigator.array);
+        vm.generalTrialDetailsObj.central_contacts[0] = {};
         vm.generalTrialDetailsObj.central_contacts[0]._destroy = false;
-        vm.generalTrialDetailsObj.central_contacts[0].phone = vm.generalTrialDetailsObj.central_contacts[0].phone.replace(regex, '');
-        vm.generalTrialDetailsObj.central_contacts[0].person_id = vm.generalTrialDetailsObj.central_contacts[0].id; //
+        vm.generalTrialDetailsObj.central_contacts[0].fullname = vm.principalInvestigator.name;
+        vm.generalTrialDetailsObj.central_contacts[0].email = vm.generalTrialDetailsObj.pi.email;
+        vm.generalTrialDetailsObj.central_contacts[0].phone = vm.generalTrialDetailsObj.pi.phone.replace(regex, '');
+        vm.generalTrialDetailsObj.central_contacts[0].person_id = vm.generalTrialDetailsObj.pi.id; //
         delete vm.generalTrialDetailsObj.central_contacts[0].id;
         vm.isPhoneValid = true;
       }
