@@ -108,7 +108,7 @@
 
             $scope.$watch(function() {return vm.trialDetailObj.admin_checkout;},
                 function(newVal) {
-                    vm.adminCheckoutAllowed = (newVal === null); // if not null, do not allow checkout again
+                    vm.adminCheckoutAllowed = (newVal === null); // boolean, if not null, do not allow checkout again
 
                     if (!!newVal) {
                         // ROLE_SUPER can override the checkout button
