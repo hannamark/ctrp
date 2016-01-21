@@ -323,6 +323,9 @@
          * @param {JSON} trialDetailObj
          */
         function setCurrentTrial(trialDetailObj) {
+            // trim off unused fields
+            delete trialDetailObj.server_response;
+            delete trialDetailObj.history;
             LocalCacheService.cacheItem('current_trial_object', trialDetailObj);
         }
 

@@ -70,10 +70,6 @@
          */
         function updateTrialDetailObj(data) {
             console.log('in updating trial detail obj, admin_checkout: ' + data.admin_checkout + ', scientific_checkout: ' + data.scientific_checkout);
-            // keep trial object slim
-            delete vm.trialDetailObj.server_response;
-            delete vm.trialDetailObj.history;
-
             vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
@@ -84,13 +80,6 @@
             vm.trialDetailObj.submissions = _.sortBy(vm.trialDetailObj.submissions, function(s) {
                 return -s.submission_num; // DESC order
             });
-            // extract the submitter for the last submission
-            // vm.trialDetailObj.submitter = vm.trialDetailObj.submissions[0].submitter || '';
-            /*
-            if (!!vm.trialDetailObj.submitter) {
-                vm.trialDetailObj.submitterName = PersonService.extractFullName(vm.trialDetailObj.submitter);
-            }
-            */
 
             if (!vm.trialDetailObj.central_contacts) {
                 vm.trialDetailObj.central_contacts = [].concat({});
@@ -101,8 +90,7 @@
             } else {
                 vm.trialDetailObj.pa_editable = false;
             }
-            // vm.trialDetailObj.lock_version = data.lock_version || '';
-            console.log('lock version: ', data.lock_version);
+
             vm.trialDetailObj.lock_version = data.lock_version;
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
