@@ -93,7 +93,7 @@
           console.log('outer trial: ', outerTrial.trial.central_contacts);
 
           TrialService.upsertTrial(outerTrial).then(function(res) {
-              console.log('central_contact: ', vm.generalTrialDetailsObj.central_contact);
+              console.log('central_contact: ', vm.generalTrialDetailsObj.central_contacts);
               console.log('updated general trial details: ', res);
               vm.generalTrialDetailsObj = res;
               vm.generalTrialDetailsObj.lock_version = res.lock_version;
@@ -139,7 +139,7 @@
                   var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
                   console.log('central contact type id: ' + _centralContactTypeId);
                   vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)})).name || 'None';
-                  vm.generalTrialDetailsObj.central_contacts[0].fullName = PersonService.extractFullName(vm.generalTrialDetailsObj.central_contacts[0]);
+                  // vm.generalTrialDetailsObj.central_contacts[0].fullname = PersonService.extractFullName(vm.generalTrialDetailsObj.central_contacts[0]);
               }
 
               // transform the other_ids array
@@ -238,11 +238,8 @@
 
       function watchPISelection() {
         $scope.$watchCollection(function() {return vm.principalInvestigator;}, function(newVal, oldVal) {
-          if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullName) {
-              var firstName = newVal[0].fname || '';
-              var middleName = newVal[0].mname || '';
-              var lastName = newVal[0].lname || '';
-              vm.principalInvestigator[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
+          if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullname) {
+              vm.principalInvestigator[0].fullname = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
               vm.generalTrialDetailsObj.pi = vm.principalInvestigator[0];
               vm.generalTrialDetailsObj.pi_id = vm.principalInvestigator[0].id; // update PI
           }
@@ -262,12 +259,12 @@
         $scope.$watchCollection(function() {return vm.generalTrialDetailsObj.central_contacts;}, function(newVal, oldVal) {
             console.log('watching central_contacts, newVal: ', newVal);
             console.log('watching central_contacts, oldVal: ', oldVal);
-          if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullName) {
+          if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullname) {
               vm.generalTrialDetailsObj.central_contacts[0] = newVal[0];
               var firstName = newVal[0].fname || '';
               var middleName = newVal[0].mname || '';
               var lastName = newVal[0].lname || '';
-              vm.generalTrialDetailsObj.central_contacts[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
+              vm.generalTrialDetailsObj.central_contacts[0].fullname = firstName + ' ' + middleName + ' ' + lastName;
               vm.generalTrialDetailsObj.central_contacts[0].person_id = newVal[0].id || '';
               vm.generalTrialDetailsObj.central_contacts[0].phone = newVal[0].phone.replace(regex, '');
               delete vm.generalTrialDetailsObj.central_contacts[0].id;
