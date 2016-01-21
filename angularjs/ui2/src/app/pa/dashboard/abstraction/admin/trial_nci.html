@@ -11,7 +11,7 @@
                     <s><strong>Clinical Research Category:</strong>
                     <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span></s>
                 </p> -->
-                <fieldset class="sub-bordered">
+                <fieldset class="sub-bordered" restriction-field>
                     <legend class="sub-bordered">Study Source:</legend>
                     <div class="form-group">
                         <label for="study_source" class="control-label col-xs-12 col-sm-3">Study Source: </label>
@@ -25,7 +25,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset class="sub-bordered">
+                <fieldset class="sub-bordered" restriction-field>
                     <legend class="sub-bordered">Funding Source:</legend>
                     <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
                         <label class="control-label col-xs-12 col-sm-3">Data Table 4 Funding Source:</label>
@@ -57,7 +57,7 @@
             <!-- second row in the accordion body -->
             <div class="row">
                 <!--div class="col-xs-12 pull-left"-->
-                <fieldset class="sub-bordered">
+                <fieldset class="sub-bordered" restriction-field>
                     <legend class="sub-bordered">Program Code:</legend>
                     <div class="form-group">
                         <label for="program_code" class="control-label col-xs-12 col-sm-3">Program Code</label>
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                  </fieldset>
-                <fieldset class="sub-bordered">
+                <fieldset class="sub-bordered" restriction-field>
                     <legend class="sub-bordered">NIH/NCI Identifiers:</legend>
                     <div class="form-group">
                         <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Division/Department Identifier: </label>
@@ -95,7 +95,7 @@
                 </fieldset>
 
                         <!-- first form-group -->
-                <fieldset class="sub-bordered">
+                <fieldset class="sub-bordered" restriction-field>
                     <legend class="sub-bordered">Send Trial Information to ClinicalTrials.gov:</legend>
                         <div class="form-group">
                                 <label for="send_trial_flag" class="control-label col-xs-12 col-sm-6">Send Trial Information to ClinicalTrials.gov?</label>
