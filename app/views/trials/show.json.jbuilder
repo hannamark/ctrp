@@ -57,8 +57,11 @@ json.last_amendment_date @trial.milestone_wrappers.present? ?
 
 json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
 
-json.submitter @trial.submissions.empty? ? '' : @trial.submissions.last.user.username
-#json.submitter @trial.submissions.empty? ? '' : (@trial.submissions.last.user.username.nil? ? '' : Person.find(@trial.submissions.last.user_id))
+#json.submitter @trial.submissions.empty? ? '' : @trial.submissions.last.user.username
+json.submitter @trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : @trial.submissions.last.user.username)
+
+# json.submitter @trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : Person.find(@trial.submissions.last.user_id))
+
 
 json.last_submission_source @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_source_id.nil? ? '' : SubmissionSource.find(@trial.submissions.last.submission_source_id))
 
