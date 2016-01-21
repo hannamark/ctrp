@@ -74,8 +74,10 @@
           if (JSON.stringify(vm.generalTrialDetailsObj.central_contacts[0]) !== '{}') {
               var typeObject = _.findWhere(vm.centralContactTypes, {name: vm.centralContactType});
               console.log('typeObject: ', typeObject);
-              vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id = !!typeObject ? typeObject.id : '';
-              vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts; // new field
+              if (vm.generalTrialDetailsObj.central_contacts[0]) {
+                  vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id = !!typeObject ? typeObject.id : '';
+                  vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts; // new field
+              }
           }
           // reset the central_contact_id if changed
           if (vm.generalTrialDetailsObj.central_contacts.length > 0 &&
