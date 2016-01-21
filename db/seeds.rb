@@ -199,16 +199,6 @@ Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
 
-StudyClassification.find_or_create_by(code: 'BAV', name: 'Bio-availability')
-StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bio-equivalence')
-StudyClassification.find_or_create_by(code: 'EFF', name: 'Efficacy')
-StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
-StudyClassification.find_or_create_by(code: 'PD', name: 'Pharmacodynamics')
-StudyClassification.find_or_create_by(code: 'PK', name: 'Pharmacokinetics')
-StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dynamics')
-StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
-StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
-
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -537,19 +527,7 @@ contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
 contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
 contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
 
-
-## Trials
-## Delete existing Trial data
-if Trial.all.size == 0
-  DataImport.delete_trial_data
-  ## Reading and importing Trial related spreadsheets
-  puts "Parsing Trial Spreadsheet"
-  DataImport.import_trials
-  puts "Parsing Milestone Spreadsheet"
-  DataImport.import_milestones
-  puts "Parsing Participating Sites Spreadsheet"
-  DataImport.import_participating_sites
-end
+total_orgs = Organization.all.size
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
@@ -576,12 +554,6 @@ test_users.each do |u|
     #puts "Updated role of user = #{user.username}, role = #{user.role}"
   end
 end
-
-## Central Contact Types
-contact_type1 = CentralContactType.find_or_create_by(code: 'NONE', name: 'None')
-contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
-contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
-contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
 
 ##Add NCICTRPDEV team
 LdapUser.delete_all
@@ -624,9 +596,23 @@ begin
     ldap_user.first_name = u["first_name"]
     ldap_user.last_name = u["last_name"]
     ldap_user.approved = true
+    ldap_user.organization = Organization.all[rand(0..total_orgs-1)]
     ldap_user.save(validate: false)
     #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"
+end
+
+## Trials
+## Delete existing Trial data
+if Trial.all.size == 0
+  DataImport.delete_trial_data
+  ## Reading and importing Trial related spreadsheets
+  puts "Parsing Trial Spreadsheet"
+  DataImport.import_trials
+  puts "Parsing Milestone Spreadsheet"
+  DataImport.import_milestones
+  puts "Parsing Participating Sites Spreadsheet"
+  DataImport.import_participating_sites
 end
