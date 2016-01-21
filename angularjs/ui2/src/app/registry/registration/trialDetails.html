@@ -390,7 +390,7 @@
 
                         <div class="form-group" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.grant_dummy)}">
                             <div class="col-sm-12">
-                                <table class="table table-striped table-condensed" ng-hide="trialDetailView.curTrial.grant_question === 'No'">
+                                <table class="table table-striped table-condensed" ng-hide="trialDetailView.curTrial.grant_question !== 'Yes'">
                                     <thead>
                                         <th>Funding Mechanism</th>
                                         <th>Institute Code</th>
@@ -735,7 +735,7 @@
 
                         <div class="form-group" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_dummy)}">
                             <div class="col-sm-12">
-                                <table class="table table-striped table-condensed" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1 || trialDetailView.curTrial.ind_ide_question === 'No'">
+                                <table class="table table-striped table-condensed" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1 || trialDetailView.curTrial.ind_ide_question !== 'Yes'">
                                     <thead>
                                         <th>IND/IDE Types</th>
                                         <th>IND/IDE Number</th>
