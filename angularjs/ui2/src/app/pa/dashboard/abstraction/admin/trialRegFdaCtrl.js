@@ -55,12 +55,12 @@
 
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
                 toastr.clear();
-                toastr.success('Reg FDA has been updated', 'Successful!', {
+                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });
