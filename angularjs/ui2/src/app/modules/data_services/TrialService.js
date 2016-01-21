@@ -924,7 +924,7 @@
          */
         function searchClinicalTrialsGov(nctId) {
             if (!!nctId) {
-                return PromiseTimeoutService.getData(URL_CONFIGS.SEARCH_CLINICAL_TRIALS_GOV + '?nci_id=' + nctId);
+                return PromiseTimeoutService.getData(URL_CONFIGS.SEARCH_CLINICAL_TRIALS_GOV + '?nct_id=' + nctId);
             }
         }
 

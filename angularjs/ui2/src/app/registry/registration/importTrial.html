@@ -5,19 +5,36 @@
         </div>
         <div class="row">
             <form class="form form-horizontal" role="form">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <label for="nci_id" class="control-label col-xs-12 col-sm-3">ClinicalTrials.gov Identifier: </label>
-                            <div class="col-xs-12 col-sm-6">
-                                <input type="text" id="nci_id" class="form-control input-sm" ng-model="importTrialView.searchParams.nct_id" auto-focus/>
-                            </div>
-                            <div class="col-xs-12 col-sm-3">
-                                <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="importTrialView.searchTrials()">
-                                    <i class="glyphicon glyphicon-search"></i> Search Studies
-                                </button>
-                            </div>
-                        </div>
+
+                <div class="form-group">
+                    <label for="nci_id" class="control-label col-xs-12 col-sm-3">ClinicalTrials.gov Identifier: </label>
+                    <div class="col-xs-12 col-sm-3">
+                        <input type="text" id="nci_id" class="form-control input-sm" ng-model="importTrialView.searchParams.nct_id" auto-focus/>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="importTrialView.searchTrials()">
+                            <i class="glyphicon glyphicon-search"></i> Search Studies
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="importTrialView.nct_id">
+                    <label class="control-label col-xs-12 col-sm-3">Studies on ClinicalTrials.gov:</label>
+                    <div class=" col-xs-12 col-sm-9">
+                        <table class="table table-bordered table-striped table-condensed">
+                            <thead>
+                                <th>ClinicalTrials.gov Identifier</th>
+                                <th>Status</th>
+                                <th>Study</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="col-md-3">{{importTrialView.nct_id}}</td>
+                                    <td class="col-md-2">{{importTrialView.status}}</td>
+                                    <td class="col-md-8">{{importTrialView.official_title}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </form>

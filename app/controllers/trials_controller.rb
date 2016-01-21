@@ -358,8 +358,13 @@ class TrialsController < ApplicationController
   end
 
   def search_clinical_trials_gov
-    p '>>>>'
-    p params
+    @search_result = {}
+    url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+    url = url.sub('NCT********', params[:nct_id])
+    xml = Nokogiri::XML(open(url))
+    @search_result[:official_title] = xml.xpath('//official_title').text
+    @search_result[:status] = xml.xpath('//overall_status').text
+    @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
   end
 
   private

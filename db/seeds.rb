@@ -366,6 +366,8 @@ trial_status_transition = '{
 
 AppSetting.find_or_create_by(code: 'TRIAL_STATUS_TRANSITION', name: 'Trial Status Transition Matrix', value: 'see big value', big_value: trial_status_transition)
 
+AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
+
 ########## SEEDING APP SETTINGS ENDS ##########
 if Organization.all.size == 0
 
