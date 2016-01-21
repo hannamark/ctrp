@@ -284,7 +284,11 @@
       }
 
       function isValidPhoneNumber() {
-          vm.isPhoneValid = isValidNumberPO(vm.generalTrialDetailsObj.central_contacts[0].phone, _defaultCountry);
+          if (vm.generalTrialDetailsObj.central_contacts[0].phone.length == 0) {
+              vm.isPhoneValid = true; // blank phone number is valid
+          } else {
+              vm.isPhoneValid = isValidNumberPO(vm.generalTrialDetailsObj.central_contacts[0].phone, _defaultCountry);
+          }
       }
 
       /**
