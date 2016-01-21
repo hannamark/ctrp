@@ -63,6 +63,7 @@
                 console.log('priority and commented updated: ', res);
                 updatedTrial.lock_version = res.lock_version;
                 PATrialService.setCurrentTrial(updatedTrial);
+                $scope.$emit('updatedInChildScope', {});
                 toastr.clear();
                 toastr.success('Trial processing information has been recorded', 'Successful!', {
                     extendedTimeOut: 1000,
