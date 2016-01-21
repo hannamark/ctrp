@@ -8,7 +8,7 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialFundingCtrl', trialFundingCtrl);
 
-    trialFundingCtrl.$inject = ['TrialService', PATrialService, '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'instituteCodeObj', 'fundingMechanismObj', 'nciObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialFundingCtrl.$inject = ['TrialService', 'PATrialService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'instituteCodeObj', 'fundingMechanismObj', 'nciObj'];//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
     function trialFundingCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, instituteCodeObj, fundingMechanismObj, nciObj){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
@@ -50,7 +50,8 @@
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                vm.curTrial.lock_version = response.lock_version || '';
+                //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
                 toastr.clear();

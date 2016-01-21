@@ -8,7 +8,7 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialNciCtrl', trialNciCtrl);
 
-    trialNciCtrl.$inject = ['TrialService', PATrialService, '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialNciCtrl.$inject = ['TrialService', 'PATrialService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
     function trialNciCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES,trialDetailObj, studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
