@@ -92,15 +92,15 @@ var abstractionCommonMethods = function(){
                 return rsltCnt;
             }
             rsltCountValRT = RetrsltCnt();
+            var spltValRsltCnt = rsltCountValRT.split(':');
+            var rsltCntTxt = spltValRsltCnt[0];
+            console.log('rsltCntTxt['+rsltCntTxt+'');
+            var rsltCntInt = spltValRsltCnt[1];
+            console.log('rsltCntInt['+rsltCntInt+'');
+            var buildRsltCntStrng = ''+txtToVerify+':'+rsltCntInt+'';
+            console.log('buildRsltCntStrng['+buildRsltCntStrng+'');
+            expect(paSearch.trialSearchPageResultCount.getText()).to.eventually.equal(buildRsltCntStrng);
         });
-        var spltValRsltCnt = rsltCountValRT.split(':');
-        var rsltCntTxt = spltValRsltCnt[0];
-        console.log('rsltCntTxt['+rsltCntTxt+'');
-        var rsltCntInt = spltValRsltCnt[1];
-        console.log('rsltCntInt['+rsltCntInt+'');
-        var buildRsltCntStrng = ''+txtToVerify+': '+rsltCntInt+'';
-        console.log('buildRsltCntStrng['+buildRsltCntStrng+'');
-        expect(paSearch.trialSearchPageResultCount.getText()).to.eventually.equal(txtToVerify);
     };
 
     /*****************************************
@@ -175,6 +175,7 @@ var abstractionCommonMethods = function(){
         console.log(configuration.trialSubmitterPWD);
         //App URL
         browser.get(configuration.uiUrl);
+        helper.wait_for(300);
         //Verify Homepage
         var BrwsrVal = browser.getCurrentUrl();
         iteraCntLg = iteraCntLg + 1;

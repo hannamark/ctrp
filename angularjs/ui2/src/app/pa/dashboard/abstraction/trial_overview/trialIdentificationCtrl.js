@@ -40,10 +40,11 @@
 
         function _getProcessingInfo() {
             $timeout(function() {
+                var _defaultPriority = _.findWhere(vm.priorities, {name: $scope.$parent.paTrialOverview.trialDetailObj.process_priority}) || vm.trialProcessingObj.priority;
                 vm.trialProcessingObj = {
-                    trialId: $scope.$parent.paTrialOverview.trialDetailObj.id,
-                    priority: _.findWhere(vm.priorities, {name: $scope.$parent.paTrialOverview.trialDetailObj.process_priority}) || 'Normal',
-                    comment: $scope.$parent.paTrialOverview.trialDetailObj.process_comment
+                    trialId: $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId,
+                    priority: _defaultPriority || 'Normal',
+                    comment: $scope.$parent.paTrialOverview.trialDetailObj.process_comment || vm.trialProcessingObj.comment
                 };
             }, 0);
         }
@@ -60,6 +61,8 @@
 
             TrialService.upsertTrial(updatedTrial).then(function(res) {
                 console.log('priority and commented updated: ', res);
+                updatedTrial.lock_version = res.lock_version;
+                PATrialService.setCurrentTrial(updatedTrial);
                 toastr.clear();
                 toastr.success('Trial processing information has been recorded', 'Successful!', {
                     extendedTimeOut: 1000,

@@ -10,7 +10,7 @@
            <div class="row">
                 <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial">
 
-                    <fieldset class="sub-bordered">
+                    <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">Responsible Party:</legend>
 
                         <div class="form-group">
@@ -65,7 +65,7 @@
                             </div>
                         </div>
                     </fieldset>
-                    <fieldset class="sub-bordered">
+                    <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">Trial Oversight Authority</legend>
 
                         <div class="form-group">
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     </fieldset>
-                    <fieldset class="sub-bordered">
+                    <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">Indicators</legend>
 
                             <div class="form-group">
@@ -190,8 +190,8 @@
                     </fieldset>
                     <div class="form-group no-bottom-margin" ng-if="trialDetailView.curTrial.pa_editable">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialDetailView.updateTrial()">Save</button>
-                            <button type="button"class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" ng-disabled="trialDetailView.disableBtn">
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="trialDetailView.updateTrial()">Save</button>
+                            <button type="button"class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field ng-disabled="trialDetailView.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                         </div>

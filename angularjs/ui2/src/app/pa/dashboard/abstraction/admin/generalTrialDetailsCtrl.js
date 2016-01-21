@@ -8,13 +8,14 @@
     .controller('generalTrialDetailsCtrl', generalTrialDetailsCtrl);
 
     generalTrialDetailsCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-            'MESSAGES', 'protocolIdOriginObj', '_', '$timeout', 'centralContactTypes'];
+            'MESSAGES', 'protocolIdOriginObj', '_', '$timeout', 'centralContactTypes', 'PersonService'];
 
     function generalTrialDetailsCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, protocolIdOriginObj, _, $timeout, centralContactTypes) {
+        MESSAGES, protocolIdOriginObj, _, $timeout, centralContactTypes, PersonService) {
       var vm = this;
+      console.log('centralContactTypes: ', centralContactTypes);
       var _defaultCountry = 'United States'; // for phone number validation
-      var _curCentralContactId = ''; // for comparing with the new central contact id
+      var _curCentralContactId = '';
       vm.generalTrialDetailsObj = {};
       vm.saveGeneralTrialDetails = saveGeneralTrialDetails;
       vm.resetGeneralTrialDetails = resetGeneralTrialDetails;
@@ -26,10 +27,13 @@
       vm.updateAlternateTitle = updateAlternateTitle;
       vm.updateLeadProtocolId = updateLeadProtocolId;
       vm.deleteAltTitle = deleteAltTitle;
+
       vm.leadOrg = [];
       vm.principalInvestigator = [];
       vm.sponsors = [];
       vm.leadProtocolId = '';
+      var otherIdsClone = [];
+      var regex = new RegExp('-', 'g');
 
       // TODO: the categories and sources come from app settings
       vm.altTitleCategories = [{id: 1, title: 'Spelling/Format'}, {id: 2, title: 'Other'}];
@@ -37,7 +41,7 @@
                             {id: 3, title: 'IRB'}, {id: 4, title: 'Other'}];
 
       vm.curAlternateTitleObj = {category: '', source: '', title: '', _destroy: false};
-      vm.centralContactType = ''; // from the first central contact type id
+      vm.centralContactType = ''; // default to None
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
       vm.centralContactTypes = centralContactTypes.types;
@@ -68,25 +72,31 @@
       function saveGeneralTrialDetails() {
           var outerTrial = {};
           if (JSON.stringify(vm.generalTrialDetailsObj.central_contacts[0]) !== '{}') {
+              var typeObject = _.findWhere(vm.centralContactTypes, {name: vm.centralContactType});
+              console.log('typeObject: ', typeObject);
+              vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id = !!typeObject ? typeObject.id : '';
               vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts; // new field
           }
           // reset the central_contact_id if changed
-          if (_curCentralContactId != vm.generalTrialDetailsObj.central_contacts[0].id) {
+          if (vm.generalTrialDetailsObj.central_contacts.length > 0 &&
+                _curCentralContactId != vm.generalTrialDetailsObj.central_contacts[0].id) {
               vm.generalTrialDetailsObj.central_contacts[0].id = _curCentralContactId;
           }
 
           vm.generalTrialDetailsObj.other_ids_attributes = vm.generalTrialDetailsObj.other_ids; // for updating the attributes in Rails
           vm.generalTrialDetailsObj.alternate_titles_attributes = vm.generalTrialDetailsObj.alternate_titles;
-          vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts;
+         // vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts;
 
           outerTrial.new = false;
           outerTrial.id = vm.generalTrialDetailsObj.id;
           outerTrial.trial = vm.generalTrialDetailsObj;
+          console.log('outer trial: ', outerTrial.trial.central_contacts);
 
           TrialService.upsertTrial(outerTrial).then(function(res) {
               console.log('central_contact: ', vm.generalTrialDetailsObj.central_contact);
               console.log('updated general trial details: ', res);
-              // vm.generalTrialDetailsObj.lock_version = res.lock_version;
+              vm.generalTrialDetailsObj = res;
+              vm.generalTrialDetailsObj.lock_version = res.lock_version;
 
               PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
               $scope.$emit('updatedInChildScope', {});
@@ -125,11 +135,12 @@
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
 
               if (vm.generalTrialDetailsObj.central_contacts.length > 0) {
-                  _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id || '';
+                  _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
                   var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
-                  vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: _centralContactTypeId})).name || 'None';
+                  console.log('central contact type id: ' + _centralContactTypeId);
+                  vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)})).name || 'None';
+                  vm.generalTrialDetailsObj.central_contacts[0].fullName = PersonService.extractFullName(vm.generalTrialDetailsObj.central_contacts[0]);
               }
-              console.log('vm.generalTrialDetailsObj.alternate_titles: ', vm.generalTrialDetailsObj.alternate_titles);
 
               // transform the other_ids array
               vm.generalTrialDetailsObj.other_ids = _.map(vm.generalTrialDetailsObj.other_ids, function(id, idx) {
@@ -138,8 +149,8 @@
                   id._destroy = id._destroy || false; // default to false if not set
                   return id;
               });
-
-          }, 1);
+              otherIdsClone = angular.copy(vm.generalTrialDetailsObj.other_ids); // back-up copy
+          }, 0);
       } //getTrialDetailCopy
 
 
@@ -204,6 +215,12 @@
       }
 
       function updateOtherId(protocolIdVal, index) {
+
+          if (!protocolIdVal || protocolIdVal.trim() === '') {
+              vm.generalTrialDetailsObj.other_ids[index].protocol_id = otherIdsClone[index].protocol_id;
+              return;
+          }
+
           if (index < vm.generalTrialDetailsObj.other_ids.length) {
               vm.generalTrialDetailsObj.other_ids[index].protocol_id = protocolIdVal;
           }
@@ -243,13 +260,17 @@
 
       function watchCentralContact() {
         $scope.$watchCollection(function() {return vm.generalTrialDetailsObj.central_contacts;}, function(newVal, oldVal) {
+            console.log('watching central_contacts, newVal: ', newVal);
+            console.log('watching central_contacts, oldVal: ', oldVal);
           if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullName) {
               vm.generalTrialDetailsObj.central_contacts[0] = newVal[0];
               var firstName = newVal[0].fname || '';
               var middleName = newVal[0].mname || '';
               var lastName = newVal[0].lname || '';
               vm.generalTrialDetailsObj.central_contacts[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
-              vm.generalTrialDetailsObj.central_contacts[0].person_id = newVal[0].id;
+              vm.generalTrialDetailsObj.central_contacts[0].person_id = newVal[0].id || '';
+              vm.generalTrialDetailsObj.central_contacts[0].phone = newVal[0].phone.replace(regex, '');
+              delete vm.generalTrialDetailsObj.central_contacts[0].id;
           }
         });
       }
@@ -259,21 +280,19 @@
 
           if (newVal === 'PI') {
                 _usePIAsCentralContact();
-            } else if (newVal === 'None' && !!vm.generalTrialDetailsObj.central_contacts &&
-                    vm.generalTrialDetailsObj.central_contacts.length > 0) {
-
+            } else if (newVal === 'None' && vm.generalTrialDetailsObj.central_contacts.length > 0) {
+                // delete the contact
                 vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
-            } else {
-                vm.generalTrialDetailsObj.central_contacts = [].concat({});
             }
-              var typeObject = _.findWhere(vm.centralContactTypes, {"name": newVal});
-              vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id = !!typeObject ? typeObject.id : '';
-              // console.log('contact type id: ', vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id);
           });
       }
 
       function isValidPhoneNumber() {
-          vm.isPhoneValid = isValidNumberPO(vm.generalTrialDetailsObj.central_contacts[0].phone, _defaultCountry);
+          if (vm.generalTrialDetailsObj.central_contacts[0].phone.length == 0) {
+              vm.isPhoneValid = true; // blank phone number is valid
+          } else {
+              vm.isPhoneValid = isValidNumberPO(vm.generalTrialDetailsObj.central_contacts[0].phone, _defaultCountry);
+          }
       }
 
       /**
@@ -282,8 +301,9 @@
       function _usePIAsCentralContact() {
         vm.generalTrialDetailsObj.central_contacts = [].concat(angular.copy(vm.principalInvestigator));
         vm.generalTrialDetailsObj.central_contacts[0]._destroy = false;
-        var regex = new RegExp('-', 'g');
         vm.generalTrialDetailsObj.central_contacts[0].phone = vm.generalTrialDetailsObj.central_contacts[0].phone.replace(regex, '');
+        vm.generalTrialDetailsObj.central_contacts[0].person_id = vm.generalTrialDetailsObj.central_contacts[0].id; //
+        delete vm.generalTrialDetailsObj.central_contacts[0].id;
         vm.isPhoneValid = true;
       }
 
@@ -327,7 +347,7 @@
       }
 
       function updateLeadProtocolId() {
-          if (!vm.leadProtocolId) {
+          if (!vm.leadProtocolId || vm.leadProtocolId.trim() === '') {
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
           } else {
               vm.generalTrialDetailsObj.lead_protocol_id = vm.leadProtocolId.trim();

@@ -22,7 +22,7 @@
             <img src="./images/ajax_loader.svg">
         </div> -->
         <!-- <div class="row" ng-show="!paTrialOverview.loadingTrialDetail && paTrialOverview.isPanelOpen"> -->
-        <div class="row">
+        <div class="row" ng-show="paTrialOverview.isPanelOpen">
             <!-- first row -->
             <div class="row">
                 <p>
@@ -89,12 +89,12 @@
 
                     <p>
                         <strong>Last Submitter:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.submitterName}}</span>
+                        <span>{{paTrialOverview.trialDetailObj.submitter}}</span>
                     </p>
 
                     <p>
                         <strong>Last Submitter Organization:</strong>
-                        <span><a href=""></a></span>
+                        <span>{{paTrialOverview.trialDetailObj.submitters_organization}}</span>
                     </p>
 
                     <!-- <p>
