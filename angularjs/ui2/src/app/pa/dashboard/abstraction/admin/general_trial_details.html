@@ -7,7 +7,7 @@
       <div class="row">
         <form name="general_trial_details_form" role="form" class="form-horizontal" novalidate ctrp-submit="generalTrialDetailView.saveGeneralTrialDetails()">
           <!-- fieldset for Title -->
-          <fieldset class="sub-bordered" restriction-field>
+          <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
             <legend class="sub-bordered">Title</legend>
             <div class="form-group">
               <label for="acronym" class="control-label col-xs-12 col-sm-2">Acronym</label>
@@ -27,7 +27,7 @@
           </fieldset>
 
           <!-- fieldset for Alternate Titles -->
-          <fieldset class="sub-bordered" restriction-field>
+          <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
             <legend class="sub-bordered">Alternate Titles</legend>
             <div class="form-group">
 
@@ -99,7 +99,7 @@
           </fieldset>
 
           <!-- fieldset for Keywords -->
-          <fieldset class="sub-bordered" restriction-field>
+          <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
             <legend class="sub-bordered">Keywords</legend>
             <label for="keywords" class="control-label col-xs-12 col-sm-2">Keywords</label>
             <div class="col-xs-12 col-sm-10">
@@ -110,7 +110,7 @@
           </fieldset>
 
           <!--fielset for Other Trial Identifiers -->
-          <fieldset class="sub-bordered" restriction-field>
+          <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
             <legend class="sub-bordered">Other Trial Identifiers</legend>
             <!-- form group for adding other identifier -->
             <div class="form-group">
@@ -177,7 +177,7 @@
           </fieldset>
 
           <!--fieldset for Lead Organization/Principal Investigator -->
-          <fieldset class="sub-bordered" restriction-field>
+          <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
             <legend class="sub-bordered">Lead Organization/Principal Investigator</legend>
             <!-- Lead Organization -->
             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.lead_organization)}">
@@ -213,7 +213,7 @@
           </fieldset>
 
           <!-- fieldset for Spnsor -->
-          <fieldset class="sub-bordered" restriction-field>
+          <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
             <legend class="sub-bordered">Sponsor</legend>
             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.sponsor)}">
               <label for="sponsor" class="control-label col-xs-12 col-sm-2">Sponsor</label>
@@ -235,7 +235,7 @@
           </fieldset>
 
           <!-- fieldset for Central Contact -->
-          <fieldset class="sub-bordered" restriction-field>
+          <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
             <legend class="sub-bordered">Central Contact</legend>
             <!-- Central contact -->
             <div class="form-group">
@@ -291,7 +291,7 @@
             </div>
           </fieldset>
 
-          <div class="form-group no-bottom-margin" ng-if="generalTrialDetailView.generalTrialDetailsObj.pa_editable">
+          <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
             <div class="col-sm-3"></div>
             <div class="btn-toolbar col-xs-12 col-sm-9">
               <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field="ROLE_ABSTRACTOR, ROLE_SUPER, ROLE_ADMIN" ng-disabled="!general_trial_details_form.$valid">
