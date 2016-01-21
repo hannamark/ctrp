@@ -7,7 +7,7 @@
 
             <div class="row">
                 <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
-                    <fieldset class="sub-bordered">
+                    <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">NCI Grant</legend>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.grant_question)}">
@@ -27,7 +27,7 @@
                             </div>
                         </div>
                     </fieldset>
-                    <fieldset class="sub-bordered">
+                    <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">Funding Mechanism</legend>
 
                         <div class="form-group" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.grant_dummy)}">
