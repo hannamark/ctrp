@@ -70,7 +70,10 @@
          */
         function updateTrialDetailObj(data) {
             console.log('in updating trial detail obj, admin_checkout: ' + data.admin_checkout + ', scientific_checkout: ' + data.scientific_checkout);
+            // keep trial object slim
             delete vm.trialDetailObj.server_response;
+            delete vm.trialDetailObj.history;
+
             vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
