@@ -244,15 +244,6 @@
                         <label ng-repeat="type in generalTrialDetailView.centralContactTypes track by $index" for="contact_type_{{$index}}" class="radio-inline control-label">
                           <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="generalTrialDetailView.centralContactType">{{type.name}}
                         </label>
-                        <!-- <label class="radio-inline control-label">
-                          <input type="radio" name="contact_type" value="PI" ng-model="generalTrialDetailView.centralContactType">PI
-                        </label>
-                        <label class="radio-inline control-label">
-                            <input type="radio" name="contact_type" value="Person" ng-model="generalTrialDetailView.centralContactType">Person
-                        </label>
-                        <label class="radio-inline control-label">
-                            <input type="radio" name="contact_type" value="General" ng-model="generalTrialDetailView.centralContactType">General
-                        </label> -->
                     </div>
                 </div>
             </div>
@@ -281,7 +272,7 @@
                       <div class="col-xs-12 col-sm-6">
                         <input type="email" id="email" name="email" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].email"
                             class="form-control" placeholder="Email">
-                        <span class="form-control-feedback" ng-show="general_trial_details_form.email.$viewValue.length" ng-class="!general_trial_details_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                        <span class="form-control-feedback" ng-show="general_trial_details_form.email.$dirty" ng-class="!general_trial_details_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                       </div>
                     </div>
                   </div>
@@ -293,7 +284,7 @@
                       <div class="col-xs-12 col-sm-6">
                         <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone"
                             class="form-control" placeholder="Phone", ng-change="generalTrialDetailView.isValidPhoneNumber()">
-                        <span ng-show="general_trial_details_form.phone.$viewValue.length" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                        <span ng-show="general_trial_details_form.phone.$dirty" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                       </div>
                     </div>
                   </div>

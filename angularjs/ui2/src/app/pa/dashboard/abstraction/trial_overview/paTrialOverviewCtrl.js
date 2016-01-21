@@ -10,10 +10,10 @@
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
         '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES',
-        '$scope', 'TrialService', 'UserService', 'curTrial', '_'];
+        '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService'];
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES,
-            $scope, TrialService, UserService, curTrial, _) {
+            $scope, TrialService, UserService, curTrial, _, PersonService) {
 
         var vm = this;
         vm.accordionOpen = true; //default open accordion
@@ -75,7 +75,7 @@
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
             if (!vm.trialDetailObj.pi.fullName) {
-                vm.trialDetailObj.pi.fullName = _extractFullName(vm.trialDetailObj.pi);
+                vm.trialDetailObj.pi.fullName = PersonService.extractFullName(vm.trialDetailObj.pi);
             }
             // sort the submissions by DESC submission_num
             vm.trialDetailObj.submissions = _.sortBy(vm.trialDetailObj.submissions, function(s) {
@@ -84,7 +84,7 @@
             // extract the submitter for the last submission
             // vm.trialDetailObj.submitter = vm.trialDetailObj.submissions[0].submitter || '';
             if (!!vm.trialDetailObj.submitter) {
-                vm.trialDetailObj.submitterName = _extractFullName(vm.trialDetailObj.submitter);
+                vm.trialDetailObj.submitterName = PersonService.extractFullName(vm.trialDetailObj.submitter);
             }
 
             if (!vm.trialDetailObj.central_contacts) {
@@ -164,22 +164,6 @@
                 console.log('updated trialDetail obj: ', res);
             });
         }
-
-        /**
-         * extract the person object's full name
-         * @param  {JSON} personObj [a Person object in json]
-         * @return {String}
-         */
-        function _extractFullName(personObj) {
-            var fullName = '';
-            var firstName = personObj.fname || '';
-            var middleName = personObj.mname || '';
-            var lastName = personObj.lname || '';
-
-            fullName = firstName + ' ' + middleName + ' ' + lastName;
-            return fullName;
-        }
-
     }
 
 })();
