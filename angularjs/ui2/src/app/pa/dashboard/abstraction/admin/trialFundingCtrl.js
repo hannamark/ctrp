@@ -50,6 +50,14 @@
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                $scope.$emit('updatedInChildScope', {});
+
+                toastr.clear();
+                toastr.success('Trial Funding has been updated', 'Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });

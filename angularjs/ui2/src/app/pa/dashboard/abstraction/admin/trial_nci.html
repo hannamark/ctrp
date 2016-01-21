@@ -120,7 +120,7 @@
                         <!-- second row in the form -->
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5"></textarea>
+                                <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5" ng-model="trialNciView.curTrial.process_comment"></textarea>
                             </div>
                         </div>
                         <!-- end of second row -->
@@ -129,7 +129,7 @@
                         <div class="form-group no-bottom-margin" ng-if="trialNciView.curTrial.pa_editable">
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="trialNciView.updateTrial()">Save</button>
-                                <button type="button" class="btn btn-warning pull-right" ng-click="trialNciView.reload()" ng-disabled="trialDetailView.disableBtn">
+                                <button type="button" class="btn btn-warning pull-right" ng-click="trialNciView.reload()" ng-disabled="trialNciView.disableBtn">
                                     <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
                             </div>

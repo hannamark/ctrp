@@ -20,6 +20,7 @@ class DataImport
       total_organizations  = Organization.all.size
       total_persons  = Person.all.size
       trial_spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-trials-random-2014.xls'))
+      start_lead_protocol_post_fix = 1776
       trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
       ((trial_spreadsheet.first_row+1)..trial_spreadsheet.last_row).each do |row|
         trial = Trial.new
@@ -128,7 +129,8 @@ class DataImport
         end
         trial.ind_ide_question = "Yes"
         # randomly assign the rest of the data
-        trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
+        trial.lead_protocol_id = "CTRP_01_" + start_lead_protocol_post_fix.to_s
+        start_lead_protocol_post_fix = start_lead_protocol_post_fix + 1
         trial.lead_org = Organization.all[rand(0..total_organizations-1)]
         trial.pilot = "Yes"
         trial.pi = Person.all[rand(0..total_persons-1)]
@@ -148,6 +150,20 @@ class DataImport
     rescue Exception => e
       puts "Exception thrown while reading Trial spreadsheet #{e.inspect}"
     end
+=begin
+And I am on the NCI Specific Information screen
+And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
+And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
+And the Trial processing status is �Verification Pending�, "Abstracted", "No Response�, or �Abstracted, Response�
+And the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�
+And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
+When I select the radio button for Yes or No for �Send Trial Information to ClinicalTrials.gov?�
+Then the selected value for �Send Trial Information to ClinicalTrials.gov?� will be Yes or No
+=end
+    #t = Trial.all.last
+    #t.sponsor = Organization.find_by_name("National Cancer Institute")
+    #t.lead_org = Organization.f
+
   end
 
   def self.import_milestones
