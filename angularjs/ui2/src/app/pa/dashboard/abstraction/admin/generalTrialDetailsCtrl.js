@@ -257,8 +257,7 @@
 
       function watchCentralContact() {
         $scope.$watchCollection(function() {return vm.generalTrialDetailsObj.central_contacts;}, function(newVal, oldVal) {
-            console.log('watching central_contacts, newVal: ', newVal);
-            console.log('watching central_contacts, oldVal: ', oldVal);
+
           if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullname) {
               vm.generalTrialDetailsObj.central_contacts[0] = newVal[0];
               var firstName = newVal[0].fname || '';
@@ -274,18 +273,24 @@
 
       function watchCentralContactType() {
         $scope.$watch(function() { return vm.centralContactType;}, function(newVal, oldVal) {
-
+          console.log('oldVal: ', oldVal);
+          console.log('newVal: ', newVal);
+          if (!!oldVal) {
+              // for changing central contact types,
+              // if previous type is not null, reset all fields in central contact
+              vm.generalTrialDetailsObj.central_contacts[0] = {email: '', phone: '', fullname: ''};
+          }
           if (newVal === 'PI') {
-                _usePIAsCentralContact();
-            } else if (newVal === 'None' && vm.generalTrialDetailsObj.central_contacts.length > 0) {
-                // delete the contact
-                vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
-            }
-          });
+              _usePIAsCentralContact();
+          } else if (newVal === 'None' && vm.generalTrialDetailsObj.central_contacts.length > 0) {
+            // delete the contact
+            vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
+          }
+        });
       }
 
       function isValidPhoneNumber() {
-          if (vm.generalTrialDetailsObj.central_contacts[0].phone.length == 0) {
+          if (vm.generalTrialDetailsObj.central_contacts[0].phone.length === 0) {
               vm.isPhoneValid = true; // blank phone number is valid
           } else {
               vm.isPhoneValid = isValidNumberPO(vm.generalTrialDetailsObj.central_contacts[0].phone, _defaultCountry);
