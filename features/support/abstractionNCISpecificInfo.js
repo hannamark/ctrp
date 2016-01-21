@@ -14,8 +14,21 @@ var helperFunctions = require('../support/helper');
 
 var abstractionNCISpecificInfo = function(){
 
+    //Admin Data
+    //General Trial Details
+    this.adminDataGeneralTrial = element(by.css('a[ui-sref="main.pa.trialOverview.generalTrialDetails"]'));
+    //Regulatory Information - FDAAA
+    this.adminDataRegulatoryInfoFDA = element(by.css('a[ui-sref="main.pa.trialOverview.regulatoryFda"]'));
+    //Regulatory Information - Human Subject Safety
+    //Regulatory Information - IND/EDE
+    this.adminDataRegulatoryInfoIND = element(by.css('a[ui-sref="main.pa.trialOverview.regulatoryInd"]'));
+    //Trial Status
+    //Trial Funding
+    this.adminDataTrialFunding = element(by.css('a[ui-sref="main.pa.trialOverview.funding"]'));
+    //NCI Specific Information
     this.adminDataNciSpecific = element(by.css('a[ui-sref="main.pa.trialOverview.nciInfo"]'));
 
+    //NCI Specific Information Page Objects
     this.nciSpecificStudySource = element(by.model('trialNciView.curTrial.study_source_id'));
     this.nciSpecificSearchOrganisations = element(by.buttonText(' Search Organizations')); //by.id('org_search_modal')
     this.nciSpecificProgramCode = element(by.model('trialNciView.curTrial.program_code'));
@@ -32,6 +45,26 @@ var abstractionNCISpecificInfo = function(){
     this.nciSpecificReset = element(by.buttonText('↵ Reset↵ '));
 
     var helper = new helperFunctions();
+
+    //General Trial Details: Click Left Navigation Link
+    this.clickAdminDataGeneralTrial = function(){
+        helper.clickButton(this.adminDataGeneralTrial, "General Trial Details Admin Data Button");
+    };
+
+    //Regulatory Information - FDAAA: Click Left Navigation Link
+    this.clickAdminDataRegulatoryInfoFDA = function(){
+        helper.clickButton(this.adminDataRegulatoryInfoFDA, "Regulatory Information - FDAAA Admin Data Button");
+    };
+
+    //Regulatory Information - IND/EDE : Click Left Navigation Link
+    this.clickAdminDataRegulatoryInfoIND = function(){
+        helper.clickButton(this.adminDataRegulatoryInfoIND, "Regulatory Information - IND/EDE Admin Data Button");
+    };
+
+    //Trial Funding : Click Left Navigation Link
+    this.clickAdminDataTrialFunding = function(){
+        helper.clickButton(this.adminDataTrialFunding, "Trial Funding Admin Data Button");
+    };
 
     //NCI Specific Information : Click Left Navigation Link
     this.clickAdminDataNCISpecificInformation = function(){
@@ -96,10 +129,31 @@ var abstractionNCISpecificInfo = function(){
     //Verify Study Source
     this.verifyStudySourceCurrentValue = function(){
         this.nciSpecificStudySource.$('option:checked').getText().then(function(value){
-        return value
-        console.log("study source: "+value);
+            return value
+            console.log("study source: "+value);
         });
-    }
+    };
+
+    this.getVerifyListValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        expect(fieldName.$('option:checked').getText()).to.eventually.equal(fieldValue);
+        console.log(errorMessage + " - Got value");
+    };
+
+    this.wait = function (element, label) {
+        browser.wait(function () {
+            return element.isPresent().then(function (state) {
+                if (state === true) {
+                    return element.isDisplayed().then(function (state2) {
+                        return state2 === true;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        }, 10000, label + " did not appear");
+        browser.sleep(250);
+    };
 
 
 };
