@@ -58,30 +58,20 @@ Then the Data Table 4 Anatomic Sites for the trial will be associated with the t
 |Urinary Bladder|
 
 Scenario:  #2 I can Delete Data Table 4 Anatomic Sites for a Trial
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Data Table 4 Anatomic Sites screen
-When I have selected the Delete check box for an individual anatomic site 
-And have clicked on Delete button
-And the message displays 'click OK to remove selected Anatomic site(s) form the study. Click Cancel to abort'
-And I have clicked on  OK
-Then the Data Table 4 Anatomic Site(s) is removed from the trial record
-When I have Clicked the Select All button
-Then the Delete check box is checked for all entries
-When I click on Delete button
-Then the message displays 'click OK to remove selected Anatomic site(s) form the study. Click Cancel to abort'
+Given I am on the Data Table 4 Anatomic Sites screen
+And I can select the Delete check box for one or more anatomic sites
+And I can click on "Select All"  to select all delete check boxes for the anatomic sites
+When I have clicked on Delete button
+Then the message displays 'click OK to remove selected Anatomic site(s) from the study. Click Cancel to abort'
 When I have clicked on  OK
-Then the Data Table 4 Anatomic Site(s) is removed from the trial record
+Then the selected Data Table 4 Anatomic Site(s) are removed from the trial record
 And the message 'Record(s) deleted displays
 When I click on Cancel
-Then the Data Table 4 Anatomic Site(s) are not removed from the trial record
+Then the selected Data Table 4 Anatomic Site(s) are not removed from the trial record
 And no message displays
 
-Scenario: #3 I can cancel from Add Data Table 4 Anatomic Site
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Data Table 4 Anatomic Sites Screen
-And I select Add
+Scenario: #3 I can reset selections on the Add Data Table 4 Anatomic Site
+Given I am on the Add Data Table 4 Anatomic Site Screen
 And I have selected one or more items from the <Anatomic Site> list 
-When I select Cancel 
-Then the Data Table 4 Anatomic Site screen displays
-And the selected Anatomic Sites will not be associated to the trial record 
+When I click on Reset Button 
+Then the Anatomic Site Selections are removed
