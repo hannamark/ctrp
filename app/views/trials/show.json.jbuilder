@@ -60,8 +60,8 @@ json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last
 ## get submitter's username
 json.submitter @trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : @trial.submissions.last.user.username)
 
-## get the submitter's organization
-json.submitters_organization @trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : @trial.submissions.last.user.prs_organization_name)
+## get the submitter's organization name
+json.submitters_organization @trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : @trial.submissions.last.user.prs_organization_name) # Organization.find(@trial.submissions.last.user.organization_id)
 
 json.last_submission_source @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_source_id.nil? ? '' : SubmissionSource.find(@trial.submissions.last.submission_source_id))
 
