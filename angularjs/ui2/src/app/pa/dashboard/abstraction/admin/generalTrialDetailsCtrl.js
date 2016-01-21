@@ -270,8 +270,7 @@
               vm.generalTrialDetailsObj.central_contacts[0].fullName = firstName + ' ' + middleName + ' ' + lastName;
               vm.generalTrialDetailsObj.central_contacts[0].person_id = newVal[0].id || '';
               vm.generalTrialDetailsObj.central_contacts[0].phone = newVal[0].phone.replace(regex, '');
-              delete vm.generalTrialDetailsObj.central_contacts[0].id
-              console.log('triggered watching central_contacts');
+              delete vm.generalTrialDetailsObj.central_contacts[0].id;
           }
         });
       }
