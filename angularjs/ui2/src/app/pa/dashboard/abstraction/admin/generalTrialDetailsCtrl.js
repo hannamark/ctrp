@@ -95,7 +95,8 @@
           TrialService.upsertTrial(outerTrial).then(function(res) {
               console.log('central_contact: ', vm.generalTrialDetailsObj.central_contact);
               console.log('updated general trial details: ', res);
-              // vm.generalTrialDetailsObj.lock_version = res.lock_version;
+              vm.generalTrialDetailsObj = res;
+              vm.generalTrialDetailsObj.lock_version = res.lock_version;
 
               PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
               $scope.$emit('updatedInChildScope', {});
