@@ -143,7 +143,27 @@
         /****************** implementations below ***************/
         function activate() {
             appendGrants();
+            getTrialDetailCopy();
+            watchTrialDetailObj();
         }
+
+        /**
+         * Get trial detail object from parent scope
+         */
+        function watchTrialDetailObj() {
+            $scope.$on(MESSAGES.TRIAL_DETAIL_SAVED, function() {
+                getTrialDetailCopy();
+            });
+        } //watchTrialDetailObj
+
+        function getTrialDetailCopy() {
+            $timeout(function() {
+                vm.curTrial = PATrialService.getCurrentTrialFromCache();
+                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+            }, 1);
+        } //getTrialDetailCopy
+
+
 
         function appendGrants() {
             for (var i = 0; i < vm.curTrial.grants.length; i++) {
