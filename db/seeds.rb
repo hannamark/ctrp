@@ -199,6 +199,16 @@ Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
 
+StudyClassification.find_or_create_by(code: 'BAV', name: 'Bio-availability')
+StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bio-equivalence')
+StudyClassification.find_or_create_by(code: 'EFF', name: 'Efficacy')
+StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
+StudyClassification.find_or_create_by(code: 'PD', name: 'Pharmacodynamics')
+StudyClassification.find_or_create_by(code: 'PK', name: 'Pharmacokinetics')
+StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dynamics')
+StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
+StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
