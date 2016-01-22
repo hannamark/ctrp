@@ -30,7 +30,7 @@
 
       vm.leadOrg = {name: '', array: []};
       vm.principalInvestigator = {name: '', array: []};
-      vm.sponsors = [];
+      vm.sponsor = {name: '', array: []};
       vm.leadProtocolId = '';
       var otherIdsClone = [];
       var regex = new RegExp('-', 'g');
@@ -115,7 +115,7 @@
       function resetGeneralTrialDetails() {
           vm.leadOrg = {name: '', array: []};
           vm.principalInvestigator = {name: '', array: []};
-          vm.sponsors = [];
+          vm.sponsor = {name: '', array: []};
          // vm.centralContact = [];
           vm.centralContactType = '';
           $timeout(function() {
@@ -131,10 +131,10 @@
       function getTrialDetailCopy() {
           $timeout(function() {
               vm.generalTrialDetailsObj = PATrialService.getCurrentTrialFromCache();
-              vm.leadOrg.name = vm.generalTrialDetailsObj.lead_org.name;
+              // vm.leadOrg.name = vm.generalTrialDetailsObj.lead_org.name;
               vm.leadOrg.array = [].concat(angular.copy(vm.generalTrialDetailsObj.lead_org));
-              console.log('leadOrg: ', vm.leadOrg);
-              vm.sponsors[0] = vm.generalTrialDetailsObj.sponsor;
+
+              vm.sponsor.array = [].concat(angular.copy(vm.generalTrialDetailsObj.sponsor));
               vm.principalInvestigator.array = [].concat(angular.copy(vm.generalTrialDetailsObj.pi));
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
 
@@ -247,13 +247,18 @@
               vm.principalInvestigator.name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
               vm.generalTrialDetailsObj.pi = vm.principalInvestigator.array[0];
               vm.generalTrialDetailsObj.pi_id = vm.principalInvestigator.array[0].id; // update PI
+
+              if (vm.centralContactType === 'PI') {
+                  _usePIAsCentralContact();
+              }
           }
         });
       }
 
       function watchSponsor() {
-          $scope.$watchCollection(function() {return vm.sponsors;}, function(newVal, oldVal) {
+          $scope.$watchCollection(function() {return vm.sponsor.array;}, function(newVal, oldVal) {
              if (angular.isArray(newVal) && newVal.length > 0) {
+                 vm.sponsor.name = newVal[0].name;
                  vm.generalTrialDetailsObj.sponsor = newVal[0];
                  vm.generalTrialDetailsObj.sponsor_id = newVal[0].id; // update sponsor
              }
