@@ -358,6 +358,7 @@ class TrialsController < ApplicationController
   end
 
   def search_clinical_trials_gov
+    # TODO Search existing trials using NCT ID
     @search_result = {}
     url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
     url = url.sub('NCT********', params[:nct_id])
