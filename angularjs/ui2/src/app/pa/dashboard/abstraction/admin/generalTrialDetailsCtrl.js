@@ -13,7 +13,6 @@
     function generalTrialDetailsCtrl($scope, TrialService, PATrialService, toastr,
         MESSAGES, protocolIdOriginObj, _, $timeout, centralContactTypes, PersonService) {
       var vm = this;
-      console.log('centralContactTypes: ', centralContactTypes);
       var _defaultCountry = 'United States'; // for phone number validation
       var _curCentralContactId = '';
       vm.generalTrialDetailsObj = {};
@@ -46,7 +45,6 @@
       vm.protocolIdOriginArr = protocolIdOriginObj;
       vm.centralContactTypes = centralContactTypes.types;
 
-      console.log('protocolIdOriginArr: ', vm.protocolIdOriginArr);
       activate();
 
       function activate() {
@@ -73,7 +71,7 @@
           var outerTrial = {};
           if (JSON.stringify(vm.generalTrialDetailsObj.central_contacts[0]) !== '{}') {
               var typeObject = _.findWhere(vm.centralContactTypes, {name: vm.centralContactType});
-              console.log('typeObject: ', typeObject);
+
               if (vm.generalTrialDetailsObj.central_contacts[0]) {
                   vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id = !!typeObject ? typeObject.id : '';
                   vm.generalTrialDetailsObj.central_contacts_attributes = vm.generalTrialDetailsObj.central_contacts; // new field
@@ -92,11 +90,8 @@
           outerTrial.new = false;
           outerTrial.id = vm.generalTrialDetailsObj.id;
           outerTrial.trial = vm.generalTrialDetailsObj;
-          console.log('outer trial: ', outerTrial.trial.central_contacts);
 
           TrialService.upsertTrial(outerTrial).then(function(res) {
-              console.log('central_contact: ', vm.generalTrialDetailsObj.central_contacts);
-              console.log('updated general trial details: ', res);
               vm.generalTrialDetailsObj = res;
               vm.generalTrialDetailsObj.lock_version = res.lock_version;
 

@@ -43,14 +43,16 @@
 
 
         function responseError(rejection) {
-            if(rejection.status === 401) {
-              //if unauthorized, kick the user back to sign_in
+            if(rejection.status === 401 || rejection.status === 403) {
+              //if unauthenticated or unauthorized, kick the user back to sign_in
               $injector.get('$state').go('main.sign_in');
               $injector.get('toastr').error('Access to the resources is not authorized', 'Please sign in to continue');
             }
             else if (rejection.status > 226 && errorCount < 2) {
                 $injector.get('toastr').clear();
-                $injector.get('toastr').error('Failed request', 'Error Code: ' + rejection.status);
+                var errorMsg = 'Failed request, Error Code: ' + rejection.status;
+                errorMsg += !!rejection.error ? 'Reason: ' + rejection.error : '';
+                $injector.get('toastr').error(errorMsg);
                 // $injector.get('UserService').logout();
                 errorCount++;
             }
