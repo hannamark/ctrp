@@ -36,12 +36,9 @@
                 event.preventDefault();
                 var writeModeSupported = false; //is write mode supported for the toState?
                 if (toState.section) {
-                    var writeModeSupported = UserService.isWriteModeSupportedForSection(toState.section);
-                    // console.log('writeModeSupported: ', writeModeSupported);
+                    writeModeSupported = UserService.isWriteModeSupportedForSection(toState.section);
                 }
-
                 $rootScope.$broadcast('isWriteModeSupported', writeModeSupported); //broadcast this
-
 
                 if (toState.name === 'main.sign_in' || toState.name === 'main.sign_up') {
 
