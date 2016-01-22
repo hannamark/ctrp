@@ -73,7 +73,7 @@
             vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
-            if (!vm.trialDetailObj.pi.fullName) {
+            if (vm.trialDetailObj.pi && !vm.trialDetailObj.pi.fullName) {
                 vm.trialDetailObj.pi.fullName = PersonService.extractFullName(vm.trialDetailObj.pi);
             }
             // sort the submissions by DESC submission_num
