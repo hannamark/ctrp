@@ -51,7 +51,7 @@
             else if (rejection.status > 226 && errorCount < 2) {
                 $injector.get('toastr').clear();
                 var errorMsg = 'Failed request, Error Code: ' + rejection.status;
-                errorMsg += !!rejection.error ? 'Reason: ' + rejection.error : '';
+                errorMsg += !!rejection.error ? ' Reason: ' + rejection.error : '';
                 $injector.get('toastr').error(errorMsg);
                 // $injector.get('UserService').logout();
                 errorCount++;
