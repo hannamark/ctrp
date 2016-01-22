@@ -43,7 +43,7 @@
 
 
         function responseError(rejection) {
-            if(rejection.status === 401 || rejection.status === 403) {
+            if(rejection.status === 401) {
               //if unauthenticated or unauthorized, kick the user back to sign_in
               $injector.get('$state').go('main.sign_in');
               $injector.get('toastr').error('Access to the resources is not authorized', 'Please sign in to continue');
