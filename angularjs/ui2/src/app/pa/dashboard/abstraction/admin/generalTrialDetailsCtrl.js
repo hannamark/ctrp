@@ -141,7 +141,6 @@
               if (vm.generalTrialDetailsObj.central_contacts.length > 0) {
                   _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
                   var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
-                  console.log('central contact type id: ' + _centralContactTypeId);
                   vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)})).name || 'None';
                   // vm.generalTrialDetailsObj.central_contacts[0].fullname = PersonService.extractFullName(vm.generalTrialDetailsObj.central_contacts[0]);
               }
@@ -309,7 +308,6 @@
       * Use the Trial's PI as the central contact      *
       */
       function _usePIAsCentralContact() {
-          console.log('array: ', vm.principalInvestigator.array);
         vm.generalTrialDetailsObj.central_contacts[0] = {};
         vm.generalTrialDetailsObj.central_contacts[0]._destroy = false;
         vm.generalTrialDetailsObj.central_contacts[0].fullname = vm.principalInvestigator.name;
