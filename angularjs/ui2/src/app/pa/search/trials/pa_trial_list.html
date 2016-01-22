@@ -80,13 +80,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="onhold" class="control-label col-xs-12 col-sm-3">Trials on Hold: </label>
-                            <div class="col-xs-12 col-sm-9">
-                                <input type="checkbox" id="onhold" ng-model="trialView.searchParams.onhold">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             <label for="submission_type" class="control-label col-xs-12 col-sm-3">Submission Type: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <ui-select multiple id="submission_type" ng-model="trialView.searchParams.submission_type">
@@ -97,18 +90,33 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="submission_method" class="control-label col-xs-12 col-sm-3">Submission Method: </label>
+                            <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Div/Dept Identifier: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <ui-select multiple id="submission_method" ng-model="trialView.searchParams.submission_method">
-                                    <ui-select-match placeholder="-Select Submission Method-">{{$item.name}}</ui-select-match>
-                                    <ui-select-choices repeat="submissionMethod in trialView.submissionMethodsArr">{{submissionMethod.name}}</ui-select-choices>
+                                <ui-select multiple id="nih_nci_div" ng-model="trialView.searchParams.nih_nci_div">
+                                    <ui-select-match placeholder="-Select  NIH/NCI Div/Dept -">{{$item.code}}</ui-select-match>
+                                    <ui-select-choices repeat="nd in trialView.nciDivArr">{{nd.code}}</ui-select-choices>
                                 </ui-select>
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-3"></div>
+                            <div class="col-xs-12 col-sm-3">
+                                <div>
+                                    <label for="onhold">
+                                        <input type="checkbox" id="onhold" ng-model="trialView.searchParams.onhold"> Trials on Hold
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div>
+                                    <label for="checkout">
+                                        <input type="checkbox" id="checkout" ng-model="trialView.searchParams.checkout"> Trials I have checked out
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-
 
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
@@ -163,13 +171,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="checkout" class="control-label col-xs-12 col-sm-3">Trials I have checked out: </label>
-                            <div class="col-xs-12 col-sm-9">
-                                <input type="checkbox" id="checkout" ng-model="trialView.searchParams.checkout">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             <label for="research_category" class="control-label col-xs-12 col-sm-3">Research Category: </label>
                             <div class="col-xs-12 col-sm-9">
                                 <ui-select multiple id="research_category" ng-model="trialView.searchParams.research_category">
@@ -180,11 +181,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Div/Dept Identifier: </label>
+                            <label for="submission_method" class="control-label col-xs-12 col-sm-3">Submission Method: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <ui-select multiple id="nih_nci_div" ng-model="trialView.searchParams.nih_nci_div">
-                                    <ui-select-match placeholder="-Select  NIH/NCI Div/Dept -">{{$item.code}}</ui-select-match>
-                                    <ui-select-choices repeat="nd in trialView.nciDivArr">{{nd.code}}</ui-select-choices>
+                                <ui-select multiple id="submission_method" ng-model="trialView.searchParams.submission_method">
+                                    <ui-select-match placeholder="-Select Submission Method-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="submissionMethod in trialView.submissionMethodsArr">{{submissionMethod.name}}</ui-select-choices>
                                 </ui-select>
                             </div>
                         </div>

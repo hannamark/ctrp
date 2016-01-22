@@ -14,6 +14,7 @@
 #  uuid                    :string(255)
 #  lock_version            :integer          default(0)
 #  extension               :string(255)
+#  fullname                :string
 #
 # Indexes
 #

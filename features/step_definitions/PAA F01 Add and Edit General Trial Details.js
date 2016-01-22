@@ -46,8 +46,8 @@ module.exports = function() {
 
 
     this.Given(/^I have selected a trial to abstract$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I am on the General Trial Details screen$/, function (callback) {

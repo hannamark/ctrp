@@ -3,7 +3,7 @@
         <input type="text" id="other_id_edit" class="form-control input-sm" ng-model="model" auto-focus required>
     </div>
     <div class="col-xs-6 col-sm-2"><button type="button" id="cancel_edit_btn" class="btn btn-warning" ng-click="cancelEdit()">Cancel</button></div>
-    <div class="col-xs-6 col-sm-2"><button type="button" id="save_id_btn" class="btn btn-success" ng-click="saveEdit()" ng-disabled="model.length == 0" restriction-field>Save</button></div>
+    <div class="col-xs-6 col-sm-2"><button type="button" id="save_id_btn" class="btn btn-success" ng-click="saveEdit()" restriction-field>Save</button></div>
 </div>
 <div ng-hide="editMode">
     <span ng-mouseenter="showEdit = true" ng-mouseleave="showEdit = false">

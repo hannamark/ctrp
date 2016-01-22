@@ -25,6 +25,10 @@ var abstractionPageMenu = require('../support/abstractionCommonBar');
 var abstractionTrialSearchPage = require('../support/abstractionSearchTrialPage');
 //Abstraction common dependencies
 var abstractionCommonMethods = require('../support/abstractionCommonMethods');
+//Abstraction NCI Specific Information
+var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
+//List of Organization
+var OrgPage = require('../support/ListOfOrganizationsPage');
 
 
 module.exports = function() {
@@ -34,10 +38,15 @@ module.exports = function() {
     var commonFunctions = new abstractionCommonMethods();
     var pageMenu = new abstractionPageMenu();
     var pageSearchTrail = new abstractionTrialSearchPage();
+    var nciSpecific = new abstractionNCISpecific();
+    var searchOrg = new OrgPage();
     var searchTableHeader = '';
     var nciID = 'NCI-2014-00894'; //A Phase II Study of Ziv-aflibercept
-    var leadProtocolID = 'CTRP_01_4345';
+    var leadProtocolID = 'CTRP_01_1776';
     var searchResultCountText = 'Trial Search Results';
+    var adminDataNCISpecific = 'NCI specific information';
+    var nciSpecificStudySourceVal = '';
+    var nciSpecificStudySourceResltVal = '';
 
     /*
      Scenario: #1 I can view and edit the value for Study Source
@@ -55,44 +64,83 @@ module.exports = function() {
 
     this.Given(/^I am on the NCI Specific Information screen$/, function (callback) {
         pageMenu.homeSearchTrials.click();
-        commonFunctions.verifySearchTrialsPAScreen();
         login.clickWriteMode('On');
-        pageSearchTrail.setSearchTrialProtocolID('*');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
         pageSearchTrail.clickSearchTrialSearchButton();
-        var gar = 1 ;
-        if (gar == 1){
-            console.log('gar'+gar+'')
-        }
-        helper.wait_for(1000);
         commonFunctions.verifyPASearchResultCount(searchResultCountText);
-        commonFunctions.clickLinkText(leadProtocolID); //CTRP_01_4345
-        helper.wait_for(9000);
-
-
-        //function tableHeader() {
-        //    return tblHDR = pageSearchTrail.searchResultTable.getText();
-        //}
-        //searchTableHeader = tableHeader();
-        //console.log('Search result table header(s):['+searchTableHeader+']')
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolID); //CTRP_01_6894
+        //nciSpecific.clickAdminCheckOut();
+        commonFunctions.adminCheckOut();
+        nciSpecific.clickAdminDataNCISpecificInformation();
         browser.sleep(25).then(callback);
-
     });
 
     this.Given(/^see the value for Study Source$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        nciSpecific.nciSpecificStudySource.$('option:checked').getText().then(function(value){
+            var pasNCISpecStudySource = ''+value+'';
+            function retNciSpecificStudySourceVal(){
+                return pasNCISpecStudySource;
+            }
+            nciSpecificStudySourceVal = retNciSpecificStudySourceVal();
+            console.log('System Identified ['+nciSpecificStudySourceVal+'] as the current Study Source selected value');
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I select a different Study Source value of National, Externally Peer\-Reviewed, Institutional, Industrial, or Other$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        if (nciSpecificStudySourceVal === 'National'){
+            nciSpecific.selectStudySource('Institutional');
+            var pasNCISpecNewVal = 'Institutional';
+            function retNCISpecNewVal(){
+                return pasNCISpecNewVal;
+            }
+            nciSpecificStudySourceResltVal = retNCISpecNewVal();
+        };
+        if (nciSpecificStudySourceVal === 'Externally Peer-Reviewed'){
+            nciSpecific.selectStudySource('Institutional');
+            var pasNCISpecNewVal = 'Institutional';
+            function retNCISpecNewVal(){
+                return pasNCISpecNewVal;
+            }
+            nciSpecificStudySourceResltVal = retNCISpecNewVal();
+        };
+        if (nciSpecificStudySourceVal === 'Institutional'){
+            nciSpecific.selectStudySource('National');
+            var pasNCISpecNewVal = 'National';
+            function retNCISpecNewVal(){
+                return pasNCISpecNewVal;
+            }
+            nciSpecificStudySourceResltVal = retNCISpecNewVal();
+        };
+        if (nciSpecificStudySourceVal === 'Industrial'){
+            nciSpecific.selectStudySource('National');
+            var pasNCISpecNewVal = 'National';
+            function retNCISpecNewVal(){
+                return pasNCISpecNewVal;
+            }
+            nciSpecificStudySourceResltVal = retNCISpecNewVal();
+        };
+        if (nciSpecificStudySourceVal === 'Other'){
+            nciSpecific.selectStudySource('National');
+            var pasNCISpecNewVal = 'National';
+            function retNCISpecNewVal(){
+                return pasNCISpecNewVal;
+            }
+            nciSpecificStudySourceResltVal = retNCISpecNewVal();
+        };
+        nciSpecific.clickSave();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the selected value for Study Source will be associated with the trial$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        nciSpecific.clickAdminDataGeneralTrial();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        nciSpecific.getVerifyListValue(nciSpecific.nciSpecificStudySource,nciSpecificStudySourceResltVal,"Study Source field validation");
+        login.logout();
+        browser.sleep(25).then(callback);
     });
-
 
     /*
      Scenario: #2 I can associate one or more organizations as the Specific Funding Source for a clinical trial
@@ -103,21 +151,34 @@ module.exports = function() {
      Then the selected organization will be associated to the trial as Specific Funding Source
      */
 
-
     this.Given(/^I am on the NCI Specific Information page screen$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolID);
+        commonFunctions.adminCheckOut();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial \(sponsor, Lead, IRB\) are displayed$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        nciSpecific.clickSearchOrganization();
+        helper.wait_for(9000);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the selected organization will be associated to the trial as Specific Funding Source$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
     });
+
+
+
+
 
     this.When(/^I have selected the organization to remove from the trial's Specific Funding Source$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
