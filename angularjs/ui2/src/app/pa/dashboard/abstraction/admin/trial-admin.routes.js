@@ -30,7 +30,7 @@
                     }
                 })
             .state('main.pa.trialOverview.regulatoryFda', {
-                url: '/regFda',
+                url: '/reg-fda',
                 templateUrl: 'app/pa/dashboard/abstraction/admin/trial_regulatory_fda.html',
                 controller: 'trialRegFdaCtrl as trialDetailView',
                 section: 'pa',
@@ -54,7 +54,7 @@
                 }
             })
             .state('main.pa.trialOverview.regulatoryInd', {
-                url: '/regInd',
+                url: '/reg-ind',
                 templateUrl: 'app/pa/dashboard/abstraction/admin/trial_regulatory_ind.html',
                 controller: 'trialRegIndCtrl as trialDetailView',
                 section: 'pa',
@@ -105,7 +105,7 @@
             })
 
             .state('main.pa.trialOverview.nciInfo', {
-                    url: '/nciInfo',
+                    url: '/nci-info',
                     templateUrl: 'app/pa/dashboard/abstraction/admin/trial_nci.html',
                     controller: 'trialNciCtrl as trialNciView',
                     section: 'pa',
