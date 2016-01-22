@@ -3,32 +3,8 @@ Feature: PA F07 View and Add Trial Milestones
 
 As any CTRP PA User, I can View and Add Milestones
 
-Scenario: #1 I view current trial milestones
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a Trial
-And I am on the Trial Milestones Screen
-Then I can view the trail milestone information for the current (most recent) submission number Ordered by Milestone Date and Time with the oldest Date and Time first:
-|Submission Number| 
-|Milestone|
-|Milestone Date and Time| 
-|Comment|
-|Creator (Username)|
-|Creation Date (Date and Time)|
 
-Scenario: #2 I view any submission trial milestones
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a Trial
-And I am on the Trial Milestones Screen
-And I have selected a submission number
-Then I can view the trail milestone information for the selected submission number Ordered by Milestone Date and Time with the oldest  Date and Time first:
-|Submission Number| 
-|Milestone|
-|Milestone Date and Time| 
-|Comment|
-|Creator (Username)|
-|Creation Date (Date and Time)|
-
-Scenario: #3 I can add trial milestones
+Scenario: #1 I can add trial milestones
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial Milestones Screen
@@ -37,11 +13,6 @@ And I can view the trail milestone information for the current
 And I can select a Milestone from the list:
 | Submission Received Date|
 |Submission Acceptance Date|
-|Validation Processing Start Date              |
-|Validation Processing Completed Date          |
-|Ready for Validation QC Date                  |
-|Validation QC Start Date                      |
-|Validation QC Completed Date                  |
 |Submission Terminated Date|
 |Submission Reactivated Date|
 |Submission Rejection Date|
@@ -64,9 +35,50 @@ And I can select a Milestone from the list:
 And I can enter the date
 And I can enter a comment
 Then the information will be associated with the trial
+ 
+ Scenario:#2 I can Add Trial Milestones Reason rule
+    Given I am on the Add Milestone screen
+     When I have selected a milestone type from the Milestone list 
+     
+      | Submission Rejection Date |
+      | Late Rejection Date |
 
+   Then A Rejection Reason field will be displayed
+   And I have to select a reason from the dropdown list type
+   
+      | Out of Scope |
+      | Duplicate |
+      | Other  |
+    And I have to enter a Date
+    And I have to enter a comment in the comment box
+    And both the rejection reason and the rejection comment will be displayed in the comment column of Trial Milestones table
 
-Scenario Outline:#4 Trial Milestones Recording Rules
+Scenario: #3 I view current trial milestones
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a Trial
+And I am on the Trial Milestones Screen
+Then I can view the trail milestone information for the current (most recent) submission number Ordered by Milestone Date and Time with the oldest Date and Time first:
+|Submission Number| 
+|Milestone|
+|Milestone Date and Time| 
+|Comment|
+|Creator (Username)|
+|Creation Date (Date and Time)|
+
+Scenario: #4 I view any submission trial milestones
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a Trial
+And I am on the Trial Milestones Screen
+And I have selected a submission number
+Then I can view the trail milestone information for the selected submission number Ordered by Milestone Date and Time with the oldest  Date and Time first:
+|Submission Number| 
+|Milestone|
+|Milestone Date and Time| 
+|Comment|
+|Creator (Username)|
+|Creation Date (Date and Time)|
+
+Scenario Outline:#5 Trial Milestones Recording Rules
   Given : I am logged into the CTRP Protocol Abstraction Application
     And I have selected a Trial
     And I am on the Trial Milestones Screen
