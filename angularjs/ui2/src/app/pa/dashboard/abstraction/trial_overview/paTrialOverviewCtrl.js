@@ -50,7 +50,7 @@
 
         function checkoutTrial(checkoutType) {
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
-                console.log('checkout result: ', res.result);
+                // console.log('checkout result: ', res.result);
                 updateTrialDetailObj(res.result);
                 showToastr(checkoutType + ' checkout was successful!', 'top right');
             });
@@ -58,7 +58,7 @@
 
         function checkinTrial(checkinType) {
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
-                console.log('checkin result: ', res.result);
+                // console.log('checkin result: ', res.result);
                 updateTrialDetailObj(res.result);
                 showToastr(checkinType + ' checkin was successful!', 'top right')
             });
@@ -70,8 +70,8 @@
          */
         function updateTrialDetailObj(data) {
             console.log('in updating trial detail obj, admin_checkout: ' + data.admin_checkout + ', scientific_checkout: ' + data.scientific_checkout);
-            vm.trialDetailObj.admin_checkout = !!vm.trialDetailObj.admin_checkout ? JSON.parse(data.admin_checkout) : null;
-            vm.trialDetailObj.scientific_checkout = !!vm.trialDetailObj.scientific_checkout ? JSON.parse(data.scientific_checkout) : null;
+            vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
+            vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
             if (!vm.trialDetailObj.pi.fullName) {
                 vm.trialDetailObj.pi.fullName = PersonService.extractFullName(vm.trialDetailObj.pi);
