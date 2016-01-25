@@ -57,7 +57,16 @@ json.last_amendment_date @trial.milestone_wrappers.present? ?
 
 json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
 
-json.submitter @trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : Person.find(@trial.submissions.last.user_id))
+## get trial's last submitter
+submitter = @trial.submissions.empty? ? nil : (@trial.submissions.last.user_id.nil? ? nil : @trial.submissions.last.user)
+
+## submitter's username
+json.submitter submitter.nil? ? '' : submitter.username
+
+## get the submitter's organization name
+json.submitters_organization submitter.nil? ? '' : (submitter.organization.nil? ? '' : submitter.organization.name)
+
+#@trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : @trial.submissions.last.user.prs_organization_name) # Organization.find(@trial.submissions.last.user.organization_id)
 
 json.last_submission_source @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_source_id.nil? ? '' : SubmissionSource.find(@trial.submissions.last.submission_source_id))
 

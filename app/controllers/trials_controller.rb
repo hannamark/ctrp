@@ -357,6 +357,22 @@ class TrialsController < ApplicationController
     end
   end
 
+  def search_clinical_trials_gov
+    # TODO Search existing trials using NCT ID
+    @search_result = {}
+    url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+    url = url.sub('NCT********', params[:nct_id])
+    begin
+      xml = Nokogiri::XML(open(url))
+    rescue OpenURI::HTTPError
+      @search_result[:error_msg] = 'A study with the given identifier is not found in ClinicalTrials.gov.'
+    else
+      @search_result[:official_title] = xml.xpath('//official_title').text
+      @search_result[:status] = xml.xpath('//overall_status').text
+      @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_trial
@@ -376,7 +392,7 @@ class TrialsController < ApplicationController
                                     :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :keywords,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
-                                    central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id],
+                                    central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
                                     trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id,

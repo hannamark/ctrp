@@ -1,6 +1,6 @@
 @PA @global
 Feature:   PAS F05 Add and Edit Eligibility Criteria 
-As a CTRP Scientific Abstractor, I can add and edit Eligibility Criteria
+As a CTRP Scientific Abstractor, I can add, edit and Delete Eligibility Criteria
 
 Scenario: #1 I can add and edit Eligibility Criteria for an Interventional trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -148,7 +148,12 @@ Then the Add/Edit Eligibility screen displays
 And Eligibility Criterion Type is defaulted to Inclusion
 And I have entered a value in Eligibility Criterion Description
 When I have selected Save
-Then the Inclusion Eligibility Criteria will be associated with the trial
+Then the Inclusion Eligibility Criteria will be Displayed as
+
+      |Eligibility Criterion Type  |
+      |Eligibility Criterion Description  |
+
+
 And ‘Record Created’ message displays
 
 Scenario: #11  Add Exclusion Criteria
@@ -161,7 +166,11 @@ Then the Add/Edit Eligibility screen displays
 And Eligibility Criterion Type is defaulted to Exclusion
 And I have entered a value in Eligibility Criterion Description
 When I have selected Save
-Then the Inclusion Eligibility Criteria will be associated with the trial
+Then the Exclusion Eligibility Criteria will be displayed
+
+      |Eligibility Criterion Type  |
+      |Eligibility Criterion Description  | 
+
 And ‘Record Created’ message displays
 
 Scenario: #12  Edit  Other Criteria
@@ -203,43 +212,30 @@ Scenario:  #15 I can Delete Eligibility Criterion for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Eligibility Criterion screen
-When I have selected the Delete check box for an eligibility criteria 
-And I have selected another delete check box for an eligibility criteria
-And have clicked on Delete button
-And the message displays 'click OK to remove selected eligibility criteria(s) form the study. Click Cancel to abort'
-And I have clicked on OK
+When I have selected the Delete check box for one or more eligibility criteria 
+And I have clicked on the delete Criterion Button
+And the message displays 'click OK to remove selected eligibility criteria(s) fromm the study. Click Cancel to abort'
+When I have clicked on OK
 Then the Eligibility Criterion (s) is removed from the trial record
-When I have clicked the Select All button
-Then the Delete check box is checked for all entries
-When I have clicked on Delete button
-Then the message displays 'click OK to remove selected eligibility criteria(s) form the study. Click Cancel to abort'
-When I click on the OK button 
-Then the eligibility criteria(s) is removed from the trial record
-And the message ‘Record(s) deleted’ displays
-When I have clicked on the cancel button 
-Then the eligibility criteria is not removed 
-And no message displays
+When I have clicked on Cancel
+Then the Eligibility Criterion will not be deleted
 
-Scenario:  #16 I can cancel on the Eligibility Criteria screen
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Eligibility Criteria screen
-And I have updated the Eligibility Criteria 
-When I select the Cancel button 
-Then the Eligibility Criteria that was entered or updated will not be saved to the trial record
-And the screen will be refreshed with data since the last save
+  Scenario: #16 I can delete all Eligibility Criterion for a Trial
+    Given I am logged into the CTRP Protocol Abstraction Application
+    And I am on the Eligibility Criteria Screen
+    When I click on the Select All Button on the Other Criteria section
+    Then the Delete check box is checked for all entries
+    When I have clicked on Delete Criterion button
+   Then the message displays 'click OK to remove selected eligibility criteria(s) form the study. Click Cancel to abort'
+    When I click on the OK button 
+    Then the eligibility criteria(s) is removed from the trial record
+    And the message ‘Record(s) deleted’ displays
+    When I have clicked on the cancel button 
+    Then the eligibility criteria is not removed 
+    And no message displays
 
-Scenario:  #17 I can cancel on the Add/Edit Eligibility Criteria screen
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Add/Edit Eligibility Criteria screen
-And I have updated the Eligibility Criteria 
-When I select the Cancel button 
-Then the Eligibility Criteria that was entered or updated will not be saved to the trial record
-And the screen will be refreshed with data since the last save
-And the Eligibility Criteria screen displays
 
-Scenario:  #18 I can reset on the Add/Edit Eligibility Criteria screen
+Scenario:  #17 I can reset on the Add/Edit Eligibility Criteria screen
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add/Edit Eligibility Criteria screen

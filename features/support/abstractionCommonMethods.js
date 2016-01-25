@@ -26,6 +26,8 @@ var abstractionPageMenu = require('../support/abstractionCommonBar');
 var poMenuItemList = require('../support/PoCommonBar');
 //Abstraction PA Search Trial Page
 var paSearchTrialPage = require('../support/abstractionSearchTrialPage');
+//Abstraction NCI Specific Information
+var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
 
 var abstractionCommonMethods = function(){
     /*******
@@ -41,6 +43,7 @@ var abstractionCommonMethods = function(){
     var paSearch = new paSearchTrialPage();
     var poHome = new poMenuItemList();
     var reader;
+    var nciSpecific = new abstractionNCISpecific();
 
     var loginTxtVerif = 'CTRP Sign In';
     var loginCredTxtVerif = 'Please sign in to continue.';
@@ -49,6 +52,7 @@ var abstractionCommonMethods = function(){
     var iteraCntLg = '';
     var searchTrialsTxt = 'Search Trials * for wild card';
     var rsltCountValRT = '';
+    var rsltGridValRT = '';
 
     /*****************************************
      * Verify Search Trials(PA) screen
@@ -57,21 +61,45 @@ var abstractionCommonMethods = function(){
         expect(paSearch.searchTrialProtocolID.isDisplayed()).to.eventually.equal(true);
         expect(paSearch.searchTrialOfficialTitle.isDisplayed()).to.eventually.equal(true);
         expect(paSearch.searchTrialIdentifiertype.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialPurpose.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialPhase.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialPrincipalInvestigator.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialPilotTrial.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialOrganization.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialOrganizationType.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialTrialStatus.isDisplayed()).to.eventually.equal(true);
-        //expect(paSearch.searchTrialStudySource.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialMilestone.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialProcessingStatus.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialResearchCategory.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialNIHNCIDivDeptIdentifier.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialNIHNCIProgramIdentifier.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialSearchButton.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialClearButton.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialPurpose.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialPhase.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialPrincipalInvestigator.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialPilotTrial.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialOrganization.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialOrganizationType.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialTrialStatus.isDisplayed()).to.eventually.equal(true);
+        ////expect(paSearch.searchTrialStudySource.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialMilestone.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialProcessingStatus.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialResearchCategory.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialNIHNCIDivDeptIdentifier.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialNIHNCIProgramIdentifier.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialSearchButton.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialClearButton.isDisplayed()).to.eventually.equal(true);
+    };
+
+
+    /*****************************************
+     * Click first link from the result grid
+     *****************************************/
+    this.clickGridFirstLink = function(row, col){
+       //var gridFirstCell = element.all(by.binding('grid.getCellValue(row, col)')).count();
+        element.all(by.binding('grid.getCellValue(row, col)')).getText().then(function(value){
+            var rsltGrid = value;
+            console.log('rsltGrid['+rsltGrid+'');
+            function RetrsltCnt(){
+                return rsltGrid;
+            }
+            rsltGridValRT = RetrsltCnt();
+
+        });
+    };
+
+    this.girdFirstValue = function(){
+        console.log('rsltGridValRT['+rsltGridValRT+'');
+        var splitGridColVal = rsltGridValRT.split(',');
+        var rwClFstVal = splitGridColVal[0];
+        console.log('rwClFstVal['+rwClFstVal+'');
     };
 
     /*****************************************
@@ -79,7 +107,7 @@ var abstractionCommonMethods = function(){
      *****************************************/
     this.clickLinkText = function(lnkTxt){
         element(by.linkText(''+ lnkTxt +'')).click();
-    }
+    };
 
     /*****************************************
      * Verify Search Result Text
@@ -92,15 +120,15 @@ var abstractionCommonMethods = function(){
                 return rsltCnt;
             }
             rsltCountValRT = RetrsltCnt();
+            var spltValRsltCnt = rsltCountValRT.split(':');
+            var rsltCntTxt = spltValRsltCnt[0];
+            console.log('rsltCntTxt['+rsltCntTxt+'');
+            var rsltCntInt = spltValRsltCnt[1];
+            console.log('rsltCntInt['+rsltCntInt+'');
+            var buildRsltCntStrng = ''+txtToVerify+':'+rsltCntInt+'';
+            console.log('buildRsltCntStrng['+buildRsltCntStrng+'');
+            expect(paSearch.trialSearchPageResultCount.getText()).to.eventually.equal(buildRsltCntStrng);
         });
-        var spltValRsltCnt = rsltCountValRT.split(':');
-        var rsltCntTxt = spltValRsltCnt[0];
-        console.log('rsltCntTxt['+rsltCntTxt+'');
-        var rsltCntInt = spltValRsltCnt[1];
-        console.log('rsltCntInt['+rsltCntInt+'');
-        var buildRsltCntStrng = ''+txtToVerify+': '+rsltCntInt+'';
-        console.log('buildRsltCntStrng['+buildRsltCntStrng+'');
-        expect(paSearch.trialSearchPageResultCount.getText()).to.eventually.equal(txtToVerify);
     };
 
     /*****************************************
@@ -175,6 +203,7 @@ var abstractionCommonMethods = function(){
         console.log(configuration.trialSubmitterPWD);
         //App URL
         browser.get(configuration.uiUrl);
+        helper.wait_for(300);
         //Verify Homepage
         var BrwsrVal = browser.getCurrentUrl();
         iteraCntLg = iteraCntLg + 1;
@@ -261,7 +290,40 @@ var abstractionCommonMethods = function(){
 
     };
 
+    /*****************************************
+     * Admin Checkout
+     *****************************************/
+    this.adminCheckOut = function (){
+        nciSpecific.nciSpecificAdminCheckIn.isDisplayed().then(function(result) {
+            if (result) {
+                nciSpecific.nciSpecificAdminCheckIn.getText().then(function(value)   {
+                    if (value === 'Admin Check In') {
+                        console.log('Trial has been already checked out');
+                    }
+                });
+            } else {
+                nciSpecific.clickAdminCheckOut();
+            }
+        });
+    };
 
+    /*****************************************
+     * Wait for element
+     *****************************************/
+    this.wait = function (element, label) {
+        browser.wait(function () {
+            return element.isPresent().then(function (state) {
+                if (state === true) {
+                    return element.isDisplayed().then(function (state2) {
+                        return state2 === true;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        }, 10000, label + " did not appear");
+        browser.sleep(250);
+    };
 
 };
 

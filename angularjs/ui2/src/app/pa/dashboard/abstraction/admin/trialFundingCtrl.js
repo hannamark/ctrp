@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialFundingCtrl', trialFundingCtrl);
 
-    trialFundingCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'instituteCodeObj', 'fundingMechanismObj', 'nciObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialFundingCtrl.$inject = ['TrialService', 'PATrialService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'instituteCodeObj', 'fundingMechanismObj', 'nciObj'];//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialFundingCtrl(TrialService, $scope, $state, toastr, trialDetailObj, instituteCodeObj, fundingMechanismObj, nciObj){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialFundingCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, instituteCodeObj, fundingMechanismObj, nciObj){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.grantorArr = [];
@@ -49,7 +49,16 @@
 
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                vm.curTrial.lock_version = response.lock_version || '';
+                //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                $scope.$emit('updatedInChildScope', {});
+
+                toastr.clear();
+                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
@@ -135,7 +144,27 @@
         /****************** implementations below ***************/
         function activate() {
             appendGrants();
+            getTrialDetailCopy();
+            watchTrialDetailObj();
         }
+
+        /**
+         * Get trial detail object from parent scope
+         */
+        function watchTrialDetailObj() {
+            $scope.$on(MESSAGES.TRIAL_DETAIL_SAVED, function() {
+                getTrialDetailCopy();
+            });
+        } //watchTrialDetailObj
+
+        function getTrialDetailCopy() {
+            $timeout(function() {
+                vm.curTrial = PATrialService.getCurrentTrialFromCache();
+                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+            }, 1);
+        } //getTrialDetailCopy
+
+
 
         function appendGrants() {
             for (var i = 0; i < vm.curTrial.grants.length; i++) {
