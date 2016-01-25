@@ -55,6 +55,7 @@
             'TRIAL_STATUSES': '/ctrp/registry/trial_statuses.json',
             'ACCEPTED_FILE_TYPES': '/ctrp/registry/accepted_file_types.json',
             'VALIDATE_TRIAL_STATUS': '/ctrp/registry/trials/validate_status.json',
+            'SEARCH_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/search_clinical_trials_gov.json',
             'NCI_DIV_PA': '/ctrp/pa/nih_nci_div_pa.json',
             'NCI_PROG_PA': '/ctrp/pa/nih_nci_prog_pa.json',
             'SUBMISSION_METHODS': '/ctrp/pa/submission_methods.json',
