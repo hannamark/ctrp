@@ -75,7 +75,6 @@
 #  gender_id                     :integer
 #  min_age_unit_id               :integer
 #  max_age_unit_id               :integer
-#  anatomic_site_id              :integer
 #  num_of_arms                   :integer
 #  verification_date             :date
 #  sampling_method               :string(255)
@@ -96,7 +95,6 @@
 #
 #  index_trials_on_accrual_disease_term_id   (accrual_disease_term_id)
 #  index_trials_on_allocation_id             (allocation_id)
-#  index_trials_on_anatomic_site_id          (anatomic_site_id)
 #  index_trials_on_assigned_to_id            (assigned_to_id)
 #  index_trials_on_biospecimen_retention_id  (biospecimen_retention_id)
 #  index_trials_on_board_affiliation_id      (board_affiliation_id)
@@ -163,7 +161,6 @@ class Trial < ActiveRecord::Base
   belongs_to :gender
   belongs_to :min_age_unit, class_name: "AgeUnit"
   belongs_to :max_age_unit, class_name: "AgeUnit"
-  belongs_to :anatomic_site
   belongs_to :study_model
   belongs_to :time_perspective
   belongs_to :biospecimen_retention
@@ -188,6 +185,7 @@ class Trial < ActiveRecord::Base
   has_many :collaborators, -> { order 'collaborators.id' }
   has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
   has_many :users, through: :trial_ownerships
+  has_many :anatomic_site_wrappers, -> { order 'anatomic_site_wrappers.id' }
 
   attr_accessor :edit_type
   attr_accessor :current_user
