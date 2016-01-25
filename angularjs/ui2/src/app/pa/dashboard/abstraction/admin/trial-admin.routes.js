@@ -76,6 +76,16 @@
                     label: 'Regulatory IND/IDE Details'
                 }
             })
+            .state('main.pa.trialOverview.regulatoryInfoHumanSafety', {
+                url: '/reg-info-human-subject-safety',
+                templateUrl: 'app/pa/dashboard/abstraction/admin/regulatory_info_human_subject_safety.html',
+                controller: 'regulatoryInfoHumanSafetyCtrl as regInfoSafetyView',
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Regulatory Information - Human Subject Safety'
+                }
+            })
 
             .state('main.pa.trialOverview.funding', {
                 url: '/funding',
@@ -130,6 +140,7 @@
                         label: 'NCI Specific Information'
                     }
                 });
+
 
     } //trialAbstractionRoutes
 
