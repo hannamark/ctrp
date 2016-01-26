@@ -112,6 +112,26 @@
                     label: 'Funding Details'
                 }
             })
+            .state('main.pa.trialOverview.collaborators', {
+                url: '/collaborators',
+                templateUrl: 'app/pa/dashboard/abstraction/admin/trial_collaborators.html',
+                controller: 'trialCollaboratorsCtrl as trialDetailView',
+                section: 'pa',
+                resolve: {
+                    TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    fundingMechanismObj: function(TrialService) {
+                        return TrialService.getFundingMechanisms();
+                    },
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Collaborators Details'
+                }
+            })
 
             .state('main.pa.trialOverview.nciInfo', {
                     url: '/nci-info',
