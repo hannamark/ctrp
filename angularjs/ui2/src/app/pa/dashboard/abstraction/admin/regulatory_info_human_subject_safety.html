@@ -1,1 +1,54 @@
-<strong>Placeholder</strong>
+<div class="row">
+    <uib-accordion close-others="false">
+        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+            <uib-accordion-heading>
+                Human Subject Safety Information <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+            </uib-accordion-heading>
+            <!-- first row in the accordion body -->
+            <div class="row">
+                <form class="form-horizontal" role="form" name="human_safety_form" novalidate ctrp-submit="regInfoSafetyView.updateHumanSafetyInfo()">
+                    <!-- board approval status -->
+                    <div class="form-group">
+                        <label for="board_approval_status" class="control-label col-xs-12 col-sm-4">Board Approval Status</label>
+                        <div class="col-xs-12 col-sm-4">
+                            <select name="approval_status" id="board_approval_status"
+                                class="form-control input-sm"
+                                ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
+                                ng-model="regInfoSafetyView.infoObj.approval_status" restriction-field
+                                ng-options="status.id as status.name for status in regInfoSafetyView.statuses">
+                                <option value="">
+                                    Select a status
+                                </option>
+                            </select>
+                        </div>
+                        <!-- offset below -->
+                        <div class="col-sm-4"></div>
+                    </div>
+                    <!-- end of board approval status -->
+
+                    <!-- board approval number -->
+                    <div class="form-group">
+                        <label for="approval_number" class="control-label col-xs-12 col-sm-4">Board Approval Number</label>
+                        <div class="col-xs-12 col-sm-4">
+                            <input type="text" name="approval_number" id="approval_number" class="form-control input-sm">
+                        </div>
+                    </div>
+                    <!-- end of board approval number -->
+
+                    <!-- Board Affiliation -->
+                    <div class="form-group">
+                        <label for="board_affiliation" class="control-label col-xs-12 col-sm-4">Board Affiliation</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="board_affiliation" name="board_affiliation" ng-model="regInfoSafetyView.boardAffiliatedWith.name" disabled class="form-control input-sm" placeholder="Affiliated Organization">
+                        </div>
+                        <div class="col-sm-4">
+                            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="regInfoSafetyView.boardAffiliatedWith.array"></ctrp-org-adv-search-modal-button>
+                        </div>
+                    </div>
+                    <!-- end of Board Affiliation -->
+
+                </form>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
+</div> <!-- outer row -->
