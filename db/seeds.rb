@@ -539,6 +539,15 @@ contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
 contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
 contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
 
+
+## Board Approval Statuses
+approval_status1 = BoardApprovalStatus.find_or_create_by(code: 'UNSUBMITTED', name: 'Request not yet submitted')
+approval_status2 = BoardApprovalStatus.find_or_create_by(code: 'SUBPENDING', name: 'Submitted, pending')
+approval_status3 = BoardApprovalStatus.find_or_create_by(code: 'SUBAPPROVED', name: 'Submitted, approved')
+approval_status4 = BoardApprovalStatus.find_or_create_by(code: 'SUBEXEMPT', name: 'Submitted, exempt')
+approval_status5 = BoardApprovalStatus.find_or_create_by(code: 'SUBDENIED', name: 'Submitted, denied')
+approval_status6 = BoardApprovalStatus.find_or_create_by(code: 'SUBUNREQUIRED', name: 'Submission not required')
+
 total_orgs = Organization.all.size
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
