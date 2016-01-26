@@ -3,7 +3,7 @@ Feature: As a CTRP Abstractor, I can add and edit Arms
 
 Scenario: #1 I can add Arm/Group for an Interventional trial
 Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial with Clinical Research Category = Interventional
+And I have selected a trial with Clinical Research Category "Interventional"
 And I am on the Arms/Groups screen
 And I have entered a value for Label
 And I have selected a value for <Type>
@@ -20,9 +20,18 @@ When I have selected Save
 Then the Arm Details for the Interventional Trial will be associated with the trial
 And the Arm details will display on the Arms/Group screen
 
+
+      |Label	  |
+      |Type  |
+      |Description  |
+      |Assigned Interventions  |
+      |Edit  |
+      |Delete  |
+
+
 Scenario: #2 I can Edit an Arm for an Interventional trial
 Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial with Clinical Research Category = Interventional
+And I have selected a trial with Clinical Research Category "Interventional"
 And I am on the Arms/Groups screen
 And I have clicked on the Edit icon for a specific Arm
 And the Edit Arm/Group details display for editing 
@@ -36,7 +45,7 @@ And the updated Arm details will display on the Arms/Group screen
 
 Scenario: #3 I can add a Arms/Group for an Observational or Ancillary-Correlative trial
 Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial with Clinical Research Category type = Observational or Ancillary-Correlative
+And I have selected a trial with Clinical Research Category type "Observational" or "Ancillary-Correlative"
 And I am on the Arms/Groups screen
 And I have entered a value for Label
 And I have entered a value for Description
@@ -44,10 +53,16 @@ And I have selected a value for Assignment in Intervention Assignment table
 When I have selected Save
 Then the Group Details for the Observational/Ancillary-Correlative Trial will be associated with the trial
 And the Group details will display on the Arms/Group screen
+      |Label	  |
+      |Description  |
+      |Assigned Interventions  |
+      |Edit  |
+      |Delete  |
+
 
 Scenario: #4 I can Edit a Group for an Observational or Ancillary-Correlative trial
 Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial with Clinical Research Category type = Observational or Ancillary-Correlative 
+And I have selected a trial with Clinical Research Category type "Observational" or "Ancillary-Correlative" 
 And I am on the Arms/Groups screen
 And I have clicked on the Edit icon for a specific Group
 And the Edit Arm/Group details display for editing 

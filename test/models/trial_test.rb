@@ -75,7 +75,6 @@
 #  gender_id                     :integer
 #  min_age_unit_id               :integer
 #  max_age_unit_id               :integer
-#  anatomic_site_id              :integer
 #  num_of_arms                   :integer
 #  verification_date             :date
 #  sampling_method               :string(255)
@@ -96,7 +95,6 @@
 #
 #  index_trials_on_accrual_disease_term_id   (accrual_disease_term_id)
 #  index_trials_on_allocation_id             (allocation_id)
-#  index_trials_on_anatomic_site_id          (anatomic_site_id)
 #  index_trials_on_assigned_to_id            (assigned_to_id)
 #  index_trials_on_biospecimen_retention_id  (biospecimen_retention_id)
 #  index_trials_on_board_affiliation_id      (board_affiliation_id)

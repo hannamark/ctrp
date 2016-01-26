@@ -30,7 +30,7 @@
                     }
                 })
             .state('main.pa.trialOverview.regulatoryFda', {
-                url: '/regFda',
+                url: '/reg-fda',
                 templateUrl: 'app/pa/dashboard/abstraction/admin/trial_regulatory_fda.html',
                 controller: 'trialRegFdaCtrl as trialDetailView',
                 section: 'pa',
@@ -53,8 +53,24 @@
                     label: 'Regulatory FDA Details'
                 }
             })
+            .state('main.pa.trialOverview.regulatoryInfoHumanSafety', {
+                url: '/regulatory-info-human-subject-safety',
+                templateUrl: 'app/pa/dashboard/abstraction/admin/regulatory_info_human_subject_safety.html',
+                controller: 'regulatoryInfoHumanSafetyCtrl as regInfoSafetyView',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    boardApprovalStatuses: function(PATrialService) {
+                        return PATrialService.getBoardApprovalStatuses();
+                    }
+                },
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Regulatory Information - Human Subject Safety'
+                }
+            })
             .state('main.pa.trialOverview.regulatoryInd', {
-                url: '/regInd',
+                url: '/reg-ind',
                 templateUrl: 'app/pa/dashboard/abstraction/admin/trial_regulatory_ind.html',
                 controller: 'trialRegIndCtrl as trialDetailView',
                 section: 'pa',
@@ -76,7 +92,6 @@
                     label: 'Regulatory IND/IDE Details'
                 }
             })
-
             .state('main.pa.trialOverview.funding', {
                 url: '/funding',
                 templateUrl: 'app/pa/dashboard/abstraction/admin/trial_funding.html',
@@ -103,9 +118,29 @@
                     label: 'Funding Details'
                 }
             })
+            .state('main.pa.trialOverview.collaborators', {
+                url: '/collaborators',
+                templateUrl: 'app/pa/dashboard/abstraction/admin/trial_collaborators.html',
+                controller: 'trialCollaboratorsCtrl as trialDetailView',
+                section: 'pa',
+                resolve: {
+                    TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    fundingMechanismObj: function(TrialService) {
+                        return TrialService.getFundingMechanisms();
+                    },
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Collaborators Details'
+                }
+            })
 
             .state('main.pa.trialOverview.nciInfo', {
-                    url: '/nciInfo',
+                    url: '/nci-info',
                     templateUrl: 'app/pa/dashboard/abstraction/admin/trial_nci.html',
                     controller: 'trialNciCtrl as trialNciView',
                     section: 'pa',
@@ -130,6 +165,7 @@
                         label: 'NCI Specific Information'
                     }
                 });
+
 
     } //trialAbstractionRoutes
 

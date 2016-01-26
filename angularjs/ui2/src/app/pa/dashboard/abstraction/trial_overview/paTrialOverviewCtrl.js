@@ -50,7 +50,7 @@
 
         function checkoutTrial(checkoutType) {
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
-                console.log('checkout result: ', res.result);
+                // console.log('checkout result: ', res.result);
                 updateTrialDetailObj(res.result);
                 showToastr(checkoutType + ' checkout was successful!', 'top right');
             });
@@ -58,7 +58,7 @@
 
         function checkinTrial(checkinType) {
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
-                console.log('checkin result: ', res.result);
+                // console.log('checkin result: ', res.result);
                 updateTrialDetailObj(res.result);
                 showToastr(checkinType + ' checkin was successful!', 'top right')
             });
@@ -73,7 +73,7 @@
             vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
-            if (!vm.trialDetailObj.pi.fullName) {
+            if (vm.trialDetailObj.pi && !vm.trialDetailObj.pi.fullName) {
                 vm.trialDetailObj.pi.fullName = PersonService.extractFullName(vm.trialDetailObj.pi);
             }
             // sort the submissions by DESC submission_num

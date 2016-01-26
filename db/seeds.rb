@@ -199,6 +199,16 @@ Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
 
+StudyClassification.find_or_create_by(code: 'BAV', name: 'Bio-availability')
+StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bio-equivalence')
+StudyClassification.find_or_create_by(code: 'EFF', name: 'Efficacy')
+StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
+StudyClassification.find_or_create_by(code: 'PD', name: 'Pharmacodynamics')
+StudyClassification.find_or_create_by(code: 'PK', name: 'Pharmacokinetics')
+StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dynamics')
+StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
+StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -382,6 +392,8 @@ trial_status_transition = '{
 
 AppSetting.find_or_create_by(code: 'TRIAL_STATUS_TRANSITION', name: 'Trial Status Transition Matrix', value: 'see big value', big_value: trial_status_transition)
 
+AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
+
 ########## SEEDING APP SETTINGS ENDS ##########
 if Organization.all.size == 0
 
@@ -527,6 +539,15 @@ contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
 contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
 contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
 
+
+## Board Approval Statuses
+approval_status1 = BoardApprovalStatus.find_or_create_by(code: 'UNSUBMITTED', name: 'Request not yet submitted')
+approval_status2 = BoardApprovalStatus.find_or_create_by(code: 'SUBPENDING', name: 'Submitted, pending')
+approval_status3 = BoardApprovalStatus.find_or_create_by(code: 'SUBAPPROVED', name: 'Submitted, approved')
+approval_status4 = BoardApprovalStatus.find_or_create_by(code: 'SUBEXEMPT', name: 'Submitted, exempt')
+approval_status5 = BoardApprovalStatus.find_or_create_by(code: 'SUBDENIED', name: 'Submitted, denied')
+approval_status6 = BoardApprovalStatus.find_or_create_by(code: 'SUBUNREQUIRED', name: 'Submission not required')
+
 total_orgs = Organization.all.size
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
@@ -567,7 +588,7 @@ tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" =
 shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shenpei", "last_name" => "Wu" }
 sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sarada", "last_name" => "Chintala" }
 hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Hemant", "last_name" => "Undale" }
-radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
+radhika = {"email" => "tekumall@nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
 
 ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika]
 
