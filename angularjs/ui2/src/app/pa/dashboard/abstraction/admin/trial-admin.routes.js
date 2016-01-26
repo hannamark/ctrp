@@ -57,6 +57,12 @@
                 url: '/regulatory-info-human-subject-safety',
                 templateUrl: 'app/pa/dashboard/abstraction/admin/regulatory_info_human_subject_safety.html',
                 controller: 'regulatoryInfoHumanSafetyCtrl as regInfoSafetyView',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    boardApprovalStatuses: function(PATrialService) {
+                        return PATrialService.getBoardApprovalStatuses();
+                    }
+                },
                 section: 'pa',
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',

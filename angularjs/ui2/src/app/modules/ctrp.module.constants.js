@@ -83,6 +83,7 @@
             'PA': {
                 'TRIALS_CHECKOUT_IN': '/ctrp/pa/trial/{:trialId}/{:checkWhat}/{:checkoutType}.json',
                 'TRIALS_CENTRAL_CONTACT_TYPES': '/ctrp/registry/trials/get_central_contact_types.json',
+                'BOARD_APPROVAL_STATUSES': '/ctrp/registry/trials/get_board_approval_statuses.json'
             }
         })
         .constant('MESSAGES', {
