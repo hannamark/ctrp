@@ -294,6 +294,10 @@
          * @return {String}           [full name, e.g. 'John Middle Doe']
          */
         function extractFullName(personObj) {
+            if (!personObj) {
+                return '';
+            }
+            
             var fullName = '';
             var firstName = personObj.fname || '';
             var middleName = personObj.mname || '';

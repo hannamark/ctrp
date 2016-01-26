@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PAA F04 Add and Edit Regulatory Information Human Subject Safety
 
 As any CTRP PA User, I can add and edit Regulatory Information � Human Subject Safety
@@ -55,26 +55,26 @@ When I select Reset
 Then the information entered or edited on the Regulatory Information - Human Subject Safety screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
-Scenario: #6 Regulatory Information - Human Subject Safety screen Information must be complete � status of approved
+Scenario: #6 Regulatory Information - Human Subject Safety screen Information must be complete for status of approved
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information - Human Subject Safety screen
 When I have selected a Board Approval Status of �Submitted, Approved�
+And the trial is not Imported
 And I have not entered an Approval Number
 And I have not entered a Board Name
 And I have not selected a Board Affiliation 
 And selected Save
-Then the system will display a warning that each of values that were not entered must be entered in order to associate the Regulatory Information - Human Subject Safety Information for the trial 
+Then the system will display an Error that Approval Number, Board Name, Board Affiliation must be entered in order to associate the Regulatory Information - Human Subject Safety Information for the trial 
 
 Scenario: #7 Regulatory Information - Human Subject Safety screen Information must be complete � �Submitted, Pending�, �Submitted. Denied�, or �Submitted, Exempt�
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information - Human Subject Safety screen
 When I have selected either of the Board Approval Status� of �Submitted, Pending�, �Submitted. Denied�, or �Submitted, Exempt�
-When I have selected either of the Board Approval Status� of �Submitted, Pending�, �Submitted, Denied�, or �Submitted, Exempt�
-And I have not entered an Approval Number
+And the trial is not Imported
 And I have not entered a Board Name
 And I have not selected a Board Affiliation 
 And selected Save
-Then the system will display a warning that each of values that were not entered must be entered in order to associate the Regulatory Information - Human Subject Safety Information for the trial 
+Then the system will display an Error that Board Name and Board Affiliation must be entered in order to associate the Regulatory Information - Human Subject Safety Information for the trial 
 
 Scenario: #8 I can add and edit the Board Affiliation 
 Given I am logged into the CTRP Protocol Abstraction application
