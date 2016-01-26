@@ -28,7 +28,7 @@ Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
 When I select the Program Code field I can edit the value for Program Code
 Then the selected value for Program Code will be associated with the trial
-
+  @runthis
 Scenario: #5 I can view and edit the values for NIH/NCI Division/Department Identifier
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
