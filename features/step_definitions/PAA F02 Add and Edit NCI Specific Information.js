@@ -29,6 +29,8 @@ var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
 //List of Organization
 var OrgPage = require('../support/ListOfOrganizationsPage');
+//Organization Search
+var orgSearch = require('../support/abstractionOrganizationSearch');
 
 
 module.exports = function() {
@@ -40,6 +42,7 @@ module.exports = function() {
     var pageSearchTrail = new abstractionTrialSearchPage();
     var nciSpecific = new abstractionNCISpecific();
     var searchOrg = new OrgPage();
+    var organizationSearch = new orgSearch();
     var searchTableHeader = '';
     var nciID = 'NCI-2014-00894'; //A Phase II Study of Ziv-aflibercept
     var leadProtocolID = 'CTRP_01_1776';
@@ -47,6 +50,13 @@ module.exports = function() {
     var adminDataNCISpecific = 'NCI specific information';
     var nciSpecificStudySourceVal = '';
     var nciSpecificStudySourceResltVal = '';
+    var orgSearchCntryList = 'All Countries';
+    var orgSearchNameA = 'Boston Medical Center';
+    var orgSearchNameB = 'Boston University School Of Public Health';
+    var orgSearchNameC = 'Memorial Hospital Colorado Springs';
+    var nciSpecificFundingSourceValA = '';
+    var programCode = '7771234';
+    var programCdeEdit = '8881234';
 
     /*
      Scenario: #1 I can view and edit the value for Study Source
@@ -165,44 +175,146 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial \(sponsor, Lead, IRB\) are displayed$/, function (callback) {
-        nciSpecific.clickSearchOrganization();
+    this.Given(/^I have selected funding source organization look\-up$/, function (callback) {
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameA);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        //organizationSearch.clickSearchOrganization();
+        //searchOrg.setOrgName(orgSearchNameB);
+        //searchOrg.clickSearchButton();
+        //searchOrg.selectOrgModelItem();
+        //searchOrg.clickOrgModelConfirm();
+        //organizationSearch.clickSearchOrganization();
+        //searchOrg.setOrgName(orgSearchNameC);
+        //searchOrg.clickSearchButton();
+        //searchOrg.selectOrgModelItem();
+        //searchOrg.clickOrgModelConfirm();
+        /*
+        organizationSearch.clickSearchOrganization();
+        //nciSpecific.getVerifyListValue(organizationSearch.orgSearchCountryList,orgSearchCntryList,"Organization Search Country field");
+        organizationSearch.setOrgSearchName('*');
+        organizationSearch.clickSearch();
+        organizationSearch.selectOrganizationFromGrid();
         helper.wait_for(9000);
+        //organizationSearch.clickOrganizationSelectionConfirmation();
+        */
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the selected organization will be associated to the trial as Specific Funding Source$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.When(/^a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial \(sponsor, Lead, IRB\) are displayed$/, function (callback) {
+        nciSpecific.clickSave();
+        browser.sleep(250).then(callback);
     });
 
+    this.Then(/^the selected organization will be associated to the trial as Specific Funding Source$/, function (callback) {
+        nciSpecific.clickAdminDataGeneralTrial();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        nciSpecific.verifyFundingSourceOrg(orgSearchNameA);
+        nciSpecific.clickFundingSourceOrganizationDel();
+        nciSpecific.clickSave();
+        //expect(nciSpecific.orgAddFundingSourceBostonMed.getText()).to.eventually.equal(orgSearchNameA);
+        //commonFunctions.wait(nciSpecific.orgAddFundingSourceBostonUni, "System displayed Funding Source - "+orgSearchNameB);
+        //expect(nciSpecific.orgAddFundingSourceBostonUni.getText()).to.eventually.equal(orgSearchNameB);
+        //commonFunctions.wait(nciSpecific.orgAddFundingSourceMemorialHos, "System displayed Funding Source - "+orgSearchNameC);
+        //expect(nciSpecific.orgAddFundingSourceMemorialHos.getText()).to.eventually.equal(orgSearchNameC);
+        browser.sleep(25).then(callback);
+    });
 
-
-
+    /*
+     Scenario: #3 I can unassociate one or more organizations from the Specific Funding Source for a clinical trial
+     Given I have selected a trial to abstract
+     And I am on the NCI Specific Information page screen
+     When I have selected the organization to remove from the trial's Specific Funding Source
+     Then the selected organization will not be associated to the trial as Specific Funding Source
+     */
 
     this.When(/^I have selected the organization to remove from the trial's Specific Funding Source$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        nciSpecific.clickSave();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the selected organization will not be associated to the trial as Specific Funding Source$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        nciSpecific.verifyFundingSourceOrg(orgSearchNameB);
+        nciSpecific.clickAdminDataGeneralTrial();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        nciSpecific.clickFundingSourceOrganizationDel();
+        nciSpecific.clickSave();
+        nciSpecific.clickAdminDataGeneralTrial();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        //nciSpecific.verifyFundingSourceOrg('');
+        browser.sleep(25).then(callback);
     });
 
+    /*
+     Scenario: #4 I can view and edit the Program Code
+     Given I am logged into the CTRP PA application
+     And I am on the NCI Specific Information screen
+     When I select the Program Code field I can edit the value for Program Code
+     Then the selected value for Program Code will be associated with the trial
+     */
+
     this.When(/^I select the Program Code field I can edit the value for Program Code$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        nciSpecific.setProgramCode(programCode);
+        nciSpecific.clickSave();
+        nciSpecific.clickAdminDataGeneralTrial();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        //expect(nciSpecific.nciSpecificProgramCode.getText()).to.eventually.equal(programCode);
+        login.logout();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolID); //CTRP_01_6894
+        //nciSpecific.clickAdminCheckOut();
+        commonFunctions.adminCheckOut();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        nciSpecific.setProgramCode(programCdeEdit);
+        nciSpecific.clickSave();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the selected value for Program Code will be associated with the trial$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        login.logout();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolID); //CTRP_01_6894
+        //nciSpecific.clickAdminCheckOut();
+        commonFunctions.adminCheckOut();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        nciSpecific.verifyProgramCode(programCdeEdit)
+        //expect(nciSpecific.nciSpecificProgramCode.getText()).to.eventually.equal(programCdeEdit);
+        browser.sleep(25).then(callback);
     });
+
+    /*
+     Scenario: #5 I can view and edit the values for NIH/NCI Division/Department Identifier
+     Given I am logged into the CTRP PA application
+     And I am on the NCI Specific Information screen
+     And see the value for NIH/NCI Division/Department Identifier
+     When I select one or more values from the for the NIH/NCI Division/Department Identifier (CCR, CTEP, DCP, NHLBI)
+     Then the selected value(s) for NIH/NCI Division/Department Identifier will be associated with the trial
+     */
 
     this.Given(/^see the value for NIH\/NCI Division\/Department Identifier$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I select one or more values from the for the NIH\/NCI Division\/Department Identifier \(CCR, CTEP, DCP, NHLBI\)$/, function (callback) {
@@ -214,6 +326,8 @@ module.exports = function() {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
     });
+
+
 
     this.When(/^I select one or more values from the for the NIH\/NCI Program Identifier \(BIQSFP, SPORE, Steering Committee Reviewed\)$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions

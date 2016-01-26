@@ -90,6 +90,14 @@ class TrialsController < ApplicationController
     end
   end
 
+  def get_board_approval_statuses
+    @statuses = BoardApprovalStatus.all
+
+    respond_to do |format|
+      format.json { render :json => {:statuses => @statuses} }
+    end
+  end
+
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?

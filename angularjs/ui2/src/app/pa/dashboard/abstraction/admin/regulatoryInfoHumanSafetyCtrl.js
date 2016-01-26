@@ -7,10 +7,11 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('regulatoryInfoHumanSafetyCtrl', regulatoryInfoHumanSafetyCtrl);
 
-    regulatoryInfoHumanSafetyCtrl.$inject = ['$scope', 'PATrialService'];
+    regulatoryInfoHumanSafetyCtrl.$inject = ['$scope', 'PATrialService', 'boardApprovalStatuses'];
 
-    function regulatoryInfoHumanSafetyCtrl($scope, PATrialService) {
+    function regulatoryInfoHumanSafetyCtrl($scope, PATrialService, boardApprovalStatuses) {
         var vm = this;
+        console.log('board approval statuses: ', boardApprovalStatuses.statuses);
     } // regulatoryInfoHumanSafetyCtrl
 
 })();

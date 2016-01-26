@@ -57,6 +57,12 @@
                 url: '/regulatory-info-human-subject-safety',
                 templateUrl: 'app/pa/dashboard/abstraction/admin/regulatory_info_human_subject_safety.html',
                 controller: 'regulatoryInfoHumanSafetyCtrl as regInfoSafetyView',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    boardApprovalStatuses: function(PATrialService) {
+                        return PATrialService.getBoardApprovalStatuses();
+                    }
+                },
                 section: 'pa',
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
@@ -110,6 +116,26 @@
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Funding Details'
+                }
+            })
+            .state('main.pa.trialOverview.collaborators', {
+                url: '/collaborators',
+                templateUrl: 'app/pa/dashboard/abstraction/admin/trial_collaborators.html',
+                controller: 'trialCollaboratorsCtrl as trialDetailView',
+                section: 'pa',
+                resolve: {
+                    TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    fundingMechanismObj: function(TrialService) {
+                        return TrialService.getFundingMechanisms();
+                    },
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Collaborators Details'
                 }
             })
 
