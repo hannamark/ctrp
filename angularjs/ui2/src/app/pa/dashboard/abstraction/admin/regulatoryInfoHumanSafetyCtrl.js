@@ -59,15 +59,19 @@
         function changeStatus() {
             var approvalStatus = _.findWhere(vm.statuses, {id: vm.trialDetailsObj.board_approval_status_id});
             // console.log('approval status: ', approvalStatus);
-            var statusName = approvalStatus.name;
+            var statusName = approvalStatus.name.toLowerCase();
             // approval number is required if the status is 'Submitted, approved'
-            vm.approvalNumRequired = statusName.toLowerCase().indexOf('approv') > -1;
-            // board name is required unless status is 'Submission not required'
-            vm.boardNameRequired = statusName.toLowerCase().indexOf('not required') === -1;
-            // board affiliation is required when status is 'Submitted, approved' or 'Submitted, exempt'
-            vm.boardAffRequired = statusName.toLowerCase().indexOf('exempt') > -1 ||
-                                  statusName.toLowerCase().indexOf('approv') > -1;
+            vm.approvalNumRequired = statusName.indexOf('approv') > -1;
+            // board affiliation is required when status is 'Submitted, pending' or
+            // 'Submitted, exempt' or 'Submitted, denied'
+            vm.boardAffRequired = statusName.indexOf('pend') > -1 ||
+                                  statusName.indexOf('denied') > -1 ||
+                                  statusName.indexOf('exempt') > -1;
 
+            // board name is required when status is 'Submitted, pending' or
+            // 'Submitted, exempt' or 'Submitted, denied'
+            // same as vm.boardAffRequired
+            vm.boardNameRequired = vm.boardAffRequired;
         } // changeStatus
 
         function updateHumanSafetyInfo() {
