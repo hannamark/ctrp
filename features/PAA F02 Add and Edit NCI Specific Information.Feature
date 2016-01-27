@@ -35,11 +35,11 @@ And I am on the NCI Specific Information screen
 And see the value for NIH/NCI Division/Department Identifier
 When I select one or more values from the for the NIH/NCI Division/Department Identifier (CCR, CTEP, DCP, NHLBI)
 Then the selected value(s) for NIH/NCI Division/Department Identifier will be associated with the trial
-
+  @runthis
 Scenario: #6 I can view and edit the values for NIH/NCI Division/Department Identifier
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
-And see the value for NIH/NCI Division/Department Identifier
+And see the value for NIH/NCI Program Id
 When I select one or more values from the for the NIH/NCI Program Identifier (BIQSFP, SPORE, Steering Committee Reviewed)
 Then the selected value(s) for NIH/NCI Program Identifier will be associated with the trial
 
@@ -99,11 +99,11 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the NCI Specific Information screen 
 And I have not selected a Study Source            | 
 When I select Save
-Then a warning message will appear "Study Source is required”
+Then an Error message will appear "Study Source is required”
 
 Scenario: #13 Funding Source is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the NCI Specific Information screen 
 And I have not selected a Funding Source            | 
 When I select Save
-Then a warning message will appear "Funding Source is required”
+Then an Error message will appear "Funding Source is required”

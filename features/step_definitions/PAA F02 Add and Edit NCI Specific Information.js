@@ -57,6 +57,13 @@ module.exports = function() {
     var nciSpecificFundingSourceValA = '';
     var programCode = '7771234';
     var programCdeEdit = '8881234';
+    var nciSpecificDepIdVal = '';
+    var nciSpecificDepIDValSelect = '-Select a NIH/NCI Division/Department Identifier-';
+    var nciSpecificDepIDValCCR = 'CCR';
+    var nciSpecificDepIDValCTEP = 'CTEP';
+    var nciSpecificDepIDValDCP = 'DCP';
+    var nciSpecificDepIDValNHBLI = 'NHBLI';
+    var nciSpecificDeptIDResltVal = '';
 
     /*
      Scenario: #1 I can view and edit the value for Study Source
@@ -313,20 +320,93 @@ module.exports = function() {
      */
 
     this.Given(/^see the value for NIH\/NCI Division\/Department Identifier$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
+        nciSpecific.nciSpecificDepartmentIdentifier.$('option:checked').getText().then(function(value){
+            var pasNCISpecDepId = ''+value+'';
+            function retNciSpecificDepIdVal(){
+                return pasNCISpecDepId;
+            }
+            nciSpecificDepIdVal = retNciSpecificDepIdVal();
+            console.log('System Identified ['+nciSpecificDepIdVal+'] as the current NIH/NCI Division/Department Identifier selected value');
+        });
         browser.sleep(25).then(callback);
     });
 
     this.When(/^I select one or more values from the for the NIH\/NCI Division\/Department Identifier \(CCR, CTEP, DCP, NHLBI\)$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        if (nciSpecificDepIdVal === nciSpecificDepIDValSelect){
+            nciSpecific.selectDepartmentIdentifier(nciSpecificDepIDValCCR);
+            var pasNCISpecDeptIDNewVal = nciSpecificDepIDValCCR;
+            function retNCISpecDeptIDNewVal(){
+                return pasNCISpecDeptIDNewVal;
+            }
+            nciSpecificDeptIDResltVal = retNCISpecDeptIDNewVal();
+        };
+        if (nciSpecificDepIdVal === nciSpecificDepIDValCCR){
+            nciSpecific.selectDepartmentIdentifier(nciSpecificDepIDValDCP);
+            var pasNCISpecDeptIDNewVal = nciSpecificDepIDValDCP;
+            function retNCISpecDeptIDNewVal(){
+                return pasNCISpecDeptIDNewVal;
+            }
+            nciSpecificDeptIDResltVal = retNCISpecDeptIDNewVal();
+        };
+        if (nciSpecificDepIdVal === nciSpecificDepIDValDCP){
+            nciSpecific.selectDepartmentIdentifier(nciSpecificDepIDValCCR);
+            var pasNCISpecDeptIDNewVal = nciSpecificDepIDValCCR;
+            function retNCISpecDeptIDNewVal(){
+                return pasNCISpecDeptIDNewVal;
+            }
+            nciSpecificDeptIDResltVal = retNCISpecDeptIDNewVal();
+        };
+        if (nciSpecificDepIdVal === nciSpecificDepIDValCTEP){
+            nciSpecific.selectDepartmentIdentifier(nciSpecificDepIDValDCP);
+            var pasNCISpecDeptIDNewVal = nciSpecificDepIDValDCP;
+            function retNCISpecDeptIDNewVal(){
+                return pasNCISpecDeptIDNewVal;
+            }
+            nciSpecificDeptIDResltVal = retNCISpecDeptIDNewVal();
+        };
+        if (nciSpecificDepIdVal === nciSpecificDepIDValNHBLI){
+            nciSpecific.selectDepartmentIdentifier(nciSpecificDepIDValDCP);
+            var pasNCISpecDeptIDNewVal = nciSpecificDepIDValDCP;
+            function retNCISpecDeptIDNewVal(){
+                return pasNCISpecDeptIDNewVal;
+            }
+            nciSpecificDeptIDResltVal = retNCISpecDeptIDNewVal();
+        };
+        nciSpecific.clickSave();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the selected value\(s\) for NIH\/NCI Division\/Department Identifier will be associated with the trial$/, function (callback) {
+        login.logout();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolID);
+        commonFunctions.adminCheckOut();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        nciSpecific.getVerifyListValue(nciSpecific.nciSpecificDepartmentIdentifier,nciSpecificDeptIDResltVal,"NIH/NCI Division/Department Identifier");
+        login.logout();
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #6 I can view and edit the values for NIH/NCI Division/Department Identifier
+     Given I am logged into the CTRP PA application
+     And I am on the NCI Specific Information screen
+     And see the value for NIH/NCI Program Id
+     When I select one or more values from the for the NIH/NCI Program Identifier (BIQSFP, SPORE, Steering Committee Reviewed)
+     Then the selected value(s) for NIH/NCI Program Identifier will be associated with the trial
+     */
+
+    this.Given(/^see the value for NIH\/NCI Program Id$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
     });
-
 
 
     this.When(/^I select one or more values from the for the NIH\/NCI Program Identifier \(BIQSFP, SPORE, Steering Committee Reviewed\)$/, function (callback) {
@@ -338,6 +418,19 @@ module.exports = function() {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
     });
+
+    /*
+     Scenario: #7 I can view and edit the �Send Trial Information to ClinicalTrials.gov?�
+     Given I am logged into the CTRP PA application
+     And I am on the NCI Specific Information screen
+     And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
+     And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
+     And the Trial processing status is �Verification Pending�, "Abstracted", "No Response�, or �Abstracted, Response�
+     And the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�
+     And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
+     When I select the radio button for Yes or No for �Send Trial Information to ClinicalTrials.gov?�
+     Then the selected value for �Send Trial Information to ClinicalTrials.gov?� will be Yes or No
+     */
 
     this.Given(/^the Trial Sponsor is "([^"]*)" \(Trial\/Sponsor_ID where organizations\/name = "([^"]*)"\)$/, function (arg1, arg2, callback) {
         // Write code here that turns the phrase above into concrete actions

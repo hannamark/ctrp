@@ -82,3 +82,18 @@ And I am on the Trial Regulatory Information - Human Subject Safety screen
 And I have selected organization look-up
 When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed
 Then the selected organization will associated with the trial as the Board Affiliation along with the Board 
+
+Scenario: #9 Hide non required fields for  Regulatory Information - Human Subject Safety 
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Regulatory Information� Human Subject Safety screen
+When I have selected the Board Approval Status of <status> from the list of:
+Then the following fields will be displayed:
+
+|Examples|
+|<Status>               |Board Approval Status|	Board Approval Number |Board Affiliation and Address|Board Name|
+|<null>                 |Dispalyed            |Hidden  		      |Hidden                       |Hidden|
+|Submitted, Approved    |Dispalyed            |Dispalyed              |Dispalyed                    |Dispalyed|
+|Submitted, Exempt      |Dispalyed            |Hidden                 |Dispalyed                    |Dispalyed|
+|Submitted, Pending     |Dispalyed            |Hidden                 |Dispalyed                    |Dispalyed|
+|Submitted, Denied      |Dispalyed            |Hidden                 |Dispalyed                    |Dispalyed|
+|Submission Not Required|Dispalyed            |Hidden                 |Hidden                       |Hidden|
