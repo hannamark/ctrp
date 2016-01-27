@@ -218,7 +218,6 @@ And I have selected one marker
 And I have selected more than one marker
 When I have selected Edit Selected button 
 Then Edit Marker screen displays
-And Name is Multiple Marker
 And boxes are checked for attributes that are the same for selected markers
 When I uncheck a box for Evaluation Type
 And I uncheck a box for Assay Type
@@ -230,10 +229,10 @@ And I check the box for Assay Type
 And I check the box for Biomarker Purpose
 And I check the box for Specimen Type
 Then it is checked for all selected markers
-When I have edited Biomarker Use
-Then it is edited for all selected markers
+When I update Biomarker Use
+Then it is updated for all selected markers
 When I have selected the Save button
-Then the attributes are updated for each marker 
+Then the attributes are updated for all selected markers 
 And the updated markers are associated to the trial
 And the Markers screen displays
 And a 'Record(s) Updated' message is displayed
