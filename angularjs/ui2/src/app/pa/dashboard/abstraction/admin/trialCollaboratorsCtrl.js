@@ -6,7 +6,7 @@
 (function() {
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
-    .controller('trialNciCtrl', trialNciCtrl);
+    .controller('trialCollaboratorsCtrl', trialCollaboratorsCtrl);
 
     trialCollaboratorsCtrl.$inject = ['TrialService', 'PATrialService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 

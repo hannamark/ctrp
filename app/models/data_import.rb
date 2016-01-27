@@ -160,9 +160,10 @@ And the trial Research Category is "Interventional" (Trial/Research_Category_id 
 When I select the radio button for Yes or No for �Send Trial Information to ClinicalTrials.gov?�
 Then the selected value for �Send Trial Information to ClinicalTrials.gov?� will be Yes or No
 =end
-    #t = Trial.all.last
-    #t.sponsor = Organization.find_by_name("National Cancer Institute")
-    #t.lead_org = Organization.f
+    t = Trial.first
+    t.sponsor = Organization.find_by_name("National Cancer Institute")
+    t.lead_org = Organization.find_by_name("NCI - Center for Cancer Research")
+    t.save!
 
   end
 
