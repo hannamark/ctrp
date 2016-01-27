@@ -382,9 +382,28 @@ class TrialsController < ApplicationController
   end
 
   def import_clinical_trials_gov
+    import_params = {}
+
     url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
     url = url.sub('NCT********', params[:nct_id])
     xml = Nokogiri::XML(open(url))
+
+    import_params[:edit_type] = 'import'
+    import_params[:is_draft] = false
+    import_params[:lead_protocol_id] = xml.xpath('//org_study_id').text
+    import_params[:official_title] = xml.xpath('//official_title').text
+
+    @trial = Trial.new(import_params)
+
+    respond_to do |format|
+      if @trial.save
+        format.html { redirect_to @trial, notice: 'Trial was successfully imported.' }
+        format.json { render :show, status: :created, location: @trial }
+      else
+        format.html { render :new }
+        format.json { render json: @trial.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   private

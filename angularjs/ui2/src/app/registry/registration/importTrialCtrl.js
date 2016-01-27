@@ -7,9 +7,9 @@
 
     angular.module('ctrp.app.registry').controller('importTrialCtrl', importTrialCtrl);
 
-    importTrialCtrl.$inject = ['TrialService'];
+    importTrialCtrl.$inject = ['TrialService', 'toastr'];
 
-    function importTrialCtrl(TrialService) {
+    function importTrialCtrl(TrialService, toastr) {
 
         var vm = this;
         vm.nct_id = '';
@@ -32,7 +32,9 @@
 
         vm.importTrial = function() {
             TrialService.importClinicalTrialsGov(vm.nct_id).then(function (response) {
-
+                if (response.server_response.status < 300) {
+                    toastr.success('Trial has been imported', 'Operation Successful!');
+                }
             }).catch(function (err) {
                 console.log("Error in importing from ClinicalTrials.gov: " + err);
             });

@@ -214,23 +214,23 @@ class Trial < ActiveRecord::Base
   end
 
   validates :lead_protocol_id, presence: true
-  validates :official_title, presence: true, if: 'is_draft == false'
-  validates :phase, presence: true, if: 'is_draft == false'
-  validates :pilot, presence: true, if: 'is_draft == false'
-  validates :research_category, presence: true, if: 'is_draft == false'
-  validates :primary_purpose, presence: true, if: 'is_draft == false'
-  validates :accrual_disease_term, presence: true, if: 'is_draft == false'
-  validates :lead_org, presence: true, if: 'is_draft == false'
-  validates :pi, presence: true, if: 'is_draft == false'
-  validates :sponsor, presence: true, if: 'is_draft == false'
-  validates :grant_question, presence: true, if: 'is_draft == false'
-  validates :ind_ide_question, presence: true, if: 'is_draft == false'
-  validates :start_date, presence: true, if: 'is_draft == false'
-  validates :start_date_qual, presence: true, if: 'is_draft == false'
-  validates :primary_comp_date, presence: true, if: 'is_draft == false'
-  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false'
-  validates :comp_date, presence: true, if: 'is_draft == false'
-  validates :comp_date_qual, presence: true, if: 'is_draft == false'
+  validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :phase, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :research_category, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :primary_purpose, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :accrual_disease_term, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :lead_org, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :pi, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :sponsor, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :grant_question, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :ind_ide_question, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :start_date, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :start_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :primary_comp_date, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
 
   before_save :generate_status
   before_create :save_history
@@ -297,7 +297,7 @@ class Trial < ActiveRecord::Base
   private
 
   def generate_status
-    if !self.is_draft && self.nci_id.nil?
+    if !self.is_draft && self.nci_id.nil? && self.edit_type != 'import'
       # Generate NCI ID
       current_year = Time.new.year.to_s
       largest_id = Trial.where('nci_id ilike ?', "%NCI-#{current_year}-%").order('nci_id desc').pluck('nci_id').first
