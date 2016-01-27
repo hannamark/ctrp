@@ -130,6 +130,7 @@ TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
 
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
+ResearchCategory.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 ResearchCategory.find_or_create_by(code: 'ANC', name: 'Ancillary Correlative')
 
 ProcessingStatus.find_or_create_by(code: 'SUB', name: 'Submitted')
