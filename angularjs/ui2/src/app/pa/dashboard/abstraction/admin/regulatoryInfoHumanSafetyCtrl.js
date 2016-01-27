@@ -12,10 +12,14 @@
 
     function regulatoryInfoHumanSafetyCtrl($scope, PATrialService, boardApprovalStatuses,
         _, $timeout) {
+
         var vm = this;
-        vm.infoObj = {}; // human subject safety information object
         vm.boardAffiliationArray = [];
         vm.statuses = boardApprovalStatuses.statuses;
+        vm.changeStatus = changeStatus;
+        vm.updateHumanSafetyInfo = updateHumanSafetyInfo;
+        vm.approvalNumRequired = false;
+        vm.boardNameRequired = false;
 
         activate();
 
@@ -45,6 +49,24 @@
                 }
             });
         } // watchAffiliationSelection
+
+        /**
+         * action triggered upon changing approval status
+         * @return {Void}
+         */
+        function changeStatus() {
+            var approvalStatus = _.findWhere(vm.statuses, {id: vm.trialDetailsObj.board_approval_status_id});
+            // console.log('approval status: ', approvalStatus);
+            var statusName = approvalStatus.name;
+            // approval number is required if the status is 'Submitted, approved'
+            vm.approvalNumRequired = statusName.toLowerCase().indexOf('approv') > -1;
+            // board name is required unless status is 'Submission not required'
+            vm.boardNameRequired = statusName.toLowerCase().indexOf('not required') === -1;
+        } // changeStatus
+
+        function updateHumanSafetyInfo() {
+            console.log('updating human safety info...');
+        }
 
     } // regulatoryInfoHumanSafetyCtrl
 
