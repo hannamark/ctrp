@@ -381,6 +381,12 @@ class TrialsController < ApplicationController
     end
   end
 
+  def import_clinical_trials_gov
+    url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+    url = url.sub('NCT********', params[:nct_id])
+    xml = Nokogiri::XML(open(url))
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_trial

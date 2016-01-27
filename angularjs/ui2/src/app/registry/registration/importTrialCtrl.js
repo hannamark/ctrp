@@ -30,6 +30,14 @@
             }
         };
 
+        vm.importTrial = function() {
+            TrialService.importClinicalTrialsGov(vm.nct_id).then(function (response) {
+
+            }).catch(function (err) {
+                console.log("Error in importing from ClinicalTrials.gov: " + err);
+            });
+        };
+
         activate();
 
         /****************************** implementations **************************/
