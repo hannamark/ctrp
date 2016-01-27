@@ -126,7 +126,18 @@
                     <div class="form-group" ng-class="regInfoSafetyView.boardNameRequired ? 'has-feedback required' : ''">
                         <label for="board_name" class="control-label col-xs-12 col-sm-4">Board Name</label>
                         <div class="col-sm-4">
-                            <input type="text" id="board_name" name="board_name" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_name" ng-required="regInfoSafetyView.boardNameRequired" placeholder="Board Name">
+                            <input type="text" id="board_name" name="board_name" class="form-control input-sm"
+                                    ng-model="regInfoSafetyView.trialDetailsObj.board_name"
+                                    ng-required="regInfoSafetyView.boardNameRequired" placeholder="Board Name">
+                            <span class="form-control-feedback" ng-show="regInfoSafetyView.boardNameRequired && human_safety_form.board_name.$viewValue.length == 0"
+                                ng-class="human_safety_form.board_name.$dirty &&
+                                !ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) ?
+                                'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span ng-messages="regInfoSafetyView.boardNameRequired && human_safety_form.board_name.$dirty &&
+                                                human_safety_form.board_name.$error">
+                                <span class="help-block" ng-message="required">Board name is required</span>
+                           </span>
+
                         </div>
                     </div>
                     <!-- end of Board name -->
