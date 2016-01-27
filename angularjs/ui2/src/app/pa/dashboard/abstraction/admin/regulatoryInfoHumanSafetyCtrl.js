@@ -93,7 +93,7 @@
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });
-                getTrialDetailCopy();
+                _getTrialDetailCopy();
             });
         }
 
