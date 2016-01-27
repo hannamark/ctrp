@@ -67,7 +67,7 @@ json.submitter submitter.nil? ? '' : submitter.username
 ## get the submitter's organization name
 json.submitters_organization submitter.nil? ? '' : (submitter.organization.nil? ? '' : submitter.organization.name)
 
-@trial.board_affiliation_id = 24068
+## @trial.board_affiliation_id = 24068
 
 json.board_affiliated_org @trial.board_affiliation_id.nil? ? nil : @trial.board_affiliation
 
