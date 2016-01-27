@@ -443,6 +443,8 @@ if Organization.all.size == 0
   org23 = Organization.find_or_create_by(id: 33699872, source_id: 'NVRF', name: 'Nevada Cancer Research Foundation CCOP', phone:'702-541-1815', source_status: source_act, source_context: ctrp,  email: "rludlum@lasvegashealth.com",  address: '1 Rancho Drive', city: 'Las Vegas', state_province:'Nevada', country:usa, postal_code:"926344")
   org24 = Organization.find_or_create_by(id: 8149074, source_id: 'WA002', name: 'Harborview Medical Center', phone:'865-541-1816', source_status: source_act, source_context: ctrp, email: "dbrown@seattlehealth.com", address: '23 Wheeling Drive', city: 'Seattle', state_province:'Washington', country:usa, postal_code:"123683") #no source id
 
+  org25 = Organization.find_or_create_by(id: 23170023,  name: 'National Cancer Institute', phone:'301-555-0000', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '9609 Medical Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20850") #no source id
+  org26 = Organization.find_or_create_by(id: 16108126,  name: 'NCI - Center for Cancer Research', phone:'301-496-4365', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '31 Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20892") #no source id
 
   family1 = Family.create(name: 'Masonic Cancer Center')
   if !family1.new_record?
@@ -569,8 +571,7 @@ test_users.each do |u|
   unless user.blank?
     user.role = u["role"]
     user.approved =  u["approve"]
-
-
+    user.organization = Organization.all[rand(0..total_orgs-1)]
     user.save!
     #puts "Updated role of user = #{user.username}, role = #{user.role}"
   end

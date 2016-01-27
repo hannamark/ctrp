@@ -27,7 +27,7 @@ And the system will list
 And the organizations will be displyed orderd assending alphanumeric by Collaborator Name
 
 
-Scenario: #3 I can Delete one or more Collaborator for a Trial
+Scenario: #3 I can Delete one or more Collaborators for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Collaborators screen
 When I have selected one or more collaborators
