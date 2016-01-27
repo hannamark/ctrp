@@ -14,7 +14,7 @@
                             <select name="approval_status" id="board_approval_status"
                                 class="form-control input-sm"
                                 ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
-                                ng-model="regInfoSafetyView.infoObj.approval_status" restriction-field
+                                ng-model="regInfoSafetyView.trialDetailsObj.board_approval_status_id" restriction-field
                                 ng-options="status.id as status.name for status in regInfoSafetyView.statuses">
                                 <option value="">
                                     Select a status
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label for="approval_number" class="control-label col-xs-12 col-sm-4">Board Approval Number</label>
                         <div class="col-xs-12 col-sm-4">
-                            <input type="text" name="approval_number" id="approval_number" class="form-control input-sm">
+                            <input type="text" name="approval_number" id="approval_number" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_approval_num">
                         </div>
                     </div>
                     <!-- end of board approval number -->
@@ -39,13 +39,40 @@
                     <div class="form-group">
                         <label for="board_affiliation" class="control-label col-xs-12 col-sm-4">Board Affiliation</label>
                         <div class="col-sm-4">
-                            <input type="text" id="board_affiliation" name="board_affiliation" ng-model="regInfoSafetyView.boardAffiliatedWith.name" disabled class="form-control input-sm" placeholder="Affiliated Organization">
+                            <input type="text" id="board_affiliation" name="board_affiliation" ng-model="regInfoSafetyView.trialDetailsObj.board_name" disabled class="form-control input-sm" placeholder="Affiliated Organization">
                         </div>
                         <div class="col-sm-4">
-                            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="regInfoSafetyView.boardAffiliatedWith.array"></ctrp-org-adv-search-modal-button>
+                            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="regInfoSafetyView.boardAffiliationArray"></ctrp-org-adv-search-modal-button>
                         </div>
                     </div>
                     <!-- end of Board Affiliation -->
+
+                    <!-- Board address -->
+                    <div class="form-group">
+                        <label for="board_affiliation_address" class="control-label col-xs-12 col-sm-4">Board Contact Address</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="board_affiliation_address" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.address" disabled>
+                        </div>
+                    </div>
+                    <!-- end of Board address -->
+
+                    <!-- Board city -->
+                    <div class="form-group">
+                        <label for="board_affiliation_city" class="control-label col-xs-12 col-sm-4">Board Contact City</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="board_affiliation_city" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.city" disabled>
+                        </div>
+                    </div>
+                    <!-- end of Board city -->
+
+                    <!-- Board state/province -->
+                    <div class="form-group">
+                        <label for="board_affiliation_state" class="control-label col-xs-12 col-sm-4">Board Contact State/Province</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="board_affiliation_state" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.state_province" disabled>
+                        </div>
+                    </div>
+                    <!-- end of Board state/province -->
 
                 </form>
             </div>
