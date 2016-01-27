@@ -7,11 +7,11 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('regulatoryInfoHumanSafetyCtrl', regulatoryInfoHumanSafetyCtrl);
 
-    regulatoryInfoHumanSafetyCtrl.$inject = ['$scope', 'PATrialService', 'boardApprovalStatuses',
-        '_', '$timeout'];
+    regulatoryInfoHumanSafetyCtrl.$inject = ['$scope', 'PATrialService', 'TrialService',
+        'boardApprovalStatuses', '_', '$timeout', 'toastr'];
 
-    function regulatoryInfoHumanSafetyCtrl($scope, PATrialService, boardApprovalStatuses,
-        _, $timeout) {
+    function regulatoryInfoHumanSafetyCtrl($scope, PATrialService, TrialService,
+        boardApprovalStatuses, _, $timeout, toastr) {
 
         var vm = this;
         vm.boardAffiliationArray = [];
@@ -36,6 +36,7 @@
         function _getTrialDetailCopy() {
             $timeout(function() {
                 vm.trialDetailsObj = PATrialService.getCurrentTrialFromCache();
+                changeStatus();
             }, 0);
         } // _getTrialDetailCopy
 
@@ -71,6 +72,25 @@
 
         function updateHumanSafetyInfo() {
             console.log('updating human safety info...');
+            var outerTrial = {};
+            outerTrial.new = false;
+            outerTrial.id = vm.trialDetailsObj.id;
+            outerTrial.trial = vm.trialDetailsObj;
+
+            TrialService.upsertTrial(outerTrial).then(function(res) {
+                vm.trialDetailsObj = res;
+                vm.trialDetailsObj.lock_version = res.lock_version;
+
+                PATrialService.setCurrentTrial(vm.trialDetailsObj); // update cache
+                $scope.$emit('updatedInChildScope', {});
+
+                toastr.clear();
+                toastr.success('Human subject safety information has been updated', 'Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
+                getTrialDetailCopy();
+            });
         }
 
     } // regulatoryInfoHumanSafetyCtrl
