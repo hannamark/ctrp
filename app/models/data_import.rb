@@ -232,11 +232,11 @@ Then the selected value for �Send Trial Information to ClinicalTrials.gov?� 
       srs = SiteRecStatusWrapper.new
       srs.participating_site = ps
       site_recruitment_status = spreadsheet.cell(row,'I')
-      puts "site_recruitment_status = #{site_recruitment_status.inspect}"
+      #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
       site_recruitment_status.gsub! "_", " "
-      puts "site_recruitment_status = #{site_recruitment_status.inspect}"
+      #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
       x = SiteRecruitmentStatus.where("lower(name) = ?", site_recruitment_status.downcase).first
-      puts "x = #{x.inspect}"
+      #puts "x = #{x.inspect}"
       srs.site_recruitment_status = x
       srs.status_date =  spreadsheet.cell(row,'J')
       ps.site_rec_status_wrappers <<  srs
