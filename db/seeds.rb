@@ -392,6 +392,8 @@ trial_status_transition = '{
 
 AppSetting.find_or_create_by(code: 'TRIAL_STATUS_TRANSITION', name: 'Trial Status Transition Matrix', value: 'see big value', big_value: trial_status_transition)
 
+AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
+
 ########## SEEDING APP SETTINGS ENDS ##########
 if Organization.all.size == 0
 
@@ -441,6 +443,8 @@ if Organization.all.size == 0
   org23 = Organization.find_or_create_by(id: 33699872, source_id: 'NVRF', name: 'Nevada Cancer Research Foundation CCOP', phone:'702-541-1815', source_status: source_act, source_context: ctrp,  email: "rludlum@lasvegashealth.com",  address: '1 Rancho Drive', city: 'Las Vegas', state_province:'Nevada', country:usa, postal_code:"926344")
   org24 = Organization.find_or_create_by(id: 8149074, source_id: 'WA002', name: 'Harborview Medical Center', phone:'865-541-1816', source_status: source_act, source_context: ctrp, email: "dbrown@seattlehealth.com", address: '23 Wheeling Drive', city: 'Seattle', state_province:'Washington', country:usa, postal_code:"123683") #no source id
 
+  org25 = Organization.find_or_create_by(id: 23170023,  name: 'National Cancer Institute', phone:'301-555-0000', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '9609 Medical Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20850") #no source id
+  org26 = Organization.find_or_create_by(id: 16108126,  name: 'NCI - Center for Cancer Research', phone:'301-496-4365', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '31 Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20892") #no source id
 
   family1 = Family.create(name: 'Masonic Cancer Center')
   if !family1.new_record?
@@ -537,6 +541,15 @@ contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
 contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
 contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
 
+
+## Board Approval Statuses
+approval_status1 = BoardApprovalStatus.find_or_create_by(code: 'UNSUBMITTED', name: 'Request not yet submitted')
+approval_status2 = BoardApprovalStatus.find_or_create_by(code: 'SUBPENDING', name: 'Submitted, pending')
+approval_status3 = BoardApprovalStatus.find_or_create_by(code: 'SUBAPPROVED', name: 'Submitted, approved')
+approval_status4 = BoardApprovalStatus.find_or_create_by(code: 'SUBEXEMPT', name: 'Submitted, exempt')
+approval_status5 = BoardApprovalStatus.find_or_create_by(code: 'SUBDENIED', name: 'Submitted, denied')
+approval_status6 = BoardApprovalStatus.find_or_create_by(code: 'SUBUNREQUIRED', name: 'Submission not required')
+
 total_orgs = Organization.all.size
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
@@ -558,8 +571,7 @@ test_users.each do |u|
   unless user.blank?
     user.role = u["role"]
     user.approved =  u["approve"]
-
-
+    user.organization = Organization.all[rand(0..total_orgs-1)]
     user.save!
     #puts "Updated role of user = #{user.username}, role = #{user.role}"
   end

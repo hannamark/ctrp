@@ -132,7 +132,8 @@
             getCurrentTrialFromCache: getCurrentTrialFromCache,
             checkoutTrial: checkoutTrial,
             checkinTrial: checkinTrial,
-            getCentralContactTypes: getCentralContactTypes
+            getCentralContactTypes: getCentralContactTypes,
+            getBoardApprovalStatuses: getBoardApprovalStatuses
         };
 
         return services;
@@ -353,10 +354,18 @@
 
         /**
          * Get the list of central contact types
-         * @return {Promise -> resolve to an Array}
+         * @return {Promise -> resolve to a JSON object}
          */
         function getCentralContactTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIALS_CENTRAL_CONTACT_TYPES);
+        }
+
+        /**
+         * Get the array of board approval statuses
+         * @return {Promise -> resolve to a JSON object with 'statuses' as key and an array as value}
+         */
+        function getBoardApprovalStatuses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.BOARD_APPROVAL_STATUSES);
         }
 
     }

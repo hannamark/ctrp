@@ -1,5 +1,6 @@
 class TrialStatusesController < ApplicationController
   before_action :set_trial_status, only: [:show, :edit, :update, :destroy]
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
 
   # GET /trial_statuses
   # GET /trial_statuses.json

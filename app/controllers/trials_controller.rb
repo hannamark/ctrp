@@ -90,6 +90,14 @@ class TrialsController < ApplicationController
     end
   end
 
+  def get_board_approval_statuses
+    @statuses = BoardApprovalStatus.all
+
+    respond_to do |format|
+      format.json { render :json => {:statuses => @statuses} }
+    end
+  end
+
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
@@ -354,6 +362,22 @@ class TrialsController < ApplicationController
         validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code])
         @validation_msgs.append(validation_msg)
       end
+    end
+  end
+
+  def search_clinical_trials_gov
+    # TODO Search existing trials using NCT ID
+    @search_result = {}
+    url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+    url = url.sub('NCT********', params[:nct_id])
+    begin
+      xml = Nokogiri::XML(open(url))
+    rescue OpenURI::HTTPError
+      @search_result[:error_msg] = 'A study with the given identifier is not found in ClinicalTrials.gov.'
+    else
+      @search_result[:official_title] = xml.xpath('//official_title').text
+      @search_result[:status] = xml.xpath('//overall_status').text
+      @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
     end
   end
 
