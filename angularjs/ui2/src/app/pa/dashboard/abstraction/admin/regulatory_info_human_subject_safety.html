@@ -35,7 +35,7 @@
                             <input type="text" name="approval_number" id="approval_number"
                                 class="form-control input-sm" ng-required="regInfoSafetyView.approvalNumRequired"
                                 ng-model="regInfoSafetyView.trialDetailsObj.board_approval_num" placeholder="Board Approval Number">
-                                <span class="form-control-feedback" ng-show="regInfoSafetyView.approvalNumRequired && human_safety_form.approval_number.$viewValue.length == 0"
+                                <span class="form-control-feedback" ng-show="human_safety_form.approval_number.$dirty"
                                     ng-class="human_safety_form.approval_number.$dirty &&
                                     !ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_number) ?
                                     'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -142,17 +142,16 @@
                         <label for="board_name" class="control-label col-xs-12 col-sm-4">Board Name</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_name" name="board_name" class="form-control input-sm"
-                                    ng-model="regInfoSafetyView.trialDetailsObj.board_name"
+                                    ng-model="regInfoSafetyView.trialDetailsObj.board_name" ng-maxlength="255"
                                     ng-required="regInfoSafetyView.boardNameRequired" placeholder="Board Name">
-                            <span class="form-control-feedback" ng-show="regInfoSafetyView.boardNameRequired && human_safety_form.board_name.$viewValue.length == 0"
+                            <span class="form-control-feedback" ng-show="(human_safety_form.board_name.$dirty && human_safety_form.board_name.$error) || (regInfoSafetyView.boardNameRequired && human_safety_form.board_name.$viewValue.length == 0)"
                                 ng-class="human_safety_form.board_name.$dirty &&
                                 !ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) ?
                                 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                            <span ng-messages="regInfoSafetyView.boardNameRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) &&
-                                                human_safety_form.board_name.$error">
+                            <span ng-messages="(human_safety_form.board_name.$dirty && human_safety_form.board_name.$error) || (regInfoSafetyView.boardNameRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name))">
                                 <span class="help-block" ng-message="required">Board name is required</span>
+                                <span class="help-block" ng-message="maxlength"> Board name exceeds 255 characters limit</span>
                            </span>
-
                         </div>
                     </div>
                     <!-- end of Board name -->
