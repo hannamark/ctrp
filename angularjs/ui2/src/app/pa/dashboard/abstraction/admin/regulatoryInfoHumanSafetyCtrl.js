@@ -20,6 +20,7 @@
         vm.updateHumanSafetyInfo = updateHumanSafetyInfo;
         vm.approvalNumRequired = false;
         vm.boardNameRequired = false;
+        vm.boardAffRequired = false;
 
         activate();
 
@@ -62,6 +63,10 @@
             vm.approvalNumRequired = statusName.toLowerCase().indexOf('approv') > -1;
             // board name is required unless status is 'Submission not required'
             vm.boardNameRequired = statusName.toLowerCase().indexOf('not required') === -1;
+            // board affiliation is required when status is 'Submitted, approved' or 'Submitted, exempt'
+            vm.boardAffRequired = statusName.toLowerCase().indexOf('exempt') > -1 ||
+                                  statusName.toLowerCase().indexOf('approv') > -1;
+
         } // changeStatus
 
         function updateHumanSafetyInfo() {

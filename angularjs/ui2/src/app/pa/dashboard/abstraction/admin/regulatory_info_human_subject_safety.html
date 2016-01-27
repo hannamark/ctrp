@@ -39,7 +39,7 @@
                                     ng-class="human_safety_form.approval_number.$dirty &&
                                     !ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_number) ?
                                     'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                                <span ng-messages="regInfoSafetyView.approvalNumRequired && human_safety_form.approval_number.$dirty &&
+                                <span ng-messages="regInfoSafetyView.approvalNumRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_number) &&
                                                     human_safety_form.approval_number.$error">
                                     <span class="help-block" ng-message="required">Board approval number is required</span>
                                </span>
@@ -48,10 +48,25 @@
                     <!-- end of board approval number -->
 
                     <!-- Board Affiliation -->
-                    <div class="form-group">
+                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
                         <label for="board_affiliation" class="control-label col-xs-12 col-sm-4">Board Affiliation</label>
                         <div class="col-sm-4">
-                            <input type="text" id="board_affiliation" name="board_affiliation" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.name" disabled class="form-control input-sm" placeholder="Affiliated Organization">
+                            <input type="text" id="board_affiliation" name="board_affiliation"
+                                ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.name"
+                                class="form-control input-sm"
+                                placeholder="Affiliated Organization"
+                                ng-required="regInfoSafetyView.boardAffRequired"
+                                disabled>
+                            <span class="form-control-feedback" ng-show="regInfoSafetyView.boardAffRequired && human_safety_form.board_affiliation.$viewValue.length == 0"
+                                ng-class="!ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation) ?
+                                'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'">
+                            </span>
+                            <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation) &&
+                                                human_safety_form.board_affiliation.$error">
+                                <span class="help-block" ng-message="required">Board affiliation is required</span>
+                           </span>
+
+
                         </div>
                         <div class="col-sm-4">
                             <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="regInfoSafetyView.boardAffiliationArray"></ctrp-org-adv-search-modal-button>
@@ -60,7 +75,7 @@
                     <!-- end of Board Affiliation -->
 
                     <!-- Board address -->
-                    <div class="form-group">
+                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
                         <label for="board_affiliation_address" class="control-label col-xs-12 col-sm-4">Board Contact Address</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_affiliation_address" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.address" disabled>
@@ -69,7 +84,7 @@
                     <!-- end of Board address -->
 
                     <!-- Board city -->
-                    <div class="form-group">
+                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
                         <label for="board_affiliation_city" class="control-label col-xs-12 col-sm-4">Board Contact City</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_affiliation_city" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.city" disabled>
@@ -78,7 +93,7 @@
                     <!-- end of Board city -->
 
                     <!-- Board state/province -->
-                    <div class="form-group">
+                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
                         <label for="board_affiliation_state" class="control-label col-xs-12 col-sm-4">Board Contact State/Province</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_affiliation_state" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.state_province" disabled>
@@ -87,7 +102,7 @@
                     <!-- end of Board state/province -->
 
                     <!-- Board zipcode -->
-                    <div class="form-group">
+                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
                         <label for="board_affiliation_zipcode" class="control-label col-xs-12 col-sm-4">Board Contact Zip/Postal Code</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_affiliation_zipcode" name="board_affiliation_zipcode" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.postal_code" disabled>
@@ -96,7 +111,7 @@
                     <!-- end of Board zipcode -->
 
                     <!-- Board country -->
-                    <div class="form-group">
+                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
                         <label for="board_affiliation_country" class="control-label col-xs-12 col-sm-4">Board Contact Country</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_affiliation_country" name="board_affiliation_country" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.country" disabled>
@@ -105,7 +120,7 @@
                     <!-- end of Board country -->
 
                     <!-- Board phone -->
-                    <div class="form-group">
+                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
                         <label for="board_affiliation_phone" class="control-label col-xs-12 col-sm-4">Board Contact Phone</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_affiliation_phone" name="board_affiliation_phone" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.phone" disabled>
@@ -114,7 +129,7 @@
                     <!-- end of Board phone -->
 
                     <!-- Board email -->
-                    <div class="form-group">
+                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
                         <label for="board_affiliation_email" class="control-label col-xs-12 col-sm-4">Board Contact Email Address</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_affiliation_email" name="board_affiliation_email" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.email" disabled>
@@ -133,7 +148,7 @@
                                 ng-class="human_safety_form.board_name.$dirty &&
                                 !ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) ?
                                 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                            <span ng-messages="regInfoSafetyView.boardNameRequired && human_safety_form.board_name.$dirty &&
+                            <span ng-messages="regInfoSafetyView.boardNameRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) &&
                                                 human_safety_form.board_name.$error">
                                 <span class="help-block" ng-message="required">Board name is required</span>
                            </span>
