@@ -28,7 +28,13 @@
        // vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
-            //console.log("curTrial =" + JSON.stringify(vm.curTrial));
+            console.log("curTrial =" + JSON.stringify(vm.curTrial));
+            if (vm.fsNum == 0) {
+                return;
+            }
+            if(vm.curTrial.study_source_id == null) {
+                return;
+            }
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {
