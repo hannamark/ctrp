@@ -40,7 +40,7 @@
                 if (angular.isArray(newVal) && newVal.length > 0) {
                     console.log('affiliation newVal: ', newVal);
                     vm.trialDetailsObj.board_affiliation_id = newVal[0].id;
-                    vm.trialDetailsObj.board_name = newVal[0].name;
+                    // vm.trialDetailsObj.board_name = newVal[0].name;
                     vm.trialDetailsObj.board_affiliated_org = newVal[0];
                 }
             });
