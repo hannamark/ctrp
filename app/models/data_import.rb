@@ -228,8 +228,21 @@ Then the selected value for �Send Trial Information to ClinicalTrials.gov?� 
         next
       end
       ps.trial = trial
-      ps.organization =  Organization.all[rand(0..13)]
-      ps.person = Person.all[rand(0..11)]
+      # Site recruitment data
+      srs = SiteRecStatusWrapper.new
+      srs.participating_site = ps
+      site_recruitment_status = spreadsheet.cell(row,'I')
+      puts "site_recruitment_status = #{site_recruitment_status.inspect}"
+      site_recruitment_status.gsub! "_", " "
+      puts "site_recruitment_status = #{site_recruitment_status.inspect}"
+      x = SiteRecruitmentStatus.where("lower(name) = ?", site_recruitment_status.downcase).first
+      puts "x = #{x.inspect}"
+      srs.site_recruitment_status = x
+      srs.status_date =  spreadsheet.cell(row,'J')
+      ps.site_rec_status_wrappers <<  srs
+      #Organization and Person
+      ps.organization =  Organization.all[rand(0..(Organization.all.size-1))]
+      ps.person = Person.all[rand(0..(Person.all.size-1))]
       trial.participating_sites << ps
       trial.save!
     end

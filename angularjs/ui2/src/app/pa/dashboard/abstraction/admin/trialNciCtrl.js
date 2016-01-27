@@ -28,6 +28,8 @@
        // vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
+            // Prevent multiple submissions
+            vm.disableBtn = true;
             console.log("curTrial =" + JSON.stringify(vm.curTrial));
             if (vm.fsNum == 0) {
                 return;
