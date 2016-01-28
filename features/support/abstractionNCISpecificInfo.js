@@ -42,7 +42,7 @@ var abstractionNCISpecificInfo = function(){
     this.nciSpecificAdminBackToSearchResult = element(by.buttonText('↵ Back to Search Results↵ '));
 
     this.nciSpecificSave = element(by.buttonText('Save'));
-    this.nciSpecificReset = element(by.buttonText('↵ Reset↵ '));
+    this.nciSpecificReset = element(by.css('button[ng-click="trialNciView.reload()"]'));
 
     //Organization Search
     this.orgSearchName = element(by.model('searchParams.name'));
@@ -82,8 +82,14 @@ var abstractionNCISpecificInfo = function(){
         helper.getVerifyValue(this.orgAddFundingSourceOrgA,fundingSrcOrgNm,"Funding Source Organization field");
     };
 
+    //Comment program code
     this.verifyProgramCode = function(progrmCD){
       helper.getVerifyValue(this.nciSpecificProgramCode,progrmCD,"Program Code field");
+    };
+
+    //Comment verification
+    this.verifyComment = function(vrfCommnt){
+        helper.getVerifyValue(this.nciSpecificComments,vrfCommnt,"Comments field");
     };
 
     //Delete Funding Source Organization
