@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  # before_filter :wrapper_authenticate_user unless Rails.env.test?
-  # load_and_authorize_resource unless Rails.env.test?
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -423,6 +423,7 @@ class TrialsController < ApplicationController
                                     :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
                                     :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
                                     :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :keywords,
+                                    :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
                                     central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname],

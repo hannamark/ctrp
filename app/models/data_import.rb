@@ -160,9 +160,10 @@ And the trial Research Category is "Interventional" (Trial/Research_Category_id 
 When I select the radio button for Yes or No for �Send Trial Information to ClinicalTrials.gov?�
 Then the selected value for �Send Trial Information to ClinicalTrials.gov?� will be Yes or No
 =end
-    #t = Trial.all.last
-    #t.sponsor = Organization.find_by_name("National Cancer Institute")
-    #t.lead_org = Organization.f
+    t = Trial.first
+    t.sponsor = Organization.find_by_name("National Cancer Institute")
+    t.lead_org = Organization.find_by_name("NCI - Center for Cancer Research")
+    t.save!
 
   end
 
@@ -227,8 +228,21 @@ Then the selected value for �Send Trial Information to ClinicalTrials.gov?� 
         next
       end
       ps.trial = trial
-      ps.organization =  Organization.all[rand(0..13)]
-      ps.person = Person.all[rand(0..11)]
+      # Site recruitment data
+      srs = SiteRecStatusWrapper.new
+      srs.participating_site = ps
+      site_recruitment_status = spreadsheet.cell(row,'I')
+      #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
+      site_recruitment_status.gsub! "_", " "
+      #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
+      x = SiteRecruitmentStatus.where("lower(name) = ?", site_recruitment_status.downcase).first
+      #puts "x = #{x.inspect}"
+      srs.site_recruitment_status = x
+      srs.status_date =  spreadsheet.cell(row,'J')
+      ps.site_rec_status_wrappers <<  srs
+      #Organization and Person
+      ps.organization =  Organization.all[rand(0..(Organization.all.size-1))]
+      ps.person = Person.all[rand(0..(Person.all.size-1))]
       trial.participating_sites << ps
       trial.save!
     end

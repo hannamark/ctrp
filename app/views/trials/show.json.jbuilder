@@ -67,7 +67,9 @@ json.submitter submitter.nil? ? '' : submitter.username
 ## get the submitter's organization name
 json.submitters_organization submitter.nil? ? '' : (submitter.organization.nil? ? '' : submitter.organization.name)
 
-#@trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : @trial.submissions.last.user.prs_organization_name) # Organization.find(@trial.submissions.last.user.organization_id)
+## @trial.board_affiliation_id = 24068
+
+json.board_affiliated_org @trial.board_affiliation_id.nil? ? nil : @trial.board_affiliation
 
 json.last_submission_source @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_source_id.nil? ? '' : SubmissionSource.find(@trial.submissions.last.submission_source_id))
 
