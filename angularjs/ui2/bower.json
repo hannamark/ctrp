@@ -58,5 +58,8 @@
     "bardjs": "~0.1.8",
     "sinon": "http://sinonjs.org/releases/sinon-1.12.1.js",
     "angular-mocks": "~1.4.8"
+  },
+  "resolutions": {
+    "angular": "1.4.9"
   }
 }
