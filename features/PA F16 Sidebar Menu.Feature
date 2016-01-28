@@ -31,14 +31,14 @@ Then the sidebar menu will be displayed expanded:
 |Trial Design|
 |Trial Description|
 |Interventions|
-|Arms|
+|Arms/Groups|
 |Eligibility Criteria|
 |Associated Trials|
 |Disease / Condition|
 |Data Table 4 Anatomic Sites|
 |Outcome Measures|
-|Sub-Groups|
-|Bio Markers|
+|Sub-Groups Stratification Criteria|
+|Markers|
 |Completion (Section)|
 |Abstraction Validation|
 

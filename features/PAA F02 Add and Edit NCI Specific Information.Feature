@@ -77,9 +77,7 @@ Scenario Outline: #11 I cannot change the �Send Trial Information to ClinicalT
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
 When the following <conditions> exist
-Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not greyed out and not editible
-
-Examples:
+Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not greyed out and not editable
 
 |<Conditions>|<Field>|
 |Trial is sponsored by "National Cancer Institute" |trials.sponsor_id Organizations.name = "National Cancer Institute"|
@@ -93,11 +91,10 @@ Examples:
 |Trial Overall Status is �Terminated�| trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
 |Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
 
-
-Scenario Outline: #11a I cannot view the �Send Trial Information to ClinicalTrials.gov?�
+Scenario: #11a I cannot view the �Send Trial Information to ClinicalTrials.gov?�
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
-When the following <conditions> exist
+When the following <conditions> exist to send the trail to the ClinicalTrials.gov
 Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not be visible
 
 |<Conditions>|<Field>|
@@ -106,13 +103,13 @@ Then the label and element for �Send Trial Information to ClinicalTrials.gov?�
 Scenario: #12 Study Source is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the NCI Specific Information screen 
-And I have not selected a Study Source            | 
-When I select Save
+And I have not selected a Study Source
+When I select Save to verify Study Source is required
 Then an Error message will appear "Study Source is required”
 
 Scenario: #13 Funding Source is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the NCI Specific Information screen 
-And I have not selected a Funding Source            | 
-When I select Save
+And I have not selected a Funding Source
+When I select Save to verify Funding Source is required
 Then an Error message will appear "Funding Source is required”

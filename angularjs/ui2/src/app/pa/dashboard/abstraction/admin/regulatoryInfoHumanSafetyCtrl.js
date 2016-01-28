@@ -70,10 +70,8 @@
                                   statusName.indexOf('denied') > -1 ||
                                   statusName.indexOf('exempt') > -1;
 
-            // board name is required when status is 'Submitted, pending' or
-            // 'Submitted, exempt' or 'Submitted, denied'
-            // same as vm.boardAffRequired
-            vm.boardNameRequired = vm.boardAffRequired;
+            // board name is required unless status is 'Submission not required'
+            vm.boardNameRequired = statusName !== '' && statusName.indexOf('not required') === -1;
         } // changeStatus
 
         function updateHumanSafetyInfo() {

@@ -218,6 +218,7 @@ And I have selected one marker
 And I have selected more than one marker
 When I have selected Edit Selected button 
 Then Edit Marker screen displays
+And the Name displays 'Multiple Markers'
 And boxes are checked for attributes that are the same for selected markers
 When I uncheck a box for Evaluation Type
 And I uncheck a box for Assay Type

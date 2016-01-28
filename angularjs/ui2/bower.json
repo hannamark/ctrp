@@ -52,7 +52,8 @@
     "angular-json-tree": "*",
     "ui-select": "angular-ui-select#~0.13.2",
     "angular-spinner": "~0.8.0",
-    "angular-messages": "~1.4.9"
+    "angular-messages": "~1.4.9",
+    "ag-grid": "~3.2.2"
   },
   "devDependencies": {
     "bardjs": "~0.1.8",

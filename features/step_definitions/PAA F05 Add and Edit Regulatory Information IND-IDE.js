@@ -36,6 +36,10 @@ module.exports = function() {
     //    browser.sleep(5000).then(callback);
     //});
 
+    /*
+
+     */
+
     this.Given(/^I am on the Trial Regulatory Information \(IND\/IDE\) screen$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
