@@ -64,10 +64,9 @@
             var statusName = !!approvalStatus ? approvalStatus.name.toLowerCase() : '';
             // approval number is required if the status is 'Submitted, approved'
             vm.approvalNumRequired = statusName.indexOf('approv') > -1;
-            // board affiliation is required when status is 'Submitted, pending' or
-            // 'Submitted, exempt' or 'Submitted, denied'
-            vm.boardAffRequired = statusName.indexOf('pend') > -1 ||
-                                  statusName.indexOf('denied') > -1 ||
+            // board affiliation is required when status is
+            // 'Submitted, exempt' or 'Submitted, approved'
+            vm.boardAffRequired = statusName.indexOf('approv') > -1 ||
                                   statusName.indexOf('exempt') > -1;
 
             // board name is required unless status is 'Submission not required'
