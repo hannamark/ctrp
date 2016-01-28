@@ -71,7 +71,7 @@
                                   statusName.indexOf('exempt') > -1;
 
             // board name is required unless status is 'Submission not required'
-            vm.boardNameRequired = statusName.indexOf('not required') === -1;
+            vm.boardNameRequired = statusName !== '' && statusName.indexOf('not required') === -1;
         } // changeStatus
 
         function updateHumanSafetyInfo() {
