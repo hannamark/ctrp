@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125185408) do
+ActiveRecord::Schema.define(version: 20160127212345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1076,7 +1076,6 @@ ActiveRecord::Schema.define(version: 20160125185408) do
     t.text     "check_in_comment"
     t.string   "process_priority",              limit: 255
     t.text     "process_comment"
-    t.boolean  "receive_email"
     t.string   "xml_required",                  limit: 255
     t.string   "acronym",                       limit: 255
     t.text     "keywords"
@@ -1119,6 +1118,7 @@ ActiveRecord::Schema.define(version: 20160125185408) do
     t.integer  "study_model_id"
     t.integer  "time_perspective_id"
     t.integer  "biospecimen_retention_id"
+    t.text     "biospecimen_desc"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
