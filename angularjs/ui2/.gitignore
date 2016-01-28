@@ -3,6 +3,7 @@ angularjs/ui2/node_modules/
 angularjs/ui2/src/bower_components/
 angularjs/ui2/.tmp
 build/
+.bowerrc
 
 #Ignore the host url in the constant file
 ./src/app/modules/ctrp.module.constants.host.js
