@@ -1,6 +1,22 @@
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 975px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .modal-lg {
+        width: 1175px;
+    }
+}
+
 @media screen and (min-width: 1300px) {
     .container {
         width: 1270px;
+    }
+
+    .modal-lg {
+        width: 1250px;
     }
 }
 
@@ -365,12 +381,12 @@ header img {
     #adv-org-search-modal  {
         top: 5%;
         right: 50%;
-        max-width: 920px;
+        max-width: 1320px;
         max-height: 1080px;
     }
 
     .modal-body {
-        max-width: 950px;
+        max-width: 1350px;
         margin-left: 5px;
         overflow: auto;
     }
