@@ -142,28 +142,49 @@
                     <!-- end of Board zipcode -->
 
                     <!-- Board country -->
-                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_country)}">
                         <label for="board_affiliation_country" class="control-label col-xs-12 col-sm-4">Board Contact Country</label>
                         <div class="col-sm-4">
-                            <input type="text" id="board_affiliation_country" name="board_affiliation_country" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.country" disabled>
+                            <input type="text" id="board_affiliation_country" name="board_affiliation_country" class="form-control input-sm"
+                                ng-required="regInfoSafetyView.boardAffRequired"
+                                ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.country"
+                                disabled>
+                            <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_country) &&
+                                                human_safety_form.board_affiliation_country.$error">
+                                <span class="help-block" ng-message="required">Board contact country is required</span>
+                           </span>
                         </div>
                     </div>
                     <!-- end of Board country -->
 
                     <!-- Board phone -->
-                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_phone)}">
                         <label for="board_affiliation_phone" class="control-label col-xs-12 col-sm-4">Board Contact Phone</label>
                         <div class="col-sm-4">
-                            <input type="text" id="board_affiliation_phone" name="board_affiliation_phone" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.phone" disabled>
+                            <input type="text" id="board_affiliation_phone" name="board_affiliation_phone" class="form-control input-sm"
+                                ng-required="regInfoSafetyView.boardAffRequired"
+                                ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.phone"
+                                disabled>
+                            <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_phone) &&
+                                                human_safety_form.board_affiliation_phone.$error">
+                                <span class="help-block" ng-message="required">Board contact phone is required</span>
+                           </span>
                         </div>
                     </div>
                     <!-- end of Board phone -->
 
                     <!-- Board email -->
-                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_email)}">
                         <label for="board_affiliation_email" class="control-label col-xs-12 col-sm-4">Board Contact Email Address</label>
                         <div class="col-sm-4">
-                            <input type="text" id="board_affiliation_email" name="board_affiliation_email" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.email" disabled>
+                            <input type="email" id="board_affiliation_email" name="board_affiliation_email" class="form-control input-sm"
+                                ng-required="regInfoSafetyView.boardAffRequired"
+                                ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.email"
+                                disabled>
+                            <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_email) &&
+                                                human_safety_form.board_affiliation_email.$error">
+                                <span class="help-block" ng-message="required">Board contact email address is required</span>
+                           </span>
                         </div>
                     </div>
                     <!-- end of Board email -->
@@ -173,9 +194,12 @@
                         <label for="board_name" class="control-label col-xs-12 col-sm-4">Board Name</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_name" name="board_name" class="form-control input-sm"
-                                    restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
-                                    ng-model="regInfoSafetyView.trialDetailsObj.board_name" ng-maxlength="255"
-                                    ng-required="regInfoSafetyView.boardNameRequired" placeholder="Board Name">
+                                    restriction-field
+                                    ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
+                                    ng-required="regInfoSafetyView.boardNameRequired"
+                                    ng-model="regInfoSafetyView.trialDetailsObj.board_name"
+                                    ng-maxlength="255"
+                                    placeholder="Board Name">
                             <span class="form-control-feedback" ng-show="(human_safety_form.board_name.$dirty && human_safety_form.board_name.$error) || (regInfoSafetyView.boardNameRequired && human_safety_form.board_name.$viewValue.length == 0)"
                                 ng-class="human_safety_form.board_name.$dirty &&
                                 !ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) ?
