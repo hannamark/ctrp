@@ -35,7 +35,7 @@ And I am on the NCI Specific Information screen
 And see the value for NIH/NCI Division/Department Identifier
 When I select one or more values from the for the NIH/NCI Division/Department Identifier (CCR, CTEP, DCP, NHLBI)
 Then the selected value(s) for NIH/NCI Division/Department Identifier will be associated with the trial
-  @runthis
+
 Scenario: #6 I can view and edit the values for NIH/NCI Division/Department Identifier
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
@@ -63,13 +63,13 @@ Then the information entered for Comments will be associated with the trial
 Scenario: #9 Save NCI Specific Information
 Given I have selected a trial to abstract 
 And I am on the NCI Specific Information screen
-When select save 
+When select save NCI Specific Information
 Then the information entered or edited on the NCI Specific Information screen will be saved to the trial record
-
+  @runthis
 Scenario: #10 Cancel NCI Specific Information 
 Given I have selected a trial to abstract 
 And I am on the NCI Specific Information screen
-When I select Reset
+When I select Reset NCI Specific Information
 Then the information entered or edited on the NCI Specific Information screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
@@ -85,7 +85,7 @@ Examples:
 |Trial is not sponsored by "National Cancer Institute" |
 |Trial Lead Organization is "NCI - Center for Cancer Research"|
 |Trial processing status is not �Verification Pending�|
-|Trial processing status is not "Abstracted| 
+|Trial processing status is not "Abstracted"|
 |Trial processing status is not �No Response�|
 |Trial processing status is not �Abstracted, Response�|
 |Trial Overall Status is �Complete�|
