@@ -436,6 +436,14 @@ class TrialsController < ApplicationController
     ctrp_research_category = ResearchCategory.find_by_name(xml.xpath('//study_type').text)
     import_params[:research_category_id] = ctrp_research_category.id if ctrp_research_category.present?
 
+    import_params[:outcome_measures_attributes] = []
+    xml.xpath('//primary_outcome').each do |p_outcome|
+      import_params[:outcome_measures_attributes].push({title: p_outcome.xpath('measure').text, time_frame: p_outcome.xpath('time_frame').text, safety_issue: p_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('PRI').id})
+    end
+    xml.xpath('//secondary_outcome').each do |s_outcome|
+      import_params[:outcome_measures_attributes].push({title: s_outcome.xpath('measure').text, time_frame: s_outcome.xpath('time_frame').text, safety_issue: s_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('SEC').id})
+    end
+
     @trial = Trial.new(import_params)
 
     respond_to do |format|

@@ -210,6 +210,10 @@ StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dyna
 StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
 StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
 
+OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
+OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
+OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
