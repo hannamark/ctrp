@@ -29,15 +29,14 @@
                     <!-- end of board approval status -->
 
                     <!-- board approval number -->
-
-                    <div class="form-group" ng-class="regInfoSafetyView.approvalNumRequired ? 'has-feedback required' : ''">
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.approvalNumRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_number)}">
                         <label for="approval_number" class="control-label col-xs-12 col-sm-4">Board Approval Number</label>
                         <div class="col-xs-12 col-sm-4">
                             <input type="text" name="approval_number" id="approval_number"
                                 restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
                                 class="form-control input-sm" ng-required="regInfoSafetyView.approvalNumRequired"
                                 ng-model="regInfoSafetyView.trialDetailsObj.board_approval_num" placeholder="Board Approval Number">
-                                <span class="form-control-feedback" ng-show="human_safety_form.approval_number.$dirty"
+                                <span class="form-control-feedback" ng-show="(human_safety_form.approval_number.$dirty && human_safety_form.approval_number.$error) || (regInfoSafetyView.approvalNumRequired && human_safety_form.approval_number.$dirty && human_safety_form.approval_number.$viewValue.length == 0)"
                                     ng-class="human_safety_form.approval_number.$dirty &&
                                     !ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_number) ?
                                     'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -140,7 +139,8 @@
                     <!-- end of Board email -->
 
                     <!-- Board name -->
-                    <div class="form-group" ng-class="regInfoSafetyView.boardNameRequired ? 'has-feedback required' : ''">
+                    <!-- <div class="form-group" ng-class="regInfoSafetyView.boardNameRequired ? 'has-feedback required' : ''"> -->
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardNameRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name)}">
                         <label for="board_name" class="control-label col-xs-12 col-sm-4">Board Name</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_name" name="board_name" class="form-control input-sm"
