@@ -50,6 +50,7 @@ module.exports = function() {
     var leadProtocolIDA = 'CTRP_01_1777';
     var leadProtocolIDB = 'CTRP_01_1778';
     var leadProtocolIDC = 'CTRP_01_17'+randNmbr;
+    var leadProtocolIDD = 'CTRP_01_1781';
     var searchResultCountText = 'Trial Search Results';
     var adminDataNCISpecific = 'NCI specific information';
     var nciSpecificStudySourceVal = '';
@@ -82,6 +83,10 @@ module.exports = function() {
     var nciSpecificCurrentCommentVal = '';
     var convPrgCde = '';
     var convComment = '';
+    var verfiSpecificStudySourceRequired = '';
+    var msgStduySourceReq = 'Study Source is required';
+    var msgFundingSourceReq = 'Funding Source is required';
+
     /*
      Scenario: #1 I can view and edit the value for Study Source
      Given I am logged into the CTRP PA application
@@ -1201,11 +1206,155 @@ module.exports = function() {
      |Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
      */
 
+    this.When(/^the following (.*) exist$/, function (conditions, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
 
+    this.Then(/^the label and element for �Send Trial Information to ClinicalTrials\.gov\?� will not greyed out and not editable$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
 
+    /*
+     Scenario: #11a I cannot view the �Send Trial Information to ClinicalTrials.gov?�
+     Given I am logged into the CTRP PA application
+     And I am on the NCI Specific Information screen
+     When the following <conditions> exist
+     Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not be visible
 
+     |<Conditions>|<Field>|
+     |Trial is not sponsored by "National Cancer Institute" |trials.sponsor_id Organizations.name not = "National Cancer Institute"|
+     */
 
+    this.When(/^the following (.*) exist to send the trail to the ClinicalTrials\.gov$/, function (conditions, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
 
+    this.Then(/^the label and element for �Send Trial Information to ClinicalTrials\.gov\?� will not be visible$/, function (table, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    /*
+     Scenario: #12 Study Source is not null
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the NCI Specific Information screen
+     And I have not selected a Study Source
+     When I select Save to verify Study Source is required
+     Then an Error message will appear "Study Source is required”
+     */
+
+    this.Given(/^I have not selected a Study Source$/, function (callback) {
+        login.logout();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolIDD);
+        commonFunctions.adminCheckOut();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        //commonFunctions.wait(nciSpecific.nciSpecificStudySource, 'Study Source');
+        nciSpecific.nciSpecificStudySource.$('option:checked').getText().then(function(value){
+            var pasNCISpecStudySource = ''+value+'';
+            function retNciSpecificStudySourceVal(){
+                return pasNCISpecStudySource;
+            }
+            verfiStudySourceVal = retNciSpecificStudySourceVal();
+            console.log('System Identified ['+verfiStudySourceVal+'] as the current Study Source selected value');
+            if (verfiStudySourceVal === '-Select a Study Source-'){
+                nciSpecific.selectStudySource('-Select a Study Source-');
+                var pasNCISpecReqNewVal = '-Select a Study Source-';
+                function retNCISpecReqNewVal(){
+                    return pasNCISpecReqNewVal;
+                }
+                verfiSpecificStudySourceRequired = retNCISpecReqNewVal();
+            }else{
+                nciSpecific.selectStudySource('-Select a Study Source-');
+                var pasNCISpecReqNewVal = '-Select a Study Source-';
+                function retNCISpecReqNewVal(){
+                    return pasNCISpecReqNewVal;
+                }
+                verfiSpecificStudySourceRequired = retNCISpecReqNewVal();
+            };
+        });
+        //Funding Source
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I select Save to verify Study Source is required$/, function (callback) {
+        nciSpecific.clickSave();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^an Error message will appear "Study Source is required”$/, function (callback) {
+        nciSpecific.verifyStudySourceReq(msgStduySourceReq);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #13 Funding Source is not null
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the NCI Specific Information screen
+     And I have not selected a Funding Source
+     When I select Save to verify Funding Source is required
+     Then an Error message will appear "Funding Source is required”
+     */
+
+    this.Given(/^I have not selected a Funding Source$/, function (callback) {
+        login.logout();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolIDD);
+        commonFunctions.adminCheckOut();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        //commonFunctions.wait(nciSpecific.nciSpecificStudySource, 'Study Source');
+        nciSpecific.nciSpecificStudySource.$('option:checked').getText().then(function(value){
+            var pasNCISpecStudySource = ''+value+'';
+            function retNciSpecificStudySourceVal(){
+                return pasNCISpecStudySource;
+            }
+            verfiStudySourceVal = retNciSpecificStudySourceVal();
+            console.log('System Identified ['+verfiStudySourceVal+'] as the current Study Source selected value');
+            if (verfiStudySourceVal === '-Select a Study Source-'){
+                nciSpecific.selectStudySource('Indsutrial');
+                var pasNCISpecReqNewVal = 'Indsutrial';
+                function retNCISpecReqNewVal(){
+                    return pasNCISpecReqNewVal;
+                }
+                verfiSpecificStudySourceRequired = retNCISpecReqNewVal();
+            }else{
+                //Do nothing
+            };
+        });
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I select Save to verify Funding Source is required$/, function (callback) {
+        nciSpecific.clickSave();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^an Error message will appear "Funding Source is required”$/, function (callback) {
+        nciSpecific.verifyFundingSourceReq(msgFundingSourceReq);
+        browser.sleep(25).then(callback);
+    });
 
 
 };

@@ -155,6 +155,12 @@ var helper = function() {
         console.log(errorMessage + " - header value");
     };
 
+    this.getVerifyRequired = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        expect(fieldName.getText()).to.eventually.equal(fieldValue);
+        console.log(errorMessage + " - Required field value");
+    };
+
     this.pageRefresh = function () {
         browser.refresh();
     };
