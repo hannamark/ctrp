@@ -49,7 +49,8 @@
                     <!-- end of board approval number -->
 
                     <!-- Board Affiliation -->
-                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
+                    <!-- <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''"> -->
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation)}">
                         <label for="board_affiliation" class="control-label col-xs-12 col-sm-4">Board Affiliation</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_affiliation" name="board_affiliation"
@@ -76,37 +77,66 @@
                     <!-- end of Board Affiliation -->
 
                     <!-- Board address -->
-                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
+
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_aff_address)}">
                         <label for="board_affiliation_address" class="control-label col-xs-12 col-sm-4">Board Contact Address</label>
                         <div class="col-sm-4">
-                            <input type="text" id="board_affiliation_address" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.address" disabled>
+                            <input type="text" id="board_affiliation_address" name="board_aff_address" class="form-control input-sm"
+                                ng-required="regInfoSafetyView.boardAffRequired"
+                                ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.address"
+                                disabled>
+                            <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_aff_address) &&
+                                                human_safety_form.board_aff_address.$error">
+                                <span class="help-block" ng-message="required">Board contact address is required</span>
+                           </span>
                         </div>
                     </div>
                     <!-- end of Board address -->
 
                     <!-- Board city -->
-                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_aff_city)}">
                         <label for="board_affiliation_city" class="control-label col-xs-12 col-sm-4">Board Contact City</label>
                         <div class="col-sm-4">
-                            <input type="text" id="board_affiliation_city" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.city" disabled>
+                            <input type="text" id="board_affiliation_city" class="form-control input-sm" name="board_aff_city"
+                                ng-required="regInfoSafetyView.boardAffRequired"
+                                ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.city"
+                                disabled>
+                            <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_aff_city) &&
+                                                human_safety_form.board_aff_city.$error">
+                                <span class="help-block" ng-message="required">Board contact city is required</span>
+                           </span>
                         </div>
                     </div>
                     <!-- end of Board city -->
 
                     <!-- Board state/province -->
-                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_aff_state)}">
                         <label for="board_affiliation_state" class="control-label col-xs-12 col-sm-4">Board Contact State/Province</label>
                         <div class="col-sm-4">
-                            <input type="text" id="board_affiliation_state" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.state_province" disabled>
+                            <input type="text" id="board_affiliation_state" name="board_aff_state" class="form-control input-sm"
+                                ng-required="regInfoSafetyView.boardAffRequired"
+                                ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.state_province"
+                                disabled>
+                            <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_aff_state) &&
+                                                human_safety_form.board_aff_state.$error">
+                                <span class="help-block" ng-message="required">Board contact state/province is required</span>
+                           </span>
                         </div>
                     </div>
                     <!-- end of Board state/province -->
 
                     <!-- Board zipcode -->
-                    <div class="form-group" ng-class="regInfoSafetyView.boardAffRequired ? 'has-feedback required' : ''">
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_zipcode)}">
                         <label for="board_affiliation_zipcode" class="control-label col-xs-12 col-sm-4">Board Contact Zip/Postal Code</label>
                         <div class="col-sm-4">
-                            <input type="text" id="board_affiliation_zipcode" name="board_affiliation_zipcode" class="form-control input-sm" ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.postal_code" disabled>
+                            <input type="text" id="board_affiliation_zipcode" name="board_affiliation_zipcode" class="form-control input-sm"
+                                ng-required="regInfoSafetyView.boardAffRequired"
+                                ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.postal_code"
+                                disabled>
+                            <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_zipcode) &&
+                                                human_safety_form.board_affiliation_zipcode.$error">
+                                <span class="help-block" ng-message="required">Board contact zip/postal code is required</span>
+                           </span>
                         </div>
                     </div>
                     <!-- end of Board zipcode -->
@@ -139,7 +169,6 @@
                     <!-- end of Board email -->
 
                     <!-- Board name -->
-                    <!-- <div class="form-group" ng-class="regInfoSafetyView.boardNameRequired ? 'has-feedback required' : ''"> -->
                     <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardNameRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name)}">
                         <label for="board_name" class="control-label col-xs-12 col-sm-4">Board Name</label>
                         <div class="col-sm-4">
