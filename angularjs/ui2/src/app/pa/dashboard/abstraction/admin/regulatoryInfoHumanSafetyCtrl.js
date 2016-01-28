@@ -18,6 +18,7 @@
         vm.statuses = boardApprovalStatuses.statuses;
         vm.changeStatus = changeStatus;
         vm.updateHumanSafetyInfo = updateHumanSafetyInfo;
+        vm.resetHumanSafetyInfo = resetHumanSafetyInfo;
         vm.approvalNumRequired = false;
         vm.boardNameRequired = false;
         vm.boardAffRequired = false;
@@ -104,6 +105,11 @@
                 _getTrialDetailCopy();
             });
         } //watchTrialDetailObj
+
+
+        function resetHumanSafetyInfo() {
+            activate();
+        } // resetHumanSafetyInfo
 
     } // regulatoryInfoHumanSafetyCtrl
 
