@@ -27,7 +27,7 @@
                 maxRowSelectable : '=?', //int, required!
                 useBuiltInTemplate: '=?', //boolean
                 selectedPersonsArray: '=',
-                allowOverwrite: '=' //boolean, overwrite previously selected person or not (default to true)
+                allowOverwrite: '=?' //boolean, overwrite previously selected person or not (default to true)
             },
             templateUrl: 'app/po/person/directives/personAdvSearchModalButtonTemplate.html',
             link: linkerFn,
