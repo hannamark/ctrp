@@ -382,16 +382,59 @@ class TrialsController < ApplicationController
   end
 
   def import_clinical_trials_gov
-    import_params = {}
-
     url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
     url = url.sub('NCT********', params[:nct_id])
     xml = Nokogiri::XML(open(url))
 
+    import_params = {}
+
     import_params[:edit_type] = 'import'
     import_params[:is_draft] = false
+    import_params[:study_source_id] = StudySource.find_by_code('IND').id
     import_params[:lead_protocol_id] = xml.xpath('//org_study_id').text
+
+    import_params[:other_ids_attributes] = []
+    xml.xpath('//secondary_id').each do |other_id|
+      import_params[:other_ids_attributes].push({protocol_id_origin_id: ProtocolIdOrigin.find_by_code('OTH').id, protocol_id: other_id.text})
+    end
+    import_params[:other_ids_attributes].push({protocol_id_origin_id: ProtocolIdOrigin.find_by_code('NCT').id, protocol_id: xml.xpath('//nct_id').text})
+
+    import_params[:brief_title] = xml.xpath('//brief_title').text
     import_params[:official_title] = xml.xpath('//official_title').text
+
+    import_params[:collaborators_attributes] = []
+    xml.xpath('//collaborator/agency').each do |collaborator|
+      import_params[:collaborators_attributes].push({org_name: collaborator.text})
+    end
+
+    import_params[:oversight_authorities_attributes] = []
+    xml.xpath('//oversight_info/authority').each do |authority|
+      splits = authority.text.split(':')
+      import_params[:oversight_authorities_attributes].push({country: splits[0].strip, organization: splits[1].strip})
+    end
+
+    import_params[:data_monitor_indicator] = xml.xpath('//oversight_info/has_dmc').text if xml.xpath('//oversight_info/has_dmc').present?
+    import_params[:brief_summary] = xml.xpath('//brief_summary').text
+    import_params[:detailed_description] = xml.xpath('//detailed_description').text
+
+    import_params[:trial_status_wrappers_attributes] = []
+    ctrp_status_code = map_status(xml.xpath('//overall_status').text)
+    ctrp_status = TrialStatus.find_by_code(ctrp_status_code)
+    import_params[:trial_status_wrappers_attributes].push({trial_status_id: ctrp_status.id}) if ctrp_status.present?
+
+    import_params[:start_date] = convert_date(xml.xpath('//start_date').text)
+    import_params[:start_date_qual] = 'Actual'
+    import_params[:comp_date] = convert_date(xml.xpath('//completion_date').text)
+    import_params[:comp_date_qual] = xml.xpath('//completion_date').attr('type')
+    import_params[:primary_comp_date] = convert_date(xml.xpath('//primary_completion_date').text)
+    import_params[:primary_comp_date_qual] = xml.xpath('//primary_completion_date').attr('type')
+
+    ctrp_phase_code = map_phase(xml.xpath('//phase').text)
+    ctrp_phase = Phase.find_by_code(ctrp_phase_code)
+    import_params[:phase_id] = ctrp_phase.id if ctrp_phase.present?
+
+    ctrp_research_category = ResearchCategory.find_by_name(xml.xpath('//study_type').text)
+    import_params[:research_category_id] = ctrp_research_category.id if ctrp_research_category.present?
 
     @trial = Trial.new(import_params)
 
@@ -407,53 +450,147 @@ class TrialsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_trial
-      @trial = Trial.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_trial
+    @trial = Trial.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def trial_params
-      params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
-                                    :primary_purpose_other, :secondary_purpose_other, :investigator_title,
-                                    :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date,
-                                    :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question,
-                                    :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
-                                    :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
-                                    :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
-                                    :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
-                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :keywords,
-                                    :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id,
-                                    other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
-                                    alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
-                                    central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname],
-                                    trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
-                                    grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
-                                    trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id,
-                                                                       :comment, :_destroy],
-                                    ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
-                                                          :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
-                                    oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
-                                    trial_documents_attributes: [:id, :_destroy],
-                                    submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def trial_params
+    params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
+                                  :primary_purpose_other, :secondary_purpose_other, :investigator_title,
+                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date,
+                                  :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question,
+                                  :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
+                                  :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
+                                  :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
+                                  :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
+                                  :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :keywords,
+                                  :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id,
+                                  other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
+                                  alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
+                                  central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname],
+                                  trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
+                                  grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
+                                  trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id,
+                                                                     :comment, :_destroy],
+                                  ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
+                                                        :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
+                                  oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
+                                  trial_documents_attributes: [:id, :_destroy],
+                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy])
+  end
 
-    # Convert status code to name in validation messages
-    def convert_validation_msg (msg)
-      if msg.has_key?('warnings')
-        msg['warnings'].each do |warning|
-          statusObj = TrialStatus.find_by_code(warning['status']) if warning.has_key?('status')
-          warning['status'] = statusObj.name if statusObj.present?
-        end
+  # Convert status code to name in validation messages
+  def convert_validation_msg (msg)
+    if msg.has_key?('warnings')
+      msg['warnings'].each do |warning|
+        statusObj = TrialStatus.find_by_code(warning['status']) if warning.has_key?('status')
+        warning['status'] = statusObj.name if statusObj.present?
       end
-
-      if msg.has_key?('errors')
-        msg['errors'].each do |error|
-          statusObj = TrialStatus.find_by_code(error['status']) if error.has_key?('status')
-          error['status'] = statusObj.name if statusObj.present?
-        end
-      end
-
-      return msg
     end
+
+    if msg.has_key?('errors')
+      msg['errors'].each do |error|
+        statusObj = TrialStatus.find_by_code(error['status']) if error.has_key?('status')
+        error['status'] = statusObj.name if statusObj.present?
+      end
+    end
+
+    return msg
+  end
+
+  # Maps the ClinicalTrials.gov status to CTRP status code
+  def map_status (ct_status)
+    case ct_status
+      when 'Not yet recruiting'
+        ctrp_status_code = 'INR'
+      when 'Withdrawn'
+        ctrp_status_code = 'WIT'
+      when 'Recruiting'
+        ctrp_status_code = 'ACT'
+      when 'Enrolling by Invitation'
+        ctrp_status_code = 'EBI'
+      when 'Suspended'
+        ctrp_status_code = 'TCL'
+      when 'Active, not recruiting'
+        ctrp_status_code = 'CAC'
+      when 'Terminated'
+        ctrp_status_code = 'ACO'
+      when 'Completed'
+        ctrp_status_code = 'COM'
+      when 'Available'
+        ctrp_status_code = 'AVA'
+      when 'No longer available'
+        ctrp_status_code = 'NLA'
+      when 'Temporarily not available'
+        ctrp_status_code = 'TNA'
+      when 'Approved for marketing'
+        ctrp_status_code = 'AFM'
+      else
+        ctrp_status_code = ''
+    end
+
+    return ctrp_status_code
+  end
+
+  def convert_date (ct_date)
+    splits = ct_date.split(' ')
+
+    case splits[0]
+      when 'January'
+        month = 'Jan'
+      when 'February'
+        month = 'Feb'
+      when 'March'
+        month = 'Mar'
+      when 'April'
+        month = 'Apr'
+      when 'May'
+        month = 'May'
+      when 'June'
+        month = 'Jun'
+      when 'July'
+        month = 'Jul'
+      when 'August'
+        month = 'Aug'
+      when 'September'
+        month = 'Sep'
+      when 'October'
+        month = 'Oct'
+      when 'November'
+        month = 'Nov'
+      when 'December'
+        month = 'Dec'
+      else
+        month = ''
+    end
+
+    return '01-' + month + '-' + splits[1]
+  end
+
+  def map_phase (ct_phase)
+    case ct_phase
+      when 'N/A'
+        ctrp_phase_code = 'N/A'
+      when 'Phase 0'
+        ctrp_phase_code = '0'
+      when 'Phase 1'
+        ctrp_phase_code = 'I'
+      when 'Phase 1/Phase 2'
+        ctrp_phase_code = 'I/II'
+      when 'Phase 2'
+        ctrp_phase_code = 'II'
+      when 'Phase 2/Phase 3'
+        ctrp_phase_code = 'II/III'
+      when 'Phase 3'
+        ctrp_phase_code = 'III'
+      when 'Phase 4'
+        ctrp_phase_code = 'IV'
+      else
+        ctrp_phase_code = ''
+    end
+
+    return ctrp_phase_code
+  end
 end
