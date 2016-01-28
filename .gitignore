@@ -65,6 +65,7 @@ config/ldap.yml
 robots.txt
 
 # Ignore Node and Bower packages
+/bower_components
 angularjs/ui2/node_modules/
 angularjs/ui2/src/bower_components/
 angularjs/ui2/.tmp
