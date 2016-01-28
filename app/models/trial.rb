@@ -47,7 +47,6 @@
 #  check_in_comment              :text
 #  process_priority              :string(255)
 #  process_comment               :text
-#  receive_email                 :boolean
 #  xml_required                  :string(255)
 #  acronym                       :string(255)
 #  keywords                      :text
@@ -90,6 +89,7 @@
 #  study_model_id                :integer
 #  time_perspective_id           :integer
 #  biospecimen_retention_id      :integer
+#  biospecimen_desc              :text
 #
 # Indexes
 #
