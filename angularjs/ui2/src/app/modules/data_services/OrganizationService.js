@@ -78,7 +78,7 @@
                 {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '80', width: '*'},
 
                 {
-                    name: 'name', enableSorting: true, minWidth: '100', width: '*',
+                    name: 'name', enableSorting: true, minWidth: '300', width: '*',
                     //this does not work for .id
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
                     ' title="{{COL_FIELD}}">' +
