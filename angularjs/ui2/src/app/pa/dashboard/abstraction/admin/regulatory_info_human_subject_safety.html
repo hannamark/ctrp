@@ -14,6 +14,7 @@
                             <select name="approval_status" id="board_approval_status"
                                 class="form-control input-sm"
                                 ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
+                                restriction-field
                                 ng-change="regInfoSafetyView.changeStatus()"
                                 ng-model="regInfoSafetyView.trialDetailsObj.board_approval_status_id" restriction-field
                                 ng-options="status.id as status.name for status in regInfoSafetyView.statuses">
@@ -33,6 +34,7 @@
                         <label for="approval_number" class="control-label col-xs-12 col-sm-4">Board Approval Number</label>
                         <div class="col-xs-12 col-sm-4">
                             <input type="text" name="approval_number" id="approval_number"
+                                restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
                                 class="form-control input-sm" ng-required="regInfoSafetyView.approvalNumRequired"
                                 ng-model="regInfoSafetyView.trialDetailsObj.board_approval_num" placeholder="Board Approval Number">
                                 <span class="form-control-feedback" ng-show="human_safety_form.approval_number.$dirty"
@@ -142,6 +144,7 @@
                         <label for="board_name" class="control-label col-xs-12 col-sm-4">Board Name</label>
                         <div class="col-sm-4">
                             <input type="text" id="board_name" name="board_name" class="form-control input-sm"
+                                    restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_name" ng-maxlength="255"
                                     ng-required="regInfoSafetyView.boardNameRequired" placeholder="Board Name">
                             <span class="form-control-feedback" ng-show="(human_safety_form.board_name.$dirty && human_safety_form.board_name.$error) || (regInfoSafetyView.boardNameRequired && human_safety_form.board_name.$viewValue.length == 0)"
@@ -162,7 +165,7 @@
                         <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field="ROLE_ABSTRACTOR, ROLE_SUPER, ROLE_ADMIN"> <!--  ng-disabled="!human_safety_form.$valid" -->
                           <i class="glyphicon glyphicon-ok"></i>  Save
                         </button>
-                        <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="" restriction-field="ROLE_ABSTRACTOR, ROLE_SUPER, ROLE_ADMIN">
+                        <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="regInfoSafetyView.resetHumanSafetyInfo()" restriction-field="ROLE_ABSTRACTOR, ROLE_SUPER, ROLE_ADMIN">
                          <i class="glyphicon glyphicon-remove"></i>  Reset
                         </button>
                       </div>

@@ -8,16 +8,17 @@
     .controller('regulatoryInfoHumanSafetyCtrl', regulatoryInfoHumanSafetyCtrl);
 
     regulatoryInfoHumanSafetyCtrl.$inject = ['$scope', 'PATrialService', 'TrialService',
-        'boardApprovalStatuses', '_', '$timeout', 'toastr'];
+        'boardApprovalStatuses', '_', '$timeout', 'toastr', 'MESSAGES'];
 
     function regulatoryInfoHumanSafetyCtrl($scope, PATrialService, TrialService,
-        boardApprovalStatuses, _, $timeout, toastr) {
+        boardApprovalStatuses, _, $timeout, toastr, MESSAGES) {
 
         var vm = this;
         vm.boardAffiliationArray = [];
         vm.statuses = boardApprovalStatuses.statuses;
         vm.changeStatus = changeStatus;
         vm.updateHumanSafetyInfo = updateHumanSafetyInfo;
+        vm.resetHumanSafetyInfo = resetHumanSafetyInfo;
         vm.approvalNumRequired = false;
         vm.boardNameRequired = false;
         vm.boardAffRequired = false;
@@ -27,6 +28,7 @@
         function activate() {
             _getTrialDetailCopy();
             _watchAffiliationSelection();
+            _watchTrialDetailObj();
         }
 
         /**
@@ -59,7 +61,7 @@
         function changeStatus() {
             var approvalStatus = _.findWhere(vm.statuses, {id: vm.trialDetailsObj.board_approval_status_id});
             // console.log('approval status: ', approvalStatus);
-            var statusName = approvalStatus.name.toLowerCase();
+            var statusName = !!approvalStatus ? approvalStatus.name.toLowerCase() : '';
             // approval number is required if the status is 'Submitted, approved'
             vm.approvalNumRequired = statusName.indexOf('approv') > -1;
             // board affiliation is required when status is 'Submitted, pending' or
@@ -82,6 +84,7 @@
             outerTrial.trial = vm.trialDetailsObj;
 
             TrialService.upsertTrial(outerTrial).then(function(res) {
+                console.log('res: ', res);
                 vm.trialDetailsObj = res;
                 vm.trialDetailsObj.lock_version = res.lock_version;
 
@@ -96,6 +99,17 @@
                 _getTrialDetailCopy();
             });
         }
+
+        function _watchTrialDetailObj() {
+            $scope.$on(MESSAGES.TRIAL_DETAIL_SAVED, function() {
+                _getTrialDetailCopy();
+            });
+        } //watchTrialDetailObj
+
+
+        function resetHumanSafetyInfo() {
+            activate();
+        } // resetHumanSafetyInfo
 
     } // regulatoryInfoHumanSafetyCtrl
 
