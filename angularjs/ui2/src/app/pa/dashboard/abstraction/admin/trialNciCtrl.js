@@ -23,11 +23,20 @@
         vm.studySourceArr = studySourceObj;
         vm.addedFses = [];
         vm.selectedFsArray = [];
+        vm.fsNum = 0;
         //vm.nih_nci_div = trialDetailObj.nih_nci_div;
        // vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
-            console.log("3curTrial =" + JSON.stringify(vm.curTrial));
+            // Prevent multiple submissions
+            vm.disableBtn = true;
+            console.log("curTrial =" + JSON.stringify(vm.curTrial));
+            if (vm.fsNum == 0) {
+                return;
+            }
+            if(vm.curTrial.study_source_id == null) {
+                return;
+            }
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {

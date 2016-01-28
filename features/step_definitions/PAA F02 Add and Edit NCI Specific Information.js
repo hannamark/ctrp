@@ -1180,37 +1180,27 @@ module.exports = function() {
     });
 
     /*
-     Scenario Outline: #11 I cannot view the �Send Trial Information to ClinicalTrials.gov?�
-
+     Scenario Outline: #11 I cannot change the �Send Trial Information to ClinicalTrials.gov? - greyed out
      Given I am logged into the CTRP PA application
      And I am on the NCI Specific Information screen
-     When the follow <conditions> exist
-     Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not be visible
+     When the following <conditions> exist
+     Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not greyed out and not editible
 
      Examples:
 
-     |<Conditions>|
-     |Trial is not sponsored by "National Cancer Institute" |
-     |Trial Lead Organization is "NCI - Center for Cancer Research"|
-     |Trial processing status is not �Verification Pending�|
-     |Trial processing status is not "Abstracted|
-     |Trial processing status is not �No Response�|
-     |Trial processing status is not �Abstracted, Response�|
-     |Trial Overall Status is �Complete�|
-     |Trial Overall Status is �Administratively Complete�|
-     |Trial Overall Status is �Terminated�|
-     |Trial Research Category is not "Interventional"|
+     |<Conditions>|<Field>|
+     |Trial is sponsored by "National Cancer Institute" |trials.sponsor_id Organizations.name = "National Cancer Institute"|
+     |Trial Lead Organization is "NCI - Center for Cancer Research"|trials.lead_org_id Organizations.name = "NCI - Center for Cancer Research"|
+     |Trial processing status is not "Verification Pending"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Verification Pending"|
+     |Trial processing status is not "Abstracted"| processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstracted"|
+     |Trial processing status is not "No Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = No Response"|
+     |Trial processing status is not "Abstracted, Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstracted, Response"|
+     |Trial Overall Status is �Complete�|trial_status_wrappers.trial_status_id trial_statuses.name = "Complete"|
+     |Trial Overall Status is �Administratively Complete�|trial_status_wrappers.trial_status_id trial_statuses.name = "Administratively Complete"|
+     |Trial Overall Status is �Terminated�| trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
+     |Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
      */
 
-    this.When(/^the follow (.*) exist$/, function (conditions, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Then(/^the label and element for �Send Trial Information to ClinicalTrials\.gov\?� will not be visible$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
 
 
 

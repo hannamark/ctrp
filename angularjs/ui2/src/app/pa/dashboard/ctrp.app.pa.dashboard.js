@@ -9,6 +9,7 @@
         'ngTouch',
         'ngAnimate',
         'ngSanitize',
+        'ngMessages',
 
         /* Cross-app modules */
         'ctrp.module.routes',

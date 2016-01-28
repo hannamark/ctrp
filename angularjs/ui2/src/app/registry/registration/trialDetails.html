@@ -25,7 +25,7 @@
                 <uib-accordion close-others="false">
                     <uib-accordion-group ng-if="['amend'].indexOf(trialDetailView.curTrial.edit_type) > -1" is-open="trialDetailView.accordions[0]">
                         <uib-accordion-heading>
-                            Amendment Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[0], 'glyphicon-chevron-right': !trialDetailView.accordions[0]}"></i>
+                            Amendment Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[0], 'glyphicon-chevron-right': !trialDetailView.accordions[0]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group">
@@ -56,7 +56,7 @@
 
                     <uib-accordion-group is-open="trialDetailView.accordions[1]">
                         <uib-accordion-heading>
-                            Trial Identifiers  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[1], 'glyphicon-chevron-right': !trialDetailView.accordions[1]}"></i>
+                            Trial Identifiers <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[1], 'glyphicon-chevron-right': !trialDetailView.accordions[1]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group required">
@@ -148,7 +148,6 @@
                                 </table>
                             </div>
                         </div>
-
                     </uib-accordion-group>
 
                     <uib-accordion-group is-open="trialDetailView.accordions[2]">
@@ -368,7 +367,7 @@
 
                     <uib-accordion-group is-open="trialDetailView.accordions[6]">
                         <uib-accordion-heading>
-                            NIH Grant Information (for NIH funded Trials)  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[6], 'glyphicon-chevron-right': !trialDetailView.accordions[6]}"></i>
+                            NIH Grant Information (for NIH funded Trials) <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[6], 'glyphicon-chevron-right': !trialDetailView.accordions[6]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.grant_question)}">
@@ -504,7 +503,7 @@
 
                     <uib-accordion-group is-open="trialDetailView.accordions[7]">
                         <uib-accordion-heading>
-                            Trial Status  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[7], 'glyphicon-chevron-right': !trialDetailView.accordions[7]}"></i>
+                            Trial Status <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[7], 'glyphicon-chevron-right': !trialDetailView.accordions[7]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ts_dummy)}">
@@ -614,7 +613,7 @@
 
                     <uib-accordion-group is-open="trialDetailView.accordions[8]">
                         <uib-accordion-heading>
-                            Trial Dates  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[8], 'glyphicon-chevron-right': !trialDetailView.accordions[8]}"></i>
+                            Trial Dates <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[8], 'glyphicon-chevron-right': !trialDetailView.accordions[8]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.start_date) || ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual)}">
@@ -713,7 +712,7 @@
 
                     <uib-accordion-group is-open="trialDetailView.accordions[9]">
                         <uib-accordion-heading>
-                            FDA IND/IDE Information for applicable trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[9], 'glyphicon-chevron-right': !trialDetailView.accordions[9]}"></i>
+                            FDA IND/IDE Information for applicable trials <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[9], 'glyphicon-chevron-right': !trialDetailView.accordions[9]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_question)}">
@@ -1020,7 +1019,7 @@
 
                     <uib-accordion-group is-open="trialDetailView.accordions[11]">
                         <uib-accordion-heading>
-                            Trial Related Documents  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[11], 'glyphicon-chevron-right': !trialDetailView.accordions[11]}"></i>
+                            Trial Related Documents <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[11], 'glyphicon-chevron-right': !trialDetailView.accordions[11]}"></i>
                         </uib-accordion-heading>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.protocol_document)}">
