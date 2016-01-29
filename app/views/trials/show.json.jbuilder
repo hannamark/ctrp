@@ -79,6 +79,8 @@ json.send_trial_flag send_trial_flag ? "Yes":"No"
 
 json.pa_editable @trial.pa_editable_check
 
+json.internal_source @trial.internal_source_id.nil? ? nil : @trial.internal_source
+
 #json.admin_checkout @trial.admin_checkout
 
 #json.scientific_checkout @trial.scientific_checkout
