@@ -90,7 +90,6 @@
 #  time_perspective_id           :integer
 #  biospecimen_retention_id      :integer
 #  biospecimen_desc              :text
-#  internal_source               :string(255)
 #
 # Indexes
 #
@@ -165,6 +164,7 @@ class Trial < ActiveRecord::Base
   belongs_to :study_model
   belongs_to :time_perspective
   belongs_to :biospecimen_retention
+  #belongs_to :internal_source
   has_many :submissions, -> { order 'submissions.id' }
   has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
   has_many :onholds, -> { order 'onholds.id' }
