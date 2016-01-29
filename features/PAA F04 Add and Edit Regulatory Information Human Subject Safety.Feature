@@ -91,9 +91,9 @@ Then the following fields will be displayed:
 
 |Examples|
 |<Status>               |Board Approval Status|	Board Approval Number |Board Affiliation and Address|Board Name|
-|<null>                 |Dispalyed            |Hidden  		      |Hidden                       |Hidden|
-|Submitted, Approved    |Dispalyed            |Dispalyed              |Dispalyed                    |Dispalyed|
-|Submitted, Exempt      |Dispalyed            |Hidden                 |Dispalyed                    |Dispalyed|
-|Submitted, Pending     |Dispalyed            |Hidden                 |Dispalyed                    |Dispalyed|
-|Submitted, Denied      |Dispalyed            |Hidden                 |Dispalyed                    |Dispalyed|
-|Submission Not Required|Dispalyed            |Hidden                 |Hidden                       |Hidden|
+|<null>                 |Displayed            |Hidden  		      |Hidden                       |Hidden|
+|Submitted, Approved    |Displayed            |Displayed              |Displayed                    |Displayed|
+|Submitted, Exempt      |Displayed            |Hidden                 |Displayed                    |Displayed|
+|Submitted, Pending     |Displayed            |Hidden                 |Displayed                    |Displayed|
+|Submitted, Denied      |Displayed            |Hidden                 |Displayed                    |Displayed|
+|Submission Not Required|Displayed            |Hidden                 |Hidden                       |Hidden|
