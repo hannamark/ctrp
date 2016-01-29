@@ -22,7 +22,7 @@
                         <div ng-repeat="collaborator in trialDetailView.addedCollaborators track by $index" class="form-group">
                             <div class="col-xs-12 col-sm-3"></div>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" class="form-control input-sm" ng-class="collaborator._destroy == true ? 'deleted-text animated-item' : 'animated-item'" disabled value="{{collaborator.organization_name}}"/>
+                                <input type="text" class="form-control input-sm" ng-class="collaborator._destroy == true ? 'deleted-text animated-item' : 'animated-item'" disabled value="{{collaborator.org_name}}"/>
                             </div>
                             <label restriction-field class="col-xs-12 col-sm-1 btn btn-default" ng-click="trialDetailView.toggleSelection($index)">
                                 <i ng-class="collaborator._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>

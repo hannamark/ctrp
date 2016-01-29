@@ -403,6 +403,7 @@ class TrialsController < ApplicationController
                                     alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
                                     central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname],
                                     trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
+                                    collaborators_attributes: [:id, :organization_id, :org_name, :_destroy],
                                     grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
                                     trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id,
                                                                        :comment, :_destroy],
