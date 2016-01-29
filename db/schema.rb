@@ -391,6 +391,15 @@ ActiveRecord::Schema.define(version: 20160129162334) do
   add_index "ind_ides", ["holder_type_id"], name: "index_ind_ides_on_holder_type_id", using: :btree
   add_index "ind_ides", ["trial_id"], name: "index_ind_ides_on_trial_id", using: :btree
 
+  create_table "internal_sources", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
   create_table "intervention_models", force: :cascade do |t|
     t.string   "code",         limit: 255
     t.string   "name",         limit: 255
@@ -1119,6 +1128,7 @@ ActiveRecord::Schema.define(version: 20160129162334) do
     t.integer  "time_perspective_id"
     t.integer  "biospecimen_retention_id"
     t.text     "biospecimen_desc"
+    t.integer  "internal_source_id"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
@@ -1128,6 +1138,7 @@ ActiveRecord::Schema.define(version: 20160129162334) do
   add_index "trials", ["board_affiliation_id"], name: "index_trials_on_board_affiliation_id", using: :btree
   add_index "trials", ["board_approval_status_id"], name: "index_trials_on_board_approval_status_id", using: :btree
   add_index "trials", ["gender_id"], name: "index_trials_on_gender_id", using: :btree
+  add_index "trials", ["internal_source_id"], name: "index_trials_on_internal_source_id", using: :btree
   add_index "trials", ["intervention_model_id"], name: "index_trials_on_intervention_model_id", using: :btree
   add_index "trials", ["investigator_aff_id"], name: "index_trials_on_investigator_aff_id", using: :btree
   add_index "trials", ["investigator_id"], name: "index_trials_on_investigator_id", using: :btree
@@ -1288,6 +1299,7 @@ ActiveRecord::Schema.define(version: 20160129162334) do
   add_foreign_key "trials", "biospecimen_retentions"
   add_foreign_key "trials", "board_approval_statuses"
   add_foreign_key "trials", "genders"
+  add_foreign_key "trials", "internal_sources"
   add_foreign_key "trials", "intervention_models"
   add_foreign_key "trials", "maskings"
   add_foreign_key "trials", "organizations", column: "board_affiliation_id"
@@ -1340,6 +1352,7 @@ ActiveRecord::Schema.define(version: 20160129162334) do
   create_sequence "holder_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "identifier_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ind_ides_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "internal_sources_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "intervention_models_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "intervention_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
