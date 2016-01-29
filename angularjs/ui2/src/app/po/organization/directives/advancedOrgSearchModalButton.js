@@ -24,7 +24,7 @@
                 maxRowSelectable: '=?', //int, required!
                 useBuiltInTemplate: '=?', //boolean
                 selectedOrgsArray: '=',
-                allowOverwrite: '=' //boolean, overwrite previously selected organizations or not (default to true)
+                allowOverwrite: '=?' //boolean, overwrite previously selected organizations or not (default to true)
 
             },
             templateUrl: 'app/po/organization/directives/advancedOrgSearchModalButtonTemplate.html',

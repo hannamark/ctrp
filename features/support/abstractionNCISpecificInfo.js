@@ -42,7 +42,10 @@ var abstractionNCISpecificInfo = function(){
     this.nciSpecificAdminBackToSearchResult = element(by.buttonText('↵ Back to Search Results↵ '));
 
     this.nciSpecificSave = element(by.buttonText('Save'));
-    this.nciSpecificReset = element(by.buttonText('↵ Reset↵ '));
+    this.nciSpecificReset = element(by.css('button[ng-click="trialNciView.reload()"]'));
+
+    this.nciSpecificStudySourceRequired = element(by.css('.help-block:nth-child(02)'));
+    this.nciSpecificFundingSourceRequired = element(by.css('.help-block:nth-child(03)'));
 
     //Organization Search
     this.orgSearchName = element(by.model('searchParams.name'));
@@ -73,17 +76,33 @@ var abstractionNCISpecificInfo = function(){
     this.orgAddFundingSourceBostonUniDel = element(by.xpath('//form/uib-accordion/div/div/div[2]/div/div[1]/fieldset[2]/div[3]/label/i'));
     this.orgAddFundingSourceMemorialHosDel = element(by.xpath('//form/uib-accordion/div/div/div[2]/div/div[1]/fieldset[2]/div[4]/label/i'));
 
+
+
     var helper = new helperFunctions();
 
+    //Verify Study Source Required
+    this.verifyStudySourceReq = function(expStudySrcReqMsg){
+        helper.getVerifyRequired(this.nciSpecificStudySourceRequired,expStudySrcReqMsg,"Study Source field");
+    };
+
+    //Verify Funding Source Required
+    this.verifyFundingSourceReq = function(expFundingSrcReqMsg){
+        helper.getVerifyRequired(this.nciSpecificFundingSourceRequired,expFundingSrcReqMsg,"Funding Source field");
+    };
+
+    //Verify Funding Source
     this.verifyFundingSourceOrg = function(fundingSrcOrgNm){
-        //this.orgAddFundingSourceBostonMed.getText().then(function(value){
-        //   console.log('current organization at funding source section: '+value);
-        //});
         helper.getVerifyValue(this.orgAddFundingSourceOrgA,fundingSrcOrgNm,"Funding Source Organization field");
     };
 
+    //Comment program code
     this.verifyProgramCode = function(progrmCD){
       helper.getVerifyValue(this.nciSpecificProgramCode,progrmCD,"Program Code field");
+    };
+
+    //Comment verification
+    this.verifyComment = function(vrfCommnt){
+        helper.getVerifyValue(this.nciSpecificComments,vrfCommnt,"Comments field");
     };
 
     //Delete Funding Source Organization

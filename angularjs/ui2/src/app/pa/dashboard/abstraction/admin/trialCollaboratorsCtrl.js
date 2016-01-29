@@ -31,9 +31,9 @@
             outerTrial.trial = vm.curTrial;
 
             if (vm.addedCollaborators.length > 0) {
-                vm.curTrial.collaborator_attributes = [];
+                vm.curTrial.collaborators_attributes = [];
                 _.each(vm.addedCollaborators, function (collaborator) {
-                    vm.curTrial.collaborator_attributes.push(collaborator);
+                    vm.curTrial.collaborators_attributes.push(collaborator);
                 });
             }
 
@@ -82,7 +82,7 @@
             if (newValue == oldValue + 1) {
                 var newCollaborator = {};
                 newCollaborator.organization_id = vm.selectedCollaborators[vm.selectedCollaborators.length - 1].id;
-                newCollaborator.organization_name = vm.selectedCollaborators[vm.selectedCollaborators.length - 1].name;
+                newCollaborator.org_name = vm.selectedCollaborators[vm.selectedCollaborators.length - 1].name;
                 newCollaborator._destroy = false;
                 vm.addedCollaborators.push(newCollaborator);
                 vm.collaboratorsNum++;
@@ -117,7 +117,7 @@
                 var viewCollaborator = {};
                 viewCollaborator.id = vm.curTrial.collaborators[i].id;
                 viewCollaborator.organization_id = vm.curTrial.collaborators[i].organization_id;
-                viewCollaborator.organization_name = vm.curTrial.collaborators[i].organization_name;
+                viewCollaborator.org_name = vm.curTrial.collaborators[i].org_name;
                 viewCollaborator._destroy = false;
                 vm.addedCollaborators.push(viewCollaborator);
                 vm.collaboratorsNum++;
