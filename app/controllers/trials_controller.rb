@@ -386,65 +386,7 @@ class TrialsController < ApplicationController
     url = url.sub('NCT********', params[:nct_id])
     xml = Nokogiri::XML(open(url))
 
-    import_params = {}
-
-    import_params[:edit_type] = 'import'
-    import_params[:is_draft] = false
-    import_params[:study_source_id] = StudySource.find_by_code('IND').id
-    import_params[:lead_protocol_id] = xml.xpath('//org_study_id').text
-
-    import_params[:other_ids_attributes] = []
-    xml.xpath('//secondary_id').each do |other_id|
-      import_params[:other_ids_attributes].push({protocol_id_origin_id: ProtocolIdOrigin.find_by_code('OTH').id, protocol_id: other_id.text})
-    end
-    import_params[:other_ids_attributes].push({protocol_id_origin_id: ProtocolIdOrigin.find_by_code('NCT').id, protocol_id: xml.xpath('//nct_id').text})
-
-    import_params[:brief_title] = xml.xpath('//brief_title').text
-    import_params[:official_title] = xml.xpath('//official_title').text
-
-    import_params[:collaborators_attributes] = []
-    xml.xpath('//collaborator/agency').each do |collaborator|
-      import_params[:collaborators_attributes].push({org_name: collaborator.text})
-    end
-
-    import_params[:oversight_authorities_attributes] = []
-    xml.xpath('//oversight_info/authority').each do |authority|
-      splits = authority.text.split(':')
-      import_params[:oversight_authorities_attributes].push({country: splits[0].strip, organization: splits[1].strip})
-    end
-
-    import_params[:data_monitor_indicator] = xml.xpath('//oversight_info/has_dmc').text if xml.xpath('//oversight_info/has_dmc').present?
-    import_params[:brief_summary] = xml.xpath('//brief_summary').text
-    import_params[:detailed_description] = xml.xpath('//detailed_description').text
-
-    import_params[:trial_status_wrappers_attributes] = []
-    ctrp_status_code = map_status(xml.xpath('//overall_status').text)
-    ctrp_status = TrialStatus.find_by_code(ctrp_status_code)
-    import_params[:trial_status_wrappers_attributes].push({trial_status_id: ctrp_status.id}) if ctrp_status.present?
-
-    import_params[:start_date] = convert_date(xml.xpath('//start_date').text)
-    import_params[:start_date_qual] = 'Actual'
-    import_params[:comp_date] = convert_date(xml.xpath('//completion_date').text)
-    import_params[:comp_date_qual] = xml.xpath('//completion_date').attr('type')
-    import_params[:primary_comp_date] = convert_date(xml.xpath('//primary_completion_date').text)
-    import_params[:primary_comp_date_qual] = xml.xpath('//primary_completion_date').attr('type')
-
-    ctrp_phase_code = map_phase(xml.xpath('//phase').text)
-    ctrp_phase = Phase.find_by_code(ctrp_phase_code)
-    import_params[:phase_id] = ctrp_phase.id if ctrp_phase.present?
-
-    ctrp_research_category = ResearchCategory.find_by_name(xml.xpath('//study_type').text)
-    import_params[:research_category_id] = ctrp_research_category.id if ctrp_research_category.present?
-
-    import_params[:outcome_measures_attributes] = []
-    xml.xpath('//primary_outcome').each do |p_outcome|
-      import_params[:outcome_measures_attributes].push({title: p_outcome.xpath('measure').text, time_frame: p_outcome.xpath('time_frame').text, safety_issue: p_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('PRI').id})
-    end
-    xml.xpath('//secondary_outcome').each do |s_outcome|
-      import_params[:outcome_measures_attributes].push({title: s_outcome.xpath('measure').text, time_frame: s_outcome.xpath('time_frame').text, safety_issue: s_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('SEC').id})
-    end
-
-    @trial = Trial.new(import_params)
+    @trial = Trial.new(import_params(xml))
 
     respond_to do |format|
       if @trial.save
@@ -506,6 +448,94 @@ class TrialsController < ApplicationController
     end
 
     return msg
+  end
+
+  def import_params (xml)
+    import_params = {}
+
+    import_params[:edit_type] = 'import'
+    import_params[:is_draft] = false
+    import_params[:study_source_id] = StudySource.find_by_code('IND').id
+    import_params[:lead_protocol_id] = xml.xpath('//org_study_id').text
+
+    import_params[:other_ids_attributes] = []
+    xml.xpath('//secondary_id').each do |other_id|
+      import_params[:other_ids_attributes].push({protocol_id_origin_id: ProtocolIdOrigin.find_by_code('OTH').id, protocol_id: other_id.text})
+    end
+    import_params[:other_ids_attributes].push({protocol_id_origin_id: ProtocolIdOrigin.find_by_code('NCT').id, protocol_id: xml.xpath('//nct_id').text})
+
+    import_params[:brief_title] = xml.xpath('//brief_title').text
+    import_params[:official_title] = xml.xpath('//official_title').text
+
+    import_params[:collaborators_attributes] = []
+    xml.xpath('//collaborator/agency').each do |collaborator|
+      import_params[:collaborators_attributes].push({org_name: collaborator.text})
+    end
+
+    import_params[:oversight_authorities_attributes] = []
+    xml.xpath('//oversight_info/authority').each do |authority|
+      splits = authority.text.split(':')
+      import_params[:oversight_authorities_attributes].push({country: splits[0].strip, organization: splits[1].strip})
+    end
+
+    import_params[:data_monitor_indicator] = xml.xpath('//oversight_info/has_dmc').text if xml.xpath('//oversight_info/has_dmc').present?
+    import_params[:brief_summary] = xml.xpath('//brief_summary').text
+    import_params[:detailed_description] = xml.xpath('//detailed_description').text
+
+    import_params[:trial_status_wrappers_attributes] = []
+    ctrp_status_code = map_status(xml.xpath('//overall_status').text)
+    ctrp_status = TrialStatus.find_by_code(ctrp_status_code)
+    import_params[:trial_status_wrappers_attributes].push({trial_status_id: ctrp_status.id}) if ctrp_status.present?
+
+    import_params[:start_date] = convert_date(xml.xpath('//start_date').text) if xml.xpath('//start_date').present?
+    import_params[:start_date_qual] = 'Actual' if xml.xpath('//start_date').present?
+    import_params[:comp_date] = convert_date(xml.xpath('//completion_date').text) if xml.xpath('//completion_date').present?
+    import_params[:comp_date_qual] = xml.xpath('//completion_date').attr('type') if xml.xpath('//completion_date').present?
+    import_params[:primary_comp_date] = convert_date(xml.xpath('//primary_completion_date').text) if xml.xpath('//primary_completion_date').present?
+    import_params[:primary_comp_date_qual] = xml.xpath('//primary_completion_date').attr('type') if xml.xpath('//primary_completion_date').present?
+
+    ctrp_phase_code = map_phase(xml.xpath('//phase').text)
+    ctrp_phase = Phase.find_by_code(ctrp_phase_code)
+    import_params[:phase_id] = ctrp_phase.id if ctrp_phase.present?
+
+    ctrp_research_category = ResearchCategory.find_by_name(xml.xpath('//study_type').text)
+    import_params[:research_category_id] = ctrp_research_category.id if ctrp_research_category.present?
+
+    xml.xpath('//study_design').text.split(',').each do |study_design|
+      splits = study_design.split(':')
+      case splits[0].strip
+        when 'Allocation'
+          ctrp_allocation_code = map_allocation(splits[1].strip)
+          ctrp_allocation = Allocation.find_by_code(ctrp_allocation_code)
+          import_params[:allocation_id] = ctrp_allocation.id if ctrp_allocation.present?
+        when 'Endpoint Classification'
+          ctrp_study_classification_code = map_study_classification(splits[1].strip)
+          ctrp_study_classification = StudyClassification.find_by_code(ctrp_study_classification_code)
+          import_params[:study_classification_id] = ctrp_study_classification.id if ctrp_study_classification.present?
+        when 'Intervention Model'
+          ctrp_intervention_model_code = map_intervention_model(splits[1].strip)
+          ctrp_intervention_model = InterventionModel.find_by_code(ctrp_intervention_model_code)
+          import_params[:intervention_model_id] = ctrp_intervention_model.id if ctrp_intervention_model.present?
+        when 'Masking'
+          ctrp_masking_code = map_masking(splits[1].strip)
+          ctrp_masking = Masking.find_by_code(ctrp_masking_code)
+          import_params[:masking_id] = ctrp_masking.id if ctrp_masking.present?
+        when 'Primary Purpose'
+          ctrp_primary_purpose_code = map_primary_purpose(splits[1].strip)
+          ctrp_primary_purpose = PrimaryPurpose.find_by_code(ctrp_primary_purpose_code)
+          import_params[:primary_purpose_id] = ctrp_primary_purpose.id if ctrp_primary_purpose.present?
+      end
+    end
+
+    import_params[:outcome_measures_attributes] = []
+    xml.xpath('//primary_outcome').each do |p_outcome|
+      import_params[:outcome_measures_attributes].push({title: p_outcome.xpath('measure').text, time_frame: p_outcome.xpath('time_frame').text, safety_issue: p_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('PRI').id})
+    end
+    xml.xpath('//secondary_outcome').each do |s_outcome|
+      import_params[:outcome_measures_attributes].push({title: s_outcome.xpath('measure').text, time_frame: s_outcome.xpath('time_frame').text, safety_issue: s_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('SEC').id})
+    end
+
+    return import_params
   end
 
   # Maps the ClinicalTrials.gov status to CTRP status code
@@ -600,5 +630,103 @@ class TrialsController < ApplicationController
     end
 
     return ctrp_phase_code
+  end
+
+  def map_allocation (ct_allocation)
+    case ct_allocation
+      when 'N/A'
+        ctrp_allocation_code = 'NA'
+      when 'Randomized'
+        ctrp_allocation_code = 'RCT'
+      when 'Nonrandomized'
+        ctrp_allocation_code = 'NRT'
+      else
+        ctrp_allocation_code = ''
+    end
+
+    return ctrp_allocation_code
+  end
+
+  def map_study_classification (ct_study_classification)
+    case ct_study_classification
+      when 'N/A'
+        ctrp_study_classification_code = 'NA'
+      when 'Safety Study'
+        ctrp_study_classification_code = 'SF'
+      when 'Efficacy Study'
+        ctrp_study_classification_code = 'EFF'
+      when 'Safety/Efficacy Study'
+        ctrp_study_classification_code = 'SFEFF'
+      when 'Bio-equivalence Study'
+        ctrp_study_classification_code = 'BEQ'
+      when 'Bio-availability Study'
+        ctrp_study_classification_code = 'BAV'
+      when 'Pharmacokinetics Study'
+        ctrp_study_classification_code = 'PD'
+      when 'Pharmacodynamics Study'
+        ctrp_study_classification_code = 'PK'
+      when 'Pharmacokinetics/dynamics Study'
+        ctrp_study_classification_code = 'PKPD'
+      else
+        ctrp_study_classification_code = ''
+    end
+
+    return ctrp_study_classification_code
+  end
+
+  def map_intervention_model (ct_intervention_model)
+    case ct_intervention_model
+      when 'Single Group Assignment'
+        ctrp_intervention_model_code = 'SG'
+      when 'Parallel Assignment'
+        ctrp_intervention_model_code = 'PL'
+      when 'Cross-over Assignment'
+        ctrp_intervention_model_code = 'CO'
+      when 'Factorial Assignment'
+        ctrp_intervention_model_code = 'FT'
+      else
+        ctrp_intervention_model_code = ''
+    end
+
+    return ctrp_intervention_model_code
+  end
+
+  def map_masking (ct_masking)
+    if ct_masking.include? 'Open'
+      ctrp_masking_code = 'OP'
+    elsif ct_masking.include? 'Single Blind'
+      ctrp_masking_code = 'SB'
+    elsif ct_masking.include? 'Double Blind'
+      ctrp_masking_code = 'DB'
+    else
+      ctrp_masking_code = ''
+    end
+
+    return ctrp_masking_code
+  end
+
+  def map_primary_purpose (ct_primary_purpose)
+    case ct_primary_purpose
+      when 'Treatment'
+        ctrp_primary_purpose_code = 'TRM'
+      when 'Prevention'
+        ctrp_primary_purpose_code = 'PRV'
+      when 'Diagnostic'
+        ctrp_primary_purpose_code = 'DIA'
+      when 'Supportive Care'
+        ctrp_primary_purpose_code = 'SUP'
+      when 'Screening'
+        ctrp_primary_purpose_code = 'SCR'
+      when 'Health Services Research '
+        ctrp_primary_purpose_code = 'HSR'
+      when 'Basic Science'
+        ctrp_primary_purpose_code = 'BSC'
+      when 'Other'
+        ctrp_primary_purpose_code = 'OTH'
+      else
+        ctrp_primary_purpose_code = ''
+    end
+
+    return ctrp_primary_purpose_code
   end
 end

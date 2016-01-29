@@ -214,6 +214,19 @@ OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
 OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
 
+Allocation.find_or_create_by(code: 'NA', name: 'NA')
+Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Control Trial')
+Allocation.find_or_create_by(code: 'NRT', name: 'Non-Randomized Trial')
+
+InterventionModel.find_or_create_by(code: 'SG', name: 'Single Group')
+InterventionModel.find_or_create_by(code: 'PL', name: 'Parallel')
+InterventionModel.find_or_create_by(code: 'CO', name: 'Cross-Over')
+InterventionModel.find_or_create_by(code: 'FT', name: 'Factorial')
+
+Masking.find_or_create_by(code: 'OP', name: 'Open')
+Masking.find_or_create_by(code: 'SB', name: 'Single Blind')
+Masking.find_or_create_by(code: 'DB', name: 'Double Blind')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
