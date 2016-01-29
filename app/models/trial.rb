@@ -90,6 +90,7 @@
 #  time_perspective_id           :integer
 #  biospecimen_retention_id      :integer
 #  biospecimen_desc              :text
+#  internal_source               :string(255)
 #
 # Indexes
 #
