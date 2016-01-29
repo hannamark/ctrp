@@ -119,7 +119,10 @@ class DataImport
         trial.sec801_indicator = trial_spreadsheet.cell(row,'CN') == "YES" ? "Yes" : "No"
         trial.data_monitor_indicator = trial_spreadsheet.cell(row,'V') == "YES" ? "Yes" : "No"
         # Sponsor
-        trial.sponsor = Organization.all[rand(0..13)]
+        trial.sponsor = Organization.all[rand(0..total_organizations-1)]
+        # Internal Source
+        trial.internal_source = InternalSource.all[rand(0..(InternalSource.all.size-1))]
+        #Responsible party
         resp_party = trial_spreadsheet.cell(row,'CJ')
         responsible_party = ResponsibleParty.find_by_code(resp_party)
         if resp_party.present? && responsible_party.blank?
