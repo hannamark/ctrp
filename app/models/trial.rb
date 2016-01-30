@@ -241,23 +241,25 @@ class Trial < ActiveRecord::Base
   before_save :check_indicator
   after_create :create_ownership
 
+  def is_sponsor_nci?
+    return (!self.sponsor.nil? && self.sponsor.name == "National Cancer Institute") ? true:false
+  end
+
+  def is_lead_org_nci_ccr?
+    return (!self.lead_org.nil? &&  self.lead_org.name == "NCI - Center for Cancer Research") ? true:false
+  end
 
   def set_send_trial_info_flag
     send_trial_flag = false
 
     #And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
-    if !self.sponsor.nil? && self.sponsor.name == "National Cancer Institute"
-      send_trial_flag = true
-    else
-      return false
-    end
+    send_trial_flag = is_sponsor_nci?
+    return if !send_trial_flag
 
-    # And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
-    if self.lead_org != "NCI - Center for Cancer Research"
-      send_trial_flag = true
-    else
-      return false
-    end
+    # And Trial Lead Organization is "NCI - Center for Cancer Research"|trials.lead_org_id Organizations.name = "NCI - Center for Cancer Research"|
+    send_trial_flag = is_lead_org_nci_ccr?
+    return if !send_trial_flag
+
     latest_processing_status = processing_status_wrappers.empty? ? nil:processing_status_wrappers.last.processing_status.name
     if latest_processing_status.nil?
       return false

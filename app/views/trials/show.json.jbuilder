@@ -73,6 +73,8 @@ json.board_affiliated_org @trial.board_affiliation_id.nil? ? nil : @trial.board_
 
 json.last_submission_source @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_source_id.nil? ? '' : SubmissionSource.find(@trial.submissions.last.submission_source_id))
 
+json.sponsor_nci @trial.is_sponsor_nci?
+
 send_trial_flag = @trial.set_send_trial_info_flag
 
 json.send_trial_flag send_trial_flag ? "Yes":"No"
