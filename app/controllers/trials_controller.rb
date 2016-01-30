@@ -397,7 +397,7 @@ class TrialsController < ApplicationController
                                     :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                     :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
                                     :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
-                                    :process_priority, :process_comment, :nih_nci_div, :nih_nci_prog, :keywords,
+                                    :process_priority, :process_comment, :nci_specific_comment, :nih_nci_div, :nih_nci_prog, :keywords,
                                     :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id,
                                     other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                     alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],

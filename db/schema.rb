@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129162334) do
+ActiveRecord::Schema.define(version: 20160130222819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1129,6 +1129,7 @@ ActiveRecord::Schema.define(version: 20160129162334) do
     t.integer  "biospecimen_retention_id"
     t.text     "biospecimen_desc"
     t.integer  "internal_source_id"
+    t.text     "nci_specific_comment"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree

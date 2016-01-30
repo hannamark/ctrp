@@ -91,6 +91,7 @@
 #  biospecimen_retention_id      :integer
 #  biospecimen_desc              :text
 #  internal_source_id            :integer
+#  nci_specific_comment          :text
 #
 # Indexes
 #
