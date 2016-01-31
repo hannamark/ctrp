@@ -15,16 +15,11 @@
                                 <th>PO ID</th>
                                 <th>PO Name</th>
                                 <th>Investigator</th>
+                                <th>Site Recruitment Status</th>
+                                <th>Site Recruitment Status Date</th>
                                 <th class="text-center">Deletion</th>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>PO ID</td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td class="text-center">--</td>
-                                </tr>
                                 <tr ng-repeat="participating_site in trialDetailView.curTrial.participating_sites_list track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">
                                     <td>{{participating_site.po_id}}</td>
                                     <td>
@@ -33,6 +28,13 @@
                                     <td>
                                         {{participating_site.investigator}}
                                     </td>
+                                    <td>
+                                        {{participating_site.site_recruitment_status}}
+                                    </td>
+                                    <td>
+                                        {{participating_site.site_recruitment_status_date}}
+                                    </td>
+
                                 </tr>
                                 </tbody>
                             </table>
