@@ -9,7 +9,7 @@
                 <div class="row">
                     <legend class="sub-bordered">Collaborator:</legend>
                     <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
-                        <label class="control-label col-xs-12 col-sm-3">Collaborator:</label>
+                        <label class="control-label col-xs-12 col-sm-3">Add Collaborator:</label>
                         <div class="col-xs-12 col-sm-9">
                             <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedCollaborators" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
                             <input type="hidden" name="collaborator_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.collaboratorNum === 0">
@@ -36,6 +36,27 @@
                                 </button>
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead style="background-color: #d9edf7">
+                                <th>PO ID</th>
+                                <th>Name (Click for editing)</th>
+                                <th class="text-center">Deletion</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>PO ID</td>
+                                    <td>
+                                        &nbsp;
+                                     </td>
+                                    <td class="text-center">--</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </fieldset>
                 </div>
             </uib-accordion-group>
