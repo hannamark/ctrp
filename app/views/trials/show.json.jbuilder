@@ -29,6 +29,14 @@ json.collaborators do
   end
 end
 
+json.participating_sites_list do
+  json.array!(@trial.participating_sites) do |participating_site|
+    json.po_id participating_site.organization.id
+    json.po_name participating_site.organization.name
+    json.investigator participating_site.person.lname
+  end
+end
+
 
 ## append the protocol_id_origin.name
 unless @trial.other_ids.empty?

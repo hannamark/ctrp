@@ -1,6 +1,6 @@
 
 /**
- * Created by schintal, Deember 22nd, 2015
+ * Created by schintal, Jan 31, 2016
  */
 
 (function() {
@@ -8,15 +8,15 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
 
-    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES,trialDetailObj, studySourceObj, nciDivObj, nciProgObj) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj) {
+
         var vm = this;
         vm.curTrial = trialDetailObj;
-
-        vm.reload = function() {
-            $state.go($state.$current, null, { reload: true });
-        };
+        console.log("trialDetailObj = " + JSON.stringify(trialDetailObj));
+        console.log("pa_editable = " + JSON.stringify(trialDetailObj["pa_editable"]));
+        console.log("participating_sites_list = " + JSON.stringify(trialDetailObj["participating_sites_list"]));
 
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
@@ -29,10 +29,14 @@
             outerTrial.trial = vm.curTrial;
 
 
+            //console.log("outertrial IN SAVE! " + JSON.stringify(outerTrial));
+
+
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.lock_version = response.lock_version || '';
-                //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
                 toastr.clear();
@@ -46,8 +50,13 @@
 
         } // updateTrial
 
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
+
         /****************** implementations below ***************/
         function activate() {
+            appendCollaborators();
             getTrialDetailCopy();
             watchTrialDetailObj();
         }
@@ -67,7 +76,6 @@
                 console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
-
 
     } //trialParticipatingSitesCtrl
 
