@@ -23,6 +23,13 @@ json.trial_documents do
   end
 end
 
+json.collaborators do
+  json.array!(@trial.collaborators) do |collaborator|
+    json.extract! collaborator, :organization_id, :org_name
+  end
+end
+
+
 ## append the protocol_id_origin.name
 unless @trial.other_ids.empty?
   oids_hash = []
