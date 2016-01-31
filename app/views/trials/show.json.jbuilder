@@ -34,6 +34,7 @@ json.participating_sites_list do
     json.po_id participating_site.organization.id
     json.po_name participating_site.organization.name
     json.investigator participating_site.person.lname
+    json.primary_contact participating_site.contact_name
     latest_site_rec_status = participating_site.site_rec_status_wrappers.blank? ? nil:participating_site.site_rec_status_wrappers.last
     unless latest_site_rec_status.nil?
       json.site_recruitment_status latest_site_rec_status.site_recruitment_status.name
