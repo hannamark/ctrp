@@ -71,13 +71,13 @@
                 </label>
                 <div class="col-xs-12 col-sm-5">
                     <div class="input-group add-on col-sm-12 date datepicker">
-                        <input tabindex="25" type="text" class="form-control input-sm" id="start_date" name="startDate"
+                        <input tabindex="20" type="text" class="form-control input-sm" id="start_date" name="startDate"
                                uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.startDate" is-open="startDateOpened"
                                datepicker-options="dateOptions" ng-click="openCalendar($event, 'start')"
                                ng-required="false" close-text="Close" placeholder="Start Date"/>
                         <span class="input-group-btn">
-                            <button tabindex="26" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
+                            <button tabindex="21" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -88,13 +88,13 @@
                 <!--<label for="person_fname" class="control-label col-sm-2"></label>-->
                 <div class="col-xs-12 col-sm-4">
                     <div class="input-group add-on col-sm-12 date datepicker" ng-class="{'has-error': search_person_form.endDate.dateLaterThan && search_person_form.endDate.$dirty}">
-                        <input tabindex="27" type="text" class="form-control input-sm" id="end_date" name="endDate"
+                        <input tabindex="22" type="text" class="form-control input-sm" id="end_date" name="endDate"
                                uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" ng-click="openCalendar($event, 'end')"
                                datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
                                ng-required="false" close-text="Close" placeholder="End Date"/>
                         <span class="input-group-btn">
-                            <button tabindex="28" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
+                            <button tabindex="23" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -164,7 +164,7 @@
                 <!-- last updated by -->
                 <label for="updated_by" class="control-label col-xs-12 col-sm-3">Updated by: </label>
                 <div class="col-xs-12 col-sm-9">
-                    <input tabindex="12" type="text" class="form-control input-sm" id="updated_by" ng-model="searchParams.updated_by" placeholder="Username" />
+                    <input tabindex="24" type="text" class="form-control input-sm" id="updated_by" ng-model="searchParams.updated_by" placeholder="Username" />
                 </div>
                 <!-- end of last updated by -->
             </div>

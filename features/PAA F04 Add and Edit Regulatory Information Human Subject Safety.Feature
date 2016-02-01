@@ -59,7 +59,7 @@ Scenario: #6 Regulatory Information - Human Subject Safety screen Information mu
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information - Human Subject Safety screen
 When I have selected a Board Approval Status of �Submitted, Approved�
-And the trial is not Imported
+And the trial is not Imported (Trials.internal_source_id Internal_Sources.name is not "imported")
 And I have not entered an Approval Number
 And I have not entered a Board Name
 And I have not selected a Board Affiliation 
