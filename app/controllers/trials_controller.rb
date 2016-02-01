@@ -565,6 +565,34 @@ class TrialsController < ApplicationController
       end
     end
 
+    ctrp_gender = Gender.find_by_name(xml.xpath('//eligibility/gender').text)
+    import_params[:gender_id] = ctrp_gender.id if ctrp_gender.present?
+
+    if xml.xpath('//eligibility/minimum_age').present?
+      min_age_text = xml.xpath('//eligibility/minimum_age').text
+      if !(min_age_text.include? 'N/A')
+        splits = min_age_text.split(' ')
+        import_params[:min_age] = splits[0]
+        ctrp_min_age_unit = AgeUnit.find_by_name(splits[1]) if splits[1].present?
+        import_params[:min_age_unit_id] = ctrp_min_age_unit.id if ctrp_min_age_unit.present?
+      end
+    end
+
+    if xml.xpath('//eligibility/maximum_age').present?
+      max_age_text = xml.xpath('//eligibility/maximum_age').text
+      if !(max_age_text.include? 'N/A')
+        splits = max_age_text.split(' ')
+        import_params[:max_age] = splits[0]
+        ctrp_max_age_unit = AgeUnit.find_by_name(splits[1]) if splits[1].present?
+        import_params[:max_age_unit_id] = ctrp_max_age_unit.id if ctrp_max_age_unit.present?
+      end
+    end
+
+    import_params[:accept_vol] = xml.xpath('//healthy_volunteers').text if xml.xpath('//healthy_volunteers').present?
+    import_params[:verification_date] = convert_date(xml.xpath('//verification_date').text) if xml.xpath('//verification_date').present?
+    import_params[:intervention_indicator] = xml.xpath('//is_fda_regulated').text if xml.xpath('//is_fda_regulated').present?
+    import_params[:sec801_indicator] = xml.xpath('//is_section_801').text if xml.xpath('//is_section_801').present?
+
     return import_params
   end
 

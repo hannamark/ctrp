@@ -229,6 +229,19 @@ Masking.find_or_create_by(code: 'OP', name: 'Open')
 Masking.find_or_create_by(code: 'SB', name: 'Single Blind')
 Masking.find_or_create_by(code: 'DB', name: 'Double Blind')
 
+AgeUnit.find_or_create_by(code: 'YR', name: 'Year')
+AgeUnit.find_or_create_by(code: 'YRS', name: 'Years')
+AgeUnit.find_or_create_by(code: 'MO', name: 'Month')
+AgeUnit.find_or_create_by(code: 'MOS', name: 'Months')
+AgeUnit.find_or_create_by(code: 'WK', name: 'Week')
+AgeUnit.find_or_create_by(code: 'WKS', name: 'Weeks')
+AgeUnit.find_or_create_by(code: 'DY', name: 'Day')
+AgeUnit.find_or_create_by(code: 'DYS', name: 'Days')
+AgeUnit.find_or_create_by(code: 'HR', name: 'Hour')
+AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
+AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
+AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
