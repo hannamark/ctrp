@@ -31,9 +31,9 @@
             outerTrial.trial = vm.curTrial;
 
             if (vm.addedCollaborators.length > 0) {
-                vm.curTrial.collaborator_attributes = [];
+                vm.curTrial.collaborators_attributes = [];
                 _.each(vm.addedCollaborators, function (collaborator) {
-                    vm.curTrial.collaborator_attributes.push(collaborator);
+                    vm.curTrial.collaborators_attributes.push(collaborator);
                 });
             }
 
@@ -43,7 +43,8 @@
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.lock_version = response.lock_version || '';
-                //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
                 toastr.clear();
@@ -82,7 +83,7 @@
             if (newValue == oldValue + 1) {
                 var newCollaborator = {};
                 newCollaborator.organization_id = vm.selectedCollaborators[vm.selectedCollaborators.length - 1].id;
-                newCollaborator.organization_name = vm.selectedCollaborators[vm.selectedCollaborators.length - 1].name;
+                newCollaborator.org_name = vm.selectedCollaborators[vm.selectedCollaborators.length - 1].name;
                 newCollaborator._destroy = false;
                 vm.addedCollaborators.push(newCollaborator);
                 vm.collaboratorsNum++;
@@ -117,7 +118,7 @@
                 var viewCollaborator = {};
                 viewCollaborator.id = vm.curTrial.collaborators[i].id;
                 viewCollaborator.organization_id = vm.curTrial.collaborators[i].organization_id;
-                viewCollaborator.organization_name = vm.curTrial.collaborators[i].organization_name;
+                viewCollaborator.org_name = vm.curTrial.collaborators[i].org_name;
                 viewCollaborator._destroy = false;
                 vm.addedCollaborators.push(viewCollaborator);
                 vm.collaboratorsNum++;

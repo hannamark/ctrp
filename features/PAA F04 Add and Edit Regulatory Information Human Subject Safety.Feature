@@ -59,7 +59,7 @@ Scenario: #6 Regulatory Information - Human Subject Safety screen Information mu
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information - Human Subject Safety screen
 When I have selected a Board Approval Status of �Submitted, Approved�
-And the trial is not Imported
+And the trial is not Imported (Trials.internal_source_id Internal_Sources.name is not "imported")
 And I have not entered an Approval Number
 And I have not entered a Board Name
 And I have not selected a Board Affiliation 
@@ -91,9 +91,9 @@ Then the following fields will be displayed:
 
 |Examples|
 |<Status>               |Board Approval Status|	Board Approval Number |Board Affiliation and Address|Board Name|
-|<null>                 |Dispalyed            |Hidden  		      |Hidden                       |Hidden|
-|Submitted, Approved    |Dispalyed            |Dispalyed              |Dispalyed                    |Dispalyed|
-|Submitted, Exempt      |Dispalyed            |Hidden                 |Dispalyed                    |Dispalyed|
-|Submitted, Pending     |Dispalyed            |Hidden                 |Dispalyed                    |Dispalyed|
-|Submitted, Denied      |Dispalyed            |Hidden                 |Dispalyed                    |Dispalyed|
-|Submission Not Required|Dispalyed            |Hidden                 |Hidden                       |Hidden|
+|<null>                 |Displayed            |Hidden  		      |Hidden                       |Hidden|
+|Submitted, Approved    |Displayed            |Displayed              |Displayed                    |Displayed|
+|Submitted, Exempt      |Displayed            |Hidden                 |Displayed                    |Displayed|
+|Submitted, Pending     |Displayed            |Hidden                 |Displayed                    |Displayed|
+|Submitted, Denied      |Displayed            |Hidden                 |Displayed                    |Displayed|
+|Submission Not Required|Displayed            |Hidden                 |Hidden                       |Hidden|

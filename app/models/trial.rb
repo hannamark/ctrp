@@ -90,6 +90,8 @@
 #  time_perspective_id           :integer
 #  biospecimen_retention_id      :integer
 #  biospecimen_desc              :text
+#  internal_source_id            :integer
+#  nci_specific_comment          :text
 #
 # Indexes
 #
@@ -100,6 +102,7 @@
 #  index_trials_on_board_affiliation_id      (board_affiliation_id)
 #  index_trials_on_board_approval_status_id  (board_approval_status_id)
 #  index_trials_on_gender_id                 (gender_id)
+#  index_trials_on_internal_source_id        (internal_source_id)
 #  index_trials_on_intervention_model_id     (intervention_model_id)
 #  index_trials_on_investigator_aff_id       (investigator_aff_id)
 #  index_trials_on_investigator_id           (investigator_id)
@@ -164,6 +167,7 @@ class Trial < ActiveRecord::Base
   belongs_to :study_model
   belongs_to :time_perspective
   belongs_to :biospecimen_retention
+  belongs_to :internal_source
   has_many :submissions, -> { order 'submissions.id' }
   has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
   has_many :onholds, -> { order 'onholds.id' }
@@ -198,6 +202,7 @@ class Trial < ActiveRecord::Base
   accepts_nested_attributes_for :oversight_authorities, allow_destroy: true
   accepts_nested_attributes_for :trial_documents, allow_destroy: true
   accepts_nested_attributes_for :submissions, allow_destroy: true
+  accepts_nested_attributes_for :collaborators, allow_destroy: true
 
   accepts_nested_attributes_for :central_contacts, allow_destroy: true
   accepts_nested_attributes_for :alternate_titles, allow_destroy: true
@@ -237,23 +242,25 @@ class Trial < ActiveRecord::Base
   before_save :check_indicator
   after_create :create_ownership
 
+  def is_sponsor_nci?
+    return (!self.sponsor.nil? && self.sponsor.name == "National Cancer Institute") ? true:false
+  end
+
+  def is_lead_org_nci_ccr?
+    return (!self.lead_org.nil? &&  self.lead_org.name == "NCI - Center for Cancer Research") ? true:false
+  end
 
   def set_send_trial_info_flag
     send_trial_flag = false
 
     #And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
-    if !self.sponsor.nil? && self.sponsor.name == "National Cancer Institute"
-      send_trial_flag = true
-    else
-      return false
-    end
+    send_trial_flag = is_sponsor_nci?
+    return if !send_trial_flag
 
-    # And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
-    if self.lead_org != "NCI - Center for Cancer Research"
-      send_trial_flag = true
-    else
-      return false
-    end
+    # And Trial Lead Organization is "NCI - Center for Cancer Research"|trials.lead_org_id Organizations.name = "NCI - Center for Cancer Research"|
+    send_trial_flag = is_lead_org_nci_ccr?
+    return if !send_trial_flag
+
     latest_processing_status = processing_status_wrappers.empty? ? nil:processing_status_wrappers.last.processing_status.name
     if latest_processing_status.nil?
       return false

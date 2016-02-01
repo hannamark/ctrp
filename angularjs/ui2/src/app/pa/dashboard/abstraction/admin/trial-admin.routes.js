@@ -92,6 +92,18 @@
                     label: 'Regulatory IND/IDE Details'
                 }
             })
+            .state('main.pa.trialOverview.paTrialStatus', {
+                url: '/trial-status',
+                templateUrl: 'app/pa/dashboard/abstraction/admin/pa_trial_status.html',
+                controller: 'paTrialStatusCtrl as trialStatusView',
+                resolve: {
+                },
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Trial Status'
+                }
+            })
             .state('main.pa.trialOverview.funding', {
                 url: '/funding',
                 templateUrl: 'app/pa/dashboard/abstraction/admin/trial_funding.html',

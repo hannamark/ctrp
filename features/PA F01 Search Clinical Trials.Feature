@@ -27,6 +27,7 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
           |Submission Method|
           |NIH/NCI Division/Department Identifier|
           |NIH/NCI Program Identifier|
+          |Information Source (Trials.internal_source_id Internal_Sources.name is not "imported")|
       Then CTRP will then display the results for all the Clinical Trials Search Results
           |NCI Trial Identifier|
           |Processing Priority|
@@ -295,3 +296,12 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
       When I enter select a Identifier Type "ClinicalTrails.gov (NCT)"
       And select search
       Then the search results will display trials that contain that Identifier type ClinicalTrails.gov (NCT) and Obsolete ClinicalTrails.gov (NCT) ID
+
+ Scenario: #23 I can search trials by Information Sourcerials
+      Given I am logged into the CTRP Protocol Abstraction application
+      And I am on the Search Clinical Trials Screen
+      When I select the information source from the list of:
+      |Protocol|
+      |Imported|
+      And select search
+      Then the search results will display trials that have the Information Source that was selected
