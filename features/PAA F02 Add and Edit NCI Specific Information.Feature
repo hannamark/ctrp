@@ -91,12 +91,14 @@ Then the label and element for ï¿½Send Trial Information to ClinicalTrials.gov?ï
 |Trial Overall Status is ï¿½Terminatedï¿½| trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
 |Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
 
+ @runthis
 Scenario: #11a I cannot view the ï¿½Send Trial Information to ClinicalTrials.gov?ï¿½
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
 When the following <conditions> exist to send the trail to the ClinicalTrials.gov
+ |conditions|
+ |Trial is not sponsored by "National Cancer Institute"|
 Then the label and element for ï¿½Send Trial Information to ClinicalTrials.gov?ï¿½ will not be visible
-
 |<Conditions>|<Field>|
 |Trial is not sponsored by "National Cancer Institute" |trials.sponsor_id Organizations.name not = "National Cancer Institute"|
 
