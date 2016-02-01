@@ -90,6 +90,8 @@
 #  time_perspective_id           :integer
 #  biospecimen_retention_id      :integer
 #  biospecimen_desc              :text
+#  internal_source_id            :integer
+#  nci_specific_comment          :text
 #
 # Indexes
 #
@@ -100,6 +102,7 @@
 #  index_trials_on_board_affiliation_id      (board_affiliation_id)
 #  index_trials_on_board_approval_status_id  (board_approval_status_id)
 #  index_trials_on_gender_id                 (gender_id)
+#  index_trials_on_internal_source_id        (internal_source_id)
 #  index_trials_on_intervention_model_id     (intervention_model_id)
 #  index_trials_on_investigator_aff_id       (investigator_aff_id)
 #  index_trials_on_investigator_id           (investigator_id)

@@ -1220,7 +1220,9 @@ module.exports = function() {
      Scenario: #11a I cannot view the �Send Trial Information to ClinicalTrials.gov?�
      Given I am logged into the CTRP PA application
      And I am on the NCI Specific Information screen
-     When the following <conditions> exist
+     When the following <conditions> exist to send the trail to the ClinicalTrials.gov
+     |<Conditions>|<Field>|
+     |Trial is not sponsored by "National Cancer Institute" |
      Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not be visible
 
      |<Conditions>|<Field>|
@@ -1228,14 +1230,17 @@ module.exports = function() {
      */
 
     this.When(/^the following (.*) exist to send the trail to the ClinicalTrials\.gov$/, function (conditions, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        getConditions = conditions;
+        console.log('Conditions: '+getConditions);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the label and element for �Send Trial Information to ClinicalTrials\.gov\?� will not be visible$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
+        sendTrialCondtions = table.raw();
+        console.log('value of table' + sendTrialCondtions);
         callback.pending();
     });
+
 
     /*
      Scenario: #12 Study Source is not null

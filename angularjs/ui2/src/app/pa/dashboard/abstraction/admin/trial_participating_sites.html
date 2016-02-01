@@ -1,1 +1,52 @@
-<strong>Placeholder</strong>
+<div class="row">
+    <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial">
+        <uib-accordion close-others="false">
+            <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+                <uib-accordion-heading>
+                    Participating Sites <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+                </uib-accordion-heading>
+                <!-- first row in the accordion body -->
+                <div class="row">
+                    <legend class="sub-bordered">Participating Sites:</legend>
+                    <fieldset>
+                        <div class="form-group">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead style="background-color: #d9edf7">
+                                <th>PO ID</th>
+                                <th>PO Name</th>
+                                <th>Investigator</th>
+                                <th>Site Recruitment Status</th>
+                                <th>Site Recruitment Status Date</th>
+                                <th>Primary Contact</th>
+                                <th class="text-center">Deletion</th>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="participating_site in trialDetailView.curTrial.participating_sites_list track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">
+                                    <td>{{participating_site.po_id}}</td>
+                                    <td>
+                                        {{participating_site.po_name}}
+                                    </td>
+                                    <td>
+                                        {{participating_site.investigator}}
+                                    </td>
+                                    <td>
+                                        {{participating_site.site_recruitment_status}}
+                                    </td>
+                                    <td>
+                                        {{participating_site.site_recruitment_status_date}}
+                                    </td>
+                                    <td>
+                                        {{participating_site.primary_contact}}
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </fieldset>
+                </div>
+            </uib-accordion-group>
+        </uib-accordion>
+    </form>
+</div>

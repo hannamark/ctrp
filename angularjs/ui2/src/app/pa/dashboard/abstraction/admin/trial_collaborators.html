@@ -7,14 +7,14 @@
                 </uib-accordion-heading>
                 <!-- first row in the accordion body -->
                 <div class="row">
-                    <legend class="sub-bordered">Collaborator:</legend>
+                    <legend class="sub-bordered">Add/Edit Collaborators:</legend>
                     <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
-                        <label class="control-label col-xs-12 col-sm-3">Collaborator:</label>
+                        <label class="control-label col-xs-12 col-sm-3">Add Collaborator:</label>
                         <div class="col-xs-12 col-sm-9">
                             <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedCollaborators" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
                             <input type="hidden" name="collaborator_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.collaboratorNum === 0">
                                     <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.collaborator_dummy)">
-                                        Funding Source is required
+                                       Collaborator is required
                                     </span>
                         </div>
                     </div>
@@ -36,6 +36,40 @@
                                 </button>
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead style="background-color: #d9edf7">
+                                <th>PO ID</th>
+                                <th>Name (Click for editing)</th>
+                                <th class="text-center">Deletion</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>PO ID</td>
+                                    <td>
+                                        &nbsp;
+                                     </td>
+                                    <td class="text-center">--</td>
+                                </tr>
+                                <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators track by $index" class="animated-item" ng-class="otherId._destroy ? 'deleted-text' : ''">
+                                    <td>{{collaborator.organization_id}}</td>
+                                    <td>
+                                        {{collaborator.org_name}}
+                                    </td>
+                                    <td class="text-center">
+                                        <!-- <button type="button" class="btn btn-default">Edit</button> -->
+                                        <!-- <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">Delete</button> -->
+                                        <label class="btn btn-default" restriction-field ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">
+                                            <i class="glyphicon" ng-class="otherId._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                        </label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </fieldset>
                 </div>
             </uib-accordion-group>

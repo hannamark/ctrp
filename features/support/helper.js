@@ -161,6 +161,26 @@ var helper = function() {
         console.log(errorMessage + " - Required field value");
     };
 
+    this.getVerifyLabel= function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        expect(fieldName.getText()).to.eventually.equal(fieldValue);
+        console.log(errorMessage + " - Required field value");
+    };
+
+    this.verifyElementPresents =function (fieldName, fieldValueTrueOrFalse) {
+        expect(fieldName.isPresent()).to.eventually.equal(fieldValueTrueOrFalse);
+    };
+
+    this.verifyElementDisplayed =function (fieldName, fieldValueTrueOrFalse) {
+        expect(fieldName.isDisplayed()).to.eventually.equal(fieldValueTrueOrFalse);
+    };
+
+    this.verifyTableRowText = function (tbleRowIdentifier, expectedTblRwVal, errorMessage) {
+        this.wait(tbleRowIdentifier, errorMessage);
+        expect(tbleRowIdentifier.getText()).to.eventually.equal(expectedTblRwVal);
+        console.log(errorMessage + " - Table Row value(s)");
+    };
+
     this.pageRefresh = function () {
         browser.refresh();
     };

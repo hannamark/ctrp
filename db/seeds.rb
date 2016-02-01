@@ -23,6 +23,8 @@ SourceStatus.find_or_create_by(code: 'INACT', name: 'InActive')
 SourceStatus.find_or_create_by(code: 'NULLIFIED', name: 'Nullified')
 FamilyRelationship.find_or_create_by(code: 'ORG', name: 'Organizational')
 FamilyRelationship.find_or_create_by(code: 'AFF', name: 'Affiliation')
+InternalSource.find_or_create_by(code: 'CTG', name: 'CT.GOV Import')
+InternalSource.find_or_create_by(code: 'REG', name: 'Registration')
 
 source_act = SourceStatus.find_by_code("ACT")
 source_pend = SourceStatus.find_by_code("PEND")
@@ -589,7 +591,9 @@ test_users.each do |u|
   unless user.blank?
     user.role = u["role"]
     user.approved =  u["approve"]
-    user.organization = Organization.all[rand(0..total_orgs-1)]
+    unless u["username"] == "ctrpsuper" ||  u["username"] == "ctrpadmin"
+      user.organization = Organization.all[rand(0..total_orgs-1)]
+    end
     user.save!
     #puts "Updated role of user = #{user.username}, role = #{user.role}"
   end
