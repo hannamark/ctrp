@@ -9,7 +9,7 @@
             <div class="row">
                 <fieldset class="sub-bordered" restriction-field>
                     <legend class="sub-bordered">Study Source:</legend>
-                    <div class="form-group" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.curTrial.study_source_id)}">
+                    <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.curTrial.study_source_id)}">
                         <label for="study_source" class="control-label col-xs-12 col-sm-3">Study Source: </label>
                         <div class="col-xs-12 col-sm-9">
                             <select  restriction-field class="form-control input-sm" id="study_source" ng-model="trialNciView.curTrial.study_source_id" ng-options="studySource.id as studySource.name for studySource in trialNciView.studySourceArr" required>
@@ -93,7 +93,7 @@
                 </fieldset>
 
                         <!-- first form-group -->
-                <fieldset class="sub-bordered" restriction-field>
+                <fieldset class="sub-bordered" restriction-field  ng-if="trialNciView.curTrial.sponsor_nci">
                     <legend class="sub-bordered">Send Trial Information to ClinicalTrials.gov:</legend>
                         <div class="form-group">
                                 <label for="send_trial_flag" class="control-label col-xs-12 col-sm-6">Send Trial Information to ClinicalTrials.gov?</label>
@@ -118,7 +118,7 @@
                         <!-- second row in the form -->
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5" ng-model="trialNciView.curTrial.process_comment"></textarea>
+                                <textarea class="form-control" name="nci_specific_comment" id="trial_nci_specific_comment" rows="5" ng-model="trialNciView.curTrial.nci_specific_comment"></textarea>
                             </div>
                         </div>
                         <!-- end of second row -->

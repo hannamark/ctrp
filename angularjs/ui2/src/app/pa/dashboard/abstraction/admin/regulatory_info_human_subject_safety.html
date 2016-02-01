@@ -8,13 +8,14 @@
             <div class="row">
                 <form class="form-horizontal" role="form" name="human_safety_form" novalidate ctrp-submit="regInfoSafetyView.updateHumanSafetyInfo()">
                     <!-- board approval status -->
-                    <div class="form-group">
+                    <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.approvalStatusRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_status)}">
                         <label for="board_approval_status" class="control-label col-xs-12 col-sm-4">Board Approval Status</label>
                         <div class="col-xs-12 col-sm-4">
                             <select name="approval_status" id="board_approval_status"
                                 class="form-control input-sm"
                                 ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
                                 restriction-field
+                                ng-required="regInfoSafetyView.approvalStatusRequired"
                                 ng-change="regInfoSafetyView.changeStatus()"
                                 ng-model="regInfoSafetyView.trialDetailsObj.board_approval_status_id" restriction-field
                                 ng-options="status.id as status.name for status in regInfoSafetyView.statuses">
@@ -22,6 +23,10 @@
                                     Select a status
                                 </option>
                             </select>
+                            <span ng-messages="regInfoSafetyView.approvalStatusRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_status) &&
+                                                human_safety_form.approval_status.$error">
+                                <span class="help-block" ng-message="required">Board approval status is required for trials registered through CTRP</span>
+                           </span>
                         </div>
                         <!-- offset below -->
                         <div class="col-sm-4"></div>

@@ -22,6 +22,7 @@
         vm.approvalNumRequired = false;
         vm.boardNameRequired = false;
         vm.boardAffRequired = false;
+        vm.approvalStatusRequired = false;
 
         activate();
 
@@ -38,6 +39,9 @@
         function _getTrialDetailCopy() {
             $timeout(function() {
                 vm.trialDetailsObj = PATrialService.getCurrentTrialFromCache();
+                var internalSourceObj = vm.trialDetailsObj.internal_source;
+                // approval status is required only for *reported/registered* trial thru CTRP
+                vm.approvalStatusRequired = !!internalSourceObj ? (internalSourceObj.code === 'REG' ? true : false) : false;
                 changeStatus();
             }, 0);
         } // _getTrialDetailCopy
