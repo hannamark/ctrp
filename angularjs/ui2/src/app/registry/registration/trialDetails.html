@@ -102,7 +102,7 @@
                                             <div>
                                                 <select restriction-field class="form-control input-sm" id="protocol_id_origin" ng-model="trialDetailView.protocol_id_origin_id">
                                                     <option value="">-Select a Protocol ID Type-</option>
-                                                    <option ng-repeat="origin in trialDetailView.protocolIdOriginArr" value="{{origin.id}}">
+                                                    <option ng-repeat="origin in trialDetailView.protocolIdOriginArr" ng-if="['NCT', 'ONCT', 'OTH'].indexOf(origin.code) > -1" value="{{origin.id}}">
                                                         {{origin.name}}
                                                     </option>
                                                 </select>

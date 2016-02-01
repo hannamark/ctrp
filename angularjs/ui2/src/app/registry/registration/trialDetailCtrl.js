@@ -715,7 +715,6 @@
         function activate() {
             appendNewTrialFlag();
             getExpFlag();
-            adjustProtocolIdOriginArr();
             adjustTrialStatusArr();
 
             if (vm.curTrial.new) {
@@ -764,16 +763,6 @@
             } else {
                 if (vm.curTrial.study_source && vm.curTrial.study_source.code == 'EXP') {
                     vm.isExp = true;
-                }
-            }
-        }
-
-        function adjustProtocolIdOriginArr() {
-            for (var i = vm.protocolIdOriginArr.length - 1; i >= 0; i--) {
-                if (vm.protocolIdOriginArr[i].code === 'CTEP' || vm.protocolIdOriginArr[i].code === 'DCP'
-                    || vm.protocolIdOriginArr[i].code === 'CCR' || vm.protocolIdOriginArr[i].code === 'DNCI'
-                    || vm.protocolIdOriginArr[i].code === 'CDR') {
-                    vm.protocolIdOriginArr.splice(i, 1);
                 }
             }
         }

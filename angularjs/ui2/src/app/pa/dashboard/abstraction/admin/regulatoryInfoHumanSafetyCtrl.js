@@ -22,6 +22,7 @@
         vm.approvalNumRequired = false;
         vm.boardNameRequired = false;
         vm.boardAffRequired = false;
+        vm.approvalStatusRequired = false;
 
         activate();
 
@@ -38,6 +39,9 @@
         function _getTrialDetailCopy() {
             $timeout(function() {
                 vm.trialDetailsObj = PATrialService.getCurrentTrialFromCache();
+                var internalSourceObj = vm.trialDetailsObj.internal_source;
+                // approval status is required only for *reported/registered* trial thru CTRP
+                vm.approvalStatusRequired = !!internalSourceObj ? (internalSourceObj.code === 'REG' ? true : false) : false;
                 changeStatus();
             }, 0);
         } // _getTrialDetailCopy
@@ -64,10 +68,9 @@
             var statusName = !!approvalStatus ? approvalStatus.name.toLowerCase() : '';
             // approval number is required if the status is 'Submitted, approved'
             vm.approvalNumRequired = statusName.indexOf('approv') > -1;
-            // board affiliation is required when status is 'Submitted, pending' or
-            // 'Submitted, exempt' or 'Submitted, denied'
-            vm.boardAffRequired = statusName.indexOf('pend') > -1 ||
-                                  statusName.indexOf('denied') > -1 ||
+            // board affiliation is required when status is
+            // 'Submitted, exempt' or 'Submitted, approved'
+            vm.boardAffRequired = statusName.indexOf('approv') > -1 ||
                                   statusName.indexOf('exempt') > -1;
 
             // board name is required unless status is 'Submission not required'

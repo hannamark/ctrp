@@ -1,24 +1,19 @@
 # == Schema Information
 #
-# Table name: sub_groups
+# Table name: internal_sources
 #
 #  id           :integer          not null, primary key
-#  label        :string(255)
-#  description  :text
-#  trial_id     :integer
+#  code         :string(255)
+#  name         :string(255)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
 #
-# Indexes
-#
-#  index_sub_groups_on_trial_id  (trial_id)
-#
 
 require 'test_helper'
 
-class SubGroupTest < ActiveSupport::TestCase
+class InternalSourceTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
