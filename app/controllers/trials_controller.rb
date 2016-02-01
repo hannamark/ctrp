@@ -536,6 +536,35 @@ class TrialsController < ApplicationController
       import_params[:outcome_measures_attributes].push({title: s_outcome.xpath('measure').text, time_frame: s_outcome.xpath('time_frame').text, safety_issue: s_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('SEC').id})
     end
 
+    import_params[:num_of_arms] = xml.xpath('//number_of_arms').text if xml.xpath('//number_of_arms').present?
+    import_params[:target_enrollment] = xml.xpath('//enrollment').text if xml.xpath('//enrollment').present?
+
+    if xml.xpath('//eligibility/criteria').present?
+      import_params[:other_criteria_attributes] = []
+      criteria_text = xml.xpath('//eligibility/criteria').text
+      criteria_text = criteria_text.sub('Inclusion Criteria', 'INCLUSION CRITERIA')
+      criteria_text = criteria_text.sub('Exclusion Criteria', 'EXCLUSION CRITERIA')
+      if criteria_text.include? 'INCLUSION CRITERIA:'
+        inclusion_partition = criteria_text.partition('INCLUSION CRITERIA:')
+        if inclusion_partition[0].include? 'EXCLUSION CRITERIA:'
+          import_params[:other_criteria_attributes].push({criteria_type: 'Inclusion', criteria_desc: inclusion_partition[2]})
+          sub_inclusion_partition = inclusion_partition[0].partition('EXCLUSION CRITERIA:')
+          import_params[:other_criteria_attributes].push({criteria_type: 'Exclusion', criteria_desc: sub_inclusion_partition[2]})
+        elsif inclusion_partition[2].include? 'EXCLUSION CRITERIA:'
+          sub_inclusion_partition = inclusion_partition[2].partition('EXCLUSION CRITERIA:')
+          import_params[:other_criteria_attributes].push({criteria_type: 'Inclusion', criteria_desc: sub_inclusion_partition[0]})
+          import_params[:other_criteria_attributes].push({criteria_type: 'Exclusion', criteria_desc: sub_inclusion_partition[2]})
+        else
+          import_params[:other_criteria_attributes].push({criteria_type: 'Inclusion', criteria_desc: inclusion_partition[2]})
+        end
+      elsif criteria_text.include? 'EXCLUSION CRITERIA:'
+        exclution_partition = criteria_text.partition('EXCLUSION CRITERIA:')
+        import_params[:other_criteria_attributes].push({criteria_type: 'Exclusion', criteria_desc: exclution_partition[2]})
+      else
+        import_params[:other_criteria_attributes].push({criteria_type: 'Inclusion', criteria_desc: criteria_text})
+      end
+    end
+
     return import_params
   end
 

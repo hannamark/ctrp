@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160130222819) do
+ActiveRecord::Schema.define(version: 20160201195840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -565,12 +565,12 @@ ActiveRecord::Schema.define(version: 20160130222819) do
 
   create_table "other_criteria", force: :cascade do |t|
     t.string   "criteria_type", limit: 255
-    t.string   "criteria_desc", limit: 255
     t.integer  "trial_id"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.string   "uuid",          limit: 255
     t.integer  "lock_version",              default: 0
+    t.text     "criteria_desc"
   end
 
   add_index "other_criteria", ["trial_id"], name: "index_other_criteria_on_trial_id", using: :btree
