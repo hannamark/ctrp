@@ -23,6 +23,7 @@
         vm.boardNameRequired = false;
         vm.boardAffRequired = false;
         vm.approvalStatusRequired = false;
+        vm.boardAffShown = false;
 
         activate();
 
@@ -72,6 +73,9 @@
             // 'Submitted, exempt' or 'Submitted, approved'
             vm.boardAffRequired = statusName.indexOf('approv') > -1 ||
                                   statusName.indexOf('exempt') > -1;
+            // show board affiliation for statuses: approved, exempt,
+            vm.boardAffShown = vm.boardAffRequired || statusName.indexOf('pend') > -1 ||
+                                statusName.indexOf('denied') > -1;
 
             // board name is required unless status is 'Submission not required'
             vm.boardNameRequired = statusName !== '' && statusName.indexOf('not required') === -1;
