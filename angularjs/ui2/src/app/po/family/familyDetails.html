@@ -116,7 +116,7 @@
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.effective_date" is-open="org.opened_effective"
                                                   datepicker-options="familyDetailView.dateOptions"
-                                                  ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
+                                                  ng-required="false" close-text="Close" ng-disabled="org._destroy" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" readonly />
                                            <span class="input-group-btn">
                                                <button tabindex="26" type="button" restriction-field class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
                                                    <i class="glyphicon glyphicon-calendar"></i>
@@ -130,7 +130,7 @@
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                   datepicker-options="familyDetailView.dateOptions"
-                                                  ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
+                                                  ng-required="false" close-text="Close" ng-disabled="org._destroy" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" readonly />
                                            <span class="input-group-btn">
                                                <button tabindex="28" type="button" restriction-field class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
                                                    <i class="glyphicon glyphicon-calendar"></i>
