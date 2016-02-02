@@ -387,6 +387,7 @@ class TrialsController < ApplicationController
     xml = Nokogiri::XML(open(url))
 
     @trial = Trial.new(import_params(xml))
+    @trial.current_user = @current_user
 
     respond_to do |format|
       if @trial.save
