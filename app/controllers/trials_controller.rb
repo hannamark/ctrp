@@ -591,6 +591,20 @@ class TrialsController < ApplicationController
     import_params[:accept_vol] = xml.xpath('//healthy_volunteers').text if xml.xpath('//healthy_volunteers').present?
     import_params[:verification_date] = convert_date(xml.xpath('//verification_date').text) if xml.xpath('//verification_date').present?
 
+    submission_params = {}
+    submission_params[:updated_at] = xml.xpath('//lastchanged_date').text
+    submission_params[:created_at] = xml.xpath('//firstreceived_date').text
+    submission_params[:submission_num] = 1
+    submission_params[:submission_date] = Date.today
+    ori = SubmissionType.find_by_code('ORI')
+    submission_params[:submission_type_id] = ori.id if ori.present?
+    cct = SubmissionSource.find_by_code('CCT')
+    submission_params[:submission_source_id] = cct.id if cct.present?
+    cti = SubmissionMethod.find_by_code('CTI')
+    submission_params[:submission_method_id] = cti.id if cti.present?
+    submission_params[:user_id] = @current_user.id if @current_user.present?
+    import_params[:submissions_attributes] = [submission_params]
+
     ctrp_responsible_party = ResponsibleParty.find_by_name(xml.xpath('//responsible_party/responsible_party_type').text)
     import_params[:responsible_party_id] = ctrp_responsible_party.id if ctrp_responsible_party.present?
 

@@ -306,7 +306,7 @@ class Trial < ActiveRecord::Base
   private
 
   def generate_status
-    if !self.is_draft && self.nci_id.nil? && self.edit_type != 'import'
+    if !self.is_draft && self.nci_id.nil?
       # Generate NCI ID
       current_year = Time.new.year.to_s
       largest_id = Trial.where('nci_id ilike ?', "%NCI-#{current_year}-%").order('nci_id desc').pluck('nci_id').first
@@ -318,8 +318,12 @@ class Trial < ActiveRecord::Base
       self.nci_id = new_id
 
       # New Submission
-      ori = SubmissionType.find_by_code('ORI')
-      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori)
+      if self.edit_type != 'import'
+        ori = SubmissionType.find_by_code('ORI')
+        newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori)
+      else
+        newSubmission = self.submissions.last
+      end
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
