@@ -590,6 +590,17 @@ class TrialsController < ApplicationController
 
     import_params[:accept_vol] = xml.xpath('//healthy_volunteers').text if xml.xpath('//healthy_volunteers').present?
     import_params[:verification_date] = convert_date(xml.xpath('//verification_date').text) if xml.xpath('//verification_date').present?
+
+    ctrp_responsible_party = ResponsibleParty.find_by_name(xml.xpath('//responsible_party/responsible_party_type').text)
+    import_params[:responsible_party_id] = ctrp_responsible_party.id if ctrp_responsible_party.present?
+
+    ctrp_keywords = ''
+    xml.xpath('//keyword').each_with_index do |keyword, i|
+      ctrp_keywords += ', ' if i > 0
+      ctrp_keywords += keyword
+    end
+    import_params[:keywords] = ctrp_keywords if ctrp_keywords.length > 0
+
     import_params[:intervention_indicator] = xml.xpath('//is_fda_regulated').text if xml.xpath('//is_fda_regulated').present?
     import_params[:sec801_indicator] = xml.xpath('//is_section_801').text if xml.xpath('//is_section_801').present?
 
