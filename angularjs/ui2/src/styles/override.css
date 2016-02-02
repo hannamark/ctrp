@@ -807,3 +807,16 @@ a.editable-click:hover {
 .search-calendar-grid {
     min-height: 310px;
 }
+
+.select2-results-absolute .select2-results {
+    position: absolute;
+    width: 225%;
+    background: #FFF;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.select2-results-absolute .select2-search {
+    padding-bottom: 4px;
+}
