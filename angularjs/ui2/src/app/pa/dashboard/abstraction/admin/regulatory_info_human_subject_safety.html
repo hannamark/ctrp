@@ -209,10 +209,16 @@
                                 ng-class="human_safety_form.board_name.$dirty &&
                                 !ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) ?
                                 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                            <span ng-messages="(human_safety_form.board_name.$dirty && human_safety_form.board_name.$error) || (regInfoSafetyView.boardNameRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name))" role="alert" multiple>
+                            <!-- <span ng-messages="(human_safety_form.board_name.$error && human_safety_form.board_name.$dirty) || (regInfoSafetyView.boardNameRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name))" role="alert" multiple>
                                 <span class="help-block" ng-message="required">Board name is required</span>
                                 <span class="help-block" ng-message="maxlength"> Board name exceeds 255 characters limit</span>
                            </span>
+                            -->
+                            <span ng-messages="regInfoSafetyView.boardNameRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) && human_safety_form.board_name.$error" role="alert" multiple>
+                                <span class="help-block" ng-message="required">Board name is required</span>
+                                <span class="help-block" ng-message="maxlength"> Board name exceeds 255 characters limit</span>
+                           </span>
+
                         </div>
                     </div>
                     <!-- end of Board name -->
