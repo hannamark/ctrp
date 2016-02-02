@@ -239,8 +239,9 @@ class Trial < ActiveRecord::Base
   validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import"'
   validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
 
-  before_save :generate_status
   before_create :save_history
+  before_create :save_internal_source
+  before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
 
@@ -305,6 +306,19 @@ class Trial < ActiveRecord::Base
 
   private
 
+  def save_history
+    history = {lead_org: self.lead_org, pi: self.pi}
+    self.history = history.to_json
+  end
+
+  def save_internal_source
+    if self.edit_type == 'import'
+      self.internal_source = InternalSource.find_by_code('CTGI')
+    else
+      self.internal_source = InternalSource.find_by_code('CTRP')
+    end
+  end
+
   def generate_status
     if !self.is_draft && self.nci_id.nil?
       # Generate NCI ID
@@ -358,20 +372,15 @@ class Trial < ActiveRecord::Base
     end
   end
 
-  def create_ownership
-    # New Trial Ownership
-    TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
-  end
-
-  def save_history
-    history = {lead_org: self.lead_org, pi: self.pi}
-    self.history = history.to_json
-  end
-
   def check_indicator
     if self.intervention_indicator == 'No' && self.sec801_indicator != 'No'
       self.sec801_indicator = 'No'
     end
+  end
+
+  def create_ownership
+    # New Trial Ownership
+    TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
   end
 
   #scopes for search API
