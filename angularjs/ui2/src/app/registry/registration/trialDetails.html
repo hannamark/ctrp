@@ -421,7 +421,7 @@
                                             </td>
 
                                             <td class="col-md-2">
-                                                <div>
+                                                <div class="select2-results-absolute">
                                                     <ui-select autofocus=true ng-model="trialDetailView.serial_number"
                                                                theme="select2"
                                                                ng-disabled="grantsInputs.disabled"
@@ -433,10 +433,13 @@
                                                                          refresh-delay="0">
                                                         <div ng-bind-html="tempgrant.serial_number | highlight: $select.search"></div>
                                                             <small>
+                                                            <!--
                                                                 <strong>Serial Number:</strong> {{tempgrant.serial_number}} <br />
                                                                 <strong>Organization:</strong> {{tempgrant.institution_name}} <br />
                                                                 <strong>Project Title:</strong> {{tempgrant.project_title}} <br />
                                                                 <strong>PI:</strong> {{tempgrant.pi_full_name}}
+                                                            -->
+                                                                {{tempgrant.serial_number}} - {{tempgrant.institution_name}}, {{tempgrant.project_title}}, {{tempgrant.pi_full_name}}
                                                             </small>
                                                             <!-- <span>{{tempgrant.serial_number}} - {{tempgrant.institution_name}}; {{tempgrant.project_title}}; {{tempgrant.pi_full_name}}</span> -->
                                                       </ui-select-choices>
