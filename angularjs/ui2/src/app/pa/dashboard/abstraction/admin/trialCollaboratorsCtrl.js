@@ -13,6 +13,7 @@
     function trialCollaboratorsCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj) {
 
         var vm = this;
+        vm.deleteCollaborator = deleteCollaborator;
         vm.curTrial = trialDetailObj;
         console.log("trialDetailObj = " + JSON.stringify(trialDetailObj));
         console.log("pa_editable = " + JSON.stringify(trialDetailObj["pa_editable"]));
@@ -112,6 +113,21 @@
                 console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
+
+        /**
+         * Toggle the identifier for destroy or restore for the
+         * specified identifier with index 'idx'
+         * @param  {Int} idx [Index for the other identifier in other_ids array]
+         * @return {Void}
+         */
+        function deleteCollaborator(idx) {
+            console.log("idx="+idx);
+            console.log("curTrial.collaborators[idx]="+vm.curTrial.collaborators[idx]);
+            if (idx < vm.curTrial.collaborators.length) {
+                vm.curTrial.collaborators[idx]._destroy = !vm.curTrial.collaborators[idx]._destroy;
+            }
+        }
+
 
         function appendCollaborators() {
             for (var i = 0; i < vm.curTrial.collaborators.length; i++) {

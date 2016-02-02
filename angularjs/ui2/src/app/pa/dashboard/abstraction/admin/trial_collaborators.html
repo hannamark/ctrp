@@ -53,16 +53,16 @@
                                      </td>
                                     <td class="text-center">--</td>
                                 </tr>
-                                <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators track by $index" class="animated-item" ng-class="otherId._destroy ? 'deleted-text' : ''">
+                                <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
                                     <td>{{collaborator.organization_id}}</td>
                                     <td>
                                         {{collaborator.org_name}}
                                     </td>
                                     <td class="text-center">
                                         <!-- <button type="button" class="btn btn-default">Edit</button> -->
-                                        <!-- <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">Delete</button> -->
-                                        <label class="btn btn-default" restriction-field ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">
-                                            <i class="glyphicon" ng-class="otherId._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                        <button type="button" class="btn btn-default" ng-click="trialDetailView.deleteCollaborator($index)">Delete</button>
+                                        <label class="btn btn-default" restriction-field ng-click="trialDetailView.deleteCollaborator($index)">
+                                            <i class="glyphicon" ng-class="collaborator._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                         </label>
                                     </td>
                                 </tr>
