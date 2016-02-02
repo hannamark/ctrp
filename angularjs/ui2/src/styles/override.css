@@ -382,7 +382,7 @@ header img {
         top: 5%;
         right: 50%;
         max-width: 1320px;
-        max-height: 1080px;
+        /*max-height: 1080px;*/
     }
 
     .modal-body {
