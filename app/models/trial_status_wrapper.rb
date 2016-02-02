@@ -25,7 +25,7 @@ class TrialStatusWrapper < ActiveRecord::Base
   belongs_to :trial_status
   belongs_to :trial
 
-  validates :status_date, presence: true
+  #validates :status_date, presence: true
   validates :trial_status, presence: true
 
   scope :by_value, ->  (value) {

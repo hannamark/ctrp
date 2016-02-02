@@ -23,8 +23,8 @@ SourceStatus.find_or_create_by(code: 'INACT', name: 'InActive')
 SourceStatus.find_or_create_by(code: 'NULLIFIED', name: 'Nullified')
 FamilyRelationship.find_or_create_by(code: 'ORG', name: 'Organizational')
 FamilyRelationship.find_or_create_by(code: 'AFF', name: 'Affiliation')
-InternalSource.find_or_create_by(code: 'CTG', name: 'CT.GOV Import')
-InternalSource.find_or_create_by(code: 'REG', name: 'Registration')
+InternalSource.find_or_create_by(code: 'CTGI', name: 'ClinicalTrials.gov Import')
+InternalSource.find_or_create_by(code: 'CTRP', name: 'CTRP')
 
 source_act = SourceStatus.find_by_code("ACT")
 source_pend = SourceStatus.find_by_code("PEND")
@@ -132,6 +132,7 @@ TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
 
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
+ResearchCategory.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 ResearchCategory.find_or_create_by(code: 'ANC', name: 'Ancillary Correlative')
 
 ProcessingStatus.find_or_create_by(code: 'SUB', name: 'Submitted')
@@ -210,6 +211,36 @@ StudyClassification.find_or_create_by(code: 'PK', name: 'Pharmacokinetics')
 StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dynamics')
 StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
 StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
+
+OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
+OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
+OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
+
+Allocation.find_or_create_by(code: 'NA', name: 'NA')
+Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Control Trial')
+Allocation.find_or_create_by(code: 'NRT', name: 'Non-Randomized Trial')
+
+InterventionModel.find_or_create_by(code: 'SG', name: 'Single Group')
+InterventionModel.find_or_create_by(code: 'PL', name: 'Parallel')
+InterventionModel.find_or_create_by(code: 'CO', name: 'Cross-Over')
+InterventionModel.find_or_create_by(code: 'FT', name: 'Factorial')
+
+Masking.find_or_create_by(code: 'OP', name: 'Open')
+Masking.find_or_create_by(code: 'SB', name: 'Single Blind')
+Masking.find_or_create_by(code: 'DB', name: 'Double Blind')
+
+AgeUnit.find_or_create_by(code: 'YR', name: 'Year')
+AgeUnit.find_or_create_by(code: 'YRS', name: 'Years')
+AgeUnit.find_or_create_by(code: 'MO', name: 'Month')
+AgeUnit.find_or_create_by(code: 'MOS', name: 'Months')
+AgeUnit.find_or_create_by(code: 'WK', name: 'Week')
+AgeUnit.find_or_create_by(code: 'WKS', name: 'Weeks')
+AgeUnit.find_or_create_by(code: 'DY', name: 'Day')
+AgeUnit.find_or_create_by(code: 'DYS', name: 'Days')
+AgeUnit.find_or_create_by(code: 'HR', name: 'Hour')
+AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
+AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
+AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
