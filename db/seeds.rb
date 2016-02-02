@@ -545,7 +545,6 @@ contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'Gen
 
 
 ## Board Approval Statuses
-approval_status1 = BoardApprovalStatus.find_or_create_by(code: 'UNSUBMITTED', name: 'Request not yet submitted')
 approval_status2 = BoardApprovalStatus.find_or_create_by(code: 'SUBPENDING', name: 'Submitted, pending')
 approval_status3 = BoardApprovalStatus.find_or_create_by(code: 'SUBAPPROVED', name: 'Submitted, approved')
 approval_status4 = BoardApprovalStatus.find_or_create_by(code: 'SUBEXEMPT', name: 'Submitted, exempt')
