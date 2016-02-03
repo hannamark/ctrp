@@ -368,6 +368,13 @@ class TrialsController < ApplicationController
   def search_clinical_trials_gov
     # TODO Search existing trials using NCT ID
     @search_result = {}
+
+    existing_nct_ids = OtherId.where('protocol_id = ? AND protocol_id_origin_id = ?', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id)
+    if existing_nct_ids.length > 0
+      @search_result[:error_msg] = 'A study with the given identifier already exists in CTRP. To find this trial in CTRP, go to the Search Trials page.'
+      return
+    end
+
     url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
     url = url.sub('NCT********', params[:nct_id])
     begin
