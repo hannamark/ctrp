@@ -431,16 +431,16 @@
                                                       <ui-select-choices repeat="tempgrant in trialDetailView.grantsInputs.grantResults | propsFilter: {serial_number: $select.search, institution_name: $select.search}"
                                                                          refresh="refreshGrants($select.search)"
                                                                          refresh-delay="0">
-                                                        <div ng-bind-html="tempgrant.serial_number.toString() | highlight: $select.search"></div>
-                                                            <small>
                                                             <!--
+                                                            <div ng-bind-html="tempgrant.serial_number.toString() | highlight: $select.search"></div>
+                                                            <small>
                                                                 <strong>Serial Number:</strong> {{tempgrant.serial_number}} <br />
                                                                 <strong>Organization:</strong> {{tempgrant.institution_name}} <br />
                                                                 <strong>Project Title:</strong> {{tempgrant.project_title}} <br />
                                                                 <strong>PI:</strong> {{tempgrant.pi_full_name}}
-                                                            -->
-                                                                {{tempgrant.serial_number}} - {{tempgrant.institution_name}}, {{tempgrant.project_title}}, {{tempgrant.pi_full_name}}
                                                             </small>
+                                                            -->
+                                                                <strong>{{tempgrant.serial_number}}</strong> - {{tempgrant.institution_name}}, {{tempgrant.project_title}}, {{tempgrant.pi_full_name}}
                                                             <!-- <span>{{tempgrant.serial_number}} - {{tempgrant.institution_name}}; {{tempgrant.project_title}}; {{tempgrant.pi_full_name}}</span> -->
                                                       </ui-select-choices>
                                                     </ui-select>
