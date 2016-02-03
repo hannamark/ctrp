@@ -65,6 +65,7 @@ And I have checked more than one Biomarker Purpose
 |Research|
 |Response Assessment|
 And I have checked Specimen type(s)
+And I ahve checked more than one Specimen type
 |Specimen type|
 |Serum|
 |Plasma|
@@ -106,25 +107,26 @@ Then an error message <MarkerErrorMessage> will be displayed
 |Specimen Type     |  Specimen Type must be entered|
 
 Scenario:#3 Selection of Other for Evaluation Type
- Given I am logged into the CTRP Protocol Abstraction application
- And I have selected a trial
- And I am on the Add Marker screen
- When I have selected Other for Evaluation Type
+ Given I am on the Add Marker screen
+ When I have selected" Other" for Evaluation Type
 Then a required text box appears 
+When I have not entered text in the Evaluation Type Other Text
+Then the error message type "Evaluation Type Other Text is required" will be displayed
 
 Scenario:#4 Selection of Other for Assay Type
- Given I am logged into the CTRP Protocol Abstraction application
- And I have selected a trial
- And I am on the Add Marker screen
+ Given I am on the Add Marker screen
  When I have selected Other for Assay Type
-Then a required text box appears 
+Then a required text box appears
+When I have not entered text in the Assay Type
+Then the error message type "Assay Type Other Text is required"
 
 Scenario:#5 Selection of Other for Specimen Type
- Given I am logged into the CTRP Protocol Abstraction application
- And I have selected a trial
- And I am on the Add Marker screen
+ Given I am on the Add Marker screen
  When I have selected Other for Specimen Type
 Then a required text box appears 
+When I have not entered text in the Specimen Type
+Then the error message type "Specimen Type Other Text is required"
+
 
 Scenario:  #6 Select Name from caDSR
  Given I am logged into the CTRP Protocol Abstraction application
