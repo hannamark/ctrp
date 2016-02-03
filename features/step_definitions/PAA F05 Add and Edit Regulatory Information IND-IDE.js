@@ -99,15 +99,20 @@ module.exports = function() {
     var verifTbleHdrs6 = '';
     var verifTbleRowAs6 = '';
     var verifTbleRowBs6 = '';
+    var optionA = '';
+    var optionB = '';
+    var optionC = '';
+    var indGrantorOptionA = '';
+    var indGrantorOptionB = '';
+    var indGrantorOptionC = '';
 
-
-    /*
-     Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
-     Given I am logged into the CTRP Protocol Abstraction application
-     And I am on the Trial Regulatory Information (IND/IDE) screen
-     When I have selected "No" where the question "Does this trial have an associated IND/IDE?"
-     Then the IND/IDE Information section will allow the entry of an IND/IDE for this trial
-     */
+        /*
+         Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
+         Given I am logged into the CTRP Protocol Abstraction application
+         And I am on the Trial Regulatory Information (IND/IDE) screen
+         When I have selected "No" where the question "Does this trial have an associated IND/IDE?"
+         Then the IND/IDE Information section will allow the entry of an IND/IDE for this trial
+         */
 
     this.Given(/^I am on the Trial Regulatory Information \(IND\/IDE\) screen$/, function (callback) {
         pageMenu.homeSearchTrials.click();
@@ -184,33 +189,114 @@ module.exports = function() {
      */
 
     this.When(/^I have selected the IND\/IDE Type from a list$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var strVal = '';
+        indIDETypeOptions = table.raw();
+        strVal = indIDETypeOptions.toString().replace(/,/g, "\n", -1);
+        console.log('IND/IDE Type defined value(s) in the data table:[' + strVal +']');
+
+        indIDE.indIDETypeAll.getText().then(function(items) {
+            console.log('IND/IDE Type Actual value(s) in the list object:['+ items +']');
+            expect(items.toString().split("\n")).to.eql(strVal.toString().split("\n"));
+        });
+        var tableDataSplt = strVal.toString().split("\n");
+        optionA = tableDataSplt[0];
+        optionB = tableDataSplt[1];
+        optionC = tableDataSplt[2];
+        indIDE.selectINDIDETypes(optionB);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I have entered the IND\/IDE number$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        indIDE.setINDIDENumbr(indIDENmbrC);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected the IND\/IDE Grantor from a list based on IND or IDE selected$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        //|IND:-Select-,CDER,CBER,IDE:-Select-,CDRH,CBER|
+        var strValGrantor = '';
+        indIDEGrantorOptions = table.raw();
+        strValGrantor = indIDEGrantorOptions.toString().replace(/,/g, "\n", -1);
+        console.log('IND/IDE Grantor defined value(s) in the data table:[' + strValGrantor +']');
+        var tableDataPreSplt = strValGrantor.toString().split("IND:");
+        var tableDataGrantorSplt = tableDataPreSplt.toString().split("IDE:");
+        var indGrantorSpltpre = tableDataGrantorSplt[0].toString().replace(/\r?\n?[^\r\n]*$/, "");
+        var indGrantorlstComma = indGrantorSpltpre.toString().replace(/,/g, "", -1);
+        var ideGrantorSpltpre = tableDataGrantorSplt[1].toString().replace(/,/g, "", -1);
+        var indGrantorSplt = indGrantorlstComma.toString().replace(/,/g, "\n", -1);
+        var ideGrantorSplt = ideGrantorSpltpre.toString().replace(/,/g, "\n", -1);
+        console.log('IND Grantor defined value(s) in the data table:[' + indGrantorSplt +']');
+        console.log('IDE Grantor defined value(s) in the data table:[' + ideGrantorSplt +']');
+        indIDE.selectINDIDETypes(optionC);
+        helper.wait_for(100);
+        indIDE.indIDEGrantorAll.getText().then(function(itemsGrntr) {
+            console.log('IDE Type Actual value(s) in the list obejct:['+ ideGrantorSplt +']');
+            expect(itemsGrntr.toString().split("\n")).to.eql(ideGrantorSplt.toString().split("\n"));
+        });
+
+        indIDE.selectINDIDETypes(optionB);
+        helper.wait_for(100);
+        indIDE.indIDEGrantorAll.getText().then(function(itemsGrntr) {
+            console.log('IND Type Actual value(s) in the list object:['+ indGrantorSplt +']');
+            expect(itemsGrntr.toString().split("\n")).to.eql(indGrantorSplt.toString().split("\n"));
+        });
+        helper.wait_for(100);
+        indIDE.setINDIDENumbr(indIDENmbrC);
+        indIDE.selectINDIDEGrantor(indIDEGrntrCDER);
+        //var selectIndGrantor = indGrantorSplt.toString().split("\n");
+        //indGrantorOptionA = selectIndGrantor[0];
+        //indGrantorOptionB = selectIndGrantor[1];
+        //indGrantorOptionC = selectIndGrantor[2];
+        //indIDE.selectINDIDETypes(indGrantorOptionB);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected the IND\/IDE Holder Type from a list$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var strValHoldrTyp = '';
+        indIDEHolderTypeOptions = table.raw();
+        strValHoldrTyp = indIDEHolderTypeOptions.toString().replace(/,/g, "\n", -1);
+        console.log('IND/IDE Holder Type defined value(s) in the data table:[' + strValHoldrTyp +']');
+
+        indIDE.indIDEHolderTypeAll.getText().then(function(itemsHldrTyp) {
+            console.log('IND/IDE Holder Type Actual value(s) in the list object:['+ itemsHldrTyp +']');
+            expect(itemsHldrTyp.toString().split("\n")).to.eql(strValHoldrTyp.toString().split("\n"));
+        });
+        var tableDataSpltHldTyp = strValHoldrTyp.toString().split("\n");
+        var selectIndIDEHldrTypNIH = tableDataSpltHldTyp[4];
+        indIDE.selectINDIDEHolderType(selectIndIDEHldrTypNIH);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected the NIH Institution or NCI Division\/Program Code from a list$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var verifTbleHdrs2 = ''+ indIDEInfoTbleColeA +' '+ indIDEInfoTbleColeB +' '+ indIDEInfoTbleColeC +' '+ indIDEInfoTbleColeD +' '+ indIDEInfoTbleColeE +'';
+        var verifTbleRowAs2 = ''+ indTypVal +' '+ indIDENmbrC +' '+ indIDEGrntrCDER +' '+ indIDEHldTypNIH +' '+ indIDEDivProgCdeNLM +'';
+        var strValNIHNCIPrgoCode = '';
+        indIDEHolderTypeOptions = table.raw();
+        strValNIHNCIPrgoCode = indIDEHolderTypeOptions.toString().replace(/,/g, "\n", -1);
+        console.log('NIH Institution, NCI Division/Program Code (if applicable) defined value(s) in the data table:[' + strValNIHNCIPrgoCode +']');
+        indIDE.selectINDIDEDivisionProgramCode(indIDEDivProgCdeNLM);
+        indIDE.clickAdd();
+        indIDE.clickSave();
+        indIDE.clickAdminDataGeneralTrial();
+        indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.verifyTableRowText(indIDE.indIDETblHdr, verifTbleHdrs2, "IND/IDE Table Header(s)");
+        helper.verifyTableRowText(indIDE.indIDETblRowA, verifTbleRowAs2, "IND/IDE Table Row A");
+        indIDE.indIDEInfoTable.all(by.css('tr')).count().then(function(rowCount) {
+            counttim = rowCount;
+            console.log(counttim);
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the IND\/IDE Information for the trial will be associated with the trial$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        for (var i = 1; i < counttim; i++){
+            console.log('Current Row' + i);
+            indIDE.clickRowDelete(i);
+        };
+        indIDE.clickSave();
+        indIDE.clickAdminDataGeneralTrial();
+        indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.verifyElementDisplayed(indIDE.indIDEInfoTable, false);
+        browser.sleep(25).then(callback);
     });
 
     /*

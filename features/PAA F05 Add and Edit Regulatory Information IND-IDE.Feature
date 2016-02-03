@@ -8,19 +8,21 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
 When I have selected "No" where the question "Does this trial have an associated IND/IDE?"
 Then the IND/IDE Information section will allow the entry of an IND/IDE for this trial
-
+ @runthis
 Scenario: #2 I can add and edit Regulatory IND or IDE Information for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
 And I have selected "Yes" where the question "Does this trial have an associated IND/IDE?"
 When I have selected the IND/IDE Type from a list
+|-Select-|
 |IND|
 |IDE|
 And I have entered the IND/IDE number
 And I have selected the IND/IDE Grantor from a list based on IND or IDE selected
-|IND: CDER, CBER|
-|IDE: CDRH, CBER|
+|IND:-Select-,CDER,CBER|
+|IDE:-Select-,CDRH,CBER|
 And I have selected the IND/IDE Holder Type from a list
+|-Select-|
 |Investigator|
 |Organization|
 |Industry|
