@@ -35,6 +35,11 @@ config/initializers/secret_token.rb
 config/secrets.yml
 config/database.yml
 config/ldap.yml
+config/environments/ci.rb
+config/environments/qa.rb
+config/environments/demo.rb
+config/environments/stage.rb
+config/environments/production.rb
 ## Environment normalisation:
 /.bundle
 /vendor/bundle

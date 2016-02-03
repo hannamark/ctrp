@@ -38,6 +38,15 @@
                     </div>
                 </div>
 
+                <div class="form-group" ng-if="importTrialView.nct_id">
+                    <label class="control-label col-xs-12 col-sm-3"></label>
+                    <div class=" col-xs-12 col-sm-9">
+                        <button type="button" class="btn btn-primary pull-right" id="import_btn" ng-click="importTrialView.importTrial()">
+                            <i class="glyphicon glyphicon-import"></i> Import Trial from ClincialTrials.gov
+                        </button>
+                    </div>
+                </div>
+
                 <div class="form-group has-error" ng-if="importTrialView.error_msg">
                     <label class="control-label col-xs-12 col-sm-3"></label>
                     <div class=" col-xs-12 col-sm-9">

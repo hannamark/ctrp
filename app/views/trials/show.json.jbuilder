@@ -99,9 +99,11 @@ json.last_submission_source @trial.submissions.empty? ? '' : (@trial.submissions
 
 #json.sponsor_nci @trial.is_sponsor_nci?
 
-send_trial_flag = @trial.set_send_trial_info_flag
+send_trial_rules_flag = @trial.set_send_trial_info_flag ? "Yes":"No"
 
-json.send_trial_flag send_trial_flag ? "Yes":"No"
+json.send_trial_rules_flag send_trial_rules_flag
+
+json.send_trial_flag @trial.send_trial_flag.nil? ? send_trial_rules_flag : @trial.send_trial_flag
 
 json.pa_editable @trial.pa_editable_check
 
