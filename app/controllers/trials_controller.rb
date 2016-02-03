@@ -123,6 +123,10 @@ class TrialsController < ApplicationController
       @trials = @trials.is_not_draft if params[:searchType] == 'All Trials'
       @trials = @trials.is_draft(@current_user.username) if params[:searchType] == 'Saved Drafts'
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
+
+      @trials.each do |trial|
+        trial.current_user = @current_user
+      end
     else
       @trials = []
     end

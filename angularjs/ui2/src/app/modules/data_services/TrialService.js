@@ -22,11 +22,14 @@
             start: 1
         }; //initial Trial Search Parameters
 
-        var actionTemplate = '<div class="btn-group" ng-class="grid.renderContainers.body.visibleRowCache.indexOf(row) > 4 ? \'dropup\' : \'\'">'
+        var actionTemplate = '<div ng-if="row.entity.actions.length > 0" class="btn-group" ng-class="grid.renderContainers.body.visibleRowCache.indexOf(row) > 4 ? \'dropup\' : \'\'">'
             + '<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
             + 'Action <span class="caret"></span>'
             + '</button>'
-            + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions"><a ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a></li></ul>'
+            + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions">'
+            + '<a ng-if="action == \'add-my-site\'">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action != \'add-my-site\'" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '</li></ul>'
             + '</div>';
 
         var gridOptions = {

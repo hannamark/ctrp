@@ -209,17 +209,6 @@ class Trial < ActiveRecord::Base
   accepts_nested_attributes_for :outcome_measures, allow_destroy: true
   accepts_nested_attributes_for :other_criteria, allow_destroy: true
 
-  # Array of actions can be taken on this Trial
-  def actions
-    actions = []
-    if self.is_draft
-      actions.append('complete')
-    else
-      actions.append('update')
-      actions.append('amend')
-    end
-  end
-
   validates :lead_protocol_id, presence: true
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import"'
   validates :phase, presence: true, if: 'is_draft == false && edit_type != "import"'
@@ -244,6 +233,22 @@ class Trial < ActiveRecord::Base
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
+
+  # Array of actions can be taken on this Trial
+  def actions
+    actions = []
+
+    if self.users.include? self.current_user
+      if self.is_draft
+        actions.append('complete')
+      elsif self.internal_source && self.internal_source.code == 'CTRP'
+        actions.append('update')
+        actions.append('amend')
+      elsif self.internal_source && self.internal_source.code == 'CTGI'
+        actions.append('add-my-site')
+      end
+    end
+  end
 
   def is_sponsor_nci?
     return (!self.sponsor.nil? && self.sponsor.name == "National Cancer Institute") ? true:false
