@@ -30,10 +30,10 @@
         //console.log("send_trial_flag="+ (vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"));
         console.log( (vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"));
 
-        if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "Yes"))==true) {
+        if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_rules_flag == "Yes"))==true) {
             vm.disable_send_trial = false;
             console.log("disable set to false");
-        } else if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"))==true){
+        } else if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_rules_flag == "No"))==true){
             vm.disable_send_trial = true;
             console.log("disable set to true");
         } else if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==false))==true){
