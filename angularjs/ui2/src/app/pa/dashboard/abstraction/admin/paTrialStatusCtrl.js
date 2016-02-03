@@ -26,6 +26,9 @@
         vm.addTrialStatus = addTrialStatus;
         vm.openCalendar = openCalendar;
         vm.deleteTrialStatus = deleteTrialStatus;
+        vm.editTrialStatus = editTrialStatus;
+        vm.cancelEdit = cancelEdit;
+        vm.commitEdit = commitEdit;
 
         activate();
         function activate() {
@@ -49,7 +52,8 @@
                     delete status.created_at
                     return status;
                 });
-                console.log('vm.trialDetailObj: ', vm.trialDetailObj);
+
+                validateStatuses();
             }, 0);
         } // _getTrialDetailCopy
 
@@ -76,24 +80,6 @@
 
         function addTrialStatus() {
 
-            /*
-            status_comment: "fasdfas"
-            status_date: "03-Feb-2016"
-            trial_status_code: "APP"
-            trial_status_id: 2
-            trial_status_name: "Approved"
-            why_stopped: "fsdfdsa"
-             */
-
-            /*
-            comment: "fsfsda"
-            status_date: "03-Feb-2016"
-            trial_status_code: "APP"
-            trial_status_id: "2"
-            trial_status_name: "Approved"
-            why_stopped: undefined
-             */
-
             if (vm.statusObj.status_date && vm.statusObj.trial_status_id) {
                 var statusExists = _.findIndex(vm.tempTrialStatuses, {trial_status_id: vm.statusObj.trial_status_id}) > -1;
                 if (statusExists) {
@@ -112,9 +98,7 @@
                 console.log('vm.tempTrialStatuses: ', vm.tempTrialStatuses);
                 vm.tempTrialStatuses.push(clonedStatusObj);
 
-                // vm.trialDetailObj.trial_status_wrappers.unshift(clonedStatusObj);
-
-                // TODO: validate statuses:
+                // Validate statuses:
                 validateStatuses();
                 // re-initialize the vm.statusObj
                 vm.statusObj = _initStatusObj();
@@ -131,7 +115,8 @@
         }
 
         function _validateStatusesDelegate(statusArr) {
-            console.log('validating statuses: ', statusArr);
+            if (statusArr.length === 0) return;
+
             TrialService.validateStatus({"statuses": statusArr}).then(function(res) {
                 console.log('_validatestatuses: ', res.validation_msgs);
                 if (res.validation_msgs && angular.isArray(res.validation_msgs)) {
@@ -149,8 +134,33 @@
 
         function deleteTrialStatus(index) {
             if (index < vm.tempTrialStatuses.length) {
-                console.log('deleting status');
                 vm.tempTrialStatuses[index]._destroy = !vm.tempTrialStatuses[index]._destroy;
+                if (vm.tempTrialStatuses[index]._destroy && vm.statusObj.edit) {
+                    vm.statusObj = _initStatusObj();
+                }
+            }
+        } // deleteTrialStatus
+
+        function editTrialStatus(index) {
+            if (index < vm.tempTrialStatuses.length) {
+                vm.statusObj = angular.copy(vm.tempTrialStatuses[index]);
+                vm.statusObj.edit = true;
+                vm.statusObj.index = index;
+                // vm.tempTrialStatuses.splice(index, 1);
+            }
+        }
+
+        function commitEdit() {
+            if (vm.statusObj.edit) {
+                vm.tempTrialStatuses[vm.statusObj.index] = angular.copy(vm.statusObj);
+                validateStatuses();
+                vm.statusObj = _initStatusObj();
+            }
+        } // commitEdit
+
+        function cancelEdit() {
+            if (vm.statusObj.edit) {
+                vm.statusObj = _initStatusObj();
             }
         }
 
