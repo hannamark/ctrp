@@ -25,6 +25,7 @@
         // actions
         vm.addTrialStatus = addTrialStatus;
         vm.openCalendar = openCalendar;
+        vm.deleteTrialStatus = deleteTrialStatus;
 
         activate();
         function activate() {
@@ -145,6 +146,13 @@
                 console.log('error in validating status');
             });
         } // _validateStatusesDelegate
+
+        function deleteTrialStatus(index) {
+            if (index < vm.tempTrialStatuses.length) {
+                console.log('deleting status');
+                vm.tempTrialStatuses[index]._destroy = !vm.tempTrialStatuses[index]._destroy;
+            }
+        }
 
 
     } // paTrialStatusCtrl

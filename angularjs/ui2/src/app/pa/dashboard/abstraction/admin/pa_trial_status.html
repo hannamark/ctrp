@@ -52,6 +52,45 @@
                                 <button class="btn btn-default" type="button" ng-click="trialStatusView.addTrialStatus()"><i class="glyphicon glyphicon-plus"></i> Add</button>
                             </div>
                         </div>
+                        <div class="row animated-item" ng-show="trialStatusView.tempTrialStatuses.length > 0">
+                            <table class="table table-bordered table-striped table-hover">
+                              <thead style="background-color: #d9edf7">
+                                <th class="text-center">Status Date</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Comment</th>
+                                <th class="text-center">Why Study Stopped</th>
+                                <th class="text-center">Errors/Warnings</th>
+                                <th class="text-center"> Delete </th>
+                              </thead>
+                              <tbody>
+                                <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" class="animated-item" ng-class="status._destroy ? 'deleted-text' : ''">
+                                  <td class="col-sm-1">{{status.status_date}}</td>
+                                  <td class="col-sm-2">{{status.trial_status_name}}</td>
+                                  <td class="col-sm-2">{{status.comment}}</td>
+                                  <td class="col-sm-2">{{status.why_stopped}}</td>
+                                  <td class="col-sm-4">
+                                      <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
+                                          ERROR: Interim status [{{error.status}}] is missing
+                                      </div>
+                                      <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message')">
+                                          ERROR: {{error.message}}
+                                      </div>
+                                      <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('status')">
+                                          WARNING: Interim status [{{warning.status}}] is missing
+                                      </div>
+                                      <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
+                                          WARNING: {{warning.message}}
+                                      </div>
+                                  </td>
+                                  <td class="text-center" class="col-sm-1">
+                                      <label class="btn btn-default" restriction-field ng-click="trialStatusView.deleteTrialStatus($index)">
+                                          <i class="glyphicon" ng-class="status._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                      </label>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </div>
 
                         <!-- <div layout-gt-sm="row">
                             <md-input-container class="md-block" flex-gt-sm>

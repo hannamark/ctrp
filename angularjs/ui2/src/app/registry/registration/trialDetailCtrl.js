@@ -687,7 +687,6 @@
                     noDestroyStatusArr.push(vm.addedStatuses[i]);
                 }
             }
-            console.log('validating status: ', noDestroyStatusArr);
 
             TrialService.validateStatus({"statuses": noDestroyStatusArr}).then(function(response) {
                 vm.statusValidationMsgs = response.validation_msgs;
