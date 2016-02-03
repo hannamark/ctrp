@@ -349,6 +349,8 @@ class TrialsController < ApplicationController
   def validate_status
     @validation_msgs = []
     transition_matrix = JSON.parse(AppSetting.find_by_code('TRIAL_STATUS_TRANSITION').big_value)
+    Rails.logger.info "transition_matrix: #{transition_matrix}"
+
     statuses = params['statuses']
 
     if statuses.present? && statuses.size > 0
