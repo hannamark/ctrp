@@ -37,6 +37,8 @@
                 if (response.server_response.status < 300) {
                     toastr.success('Trial has been imported', 'Operation Successful!');
                     $state.go('main.importTrial', null, {reload: true});
+                } else {
+                    vm.disableBtn = false;
                 }
             }).catch(function (err) {
                 console.log("Error in importing from ClinicalTrials.gov: " + err);

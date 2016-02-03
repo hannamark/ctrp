@@ -475,6 +475,17 @@ class TrialsController < ApplicationController
     import_params[:brief_title] = xml.xpath('//brief_title').text
     import_params[:official_title] = xml.xpath('//official_title').text
 
+    org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
+    orgs = Organization.all
+    orgs = orgs.matches_name_wc(org_name, true)
+    orgs = orgs.with_source_status("Active")
+    orgs = orgs.with_source_context("CTRP")
+    if orgs.length > 0
+      import_params[:lead_org_id] = orgs[0].id
+      import_params[:sponsor_id] = orgs[0].id
+      import_params[:trial_funding_sources_attributes] = [{organization_id: orgs[0].id}]
+    end
+
     import_params[:collaborators_attributes] = []
     xml.xpath('//collaborator/agency').each do |collaborator|
       import_params[:collaborators_attributes].push({org_name: collaborator.text})
