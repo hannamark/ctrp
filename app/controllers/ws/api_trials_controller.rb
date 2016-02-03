@@ -1,11 +1,16 @@
 class Ws::ApiTrialsController < Ws::BaseApiController
+  #include Services::TrialService
   #wrap_parameters format: [:json, :xml]
 
-  before_filter :find_person, only: [:show, :update]
+  before_filter :find_trial, only: [:show, :update]
   before_filter :sam, only: [:change_status]
+
+
 
   before_filter only: [:create,:update] do
     string = request.body.read
+
+
     begin
     bad_doc = Nokogiri::XML(string) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
     rescue Nokogiri::XML::SyntaxError => e
@@ -14,6 +19,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     errors =Hash.new
     @trialMasterMap = Hash.new
+    trialService = TrialService.new
+
 
     if request.content_type == "application/xml"
         @object = Hash.from_xml(string)
@@ -27,9 +34,13 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     end
 
+
+
+
     if !errors.empty?
     #render xml:errors, status: :bad_request and return
     end
+
 
     ###############Pre Baci validation such as CompleteTrialRegistartion, category node existence checking #####################
 
@@ -63,6 +74,55 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         @trialMasterMap.store("lead_protocol_id",trialkeys["leadOrgTrialID"])
 
       end
+
+
+
+
+
+     ############ *****************  TRIAL DOCS ******************  ##########################
+
+
+      @trialDocs = Array.new
+
+      if trialkeys.has_key?("protocolDocument")
+
+        process_docs(trialkeys["protocolDocument"])
+
+      end
+
+      if trialkeys.has_key?("irbApprovalDocument")
+
+        process_docs(trialkeys["irbApprovalDocument"])
+
+      end
+
+      if trialkeys.has_key?("participatingSitesDocument")
+
+        process_docs(trialkeys["participatingSitesDocument"])
+
+      end
+
+      if trialkeys.has_key?("informedConsentDocument")
+
+        process_docs(trialkeys["informedConsentDocument"])
+
+      end
+
+      if trialkeys.has_key?("otherDocument")
+
+        process_docs(trialkeys["otherDocument"])
+
+      end
+
+
+      @trialMasterMap.store("trial_documents_attributes",@trialDocs);
+
+
+
+      #########################################################################################
+
+
+
 
     end
 
@@ -166,7 +226,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
 
 
-    ###############============>>>>>>> Trail Lead,Pi,Sposor   <<<<<<<<<<<<<<<<=================###################
+    ###############============>>>>>>> Trail Lead,Pi,Sposor (Refractoring)   <<<<<<<<<<<<<<<<=================###################
 
   ###lead_org_id
     if trialkeys.has_key?("leadOrganization") && trialkeys["leadOrganization"].has_key?("existingOrganization")
@@ -174,7 +234,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
       if trialkeys["leadOrganization"]["existingOrganization"].has_key?("poID")
       lead_org =trialkeys["leadOrganization"]["existingOrganization"]["poID"]
-      count = Organization.where("ctrp_id=?", lead_org).where("source_context_id=? and source_status_id=?", SourceContext.find_by_name("CTRP").id,SourceStatus.find_by_name("Active").id).count;
+
+      count= trialService.active_ctrp_org_count(lead_org)
       if count > 0
 
         @trialMasterMap["lead_org_id"]=lead_org
@@ -200,13 +261,12 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
       if trialkeys["sponsor"]["existingOrganization"].has_key?("poID")
         sponsor =trialkeys["sponsor"]["existingOrganization"]["poID"]
-        count = Organization.where("ctrp_id=?", sponsor).where("source_context_id=? and source_status_id=?", SourceContext.find_by_name("CTRP").id,SourceStatus.find_by_name("Active").id).count;
-        if count > 0
+        count = trialService.active_ctrp_org_count(sponsor)
 
+        if count > 0
           @trialMasterMap["sponsor_id"]=sponsor
         else
           validate_errors.store("tns:sponsor","given sponsor not existed Org in CTRP 5.X ; expected active and CTRP org")
-
         end
 
       else
@@ -230,12 +290,14 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
       if trialkeys["pi"]["existingPerson"].has_key?("poID")
         pi =trialkeys["pi"]["existingPerson"]["poID"]
-        count = Person.where("ctrp_id=?", pi).where("source_context_id=? and source_status_id=?", SourceContext.find_by_name("CTRP").id,SourceStatus.find_by_name("Active").id).count;
+
+        count = trialService.active_ctrp_person_count(pi)
+
         if count > 0
 
           @trialMasterMap["pi_id"]=pi
         else
-          validate_errors.store("tns:pi","given pi not existed Person in CTRP 5.X ; expected active and CTRP org")
+          validate_errors.store("tns:pi","given pi not existed Person in CTRP 5.X ; expected active and CTRP person")
 
         end
 
@@ -251,9 +313,201 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
 
 
+################################ IND/IDE ##########################
+       ind_ides=Array.new
+
+
+       if trialkeys.has_key?("ind") || trialkeys.has_key?("ide")
 
 
 
+       if trialkeys.has_key?("ind")
+         if trialkeys["ind"].kind_of?(Array)
+           if trialkeys["ind"].length > 0
+             len=trialkeys["ind"].length
+
+
+             puts trialkeys["ind"]
+
+             puts len
+             for i in 0..len-1
+               if trialkeys["ind"][i].has_key?("number") && trialkeys["ind"][i].has_key?("grantor") && trialkeys["ind"][i].has_key?("holderType")
+
+                 number=trialkeys["ind"][i]["number"]
+                 grantor=trialkeys["ind"][i]["grantor"]
+                 holderType=trialkeys["ind"][i]["holderType"]
+                 holderTypeId= HolderType.find_by_name(holderType).id;
+                 myHash= Hash.new();
+                 myHash.store("ind_ide_type","ind");
+                 myHash.store("ind_ide_number",number);
+                 myHash.store("grantor",grantor);
+                 myHash.store("holder_type_id",holderTypeId);
+
+                 ind_ides.push(myHash);
+                 # ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id, :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
+               else
+                 validate_errors.store("tns:ind"," For each ind  number, grantor, holderType expected;")
+                 break;
+               end
+
+             end
+
+           end
+         else
+           if trialkeys["ind"].has_key?("number") && trialkeys["ind"].has_key?("grantor") && trialkeys["ind"].has_key?("holderType")
+             number=trialkeys["ind"]["number"]
+             grantor=trialkeys["ind"]["grantor"]
+             holderType=trialkeys["ind"]["holderType"]
+             holderTypeId= HolderType.find_by_name(holderType).id;
+
+             myHash= Hash.new();
+             myHash.store("ind_ide_type","ind");
+             myHash.store("ind_ide_number",number);
+             myHash.store("grantor",grantor);
+             myHash.store("holder_type_id",holderTypeId);
+
+             ind_ides.push(myHash);
+           else
+             validate_errors.store("tns:ind"," number, grantor, holderType expected;")
+
+           end
+         end
+
+       end
+
+       if trialkeys.has_key?("ide")
+         if trialkeys["ide"].kind_of?(Array)
+           if trialkeys["ide"].length > 0
+             len=trialkeys["ide"].length
+
+
+             puts trialkeys["ide"]
+
+             puts len
+             for i in 0..len-1
+               if trialkeys["ide"][i].has_key?("number") && trialkeys["ide"][i].has_key?("grantor") && trialkeys["ide"][i].has_key?("holderType")
+
+                 number=trialkeys["ide"][i]["number"]
+                 grantor=trialkeys["ide"][i]["grantor"]
+                 holderType=trialkeys["ide"][i]["holderType"]
+                 holderTypeId= HolderType.find_by_name(holderType).id;
+                 myHash= Hash.new();
+                 myHash.store("ind_ide_type","ide");
+                 myHash.store("ind_ide_number",number);
+                 myHash.store("grantor",grantor);
+                 myHash.store("holder_type_id",holderTypeId);
+
+                 ind_ides.push(myHash);
+                 # ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id, :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
+               else
+                 validate_errors.store("tns:ide"," For each ide  number, grantor, holderType expected;")
+                 break;
+               end
+
+             end
+
+           end
+         else
+           if trialkeys["ide"].has_key?("number") && trialkeys["ide"].has_key?("grantor") && trialkeys["ide"].has_key?("holderType")
+             number=trialkeys["ide"]["number"]
+             grantor=trialkeys["ide"]["grantor"]
+             holderType=trialkeys["ide"]["holderType"]
+             holderTypeId= HolderType.find_by_name(holderType).id;
+
+             myHash= Hash.new();
+             myHash.store("ind_ide_type","ide");
+             myHash.store("ind_ide_number",number);
+             myHash.store("grantor",grantor);
+             myHash.store("holder_type_id",holderTypeId);
+
+             ind_ides.push(myHash);
+           else
+             validate_errors.store("tns:ide"," number, grantor, holderType expected;")
+
+           end
+         end
+
+       end
+       @trialMasterMap.store("ind_ides_attributes",ind_ides);
+       else
+         validate_errors.store("tns:ide/tns:ind","Either tns:ind or tnd:ide expected")
+
+       end
+
+
+
+###################################################################
+
+
+
+       ####################REGULATORY INFORMATION ###################
+
+=begin
+if trialkeys.has_key?("ide")
+         if trialkeys["ide"].kind_of?(Array)
+           if trialkeys["ide"].length > 0
+             len=trialkeys["ide"].length
+
+
+             puts trialkeys["ide"]
+
+             puts len
+             for i in 0..len-1
+               if trialkeys["ide"][i].has_key?("number") && trialkeys["ide"][i].has_key?("grantor") && trialkeys["ide"][i].has_key?("holderType")
+
+                 number=trialkeys["ide"][i]["number"]
+                 grantor=trialkeys["ide"][i]["grantor"]
+                 holderType=trialkeys["ide"][i]["holderType"]
+                 holderTypeId= HolderType.find_by_name(holderType).id;
+                 myHash= Hash.new();
+                 myHash.store("ind_ide_type","ide");
+                 myHash.store("ind_ide_number",number);
+                 myHash.store("grantor",grantor);
+                 myHash.store("holder_type_id",holderTypeId);
+
+                 ind_ides.push(myHash);
+                 # ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id, :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
+               else
+                 validate_errors.store("tns:ide"," For each ide  number, grantor, holderType expected;")
+                 break;
+               end
+
+             end
+
+           end
+         else
+           if trialkeys["ide"].has_key?("number") && trialkeys["ide"].has_key?("grantor") && trialkeys["ide"].has_key?("holderType")
+             number=trialkeys["ide"]["number"]
+             grantor=trialkeys["ide"]["grantor"]
+             holderType=trialkeys["ide"]["holderType"]
+             holderTypeId= HolderType.find_by_name(holderType).id;
+
+             myHash= Hash.new();
+             myHash.store("ind_ide_type","ide");
+             myHash.store("ind_ide_number",number);
+             myHash.store("grantor",grantor);
+             myHash.store("holder_type_id",holderTypeId);
+
+             ind_ides.push(myHash);
+           else
+             validate_errors.store("tns:ide"," number, grantor, holderType expected;")
+
+           end
+         end
+
+       end
+       @trialMasterMap.store("ind_ides_attributes",ind_ides);
+       else
+         validate_errors.store("tns:ide/tns:ind","Either tns:ind or tnd:ide expected")
+
+       end
+
+=end
+
+
+
+
+       ##############################################################
 
 
     #############################################################################################################################
@@ -508,7 +762,7 @@ end # end of before_create
         render json: @trial
         return
       elsif request.content_type == "application/xml"
-        render xml: @trial
+        render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
         return
         return
       else
@@ -556,9 +810,35 @@ end # end of before_create
   end
 
   private
-  def find_person
-    @person = Person.find_by_id(params[:id])
-    render nothing: true, status: :not_found unless @person.present?
+
+  def process_docs(dochash)
+
+    p dochash["filename"]
+    p dochash["__content__"]
+
+    filename = dochash["filename"]
+    content = dochash["__content__"]
+    content.gsub!('\\r', "\r")
+    content.gsub!('\\n', "\n")
+    decode_base64_content = Base64.decode64(content)
+    tempfile = Tempfile.new("fileupload")
+    tempfile.binmode
+    tempfile.write(decode_base64_content)
+
+
+    @trialprotocolDocMap = Hash.new
+    @trialprotocolDocMap.store("file",tempfile)
+    @trialprotocolDocMap.store("file_name",filename)
+    @trialprotocolDocMap.store("document_type","Informed Consent")
+    @trialDocs.push(@trialprotocolDocMap)
+
+
+  end
+
+
+  def find_trial
+    @trial = Trial.find_by_nci_id(params[:nci_id])
+    render nothing: true, status: :not_found unless @trial.present?
   end
 
   def sam
