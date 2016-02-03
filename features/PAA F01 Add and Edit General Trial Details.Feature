@@ -65,9 +65,9 @@ Given I have selected a trial to abstract
 And I am on the General Trial Details screen
 And I am in the Central Contact section
 And I have selected the radio button for PI
-And the phone # and e-mail address is displayed 
-Then I can edit the phone # and e-mail address 
-And the PI, phone # and e-mail address will be associated with this trail
+And the phone #, extension and e-mail address is displayed 
+Then I can edit the phone #, extension and e-mail address 
+And the PI, phone #, extension and e-mail address will be associated with this trail
 
 Scenario: #9 I can associate a person as the Central Contact or for the trial
 Given I have selected a trial to abstract 
@@ -75,9 +75,9 @@ And I am on the General Trial Details screen
 And I am in the Central Contact section
 And I select the radio button for Person
 And preform a person look and select a person
-And the selected Person, their phone # and e-mail address will be displayed
+And the selected Person, their phone #, extension and e-mail address will be displayed
 Then I can edit the phone # and e-mail address 
-And the Person, phone # and e-mail address will be associated with this trail
+And the Person, phone #, extension and e-mail address will be associated with this trail
 
 Scenario: #10 I can associate General Central Contact for the trial
 Given I have selected a trial to abstract 
@@ -85,8 +85,8 @@ And I am on the General Trial Details screen
 And I am in the Central Contact section
 And I select the radio button for General Contact
 And I enter the Central Contact Name
-And I enter either a Central Contact Phone Number or Central Contact E-Mail Address or both
-Then the selected Central Contact, Phone # and e-mail address will be Central contact for the trial
+And I enter either a Central Contact Phone Number and extension or Central Contact E-Mail Address or both
+Then the selected Central Contact, Phone #, extension and e-mail address will be Central contact for the trial
 
 Scenario: #11 Save General Trials Details information
 Given I have selected a trial to abstract 

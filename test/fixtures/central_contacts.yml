@@ -28,13 +28,11 @@
 one:
   central_contact_type_id: 
   person_id: 
-  country: MyString
   phone: MyString
   email: MyString
 
 two:
   central_contact_type_id: 
   person_id: 
-  country: MyString
   phone: MyString
   email: MyString

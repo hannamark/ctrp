@@ -181,6 +181,22 @@ var helper = function() {
         console.log(errorMessage + " - Table Row value(s)");
     };
 
+    this.getListOptionsValue = function(listName){
+        var j = 0;
+        var textList = [];
+        var text = '';
+        var myLists = listName;
+        myLists.count().then(function(count){
+            console.log('List Options Count: '+count);
+            myLists.each(function(element, index){
+                element.getText().then(function(text){
+                    textList[j++] = text
+                    return text;
+                });
+            });
+        });
+    };
+
     this.pageRefresh = function () {
         browser.refresh();
     };

@@ -97,6 +97,10 @@
                 templateUrl: 'app/pa/dashboard/abstraction/admin/pa_trial_status.html',
                 controller: 'paTrialStatusCtrl as trialStatusView',
                 resolve: {
+                    TrialService: 'TrialService',
+                    trialStatuses: function(TrialService) {
+                        return TrialService.getTrialStatuses();
+                    }
                 },
                 section: 'pa',
                 ncyBreadcrumb: {
