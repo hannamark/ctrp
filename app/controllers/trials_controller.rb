@@ -123,6 +123,10 @@ class TrialsController < ApplicationController
       @trials = @trials.is_not_draft if params[:searchType] == 'All Trials'
       @trials = @trials.is_draft(@current_user.username) if params[:searchType] == 'Saved Drafts'
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
+
+      @trials.each do |trial|
+        trial.current_user = @current_user
+      end
     else
       @trials = []
     end
@@ -366,8 +370,14 @@ class TrialsController < ApplicationController
   end
 
   def search_clinical_trials_gov
-    # TODO Search existing trials using NCT ID
     @search_result = {}
+
+    existing_nct_ids = OtherId.where('protocol_id = ? AND protocol_id_origin_id = ?', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id)
+    if existing_nct_ids.length > 0
+      @search_result[:error_msg] = 'A study with the given identifier already exists in CTRP. To find this trial in CTRP, go to the Search Trials page.'
+      return
+    end
+
     url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
     url = url.sub('NCT********', params[:nct_id])
     begin
@@ -468,6 +478,17 @@ class TrialsController < ApplicationController
 
     import_params[:brief_title] = xml.xpath('//brief_title').text
     import_params[:official_title] = xml.xpath('//official_title').text
+
+    org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
+    orgs = Organization.all
+    orgs = orgs.matches_name_wc(org_name, true)
+    orgs = orgs.with_source_status("Active")
+    orgs = orgs.with_source_context("CTRP")
+    if orgs.length > 0
+      import_params[:lead_org_id] = orgs[0].id
+      import_params[:sponsor_id] = orgs[0].id
+      import_params[:trial_funding_sources_attributes] = [{organization_id: orgs[0].id}]
+    end
 
     import_params[:collaborators_attributes] = []
     xml.xpath('//collaborator/agency').each do |collaborator|
