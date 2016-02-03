@@ -81,10 +81,10 @@
                               </thead>
                               <tbody>
                                 <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" class="animated-item text-center" ng-class="status._destroy ? 'deleted-text' : ''">
-                                  <td class="col-sm-2">{{::status.status_date}}</td>
-                                  <td class="col-sm-1">{{::status.trial_status_name}}</td>
-                                  <td class="col-sm-2">{{::status.comment}}</td>
-                                  <td class="col-sm-2">{{::status.why_stopped}}</td>
+                                  <td class="col-sm-2">{{status.status_date}}</td>
+                                  <td class="col-sm-1">{{status.trial_status_name}}</td>
+                                  <td class="col-sm-2">{{status.comment}}</td>
+                                  <td class="col-sm-2">{{status.why_stopped}}</td>
                                   <td class="col-sm-4">
                                       <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
                                           ERROR: Interim status [{{error.status}}] is missing

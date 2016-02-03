@@ -139,6 +139,7 @@
         function deleteTrialStatus(index) {
             if (index < vm.tempTrialStatuses.length) {
                 vm.tempTrialStatuses[index]._destroy = !vm.tempTrialStatuses[index]._destroy;
+                // empty the edit fields if it's targeted for destroy
                 if (vm.tempTrialStatuses[index]._destroy && vm.statusObj.edit) {
                     vm.statusObj = _initStatusObj();
                 }
@@ -156,8 +157,17 @@
 
         function commitEdit() {
             if (vm.statusObj.edit) {
-                vm.tempTrialStatuses[vm.statusObj.index] = angular.copy(vm.statusObj);
-                validateStatuses();
+                vm.statusObj.status_date = moment(vm.statusObj.status_date).format("DD-MMM-YYYY"); // e.g. 03-Feb-2016
+                // vm.statusObj.status_date = DateService.convertISODateToLocaleDateStr(vm.statusObj.status_date);
+                var selectedStatus = _.findWhere(vm.trialStatuses, {id: vm.statusObj.trial_status_id});
+                if (!!selectedStatus) {
+                    vm.statusObj.trial_status_name = selectedStatus.name;
+                    vm.statusObj.trial_status_code = selectedStatus.code;
+                }
+                // vm.tempTrialStatuses.splice(vm.statusObj.index, 0, vm.statusObj);
+                vm.tempTrialStatuses[vm.statusObj.index] = vm.statusObj;
+                console.log('vm.tempTrialStatuses: ', vm.tempTrialStatuses);
+                // validateStatuses();
                 vm.statusObj = _initStatusObj();
             }
         } // commitEdit
