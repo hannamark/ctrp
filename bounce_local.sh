@@ -30,7 +30,7 @@ sleep 15
 
 #Instantiate data via REST and ActiveRecord db seeding
 ruby db/add_users.rb
-rake db:seed
+rake db:seed RAILS_ENV=development
 
 
 #Note: as written, this script won't close terminals previously opened by this script
