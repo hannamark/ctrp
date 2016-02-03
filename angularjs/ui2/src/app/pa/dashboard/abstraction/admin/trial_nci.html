@@ -7,20 +7,18 @@
             </uib-accordion-heading>
             <!-- first row in the accordion body -->
             <div class="row">
-                 <!-- <p>
-                    <s><strong>Clinical Research Category:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span></s>
-                </p> -->
                 <fieldset class="sub-bordered" restriction-field>
                     <legend class="sub-bordered">Study Source:</legend>
-                    <div class="form-group">
+                    <div class="form-group " ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.curTrial.study_source_id)}">
                         <label for="study_source" class="control-label col-xs-12 col-sm-3">Study Source: </label>
                         <div class="col-xs-12 col-sm-9">
-                            <select class="form-control input-sm" id="study_source" ng-model="trialNciView.curTrial.study_source_id" ng-options="studySource.id as studySource.name for studySource in trialNciView.studySourceArr">
+                            <select  restriction-field class="form-control input-sm" id="study_source" ng-model="trialNciView.curTrial.study_source_id" ng-options="studySource.id as studySource.name for studySource in trialNciView.studySourceArr" required>
                                 <option value="">-Select a Study Source-</option>
                                 <option ng-repeat="studySource in trialNciView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
                             </select>
-
+                            <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.curTrial.study_source_id)">
+                                    Study Source is required
+                            </span>
                         </div>
                     </div>
                 </fieldset>
@@ -95,16 +93,16 @@
                 </fieldset>
 
                         <!-- first form-group -->
-                <fieldset class="sub-bordered" restriction-field>
+                <fieldset class="sub-bordered" restriction-field  ng-if="trialNciView.isSponsorNci">
                     <legend class="sub-bordered">Send Trial Information to ClinicalTrials.gov:</legend>
                         <div class="form-group">
                                 <label for="send_trial_flag" class="control-label col-xs-12 col-sm-6">Send Trial Information to ClinicalTrials.gov?</label>
                                 <div class="col-xs-12 col-sm-3">
                                     <label class="radio-inline">
-                                        <input type="radio" name="send_trial_flag" ng-model="trialNciView.curTrial.send_trial_flag" value="No"> No
+                                        <input type="radio" name="send_trial_flag" ng-model="trialNciView.curTrial.send_trial_flag" value="No" ng_disabled="trialNciView.disable_send_trial"> No
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="send_trial_flag" ng-model="trialNciView.curTrial.send_trial_flag" value="Yes"> Yes
+                                        <input type="radio" name="send_trial_flag" ng-model="trialNciView.curTrial.send_trial_flag" value="Yes" ng_disabled="trialNciView.disable_send_trial"> Yes
                                     </label>
                                 </div>
                         </div>
@@ -120,7 +118,7 @@
                         <!-- second row in the form -->
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <textarea class="form-control" name="processing_comment" id="trial_processing_comment" rows="5" ng-model="trialNciView.curTrial.process_comment"></textarea>
+                                <textarea class="form-control" name="nci_specific_comment" id="trial_nci_specific_comment" rows="5" ng-model="trialNciView.curTrial.nci_specific_comment"></textarea>
                             </div>
                         </div>
                         <!-- end of second row -->

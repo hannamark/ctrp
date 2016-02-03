@@ -47,7 +47,6 @@
 #  check_in_comment              :text
 #  process_priority              :string(255)
 #  process_comment               :text
-#  receive_email                 :boolean
 #  xml_required                  :string(255)
 #  acronym                       :string(255)
 #  keywords                      :text
@@ -75,7 +74,6 @@
 #  gender_id                     :integer
 #  min_age_unit_id               :integer
 #  max_age_unit_id               :integer
-#  anatomic_site_id              :integer
 #  num_of_arms                   :integer
 #  verification_date             :date
 #  sampling_method               :string(255)
@@ -91,17 +89,20 @@
 #  study_model_id                :integer
 #  time_perspective_id           :integer
 #  biospecimen_retention_id      :integer
+#  biospecimen_desc              :text
+#  internal_source_id            :integer
+#  nci_specific_comment          :text
 #
 # Indexes
 #
 #  index_trials_on_accrual_disease_term_id   (accrual_disease_term_id)
 #  index_trials_on_allocation_id             (allocation_id)
-#  index_trials_on_anatomic_site_id          (anatomic_site_id)
 #  index_trials_on_assigned_to_id            (assigned_to_id)
 #  index_trials_on_biospecimen_retention_id  (biospecimen_retention_id)
 #  index_trials_on_board_affiliation_id      (board_affiliation_id)
 #  index_trials_on_board_approval_status_id  (board_approval_status_id)
 #  index_trials_on_gender_id                 (gender_id)
+#  index_trials_on_internal_source_id        (internal_source_id)
 #  index_trials_on_intervention_model_id     (intervention_model_id)
 #  index_trials_on_investigator_aff_id       (investigator_aff_id)
 #  index_trials_on_investigator_id           (investigator_id)
@@ -163,10 +164,10 @@ class Trial < ActiveRecord::Base
   belongs_to :gender
   belongs_to :min_age_unit, class_name: "AgeUnit"
   belongs_to :max_age_unit, class_name: "AgeUnit"
-  belongs_to :anatomic_site
   belongs_to :study_model
   belongs_to :time_perspective
   belongs_to :biospecimen_retention
+  belongs_to :internal_source
   has_many :submissions, -> { order 'submissions.id' }
   has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
   has_many :onholds, -> { order 'onholds.id' }
@@ -188,6 +189,7 @@ class Trial < ActiveRecord::Base
   has_many :collaborators, -> { order 'collaborators.id' }
   has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
   has_many :users, through: :trial_ownerships
+  has_many :anatomic_site_wrappers, -> { order 'anatomic_site_wrappers.id' }
 
   attr_accessor :edit_type
   attr_accessor :current_user
@@ -203,6 +205,9 @@ class Trial < ActiveRecord::Base
 
   accepts_nested_attributes_for :central_contacts, allow_destroy: true
   accepts_nested_attributes_for :alternate_titles, allow_destroy: true
+  accepts_nested_attributes_for :collaborators, allow_destroy: true
+  accepts_nested_attributes_for :outcome_measures, allow_destroy: true
+  accepts_nested_attributes_for :other_criteria, allow_destroy: true
 
   # Array of actions can be taken on this Trial
   def actions
@@ -216,46 +221,49 @@ class Trial < ActiveRecord::Base
   end
 
   validates :lead_protocol_id, presence: true
-  validates :official_title, presence: true, if: 'is_draft == false'
-  validates :phase, presence: true, if: 'is_draft == false'
-  validates :pilot, presence: true, if: 'is_draft == false'
-  validates :research_category, presence: true, if: 'is_draft == false'
-  validates :primary_purpose, presence: true, if: 'is_draft == false'
-  validates :accrual_disease_term, presence: true, if: 'is_draft == false'
-  validates :lead_org, presence: true, if: 'is_draft == false'
-  validates :pi, presence: true, if: 'is_draft == false'
-  validates :sponsor, presence: true, if: 'is_draft == false'
-  validates :grant_question, presence: true, if: 'is_draft == false'
-  validates :ind_ide_question, presence: true, if: 'is_draft == false'
-  validates :start_date, presence: true, if: 'is_draft == false'
-  validates :start_date_qual, presence: true, if: 'is_draft == false'
-  validates :primary_comp_date, presence: true, if: 'is_draft == false'
-  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false'
-  validates :comp_date, presence: true, if: 'is_draft == false'
-  validates :comp_date_qual, presence: true, if: 'is_draft == false'
+  validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :phase, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :research_category, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :primary_purpose, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :accrual_disease_term, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :lead_org, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :pi, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :sponsor, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :grant_question, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :ind_ide_question, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :start_date, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :start_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :primary_comp_date, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
 
-  before_save :generate_status
   before_create :save_history
+  before_create :save_internal_source
+  before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
 
+  def is_sponsor_nci?
+    return (!self.sponsor.nil? && self.sponsor.name == "National Cancer Institute") ? true:false
+  end
+
+  def is_lead_org_nci_ccr?
+    return (!self.lead_org.nil? &&  self.lead_org.name == "NCI - Center for Cancer Research") ? true:false
+  end
 
   def set_send_trial_info_flag
     send_trial_flag = false
 
     #And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
-    if !self.sponsor.nil? && self.sponsor.name == "National Cancer Institute"
-      send_trial_flag = true
-    else
-      return false
-    end
+    #send_trial_flag = is_sponsor_nci?
+    #return if !send_trial_flag
 
-    # And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
-    if self.lead_org != "NCI - Center for Cancer Research"
-      send_trial_flag = true
-    else
-      return false
-    end
+    # And Trial Lead Organization is "NCI - Center for Cancer Research"|trials.lead_org_id Organizations.name = "NCI - Center for Cancer Research"|
+    #send_trial_flag = is_lead_org_nci_ccr?
+    #return if !send_trial_flag
+
     latest_processing_status = processing_status_wrappers.empty? ? nil:processing_status_wrappers.last.processing_status.name
     if latest_processing_status.nil?
       return false
@@ -298,6 +306,19 @@ class Trial < ActiveRecord::Base
 
   private
 
+  def save_history
+    history = {lead_org: self.lead_org, pi: self.pi}
+    self.history = history.to_json
+  end
+
+  def save_internal_source
+    if self.edit_type == 'import'
+      self.internal_source = InternalSource.find_by_code('CTGI')
+    else
+      self.internal_source = InternalSource.find_by_code('CTRP')
+    end
+  end
+
   def generate_status
     if !self.is_draft && self.nci_id.nil?
       # Generate NCI ID
@@ -311,8 +332,13 @@ class Trial < ActiveRecord::Base
       self.nci_id = new_id
 
       # New Submission
-      ori = SubmissionType.find_by_code('ORI')
-      newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori)
+      if self.edit_type != 'import'
+        ori = SubmissionType.find_by_code('ORI')
+        reg = SubmissionMethod.find_by_code('REG')
+        newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_method: reg)
+      else
+        newSubmission = self.submissions.last
+      end
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
@@ -325,15 +351,18 @@ class Trial < ActiveRecord::Base
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       new_sub_number = largest_sub_num.present? ? largest_sub_num + 1 : 1
       upd = SubmissionType.find_by_code('UPD')
-      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, user: self.current_user, submission_type: upd)
+      reg = SubmissionMethod.find_by_code('REG')
+      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, user: self.current_user, submission_type: upd, submission_method: reg)
     elsif self.edit_type == 'amend'
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       amd = SubmissionType.find_by_code('AMD')
+      reg = SubmissionMethod.find_by_code('REG')
       latest_submission = self.submissions.last
       latest_submission.submission_num = largest_sub_num.present? ? largest_sub_num + 1 : 1
       latest_submission.user = self.current_user
       latest_submission.submission_type = amd
+      latest_submission.submission_method = reg
 
       srd = Milestone.find_by_code('SRD')
       MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
@@ -343,20 +372,15 @@ class Trial < ActiveRecord::Base
     end
   end
 
-  def create_ownership
-    # New Trial Ownership
-    TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
-  end
-
-  def save_history
-    history = {lead_org: self.lead_org, pi: self.pi}
-    self.history = history.to_json
-  end
-
   def check_indicator
     if self.intervention_indicator == 'No' && self.sec801_indicator != 'No'
       self.sec801_indicator = 'No'
     end
+  end
+
+  def create_ownership
+    # New Trial Ownership
+    TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
   end
 
   #scopes for search API

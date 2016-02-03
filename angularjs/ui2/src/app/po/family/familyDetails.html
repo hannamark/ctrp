@@ -69,16 +69,20 @@
 
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Add Family Membership:</label>
-                   <div class="col-xs-12 col-sm-9">
+                    <div class="col-xs-12 col-sm-9">
                        <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="familyDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
-
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-2"></div>
+                    <div class="col-xs-12 col-sm-9">
                        <!--<button class="btn btn-primary" ng-click="familyDetailView.searchOrgsForAffiliation('lg')">
                            <i class="glyphicon glyphicon-search"></i> Search Organizations
                        </button>
                        <button class="btn btn-danger" ng-click="familyDetailView.batchSelect('removeAll')" ng-show="familyDetailView.savedSelection.length > 0">
                            <i class="glyphicon glyphicon-remove"></i> Remove All Family Members
                        </button> -->
-                       <div class="row animated-item top-offset-tiny table-responsive" ng-show="familyDetailView.savedSelection.length > 0">
+                       <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid" ng-show="familyDetailView.savedSelection.length > 0">
                            <input type="text" ng-model="familyDetailView.selectedOrgFilter" restriction-field class="form-control input-sm" placeholder="Filter selected organizations"/>
                            <table class="table table-bordered table-striped table-condensed">
                                <thead>
@@ -112,7 +116,7 @@
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.effective_date" is-open="org.opened_effective"
                                                   datepicker-options="familyDetailView.dateOptions"
-                                                  ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
+                                                  ng-required="false" close-text="Close" ng-disabled="org._destroy" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" readonly />
                                            <span class="input-group-btn">
                                                <button tabindex="26" type="button" restriction-field class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
                                                    <i class="glyphicon glyphicon-calendar"></i>
@@ -126,7 +130,7 @@
                                                   datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                   datepicker-options="familyDetailView.dateOptions"
-                                                  ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
+                                                  ng-required="false" close-text="Close" ng-disabled="org._destroy" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" readonly />
                                            <span class="input-group-btn">
                                                <button tabindex="28" type="button" restriction-field class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
                                                    <i class="glyphicon glyphicon-calendar"></i>
@@ -144,6 +148,7 @@
                            </table>
                        </div>
                    </div>
+                   <div class="col-xs-12 col-sm-1"></div>
                </div>
 
                 <div class="form-group no-bottom-margin">

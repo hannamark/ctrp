@@ -7,8 +7,9 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :created_at, :updated_at, :created_by, :updated_by, :study_source, :lead_org, :pi, :sponsor,
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
-              :actions, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment,
-              :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts
+              :actions, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
+              :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
+              :board_approval_num, :board_approval_status_id
 
 json.trial_status_wrappers do
   json.array!(@trial.trial_status_wrappers) do |status|
@@ -21,6 +22,30 @@ json.trial_documents do
     json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at
   end
 end
+
+json.collaborators do
+  json.array!(@trial.collaborators) do |collaborator|
+    json.extract! collaborator, :organization_id, :org_name
+  end
+end
+
+json.participating_sites_list do
+  json.array!(@trial.participating_sites) do |participating_site|
+    json.po_id participating_site.organization.id
+    json.po_name participating_site.organization.name
+    json.investigator participating_site.person.lname
+    json.primary_contact participating_site.contact_name
+    latest_site_rec_status = participating_site.site_rec_status_wrappers.blank? ? nil:participating_site.site_rec_status_wrappers.last
+    unless latest_site_rec_status.nil?
+      json.site_recruitment_status latest_site_rec_status.site_recruitment_status.name
+      json.site_recruitment_status_date latest_site_rec_status.status_date
+    else
+      json.site_recruitment_status ""
+      json.site_recruitment_status_date ""
+    end
+  end
+end
+
 
 ## append the protocol_id_origin.name
 unless @trial.other_ids.empty?
@@ -66,15 +91,21 @@ json.submitter submitter.nil? ? '' : submitter.username
 ## get the submitter's organization name
 json.submitters_organization submitter.nil? ? '' : (submitter.organization.nil? ? '' : submitter.organization.name)
 
-#@trial.submissions.empty? ? '' : (@trial.submissions.last.user_id.nil? ? '' : @trial.submissions.last.user.prs_organization_name) # Organization.find(@trial.submissions.last.user.organization_id)
+## @trial.board_affiliation_id = 24068
+
+json.board_affiliated_org @trial.board_affiliation_id.nil? ? nil : @trial.board_affiliation
 
 json.last_submission_source @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_source_id.nil? ? '' : SubmissionSource.find(@trial.submissions.last.submission_source_id))
+
+#json.sponsor_nci @trial.is_sponsor_nci?
 
 send_trial_flag = @trial.set_send_trial_info_flag
 
 json.send_trial_flag send_trial_flag ? "Yes":"No"
 
 json.pa_editable @trial.pa_editable_check
+
+json.internal_source @trial.internal_source_id.nil? ? nil : @trial.internal_source
 
 #json.admin_checkout @trial.admin_checkout
 

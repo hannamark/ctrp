@@ -19,7 +19,6 @@
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
-        vm.accordions = [true, true, true, true, true, true, true, true, true, true, true, true];
         vm.collapsed = false;
         vm.studySourceCode = studySourceCode.toUpperCase();
         vm.isExp = false;
@@ -705,11 +704,17 @@
 
         activate();
 
+        /*
+            Moving these variable definitions after activate() has been invoked. 
+            isOpenByDefault value is only important for accordion groups that do not have any writeable fields when edit_type === 'update'
+        */
+        vm.isOpenByDefault =  vm.curTrial.new || vm.curTrial.edit_type === 'amend';
+        vm.accordions = [true, true, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, true, true, true, true, vm.isOpenByDefault, true];
+
         /****************** implementations below ***************/
         function activate() {
             appendNewTrialFlag();
             getExpFlag();
-            adjustProtocolIdOriginArr();
             adjustTrialStatusArr();
 
             if (vm.curTrial.new) {
@@ -758,16 +763,6 @@
             } else {
                 if (vm.curTrial.study_source && vm.curTrial.study_source.code == 'EXP') {
                     vm.isExp = true;
-                }
-            }
-        }
-
-        function adjustProtocolIdOriginArr() {
-            for (var i = vm.protocolIdOriginArr.length - 1; i >= 0; i--) {
-                if (vm.protocolIdOriginArr[i].code === 'CTEP' || vm.protocolIdOriginArr[i].code === 'DCP'
-                    || vm.protocolIdOriginArr[i].code === 'CCR' || vm.protocolIdOriginArr[i].code === 'DNCI'
-                    || vm.protocolIdOriginArr[i].code === 'CDR') {
-                    vm.protocolIdOriginArr.splice(i, 1);
                 }
             }
         }

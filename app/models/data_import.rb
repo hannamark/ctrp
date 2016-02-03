@@ -119,7 +119,10 @@ class DataImport
         trial.sec801_indicator = trial_spreadsheet.cell(row,'CN') == "YES" ? "Yes" : "No"
         trial.data_monitor_indicator = trial_spreadsheet.cell(row,'V') == "YES" ? "Yes" : "No"
         # Sponsor
-        trial.sponsor = Organization.all[rand(0..13)]
+        trial.sponsor = Organization.all[rand(0..total_organizations-1)]
+        # Internal Source
+        trial.internal_source = InternalSource.all[rand(0..(InternalSource.all.size-1))]
+        #Responsible party
         resp_party = trial_spreadsheet.cell(row,'CJ')
         responsible_party = ResponsibleParty.find_by_code(resp_party)
         if resp_party.present? && responsible_party.blank?
@@ -127,12 +130,14 @@ class DataImport
         else
           trial.responsible_party = responsible_party
         end
+
         trial.ind_ide_question = "Yes"
+        trial.pilot = "Yes"
+
         # randomly assign the rest of the data
         trial.lead_protocol_id = "CTRP_01_" + start_lead_protocol_post_fix.to_s
         start_lead_protocol_post_fix = start_lead_protocol_post_fix + 1
         trial.lead_org = Organization.all[rand(0..total_organizations-1)]
-        trial.pilot = "Yes"
         trial.pi = Person.all[rand(0..total_persons-1)]
         trial.investigator = Person.all[rand(0..total_persons-1)]
 
@@ -145,24 +150,25 @@ class DataImport
         trial_owner.user = trial_submitters[rand(0..2)]
         trial.trial_ownerships << trial_owner
 
+        #Assign random collaborators
+        c1 = Collaborator.new
+        c1.organization = Organization.all[rand(0..total_organizations-1)]
+        c1.org_name = c1.organization.name
+        c2 = Collaborator.new
+        c2.organization = Organization.all[rand(0..total_organizations-1)]
+        c2.org_name = c2.organization.name
+        trial.collaborators << c1
+        trial.collaborators << c2
         trial.save!
       end
     rescue Exception => e
       puts "Exception thrown while reading Trial spreadsheet #{e.inspect}"
     end
-=begin
-And I am on the NCI Specific Information screen
-And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
-And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
-And the Trial processing status is �Verification Pending�, "Abstracted", "No Response�, or �Abstracted, Response�
-And the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�
-And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
-When I select the radio button for Yes or No for �Send Trial Information to ClinicalTrials.gov?�
-Then the selected value for �Send Trial Information to ClinicalTrials.gov?� will be Yes or No
-=end
-    #t = Trial.all.last
-    #t.sponsor = Organization.find_by_name("National Cancer Institute")
-    #t.lead_org = Organization.f
+    # Massaging data for PAA F02, Scenario 7
+    t = Trial.first
+    t.sponsor = Organization.find_by_name("National Cancer Institute")
+    t.lead_org = Organization.find_by_name("NCI - Center for Cancer Research")
+    t.save!
 
   end
 
@@ -227,8 +233,21 @@ Then the selected value for �Send Trial Information to ClinicalTrials.gov?� 
         next
       end
       ps.trial = trial
-      ps.organization =  Organization.all[rand(0..13)]
-      ps.person = Person.all[rand(0..11)]
+      # Site recruitment data
+      srs = SiteRecStatusWrapper.new
+      srs.participating_site = ps
+      site_recruitment_status = spreadsheet.cell(row,'I')
+      #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
+      site_recruitment_status.gsub! "_", " "
+      #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
+      x = SiteRecruitmentStatus.where("lower(name) = ?", site_recruitment_status.downcase).first
+      #puts "x = #{x.inspect}"
+      srs.site_recruitment_status = x
+      srs.status_date =  spreadsheet.cell(row,'J')
+      ps.site_rec_status_wrappers <<  srs
+      #Organization and Person
+      ps.organization =  Organization.all[rand(0..(Organization.all.size-1))]
+      ps.person = Person.all[rand(0..(Person.all.size-1))]
       trial.participating_sites << ps
       trial.save!
     end

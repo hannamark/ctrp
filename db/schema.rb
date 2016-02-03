@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121193947) do
+ActiveRecord::Schema.define(version: 20160202202501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,18 @@ ActiveRecord::Schema.define(version: 20160121193947) do
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
   end
+
+  create_table "anatomic_site_wrappers", force: :cascade do |t|
+    t.integer  "anatomic_site_id"
+    t.integer  "trial_id"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "uuid",             limit: 255
+    t.integer  "lock_version",                 default: 0
+  end
+
+  add_index "anatomic_site_wrappers", ["anatomic_site_id"], name: "index_anatomic_site_wrappers_on_anatomic_site_id", using: :btree
+  add_index "anatomic_site_wrappers", ["trial_id"], name: "index_anatomic_site_wrappers_on_trial_id", using: :btree
 
   create_table "anatomic_sites", force: :cascade do |t|
     t.string   "code",         limit: 255
@@ -169,7 +181,6 @@ ActiveRecord::Schema.define(version: 20160121193947) do
   end
 
   create_table "central_contacts", force: :cascade do |t|
-    t.string   "country",                 limit: 255
     t.string   "phone",                   limit: 255
     t.string   "email",                   limit: 255
     t.integer  "central_contact_type_id"
@@ -233,12 +244,12 @@ ActiveRecord::Schema.define(version: 20160121193947) do
     t.string   "thesaurus_id",     limit: 255
     t.string   "display_name",     limit: 255
     t.string   "parent_preferred", limit: 255
-    t.string   "in_xml",           limit: 255
     t.integer  "trial_id"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
     t.string   "uuid",             limit: 255
     t.integer  "lock_version",                 default: 0
+    t.string   "rank",             limit: 255
   end
 
   add_index "diseases", ["trial_id"], name: "index_diseases_on_trial_id", using: :btree
@@ -378,6 +389,15 @@ ActiveRecord::Schema.define(version: 20160121193947) do
   add_index "ind_ides", ["expanded_access_type_id"], name: "index_ind_ides_on_expanded_access_type_id", using: :btree
   add_index "ind_ides", ["holder_type_id"], name: "index_ind_ides_on_holder_type_id", using: :btree
   add_index "ind_ides", ["trial_id"], name: "index_ind_ides_on_trial_id", using: :btree
+
+  create_table "internal_sources", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
 
   create_table "intervention_models", force: :cascade do |t|
     t.string   "code",         limit: 255
@@ -544,16 +564,12 @@ ActiveRecord::Schema.define(version: 20160121193947) do
 
   create_table "other_criteria", force: :cascade do |t|
     t.string   "criteria_type", limit: 255
-    t.string   "criteria_desc", limit: 255
-    t.text     "criteria_name"
-    t.string   "operator",      limit: 255
-    t.string   "value",         limit: 255
-    t.string   "unit",          limit: 255
     t.integer  "trial_id"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.string   "uuid",          limit: 255
     t.integer  "lock_version",              default: 0
+    t.text     "criteria_desc"
   end
 
   add_index "other_criteria", ["trial_id"], name: "index_other_criteria_on_trial_id", using: :btree
@@ -850,7 +866,7 @@ ActiveRecord::Schema.define(version: 20160121193947) do
   end
 
   create_table "sub_groups", force: :cascade do |t|
-    t.string   "code",         limit: 255
+    t.string   "label",        limit: 255
     t.text     "description"
     t.integer  "trial_id"
     t.datetime "created_at",                           null: false
@@ -1068,7 +1084,6 @@ ActiveRecord::Schema.define(version: 20160121193947) do
     t.text     "check_in_comment"
     t.string   "process_priority",              limit: 255
     t.text     "process_comment"
-    t.boolean  "receive_email"
     t.string   "xml_required",                  limit: 255
     t.string   "acronym",                       limit: 255
     t.text     "keywords"
@@ -1096,7 +1111,6 @@ ActiveRecord::Schema.define(version: 20160121193947) do
     t.integer  "gender_id"
     t.integer  "min_age_unit_id"
     t.integer  "max_age_unit_id"
-    t.integer  "anatomic_site_id"
     t.integer  "num_of_arms"
     t.date     "verification_date"
     t.string   "sampling_method",               limit: 255
@@ -1112,16 +1126,19 @@ ActiveRecord::Schema.define(version: 20160121193947) do
     t.integer  "study_model_id"
     t.integer  "time_perspective_id"
     t.integer  "biospecimen_retention_id"
+    t.text     "biospecimen_desc"
+    t.integer  "internal_source_id"
+    t.text     "nci_specific_comment"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
   add_index "trials", ["allocation_id"], name: "index_trials_on_allocation_id", using: :btree
-  add_index "trials", ["anatomic_site_id"], name: "index_trials_on_anatomic_site_id", using: :btree
   add_index "trials", ["assigned_to_id"], name: "index_trials_on_assigned_to_id", using: :btree
   add_index "trials", ["biospecimen_retention_id"], name: "index_trials_on_biospecimen_retention_id", using: :btree
   add_index "trials", ["board_affiliation_id"], name: "index_trials_on_board_affiliation_id", using: :btree
   add_index "trials", ["board_approval_status_id"], name: "index_trials_on_board_approval_status_id", using: :btree
   add_index "trials", ["gender_id"], name: "index_trials_on_gender_id", using: :btree
+  add_index "trials", ["internal_source_id"], name: "index_trials_on_internal_source_id", using: :btree
   add_index "trials", ["intervention_model_id"], name: "index_trials_on_intervention_model_id", using: :btree
   add_index "trials", ["investigator_aff_id"], name: "index_trials_on_investigator_aff_id", using: :btree
   add_index "trials", ["investigator_id"], name: "index_trials_on_investigator_id", using: :btree
@@ -1198,6 +1215,8 @@ ActiveRecord::Schema.define(version: 20160121193947) do
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
   add_foreign_key "alternate_titles", "trials"
+  add_foreign_key "anatomic_site_wrappers", "anatomic_sites"
+  add_foreign_key "anatomic_site_wrappers", "trials"
   add_foreign_key "arms_groups", "interventions"
   add_foreign_key "arms_groups", "trials"
   add_foreign_key "associated_trials", "identifier_types"
@@ -1277,10 +1296,10 @@ ActiveRecord::Schema.define(version: 20160121193947) do
   add_foreign_key "trials", "age_units", column: "max_age_unit_id"
   add_foreign_key "trials", "age_units", column: "min_age_unit_id"
   add_foreign_key "trials", "allocations"
-  add_foreign_key "trials", "anatomic_sites"
   add_foreign_key "trials", "biospecimen_retentions"
   add_foreign_key "trials", "board_approval_statuses"
   add_foreign_key "trials", "genders"
+  add_foreign_key "trials", "internal_sources"
   add_foreign_key "trials", "intervention_models"
   add_foreign_key "trials", "maskings"
   add_foreign_key "trials", "organizations", column: "board_affiliation_id"
@@ -1305,6 +1324,7 @@ ActiveRecord::Schema.define(version: 20160121193947) do
   create_sequence "allocations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "alternate_titles_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "amendment_reasons_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "anatomic_site_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "anatomic_sites_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "app_settings_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "arms_groups_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1332,6 +1352,7 @@ ActiveRecord::Schema.define(version: 20160121193947) do
   create_sequence "holder_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "identifier_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ind_ides_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "internal_sources_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "intervention_models_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "intervention_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

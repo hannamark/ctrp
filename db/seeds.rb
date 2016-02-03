@@ -1,3 +1,5 @@
+#SEEDS for all environments
+
 require 'rubygems'
 require 'roo'
 # This file should contain all the record creation needed to seed the database with its default values.
@@ -23,6 +25,8 @@ SourceStatus.find_or_create_by(code: 'INACT', name: 'InActive')
 SourceStatus.find_or_create_by(code: 'NULLIFIED', name: 'Nullified')
 FamilyRelationship.find_or_create_by(code: 'ORG', name: 'Organizational')
 FamilyRelationship.find_or_create_by(code: 'AFF', name: 'Affiliation')
+InternalSource.find_or_create_by(code: 'CTGI', name: 'ClinicalTrials.gov Import')
+InternalSource.find_or_create_by(code: 'CTRP', name: 'CTRP')
 
 source_act = SourceStatus.find_by_code("ACT")
 source_pend = SourceStatus.find_by_code("PEND")
@@ -130,6 +134,7 @@ TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
 
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
+ResearchCategory.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 ResearchCategory.find_or_create_by(code: 'ANC', name: 'Ancillary Correlative')
 
 ProcessingStatus.find_or_create_by(code: 'SUB', name: 'Submitted')
@@ -209,6 +214,36 @@ StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dyna
 StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
 StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
 
+OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
+OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
+OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
+
+Allocation.find_or_create_by(code: 'NA', name: 'NA')
+Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Control Trial')
+Allocation.find_or_create_by(code: 'NRT', name: 'Non-Randomized Trial')
+
+InterventionModel.find_or_create_by(code: 'SG', name: 'Single Group')
+InterventionModel.find_or_create_by(code: 'PL', name: 'Parallel')
+InterventionModel.find_or_create_by(code: 'CO', name: 'Cross-Over')
+InterventionModel.find_or_create_by(code: 'FT', name: 'Factorial')
+
+Masking.find_or_create_by(code: 'OP', name: 'Open')
+Masking.find_or_create_by(code: 'SB', name: 'Single Blind')
+Masking.find_or_create_by(code: 'DB', name: 'Double Blind')
+
+AgeUnit.find_or_create_by(code: 'YR', name: 'Year')
+AgeUnit.find_or_create_by(code: 'YRS', name: 'Years')
+AgeUnit.find_or_create_by(code: 'MO', name: 'Month')
+AgeUnit.find_or_create_by(code: 'MOS', name: 'Months')
+AgeUnit.find_or_create_by(code: 'WK', name: 'Week')
+AgeUnit.find_or_create_by(code: 'WKS', name: 'Weeks')
+AgeUnit.find_or_create_by(code: 'DY', name: 'Day')
+AgeUnit.find_or_create_by(code: 'DYS', name: 'Days')
+AgeUnit.find_or_create_by(code: 'HR', name: 'Hour')
+AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
+AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
+AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -219,11 +254,7 @@ AppSetting.find_or_create_by(code: 'IC', name: 'Institute Code List', value: 'se
 
 AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List', value: 'see big value', big_value: 'CCR,CCT/CTB,CIP,CDP,CTEP,DCB,DCCPS,DCEG,DCP,DEA,DTP,OD,OSB/SPOREs,TRP,RRP,N/A')
 
-AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', description: 'Message for login page if needed.', value: 'see big value', big_value: 'This is the CI tier at CBIIT')
-
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
-
-AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'S8', big_value: '')
 
 AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,zip,gz', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/zip, application/x-gzip')
 
@@ -392,6 +423,8 @@ trial_status_transition = '{
 
 AppSetting.find_or_create_by(code: 'TRIAL_STATUS_TRANSITION', name: 'Trial Status Transition Matrix', value: 'see big value', big_value: trial_status_transition)
 
+AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
+
 ########## SEEDING APP SETTINGS ENDS ##########
 if Organization.all.size == 0
 
@@ -441,6 +474,8 @@ if Organization.all.size == 0
   org23 = Organization.find_or_create_by(id: 33699872, source_id: 'NVRF', name: 'Nevada Cancer Research Foundation CCOP', phone:'702-541-1815', source_status: source_act, source_context: ctrp,  email: "rludlum@lasvegashealth.com",  address: '1 Rancho Drive', city: 'Las Vegas', state_province:'Nevada', country:usa, postal_code:"926344")
   org24 = Organization.find_or_create_by(id: 8149074, source_id: 'WA002', name: 'Harborview Medical Center', phone:'865-541-1816', source_status: source_act, source_context: ctrp, email: "dbrown@seattlehealth.com", address: '23 Wheeling Drive', city: 'Seattle', state_province:'Washington', country:usa, postal_code:"123683") #no source id
 
+  org25 = Organization.find_or_create_by(id: 23170023,  name: 'National Cancer Institute', phone:'301-555-0000', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '9609 Medical Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20850") #no source id
+  org26 = Organization.find_or_create_by(id: 16108126,  name: 'NCI - Center for Cancer Research', phone:'301-496-4365', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '31 Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20892") #no source id
 
   family1 = Family.create(name: 'Masonic Cancer Center')
   if !family1.new_record?
@@ -537,6 +572,14 @@ contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
 contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
 contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
 
+
+## Board Approval Statuses
+approval_status2 = BoardApprovalStatus.find_or_create_by(code: 'SUBPENDING', name: 'Submitted, pending')
+approval_status3 = BoardApprovalStatus.find_or_create_by(code: 'SUBAPPROVED', name: 'Submitted, approved')
+approval_status4 = BoardApprovalStatus.find_or_create_by(code: 'SUBEXEMPT', name: 'Submitted, exempt')
+approval_status5 = BoardApprovalStatus.find_or_create_by(code: 'SUBDENIED', name: 'Submitted, denied')
+approval_status6 = BoardApprovalStatus.find_or_create_by(code: 'SUBUNREQUIRED', name: 'Submission not required')
+
 total_orgs = Organization.all.size
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
@@ -558,8 +601,9 @@ test_users.each do |u|
   unless user.blank?
     user.role = u["role"]
     user.approved =  u["approve"]
-
-
+    unless u["username"] == "ctrpsuper" ||  u["username"] == "ctrpadmin"
+      user.organization = Organization.all[rand(0..total_orgs-1)]
+    end
     user.save!
     #puts "Updated role of user = #{user.username}, role = #{user.role}"
   end
@@ -577,7 +621,7 @@ tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" =
 shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shenpei", "last_name" => "Wu" }
 sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sarada", "last_name" => "Chintala" }
 hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Hemant", "last_name" => "Undale" }
-radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
+radhika = {"email" => "tekumall@nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
 
 ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika]
 
@@ -626,3 +670,7 @@ if Trial.all.size == 0
   puts "Parsing Participating Sites Spreadsheet"
   DataImport.import_participating_sites
 end
+
+
+#Line to include seeds from passed environment variable
+load(Rails.root.join( 'db', 'seeds', "#{Rails.env.downcase}.rb"))

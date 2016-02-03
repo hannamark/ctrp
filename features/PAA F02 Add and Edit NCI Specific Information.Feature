@@ -39,7 +39,7 @@ Then the selected value(s) for NIH/NCI Division/Department Identifier will be as
 Scenario: #6 I can view and edit the values for NIH/NCI Division/Department Identifier
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
-And see the value for NIH/NCI Division/Department Identifier
+And see the value for NIH/NCI Program Id
 When I select one or more values from the for the NIH/NCI Program Identifier (BIQSFP, SPORE, Steering Committee Reviewed)
 Then the selected value(s) for NIH/NCI Program Identifier will be associated with the trial
 
@@ -48,7 +48,7 @@ Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
 And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
 And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
-And the Trial processing status is �Verification Pending�, "Abstracted", "No Response�, or �Abstracted, Response� 
+And the Trial processing status is �Verification Pending�, "Abstracted", "Abstraction Verified No Response�, or �Abstraction Verified Response� 
 And the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�  
 And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
 When I select the radio button for Yes or No for �Send Trial Information to ClinicalTrials.gov?� 
@@ -63,47 +63,55 @@ Then the information entered for Comments will be associated with the trial
 Scenario: #9 Save NCI Specific Information
 Given I have selected a trial to abstract 
 And I am on the NCI Specific Information screen
-When select save 
+When select save NCI Specific Information
 Then the information entered or edited on the NCI Specific Information screen will be saved to the trial record
 
 Scenario: #10 Cancel NCI Specific Information 
 Given I have selected a trial to abstract 
 And I am on the NCI Specific Information screen
-When I select Reset
+When I select Reset NCI Specific Information
 Then the information entered or edited on the NCI Specific Information screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
 
-Scenario Outline: #11 I cannot view the �Send Trial Information to ClinicalTrials.gov?�
+Scenario Outline: #11 I cannot change the �Send Trial Information to ClinicalTrials.gov? - greyed out
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
-When the follow <conditions> exist
+When the following <conditions> exist
+Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not greyed out and not editable
+
+|<Conditions>|<Field>|
+|Trial is sponsored by "National Cancer Institute" |trials.sponsor_id Organizations.name = "National Cancer Institute"|
+|Trial Lead Organization is "NCI - Center for Cancer Research"|trials.lead_org_id Organizations.name = "NCI - Center for Cancer Research"|
+|Trial processing status is not "Verification Pending"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Verification Pending"|
+|Trial processing status is not "Abstracted"| processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstracted"|
+|Trial processing status is not "Abstraction Verified Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = Abstraction Verified Response"|
+|Trial processing status is not "Abstraction Verified No Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstraction Verified No Response"|
+|Trial Overall Status is �Complete�|trial_status_wrappers.trial_status_id trial_statuses.name = "Complete"|
+|Trial Overall Status is �Administratively Complete�|trial_status_wrappers.trial_status_id trial_statuses.name = "Administratively Complete"|
+|Trial Overall Status is �Terminated�| trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
+|Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
+
+ @runthis
+Scenario: #11a I cannot view the �Send Trial Information to ClinicalTrials.gov?�
+Given I am logged into the CTRP PA application
+And I am on the NCI Specific Information screen
+When the following <conditions> exist to send the trail to the ClinicalTrials.gov
+ |conditions|
+ |Trial is not sponsored by "National Cancer Institute"|
 Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not be visible
-
-Examples:
-
-|<Conditions>|
-|Trial is not sponsored by "National Cancer Institute" |
-|Trial Lead Organization is "NCI - Center for Cancer Research"|
-|Trial processing status is not �Verification Pending�|
-|Trial processing status is not "Abstracted| 
-|Trial processing status is not �No Response�|
-|Trial processing status is not �Abstracted, Response�|
-|Trial Overall Status is �Complete�|
-|Trial Overall Status is �Administratively Complete�|
-|Trial Overall Status is �Terminated�| 
-|Trial Research Category is not "Interventional"|
-
+|<Conditions>|<Field>|
+|Trial is not sponsored by "National Cancer Institute" |trials.sponsor_id Organizations.name not = "National Cancer Institute"|
 
 Scenario: #12 Study Source is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the NCI Specific Information screen 
-And I have not selected a Study Source            | 
-When I select Save
-Then a warning message will appear "Study Source is required”
+And I have not selected a Study Source
+When I select Save to verify Study Source is required
+Then an Error message will appear "Study Source is required”
 
 Scenario: #13 Funding Source is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the NCI Specific Information screen 
-And I have not selected a Funding Source            | 
-When I select Save
-Then a warning message will appear "Funding Source is required”
+And I have not selected a Funding Source
+When I select Save to verify Funding Source is required
+Then an Error message will appear "Funding Source is required”

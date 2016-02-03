@@ -47,7 +47,6 @@
 #  check_in_comment              :text
 #  process_priority              :string(255)
 #  process_comment               :text
-#  receive_email                 :boolean
 #  xml_required                  :string(255)
 #  acronym                       :string(255)
 #  keywords                      :text
@@ -75,7 +74,6 @@
 #  gender_id                     :integer
 #  min_age_unit_id               :integer
 #  max_age_unit_id               :integer
-#  anatomic_site_id              :integer
 #  num_of_arms                   :integer
 #  verification_date             :date
 #  sampling_method               :string(255)
@@ -91,17 +89,20 @@
 #  study_model_id                :integer
 #  time_perspective_id           :integer
 #  biospecimen_retention_id      :integer
+#  biospecimen_desc              :text
+#  internal_source_id            :integer
+#  nci_specific_comment          :text
 #
 # Indexes
 #
 #  index_trials_on_accrual_disease_term_id   (accrual_disease_term_id)
 #  index_trials_on_allocation_id             (allocation_id)
-#  index_trials_on_anatomic_site_id          (anatomic_site_id)
 #  index_trials_on_assigned_to_id            (assigned_to_id)
 #  index_trials_on_biospecimen_retention_id  (biospecimen_retention_id)
 #  index_trials_on_board_affiliation_id      (board_affiliation_id)
 #  index_trials_on_board_approval_status_id  (board_approval_status_id)
 #  index_trials_on_gender_id                 (gender_id)
+#  index_trials_on_internal_source_id        (internal_source_id)
 #  index_trials_on_intervention_model_id     (intervention_model_id)
 #  index_trials_on_investigator_aff_id       (investigator_aff_id)
 #  index_trials_on_investigator_id           (investigator_id)

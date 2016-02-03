@@ -35,6 +35,11 @@ config/initializers/secret_token.rb
 config/secrets.yml
 config/database.yml
 config/ldap.yml
+config/environments/ci.rb
+config/environments/qa.rb
+config/environments/demo.rb
+config/environments/stage.rb
+config/environments/production.rb
 ## Environment normalisation:
 /.bundle
 /vendor/bundle
@@ -65,6 +70,7 @@ config/ldap.yml
 robots.txt
 
 # Ignore Node and Bower packages
+/bower_components
 angularjs/ui2/node_modules/
 angularjs/ui2/src/bower_components/
 angularjs/ui2/.tmp

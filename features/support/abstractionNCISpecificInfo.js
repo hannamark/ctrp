@@ -30,7 +30,7 @@ var abstractionNCISpecificInfo = function(){
 
     //NCI Specific Information Page Objects
     this.nciSpecificStudySource = element(by.model('trialNciView.curTrial.study_source_id'));
-    this.nciSpecificSearchOrganisations = element(by.buttonText(' Search Organizations')); //by.id('org_search_modal')
+    this.nciSpecificSearchOrganisations = element(by.id('org_search_modal')); // by.buttonText(' Search Organizations')
     this.nciSpecificProgramCode = element(by.model('trialNciView.curTrial.program_code'));
     this.nciSpecificDepartmentIdentifier = element(by.model('trialNciView.curTrial.nih_nci_div'));
     this.nciSpecificProgramID = element(by.model('trialNciView.curTrial.nih_nci_prog'));
@@ -42,10 +42,101 @@ var abstractionNCISpecificInfo = function(){
     this.nciSpecificAdminBackToSearchResult = element(by.buttonText('↵ Back to Search Results↵ '));
 
     this.nciSpecificSave = element(by.buttonText('Save'));
-    this.nciSpecificReset = element(by.buttonText('↵ Reset↵ '));
+    this.nciSpecificReset = element(by.css('button[ng-click="trialNciView.reload()"]'));
+
+    this.nciSpecificStudySourceRequired = element(by.css('.help-block:nth-child(02)'));
+    this.nciSpecificFundingSourceRequired = element(by.css('.help-block:nth-child(03)'));
+
+    //Organization Search
+    this.orgSearchName = element(by.model('searchParams.name'));
+    this.orgSearchSearchAlias = element(by.model('searchParams.alias')); //by.id('alias_search')
+    this.orgSearchFamilyName = element(by.model('searchParams.family_name'));
+    this.orgSearchSourceStatus = element(by.css('p.form-control-static'));
+    this.orgSearchSourceID = element(by.model('searchParams.source_id'));
+    this.orgSearchSourceContext = element(by.binding('sourceContexts[0].name'));
+    this.orgSearchCity = element(by.model('searchParams.city'));
+    this.orgSearchPotalCode = element(by.model('searchParams.postal_code'));
+    this.orgSearchCountryList = element(by.model('searchParams.country'));
+    this.orgSearchPhone = element(by.model('searchParams.phone'));
+    this.orgSearchEmail = element(by.model('searchParams.email'));
+    this.orgSearchStateList = element(by.model('searchParams.state_province'));
+    this.orgSearchExactSearch = element(by.model('searchParams.wc_search'));
+    this.orgSearchClearButton = element(by.id('reset_btn'));
+    this.orgSearchSearchButton = element(by.id('submission_btn'));
+    this.orgSearchSelectItem = element(by.css('div[ng-click="selectButtonClick(row, $event)"]'));
+    this.orgSearchConfirmSelection = element(by.buttonText('Confirm Selection'));
+    this.orgSearchClose = element();
+
+    this.orgAddFundingSourceOrgA = element(by.css('.form-control.input-sm.animated-item')); // .css('input[value="Boston Medical Center"]')
+    this.orgAddFundingSourceBostonMed = element(by.css('.form-control.input-sm.animated-item'))
+    this.orgAddFundingSourceBostonUni = element(by.xpath('*//form/uib-accordion/div/div/div[2]/div/div[1]/fieldset[2]/div[3]/div[2]/input')); //element(by.css('input[value="Boston University School Of Public Health"]'));
+    this.orgAddFundingSourceMemorialHos = element(by.xpath('*//form/uib-accordion/div/div/div[2]/div/div[1]/fieldset[2]/div[4]/div[2]/input'));
+
+    this.orgAddFundingSourceBostonMedDel = element(by.css('.glyphicon.glyphicon-remove-circle'));
+    this.orgAddFundingSourceBostonUniDel = element(by.xpath('//form/uib-accordion/div/div/div[2]/div/div[1]/fieldset[2]/div[3]/label/i'));
+    this.orgAddFundingSourceMemorialHosDel = element(by.xpath('//form/uib-accordion/div/div/div[2]/div/div[1]/fieldset[2]/div[4]/label/i'));
+
+
 
     var helper = new helperFunctions();
 
+    //Verify Study Source Required
+    this.verifyStudySourceReq = function(expStudySrcReqMsg){
+        helper.getVerifyRequired(this.nciSpecificStudySourceRequired,expStudySrcReqMsg,"Study Source field");
+    };
+
+    //Verify Funding Source Required
+    this.verifyFundingSourceReq = function(expFundingSrcReqMsg){
+        helper.getVerifyRequired(this.nciSpecificFundingSourceRequired,expFundingSrcReqMsg,"Funding Source field");
+    };
+
+    //Verify Funding Source
+    this.verifyFundingSourceOrg = function(fundingSrcOrgNm){
+        helper.getVerifyValue(this.orgAddFundingSourceOrgA,fundingSrcOrgNm,"Funding Source Organization field");
+    };
+
+    //Comment program code
+    this.verifyProgramCode = function(progrmCD){
+      helper.getVerifyValue(this.nciSpecificProgramCode,progrmCD,"Program Code field");
+    };
+
+    //Comment verification
+    this.verifyComment = function(vrfCommnt){
+        helper.getVerifyValue(this.nciSpecificComments,vrfCommnt,"Comments field");
+    };
+
+    //Delete Funding Source Organization
+    this.clickFundingSourceOrganizationDel = function(){
+        helper.clickButton(this.orgAddFundingSourceBostonMedDel,"Funding Source Organization Delete button");
+    };
+
+    //Set Name : Organization Search
+    this.setOrgSearchName = function(orgSrchNam){
+        helper.setValue(this.orgSearchName,orgSrchNam,"Organization Search by Name field");
+    };
+
+    //Set Source ID : Organization Search
+    this.setSourceId = function(sourceId){
+        helper.setValue(this.sourceId,sourceId,"Organization Search by SourceId field");
+    };
+
+    //Search : Organization Search
+    this.clickOrganizationSearch = function(){
+        helper.clickButton(this.orgSearchSearchButton,"Organization Search button");
+    };
+
+
+    //Select Organization : Organization Search
+    this.selectOrganizationFromGrid = function(){
+        helper.clickButton(this.orgSearchSelectItem,"Organization list Item selection");
+    };
+
+    //Confirmation Selection : Organization Search
+    this.clickOrganizationSelectionConfirmation = function(){
+        helper.clickButton(this.orgSearchConfirmSelection,"Organization Selection Confirmation button");
+    };
+
+    //Admin Data
     //General Trial Details: Click Left Navigation Link
     this.clickAdminDataGeneralTrial = function(){
         helper.clickButton(this.adminDataGeneralTrial, "General Trial Details Admin Data Button");

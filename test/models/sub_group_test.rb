@@ -3,7 +3,7 @@
 # Table name: sub_groups
 #
 #  id           :integer          not null, primary key
-#  code         :string(255)
+#  label        :string(255)
 #  description  :text
 #  trial_id     :integer
 #  created_at   :datetime         not null

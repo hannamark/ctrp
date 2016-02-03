@@ -3,7 +3,6 @@
 # Table name: central_contacts
 #
 #  id                      :integer          not null, primary key
-#  country                 :string(255)
 #  phone                   :string(255)
 #  email                   :string(255)
 #  central_contact_type_id :integer

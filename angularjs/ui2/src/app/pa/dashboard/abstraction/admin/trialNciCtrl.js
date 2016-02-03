@@ -23,11 +23,39 @@
         vm.studySourceArr = studySourceObj;
         vm.addedFses = [];
         vm.selectedFsArray = [];
+        vm.isSponsorNci = (trialDetailObj["sponsor"]["name"] == "National Cancer Institute")? true: false;
+        console.log("isSponsorNci"+ vm.isSponsorNci);
+        vm.isLeadOrgNciCcr = (trialDetailObj["lead_org"]["name"] == "NCI - Center for Cancer Research")? true: false;
+        console.log("isLeadOrgNciCcr"+ vm.isSponsorNci);
+        //console.log("send_trial_flag="+ (vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"));
+        console.log( (vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"));
+
+        if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "Yes"))==true) {
+            vm.disable_send_trial = false;
+            console.log("disable set to false");
+        } else if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"))==true){
+            vm.disable_send_trial = true;
+            console.log("disable set to true");
+        } else if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==false))==true){
+            vm.disable_send_trial = true;
+        } else {
+            vm.disable_send_trial = true;
+        }
+        vm.fsNum = 0;
         //vm.nih_nci_div = trialDetailObj.nih_nci_div;
        // vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
-            console.log("3curTrial =" + JSON.stringify(vm.curTrial));
+            // Prevent multiple submissions
+            vm.disableBtn = true;
+            console.log("curTrial =" + JSON.stringify(vm.curTrial));
+            console.log("(vm.curTrial.study_source_id  =" + JSON.stringify(vm.curTrial.study_source_id));
+            if (vm.fsNum == 0) {
+                return;
+            }
+           // if(vm.curTrial.study_source_id == null) {
+           //     return;
+           // }
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {
@@ -135,7 +163,6 @@
                 vm.fsNum++;
             }
         }
-
 
     } //trialNciCtrl
 

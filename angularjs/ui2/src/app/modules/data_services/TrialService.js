@@ -109,6 +109,8 @@
             checkAuthority: checkAuthority,
             addStatus: addStatus,
             validateStatus: validateStatus,
+            searchClinicalTrialsGov: searchClinicalTrialsGov,
+            importClinicalTrialsGov: importClinicalTrialsGov,
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial,
             getGrantsSerialNumber: getGrantsSerialNumber
@@ -912,6 +914,29 @@
         function validateStatus(statuses) {
             if (!!statuses) {
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_TRIAL_STATUS, statuses);
+            }
+        }
+
+        /**
+         * Search ClinicalTrials.gov using NCT ID
+         *
+         * @param nctId
+         * @returns {*}
+         */
+        function searchClinicalTrialsGov(nctId) {
+            if (!!nctId) {
+                return PromiseTimeoutService.getData(URL_CONFIGS.SEARCH_CLINICAL_TRIALS_GOV + '?nct_id=' + nctId);
+            }
+        }
+
+        /**
+         * Import from ClinicalTrials.gov using NCT ID
+         *
+         * @param nctId
+         */
+        function importClinicalTrialsGov(nctId) {
+            if (!!nctId) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.IMPORT_CLINICAL_TRIALS_GOV, {"nct_id": nctId});
             }
         }
 

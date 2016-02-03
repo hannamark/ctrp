@@ -1,6 +1,22 @@
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 975px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .modal-lg {
+        width: 1175px;
+    }
+}
+
 @media screen and (min-width: 1300px) {
     .container {
         width: 1270px;
+    }
+
+    .modal-lg {
+        width: 1250px;
     }
 }
 
@@ -365,12 +381,12 @@ header img {
     #adv-org-search-modal  {
         top: 5%;
         right: 50%;
-        max-width: 920px;
-        max-height: 1080px;
+        max-width: 1320px;
+        /*max-height: 1080px;*/
     }
 
     .modal-body {
-        max-width: 950px;
+        max-width: 1350px;
         margin-left: 5px;
         overflow: auto;
     }
@@ -786,4 +802,21 @@ a.editable-click,
 a.editable-click:hover {
     text-decoration: none;
     border-bottom: dashed 1px #0088cc;
+}
+
+.search-calendar-grid {
+    min-height: 310px;
+}
+
+.select2-results-absolute .select2-results {
+    position: absolute;
+    width: 225%;
+    background: #FFF;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.select2-results-absolute .select2-search {
+    padding-bottom: 4px;
 }
