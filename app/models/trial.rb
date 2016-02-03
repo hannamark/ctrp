@@ -332,12 +332,12 @@ class Trial < ActiveRecord::Base
       self.nci_id = new_id
 
       # New Submission
-      if self.edit_type != 'import'
+      if self.edit_type == 'import'
+        newSubmission = self.submissions.last
+      else
         ori = SubmissionType.find_by_code('ORI')
         reg = SubmissionMethod.find_by_code('REG')
         newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_method: reg)
-      else
-        newSubmission = self.submissions.last
       end
 
       # New Milestone
