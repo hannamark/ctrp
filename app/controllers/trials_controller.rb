@@ -366,7 +366,6 @@ class TrialsController < ApplicationController
   end
 
   def search_clinical_trials_gov
-    # TODO Search existing trials using NCT ID
     @search_result = {}
 
     existing_nct_ids = OtherId.where('protocol_id = ? AND protocol_id_origin_id = ?', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id)
