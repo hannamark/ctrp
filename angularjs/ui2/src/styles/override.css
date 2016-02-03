@@ -382,7 +382,7 @@ header img {
         top: 5%;
         right: 50%;
         max-width: 1320px;
-        max-height: 1080px;
+        /*max-height: 1080px;*/
     }
 
     .modal-body {
@@ -806,4 +806,17 @@ a.editable-click:hover {
 
 .search-calendar-grid {
     min-height: 310px;
+}
+
+.select2-results-absolute .select2-results {
+    position: absolute;
+    width: 250%;
+    background: #FFF;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.select2-results-absolute .select2-search {
+    padding-bottom: 4px;
 }

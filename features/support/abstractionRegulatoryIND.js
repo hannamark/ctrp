@@ -34,10 +34,14 @@ var abstractionRegulatoryIND = function(){
     this.indIDEAssociatedRdo = element.all(by.model('trialDetailView.curTrial.ind_ide_question')); //by.css('input[ng-model="trialDetailView.curTrial.ind_ide_question"]')
 
     this.indIDEType = element(by.model('trialDetailView.ind_ide_type'));
+    this.indIDETypeAll = element.all(by.model('trialDetailView.ind_ide_type'));
     this.indIDENumber = element(by.model('trialDetailView.ind_ide_number'));
     this.indIDEGrantor = element(by.model('trialDetailView.grantor'));
+    this.indIDEGrantorAll = element.all(by.model('trialDetailView.grantor'));
     this.indIDEHolderType = element(by.model('trialDetailView.holder_type_id'));
+    this.indIDEHolderTypeAll = element.all(by.model('trialDetailView.holder_type_id'));
     this.indIDEDisvisionProgramCode = element(by.model('trialDetailView.nih_nci'));
+    this.indIDEDisvisionProgramCodeAll = element.all(by.model('trialDetailView.nih_nci'));
     this.indIDEAddButton = element(by.css('button[ng-click="trialDetailView.addIndIde()"]'));
 
 
@@ -161,6 +165,8 @@ var abstractionRegulatoryIND = function(){
     this.clickReset = function(){
         helper.clickButton(this.indIDEReset,"Reset - button");
     };
+
+
 
 
 
