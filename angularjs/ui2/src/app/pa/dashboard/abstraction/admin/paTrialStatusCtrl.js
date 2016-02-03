@@ -157,8 +157,8 @@
 
         function commitEdit() {
             if (vm.statusObj.edit) {
-                vm.statusObj.status_date = moment(vm.statusObj.status_date).format("DD-MMM-YYYY"); // e.g. 03-Feb-2016
-                // vm.statusObj.status_date = DateService.convertISODateToLocaleDateStr(vm.statusObj.status_date);
+                // vm.statusObj.status_date = moment(vm.statusObj.status_date).format("DD-MMM-YYYY"); // e.g. 03-Feb-2016
+                vm.statusObj.status_date = DateService.convertISODateToLocaleDateStr(vm.statusObj.status_date);
                 var selectedStatus = _.findWhere(vm.trialStatuses, {id: vm.statusObj.trial_status_id});
                 if (!!selectedStatus) {
                     vm.statusObj.trial_status_name = selectedStatus.name;
