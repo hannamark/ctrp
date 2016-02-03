@@ -114,11 +114,15 @@
             return _validateStatusesDelegate(activeStatuses);
         }
 
+        /**
+         * Delegate for validating trial statuses
+         * @param  {[type]} statusArr [array of trial statuses]
+         * @return {[type]}           [description]
+         */
         function _validateStatusesDelegate(statusArr) {
             if (statusArr.length === 0) return;
 
             TrialService.validateStatus({"statuses": statusArr}).then(function(res) {
-                console.log('_validatestatuses: ', res.validation_msgs);
                 if (res.validation_msgs && angular.isArray(res.validation_msgs)) {
                     vm.statusValidationMsgs = res.validation_msgs;
                     _.each(vm.tempTrialStatuses, function(status, index) {
