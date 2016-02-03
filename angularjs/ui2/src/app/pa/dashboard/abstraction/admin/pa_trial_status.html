@@ -5,6 +5,7 @@
                 Trial Status <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
                 <form class="form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="">
+                    <!-- fieldset for trial statuses -->
                     <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Trial Statuses</legend>
                         <div class="row">
@@ -111,36 +112,17 @@
                               </tbody>
                             </table>
                         </div>
-
-                        <!-- <div layout-gt-sm="row">
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>Status Date</label>
-                                <input name="status_date" ng-model="trialStatusView.statusObj.status_date" required>
-                                <div ng-messages="trial_status_form.status_date.$dirty && trial_status_form.status_date.$error" role="alert">
-                                    <div class="help-block" ng-message="required">Status date is required</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container>
-                                <label>Status</label>
-                                <md-select ng-model="trialStatusView.statusObj.trial_status_id" required>
-                                    <md-option ng-repeat="status in trialStatusView.trialStatuses" value="{{status.id}}">
-                                        {{status.name}}
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>Why study stopped</label>
-                                <input ng-model="trialStatusView.statusObj.why_stopped">
-                            </md-input-container>
-
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>Comment</label>
-                                <input ng-model="trialStatusView.statusObj.status_comment">
-                            </md-input-container>
-                        </div>
-                        <button class="btn btn-default">Add</button> -->
                     </fieldset>
+                    <!-- end of fieldset for trial statuses -->
+
+                    <!-- fieldset for trial dates -->
+                    <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                        <legend class="sub-bordered">Trial Dates and Comments</legend>
+                        <div class="row">
+
+                        </div>
+                    </fieldset>
+                    <!-- end of fieldset for trial dates -->
                 </form>
         </uib-accordion-group>
     </uib-accordion>
