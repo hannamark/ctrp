@@ -167,7 +167,7 @@
                 // vm.tempTrialStatuses.splice(vm.statusObj.index, 0, vm.statusObj);
                 vm.tempTrialStatuses[vm.statusObj.index] = vm.statusObj;
                 console.log('vm.tempTrialStatuses: ', vm.tempTrialStatuses);
-                // validateStatuses();
+                validateStatuses();
                 vm.statusObj = _initStatusObj();
             }
         } // commitEdit
