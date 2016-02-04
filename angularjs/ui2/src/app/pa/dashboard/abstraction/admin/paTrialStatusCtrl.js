@@ -45,15 +45,21 @@
                     status.trial_status_code = curStatusObj.code || '';
                     status._destroy = false;
                     // status.status_date is in this format "YYYY-mm-DD" (e.g. "2009-12-03")
-                    // change it to the format ("DD-MMM-YYYY", e.g. "03-Dec-2009")
-                    status.status_date = moment(status.status_date).format("DD-MMM-YYYY")
-                    delete status.trial_status // delete the trial_status object
-                    delete status.updated_at
-                    delete status.created_at
+                    // transform it to the format ("DD-MMM-YYYY", e.g. "03-Dec-2009")
+                    status.status_date = moment(status.status_date).format("DD-MMM-YYYY");
+                    delete status.trial_status; // delete the trial_status object
+                    delete status.updated_at;
+                    delete status.created_at;
                     return status;
                 });
 
                 validateStatuses();
+                // format the trial-associated date fields                
+                vm.trialDetailObj.start_date = moment(vm.trialDetailObj.start_date).format("DD-MMM-YYYY");
+                // DateService.convertISODateToLocaleDateStr()
+                vm.trialDetailObj.primary_comp_date = moment(vm.trialDetailObj.primary_comp_date).format("DD-MMM-YYYY");
+                vm.trialDetailObj.comp_date = moment(vm.trialDetailObj.comp_date).format("DD-MMM-YYYY");
+                vm.trialDetailObj.amendment_date = moment(vm.trialDetailObj.amendment_date).format("DD-MMM-YYYY");
             }, 0);
         } // _getTrialDetailCopy
 
@@ -159,6 +165,7 @@
         function commitEdit() {
             if (vm.statusObj.edit) {
                 // vm.statusObj.status_date = moment(vm.statusObj.status_date).format("DD-MMM-YYYY"); // e.g. 03-Feb-2016
+                // format date from 'yyyy-mm-DD' to 'yyyy-MMM-DD' (e.g. from 2009-12-03 to 03-Feb-2009)
                 vm.statusObj.status_date = DateService.convertISODateToLocaleDateStr(vm.statusObj.status_date);
                 var selectedStatus = _.findWhere(vm.trialStatuses, {id: vm.statusObj.trial_status_id});
                 if (!!selectedStatus) {
