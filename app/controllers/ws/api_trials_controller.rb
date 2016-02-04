@@ -1,13 +1,10 @@
 class Ws::ApiTrialsController < Ws::BaseApiController
-  #include Services::TrialService
-  #wrap_parameters format: [:json, :xml]
 
-  before_filter :find_trial, only: [:show, :update]
+
+  before_filter :find_trial, only: [:update]
   before_filter :sam, only: [:change_status]
 
-
-
-  before_filter only: [:create,:update] do
+  before_filter only: [:create] do
     string = request.body.read
 
 
@@ -17,9 +14,10 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     puts "caught exception: #{e}"
     end
 
-    errors =Hash.new
+    @errors =Hash.new
     @trialMasterMap = Hash.new
     trialService = TrialService.new
+    @trialMasterMap["coming_from"] = "rest"
 
 
     if request.content_type == "application/xml"
@@ -30,14 +28,14 @@ class Ws::ApiTrialsController < Ws::BaseApiController
       #doc = Nokogiri::XML(string)
       #@object=Hash.from_xml(doc.to_s)
       else
-        errors.store("xml request body is not wellformed","");
+        @errors.store("xml request body is not wellformed","");
 
     end
 
 
 
 
-    if !errors.empty?
+    if !@errors.empty?
     #render xml:errors, status: :bad_request and return
     end
 
@@ -46,21 +44,21 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
 
     if !@object.has_key?("CompleteTrialRegistration")
-      errors.store("tns:CompleteTrialRegistration","this node has to be included in the request; Parent node for this request");
+      @errors.store("tns:CompleteTrialRegistration","this node has to be included in the request; Parent node for this request");
       #render xml: errors, status: :bad_request and return
 
     else
       trialkeys = @object["CompleteTrialRegistration"]
       if !trialkeys.has_key?("category")
-        errors.store("tns:category","this node has to be included in the request;");
+        @errors.store("tns:category","this node has to be included in the request;");
        # render xml: errors, status: :bad_request and return
 
       else
         @study_sources = StudySource.pluck(:name);
 
         if !@study_sources.collect {|el| el.downcase }.include? trialkeys["category"].downcase
-        errors.store("tns:category","Invalid value:following are valid values");
-        errors.store("tns:category:validvalues",@study_sources);
+          @errors.store("tns:category","Invalid value:following are valid values");
+          @errors.store("tns:category:validvalues",@study_sources);
         #render xml: errors, status: :bad_request and return
         else
           @trialMasterMap["study_source_id"]=StudySource.find_by_name(trialkeys["category"]).id
@@ -69,7 +67,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
       end
 
       if !trialkeys.has_key?("leadOrgTrialID")
-        errors.store("leadOrgTrialID", "please verify its not existed")
+        @errors.store("leadOrgTrialID", "please verify its not existed")
       else
         @trialMasterMap.store("lead_protocol_id",trialkeys["leadOrgTrialID"])
 
@@ -127,8 +125,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
 
 
-    if !errors.empty?
-      render xml: errors, status: :bad_request
+    if !@errors.empty?
+      render xml: @errors, status: :bad_request
     else
        validate_errors = Hash.new();
     #############################################################################################################################
@@ -778,13 +776,13 @@ end # end of before_create
 
 
   def update
-
-    @person =Person.find_by_id(params[:id])
+    p @trial
+    #@person =Person.find_by_id(params[:id])
     if @person.update(@object["person"])
       if request.content_type == "application/json"
-        render json: @person
+        render json: @trial
       elsif request.content_type == "application/xml"
-        render xml: @person
+        render xml: @trial
       else
 
       end
@@ -837,9 +835,22 @@ end # end of before_create
 
 
   def find_trial
-    @trial = Trial.find_by_nci_id(params[:nci_id])
+
+    #puts request.body.read
+    puts params
+    if params.has_key?("idType")
+      if params[:idType] == "nci"
+        @trial = Trial.find_by_nci_id(params[:id])
+      else
+        render xml: "expected idtypes are nci,pa,dcp,ctep but currently nci is accepting", status: :bad_request
+      end
+    else
+      @trial = Trial.find_by_id(params[:id])
+    end
     render nothing: true, status: :not_found unless @trial.present?
   end
+
+
 
   def sam
     @status = request.body.read
@@ -848,12 +859,4 @@ end # end of before_create
   end
 
 
-
-  def person_params
-    params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone,
-                                   :source_status_id,:source_context_id, :lock_version,
-                                   po_affiliations_attributes: [:id, :organization_id, :effective_date,
-                                                                :expiration_date, :po_affiliation_status_id,
-                                                                :lock_version, :_destroy])
-  end
 end
