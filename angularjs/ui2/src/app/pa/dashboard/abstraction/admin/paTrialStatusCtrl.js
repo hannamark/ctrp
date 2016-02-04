@@ -95,7 +95,6 @@
                     clonedStatusObj.trial_status_name = selectedStatus.name;
                     clonedStatusObj.trial_status_code = selectedStatus.code;
                 }
-                console.log('vm.tempTrialStatuses: ', vm.tempTrialStatuses);
                 vm.tempTrialStatuses.push(clonedStatusObj);
 
                 // Validate statuses:
