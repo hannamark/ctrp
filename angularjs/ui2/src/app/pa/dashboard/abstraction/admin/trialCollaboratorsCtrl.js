@@ -119,7 +119,7 @@
 
         /****************** implementations below ***************/
         function activate() {
-            appendCollaborators();
+            //appendCollaborators();
             getTrialDetailCopy();
             watchTrialDetailObj();
         }
