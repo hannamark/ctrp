@@ -34,7 +34,12 @@
             if (vm.addedCollaborators.length > 0) {
                 vm.curTrial.collaborators_attributes = [];
                 _.each(vm.addedCollaborators, function (collaborator) {
+                    var index = 0;
                     vm.curTrial.collaborators_attributes.push(collaborator);
+                    if (!vm.addedCollaborators[index]._destroy) {
+                        vm.curTrial.collaborators.push(collaborator);
+                    }
+                    index++;
                 });
             }
 
