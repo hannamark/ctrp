@@ -35,6 +35,7 @@
         vm.cancelEdit = cancelEdit;
         vm.commitEdit = commitEdit;
         vm.createComment = createComment;
+        vm.updateComment = updateComment;
 
         activate();
         function activate() {
@@ -223,6 +224,14 @@
                  _loadComments(commentField);
               });
         } //createComment
+
+        function updateComment(newContent, index) {
+            if (index < vm.commentList.length) {
+                var editedComment = vm.commentList[index];
+                editedComment.content = newContent;
+                CommentService.updateComment(editedComment);
+            }
+        }
 
         function _initCommentObj() {
             return {
