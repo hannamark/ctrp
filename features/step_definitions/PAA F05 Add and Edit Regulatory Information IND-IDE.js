@@ -105,6 +105,8 @@ module.exports = function() {
     var indGrantorOptionA = '';
     var indGrantorOptionB = '';
     var indGrantorOptionC = '';
+    var indIDEAssociatedQueVals7 = '';
+    var globalYesNoFlag = '';
 
         /*
          Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
@@ -689,7 +691,70 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    /*
+     Scenario Outline: #7 Regulatory IND or IDE Information must be complete
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Regulatory Information (IND/IDE) screen
+     And I have selected conditions for the question <Does this trial have an associated IND or IDE?>
+     When I have not selected values the <IND/IDE Type>
+     And I have not entered the <IND/IDE number>
+     And I have not selected the <IND/IDE Grantor>
+     And I have not selected the <IND/IDE Holder Type>
+     And I have not selected the <NIH Institution or NCI Division or Program>
+     And selected Save
+     Then the system will display a warning <Message> that each of values that were not entered must be entered in order to associate the IND/IDE Information for the trial
 
+     Examples:
+     |Does this trial have an associated IND or IDE?|IND/IDE Type |IND/IDE number|IND/IDE Grantor|IND/IDE Holder Type |NIH Institution or NCI Division or Program|Message|
+     |No|null|null|null|null|null|null|
+     |Yes|IND|77782|CDER|Investigator|null|null|
+     */
+
+    this.Given(/^I have selected conditions for the question (.*)$/, function (DoesThisTrialHaveAnAssociatedINDOrIDE, callback) {
+        globalYesNoFlag = DoesThisTrialHaveAnAssociatedINDOrIDE;
+        console.log('Condition: '+globalYesNoFlag);
+        if (DoesThisTrialHaveAnAssociatedINDOrIDE === 'No'){
+            indIDE.selectAssociatedINDIDERdo('1');
+        }else if(DoesThisTrialHaveAnAssociatedINDOrIDE === 'Yes'){
+            indIDE.selectAssociatedINDIDERdo('0');
+        }
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have not selected values the (.*)$/, function (INDIDEType, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have not entered the (.*)$/, function (INDIDENumber, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have not selected the (.*)$/, function (INDIDEGrantor, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have not selected the (.*)$/, function (INDIDEHolderType, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have not selected the (.*)$/, function (NIHInstitutionOrNCIDivisionOrProgram, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^selected Save$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the system will display a warning (.*) that each of values that were not entered must be entered in order to associate the IND\/IDE Information for the trial$/, function (Message, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
 
 
 

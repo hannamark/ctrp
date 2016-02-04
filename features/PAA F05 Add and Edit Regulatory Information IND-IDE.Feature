@@ -102,30 +102,20 @@ And I am on the Register Trial Regulatory Information (IND/IDE) screen
 When I select Reset to not save (IND/IDE) screen
 Then the information entered or edited on the Regulatory Information (IND/IDE) screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
-
+  @runthis
 Scenario Outline: #7 Regulatory IND or IDE Information must be complete
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
-And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
-When I have not selected values the IND/IDE Type 
-And I have not entered the IND/IDE number
-And I have not selected the IND/IDE Grantor
-And I have not selected the IND/IDE Holder Type 
-And I have not selected the NIH Institution or NCI Division/Program Code when the IND/IDE Holder Type is 
-|NCI|
-|NIH|
+And I have selected conditions for the question <Does this trial have an associated IND or IDE>
+When I have not selected values the <IND IDE Type>
+And I have not entered the <IND IDE number>
+And I have not selected the <IND IDE Grantor>
+And I have not selected the <IND IDE Holder Type>
+And I have not selected the <NIH Institution or NCI Division or Program>
 And selected Save
-Then the system will display a warning that each of values that were not entered must be entered in order to associate the IND/IDE Information for the trial 
+Then the system will display a warning <Message> that each of values that were not entered must be entered in order to associate the IND/IDE Information for the trial
 
 Examples:
-|Does this trial have an associated IND or IDE?|IND/IDE Type |IND/IDE number|IND/IDE Grantor|IND/IDE Holder Type |NIH Institution/NCI Division/Program Code|Message|
+|Does this trial have an associated IND or IDE|IND IDE Type |IND IDE number|IND IDE Grantor|IND IDE Holder Type |NIH Institution or NCI Division or Program|Message|
 |No|null|null|null|null|null|null|
 |Yes|IND|77782|CDER|Investigator|null|null|
-|Yes|IND|77782|CDER|NCI|CTEP|null|
-|Yes|IND|77782|CDER|NIH|NLM|null| 
-|Yes|IND|77782|CDER|NCI|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
-|Yes|IND|77782|CDER|null|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
-|Yes|IND|77782|CDER|null|null|Warning - The NIH  is Required|
-|Yes|IND|77782|null|NCI|null|Warning - The IND/IDE Holder Type is Required|
-|Yes|IND|null|CDER|NCI|CTEP|Warning - IND/IDE number is Required|
-|Yes|null|77782|CDER|NCI|CTEP|Warning - IND/IDE Type is Required|
