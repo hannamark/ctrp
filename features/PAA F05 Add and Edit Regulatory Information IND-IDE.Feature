@@ -102,7 +102,7 @@ And I am on the Register Trial Regulatory Information (IND/IDE) screen
 When I select Reset to not save (IND/IDE) screen
 Then the information entered or edited on the Regulatory Information (IND/IDE) screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data
-  @runthis
+
 Scenario Outline: #7 Regulatory IND or IDE Information must be complete
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
