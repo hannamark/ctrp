@@ -261,6 +261,48 @@
                         {{viewTrialView.curTrial.data_monitor_indicator}}
                     </div>
                 </div>
+
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Protocol Document' && document.is_latest" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
+                    <div class="col-xs-12 col-sm-9 form-text">
+                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
+                    </div>
+                </div>
+
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Change Memo Document' && document.is_latest" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Change Memo Document:</label>
+                    <div class="col-xs-12 col-sm-9 form-text">
+                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
+                    </div>
+                </div>
+
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Protocol Highlighted Document' && document.is_latest" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Protocol Highlighted Document:</label>
+                    <div class="col-xs-12 col-sm-9 form-text">
+                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
+                    </div>
+                </div>
+
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'IRB Approval' && document.is_latest" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">IRB Approval:</label>
+                    <div class="col-xs-12 col-sm-9 form-text">
+                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
+                    </div>
+                </div>
+
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'List of Participating Sites' && document.is_latest" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">List of Participating Sites:</label>
+                    <div class="col-xs-12 col-sm-9 form-text">
+                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
+                    </div>
+                </div>
+
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Informed Consent' && document.is_latest" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Informed Consent Document:</label>
+                    <div class="col-xs-12 col-sm-9 form-text">
+                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
