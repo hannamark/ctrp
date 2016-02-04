@@ -89,11 +89,9 @@ json.current_trial_why_stopped @trial.trial_status_wrappers.present? ?
 json.processing_status @trial.processing_status_wrappers.present? ?
     @trial.processing_status_wrappers.last.processing_status.name : nil
 
-json.last_amendment_num @trial.milestone_wrappers.present? ?
-    @trial.milestone_wrappers.last.submission.amendment_num : nil
-
-json.last_amendment_date @trial.milestone_wrappers.present? ?
-    @trial.milestone_wrappers.last.submission.amendment_date : nil
+last_amd = @trial.submissions.where('submission_type_id = ?', SubmissionType.find_by_code('AMD').id).last
+json.last_amendment_num last_amd.amendment_num if last_amd.present?
+json.last_amendment_date last_amd.amendment_date if last_amd.present?
 
 json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
 

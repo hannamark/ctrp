@@ -5,6 +5,20 @@
         </div>
         <div class="row">
             <form class="form form-horizontal" role="form">
+                <div ng-if="viewTrialView.curTrial.last_amendment_num" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Amendment Number:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{viewTrialView.curTrial.last_amendment_num}}
+                    </div>
+                </div>
+
+                <div ng-if="viewTrialView.curTrial.last_amendment_date" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Amendment Date:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{viewTrialView.curTrial.last_amendment_date}}
+                    </div>
+                </div>
+
                 <div ng-if="viewTrialView.curTrial.lead_protocol_id" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Lead Organization Trial Identifier:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
