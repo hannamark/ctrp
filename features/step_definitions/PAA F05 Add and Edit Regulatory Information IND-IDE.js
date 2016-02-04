@@ -732,10 +732,12 @@ module.exports = function() {
 
         } else if(globalYesNoFlag === 'Yes'){
             if (INDIDEType === 'IND'){
+                helper.verifyElementDisplayed(indIDE.indIDEType, true);
                 indIDE.selectINDIDETypes(indTypVal);
                 INDIDEType = indTypVal;
             };
             if (INDIDEType === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEType, true);
                 //Select Nothing
                 INDIDEType = glovalNullVal;
             };
@@ -750,7 +752,14 @@ module.exports = function() {
                 INDIDENumber = glovalNullVal;
             }
         } else if(globalYesNoFlag === 'Yes'){
-
+            if (!INDIDENumber === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDENumber, true);
+                indIDE.setINDIDENumbr(INDIDENumber);
+            }
+            if (INDIDENumber === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDENumber, true);
+                indIDE.setINDIDENumbr('');
+            }
         };
         browser.sleep(25).then(callback);
     });
@@ -761,9 +770,17 @@ module.exports = function() {
                 helper.verifyElementDisplayed(indIDE.indIDEGrantor, false);
                 INDIDEGrantor = glovalNullVal;
             }
-
         } else if(globalYesNoFlag === 'Yes'){
-
+            if (!INDIDEGrantor === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEGrantor, true);
+                indIDE.selectINDIDEGrantor(INDIDEGrantor);
+                INDIDEGrantor = indIDEGrntrCDER;
+            }
+            if (INDIDEGrantor === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEGrantor, true);
+                //Select Nothing
+                INDIDEGrantor = indIDEGrntrCDER;
+            }
         };
         browser.sleep(25).then(callback);
     });
@@ -774,9 +791,15 @@ module.exports = function() {
                 helper.verifyElementDisplayed(indIDE.indIDEHolderType, false);
                 INDIDEHolderType = glovalNullVal;
             }
-
         } else if(globalYesNoFlag === 'Yes'){
-
+            if (!INDIDEHolderType === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
+                indIDE.selectINDIDEHolderType(INDIDEHolderType);
+            }
+            if (INDIDEHolderType === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
+                //Select Nothing
+            }
         };
         browser.sleep(25).then(callback);
     });
@@ -788,18 +811,27 @@ module.exports = function() {
                 helper.verifyElementDisplayed(indIDE.indIDEAddButton, false);
                 NIHInstitutionOrNCIDivisionOrProgram = glovalNullVal;
             }
-
         } else if(globalYesNoFlag === 'Yes'){
-
+            if (!NIHInstitutionOrNCIDivisionOrProgram === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
+                helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
+                indIDE.selectINDIDEDivisionProgramCode(NIHInstitutionOrNCIDivisionOrProgram);
+            }
+            if (NIHInstitutionOrNCIDivisionOrProgram === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
+                helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
+                //Select Nothing
+            }
         };
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^selected Save$/, function (callback) {
         if (globalYesNoFlag === 'No'){
-
+            helper.verifyElementDisplayed(indIDE.indIDEAddButton, false);
         } else if(globalYesNoFlag === 'Yes'){
-
+            helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
+            indIDE.clickAdd();
         };
         browser.sleep(25).then(callback);
     });
@@ -809,9 +841,13 @@ module.exports = function() {
             if (Message === 'null'){
                 Message = glovalNullVal;
             }
-
         } else if(globalYesNoFlag === 'Yes'){
-
+            if (!Message === 'null'){
+                console.log('Current Warning Message:['+ Message +']');
+            }
+            if (Message === 'null'){
+                console.log('Current Warning Message:['+ Message +']');
+            }
         };
         browser.sleep(25).then(callback);
     });
