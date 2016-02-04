@@ -128,24 +128,25 @@
                         <legend class="sub-bordered">Trial Comments</legend>
                         <div class="row" style="max-height: 230px; overflow-y: scroll">
                             <div style="width: 98%;">
-                            <ul>
-                                <li ng-repeat="item in trialStatusView.todos">
-                                    <small>{{item.who}} commented on 03-Feb-2016:</small>
-                                    <h5>{{item.what}}</h5>
-                                    <p>
-                                        {{item.notes}}
-                                    </p>
-                                    <md-divider ng-if="!$last"></md-divider>
-                                </li>
-                            </ul>
+                                <span ng-show="trialStatusView.commentList.length == 0">
+                                    <h5>No comments yet</h5>
+                                </span>
+                                <ul>
+                                    <li ng-repeat="comment in trialStatusView.commentList">
+                                        <p>{{comment.username}} commented ({{comment.updated_at | date: "dd-MMM-yyyy H:mm"}}):</p>
+                                        <h5 class="md-body-1" in-place-edit="comment.content" on-save="updateComment(comment.content, $index)"
+                                        template="app/modules/widgets/comment/comment-in-place-edit.html" is-editable="{{comment.isEditable}}">{{comment.content}}, {{comment.isEditable}}</h5>
+                                        <md-divider ng-if="!$last"></md-divider>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-group">
-                                <input type="text" class="form-control input-sm" restriction-field placeholder="Your comment...">
+                                <input type="text" class="form-control input-sm" ng-model="trialStatusView.commentObj.content" restriction-field placeholder="Your comment...">
                                 <span class="input-group-btn">
                                     <!-- <md-button class="md-raised" type="button">Button</md-button> -->
-                                    <button class="btn btn-primary" restriction-field type="button">Add Comment</button>
+                                    <button class="btn btn-default" restriction-field type="button" ng-click="trialStatusView.createComment()">Add Comment</button>
                                 </span>
                             </div>
                         </div>
