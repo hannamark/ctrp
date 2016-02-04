@@ -8,6 +8,10 @@
                 <!-- first row in the accordion body -->
                 <div class="row">
                     <legend class="sub-bordered">Add/Edit Collaborators:</legend>
+
+                    <div class="form-group no-bottom-margin" ng-if="trialDetailView.addMode">
+
+
                     <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
                         <label class="control-label col-xs-12 col-sm-3">Add Collaborator:</label>
                         <div class="col-xs-12 col-sm-9">
@@ -36,8 +40,9 @@
                                 </button>
                             </div>
                         </div>
-
-
+   </fieldset>
+                        </div>
+<fieldset>
                         <div class="form-group">
                             <table class="table table-bordered table-striped table-hover">
                                 <thead style="background-color: #d9edf7">
@@ -46,30 +51,30 @@
                                 <th class="text-center">Deletion</th>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>PO ID</td>
-                                    <td>
-                                        &nbsp;
-                                     </td>
-                                    <td class="text-center">--</td>
-                                </tr>
                                 <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
                                     <td>{{collaborator.organization_id}}</td>
                                     <td>
                                         {{collaborator.org_name}}
                                     </td>
                                     <td class="text-center">
-                                        <!-- <button type="button" class="btn btn-default">Edit</button> -->
-                                        <button type="button" class="btn btn-default" ng-click="trialDetailView.deleteCollaborator($index)">Delete</button>
-                                        <label class="btn btn-default" restriction-field ng-click="trialDetailView.deleteCollaborator($index)">
-                                            <i class="glyphicon" ng-class="collaborator._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                        </label>
+                                        <input type="checkbox" ng-model="collaborator.selected" ng-change="trialDetailView.deleteListHandler(trialDetailView.curTrial.collaborators)" /></td>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
 
+                    </fieldset>
+
+                    <fieldset>
+                        <fieldset>
+                            <div class="form-group no-bottom-margin" ng-if="trialDetailView.curTrial.pa_editable">
+                                <div class="btn-toolbar">
+                                    <button type="submit" class="btn btn-primary pull-right" id="delete" restriction-field ng-click="trialDetailView.deleteSelected()">Delete</button>
+                                    <button type="submit" class="btn btn-primary pull-right" id="add" restriction-field ng-click="trialDetailView.setAddMode()">Add</button>
+                                </div>
+                            </div>
+                        </fieldset>
                     </fieldset>
                 </div>
             </uib-accordion-group>
