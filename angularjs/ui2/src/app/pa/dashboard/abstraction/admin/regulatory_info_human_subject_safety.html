@@ -16,7 +16,6 @@
                                 ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
                                 restriction-field
                                 ng-required="regInfoSafetyView.approvalStatusRequired"
-                                ng-change="regInfoSafetyView.changeStatus()"
                                 ng-model="regInfoSafetyView.trialDetailsObj.board_approval_status_id" restriction-field
                                 ng-options="status.id as status.name for status in regInfoSafetyView.statuses">
                                 <option value="">
@@ -228,7 +227,10 @@
                       <div class="btn-toolbar col-xs-12 col-sm-9">
                         <button type="submit" class="btn btn-primary pull-right" id="save_btn"
                             restriction-field="ROLE_ABSTRACTOR, ROLE_SUPER, ROLE_ADMIN"
-                            ng-disabled="human_safety_form.$pristine"> <!--  ng-disabled="!human_safety_form.$valid" -->
+                            ng-disabled="human_safety_form.$pristine"
+                            >
+                            <!-- ng-disabled="human_safety_form.$pristine" -->
+                            <!--  ng-disabled="!human_safety_form.$valid" -->
                           <i class="glyphicon glyphicon-ok"></i>  Save
                         </button>
                         <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="regInfoSafetyView.resetHumanSafetyInfo()" restriction-field="ROLE_ABSTRACTOR, ROLE_SUPER, ROLE_ADMIN">
