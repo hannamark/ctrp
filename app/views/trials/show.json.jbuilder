@@ -1,9 +1,9 @@
-json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id,
+json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id, :research_category,
               :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
               :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual, :comp_date, :comp_date_qual,
               :ind_ide_question, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
-              :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :responsible_party_id,
-              :accrual_disease_term_id, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id,
+              :study_source_id, :phase_id, :phase, :primary_purpose_id, :primary_purpose, :secondary_purpose_id, :secondary_purpose, :responsible_party_id,
+              :accrual_disease_term_id, :accrual_disease_term, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id,
               :created_at, :updated_at, :created_by, :updated_by, :study_source, :lead_org, :pi, :sponsor,
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
@@ -11,9 +11,21 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
               :board_approval_num, :board_approval_status_id
 
+json.other_ids do
+  json.array!(@trial.other_ids) do |id|
+    json.extract! id, :trial_id, :id, :protocol_id_origin_id, :protocol_id_origin, :protocol_id
+  end
+end
+
 json.trial_status_wrappers do
   json.array!(@trial.trial_status_wrappers) do |status|
     json.extract! status, :trial_id, :id, :status_date, :why_stopped, :trial_status_id, :trial_status, :comment, :created_at, :updated_at
+  end
+end
+
+json.ind_ides do
+  json.array!(@trial.ind_ides) do |ind_ide|
+    json.extract! ind_ide, :trial_id, :id, :ind_ide_type, :grantor, :nih_nci, :holder_type_id, :holder_type, :ind_ide_number
   end
 end
 
@@ -66,13 +78,16 @@ json.submissions do
 end
 
 json.current_trial_status @trial.trial_status_wrappers.present? ?
-    @trial.trial_status_wrappers.latest.trial_status.name : nil
+    @trial.trial_status_wrappers.last.trial_status.name : nil
 
 json.current_trial_status_date @trial.trial_status_wrappers.present? ?
-    @trial.trial_status_wrappers.latest.trial_status.updated_at : nil
+    @trial.trial_status_wrappers.last.status_date : nil
+
+json.current_trial_why_stopped @trial.trial_status_wrappers.present? ?
+    @trial.trial_status_wrappers.last.why_stopped : nil
 
 json.processing_status @trial.processing_status_wrappers.present? ?
-    @trial.processing_status_wrappers.latest.processing_status.name : nil
+    @trial.processing_status_wrappers.last.processing_status.name : nil
 
 json.last_amendment_num @trial.milestone_wrappers.present? ?
     @trial.milestone_wrappers.last.submission.amendment_num : nil
