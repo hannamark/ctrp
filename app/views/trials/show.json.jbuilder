@@ -41,6 +41,12 @@ json.collaborators do
   end
 end
 
+json.collaborators_attributes do
+  json.array!(@trial.collaborators) do |collaborator|
+    json.extract! collaborator, :id, :organization_id, :org_name
+  end
+end
+
 json.participating_sites_list do
   json.array!(@trial.participating_sites) do |participating_site|
     json.po_id participating_site.organization.id

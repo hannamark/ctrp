@@ -49,17 +49,6 @@
                 });
             }
 
-            if (vm.selectedDeleteCollaboratorsList > 0){
-                vm.curTrial.collaborators_attributes = [];
-                console.log("vm.selectedDeleteCollaboratorsList" + JSON.stringify(vm.selectedDeleteCollaboratorsList));
-                _.each(vm.selectedDeleteCollaboratorsList, function (collaborator) {
-                    var index = 0;
-                    collaborator._destroy = true;
-                    vm.curTrial.collaborators.push(collaborator);
-                    vm.curTrial.collaborators_attributes.push(collaborator);
-                    index++;
-                });
-            }
             //vm.curTrial.collaborators_attributes = vm.curTrial.collaborators;
             console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators));
             //console.log("outertrial IN SAVE! " + JSON.stringify(outerTrial));
@@ -170,18 +159,13 @@
         function deleteListHandler(cList){
 
             console.log("In deleteListHandler");
-
-
             var deleteList = [];
-
             angular.forEach(cList, function(item) {
                 if ( angular.isDefined(item.selected) && item.selected === true ) {
                     deleteList.push(item);
                 }
             });
-
             vm.selectedDeleteCollaboratorsList = deleteList ;
-
             console.log(deleteList);
 
         };
@@ -189,11 +173,53 @@
         function deleteSelected(){
             console.log("In deleteSelected");
             console.log(vm.selectedDeleteCollaboratorsList);
-            for (var i = 0; i < vm.selectedDeleteCollaboratorsList; i++) {
-                vm.curTrial.collaborators[i]._destroy = !vm.curTrial.collaborators[i]._destroy;
+            vm.curTrial.collaborators_attributes=[];
+            console.log(vm.selectedDeleteCollaboratorsList);
+            for (var i = 0; i < vm.selectedDeleteCollaboratorsList.length; i++) {
+                var collaboratorToBeDeletedFromDb = {};
+                collaboratorToBeDeletedFromDb.id =  vm.selectedDeleteCollaboratorsList[i].id;
+                collaboratorToBeDeletedFromDb.organization_id = vm.selectedDeleteCollaboratorsList[i].organization_id;
+                collaboratorToBeDeletedFromDb.org_name = vm.selectedDeleteCollaboratorsList[i].org_name;
+                collaboratorToBeDeletedFromDb._destroy = true;
+                vm.curTrial.collaborators_attributes.push(collaboratorToBeDeletedFromDb);
             }
-            vm.updateTrial();
+            for (var i = 0; i < vm.selectedDeleteCollaboratorsList.length; i++) {
+                console.log("IN LOOP" + JSON.stringify(vm.curTrial.collaborators));
+                for (var j = 0; j < vm.curTrial.collaborators.length; j++) {
+                    console.log("INNER LOOP" + JSON.stringify(vm.curTrial.collaborators[j].organization_id));
+                    console.log("INNER LOOP" + JSON.stringify(vm.selectedDeleteCollaboratorsList[i].organization_id));
+                    if (vm.curTrial.collaborators[j].organization_id == vm.selectedDeleteCollaboratorsList[i].organization_id){
+                        var collaboratorToBeDeletedFromView = vm.curTrial.collaborators[j];
+                        console.log("coll to be delview ="+ JSON.stringify(collaboratorToBeDeletedFromView));
+                        vm.curTrial.collaborators.pop(collaboratorToBeDeletedFromView);
+                    }
+                }
+            }
+                var outerTrial = {};
+            outerTrial.new = vm.curTrial.new;
+            outerTrial.id = vm.curTrial.id;
+            outerTrial.trial = vm.curTrial;
+            console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
+            TrialService.upsertTrial(outerTrial).then(function(response) {
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                vm.curTrial.lock_version = response.lock_version || '';
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                $scope.$emit('updatedInChildScope', {});
+                toastr.clear();
+                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
+            }).catch(function(err) {
+                console.log("error in updating trial " + JSON.stringify(outerTrial));
+            });
+
         };
+
+        function updateTrial(outerTrial){
+
+        }
 
         function setAddMode() {
             console.log("In addParticipatingSite");
