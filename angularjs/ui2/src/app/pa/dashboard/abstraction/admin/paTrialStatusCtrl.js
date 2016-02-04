@@ -8,10 +8,12 @@
     .controller('paTrialStatusCtrl', paTrialStatusCtrl);
 
     paTrialStatusCtrl.$inject = ['$scope', '_', 'PATrialService', 'TrialService',
-        'trialStatuses', 'Common', 'DateService', '$timeout'];
+        'trialStatuses', 'Common', 'DateService', '$timeout', 'CommentService',
+        'UserService'];
 
     function paTrialStatusCtrl($scope, _, PATrialService, TrialService,
-        trialStatuses, Common, DateService, $timeout) {
+        trialStatuses, Common, DateService, $timeout, CommentService,
+        UserService) {
 
         var vm = this;
         vm.trialStatuses = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
@@ -21,6 +23,9 @@
         vm.dateOptions = DateService.getDateOptions();
         vm.trialDetailObj = {};
         vm.tempTrialStatuses = [];
+        vm.commentList = [];
+        var commentField = 'trial-status'; // for marking comment entry
+        var commentModel = 'Trial'; // model name for comment
 
         // actions
         vm.addTrialStatus = addTrialStatus;
@@ -29,45 +34,7 @@
         vm.editTrialStatus = editTrialStatus;
         vm.cancelEdit = cancelEdit;
         vm.commitEdit = commitEdit;
-
-        var imagePath = 'https://material.angularjs.org/latest/img/list/60.jpeg';
-        vm.todos = [
-      {
-        face : imagePath,
-        what: 'Brunch this weekend?',
-        who: 'Min Li Chan',
-        when: '3:08PM',
-        notes: " I'll be in your neighborhood doing errands"
-      },
-      {
-        face : imagePath,
-        what: 'Brunch this weekend?',
-        who: 'Min Li Chan',
-        when: '3:08PM',
-        notes: " I'll be in your neighborhood doing errands"
-      },
-      {
-        face : imagePath,
-        what: 'Brunch this weekend?',
-        who: 'Min Li Chan',
-        when: '3:08PM',
-        notes: " I'll be in your neighborhood doing errands"
-      },
-      {
-        face : imagePath,
-        what: 'Brunch this weekend?',
-        who: 'Min Li Chan',
-        when: '3:08PM',
-        notes: " I'll be in your neighborhood doing errands"
-      },
-      {
-        face : imagePath,
-        what: 'Brunch this weekend?',
-        who: 'Min Li Chan',
-        when: '3:08PM',
-        notes: " I'll be in your neighborhood doing errands"
-      },
-    ];
+        vm.createComment = createComment;
 
         activate();
         function activate() {
@@ -77,6 +44,10 @@
         function _getTrialDetailCopy() {
             $timeout(function() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                // load comments for the trial with the field name {commentField}
+                vm.commentObj = _initCommentObj();
+                _loadComments(commentField);
+
                 // convert the trial_status_id to status name
                 vm.tempTrialStatuses = _.map(vm.trialDetailObj.trial_status_wrappers, function(status) {
                     var curStatusObj = _.findWhere(vm.trialStatuses, {id: status.trial_status_id});
@@ -223,6 +194,45 @@
             if (vm.statusObj.edit) {
                 vm.statusObj = _initStatusObj();
             }
+        }
+
+        /**
+         * Fetch comments for the trial with its uuid and the fieldName
+         * @param  {String} fieldName [field name for the comment, e.g. trial-status]
+         * @return {Promise}           [resolved to an array of comments]
+         */
+        function _loadComments(fieldName) {
+            CommentService.getComments(vm.trialDetailObj.uuid, fieldName)
+                .then(function(res) {
+                    vm.commentList = CommentService.annotateCommentIsEditable(res.comments);
+                })
+                .catch(function(err) {
+                    console.log('error in retrieving comments');
+                });
+        }
+
+        /**
+        * POST commentObj to API
+        */
+        function createComment() {
+            if (vm.commentObj.content === '') return;
+            CommentService.createComment(vm.commentObj)
+              .then(function(res) {
+                 console.log('posted comment, res: ', res);
+                 vm.commentObj = _initCommentObj();
+                 _loadComments(commentField);
+              });
+        } //createComment
+
+        function _initCommentObj() {
+            return {
+              content: '',
+              username: UserService.getLoggedInUsername(),
+              field: commentField,
+              model: commentModel,
+              instance_uuid: vm.trialDetailObj.uuid,
+              parent_id: ''
+            };
         }
 
 
