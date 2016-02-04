@@ -9,11 +9,11 @@
 
     paTrialStatusCtrl.$inject = ['$scope', '_', 'PATrialService', 'TrialService',
         'trialStatuses', 'Common', 'DateService', '$timeout', 'CommentService',
-        'UserService'];
+        'UserService', 'toastr'];
 
     function paTrialStatusCtrl($scope, _, PATrialService, TrialService,
         trialStatuses, Common, DateService, $timeout, CommentService,
-        UserService) {
+        UserService, toastr) {
 
         var vm = this;
         vm.trialStatuses = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
@@ -33,7 +33,6 @@
         var commentModel = 'Trial'; // model name for comment
         vm._date_opened = false;
 
-
         // actions
         vm.addTrialStatus = addTrialStatus;
         vm.openCalendar = openCalendar;
@@ -43,6 +42,8 @@
         vm.commitEdit = commitEdit;
         vm.createComment = createComment;
         vm.updateComment = updateComment;
+        vm.updateTrialStatuses = updateTrialStatuses;
+        vm.resetForm = resetForm;
 
         activate();
         function activate() {
@@ -55,6 +56,7 @@
                 // load comments for the trial with the field name {commentField}
                 vm.commentObj = _initCommentObj();
                 _loadComments(commentField);
+                _convertDates();
 
                 // convert the trial_status_id to status name
                 vm.tempTrialStatuses = _.map(vm.trialDetailObj.trial_status_wrappers, function(status) {
@@ -72,12 +74,6 @@
                 });
 
                 validateStatuses();
-                // format the trial-associated date fields
-                vm.trialDetailObj.start_date = !!vm.trialDetailObj.start_date ? moment(vm.trialDetailObj.start_date).format("DD-MMM-YYYY") : '';
-                // DateService.convertISODateToLocaleDateStr()
-                vm.trialDetailObj.primary_comp_date = !!vm.trialDetailObj.primary_comp_date ? moment(vm.trialDetailObj.primary_comp_date).format("DD-MMM-YYYY") : '';
-                vm.trialDetailObj.comp_date = !!vm.trialDetailObj.comp_date ? moment(vm.trialDetailObj.comp_date).format("DD-MMM-YYYY") : '';
-                vm.trialDetailObj.amendment_date = !!vm.trialDetailObj.amendment_date ? moment(vm.trialDetailObj.amendment_date).format("DD-MMM-YYYY") : '';
             }, 0);
         } // _getTrialDetailCopy
 
@@ -246,6 +242,15 @@
             };
         }
 
+        function _convertDates() {
+            // format the trial-associated date fields
+            vm.trialDetailObj.start_date = !!vm.trialDetailObj.start_date ? moment(vm.trialDetailObj.start_date).format("DD-MMM-YYYY") : '';
+            // DateService.convertISODateToLocaleDateStr()
+            vm.trialDetailObj.primary_comp_date = !!vm.trialDetailObj.primary_comp_date ? moment(vm.trialDetailObj.primary_comp_date).format("DD-MMM-YYYY") : '';
+            vm.trialDetailObj.comp_date = !!vm.trialDetailObj.comp_date ? moment(vm.trialDetailObj.comp_date).format("DD-MMM-YYYY") : '';
+            vm.trialDetailObj.amendment_date = !!vm.trialDetailObj.amendment_date ? moment(vm.trialDetailObj.amendment_date).format("DD-MMM-YYYY") : '';
+        }
+
         function openCalendar ($event, type) {
             $event.preventDefault();
             $event.stopPropagation();
@@ -262,6 +267,36 @@
                 vm.amendmentDateOpened = !vm.amendmentDateOpened;
             }
         }; //openCalendar
+
+        function updateTrialStatuses() {
+            vm.trialDetailObj.trial_status_wrappers = vm.tempTrialStatuses;
+            var outerTrial = {};
+            outerTrial.new = false;
+            outerTrial.id = vm.trialDetailObj.id;
+            outerTrial.trial = vm.trialDetailObj;
+
+            TrialService.upsertTrial(outerTrial).then(function(res) {
+                vm.trialDetailObj = res;
+                vm.trialDetailObj.lock_version = res.lock_version;
+
+                PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
+                $scope.$emit('updatedInChildScope', {});
+
+                toastr.clear();
+                toastr.success('Trial statuses has been updated', 'Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
+                _getTrialDetailCopy();
+            });
+
+        } // updateTrialStatuses
+
+        function resetForm() {
+            _getTrialDetailCopy();
+        }
+
+
 
 
     } // paTrialStatusCtrl

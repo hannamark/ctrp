@@ -4,7 +4,7 @@
             <uib-accordion-heading>
                 Trial Status <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
-                <form class="form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="">
+                <form class="form-horizontal" role="form" name="trial_status_form" novalidate>
                     <!-- fieldset for trial statuses -->
                     <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Trial Statuses</legend>
@@ -146,7 +146,7 @@
                                 <input type="text" class="form-control input-sm" ng-model="trialStatusView.commentObj.content" restriction-field placeholder="Your comment...">
                                 <span class="input-group-btn">
                                     <!-- <md-button class="md-raised" type="button">Button</md-button> -->
-                                    <button class="btn btn-default" restriction-field type="button" ng-click="trialStatusView.createComment()">Add Comment</button>
+                                    <button class="btn btn-default" restriction-field type="button" ng-click="trialStatusView.createComment()">Add</button>
                                 </span>
                             </div>
                         </div>
@@ -255,6 +255,18 @@
                         </div>
                     </fieldset>
                     <!-- end of fieldset for trial dates -->
+
+                    <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                      <div class="col-sm-3"></div>
+                      <div class="btn-toolbar col-xs-12 col-sm-9">
+                        <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-click="trialStatusView.updateTrialStatuses()"> <!--  ng-disabled="!trial_status_form.$valid" -->
+                          <i class="glyphicon glyphicon-ok"></i>  Save
+                        </button>
+                        <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialStatusView.resetForm()" restriction-field>
+                         <i class="glyphicon glyphicon-remove"></i>  Reset
+                        </button>
+                      </div>
+                    </div>
                 </form>
         </uib-accordion-group>
     </uib-accordion>
