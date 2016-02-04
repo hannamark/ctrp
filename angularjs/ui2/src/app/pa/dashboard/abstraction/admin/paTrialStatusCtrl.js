@@ -30,6 +30,45 @@
         vm.cancelEdit = cancelEdit;
         vm.commitEdit = commitEdit;
 
+        var imagePath = 'https://material.angularjs.org/latest/img/list/60.jpeg';
+        vm.todos = [
+      {
+        face : imagePath,
+        what: 'Brunch this weekend?',
+        who: 'Min Li Chan',
+        when: '3:08PM',
+        notes: " I'll be in your neighborhood doing errands"
+      },
+      {
+        face : imagePath,
+        what: 'Brunch this weekend?',
+        who: 'Min Li Chan',
+        when: '3:08PM',
+        notes: " I'll be in your neighborhood doing errands"
+      },
+      {
+        face : imagePath,
+        what: 'Brunch this weekend?',
+        who: 'Min Li Chan',
+        when: '3:08PM',
+        notes: " I'll be in your neighborhood doing errands"
+      },
+      {
+        face : imagePath,
+        what: 'Brunch this weekend?',
+        who: 'Min Li Chan',
+        when: '3:08PM',
+        notes: " I'll be in your neighborhood doing errands"
+      },
+      {
+        face : imagePath,
+        what: 'Brunch this weekend?',
+        who: 'Min Li Chan',
+        when: '3:08PM',
+        notes: " I'll be in your neighborhood doing errands"
+      },
+    ];
+
         activate();
         function activate() {
             _getTrialDetailCopy();
@@ -54,7 +93,7 @@
                 });
 
                 validateStatuses();
-                // format the trial-associated date fields                
+                // format the trial-associated date fields
                 vm.trialDetailObj.start_date = moment(vm.trialDetailObj.start_date).format("DD-MMM-YYYY");
                 // DateService.convertISODateToLocaleDateStr()
                 vm.trialDetailObj.primary_comp_date = moment(vm.trialDetailObj.primary_comp_date).format("DD-MMM-YYYY");

@@ -820,3 +820,5 @@ a.editable-click:hover {
 .select2-results-absolute .select2-search {
     padding-bottom: 4px;
 }
+
+.top-buffer { margin-top:10px; }
