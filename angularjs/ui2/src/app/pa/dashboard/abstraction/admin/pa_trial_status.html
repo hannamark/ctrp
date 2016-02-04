@@ -143,9 +143,9 @@
                         </div>
                         <div class="row">
                             <div class="input-group">
-                                <input type="text" class="form-control input-sm" ng-model="trialStatusView.commentObj.content" restriction-field placeholder="Your comment...">
+                                <textarea class="form-control input-sm" id="status_comment" name="trial_status_comment" rows="1" ng-model="trialStatusView.commentObj.content" restriction-field placeholder="Your comment..."></textarea>
+                                <!-- <input type="text" class="form-control input-sm" ng-model="trialStatusView.commentObj.content" restriction-field placeholder="Your comment..."> -->
                                 <span class="input-group-btn">
-                                    <!-- <md-button class="md-raised" type="button">Button</md-button> -->
                                     <button class="btn btn-default" restriction-field type="button" ng-click="trialStatusView.createComment()">Add</button>
                                 </span>
                             </div>
