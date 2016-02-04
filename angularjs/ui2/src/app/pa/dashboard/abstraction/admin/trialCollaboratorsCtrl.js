@@ -115,6 +115,8 @@
             }
         });
 
+        activate();
+
         /****************** implementations below ***************/
         function activate() {
             appendCollaborators();
