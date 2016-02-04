@@ -79,7 +79,7 @@
         } // openCalendar
 
         function addTrialStatus() {
-
+            vm.statusErrorMsg = '';
             if (vm.statusObj.status_date && vm.statusObj.trial_status_id) {
                 var statusExists = _.findIndex(vm.tempTrialStatuses, {trial_status_id: vm.statusObj.trial_status_id}) > -1;
                 if (statusExists) {
@@ -95,13 +95,14 @@
                     clonedStatusObj.trial_status_name = selectedStatus.name;
                     clonedStatusObj.trial_status_code = selectedStatus.code;
                 }
-                console.log('vm.tempTrialStatuses: ', vm.tempTrialStatuses);
                 vm.tempTrialStatuses.push(clonedStatusObj);
 
                 // Validate statuses:
                 validateStatuses();
                 // re-initialize the vm.statusObj
                 vm.statusObj = _initStatusObj();
+            } else {
+                vm.statusErrorMsg = 'Both status date and trial status are required';
             }
         }
 
