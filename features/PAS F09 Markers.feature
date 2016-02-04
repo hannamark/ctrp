@@ -181,7 +181,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Marker Search in caDSR screen 
 When I select Highlight Query Text = No
 And I select the search button
-Then the Search Term in th ePermissable Value field is not highlighted 
+Then the Search Term in the Permissable Value field is not highlighted 
 
 Scenario:  #10 Enter Public ID in caDSR Marker Search screen
 Given I am logged into the CTRP Protocol Abstraction application
@@ -196,7 +196,15 @@ When I enter and Publid ID
 And there is no match in caDSR
 Then a 'Nothing found to display' message is displayed
 
-Scenario:  #11  Create new marker with attributes of existing marker
+Scenario:  #11 Missing Name and Public ID in caDSR Marker Search screen
+Given I am on the Marker Search in caDSR screen
+When I have not entered a Search Term
+And I have not entered a Public ID
+And I click the Search button 
+Then the error message "At least one search criteria is required" displays
+
+
+Scenario:  #12  Create new marker with attributes of existing marker
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add Marker screen
@@ -210,7 +218,7 @@ Then the new marker will be associated to the trial
 And the Markers screen displays
 And a 'Record Created' message is displayed
 
-Scenario:  #12 Edit Marker Attributes  
+Scenario:  #13 Edit Marker Attributes  
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Add Marker screen
@@ -225,7 +233,7 @@ And I have selected the Save button
 Then the updated marker will be associated to the trial
 And the Markers screen displays
   
-Scenario:  #13 Edit Attributes for Multiple Markers 
+Scenario:  #14 Edit Attributes for Multiple Markers 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Marker screen
@@ -253,7 +261,7 @@ And the updated markers are associated to the trial
 And the Markers screen displays
 And a 'Record(s) Updated' message is displayed
 
-Scenario:  #14 I can Delete Markers for a Trial
+Scenario:  #15 I can Delete Markers for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Markers screen
@@ -277,7 +285,7 @@ And 'Record(s) deleted' message is not displayed
 When Marker Status = pending
 Then the marker is removed from the New Marker Requests screen
 
- Scenario:  #15 I can Reset Add Markers screen for a Trial
+ Scenario:  #16 I can Reset Add Markers screen for a Trial
  Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
 And I am on the Add Markers screen
