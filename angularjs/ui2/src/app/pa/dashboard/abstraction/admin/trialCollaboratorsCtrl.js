@@ -35,6 +35,9 @@
                 vm.curTrial.collaborators_attributes = [];
                 _.each(vm.addedCollaborators, function (collaborator) {
                     vm.curTrial.collaborators_attributes.push(collaborator);
+                    if (!vm.addedCollaborators[index]._destroy) {
+                        vm.curTrial.collaborators.push(collaborator);
+                    }
                 });
             }
 

@@ -207,7 +207,7 @@ And the study souce is:
 |National|
 |Externally Peer-Reviewed|
 |Institutional|
-When select Accept
+When I select Accept
 And any of the mandatory fields have not be entered:
 |Lead Organizaiton identifier|
 |Official Title|
@@ -229,7 +229,7 @@ And the study souce is:
 |National|
 |Externally Peer-Reviewed|
 |Institutional|
-When select Accept
+When I select Accept
 And any of the mandatory fields have not be entered:
 |Lead Organizaiton identifier|
 |Official Title|
@@ -252,7 +252,7 @@ And the study souce is:
 |Industrial|
 |Other|
 |Expanded Access|
-When select Accept
+When I select Accept
 And any of the mandatory fields have not be entered:
 |Lead Organizaiton identifier|
 |Official Title|
