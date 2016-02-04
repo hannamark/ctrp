@@ -1,7 +1,7 @@
 class Ws::ApiTrialsController < Ws::BaseApiController
 
 
-  before_filter :find_trial, only: [:update]
+  #before_filter :find_trial, only: [:update]
   before_filter :sam, only: [:change_status]
 
   before_filter only: [:create] do
@@ -73,62 +73,13 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
       end
 
-
-
-
-
-     ############ *****************  TRIAL DOCS ******************  ##########################
-
-
-      @trialDocs = Array.new
-
-      if trialkeys.has_key?("protocolDocument")
-
-        process_docs(trialkeys["protocolDocument"])
-
-      end
-
-      if trialkeys.has_key?("irbApprovalDocument")
-
-        process_docs(trialkeys["irbApprovalDocument"])
-
-      end
-
-      if trialkeys.has_key?("participatingSitesDocument")
-
-        process_docs(trialkeys["participatingSitesDocument"])
-
-      end
-
-      if trialkeys.has_key?("informedConsentDocument")
-
-        process_docs(trialkeys["informedConsentDocument"])
-
-      end
-
-      if trialkeys.has_key?("otherDocument")
-
-        process_docs(trialkeys["otherDocument"])
-
-      end
-
-
-      @trialMasterMap.store("trial_documents_attributes",@trialDocs);
-
-
-
-      #########################################################################################
-
-
-
-
     end
 
 
     if !@errors.empty?
       render xml: @errors, status: :bad_request
     else
-       validate_errors = Hash.new();
+       @validate_errors = Hash.new();
     #############################################################################################################################
 
 
@@ -148,41 +99,32 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         trialkeys.delete("phase")
       else
         @phases = Phase.pluck(:name);
-        validate_errors.store("tns:phase","Invalid value:following are valid values;")
-        validate_errors.store("tns:phase:validvalues",@phases);
+        @validate_errors.store("tns:phase","Invalid value:following are valid values;")
+        @validate_errors.store("tns:phase:validvalues",@phases);
         #render xml: errors, status: :bad_request
       end
     else
-      validate_errors.store("tns:phase","this node has to be included in the request;");
+      @validate_errors.store("tns:phase","this node has to be included in the request;");
       #render xml: errors, status: :bad_request
     end
 
     #accrualDiseaseTerminology  accrual_disease_term_id
+       if trialkeys.has_key?("accrualDiseaseTerminology")
+         process_accrual_diseageterminology(trialkeys)
+       else
+         @validate_errors.store("tns:accrualDiseaseTerminology","accrualDiseaseTerminology expected;");
+       end
 
-    if trialkeys.has_key?("accrualDiseaseTerminology")
-      if AccrualDiseaseTerm.find_by_name(trialkeys["accrualDiseaseTerminology"])
-        @trialMasterMap["accrual_disease_term_id"]=AccrualDiseaseTerm.find_by_name(trialkeys["accrualDiseaseTerminology"]).id
-        trialkeys.delete("accrualDiseaseTerminology")
-      else
-        @accrualdiseaseterms = AccrualDiseaseTerm.pluck(:name);
-        validate_errors.store("tns:accrualDiseaseTerminology","Invalid value:following are valid values;")
-        validate_errors.store("tns:accrualDiseaseTerminology:validvalues",@accrualdiseaseterms);
-        #render xml: errors, status: :bad_request
 
-      end
-    else
-      validate_errors.store("tns:accrualDiseaseTerminology","accrualDiseaseTerminology expected;");
-      #render xml: errors, status: :bad_request
-    end
 
     #title official_title
 
     if !trialkeys.has_key?("title")
-      validate_errors.store("tns:title","title expected;");
+      @validate_errors.store("tns:title","title expected;");
       #render xml: errors, status: :bad_request
     else
       if trialkeys["title"].nil?
-        validate_errors.store("tns:title","Title can not be null");
+        @validate_errors.store("tns:title","Title can not be null");
         #render xml: errors, status: :bad_request
       else
         @trialMasterMap["official_title"]=trialkeys["title"]
@@ -199,20 +141,20 @@ class Ws::ApiTrialsController < Ws::BaseApiController
           if trialkeys.has_key?("primaryPurposeOtherDescription")
             @trialMasterMap["primary_purpose_other"]= trialkeys["primaryPurposeOtherDescription"]
           else
-            validate_errors.store("tns:primaryPurposeOtherDescription","When primaryPurpose is other; primaryPurposeOtherDescription expected with minimum length of 1");
+            @validate_errors.store("tns:primaryPurposeOtherDescription","When primaryPurpose is other; primaryPurposeOtherDescription expected with minimum length of 1");
           end
         end
         trialkeys.delete("primaryPurpose")
       else
         @primarypurposes = PrimaryPurpose.pluck(:name);
-        validate_errors.store("tns:primaryPurpose","Invalid value:following are valid values;")
-        validate_errors.store("tns:primaryPurpose:validvalues",@primarypurposes);
+        @validate_errors.store("tns:primaryPurpose","Invalid value:following are valid values;")
+        @validate_errors.store("tns:primaryPurpose:validvalues",@primarypurposes);
 
       end
 
 
     else
-      validate_errors.store("tns:primaryPurpose","primaryPurpose is expected");
+      @validate_errors.store("tns:primaryPurpose","primaryPurpose is expected");
       #render xml: validate_errors, status: :bad_request
     end
 
@@ -238,17 +180,17 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
         @trialMasterMap["lead_org_id"]=lead_org
       else
-        validate_errors.store("tns:poID","given poID not existed Org in CTRP 5.X ; expected active and CTRP org")
+        @validate_errors.store("tns:poID","given poID not existed Org in CTRP 5.X ; expected active and CTRP org")
 
       end
 
       else
-        validate_errors.store("tns:poID","poID node missing; this node is exoected")
+        @validate_errors.store("tns:poID","poID node missing; this node is exoected")
       end
 
     else
 
-      validate_errors.store("tns:leadOrganization","Lead organization expected; with existingOrganization with active status and CTRP Context")
+      @validate_errors.store("tns:leadOrganization","Lead organization expected; with existingOrganization with active status and CTRP Context")
 
 #        render xml: errors, status: :bad_request
       end
@@ -264,16 +206,16 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         if count > 0
           @trialMasterMap["sponsor_id"]=sponsor
         else
-          validate_errors.store("tns:sponsor","given sponsor not existed Org in CTRP 5.X ; expected active and CTRP org")
+          @validate_errors.store("tns:sponsor","given sponsor not existed Org in CTRP 5.X ; expected active and CTRP org")
         end
 
       else
-        validate_errors.store("tns:sponsor","sponsor node missing; this node is exoected")
+        @validate_errors.store("tns:sponsor","sponsor node missing; this node is exoected")
       end
 
     else
 
-      validate_errors.store("tns:sponsor","sponsor organization expected; with existingOrganization with active status and CTRP Context")
+      @validate_errors.store("tns:sponsor","sponsor organization expected; with existingOrganization with active status and CTRP Context")
 
 #        render xml: errors, status: :bad_request
     end
@@ -295,17 +237,17 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
           @trialMasterMap["pi_id"]=pi
         else
-          validate_errors.store("tns:pi","given pi not existed Person in CTRP 5.X ; expected active and CTRP person")
+          @validate_errors.store("tns:pi","given pi not existed Person in CTRP 5.X ; expected active and CTRP person")
 
         end
 
       else
-        validate_errors.store("tns:pi","pi node missing; this node is exoected")
+        @validate_errors.store("tns:pi","pi node missing; this node is exoected")
       end
 
     else
 
-      validate_errors.store("tns:pi","pi person expected; with existingPerson with active status and CTRP Context")
+      @validate_errors.store("tns:pi","pi person expected; with existingPerson with active status and CTRP Context")
 
 #        render xml: errors, status: :bad_request
     end
@@ -344,7 +286,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
                  ind_ides.push(myHash);
                  # ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id, :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                else
-                 validate_errors.store("tns:ind"," For each ind  number, grantor, holderType expected;")
+                 @validate_errors.store("tns:ind"," For each ind  number, grantor, holderType expected;")
                  break;
                end
 
@@ -366,7 +308,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
              ind_ides.push(myHash);
            else
-             validate_errors.store("tns:ind"," number, grantor, holderType expected;")
+             @validate_errors.store("tns:ind"," number, grantor, holderType expected;")
 
            end
          end
@@ -398,7 +340,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
                  ind_ides.push(myHash);
                  # ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id, :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                else
-                 validate_errors.store("tns:ide"," For each ide  number, grantor, holderType expected;")
+                 @validate_errors.store("tns:ide"," For each ide  number, grantor, holderType expected;")
                  break;
                end
 
@@ -420,7 +362,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
              ind_ides.push(myHash);
            else
-             validate_errors.store("tns:ide"," number, grantor, holderType expected;")
+             @validate_errors.store("tns:ide"," number, grantor, holderType expected;")
 
            end
          end
@@ -428,84 +370,13 @@ class Ws::ApiTrialsController < Ws::BaseApiController
        end
        @trialMasterMap.store("ind_ides_attributes",ind_ides);
        else
-         validate_errors.store("tns:ide/tns:ind","Either tns:ind or tnd:ide expected")
+         @validate_errors.store("tns:ide/tns:ind","Either tns:ind or tnd:ide expected")
 
        end
 
 
 
-###################################################################
 
-
-
-       ####################REGULATORY INFORMATION ###################
-
-=begin
-if trialkeys.has_key?("ide")
-         if trialkeys["ide"].kind_of?(Array)
-           if trialkeys["ide"].length > 0
-             len=trialkeys["ide"].length
-
-
-             puts trialkeys["ide"]
-
-             puts len
-             for i in 0..len-1
-               if trialkeys["ide"][i].has_key?("number") && trialkeys["ide"][i].has_key?("grantor") && trialkeys["ide"][i].has_key?("holderType")
-
-                 number=trialkeys["ide"][i]["number"]
-                 grantor=trialkeys["ide"][i]["grantor"]
-                 holderType=trialkeys["ide"][i]["holderType"]
-                 holderTypeId= HolderType.find_by_name(holderType).id;
-                 myHash= Hash.new();
-                 myHash.store("ind_ide_type","ide");
-                 myHash.store("ind_ide_number",number);
-                 myHash.store("grantor",grantor);
-                 myHash.store("holder_type_id",holderTypeId);
-
-                 ind_ides.push(myHash);
-                 # ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id, :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
-               else
-                 validate_errors.store("tns:ide"," For each ide  number, grantor, holderType expected;")
-                 break;
-               end
-
-             end
-
-           end
-         else
-           if trialkeys["ide"].has_key?("number") && trialkeys["ide"].has_key?("grantor") && trialkeys["ide"].has_key?("holderType")
-             number=trialkeys["ide"]["number"]
-             grantor=trialkeys["ide"]["grantor"]
-             holderType=trialkeys["ide"]["holderType"]
-             holderTypeId= HolderType.find_by_name(holderType).id;
-
-             myHash= Hash.new();
-             myHash.store("ind_ide_type","ide");
-             myHash.store("ind_ide_number",number);
-             myHash.store("grantor",grantor);
-             myHash.store("holder_type_id",holderTypeId);
-
-             ind_ides.push(myHash);
-           else
-             validate_errors.store("tns:ide"," number, grantor, holderType expected;")
-
-           end
-         end
-
-       end
-       @trialMasterMap.store("ind_ides_attributes",ind_ides);
-       else
-         validate_errors.store("tns:ide/tns:ind","Either tns:ind or tnd:ide expected")
-
-       end
-
-=end
-
-
-
-
-       ##############################################################
 
 
     #############################################################################################################################
@@ -528,11 +399,11 @@ if trialkeys.has_key?("summary4FundingSponsor")
           myHash.store("organization_id",poID);
           trial_funding_sources.push(myHash);
          else
-           validate_errors.store("tns:summary4FundingSponsor","org not existed "+poID)
+           @validate_errors.store("tns:summary4FundingSponsor","org not existed "+poID)
            break;
          end
        else
-         validate_errors.store("tns:summary4FundingSponsor","One or more of these nodes are missing existingOrganization")
+         @validate_errors.store("tns:summary4FundingSponsor","One or more of these nodes are missing existingOrganization")
          break;
        end
 
@@ -549,11 +420,11 @@ if trialkeys.has_key?("summary4FundingSponsor")
           myHash.store("organization_id",poID);
           trial_funding_sources.push(myHash);
         else
-          validate_errors.store("tns:summary4FundingSponsor","org not existed "+poID)
+          @validate_errors.store("tns:summary4FundingSponsor","org not existed "+poID)
           break;
         end
       else
-        validate_errors.store("tns:summary4FundingSponsor","missing existingOrganization")
+        @validate_errors.store("tns:summary4FundingSponsor","missing existingOrganization")
         break;
       end
 
@@ -561,7 +432,7 @@ if trialkeys.has_key?("summary4FundingSponsor")
 
     @trialMasterMap.store("trial_funding_sources_attributes",trial_funding_sources);
 else
-  validate_errors.store("tns:summary4FundingSponsor","summary4FundingSponsor expected;")
+  @validate_errors.store("tns:summary4FundingSponsor","summary4FundingSponsor expected;")
 
 end
 
@@ -574,65 +445,11 @@ end
 
     ################################################################################################################################
 #### Grants
-    grants=Array.new
-
-       if trialkeys.has_key?("grant")
-        if trialkeys["grant"].kind_of?(Array)
-        if trialkeys["grant"].length > 0
-      len=trialkeys["grant"].length
-
-      puts "grants length *********>>>>>>>> "
-
-      puts trialkeys["grant"]
-
-      puts len
-      for i in 0..len-1
-        if trialkeys["grant"][i].has_key?("fundingMechanism") #&& trialkeys["grant"][i].has_key?("nihInstitutionCode") && trialkeys["grant"][i].has_key?("serialNumber") && trialkeys["grant"][i].has_key?("nciDivisionProgramCode")
-
-          fundingMechanism=trialkeys["grant"][i]["fundingMechanism"]
-          nihInstitutionCode=trialkeys["grant"][i]["nihInstitutionCode"]
-          serialNumber=trialkeys["grant"][i]["serialNumber"]
-          nciDivisionProgramCode=trialkeys["grant"][i]["nciDivisionProgramCode"]
-
-          myHash= Hash.new();
-          myHash.store("funding_mechanism",fundingMechanism);
-          myHash.store("institute_code",nihInstitutionCode);
-          myHash.store("serial_number",serialNumber);
-          myHash.store("nci",nciDivisionProgramCode);
-
-          grants.push(myHash);
-
-        else
-          validate_errors.store("tns:grant"," For each grant fundingMechanism, nihInstitutionCode, serialNumber, nciDivisionProgramCode expected;")
-          break;
-        end
-
-      end
-
-    end
-else
-  if trialkeys["grant"].has_key?("fundingMechanism") && trialkeys["grant"].has_key?("nihInstitutionCode") && trialkeys["grant"].has_key?("serialNumber") && trialkeys["grant"].has_key?("nciDivisionProgramCode")
-
-    fundingMechanism=trialkeys["grant"]["fundingMechanism"]
-    nihInstitutionCode=trialkeys["grant"]["nihInstitutionCode"]
-    serialNumber=trialkeys["grant"]["serialNumber"]
-    nciDivisionProgramCode=trialkeys["grant"]["nciDivisionProgramCode"]
-
-    myHash= Hash.new();
-    myHash.store("funding_mechanism",fundingMechanism);
-    myHash.store("institute_code",nihInstitutionCode);
-    myHash.store("serial_number",serialNumber);
-    myHash.store("nci",nciDivisionProgramCode);
-
-    grants.push(myHash);
-end
-end
-    @trialMasterMap.store("grants_attributes",grants);
-       else
-         validate_errors.store("tns:grant","grant expected;")
-
+      if trialkeys.has_key?("grant")
+      process_grants(trialkeys)
+      else
+        @validate_errors.store("tns:grant","grant expected;")
        end
-
 
 
 
@@ -640,91 +457,200 @@ end
 
 
 
-       trial_status_wrapper=Array.new();
-       trial_status_map=Hash.new();
-       if trialkeys.has_key?("trialStatus")
-         if TrialStatus.find_by_name(trialkeys["trialStatus"])
-           trial_status_map["trial_status_id"]=TrialStatus.find_by_name(trialkeys["trialStatus"]).id
-           trialkeys.delete("trialStatus")
-         else
-           @trialstatusses = TrialStatus.pluck(:name);
-           validate_errors.store("tns:trialStatus","Invalid value:following are valid values;")
-           validate_errors.store("tns:trialStatus:validvalues",@trialstatusses);
-         end
-       end
-
-       if trialkeys.has_key?("trialStatusDate")
-           trial_status_map["status_date"]=trialkeys["trialStatusDate"]
-           trialkeys.delete("trialStatusDate")
-       end
-        if trialkeys.has_key?("whyStopped")
-           trial_status_map["why_stopped"]=trialkeys["whyStopped"]
-           trialkeys.delete("whyStopped")
-       end
-
-       trial_status_wrapper.push(trial_status_map);
-       @trialMasterMap.store("trial_status_wrappers_attributes",trial_status_wrapper) if !trial_status_map.empty?
-
-    # ##"start_date_qual"=>"Actual", "primary_comp_date_qual"=>"Actual",
-    # ##"comp_date_qual"=>"Actual", "primary_comp_date"=>"2015-12-26T05:00:00.000Z",
-    # ##"start_date"=>"2015-12-01T05:00:00.000Z", "comp_date"=>"2015-12-09T05:00:00.000Z",
-
-    #    <tns:trialStartDate type="Anticipated">2015-12-27</tns:trialStartDate>
-
-    #   <tns:primaryCompletionDate type="Anticipated">2016-07-15</tns:primaryCompletionDate>
-
-    #  <tns:completionDate type="Anticipated">2016-07-15</tns:completionDate>
+       process_trialstatus(trialkeys)
 
 
        if trialkeys.has_key?("trialStartDate")
-         if !trialkeys["trialStartDate"].kind_of?(Array) && ( trialkeys["trialStartDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["trialStartDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
-           @trialMasterMap["start_date_qual"]=trialkeys["trialStartDate"]["type"];
-           @trialMasterMap["start_date"]=trialkeys["trialStartDate"]["__content__"];
-         else
-           validate_errors.store("tns:trialStartDate","exactly one trialStartDate expected; or valid types are Anticipated and Actual ")
-
-         end
+       process_trial_start_date(trialkeys)
        else
-         validate_errors.store("tns:trialStartDate","trialStartDate expected;")
+         @validate_errors.store("tns:trialStartDate","trialStartDate expected;")
        end
 
 
        if trialkeys.has_key?("primaryCompletionDate")
-         if !trialkeys["primaryCompletionDate"].kind_of?(Array) && ( trialkeys["primaryCompletionDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["primaryCompletionDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
-           @trialMasterMap["primary_comp_date_qual"]=trialkeys["primaryCompletionDate"]["type"];
-           @trialMasterMap["primary_comp_date"]=trialkeys["primaryCompletionDate"]["__content__"];
-         else
-           validate_errors.store("tns:primaryCompletionDate","exactly one primaryCompletionDate expected; or valid types are Anticipated and Actual ")
-
-         end
+         process_trial_primary_completion_date(trialkeys)
        else
-         validate_errors.store("tns:primaryCompletionDate","primaryCompletionDate expected;")
+         @validate_errors.store("tns:primaryCompletionDate","primaryCompletionDate expected;")
        end
 
 
        if trialkeys.has_key?("completionDate")
-         if !trialkeys["completionDate"].kind_of?(Array) && ( trialkeys["completionDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["completionDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
-           @trialMasterMap["comp_date_qual"]=trialkeys["trialStartDate"]["type"];
-           @trialMasterMap["comp_date"]=trialkeys["trialStartDate"]["__content__"];
-         else
-           validate_errors.store("tns:completionDate","exactly one completionDate expected; or valid types are Anticipated and Actual ")
-
-         end
+         process_trial_completion_date(trialkeys)
        else
-         validate_errors.store("tns:completionDate","completionDate expected;")
+         @validate_errors.store("tns:completionDate","completionDate expected;")
        end
+
+
+    ############ *****************  TRIAL DOCS ******************  ##########################
+
+
+       @trialDocs = Array.new
+
+       if trialkeys.has_key?("protocolDocument")
+
+         process_docs(trialkeys["protocolDocument"])
+       else
+         @validate_errors.store("tns:protocolDocument","completionDate expected;")
+       end
+
+
+       if trialkeys.has_key?("irbApprovalDocument")
+
+         process_docs(trialkeys["irbApprovalDocument"])
+       else
+         @validate_errors.store("tns:irbApprovalDocument","irbApprovalDocument expected;")
+       end
+
+       if trialkeys.has_key?("participatingSitesDocument")
+
+         process_docs(trialkeys["participatingSitesDocument"])
+
+       end
+
+       if trialkeys.has_key?("informedConsentDocument")
+
+         process_docs(trialkeys["informedConsentDocument"])
+
+       end
+
+       if trialkeys.has_key?("otherDocument")
+
+         process_docs(trialkeys["otherDocument"])
+
+       end
+
+
+       @trialMasterMap.store("trial_documents_attributes",@trialDocs);
+
+
+
+    #########################################################################################
 
 
 
     ##################################################################################################################################
 
 
-       render xml: validate_errors, status: :bad_request if !validate_errors.empty?
+       render xml: @validate_errors, status: :bad_request if !@validate_errors.empty?
 
     end
     puts "************* Master Map ****************"
     puts @trialMasterMap
 end # end of before_create
+
+
+
+
+
+
+  before_filter only: [:update] do
+
+    if params.has_key?("idType")
+      if params[:idType] == "nci"
+        @trial = Trial.find_by_nci_id(params[:id])
+      else
+        render xml: "expected idtypes are nci,pa,dcp,ctep but currently nci is accepting", status: :bad_request
+      end
+    else
+      @trial = Trial.find_by_id(params[:id])
+    end
+    render nothing: true, status: :not_found unless @trial.present?
+
+    string =request.body.read
+    p request.body.read
+
+
+    if request.content_type == "application/xml"
+      @object = Hash.from_xml(string)
+    else
+      @errors.store("xml request body is not wellformed","");
+    end
+
+
+    p @object
+
+    if !@object.has_key?("CompleteTrialUpdate")
+      @errors.store("tns:CompleteTrialUpdate","this node has to be included in the request; Parent node for this request");
+    end
+
+    trialkeys = @object["CompleteTrialUpdate"]
+    p trialkeys
+    @trialMasterMap = Hash.new
+    @validate_errors = Hash.new
+
+    if trialkeys.has_key?("accrualDiseaseTerminology")
+      process_accrual_diseageterminology(trialkeys)
+    end
+
+    if trialkeys.has_key?("grant")
+      process_grants(trialkeys)
+    end
+
+    process_trialstatus(trialkeys)
+
+
+       if trialkeys.has_key?("trialStartDate")
+       process_trial_start_date(trialkeys)
+      end
+
+
+       if trialkeys.has_key?("primaryCompletionDate")
+         process_trial_primary_completion_date(trialkeys)
+       end
+
+
+
+       if trialkeys.has_key?("completionDate")
+         process_trial_completion_date(trialkeys)
+       end
+
+
+    @trialDocs = Array.new
+
+    if trialkeys.has_key?("protocolDocument")
+
+      process_docs(trialkeys["protocolDocument"])
+
+    end
+
+
+    if trialkeys.has_key?("irbApprovalDocument")
+
+      process_docs(trialkeys["irbApprovalDocument"])
+
+    end
+
+    if trialkeys.has_key?("participatingSitesDocument")
+
+      process_docs(trialkeys["participatingSitesDocument"])
+
+    end
+
+    if trialkeys.has_key?("informedConsentDocument")
+
+      process_docs(trialkeys["informedConsentDocument"])
+
+    end
+
+    if trialkeys.has_key?("otherDocument")
+
+      process_docs(trialkeys["otherDocument"])
+
+    end
+
+
+    @trialMasterMap.store("trial_documents_attributes",@trialDocs);
+
+    @trialMasterMap["coming_from"] = "rest"
+    @trialMasterMap["edit_type"] = "update"
+
+    p @trialMasterMap
+
+    render xml: @validate_errors, status: :bad_request if !@validate_errors.empty?
+
+    #@trialMasterMap["accrual_disease_term_id"]
+  end
+
 
 
   def index
@@ -776,13 +702,12 @@ end # end of before_create
 
 
   def update
-    p @trial
-    #@person =Person.find_by_id(params[:id])
-    if @person.update(@object["person"])
+
+    if @trial.update(@trialMasterMap)
       if request.content_type == "application/json"
         render json: @trial
       elsif request.content_type == "application/xml"
-        render xml: @trial
+        render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
       else
 
       end
@@ -836,8 +761,6 @@ end # end of before_create
 
   def find_trial
 
-    #puts request.body.read
-    puts params
     if params.has_key?("idType")
       if params[:idType] == "nci"
         @trial = Trial.find_by_nci_id(params[:id])
@@ -848,9 +771,146 @@ end # end of before_create
       @trial = Trial.find_by_id(params[:id])
     end
     render nothing: true, status: :not_found unless @trial.present?
+    p request.body.read
+    @trialMasterMap = Hash.new
+    #@trialMasterMap["accrual_disease_term_id"]
+
+  end
+
+def process_accrual_diseageterminology(trialkeys)
+      if AccrualDiseaseTerm.find_by_name(trialkeys["accrualDiseaseTerminology"])
+        @trialMasterMap["accrual_disease_term_id"]=AccrualDiseaseTerm.find_by_name(trialkeys["accrualDiseaseTerminology"]).id
+      else
+        @accrualdiseaseterms = AccrualDiseaseTerm.pluck(:name);
+        @validate_errors.store("tns:accrualDiseaseTerminology","Invalid value:following are valid values;")
+        @validate_errors.store("tns:accrualDiseaseTerminology:validvalues",@accrualdiseaseterms);
+      end
+
+end
+
+
+  def process_grants(trialkeys)
+
+    grants=Array.new
+
+    if trialkeys["grant"].kind_of?(Array)
+        if trialkeys["grant"].length > 0
+          len=trialkeys["grant"].length
+
+          puts "grants length *********>>>>>>>> "
+
+          puts trialkeys["grant"]
+
+          puts len
+          for i in 0..len-1
+            if trialkeys["grant"][i].has_key?("fundingMechanism") #&& trialkeys["grant"][i].has_key?("nihInstitutionCode") && trialkeys["grant"][i].has_key?("serialNumber") && trialkeys["grant"][i].has_key?("nciDivisionProgramCode")
+
+              fundingMechanism=trialkeys["grant"][i]["fundingMechanism"]
+              nihInstitutionCode=trialkeys["grant"][i]["nihInstitutionCode"]
+              serialNumber=trialkeys["grant"][i]["serialNumber"]
+              nciDivisionProgramCode=trialkeys["grant"][i]["nciDivisionProgramCode"]
+
+              myHash= Hash.new();
+              myHash.store("funding_mechanism",fundingMechanism);
+              myHash.store("institute_code",nihInstitutionCode);
+              myHash.store("serial_number",serialNumber);
+              myHash.store("nci",nciDivisionProgramCode);
+
+              grants.push(myHash);
+
+            else
+              @validate_errors.store("tns:grant"," For each grant fundingMechanism, nihInstitutionCode, serialNumber, nciDivisionProgramCode expected;")
+              break;
+            end
+
+          end
+
+        end
+      else
+        if trialkeys["grant"].has_key?("fundingMechanism") && trialkeys["grant"].has_key?("nihInstitutionCode") && trialkeys["grant"].has_key?("serialNumber") && trialkeys["grant"].has_key?("nciDivisionProgramCode")
+
+          fundingMechanism=trialkeys["grant"]["fundingMechanism"]
+          nihInstitutionCode=trialkeys["grant"]["nihInstitutionCode"]
+          serialNumber=trialkeys["grant"]["serialNumber"]
+          nciDivisionProgramCode=trialkeys["grant"]["nciDivisionProgramCode"]
+
+          myHash= Hash.new();
+          myHash.store("funding_mechanism",fundingMechanism);
+          myHash.store("institute_code",nihInstitutionCode);
+          myHash.store("serial_number",serialNumber);
+          myHash.store("nci",nciDivisionProgramCode);
+
+          grants.push(myHash);
+        end
+      end
+      @trialMasterMap.store("grants_attributes",grants);
+
   end
 
 
+
+   def process_trialstatus(trialkeys)
+
+     trial_status_wrapper=Array.new();
+     trial_status_map=Hash.new();
+     if trialkeys.has_key?("trialStatus")
+       if TrialStatus.find_by_name(trialkeys["trialStatus"])
+         trial_status_map["trial_status_id"]=TrialStatus.find_by_name(trialkeys["trialStatus"]).id
+         trialkeys.delete("trialStatus")
+       else
+         @trialstatusses = TrialStatus.pluck(:name);
+         @validate_errors.store("tns:trialStatus","Invalid value:following are valid values;")
+         @validate_errors.store("tns:trialStatus:validvalues",@trialstatusses);
+       end
+     end
+
+     if trialkeys.has_key?("trialStatusDate")
+       trial_status_map["status_date"]=trialkeys["trialStatusDate"]
+       trialkeys.delete("trialStatusDate")
+     end
+     if trialkeys.has_key?("whyStopped")
+       trial_status_map["why_stopped"]=trialkeys["whyStopped"]
+       trialkeys.delete("whyStopped")
+     end
+
+     trial_status_wrapper.push(trial_status_map);
+     @trialMasterMap.store("trial_status_wrappers_attributes",trial_status_wrapper) if !trial_status_map.empty?
+
+   end
+
+
+  def  process_trial_start_date(trialkeys)
+
+  if !trialkeys["trialStartDate"].kind_of?(Array) && ( trialkeys["trialStartDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["trialStartDate"]["type"].to_s.downcase == "Actual".to_s.downcase )
+  @trialMasterMap["start_date_qual"]=trialkeys["trialStartDate"]["type"];
+  @trialMasterMap["start_date"]=trialkeys["trialStartDate"]["__content__"];
+  else
+    @validate_errors.store("tns:trialStartDate","exactly one trialStartDate expected; or valid types are Anticipated and Actual ")
+
+  end
+    end
+
+
+def process_trial_primary_completion_date(trialkeys)
+  if !trialkeys["primaryCompletionDate"].kind_of?(Array) && ( trialkeys["primaryCompletionDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["primaryCompletionDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
+    @trialMasterMap["primary_comp_date_qual"]=trialkeys["primaryCompletionDate"]["type"];
+    @trialMasterMap["primary_comp_date"]=trialkeys["primaryCompletionDate"]["__content__"];
+  else
+    @validate_errors.store("tns:primaryCompletionDate","exactly one primaryCompletionDate expected; or valid types are Anticipated and Actual ")
+
+  end
+end
+
+
+  def process_trial_completion_date(trialkeys)
+if !trialkeys["completionDate"].kind_of?(Array) && ( trialkeys["completionDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["completionDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
+           @trialMasterMap["comp_date_qual"]=trialkeys["trialStartDate"]["type"];
+           @trialMasterMap["comp_date"]=trialkeys["trialStartDate"]["__content__"];
+         else
+           @validate_errors.store("tns:completionDate","exactly one completionDate expected; or valid types are Anticipated and Actual ")
+
+         end
+end
 
   def sam
     @status = request.body.read
