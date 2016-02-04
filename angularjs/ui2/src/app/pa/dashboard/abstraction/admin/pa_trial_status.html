@@ -22,7 +22,7 @@
                                         <td class="col-md-2">
                                             <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                                 <input type="text" id="status_date" name="status_date" class="form-control input-sm"
-                                                    datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.statusObj.status_date"
+                                                    uib-datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.statusObj.status_date"
                                                     ng-click="trialStatusView.openCalendar($event, 'status_date')"
                                                     is-open="trialStatusView.statusDateOpened"
                                                     datepicker-options="trialStatusView.dateOptions"
@@ -58,7 +58,8 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div ng-hide="trialStatusView.statusObj.edit">
-                                                <button class="btn btn-default" restriction-field type="button" ng-click="trialStatusView.addTrialStatus()"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                                                <button class="btn btn-default" restriction-field type="button" ng-click="trialStatusView.addTrialStatus()"
+                                                    ng-disabled="trialStatusView.statusObj.status_date == '' || trialStatusView.statusObj.trial_status_id == ''"><i class="glyphicon glyphicon-plus"></i> Add</button>
                                             </div>
                                             <!-- <div class="btn-toolbar col-xs-12" ng-show="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
@@ -66,12 +67,15 @@
                                             </div> -->
                                             <div class="btn-group inline" ng-show="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
-                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()">Commit</button>
+                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()" ng-disabled="trialStatusView.statusObj.status_date == '' || trialStatusView.statusObj.trial_status_id == ''">Commit</button>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="add-association-error" ng-show="trialStatusView.statusErrorMsg.length > 0">
+                                {{trialStatusView.statusErrorMsg}}
+                            </div>
 
                         </div>
                         <div class="row animated-item" ng-show="trialStatusView.tempTrialStatuses.length > 0">
