@@ -107,6 +107,7 @@ module.exports = function() {
     var indGrantorOptionC = '';
     var indIDEAssociatedQueVals7 = '';
     var globalYesNoFlag = '';
+    var glovalNullVal = 'null';
 
         /*
          Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
@@ -717,43 +718,102 @@ module.exports = function() {
             indIDE.selectAssociatedINDIDERdo('1');
         }else if(DoesThisTrialHaveAnAssociatedINDOrIDE === 'Yes'){
             indIDE.selectAssociatedINDIDERdo('0');
-        }
+        };
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have not selected values the (.*)$/, function (INDIDEType, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.When(/^I have selected values the (.*)$/, function (INDIDEType, callback) {
+        if (globalYesNoFlag === 'No'){
+            if (INDIDEType === 'null'){
+                indIDE.verifyFdaIndIdeYesOrNoOption('1', true);
+                helper.verifyElementDisplayed(indIDE.indIDEType, false);
+                INDIDEType = glovalNullVal;
+            };
+
+        } else if(globalYesNoFlag === 'Yes'){
+            if (INDIDEType === 'IND'){
+                indIDE.selectINDIDETypes(indTypVal);
+                INDIDEType = indTypVal;
+            };
+            if (INDIDEType === 'null'){
+                //Select Nothing
+                INDIDEType = glovalNullVal;
+            };
+        };
+        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have not entered the (.*)$/, function (INDIDENumber, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^I have entered the (.*)$/, function (INDIDENumber, callback) {
+        if (globalYesNoFlag === 'No'){
+            if (INDIDENumber === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDENumber, false);
+                INDIDENumber = glovalNullVal;
+            }
+        } else if(globalYesNoFlag === 'Yes'){
+
+        };
+        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have not selected the (.*)$/, function (INDIDEGrantor, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^I have selected the (.*)$/, function (INDIDEGrantor, callback) {
+        if (globalYesNoFlag === 'No'){
+            if (INDIDEGrantor === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEGrantor, false);
+                INDIDEGrantor = glovalNullVal;
+            }
+
+        } else if(globalYesNoFlag === 'Yes'){
+
+        };
+        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have not selected the (.*)$/, function (INDIDEHolderType, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^I have selected the (.*)$/, function (INDIDEHolderType, callback) {
+        if (globalYesNoFlag === 'No'){
+            if (INDIDEHolderType === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEHolderType, false);
+                INDIDEHolderType = glovalNullVal;
+            }
+
+        } else if(globalYesNoFlag === 'Yes'){
+
+        };
+        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have not selected the (.*)$/, function (NIHInstitutionOrNCIDivisionOrProgram, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^I have selected the (.*)$/, function (NIHInstitutionOrNCIDivisionOrProgram, callback) {
+        if (globalYesNoFlag === 'No'){
+            if (NIHInstitutionOrNCIDivisionOrProgram === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, false);
+                helper.verifyElementDisplayed(indIDE.indIDEAddButton, false);
+                NIHInstitutionOrNCIDivisionOrProgram = glovalNullVal;
+            }
+
+        } else if(globalYesNoFlag === 'Yes'){
+
+        };
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^selected Save$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        if (globalYesNoFlag === 'No'){
+
+        } else if(globalYesNoFlag === 'Yes'){
+
+        };
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system will display a warning (.*) that each of values that were not entered must be entered in order to associate the IND\/IDE Information for the trial$/, function (Message, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        if (globalYesNoFlag === 'No'){
+            if (Message === 'null'){
+                Message = glovalNullVal;
+            }
+
+        } else if(globalYesNoFlag === 'Yes'){
+
+        };
+        browser.sleep(25).then(callback);
     });
 
 
