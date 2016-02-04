@@ -303,6 +303,7 @@
         function watchTrialStatusChanges() {
             $scope.$watch(function() {return vm.statusObj.trial_status_id;}, function(newVal, oldVal) {
                 if (newVal) {
+                    vm.statusObj.why_stopped = '';
                     var selectedStatus = _.findWhere(vm.trialStatuses, {id: newVal});
                     var statusName = selectedStatus.name || '';
                     var statusesForStop = ['administratively complete', 'withdrawn', 'temporarily closed'];
