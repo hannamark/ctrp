@@ -270,7 +270,8 @@
         }; //openCalendar
 
         function updateTrialStatuses() {
-            vm.trialDetailObj.trial_status_wrappers = vm.tempTrialStatuses;
+            createComment(); // if the user did not save the comment, save it here
+            vm.trialDetailObj.trial_status_wrappers_attributes = vm.tempTrialStatuses;
             var outerTrial = {};
             outerTrial.new = false;
             outerTrial.id = vm.trialDetailObj.id;

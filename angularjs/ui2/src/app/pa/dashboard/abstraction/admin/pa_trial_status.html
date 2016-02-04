@@ -55,8 +55,12 @@
                                             <div>
                                                 <textarea rows="1" id="why_stopped" name="why_stopped" class="form-control input-sm"
                                                     ng-model="trialStatusView.statusObj.why_stopped"
+                                                    ng-maxlength="255"
                                                     ng-disabled="!trialStatusView.showWhyStoppedField">
                                                 </textarea>
+                                                <span ng-show="trial_status_form.why_stopped.$dirty">
+                                                    {{255 - trial_status_form.why_stopped.$viewValue.length}} characters left
+                                                </span>
                                             </div>
                                         </td>
                                         <td class="col-md-2">
@@ -70,7 +74,7 @@
                                             </div> -->
                                             <div class="btn-group inline" ng-show="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
-                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()" ng-disabled="trialStatusView.statusObj.status_date == '' || trialStatusView.statusObj.trial_status_id == ''">Commit</button>
+                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()" ng-disabled="trialStatusView.statusObj.status_date == '' || trialStatusView.statusObj.trial_status_id == '' || trial_status_form.why_stopped.$viewValue.length > 255">Commit</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -79,7 +83,12 @@
                             <div class="add-association-error" ng-show="trialStatusView.statusErrorMsg.length > 0">
                                 {{trialStatusView.statusErrorMsg}}
                             </div>
-
+                            <div>
+                                <p>
+                                    <mark>Please refer to the Trial Status Transition Rules:</mark>
+                                    <a href="https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules" target="_blank">https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
+                                </p>
+                            </div>
                         </div>
                         <div class="row" ng-show="trialStatusView.tempTrialStatuses.length > 0">
                             <table class="table table-bordered table-striped table-hover">
@@ -254,7 +263,9 @@
                             </div>
                         </div>
                         <!-- end of completion date -->
-
+                        <div class="row top-buffer">
+                            <mark>Please refer to the Trial Status Rules for Start and Completion Dates Rules:</mark>
+                            <a href="https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Rules+for+Start+and+Completion+Dates">https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Rules+for+Start+and+Completion+Dates <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
                         </div>
                     </fieldset>
                     <!-- end of fieldset for trial dates -->
