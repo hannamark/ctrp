@@ -20,12 +20,19 @@
         vm.statusObj = _initStatusObj();
         vm.dateFormat = DateService.getFormats()[1];
         vm.statusDateOpened = false;
+        vm.startDateOpened = false;
+        vm.primaryCompDateOpened = false;
+        vm.compDateOpened = false;
+        vm.amendmentDateOpened = false;
+
         vm.dateOptions = DateService.getDateOptions();
         vm.trialDetailObj = {};
         vm.tempTrialStatuses = [];
         vm.commentList = [];
         var commentField = 'trial-status'; // for marking comment entry
         var commentModel = 'Trial'; // model name for comment
+        vm._date_opened = false;
+
 
         // actions
         vm.addTrialStatus = addTrialStatus;
@@ -66,11 +73,11 @@
 
                 validateStatuses();
                 // format the trial-associated date fields
-                vm.trialDetailObj.start_date = moment(vm.trialDetailObj.start_date).format("DD-MMM-YYYY");
+                vm.trialDetailObj.start_date = !!vm.trialDetailObj.start_date ? moment(vm.trialDetailObj.start_date).format("DD-MMM-YYYY") : '';
                 // DateService.convertISODateToLocaleDateStr()
-                vm.trialDetailObj.primary_comp_date = moment(vm.trialDetailObj.primary_comp_date).format("DD-MMM-YYYY");
-                vm.trialDetailObj.comp_date = moment(vm.trialDetailObj.comp_date).format("DD-MMM-YYYY");
-                vm.trialDetailObj.amendment_date = moment(vm.trialDetailObj.amendment_date).format("DD-MMM-YYYY");
+                vm.trialDetailObj.primary_comp_date = !!vm.trialDetailObj.primary_comp_date ? moment(vm.trialDetailObj.primary_comp_date).format("DD-MMM-YYYY") : '';
+                vm.trialDetailObj.comp_date = !!vm.trialDetailObj.comp_date ? moment(vm.trialDetailObj.comp_date).format("DD-MMM-YYYY") : '';
+                vm.trialDetailObj.amendment_date = !!vm.trialDetailObj.amendment_date ? moment(vm.trialDetailObj.amendment_date).format("DD-MMM-YYYY") : '';
             }, 0);
         } // _getTrialDetailCopy
 
@@ -88,12 +95,6 @@
             };
             return statusObj;
         }
-
-        function openCalendar($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            vm.statusDateOpened = !vm.statusDateOpened;
-        } // openCalendar
 
         function addTrialStatus() {
             vm.statusErrorMsg = '';
@@ -244,6 +245,23 @@
               parent_id: ''
             };
         }
+
+        function openCalendar ($event, type) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            if (type === 'status_date') {
+                vm.statusDateOpened = !vm.statusDateOpened;
+            } else if (type === 'start_date') {
+                vm.startDateOpened = !vm.startDateOpened;
+            } else if (type === 'primary_comp_date') {
+                vm.primaryCompDateOpened = !vm.primaryCompDateOpened;
+            } else if (type === 'comp_date') {
+                vm.compDateOpened = !vm.compDateOpened;
+            } else if (type === 'amendment_date') {
+                vm.amendmentDateOpened = !vm.amendmentDateOpened;
+            }
+        }; //openCalendar
 
 
     } // paTrialStatusCtrl

@@ -28,7 +28,7 @@
                                                     datepicker-options="trialStatusView.dateOptions"
                                                     ng-required="true" close-text="Close" readonly />
                                                 <span class="input-group-btn">
-                                                    <button type="button" restriction-field class="btn btn-default" ng-click="trialStatusView.openCalendar($event)">
+                                                    <button type="button" restriction-field class="btn btn-default" ng-click="trialStatusView.openCalendar($event, 'status_date')">
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                                 </span>
@@ -160,10 +160,10 @@
                             <label class="control-label col-xs-12 col-sm-3">Trial Start Date</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm" name="start_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.start_date"
-                                           ng-click="trialDetailView.openCalendar($event, 'start_date')" is-open="trialDetailView.start_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required readonly>
+                                    <input type="text" class="form-control input-sm" name="start_date" datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.start_date"
+                                           ng-click="trialStatusView.openCalendar($event, 'start_date')" is-open="trialStatusView.startDateOpened" datepicker-options="trialStatusView.dateOptions" close-text="Close" required readonly>
                                     <span class="input-group-btn">
-                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'start_date')">
+                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialStatusView.openCalendar($event, 'start_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                     </span>
@@ -192,10 +192,10 @@
                             <label class="control-label col-xs-12 col-sm-3">Primary Completion Date</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm" name="primary_comp_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.primary_comp_date"
-                                           ng-click="trialDetailView.openCalendar($event, 'primary_comp_date')" is-open="trialDetailView.primary_comp_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required readonly />
+                                    <input type="text" class="form-control input-sm" name="primary_comp_date" datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.primary_comp_date"
+                                           ng-click="trialStatusView.openCalendar($event, 'primary_comp_date')" is-open="trialStatusView.primaryCompDateOpened" datepicker-options="trialStatusView.dateOptions" close-text="Close" required readonly />
                                     <span class="input-group-btn">
-                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'primary_comp_date')">
+                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialStatusView.openCalendar($event, 'primary_comp_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                     </span>
@@ -224,10 +224,10 @@
                             <label class="control-label col-xs-12 col-sm-3">Completion Date</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm" name="comp_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.comp_date"
-                                           ng-click="trialDetailView.openCalendar($event, 'comp_date')" is-open="trialDetailView.comp_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required readonly />
+                                    <input type="text" class="form-control input-sm" name="comp_date" datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.comp_date"
+                                           ng-click="trialStatusView.openCalendar($event, 'comp_date')" is-open="trialStatusView.compDateOpened" datepicker-options="trialStatusView.dateOptions" close-text="Close" required readonly />
                                     <span class="input-group-btn">
-                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'comp_date')">
+                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialStatusView.openCalendar($event, 'comp_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                     </span>
