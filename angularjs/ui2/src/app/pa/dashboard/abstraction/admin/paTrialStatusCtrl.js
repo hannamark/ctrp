@@ -24,6 +24,7 @@
         vm.primaryCompDateOpened = false;
         vm.compDateOpened = false;
         vm.amendmentDateOpened = false;
+        vm.showWhyStoppedField = false;
 
         vm.dateOptions = DateService.getDateOptions();
         vm.trialDetailObj = {};
@@ -44,10 +45,11 @@
         vm.updateComment = updateComment;
         vm.updateTrialStatuses = updateTrialStatuses;
         vm.resetForm = resetForm;
-        vm.trialStatusDidChange = trialStatusDidChange;
+        vm.watchTrialStatusChanges = watchTrialStatusChanges;
 
         activate();
         function activate() {
+            watchTrialStatusChanges();
             _getTrialDetailCopy();
         } // activate
 
@@ -298,15 +300,21 @@
             _getTrialDetailCopy();
         }
 
-        function trialStatusDidChange() {
-            var selectedStatus = _.findWhere(vm.trialStatuses, {id: vm.statusObj.trial_status_id});
-            var statusName = selectedStatus.name || '';
-            var statusesForStop = ['administratively complete', 'withdrawn', 'temporarily closed'];
-            if (_.contains(statusesForStop, statusName.toLowerCase())) {
-                vm.showWhyStoppedField = true;
-            } else {
-                vm.showWhyStoppedField = false;
-            }
+        function watchTrialStatusChanges() {
+            $scope.$watch(function() {return vm.statusObj.trial_status_id;}, function(newVal, oldVal) {
+                if (newVal) {
+                    var selectedStatus = _.findWhere(vm.trialStatuses, {id: newVal});
+                    var statusName = selectedStatus.name || '';
+                    var statusesForStop = ['administratively complete', 'withdrawn', 'temporarily closed'];
+                    if (_.contains(statusesForStop, statusName.toLowerCase())) {
+                        vm.showWhyStoppedField = true;
+                    } else {
+                        vm.showWhyStoppedField = false;
+                    }
+                }
+            });
+
+
         }
     } // paTrialStatusCtrl
 

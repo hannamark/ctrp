@@ -38,7 +38,6 @@
                                             <div>
                                                 <select name="status" id="status_select"
                                                     class="form-control input-sm"
-                                                    ng-change="trialStatusView.trialStatusDidChange()"
                                                     restriction-field
                                                     ng-model="trialStatusView.statusObj.trial_status_id"
                                                     ng-options="status.id as status.name for status in trialStatusView.trialStatuses">
@@ -58,7 +57,7 @@
                                                     ng-maxlength="255"
                                                     ng-disabled="!trialStatusView.showWhyStoppedField">
                                                 </textarea>
-                                                <span ng-show="trial_status_form.why_stopped.$dirty">
+                                                <span ng-show="trial_status_form.why_stopped.$dirty && trialStatusView.showWhyStoppedField">
                                                     {{255 - trial_status_form.why_stopped.$viewValue.length}} characters left
                                                 </span>
                                             </div>
