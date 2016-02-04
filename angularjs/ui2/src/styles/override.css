@@ -810,7 +810,7 @@ a.editable-click:hover {
 
 .select2-results-absolute .select2-results {
     position: absolute;
-    width: 225%;
+    width: 250%;
     background: #FFF;
     border: 1px solid #DDD;
     border-radius: 5px;
