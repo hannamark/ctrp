@@ -206,6 +206,7 @@
             CommentService.getComments(vm.trialDetailObj.uuid, fieldName)
                 .then(function(res) {
                     vm.commentList = CommentService.annotateCommentIsEditable(res.comments);
+                    vm.commentList.reverse();
                 })
                 .catch(function(err) {
                     console.log('error in retrieving comments');
