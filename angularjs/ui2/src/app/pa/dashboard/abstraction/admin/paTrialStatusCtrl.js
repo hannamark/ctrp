@@ -44,6 +44,7 @@
         vm.updateComment = updateComment;
         vm.updateTrialStatuses = updateTrialStatuses;
         vm.resetForm = resetForm;
+        vm.trialStatusDidChange = trialStatusDidChange;
 
         activate();
         function activate() {
@@ -296,9 +297,16 @@
             _getTrialDetailCopy();
         }
 
-
-
-
+        function trialStatusDidChange() {
+            var selectedStatus = _.findWhere(vm.trialStatuses, {id: vm.statusObj.trial_status_id});
+            var statusName = selectedStatus.name || '';
+            var statusesForStop = ['administratively complete', 'withdrawn', 'temporarily closed'];
+            if (_.contains(statusesForStop, statusName.toLowerCase())) {
+                vm.showWhyStoppedField = true;
+            } else {
+                vm.showWhyStoppedField = false;
+            }
+        }
     } // paTrialStatusCtrl
 
 
