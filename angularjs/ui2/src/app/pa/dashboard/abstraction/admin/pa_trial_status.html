@@ -60,7 +60,11 @@
                                             <div ng-hide="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-default" restriction-field type="button" ng-click="trialStatusView.addTrialStatus()"><i class="glyphicon glyphicon-plus"></i> Add</button>
                                             </div>
-                                            <div class="btn-toolbar col-xs-12" ng-show="trialStatusView.statusObj.edit">
+                                            <!-- <div class="btn-toolbar col-xs-12" ng-show="trialStatusView.statusObj.edit">
+                                                <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
+                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()">Commit</button>
+                                            </div> -->
+                                            <div class="btn-group inline" ng-show="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
                                                 <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()">Commit</button>
                                             </div>
