@@ -14,12 +14,18 @@
 
         var vm = this;
         vm.deleteCollaborator = deleteCollaborator;
+        vm.deleteListHandler = deleteListHandler;
+        vm.deleteSelected = deleteSelected;
+        vm.setAddMode = setAddMode;
         vm.curTrial = trialDetailObj;
         console.log("trialDetailObj = " + JSON.stringify(trialDetailObj));
         console.log("pa_editable = " + JSON.stringify(trialDetailObj["pa_editable"]));
+        vm.curTrial.collaborators_attributes = [];
         vm.addedCollaborators = [];
         vm.selectedCollaborators = [];
+        vm.selectedDeleteCollaboratorsList = [];
         vm.collaboratorsNum = 0;
+        vm.addMode=false;
 
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
@@ -43,7 +49,20 @@
                 });
             }
 
-            console.log("outertrial IN SAVE! " + JSON.stringify(outerTrial));
+            if (vm.selectedDeleteCollaboratorsList > 0){
+                vm.curTrial.collaborators_attributes = [];
+                console.log("vm.selectedDeleteCollaboratorsList" + JSON.stringify(vm.selectedDeleteCollaboratorsList));
+                _.each(vm.selectedDeleteCollaboratorsList, function (collaborator) {
+                    var index = 0;
+                    collaborator._destroy = true;
+                    vm.curTrial.collaborators.push(collaborator);
+                    vm.curTrial.collaborators_attributes.push(collaborator);
+                    index++;
+                });
+            }
+            //vm.curTrial.collaborators_attributes = vm.curTrial.collaborators;
+            console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators));
+            //console.log("outertrial IN SAVE! " + JSON.stringify(outerTrial));
 
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
@@ -52,7 +71,7 @@
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
-
+                vm.addedCollaborators = [];
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
@@ -145,6 +164,40 @@
                 vm.collaboratorsNum++;
             }
         }
+
+        function deleteListHandler(cList){
+
+            console.log("In deleteListHandler");
+
+
+            var deleteList = [];
+
+            angular.forEach(cList, function(item) {
+                if ( angular.isDefined(item.selected) && item.selected === true ) {
+                    deleteList.push(item);
+                }
+            });
+
+            vm.selectedDeleteCollaboratorsList = deleteList ;
+
+            console.log(deleteList);
+
+        };
+
+        function deleteSelected(){
+            console.log("In deleteSelected");
+            console.log(vm.selectedDeleteCollaboratorsList);
+            for (var i = 0; i < vm.selectedDeleteCollaboratorsList; i++) {
+                vm.curTrial.collaborators[i]._destroy = !vm.curTrial.collaborators[i]._destroy;
+            }
+            vm.updateTrial();
+        };
+
+        function setAddMode() {
+            console.log("In addParticipatingSite");
+            vm.addMode = true;
+        }
+
 
     } //trialCollaboratorsCtrl
 

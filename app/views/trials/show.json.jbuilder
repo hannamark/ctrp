@@ -25,7 +25,7 @@ end
 
 json.collaborators do
   json.array!(@trial.collaborators) do |collaborator|
-    json.extract! collaborator, :organization_id, :org_name
+    json.extract! collaborator, :id, :organization_id, :org_name
   end
 end
 
