@@ -38,7 +38,7 @@
             TrialService.importClinicalTrialsGov(vm.nct_id).then(function (response) {
                 if (response.server_response.status < 300) {
                     toastr.success('Trial has been imported', 'Operation Successful!');
-                    $state.go('main.importTrial', null, {reload: true});
+                    $state.go('main.viewTrial', {trialId: response.id});
                 } else {
                     vm.disableBtn = false;
                 }
