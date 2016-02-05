@@ -61,13 +61,14 @@
         function _getTrialDetailCopy() {
             $timeout(function() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
-                // load comments for the trial with the field name {commentField}
                 vm.isExpandedAccess = !!vm.trialDetailObj.research_category ? vm.trialDetailObj.research_category.name.toLowerCase().indexOf('expand') > -1 : false;
                 if (!vm.isExpanedAccess) {
                     // disable some trial statuses if non-expanded access
                     _disableItemsInTrialStatusList();
                 }
+                
                 vm.commentObj = _initCommentObj();
+                // load comments for the trial with the field name {commentField}
                 _loadComments(commentField);
                 _convertDates();
 
