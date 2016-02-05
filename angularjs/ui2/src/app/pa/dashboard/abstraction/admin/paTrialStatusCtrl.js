@@ -27,6 +27,8 @@
         vm.amendmentDateOpened = false;
         vm.showWhyStoppedField = false;
         vm.isExpandedAccess = false;
+        vm.isDCPTrial = false;
+        vm.isInterventional = false;
 
         vm.dateOptions = DateService.getDateOptions();
         vm.trialDetailObj = {};
@@ -61,12 +63,22 @@
         function _getTrialDetailCopy() {
             $timeout(function() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
-                vm.isExpandedAccess = !!vm.trialDetailObj.research_category ? vm.trialDetailObj.research_category.name.toLowerCase().indexOf('expand') > -1 : false;
+                var researchCategoryTitle = !!vm.trialDetailObj.research_category ? vm.trialDetailObj.research_category.name.toLowerCase() : '';
+                vm.isExpandedAccess = researchCategoryTitle.indexOf('expand') > -1;
+                vm.isInterventional = researchCategoryTitle.indexOf('intervention') > -1;
                 if (!vm.isExpanedAccess) {
                     // disable some trial statuses if non-expanded access
                     _disableItemsInTrialStatusList();
                 }
-                
+                // find out if the trial has DCP identifier
+                if (vm.trialDetailObj.other_ids) {
+                    _.each(vm.trialDetailObj.other_ids, function(id) {
+                        if (id.protocol_id_origin && id.protocol_id_origin.code.indexOf('DCP') > -1) {
+                            vm.isDCPTrial = true;
+                            return;
+                        }
+                    });
+                }
                 vm.commentObj = _initCommentObj();
                 // load comments for the trial with the field name {commentField}
                 _loadComments(commentField);

@@ -93,7 +93,6 @@
             // show board affiliation for statuses: approved, exempt,
             vm.boardAffShown = vm.boardAffRequired || statusName.indexOf('pend') > -1 ||
                                 statusName.indexOf('denied') > -1;
-
             // board name is required unless status is 'Submission not required'
             vm.boardNameRequired = statusName !== '' && statusName.indexOf('not required') === -1;
         } // changeStatus
