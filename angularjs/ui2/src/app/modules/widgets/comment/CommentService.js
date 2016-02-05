@@ -94,7 +94,7 @@
             var isEditable = userRolesAllowedToEdit.indexOf(UserService.getUserRole()) > -1;
             annotatedComments = comments.map(function(comment, index) {
               comment.index = totalComments - index;
-              if (isEditable || comment.username == UserService.getLoggedInUsername()) {
+              if (isEditable || comment.username === UserService.getLoggedInUsername()) {
                 comment.isEditable = true;
               } else {
                 comment.isEditable = false;
