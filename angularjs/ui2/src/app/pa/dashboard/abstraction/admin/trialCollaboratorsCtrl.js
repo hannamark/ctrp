@@ -191,7 +191,7 @@
                     if (vm.curTrial.collaborators[j].organization_id == vm.selectedDeleteCollaboratorsList[i].organization_id){
                         var collaboratorToBeDeletedFromView = vm.curTrial.collaborators[j];
                         console.log("coll to be delview ="+ JSON.stringify(collaboratorToBeDeletedFromView));
-                        vm.curTrial.collaborators.pop(collaboratorToBeDeletedFromView);
+                        vm.curTrial.collaborators.splice(j, 1);
                     }
                 }
             }
