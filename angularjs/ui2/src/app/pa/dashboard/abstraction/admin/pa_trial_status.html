@@ -4,7 +4,7 @@
             <uib-accordion-heading>
                 Trial Status <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
-                <form class="form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="">
+                <form class="form-horizontal" role="form" name="trial_status_form" novalidate>
                     <!-- fieldset for trial statuses -->
                     <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Trial Statuses</legend>
@@ -28,7 +28,7 @@
                                                     datepicker-options="trialStatusView.dateOptions"
                                                     ng-required="true" close-text="Close" readonly />
                                                 <span class="input-group-btn">
-                                                    <button type="button" restriction-field class="btn btn-default" ng-click="trialStatusView.openCalendar($event)">
+                                                    <button type="button" restriction-field class="btn btn-default" ng-click="trialStatusView.openCalendar($event, 'status_date')">
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                                 </span>
@@ -38,7 +38,6 @@
                                             <div>
                                                 <select name="status" id="status_select"
                                                     class="form-control input-sm"
-                                                    ng-required="true"
                                                     restriction-field
                                                     ng-model="trialStatusView.statusObj.trial_status_id"
                                                     ng-options="status.id as status.name for status in trialStatusView.trialStatuses">
@@ -53,7 +52,14 @@
                                         </td>
                                         <td class="col-md-3">
                                             <div>
-                                                <textarea rows="1" id="why_stopped" name="why_stopped" class="form-control input-sm" ng-model="trialStatusView.statusObj.why_stopped"></textarea>
+                                                <textarea rows="1" id="why_stopped" name="why_stopped" class="form-control input-sm"
+                                                    ng-model="trialStatusView.statusObj.why_stopped"
+                                                    ng-maxlength="255"
+                                                    ng-disabled="!trialStatusView.showWhyStoppedField">
+                                                </textarea>
+                                                <span ng-show="trial_status_form.why_stopped.$dirty && trialStatusView.showWhyStoppedField">
+                                                    {{255 - trial_status_form.why_stopped.$viewValue.length}} characters left
+                                                </span>
                                             </div>
                                         </td>
                                         <td class="col-md-2">
@@ -67,7 +73,7 @@
                                             </div> -->
                                             <div class="btn-group inline" ng-show="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
-                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()" ng-disabled="trialStatusView.statusObj.status_date == '' || trialStatusView.statusObj.trial_status_id == ''">Commit</button>
+                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()" ng-disabled="trialStatusView.statusObj.status_date == '' || trialStatusView.statusObj.trial_status_id == '' || trial_status_form.why_stopped.$viewValue.length > 255">Commit</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -76,9 +82,14 @@
                             <div class="add-association-error" ng-show="trialStatusView.statusErrorMsg.length > 0">
                                 {{trialStatusView.statusErrorMsg}}
                             </div>
-
+                            <div>
+                                <p>
+                                    <mark>Please refer to the Trial Status Transition Rules:</mark>
+                                    <a href="https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules" target="_blank">https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
+                                </p>
+                            </div>
                         </div>
-                        <div class="row animated-item" ng-show="trialStatusView.tempTrialStatuses.length > 0">
+                        <div class="row" ng-show="trialStatusView.tempTrialStatuses.length > 0">
                             <table class="table table-bordered table-striped table-hover">
                               <thead style="background-color: #d9edf7">
                                 <th class="text-center">Status Date</th>
@@ -123,14 +134,152 @@
                     </fieldset>
                     <!-- end of fieldset for trial statuses -->
 
+                    <!-- fieldset for trial comment -->
+                    <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                        <legend class="sub-bordered">Trial Comments</legend>
+                        <div class="row" style="max-height: 230px; overflow-y: scroll">
+                            <div style="width: 98%;">
+                                <span ng-show="trialStatusView.commentList.length == 0">
+                                    <h5>No comments yet</h5>
+                                </span>
+                                <ul>
+                                    <li ng-repeat="comment in trialStatusView.commentList">
+                                        <p>{{comment.username}} commented ({{comment.updated_at | date: "dd-MMM-yyyy H:mm"}}):</p>
+                                        <h5 class="md-body-1" in-place-edit="comment.content" on-save="trialStatusView.updateComment(comment.content, $index)"
+                                        template="app/modules/widgets/comment/comment-in-place-edit.html" is-editable="{{comment.isEditable}}">{{comment.content}}, {{comment.isEditable}}</h5>
+                                        <md-divider ng-if="!$last"></md-divider>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group">
+                                <textarea class="form-control input-sm" id="status_comment" name="trial_status_comment" rows="1" ng-model="trialStatusView.commentObj.content" restriction-field placeholder="Your comment..."></textarea>
+                                <!-- <input type="text" class="form-control input-sm" ng-model="trialStatusView.commentObj.content" restriction-field placeholder="Your comment..."> -->
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" restriction-field type="button" ng-click="trialStatusView.createComment()">Add</button>
+                                </span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- end of fieldset for trial comment -->
+
                     <!-- fieldset for trial dates -->
                     <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                        <legend class="sub-bordered">Trial Dates and Comments</legend>
+                        <legend class="sub-bordered">Trial Dates</legend>
                         <div class="row">
-
+                            <label class="control-label col-xs-12 col-sm-3">Trial Start Date</label>
+                            <div class="col-xs-12 col-sm-3">
+                                <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control input-sm" name="start_date" uib-datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.start_date"
+                                           ng-click="trialStatusView.openCalendar($event, 'start_date')" is-open="trialStatusView.startDateOpened" datepicker-options="trialStatusView.dateOptions" close-text="Close" required readonly>
+                                    <span class="input-group-btn">
+                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialStatusView.openCalendar($event, 'start_date')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.start_date)">
+                                    Trial Start Date is required
+                                </span>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <label class="radio-inline">
+                                    <input type="radio" name="start_date_qual" restriction-field ng-model="trialStatusView.trialDetailObj.start_date_qual"
+                                           value="Actual" ng-required="!trialStatusView.trialDetailObj.start_date_qual"> Actual
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="start_date_qual" restriction-field ng-model="trialStatusView.trialDetailObj.start_date_qual"
+                                           value="Anticipated" ng-required="!trialStatusView.trialDetailObj.start_date_qual"> Anticipated
+                                </label>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual)">
+                                    Trial Start Date Type is required
+                                </span>
+                            </div>
+                        </div>
+                        <!-- end of trial start date -->
+                        <!-- trial primary completion date -->
+                        <div class="row top-buffer">
+                            <label class="control-label col-xs-12 col-sm-3">Primary Completion Date</label>
+                            <div class="col-xs-12 col-sm-3">
+                                <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control input-sm" name="primary_comp_date" uib-datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.primary_comp_date"
+                                           ng-click="trialStatusView.openCalendar($event, 'primary_comp_date')" is-open="trialStatusView.primaryCompDateOpened" datepicker-options="trialStatusView.dateOptions" close-text="Close" required readonly />
+                                    <span class="input-group-btn">
+                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialStatusView.openCalendar($event, 'primary_comp_date')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date)">
+                                    Primary Completion Date is required
+                                </span>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="radio-inline">
+                                    <input type="radio" name="primary_comp_date_qual" restriction-field ng-model="trialStatusView.trialDetailObj.primary_comp_date_qual"
+                                           value="Actual" ng-required="!trialStatusView.trialDetailObj.primary_comp_date_qual"> Actual
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="primary_comp_date_qual" restriction-field ng-model="trialStatusView.trialDetailObj.primary_comp_date_qual"
+                                           value="Anticipated" ng-required="!trialStatusView.trialDetailObj.primary_comp_date_qual"> Anticipated
+                                </label>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date_qual)">
+                                    Primary Completion Date Type is required
+                                </span>
+                            </div>
+                        </div>
+                        <!--end of trial primary completion date -->
+                        <!-- completion date -->
+                        <div class="row top-buffer">
+                            <label class="control-label col-xs-12 col-sm-3">Completion Date</label>
+                            <div class="col-xs-12 col-sm-3">
+                                <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                    <input type="text" class="form-control input-sm" name="comp_date" uib-datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.comp_date"
+                                           ng-click="trialStatusView.openCalendar($event, 'comp_date')" is-open="trialStatusView.compDateOpened" datepicker-options="trialStatusView.dateOptions" close-text="Close" required readonly />
+                                    <span class="input-group-btn">
+                                        <button restriction-field type="button" class="btn btn-default" ng-click="trialStatusView.openCalendar($event, 'comp_date')">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.comp_date)">
+                                    Completion Date is required
+                                </span>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <label class="radio-inline">
+                                    <input type="radio" name="comp_date_qual" restriction-field ng-model="trialStatusView.trialDetailObj.comp_date_qual"
+                                           value="Actual" ng-required="!trialStatusView.trialDetailObj.comp_date_qual"> Actual
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="comp_date_qual" restriction-field ng-model="trialStatusView.trialDetailObj.comp_date_qual"
+                                           value="Anticipated" ng-required="!trialStatusView.trialDetailObj.comp_date_qual"> Anticipated
+                                </label>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.comp_date_qual)">
+                                    Completion Date Type is required
+                                </span>
+                            </div>
+                        </div>
+                        <!-- end of completion date -->
+                        <div class="row top-buffer">
+                            <mark>Please refer to the Trial Status Rules for Start and Completion Dates Rules:</mark>
+                            <a href="https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Rules+for+Start+and+Completion+Dates" target="_blank">https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Rules+for+Start+and+Completion+Dates <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
                         </div>
                     </fieldset>
                     <!-- end of fieldset for trial dates -->
+
+                    <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                      <div class="col-sm-3"></div>
+                      <div class="btn-toolbar col-xs-12 col-sm-9">
+                        <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-click="trialStatusView.updateTrialStatuses()"> <!--  ng-disabled="!trial_status_form.$valid" -->
+                          <i class="glyphicon glyphicon-ok"></i>  Save
+                        </button>
+                        <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialStatusView.resetForm()" restriction-field>
+                         <i class="glyphicon glyphicon-remove"></i>  Reset
+                        </button>
+                      </div>
+                    </div>
                 </form>
         </uib-accordion-group>
     </uib-accordion>
