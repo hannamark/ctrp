@@ -7,12 +7,13 @@
 
     angular.module('ctrp.app.registry').controller('viewTrialCtrl', viewTrialCtrl);
 
-    viewTrialCtrl.$inject = ['trialDetailObj', 'TrialService', 'toastr', '$state', 'DateService'];
+    viewTrialCtrl.$inject = ['trialDetailObj', 'TrialService', 'toastr', '$state', 'DateService', 'HOST'];
 
-    function viewTrialCtrl(trialDetailObj, TrialService, toastr, $state, DateService) {
+    function viewTrialCtrl(trialDetailObj, TrialService, toastr, $state, DateService, HOST) {
 
         var vm = this;
         vm.curTrial = trialDetailObj;
+        vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
 
         activate();
 
