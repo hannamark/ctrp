@@ -5,7 +5,7 @@
         </div>
         <div class="row">
             <form class="form form-horizontal" role="form">
-                <h5 class="border-bottom">Amendment Details:</h5>
+                <h5 ng-if="viewTrialView.curTrial.last_amendment_date" class="border-bottom">Amendment Details:</h5>
 
                 <div ng-if="viewTrialView.curTrial.last_amendment_num" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Amendment Number:</label>
@@ -161,7 +161,7 @@
                     </div>
                 </div>
 
-                <h5 class="border-bottom">NIH Grant Information (for NIH funded Trials):</h5>
+                <h5 ng-if="viewTrialView.curTrial.grants.length > 0" class="border-bottom">NIH Grant Information (for NIH funded Trials):</h5>
 
                 <div ng-if="viewTrialView.curTrial.grants.length > 0" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3"></label>
@@ -231,7 +231,7 @@
                     </div>
                 </div>
 
-                <h5 class="border-bottom">FDA IND/IDE Information for applicable trials:</h5>
+                <h5 ng-if="viewTrialView.curTrial.ind_ides.length > 0" class="border-bottom">FDA IND/IDE Information for applicable trials:</h5>
 
                 <div ng-if="viewTrialView.curTrial.ind_ides.length > 0" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3"></label>
