@@ -95,45 +95,38 @@ Then the aduit trail will be displayed for the Trial ordered by date with newest
 |Admendment Number|
 |Milestone Name|
 |Processing Status Name|
-|Other ID (multiple) xxxxx: other_ids.protocol_id, other_ids.protocol_id_origin_id:  protocol_id_origins.name|
-|Markers Name (multiple) xxxxxxx: markers.name, markers.evaluation_type_id evaluation_types.name, markers.assay_type_id assay_types.name, markers.biomarker_use_id biomarker_uses.name, markers.biomarker_purpose_id biomarker_purposes.name, marker.specimen_type_id specimen_types.name, markers.record_status|
-|Outcome Measure  (multiple) xxxxxx: outcome_measures.outcome_measure_type_id: outcome_measures_types.name,  outcome_measures.title, outcome_measures.time_frame, outcome_measures.description, outcome_measures.safety_issue |
-|eligibility criteria (multiple) xxxxxx other_criteria.criteria_type, other_criteria.criteria_desc |
-|Associated Trials (multiple)  xxxxx associated_trials.trial_identifier, identifier_type identifier_types.code, name  |
+|Other ID (multiple) xxxx: other_ids.protocol_id, other_ids.protocol_id_origin_id:  protocol_id_origins.name|
+|Markers Name (multiple) xxxx: markers.name, markers.evaluation_type_id evaluation_types.name, markers.assay_type_id assay_types.name, markers.biomarker_use_id biomarker_uses.name, markers.biomarker_purpose_id biomarker_purposes.name, marker.specimen_type_id specimen_types.name, markers.record_status|
+|Outcome Measure  (multiple) xxxxx: outcome_measures.outcome_measure_type_id: outcome_measures_types.name,  outcome_measures.title, outcome_measures.time_frame, outcome_measures.description, outcome_measures.safety_issue |
+|eligibility criteria (multiple) xxxx other_criteria.criteria_type, other_criteria.criteria_desc |
+|Associated Trials (multiple)  xxxx associated_trials.trial_identifier, identifier_type identifier_types.code, name  |
 |Disease and Condition (multiple) xxxx  diseases.preferred_name, diseases.code, diseases.thesaurus_id, diseases.display name  |
 |Interventions (multiple)xxxx interventions.name, other_name, description, intervention_type_id  intervention_types.code, name  |
 |arms_groups (multiple) xxxx arms_groups.label,type,description, intervention_id intervention_types.code, name |
-|subgroup Stratification Criteria (multiple) xxxx sub_groups.code, sub_groups.description |
+|Subgroup Stratification Criteria (multiple) xxxx sub_groups.code, sub_groups.description |
 
 |trial owners (multiple) xxxx trial_ownerships.user_id: users.username| 
 |trial documents (multiple) xxxx trial_documents.filename, document_type, document_subtype|
 |alternative titles (multiple) xxxx alternate_titles.category,  title  (???source) |
 
-|central contacts (multiple) xxx central_contacts.phone, email, central_contact_type_id: central_contact_types.name |
+|central contacts (multiple) xxxx central_contacts.phone, email, central_contact_type_id: central_contact_types.name, person_id: people.fname, mname, lname |
 
 |citations (multiple) xxxx citations.description, pub_med_id, results_reference|  
 |collaborators (multiple) xxxx collaborators.org_name,organization_id: organizations.name  |
 | grants (multiple) xxxx grants.funding_mechanism, institute_code,nci,serial_number |
 
-XXXXX  ind_ides.ind_ide_type, grantor, nih_nci,holder_type_id, expanded_access_type_id, expanded_access, exempt, ind_ide_number
-links
-milestones_wrappers
-submissions
-on_holds
-other_criteria
-other_ids
-outcome_measures
-oversight_authorities
-participating_sites
-processing_status_wrappers
-sub_groups
-trial_co_lead_orgs
-trial_co_pis
-trial_status_wrappers
+|Ind ( multiple) xxxx ind_ides.ind_ide_type, grantor, nih_nci,holder_type_id, expanded_access, exempt, ind_ide_number, expanded_access_type_id: expanded_access_types.name|
+|links (multiple) xxxx  links.description|
+|Milestones (multiple) xxxx milestone_wrappers.milestone_date, milestone_id: milestones.name, submission_id: submission_types.name|
+|submissions (multiple) xxxx submission.submission_num, submission_date, amendment_date,amendment_reason_id: cccc, submission_type_id: cccc, submission_source_id: submission_sources.name, submission_method_id: submission_methods.name|
 
-person_ID People.name  (was after central contacts)
-diseases
+| oversight_authorities (multiple) xxxx oversight_authorities.country, organization|
+| participating_sites (multiple) xxxx participating_sites.protocol_id, program_code, contact_name, contact_phone, contact_email, organization_id: organizations.name, person_id: people.fname, mname, lname|
 
+|Processing Status processing_status_wrappers.status_date, processing_status_id: processing_statuses.name |
+| Trial co leads (multiple) xxxx trial_co_lead_orgs.organization_id: organizations.name|
+| Co-PIs trial_co_pis.person_id : people.fname, mname, lname|
+| Trial Status trial_status_wrappers.status_date, why_stopped, trial_status_id: trial_statuses.name|
 
 
 Scenario: #2 I can export the results into an Excel spreadsheet
