@@ -16,6 +16,7 @@
         UserService, toastr) {
 
         var vm = this;
+        console.log('trialStatuses: ', trialStatuses);
         vm.trialStatuses = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
         vm.statusObj = _initStatusObj();
         vm.dateFormat = DateService.getFormats()[1];
@@ -25,6 +26,7 @@
         vm.compDateOpened = false;
         vm.amendmentDateOpened = false;
         vm.showWhyStoppedField = false;
+        vm.isExpandedAccess = false;
 
         vm.dateOptions = DateService.getDateOptions();
         vm.trialDetailObj = {};
@@ -37,7 +39,6 @@
             'temporarily closed to accrual',
             'temporarily closed to accrual and intervention'
         ];
-        vm._date_opened = false;
 
         // actions
         vm.addTrialStatus = addTrialStatus;
@@ -50,11 +51,10 @@
         vm.updateComment = updateComment;
         vm.updateTrialStatuses = updateTrialStatuses;
         vm.resetForm = resetForm;
-        vm.watchTrialStatusChanges = watchTrialStatusChanges;
 
         activate();
         function activate() {
-            watchTrialStatusChanges();
+            _watchTrialStatusChangesChanges();
             _getTrialDetailCopy();
         } // activate
 
@@ -62,6 +62,12 @@
             $timeout(function() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
                 // load comments for the trial with the field name {commentField}
+                vm.isExpandedAccess = !!vm.trialDetailObj.research_category ? vm.trialDetailObj.research_category.name.toLowerCase().indexOf('expand') > -1 : false;
+                vm.isExpanedAccess = false;
+                if (!vm.isExpanedAccess) {
+                    // disable some trial statuses if non-expanded access
+                    _disableItemsInTrialStatusList();
+                }
                 vm.commentObj = _initCommentObj();
                 _loadComments(commentField);
                 _convertDates();
@@ -310,7 +316,7 @@
             _getTrialDetailCopy();
         }
 
-        function watchTrialStatusChanges() {
+        function _watchTrialStatusChangesChanges() {
             $scope.$watch(function() {return vm.statusObj.trial_status_id;}, function(newVal, oldVal) {
                 if (newVal) {
                     vm.statusObj.why_stopped = '';
@@ -323,9 +329,29 @@
                     }
                 }
             });
-
-
         }
+
+        /**
+         * If the trial is non-expanded access, disable the following items from selection:
+         * |Available |
+         * |No longer available|
+         * |Temporarily not available|
+         * |Approved for marketing|
+         * @return {Void}
+         */
+        var nonSelectableStatuses = [
+            'available',
+            'no longer available',
+            'temporarily not available',
+            'approved for marketing'
+        ];
+        function _disableItemsInTrialStatusList() {
+            vm.trialStatuses = _.map(vm.trialStatuses, function(status) {
+                status.disabled = _.contains(nonSelectableStatuses, status.name.toLowerCase());
+                return status;
+            });
+        } // _disableItemsInTrialStatusList
+
     } // paTrialStatusCtrl
 
 

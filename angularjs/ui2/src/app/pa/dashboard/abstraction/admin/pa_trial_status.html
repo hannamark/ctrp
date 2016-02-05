@@ -40,7 +40,7 @@
                                                     class="form-control input-sm"
                                                     restriction-field
                                                     ng-model="trialStatusView.statusObj.trial_status_id"
-                                                    ng-options="status.id as status.name for status in trialStatusView.trialStatuses">
+                                                    ng-options="status.id as status.name disable when status.disabled for status in trialStatusView.trialStatuses">
                                                     <option value="">Select a status</option>
                                                 </select>
                                             </div>
