@@ -161,9 +161,9 @@
                     </div>
                 </div>
 
-                <h5 ng-if="viewTrialView.curTrial.grants.length > 0" class="border-bottom">NIH Grant Information (for NIH funded Trials):</h5>
+                <h5 ng-if="viewTrialView.curTrial.grants.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">NIH Grant Information (for NIH funded Trials):</h5>
 
-                <div ng-if="viewTrialView.curTrial.grants.length > 0" class="form-group">
+                <div ng-if="viewTrialView.curTrial.grants.length > 0 && viewTrialView.curTrial.is_owner" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3"></label>
                     <div class=" col-xs-12 col-sm-7">
                         <table class="table table-bordered table-striped table-condensed">
@@ -231,9 +231,9 @@
                     </div>
                 </div>
 
-                <h5 ng-if="viewTrialView.curTrial.ind_ides.length > 0" class="border-bottom">FDA IND/IDE Information for applicable trials:</h5>
+                <h5 ng-if="viewTrialView.curTrial.ind_ides.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">FDA IND/IDE Information for applicable trials:</h5>
 
-                <div ng-if="viewTrialView.curTrial.ind_ides.length > 0" class="form-group">
+                <div ng-if="viewTrialView.curTrial.ind_ides.length > 0 && viewTrialView.curTrial.is_owner" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3"></label>
                     <div class=" col-xs-12 col-sm-8">
                         <table class="table table-bordered table-striped table-condensed">
@@ -257,37 +257,37 @@
                     </div>
                 </div>
 
-                <h5 class="border-bottom">Regulatory Information:</h5>
+                <h5 ng-if="viewTrialView.curTrial.is_owner" class="border-bottom">Regulatory Information:</h5>
 
-                <div ng-if="viewTrialView.curTrial.responsible_party" class="form-group">
+                <div ng-if="viewTrialView.curTrial.responsible_party && viewTrialView.curTrial.is_owner" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Responsible Party:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{viewTrialView.curTrial.responsible_party.name}}
                     </div>
                 </div>
 
-                <div ng-if="viewTrialView.curTrial.investigator" class="form-group">
+                <div ng-if="viewTrialView.curTrial.investigator && viewTrialView.curTrial.is_owner" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Investigator:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{viewTrialView.curTrial.investigator.lname + ', ' + viewTrialView.curTrial.investigator.fname}}
                     </div>
                 </div>
 
-                <div ng-if="viewTrialView.curTrial.investigator_title" class="form-group">
+                <div ng-if="viewTrialView.curTrial.investigator_title && viewTrialView.curTrial.is_owner" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Investigator Title:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{viewTrialView.curTrial.investigator_title}}
                     </div>
                 </div>
 
-                <div ng-if="viewTrialView.curTrial.investigator_aff" class="form-group">
+                <div ng-if="viewTrialView.curTrial.investigator_aff && viewTrialView.curTrial.is_owner" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Investigator Affiliation:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{viewTrialView.curTrial.investigator_aff.name}}
                     </div>
                 </div>
 
-                <div ng-if="viewTrialView.curTrial.oversight_authorities.length > 0" class="form-group">
+                <div ng-if="viewTrialView.curTrial.oversight_authorities.length > 0 && viewTrialView.curTrial.is_owner" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Trial Oversight Authority:</label>
                     <div class=" col-xs-12 col-sm-6">
                         <table class="table table-bordered table-striped table-condensed">
@@ -305,72 +305,86 @@
                     </div>
                 </div>
 
-                <div ng-if="viewTrialView.curTrial.intervention_indicator" class="form-group">
+                <div ng-if="viewTrialView.curTrial.intervention_indicator && viewTrialView.curTrial.is_owner" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">FDA Regulated Intervention Indicator:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{viewTrialView.curTrial.intervention_indicator}}
                     </div>
                 </div>
 
-                <div ng-if="viewTrialView.curTrial.sec801_indicator" class="form-group">
+                <div ng-if="viewTrialView.curTrial.sec801_indicator && viewTrialView.curTrial.is_owner" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Section 801 Indicator:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{viewTrialView.curTrial.sec801_indicator}}
                     </div>
                 </div>
 
-                <div ng-if="viewTrialView.curTrial.data_monitor_indicator" class="form-group">
+                <div ng-if="viewTrialView.curTrial.data_monitor_indicator && viewTrialView.curTrial.is_owner" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Data Monitoring Committee Appointed Indicator:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{viewTrialView.curTrial.data_monitor_indicator}}
                     </div>
                 </div>
 
-                <h5 class="border-bottom">Trial Related Documents:</h5>
+                <h5 ng-if="viewTrialView.curTrial.is_owner" class="border-bottom">Trial Related Documents:</h5>
 
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Protocol Document' && document.is_latest" class="form-group">
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
+                     ng-if="document.document_type == 'Protocol Document' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
                         <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                     </div>
                 </div>
 
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Change Memo Document' && document.is_latest" class="form-group">
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
+                     ng-if="document.document_type == 'Change Memo Document' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Change Memo Document:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
                         <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                     </div>
                 </div>
 
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Protocol Highlighted Document' && document.is_latest" class="form-group">
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
+                     ng-if="document.document_type == 'Protocol Highlighted Document' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Protocol Highlighted Document:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
                         <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                     </div>
                 </div>
 
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'IRB Approval' && document.is_latest" class="form-group">
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
+                     ng-if="document.document_type == 'IRB Approval' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">IRB Approval:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
                         <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                     </div>
                 </div>
 
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'List of Participating Sites' && document.is_latest" class="form-group">
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
+                     ng-if="document.document_type == 'List of Participating Sites' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">List of Participating Sites:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
                         <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                     </div>
                 </div>
 
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Informed Consent' && document.is_latest" class="form-group">
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
+                     ng-if="document.document_type == 'Informed Consent' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Informed Consent Document:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
                         <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                     </div>
                 </div>
 
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Other Document'" class="form-group">
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
+                     ng-if="document.document_type == 'Other Document' && viewTrialView.curTrial.is_owner"
+                     class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Other:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
                         <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
