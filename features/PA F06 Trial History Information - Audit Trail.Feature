@@ -14,8 +14,6 @@ Then the aduit trail will be displayed for the Trial ordered by date with newest
 |Lead Protocol (lead_protocol_id)|
 |official_title|
 |pilot|
-|primary_purpose_other|
-|secondary_purpose_other|
 |program_code|
 |grant_question|
 |start_date|
@@ -31,7 +29,9 @@ Then the aduit trail will be displayed for the Trial ordered by date with newest
 |Study Source (study_source_id:study_sources/Name)|
 |Phase (phase_id)|
 |primary purpose (primary_purpose_id:  primary_purposes/Name)|
+|primary_purpose_other|
 |secondary purpose (secondary_purpose_id: secondary_purposes/Name)|
+|secondary_purpose_other|
 |responsible party (responsible_party_id:responsible_parties/name)|
 |Lead Org (lead_org_id:Organizations/Name)|
 |PI (pi_id:People/Last Name, First Name, Middle Name)|
@@ -56,10 +56,14 @@ Then the aduit trail will be displayed for the Trial ordered by date with newest
 |brief_title|
 |brief_summary|
 |detailed_description|
-|objective|
+|objectives|
 |target_enrollment|
 |final_enrollment|
 |accruals|
+|study Model: study_models.name|
+|study_model_other|
+|time perspectives:  time_perspectives.name |
+|time_perspective_other |
 |accept_vol|
 |min_age|
 |max_age|
@@ -67,6 +71,10 @@ Then the aduit trail will be displayed for the Trial ordered by date with newest
 |board_approval_status (board_approval_status_id: board_approval_status/name)|
 |intervention_model (intervention_model_id:  intervention_models/name)|
 |masking (masking_id: maskings/Name|
+|masking_role_subject
+|masking_role_investigator
+|masking_role_caregiver
+|masking_role_outcome_assessor
 |allocations (allocation_id: allocations/Name)|
 |study_classification (study_classification_id: study_classifications/Name)|
 |gender (gender_id: genders/Name)|
@@ -88,19 +96,22 @@ Then the aduit trail will be displayed for the Trial ordered by date with newest
 |Milestone Name|
 |Processing Status Name|
 |Other ID (multiple)|
-|Markers Name (multiple)|
-|Outcome Measure Title (multiple)|
+|Markers Name (multiple) markers.name, markers.evaluation_type_id evaluation_types.name, markers.assay_type_id assay_types.name, markers.biomarker_use_id biomarker_uses.name, markers.biomarker_purpose_id biomarker_purposes.name, marker.specimen_type_id specimen_types.name, markers.record_status|
+|Outcome Measure  (multiple) outcome_measures.outcome_measure_type_id: outcome_measures_types.name,  outcome_measures.title, outcome_measures.time_frame, outcome_measures.description, outcome_measures.safety_issue |
+|eligibility criteria (multiple) other_criteria.criteria_type, other_criteria.criteria_desc |
+|Associated Trials (multiple)  associated_trials.trial_identifier, identifier_type identifier_types.code, name  |
+|Disease and Condition (multiple)  diseases.preferred_name, diseases.code, diseases.thesaurus_id, diseases.display name  |
+|Interventions (multiple)interventions.name, other_name, description, intervention_type_id  intervention_types.code, name  |
+|arms_groups (multiple) arms_groups.label,type,description, intervention_id intervention_types.code, name |
+|subgroup Stratification Criteria (multiple) sub_groups.code, sub_groups.description |
 
 
 
 trial_ownerships.user_id users.username(s)
 trial_documents.filename, document_type, document_subtype
-markers.name 
 alternative_titles.category, source, title
-interventions.name, other_name, description, intervention_type_id  intervention_types.code, name 
-arms_groups.label,type,description, intervention_id intervention_types.code, name 
-associated_trials.trial_identifier, identifier_type identifier_types.code, name 
-trial_funding_sources.organization_id organization_id.name
+
+
 central_contacts.phone, e-mail, central_contact_type_ID, central_contact_types.name person_ID People.name
 citations
 collaborators.org_name,organization_id organizations.name
