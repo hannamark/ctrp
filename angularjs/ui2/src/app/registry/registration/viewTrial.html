@@ -369,6 +369,14 @@
                         <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                     </div>
                 </div>
+
+                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Other Document'" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Other:</label>
+                    <div class="col-xs-12 col-sm-9 form-text">
+                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
+                        <br>{{document.document_subtype}}
+                    </div>
+                </div>
             </form>
         </div>
     </div>
