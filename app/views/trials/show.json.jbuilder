@@ -95,7 +95,11 @@ json.current_trial_why_stopped @trial.trial_status_wrappers.present? ?
 json.processing_status @trial.processing_status_wrappers.present? ?
     @trial.processing_status_wrappers.last.processing_status.name : nil
 
-last_amd = @trial.submissions.where('submission_type_id = ?', SubmissionType.find_by_code('AMD').id).last
+if SubmissionType.find_by_code('AMD')
+  last_amd = @trial.submissions.where('submission_type_id = ?', SubmissionType.find_by_code('AMD').id).last
+else
+  last_amd = nil
+end
 json.last_amendment_num last_amd.amendment_num if last_amd.present?
 json.last_amendment_date last_amd.amendment_date if last_amd.present?
 
