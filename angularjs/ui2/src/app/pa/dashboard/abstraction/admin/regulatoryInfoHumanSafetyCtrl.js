@@ -29,7 +29,6 @@
 
         function activate() {
             _getTrialDetailCopy();
-            watchApprovalStatus();
             _watchAffiliationSelection();
             _watchTrialDetailObj();
         }
@@ -44,7 +43,7 @@
                 var internalSourceObj = vm.trialDetailsObj.internal_source;
                 // approval status is required only for *reported/registered* trial thru CTRP
                 vm.approvalStatusRequired = !!internalSourceObj ? (internalSourceObj.code === 'REG' ? true : false) : false;
-                changeStatus();
+                _watchApprovalStatus();
             }, 0);
         } // _getTrialDetailCopy
 
@@ -60,17 +59,18 @@
             });
         } // watchAffiliationSelection
 
-        function watchApprovalStatus() {
+        function _watchApprovalStatus() {
             $scope.$watch(function() {
                 return vm.trialDetailsObj.board_approval_status_id;
             }, function(newVal, oldVal) {
                 changeStatus();
-                vm.trialDetailsObj.board_approval_status_id = newVal;
-                // if (newVal) {
-                //     changeStatus();
-                // } else {
-                //     vm.trialDetailsObj.board_approval_status_id = '';
-                // }
+                
+                if (newVal !== oldVal) {
+                    // clear the old values
+                    vm.trialDetailsObj.board_affiliated_org = {id: ''};
+                    vm.trialDetailsObj.board_name = '';
+                    vm.trialDetailsObj.board_approval_num = '';
+                }
             });
         }
 
@@ -94,13 +94,13 @@
 
             // board name is required unless status is 'Submission not required'
             vm.boardNameRequired = statusName !== '' && statusName.indexOf('not required') === -1;
-            // vm.trialDetailsObj.board_affiliated_org = {};
-            // vm.trialDetailsObj.board_name = '';
         } // changeStatus
 
         function updateHumanSafetyInfo() {
             if (vm.trialDetailsObj.board_approval_status_id === '') return;
-            console.log('updating human safety info...');
+
+            vm.trialDetailsObj.board_affiliation_id = vm.trialDetailsObj.board_affiliated_org.id;
+            console.log('updating human safety info... ', vm.trialDetailsObj);
             var outerTrial = {};
             outerTrial.new = false;
             // if the approval number is not entered, enter the date (dd-MMM-yyyy)
