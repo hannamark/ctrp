@@ -344,7 +344,7 @@
         }
 
         /**
-         * If the trial is non-expanded access, disable the following items from selection:
+         * If the trial is non-expanded access, disable the following items from trial status selection:
          * |Available |
          * |No longer available|
          * |Temporarily not available|
