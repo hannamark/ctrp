@@ -2,12 +2,12 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
               :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual, :comp_date, :comp_date_qual,
               :ind_ide_question, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
-              :study_source_id, :phase_id, :phase, :primary_purpose_id, :primary_purpose, :secondary_purpose_id, :secondary_purpose, :responsible_party_id,
+              :study_source_id, :phase_id, :phase, :primary_purpose_id, :primary_purpose, :secondary_purpose_id, :secondary_purpose, :responsible_party_id, :responsible_party,
               :accrual_disease_term_id, :accrual_disease_term, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id,
               :created_at, :updated_at, :created_by, :updated_by, :study_source, :lead_org, :pi, :sponsor,
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
-              :actions, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
+              :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
               :board_approval_num, :board_approval_status_id, :uuid
 
@@ -95,11 +95,13 @@ json.current_trial_why_stopped @trial.trial_status_wrappers.present? ?
 json.processing_status @trial.processing_status_wrappers.present? ?
     @trial.processing_status_wrappers.last.processing_status.name : nil
 
-json.last_amendment_num @trial.milestone_wrappers.present? ?
-    @trial.milestone_wrappers.last.submission.amendment_num : nil
-
-json.last_amendment_date @trial.milestone_wrappers.present? ?
-    @trial.milestone_wrappers.last.submission.amendment_date : nil
+if SubmissionType.find_by_code('AMD')
+  last_amd = @trial.submissions.where('submission_type_id = ?', SubmissionType.find_by_code('AMD').id).last
+else
+  last_amd = nil
+end
+json.last_amendment_num last_amd.amendment_num if last_amd.present?
+json.last_amendment_date last_amd.amendment_date if last_amd.present?
 
 json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
 

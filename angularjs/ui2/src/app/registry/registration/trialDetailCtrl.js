@@ -206,7 +206,7 @@
                             if (vm.curTrial.is_draft) {
                                 $state.go('main.trialDetail', {trialId: response.id, editType: 'complete'}, {reload: true});
                             } else {
-                                $state.go('main.trials', null, {reload: true});
+                                $state.go('main.viewTrial', {trialId: response.id});
                             }
                             toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                         }
