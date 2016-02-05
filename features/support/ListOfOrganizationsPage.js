@@ -227,10 +227,16 @@ ListOfOrganizationsPage = function () {
 
     this.setAffiliatedOrgEffectiveDate = function(orgEffectiveDate){
         search.setValue(this.orgAffiliatedEffectiveDate,orgEffectiveDate,"Add Organization Effective Date field");
+        //following will select only the default date
+        //this.orgAffiliatedEffectiveDate.click();
+        //element(by.css('.btn.btn-default.btn-sm.active')).click();
     };
 
     this.setAffiliatedOrgExpirationDate = function(orgExpirationDate){
         search.setValue(this.orgAffiliatedExpirationDate,orgExpirationDate,"Add Organization Expiration Date field");
+        //following will select only the default date
+        //this.orgAffiliatedExpirationDate.click();
+        //element(by.css('.btn.btn-default.btn-sm.active')).click();
     };
 
     this.verifyAffiliatedOrgEffectiveDate = function(orgEffectiveDate){

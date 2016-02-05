@@ -29,6 +29,7 @@
 
         function activate() {
             _getTrialDetailCopy();
+            watchApprovalStatus();
             _watchAffiliationSelection();
             _watchTrialDetailObj();
         }
@@ -59,6 +60,20 @@
             });
         } // watchAffiliationSelection
 
+        function watchApprovalStatus() {
+            $scope.$watch(function() {
+                return vm.trialDetailsObj.board_approval_status_id;
+            }, function(newVal, oldVal) {
+                changeStatus();
+                vm.trialDetailsObj.board_approval_status_id = newVal;
+                // if (newVal) {
+                //     changeStatus();
+                // } else {
+                //     vm.trialDetailsObj.board_approval_status_id = '';
+                // }
+            });
+        }
+
         /**
          * action triggered upon changing approval status
          * @return {Void}
@@ -79,9 +94,12 @@
 
             // board name is required unless status is 'Submission not required'
             vm.boardNameRequired = statusName !== '' && statusName.indexOf('not required') === -1;
+            // vm.trialDetailsObj.board_affiliated_org = {};
+            // vm.trialDetailsObj.board_name = '';
         } // changeStatus
 
         function updateHumanSafetyInfo() {
+            if (vm.trialDetailsObj.board_approval_status_id === '') return;
             console.log('updating human safety info...');
             var outerTrial = {};
             outerTrial.new = false;

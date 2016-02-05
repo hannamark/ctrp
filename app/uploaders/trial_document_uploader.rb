@@ -24,7 +24,7 @@ class TrialDocumentUploader < CarrierWave::Uploader::Base
   # Store the original filename in Trial Document's file_name field
   before :cache, :save_original_filename
   def save_original_filename(file)
-    model.file_name ||= file.original_filename if file.respond_to?(:original_filename)
+#    model.file_name ||= file.original_filename if file.respond_to?(:original_filename)
   end
 
   # Override the filename with UUID

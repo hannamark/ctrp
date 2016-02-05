@@ -12,7 +12,7 @@
                         <input type="text" id="nci_id" class="form-control input-sm" ng-model="importTrialView.searchParams.nct_id" auto-focus/>
                     </div>
                     <div class="col-xs-12 col-sm-6">
-                        <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="importTrialView.searchTrials()">
+                        <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="importTrialView.searchTrials()" ng-disabled="importTrialView.disableBtn">
                             <i class="glyphicon glyphicon-search"></i> Search Studies
                         </button>
                     </div>
@@ -31,7 +31,10 @@
                                 <tr>
                                     <td class="col-md-3">{{importTrialView.nct_id}}</td>
                                     <td class="col-md-2">{{importTrialView.status}}</td>
-                                    <td class="col-md-8">{{importTrialView.official_title}}</td>
+                                    <td class="col-md-8">{{importTrialView.official_title}}<br><br>
+                                        <b>Condition(s):</b> {{importTrialView.condition}}<br>
+                                        <b>Intervention(s):</b> {{importTrialView.intervention}}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -41,7 +44,7 @@
                 <div class="form-group" ng-if="importTrialView.nct_id">
                     <label class="control-label col-xs-12 col-sm-3"></label>
                     <div class=" col-xs-12 col-sm-9">
-                        <button type="button" class="btn btn-primary pull-right" id="import_btn" ng-click="importTrialView.importTrial()">
+                        <button type="button" class="btn btn-primary pull-right" id="import_btn" ng-click="importTrialView.importTrial()" ng-disabled="importTrialView.disableBtn">
                             <i class="glyphicon glyphicon-import"></i> Import Trial from ClincialTrials.gov
                         </button>
                     </div>
