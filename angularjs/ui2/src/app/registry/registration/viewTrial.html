@@ -259,6 +259,34 @@
 
                 <h5 class="border-bottom">Regulatory Information:</h5>
 
+                <div ng-if="viewTrialView.curTrial.responsible_party" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Responsible Party:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{viewTrialView.curTrial.responsible_party.name}}
+                    </div>
+                </div>
+
+                <div ng-if="viewTrialView.curTrial.investigator" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Investigator:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{viewTrialView.curTrial.investigator.lname + ', ' + viewTrialView.curTrial.investigator.fname}}
+                    </div>
+                </div>
+
+                <div ng-if="viewTrialView.curTrial.investigator_title" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Investigator Title:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{viewTrialView.curTrial.investigator_title}}
+                    </div>
+                </div>
+
+                <div ng-if="viewTrialView.curTrial.investigator_aff" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Investigator Affiliation:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{viewTrialView.curTrial.investigator_aff.name}}
+                    </div>
+                </div>
+
                 <div ng-if="viewTrialView.curTrial.oversight_authorities.length > 0" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Trial Oversight Authority:</label>
                     <div class=" col-xs-12 col-sm-6">
