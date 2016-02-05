@@ -11,8 +11,8 @@
                         <legend class="sub-bordered">NCI Grant</legend>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.grant_question)}">
-                            <label class="control-label col-xs-12 col-sm-3">Is this trial funded by an NCI grant?</label>
-                            <div class="col-xs-12 col-sm-9">
+                            <label class="control-label col-xs-12 col-sm-4">Is this trial funded by an NCI grant?</label>
+                            <div class="col-xs-12 col-sm-8">
                                 <label class="radio-inline">
                                     <input type="radio" restriction-field ng-model="trialDetailView.curTrial.grant_question" value="Yes" name="grant_question"
                                    ng-required="!trialDetailView.curTrial.grant_question"> Yes
@@ -155,4 +155,3 @@
         </uib-accordion-group>
     </uib-accordion>
 </div>
-

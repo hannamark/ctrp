@@ -468,7 +468,6 @@ end
        end
 
 
-
     ##########################Trial Status && Trial Dates########################################################################################################
 
 
@@ -496,7 +495,12 @@ end
          @validate_errors.store("tns:completionDate","completionDate expected;")
        end
 
+    ####################
 
+       process_regulatory_section(trialkeys)
+
+
+    #############
     ############ *****************  TRIAL DOCS ******************  ##########################
 
 
@@ -1044,15 +1048,92 @@ end
 
  @trialMasterMap.store("other_ids_attributes",other_ids) if other_ids.any?
 
-
-
 end
 
 
-  def sam
-    @status = request.body.read
-    @person = Person.find_by_id(params[:id])
-    #render nothing: true, status: :not_found unless @person.present? && request.body.read.length > 0  &&  request.content_type == "text/plain"
+ def process_regulatory_section(trialkeys)
+
+   # oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
+   #:responsible_party_id
+
+   #:intervention_indicator, :sec801_indicator, :data_monitor_indicator,
+   if trialkeys.has_key?("regulatoryInformation")
+
+     if trialkeys["regulatoryInformation"].has_key?("country") && trialkeys["regulatoryInformation"].has_key?("authorityName")
+
+       country=trialkeys["regulatoryInformation"]["country"]
+       authorityName= trialkeys["regulatoryInformation"]["authorityName"]
+       oversight_authorities=Array.new()
+       oversight_map =Hash.new();
+
+       oversight_map["country"]=country
+       oversight_map["organization"]=authorityName
+
+       oversight_authorities.push(oversight_map)
+
+       @trialMasterMap.store("oversight_authorities_attributes",oversight_authorities)
+
+     end
+
+     if trialkeys["regulatoryInformation"].has_key?("section801")
+       sec=trialkeys["regulatoryInformation"]["section801"]
+         if sec.to_s.downcase == "true".to_s.downcase
+
+           @trialMasterMap.store("sec801_indicator","Yes");
+
+         elsif sec.to_s.downcase == "false".to_s.downcase
+
+           @trialMasterMap.store("sec801_indicator","No");
+
+         else
+
+           @trialMasterMap.store("sec801_indicator","N/A");
+
+         end
+
+     end
+
+     if trialkeys["regulatoryInformation"].has_key?("dataMonitoringCommitteeAppointed")
+       sec=trialkeys["regulatoryInformation"]["dataMonitoringCommitteeAppointed"]
+       if sec.to_s.downcase == "true".to_s.downcase
+
+         @trialMasterMap.store("data_monitor_indicator","Yes");
+
+       elsif sec.to_s.downcase == "false".to_s.downcase
+
+         @trialMasterMap.store("data_monitor_indicator","No");
+
+       else
+
+         @trialMasterMap.store("data_monitor_indicator","N/A");
+
+       end
+
+     end
+
+
+     if trialkeys["regulatoryInformation"].has_key?("fdaRegulated")
+       sec=trialkeys["regulatoryInformation"]["fdaRegulated"]
+
+       if sec.to_s.downcase == "true".to_s.downcase
+
+         @trialMasterMap.store("intervention_indicator","Yes");
+
+       elsif sec.to_s.downcase == "false".to_s.downcase
+
+         @trialMasterMap.store("intervention_indicator","No");
+       else
+         @trialMasterMap.store("intervention_indicator","N/A");
+
+       end
+
+     end
+
+
+
+
+     end
+
   end
 
 
