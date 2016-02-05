@@ -184,6 +184,23 @@
                     parent: 'main.trials',
                     label: 'Import Trials'
                 }
+            })
+
+            .state('main.viewTrial', {
+                url: '/view-trial/:trialId',
+                templateUrl: 'app/registry/registration/viewTrial.html',
+                controller: 'viewTrialCtrl as viewTrialView',
+                section: 'registry',
+                resolve: {
+                    TrialService: 'TrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.trials',
+                    label: 'View Trial'
+                }
             });
     } //trialRegistrationRoutes
 })();

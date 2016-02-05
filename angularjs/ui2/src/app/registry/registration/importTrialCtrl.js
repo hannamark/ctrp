@@ -24,6 +24,8 @@
                     vm.nct_id = response.nct_id;
                     vm.status = response.status;
                     vm.official_title = response.official_title;
+                    vm.condition = response.condition;
+                    vm.intervention = response.intervention;
                     vm.error_msg = response.error_msg;
                 }).catch(function (err) {
                     console.log("Error in searching ClinicalTrials.gov: " + err);

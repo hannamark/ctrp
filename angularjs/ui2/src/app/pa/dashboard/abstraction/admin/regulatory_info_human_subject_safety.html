@@ -16,7 +16,6 @@
                                 ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
                                 restriction-field
                                 ng-required="regInfoSafetyView.approvalStatusRequired"
-                                ng-change="regInfoSafetyView.changeStatus()"
                                 ng-model="regInfoSafetyView.trialDetailsObj.board_approval_status_id" restriction-field
                                 ng-options="status.id as status.name for status in regInfoSafetyView.statuses">
                                 <option value="">
@@ -162,12 +161,12 @@
                         </div>
                         <!-- end of Board country -->
 
-                        <!-- Board phone -->
+                        <!-- Board phone: required if board email is not set -->
                         <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_phone)}">
                             <label for="board_affiliation_phone" class="control-label col-xs-12 col-sm-4">Board Contact Phone</label>
                             <div class="col-sm-4">
                                 <input type="text" id="board_affiliation_phone" name="board_affiliation_phone" class="form-control input-sm"
-                                    ng-required="regInfoSafetyView.boardAffRequired"
+                                    ng-required="regInfoSafetyView.boardAffRequired && !(human_safety_form.board_affiliation_phone.$viewValue.length || human_safety_form.board_affiliation_email.$viewValue.length)"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.phone"
                                     disabled>
                                 <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_phone) &&
@@ -178,12 +177,12 @@
                         </div>
                         <!-- end of Board phone -->
 
-                        <!-- Board email -->
+                        <!-- Board email: required if board phone is not set -->
                         <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_email)}">
                             <label for="board_affiliation_email" class="control-label col-xs-12 col-sm-4">Board Contact Email Address</label>
                             <div class="col-sm-4">
                                 <input type="email" id="board_affiliation_email" name="board_affiliation_email" class="form-control input-sm"
-                                    ng-required="regInfoSafetyView.boardAffRequired"
+                                    ng-required="regInfoSafetyView.boardAffRequired && !(human_safety_form.board_affiliation_phone.$viewValue.length || human_safety_form.board_affiliation_email.$viewValue.length)"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.email"
                                     disabled>
                                 <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation_email) &&
@@ -205,15 +204,9 @@
                                         ng-model="regInfoSafetyView.trialDetailsObj.board_name"
                                         ng-maxlength="255"
                                         placeholder="Board Name">
-                                <span class="form-control-feedback" ng-show="(human_safety_form.board_name.$dirty && human_safety_form.board_name.$error) || (regInfoSafetyView.boardNameRequired && human_safety_form.board_name.$viewValue.length == 0)"
-                                    ng-class="human_safety_form.board_name.$dirty &&
-                                    !ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) ?
+                                <span class="form-control-feedback" ng-show="(human_safety_form.board_name.$dirty && human_safety_form.board_name.$error)"
+                                    ng-class="human_safety_form.board_name.$dirty && !ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) ?
                                     'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                                <!-- <span ng-messages="(human_safety_form.board_name.$error && human_safety_form.board_name.$dirty) || (regInfoSafetyView.boardNameRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name))" role="alert" multiple>
-                                    <span class="help-block" ng-message="required">Board name is required</span>
-                                    <span class="help-block" ng-message="maxlength"> Board name exceeds 255 characters limit</span>
-                               </span>
-                                -->
                                 <span ng-messages="regInfoSafetyView.boardNameRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) && human_safety_form.board_name.$error" role="alert" multiple>
                                     <span class="help-block" ng-message="required">Board name is required</span>
                                     <span class="help-block" ng-message="maxlength"> Board name exceeds 255 characters limit</span>
@@ -228,7 +221,10 @@
                       <div class="btn-toolbar col-xs-12 col-sm-9">
                         <button type="submit" class="btn btn-primary pull-right" id="save_btn"
                             restriction-field="ROLE_ABSTRACTOR, ROLE_SUPER, ROLE_ADMIN"
-                            ng-disabled="human_safety_form.$pristine"> <!--  ng-disabled="!human_safety_form.$valid" -->
+                            ng-disabled="human_safety_form.$pristine"
+                            >
+                            <!-- ng-disabled="human_safety_form.$pristine" -->
+                            <!--  ng-disabled="!human_safety_form.$valid" -->
                           <i class="glyphicon glyphicon-ok"></i>  Save
                         </button>
                         <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="regInfoSafetyView.resetHumanSafetyInfo()" restriction-field="ROLE_ABSTRACTOR, ROLE_SUPER, ROLE_ADMIN">

@@ -43,7 +43,7 @@
                 var internalSourceObj = vm.trialDetailsObj.internal_source;
                 // approval status is required only for *reported/registered* trial thru CTRP
                 vm.approvalStatusRequired = !!internalSourceObj ? (internalSourceObj.code === 'REG' ? true : false) : false;
-                changeStatus();
+                _watchApprovalStatus();
             }, 0);
         } // _getTrialDetailCopy
 
@@ -58,6 +58,21 @@
                 }
             });
         } // watchAffiliationSelection
+
+        function _watchApprovalStatus() {
+            $scope.$watch(function() {
+                return vm.trialDetailsObj.board_approval_status_id;
+            }, function(newVal, oldVal) {
+                changeStatus();
+                
+                if (newVal !== oldVal) {
+                    // clear the old values
+                    vm.trialDetailsObj.board_affiliated_org = {id: ''};
+                    vm.trialDetailsObj.board_name = '';
+                    vm.trialDetailsObj.board_approval_num = '';
+                }
+            });
+        }
 
         /**
          * action triggered upon changing approval status
@@ -82,7 +97,10 @@
         } // changeStatus
 
         function updateHumanSafetyInfo() {
-            console.log('updating human safety info...');
+            if (vm.trialDetailsObj.board_approval_status_id === '') return;
+
+            vm.trialDetailsObj.board_affiliation_id = vm.trialDetailsObj.board_affiliated_org.id;
+            console.log('updating human safety info... ', vm.trialDetailsObj);
             var outerTrial = {};
             outerTrial.new = false;
             // if the approval number is not entered, enter the date (dd-MMM-yyyy)
