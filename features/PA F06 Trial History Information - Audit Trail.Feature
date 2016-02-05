@@ -8,7 +8,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information Audit Trail Screen
 And I select View Audit Trail
-Then the aduit trail will be displayed for the Trial ordered by date with newest update first and include the following fields:
+Then the audit trail will be displayed for the Trial ordered by date with newest update first and include the following fields:
 
 |NCI ID (nci_id)|
 |Lead Protocol (lead_protocol_id)|
