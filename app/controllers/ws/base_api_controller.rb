@@ -1,6 +1,6 @@
 class Ws::BaseApiController < ApplicationController
   #before_filter :parse_request, :authenticate_user_from_token!
-  http_basic_authenticate_with name: "ctrpadmin", password: "passwd", except: :index
+  http_basic_authenticate_with name: "ctrptrialsubmitter", password: "Welcome01", except: :index
 
   private
 

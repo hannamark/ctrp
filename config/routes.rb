@@ -15,7 +15,7 @@ namespace "ws" do
           post '/' => 'api_trials#create'
           post '/:idType/:id' => 'api_trials#update'
           post '/:id' => 'api_trials#update'
-          put '/' => 'api_trials#amend'
+          put '/:idType/:id' => 'api_trials#amend'
           put  '/:id' =>  'api_trials#update'
           put  '/:id/status' =>  'api_trials#change_status'
         end

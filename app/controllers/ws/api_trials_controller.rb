@@ -115,9 +115,21 @@ class Ws::ApiTrialsController < Ws::BaseApiController
          @validate_errors.store("tns:accrualDiseaseTerminology","accrualDiseaseTerminology expected;");
        end
 
+#pilot
 
+       if trialkeys.has_key?("pilot")
+         if trialkeys["pilot"].to_s.downcase == "true".to_s.downcase
+         @trialMasterMap.store("pilot","Yes");
+         elsif trialkeys["pilot"].to_s.downcase == "false".to_s.downcase
+           @trialMasterMap.store("pilot","No");
+         else
+           @validate_errors.store("tns:pilot","True, False are valid values;;");
+         end
+
+       end
 
     #title official_title
+
 
     if !trialkeys.has_key?("title")
       @validate_errors.store("tns:title","title expected;");
@@ -161,7 +173,11 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     ###############============>>>>>>> TrailDetails Ending   <<<<<<<<<<<<<<<<=================###################
 
+########Other_IDS#######
 
+ process_other_trial_id(trialkeys)
+
+#############################
 
 
 
@@ -488,7 +504,7 @@ end
 
        if trialkeys.has_key?("protocolDocument")
 
-         process_docs(trialkeys["protocolDocument"])
+         process_docs(trialkeys["protocolDocument"],"Protocol Document" )
        else
          @validate_errors.store("tns:protocolDocument","completionDate expected;")
        end
@@ -496,26 +512,26 @@ end
 
        if trialkeys.has_key?("irbApprovalDocument")
 
-         process_docs(trialkeys["irbApprovalDocument"])
+         process_docs(trialkeys["irbApprovalDocument"], "IRB Approval")
        else
          @validate_errors.store("tns:irbApprovalDocument","irbApprovalDocument expected;")
        end
 
        if trialkeys.has_key?("participatingSitesDocument")
 
-         process_docs(trialkeys["participatingSitesDocument"])
+         process_docs(trialkeys["participatingSitesDocument"], "List of Participating Sites")
 
        end
 
        if trialkeys.has_key?("informedConsentDocument")
 
-         process_docs(trialkeys["informedConsentDocument"])
+         process_docs(trialkeys["informedConsentDocument"], "Informed Consent")
 
        end
 
        if trialkeys.has_key?("otherDocument")
 
-         process_docs(trialkeys["otherDocument"])
+         process_docs(trialkeys["otherDocument"], "Other Document")
 
        end
 
@@ -609,32 +625,32 @@ end # end of before_create
 
     if trialkeys.has_key?("protocolDocument")
 
-      process_docs(trialkeys["protocolDocument"])
+      process_docs(trialkeys["protocolDocument"], "Protocol Document")
 
     end
 
 
     if trialkeys.has_key?("irbApprovalDocument")
 
-      process_docs(trialkeys["irbApprovalDocument"])
+      process_docs(trialkeys["irbApprovalDocument"], "IRB Approval")
 
     end
 
     if trialkeys.has_key?("participatingSitesDocument")
 
-      process_docs(trialkeys["participatingSitesDocument"])
+      process_docs(trialkeys["participatingSitesDocument"], "List of Participating Sites")
 
     end
 
     if trialkeys.has_key?("informedConsentDocument")
 
-      process_docs(trialkeys["informedConsentDocument"])
+      process_docs(trialkeys["informedConsentDocument"],"Informed Consent")
 
     end
 
     if trialkeys.has_key?("otherDocument")
 
-      process_docs(trialkeys["otherDocument"])
+      process_docs(trialkeys["otherDocument"], "Other Document")
 
     end
 
@@ -651,26 +667,118 @@ end # end of before_create
     #@trialMasterMap["accrual_disease_term_id"]
   end
 
+before_filter only: [:amend] do
 
-
-  def index
-    #render json: Project.where('owner_id = ?', @user.id)
-  end
-
-
-
-  def show
-    if request.content_type == "application/json"
-      render json: @trial
-      return
-    elsif request.content_type == "application/xml"
-      render xml: @trial
-      return
+    if params.has_key?("idType")
+      if params[:idType] == "nci"
+        @trial = Trial.find_by_nci_id(params[:id])
+      else
+        render xml: "expected idtypes are nci,pa,dcp,ctep but currently nci is accepting", status: :bad_request
+      end
     else
-      render json: @trial
-      return
+      @trial = Trial.find_by_id(params[:id])
     end
+    render nothing: true, status: :not_found unless @trial.present?
+
+    string =request.body.read
+    @trialMasterMap = Hash.new
+    @validate_errors = Hash.new
+    @errors = Hash.new
+
+
+
+    if request.content_type == "application/xml"
+      @object = Hash.from_xml(string)
+    else
+      @errors.store("xml request body is not wellformed","");
+    end
+
+
+    if !@object.has_key?("CompleteTrialAmendment")
+      @errors.store("tns:CompleteTrialAmendment","this node has to be included in the request; Parent node for this request");
+    end
+
+
+    render xml: @validate_errors, status: :bad_request if !@errors.empty?
+
+    trialkeys = @object["CompleteTrialAmendment"]
+    p trialkeys
+
+
+    if trialkeys.has_key?("accrualDiseaseTerminology")
+      process_accrual_diseageterminology(trialkeys)
+    end
+
+    if trialkeys.has_key?("grant")
+      process_grants(trialkeys)
+    end
+
+    process_trialstatus(trialkeys)
+
+
+       if trialkeys.has_key?("trialStartDate")
+       process_trial_start_date(trialkeys)
+      end
+
+
+       if trialkeys.has_key?("primaryCompletionDate")
+         process_trial_primary_completion_date(trialkeys)
+       end
+
+
+
+       if trialkeys.has_key?("completionDate")
+         process_trial_completion_date(trialkeys)
+       end
+
+
+    @trialDocs = Array.new
+
+    if trialkeys.has_key?("protocolDocument")
+
+      process_docs(trialkeys["protocolDocument"],"Protocol Document")
+
+    end
+
+
+    if trialkeys.has_key?("irbApprovalDocument")
+
+      process_docs(trialkeys["irbApprovalDocument"],"IRB Approval")
+
+    end
+
+    if trialkeys.has_key?("participatingSitesDocument")
+
+      process_docs(trialkeys["participatingSitesDocument"],"List of Participating Sites")
+
+    end
+
+    if trialkeys.has_key?("informedConsentDocument")
+
+      process_docs(trialkeys["informedConsentDocument"],"Informed Consent")
+
+    end
+
+    if trialkeys.has_key?("otherDocument")
+
+      process_docs(trialkeys["otherDocument"],"Other Document")
+
+    end
+
+
+    @trialMasterMap.store("trial_documents_attributes",@trialDocs);
+
+    @trialMasterMap["coming_from"] = "rest"
+    @trialMasterMap["edit_type"] = "amend"
+
+    p @trialMasterMap
+
+    render xml: @validate_errors, status: :bad_request if !@validate_errors.empty?
+
+    #@trialMasterMap["accrual_disease_term_id"]
   end
+
+
 
 
 
@@ -716,25 +824,26 @@ end # end of before_create
     end
   end
 
-  def change_status
-    puts @status
-    status_id = SourceStatus.find_by_name(@status.upcase).id
-    if @person.update({"source_status_id" => status_id})
+  def amend
+
+    if @trial.update(@trialMasterMap)
       if request.content_type == "application/json"
-        render json: @person
+        render json: @trial
       elsif request.content_type == "application/xml"
-        render xml: @person
+        render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
       else
-        render json: @person
+
       end
     else
       render nothing: true, status: :bad_request
     end
   end
 
+
+
   private
 
-  def process_docs(dochash)
+  def process_docs(dochash,document_type)
 
     p dochash["filename"]
     p dochash["__content__"]
@@ -744,16 +853,15 @@ end # end of before_create
     content.gsub!('\\r', "\r")
     content.gsub!('\\n', "\n")
     decode_base64_content = Base64.decode64(content)
-    tempfile = Tempfile.new("fileupload")
-    tempfile.binmode
-    tempfile.write(decode_base64_content)
 
+       @trialprotocolDocMap = Hash.new
+       out_file = File.new(filename, "w")
+       out_file.puts(decode_base64_content)
 
-    @trialprotocolDocMap = Hash.new
-    @trialprotocolDocMap.store("file",tempfile)
-    @trialprotocolDocMap.store("file_name",filename)
-    @trialprotocolDocMap.store("document_type","Informed Consent")
-    @trialDocs.push(@trialprotocolDocMap)
+       @trialprotocolDocMap.store("file",out_file)
+       @trialprotocolDocMap.store("file_name",filename)
+       @trialprotocolDocMap.store("document_type",document_type)
+       @trialDocs.push(@trialprotocolDocMap)
 
 
   end
@@ -903,14 +1011,43 @@ end
 
 
   def process_trial_completion_date(trialkeys)
-if !trialkeys["completionDate"].kind_of?(Array) && ( trialkeys["completionDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["completionDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
+       if !trialkeys["completionDate"].kind_of?(Array) && ( trialkeys["completionDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["completionDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
            @trialMasterMap["comp_date_qual"]=trialkeys["trialStartDate"]["type"];
            @trialMasterMap["comp_date"]=trialkeys["trialStartDate"]["__content__"];
-         else
+        else
            @validate_errors.store("tns:completionDate","exactly one completionDate expected; or valid types are Anticipated and Actual ")
 
          end
 end
+
+  def process_other_trial_id(trialkeys)
+
+     other_ids = Array.new()
+     clinical_id_map=Hash.new()
+     other_id_map =Hash.new()
+
+   if trialkeys.has_key?("clinicalTrialsDotGovTrialID")
+
+       clinical_id_map["protocol_id_origin_id"]=ProtocolIdOrigin.find_by_name("ClinicalTrials.gov Identifier").id
+       clinical_id_map["protocol_id"]=trialkeys["clinicalTrialsDotGovTrialID"]
+       other_ids.push(clinical_id_map);
+
+  end
+
+  if trialkeys.has_key?("otherTrialID")
+
+       other_id_map["protocol_id_origin_id"]=ProtocolIdOrigin.find_by_name("Other Identifier").id
+       other_id_map["protocol_id"]=trialkeys["otherTrialID"]
+       other_ids.push(other_id_map);
+
+  end
+
+ @trialMasterMap.store("other_ids_attributes",other_ids) if other_ids.any?
+
+
+
+end
+
 
   def sam
     @status = request.body.read
