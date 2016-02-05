@@ -829,3 +829,7 @@ h5.border-bottom {
     margin-top: 30px;
     border-bottom: 1px solid #E6E6E6;
 }
+
+span.date-qualifier {
+    margin-left: 20px;
+}
