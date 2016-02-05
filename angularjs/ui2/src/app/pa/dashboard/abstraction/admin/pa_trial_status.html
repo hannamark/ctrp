@@ -40,32 +40,43 @@
                                                     class="form-control input-sm"
                                                     restriction-field
                                                     ng-model="trialStatusView.statusObj.trial_status_id"
-                                                    ng-options="status.id as status.name for status in trialStatusView.trialStatuses">
+                                                    ng-options="status.id as status.name disable when status.disabled for status in trialStatusView.trialStatuses">
                                                     <option value="">Select a status</option>
                                                 </select>
                                             </div>
                                         </td>
                                         <td class="col-md-3">
                                             <div>
-                                                <textarea class="form-control input-sm" id="comment" name="status_comment" rows="1" ng-model="trialStatusView.statusObj.comment"></textarea>
+                                                <textarea class="form-control input-sm" id="comment" name="status_comment"
+                                                    rows="1"
+                                                    ng-maxlength="160"
+                                                    ng-model="trialStatusView.statusObj.comment">
+                                                </textarea>
+                                                <span ng-show="trial_status_form.status_comment.$dirty">
+                                                    {{160 - trial_status_form.status_comment.$viewValue.length}} characters left
+                                                </span>
                                             </div>
                                         </td>
                                         <td class="col-md-3">
                                             <div>
                                                 <textarea rows="1" id="why_stopped" name="why_stopped" class="form-control input-sm"
                                                     ng-model="trialStatusView.statusObj.why_stopped"
-                                                    ng-maxlength="255"
+                                                    ng-maxlength="160"
                                                     ng-disabled="!trialStatusView.showWhyStoppedField">
                                                 </textarea>
                                                 <span ng-show="trial_status_form.why_stopped.$dirty && trialStatusView.showWhyStoppedField">
-                                                    {{255 - trial_status_form.why_stopped.$viewValue.length}} characters left
+                                                    {{160 - trial_status_form.why_stopped.$viewValue.length}} characters left
                                                 </span>
                                             </div>
                                         </td>
                                         <td class="col-md-2">
                                             <div ng-hide="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-default" restriction-field type="button" ng-click="trialStatusView.addTrialStatus()"
-                                                    ng-disabled="trialStatusView.statusObj.status_date == '' || trialStatusView.statusObj.trial_status_id == ''"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                                                    ng-disabled="trialStatusView.statusObj.status_date == '' ||
+                                                    trialStatusView.statusObj.trial_status_id == '' ||
+                                                    trial_status_form.why_stopped.$viewValue.length > 160 ||
+                                                    trial_status_form.status_comment.$viewValue.length > 160
+                                                    "><i class="glyphicon glyphicon-plus"></i> Add</button>
                                             </div>
                                             <!-- <div class="btn-toolbar col-xs-12" ng-show="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
@@ -73,7 +84,11 @@
                                             </div> -->
                                             <div class="btn-group inline" ng-show="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
-                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()" ng-disabled="trialStatusView.statusObj.status_date == '' || trialStatusView.statusObj.trial_status_id == '' || trial_status_form.why_stopped.$viewValue.length > 255">Commit</button>
+                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()"
+                                                    ng-disabled="trialStatusView.statusObj.status_date == '' ||
+                                                    trialStatusView.statusObj.trial_status_id == '' ||
+                                                    trial_status_form.why_stopped.$viewValue.length > 160 ||
+                                                    trial_status_form.status_comment.$viewValue.length > 160">Commit</button>
                                             </div>
                                         </td>
                                     </tr>
