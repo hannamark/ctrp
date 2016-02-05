@@ -204,9 +204,8 @@
                                         ng-model="regInfoSafetyView.trialDetailsObj.board_name"
                                         ng-maxlength="255"
                                         placeholder="Board Name">
-                                <span class="form-control-feedback" ng-show="(human_safety_form.board_name.$dirty && human_safety_form.board_name.$error) || (regInfoSafetyView.boardNameRequired && human_safety_form.board_name.$viewValue.length == 0)"
-                                    ng-class="human_safety_form.board_name.$dirty &&
-                                    !ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) ?
+                                <span class="form-control-feedback" ng-show="(human_safety_form.board_name.$dirty && human_safety_form.board_name.$error)"
+                                    ng-class="human_safety_form.board_name.$dirty && !ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) ?
                                     'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <!-- <span ng-messages="(human_safety_form.board_name.$error && human_safety_form.board_name.$dirty) || (regInfoSafetyView.boardNameRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name))" role="alert" multiple>
                                     <span class="help-block" ng-message="required">Board name is required</span>
