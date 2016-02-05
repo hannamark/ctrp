@@ -250,6 +250,14 @@ class Trial < ActiveRecord::Base
     end
   end
 
+  def is_owner
+    if self.users.include? self.current_user
+      return true
+    else
+      return false
+    end
+  end
+
   def is_sponsor_nci?
     return (!self.sponsor.nil? && self.sponsor.name == "National Cancer Institute") ? true:false
   end

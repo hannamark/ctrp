@@ -5,6 +5,8 @@
         </div>
         <div class="row">
             <form class="form form-horizontal" role="form">
+                <h5 class="border-bottom">Amendment Details:</h5>
+
                 <div ng-if="viewTrialView.curTrial.last_amendment_num" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Amendment Number:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
@@ -18,6 +20,8 @@
                         {{viewTrialView.curTrial.last_amendment_date}}
                     </div>
                 </div>
+
+                <h5 class="border-bottom">Trial Identifiers:</h5>
 
                 <div ng-if="viewTrialView.curTrial.lead_protocol_id" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Lead Organization Trial Identifier:</label>
@@ -50,6 +54,8 @@
                         </table>
                     </div>
                 </div>
+
+                <h5 class="border-bottom">Trial Details:</h5>
 
                 <div ng-if="viewTrialView.curTrial.official_title" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Official Title:</label>
@@ -114,6 +120,8 @@
                     </div>
                 </div>
 
+                <h5 class="border-bottom">Lead Organization/Principal Investigator:</h5>
+
                 <div ng-if="viewTrialView.curTrial.lead_org" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Lead Organization:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
@@ -128,12 +136,16 @@
                     </div>
                 </div>
 
+                <h5 class="border-bottom">Sponsor:</h5>
+
                 <div ng-if="viewTrialView.curTrial.sponsor" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Sponsor:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{viewTrialView.curTrial.sponsor.name}}
                     </div>
                 </div>
+
+                <h5 class="border-bottom">Data Table 4 Information:</h5>
 
                 <div ng-repeat="funding_source in viewTrialView.curTrial.funding_sources track by $index" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3"><span ng-if="$index == 0">Data Table 4 Funding Source:</span></label>
@@ -148,6 +160,8 @@
                         {{viewTrialView.curTrial.program_code}}
                     </div>
                 </div>
+
+                <h5 class="border-bottom">NIH Grant Information (for NIH funded Trials):</h5>
 
                 <div ng-if="viewTrialView.curTrial.grants.length > 0" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3"></label>
@@ -171,6 +185,8 @@
                     </div>
                 </div>
 
+                <h5 class="border-bottom">Trial Status:</h5>
+
                 <div ng-if="viewTrialView.curTrial.current_trial_status" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Current Trials Status:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
@@ -192,6 +208,8 @@
                     </div>
                 </div>
 
+                <h5 class="border-bottom">Trial Dates:</h5>
+
                 <div ng-if="viewTrialView.curTrial.start_date" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Trial Start Date:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
@@ -212,6 +230,8 @@
                         {{viewTrialView.curTrial.comp_date}} {{viewTrialView.curTrial.comp_date_qual}}
                     </div>
                 </div>
+
+                <h5 class="border-bottom">FDA IND/IDE Information for applicable trials:</h5>
 
                 <div ng-if="viewTrialView.curTrial.ind_ides.length > 0" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3"></label>
@@ -237,8 +257,10 @@
                     </div>
                 </div>
 
+                <h5 class="border-bottom">Regulatory Information:</h5>
+
                 <div ng-if="viewTrialView.curTrial.oversight_authorities.length > 0" class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3"></label>
+                    <label class="control-label col-xs-12 col-sm-3">Trial Oversight Authority:</label>
                     <div class=" col-xs-12 col-sm-6">
                         <table class="table table-bordered table-striped table-condensed">
                             <thead>
@@ -275,6 +297,8 @@
                         {{viewTrialView.curTrial.data_monitor_indicator}}
                     </div>
                 </div>
+
+                <h5 class="border-bottom">Trial Related Documents:</h5>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index" ng-if="document.document_type == 'Protocol Document' && document.is_latest" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
