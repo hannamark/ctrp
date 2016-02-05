@@ -32,6 +32,11 @@
         vm.commentList = [];
         var commentField = 'trial-status'; // for marking comment entry
         var commentModel = 'Trial'; // model name for comment
+        var statusesForWhyStopped = [
+            'administratively complete', 'withdrawn',
+            'temporarily closed to accrual',
+            'temporarily closed to accrual and intervention'
+        ];
         vm._date_opened = false;
 
         // actions
@@ -311,8 +316,7 @@
                     vm.statusObj.why_stopped = '';
                     var selectedStatus = _.findWhere(vm.trialStatuses, {id: newVal});
                     var statusName = selectedStatus.name || '';
-                    var statusesForStop = ['administratively complete', 'withdrawn', 'temporarily closed'];
-                    if (_.contains(statusesForStop, statusName.toLowerCase())) {
+                    if (_.contains(statusesForWhyStopped, statusName.toLowerCase())) {
                         vm.showWhyStoppedField = true;
                     } else {
                         vm.showWhyStoppedField = false;
