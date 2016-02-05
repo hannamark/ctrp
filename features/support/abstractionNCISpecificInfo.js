@@ -35,7 +35,7 @@ var abstractionNCISpecificInfo = function(){
     this.nciSpecificDepartmentIdentifier = element(by.model('trialNciView.curTrial.nih_nci_div'));
     this.nciSpecificProgramID = element(by.model('trialNciView.curTrial.nih_nci_prog'));
     this.nciSpecificSendTrial = element(by.model('trialNciView.curTrial.send_trial_flag')); //by.model('trialNciView.curTrial.send_trial_flag')
-    this.nciSpecificComments = element(by.id('trial_processing_comment'));
+    this.nciSpecificComments = element(by.id('trial_nci_specific_comment'));
 
     this.nciSpecificAdminCheckOut = element(by.id('admin_checkout')); //by.id('admin_checkout') by.css('#admin_checkout') by.buttonText('Admin Check Out')
     this.nciSpecificAdminCheckIn = element(by.id('admin_checkin')); //by.buttonText('Admin Check In')
@@ -107,7 +107,12 @@ var abstractionNCISpecificInfo = function(){
 
     //Delete Funding Source Organization
     this.clickFundingSourceOrganizationDel = function(){
-        helper.clickButton(this.orgAddFundingSourceBostonMedDel,"Funding Source Organization Delete button");
+        this.orgAddFundingSourceBostonMedDel.isPresent().then(function (state) {
+            if (state === true) {
+                    helper.clickButton(this.orgAddFundingSourceBostonMedDel, "Funding Source Organization Delete button");
+
+            };
+        });
     };
 
     //Set Name : Organization Search
