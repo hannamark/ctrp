@@ -64,7 +64,7 @@
                 return vm.trialDetailsObj.board_approval_status_id;
             }, function(newVal, oldVal) {
                 changeStatus();
-                
+
                 if (newVal !== oldVal) {
                     // clear the old values
                     vm.trialDetailsObj.board_affiliated_org = {id: ''};
@@ -87,6 +87,8 @@
             // board affiliation is required when status is
             // 'Submitted, exempt' or 'Submitted, approved'
             vm.boardAffRequired = statusName.indexOf('approv') > -1 ||
+                                  statusName.indexOf('pend') > -1 ||
+                                  statusName.indexOf('denied') > -1 ||
                                   statusName.indexOf('exempt') > -1;
             // show board affiliation for statuses: approved, exempt,
             vm.boardAffShown = vm.boardAffRequired || statusName.indexOf('pend') > -1 ||
