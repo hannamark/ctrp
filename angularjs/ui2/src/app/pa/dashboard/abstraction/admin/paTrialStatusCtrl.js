@@ -63,7 +63,6 @@
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
                 // load comments for the trial with the field name {commentField}
                 vm.isExpandedAccess = !!vm.trialDetailObj.research_category ? vm.trialDetailObj.research_category.name.toLowerCase().indexOf('expand') > -1 : false;
-                vm.isExpanedAccess = false;
                 if (!vm.isExpanedAccess) {
                     // disable some trial statuses if non-expanded access
                     _disableItemsInTrialStatusList();
