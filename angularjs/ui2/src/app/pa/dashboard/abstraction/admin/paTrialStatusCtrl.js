@@ -174,6 +174,11 @@
         }
 
         function commitEdit() {
+            vm.statusErrorMsg = '';
+            if (!vm.statusObj.status_date || !vm.statusObj.trial_status_id) {
+                vm.statusErrorMsg = 'Both status date and trial status are required';
+                return;
+            }
             if (vm.statusObj.edit) {
                 // vm.statusObj.status_date = moment(vm.statusObj.status_date).format("DD-MMM-YYYY"); // e.g. 03-Feb-2016
                 // format date from 'yyyy-mm-DD' to 'yyyy-MMM-DD' (e.g. from 2009-12-03 to 03-Feb-2009)

@@ -144,7 +144,7 @@
                                 </span>
                                 <ul>
                                     <li ng-repeat="comment in trialStatusView.commentList">
-                                        <p>{{comment.username}} commented ({{comment.updated_at | date: "dd-MMM-yyyy H:mm"}}):</p>
+                                        <p><strong>{{comment.username}}</strong> commented ({{comment.updated_at | date: "dd-MMM-yyyy H:mm"}}):</p>
                                         <h5 class="md-body-1" in-place-edit="comment.content" on-save="trialStatusView.updateComment(comment.content, $index)"
                                         template="app/modules/widgets/comment/comment-in-place-edit.html" is-editable="{{comment.isEditable}}">{{comment.content}}, {{comment.isEditable}}</h5>
                                         <md-divider ng-if="!$last"></md-divider>
