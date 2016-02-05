@@ -51,9 +51,20 @@
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
-                                    <td>{{collaborator.organization_id}}</td>
                                     <td>
-                                        {{collaborator.org_name}}
+                                        {{collaborator.organization_id}}
+                                    </td>
+                                    <td>
+                                        <div ng-if="!collaborator.organization_id">
+                                            <span in-place-edit="collaborator.org_name" on-save="trialDetailView.updateTrial(collaborator.org_name, $index)"
+                                                  template="app/pa/dashboard/abstraction/admin/other_identifier_edit_template.html" id="#other_id_edit">
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="collaborator.organization_id">
+                                            {{collaborator.org_name}}
+                                        </div>
+
                                     </td>
                                     <td class="text-center">
                                         <input type="checkbox" ng-model="collaborator.selected" ng-change="trialDetailView.deleteListHandler(trialDetailView.curTrial.collaborators)" /></td>
