@@ -44,6 +44,7 @@
             console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators));
             //console.log("outertrial IN SAVE! " + JSON.stringify(outerTrial));
             vm.saveTrial();
+            vm.addedCollaborators = [];
 
         } // updateTrial
 
@@ -63,7 +64,7 @@
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
-                vm.addedCollaborators = [];
+                vm.curTrial.collaborators = response["collaborators"];
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
@@ -76,15 +77,8 @@
         }
 
         vm.updateCollaborator = function(org_name, idx) {
-            console.log("idx="+idx);
-            console.log("org_name="+org_name);
-            console.log("collaborators="+JSON.stringify(vm.curTrial.collaborators));
-            console.log("collaborators[idx]="+JSON.stringify(vm.curTrial.collaborators[idx]));
             vm.curTrial.collaborators_attributes=[];
             var collaborator = vm.curTrial.collaborators[idx];
-            //collaborator.id = vm.curTrial.collaborators[idx].id;
-            //collaborator.organization_id = vm.curTrial.collaborators[idx].organization_id;
-            //collaborator.org_name = vm.curTrial.collaborators[idx].org_name;
             vm.curTrial.collaborators_attributes.push(collaborator);
             console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
             vm.saveTrial();
@@ -163,8 +157,6 @@
         };
 
         function deleteSelected(){
-            //console.log("In deleteSelected");
-            //console.log(vm.selectedDeleteCollaboratorsList);
             vm.curTrial.collaborators_attributes=[];
             //console.log(vm.selectedDeleteCollaboratorsList);
             for (var i = 0; i < vm.selectedDeleteCollaboratorsList.length; i++) {
@@ -176,10 +168,7 @@
                 vm.curTrial.collaborators_attributes.push(collaboratorToBeDeletedFromDb);
             }
             for (var i = 0; i < vm.selectedDeleteCollaboratorsList.length; i++) {
-                //console.log("IN LOOP" + JSON.stringify(vm.curTrial.collaborators));
                 for (var j = 0; j < vm.curTrial.collaborators.length; j++) {
-                    //console.log("INNER LOOP" + JSON.stringify(vm.curTrial.collaborators[j].organization_id));
-                    //console.log("INNER LOOP" + JSON.stringify(vm.selectedDeleteCollaboratorsList[i].organization_id));
                     if (vm.curTrial.collaborators[j].organization_id == vm.selectedDeleteCollaboratorsList[i].organization_id){
                         var collaboratorToBeDeletedFromView = vm.curTrial.collaborators[j];
                         console.log("coll to be delview ="+ JSON.stringify(collaboratorToBeDeletedFromView));
