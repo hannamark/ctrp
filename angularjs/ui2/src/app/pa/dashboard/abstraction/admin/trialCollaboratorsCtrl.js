@@ -26,23 +26,30 @@
         vm.collaboratorsNum = 0;
         vm.addMode=false;
 
-        vm.updateTrial = function(updateType) {
+        /*
+         * This function is invoked when the organizations are added and saved
+         */
+        vm.updateTrial = function() {
             // Prevent multiple submissions
+            console.log("update Trial ");
             if (vm.addedCollaborators.length > 0) {
                 vm.curTrial.collaborators_attributes = [];
                 _.each(vm.addedCollaborators, function (collaborator) {
-                    var index = 0;
-                    vm.curTrial.collaborators_attributes.push(collaborator);
-                    if (!vm.addedCollaborators[index]._destroy) {
-                        vm.curTrial.collaborators.push(collaborator);
+                    var exists = false
+                    for (var i = 0; i < vm.curTrial.collaborators.length; i++) {
+                        if (vm.curTrial.collaborators[i].id) {
+                            if (vm.curTrial.collaborators[i].organization_id == collaborator.organization_id) {
+                                exists = true;
+                            }
+                        }
                     }
-                    index++;
+                    console.log("update Trial exists ="+exists);
+                    if (!exists){
+                        vm.curTrial.collaborators_attributes.push(collaborator);
+                    }
                 });
             }
-
-            //vm.curTrial.collaborators_attributes = vm.curTrial.collaborators;
-            console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators));
-            //console.log("outertrial IN SAVE! " + JSON.stringify(outerTrial));
+            console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
             vm.saveTrial();
             vm.addedCollaborators = [];
 
@@ -74,8 +81,13 @@
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
 
-        }
+        }//saveTrial
 
+        /**
+         * The in-line editing of the Organization name for Organizations without PO_ID
+         * @param org_name
+         * @param idx
+         */
         vm.updateCollaborator = function(org_name, idx) {
             vm.curTrial.collaborators_attributes=[];
             var collaborator = vm.curTrial.collaborators[idx];
@@ -142,17 +154,16 @@
         } //getTrialDetailCopy
 
 
-        function deleteListHandler(cList){
-
+        function deleteListHandler(collaboratorsSelectedInCheckboxes){
             console.log("In deleteListHandler");
             var deleteList = [];
-            angular.forEach(cList, function(item) {
+            angular.forEach(collaboratorsSelectedInCheckboxes, function(item) {
                 if ( angular.isDefined(item.selected) && item.selected === true ) {
                     deleteList.push(item);
                 }
             });
             vm.selectedDeleteCollaboratorsList = deleteList ;
-            console.log(deleteList);
+            console.log("In vm.selectedDeleteCollaboratorsList=" + JSON.strigify(vm.selectedDeleteCollaboratorsList));
 
         };
 
@@ -183,7 +194,6 @@
 
 
         function setAddMode() {
-            console.log("In addParticipatingSite");
             vm.addMode = true;
         }
 
