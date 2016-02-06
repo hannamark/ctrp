@@ -193,132 +193,14 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
 
 ################################ IND/IDE ##########################
-       ind_ides=Array.new
 
-
+       @ind_ides=Array.new
        if trialkeys.has_key?("ind") || trialkeys.has_key?("ide")
-
-
-
-       if trialkeys.has_key?("ind")
-         if trialkeys["ind"].kind_of?(Array)
-           if trialkeys["ind"].length > 0
-             len=trialkeys["ind"].length
-
-
-             puts trialkeys["ind"]
-
-             puts len
-             for i in 0..len-1
-               if trialkeys["ind"][i].has_key?("number") && trialkeys["ind"][i].has_key?("grantor") && trialkeys["ind"][i].has_key?("holderType")
-
-                 number=trialkeys["ind"][i]["number"]
-                 grantor=trialkeys["ind"][i]["grantor"]
-                 holderType=trialkeys["ind"][i]["holderType"]
-                 holderTypeId= HolderType.find_by_name(holderType).id;
-                 myHash= Hash.new();
-                 myHash.store("ind_ide_type","ind");
-                 myHash.store("ind_ide_number",number);
-                 myHash.store("grantor",grantor);
-                 myHash.store("holder_type_id",holderTypeId);
-
-                 ind_ides.push(myHash);
-                 # ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id, :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
-               else
-                 @validate_errors.store("tns:ind"," For each ind  number, grantor, holderType expected;")
-                 break;
-               end
-
-             end
-
-           end
-         else
-           if trialkeys["ind"].has_key?("number") && trialkeys["ind"].has_key?("grantor") && trialkeys["ind"].has_key?("holderType")
-             number=trialkeys["ind"]["number"]
-             grantor=trialkeys["ind"]["grantor"]
-             holderType=trialkeys["ind"]["holderType"]
-             holderTypeId= HolderType.find_by_name(holderType).id;
-
-             myHash= Hash.new();
-             myHash.store("ind_ide_type","ind");
-             myHash.store("ind_ide_number",number);
-             myHash.store("grantor",grantor);
-             myHash.store("holder_type_id",holderTypeId);
-
-             ind_ides.push(myHash);
-           else
-             @validate_errors.store("tns:ind"," number, grantor, holderType expected;")
-
-           end
-         end
-
-       end
-
-       if trialkeys.has_key?("ide")
-         if trialkeys["ide"].kind_of?(Array)
-           if trialkeys["ide"].length > 0
-             len=trialkeys["ide"].length
-
-
-             puts trialkeys["ide"]
-
-             puts len
-             for i in 0..len-1
-               if trialkeys["ide"][i].has_key?("number") && trialkeys["ide"][i].has_key?("grantor") && trialkeys["ide"][i].has_key?("holderType")
-
-                 number=trialkeys["ide"][i]["number"]
-                 grantor=trialkeys["ide"][i]["grantor"]
-                 holderType=trialkeys["ide"][i]["holderType"]
-                 holderTypeId= HolderType.find_by_name(holderType).id;
-                 myHash= Hash.new();
-                 myHash.store("ind_ide_type","ide");
-                 myHash.store("ind_ide_number",number);
-                 myHash.store("grantor",grantor);
-                 myHash.store("holder_type_id",holderTypeId);
-
-                 ind_ides.push(myHash);
-                 # ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id, :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
-               else
-                 @validate_errors.store("tns:ide"," For each ide  number, grantor, holderType expected;")
-                 break;
-               end
-
-             end
-
-           end
-         else
-           if trialkeys["ide"].has_key?("number") && trialkeys["ide"].has_key?("grantor") && trialkeys["ide"].has_key?("holderType")
-             number=trialkeys["ide"]["number"]
-             grantor=trialkeys["ide"]["grantor"]
-             holderType=trialkeys["ide"]["holderType"]
-             holderTypeId= HolderType.find_by_name(holderType).id;
-
-             myHash= Hash.new();
-             myHash.store("ind_ide_type","ide");
-             myHash.store("ind_ide_number",number);
-             myHash.store("grantor",grantor);
-             myHash.store("holder_type_id",holderTypeId);
-
-             ind_ides.push(myHash);
-           else
-             @validate_errors.store("tns:ide"," number, grantor, holderType expected;")
-
-           end
-         end
-
-       end
-       @trialMasterMap.store("ind_ides_attributes",ind_ides);
+         process_ind_ides(trialkeys)
        else
          @validate_errors.store("tns:ide/tns:ind","Either tns:ind or tnd:ide expected")
 
        end
-
-
-
-
-
-
-    #############################################################################################################################
 
   ####Funding Sources
        @trial_funding_sources=Array.new
@@ -757,6 +639,14 @@ end # end of before_create
     end
 
 
+    ########IND_IDES#########
+
+    @ind_ides=Array.new
+    if trialkeys.has_key?("ind") || trialkeys.has_key?("ide")
+      delete_ind_ides(trialkeys)
+      process_ind_ides(trialkeys)
+    end
+
     ##################################################
 
     @trialMasterMap.store("trial_documents_attributes",@trialDocs);
@@ -987,7 +877,7 @@ end
   end
 
 
-   def process_trialstatus(trialkeys)
+  def process_trialstatus(trialkeys)
 
 
      trial_status_map=Hash.new();
@@ -1015,8 +905,6 @@ end
      @trialMasterMap.store("trial_status_wrappers_attributes",@trial_status_wrapper) if !trial_status_map.empty?
 
    end
-
-
 
 
   def  process_trial_start_date(trialkeys)
@@ -1405,5 +1293,134 @@ end
   @trialMasterMap.store("trial_funding_sources_attributes",@trial_funding_sources);
   end
 
+  def process_ind_ides(trialkeys)
 
-end #main end
+      if trialkeys.has_key?("ind")
+        if trialkeys["ind"].kind_of?(Array)
+          if trialkeys["ind"].length > 0
+            len=trialkeys["ind"].length
+
+
+            puts trialkeys["ind"]
+
+            puts len
+            for i in 0..len-1
+              if trialkeys["ind"][i].has_key?("number") && trialkeys["ind"][i].has_key?("grantor") && trialkeys["ind"][i].has_key?("holderType")
+
+                number=trialkeys["ind"][i]["number"]
+                grantor=trialkeys["ind"][i]["grantor"]
+                holderType=trialkeys["ind"][i]["holderType"]
+                holderTypeId= HolderType.find_by_name(holderType).id;
+                myHash= Hash.new();
+                myHash.store("ind_ide_type","ind");
+                myHash.store("ind_ide_number",number);
+                myHash.store("grantor",grantor);
+                myHash.store("holder_type_id",holderTypeId);
+
+                @ind_ides.push(myHash);
+                # ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id, :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
+              else
+                @validate_errors.store("tns:ind"," For each ind  number, grantor, holderType expected;")
+                break;
+              end
+
+            end
+
+          end
+        else
+          if trialkeys["ind"].has_key?("number") && trialkeys["ind"].has_key?("grantor") && trialkeys["ind"].has_key?("holderType")
+            number=trialkeys["ind"]["number"]
+            grantor=trialkeys["ind"]["grantor"]
+            holderType=trialkeys["ind"]["holderType"]
+            holderTypeId= HolderType.find_by_name(holderType).id;
+
+            myHash= Hash.new();
+            myHash.store("ind_ide_type","ind");
+            myHash.store("ind_ide_number",number);
+            myHash.store("grantor",grantor);
+            myHash.store("holder_type_id",holderTypeId);
+
+            @ind_ides.push(myHash);
+          else
+            @validate_errors.store("tns:ind"," number, grantor, holderType expected;")
+
+          end
+        end
+
+      end
+
+      if trialkeys.has_key?("ide")
+        if trialkeys["ide"].kind_of?(Array)
+          if trialkeys["ide"].length > 0
+            len=trialkeys["ide"].length
+
+
+            puts trialkeys["ide"]
+
+            puts len
+            for i in 0..len-1
+              if trialkeys["ide"][i].has_key?("number") && trialkeys["ide"][i].has_key?("grantor") && trialkeys["ide"][i].has_key?("holderType")
+
+                number=trialkeys["ide"][i]["number"]
+                grantor=trialkeys["ide"][i]["grantor"]
+                holderType=trialkeys["ide"][i]["holderType"]
+                holderTypeId= HolderType.find_by_name(holderType).id;
+                myHash= Hash.new();
+                myHash.store("ind_ide_type","ide");
+                myHash.store("ind_ide_number",number);
+                myHash.store("grantor",grantor);
+                myHash.store("holder_type_id",holderTypeId);
+
+                @ind_ides.push(myHash);
+                # ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id, :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
+              else
+                @validate_errors.store("tns:ide"," For each ide  number, grantor, holderType expected;")
+                break;
+              end
+
+            end
+
+          end
+        else
+          if trialkeys["ide"].has_key?("number") && trialkeys["ide"].has_key?("grantor") && trialkeys["ide"].has_key?("holderType")
+            number=trialkeys["ide"]["number"]
+            grantor=trialkeys["ide"]["grantor"]
+            holderType=trialkeys["ide"]["holderType"]
+            holderTypeId= HolderType.find_by_name(holderType).id;
+
+            myHash= Hash.new();
+            myHash.store("ind_ide_type","ide");
+            myHash.store("ind_ide_number",number);
+            myHash.store("grantor",grantor);
+            myHash.store("holder_type_id",holderTypeId);
+
+            @ind_ides.push(myHash);
+          else
+            @validate_errors.store("tns:ide"," number, grantor, holderType expected;")
+
+          end
+        end
+
+      end
+      @trialMasterMap.store("ind_ides_attributes",@ind_ides);
+
+  end
+
+  def delete_ind_ides(trialkeys)
+    existing_ii = Array.new()
+
+    existing_ii = IndIde.where(trial_id: @trial.id).pluck(:id)
+    len = existing_ii.length
+    if len > 0
+      for i in 0..len-1
+        myHash= Hash.new();
+        myHash.store("id", existing_ii[i])
+        myHash.store("_destroy","true")
+        @ind_ides.push(myHash);
+      end
+      @trialMasterMap.store("ind_ides_attributes",@ind_ides);
+
+    end
+  end
+
+  end #main end
