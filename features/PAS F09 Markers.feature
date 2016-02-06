@@ -104,6 +104,8 @@ Then Record Status is set to Active
 And the Record Status displays as Active
 When Name is not selected from caDSR
 And I select Save
+Then record status is Pending
+And will be dipslayed on the Markers table
 
 Scenario:  #3 Marker Mandatory Fields Rules
 Given I am on the Markers screen
@@ -152,6 +154,7 @@ And Highlight Query Text is defaulted to Yes
 And Search Scope is defaulted to Both
 When I have entered a Search Term 
 And have selected the Search button
+And I can enter a Public Id
 Then a results table with Permissable Value with Search Term highlighted displays
 And Meaning displays in the results table
 And Marker Synonym displays in the results table
@@ -160,7 +163,15 @@ And Public ID displays in the results table
 When I select the Select button
 Then the selected marker displays on Add Marker screen
 
-Scenario:  #8 Select Search Scope in caDSR Marker Search screen
+Scenario:  #8 Missing Name and Public ID in caDSR Marker Search screen
+Given I am on the Marker Search in caDSR screen
+When I have not entered a Search Term
+And I have not entered a Public ID
+And I click the Search button 
+Then the error message "At least one search criteria is required" displays
+
+
+Scenario:  EXPAND #9 Select Search Scope in caDSR Marker Search screen
 Given I am logged into the CTRP Protocol Abstraction application
  And I have selected a trial
  And I am on the Add Marker screen
@@ -168,10 +179,14 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Marker Search in caDSR screen 
 When I have selected Primary Term for Search Scope
 And I select the Search button
-Then a results table displays with markers with the Search Term in the Permissable Value field
+Then a results table displays with markers HIGHLIGHTED with the Search Term in the Permissable Value field
 When I have selected Synonym for Search Scope
 And I select the Search button
 Then a results table displays with markers with the Search Term in the Marker Synonym field
+ADD BOTH   (use BRAF as an example)
+
+
+Add CASE SENSITIVE SCENARIO
 
 Scenario:  #9 Highlight Query Text in caDSR Marker Search screen
 Given I am logged into the CTRP Protocol Abstraction application
@@ -182,6 +197,9 @@ And I am on the Marker Search in caDSR screen
 When I select Highlight Query Text = No
 And I select the search button
 Then the Search Term in the Permissable Value field is not highlighted 
+When I select Highlight Query Text = Yes
+Then the results from the Search Term and Search Scope are highlighted
+DO a TABLE TO DESCRIBE THIS
 
 Scenario:  #10 Enter Public ID in caDSR Marker Search screen
 Given I am logged into the CTRP Protocol Abstraction application
@@ -191,39 +209,31 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Marker Search in caDSR screen 
 When I enter a Public ID
 And there is a match in caDSR
-Then there is one result in the result table
+Then the exact match displays in the result table
 When I enter and Publid ID
 And there is no match in caDSR
 Then a 'Nothing found to display' message is displayed
 
-Scenario:  #11 Missing Name and Public ID in caDSR Marker Search screen
-Given I am on the Marker Search in caDSR screen
-When I have not entered a Search Term
-And I have not entered a Public ID
-And I click the Search button 
-Then the error message "At least one search criteria is required" displays
 
 
 Scenario:  #12  Create new marker with attributes of existing marker
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Add Marker screen
+Given I am on the Markers screen
 When I have selected Edit for a specific marker
 Then the Edit Marker screen displays
 When I have selected the Save & Retain Attributes button
 Then the Name field is blank
 When I have entered a value for Name
 And I have selected the Save button
+Then the new marker with the existing attributes will be saved
 Then the new marker will be associated to the trial
 And the Markers screen displays
 And a 'Record Created' message is displayed
 
 Scenario:  #13 Edit Marker Attributes  
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Add Marker screen
+Given I am on the Marker screen
 When I have selected Edit for a specific marker
 Then the Edit Marker Displays
+And the Name cannot be changed
 When I have edited Evaluation Type
 And I have edited Assay Type
 And I have edited Biomarker Use
