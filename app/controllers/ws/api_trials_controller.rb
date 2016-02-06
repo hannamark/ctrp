@@ -321,55 +321,12 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     #############################################################################################################################
 
   ####Funding Sources
-       trial_funding_sources=Array.new
+       @trial_funding_sources=Array.new
 
 if trialkeys.has_key?("summary4FundingSponsor")
 
-  if trialkeys["summary4FundingSponsor"].kind_of?(Array)
-    if trialkeys["summary4FundingSponsor"].length > 0
-     len=trialkeys["summary4FundingSponsor"].length
-     #puts len
-      for i in 0..len-1
-       if trialkeys["summary4FundingSponsor"][i].has_key?("existingOrganization")
-         poID=trialkeys["summary4FundingSponsor"][i]["existingOrganization"]["poID"]
-         count = Organization.where("ctrp_id=?", poID).where("source_context_id=? and source_status_id=?", SourceContext.find_by_name("CTRP").id,SourceStatus.find_by_name("Active").id).count;
-         if count > 0
-          myHash= Hash.new();
-          myHash.store("organization_id",poID);
-          trial_funding_sources.push(myHash);
-         else
-           @validate_errors.store("tns:summary4FundingSponsor","org not existed "+poID)
-           break;
-         end
-       else
-         @validate_errors.store("tns:summary4FundingSponsor","One or more of these nodes are missing existingOrganization")
-         break;
-       end
+  process_funding_sponsor(trialkeys)
 
-      end
-
-    end
-
-    else
-      if trialkeys["summary4FundingSponsor"].has_key?("existingOrganization")
-        poID=trialkeys["summary4FundingSponsor"]["existingOrganization"]["poID"]
-        count = Organization.where("ctrp_id=?", poID).where("source_context_id=? and source_status_id=?", SourceContext.find_by_name("CTRP").id,SourceStatus.find_by_name("Active").id).count;
-        if count > 0
-          myHash= Hash.new();
-          myHash.store("organization_id",poID);
-          trial_funding_sources.push(myHash);
-        else
-          @validate_errors.store("tns:summary4FundingSponsor","org not existed "+poID)
-          break;
-        end
-      else
-        @validate_errors.store("tns:summary4FundingSponsor","missing existingOrganization")
-        break;
-      end
-
-    end
-
-    @trialMasterMap.store("trial_funding_sources_attributes",trial_funding_sources);
 else
   @validate_errors.store("tns:summary4FundingSponsor","summary4FundingSponsor expected;")
 
@@ -784,6 +741,20 @@ end # end of before_create
     #pilot
     process_pilot(trialkeys)
 
+    ####Funding Sources
+    @trial_funding_sources=Array.new
+
+    if trialkeys.has_key?("summary4FundingSponsor")
+      delete_funding_sponsor(trialkeys)
+      process_funding_sponsor(trialkeys)
+
+    end
+
+    ### Program Code
+
+    if trialkeys.has_key?("programCode")
+      @trialMasterMap.store("program_code",trialkeys["programCode"]);
+    end
 
 
     ##################################################
@@ -886,7 +857,6 @@ end # end of before_create
        @trialprotocolDocMap.store("document_type",document_type)
        @trialDocs.push(@trialprotocolDocMap)
 
-
   end
 
 
@@ -908,7 +878,7 @@ end # end of before_create
 
   end
 
-def process_accrual_diseageterminology(trialkeys)
+  def process_accrual_diseageterminology(trialkeys)
       if AccrualDiseaseTerm.find_by_name(trialkeys["accrualDiseaseTerminology"])
         @trialMasterMap["accrual_disease_term_id"]=AccrualDiseaseTerm.find_by_name(trialkeys["accrualDiseaseTerminology"]).id
       else
@@ -941,8 +911,6 @@ end
   end
 
   def process_grants(trialkeys)
-
-
 
     if trialkeys["grant"].kind_of?(Array)
         if trialkeys["grant"].length > 0
@@ -1063,7 +1031,7 @@ end
     end
 
 
-def process_trial_primary_completion_date(trialkeys)
+  def process_trial_primary_completion_date(trialkeys)
   if !trialkeys["primaryCompletionDate"].kind_of?(Array) && ( trialkeys["primaryCompletionDate"]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys["primaryCompletionDate"]["type"].to_s.down_case == "Actual".to_s.downcase)
     @trialMasterMap["primary_comp_date_qual"]=trialkeys["primaryCompletionDate"]["type"];
     @trialMasterMap["primary_comp_date"]=trialkeys["primaryCompletionDate"]["__content__"];
@@ -1133,10 +1101,7 @@ end
   end
 
 
-
-
-
- def process_regulatory_section(trialkeys)
+  def process_regulatory_section(trialkeys)
 
    # oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
    #:responsible_party_id
@@ -1364,16 +1329,81 @@ end
   end
 
   def process_pilot(trialkeys)
-  if trialkeys.has_key?("pilot")
-    if trialkeys["pilot"].to_s.downcase == "true".to_s.downcase
-      @trialMasterMap.store("pilot","Yes");
-    elsif trialkeys["pilot"].to_s.downcase == "false".to_s.downcase
-      @trialMasterMap.store("pilot","No");
-    else
-      @validate_errors.store("tns:pilot","True, False are valid values;;");
+      if trialkeys.has_key?("pilot")
+        if trialkeys["pilot"].to_s.downcase == "true".to_s.downcase
+            @trialMasterMap.store("pilot","Yes");
+        elsif trialkeys["pilot"].to_s.downcase == "false".to_s.downcase
+            @trialMasterMap.store("pilot","No");
+        else
+            @validate_errors.store("tns:pilot","True, False are valid values;;");
+         end
+      end
+  end
+
+  def  delete_funding_sponsor(trialkeys)
+
+    existing_fs = Array.new()
+
+    existing_fs = TrialFundingSource.where(trial_id: @trial.id).pluck(:id)
+
+    len = existing_fs.length
+     if len > 0
+        for i in 0..len-1
+          myHash= Hash.new();
+          myHash.store("id", existing_fs[i])
+          myHash.store("_destroy","true")
+          @trial_funding_sources.push(myHash);
+         end
+  @trialMasterMap.store("trial_funding_sources_attributes",@trial_funding_sources);
+
+     end
+  end
+
+  def process_funding_sponsor(trialkeys)
+  if trialkeys["summary4FundingSponsor"].kind_of?(Array)
+  if trialkeys["summary4FundingSponsor"].length > 0
+    len=trialkeys["summary4FundingSponsor"].length
+    #puts len
+    for i in 0..len-1
+      if trialkeys["summary4FundingSponsor"][i].has_key?("existingOrganization")
+        poID=trialkeys["summary4FundingSponsor"][i]["existingOrganization"]["poID"]
+        count = Organization.where("ctrp_id=?", poID).where("source_context_id=? and source_status_id=?", SourceContext.find_by_name("CTRP").id,SourceStatus.find_by_name("Active").id).count;
+        if count > 0
+          myHash= Hash.new();
+          myHash.store("organization_id",poID);
+          @trial_funding_sources.push(myHash);
+        else
+          @validate_errors.store("tns:summary4FundingSponsor","org not existed "+poID)
+          break;
+        end
+      else
+        @validate_errors.store("tns:summary4FundingSponsor","One or more of these nodes are missing existingOrganization")
+        break;
+      end
+
     end
 
   end
-end
 
-end
+  else
+    if trialkeys["summary4FundingSponsor"].has_key?("existingOrganization")
+      poID=trialkeys["summary4FundingSponsor"]["existingOrganization"]["poID"]
+      count = Organization.where("ctrp_id=?", poID).where("source_context_id=? and source_status_id=?", SourceContext.find_by_name("CTRP").id,SourceStatus.find_by_name("Active").id).count;
+      if count > 0
+        myHash= Hash.new();
+        myHash.store("organization_id",poID);
+        @trial_funding_sources.push(myHash);
+      else
+        @validate_errors.store("tns:summary4FundingSponsor","org not existed "+poID)
+      end
+    else
+      @validate_errors.store("tns:summary4FundingSponsor","missing existingOrganization")
+    end
+
+  end
+
+  @trialMasterMap.store("trial_funding_sources_attributes",@trial_funding_sources);
+  end
+
+
+end #main end
