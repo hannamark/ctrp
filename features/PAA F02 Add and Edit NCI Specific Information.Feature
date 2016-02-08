@@ -91,7 +91,7 @@ Then the label and element for ÔøΩSend Trial Information to ClinicalTrials.gov?Ô
 |Trial Overall Status is ÔøΩTerminatedÔøΩ| trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
 |Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
 
- @runthis
+
 Scenario: #11a I cannot view the ÔøΩSend Trial Information to ClinicalTrials.gov?ÔøΩ
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
@@ -108,7 +108,7 @@ And I am on the NCI Specific Information screen
 And I have not selected a Study Source
 When I select Save to verify Study Source is required
 Then an Error message will appear "Study Source is required‚Äù
-
+ @runthis
 Scenario: #13 Funding Source is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the NCI Specific Information screen 

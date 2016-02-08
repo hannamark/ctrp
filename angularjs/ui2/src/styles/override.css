@@ -585,6 +585,7 @@ h4 {
     padding: 3px 6px;
     font-size: 12px;
     font-weight: bold;
+    height: 22px;
 }
 
 .btn-default {
@@ -819,4 +820,16 @@ a.editable-click:hover {
 
 .select2-results-absolute .select2-search {
     padding-bottom: 4px;
+}
+
+.top-buffer { margin-top:10px; }
+
+h5.border-bottom {
+    color: #2A71A5;
+    margin-top: 30px;
+    border-bottom: 1px solid #E6E6E6;
+}
+
+span.date-qualifier {
+    margin-left: 20px;
 }

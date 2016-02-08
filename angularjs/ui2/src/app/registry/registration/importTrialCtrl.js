@@ -24,6 +24,8 @@
                     vm.nct_id = response.nct_id;
                     vm.status = response.status;
                     vm.official_title = response.official_title;
+                    vm.condition = response.condition;
+                    vm.intervention = response.intervention;
                     vm.error_msg = response.error_msg;
                 }).catch(function (err) {
                     console.log("Error in searching ClinicalTrials.gov: " + err);
@@ -36,7 +38,7 @@
             TrialService.importClinicalTrialsGov(vm.nct_id).then(function (response) {
                 if (response.server_response.status < 300) {
                     toastr.success('Trial has been imported', 'Operation Successful!');
-                    $state.go('main.importTrial', null, {reload: true});
+                    $state.go('main.viewTrial', {trialId: response.id});
                 } else {
                     vm.disableBtn = false;
                 }
