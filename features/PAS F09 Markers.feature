@@ -104,6 +104,8 @@ Then Record Status is set to Active
 And the Record Status displays as Active
 When Name is not selected from caDSR
 And I select Save
+Then record status "Pending" will be displayed on the Markers table
+And the pending marker will be added to the "New Marker Requests" screen
 
 Scenario:  #3 Marker Mandatory Fields Rules
 Given I am on the Markers screen
@@ -142,88 +144,104 @@ Then the error message type "Specimen Type Other Text is required"
 
 
 Scenario:  #7 Select Name from caDSR
- Given I am logged into the CTRP Protocol Abstraction application
- And I have selected a trial
- And I am on the Add Marker screen
+  Given I am on the Add Marker screen
  And I have selected the caDSR button
 And I am on the Marker Search in caDSR screen 
 And Case-Sensitive Search is defaulted to No
 And Highlight Query Text is defaulted to Yes
 And Search Scope is defaulted to Both
 When I have entered a Search Term 
-And have selected the Search button
-Then a results table with Permissable Value with Search Term highlighted displays
-And Meaning displays in the results table
-And Marker Synonym displays in the results table
-And Description displays in the results table
-And Public ID displays in the results table
+And I have selected the Search button
+And I can enter a Public Id
+And I have selected the Search button
+Then a results table type will be displayed
+|Permissable Value|
+|  Meaning |
+| Marker Synonym |
+| Description  | 
+| Public ID |
+| Select|
 When I select the Select button
 Then the selected marker displays on Add Marker screen
 
-Scenario:  #8 Select Search Scope in caDSR Marker Search screen
-Given I am logged into the CTRP Protocol Abstraction application
- And I have selected a trial
- And I am on the Add Marker screen
- And I have selected the caDSR button
-And I am on the Marker Search in caDSR screen 
-When I have selected Primary Term for Search Scope
-And I select the Search button
-Then a results table displays with markers with the Search Term in the Permissable Value field
-When I have selected Synonym for Search Scope
-And I select the Search button
-Then a results table displays with markers with the Search Term in the Marker Synonym field
-
-Scenario:  #9 Highlight Query Text in caDSR Marker Search screen
-Given I am logged into the CTRP Protocol Abstraction application
- And I have selected a trial
- And I am on the Add Marker screen
- And I have selected the caDSR button
-And I am on the Marker Search in caDSR screen 
-When I select Highlight Query Text = No
-And I select the search button
-Then the Search Term in the Permissable Value field is not highlighted 
-
-Scenario:  #10 Enter Public ID in caDSR Marker Search screen
-Given I am logged into the CTRP Protocol Abstraction application
- And I have selected a trial
- And I am on the Add Marker screen
- And I have selected the caDSR button
-And I am on the Marker Search in caDSR screen 
-When I enter a Public ID
-And there is a match in caDSR
-Then there is one result in the result table
-When I enter and Publid ID
-And there is no match in caDSR
-Then a 'Nothing found to display' message is displayed
-
-Scenario:  #11 Missing Name and Public ID in caDSR Marker Search screen
+Scenario:  #8 Missing Name and Public ID in caDSR Marker Search screen
 Given I am on the Marker Search in caDSR screen
 When I have not entered a Search Term
 And I have not entered a Public ID
 And I click the Search button 
 Then the error message "At least one search criteria is required" displays
 
+Scenario:  #9 Case Sensitive Search on caDSR search screen
+Given I am on the Marker Search in caDSR screen
+When I have selected Yes for Case-Sensitive Search
+And I have entered a Search Term
+When I click Search button
+Then a results table displays with markers with the exact case sensitive match on the search term
+When I have selected No for Case-Sensitive Search 
+And I have entered a Search Term
+When I click Search button
+Then a results table displays with markers that do not indicate case on the search term
 
-Scenario:  #12  Create new marker with attributes of existing marker
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Add Marker screen
+
+Scenario:  #10 Select Search Scope in caDSR Marker Search screen
+Given I am on the Add Marker screen
+ And I have selected the caDSR button
+And I am on the Marker Search in caDSR screen 
+When I have selected Primary Term for Search Scope
+And I select the Search button
+Then a results table displays with Permissable Value that matched the search term 
+When I have selected Synonym for Search Scope
+And I select the Search button
+Then a results table displays with Marker Synonym field that matched the search term 
+When I have selected Both for Search Scope
+And I select the Search button
+Then a results table displays with both Permissable Value and Marker Synonym fields displaying search term
+
+
+Scenario:  #11 Highlight Query Text in caDSR Marker Search screen
+Given I am on the Add Marker screen
+And I have selected the caDSR button
+And I am on the Marker Search in caDSR screen 
+When I select <Highlight Query Text> 
+And I select the search button
+Then the <Search Term in the results table>
+
+|highlight Query Text |  Search Term result in the results table|
+| yes                 | Search term is highlighted 
+| No                  | Search term is not highlighted
+
+
+Scenario:  #12 Enter Public ID in caDSR Marker Search screen
+Given I am on the Add Marker screen
+ And I have selected the caDSR button
+And I am on the Marker Search in caDSR screen 
+When I enter a valid Public ID
+And there is a match in caDSR
+Then the exact match of the Public ID will be displayed in the result table
+When I enter an invalide Publid ID
+And there is no match in caDSR
+Then a 'Nothing found to display' message is displayed
+
+
+
+Scenario:  #13  Create new marker with attributes of existing marker
+Given I am on the Markers screen
 When I have selected Edit for a specific marker
 Then the Edit Marker screen displays
 When I have selected the Save & Retain Attributes button
 Then the Name field is blank
 When I have entered a value for Name
 And I have selected the Save button
+Then the new marker with the existing attributes will be saved
 Then the new marker will be associated to the trial
 And the Markers screen displays
 And a 'Record Created' message is displayed
 
-Scenario:  #13 Edit Marker Attributes  
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Add Marker screen
+Scenario:  #14 Edit Marker Attributes  
+Given I am on the Marker screen
 When I have selected Edit for a specific marker
 Then the Edit Marker Displays
+And the Name cannot be changed
 When I have edited Evaluation Type
 And I have edited Assay Type
 And I have edited Biomarker Use
@@ -233,7 +251,7 @@ And I have selected the Save button
 Then the updated marker will be associated to the trial
 And the Markers screen displays
   
-Scenario:  #14 Edit Attributes for Multiple Markers 
+Scenario:  #15 Edit Attributes for Multiple Markers 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Marker screen
@@ -242,18 +260,30 @@ And I have selected more than one marker
 When I have selected Edit Selected button 
 Then Edit Marker screen displays
 And Name is Multiple Marker
-And boxes are checked for attributes that are the same for selected markers
-When I uncheck a box for Evaluation Type
-And I uncheck a box for Assay Type
-And I uncheck a box for Biomarker Purpose
-And I uncheck a box for Specimen Type
+And boxes are checked for attributes that are the same for selected markers for the field type
+     
+      |Evaluation Type  |
+      |Assay Type  |
+      |Biomarker Purpose  |
+      |Specimen Type  |
+ 
+When I uncheck a box for the field type
+      |Evaluation Type  |
+      |Assay Type  |
+      |Biomarker Purpose  |
+      |Specimen Type  | 
 Then it is unchecked for all selected markers
-When I check the box for Evaluation Type
-And I check the box for Assay Type
-And I check the box for Biomarker Purpose
-And I check the box for Specimen Type
+When I check the box for the field type
+      |Evaluation Type  |
+      |Assay Type  |
+      |Biomarker Purpose  |
+      |Specimen Type  |
 Then it is checked for all selected markers
-When I have edited Biomarker Use
+When I have edited Biomarker Use type
+
+      |Integral  |
+      |Integrated  |
+
 Then it is edited for all selected markers
 When I have selected the Save button
 Then the attributes are updated for each marker 
@@ -261,12 +291,11 @@ And the updated markers are associated to the trial
 And the Markers screen displays
 And a 'Record(s) Updated' message is displayed
 
-Scenario:  #15 I can Delete Markers for a Trial
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Markers screen
+Scenario:  #16 I can Delete Markers for a Trial
+Given I am on the Markers screen
 When I have selected the Delete check box for an individual Marker 
-And have clicked on Delete button
+And I can select the delete check box for more than one Marker
+And I have clicked on Delete button
 And the message displays 'click OK to remove selected Marker(s) form the study. Click Cancel to abort'
 And I have clicked on  OK
 Then the Marker(s) is removed from the trial record
@@ -278,17 +307,20 @@ And I have clicked on OK
 Then the Marker(s) is removed from the trial record
 And 'Record(s) deleted' message is displayed
 When I have Clicked on the Delete button
-And the message displays 'click OK to remove selected SubGroups from the study. Click Cancel to abort'
+And the message displays 'click OK to remove selected Marker(s) from the study. Click Cancel to abort'
 And I have clicked on the Cancel button
 Then the Marker(s) is not removed from the trial record
 And 'Record(s) deleted' message is not displayed
 When Marker Status = pending
-Then the marker is removed from the New Marker Requests screen
+Then the marker is removed from the "New Marker Requests" screen
 
- Scenario:  #16 I can Reset Add Markers screen for a Trial
- Given I am logged into the CTRP Protocol Abstraction application
- And I have selected a trial
-And I am on the Add Markers screen
+ Scenario:  #17 I can Reset Edit Markers screen for a Trial
+Given I am on the Edit Markers screen
 When I have selected Reset
-Then the updated information on the Add Markers screen will not be saved to the trial record
+Then the updated information on the Edit Markers screen will not be saved to the trial record
 And the screen will be refreshed with the data since the last save
+
+Scenario:  #18 I can Reset Add Markers screen for a Trial
+Given I am on the Add Markers screen
+When I have selected Reset
+Then the added information will be removed
