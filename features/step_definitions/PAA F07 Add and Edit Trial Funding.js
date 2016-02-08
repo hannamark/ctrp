@@ -68,6 +68,25 @@ module.exports = function() {
     var searchResultCountText = 'Trial Search Results';
     var nciGrantQueVal = '';
 
+    var fundingMechanismSelectedFirst = 'R01';
+    var instituteCodeSelectedFirst = 'CA';
+    var programCodeSelectedFirst = 'OD';
+    var grantSerialNumberFirst = '142587';
+    var grantEntireSerialNumberFirst = 'Serial Number: 142587\nOrganization: UNIVERSITY OF ALABAMA AT BIRMINGHAM\nProject Title: Phase-sensitive x-ray breast tomosynthesis\nPI: Fese Mokube';
+    var grantValueFirst = '142587';
+    var fundingMechanismSelectedSecond = 'F32';
+    var instituteCodeSelectedSecond = 'CA';
+    var programCodeSelectedSecond = 'TRP';
+    var grantSerialNumberSecond = '153978';
+    var grantEntireSerialNumberSecond = '153978 - MASSACHUSETTS GENERAL HOSPITAL; Proliferation-promoting activities of pRB; BARRY SLECKMAN';
+    var grantValueSecond = '153978';
+
+    /*********************
+     * Validation message *
+     *********************/
+    var grantRequired = 'Grant is required';
+    var emtpyGrantField = 'Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code';
+
     /*
      Scenario: #1 I can indicate that the trial does not have an associated grant
      Given I am logged into the CTRP Protocol Abstraction application to abstract
@@ -136,6 +155,32 @@ module.exports = function() {
         helper.verifyElementDisplayed(trialFunding.nciGrantLblInstitueCode, false);
         helper.verifyElementDisplayed(trialFunding.nciGrantLblSerialNumber, false);
         helper.verifyElementDisplayed(trialFunding.nciGrantLblNCIDivisionProgCode, false);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #2 I can indicate that the trial has one or more associated grant
+     Given I am logged into the CTRP Protocol Abstraction application to abstract
+     And I have selected trial
+     And I am on the Trial Funding Screen
+     And I have selected "Yes" for the NCI Grant question "Is this trial funded by a NCI Grant?"
+     When I have selected the Funding Mechanism from a list
+     And I have selected the Institute Code from a list
+     And I have selected the NCI Division/Program Code from a list
+     And I have entered the Grant Serial Number
+     Then the FDAAA required Grant Information for the trial will be complete
+     */
+
+    this.When(/^I have look for the funding mechanism serial number and entered the serial number$/, function (callback) {
+        addTrial.setAddTrialSerialNumber(grantSerialNumberFirst);
+        console.log('This checks for Grant Serial number has Serial Number, Organization, Project Title, and Contact Principal Investigator');
+        expect(addTrial.addTrialSerialNumberSelect.getText()).to.eventually.equal(grantEntireSerialNumberFirst).and.notify(callback);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the FDAAA required Grant Information for the trial will be complete$/, function (callback) {
+        trialFunding.clickAddGrantButton();
+        helper.wait_for(9000);
         browser.sleep(25).then(callback);
     });
 
