@@ -3,7 +3,7 @@ Feature: PA F05 Trial History Information - Audit Trail.Feature
 
 As any CTRP PA User, I can View the Trial History Information Audit Trail
 
-Scenario: #1 I can view Trial History Information Audit Trail
+Scenario Outline: #1 I can view Trial History Information Audit Trail
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information Audit Trail Screen
@@ -128,6 +128,24 @@ Then the aduit trail will be displayed for the Trial ordered by date with newest
 | Co-PIs trial_co_pis.person_id : people.fname, mname, lname|
 | Trial Status trial_status_wrappers.status_date, why_stopped, trial_status_id: trial_statuses.name|
 
+Examples:
+|NCI-ID| Lead Protocol| official_title|
+|NCI-2015-00518 |CC-486-NPC-001 | A PHASE 2, MULTICENTER, INTERNATIONAL, SINGLE ARM STUDY TO ASSESS THE SAFETY AND EFFICACY OF SINGLE AGENT CC-486 (ORAL AZACITIDINE) IN PREVIOUSLY TREATED SUBJECTS WITH LOCALLY ADVANCED OR METASTATIC NASOPHARYNGEAL CARCINOMA |     
+
+|pilot| program_code| grant_question|start_date       | start_date_qual| primary_comp_date|primary_comp_date_qual|
+| No  | XXX         |XXX            |February 01, 2015| Actual         |May 01, 2016      |Anticipated           |  
+
+|comp_date          |comp_date_qual|ind_ide_question|intervention_indicator|sec801_indicator|data_monitor_indicator|
+|September 01, 2016 |Anticipated   | XXX            |  Single Group        |Yes             |                      |  
+
+|Study Source |Phase |primary purpose|primary_purpose_other|secondary purpose |secondary_purpose_other|
+|Industrial   |II    |Treatment      |                     |XXX               |XXX                    |
+
+|responsible party|Lead Org|PI Last Name, First Name, Middle Name|Sponsor|
+|responsible party|Celgene Corporation|PI Last Name, First Name, Middle Name|Celgene Corporation|
+
+|Investigator Last Name, First Name, Middle Name| Created At|updated_at|research category|
+|Investigator Last Name, First Name, Middle Name| Created At|updated_at|Interventional   |
 
 Scenario: #2 I can export the results into an Excel spreadsheet
 Given I have executed a search in CTRP
