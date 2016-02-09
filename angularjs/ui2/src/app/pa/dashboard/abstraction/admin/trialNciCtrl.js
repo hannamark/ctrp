@@ -59,7 +59,17 @@
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {
-                    vm.curTrial.trial_funding_sources_attributes.push(fs);
+                    var exists = false
+                    for (var i = 0; i < vm.curTrial.trial_funding_sources.length; i++) {
+                        if (vm.curTrial.trial_funding_sources[i].id) {
+                            if (vm.curTrial.trial_funding_sources[i].organization_id == fs.organization_id) {
+                                exists = true;
+                            }
+                        }
+                    }
+                    if (!exists) {
+                        vm.curTrial.trial_funding_sources_attributes.push(fs);
+                    }
                 });
             }
 
@@ -74,7 +84,7 @@
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
-
+                vm.curTrial.trial_funding_sources = response["trial_funding_sources"];
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', 'Successful!', {
                     extendedTimeOut: 1000,
