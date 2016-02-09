@@ -7,6 +7,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   before_filter only: [:create] do
     string = request.body.read
 
+   @docs =Array.new()
 
     begin
     bad_doc = Nokogiri::XML(string) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
@@ -323,6 +324,7 @@ end
 end # end of before_create
 
   before_filter only: [:update] do
+    @docs =Array.new()
 
     if params.has_key?("idType")
       if params[:idType] == "nci"
@@ -439,6 +441,7 @@ end # end of before_create
   end
 
   before_filter only: [:amend] do
+    @docs =Array.new()
 
     if params.has_key?("idType")
       if params[:idType] == "nci"
@@ -677,9 +680,15 @@ end # end of before_create
         render json: @trial
         return
       elsif request.content_type == "application/xml"
+        len = @docs.length
+        if len > 0
+          for i in 0..len-1
+            temp=@docs[i]
+            File.delete(temp)
+          end
+        end
         render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
-        return
-        return
+
       else
 
       end
@@ -738,9 +747,11 @@ end # end of before_create
     content.gsub!('\\n', "\n")
     decode_base64_content = Base64.decode64(content)
 
+
        @trialprotocolDocMap = Hash.new
        out_file = File.new(filename, "w")
        out_file.puts(decode_base64_content)
+       @docs.push(filename)
 
        @trialprotocolDocMap.store("file",out_file)
        @trialprotocolDocMap.store("file_name",filename)

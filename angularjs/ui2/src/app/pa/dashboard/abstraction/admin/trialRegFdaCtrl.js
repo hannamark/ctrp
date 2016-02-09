@@ -17,6 +17,12 @@
         vm.countryArr = countryList;
         vm.showInvestigator = false;
         vm.showInvSearchBtn = true;
+        vm.selectedLoArray = [];
+        vm.selectedPiArray = [];
+        vm.selectedSponsorArray = [];
+        vm.selectedInvArray = [];
+        vm.selectedIaArray = [];
+        vm.selectedFsArray = [];
         vm.addedAuthorities = [];
         vm.indIdeNum = 0;
 
@@ -27,6 +33,12 @@
         vm.updateTrial = function() {
             // Prevent multiple submissions
             vm.disableBtn = true;
+
+            if (vm.selectedPiArray.length > 0) {
+                vm.curTrial.pi_id = vm.selectedPiArray[0].id;
+            } else {
+                vm.curTrial.pi_id = null;
+            }
 
             if (vm.selectedInvArray.length > 0) {
                 vm.curTrial.investigator_id = vm.selectedInvArray[0].id;
@@ -57,6 +69,9 @@
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.lock_version = response.lock_version || '';
+                vm.curTrial.responsible_party_id = response["responsible_party_id"];
+                vm.curTrial.responsible_party = response["responsible_party"];
+                vm.curTrial.investigator_aff_id = response["investigator_aff_id"];
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
@@ -138,6 +153,7 @@
                 if (piOption[0].id == vm.curTrial.responsible_party_id) {
                     vm.showInvestigator = true;
                     vm.showInvSearchBtn = false;
+                    //console.log("Setting Investigator title");
                     vm.curTrial.investigator_title = 'Principal Investigator';
                     // Copy the value from PI and Sponsor
                     vm.selectedInvArray = vm.selectedPiArray;
@@ -145,6 +161,7 @@
                 } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
                     vm.showInvestigator = true;
                     vm.showInvSearchBtn = true;
+                    //console.log("Setting Investigator title");
                     vm.curTrial.investigator_title = 'Principal Investigator';
                     // Copy the value from PI and Sponsor
                     vm.selectedInvArray = vm.selectedPiArray;
@@ -167,6 +184,8 @@
         /****************** implementations below ***************/
         function activate() {
             appendAuthorities();
+            displayPOs();
+            rpFieldChange();
             getTrialDetailCopy();
             watchTrialDetailObj();
         }
@@ -183,7 +202,7 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 
@@ -215,6 +234,39 @@
                 authority._destroy = false;
                 vm.addedAuthorities.push(authority);
                 vm.toaNum++;
+            }
+        }
+
+        function rpFieldChange() {
+            var piOption = vm.responsiblePartyArr.filter(findPiOption);
+            var siOption = vm.responsiblePartyArr.filter(findSiOption);
+            if (piOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.showInvestigator = true;
+                vm.showInvSearchBtn = false;
+            } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
+                vm.showInvestigator = true;
+            }
+        }
+
+        function displayPOs() {
+            if (vm.curTrial.lead_org_id) {
+                $timeout( function(){ vm.selectedLoArray.push(vm.curTrial.lead_org); }, 1500);
+            }
+
+            if (vm.curTrial.pi_id) {
+                $timeout( function(){ vm.selectedPiArray.push(vm.curTrial.pi); }, 1500);
+            }
+
+            if (vm.curTrial.sponsor_id) {
+                $timeout( function(){ vm.selectedSponsorArray.push(vm.curTrial.sponsor); }, 1500);
+            }
+
+            if (vm.curTrial.investigator_id) {
+                $timeout( function(){ vm.selectedInvArray.push(vm.curTrial.investigator); }, 1500);
+            }
+
+            if (vm.curTrial.investigator_aff_id) {
+                $timeout( function(){ vm.selectedIaArray.push(vm.curTrial.investigator_aff); }, 1500);
             }
         }
 

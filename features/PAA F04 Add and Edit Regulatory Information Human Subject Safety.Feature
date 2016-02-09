@@ -6,12 +6,13 @@ As any CTRP PA User, I can add and edit Regulatory Information � Human Subject
 Scenario: #1 I can add and edit Regulatory Information - Human Subject Safety for a Regulated Trial with board status approved
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information� Human Subject Safety screen
-When I have selected the Board Approval Status of �Submitted, Approved� from the list of :
-|Submitted, Approved|
-|Submitted, Exempt|
-|Submission Not Required|
-|Submitted, Pending|
-|Submitted, Denied|
+When from the Board Approval Status I have selected the �Submitted, Approved� from the list of:
+  |Select a status|
+  |Submitted, pending|
+  |Submitted, approved|
+  |Submitted, exempt|
+  |Submitted, denied|
+  |Submission not required|
 And I have entered a Board Approval Number
 And I have entered a Board Name
 And I have selected a Board Affiliation using the organization lookup
@@ -19,33 +20,34 @@ Then the Board Approval Status , Board Approval Number, Board Name, Board Affili
 
 Scenario: #2 I can add and edit Regulatory Information - Human Subject Safety for a Regulated Trial with board status pending, board status denied, or board status exempt
 Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Trial Regulatory Information - Human Subject Safety screen
+And I am on the Trial Regulatory Information� Human Subject Safety screen
 When I have selected either of the Board Approval Status� of �Submitted, Pending�, �Submitted, Denied�, or �Submitted, Exempt� from the list of:
-When I have selected either of the Board Approval Status� of �Submitted, Pending�, �Submitted, Denied�, or �Submitted, Exempt� from the list of:
-|Submitted, Approved|
-|Submitted, Exempt|
-|Submission Not Required|
-|Submitted, Pending|
-|Submitted, Denied|
+  |Select a status|
+  |Submitted, pending|
+  |Submitted, approved|
+  |Submitted, exempt|
+  |Submitted, denied|
+  |Submission not required|
 And I have entered a Board Name
 And I have selected a Board Affiliation using the organization lookup
 Then the Board Approval Status , Board Approval Number, Board Name, Board Affiliation will be associated with the trial along with the Board Affiliation�s address (street, city, state, zip, country), Phone # and e-mail address
 
 Scenario: #3 I can add and edit Regulatory Information - Human Subject Safety for a Regulated Trial with board status of Not Required
 Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Trial Regulatory Information - Human Subject Safety screen
-When I have selected the Board Approval Status of �Submission Not Required� from the list of :
-|Submitted, Approved|
-|Submitted, Exempt|
-|Submission Not Required|
-|Submitted, Pending|
-|Submitted, Denied|
+And I am on the Trial Regulatory Information� Human Subject Safety screen
+When from the Board Approval Status I have selected the �Submission Not Required� from the list of:
+  |Select a status|
+  |Submitted, pending|
+  |Submitted, approved|
+  |Submitted, exempt|
+  |Submitted, denied|
+  |Submission not required|
 Then the Board Approval Status will be associated with the trial
-
+  @runthis
 Scenario: #4 Save Regulatory Information - Human Subject Safety 
 Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Register Trial Regulatory Information - Human Subject Safety screen
-When select save 
+And I am on the Trial Regulatory Information� Human Subject Safety screen
+When select save at the Regulatory Information� Human Subject Safety screen
 Then the information entered or edited on the Regulatory Information - Human Subject Safety screen will be saved to the trial record
 
 Scenario: #5 Cancel Regulatory Information

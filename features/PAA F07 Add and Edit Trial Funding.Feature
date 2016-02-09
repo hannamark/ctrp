@@ -2,30 +2,30 @@
 Feature: PAA F07 Add and Edit Trial Funding
 
 As any CTRP PA User, I can add and edit a grant and its information 
-   @runthis
+
 Scenario: #1 I can indicate that the trial does not have an associated grant
 Given I am logged into the CTRP Protocol Abstraction application to abstract
 And I have selected trial
 And I am on the Trial Funding Screen
 When I have selected "No" for the NCI Grant question "Is this trial funded by a NCI Grant?"
 Then the FDAAA required Grant Information for the trial will not be complete
-
+   @runthis
 Scenario: #2 I can indicate that the trial has one or more associated grant
 Given I am logged into the CTRP Protocol Abstraction application to abstract
 And I have selected trial
 And I am on the Trial Funding Screen
-And I have selected "Yes" for the question "Is this trial funded by a NCI Grant?"
+And I have selected "Yes" for the NCI Grant question "Is this trial funded by a NCI Grant?"
 When I have selected the Funding Mechanism from a list
 And I have selected the Institute Code from a list
 And I have selected the NCI Division/Program Code from a list
-And I have entered the Grant Serial Number
+And I have look for the funding mechanism serial number and entered the serial number
 Then the FDAAA required Grant Information for the trial will be complete
 
 Scenario: #3 I can enter the NCI Grant information for one or more trials using a Grant Serial Number look-up
 Given I am logged into the CTRP Protocol Abstraction application to abstract
 And I have selected trial
 And I am on the Trial Funding Screen
-And I have selected "Yes" for the question "Is this trial funded by a NCI Grant?"
+And I have selected "Yes" for the NCI Grant question "Is this trial funded by a NCI Grant?"
 When I have selected the Funding Mechanism from a list
 And I have selected the Institute Code from a list
 And I have selected the NCI Division/Program Code from a list

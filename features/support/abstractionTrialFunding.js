@@ -37,6 +37,12 @@ var abstractionTrialFunding = function(){
     this.nciGrantFundingMechanism = element(by.model('trialDetailView.funding_mechanism'));
     this.nciGrantInstitueCode = element(by.model('trialDetailView.institute_code'));
     this.nciGrantSerialNumber = element(by.model('$select.search'));
+
+    this.nciGrantSerialNumberBox = element(by.binding('$select.placeholder')); //element(by.css('span[aria-label="Select box activate"]'));//element(by.model('trialDetailView.serial_number'));
+    this.nciGrantSerialNumberField = element(by.css('input[ng-model="$select.search"]'));
+    this.nciGrantSerialNumberSelect = element(by.css('.ui-select-choices-row.select2-highlighted'));
+    this.nciGrantSerialNumberVerify = element(by.css('.select2-choice.ui-select-match'));
+
     this.nciGrantNCIDivisionProgCode = element(by.model('trialDetailView.nci'));
     this.nciGrantAddButton = element(by.css('button[ng-click="trialDetailView.addGrant()"]'));
 
@@ -102,55 +108,12 @@ var abstractionTrialFunding = function(){
 
 
 
-
-
-
-
-    //IND/IDE Types : Drop down
-    this.selectINDIDETypes = function(indIDETyp)  {
-        helper.selectValueFromList(this.indIDEType,indIDETyp,"IND/IDE Types - drop down field selected as:["+indIDETyp+"]");
+    //NCI Grant
+    this.clickAddGrantButton = function(){
+        helper.clickButton(this.nciGrantAddButton,"NCI Grant Add button");
     };
 
-    //IND/IDE Number : Text Box
-    this.setINDIDENumbr = function(indIDENmbr)  {
-        helper.setValue(this.indIDENumber,indIDENmbr,"IND/IDE Number - Text Box field value entered:["+indIDENmbr+"]");
-    };
 
-    //IND/IDE Grantor : Drop down
-    this.selectINDIDEGrantor = function(indIDEGrntr)  {
-        helper.selectValueFromList(this.indIDEGrantor,indIDEGrntr,"IND/IDE Grantor - drop down field selected as:["+indIDEGrntr+"]");
-    };
-
-    //IND/IDE Holder Type : Drop down
-    this.selectINDIDEHolderType = function(indIDEHldrTyp)  {
-        helper.selectValueFromList(this.indIDEHolderType,indIDEHldrTyp,"IND/IDE Grantor - drop down field selected as:["+indIDEHldrTyp+"]");
-    };
-
-    //IND/IDE Division Program Code : Drop down
-    this.selectINDIDEDivisionProgramCode = function(indIDEDviProgCde)  {
-        helper.selectValueFromList(this.indIDEDisvisionProgramCode,indIDEDviProgCde,"IND/IDE Types - drop down field selected as:["+indIDEDviProgCde+"]");
-    };
-
-    //Delete Row A: Button
-    this.clickRowADelete = function(){
-        helper.clickButton(this.indIDETblRowADel,"Row A Delete - button");
-    };
-
-    //Delete Row B: Button
-    this.clickRowBDelete = function(){
-        helper.clickButton(this.indIDETblRowBDel,"Row B Delete - button");
-    };
-
-    //Delete Row : Table row delete
-    this.clickRowDelete = function(getInt){
-        helper.clickButton(element(by.css('.table.table-bordered.table-striped.table-condensed>tbody>tr:nth-child('+getInt+')>td:nth-child(06)>label')), "Deleted Table Row");
-    }
-
-
-    //Add : Button
-    this.clickAdd = function(){
-        helper.clickButton(this.indIDEAddButton,"Add - button");
-    };
 
     //Save : Button
     this.clickSave = function(){

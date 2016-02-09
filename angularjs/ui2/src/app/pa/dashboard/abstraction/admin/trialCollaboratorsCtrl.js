@@ -69,9 +69,9 @@
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.lock_version = response.lock_version || '';
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
                 vm.curTrial.collaborators = response["collaborators"];
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
