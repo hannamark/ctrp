@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160203113446) do
+ActiveRecord::Schema.define(version: 20160209220630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -623,6 +623,21 @@ ActiveRecord::Schema.define(version: 20160203113446) do
   end
 
   add_index "oversight_authorities", ["trial_id"], name: "index_oversight_authorities_on_trial_id", using: :btree
+
+  create_table "participating_site_investigators", force: :cascade do |t|
+    t.integer  "participating_site_id"
+    t.integer  "person_id"
+    t.boolean  "set_as_contact"
+    t.string   "investigator_type",     limit: 255
+    t.string   "status",                limit: 255
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.string   "uuid",                  limit: 255
+    t.integer  "lock_version",                      default: 0
+  end
+
+  add_index "participating_site_investigators", ["participating_site_id"], name: "index_participating_site_investigators_on_participating_site_id", using: :btree
+  add_index "participating_site_investigators", ["person_id"], name: "index_participating_site_investigators_on_person_id", using: :btree
 
   create_table "participating_sites", force: :cascade do |t|
     t.string   "protocol_id",     limit: 255
@@ -1261,6 +1276,8 @@ ActiveRecord::Schema.define(version: 20160203113446) do
   add_foreign_key "outcome_measures", "outcome_measure_types"
   add_foreign_key "outcome_measures", "trials"
   add_foreign_key "oversight_authorities", "trials"
+  add_foreign_key "participating_site_investigators", "participating_sites"
+  add_foreign_key "participating_site_investigators", "people"
   add_foreign_key "participating_sites", "organizations"
   add_foreign_key "participating_sites", "people"
   add_foreign_key "participating_sites", "trials"
@@ -1371,6 +1388,7 @@ ActiveRecord::Schema.define(version: 20160203113446) do
   create_sequence "outcome_measure_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "outcome_measures_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "oversight_authorities_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "participating_site_investigators_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "participating_sites_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "people_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "phases_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
