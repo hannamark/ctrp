@@ -181,11 +181,28 @@
                 <button tabindex="30" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="personSearch2View.searchPeople('fromStart')" ng-disabled="searching">
                     <i class="glyphicon glyphicon-search"></i> Search
                 </button>
-                <button tabindex="29" class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()" ng-disabled="searching">
+                <button tabindex="29" class="btn btn-warning pull-right" id="reset_btn" ng-click="personSearch2View.resetSearch()" ng-disabled="searching">
                     <i class="glyphicon glyphicon-remove"></i> Clear
                 </button>
             </div>
         </div>
     </div>
     <!-- end of buttons -->
+    <!-- ag-grid for people search results -->
+    <div class="row">
+        <div style="padding: 4px">
+            <div style="float: right;">
+                <input type="text" ng-model="personSearch2View.gridOptions.quickFilterText" placeholder="Type text to filter..."/>
+            </div>
+            <div style="padding: 4px;">
+                <b>Person Search Results: </b> {{personSearch2View.rowCount}} found
+            </div>
+            <div style="clear: both;"/>
+        </div>
+        <div style="width: 100%; height: 400px;"
+             ag-grid="personSearch2View.gridOptions"
+             class="ag-fresh ag-basic">
+        </div>
+    </div>
+    <!-- end of people search results -->
 </form>

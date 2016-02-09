@@ -49,6 +49,9 @@
             vm.startDateOpened = ''; //false;
             vm.endDateOpened = ''; // false;
 
+            // ag-grid options
+            // vm.gridOptions = getGridOptions();
+
             // actions
             vm.typeAheadNameSearch = typeAheadNameSearch;
             vm.resetSearch = resetSearch;
@@ -58,6 +61,7 @@
 
             function activate() {
                 _getPromisedData();
+                getGridOptions();
             }
 
             function _getPromisedData() {
@@ -88,8 +92,8 @@
 
             function resetSearch() {
                 vm.searchParams = PersonService.getInitialPersonSearchParams();
-                vm.gridOptions.data = [];
-                vm.gridOptions.totalItems = null;
+                // vm.gridOptions.data = [];
+                // vm.gridOptions.totalItems = null;
                 var excludedKeys = ['wc_search'];
                 _.keys(vm.searchParams).forEach(function (key) {
                     if (excludedKeys.indexOf(key) === -1) {
@@ -99,12 +103,6 @@
                 });
                 vm.searchParams.wc_search = true;
                 vm.searchWarningMessage = '';
-                if (angular.isDefined(vm.$parent.personSearchResults)) {
-                    vm.$parent.personSearchResults = {};
-                }
-                if (angular.isDefined(vm.$parent.selectedPersonsArray)) {
-                    vm.$parent.selectedPersonsArray = [];
-                }
             }; //resetSearch
 
             vm.rowFormatter = function( row ) {
@@ -139,10 +137,11 @@
 
                 if(!isEmptySearch) { //skip searching if empty search
                     vm.searching = true;
-
                     PersonService.searchPeople(vm.searchParams).then(function (data) {
                         // console.log('received data for person search: ' + JSON.stringify(data));
                         console.log('people search results: ', data.data);
+                        vm.gridOptions.rowData = data.data.people;
+                        vm.gridOptions.api.refreshView();
                         /*
                         if (vm.showGrid && data.data.people) {
                             // console.log("received person search results: " + JSON.stringify(data.data.people));
@@ -193,6 +192,42 @@
                 },
             ];
             */
+            var colDefs = [
+                {headerName: '', width: 30, checkboxSelection: true,
+                     suppressSorting: true, suppressMenu: true, pinned: true},
+                {headerName: 'CTRP ID', field: 'ctrp_id', width: 50, cellHeight: 20},
+                {headerName: 'CTEP ID', field: 'ctep_id', width: 50, cellHeight: 20}
+             ];
+           function getGridOptions() {
+               vm.gridOptions = {
+                    columnDefs: colDefs,
+                    rowData: [],
+                    rowSelection: 'multiple',
+                    enableColResize: true,
+                    enableSorting: true,
+                    enableFilter: true,
+                    groupHeaders: true,
+                    rowHeight: 22,
+                    onModelUpdated: onModelUpdated,
+                    suppressRowClickSelection: true
+                };
+                // return options;
+           }
+
+           function onModelUpdated() {
+               console.info('on model updated triggered!');
+           }
+
+           function getColumnDefs() {
+               var colDefs = [
+                   {headerName: '', width: 30, checkboxSelection: true,
+                        suppressSorting: true, suppressMenu: true, pinned: true},
+                   {headerName: 'CTRP ID', field: 'ctrp_id', width: 50, cellHeight: 20},
+                   {headerName: 'CTEP ID', field: 'ctep_id', width: 50, cellHeight: 20}
+                ];
+
+               return colDefs;
+           }
         } // personSearch2DirectiveController
 
     }
