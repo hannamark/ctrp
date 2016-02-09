@@ -56,7 +56,7 @@
 
 
         /**
-         * Convert ISO Date format to Locale String (e.g. January 20, 2015)
+         * Convert ISO Date format to Locale String (e.g. 20-Jan-2015)
          *
          * @param isoDate (e.g. '2011-06-02T09:34:29+02:00')
          */

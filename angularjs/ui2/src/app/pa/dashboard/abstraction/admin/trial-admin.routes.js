@@ -137,7 +137,7 @@
             .state('main.pa.trialOverview.participatingSites', {
                 url: '/participating-sites',
                 templateUrl: 'app/pa/dashboard/abstraction/admin/trial_participating_sites.html',
-                controller: 'trialParticipatingSitesCtrl as trialDetailView',
+                controller: 'trialParticipatingSitesCtrl as psView',
                 section: 'pa',
                 resolve: {
                     TrialService: 'TrialService',

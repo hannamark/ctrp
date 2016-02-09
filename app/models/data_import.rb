@@ -168,6 +168,11 @@ class DataImport
     t = Trial.first
     t.sponsor = Organization.find_by_name("National Cancer Institute")
     t.lead_org = Organization.find_by_name("NCI - Center for Cancer Research")
+    org27 = Organization.find_or_create_by(name: 'John Hopkins')
+    c3 = Collaborator.new
+    c3.organization = org27
+    c3.org_name = org27.name
+    t.collaborators << c3
     t.save!
 
   end

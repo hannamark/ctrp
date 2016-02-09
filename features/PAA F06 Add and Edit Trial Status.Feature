@@ -136,19 +136,21 @@ Scenario: #11 Selection of Primary Completion Date Type "NA" - DCP
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
 Given I have selected trail
+And I have selected the Primary Completion Date
 And I have selected the Primary Completion Date Type  "NA"
 And the trial does not have a DCP Trial Identifier 
 And I select Save
-Then a warning will be displayed "Primary Completion Date Type of "NA" is only available for DCP Trials"
+Then an Error will be displayed "Primary Completion Date Type of "NA" is only available for DCP Trials"
 
 Scenario: #12 Selection of Primary Completion Date Type "NA" - Non Intervential
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
 Given I have selected trail
+And I have selected the Primary Completion Date
 And I have selected the Primary Completion Date Type  "NA"
 And the trial is Intervential
 And I select Save
-Then a warning will be displayed "Primary Completion Date Type of "NA" is only available for Non-Interventional Trials"
+Then an Error will be displayed "Primary Completion Date Type of "NA" is only available for Non-Interventional Trials"
 
 Scenario: #13 Selection of Primary Completion Date - DCP
 Given I am logged into the CTRP Protocol Abstraction application
@@ -157,7 +159,7 @@ Given I have selected trail
 And I have not entered a Primary Completion Date
 And the trial does not have a DCP Trial Identifier 
 And I select Save
-Then a warning will be displayed "Primary Completion Date is Required"
+Then an Error will be displayed "Primary Completion Date is Required"
 
 Scenario: #14 Selection of Primary Completion Date Non Intervential
 Given I am logged into the CTRP Protocol Abstraction application
@@ -166,4 +168,20 @@ Given I have selected trail
 And I have not entered a Primary Completion Date
 And the trial is Intervential
 And I select Save
-Then a warning will be displayed "Primary Completion Date is required"
+Then an Error will be displayed "Primary Completion Date is required"
+
+Scenario: #15 Start Date not null
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Status Screen
+Given I have selected trail
+And I have not entered a Start Date
+And I select Save
+Then an Error will be displayed "Start Date is Required"
+
+Scenario: #16 Start Date Type not null
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Status Screen
+Given I have selected trail
+And I have not entered a Start Date Type
+And I select Save
+Then an Error will be displayed "Start Date Type is Required"
