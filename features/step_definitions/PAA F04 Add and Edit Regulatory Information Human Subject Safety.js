@@ -743,13 +743,94 @@ module.exports = function() {
     });
 
     /*
+     Scenario Outline: #9 Hide non required fields for  Regulatory Information - Human Subject Safety
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Regulatory Information� Human Subject Safety screen
+     When from the Board Approval Status I have selected the following <Status> from the list of:
+     Then the following fields <Board Approval Status>, <Board Approval Number>, <Board Affiliation and Address>, <Board Name> will be displayed:
+
+     Examples:
+     |Status                 |Board Approval Status|Board Approval Number|Board Affiliation and Address|Board Name|
+     |Select a status        |Displayed            |Hidden  		     |Hidden                       |Hidden    |
+     |Submitted, approved    |Displayed            |Displayed            |Displayed                    |Displayed |
+     |Submitted, exempt      |Displayed            |Hidden               |Displayed                    |Displayed |
+     |Submitted, pending     |Displayed            |Hidden               |Displayed                    |Displayed |
+     |Submitted, denied      |Displayed            |Hidden               |Displayed                    |Displayed |
+     |Submission not required|Displayed            |Hidden               |Hidden                       |Hidden    |
 
      */
 
+    this.When(/^from the Board Approval Status I have selected the following (.*) from the list of:$/, function (Status, callback) {
+        if (boardApprovalStatusCrntVal === 'Submitted, approved'){
+            searchAndSelectOrg();
+        }else if(boardApprovalStatusCrntVal === 'Submitted, pending'){
+            searchAndSelectOrg();
+        }else if(boardApprovalStatusCrntVal === 'Submitted, exempt'){
+            searchAndSelectOrg();
+        }else if(boardApprovalStatusCrntVal === 'Submitted, denied'){
+            searchAndSelectOrg();
+        }else if(boardApprovalStatusCrntVal === 'Submission not required'){
+            searchAndSelectOrg();
+        };
+        function searchAndSelectOrg(){
+            console.log('test current')
+            humanSafety.selectBoardApprovalStatus(boardApprovalStatusSelect);
+            humanSafety.clickSave();
+            helper.wait_for(25);
+            humanSafety.clickAdminDataGeneralTrial();
+            humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+        };
+        helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatus, true);
+        helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatuslbl, true);
+        helper.verifyElementDisplayed(humanSafety.humanSafetySave, true);
+        helper.verifyElementDisplayed(humanSafety.humanSafetyReset, true);
+        helper.verifyElementDisplayed(humanSafety.humanSafetyBoradAffiliation, false);
+        buildSelectionOpton = ''+ Status +'';
+        console.log('buildSelectionOpton:['+ buildSelectionOpton +']');
+        humanSafety.selectBoardApprovalStatus(buildSelectionOpton);
+        nciSpecific.getVerifyListValue(humanSafety.humanSafetyBoradApprovalStatus,buildSelectionOpton,"Board Approval Status - field validation");
+        browser.sleep(25).then(callback);
+    });
 
-
-
-
+    this.Then(/^the following fields (.*), (.*), (.*), (.*) will be displayed:$/, function (BoardApprovalStatus, BoardApprovalNumber, BoardAffiliationAndAddress, BoardName, callback) {
+        //BoardApprovalStatus
+        if (BoardApprovalStatus === 'Displayed'){
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatus, true);
+        };
+        //BoardApprovalNumber
+        if (BoardApprovalNumber === 'Displayed'){
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalNumber, true);
+        } else if (BoardApprovalNumber === 'Hidden'){
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalNumber, false);
+        };
+        //BoardAffiliationAndAddress
+        if (BoardAffiliationAndAddress === 'Displayed'){
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradAffiliation, true);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradContactAddress, true);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradContactCity, true);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradStateProvince, true);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradZipPostalCode, true);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradCountry, true);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradPhone, true);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradEmail, true);
+        } else if (BoardAffiliationAndAddress === 'Hidden'){
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradAffiliation, false);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradContactAddress, false);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradContactCity, false);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradStateProvince, false);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradZipPostalCode, false);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradCountry, false);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradPhone, false);
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradEmail, false);
+        };
+        //BoardName
+        if (BoardName === 'Displayed'){
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradName, true);
+        } else if (BoardName === 'Hidden'){
+            helper.verifyElementDisplayed(humanSafety.humanSafetyBoradName, false);
+        };
+        browser.sleep(25).then(callback);
+    });
 
 
 };

@@ -85,17 +85,18 @@ And I have selected organization look-up at the Regulatory Information� Human 
 When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed in the lookup window
 Then the selected organization will associated with the trial as the Board Affiliation along with the Board
   @runthis
-Scenario: #9 Hide non required fields for  Regulatory Information - Human Subject Safety 
+Scenario Outline: #9 Hide non required fields for  Regulatory Information - Human Subject Safety
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information� Human Subject Safety screen
-When I have selected the Board Approval Status of <status> from the list of:
-Then the following fields will be displayed:
+When from the Board Approval Status I have selected the following <Status> from the list of:
+Then the following fields <Board Approval Status>, <Board Approval Number>, <Board Affiliation and Address>, <Board Name> will be displayed:
 
-|Examples|
-|<Status>               |Board Approval Status|	Board Approval Number |Board Affiliation and Address|Board Name|
-|<null>                 |Displayed            |Hidden  		          |Hidden                       |Hidden|
-|Submitted, Approved    |Displayed            |Displayed              |Displayed                    |Displayed|
-|Submitted, Exempt      |Displayed            |Hidden                 |Displayed                    |Displayed|
-|Submitted, Pending     |Displayed            |Hidden                 |Displayed                    |Displayed|
-|Submitted, Denied      |Displayed            |Hidden                 |Displayed                    |Displayed|
-|Submission Not Required|Displayed            |Hidden                 |Hidden                       |Hidden|
+Examples:
+|Status                 |Board Approval Status|Board Approval Number|Board Affiliation and Address|Board Name|
+|Select a status        |Displayed            |Hidden  		        |Hidden                       |Hidden    |
+|Submitted, approved    |Displayed            |Displayed            |Displayed                    |Displayed |
+|Submitted, exempt      |Displayed            |Hidden               |Displayed                    |Displayed |
+|Submitted, pending     |Displayed            |Hidden               |Displayed                    |Displayed |
+|Submitted, denied      |Displayed            |Hidden               |Displayed                    |Displayed |
+|Submission not required|Displayed            |Hidden               |Hidden                       |Hidden    |
+
