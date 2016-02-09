@@ -95,6 +95,7 @@
                 vm.searchParams = PersonService.getInitialPersonSearchParams();
                 // vm.gridOptions.data = [];
                 // vm.gridOptions.totalItems = null;
+                vm.gridOptions.api.setRowData([]);
                 var excludedKeys = ['wc_search'];
                 _.keys(vm.searchParams).forEach(function (key) {
                     if (excludedKeys.indexOf(key) === -1) {
