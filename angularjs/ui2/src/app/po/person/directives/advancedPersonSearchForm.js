@@ -84,7 +84,6 @@
             $scope.searching = false;
             console.log('in person search form directive');
 
-
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
             } else {
@@ -154,7 +153,6 @@
                     });
                 }
             }; //searchPeople
-
 
             $scope.getDateRange = function(range) {
                 var today = new Date();
