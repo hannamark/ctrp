@@ -228,10 +228,11 @@
            }
 
            function getColumnDefs() {
+               // {headerCellTemplate: '<strong>Head</strong>'}
                var colDefs = [
                    {headerName: '', width: 30, checkboxSelection: true,
                         suppressSorting: true, suppressMenu: true, pinned: true},
-                   {headerName: 'CTRP ID', field: 'ctrp_id', width: 100, cellHeight: 20},
+                   {headerName: 'CTRP ID', field: 'ctrp_id', width: 100, cellHeight: 20, unSortIcon: true, editable: true},
                    {headerName: 'CTEP ID', field: 'ctep_id', width: 100, cellHeight: 20},
                    {headerName: 'First', field: 'fname', width: 100, cellHeight: 20},
                    {headerName: 'Last', field: 'lname', width: 100, cellHeight: 20},
@@ -241,7 +242,10 @@
                    {headerName: 'Email', field: 'email', width: 140, cellHeight: 20},
                    {headerName: 'Phone', field: 'phone', width: 120, cellHeight: 20},
                    {headerName: 'Affiliated Orgs', field: 'ctep_id', width: 150, cellHeight: 20},
-                   {headerName: 'Updated', field: 'updated_at', width: 130, cellHeight: 20},
+                   {headerName: 'Updated', field: 'updated_at', width: 130, cellHeight: 20,
+                    cellRenderer: function(params) {
+                        return !!params ? moment(params).format("DD-MMM-YYYY HH:mm") : '';
+                    }},
                    {headerName: 'Prefix', field: 'prefix', width: 70, cellHeight: 20},
                    {headerName: 'Suffix', field: 'suffix', width: 70, cellHeight: 20},
                 ];
