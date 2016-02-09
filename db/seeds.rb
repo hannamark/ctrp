@@ -494,8 +494,9 @@ ba_users = [joe, michael, sandy, susan, sophia]
 stephanie = {"email" => "whitleys@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Stephanie", "last_name" => "Whitley" }
 kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
 andrea = {"email" => "mooreaj@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Andrea", "last_name" => "Moore" }
+graysonra = {"email" => "graysonra@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Rachel", "last_name" => "Grayson" }
 
-ctro_users = [stephanie, kirsten, andrea]
+ctro_users = [stephanie, kirsten, andrea, graysonra]
 
 #Add Fed users
 
@@ -528,3 +529,4 @@ end
 #Line to include seeds from passed environment variable
 puts "Begin seeding environment-specfic data"
 load(Rails.root.join( 'db', 'seeds', "#{Rails.env.downcase}.rb"))
+puts "Seeding complete"
