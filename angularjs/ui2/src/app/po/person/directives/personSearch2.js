@@ -39,18 +39,19 @@
             console.log('searchParams: ', vm.searchParams);
             vm.sourceContextArr = [];
             vm.sourceStatusArr = [];
+            vm.searchResults = []; // array of person
             var fromStateName = $state.fromState.name || '';
             vm.searchWarningMessage = '';
             console.log('fromStateName: ', fromStateName);
 
             vm.dateFormat = DateService.getFormats()[1];
-            // console.log('dateFormat: ' + vm.dateFormat);
             vm.dateOptions = DateService.getDateOptions();
             vm.startDateOpened = ''; //false;
             vm.endDateOpened = ''; // false;
 
             // ag-grid options
-            // vm.gridOptions = getGridOptions();
+            vm.gridOptions = getGridOptions();
+            console.log('vm.gridOptions: ', vm.gridOptions);
 
             // actions
             vm.typeAheadNameSearch = typeAheadNameSearch;
@@ -61,7 +62,7 @@
 
             function activate() {
                 _getPromisedData();
-                getGridOptions();
+                // getGridOptions();
             }
 
             function _getPromisedData() {
@@ -140,8 +141,9 @@
                     PersonService.searchPeople(vm.searchParams).then(function (data) {
                         // console.log('received data for person search: ' + JSON.stringify(data));
                         console.log('people search results: ', data.data);
-                        vm.gridOptions.rowData = data.data.people;
+                        vm.gridOptions.api.setRowData(data.data.people);
                         vm.gridOptions.api.refreshView();
+                        vm.searchResults = data.data.people;
                         /*
                         if (vm.showGrid && data.data.people) {
                             // console.log("received person search results: " + JSON.stringify(data.data.people));
@@ -192,16 +194,21 @@
                 },
             ];
             */
-            var colDefs = [
-                {headerName: '', width: 30, checkboxSelection: true,
-                     suppressSorting: true, suppressMenu: true, pinned: true},
-                {headerName: 'CTRP ID', field: 'ctrp_id', width: 50, cellHeight: 20},
-                {headerName: 'CTEP ID', field: 'ctep_id', width: 50, cellHeight: 20}
-             ];
+
            function getGridOptions() {
-               vm.gridOptions = {
-                    columnDefs: colDefs,
-                    rowData: [],
+               var colDefs = [
+                   {headerName: '', width: 30, checkboxSelection: true,
+                        suppressSorting: true, suppressMenu: true, pinned: true},
+                   {headerName: 'CTRP ID', field: 'ctrp_id', width: 100, cellHeight: 20},
+                   {headerName: 'CTEP ID', field: 'ctep_id', width: 100, cellHeight: 20}
+                ];
+
+               var options = {
+                    columnDefs: getColumnDefs(),
+                    rowData: [
+                        {'ctrp_id': 1232, 'ctep_id': 321},
+                        {'ctrp_id': 12322, 'ctep_id': 3212},
+                    ],
                     rowSelection: 'multiple',
                     enableColResize: true,
                     enableSorting: true,
@@ -211,7 +218,8 @@
                     onModelUpdated: onModelUpdated,
                     suppressRowClickSelection: true
                 };
-                // return options;
+                // options.datasource = tableDataSource;
+                return options;
            }
 
            function onModelUpdated() {
@@ -222,12 +230,41 @@
                var colDefs = [
                    {headerName: '', width: 30, checkboxSelection: true,
                         suppressSorting: true, suppressMenu: true, pinned: true},
-                   {headerName: 'CTRP ID', field: 'ctrp_id', width: 50, cellHeight: 20},
-                   {headerName: 'CTEP ID', field: 'ctep_id', width: 50, cellHeight: 20}
+                   {headerName: 'CTRP ID', field: 'ctrp_id', width: 100, cellHeight: 20},
+                   {headerName: 'CTEP ID', field: 'ctep_id', width: 100, cellHeight: 20},
+                   {headerName: 'First', field: 'fname', width: 100, cellHeight: 20},
+                   {headerName: 'Last', field: 'lname', width: 100, cellHeight: 20},
+                   {headerName: 'Source Context', field: 'source_context', width: 100, cellHeight: 20},
+                   {headerName: 'Source Status', field: 'source_status', width: 100, cellHeight: 20},
+                   {headerName: 'Source ID', field: 'source_id', width: 100, cellHeight: 20},
+                   {headerName: 'Email', field: 'email', width: 140, cellHeight: 20},
+                   {headerName: 'Phone', field: 'phone', width: 120, cellHeight: 20},
+                   {headerName: 'Affiliated Orgs', field: 'ctep_id', width: 150, cellHeight: 20},
+                   {headerName: 'Updated', field: 'updated_at', width: 130, cellHeight: 20},
+                   {headerName: 'Prefix', field: 'prefix', width: 70, cellHeight: 20},
+                   {headerName: 'Suffix', field: 'suffix', width: 70, cellHeight: 20},
                 ];
 
                return colDefs;
            }
+
+           var tableDataSource = {
+               getRows: getRows,
+               pageSize: vm.searchParams.rows,
+               rowCount: 100,
+               overflowSize: 100,
+               maxConcurrentRequests: 3
+           };
+
+           function getRows(params) {
+               params.startRow = (vm.searchParams.start - 1) * vm.searchParams.rows;
+               params.endRow = vm.searchParams.start * vm.searchParams.rows;
+               params.successCallback = function() {
+                   console.info('success in getRows');
+               }
+               return params;
+           }
+
         } // personSearch2DirectiveController
 
     }
