@@ -9,14 +9,15 @@
             <div class="row">
                 <fieldset class="sub-bordered" restriction-field>
                     <legend class="sub-bordered">Study Source:</legend>
-                    <div class="form-group " ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.curTrial.study_source_id)}">
+                    <div class="form-group required" ng-class="{'has-error': !trialNciView.study_source_id && ctrpbtn.trial_form.needsAttention(trial_form.study_source_id)}">
                         <label for="study_source" class="control-label col-xs-12 col-sm-3">Study Source: </label>
                         <div class="col-xs-12 col-sm-9">
                             <select  restriction-field class="form-control input-sm" id="study_source" ng-model="trialNciView.curTrial.study_source_id" ng-options="studySource.id as studySource.name for studySource in trialNciView.studySourceArr" required>
                                 <option value="">-Select a Study Source-</option>
                                 <option ng-repeat="studySource in trialNciView.studySourceArr" value="{{studySource.code}}">{{studySource.name}}</option>
                             </select>
-                            <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.curTrial.study_source_id)">
+
+                            <span class="help-block" ng-show="!trialNciView.study_source_id && ctrpbtn.trial_form.needsAttention(trial_form.study_source_id)">
                                     Study Source is required
                             </span>
                         </div>
