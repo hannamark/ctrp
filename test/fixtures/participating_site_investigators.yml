@@ -7,7 +7,6 @@
 #  person_id             :integer
 #  set_as_contact        :boolean
 #  investigator_type     :string(255)
-#  status                :string(255)
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  uuid                  :string(255)
