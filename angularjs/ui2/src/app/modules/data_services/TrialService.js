@@ -27,7 +27,7 @@
             + 'Action <span class="caret"></span>'
             + '</button>'
             + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions">'
-            + '<a ng-if="action == \'add-my-site\'">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'add-my-site\'" ui-sref="main.addParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '<a ng-if="action != \'add-my-site\'" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '</li></ul>'
             + '</div>';

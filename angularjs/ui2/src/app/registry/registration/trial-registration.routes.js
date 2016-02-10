@@ -201,6 +201,23 @@
                     parent: 'main.trials',
                     label: 'View Trial'
                 }
+            })
+
+            .state('main.addParticipatingSite', {
+                url: '/add-participating-site/:trialId',
+                templateUrl: 'app/registry/registration/psDetails.html',
+                controller: 'psDetailCtrl as psDetailView',
+                section: 'registry',
+                resolve: {
+                    TrialService: 'TrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.trials',
+                    label: 'Add Participating Site'
+                }
             });
     } //trialRegistrationRoutes
 })();
