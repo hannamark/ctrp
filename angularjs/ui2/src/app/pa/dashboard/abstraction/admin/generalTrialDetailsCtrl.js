@@ -92,6 +92,7 @@
           outerTrial.trial = vm.generalTrialDetailsObj;
 
           TrialService.upsertTrial(outerTrial).then(function(res) {
+              console.log('saved trial: ', res);
               vm.generalTrialDetailsObj = res;
               vm.generalTrialDetailsObj.lock_version = res.lock_version;
 
@@ -303,14 +304,21 @@
       * Use the Trial's PI as the central contact      *
       */
       function _usePIAsCentralContact() {
-        vm.generalTrialDetailsObj.central_contacts[0] = {};
-        vm.generalTrialDetailsObj.central_contacts[0]._destroy = false;
-        vm.generalTrialDetailsObj.central_contacts[0].fullname = vm.principalInvestigator.name;
-        vm.generalTrialDetailsObj.central_contacts[0].email = vm.generalTrialDetailsObj.pi.email;
-        vm.generalTrialDetailsObj.central_contacts[0].phone = vm.generalTrialDetailsObj.pi.phone.replace(regex, '');
-        vm.generalTrialDetailsObj.central_contacts[0].person_id = vm.generalTrialDetailsObj.pi.id; //
-        delete vm.generalTrialDetailsObj.central_contacts[0].id;
-        vm.isPhoneValid = true;
+          var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
+          var _centralContactType = (_.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)})).name || 'None';
+          if (_centralContactType === 'PI') {
+              // if the central contact type is already 'PI', do nothing here
+              return;
+          }
+
+          vm.generalTrialDetailsObj.central_contacts[0] = {};
+          vm.generalTrialDetailsObj.central_contacts[0]._destroy = false;
+          vm.generalTrialDetailsObj.central_contacts[0].fullname = vm.principalInvestigator.name;
+          vm.generalTrialDetailsObj.central_contacts[0].email = vm.generalTrialDetailsObj.pi.email;
+          vm.generalTrialDetailsObj.central_contacts[0].phone = vm.generalTrialDetailsObj.pi.phone.replace(regex, '');
+          vm.generalTrialDetailsObj.central_contacts[0].person_id = vm.generalTrialDetailsObj.pi.id; //
+          delete vm.generalTrialDetailsObj.central_contacts[0].id;
+          vm.isPhoneValid = true;
       }
 
 
