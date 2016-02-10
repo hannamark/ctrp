@@ -113,9 +113,9 @@
           vm.principalInvestigator = {name: '', array: []};
           vm.sponsor = {name: '', array: []};
          // vm.centralContact = [];
-          vm.centralContactType = '';
           $timeout(function() {
              getTrialDetailCopy();
+             vm.centralContactType = _getCentralContactType(); // restore vm.centralContactType
           }, 0);
           // vm.generalTrialDetailsObj = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
       }
@@ -135,9 +135,7 @@
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
 
               if (vm.generalTrialDetailsObj.central_contacts.length > 0) {
-                  _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
-                  var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
-                  vm.centralContactType = (_.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)})).name || 'None';
+                  vm.centralContactType = _getCentralContactType();
                   // vm.generalTrialDetailsObj.central_contacts[0].fullname = PersonService.extractFullName(vm.generalTrialDetailsObj.central_contacts[0]);
               }
 
@@ -278,17 +276,22 @@
 
       function watchCentralContactType() {
         $scope.$watch(function() { return vm.centralContactType;}, function(newVal, oldVal) {
+            /*
           if (!!oldVal) {
               // for changing central contact types,
               // if previous type is not null, reset all fields in central contact
+              console.error('resetting vm.generalTrialDetailsObj.central_contacts!!');
               vm.generalTrialDetailsObj.central_contacts[0] = {email: '', phone: '', fullname: ''};
           }
-          if (newVal === 'PI') {
-              _usePIAsCentralContact();
-          } else if (newVal === 'None' && vm.generalTrialDetailsObj.central_contacts.length > 0) {
+          */
+            if (newVal === 'PI') {
+                _usePIAsCentralContact();
+            } else if (newVal === 'None' && vm.generalTrialDetailsObj.central_contacts.length > 0) {
             // delete the contact
-            vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
-          }
+                vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
+            } else {
+                vm.generalTrialDetailsObj.central_contacts = [].concat({email: '', phone: ''});
+            }
         });
       }
 
@@ -304,9 +307,7 @@
       * Use the Trial's PI as the central contact      *
       */
       function _usePIAsCentralContact() {
-          var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
-          var _centralContactType = (_.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)})).name || 'None';
-          if (_centralContactType === 'PI') {
+          if (_getCentralContactType() === 'PI') {
               // if the central contact type is already 'PI', do nothing here
               return;
           }
@@ -366,6 +367,19 @@
           } else {
               vm.generalTrialDetailsObj.lead_protocol_id = vm.leadProtocolId.trim();
           }
+      }
+
+      /**
+       * Get the central contact type name if the central_contacts[0] has a valid central_contact_type_id (not null)
+       * @return {[type]} [description]
+       */
+      function _getCentralContactType() {
+          _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
+          var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
+          var _centralContactType = _.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)});
+          var typeName = !!_centralContactType ? _centralContactType.name : 'None';
+
+          return typeName;
       }
 
     } //generalTrialDetailCtrl
