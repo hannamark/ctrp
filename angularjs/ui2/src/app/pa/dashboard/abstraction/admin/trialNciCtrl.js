@@ -85,6 +85,8 @@
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
                 vm.curTrial.trial_funding_sources = response["trial_funding_sources"];
+                vm.curTrial.nih_nci_div =  response["nih_nci_div"];
+                vm.curTrial.nih_nci_prog =  response["nih_nci_prog"];
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', 'Successful!', {
                     extendedTimeOut: 1000,
