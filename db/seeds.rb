@@ -48,6 +48,7 @@ FamilyType.find_or_create_by(code:'CANCERCENTER',name:'Cancer Center')
 FamilyType.find_or_create_by(code:'NCTN',name:'NCTN')
 FamilyType.find_or_create_by(code:'NIH',name:'NIH')
 FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
+FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
 
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
@@ -250,7 +251,7 @@ AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File T
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHBLI')
 
-AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP; SPORE; Steering Commitee Reviewed')
+AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering_Commitee_Reviewed')
 
 trial_status_transition = '{
                              "STATUSZERO": {
@@ -454,7 +455,9 @@ test_users.each do |u|
   unless user.blank?
     user.role = u["role"]
     user.approved =  u["approve"]
-    user.organization = org0
+    unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER"
+      user.organization = org0
+    end
     user.save!
     #puts "Updated role of user = #{user.username}, role = #{user.role}"
   end
