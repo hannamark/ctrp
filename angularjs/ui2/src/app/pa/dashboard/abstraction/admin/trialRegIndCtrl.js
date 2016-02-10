@@ -59,7 +59,17 @@
 
         // Add IND/IDE to a temp array
         vm.addIndIde = function () {
+            //console.log("In addIndIde vm.addedIndIdes=" + JSON.stringify(vm.addedIndIdes));
             if (vm.ind_ide_type && vm.ind_ide_number && vm.grantor && vm.holder_type_id) {
+                // Check if there is a similar entry
+                for (var i = 0; i < vm.addedIndIdes.length; i++) {
+                   if((vm.addedIndIdes[i].ind_ide_type == vm.ind_ide_type) &&
+                       (vm.addedIndIdes[i].ind_ide_number == vm.ind_ide_number) &&
+                       (vm.addedIndIdes[i].grantor == vm.grantor) &&
+                       (vm.addedIndIdes[i].holder_type_id == vm.holder_type_id)) {
+                       return;
+                   }
+                }
                 var newIndIde = {};
                 newIndIde.ind_ide_type = vm.ind_ide_type;
                 newIndIde.ind_ide_number = vm.ind_ide_number;
@@ -156,7 +166,7 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 
