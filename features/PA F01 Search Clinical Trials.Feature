@@ -32,7 +32,7 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
           |NCI Trial Identifier|
           |Processing Priority|
           |Other ID Source and Other ID|
-          |Official Title - preceded with an "(*)" that can be selected to display alternate titles |
+          |Official Title|
           |Sponsor|
           |Lead Organization|
           |Participating Sites|

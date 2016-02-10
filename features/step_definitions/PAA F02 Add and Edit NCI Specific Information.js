@@ -51,6 +51,11 @@ module.exports = function() {
     var leadProtocolIDB = 'CTRP_01_1778';
     var leadProtocolIDC = 'CTRP_01_17'+randNmbr;
     var leadProtocolIDD = 'CTRP_01_1781';
+    var leadProtocolIDE = 'CTRP_01_1787';
+    var leadProtocolIDF = 'CTRP_01_1789';
+    var leadProtocolIDG = 'CTRP_01_1790';
+    var leadProtocolIDH = 'CTRP_01_1792';
+    var leadProtocolIDI = 'CTRP_01_1794';
     var searchResultCountText = 'Trial Search Results';
     var adminDataNCISpecific = 'NCI specific information';
     var nciSpecificStudySourceVal = '';
@@ -169,6 +174,7 @@ module.exports = function() {
             }
             nciSpecificStudySourceResltVal = retNCISpecNewVal();
         };
+        nciSpecific.clickFundingSourceOrganizationDel();
         organizationSearch.clickSearchOrganization();
         searchOrg.setOrgName(orgSearchNameA);
         searchOrg.clickSearchButton();
@@ -200,11 +206,11 @@ module.exports = function() {
         pageMenu.homeSearchTrials.click();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDE);
         pageSearchTrail.clickSearchTrialSearchButton();
         commonFunctions.verifyPASearchResultCount(searchResultCountText);
         commonFunctions.clickGridFirstLink(1,1);
-        commonFunctions.clickLinkText(leadProtocolID);
+        commonFunctions.clickLinkText(leadProtocolIDE);
         commonFunctions.adminCheckOut();
         nciSpecific.clickAdminDataNCISpecificInformation();
         browser.sleep(25).then(callback);
@@ -259,6 +265,7 @@ module.exports = function() {
                 nciSpecificStudySourceResltVal = retNCISpecNewVal();
             };
         });
+        nciSpecific.clickFundingSourceOrganizationDel();
         organizationSearch.clickSearchOrganization();
         searchOrg.setOrgName(orgSearchNameA);
         searchOrg.clickSearchButton();
@@ -338,17 +345,20 @@ module.exports = function() {
                 nciSpecificStudySourceResltVal = retNCISpecNewVal();
             };
         });
+        nciSpecific.clickFundingSourceOrganizationDel();
         organizationSearch.clickSearchOrganization();
         searchOrg.setOrgName(orgSearchNameB);
         searchOrg.clickSearchButton();
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         nciSpecific.clickSave();
+        nciSpecific.clickAdminDataGeneralTrial();
+        nciSpecific.clickAdminDataNCISpecificInformation();
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the selected organization will not be associated to the trial as Specific Funding Source$/, function (callback) {
-        nciSpecific.verifyFundingSourceOrg(orgSearchNameB);
+        //nciSpecific.verifyFundingSourceOrg(orgSearchNameB);
         nciSpecific.clickAdminDataGeneralTrial();
         nciSpecific.clickAdminDataNCISpecificInformation();
         nciSpecific.clickFundingSourceOrganizationDel();
@@ -481,6 +491,84 @@ module.exports = function() {
      */
 
     this.Given(/^see the value for NIH\/NCI Division\/Department Identifier$/, function (callback) {
+        login.logout();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDF);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolIDF);
+        commonFunctions.adminCheckOut();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        //Study Source
+        commonFunctions.wait(nciSpecific.nciSpecificStudySource, 'Study Source');
+        nciSpecific.nciSpecificStudySource.$('option:checked').getText().then(function(value){
+            var pasNCISpecStudySource = ''+value+'';
+            function retNciSpecificStudySourceVal(){
+                return pasNCISpecStudySource;
+            }
+            verfiStudySourceVal = retNciSpecificStudySourceVal();
+            console.log('System Identified ['+verfiStudySourceVal+'] as the current Study Source selected value');
+            if (verfiStudySourceVal === 'National'){
+                nciSpecific.selectStudySource('Institutional');
+                var pasNCISpecNewVal = 'Institutional';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Externally Peer-Reviewed'){
+                nciSpecific.selectStudySource('Institutional');
+                var pasNCISpecNewVal = 'Institutional';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Institutional'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Industrial'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Other'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+        });
+        //Funding Source
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        //Program Code
+        nciSpecific.nciSpecificProgramCode.getAttribute().then(function(value){
+            var pasProgramCode = ''+value+'';
+            function retNciSpecificProgramCodeVal(){
+                return pasProgramCode;
+            }
+            nciSpecificProgramCodeVal = retNciSpecificProgramCodeVal();
+        });
+        nciSpecific.setProgramCode(programCode);
+        //Department Identifier
         nciSpecific.nciSpecificDepartmentIdentifier.$('option:checked').getText().then(function(value){
             var pasNCISpecDepId = ''+value+'';
             function retNciSpecificDepIdVal(){
@@ -543,11 +631,11 @@ module.exports = function() {
         pageMenu.homeSearchTrials.click();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDF);
         pageSearchTrail.clickSearchTrialSearchButton();
         commonFunctions.verifyPASearchResultCount(searchResultCountText);
         commonFunctions.clickGridFirstLink(1,1);
-        commonFunctions.clickLinkText(leadProtocolID);
+        commonFunctions.clickLinkText(leadProtocolIDF);
         commonFunctions.adminCheckOut();
         nciSpecific.clickAdminDataNCISpecificInformation();
         nciSpecific.getVerifyListValue(nciSpecific.nciSpecificDepartmentIdentifier,nciSpecificDeptIDResltVal,"NIH/NCI Division/Department Identifier");
@@ -565,6 +653,86 @@ module.exports = function() {
      */
 
     this.Given(/^see the value for NIH\/NCI Program Id$/, function (callback) {
+
+        login.logout();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDF);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolIDF);
+        commonFunctions.adminCheckOut();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        //nciSpecific.clickFundingSourceOrganizationDel();
+        //Study Source
+        commonFunctions.wait(nciSpecific.nciSpecificStudySource, 'Study Source');
+        nciSpecific.nciSpecificStudySource.$('option:checked').getText().then(function(value){
+            var pasNCISpecStudySource = ''+value+'';
+            function retNciSpecificStudySourceVal(){
+                return pasNCISpecStudySource;
+            }
+            verfiStudySourceVal = retNciSpecificStudySourceVal();
+            console.log('System Identified ['+verfiStudySourceVal+'] as the current Study Source selected value');
+            if (verfiStudySourceVal === 'National'){
+                nciSpecific.selectStudySource('Institutional');
+                var pasNCISpecNewVal = 'Institutional';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Externally Peer-Reviewed'){
+                nciSpecific.selectStudySource('Institutional');
+                var pasNCISpecNewVal = 'Institutional';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Institutional'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Industrial'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Other'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+        });
+        //Funding Source
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        //Program Code
+        nciSpecific.nciSpecificProgramCode.getAttribute().then(function(value){
+            var pasProgramCode = ''+value+'';
+            function retNciSpecificProgramCodeVal(){
+                return pasProgramCode;
+            }
+            nciSpecificProgramCodeVal = retNciSpecificProgramCodeVal();
+        });
+        nciSpecific.setProgramCode(programCode);
+        //Program ID
         nciSpecific.nciSpecificProgramID.$('option:checked').getText().then(function(value){
             var pasNCISpecProgramId = ''+value+'';
             function retNciSpecificProgramIdVal(){
@@ -627,11 +795,11 @@ module.exports = function() {
         pageMenu.homeSearchTrials.click();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDF);
         pageSearchTrail.clickSearchTrialSearchButton();
         commonFunctions.verifyPASearchResultCount(searchResultCountText);
         commonFunctions.clickGridFirstLink(1,1);
-        commonFunctions.clickLinkText(leadProtocolID);
+        commonFunctions.clickLinkText(leadProtocolIDF);
         commonFunctions.adminCheckOut();
         nciSpecific.clickAdminDataNCISpecificInformation();
         nciSpecific.getVerifyListValue(nciSpecific.nciSpecificProgramID,nciSpecificProgramIdResultVal,"NIH/NCI Program Id");
@@ -696,8 +864,77 @@ module.exports = function() {
      */
 
     this.When(/^I select the Comments field I can enter or edit comments$/, function (callback) {
+        login.logout();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDG);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolIDG);
+        commonFunctions.adminCheckOut();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        //Study Source
+        commonFunctions.wait(nciSpecific.nciSpecificStudySource, 'Study Source');
+        nciSpecific.nciSpecificStudySource.$('option:checked').getText().then(function(value){
+            var pasNCISpecStudySource = ''+value+'';
+            function retNciSpecificStudySourceVal(){
+                return pasNCISpecStudySource;
+            }
+            verfiStudySourceVal = retNciSpecificStudySourceVal();
+            console.log('System Identified ['+verfiStudySourceVal+'] as the current Study Source selected value');
+            if (verfiStudySourceVal === 'National'){
+                nciSpecific.selectStudySource('Institutional');
+                var pasNCISpecNewVal = 'Institutional';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Externally Peer-Reviewed'){
+                nciSpecific.selectStudySource('Institutional');
+                var pasNCISpecNewVal = 'Institutional';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Institutional'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Industrial'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+            if (verfiStudySourceVal === 'Other'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                verfiSpecificStudySourceRsltVal = retNCISpecNewVal();
+            };
+        });
+        //Funding Source
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
         nciSpecific.setComment(nciSpecificCommnetsAdd);
         nciSpecific.clickSave();
+        helper.wait_for(9000);
         nciSpecific.clickAdminDataGeneralTrial();
         nciSpecific.clickAdminDataNCISpecificInformation();
         login.logout();
@@ -705,11 +942,11 @@ module.exports = function() {
         pageMenu.homeSearchTrials.click();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDG);
         pageSearchTrail.clickSearchTrialSearchButton();
         commonFunctions.verifyPASearchResultCount(searchResultCountText);
         commonFunctions.clickGridFirstLink(1,1);
-        commonFunctions.clickLinkText(leadProtocolID);
+        commonFunctions.clickLinkText(leadProtocolIDG);
         commonFunctions.adminCheckOut();
         nciSpecific.clickAdminDataNCISpecificInformation();
         nciSpecific.verifyComment(nciSpecificCommnetsAdd);
@@ -724,11 +961,11 @@ module.exports = function() {
         pageMenu.homeSearchTrials.click();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDG);
         pageSearchTrail.clickSearchTrialSearchButton();
         commonFunctions.verifyPASearchResultCount(searchResultCountText);
         commonFunctions.clickGridFirstLink(1,1);
-        commonFunctions.clickLinkText(leadProtocolID);
+        commonFunctions.clickLinkText(leadProtocolIDG);
         commonFunctions.adminCheckOut();
         nciSpecific.clickAdminDataNCISpecificInformation();
         nciSpecific.verifyComment(nciSpecificCommnetsEdit);
@@ -1257,11 +1494,11 @@ module.exports = function() {
         pageMenu.homeSearchTrials.click();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDH);
         pageSearchTrail.clickSearchTrialSearchButton();
         commonFunctions.verifyPASearchResultCount(searchResultCountText);
         commonFunctions.clickGridFirstLink(1,1);
-        commonFunctions.clickLinkText(leadProtocolIDD);
+        commonFunctions.clickLinkText(leadProtocolIDH);
         commonFunctions.adminCheckOut();
         nciSpecific.clickAdminDataNCISpecificInformation();
         //commonFunctions.wait(nciSpecific.nciSpecificStudySource, 'Study Source');
@@ -1322,11 +1559,11 @@ module.exports = function() {
         pageMenu.homeSearchTrials.click();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDI);
         pageSearchTrail.clickSearchTrialSearchButton();
         commonFunctions.verifyPASearchResultCount(searchResultCountText);
         commonFunctions.clickGridFirstLink(1,1);
-        commonFunctions.clickLinkText(leadProtocolIDD);
+        commonFunctions.clickLinkText(leadProtocolIDI);
         commonFunctions.adminCheckOut();
         nciSpecific.clickAdminDataNCISpecificInformation();
         //commonFunctions.wait(nciSpecific.nciSpecificStudySource, 'Study Source');
@@ -1348,6 +1585,7 @@ module.exports = function() {
                 //Do nothing
             };
         });
+        nciSpecific.clickFundingSourceOrganizationDel();
         browser.sleep(25).then(callback);
     });
 

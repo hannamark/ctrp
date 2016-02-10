@@ -51,7 +51,9 @@
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.lock_version = response.lock_version || '';
-                //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                vm.curTrial.grants = response["grants"];
+                console.log("vm.grants="+JSON.stringify(vm.curTrial.grants));
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
                 toastr.clear();
@@ -103,6 +105,7 @@
                 var newGrant = {};
                 newGrant.funding_mechanism = vm.funding_mechanism;
                 newGrant.institute_code = vm.institute_code;
+                //console.log("vm.serial_number" + JSON.stringify(vm.serial_number));
                 newGrant.serial_number = vm.serial_number.serial_number;
                 newGrant.nci = vm.nci;
                 newGrant._destroy = false;
@@ -160,7 +163,7 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 

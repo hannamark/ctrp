@@ -13,7 +13,6 @@
     function trialCollaboratorsCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj) {
 
         var vm = this;
-        vm.deleteCollaborator = deleteCollaborator;
         vm.deleteListHandler = deleteListHandler;
         vm.deleteSelected = deleteSelected;
         vm.setAddMode = setAddMode;
@@ -27,8 +26,37 @@
         vm.collaboratorsNum = 0;
         vm.addMode=false;
 
-        vm.updateTrial = function(updateType) {
+        /*
+         * This function is invoked when the organizations are added and saved
+         */
+        vm.updateTrial = function() {
             // Prevent multiple submissions
+            console.log("update Trial ");
+            if (vm.addedCollaborators.length > 0) {
+                vm.curTrial.collaborators_attributes = [];
+                _.each(vm.addedCollaborators, function (collaborator) {
+                    var exists = false
+                    for (var i = 0; i < vm.curTrial.collaborators.length; i++) {
+                        if (vm.curTrial.collaborators[i].id) {
+                            if (vm.curTrial.collaborators[i].organization_id == collaborator.organization_id) {
+                                exists = true;
+                            }
+                        }
+                    }
+                    console.log("update Trial exists ="+exists);
+                    if (!exists){
+                        vm.curTrial.collaborators_attributes.push(collaborator);
+                    }
+                });
+            }
+            console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
+            vm.saveTrial();
+            vm.addedCollaborators = [];
+
+        } // updateTrial
+
+
+        vm.saveTrial = function(){
             vm.disableBtn = true;
 
             // An outer param wrapper is needed for nested attributes to work
@@ -37,41 +65,13 @@
             outerTrial.id = vm.curTrial.id;
             outerTrial.trial = vm.curTrial;
 
-            if (vm.addedCollaborators.length > 0) {
-                vm.curTrial.collaborators_attributes = [];
-                _.each(vm.addedCollaborators, function (collaborator) {
-                    var index = 0;
-                    vm.curTrial.collaborators_attributes.push(collaborator);
-                    if (!vm.addedCollaborators[index]._destroy) {
-                        vm.curTrial.collaborators.push(collaborator);
-                    }
-                    index++;
-                });
-            }
-
-            if (vm.selectedDeleteCollaboratorsList > 0){
-                vm.curTrial.collaborators_attributes = [];
-                console.log("vm.selectedDeleteCollaboratorsList" + JSON.stringify(vm.selectedDeleteCollaboratorsList));
-                _.each(vm.selectedDeleteCollaboratorsList, function (collaborator) {
-                    var index = 0;
-                    collaborator._destroy = true;
-                    vm.curTrial.collaborators.push(collaborator);
-                    vm.curTrial.collaborators_attributes.push(collaborator);
-                    index++;
-                });
-            }
-            //vm.curTrial.collaborators_attributes = vm.curTrial.collaborators;
-            console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators));
-            //console.log("outertrial IN SAVE! " + JSON.stringify(outerTrial));
-
-
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.lock_version = response.lock_version || '';
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
-                vm.addedCollaborators = [];
+                vm.curTrial.collaborators = response["collaborators"];
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
@@ -81,7 +81,21 @@
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
 
-        } // updateTrial
+        }//saveTrial
+
+        /**
+         * The in-line editing of the Organization name for Organizations without PO_ID
+         * @param org_name
+         * @param idx
+         */
+        vm.updateCollaborator = function(org_name, idx) {
+            vm.curTrial.collaborators_attributes=[];
+            var collaborator = vm.curTrial.collaborators[idx];
+            vm.curTrial.collaborators_attributes.push(collaborator);
+            console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
+            vm.saveTrial();
+        } // updateCollaborator
+
 
         vm.reload = function() {
             $state.go($state.$current, null, { reload: true });
@@ -119,7 +133,6 @@
 
         /****************** implementations below ***************/
         function activate() {
-            //appendCollaborators();
             getTrialDetailCopy();
             watchTrialDetailObj();
         }
@@ -140,63 +153,47 @@
             }, 1);
         } //getTrialDetailCopy
 
-        /**
-         * Toggle the identifier for destroy or restore for the
-         * specified identifier with index 'idx'
-         * @param  {Int} idx [Index for the other identifier in other_ids array]
-         * @return {Void}
-         */
-        function deleteCollaborator(idx) {
-            console.log("idx="+idx);
-            console.log("curTrial.collaborators[idx]="+vm.curTrial.collaborators[idx]);
-            if (idx < vm.curTrial.collaborators.length) {
-                vm.curTrial.collaborators[idx]._destroy = !vm.curTrial.collaborators[idx]._destroy;
-            }
-        }
 
-
-        function appendCollaborators() {
-            for (var i = 0; i < vm.curTrial.collaborators.length; i++) {
-                var viewCollaborator = {};
-                viewCollaborator.id = vm.curTrial.collaborators[i].id;
-                viewCollaborator.organization_id = vm.curTrial.collaborators[i].organization_id;
-                viewCollaborator.org_name = vm.curTrial.collaborators[i].org_name;
-                viewCollaborator._destroy = false;
-                vm.addedCollaborators.push(viewCollaborator);
-                vm.collaboratorsNum++;
-            }
-        }
-
-        function deleteListHandler(cList){
-
+        function deleteListHandler(collaboratorsSelectedInCheckboxes){
             console.log("In deleteListHandler");
-
-
             var deleteList = [];
-
-            angular.forEach(cList, function(item) {
+            angular.forEach(collaboratorsSelectedInCheckboxes, function(item) {
                 if ( angular.isDefined(item.selected) && item.selected === true ) {
                     deleteList.push(item);
                 }
             });
-
             vm.selectedDeleteCollaboratorsList = deleteList ;
-
-            console.log(deleteList);
+            console.log("In vm.selectedDeleteCollaboratorsList=" + JSON.stringify(vm.selectedDeleteCollaboratorsList));
 
         };
 
         function deleteSelected(){
-            console.log("In deleteSelected");
-            console.log(vm.selectedDeleteCollaboratorsList);
-            for (var i = 0; i < vm.selectedDeleteCollaboratorsList; i++) {
-                vm.curTrial.collaborators[i]._destroy = !vm.curTrial.collaborators[i]._destroy;
+            vm.curTrial.collaborators_attributes=[];
+            //console.log(vm.selectedDeleteCollaboratorsList);
+            for (var i = 0; i < vm.selectedDeleteCollaboratorsList.length; i++) {
+                var collaboratorToBeDeletedFromDb = {};
+                collaboratorToBeDeletedFromDb.id =  vm.selectedDeleteCollaboratorsList[i].id;
+                collaboratorToBeDeletedFromDb.organization_id = vm.selectedDeleteCollaboratorsList[i].organization_id;
+                collaboratorToBeDeletedFromDb.org_name = vm.selectedDeleteCollaboratorsList[i].org_name;
+                collaboratorToBeDeletedFromDb._destroy = true;
+                vm.curTrial.collaborators_attributes.push(collaboratorToBeDeletedFromDb);
             }
-            vm.updateTrial();
+            for (var i = 0; i < vm.selectedDeleteCollaboratorsList.length; i++) {
+                for (var j = 0; j < vm.curTrial.collaborators.length; j++) {
+                    if (vm.curTrial.collaborators[j].organization_id == vm.selectedDeleteCollaboratorsList[i].organization_id){
+                        var collaboratorToBeDeletedFromView = vm.curTrial.collaborators[j];
+                        console.log("coll to be delview ="+ JSON.stringify(collaboratorToBeDeletedFromView));
+                        vm.curTrial.collaborators.splice(j, 1);
+                    }
+                }
+            }
+
+            vm.saveTrial();
         };
 
+
+
         function setAddMode() {
-            console.log("In addParticipatingSite");
             vm.addMode = true;
         }
 

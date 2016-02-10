@@ -28,6 +28,7 @@ module Ctrp
     config.organizations_id_sequence_start_with = 65000000
     config.persons_id_sequence_start_with = 65000000
     config.families_id_sequence_start_with = 65000000
+    config.restful_service_pwd = "Welcome01"
 
     #config.serve_static_files = true
     #paths['public'] = File.join 'public', 'ctrp', 'ui2', 'src'

@@ -325,6 +325,14 @@ var abstractionCommonMethods = function(){
         browser.sleep(250);
     };
 
+
+    /*****************************************
+     * Verify expected value : Text Box
+     *****************************************/
+    this.verifyValueFromTextBox = function(obj, expectedValue, errorMessage){
+        helper.getVerifyValue(obj, expectedValue, "Funding Source Organization field");
+    };
+
 };
 
 module.exports = abstractionCommonMethods;

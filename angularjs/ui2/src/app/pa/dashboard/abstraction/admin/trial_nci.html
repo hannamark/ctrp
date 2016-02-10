@@ -81,13 +81,18 @@
                     <div class="form-group">
                         <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Program Id: </label>
                         <div class="col-xs-12 col-sm-9">
+                            <!--select class="form-control input-sm" id="nih_nci_prog" ng-model="trialNciView.curTrial.nih_nci_prog">
+                                <option value="">-Select a NIH/NCI Program ID-</option>
+                                <option ng-repeat="ncip in trialNciView.nciProgArr" value="{{ncip.code}}">
+                                    {{ncip.code}}
+                                </option>
+                            </select-->
                             <select class="form-control input-sm" id="nih_nci_prog" ng-model="trialNciView.curTrial.nih_nci_prog">
                                 <option value="">-Select a NIH/NCI Program ID-</option>
-                                <option ng-repeat="nci in trialNciView.nciProgArr" value="{{nci.code}}">
-                                    {{nci.code}}
-                                </option>
+                                <option value="BIQSFP">BIQSFP</option>
+                                <option value="SPORE">SPORE</option>
+                                <option value="Steering Commitee Reviewed">Steering Commitee Reviewed</option>
                             </select>
-
                         </div>
                     </div>
                 </fieldset>

@@ -75,14 +75,14 @@ class Ability
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard
     elsif user.role == 'ROLE_ABSTRACTOR' && user.approved?
-      can :manage, [Trial]
+      can :manage, [Trial, Comment]
       can :read, :all
       can :search, :all
       cannot :access_backoffice, :manage_backoffice
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
     elsif user.role == 'ROLE_ABSTRACTOR-SU' && user.approved?
-      can :manage, [Trial]
+      can :manage, [Trial, Comment]
       can :read, :all
       can :search, :all
       cannot :access_backoffice, :manage_backoffice

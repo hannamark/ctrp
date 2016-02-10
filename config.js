@@ -70,7 +70,9 @@ exports.config = {
 
          /************* PA Features ************/
         'features/PAA\ F02\ Add\ and\ Edit\ NCI\ Specific\ Information.Feature',
-        'features/PAA\ F05\ Add\ and\ Edit\ Regulatory\ Information\ IND-IDE.Feature'
+        'features/PAA\ F05\ Add\ and\ Edit\ Regulatory\ Information\ IND-IDE.Feature',
+        'features/PAA\ F04\ Add\ and\ Edit\ Regulatory\ Information\ Human\ Subject\ Safety.Feature',
+        'features/PAA\ F07\ Add\ and\ Edit\ Trial\ Funding.Feature'
 
     ],
 

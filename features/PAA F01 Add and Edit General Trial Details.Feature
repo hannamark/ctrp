@@ -17,19 +17,7 @@ When I edit the Official Title for the trial
 And I can optionally enter or edit the Acronym for the trial
 Then the title section will be complete
 
-Scenario: #3 I can enter Alternative Titles for a trial
-Given I have selected a trial to abstract 
-And I am on the General Trial Details screen
-When I add or edit the Alternative Title 
-And I select the Alternative Title Category for each Alternative Title from the list:
-|Spelling/Formatting Correction|
-|Other|
-And I select the source for the Alternative Title for each Alternative Title from the list:
-|Protocol|
-|Complete Sheet|
-|IRB|
-|Other|
-Then the Alternative Titles section will be complete
+
 
 Scenario: #4 I can enter the Keywords for a trial
 Given I have selected a trial to abstract 

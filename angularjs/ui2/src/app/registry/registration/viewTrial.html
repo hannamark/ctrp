@@ -120,7 +120,7 @@
                     </div>
                 </div>
 
-                <h5 class="border-bottom">Lead Organization/Principal Investigator:</h5>
+                <h5 ng-if="viewTrialView.curTrial.lead_org || viewTrialView.curTrial.pi" class="border-bottom">Lead Organization/Principal Investigator:</h5>
 
                 <div ng-if="viewTrialView.curTrial.lead_org" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Lead Organization:</label>
@@ -136,7 +136,7 @@
                     </div>
                 </div>
 
-                <h5 class="border-bottom">Sponsor:</h5>
+                <h5 ng-if="viewTrialView.curTrial.sponsor" class="border-bottom">Sponsor:</h5>
 
                 <div ng-if="viewTrialView.curTrial.sponsor" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Sponsor:</label>
@@ -145,7 +145,7 @@
                     </div>
                 </div>
 
-                <h5 class="border-bottom">Data Table 4 Information:</h5>
+                <h5 ng-if="viewTrialView.curTrial.funding_sources.length > 0 || viewTrialView.curTrial.program_code" class="border-bottom">Data Table 4 Information:</h5>
 
                 <div ng-repeat="funding_source in viewTrialView.curTrial.funding_sources track by $index" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3"><span ng-if="$index == 0">Data Table 4 Funding Source:</span></label>
@@ -213,21 +213,21 @@
                 <div ng-if="viewTrialView.curTrial.start_date" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Trial Start Date:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
-                        {{viewTrialView.curTrial.start_date}} {{viewTrialView.curTrial.start_date_qual}}
+                        {{viewTrialView.curTrial.start_date}}<span class="date-qualifier">{{viewTrialView.curTrial.start_date_qual}}</span>
                     </div>
                 </div>
 
                 <div ng-if="viewTrialView.curTrial.primary_comp_date" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Primary Completion Date:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
-                        {{viewTrialView.curTrial.primary_comp_date}} {{viewTrialView.curTrial.primary_comp_date_qual}}
+                        {{viewTrialView.curTrial.primary_comp_date}}<span class="date-qualifier">{{viewTrialView.curTrial.primary_comp_date_qual}}</span>
                     </div>
                 </div>
 
                 <div ng-if="viewTrialView.curTrial.comp_date" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Completion Date:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
-                        {{viewTrialView.curTrial.comp_date}} {{viewTrialView.curTrial.comp_date_qual}}
+                        {{viewTrialView.curTrial.comp_date}}<span class="date-qualifier">{{viewTrialView.curTrial.comp_date_qual}}</span>
                     </div>
                 </div>
 
@@ -326,7 +326,7 @@
                     </div>
                 </div>
 
-                <h5 ng-if="viewTrialView.curTrial.is_owner" class="border-bottom">Trial Related Documents:</h5>
+                <h5 ng-if="viewTrialView.curTrial.trial_documents.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">Trial Related Documents:</h5>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
                      ng-if="document.document_type == 'Protocol Document' && document.is_latest && viewTrialView.curTrial.is_owner"
