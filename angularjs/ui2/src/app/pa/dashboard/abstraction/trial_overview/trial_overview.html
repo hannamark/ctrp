@@ -1,3 +1,21 @@
+<script type="text/ng-template" id="submitterPopOverTemplate.html">
+    <p>
+        <strong>First Name: </strong>
+        <span>{{paTrialOverview.submitterPopOver.submitter.first_name}}</span>
+    </p>
+    <p ng-show="paTrialOverview.submitterPopOver.submitter.middle_name">
+        <strong>Middle Name: </strong>
+        <span>{{paTrialOverview.submitterPopOver.submitter.middle_name}}</span>
+    </p>
+    <p>
+        <strong>Last Name: </strong>
+        <span>{{paTrialOverview.submitterPopOver.submitter.last_name}}</span>
+    </p>
+    <p>
+        <strong>Email: </strong>
+        <span>{{paTrialOverview.submitterPopOver.submitter.email}}</span>
+    </p>
+</script>
 <div class="row-fluid">
     <!-- ng-controller="paTrialOverviewCtrl as paTrialOverview" -->
     <section class="md-whiteframe-z1">
@@ -89,7 +107,7 @@
 
                     <p>
                         <strong>Last Submitter:</strong>
-                        <span>{{paTrialOverview.trialDetailObj.submitter}}</span>
+                        <span><a href="" uib-popover-template="paTrialOverview.submitterPopOver.templateUrl" popover-placement="right" popover-title="{{paTrialOverview.submitterPopOver.templateUrl.title}}">{{paTrialOverview.trialDetailObj.submitter.username}}</a></span>
                     </p>
 
                     <p>

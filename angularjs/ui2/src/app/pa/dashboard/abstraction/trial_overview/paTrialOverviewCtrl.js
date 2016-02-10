@@ -31,6 +31,12 @@
         vm.scientificCheckoutAllowed = false;
         vm.scientificCheckoutBtnDisabled = false;
         vm.curUser = UserService.currentUser();
+        vm.submitter = {}; // container for the last submitter information
+        vm.submitterPopOver = {
+            submitter: vm.submitter,
+            templateUrl: 'submitterPopOverTemplate.html',
+            title: 'Last Trial Submitter'
+        };
 
         activate();
 
@@ -84,6 +90,12 @@
             if (!vm.trialDetailObj.central_contacts) {
                 vm.trialDetailObj.central_contacts = [].concat({});
             }
+
+            // fill submitter's info:
+            vm.submitterPopOver.submitter = vm.trialDetailObj.submitter || {};
+            vm.submitterPopOver.submitter.organization = vm.trialDetailObj.submitters_organization || '';
+
+            console.log('vm.submitterPopOver: ', vm.submitterPopOver);
 
             // false if neither type is checked out
             vm.trialDetailObj.pa_editable = !!data.admin_checkout || !!data.scientific_checkout;

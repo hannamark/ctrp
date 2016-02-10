@@ -113,7 +113,8 @@ json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last
 submitter = @trial.submissions.empty? ? nil : (@trial.submissions.last.user_id.nil? ? nil : @trial.submissions.last.user)
 
 ## submitter's username
-json.submitter submitter.nil? ? '' : submitter.username
+#json.submitter submitter.nil? ? '' : submitter.username
+json.submitter submitter
 
 ## get the submitter's organization name
 json.submitters_organization submitter.nil? ? '' : (submitter.organization.nil? ? '' : submitter.organization.name)
