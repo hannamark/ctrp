@@ -43,7 +43,7 @@
         }
         vm.fsNum = 0;
         //vm.nih_nci_div = trialDetailObj.nih_nci_div;
-       // vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
+        //vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
             // Prevent multiple submissions
@@ -82,11 +82,11 @@
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 vm.curTrial.lock_version = response.lock_version || '';
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                $scope.$emit('updatedInChildScope', {});
                 vm.curTrial.trial_funding_sources = response["trial_funding_sources"];
                 vm.curTrial.nih_nci_div =  response["nih_nci_div"];
                 vm.curTrial.nih_nci_prog =  response["nih_nci_prog"];
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                $scope.$emit('updatedInChildScope', {});
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', 'Successful!', {
                     extendedTimeOut: 1000,
@@ -155,7 +155,7 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 
