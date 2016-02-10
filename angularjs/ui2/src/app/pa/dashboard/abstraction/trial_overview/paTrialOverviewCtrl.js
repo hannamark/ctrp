@@ -85,12 +85,8 @@
                 vm.trialDetailObj.central_contacts = [].concat({});
             }
 
-            if (!!data.admin_checkout || !!data.scientific_checkout) {
-                vm.trialDetailObj.pa_editable = true;
-            } else {
-                vm.trialDetailObj.pa_editable = false;
-            }
-
+            // false if neither type is checked out
+            vm.trialDetailObj.pa_editable = !!data.admin_checkout || !!data.scientific_checkout;
             vm.trialDetailObj.lock_version = data.lock_version;
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
@@ -111,9 +107,11 @@
                     vm.adminCheckoutAllowed = (newVal === null); // boolean, if not null, do not allow checkout again
 
                     if (!!newVal) {
+                        var curUserRole = UserService.getUserRole() || '';
                         // ROLE_SUPER can override the checkout button
                         vm.adminCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.admin_checkout.by &&
-                            UserService.getUserRole() !== 'ROLE_SUPER' && UserService.getUserRole() != "ROLE_ABSTRACTOR";
+                        curUserRole !== 'ROLE_SUPER' && curUserRole !== 'ROLE_ABSTRACTOR' &&
+                        curUserRole !== 'ROLE_ABSTRACTOR-SU' && curUserRole !== 'ROLE_ADMIN';
                     }
                 });
 
@@ -122,9 +120,11 @@
                     vm.scientificCheckoutAllowed = (newVal === null); // if not null, do not allow checkout again
 
                     if (!!newVal) {
+                        var curUserRole = UserService.getUserRole() || '';
                         // ROLE_SUPER can override the checkout button
                         vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.scientific_checkout.by &&
-                            UserService.getUserRole() !== 'ROLE_SUPER' && UserService.getUserRole() != "ROLE_ABSTRACTOR";;
+                            curUserRole !== 'ROLE_SUPER' && curUserRole !== 'ROLE_ABSTRACTOR' &&
+                            curUserRole !== 'ROLE_ABSTRACTOR-SU' && curUserRole !== 'ROLE_ADMIN';
                     }
                 });
         } //watchCheckoutButtons
