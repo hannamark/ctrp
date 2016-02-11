@@ -202,11 +202,144 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    /*
+     Scenario: #2 I can edit a Collaborator for a Trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Collaborators screen
+     And the list of collaborators is displayed
+     Then I can edit the name of a collaborator that does not have a CTRP organization ID
+     And the system will list
+     |PO ID|
+     |Name|
+     |Deletion|
+     And the organizations will be displyed orderd assending alphanumeric by Collaborator Name
+     */
 
+    this.Given(/^the list of collaborators is displayed$/, function (callback) {
+        trialCollaborators.clickAddCollaboratorButton();
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialCollaborators.clickSave();
+        trialCollaborators.findOrgOnTheTableList(orgSearchNameB);
+        trialCollaborators.selectAllOrg();
+        trialCollaborators.clickDeleteCollaborator();
+        helper.wait_for(300);
+        browser.sleep(25).then(callback);
+    });
 
+    this.Then(/^I can edit the name of a collaborator that does not have a CTRP organization ID$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        browser.sleep(25).then(callback);
+    });
 
+    /*
+     Scenario: #3 I can Delete one or more Collaborators for a Trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Collaborators screen
+     When I have selected one or more collaborators
+     And have selected Delete Collaborator
+     Then the collaborator(s) will be unassociated with the trial
+     */
 
+    this.When(/^I have selected one or more collaborators$/, function (callback) {
+        trialCollaborators.clickAddCollaboratorButton();
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialCollaborators.clickSave();
+        trialCollaborators.findOrgOnTheTableList(orgSearchNameB);
+        browser.sleep(25).then(callback);
+    });
 
+    this.When(/^have selected Delete Collaborator$/, function (callback) {
+        trialCollaborators.selectAllOrg();
+        trialCollaborators.clickDeleteCollaborator();
+        helper.wait_for(300);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the collaborator\(s\) will be unassociated with the trial$/, function (callback) {
+        trialCollaborators.verifyListOfCollboratorsNameExists('0');
+        helper.verifyElementDisplayed(trialCollaborators.collaboratorsTableListTHead, true);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #4 Save Trial Collaborators
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Collaborators screen
+     When select save Collaborator
+     Then the information entered or edited on the Trial Collaborators screen will be saved to the trial record
+     */
+
+    this.When(/^select save Collaborator$/, function (callback) {
+        trialCollaborators.clickAddCollaboratorButton();
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialCollaborators.clickSave();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the information entered or edited on the Trial Collaborators screen will be saved to the trial record$/, function (callback) {
+        trialCollaborators.findOrgOnTheTableList(orgSearchNameB);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #5 Cancel Trial Collaborators
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Collaborators screen
+     When I select Reset Collaborator
+     Then the information entered or edited on the Collaborators screen will not be saved to the trial record
+     And the Trial Collaborators screen will be refreshed with the existing data
+     */
+
+    this.When(/^I select Reset Collaborator$/, function (callback) {
+        trialCollaborators.clickAddCollaboratorButton();
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialCollaborators.clickSave();
+        trialCollaborators.selectAllOrg();
+        trialCollaborators.clickDeleteCollaborator();
+        helper.wait_for(300);
+        trialCollaborators.clickAddCollaboratorButton();
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialCollaborators.clickSave();
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameA);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialCollaborators.clickCancel();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the information entered or edited on the Collaborators screen will not be saved to the trial record$/, function (callback) {
+        trialCollaborators.clickAdminDataGeneralTrial();
+        trialCollaborators.clickAdminDataCollaborators();
+        trialCollaborators.verifyListOfCollboratorsNameExists('1');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Trial Collaborators screen will be refreshed with the existing data$/, function (callback) {
+        trialCollaborators.findOrgOnTheTableList(orgSearchNameB);
+        browser.sleep(25).then(callback);
+    });
 
 
 };

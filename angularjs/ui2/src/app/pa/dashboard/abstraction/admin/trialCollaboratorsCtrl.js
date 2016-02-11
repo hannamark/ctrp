@@ -31,7 +31,10 @@
          */
         vm.updateTrial = function() {
             // Prevent multiple submissions
-            console.log("update Trial ");
+            console.log("update Trial vm.addedCollaborators.length " + vm.addedCollaborators.length);
+            if (vm.addedCollaborators.length == 0){
+                return;
+            }
             if (vm.addedCollaborators.length > 0) {
                 vm.curTrial.collaborators_attributes = [];
                 _.each(vm.addedCollaborators, function (collaborator) {
@@ -52,7 +55,6 @@
             console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
             vm.saveTrial();
             vm.addedCollaborators = [];
-
         } // updateTrial
 
 
