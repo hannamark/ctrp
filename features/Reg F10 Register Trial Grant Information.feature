@@ -27,7 +27,7 @@ Feature: Reg F10 Register Trial Grant Information
     And I have entered a partial Grant Serial Number
     Then CTRP will search the IMPACII database view of Grant Information for serial numbers that contain the institute code and partial Grant Serial Number entered
     And CTRP will display Grant Serial Number, Organization, Project Title, and Contact Principal Investigator that match the partial Grant Serial Number
-    And I can select from the Grant Serial Numbers displayed or enter a different Grant Serial Number
+    And I can select from the Grant Serial Numbers displayed
     And I can click on the add button to add the grant
 
     Examples:
