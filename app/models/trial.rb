@@ -126,7 +126,9 @@
 #
 
 class Trial < ActiveRecord::Base
-  has_paper_trail class_name:'TrialVersion'
+  p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+  has_paper_trail :class_name => TrialVersion
+  p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 
   include BasicConcerns
 
