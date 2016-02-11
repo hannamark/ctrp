@@ -23,6 +23,7 @@
         vm.studySourceArr = studySourceObj;
         vm.addedFses = [];
         vm.selectedFsArray = [];
+        vm.study_source_id = vm.curTrial.study_source_id;
         vm.isSponsorNci = (trialDetailObj["sponsor"]["name"] == "National Cancer Institute")? true: false;
         console.log("isSponsorNci"+ vm.isSponsorNci);
         vm.isLeadOrgNciCcr = (trialDetailObj["lead_org"]["name"] == "NCI - Center for Cancer Research")? true: false;
@@ -43,23 +44,29 @@
         }
         vm.fsNum = 0;
         //vm.nih_nci_div = trialDetailObj.nih_nci_div;
-       // vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
+        //vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
             // Prevent multiple submissions
             vm.disableBtn = true;
-            console.log("curTrial =" + JSON.stringify(vm.curTrial));
-            console.log("(vm.curTrial.study_source_id  =" + JSON.stringify(vm.curTrial.study_source_id));
-            if (vm.fsNum == 0) {
+           //Required values
+           if ((vm.fsNum == 0) || (!vm.study_source_id)) {
                 return;
             }
-           // if(vm.curTrial.study_source_id == null) {
-           //     return;
-           // }
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {
-                    vm.curTrial.trial_funding_sources_attributes.push(fs);
+                    var exists = false
+                    for (var i = 0; i < vm.curTrial.trial_funding_sources.length; i++) {
+                        if (vm.curTrial.trial_funding_sources[i].id) {
+                            if (vm.curTrial.trial_funding_sources[i].organization_id == fs.organization_id) {
+                                exists = true;
+                            }
+                        }
+                    }
+                    if (!exists) {
+                        vm.curTrial.trial_funding_sources_attributes.push(fs);
+                    }
                 });
             }
 
@@ -72,9 +79,11 @@
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 vm.curTrial.lock_version = response.lock_version || '';
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                vm.curTrial.trial_funding_sources = response["trial_funding_sources"];
+                vm.curTrial.nih_nci_div =  response["nih_nci_div"];
+                vm.curTrial.nih_nci_prog =  response["nih_nci_prog"];
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
-
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', 'Successful!', {
                     extendedTimeOut: 1000,
@@ -121,6 +130,16 @@
             }
         });
 
+        $scope.$watch(function() {
+            return vm.curTrial.study_source_id;
+        }, function(newValue, oldValue) {
+            if (!newValue) {
+                vm.study_source_id = null;
+            } else {
+                vm.study_source_id = newValue;
+            }
+        });
+
         activate();
 
         /****************** implementations below ***************/
@@ -143,7 +162,7 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 

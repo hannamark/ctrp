@@ -163,7 +163,7 @@
                 }
             });
             vm.selectedDeleteCollaboratorsList = deleteList ;
-            console.log("In vm.selectedDeleteCollaboratorsList=" + JSON.strigify(vm.selectedDeleteCollaboratorsList));
+            console.log("In vm.selectedDeleteCollaboratorsList=" + JSON.stringify(vm.selectedDeleteCollaboratorsList));
 
         };
 
