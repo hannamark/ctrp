@@ -1,3 +1,4 @@
+TEXT_BYTES = 1_073_741_823
 class CreateTrialVersion < ActiveRecord::Migration
   def change
     create_table :trial_versions do |t|
@@ -5,9 +6,10 @@ class CreateTrialVersion < ActiveRecord::Migration
       t.integer  :item_id,        null: false
       t.string   :event,          null: false
       t.string   :whodunnit
-      t.json     :object
+      t.text     :object,    :limit => TEXT_BYTES
       t.datetime :created_at
       t.integer  :transaction_id
+      t.text     :object_changes
     end
   end
 end

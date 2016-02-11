@@ -19,7 +19,7 @@
 #  index_milestone_wrappers_on_trial_id       (trial_id)
 #
 
-class MilestoneWrapper < ActiveRecord::Base
+class MilestoneWrapper < TrialBase
   include BasicConcerns
 
   belongs_to :milestone

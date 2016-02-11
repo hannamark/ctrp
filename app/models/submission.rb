@@ -28,7 +28,7 @@
 #  index_submissions_on_user_id               (user_id)
 #
 
-class Submission < ActiveRecord::Base
+class Submission < TrialBase
   include BasicConcerns
 
   belongs_to :amendment_reason

@@ -1058,9 +1058,10 @@ ActiveRecord::Schema.define(version: 20160211161710) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.json     "object"
+    t.text     "object"
     t.datetime "created_at"
     t.integer  "transaction_id"
+    t.text     "object_changes"
   end
 
   create_table "trials", force: :cascade do |t|

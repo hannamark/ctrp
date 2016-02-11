@@ -125,12 +125,7 @@
 #  index_trials_on_time_perspective_id       (time_perspective_id)
 #
 
-class Trial < ActiveRecord::Base
-  p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-  has_paper_trail :class_name => TrialVersion
-  p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-
-  include BasicConcerns
+class Trial < TrialBase
 
   belongs_to :study_source
   belongs_to :phase
