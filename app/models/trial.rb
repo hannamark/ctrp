@@ -126,6 +126,8 @@
 #
 
 class Trial < ActiveRecord::Base
+  has_paper_trail class_name:'TrialVersion'
+
   include BasicConcerns
 
   belongs_to :study_source
