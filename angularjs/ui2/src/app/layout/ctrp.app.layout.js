@@ -31,8 +31,8 @@
                 }
             });
 
-            $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-
+            $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, toastr) {
+                toastr.clear();
                 event.preventDefault();
                 var writeModeSupported = false; //is write mode supported for the toState?
                 if (toState.section) {
