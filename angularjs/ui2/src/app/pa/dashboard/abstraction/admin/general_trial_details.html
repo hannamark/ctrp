@@ -287,7 +287,7 @@
                         <span ng-show="general_trial_details_form.phone.$dirty" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                       </div>
                       <div class="col-xs-12 col-sm-2">
-                          <input type="text" class="form-control" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension"
+                          <input type="text" class="form-control" id="phone_extension" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension"
                               placeholder="Extension">
                       </div>
                     </div>
