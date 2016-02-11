@@ -295,16 +295,6 @@
                     vm.generalTrialDetailsObj.central_contacts = [].concat({email: '', phone: ''});
                 }
             }
-            /*
-            if (newVal === 'PI') {
-                _usePIAsCentralContact();
-            } else if (newVal === 'None' && vm.generalTrialDetailsObj.central_contacts.length > 0) {
-            // delete the contact
-                vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
-            } else {
-                vm.generalTrialDetailsObj.central_contacts = [].concat({email: '', phone: ''});
-            }
-            */
         });
       }
 
@@ -387,10 +377,14 @@
        * @return {[type]} [description]
        */
       function _getCentralContactType() {
-          _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
-          var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
-          var _centralContactType = _.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)});
-          var typeName = !!_centralContactType ? _centralContactType.name : 'None';
+          var typeName = 'None';
+
+          if (angular.isDefined(vm.generalTrialDetailsObj.central_contacts)) {
+              _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
+              var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
+              var _centralContactType = _.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)});
+              typeName = !!_centralContactType ? _centralContactType.name : typeName;
+          }
 
           return typeName;
       }
