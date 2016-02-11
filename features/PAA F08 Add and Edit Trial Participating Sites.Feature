@@ -7,8 +7,8 @@ Scenario Outline: #1 I can add one or more a participating sites for a trial
 Given I am on the Participating Site Page
 And I have selected an organization <organization name> with the Organization look up
 And I have entered or edited the Local Trial Identifier <Local Trial Identifier >
-And I have selected the Site Recruitment Status <Site Recruitment Status> 
-And I have selected the Site Recruitment status date <Site Recruitment Status Date>
+And I have selected one or more Site Recruitment Status <Site Recruitment Status> 
+And I have selected one or more Site Recruitment status date <Site Recruitment Status Date>
 And I have entered Site Recruitment status comments <Site Recruitment status comments>
 And I have entered the program code <Site Specific Program Code>
 And I have entered a Target Accrual Number < Target Accrual Number>
@@ -33,8 +33,8 @@ Scenario Outline: #2 I can edit a participating site for a trial
 Given I am on the Participating Site Page
 And I have selected the Participating site <organization name> 
 And I have entered or edited the Local Trial Identifier <Local Trial Identifier >
-And I have selected the Site Recruitment Status <Site Recruitment Status> 
-And I have selected the Site Recruitment status date <Site Recruitment Status Date>
+And I have selected one or more Site Recruitment Status <Site Recruitment Status> 
+And I have selected one or more Site Recruitment status date <Site Recruitment Status Date>
 And I have entered Site Recruitment status comments <Site Recruitment status comments>
 And I have entered or edited the program code <Site Specific Program Code>
 And I have entered or edited the Target Accrual Number < Target Accrual Number>
@@ -124,3 +124,21 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
 and I select "set as site contact" for general contact
 Then the "set as site contact" will be cleared for investigators
+
+Scenario : #9 I view the participating site status' for a trial 
+Given I am on the Participating Site Page
+And I have selected an organization 
+And I have selected the Participating Site Status
+Then the Participating Site Status's will be displayed.
+
+Scenario: #10 I can add, edit or delete a trial Status
+Given I am on the Participating Site Page
+And I have selected an organization 
+And I have selected the Participating Site Status History
+Then I can delete any status by clinking on the delete button in the Actions column
+And I can edit any status by clicking on the edit button
+And I can edit a status
+And I can edit the status date 
+And I can enter a status comment
+And I can view the trial Status warnings (same as trail status warnings)
+

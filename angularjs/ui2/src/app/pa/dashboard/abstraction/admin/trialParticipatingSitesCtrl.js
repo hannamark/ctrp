@@ -17,6 +17,11 @@
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.currentParticipatingSite= {};
+        vm.showOrgFields = true;
+        vm.city=null;
+        vm.state_province=null;
+        vm.country=null;
+        vm.postal=null;
         //vm.saveCurrentParticipatingSite = saveGeneralTrialDetails;
         //vm.resetCurrentParticipatingSite = resetGeneralTrialDetails;
         vm.currentParticipatingSite.organization = {name: '', array: []};
@@ -88,7 +93,12 @@
                 if (angular.isArray(newVal) && newVal.length > 0) {
                     vm.currentParticipatingSite.name = newVal[0].name;
                     vm.currentParticipatingSite.organization = newVal[0];
-                    vm.currentParticipatingSite.organization_id = newVal[0].id; // update sponsor
+                    vm.currentParticipatingSite.organization_id = newVal[0].id;
+                    vm.city = newVal[0].city;
+                    vm.state_province = newVal[0].state_province;
+                    vm.country = newVal[0].country;
+                    vm.postal_code = newVal[0].postal_code;
+                    //console.log("vm.currentParticipatingSite =" + JSON.stringify(vm.currentParticipatingSite));
                 }
             });
         }
@@ -102,6 +112,11 @@
             vm.addEditMode = true;
             vm.currentParticipatingSite = vm.curTrial.participating_sites_list[idx];
             console.log("SETTING TO EDITMODE vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
+            console.log("SETTING TO EDITMODE vm.curTrial.participating_sites_list="+JSON.stringify(vm.curTrial.participating_sites_list));
+            vm.city =  vm.curTrial.participating_sites_list[idx].city;
+            vm.state_province =  vm.curTrial.participating_sites_list[idx].state_province;
+            vm.country = vm.curTrial.participating_sites_list[idx].country;
+            vm.postal_code = vm.curTrial.participating_sites_list[idx].postal_code;
             vm.currentParticipatingSite.organization = {name: vm.currentParticipatingSite["po_name"], array: []};
         }
 

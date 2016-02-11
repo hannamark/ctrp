@@ -67,6 +67,11 @@ var abstractionRegulatoryHuman = function(){
     this.humanSafetySave = element(by.buttonText('Save'));
     this.humanSafetyReset = element(by.css('button[ng-click="regInfoSafetyView.resetHumanSafetyInfo()"]'));
 
+    this.requiredMessageApprovalNumber = element(by.css('div[ng-show="regInfoSafetyView.approvalNumRequired"] .help-block.ng-scope'));
+    this.requiredMessageBoardAffiliation = element(by.xpath('//uib-accordion/div/div/div[2]/div/div/form/div[3]/div[1]/div[1]/span[2]/span'));
+    this.requiredMessageBoardName = element(by.xpath('//uib-accordion/div/div/div[2]/div/div/form/div[3]/div[9]/div/span[2]/span')); //uib-accordion/div/div/div[2]/div/div/form/div[3]/div[9]/div/span[2]/span
+
+
 
     var helper = new helperFunctions();
 

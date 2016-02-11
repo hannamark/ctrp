@@ -129,7 +129,7 @@
                                     <tr ng-repeat="grant in trialDetailView.addedGrants track by $index" ng-class="grant._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                         <td class="col-md-2">{{grant.funding_mechanism}}</td>
                                         <td class="col-md-2">{{grant.institute_code}}</td>
-                                        <td class="col-md-3">{{grant.serial_number.serial_number}}</td>
+                                        <td class="col-md-3">{{grant.serial_number}}</td>
                                         <td class="col-md-4">{{grant.nci}}</td>
                                         <td class="col-md-1" style="vertical-align: middle">
                                             <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'grant')">
