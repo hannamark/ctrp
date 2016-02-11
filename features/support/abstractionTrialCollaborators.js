@@ -57,6 +57,7 @@ var abstractionTrialCollaborators = function(){
     this.collaboratorsTableTHeadColB = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(02)'));
     this.collaboratorsTableTHeadColC = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(03)'));
 
+    this.collaboratorsTableTBody = element(by.css('.table.table-bordered.table-striped.table-hover tbody'));
     this.collaboratorsTableTBodyRowAColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(01)'));
     this.collaboratorsTableTBodyRowAColB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(02)'));
     this.collaboratorsTableTBodyRowAColC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(03)'));
@@ -195,6 +196,15 @@ var abstractionTrialCollaborators = function(){
                 console.log('i:['+i+']');
                 element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(03) input')).click();
             };
+        });
+    };
+
+    //Verify the list of collaborators table row's has been deleted
+    this.verifyListOfCollboratorsNameExists = function(expectedOrgNmbr){
+        this.waitForElement(this.collaboratorsTableList, "List of Collaborators Table");
+        this.collaboratorsTableListAll.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            expect((rows.length).toString()).to.eql(expectedOrgNmbr.toString());
         });
     };
 
