@@ -297,13 +297,15 @@
             if (!personObj) {
                 return '';
             }
-            
             var fullName = '';
             var firstName = personObj.fname || '';
             var middleName = personObj.mname || '';
             var lastName = personObj.lname || '';
 
-            fullName = firstName + ' ' + middleName + ' ' + lastName;
+            fullName += firstName;
+            fullName += !!middleName ? (' ' + middleName) : '';
+            fullName += !!lastName ? (' ' + lastName) : '';
+
             return fullName;
         }
 

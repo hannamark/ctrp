@@ -282,14 +282,14 @@ var helper = function() {
 
     this.retValVerification = function (objt, objtType, expectedValue){
         try {
-            console.log("You see", this.retValVerification(objt, objtType, expectedValue));
+            console.log("You see", this.retValVerificationM(objt, objtType, expectedValue));
         } catch (error) {
             console.log("Something went wrong: " + error);
         }
     }
 
 
-    this.retValVerification = function(obj, objType, expectedVal){
+    this.retValVerificationM = function(obj, objType, expectedVal){
         var actualVal;
         if (objType === 'list'){
             var propList = "";
