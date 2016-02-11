@@ -16,6 +16,7 @@
         console.log('in user controller');
         //console.log('received loginBulletin: ' + JSON.stringify(loginBulletin));
         vm.loginBulletin = loginBulletin['login_bulletin'] || '';
+        vm.processing = false;
 
         vm.userObj = {
             'user': {
@@ -23,19 +24,19 @@
                 password: '',
                 source: 'Angular'
             },
-            'type': vm.type
+            'type': vm.type,
+            'processing': vm.processing
         };
 
         /* Clears out sign-in form if user rejects GSA notice */
         $scope.$on('gsaReject', function(e, data) {
             vm.userObj.user.password = '';
             vm.userObj.user.username = '';
+            vm.userObj.processing = false;
         });
 
         vm.authenticate = function() {
             return UserService.login(vm.userObj);
         }; // authenticate
     }
-
-
 })();
