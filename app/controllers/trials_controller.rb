@@ -443,7 +443,7 @@ class TrialsController < ApplicationController
                                   :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                   alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
-                                  central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname],
+                                  central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname, :extension],
                                   trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                   collaborators_attributes: [:id, :organization_id, :org_name, :_destroy],
                                   grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],

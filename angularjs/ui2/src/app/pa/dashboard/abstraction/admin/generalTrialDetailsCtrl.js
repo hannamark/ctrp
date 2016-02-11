@@ -289,6 +289,7 @@
                 vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
             } else if (newVal !== _getCentralContactType()) {
                 if (newVal === 'PI') {
+                    console.log('using pI');
                     _usePIAsCentralContact();
                 } else {
                     // erase the previous value ???
