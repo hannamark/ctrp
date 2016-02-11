@@ -281,10 +281,14 @@
                   <div class="form-group">
                     <label for="phone" class="control-label col-xs-12 col-sm-2">Phone Number</label>
                     <div class="col-xs-12 col-sm-10">
-                      <div class="col-xs-12 col-sm-6">
+                      <div class="col-xs-12 col-sm-4">
                         <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone"
                             class="form-control" placeholder="Phone", ng-change="generalTrialDetailView.isValidPhoneNumber()">
                         <span ng-show="general_trial_details_form.phone.$dirty" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                      </div>
+                      <div class="col-xs-12 col-sm-2">
+                          <input type="text" class="form-control" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension"
+                              placeholder="Extension">
                       </div>
                     </div>
                   </div>
