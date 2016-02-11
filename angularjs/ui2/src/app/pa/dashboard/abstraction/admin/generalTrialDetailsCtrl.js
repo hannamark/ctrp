@@ -250,10 +250,10 @@
 
       function watchSponsor() {
           $scope.$watchCollection(function() {return vm.sponsor.array;}, function(newVal, oldVal) {
-             if (angular.isArray(newVal) && newVal.length > 0) {
-                 vm.sponsor.name = newVal[0].name;
+             if (angular.isArray(newVal) && newVal.length > 0 && !!newVal[0]) {
+                 vm.sponsor.name = !!newVal[0].name ? newVal[0].name : '';
                  vm.generalTrialDetailsObj.sponsor = newVal[0];
-                 vm.generalTrialDetailsObj.sponsor_id = newVal[0].id; // update sponsor
+                 vm.generalTrialDetailsObj.sponsor_id = !!newVal[0].id ? newVal[0].id : ''; // update sponsor
              }
           });
       }
@@ -289,6 +289,7 @@
                 vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
             } else if (newVal !== _getCentralContactType()) {
                 if (newVal === 'PI') {
+                    console.log('using pI');
                     _usePIAsCentralContact();
                 } else {
                     // erase the previous value ???
@@ -378,8 +379,9 @@
        */
       function _getCentralContactType() {
           var typeName = 'None';
-
-          if (angular.isDefined(vm.generalTrialDetailsObj.central_contacts)) {
+          if (angular.isDefined(vm.generalTrialDetailsObj.central_contacts) &&
+                vm.generalTrialDetailsObj.central_contacts.length > 0 &&
+                !!vm.generalTrialDetailsObj.central_contacts[0]) {
               _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
               var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
               var _centralContactType = _.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)});
