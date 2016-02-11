@@ -2,19 +2,22 @@
 #
 # Table name: markers
 #
-#  id                   :integer          not null, primary key
-#  name                 :string(255)
-#  record_status        :string(255)
-#  evaluation_type_id   :integer
-#  assay_type_id        :integer
-#  biomarker_use_id     :integer
-#  biomarker_purpose_id :integer
-#  specimen_type_id     :integer
-#  trial_id             :integer
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  uuid                 :string(255)
-#  lock_version         :integer          default(0)
+#  id                    :integer          not null, primary key
+#  name                  :string(255)
+#  record_status         :string(255)
+#  evaluation_type_id    :integer
+#  assay_type_id         :integer
+#  biomarker_use_id      :integer
+#  biomarker_purpose_id  :integer
+#  specimen_type_id      :integer
+#  trial_id              :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  uuid                  :string(255)
+#  lock_version          :integer          default(0)
+#  evaluation_type_other :string(255)
+#  assay_type_other      :string(255)
+#  specimen_type_other   :string(255)
 #
 # Indexes
 #

@@ -17,7 +17,6 @@
         vm.deleteSelected = deleteSelected;
         vm.setAddMode = setAddMode;
         vm.curTrial = trialDetailObj;
-        console.log("trialDetailObj = " + JSON.stringify(trialDetailObj));
         console.log("pa_editable = " + JSON.stringify(trialDetailObj["pa_editable"]));
         vm.curTrial.collaborators_attributes = [];
         vm.addedCollaborators = [];
@@ -91,8 +90,17 @@
          * @param idx
          */
         vm.updateCollaborator = function(org_name, idx) {
+            if(!org_name){
+                vm.curTrial = PATrialService.getCurrentTrialFromCache();
+                toastr.error('The collaborator organization name cannot be empty.' , {
+                    extendedTimeOut: 5,
+                    timeOut: 0
+                });
+                return;
+            }
             vm.curTrial.collaborators_attributes=[];
             var collaborator = vm.curTrial.collaborators[idx];
+            collaborator.org_name = vm.curTrial.collaborators[idx].org_name;
             vm.curTrial.collaborators_attributes.push(collaborator);
             console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
             vm.saveTrial();
@@ -151,7 +159,7 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 
