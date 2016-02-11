@@ -4,7 +4,7 @@ Feature: PAM F11 Manage NCIt Intervention Terms
 As a CTRP Scientific Abstractor,I can manage NCIt Intervention Terms
 
 Scenario: #1 I can Import a term from NCIt that is not in CTRP
-Given I am logged into CTRP
+Given I am logged into CTRP PA Application 
 And I select the option to Manage NCIt Intervention Terms
 And I select the option to Import/Sync Term With NCIt
 When I enter the NCIt Identifier
@@ -33,7 +33,7 @@ And I select the ClinicalTrials.gov Type
 |Other|
 When I click the Import Button
 Then the intervention term is imported
-And the system synchronizes
+And the message displays as "New intervention <Name> added successfully"
 
 Scenario: #2 I can Import a term from NCIt that is already in CTRP
 Given I am logged into CTRP
