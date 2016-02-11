@@ -2,7 +2,7 @@
 Feature: PAA F09 Add and Edit Trial Collaborators
 
 As any CTRP PA User, I can add and edit Trial Collaborators
-  @runthis
+
 Scenario: #1 I can add a Collaborators to a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Collaborators screen
@@ -16,17 +16,16 @@ And the system will list
   |Deletion|
 And the organizations will be displyed orderd assending alphanumeric by Collaborator Name
 
-
 Scenario: #2 I can edit a Collaborator for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Collaborators screen
 And the list of collaborators is displayed
 Then I can edit the name of a collaborator that does not have a CTRP organization ID
 And the system will list
-  |CTRP Organization ID|
-  |Collaborator Name|
+  |PO ID|
+  |Name|
+  |Deletion|
 And the organizations will be displyed orderd assending alphanumeric by Collaborator Name
-
 
 Scenario: #3 I can Delete one or more Collaborators for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -40,7 +39,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Collaborators screen
 When select save Collaborator
 Then the information entered or edited on the Trial Collaborators screen will be saved to the trial record
-
+  @runthis
 Scenario: #5 Cancel Trial Collaborators
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Collaborators screen
