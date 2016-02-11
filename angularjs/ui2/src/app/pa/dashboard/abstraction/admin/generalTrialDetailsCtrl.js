@@ -284,6 +284,18 @@
               vm.generalTrialDetailsObj.central_contacts[0] = {email: '', phone: '', fullname: ''};
           }
           */
+            if (newVal === 'None' && vm.generalTrialDetailsObj.central_contacts.length > 0) {
+                // delete the contact
+                vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
+            } else if (newVal !== _getCentralContactType()) {
+                if (newVal === 'PI') {
+                    _usePIAsCentralContact();
+                } else {
+                    // erase the previous value ???
+                    vm.generalTrialDetailsObj.central_contacts = [].concat({email: '', phone: ''});
+                }
+            }
+            /*
             if (newVal === 'PI') {
                 _usePIAsCentralContact();
             } else if (newVal === 'None' && vm.generalTrialDetailsObj.central_contacts.length > 0) {
@@ -292,6 +304,7 @@
             } else {
                 vm.generalTrialDetailsObj.central_contacts = [].concat({email: '', phone: ''});
             }
+            */
         });
       }
 
