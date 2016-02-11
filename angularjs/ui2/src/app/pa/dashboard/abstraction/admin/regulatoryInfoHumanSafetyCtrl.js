@@ -42,7 +42,7 @@
                 vm.trialDetailsObj = PATrialService.getCurrentTrialFromCache();
                 var internalSourceObj = vm.trialDetailsObj.internal_source;
                 // approval status is required only for *reported/registered* trial thru CTRP
-                vm.approvalStatusRequired = !!internalSourceObj ? (internalSourceObj.code === 'REG' ? true : false) : false;
+                vm.approvalStatusRequired = !!internalSourceObj ? (internalSourceObj.code === 'REG') : false;
                 _watchApprovalStatus();
             }, 0);
         } // _getTrialDetailCopy
