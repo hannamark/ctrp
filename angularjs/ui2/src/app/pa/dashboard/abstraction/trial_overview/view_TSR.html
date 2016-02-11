@@ -4,7 +4,75 @@
             <uib-accordion-heading>
                 View TSR <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
-            <strong>Placeholder ....</strong>
+            <div class="row">
+                <form name="tsr_form" class="form form-horizontal" role="form" novalidate ctrp-submit="tsrCtrl.getFormatDownload()">
+                    <div class="col-xs-12">
+                        <div class="form-group has-feedback required">
+                            <label for="tsr_format" class="control-label col-xs-12 col-sm-3">Report Summary Format: </label>
+                            <div class="col-xs-12 col-sm-4">
+                                <select name="tsr_format" id="tsr_format" class="form-control input-sm" ng-model="tsrCtrl.format">
+                                    <option value="">Select format...</option>
+                                    <option value="html">HTML</option>
+                                    <option value="word">MS-Word</option>
+                                    <!--<option value="rtf">Rich Text</option>-->
+                                </select>
+                            </div>
+                            <div class="col-xs-12 col-sm-5">
+                                <button class="btn btn-primary">Download</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <th colspan="2" class="text-center">Trial Summary Report</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2"><h5>Trial Identification</h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Trial Category</td>
+                                            <td>Complete</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Trial Type</td>
+                                            <td>Interventional</td>
+                                        </tr>
+                                        <tr>
+                                            <td>NCI Trial Identifier</td>
+                                            <td>NCI-2014-01810</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Other Trial Identifiers</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lead Organization Identifier</td>
+                                            <td>NRG-BR002</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ClinicalTrials.gov Identifier</td>
+                                            <td>NCT02364557</td>
+                                        </tr>
+                                        <tr>
+                                            <td>DCP Identifier</td>
+                                            <td>No DAta Available</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CTEP Identifier</td>
+                                            <td>NRG-BR002</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CCER Identifier</td>
+                                            <td>No Data Available</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </uib-accordion-group>
     </uib-accordion>
 </div>
