@@ -21,7 +21,7 @@
         /* 3rd party */
         'ui.router'
 
-    ]).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService, LocalCacheService) {
+    ]).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService, LocalCacheService, toastr) {
             console.log('ctrp.app.layout is running!');
             $rootScope.$on('stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
                 var statesNotRequiringGsa = ['main.sign_in', 'main.sign_up', 'main.gsa'];
@@ -31,9 +31,10 @@
                 }
             });
 
-            $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, toastr) {
-                toastr.clear();
+            $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+                
                 event.preventDefault();
+                toastr.clear();
                 var writeModeSupported = false; //is write mode supported for the toState?
                 if (toState.section) {
                     writeModeSupported = UserService.isWriteModeSupportedForSection(toState.section);
