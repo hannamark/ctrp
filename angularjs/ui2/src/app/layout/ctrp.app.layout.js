@@ -44,11 +44,11 @@
 
                     if (!UserService.isLoggedIn()) {
                         UserService.getAppVerFromDMZ().then(function(data) {
-                            console.log('retrieved data from dmz: ' + JSON.stringify(data));
+                            // console.log('retrieved data from dmz: ' + JSON.stringify(data));
                             UserService.setAppVersion(data['app_version']);
                         });
                         UserService.getAppRelMilestoneFromDMZ().then(function(data) {
-                            console.log('retrieved data from dmz: ' + JSON.stringify(data));
+                            // console.log('retrieved data from dmz: ' + JSON.stringify(data));
                             UserService.setAppRelMilestone(data['app_rel_milestone']);
                         });
                     }
