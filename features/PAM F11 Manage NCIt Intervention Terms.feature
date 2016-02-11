@@ -34,13 +34,13 @@ As a CTRP Scientific Abstractor,I can manage NCIt Intervention Terms
 	When I have clicked on the Save Button
     Then the "Message. New intervention test01 added successfully." will be displayed
     
-Scenario: #5 I can remove synonyms
+Scenario: #2 I can remove synonyms
 Given I am on the New Intervention Details form
 When I select a synonym to be removed
 And Click on the Remove button
 Then the Synonym is removed from the list of synonyms
     
-  Scenario: #2  Rules for New Intervention Details
+  Scenario: #3  Rules for New Intervention Details
     Given I am on the Enter New Intervention Details screen 
     When I have not entered an NCIt Identifier
     Then the error "NCI Identifier must be entered"will be displayed
@@ -50,7 +50,7 @@ Then the Synonym is removed from the list of synonyms
     When I enter a duplicate for new intervention details term
     Then  the error "Message. Intervention with NCIt code test already exists!." will be displayed
     
-    Scenario: #3 I can Reset Enter New Intervention Details
+    Scenario: #4 I can Reset Enter New Intervention Details
 Given I am on the New Intervention Details form
 And I have entered data into the fields
 When I select the reset button
@@ -61,7 +61,7 @@ Then the data that has been entered since the last save is removed
 When I click Cancel
 Then the data is not removed
     
-Scenario: #2 I can Import a term from NCIt that is not in CTRP
+Scenario: #5 I can Import a term from NCIt that is not in CTRP
 Given I am logged into CTRP
 And I select the option to Manage NCIt Intervention Terms
 And I select the option to Import/Sync Term With NCIt
@@ -100,7 +100,7 @@ Then the intervention term is imported
 And the Message. "New intervention C42933 added successfully". will be displayed
 And the system synchronizes
 
-Scenario: #3 I can Import a term from NCIt that is already in CTRP
+Scenario: #6 I can Import a term from NCIt that is already in CTRP
 Given I am logged into the PA application
 And I select the option to Manage NCIt Intervention Terms
 And I select the option to Import/Sync Term With NCIt
@@ -129,7 +129,7 @@ When I click on the cancel button
 Then the "Import New Intervention From NCIt" screen displayes
 
 
-Scenario: #4 I can complete an EVS new term request form
+Scenario: #7 I can complete an EVS new term request form
 Given I select the option Manage NCIt Intervention Terms
 When I select the option EVS New Term Request Form
 Then the Term Suggestion form displays
@@ -160,8 +160,18 @@ And I can select a value for <Vocabulary>
  And I must enter the security code displayed in the field type
  
       |Enter the characters appearing in the above image: *|
+ When I click the Submit button 
+ Then the request is submitted
+ When I click the Clear button
+ Then the message from the webpage displays
+    |Are you sure you want to clear this page?|
+ When I click the OK button
+ Then the information that has been entered on the page is cleared
+ When I click the Cancel button
+ Then the information that has been entered on the page is not cleared 
+
       
-     Scenario:#4 Vocabulary value rules
+     Scenario:#8 Vocabulary value rules
      Given I am on the Term Suggestion Screen
      And I can select a value for <Vocabulary>
       |NCI Thesaurus|
@@ -180,7 +190,7 @@ And I can select a value for <Vocabulary>
       |Other             |This vocabulary does not have an associated home page   |
       
 
-      Scenario: Rules for Mandatory fields
+      Scenario:#9 Rules for Mandatory fields
     Given I am on the Term suggestion screen
      When I have not entered the mandatory <FieldType>
      And I have clicked on the submit button
@@ -191,15 +201,6 @@ And I can select a value for <Vocabulary>
       |Term           |Please enter term information below.  |
       |Security Code  |Please enter the security code appearing in the image.  |
 
-    When I click the Submit button 
-    Then the request is submitted
-    When I click the Clear button
-    Then the message from the webpage displays
-    |Are you sure you want to clear this page?|
-    When I click the OK button
-    Then the information that has been entered on the page is cleared
-    When I click the Cancel button
-    Then the information that has been entered on the page is not cleared 
-
+   
 
 
