@@ -90,17 +90,28 @@
          * @param idx
          */
         vm.updateCollaborator = function(org_name, idx) {
+            console.log("updateCollaborator org_name = " + org_name);
+            console.log("updateCollaborator idx = " + idx);
             if(!org_name){
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
                 toastr.error('The collaborator organization name cannot be empty.' , {
-                    extendedTimeOut: 5,
+                    extendedTimeOut: 1,
                     timeOut: 0
                 });
                 return;
             }
             vm.curTrial.collaborators_attributes=[];
-            var collaborator = vm.curTrial.collaborators[idx];
-            collaborator.org_name = vm.curTrial.collaborators[idx].org_name;
+            var collaborator = null;
+            for (var i = 0; i < vm.curTrial.collaborators.length; i++) {
+                if( vm.curTrial.collaborators[i].id == idx){
+                    collaborator =  vm.curTrial.collaborators[i];
+                }
+            }
+            if (collaborator == null) {
+                return;
+            }
+            console.log("collaborator " + JSON.stringify(collaborator));
+            collaborator.org_name = org_name;
             vm.curTrial.collaborators_attributes.push(collaborator);
             console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
             vm.saveTrial();
