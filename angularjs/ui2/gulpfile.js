@@ -143,7 +143,7 @@ gulp.task('build', ['optimize', 'images', 'fonts'], function() {
         subtitle: 'Deployed to the build folder',
         message: 'Running `gulp serve-build`'
     };
-    del(config.temp);
+    // del(config.temp);
     log(msg);
     notify(msg);
 });
@@ -189,7 +189,7 @@ gulp.task('build-specs', ['templatecache'], function() {
 gulp.task('optimize', ['inject', 'test'], function() {
     log('Optimizing the javascript, css, html');
 
-    var assets = $.useref.assets({searchPath: './src/'});
+    var assets = $.useref.assets({searchPath: './'});
     var templateCache = config.temp + config.templateCache.file;
     var cssFilter = $.filter('**/*.css');
     var jsLibFilter = $.filter('**/' + config.optimized.lib);
@@ -200,7 +200,8 @@ gulp.task('optimize', ['inject', 'test'], function() {
         .pipe($.plumber())
         .pipe($.inject(
             gulp.src(templateCache, {read: false}), {
-            starttag: '<!-- inject:templates:js -->'
+            starttag: '<!-- inject:templates:js -->',
+            ignorePath: config.temp
         }))
         .pipe(assets)
         .pipe(cssFilter)

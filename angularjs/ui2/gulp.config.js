@@ -70,7 +70,7 @@ module.exports = function() {
         bower: {
             json: require('./bower.json'),
             directory: './src/bower_components/',
-            ignorePath: '../'
+            ignorePath: '../..'
         },
 
         packages: [
