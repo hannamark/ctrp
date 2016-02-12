@@ -104,6 +104,8 @@ module.exports = function() {
     var requiredMsgApproval = 'Board approval number is required';
     var requiredMsgAffiliation = 'Board affiliation is required';
     var requiredMsgName = 'Board name is required';
+    var orgNameToBeEdited = 'John Hopkins';
+    var orgNameEdited = 'Edited John Hopkins Edited';
 
 
     /*
@@ -204,9 +206,9 @@ module.exports = function() {
 
     /*
      Scenario: #2 I can edit a Collaborator for a Trial
-     Given I am logged into the CTRP Protocol Abstraction application
-     And I am on the Trial Collaborators screen
-     And the list of collaborators is displayed
+     Given I am logged into the CTRP Protocol Abstraction application -
+     And I am on the Trial Collaborators screen --
+     And the list of collaborators is displayed ---
      Then I can edit the name of a collaborator that does not have a CTRP organization ID
      And the system will list
      |PO ID|
@@ -216,24 +218,65 @@ module.exports = function() {
      */
 
     this.Given(/^the list of collaborators is displayed$/, function (callback) {
-        trialCollaborators.clickAddCollaboratorButton();
-        organizationSearch.clickSearchOrganization();
-        searchOrg.setOrgName(orgSearchNameB);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        trialCollaborators.clickSave();
-        trialCollaborators.findOrgOnTheTableList(orgSearchNameB);
-        trialCollaborators.selectAllOrg();
-        trialCollaborators.clickDeleteCollaborator();
-        helper.wait_for(300);
+        login.logout();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolID);
+        commonFunctions.adminCheckOut();
+        trialCollaborators.clickAdminDataCollaborators();
+        //collaborator page check point
+        trialCollaborators.waitForElement(trialCollaborators.collaboratorsAddButton, "Collaborators Add Button");
+        helper.verifyElementDisplayed(trialCollaborators.collaboratorsAddButton, true);
+        helper.verifyElementDisplayed(trialCollaborators.collaboratorsDeleteButton, true);
+        helper.verifyElementDisplayed(trialCollaborators.collaboratorsTableListTHead, true);
+        //trialCollaborators.findOrgOnTheTableList(orgNameToBeEdited);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^I can edit the name of a collaborator that does not have a CTRP organization ID$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
+        trialCollaborators.selectAllListOfOrgExcept(orgNameToBeEdited);
+        trialCollaborators.clickDeleteCollaborator();
+        trialCollaborators.clickAdminDataGeneralTrial();
+        trialCollaborators.clickAdminDataCollaborators();
+        trialCollaborators.clickInLineEditingLink();
+        trialCollaborators.clickInLineEditingTextBox();
+        trialCollaborators.setInLineEditingText(orgNameEdited);
+        trialCollaborators.clickInLineEditingSave();
+        browser.sleep(250).then(callback);
+    });
+
+    this.Then(/^the edited organizations will be displyed orderd assending alphanumeric by Collaborator Name$/, function (callback) {
+        trialCollaborators.clickAdminDataGeneralTrial();
+        trialCollaborators.clickAdminDataCollaborators();
+        trialCollaborators.findOrgOnTheTableList(orgNameEdited);
+        trialCollaborators.clickInLineEditingLink();
+        trialCollaborators.clickInLineEditingTextBox();
+        trialCollaborators.setInLineEditingText(orgNameToBeEdited);
+        trialCollaborators.clickInLineEditingSave();
+        trialCollaborators.clickAdminDataGeneralTrial();
+        trialCollaborators.clickAdminDataCollaborators();
+        trialCollaborators.findOrgOnTheTableList(orgNameToBeEdited);
+        trialCollaborators.clickAddCollaboratorButton();
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameA);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialCollaborators.clickSave();
+        helper.wait_for(300);
+        trialCollaborators.clickAdminDataGeneralTrial();
+        trialCollaborators.clickAdminDataCollaborators();
+        helper.verifyTableRowText(trialCollaborators.collaboratorsTableTBodyRowAColB, orgSearchNameA, "Verifying assending alphanumeric by Collaborator Name");
+        helper.verifyTableRowText(trialCollaborators.collaboratorsTableTBodyRowBColB, orgNameToBeEdited, "Verifying assending alphanumeric by Collaborator Name");
         browser.sleep(25).then(callback);
     });
+
 
     /*
      Scenario: #3 I can Delete one or more Collaborators for a Trial
@@ -303,6 +346,24 @@ module.exports = function() {
      */
 
     this.When(/^I select Reset Collaborator$/, function (callback) {
+        login.logout();
+        commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDB);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolIDB);
+        commonFunctions.adminCheckOut();
+        trialCollaborators.clickAdminDataCollaborators();
+        //collaborator page check point
+        trialCollaborators.waitForElement(trialCollaborators.collaboratorsAddButton, "Collaborators Add Button");
+        helper.verifyElementDisplayed(trialCollaborators.collaboratorsAddButton, true);
+        helper.verifyElementDisplayed(trialCollaborators.collaboratorsDeleteButton, true);
+        helper.verifyElementDisplayed(trialCollaborators.collaboratorsTableListTHead, true);
+        //Add one for delete one
         trialCollaborators.clickAddCollaboratorButton();
         organizationSearch.clickSearchOrganization();
         searchOrg.setOrgName(orgSearchNameB);
@@ -313,6 +374,9 @@ module.exports = function() {
         trialCollaborators.selectAllOrg();
         trialCollaborators.clickDeleteCollaborator();
         helper.wait_for(300);
+        //Add two for save
+        trialCollaborators.clickAdminDataGeneralTrial();
+        trialCollaborators.clickAdminDataCollaborators();
         trialCollaborators.clickAddCollaboratorButton();
         organizationSearch.clickSearchOrganization();
         searchOrg.setOrgName(orgSearchNameB);
@@ -320,18 +384,23 @@ module.exports = function() {
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         trialCollaborators.clickSave();
+        //Add three for cancel
+        trialCollaborators.clickAdminDataGeneralTrial();
+        trialCollaborators.clickAdminDataCollaborators();
+        trialCollaborators.clickAddCollaboratorButton();
         organizationSearch.clickSearchOrganization();
         searchOrg.setOrgName(orgSearchNameA);
         searchOrg.clickSearchButton();
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         trialCollaborators.clickCancel();
+        //Refresh page
+        trialCollaborators.clickAdminDataGeneralTrial();
+        trialCollaborators.clickAdminDataCollaborators();
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the information entered or edited on the Collaborators screen will not be saved to the trial record$/, function (callback) {
-        trialCollaborators.clickAdminDataGeneralTrial();
-        trialCollaborators.clickAdminDataCollaborators();
         trialCollaborators.verifyListOfCollboratorsNameExists('1');
         browser.sleep(25).then(callback);
     });
