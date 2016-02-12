@@ -189,7 +189,7 @@ gulp.task('build-specs', ['templatecache'], function() {
 gulp.task('optimize', ['inject', 'test'], function() {
     log('Optimizing the javascript, css, html');
 
-    var assets = $.useref.assets({searchPath: './'});
+    var assets = $.useref.assets({searchPath: './src/'});
     var templateCache = config.temp + config.templateCache.file;
     var cssFilter = $.filter('**/*.css');
     var jsLibFilter = $.filter('**/' + config.optimized.lib);
