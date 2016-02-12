@@ -297,7 +297,7 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
       And select search
       Then the search results will display trials that contain that Identifier type ClinicalTrails.gov (NCT) and Obsolete ClinicalTrails.gov (NCT) ID
 
- Scenario: #23 I can search trials by Information Sourcerials
+ Scenario: #23 I can search trials by Information Source
       Given I am logged into the CTRP Protocol Abstraction application
       And I am on the Search Clinical Trials Screen
       When I select the information source from the list of:
