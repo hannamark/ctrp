@@ -266,7 +266,8 @@
               var firstName = newVal[0].fname || '';
               var middleName = newVal[0].mname || '';
               var lastName = newVal[0].lname || '';
-              vm.generalTrialDetailsObj.central_contacts[0].fullname = firstName + ' ' + middleName + ' ' + lastName;
+              var fullName = firstName + ' ' + middleName + ' ' + lastName;
+              vm.generalTrialDetailsObj.central_contacts[0].fullname = (fullName).trim();
               vm.generalTrialDetailsObj.central_contacts[0].person_id = newVal[0].id || '';
               vm.generalTrialDetailsObj.central_contacts[0].phone = newVal[0].phone.replace(regex, '');
               delete vm.generalTrialDetailsObj.central_contacts[0].id;
@@ -276,14 +277,7 @@
 
       function watchCentralContactType() {
         $scope.$watch(function() { return vm.centralContactType;}, function(newVal, oldVal) {
-            /*
-          if (!!oldVal) {
-              // for changing central contact types,
-              // if previous type is not null, reset all fields in central contact
-              console.error('resetting vm.generalTrialDetailsObj.central_contacts!!');
-              vm.generalTrialDetailsObj.central_contacts[0] = {email: '', phone: '', fullname: ''};
-          }
-          */
+            vm.centralContactNameRequired = !!newVal && newVal !== 'None';
             if (newVal === 'None' && vm.generalTrialDetailsObj.central_contacts.length > 0) {
                 // delete the contact
                 vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
@@ -382,6 +376,7 @@
           if (angular.isDefined(vm.generalTrialDetailsObj.central_contacts) &&
                 vm.generalTrialDetailsObj.central_contacts.length > 0 &&
                 !!vm.generalTrialDetailsObj.central_contacts[0]) {
+
               _curCentralContactId = vm.generalTrialDetailsObj.central_contacts[0].id;
               var _centralContactTypeId = vm.generalTrialDetailsObj.central_contacts[0].central_contact_type_id;
               var _centralContactType = _.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)});
