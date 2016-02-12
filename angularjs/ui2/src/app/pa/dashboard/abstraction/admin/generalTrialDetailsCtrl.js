@@ -275,9 +275,10 @@
         });
       }
 
+      var nameRequiredByCentralContactTypes = ['General', 'Person']; // name required for General and Person
       function watchCentralContactType() {
         $scope.$watch(function() { return vm.centralContactType;}, function(newVal, oldVal) {
-            vm.centralContactNameRequired = !!newVal && newVal !== 'None';
+            vm.centralContactNameRequired = _.contains(nameRequiredByCentralContactTypes, newVal); //!!newVal && newVal !== 'None';
             if (newVal === 'None' && vm.generalTrialDetailsObj.central_contacts.length > 0) {
                 // delete the contact
                 vm.generalTrialDetailsObj.central_contacts[0]._destroy = true; //
