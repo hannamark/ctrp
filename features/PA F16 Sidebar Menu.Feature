@@ -9,7 +9,8 @@ Given I am logged into the CTRP application
 And I have selected a trial to abstract
 Then the sidebar menu will be displayed expanded:
 |Trial Abstraction - <Current Trial ID>|
-|Trial Identification (Section)|
+|Trial Overview (Section)|
+|Trial Identification|
 |Trial History|
 |Trial Milestones|
 |On Hold Info|
@@ -48,7 +49,7 @@ And I have selected a trial to abstract
 And I have selected the unexpand arrow on the Trial Abstraction menu item
 Then the sidebar menu will collapse displayed the section headers:
 |Trial Abstraction - <Current Trial ID>|
-|Trial Identification|
+|Trial Overview|
 |Administrative Data|
 |Scientific Data|
 |Completion|
@@ -60,7 +61,7 @@ And the side bar is collapsed
 And I have selected the expand arrow on the Trial Abstraction menu item
 Then the sidebar menu will be fully expanded collapse displayed the section headers:
 |Trial Abstraction - <Current Trial ID>|
-|Trial Identification|
+|Trial Overview|
 |Administrative Data|
 |Scientific Data|
 |Completion|
@@ -72,7 +73,7 @@ And the side bar is collapsed
 And I have selected the expand arrow on the the side bar section
 Then that sidebar menu section will be expanded"
 |Trial Abstraction - <Current Trial ID>|
-|Trial Identification|
+|Trial Overview|
 |Administrative Data|
 |Scientific Data|
 |Completion|
@@ -80,28 +81,43 @@ Then that sidebar menu section will be expanded"
 Scenario: #5 Trial Validation Sidebar Menu Tab for imported trails
 Given I am logged into the CTRP application
 And I have selected a trial to Validate
-And the trial study source is
-|Industrial|
-|Other|
-|Expanded Access|
+And the trial information source is
+|Imported|
 Then the sidebar menu will be displayed expanded:
 |Trial Validation - <Current Trial ID>|
+|Trial Overview (Section)|
+|Trial History|
+|Trial Milestones|
+|On Hold Info|
+|View TSR|
+|Assign Ownership|
+|Check Out History|
+|Administrative Data (Section)|
 |Participating Sites|
+|Trial Validation (section)|
 |Submission Validation|
 
 Scenario: #6 Trial Validation Sidebar Menu Tab for non imported trials
 Given I am logged into the CTRP application
 And I have selected a trial to Validate
-And the trial study source is
-|National|
-|Externally Peer-Reviewed|
-|Institutional|
+And the trial information source is
+|Protocol|
 Then the sidebar menu will be displayed expanded:
 |Trial Validation - <Current Trial ID>|
+|Trial Overview (Section)|
+|Trial History|
+|Trial Milestones|
+|On Hold Info|
+|View TSR|
+|Assign Ownership|
+|Check Out History|
+|Administrative Data (Section)|
 |Regulatory Information - FDAAA|
 |Regulatory Information - IND/IDE|
 |Trial Status|
 |Trial Funding|
 |Trial Related Documents|
+|Trial Validation (section)|
 |Submission Validation|
+
 
