@@ -1,0 +1,2 @@
+class TrialVersionsController < ApplicationController
+end
