@@ -7,4 +7,5 @@ json.extract! @user,
               :zipcode,
               :role,
               :organization_id,
+              :organization,
               :created_at, :updated_at

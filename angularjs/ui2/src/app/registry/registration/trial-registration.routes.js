@@ -210,8 +210,12 @@
                 section: 'registry',
                 resolve: {
                     TrialService: 'TrialService',
+                    UserService: 'UserService',
                     trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    userDetailObj: function(UserService) {
+                        return UserService.getUserDetailsByUsername();
                     }
                 },
                 ncyBreadcrumb: {
