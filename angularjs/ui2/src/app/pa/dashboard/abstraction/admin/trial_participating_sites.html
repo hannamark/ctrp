@@ -27,6 +27,50 @@
                                 </div>
                             </div>
                         </div>
+                        <div ng-show="psView.showOrgFields">
+
+                            <!-- City -->
+                            <div class="form-group">
+                                <label for="city" class="control-label col-xs-12 col-sm-4"> City</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="city" class="form-control input-sm" name="city"
+                                           ng-model="psView.city"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <!-- State/Province -->
+                            <div class="form-group">
+                                <label for="state_province" class="control-label col-xs-12 col-sm-4"> State</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="state_province" class="form-control input-sm" name="state_province"
+                                           ng-model="psView.state_province"
+                                           disabled>
+                                </div>
+                            </div>
+
+
+                            <!-- Country -->
+                            <div class="form-group">
+                                <label for="country" class="control-label col-xs-12 col-sm-4">Country</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="country" class="form-control input-sm" name="country"
+                                           ng-model="psView.country"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <!-- Postal Code -->
+                            <div class="form-group">
+                                <label for="country" class="control-label col-xs-12 col-sm-4">Zip/Postal Code(US/Canada/Australia): </label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="postal_code" class="form-control input-sm" name="postal_code"
+                                           ng-model="psView.postal_code"
+                                           disabled>
+                                </div>
+                            </div>
+                            
+                        </div>
                     </fieldset>
                 </div>
                 <div class="row">

@@ -23,6 +23,7 @@
         vm.studySourceArr = studySourceObj;
         vm.addedFses = [];
         vm.selectedFsArray = [];
+        vm.study_source_id = vm.curTrial.study_source_id;
         vm.isSponsorNci = (trialDetailObj["sponsor"]["name"] == "National Cancer Institute")? true: false;
         console.log("isSponsorNci"+ vm.isSponsorNci);
         vm.isLeadOrgNciCcr = (trialDetailObj["lead_org"]["name"] == "NCI - Center for Cancer Research")? true: false;
@@ -48,14 +49,10 @@
         vm.updateTrial = function () {
             // Prevent multiple submissions
             vm.disableBtn = true;
-            console.log("curTrial =" + JSON.stringify(vm.curTrial));
-            console.log("(vm.curTrial.study_source_id  =" + JSON.stringify(vm.curTrial.study_source_id));
-            if (vm.fsNum == 0) {
+           //Required values
+           if ((vm.fsNum == 0) || (!vm.study_source_id)) {
                 return;
             }
-           // if(vm.curTrial.study_source_id == null) {
-           //     return;
-           // }
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {
@@ -130,6 +127,16 @@
                 newFs._destroy = false;
                 vm.addedFses.push(newFs);
                 vm.fsNum++;
+            }
+        });
+
+        $scope.$watch(function() {
+            return vm.curTrial.study_source_id;
+        }, function(newValue, oldValue) {
+            if (!newValue) {
+                vm.study_source_id = null;
+            } else {
+                vm.study_source_id = newValue;
             }
         });
 

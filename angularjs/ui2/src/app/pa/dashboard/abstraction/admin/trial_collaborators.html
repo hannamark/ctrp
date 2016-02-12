@@ -33,7 +33,7 @@
                             <div class="form-group no-bottom-margin" ng-if="trialDetailView.curTrial.pa_editable">
                                 <div class="btn-toolbar">
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="trialDetailView.updateTrial()">Save</button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()"  restriction-field ng-disabled="trialDetailView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()"  restriction-field>
                                         <i class="glyphicon glyphicon-remove"></i> Cancel
                                     </button>
                                 </div>
@@ -50,7 +50,7 @@
                                 <th class="text-center">Deletion</th>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
+                                <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators | orderBy:'org_name' track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
                                     <td>
                                         {{collaborator.organization_id}}
                                     </td>

@@ -18,7 +18,8 @@ And I am on the Trial Regulatory Information screen
 When the Responsible Party Type is Sponsor-Investigator
 And I have performed a person search
 And I have selected a person as the Investigator
-Then the person selected will be recorded as the Investigator for the Sponsor-Investigator Responsible Party and the Sponsor Organization will be recorded as the Investigator�s Affiliation Organization
+Then the person selected will be recorded as the Investigator for the Sponsor-Investigator Responsible Party 
+And the Sponsor Organization will be recorded as the Investigator�s Affiliation Organization
 
 Scenario: #3 I can define the Investigator�s Title
 Given I have selected a trial to abstract 
@@ -26,10 +27,10 @@ And I am on the Trial Regulatory Information screen
 When I enter the Title for the Investigator (Field will be prefilled with �Principal Investigator�)
 Then the selected value will be recorded as the Responsible Party Type
 
-Scenario: #4 I can associate an organization an Affiliation of the Investigator
+Scenario: #4 I can associate an organization as an Affiliation of the Investigator
 Given I have selected a trial to abstract 
 And I am on the Trial Regulatory Information screen
-And I have selected an organization as Affiliation of the Investigator
+And I have selected an organization as an Affiliation of the Investigator (defaulted to Sponsor Organization)
 And the Responsible Party Type is Principal Investigator
 And I have selected organization look-up
 When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed

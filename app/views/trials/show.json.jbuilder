@@ -51,6 +51,10 @@ json.participating_sites_list do
   json.array!(@trial.participating_sites) do |participating_site|
     json.po_id participating_site.organization.id
     json.po_name participating_site.organization.name
+    json.city participating_site.organization.city
+    json.state_province participating_site.organization.state_province
+    json.country participating_site.organization.country
+    json.postal_code participating_site.organization.postal_code
     json.investigator participating_site.person.lname
     json.primary_contact participating_site.contact_name
     latest_site_rec_status = participating_site.site_rec_status_wrappers.blank? ? nil:participating_site.site_rec_status_wrappers.last
@@ -109,7 +113,8 @@ json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last
 submitter = @trial.submissions.empty? ? nil : (@trial.submissions.last.user_id.nil? ? nil : @trial.submissions.last.user)
 
 ## submitter's username
-json.submitter submitter.nil? ? '' : submitter.username
+#json.submitter submitter.nil? ? '' : submitter.username
+json.submitter submitter
 
 ## get the submitter's organization name
 json.submitters_organization submitter.nil? ? '' : (submitter.organization.nil? ? '' : submitter.organization.name)

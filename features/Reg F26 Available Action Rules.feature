@@ -67,6 +67,7 @@ As any CTRP User, I can select available Actions
 
   Scenario: #3 Available Actions when Trial is Imported from ClinicalTrials.gov
     Given I am logged into the CTRP Registration application
+    And I do not have Administrative Privileges
     And I am on the Clinical Trials search Results
     And the the Trial Processing Status is any processing status type
       
@@ -87,3 +88,25 @@ As any CTRP User, I can select available Actions
      When my participating site is not added to the Trial 
      Then the only available Action is to add my participating Site to the trial
 
+  Scenario: #4 Available Actions when Trial is Imported from ClinicalTrials.gov
+    Given I am logged into the CTRP Registration application
+    And I have Administrative Privileges
+    And I am on the Clinical Trials search Results
+    And the the Trial Processing Status is any processing status type
+      
+      |Submitted  |
+      |Amendment Submitted  |
+      |Accepted  |
+      |Rejected  |
+      |Abstracted  |
+      |Verification Pending  |
+      |Abstraction Verified Response  |
+      |Abstraction Verified No Response  |
+      |On-Hold  |
+      |Submission Terminated  |
+      |Submission Reactivated  |
+    
+     When participating Sites from my Family are added to the trial
+     Then the Available Action Update will allow update of any of the participating site from my Family registered on the Trial
+     When a participating site from my Family has not been added to the Trial 
+     Then the Available Action Add will allow adding any of the participating site from my Family not previously registered on the Trial
