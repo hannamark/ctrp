@@ -57,6 +57,14 @@ json.participating_sites_list do
     json.postal_code participating_site.organization.postal_code
     json.investigator participating_site.person.lname
     json.primary_contact participating_site.contact_name
+    json.site_rec_status_wrappers do
+      json.array!(participating_site.site_rec_status_wrappers) do |site_rec_status_wrapper|
+        json.id site_rec_status_wrapper.id
+        json.status_date  site_rec_status_wrapper.status_date
+        json.site_recruitment_status  site_rec_status_wrapper.site_recruitment_status.name
+      end
+    end
+
     latest_site_rec_status = participating_site.site_rec_status_wrappers.blank? ? nil:participating_site.site_rec_status_wrappers.last
     unless latest_site_rec_status.nil?
       json.site_recruitment_status latest_site_rec_status.site_recruitment_status.name

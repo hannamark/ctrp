@@ -128,6 +128,7 @@
             vm.currentParticipatingSite = vm.curTrial.participating_sites_list[idx];
             console.log("SETTING TO EDITMODE vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
             console.log("SETTING TO EDITMODE vm.curTrial.participating_sites_list="+JSON.stringify(vm.curTrial.participating_sites_list));
+            console.log("SETTING TO EDITMODE vm.currentParticipatingSite.site_rec_status_wrappers="+JSON.stringify(vm.currentParticipatingSite["site_rec_status_wrappers"]));
             vm.city =  vm.curTrial.participating_sites_list[idx].city;
             vm.state_province =  vm.curTrial.participating_sites_list[idx].state_province;
             vm.country = vm.curTrial.participating_sites_list[idx].country;

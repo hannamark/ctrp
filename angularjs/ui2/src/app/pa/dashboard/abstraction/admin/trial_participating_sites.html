@@ -160,49 +160,40 @@
                                 <div class="add-association-error" ng-show="trialStatusView.statusErrorMsg.length > 0">
                                     {{trialStatusView.statusErrorMsg}}
                                 </div>
-                                <div>
-                                    <p>
-                                        <mark>Please refer to the Trial Status Transition Rules:</mark>
-                                        <a href="https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules" target="_blank">https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
-                                    </p>
-                                </div>
                             </div>
-                            <!-- Navya
-                            <div class="row" ng-show="trialStatusView.tempTrialStatuses.length > 0">
+                            <div class="row" ng-show="psView.currentParticipatingSite.site_rec_status_wrappers.length > 0">
                                 <table class="table table-bordered table-striped table-hover">
                                     <thead style="background-color: #d9edf7">
                                     <th class="text-center">Status Date</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Comment</th>
-                                    <th class="text-center">Why Study Stopped</th>
                                     <th class="text-center">Errors/Warnings</th>
                                     <th class="text-center"> Delete/Edit </th>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" class="animated-item text-center" ng-class="status._destroy ? 'deleted-text' : ''">
-                                        <td class="col-sm-2">{{status.status_date}}</td>
-                                        <td class="col-sm-1">{{status.trial_status_name}}</td>
-                                        <td class="col-sm-2">{{status.comment}}</td>
-                                        <td class="col-sm-2">{{status.why_stopped}}</td>
+                                    <tr ng-repeat="site_rec in psView.currentParticipatingSite.site_rec_status_wrappers track by $index" class="animated-item text-center" ng-class="site_rec._destroy ? 'deleted-text' : ''">
+                                        <td class="col-sm-2">{{site_rec.status_date}}</td>
+                                        <td class="col-sm-1">{{site_rec.site_recruitment_status}}</td>
+                                        <td class="col-sm-2">{{site_rec.comment}}</td>
                                         <td class="col-sm-4">
-                                            <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
+                                            <div class="text-danger" ng-repeat="error in psView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
                                                 ERROR: Interim status [{{error.status}}] is missing
                                             </div>
-                                            <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message')">
+                                            <div class="text-danger" ng-repeat="error in psView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message')">
                                                 ERROR: {{error.message}}
                                             </div>
-                                            <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('status')">
+                                            <div class="text-warning" ng-repeat="warning in psView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('status')">
                                                 WARNING: Interim status [{{warning.status}}] is missing
                                             </div>
-                                            <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
+                                            <div class="text-warning" ng-repeat="warning in psView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
                                                 WARNING: {{warning.message}}
                                             </div>
                                         </td>
                                         <td class="text-center" class="col-sm-1">
-                                            <label class="btn btn-default" restriction-field ng-click="trialStatusView.deleteTrialStatus($index)">
+                                            <label class="btn btn-default" restriction-field ng-click="psView.deleteTrialStatus($index)">
                                                 <i class="glyphicon" ng-class="status._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                             </label>
-                                            <label class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="trialStatusView.editTrialStatus($index)">
+                                            <label class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="psView.editTrialStatus($index)">
                                                 <i class="glyphicon glyphicon-edit"></i>
                                             </label>
                                         </td>
@@ -210,7 +201,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            Navya -->
+
                         </fieldset>
 
 
