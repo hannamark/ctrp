@@ -22,15 +22,22 @@ module.exports = function() {
         build: './build/',
         client: client,
         css: temp + 'styles.css',
-        fonts: './src/bower_components/font-awesome/fonts/**/*.*',
+        fonts: './bower_components/font-awesome/fonts/**/*.*',
         html: clientApp + '**/*.html',
         htmltemplates: clientApp + '**/*.html',
         images: client + 'images/**/*.*',
         index: client + 'index.html',
         js: [
-            clientApp + '**/*.module.js',  //name modules,
+            clientApp + '**/*.module.constants.js',
+            clientApp + '**/*.module.*.js',
+            clientApp + '**/*.app.user.js',
+            clientApp + '**/ctrp.app.*.js',
+            clientApp + '**/ctrp.app.main.js',
             clientApp + '**/*.js',
             '!' + clientApp + '**/*.spec.js' //exclude unit test files
+        ],
+        jsOrder: [
+            // TODO:
         ],
         less: client + 'styles/styles.less',
         report: report,
@@ -69,8 +76,8 @@ module.exports = function() {
 
         bower: {
             json: require('./bower.json'),
-            directory: './src/bower_components/',
-            ignorePath: '../..'
+            directory: './bower_components/',
+            ignorePath: '../'
         },
 
         packages: [

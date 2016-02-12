@@ -118,12 +118,19 @@ gulp.task('wiredep', function() {
 
     return gulp
         .src(config.index)
+        .pipe($.inject(gulp.src(config.js)))
+        .pipe(wiredep(options))
+        .pipe(gulp.dest(config.client));
+
+        /*
+        .src(config.index)
         .pipe(wiredep(options))
         .pipe($.inject(gulp.src(config.js)
             .pipe(pipes.orderedVendorScripts())
             .pipe(pipes.orderedAppScripts())
         , {relative: true}))
         .pipe(gulp.dest(config.client));
+        */
 });
 
 gulp.task('inject', ['wiredep', 'styles', 'templatecache'], function() {
@@ -194,6 +201,7 @@ gulp.task('optimize', ['inject', 'test'], function() {
     var cssFilter = $.filter('**/*.css');
     var jsLibFilter = $.filter('**/' + config.optimized.lib);
     var jsAppFilter = $.filter('**/' + config.optimized.app);
+    log('jsAppFilter: ' + jsAppFilter);
 
     return gulp
         .src(config.index)
