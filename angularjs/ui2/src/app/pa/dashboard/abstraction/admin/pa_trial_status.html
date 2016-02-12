@@ -182,7 +182,7 @@
                     <!-- fieldset for trial dates -->
                     <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Trial Dates</legend>
-                        <div class="row">
+                        <div class="form-group top-buffer" ng-class="{'has-feedback required': trialStatusView.startDateRequired, 'has-error': ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date) || ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date_qual)}">
                             <label class="control-label col-xs-12 col-sm-3">Trial Start Date</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
@@ -193,6 +193,7 @@
                                            ng-click="trialStatusView.openCalendar($event, 'start_date')"
                                            is-open="trialStatusView.startDateOpened"
                                            datepicker-options="trialStatusView.dateOptions"
+                                           ng-required="true"
                                            close-text="Close" readonly>
                                     <span class="input-group-btn">
                                         <button restriction-field type="button" class="btn btn-default" ng-click="trialStatusView.openCalendar($event, 'start_date')">
@@ -200,22 +201,26 @@
                                         </button>
                                     </span>
                                 </div>
-                                <!-- <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.start_date)">
-                                    Trial Start Date is required
-                                </span> -->
+                                <span ng-messages="ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date) &&
+                                                    trial_status_form.start_date.$error">
+                                    <span class="help-block" ng-message="required">Start date is required</span>
+                               </span>
                             </div>
                             <div class="col-xs-12 col-sm-6">
                                 <label class="radio-inline">
-                                    <input type="radio" name="start_date_qual" restriction-field ng-model="trialStatusView.trialDetailObj.start_date_qual"
-                                           value="Actual"> Actual
+                                    <input type="radio" name="start_date_qual" restriction-field
+                                        ng-model="trialStatusView.trialDetailObj.start_date_qual"
+                                        ng-required="true" value="Actual"> Actual
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="start_date_qual" restriction-field ng-model="trialStatusView.trialDetailObj.start_date_qual"
-                                           value="Anticipated"> Anticipated
+                                    <input type="radio" name="start_date_qual" restriction-field
+                                        ng-model="trialStatusView.trialDetailObj.start_date_qual"
+                                        ng-required="true" value="Anticipated"> Anticipated
                                 </label>
-                                <!-- <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual)">
-                                    Trial Start Date Type is required
-                                </span> -->
+                                <span ng-messages="ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date_qual) &&
+                                                    trial_status_form.start_date_qual.$error">
+                                    <span class="help-block" ng-message="required">Start date type is required</span>
+                               </span>
                             </div>
                         </div>
                         <!-- end of trial start date -->
