@@ -405,7 +405,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^the Trial Collaborators screen will be refreshed with the existing data$/, function (callback) {
+    this.Then(/^the Trial Collaborators screen will be refreshed with the existing list of Collaborators data$/, function (callback) {
         trialCollaborators.findOrgOnTheTableList(orgSearchNameB);
         browser.sleep(25).then(callback);
     });
