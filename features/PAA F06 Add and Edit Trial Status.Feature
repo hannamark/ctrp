@@ -11,6 +11,7 @@ And I have selected a trial status from the list of:
 |In Review| 
 |Approved|
 |Active| 
+|Enrolling by Invitation|
 |Temporarily Closed to Accrual|
 |Temporarily Closed to Accrual and Intervention|
 |Closed to Accrual|
