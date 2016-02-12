@@ -1,7 +1,7 @@
 class SiteRecruitmentStatusesController < ApplicationController
   before_action :set_site_recruitment_status, only: [:show, :edit, :update, :destroy]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
-  
+
   # GET /site_recruitment_statuses
   # GET /site_recruitment_statuses.json
   def index
