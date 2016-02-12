@@ -108,6 +108,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :trial_versions do
+      collection do
+        get 'index'
+      end
+    end
+
     resources :po_affiliations
     resources :po_affiliation_statuses
 
