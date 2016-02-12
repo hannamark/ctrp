@@ -8,11 +8,12 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
 
-    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj'];
+    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService','DateService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService,DateService , $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj) {
 
         var vm = this;
+        console.log("HIIII");
         vm.curTrial = trialDetailObj;
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
@@ -22,9 +23,23 @@
         vm.state_province=null;
         vm.country=null;
         vm.postal=null;
+        vm.dateFormat = DateService.getFormats()[1];
+        vm.dateOptions = DateService.getDateOptions();
+        vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
         //vm.saveCurrentParticipatingSite = saveGeneralTrialDetails;
         //vm.resetCurrentParticipatingSite = resetGeneralTrialDetails;
         vm.currentParticipatingSite.organization = {name: '', array: []};
+
+        console.log("statusRecruitmentStatusesObj = " + vm.statusRecruitmentStatusesArr);
+        activate();
+
+        /****************** implementations below ***************/
+        function activate() {
+            //appendCollaborators();
+            getTrialDetailCopy();
+            watchTrialDetailObj();
+            watchOrganization();
+        }
 
         /*
          * This function is invoked when the organizations are added and saved
@@ -113,6 +128,7 @@
             vm.currentParticipatingSite = vm.curTrial.participating_sites_list[idx];
             console.log("SETTING TO EDITMODE vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
             console.log("SETTING TO EDITMODE vm.curTrial.participating_sites_list="+JSON.stringify(vm.curTrial.participating_sites_list));
+            console.log("SETTING TO EDITMODE vm.currentParticipatingSite.site_rec_status_wrappers="+JSON.stringify(vm.currentParticipatingSite["site_rec_status_wrappers"]));
             vm.city =  vm.curTrial.participating_sites_list[idx].city;
             vm.state_province =  vm.curTrial.participating_sites_list[idx].state_province;
             vm.country = vm.curTrial.participating_sites_list[idx].country;
@@ -120,15 +136,23 @@
             vm.currentParticipatingSite.organization = {name: vm.currentParticipatingSite["po_name"], array: []};
         }
 
-        activate();
+        function openCalendar ($event, type) {
+            $event.preventDefault();
+            $event.stopPropagation();
 
-        /****************** implementations below ***************/
-        function activate() {
-            //appendCollaborators();
-            getTrialDetailCopy();
-            watchTrialDetailObj();
-            watchOrganization();
-        }
+            if (type === 'status_date') {
+                vm.statusDateOpened = !vm.statusDateOpened;
+            } else if (type === 'start_date') {
+                vm.startDateOpened = !vm.startDateOpened;
+            } else if (type === 'primary_comp_date') {
+                vm.primaryCompDateOpened = !vm.primaryCompDateOpened;
+            } else if (type === 'comp_date') {
+                vm.compDateOpened = !vm.compDateOpened;
+            } else if (type === 'amendment_date') {
+                vm.amendmentDateOpened = !vm.amendmentDateOpened;
+            }
+        }; //openCalendar
+
 
         /**
          * Get trial detail object from parent scope

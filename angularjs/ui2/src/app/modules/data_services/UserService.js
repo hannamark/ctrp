@@ -145,6 +145,8 @@
         };
 
         this.login = function (userObj) {
+            userObj.processing = true;
+
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in', userObj)
                 .then(function (data) {
                     console.log('successful login, data returned: ' + JSON.stringify(data));
@@ -167,6 +169,7 @@
                         }, 500);
                     } else {
                         toastr.error('Login failed', 'Login error');
+                        userObj.processing = false;
                     }
                 }).catch(function (err) {
                     $log.error('error in log in: ' + JSON.stringify(err));

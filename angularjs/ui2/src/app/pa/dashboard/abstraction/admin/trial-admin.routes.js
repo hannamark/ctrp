@@ -145,8 +145,8 @@
                     trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
                     },
-                    fundingMechanismObj: function(TrialService) {
-                        return TrialService.getFundingMechanisms();
+                    siteRecruitmentStatusesObj: function(PATrialService) {
+                        return PATrialService.getSiteRecruitementStatuses();
                     },
                 },
                 ncyBreadcrumb: {
