@@ -175,6 +175,7 @@ Rails.application.routes.draw do
       resources :processing_statuses
       resources :milestones
       resources :research_categories
+      resources :site_recruitment_statuses
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'
