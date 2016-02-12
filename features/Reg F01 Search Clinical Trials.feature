@@ -128,7 +128,7 @@ Then the search results will display trials where the person selected is princip
 Scenario: #12 I can search for clinical trials by Study Source
 Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
-When I select a Study Source from a list that contains National, Externally Peer-Reviewed, Institutional, Industrial, Other, Expanded Access
+When I select a Study Source from a list that contains National, Externally Peer-Reviewed, Institutional, Industrial, Other
 And select a search option
 Then the search results will display trials with a matching Study Source
 
@@ -161,7 +161,6 @@ Then the search results will display the trials that match all the search criter
       |National                  |
       |Externally Peer-Reviewed  |
       |Institutional             |
-      |Expanded Access           |
       |Industrial                |
       |Other                     |
 
