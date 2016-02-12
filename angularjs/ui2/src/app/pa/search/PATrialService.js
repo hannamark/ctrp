@@ -133,7 +133,8 @@
             checkoutTrial: checkoutTrial,
             checkinTrial: checkinTrial,
             getCentralContactTypes: getCentralContactTypes,
-            getBoardApprovalStatuses: getBoardApprovalStatuses
+            getBoardApprovalStatuses: getBoardApprovalStatuses,
+            getSiteRecruitementStatuses: getSiteRecruitementStatuses
         };
 
         return services;
@@ -272,6 +273,11 @@
 
         function getSubmissionMethods() {
             return PromiseTimeoutService.getData(URL_CONFIGS.SUBMISSION_METHODS);
+        }
+
+        function getSiteRecruitementStatuses() {
+            console.log("In getSiteRecruitementStatuses");
+            return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
         }
 
         function getExpandedAccessTypes() {
