@@ -26,8 +26,8 @@ ratings:
   "**.html"
 
 exclude_paths:
-  - "test/*"
-  - "public/ctrp/ui/third_party_libs/*"
-  - "config.js"
-  - "features/*"
-  - "app/models/ability.rb"
+- "test/*"
+- "public/ctrp/ui/third_party_libs/*"
+- "config.js"
+- "features/*"
+- "app/models/ability.rb"
