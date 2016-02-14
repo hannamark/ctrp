@@ -20,10 +20,10 @@ ratings:
   paths:
   - app/**
   - angularjs/**
-  "**.rb"
-  "**.js"
-  "**.css"
-  "**.html"
+  - "**.rb"
+  - "**.js"
+  - "**.css"
+  - "**.html"
 
 exclude_paths:
 - "test/*"
