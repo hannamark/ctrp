@@ -20,6 +20,7 @@
         vm.trialStatuses = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
         vm.statusObj = _initStatusObj();
         vm.dateFormat = DateService.getFormats()[1];
+        vm.startDateRequired = true;
         vm.statusDateOpened = false;
         vm.startDateOpened = false;
         vm.primaryCompDateOpened = false;

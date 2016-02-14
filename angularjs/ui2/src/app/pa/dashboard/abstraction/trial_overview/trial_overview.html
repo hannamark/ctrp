@@ -60,7 +60,7 @@
                     <p>
                         <!--same as ClinicalTrials.gov Id -->
                         <strong>NCT ID:</strong>
-                        <span><a href="https://clinicaltrials.gov/ct2/show/{{paTrialOverview.trialDetailObj.nct_trial_id}}" target="_blank">{{paTrialOverview.trialDetailObj.nct_trial_id}}<i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a></span>
+                        <span ng-show="paTrialOverview.trialDetailObj.nct_trial_id"><a href="https://clinicaltrials.gov/ct2/show/{{paTrialOverview.trialDetailObj.nct_trial_id}}" target="_blank">{{paTrialOverview.trialDetailObj.nct_trial_id}}<i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a></span>
                     </p>
                     <p>
                         <strong>Lead Organization Trial ID:</strong>
@@ -134,6 +134,10 @@
 
                 <!-- column 3 -->
                 <div class="col-sm-4 col-xs-12">
+                    <p>
+                        <strong>Information Source: </strong>
+                        <span>{{paTrialOverview.trialDetailObj.internal_source.name}}</span>
+                    </p>
                     <p>
                         <strong>Current Trial Status:</strong>
                         <span>{{paTrialOverview.trialDetailObj.current_trial_status}}</span>

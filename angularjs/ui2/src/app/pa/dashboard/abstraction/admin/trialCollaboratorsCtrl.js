@@ -17,7 +17,6 @@
         vm.deleteSelected = deleteSelected;
         vm.setAddMode = setAddMode;
         vm.curTrial = trialDetailObj;
-        console.log("trialDetailObj = " + JSON.stringify(trialDetailObj));
         console.log("pa_editable = " + JSON.stringify(trialDetailObj["pa_editable"]));
         vm.curTrial.collaborators_attributes = [];
         vm.addedCollaborators = [];
@@ -31,7 +30,10 @@
          */
         vm.updateTrial = function() {
             // Prevent multiple submissions
-            console.log("update Trial ");
+            console.log("update Trial vm.addedCollaborators.length " + vm.addedCollaborators.length);
+            if (vm.addedCollaborators.length == 0){
+                return;
+            }
             if (vm.addedCollaborators.length > 0) {
                 vm.curTrial.collaborators_attributes = [];
                 _.each(vm.addedCollaborators, function (collaborator) {
@@ -52,7 +54,6 @@
             console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
             vm.saveTrial();
             vm.addedCollaborators = [];
-
         } // updateTrial
 
 
@@ -89,8 +90,28 @@
          * @param idx
          */
         vm.updateCollaborator = function(org_name, idx) {
+            console.log("updateCollaborator org_name = " + org_name);
+            console.log("updateCollaborator idx = " + idx);
+            if(!org_name){
+                vm.curTrial = PATrialService.getCurrentTrialFromCache();
+                toastr.error('The collaborator organization name cannot be empty.' , {
+                    extendedTimeOut: 1,
+                    timeOut: 0
+                });
+                return;
+            }
             vm.curTrial.collaborators_attributes=[];
-            var collaborator = vm.curTrial.collaborators[idx];
+            var collaborator = null;
+            for (var i = 0; i < vm.curTrial.collaborators.length; i++) {
+                if( vm.curTrial.collaborators[i].id == idx){
+                    collaborator =  vm.curTrial.collaborators[i];
+                }
+            }
+            if (collaborator == null) {
+                return;
+            }
+            console.log("collaborator " + JSON.stringify(collaborator));
+            collaborator.org_name = org_name;
             vm.curTrial.collaborators_attributes.push(collaborator);
             console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
             vm.saveTrial();
@@ -149,7 +170,7 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 
