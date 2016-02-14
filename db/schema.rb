@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160211213723) do
+ActiveRecord::Schema.define(version: 20160214090924) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1064,9 +1064,12 @@ ActiveRecord::Schema.define(version: 20160211213723) do
     t.string   "whodunnit"
     t.text     "object"
     t.datetime "created_at"
-    t.integer  "transaction_id"
     t.text     "object_changes"
+    t.integer  "transaction_id"
   end
+
+  add_index "trial_versions", ["item_type", "item_id"], name: "index_trial_versions_on_item_type_and_item_id", using: :btree
+  add_index "trial_versions", ["transaction_id"], name: "index_trial_versions_on_transaction_id", using: :btree
 
   create_table "trials", force: :cascade do |t|
     t.string   "nci_id",                        limit: 255
@@ -1248,8 +1251,8 @@ ActiveRecord::Schema.define(version: 20160211213723) do
     t.string   "whodunnit"
     t.text     "object"
     t.datetime "created_at"
-    t.integer  "transaction_id"
     t.text     "object_changes"
+    t.integer  "transaction_id"
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
