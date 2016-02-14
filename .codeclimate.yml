@@ -16,15 +16,14 @@ engines:
   csslint:
     enabled: true
 
-
 ratings:
-   paths:
-    - app/**
-    - angularjs/**
-    "**.rb"
-    "**.js"
-    "**.css"
-    "**.html"
+  paths:
+  - app/**
+  - angularjs/**
+  "**.rb"
+  "**.js"
+  "**.css"
+  "**.html"
 
 exclude_paths:
   - "test/*"
