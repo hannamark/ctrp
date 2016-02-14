@@ -15,7 +15,6 @@ engines:
     enabled: true
   csslint:
     enabled: true
-
 ratings:
   paths:
   - app/**
@@ -24,7 +23,6 @@ ratings:
   - "**.js"
   - "**.css"
   - "**.html"
-
 exclude_paths:
 - "test/*"
 - "public/ctrp/ui/third_party_libs/*"
