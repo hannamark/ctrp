@@ -16,6 +16,6 @@ engines:
     config:
       languages:
         ruby:
-          mass_threshold: 150
+          mass_threshold: 1500
         javascript:
           mass_threshold: 200
