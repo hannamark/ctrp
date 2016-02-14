@@ -9,3 +9,13 @@ exclude_paths:
 - "angularjs/*"
 - "features/*"
 - "app/models/ability.rb"
+
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        ruby:
+          mass_threshold: 40
+        javascript:
+          mass_threshold: 80
