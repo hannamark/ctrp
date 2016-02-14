@@ -1,6 +1,6 @@
 class TrialVersionsController < ApplicationController
 
-before_action :set_version, only: [:show, :edit, :update, :destroy]
+#before_action :set_version, only: [:show,  :update, :destroy]
 
 def diff
 end
@@ -10,10 +10,18 @@ end
 def index
   #@data_tables = ActiveRecord::Base.connection.tables
   #@model_options = @data_tables.map{|u| [ u ] }
-  @data_tables =TrialVersion.find_by_sql("select distinct item_type from trial_versions");
-  print @data_tables
-  @versions = TrialVersion.find_by_sql("select distinct item_id,item_type from trial_versions order by item_type");
-
+  #@data_tables =TrialVersion.find_by_sql("select distinct item_type from trial_versions");
+  #print @data_tables
+  #@trial_versions = TrialVersion.find_by_sql("select distinct item_id,item_type from trial_versions order by item_type");
+  @trial_versions = TrialVersion.all
+  #respond_to do |format|
+    #if @trial.save
+      #format.html { redirect_to @versions, notice: 'Trial was successfully created.' }
+     # format.json { render :show, status: :created, location: @versions }
+    #else
+     # format.html { render :new }
+      #format.json { render json: @trial.errors, status: :unprocessable_entity }
+    #end
 end
 
 # GET /versions/1
@@ -31,10 +39,16 @@ def destroy
   end
 end
 
+
 def history
   p params
-  @datas =TrialVersion.where("item_type = ? AND item_id = ? ", params[:item_type],params[:item_id])
+  p request.body.read
+  @object=Hash.new
+  @object =request.body.read
+  p @object
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? ", "Trial",params[:trial_id])
 end
+
 
 private
 # Use callbacks to share common setup or constraints between actions.

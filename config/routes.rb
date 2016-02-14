@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :trial_versions
+
   resources :accrual_disease_terms
 
   resources :trial_documents
@@ -111,6 +113,7 @@ Rails.application.routes.draw do
     resources :trial_versions do
       collection do
         get 'index'
+        post 'history'
       end
     end
 
