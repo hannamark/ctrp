@@ -9,12 +9,13 @@
             <div class="row">
                 <td class="col-md-2">
                     <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                        <label for="start_date" >Start Date </label>
                         <input type="text" id="start_date" name="status_date" class="form-control input-sm"
                                uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.statusObj.start_date"
                                ng-click="trialHistoryView.openCalendar($event, 'start_date')"
                                is-open="trialHistoryView.startDateOpened"
                                datepicker-options="trialHistoryView.dateOptions"
-                               close-text="Close" readonly />
+                               close-text="Close" placeholder="Start Date" readonly />
                                                 <span class="input-group-btn">
                                                     <button type="button" restriction-field class="btn btn-default" ng-click="trialHistoryView.openCalendar($event, 'start_date')">
                                                         <i class="glyphicon glyphicon-calendar"></i>
@@ -25,12 +26,14 @@
 
                 <td class="col-md-2">
                     <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                        <label for="start_date" >End Date </label>
                         <input type="text" id="end_date" name="end_date" class="form-control input-sm"
                                uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.statusObj.end_date"
                                ng-click="trialHistoryView.openCalendar($event, 'end_date')"
                                is-open="trialHistoryView.endDateOpened"
                                datepicker-options="trialHistoryView.dateOptions"
-                               close-text="Close" readonly />
+                               date-later-than="{{trialHistoryView.statusObj.start_date| date: 'short'}}
+                               close-text="Close" placeholder="End Date" readonly />
                                                 <span class="input-group-btn">
                                                     <button type="button" restriction-field class="btn btn-default" ng-click="trialHistoryView.openCalendar($event, 'end_date')">
                                                         <i class="glyphicon glyphicon-calendar"></i>
@@ -51,7 +54,7 @@
 
             </form>
 
-            <!-- list of families -->
+            <!-- list of audit trials -->
             <div class="row" ng-class="{'top-offset-xs': trialHistoryView.gridOptions.data.length > 0 }">
                 <div class="col-xs-12">
                     <div class="row" ng-if="trialHistoryView.gridOptions.totalItems != null">
