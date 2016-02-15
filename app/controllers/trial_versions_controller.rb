@@ -46,6 +46,11 @@ def history
   @object=Hash.new
   @object =request.body.read
   p @object
+  #@trial = Trial.find_by_id(21)
+  #p @trial.trial_versions.last.changeset
+  #widget.versions.last.changeset
+
+
   @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? ", "Trial",params[:trial_id])
 end
 
