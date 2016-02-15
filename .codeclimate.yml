@@ -9,8 +9,6 @@ engines:
           mass_threshold: 200
   rubocop:
     enabled: true
-  golint:
-    enabled: true
   eslint:
     enabled: true
   csslint:
