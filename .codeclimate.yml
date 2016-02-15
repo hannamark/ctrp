@@ -4,9 +4,9 @@ engines:
     config:
       languages:
         ruby:
-          mass_threshold: 1500
+          mass_threshold: 18
         javascript:
-          mass_threshold: 200
+          mass_threshold: 40
   rubocop:
     enabled: true
   eslint:
