@@ -207,6 +207,7 @@ class Trial < ActiveRecord::Base
 
   accepts_nested_attributes_for :central_contacts, allow_destroy: true
   accepts_nested_attributes_for :alternate_titles, allow_destroy: true
+  accepts_nested_attributes_for :participating_sites, allow_destroy: true
   accepts_nested_attributes_for :collaborators, allow_destroy: true
   accepts_nested_attributes_for :outcome_measures, allow_destroy: true
   accepts_nested_attributes_for :other_criteria, allow_destroy: true

@@ -58,12 +58,16 @@
             'SEARCH_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/search_clinical_trials_gov.json',
             'IMPORT_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/import_clinical_trials_gov.json',
             'SITE_RECRUITMENT_STATUSES': '/ctrp/registry/site_recruitment_statuses.json',
+            'SITE_REC_STATUS_LIST': '/ctrp/registry/site_rec_status_wrappers.json',
+            'A_SITE_REC_STATUS': '/ctrp/registry/site_rec_status_wrappers/',
             'NCI_DIV_PA': '/ctrp/pa/nih_nci_div_pa.json',
             'NCI_PROG_PA': '/ctrp/pa/nih_nci_prog_pa.json',
             'SUBMISSION_METHODS': '/ctrp/pa/submission_methods.json',
 
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
+                'PARTICIPATING_SITE_WITH_ID': '/ctrp/registry/participating_sites/{:id}.json',
+                'SITE_REC_STATUS_WITH_ID': '/ctrp/registry/site_rec_status_wrappers/{:id}.json',
             },
 
             'MILESTONES': '/ctrp/registry/milestones.json',

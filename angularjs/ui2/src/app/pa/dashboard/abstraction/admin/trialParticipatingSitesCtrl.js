@@ -29,7 +29,7 @@
         vm.postal=null;
         vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
-        vm.currentParticipatingSite.organization = {name: '', array: []};
+        vm.currentParticipatingSite.selOrganization = {name: '', array: []};
 
         //actions
         vm.addSiteRecruitment = addSiteRecruitment;
@@ -110,8 +110,9 @@
 
         // Add Participating to a temp array
         function watchOrganization() {
-            $scope.$watchCollection(function() {return vm.currentParticipatingSite.organization.array;}, function(newVal, oldVal) {
+            $scope.$watchCollection(function() {return vm.currentParticipatingSite.selOrganization.array;}, function(newVal, oldVal) {
                 if (angular.isArray(newVal) && newVal.length > 0) {
+                    console.log("newVal = "+ JSON.stringify(newVal));
                     vm.currentParticipatingSite.name = newVal[0].name;
                     vm.currentParticipatingSite.organization = newVal[0];
                     vm.currentParticipatingSite.organization_id = newVal[0].id;
@@ -119,6 +120,7 @@
                     vm.state_province = newVal[0].state_province;
                     vm.country = newVal[0].country;
                     vm.postal_code = newVal[0].postal_code;
+                    vm.currentParticipatingSite.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
                     //console.log("vm.currentParticipatingSite =" + JSON.stringify(vm.currentParticipatingSite));
                 }
             });
@@ -135,11 +137,12 @@
             console.log("SETTING TO EDITMODE vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
             console.log("SETTING TO EDITMODE vm.curTrial.participating_sites_list="+JSON.stringify(vm.curTrial.participating_sites_list));
             console.log("SETTING TO EDITMODE vm.currentParticipatingSite.site_rec_status_wrappers="+JSON.stringify(vm.currentParticipatingSite["site_rec_status_wrappers"]));
-            vm.city =  vm.curTrial.participating_sites_list[idx].city;
-            vm.state_province =  vm.curTrial.participating_sites_list[idx].state_province;
-            vm.country = vm.curTrial.participating_sites_list[idx].country;
-            vm.postal_code = vm.curTrial.participating_sites_list[idx].postal_code;
-            vm.currentParticipatingSite.organization = {name: vm.currentParticipatingSite["po_name"], array: []};
+            vm.city =  vm.curTrial.participating_sites_list[idx].organization.city;
+            vm.state_province =  vm.curTrial.participating_sites_list[idx].organization.state_province;
+            vm.country = vm.curTrial.participating_sites_list[idx].organization.country;
+            vm.postal_code = vm.curTrial.participating_sites_list[idx].organization.postal_code;
+            vm.po_name = vm.curTrial.participating_sites_list[idx].organization.po_name;
+            vm.currentParticipatingSite.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
         }
 
         function openCalendar ($event, type) {
@@ -172,7 +175,38 @@
         function addSiteRecruitment() {
 
              console.log("vm.current_site_recruitment="+JSON.stringify(vm.current_site_recruitment));
+
+            console.log("vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
+             vm.current_site_recruitment.participating_site_id = vm.currentParticipatingSite.id;
+
+            // Temporary code. User of ng-options in the UI should resolve it.
+            for (var i = 0; i < vm.siteRecruitmentStatusesArr.length; i++) {
+                if (vm.current_site_recruitment.site_recruitment_status == vm.siteRecruitmentStatusesArr[i].name) {
+                    vm.current_site_recruitment.site_recruitment_status = vm.siteRecruitmentStatusesArr[i];
+                }
+            }
+
+             console.log("vm.current_site_recruitment="+JSON.stringify(vm.current_site_recruitment));
+             TrialService.upsertSiteRecStatus(vm.current_site_recruitment).then(function(response) {
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                //vm.curTrial.lock_version = response.lock_version || '';
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                 //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                $scope.$emit('updatedInChildScope', {});
+                toastr.clear();
+                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
+            }).catch(function(err) {
+                console.log("error in updating trial " + JSON.stringify(outerTrial));
+            });
+
+            //vm.current_site_recruitment.site_recruitment_status_id = vm.
+
+                 //vm.current_site_recruitment
         }
+
 
         /**
          * Get trial detail object from parent scope

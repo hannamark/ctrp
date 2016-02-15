@@ -115,7 +115,8 @@
             importClinicalTrialsGov: importClinicalTrialsGov,
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial,
-            getGrantsSerialNumber: getGrantsSerialNumber
+            getGrantsSerialNumber: getGrantsSerialNumber,
+            upsertSiteRecStatus: upsertSiteRecStatus
         };
 
         return services;
@@ -251,6 +252,38 @@
             var url = URL_CONFIGS.TRIALS.STATUS_WITH_ID.replace(/\s*\{.*?\}\s*/g, trialStatusId);
             return PromiseTimeoutService.getData(url);
         }
+
+        function getParticipatingSiteById(participatingSiteId) {
+            //insert the participatingSiteId into the url
+            var url = URL_CONFIGS.TRIALS.PARTICIPATING_SITE_WITH_ID.replace(/\s*\{.*?\}\s*/g, participatingSiteId);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        function getSiteRecStatusById(siteRecStatusId) {
+            //insert the siteRecStatusId into the url
+            var url = URL_CONFIGS.TRIALS.SITE_REC_STATUS_WITH_ID.replace(/\s*\{.*?\}\s*/g, siteRecStatusId);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        /**
+         * Update or insert a Site Recruitment Status Records
+         *
+         * @param siteRecStatusObj
+         * @returns {*}
+         */
+        function upsertSiteRecStatus(siteRecStatusObj) {
+            if (siteRecStatusObj.new) {
+                //create a new trial
+                $log.info('creating a trial: ' + JSON.stringify(siteRecStatusObj));
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SITE_REC_STATUS_LIST, siteRecStatusObj);
+            }
+
+            //update an existing trial
+            var configObj = {}; //empty config
+            $log.info('updating a trial: ' + JSON.stringify(siteRecStatusObj));
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_SITE_REC_STATUS + siteRecStatusObj.id + '.json', siteRecStatusObj, configObj);
+        } //upsertTrial
+
 
         function getMilestones() {
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
