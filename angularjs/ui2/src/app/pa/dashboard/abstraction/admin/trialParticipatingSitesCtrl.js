@@ -10,14 +10,18 @@
 
     trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService','DateService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService,DateService , $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService, DateService , $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj) {
 
         var vm = this;
-        console.log("HIIII");
+
+        // injected objects
         vm.curTrial = trialDetailObj;
-        vm.setAddMode = setAddMode;
-        vm.setEditMode = setEditMode;
+        vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
+
+        // initializations
         vm.currentParticipatingSite= {};
+        vm.current_site_recruitment = {};
+        vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
         vm.showOrgFields = true;
         vm.city=null;
         vm.state_province=null;
@@ -25,17 +29,19 @@
         vm.postal=null;
         vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
-        vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
-        //vm.saveCurrentParticipatingSite = saveGeneralTrialDetails;
-        //vm.resetCurrentParticipatingSite = resetGeneralTrialDetails;
         vm.currentParticipatingSite.organization = {name: '', array: []};
 
-        console.log("statusRecruitmentStatusesObj = " + vm.statusRecruitmentStatusesArr);
+        //actions
+        vm.addSiteRecruitment = addSiteRecruitment;
+        vm.editSiteRecruitment = editSiteRecruitment;
+        vm.setAddMode = setAddMode;
+        vm.setEditMode = setEditMode;
+
+
         activate();
 
         /****************** implementations below ***************/
         function activate() {
-            //appendCollaborators();
             getTrialDetailCopy();
             watchTrialDetailObj();
             watchOrganization();
@@ -153,6 +159,20 @@
             }
         }; //openCalendar
 
+        function editSiteRecruitment(index) {
+            //if (index < vm.tempTrialStatuses.length) {
+            console.log("In editSiteRecruitment");
+            vm.current_site_recruitment = angular.copy(vm.currentParticipatingSite.site_rec_status_wrappers[index]);
+            vm.current_site_recruitment.edit = true;
+            vm.current_site_recruitment.index = index;
+                // vm.tempTrialStatuses.splice(index, 1);
+            //}
+        }
+
+        function addSiteRecruitment() {
+
+             console.log("vm.current_site_recruitment="+JSON.stringify(vm.current_site_recruitment));
+        }
 
         /**
          * Get trial detail object from parent scope
