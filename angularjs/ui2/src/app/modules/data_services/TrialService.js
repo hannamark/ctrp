@@ -115,7 +115,8 @@
             importClinicalTrialsGov: importClinicalTrialsGov,
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial,
-            getGrantsSerialNumber: getGrantsSerialNumber
+            getGrantsSerialNumber: getGrantsSerialNumber,
+            upsertParticipatingSite: upsertParticipatingSite
         };
 
         return services;
@@ -251,6 +252,33 @@
             var url = URL_CONFIGS.TRIALS.STATUS_WITH_ID.replace(/\s*\{.*?\}\s*/g, trialStatusId);
             return PromiseTimeoutService.getData(url);
         }
+
+        function getParticipatingSiteById(participatingSiteId) {
+            //insert the participatingSiteId into the url
+            var url = URL_CONFIGS.TRIALS.PARTICIPATING_SITE_WITH_ID.replace(/\s*\{.*?\}\s*/g, participatingSiteId);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        /**
+         * Update or insert a Participating Site Records
+         *
+         * @param participatingSiteObj
+         * @returns {*}
+         */
+        function upsertParticipatingSite(participatingSiteObj) {
+            if (participatingSiteObj.new) {
+                //create a new trial
+                $log.info('creating a trial: ' + JSON.stringify(participatingSiteObj));
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PARTICIPATING_SITE_LIST, participatingSiteObj);
+            }
+
+            //update an Participating Site
+            var configObj = {}; //empty config
+            console.log('updating a participating site: ' + JSON.stringify(participatingSiteObj));
+            $log.info('updating a participating site: ' + JSON.stringify(participatingSiteObj));
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteObj.id + '.json', participatingSiteObj, configObj);
+        } //upsertParticipatingSite
+
 
         function getMilestones() {
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);

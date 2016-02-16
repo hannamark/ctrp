@@ -31,7 +31,8 @@ end
 
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
-    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at
+    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id
+    json.set! :added_by, document.added_by_id.nil? ? '' : User.find(document.added_by_id)
   end
 end
 
@@ -49,14 +50,10 @@ end
 
 json.participating_sites_list do
   json.array!(@trial.participating_sites) do |participating_site|
-    json.po_id participating_site.organization.id
-    json.po_name participating_site.organization.name
-    json.city participating_site.organization.city
-    json.state_province participating_site.organization.state_province
-    json.country participating_site.organization.country
-    json.postal_code participating_site.organization.postal_code
+    json.id participating_site.id
     json.investigator participating_site.person.lname
     json.primary_contact participating_site.contact_name
+    json.organization participating_site.organization
     json.site_rec_status_wrappers do
       json.array!(participating_site.site_rec_status_wrappers) do |site_rec_status_wrapper|
         json.id site_rec_status_wrapper.id
