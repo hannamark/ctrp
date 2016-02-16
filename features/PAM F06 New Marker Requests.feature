@@ -1,7 +1,7 @@
 @Admin @Global 
-Feature: PAM F11 Manage NCIt Intervention Terms 
+Feature: PAM F06 New Marker Requests 
 
-As a Research Scientist,I can manage NCIt Intervention Terms
+As a Research Scientist,I can manage New Marker Requests
 
 Scenario: #1 I can Import a term from NCIt that is not in CTRP
 Given I am logged into CTRP
