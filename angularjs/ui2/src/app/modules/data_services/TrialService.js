@@ -100,6 +100,7 @@
             getInstituteCodes: getInstituteCodes,
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
+            getSrStatuses: getSrStatuses,
             getTrialStatusById: getTrialStatusById,
             getMilestones: getMilestones,
             getHolderTypes: getHolderTypes,
@@ -244,6 +245,10 @@
 
         function getTrialStatuses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_STATUSES);
+        }
+
+        function getSrStatuses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
         }
 
         function getTrialStatusById(trialStatusId) {

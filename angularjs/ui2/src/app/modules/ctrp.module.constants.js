@@ -53,6 +53,7 @@
             'INSTITUTE_CODES': '/ctrp/registry/institute_codes.json',
             'NCI': '/ctrp/registry/nci.json',
             'TRIAL_STATUSES': '/ctrp/registry/trial_statuses.json',
+            'SITE_RECRUITMENT_STATUSES': '/ctrp/registry/site_recruitment_statuses.json',
             'ACCEPTED_FILE_TYPES': '/ctrp/registry/accepted_file_types.json',
             'VALIDATE_TRIAL_STATUS': '/ctrp/registry/trials/validate_status.json',
             'SEARCH_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/search_clinical_trials_gov.json',

@@ -216,6 +216,9 @@
                     },
                     userDetailObj: function(UserService) {
                         return UserService.getUserDetailsByUsername();
+                    },
+                    srStatusObj: function(TrialService) {
+                        return TrialService.getSrStatuses();
                     }
                 },
                 ncyBreadcrumb: {
