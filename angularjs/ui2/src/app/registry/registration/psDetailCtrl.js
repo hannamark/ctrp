@@ -25,6 +25,10 @@
 
         };
 
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
+
         // Delete the associations
         vm.toggleSelection = function (index, type) {
             if (type == 'sr_status') {
