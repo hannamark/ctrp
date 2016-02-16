@@ -50,12 +50,7 @@ end
 
 json.participating_sites_list do
   json.array!(@trial.participating_sites) do |participating_site|
-    #json.po_id participating_site.organization.id
-    #json.po_name participating_site.organization.name
-    #json.city participating_site.organization.city
-    #json.state_province participating_site.organization.state_province
-    #json.country participating_site.organization.country
-    #json.postal_code participating_site.organization.postal_code
+    json.id participating_site.id
     json.investigator participating_site.person.lname
     json.primary_contact participating_site.contact_name
     json.organization participating_site.organization

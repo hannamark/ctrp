@@ -76,20 +76,27 @@
 
         } // updateTrial
 
-        vm.saveTrial = function(){
+        vm.saveParticipatingSite = function(){
             vm.disableBtn = true;
+            console.log("In save trial");
+          //  for (var i = 0; i < vm.curTrial.participating_sites_list.length; i++) {
+          //      if (vm.curTrial.participating_sites_list[i] == vm.currentParticipatingSite.id) {
+          //          vm.curTrial.participating_sites_list[i] = vm.currentParticipatingSite.id;
+          //      }
+          //  }
 
             // An outer param wrapper is needed for nested attributes to work
-            var outerTrial = {};
-            outerTrial.new = vm.curTrial.new;
-            outerTrial.id = vm.curTrial.id;
-            outerTrial.trial = vm.curTrial;
+            //var outerTrial = {};
+            //outerTrial.new = vm.curTrial.new;
+            //outerTrial.id = vm.curTrial.id;
+            //outerTrial.trial = vm.curTrial;
 
-            TrialService.upsertTrial(outerTrial).then(function(response) {
+            TrialService.upsertParticipatingSite(vm.currentParticipatingSite).then(function(response) {
+                console.log("response="+JSON.stringify(response));
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.lock_version = response.lock_version || '';
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
                 vm.curTrial.collaborators = response["collaborators"];
                 toastr.clear();
@@ -186,8 +193,15 @@
                 }
             }
 
-             console.log("vm.current_site_recruitment="+JSON.stringify(vm.current_site_recruitment));
-             TrialService.upsertSiteRecStatus(vm.current_site_recruitment).then(function(response) {
+            vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
+            vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
+
+            console.log("vm.current_participating_site.="+JSON.stringify(vm.currentParticipatingSite));
+            vm.saveParticipatingSite();
+
+            /**
+             TrialService.upsertParticipatingSite(vm.currentParticipatingSite).then(function(response) {
+                console.log("response = " + JSON.stringify(response));
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 //vm.curTrial.lock_version = response.lock_version || '';
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
@@ -205,6 +219,7 @@
             //vm.current_site_recruitment.site_recruitment_status_id = vm.
 
                  //vm.current_site_recruitment
+             **/
         }
 
 

@@ -116,7 +116,7 @@
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial,
             getGrantsSerialNumber: getGrantsSerialNumber,
-            upsertSiteRecStatus: upsertSiteRecStatus
+            upsertParticipatingSite: upsertParticipatingSite
         };
 
         return services;
@@ -259,30 +259,25 @@
             return PromiseTimeoutService.getData(url);
         }
 
-        function getSiteRecStatusById(siteRecStatusId) {
-            //insert the siteRecStatusId into the url
-            var url = URL_CONFIGS.TRIALS.SITE_REC_STATUS_WITH_ID.replace(/\s*\{.*?\}\s*/g, siteRecStatusId);
-            return PromiseTimeoutService.getData(url);
-        }
-
         /**
-         * Update or insert a Site Recruitment Status Records
+         * Update or insert a Participating Site Records
          *
-         * @param siteRecStatusObj
+         * @param participatingSiteObj
          * @returns {*}
          */
-        function upsertSiteRecStatus(siteRecStatusObj) {
-            if (siteRecStatusObj.new) {
+        function upsertParticipatingSite(participatingSiteObj) {
+            if (participatingSiteObj.new) {
                 //create a new trial
-                $log.info('creating a trial: ' + JSON.stringify(siteRecStatusObj));
-                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SITE_REC_STATUS_LIST, siteRecStatusObj);
+                $log.info('creating a trial: ' + JSON.stringify(participatingSiteObj));
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PARTICIPATING_SITE_LIST, participatingSiteObj);
             }
 
-            //update an existing trial
+            //update an Participating Site
             var configObj = {}; //empty config
-            $log.info('updating a trial: ' + JSON.stringify(siteRecStatusObj));
-            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_SITE_REC_STATUS + siteRecStatusObj.id + '.json', siteRecStatusObj, configObj);
-        } //upsertTrial
+            console.log('updating a participating site: ' + JSON.stringify(participatingSiteObj));
+            $log.info('updating a participating site: ' + JSON.stringify(participatingSiteObj));
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteObj.id + '.json', participatingSiteObj, configObj);
+        } //upsertParticipatingSite
 
 
         function getMilestones() {
