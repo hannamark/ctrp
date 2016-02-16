@@ -42,11 +42,11 @@
                                     <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                         <input restriction-field type="text" class="form-control input-sm" datepicker-popup="{{psDetailView.dateFormat}}" ng-model="psDetailView.status_date"
                                                ng-click="psDetailView.openCalendar($event, 'status_date')" is-open="psDetailView.status_date_opened" datepicker-options="psDetailView.dateOptions" ng-required="false" close-text="Close">
-                                                    <span class="input-group-btn">
-                                                        <button restriction-field type="button" class="btn btn-default" ng-click="psDetailView.openCalendar($event, 'status_date')">
-                                                            <i class="glyphicon glyphicon-calendar"></i>
-                                                        </button>
-                                                    </span>
+                                        <span class="input-group-btn">
+                                            <button restriction-field type="button" class="btn btn-default" ng-click="psDetailView.openCalendar($event, 'status_date')">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </button>
+                                        </span>
                                     </div>
                                 </td>
                                 <td class="col-md-4">
