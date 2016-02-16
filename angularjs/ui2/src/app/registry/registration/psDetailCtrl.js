@@ -21,6 +21,10 @@
         vm.addedStatuses = [];
         vm.srsNum = 0;
 
+        vm.updateTrial = function() {
+
+        };
+
         // Delete the associations
         vm.toggleSelection = function (index, type) {
             if (type == 'sr_status') {
@@ -61,7 +65,7 @@
                 newStatus.comment = vm.status_comment;
                 newStatus._destroy = false;
                 TrialService.addStatus(vm.addedStatuses, newStatus);
-                vm.tsNum++;
+                vm.srsNum++;
                 vm.status_date = null;
                 vm.sr_status_id = null;
                 vm.status_comment = null;

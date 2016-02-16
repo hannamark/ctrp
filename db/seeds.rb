@@ -190,10 +190,6 @@ SiteRecruitmentStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed t
 SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Complete')
 SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
-SiteRecruitmentStatus.find_or_create_by(code: 'AVA', name: 'Available')
-SiteRecruitmentStatus.find_or_create_by(code: 'NLA', name: 'No longer available')
-SiteRecruitmentStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available')
-SiteRecruitmentStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
 
 Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')

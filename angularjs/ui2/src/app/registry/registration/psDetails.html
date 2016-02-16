@@ -4,7 +4,7 @@
             <h4>Add Participating Site</h4>
         </div>
         <div class="row">
-            <form class="form form-horizontal" role="form">
+            <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="psDetailView.updateTrial()">
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">NCI ID:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
@@ -120,6 +120,17 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div class="form-group no-bottom-margin">
+                    <div class="btn-toolbar col-xs-12">
+                        <button type="submit" restriction-field class="btn btn-primary pull-right" id="submit_btn" ng-disabled="psDetailView.disableBtn">
+                            Save
+                        </button>
+                        <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="psDetailView.reload()" ng-disabled="psDetailView.disableBtn">
+                            <i class="glyphicon glyphicon-remove"></i> Reset
+                        </button>
                     </div>
                 </div>
             </form>
