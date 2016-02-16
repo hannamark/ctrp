@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160211213723) do
+ActiveRecord::Schema.define(version: 20160215052636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -344,8 +344,8 @@ ActiveRecord::Schema.define(version: 20160211213723) do
     t.string   "institute_code",    limit: 255
     t.string   "nci",               limit: 255
     t.integer  "trial_id"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "uuid",              limit: 255
     t.integer  "lock_version",                  default: 0
     t.string   "serial_number",     limit: 255
