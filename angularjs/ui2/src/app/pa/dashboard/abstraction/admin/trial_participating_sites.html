@@ -221,6 +221,7 @@
                                 <th>Site Recruitment Status</th>
                                 <th>Site Recruitment Status Date</th>
                                 <th>Primary Contact</th>
+                                <th class="text-center">Edit</th>
                                 <th class="text-center">Deletion</th>
                                 </thead>
                                 <tbody>
@@ -241,7 +242,13 @@
                                     <td>
                                         {{participating_site.primary_contact}}
                                     </td>
-                                    <td> <button type="button" class="btn btn-default" ng-click="psView.setEditMode($index)">Edit</button>
+                                    <td>
+                                        <label class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="psView.setEditMode($index)">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </label>
+
+                                    </td>
+                                    <td>
                                         <label class="btn btn-default" restriction-field ng-click="psView.deleteParticipatingSite($index)">
                                             <i class="glyphicon" ng-class="participating_site._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                         </label>
@@ -251,7 +258,7 @@
                             </table>
 
                             <div class="btn-toolbar">
-                                <button type="button" class="btn btn-primary pull-right" id="add_participating_site" restriction-field ng-click="psView.setAddMode()">Add</button>
+                                <button type="button" class="btn btn-primary pull-right" id="add_participating_site" restriction-field ng-click="psView.setAddMode()">Add Participating Site</button>
                             </div>
 
                         </div>
