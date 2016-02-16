@@ -7,7 +7,7 @@ engines:
         #default is 18, increased to ignore rails rest controller methods
           mass_threshold: 50
         javascript:
-          mass_threshold: 40
+          mass_threshold: 100
   rubocop:
     enabled: true
   eslint:

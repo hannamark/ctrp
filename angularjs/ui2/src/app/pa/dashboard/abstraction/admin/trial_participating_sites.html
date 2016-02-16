@@ -17,14 +17,14 @@
                                 <div class="col-xs-12 col-sm-6">
                                     <input type="text" id="organization" name="organization" ng-model="psView.currentParticipatingSite.organization.name" disabled class="form-control" placeholder="Organization" required>
                                     <!-- <input type="text" id="sponsor" name="organization" disabled class="form-control" placeholder="Sponsor"> -->
-                  <span class="form-control-feedback" ng-show="psView.currentParticipatingSite.organization.name.length == 0" ng-class="ps_form.organization.$dirty &&
-                      !ctrpbtn.general_trial_details_form.needsAttention(psView.currentParticipatingSite.organization) ?
+                  <span class="form-control-feedback" ng-show="psView.currentParticipatingSite.selOrganization.name.length == 0" ng-class="ps_form.organization.$dirty &&
+                      !ctrpbtn.general_trial_details_form.needsAttention(psView.currentParticipatingSite.selOrganization) ?
                       'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                                    <span class="help-block" ng-show="ps_form.organization.$dirty && ps_form.sponsor.$error.required">Sponsor is Required</span>
+                                    <span class="help-block" ng-show="ps_form.selOrganization.$dirty && ps_form.sponsor.$error.required">Sponsor is Required</span>
                                 </div>
                                 <div class="col-xs-12 col-sm-6">
                                     <!-- <button class="btn btn-primary">Look Up Sponsor</button> -->
-                                    <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="psView.currentParticipatingSite.organization.array"></ctrp-org-adv-search-modal-button>
+                                    <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="psView.currentParticipatingSite.selOrganization.array"></ctrp-org-adv-search-modal-button>
                                 </div>
                             </div>
                         </div>
@@ -221,13 +221,14 @@
                                 <th>Site Recruitment Status</th>
                                 <th>Site Recruitment Status Date</th>
                                 <th>Primary Contact</th>
+                                <th class="text-center">Edit</th>
                                 <th class="text-center">Deletion</th>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="participating_site in psView.curTrial.participating_sites_list track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">
-                                    <td>{{participating_site.po_id}}</td>
+                                    <td>{{participating_site.organization.id}}</td>
                                     <td>
-                                        {{participating_site.po_name}}
+                                        {{participating_site.organization.name}}
                                     </td>
                                     <td>
                                         {{participating_site.investigator}}
@@ -241,7 +242,13 @@
                                     <td>
                                         {{participating_site.primary_contact}}
                                     </td>
-                                    <td> <button type="button" class="btn btn-default" ng-click="psView.setEditMode($index)">Edit</button>
+                                    <td>
+                                        <label class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="psView.setEditMode($index)">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </label>
+
+                                    </td>
+                                    <td>
                                         <label class="btn btn-default" restriction-field ng-click="psView.deleteParticipatingSite($index)">
                                             <i class="glyphicon" ng-class="participating_site._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                         </label>
@@ -251,7 +258,7 @@
                             </table>
 
                             <div class="btn-toolbar">
-                                <button type="button" class="btn btn-primary pull-right" id="add_participating_site" restriction-field ng-click="psView.setAddMode()">Add</button>
+                                <button type="button" class="btn btn-primary pull-right" id="add_participating_site" restriction-field ng-click="psView.setAddMode()">Add Participating Site</button>
                             </div>
 
                         </div>

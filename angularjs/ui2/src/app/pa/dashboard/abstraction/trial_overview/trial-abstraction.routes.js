@@ -41,6 +41,7 @@
                 .state('main.pa.trialOverview.trialHistory', {
                     url: '/history',
                     templateUrl: 'app/pa/dashboard/abstraction/trial_overview/trial_history.html',
+                    controller:   'trialHistoryCtrl as trialHistoryView',
                     section: 'pa',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',

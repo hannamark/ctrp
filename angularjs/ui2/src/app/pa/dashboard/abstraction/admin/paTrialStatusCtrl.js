@@ -1,5 +1,5 @@
 /**
- * Created by wangg5, Deember 31st, 2015
+ * Created by wangg5, December 31st, 2015
  */
 
 (function() {
