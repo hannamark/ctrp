@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="ctrp.app.main">
     <head>
-        <!-- <ng-include src="'header.env.vars'"></ng-include> -->
+        <ng-include src="'app/layout/header.env.html'"></ng-include>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
@@ -113,11 +113,6 @@
         <script src="/src/app/po/person/directives/advancedPersonSearchForm.js"></script>
         <script src="/src/app/po/organization/directives/advancedOrgSearchModalButton.js"></script>
         <script src="/src/app/po/organization/directives/advancedOrgSearchForm2.js"></script>
-        <script src="/src/app/pa/search/trials/search-trials.routes.js"></script>
-        <script src="/src/app/pa/ctrp.app.pa.js"></script>
-        <script src="/src/app/pa/search/trials/paTrialCtrl.js"></script>
-        <script src="/src/app/pa/dashboard/gov_import/gov-import.routes.js"></script>
-        <script src="/src/app/pa/dashboard/results_reporting/results-reporting.routes.js"></script>
         <script src="/src/app/modules/widgets/ctrp.module.widgets.js"></script>
         <script src="/src/app/modules/widgets/forms/ctrp.widgets.autoFocus.directive.js"></script>
         <script src="/src/app/modules/widgets/filters/ctrp.widgets.filter.reverseList.js"></script>
@@ -128,6 +123,11 @@
         <script src="/src/app/modules/widgets/comment/CommentService.js"></script>
         <script src="/src/app/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js"></script>
         <script src="/src/app/modules/widgets/buttons/ctrp.widgets.backButton.directive.js"></script>
+        <script src="/src/app/pa/search/trials/search-trials.routes.js"></script>
+        <script src="/src/app/pa/ctrp.app.pa.js"></script>
+        <script src="/src/app/pa/search/trials/paTrialCtrl.js"></script>
+        <script src="/src/app/pa/dashboard/results_reporting/results-reporting.routes.js"></script>
+        <script src="/src/app/pa/dashboard/gov_import/gov-import.routes.js"></script>
         <script src="/src/app/registry/ctrp.app.registry.js"></script>
         <script src="/src/app/registry/registration/viewTrialCtrl.js"></script>
         <script src="/src/app/registry/registration/trialDetailCtrl.js"></script>
@@ -150,8 +150,6 @@
         <script src="/src/app/po/family/family.routes.js"></script>
         <script src="/src/app/po/family/ModalInstanceFamilyMembersCtrl.js"></script>
         <script src="/src/app/po/family/ModalInstanceFamilyCtrl.js"></script>
-        <script src="/src/app/pa/layout/paModuleMenuPanelCtrl.js"></script>
-        <script src="/src/app/pa/search/PATrialService.js"></script>
         <script src="/src/app/modules/widgets/ctrp.widgets.restrictionField.directive.js"></script>
         <script src="/src/app/modules/widgets/ctrp.widgets.in-place-edit.directive.js"></script>
         <script src="/src/app/modules/validators/ctrp.module.validators.js"></script>
@@ -169,6 +167,8 @@
         <script src="/src/app/modules/data_services/DateService.js"></script>
         <script src="/src/app/modules/cache_service/ctrp.module.localCache.js"></script>
         <script src="/src/app/modules/cache_service/LocalCacheService.js"></script>
+        <script src="/src/app/pa/layout/paModuleMenuPanelCtrl.js"></script>
+        <script src="/src/app/pa/search/PATrialService.js"></script>
         <script src="/src/app/administrative/new_biomarker_requests/new-biomarker-requests.routes.js"></script>
         <script src="/src/app/administrative/registered_user_details/registered-user-details.routes.js"></script>
         <script src="/src/app/administrative/manage_site_admins/manage-site-admins.routes.js"></script>
