@@ -21,7 +21,7 @@ module.exports = function() {
         ],
         build: './build/',
         client: client,
-        css: temp + 'styles.css',
+        css: [temp + 'styles.css', temp + 'override.css'],
         fonts: './bower_components/font-awesome/fonts/**/*.*',
         html: clientApp + '**/*.html',
         htmltemplates: clientApp + '**/*.html',
@@ -40,6 +40,7 @@ module.exports = function() {
             // TODO:
         ],
         less: client + 'styles/styles.less',
+        override: client + 'styles/override.css',
         report: report,
         root: root,
         server: server, //not used

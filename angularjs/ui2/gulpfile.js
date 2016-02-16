@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var es = require('event-stream');
 var args = require('yargs').argv;
 var browserSync = require('browser-sync');
 var config = require('./gulp.config')();
@@ -42,12 +43,25 @@ gulp.task('vet', function() {
 gulp.task('styles', ['clean-styles'], function() {
     log('Compiling Less --> CSS');
 
+    return es.merge(
+        gulp
+            .src(config.less)
+            .pipe($.plumber())
+            .pipe($.less())
+            .pipe($.autoprefixer({browsers: ['last 2 version', '> 5%']}))
+            .pipe(gulp.dest(config.temp)),
+
+        gulp.src(config.override)
+            .pipe(gulp.dest(config.temp))
+    );
+    /*
     return gulp
         .src(config.less)
         .pipe($.plumber())
         .pipe($.less())
         .pipe($.autoprefixer({browsers: ['last 2 version', '> 5%']}))
         .pipe(gulp.dest(config.temp));
+        */
 });
 
 gulp.task('fonts', ['clean-fonts'], function() {
@@ -118,21 +132,10 @@ gulp.task('wiredep', function() {
 
     return gulp
         .src(config.index)
-        // .pipe($.inject(gulp.src(config.js)))
         .pipe($.inject(gulp.src(config.js)
-            .pipe($.angularFilesort())))
+            .pipe(pipes.orderedAppScripts()))) // $.angularFilesort()
         .pipe(wiredep(options))
         .pipe(gulp.dest(config.client));
-
-        /*
-        .src(config.index)
-        .pipe(wiredep(options))
-        .pipe($.inject(gulp.src(config.js)
-            .pipe(pipes.orderedVendorScripts())
-            .pipe(pipes.orderedAppScripts())
-        , {relative: true}))
-        .pipe(gulp.dest(config.client));
-        */
 });
 
 gulp.task('inject', ['wiredep', 'styles', 'templatecache'], function() {
