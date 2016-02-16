@@ -210,6 +210,7 @@ gulp.task('optimize', ['inject', 'test'], function() {
 
     return gulp
         .src(config.index)
+        .pipe($.replace('<link rel="stylesheet" href="styles/override.css" />', ''))
         .pipe($.plumber())
         .pipe($.inject(
             gulp.src(templateCache, {read: false}), {
