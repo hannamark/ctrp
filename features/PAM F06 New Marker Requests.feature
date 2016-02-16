@@ -1,126 +1,211 @@
 @Admin @Global 
 Feature: PAM F06 New Marker Requests 
 
-As a Research Scientist,I can manage New Marker Requests
+As a Research Scientist, I can manage New Marker Requests
 
-Scenario: #1 I can Import a term from NCIt that is not in CTRP
+Scenario: #1 I can Search for a new Marker request in the list of pending requests
 Given I am logged into CTRP
-And I select the option to Manage NCIt Intervention Terms
-And I select the option to Import/Sync Term With NCIt
-When I enter the NCIt Identifier
-Then Import New Intervention From NCIt screen displays
-| NCIt Identifier |
-| CDR Identifier |
-| Preferred Name|
-| Synonyms|
-| Cancer.gov Type |
-| clinicalTrials.gov Type|
-And I can enter the CDR Identifier
-And I can select the Cancer.gov Type
-|Drug|
-| Procedure/Surgery |
-| Genetic |
-|Other|
-And I select the ClinicalTrials.gov Type
-|Drug|
-|Device |
-|Biological/vaccine|
-| Procedure/Surgery |
-|Radiation|
-|Behavioral|
-|Genetic|
-|Dietary Supplement|
-|Other|
-When I click the Import Button
-Then the intervention term is imported
-And the system synchronizes
+When I select the option "New Marker Requests"
+Then the "Pending Markers Report:  Marker Search" screen display
+And I can Enter a CTRP ID
+And I can Enter a Marker Name
+When I Select the Search Button
+And the CTRP ID or Marker Name is not in the list
+Then the Nothing found message displays
+| Message.   Nothing found to display |
+When either the CTRP ID or the Marker Name is on the list
+Then the Marker Search Results table displays
 
-Scenario: #2 I can Import a term from NCIt that is already in CTRP
-Given I am logged into CTRP
-And I select the option to Manage NCIt Intervention Terms
-And I select the option to Import/Sync Term With NCIt
-When I enter the NCIt Identifier
-Then Synchronize Existing Intervention Term with NCIt screen displays
-| NCIt Identifier |
-| CDR Identifier |
-| Preferred Name|
-| Synonyms|
-| Cancer.gov Type |
-| clinicalTrials.gov Type|
-And the term already present in CTRP message displays
-| Message.  Intervention with NCIt code 'C1234' already present in CTRP, compare the values below and click 'sync Term' to update the CTRP term with values from NCIt|
-And note displays 
-|Note: 'CDR Identifier','Cancer.gov Type' and 'Clinical Trials.gov Type' attributes are NOT synchronized from NCIt, their existing CTRP values shown above will be retained.|
-When I click the Sync Button
-Then the system synchronizes
-And the Manage NCIt Disease/Condition or Intervention Terms screen displays
-And the sychronize message displays
-|Message.  Intervention C1777 synchronized with NCI thesaurus|
+      | CTRP ID with link to the study in CTRP and link to the protocol document |
+      | Marker Name|
+      | Term Request |
+      | caDSR Public ID |
+      | Action with Accept button |
 
-Scenario: #3 I can request new term request form
-Given I select the option Manage NCIt Intervention Terms
-When I select the option EVS New Term Request Form
-Then the Term Suggestion form displays
-|Contact Information:|
-And I can enter Business Email
-And I can enter Other
-|Term Information|
-And I can select a value for <Vocabulary>
-|NCI Thesaurus|
-|NCI Metathesaurus|
-|CTCAE|
-|NPO|
-|Other|
-And I can enter Term
-And I can enter Synonym(s)
-And I can enter Nearest Code\CUI
-And I can enter Definition/Other
-|Additional Information|
-And I can enter project/Product term needed for
-And I can enter Reason for suggestion plus any other additional information
-|Security Code|
-And I can enter 'Enter the characters appearing in the above image'
-When I click the Submit button 
-Then the request is submitted
-When I click the Clear button
-Then the message from the webpage displays
-|Are you sure you want to clear this page?|
+Scenario: #2 CTRP ID links
+Given I am on the "Pending Markers Report:  Marker Search" screen 
+When I click on a CTRP ID 
+Then the Marker screen for the selected CTRP study displays
+When I click on the protocol document icon for a specific CTRP ID
+Then the protocol document displays
+
+Scenario: #3 I can Reset a Marker Search
+Given I am on the "Pending Markers Report:  Marker Search" screen 
+And I have entered a CTRP ID or a Marker Name
+When I click on the Reset button 
+Then the CTRP ID and Marker Name fields are blank
+
+Scenario: #4 I can submit caDSR Search
+Given I am on the "Pending Markers Report:  Marker Search" screen 
+When I click on the caDSR Search button 
+Then the Marker Search in caDSR screen displays
+|Case-Sensitive Search|
+|Highlight Query Text|
+|Search Scope|
+|Search Term|
+|Public ID (exact match)|
+|Search button|
+|Reset button|
+|Cancel button|
+
+Scenario:  #5 Select Name from caDSR
+Given I am on the Marker Search in caDSR screen 
+And Case-Sensitive Search is defaulted to No
+And Highlight Query Text is defaulted to Yes
+And Search Scope is defaulted to Both
+When I have entered a Search Term 
+And I have selected the Search button
+And I can enter a Public Id
+And I have selected the Search button
+Then a results table type will be displayed
+|Permissable Value|
+|  Meaning |
+| Description  | 
+| Public ID |
+
+Scenario:  #6 Missing Name and Public ID in caDSR Marker Search screen
+Given I am on the Marker Search in caDSR screen
+When I have not entered a Search Term
+And I have not entered a Public ID
+And I click the Search button 
+Then the error message "At least one search criteria is required" displays
+
+Scenario:  #7 Case Sensitive Search on caDSR search screen
+Given I am on the Marker Search in caDSR screen
+When I have selected Yes for Case-Sensitive Search
+And I have entered a Search Term
+When I click Search button
+Then a results table displays with markers with the exact case sensitive match on the search term
+When I have selected No for Case-Sensitive Search 
+And I have entered a Search Term
+When I click Search button
+Then a results table displays with markers that do not indicate case on the search term
+
+
+Scenario:  #8 Select Search Scope in caDSR Marker Search screen
+Given I am on the Add Marker screen
+ And I have selected the caDSR button
+And I am on the Marker Search in caDSR screen 
+When I have selected Primary Term for Search Scope
+And I select the Search button
+Then a results table displays with Permissable Value that matched the search term 
+When I have selected Synonym for Search Scope
+And I select the Search button
+Then a results table displays with Marker Synonym field that matched the search term 
+When I have selected Both for Search Scope
+And I select the Search button
+Then a results table displays with both Permissable Value and Marker Synonym fields displaying search term
+
+
+Scenario:  #9 Highlight Query Text in caDSR Marker Search screen
+Given I am on the Add Marker screen
+And I have selected the caDSR button
+And I am on the Marker Search in caDSR screen 
+When I select <Highlight Query Text> 
+And I select the search button
+Then the <Search Term in the results table>
+
+|highlight Query Text |  Search Term result in the results table|
+| yes                 | Search term is highlighted 
+| No                  | Search term is not highlighted
+
+
+Scenario:  #10 Enter Public ID in caDSR Marker Search screen
+Given I am on the Add Marker screen
+ And I have selected the caDSR button
+And I am on the Marker Search in caDSR screen 
+When I enter a valid_Public_ID
+And there is a match in caDSR
+Then the exact match of the Public ID will be displayed in the result table
+When I enter an invalid Publid ID
+And there is no match in caDSR
+Then a 'Nothing found to display' message is displayed
+Example:
+|Valid_Public_ID|
+|5044197|
+|3589771|
+
+
+Scenario: #11  I can submit a Term Request
+Given I am on the "Pending Markers Report:  Marker Search" screen 
+And I have selected a CTRP ID/ Marker Name 
+When I click on the Term Request Form button
+Then the Create Permissable Value Request form type displays
+
+      | CTRP ID | populated |
+      |To email	  |populated  |
+      | Sender's email |populated  |
+      |Marker Name |populated |
+      |Found in Hugo   |checkbox |  
+      |HUGO| Link to HUGO|
+      |Text of marker as written in the protocol| text box|
+And I can change the Marker Name
+And I can check "Found in Hugo"
+And I can enter "Text of marker as written in the protocol"
+When I click Send Email button
+Then NCI CTRP: CTRP REQUEST for NEW PERMISSABLE VALUES email is generated
+And Pending Markers Report:  Marker Search screen displays
+And Term Request displays Date_time type
+Example:
+|Date_time|
+|2016-02-16 11:46:37|
+
+When I click Cancel button
+Then Pending Markers Report:  Marker Search screen displays
+And Term Request button is present
+And no updates have been made
+
+
+Scenario: #12 I can accept a Marker Name 
+Given I am on the "Pending Markers Report:  Marker Search" screen 
+WhenI have selected a CTRP ID/ Marker Name 
+And I have entered a valid caDSR Public ID
+And I click on the Accept button
+Then the Marker Search in caDSR screen displays with the following
+|Permissable Value|
+|Meaning|
+|Description|
+|Proceed with the change button|
+|Cancel button|
+When I click "Proceed with the change" button
+Then the "Pending Markers Report:  Marker Search" screen displays with the CTRP ID/Marker Name row removed
+And the Marker screen for the CTRP study has been updated with the Name and the Record Status is "Active'
+When I click "Cancel" button
+Scenario: #12 I can accept a Marker Name for a submitted term request
+Given I am on the "Pending Markers Report:  Marker Search" screen 
+WhenI have selected a CTRP ID/ Marker Name with a submitted Term Request 
+And I have entered a valid caDSR Public ID
+And I click on the Accept button
+Then the Marker Search in caDSR screen displays with the following
+|Permissable Value|
+|Meaning|
+|Description|
+When I click "Proceed with the change" button
+Then the "Pending Markers Report:  Marker Search" screen displays with the CTRP ID/Marker Name row removed
+And the Marker screen for the CTRP study has been updated with the Name and the Record Status is "Active'
+When I click "Cancel" button
+Then "Pending Markers Report:  Marker Search" screen displays 
+Scenario: #12 I can accept a Marker Name for a submitted term request
+Given I am on the "Pending Markers Report:  Marker Search" screen 
+WhenI have selected a CTRP ID/ Marker Name with a submitted Term Request 
+And I have entered a valid caDSR Public ID
+And I click on the Accept button
+Then the Marker Search in caDSR screen displays with the following
+|Permissable Value|
+|Meaning|
+|Description|
+When I click "Proceed with the change" button
+Then the "Pending Markers Report:  Marker Search" screen displays with the CTRP ID/Marker Name row removed
+And the Marker screen for the CTRP study has been updated with the Name and the Record Status is "Active'
+When I click "Cancel" button
+Then "Pending Markers Report:  Marker Search" screen displays 
+And no changes have been made
+
+Scenario: #13 I accept a Marker Name with an invalid caDSR Public ID
+Given I am on the "Pending Markers Report:  Marker Search" screen 
+When I have selected a CTRP ID/ Marker Name 
+And I have entered an invalid caDSR Public ID
+And I click on the Accept button
+Then the Public_ID_not_found message displays
+|Message No match found in caDSR with the Public ID entered|
 When I click the OK button
-Then the information that has been entered on the page is cleared
-When I click the Cancel button
-Then the information that has been entered on the page is not cleared 
-
-Scenario: #4 I can enter term information
-Given I select the option Manage NCIt Intervention Terms
-When I select the option Enter Term Information
-Then the Enter New Intervention Details form displays
-And I must enter NCIt Identifier
-And I can enter CDR Identifier
-And I must enter Preferred Name
-And I can enter Synonym 
-When I click the Add button
-Then the Synonym is moved to the box directly below  
-And I can add another Synonym 
-When I click the Add button
-Then the Synonym is moved to the box directly below  
-And I can select a Cancer.gov Type
-And I can select a ClinicalTrial.gov Type
-When I click the Save button
-Then the Intervention term is entered
-
-Scenario: #5 I can remove synonyms
-Given I am on the New Intervention Details form
-When I select a synonym to be removed
-And Click on the Remove button
-Then the Synonym is removed from the list of synonyms
-
-Scenario: #6 I can Reset Enter New Intervention Details
-Given I am on the New Intervention Details form
-And I have entered data into the fields
-When I select the reset button
-Then the message displays
-|Click OK to reset the intervention details.  Click Cancel to abort|
-When I click OK
-Then the data that has been entered since the last save is removed
-When I click Cancel
-Then the data is not removed
