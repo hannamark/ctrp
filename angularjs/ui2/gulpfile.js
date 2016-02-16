@@ -221,11 +221,11 @@ gulp.task('optimize', ['inject', 'test'], function() {
         .pipe($.csso())
         .pipe(cssFilter.restore())
         .pipe(jsLibFilter)
-        .pipe($.uglify())
+        .pipe($.uglify({mangle: false})) // no variable name mangling
         .pipe(jsLibFilter.restore())
         .pipe(jsAppFilter)
         .pipe($.ngAnnotate())
-        .pipe($.uglify())
+        .pipe($.uglify({mangle: false})) // no variable name mangling
         .pipe(jsAppFilter.restore())
         .pipe($.rev())
         .pipe(assets.restore())
