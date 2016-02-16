@@ -51,7 +51,10 @@ def history
   #widget.versions.last.changeset
 
 
-  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? ", "Trial",params[:trial_id])
+  #@trial_versions =TrialVersion.where("item_type = ? AND item_id = ? ", "Trial",params[:trial_id])
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at BETWEEN ? AND ? ", "Trial",params[:trial_id],params[:start_date],params[:end_date])
+
+
 end
 
 

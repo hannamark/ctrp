@@ -11,7 +11,7 @@
                     <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                         <label for="start_date" >Start Date </label>
                         <input type="text" id="start_date" name="status_date" class="form-control input-sm"
-                               uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.statusObj.start_date"
+                               uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.start_date"
                                ng-click="trialHistoryView.openCalendar($event, 'start_date')"
                                is-open="trialHistoryView.startDateOpened"
                                datepicker-options="trialHistoryView.dateOptions"
@@ -28,7 +28,7 @@
                     <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                         <label for="start_date" >End Date </label>
                         <input type="text" id="end_date" name="end_date" class="form-control input-sm"
-                               uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.statusObj.end_date"
+                               uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.end_date"
                                ng-click="trialHistoryView.openCalendar($event, 'end_date')"
                                is-open="trialHistoryView.endDateOpened"
                                datepicker-options="trialHistoryView.dateOptions"

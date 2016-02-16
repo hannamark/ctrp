@@ -27,7 +27,6 @@
         vm.endDateOpened = false;
         vm.openCalendar = openCalendar;
         vm.submit = submit;
-        vm.trialHistoryObj = {trial_id: '21'};
 
 
         //ui-grid plugin options
@@ -103,18 +102,21 @@
         }; //openCalendar
 
         function submit() {
-            //alert('hello');
-            //vm.searchParams.trial_id=23;
-            AuditService.getAudits(vm.trialHistoryObj).then(function (data) {
-                console.log('received search results: ' + JSON.stringify(data.trial_versions));
-                vm.gridOptions.data = data.trial_versions; //prepareGridData(data.data.orgs); //data.data.orgs;
-                //vm.gridOptions.data = data.trial_versions; //prepareGridData(data.data.orgs); //data.data.orgs;
 
-                //console.log('vm grid: ' + JSON.stringify(vm.gridOptions.data));
-                //console.log('received search results: ' + JSON.stringify(data.data));
-               //vm.gridOptions.totalItems = data.data.total;
+           var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+            var startDate = vm.start_date;
+            var endDate = vm.end_date;
+            console.log(startDate);
+            vm.trialHistoryObj = {trial_id: trialId, start_date: startDate, end_date: endDate};
+
+                AuditService.getAudits(vm.trialHistoryObj).then(function (data) {
+                console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                vm.gridOptions.data = data.trial_versions;
+                vm.gridOptions.totalItems = data.total;
+                    console.log(data.total)
+                    console.log(data.trial_versions.size)
             }).catch(function (err) {
-                console.log('search people failed');
+                console.log('Getting audit trials failed');
             }).finally(function() {
                 console.log('search finished');
                 vm.searching = false;
