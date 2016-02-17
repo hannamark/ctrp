@@ -20,8 +20,7 @@
 #  index_trial_documents_on_trial_id     (trial_id)
 #
 
-class TrialDocument < ActiveRecord::Base
-  include BasicConcerns
+class TrialDocument < TrialBase
 
   belongs_to :added_by, class_name: "User"
   belongs_to :trial

@@ -43,7 +43,7 @@ When from the Board Approval Status I have selected the �Submission Not Requir
   |Submitted, denied|
   |Submission not required|
 Then the Board Approval Status will be associated with the trial
-
+  @runthis
 Scenario: #4 Save Regulatory Information - Human Subject Safety 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information� Human Subject Safety screen

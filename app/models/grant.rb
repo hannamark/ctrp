@@ -18,7 +18,7 @@
 #  index_grants_on_trial_id  (trial_id)
 #
 
-class Grant < ActiveRecord::Base
+class Grant < TrialBase
   include BasicConcerns
 
   belongs_to :trial

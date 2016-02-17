@@ -64,7 +64,49 @@ var abstractionTrialCollaborators = function(){
 
     this.collaboratorsTableTBodyRowBColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(01)'));
     this.collaboratorsTableTBodyRowBColB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(02)'));
-    this.collaboratorsTableTBodyRowBColC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(03)'));
+    this.collaboratorsTableTBodyRowBColC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(03)'));
+
+    this.collaboratorsTableTBodyRowCColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(01)'));
+    this.collaboratorsTableTBodyRowCColB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(02)'));
+    this.collaboratorsTableTBodyRowCColC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(03)'));
+
+    this.collaboratorsTableTBodyRowDColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(01)'));
+    this.collaboratorsTableTBodyRowDColB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(02)'));
+    this.collaboratorsTableTBodyRowDColC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(03)'));
+
+    this.collaboratorsTableTBodyRowEColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(01)'));
+    this.collaboratorsTableTBodyRowEColB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(02)'));
+    this.collaboratorsTableTBodyRowEColC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(03)'));
+
+    this.collaboratorsTableTBodyRowFColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(01)'));
+    this.collaboratorsTableTBodyRowFColB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(02)'));
+    this.collaboratorsTableTBodyRowFColC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(03)'));
+
+    this.collaboratorsTableTBodyRowGColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(01)'));
+    this.collaboratorsTableTBodyRowGColB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(02)'));
+    this.collaboratorsTableTBodyRowGColC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(03)'));
+
+    this.collaboratorsTableTBodyRowHColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(01)'));
+    this.collaboratorsTableTBodyRowHColB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(02)'));
+    this.collaboratorsTableTBodyRowHColC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(03)'));
+
+    this.collaboratorsTableTBodyRowAColCSelect = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(03) input'));
+    this.collaboratorsTableTBodyRowBColCSelect = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(03) input'));
+    this.collaboratorsTableTBodyRowCColCSelect = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(03) input'));
+    this.collaboratorsTableTBodyRowDColCSelect = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(03) input'));
+    this.collaboratorsTableTBodyRowEColCSelect = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(03) input'));
+    this.collaboratorsTableTBodyRowFColCSelect = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(03) input'));
+    this.collaboratorsTableTBodyRowGColCSelect = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(03) input'));
+    this.collaboratorsTableTBodyRowHColCSelect = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(03) input'));
+
+    /*
+     * In Line Editing
+     */
+    this.inLineEditingLink = element(by.css('span[ng-click="edit()"]'));
+    this.inLineEditingTextBox = element(by.css('input.form-control.input-sm')); //by.css('.form-control.input-sm')
+    this.inLineEditingCancelButton = element(by.id('cancel_edit_btn'));
+    this.inLineEditingSaveButton = element(by.buttonText('Save'));
+
 
     /*
      * Add Collaborators object(s)
@@ -72,7 +114,7 @@ var abstractionTrialCollaborators = function(){
 
     this.collaboratorsConfirmSelectedOrg = element(by.css('.form-control.input-sm.animated-item'));
     this.collaboratorsSave = element(by.buttonText('Save'));
-    this.collaboratorsCancelButton = element(by.css('button[ng-disabled="trialDetailView.disableBtn"]'));
+    this.collaboratorsCancelButton = element(by.css('button[ng-click="trialDetailView.reload()"]'));
 
     //this.requiredMessageAddCollaborators = element(by.css('div[ng-show="regInfoSafetyView.approvalNumRequired"] .help-block.ng-scope'));
     //this.collaboratorsReset = element(by.css('button[ng-click="regInfoSafetyView.resetHumanSafetyInfo()"]'));
@@ -148,6 +190,35 @@ var abstractionTrialCollaborators = function(){
     };
 
     //***********************************
+    //In Line Editing
+    //***********************************
+    //In Editing : Link
+    this.clickInLineEditingLink = function(){
+        helper.clickButton(this.inLineEditingLink,"Inline Editing - Link");
+    };
+
+    //In Editing : Link
+    this.clickInLineEditingTextBox = function(){
+        helper.clickButton(this.inLineEditingTextBox,"Inline Editing - Text Box");
+    };
+
+    //In Line Editing Text : Text Box
+    this.setInLineEditingText = function(getEditedValToBeSet)  {
+        helper.setValue(this.inLineEditingTextBox,getEditedValToBeSet,"In Line Editing - Text Box field value entered:["+getEditedValToBeSet+"]");
+    };
+
+    //In Line Editing Cancel : Button
+    this.clickInLineEditingCancel = function(){
+        helper.clickButton(this.inLineEditingCancelButton,"In Line Editing Cancel - button");
+    };
+
+    //In Line Editing Save : Button
+    this.clickInLineEditingSave = function(){
+        helper.clickButton(this.inLineEditingSaveButton,"In Line Editing Save - button");
+    };
+
+
+    //***********************************
     //Verify Trial Collaborators
     //***********************************
 
@@ -155,6 +226,91 @@ var abstractionTrialCollaborators = function(){
     //***********************************
     //Screen Methods - Trial Collaborators
     //***********************************
+
+    //Select all the org from list of org except <getUnselectedOrgName>
+    this.selectAllListOfOrgExcept = function(getUnselectedOrgName){
+        var runTimeVal = '';
+        var runTimeFlagTorF = '';
+        var runTimeFlagCondition = 'false';
+        this.waitForElement(this.collaboratorsTableTBodyRowAColA, "List of Collaborators Table");
+        this.collaboratorsTableListAll.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=0; i<(rows.length); i++){
+                if (i === 0){
+                    console.log('Test 1');
+                    listCollbrtrNm = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(02)')).getText('value');
+                    listCollbrtrNm.then(function(Test1){
+                        if (Test1 !== getUnselectedOrgName){
+                            element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(03) input')).click();
+                        };
+                    });
+                }
+                if (i === 1){
+                    console.log('Test 2');
+                    listCollbrtrNm = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(02)')).getText('value');
+                    listCollbrtrNm.then(function(Test2){
+                        if (Test2 !== getUnselectedOrgName){
+                            element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(03) input')).click();
+                        };
+                    });
+                }
+                if (i === 2){
+                    console.log('Test 3');
+                    listCollbrtrNm = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(02)')).getText('value');
+                    listCollbrtrNm.then(function(Test3){
+                        if (Test3 !== getUnselectedOrgName){
+                            element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(03) input')).click();
+                        };
+                    });
+                }
+                if (i === 3){
+                    console.log('Test 4');
+                    listCollbrtrNm = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(02)')).getText('value');
+                    listCollbrtrNm.then(function(Test4){
+                        if (Test4 !== getUnselectedOrgName){
+                            element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(03) input')).click();
+                        };
+                    });
+                }
+                if (i === 4){
+                    console.log('Test 5');
+                    listCollbrtrNm = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(02)')).getText('value');
+                    listCollbrtrNm.then(function(Test5){
+                        if (Test5 !== getUnselectedOrgName){
+                            element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(03) input')).click();
+                        };
+                    });
+                }
+                if (i === 5){
+                    console.log('Test 6');
+                    listCollbrtrNm = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(02)')).getText('value');
+                    listCollbrtrNm.then(function(Test6){
+                        if (Test6 !== getUnselectedOrgName){
+                            element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(03) input')).click();
+                        };
+                    });
+                }
+                if (i === 6){
+                    console.log('Test 7');
+                    listCollbrtrNm = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(02)')).getText('value');
+                    listCollbrtrNm.then(function(Test7){
+                        if (Test7 !== getUnselectedOrgName){
+                            element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(03) input')).click();
+                        };
+                    });
+                }
+                if (i === 7){
+                    console.log('Test 8');
+                    listCollbrtrNm = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(02)')).getText('value');
+                    listCollbrtrNm.then(function(Test8){
+                        if (Test8 !== getUnselectedOrgName){
+                            element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(03) input')).click();
+                        };
+                    });
+                }
+            };
+        });
+    };
 
     //Find Added Orginization Name on the List of Collaborators Name column
     this.findOrgOnTheTableList = function(getExpectedValue){
@@ -199,12 +355,73 @@ var abstractionTrialCollaborators = function(){
         });
     };
 
+    //Select Org
+    this.selectOrg = function(getIVal){
+                console.log('i:['+getIVal+']');
+                element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+getIVal+') td:nth-child(03) input')).click();
+    };
+
+    //Select Any Name from the the list of collaborators table
+    this.selectAllOrgExcept = function(getExceptOrgNm){
+        this.waitForElement(this.collaboratorsTableTBodyRowAColA, "List of Collaborators Table");
+        this.collaboratorsTableListAll.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var e=1; e<(rows.length+1); e++){
+                console.log('e:['+e+']');
+                if (e===(rows.length+1)){
+                    e = (rows.length);
+                }
+                listCollbrtrNm = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+e+') td:nth-child(02)')).getText('value');
+                listCollbrtrNm.then(function(value){
+                    if (value === getExceptOrgNm){
+                        console.log('Unselected Identified Org:['+getExceptOrgNm+']');
+                    } else if (value === !getExceptOrgNm){
+                        this.selectOrg(e);
+                    }
+                    console.log('Expected Name(selectAllOrgExcept):['+getExceptOrgNm+']');
+                    console.log('Actual Name(selectAllOrgExcept):['+value+']');
+                });
+            };
+        });
+    };
+
     //Verify the list of collaborators table row's has been deleted
     this.verifyListOfCollboratorsNameExists = function(expectedOrgNmbr){
         this.waitForElement(this.collaboratorsTableList, "List of Collaborators Table");
         this.collaboratorsTableListAll.then(function(rows){
             console.log('total Row Count:['+(rows.length)+']');
             expect((rows.length).toString()).to.eql(expectedOrgNmbr.toString());
+        });
+    };
+
+    //Edit Collaborators Name
+    this.findOrgOnTheTableAndEdit = function(getExpectedValue){
+        var runTimeVal = '';
+        var runTimeFlagTorF = '';
+        var runTimeFlagCondition = 'false';
+        this.waitForElement(this.collaboratorsTableTBodyRowAColA, "List of Collaborators Table");
+        this.collaboratorsTableListAll.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                console.log('i:['+i+']');
+                listCollbrtrNm = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(02)')).getText('value');
+                listCollbrtrNm.then(function(value){
+                    console.log('Expected Name:['+getExpectedValue+']');
+                    console.log('Actual Name:['+value+']');
+                    if (value === getExpectedValue){
+                        console.log('Curent Row:['+i+'] and Name:['+value+']');
+                        expect(value.toString()).to.eql(getExpectedValue.toString());
+                        runTimeVal = ''+value+'';
+                        runTimeFlagTorF = 'true'
+                    } else if(i === rows.length && !value === getExpectedValue){
+                        runTimeFlagTorF = 'false'
+                    }
+                    if (runTimeFlagCondition === runTimeFlagTorF){
+                        console.log('Condition')
+                        expect(runTimeVal.toString()).to.eql(getExpectedValue.toString());
+                    }
+                });
+            };
         });
     };
 
