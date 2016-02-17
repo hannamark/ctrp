@@ -7,13 +7,15 @@
 
     angular.module('ctrp.app.registry').controller('psDetailCtrl', psDetailCtrl);
 
-    psDetailCtrl.$inject = ['trialDetailObj', 'userDetailObj', 'TrialService', 'toastr', '$state', 'srStatusObj',
-        'DateService'];
+    psDetailCtrl.$inject = ['psDetailObj', 'trialDetailObj', 'userDetailObj', 'TrialService', 'toastr', '$state',
+        'srStatusObj', 'DateService'];
 
-    function psDetailCtrl(trialDetailObj, userDetailObj, TrialService, toastr, $state, srStatusObj,
-                          DateService) {
+    function psDetailCtrl(psDetailObj, trialDetailObj, userDetailObj, TrialService, toastr, $state,
+                          srStatusObj, DateService) {
 
         var vm = this;
+        vm.curPs = psDetailObj || {};
+        vm.curPs = vm.curPs.data || vm.curPs;
         vm.curTrial = trialDetailObj;
         vm.curUser = userDetailObj;
         vm.curPs = {};

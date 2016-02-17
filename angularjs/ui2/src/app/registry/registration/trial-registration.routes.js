@@ -211,6 +211,11 @@
                 resolve: {
                     TrialService: 'TrialService',
                     UserService: 'UserService',
+                    psDetailObj: function($q) {
+                        var deferred = $q.defer();
+                        deferred.resolve(null);
+                        return deferred.promise;
+                    },
                     trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
                     },
