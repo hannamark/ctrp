@@ -91,7 +91,7 @@
                                         <td class="col-md-2">
                                             <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                                 <input type="text" id="status_date" name="status_date" class="form-control input-sm"
-                                                       uib-datepicker-popup="{{psView.dateFormat}}" ng-model="psView.statusObj.status_date"
+                                                       uib-datepicker-popup="{{psView.dateFormat}}" ng-model="psView.current_site_recruitment.status_date"
                                                        ng-click="psView.openCalendar($event, 'status_date')"
                                                        is-open="psView.statusDateOpened"
                                                        datepicker-options="psView.dateOptions"
@@ -202,8 +202,15 @@
                         </fieldset>
 
 
+                        <div class="form-group no-bottom-margin">
+                            <div class="btn-toolbar">
+                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()">Save</button>
+                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.reload()"  restriction-field ng-disabled="psView.disableBtn">
+                                    <i class="glyphicon glyphicon-remove"></i> Reset
+                                </button>
+                            </div>
+                        </div>
 
-                        <!-- end of fieldset for trial statuses -->
 
 
 
