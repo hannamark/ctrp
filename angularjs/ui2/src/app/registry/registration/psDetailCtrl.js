@@ -99,7 +99,7 @@
                 _.each(vm.srStatusArr, function (status) {
                     if (status.id == vm.sr_status_id) {
                         newStatus.sr_status_name = status.name;
-                        newStatus.trial_status_code = status.code;
+                        newStatus.sr_status_code = status.code;
                     }
                 });
                 newStatus.comment = vm.status_comment;
@@ -126,7 +126,7 @@
                 }
             }
 
-            TrialService.validateStatus({"statuses": noDestroyStatusArr}).then(function(response) {
+            TrialService.validateSrStatus({"statuses": noDestroyStatusArr}).then(function(response) {
                 vm.statusValidationMsgs = response.validation_msgs;
 
                 // Add empty object to positions where _destroy is true

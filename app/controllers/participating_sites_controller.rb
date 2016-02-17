@@ -61,6 +61,25 @@ class ParticipatingSitesController < ApplicationController
     end
   end
 
+  def validate_status
+    @validation_msgs = []
+    transition_matrix = JSON.parse(AppSetting.find_by_code('SR_STATUS_TRANSITION').big_value)
+    statuses = params['statuses']
+
+    if statuses.present? && statuses.size > 0
+      statuses.each_with_index do |e, i|
+        if i == 0
+          from_status_code = 'STATUSZERO'
+        else
+          from_status_code = statuses[i - 1]['sr_status_code']
+        end
+        to_status_code = statuses[i]['sr_status_code']
+        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code])
+        @validation_msgs.append(validation_msg)
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_participating_site
@@ -71,7 +90,25 @@ class ParticipatingSitesController < ApplicationController
     def participating_site_params
       params[:participating_site].permit(:protocol_id, :program_code, :contact_name, :contact_phone, :contact_email, :trial_id, :organization_id,
                                          site_rec_status_wrappers_attributes: [:id, :status_date, :site_recruitment_status_id, :_destroy],
-                                         participating_site_investigators_attributes: [:id, :participating_site_id, :person_id, :set_as_contact, :investigator_type, :_destroy]
-    )
+                                         participating_site_investigators_attributes: [:id, :participating_site_id, :person_id, :set_as_contact, :investigator_type, :_destroy])
     end
+
+  # Convert status code to name in validation messages
+  def convert_validation_msg (msg)
+    if msg.has_key?('warnings')
+      msg['warnings'].each do |warning|
+        statusObj = SiteRecruitmentStatus.find_by_code(warning['status']) if warning.has_key?('status')
+        warning['status'] = statusObj.name if statusObj.present?
+      end
+    end
+
+    if msg.has_key?('errors')
+      msg['errors'].each do |error|
+        statusObj = SiteRecruitmentStatus.find_by_code(error['status']) if error.has_key?('status')
+        error['status'] = statusObj.name if statusObj.present?
+      end
+    end
+
+    return msg
+  end
 end

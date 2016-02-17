@@ -112,6 +112,7 @@
             checkAuthority: checkAuthority,
             addStatus: addStatus,
             validateStatus: validateStatus,
+            validateSrStatus: validateSrStatus,
             searchClinicalTrialsGov: searchClinicalTrialsGov,
             importClinicalTrialsGov: importClinicalTrialsGov,
             uploadDocument: uploadDocument,
@@ -949,6 +950,17 @@
         function validateStatus(statuses) {
             if (!!statuses) {
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_TRIAL_STATUS, statuses);
+            }
+        }
+
+        /**
+         * Get validation warnings/errors for site recruitment statuses
+         *
+         * @param statuses
+         */
+        function validateSrStatus(statuses) {
+            if (!!statuses) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_SR_STATUS, statuses);
             }
         }
 
