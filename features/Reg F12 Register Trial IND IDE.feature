@@ -3,14 +3,13 @@ Feature: Reg F12 Register Trial IND IDE
 
 As a CTRP User, I can indicate if a trial has an associated IND or IDE and if so, enter information about the IND or IDE
 
-Scenario Outline: #1 I can indicate that the trial does not have an associated IND or IDE
-Given I have selected the option to register a trial <trialType>
+Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
+Given I have selected the option to register a trial <TrialType>
 And I am on the Register Trial IND/IDE Information screen
-When I have selected "No" for the question "Does this trial have an associated IND/IDE?"
+When I have selected "No" for the question "Does this trial have an associated IND or IDE?"
 Then the IND/IDE Information section for the trial registration will not indicate any errors during trial review
-
-Examples:
-      |trialType                 |
+      
+      |TrialType                 |
       |National                  |
       |Externally Peer-Reviewed  |
       |Institutional             |
@@ -18,7 +17,7 @@ Examples:
 Scenario: #2 I can enter the IND or IDE information for a trial
 Given I have selected the option to register a trial <TrialType>
 And I am on the Register Trial IND/IDE Information screen
-And I have selected "Yes" for the question "Does this trial have an associated IND/IDE?"
+And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
 When I have selected the IND/IDE Type:
   
       |IND|
@@ -53,11 +52,45 @@ Then the IND/IDE Information for the trial registration will not indicate any er
       |National                  |
       |Externally Peer-Reviewed  |
       |Institutional             |
+
+
+Scenario:#2 FDA IND/IDE Information Validation check rule
+    Given I am on The FDA IND/IDE Information for applicable trials
+    When I have NOT entered <IND/IDETypes>
+      |<IND/IDETypes>  |
+      |IND/IDE Types  |
+      |IND/IDE Number  |
+      |IND/IDE Grantor  |
+      |IND/IDE Holder Type  |
+
+     And I have clicked on the Add IND/IDE Button
+     Then A message will be displayed "Please choose an IND/IDE Type,enter an IND/IDE Number, select an IND/IDE Grantor and select an IND/IDE Holder Type"
+
       
-Scenario: #3 I can enter the IND and IDE information for multiple IND or IDE registrations for a trial
+Scenario Outline: #3 I must enter FDA IND/IDE Information for applicable trials
+    Given I have selected the option to register a trial <TrialType>
+    And I am on the FDA IND/IDE Information for applicable trials
+    When I have not selected an IND/IDE Types
+    And I have not entered IND/IDE Number
+    And I have not selected an IND/IDE Grantor
+    And I have not selected an IND/IDE Holder Type
+     Then the Register Trial FDA IND/IDE Information for applicable trials section will indicate an error type" FDA IND/IDE Information Required"
+
+Examples: 
+
+
+      |TrialType                 |
+      |National                  |
+      |Externally Peer-Reviewed  |
+      |Institutional             |
+
+
+
+
+Scenario: #4 I can enter the IND and IDE information for multiple IND or IDE registrations for a trial
 Given I have selected the option to register a trial <TrialType>
 And I am on the Register Trial IND/IDE Information screen
-And I have selected "Yes" for the question "Does this trial have an associated IND/IDE?"
+And I have selected "Yes" for the question "Does this trial have an associated IND or IDE?"
 When I have entered the information for an IND/IDE Type
         |IND|
         |IED|
@@ -69,4 +102,5 @@ Then I will be able to select "Add IND/IDE" and enter the information for multip
       |Institutional             |
 
 
+  
 
