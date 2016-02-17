@@ -273,7 +273,7 @@
         function upsertParticipatingSite(participatingSiteObj) {
             if (participatingSiteObj.new) {
                 //create a new trial
-                $log.info('creating a trial: ' + JSON.stringify(participatingSiteObj));
+                $log.info('creating a participating site: ' + JSON.stringify(participatingSiteObj));
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PARTICIPATING_SITE_LIST, participatingSiteObj);
             }
 

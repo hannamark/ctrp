@@ -35,6 +35,7 @@ class ParticipatingSite < ActiveRecord::Base
   has_many :people, through: :participating_site_investigators
 
   accepts_nested_attributes_for :site_rec_status_wrappers, allow_destroy: true
+  accepts_nested_attributes_for :participating_site_investigators, allow_destroy: true
 
 
   scope :by_value, ->  (value) {

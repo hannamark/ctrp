@@ -25,8 +25,41 @@
         vm.addedStatuses = [];
         vm.srsNum = 0;
 
-        vm.updateTrial = function() {
+        vm.updatePs = function() {
+            // Prevent multiple submissions
+            vm.disableBtn = true;
 
+            vm.curPs.trial_id = vm.curTrial.id;
+
+            if (vm.selectedPiArray.length > 0) {
+                vm.curPs.participating_site_investigators_attributes = [];
+                vm.curPs.participating_site_investigators_attributes.push({person_id: vm.selectedPiArray[0].id});
+            }
+
+            if (vm.addedStatuses.length > 0) {
+                vm.curPs.site_rec_status_wrappers_attributes = [];
+                _.each(vm.addedStatuses, function (status) {
+                    vm.curPs.site_rec_status_wrappers_attributes.push(status);
+                });
+            }
+
+            // An outer param wrapper is needed for nested attributes to work
+            var outerPs= {};
+            outerPs.new = vm.curPs.new;
+            outerPs.id = vm.curPs.id;
+            outerPs.participating_site = vm.curPs;
+
+            TrialService.upsertParticipatingSite(outerPs).then(function(response) {
+                if (response.server_response.status < 300) {
+                    $state.go('main.trials', null, {reload: true});
+                    toastr.success('Participating Site ' + vm.curPs.id + ' has been recorded', 'Operation Successful!');
+                } else {
+                    // Enable buttons in case of backend error
+                    vm.disableBtn = false;
+                }
+            }).catch(function(err) {
+                console.log("error in updating trial " + JSON.stringify(outerPs));
+            });
         };
 
         vm.reload = function() {
@@ -62,7 +95,7 @@
             if (vm.status_date && vm.sr_status_id) {
                 var newStatus = {};
                 newStatus.status_date = DateService.convertISODateToLocaleDateStr(vm.status_date);
-                newStatus.sr_status_id = vm.sr_status_id;
+                newStatus.site_recruitment_status_id = vm.sr_status_id;
                 // For displaying status name in the table
                 _.each(vm.srStatusArr, function (status) {
                     if (status.id == vm.sr_status_id) {
@@ -113,10 +146,23 @@
         /****************************** implementations **************************/
 
         function activate() {
+            appendNewPsFlag();
             populateOrgs();
             setDefaultOrg();
         }
 
+        /**
+         * Append a 'new' key to the vm.curPs to
+         * indicate this is a new trial, not an trial
+         * for editing/curating
+         *
+         */
+        function appendNewPsFlag() {
+            if ($state.$current.name.indexOf('add') > -1) {
+                vm.curPs.new = true;  //
+            }
+        }
+        
         // Populate available organization list
         function populateOrgs() {
             if (vm.curUser.role === 'ROLE_SITE-SU') {
