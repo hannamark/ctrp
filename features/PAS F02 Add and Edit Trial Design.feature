@@ -175,15 +175,15 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
      Then the Ancillary Correlative trial design is associated with the trial
       And the message Record Updated displays
 
-  Scenario Outline:#7 Observational and Ancillary Correlative Trial Design Mandatory Fields rules
+  Scenario Outline:#7 Observational Trial Design Mandatory Fields rules
     Given I am on the Trial Design Screen
-      And the Clinical research Category is Observational or Ancillary Correlative 
+      And the Clinical research Category is Observational 
      When The Trial Design field <TrialDesignField> is not entered
       And I have seleted the save Button
      Then an error message <TrialDesignErrorMessage> will be displayed  
     Examples: 
   
-      | <TrialDesignField> | <TrialDesignErrorMessage>       | 
+      | <TrialDesignField> | <TrialDesignErrorMessage>          | 
       | Primary Purpose    | Primary Purpose must be entered    | 
       | Trial Phase        | Trial Phase must be entered        | 
       | Intervention Model | Intervention Model must be entered | 
