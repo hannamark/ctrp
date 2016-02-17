@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160215212038) do
+ActiveRecord::Schema.define(version: 20160217010200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -807,6 +807,7 @@ ActiveRecord::Schema.define(version: 20160215212038) do
     t.datetime "updated_at",                                         null: false
     t.string   "uuid",                       limit: 255
     t.integer  "lock_version",                           default: 0
+    t.text     "comments"
   end
 
   add_index "site_rec_status_wrappers", ["participating_site_id"], name: "index_site_rec_status_wrappers_on_participating_site_id", using: :btree
@@ -1062,9 +1063,9 @@ ActiveRecord::Schema.define(version: 20160215212038) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.jsonb    "object"
+    t.text     "object"
     t.datetime "created_at"
-    t.jsonb    "object_changes"
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1249,9 +1250,9 @@ ActiveRecord::Schema.define(version: 20160215212038) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.jsonb    "object"
+    t.text     "object"
     t.datetime "created_at"
-    t.jsonb    "object_changes"
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 

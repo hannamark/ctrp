@@ -4,9 +4,9 @@ Feature: PAM F06 New Marker Requests
 As a Research Scientist, I can manage New Marker Requests
 
 Scenario: #1 I can Search for a new Marker request in the list of pending requests
-Given I am logged into CTRP
+Given I am logged into CTRP PA Application
 When I select the option "New Marker Requests"
-Then the "Pending Markers Report:  Marker Search" screen display
+Then the "Pending Markers Report Marker Search" screen display
 And I can Enter a CTRP ID
 And I can Enter a Marker Name
 When I Select the Search Button
@@ -31,11 +31,12 @@ Then the protocol document displays
 
 Scenario: #3 I can Reset a Marker Search
 Given I am on the "Pending Markers Report:  Marker Search" screen 
-And I have entered a CTRP ID or a Marker Name
+And I have entered a CTRP ID
+And I have entered a Marker Name
 When I click on the Reset button 
-Then the CTRP ID and Marker Name fields are blank
+Then the Marker Search screen is refreshed for a new search 
 
-Scenario: #4 I can submit caDSR Search
+Scenario: #4 I can submit caDSR Search                          
 Given I am on the "Pending Markers Report:  Marker Search" screen 
 When I click on the caDSR Search button 
 Then the Marker Search in caDSR screen displays
@@ -54,12 +55,12 @@ And Case-Sensitive Search is defaulted to No
 And Highlight Query Text is defaulted to Yes
 And Search Scope is defaulted to Both
 When I have entered a Search Term 
-And I have selected the Search button
 And I can enter a Public Id
 And I have selected the Search button
 Then a results table type will be displayed
 |Permissable Value|
 |  Meaning |
+|Marker Synonym  |
 | Description  | 
 | Public ID |
 
@@ -109,7 +110,6 @@ Then the <Search Term in the results table>
 | yes                 | Search term is highlighted 
 | No                  | Search term is not highlighted
 
-
 Scenario:  #10 Enter Public ID in caDSR Marker Search screen
 Given I am on the Add Marker screen
  And I have selected the caDSR button
@@ -140,7 +140,9 @@ Then the Create Permissable Value Request form type displays
       |HUGO| Link to HUGO|
       |Text of marker as written in the protocol| text box|
 And I can change the Marker Name
-And I can check "Found in Hugo"
+When I check "Found in Hugo"
+Then Hugo Marker Code fied will be displayed
+And I must enter Hugo Marker Code 
 And I can enter "Text of marker as written in the protocol"
 When I click Send Email button
 Then NCI CTRP: CTRP REQUEST for NEW PERMISSABLE VALUES email is generated
@@ -149,7 +151,6 @@ And Term Request displays Date_time type
 Example:
 |Date_time|
 |2016-02-16 11:46:37|
-
 When I click Cancel button
 Then Pending Markers Report:  Marker Search screen displays
 And Term Request button is present
@@ -168,12 +169,16 @@ Then the Marker Search in caDSR screen displays with the following
 |Proceed with the change button|
 |Cancel button|
 When I click "Proceed with the change" button
-Then the "Pending Markers Report:  Marker Search" screen displays with the CTRP ID/Marker Name row removed
-And the Marker screen for the CTRP study has been updated with the Name and the Record Status is "Active'
-When I click "Cancel" button
-Scenario: #12 I can accept a Marker Name for a submitted term request
+Then the "Pending Markers Report:  Marker Search" screen displays with the accepted CTRP ID/Marker Name row removed
+And the Marker screen for the CTRP study has been updated with the accepted marker Name and the Record Status is "Active"
+When I click the "Cancel" button
+Then the Marker screen for the CTRP study won't be updated with the Name and the Record Status will remain "Pending"
+
+
+
+Scenario: #12 I can accept a Marker Name for a term request
 Given I am on the "Pending Markers Report:  Marker Search" screen 
-WhenI have selected a CTRP ID/ Marker Name with a submitted Term Request 
+WhenI have selected a CTRP ID/ Marker Name  
 And I have entered a valid caDSR Public ID
 And I click on the Accept button
 Then the Marker Search in caDSR screen displays with the following
@@ -181,25 +186,13 @@ Then the Marker Search in caDSR screen displays with the following
 |Meaning|
 |Description|
 When I click "Proceed with the change" button
-Then the "Pending Markers Report:  Marker Search" screen displays with the CTRP ID/Marker Name row removed
+Then the "Pending Markers Report:  Marker Search" screen displays with the accepted CTRP ID/Marker Name row removed
 And the Marker screen for the CTRP study has been updated with the Name and the Record Status is "Active'
 When I click "Cancel" button
 Then "Pending Markers Report:  Marker Search" screen displays 
-Scenario: #12 I can accept a Marker Name for a submitted term request
-Given I am on the "Pending Markers Report:  Marker Search" screen 
-WhenI have selected a CTRP ID/ Marker Name with a submitted Term Request 
-And I have entered a valid caDSR Public ID
-And I click on the Accept button
-Then the Marker Search in caDSR screen displays with the following
-|Permissable Value|
-|Meaning|
-|Description|
-When I click "Proceed with the change" button
-Then the "Pending Markers Report:  Marker Search" screen displays with the CTRP ID/Marker Name row removed
-And the Marker screen for the CTRP study has been updated with the Name and the Record Status is "Active'
-When I click "Cancel" button
-Then "Pending Markers Report:  Marker Search" screen displays 
-And no changes have been made
+And the Marker screen for the CTRP study won't be updated with the Name and the Record Status will remain "Pending"
+
+
 
 Scenario: #13 I accept a Marker Name with an invalid caDSR Public ID
 Given I am on the "Pending Markers Report:  Marker Search" screen 
