@@ -35,11 +35,13 @@ class Person < ActiveRecord::Base
   has_many :organizations, through: :po_affiliations
   belongs_to :source_status
   belongs_to :source_context
-  belongs_to :source_cluster
+  #belongs_to :source_cluster
   has_many :trial_co_pis
   has_many :copi_trials, through: :trial_co_pis, source: :trial
   has_many :pi_trials, foreign_key: :pi_id, class_name: "Trial"
   has_many :investigator_trials, foreign_key: :investigator_id, class_name: "Trial"
+  has_many :participating_site_investigators, -> { order 'participating_site_investigators.id' }
+  has_many :participating_sites, through: :participating_site_investigators
 
   accepts_nested_attributes_for :po_affiliations, allow_destroy: true
 

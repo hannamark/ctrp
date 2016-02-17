@@ -18,7 +18,7 @@
                     <input tabindex="12" type="text" id="organization_name" class="form-control input-sm"
                             autocomplete="off" placeholder="Organization Name" ng-model="searchParams.name" auto-focus
                             uib-typeahead="org for org in typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
-                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
+                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" auto-focus />
                     <!--<i ng-show="loadingOrganizations" class="glyphicon glyphicon-refresh"></i>
                     <div ng-show="noResults">
                         <i class="glyphicon glyphicon-remove has-error">No organizations name matched</i>
@@ -101,7 +101,16 @@
                 </div>
                 <!-- end of last updated by -->
             </div>
-
+            <div class="form-group">
+                <div class="col-xs-12 col-sm-3"></div>
+                <div class="col-xs-12 col-sm-9">
+                    <div ng-class="searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
+                        <label for="wc_search">
+                            <input tabindex="11" type="checkbox" id="wc_search" ng-model="searchParams.wc_search" /> Exact Search
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-xs-12 col-md-6">
             <!--source status-->
@@ -182,7 +191,7 @@
                                uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.startDate" is-open="startDateOpened"
                                datepicker-options="dateOptions" ng-click="openCalendar($event, 'start')"
-                               ng-required="false" close-text="Close" placeholder="Start Date"/>
+                               ng-required="false" close-text="Close" placeholder="Start Date" />
                         <span class="input-group-btn">
                             <button tabindex="29" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
                                 <i class="glyphicon glyphicon-calendar"></i>
@@ -199,7 +208,7 @@
                                uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" ng-click="openCalendar($event, 'end')"
                                datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
-                               ng-required="false" close-text="Close" placeholder="End Date"/>
+                               ng-required="false" close-text="Close" placeholder="End Date" />
                         <span class="input-group-btn">
                             <button tabindex="31" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
                                 <i class="glyphicon glyphicon-calendar"></i>
@@ -211,17 +220,9 @@
                     </span>
                 </div>
             </div>
-
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-9">
-            <div ng-class="searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
-                <label for="wc_search">
-                    <input tabindex="11" type="checkbox" id="wc_search" ng-model="searchParams.wc_search" /> Exact Search
-                </label>
-            </div>
-        </div>
         <div class="col-xs-12">
             <div class="btn-toolbar">
                 <button tabindex="33" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchOrgs('fromStart')" ng-disabled="searching">

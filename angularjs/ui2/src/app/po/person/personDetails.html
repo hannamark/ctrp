@@ -144,7 +144,12 @@
                             <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
                             <div class="col-xs-12 col-sm-9">
                                 <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
-                                <div class="row animated-item top-offset-tiny table-responsive" ng-show="personDetailView.savedSelection.length > 0">
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="personDetailView.curPersonEditable">
+                            <div class="col-xs-12 col-sm-2"></div>
+                            <div class="col-xs-12 col-sm-9">
+                                <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid" ng-show="personDetailView.savedSelection.length > 0">
                                     <input type="text" ng-model="personDetailView.selectedOrgFilter" restriction-field class="form-control input-sm" placeholder="Filter selected organizations"/>
                                     <table class="table table-bordered table-striped table-condensed">
                                         <thead>
@@ -164,7 +169,7 @@
                                                            uib-datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                            ng-model="org.effective_date" is-open="org.opened_effective"
                                                            datepicker-options="personDetailView.dateOptions"
-                                                           ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
+                                                           ng-required="false" close-text="Close" ng-disabled="org._destroy" ng-click="personDetailView.openCalendar($event, $index, 'effective')" />
                                                     <span class="input-group-btn">
                                                         <button tabindex="26" type="button" restriction-field class="btn btn-default" ng-click="personDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
                                                             <i class="glyphicon glyphicon-calendar"></i>
@@ -178,7 +183,7 @@
                                                            uib-datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                            ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                            datepicker-options="personDetailView.dateOptions"
-                                                           ng-required="false" close-text="Close" ng-disabled="org._destroy"/>
+                                                           ng-required="false" close-text="Close" ng-disabled="org._destroy" ng-click="personDetailView.openCalendar($event, $index, 'expiration')" />
                                                     <span class="input-group-btn">
                                                         <button tabindex="28" type="button" restriction-field class="btn btn-default" ng-click="personDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
                                                             <i class="glyphicon glyphicon-calendar"></i>
@@ -198,6 +203,7 @@
                                 <!-- row for the table ends -->
                                 <!--</div>-->
                             </div>
+                            <div class="col-xs-12 col-sm-1"></div>
                         </div>
                         <div class="form-group no-bottom-margin" ng-show="personDetailView.curPersonEditable">
                             <div class="col-xs-12 col-sm-3"></div>

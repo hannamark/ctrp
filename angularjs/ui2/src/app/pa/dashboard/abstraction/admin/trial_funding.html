@@ -7,12 +7,12 @@
 
             <div class="row">
                 <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
-                    <fieldset class="sub-bordered">
+                    <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">NCI Grant</legend>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.grant_question)}">
-                            <label class="control-label col-xs-12 col-sm-3">Is this trial funded by an NCI grant?</label>
-                            <div class="col-xs-12 col-sm-9">
+                            <label class="control-label col-xs-12 col-sm-4">Is this trial funded by an NCI grant?</label>
+                            <div class="col-xs-12 col-sm-8">
                                 <label class="radio-inline">
                                     <input type="radio" restriction-field ng-model="trialDetailView.curTrial.grant_question" value="Yes" name="grant_question"
                                    ng-required="!trialDetailView.curTrial.grant_question"> Yes
@@ -27,7 +27,7 @@
                             </div>
                         </div>
                     </fieldset>
-                    <fieldset class="sub-bordered">
+                    <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">Funding Mechanism</legend>
 
                         <div class="form-group" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.grant_dummy)}">
@@ -64,8 +64,8 @@
                                         </td>
 
                                         <td class="col-md-2">
-                                            <div>
-                                                <ui-select autofocus ng-model="trialDetailView.serial_number"
+                                            <div class="select2-results-absolute">
+                                                <ui-select autofocus="true" ng-model="trialDetailView.serial_number"
                                                            theme="select2"
                                                            ng-disabled="grantsInputs.disabled"
                                                            reset-search-input="false"
@@ -74,6 +74,7 @@
                                                     <ui-select-choices repeat="tempgrant in trialDetailView.grantsInputs.grantResults | propsFilter: {serial_number: $select.search, institution_name: $select.search}"
                                                                        refresh="refreshGrants($select.search)"
                                                                        refresh-delay="0">
+                                                        <!--
                                                         <div ng-bind-html="tempgrant.serial_number | highlight: $select.search"></div>
                                                         <small>
                                                             <strong>Serial Number:</strong> {{tempgrant.serial_number}} <br />
@@ -81,6 +82,8 @@
                                                             <strong>Project Title:</strong> {{tempgrant.project_title}} <br />
                                                             <strong>PI:</strong> {{tempgrant.pi_full_name}}
                                                         </small>
+                                                        -->
+                                                        <strong>{{tempgrant.serial_number}}</strong> - {{tempgrant.institution_name}}, {{tempgrant.project_title}}, {{tempgrant.pi_full_name}}
                                                     </ui-select-choices>
                                                 </ui-select>
                                             </div>
@@ -129,7 +132,7 @@
                                     <tr ng-repeat="grant in trialDetailView.addedGrants track by $index" ng-class="grant._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                         <td class="col-md-2">{{grant.funding_mechanism}}</td>
                                         <td class="col-md-2">{{grant.institute_code}}</td>
-                                        <td class="col-md-3">{{grant.serial_number.serial_number}}</td>
+                                        <td class="col-md-3">{{grant.serial_number}}</td>
                                         <td class="col-md-4">{{grant.nci}}</td>
                                         <td class="col-md-1" style="vertical-align: middle">
                                             <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'grant')">
@@ -142,10 +145,10 @@
                             </div>
                         </div>
                     </fieldset>
-                    <div class="form-group no-bottom-margin">
+                    <div class="form-group no-bottom-margin" ng-if="trialDetailView.curTrial.pa_editable">
                         <div class="btn-toolbar">
                             <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field >Save</button>
-                            <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" ng-disabled="trialDetailView.disableBtn">
+                            <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field ng-disabled="trialDetailView.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                         </div>
@@ -155,4 +158,3 @@
         </uib-accordion-group>
     </uib-accordion>
 </div>
-

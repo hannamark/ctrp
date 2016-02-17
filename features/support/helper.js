@@ -155,6 +155,48 @@ var helper = function() {
         console.log(errorMessage + " - header value");
     };
 
+    this.getVerifyRequired = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        expect(fieldName.getText()).to.eventually.equal(fieldValue);
+        console.log(errorMessage + " - Required field value");
+    };
+
+    this.getVerifyLabel= function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        expect(fieldName.getText()).to.eventually.equal(fieldValue);
+        console.log(errorMessage + " - Required field value");
+    };
+
+    this.verifyElementPresents =function (fieldName, fieldValueTrueOrFalse) {
+        expect(fieldName.isPresent()).to.eventually.equal(fieldValueTrueOrFalse);
+    };
+
+    this.verifyElementDisplayed =function (fieldName, fieldValueTrueOrFalse) {
+        expect(fieldName.isDisplayed()).to.eventually.equal(fieldValueTrueOrFalse);
+    };
+
+    this.verifyTableRowText = function (tbleRowIdentifier, expectedTblRwVal, errorMessage) {
+        this.wait(tbleRowIdentifier, errorMessage);
+        expect(tbleRowIdentifier.getText()).to.eventually.equal(expectedTblRwVal);
+        console.log(errorMessage + " - Table Row value(s)");
+    };
+
+    this.getListOptionsValue = function(listName){
+        var j = 0;
+        var textList = [];
+        var text = '';
+        var myLists = listName;
+        myLists.count().then(function(count){
+            console.log('List Options Count: '+count);
+            myLists.each(function(element, index){
+                element.getText().then(function(text){
+                    textList[j++] = text
+                    return text;
+                });
+            });
+        });
+    };
+
     this.pageRefresh = function () {
         browser.refresh();
     };
@@ -240,14 +282,14 @@ var helper = function() {
 
     this.retValVerification = function (objt, objtType, expectedValue){
         try {
-            console.log("You see", this.retValVerification(objt, objtType, expectedValue));
+            console.log("You see", this.retValVerificationM(objt, objtType, expectedValue));
         } catch (error) {
             console.log("Something went wrong: " + error);
         }
     }
 
 
-    this.retValVerification = function(obj, objType, expectedVal){
+    this.retValVerificationM = function(obj, objType, expectedVal){
         var actualVal;
         if (objType === 'list'){
             var propList = "";

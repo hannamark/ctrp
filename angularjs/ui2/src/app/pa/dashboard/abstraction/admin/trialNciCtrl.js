@@ -8,30 +8,65 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialNciCtrl', trialNciCtrl);
 
-    trialNciCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialNciCtrl.$inject = ['TrialService', 'PATrialService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialNciCtrl(TrialService, $scope, $state, toastr, trialDetailObj, studySourceObj, nciDivObj, nciProgObj) {
+    function trialNciCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES,trialDetailObj, studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         console.log("trialDetailObj.send_trial_flag  =" + JSON.stringify(trialDetailObj.send_trial_flag));
         vm.nciDivArr = nciDivObj;
         console.log("nciProgObj  =" + JSON.stringify(nciProgObj));
-        console.log("trial  =" + JSON.stringify(trialDetailObj));
+        //console.log("trial  =" + JSON.stringify(trialDetailObj));
         console.log("nci-div  =" + JSON.stringify(trialDetailObj["nih_nci_div"]));
         console.log("nci-prog  =" + JSON.stringify(trialDetailObj["nih_nci_prog"]));
         vm.nciProgArr = nciProgObj;
         vm.studySourceArr = studySourceObj;
         vm.addedFses = [];
         vm.selectedFsArray = [];
-        vm.nih_nci_div = trialDetailObj.nih_nci_div;
-        vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
+        vm.study_source_id = vm.curTrial.study_source_id;
+        vm.isSponsorNci = (trialDetailObj["sponsor"]["name"] == "National Cancer Institute")? true: false;
+        console.log("isSponsorNci"+ vm.isSponsorNci);
+        vm.isLeadOrgNciCcr = (trialDetailObj["lead_org"]["name"] == "NCI - Center for Cancer Research")? true: false;
+        console.log("isLeadOrgNciCcr"+ vm.isSponsorNci);
+        //console.log("send_trial_flag="+ (vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"));
+        console.log( (vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"));
+
+        if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_rules_flag == "Yes"))==true) {
+            vm.disable_send_trial = false;
+            console.log("disable set to false");
+        } else if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_rules_flag == "No"))==true){
+            vm.disable_send_trial = true;
+            console.log("disable set to true");
+        } else if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==false))==true){
+            vm.disable_send_trial = true;
+        } else {
+            vm.disable_send_trial = true;
+        }
+        vm.fsNum = 0;
+        //vm.nih_nci_div = trialDetailObj.nih_nci_div;
+        //vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
-            console.log("3curTrial =" + JSON.stringify(vm.curTrial));
+            // Prevent multiple submissions
+            vm.disableBtn = true;
+           //Required values
+           if ((vm.fsNum == 0) || (!vm.study_source_id)) {
+                return;
+            }
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {
-                    vm.curTrial.trial_funding_sources_attributes.push(fs);
+                    var exists = false
+                    for (var i = 0; i < vm.curTrial.trial_funding_sources.length; i++) {
+                        if (vm.curTrial.trial_funding_sources[i].id) {
+                            if (vm.curTrial.trial_funding_sources[i].organization_id == fs.organization_id) {
+                                exists = true;
+                            }
+                        }
+                    }
+                    if (!exists) {
+                        vm.curTrial.trial_funding_sources_attributes.push(fs);
+                    }
                 });
             }
 
@@ -42,7 +77,18 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                vm.curTrial.lock_version = response.lock_version || '';
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                vm.curTrial.trial_funding_sources = response["trial_funding_sources"];
+                vm.curTrial.nih_nci_div =  response["nih_nci_div"];
+                vm.curTrial.nih_nci_prog =  response["nih_nci_prog"];
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                $scope.$emit('updatedInChildScope', {});
+                toastr.clear();
+                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', 'Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
@@ -84,12 +130,42 @@
             }
         });
 
+        $scope.$watch(function() {
+            return vm.curTrial.study_source_id;
+        }, function(newValue, oldValue) {
+            if (!newValue) {
+                vm.study_source_id = null;
+            } else {
+                vm.study_source_id = newValue;
+            }
+        });
+
         activate();
 
         /****************** implementations below ***************/
         function activate() {
             appendFses();
+            getTrialDetailCopy();
+            watchTrialDetailObj();
+
         }
+
+        /**
+         * Get trial detail object from parent scope
+         */
+        function watchTrialDetailObj() {
+            $scope.$on(MESSAGES.TRIAL_DETAIL_SAVED, function() {
+                getTrialDetailCopy();
+            });
+        } //watchTrialDetailObj
+
+        function getTrialDetailCopy() {
+            $timeout(function() {
+                vm.curTrial = PATrialService.getCurrentTrialFromCache();
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+            }, 1);
+        } //getTrialDetailCopy
+
 
         function appendFses() {
             for (var i = 0; i < vm.curTrial.trial_funding_sources.length; i++) {
@@ -106,7 +182,6 @@
                 vm.fsNum++;
             }
         }
-
 
     } //trialNciCtrl
 

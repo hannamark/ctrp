@@ -16,13 +16,17 @@
         <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
         <link rel="stylesheet" href="bower_components/angular-material-icons/angular-material-icons.css" />
         <link rel="stylesheet" href="bower_components/ui-select/dist/select.css" />
+        <link rel="stylesheet" href="bower_components/ag-grid/dist/ag-grid.css" />
+        <link rel="stylesheet" href="bower_components/ag-grid/dist/theme-fresh.css" />
+        <link rel="stylesheet" href="bower_components/ag-grid/dist/theme-blue.css" />
+        <link rel="stylesheet" href="bower_components/ag-grid/dist/theme-dark.css" />
         <!-- endbower -->
         <!-- endbuild -->
 
         <!-- ctrp override -->
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+        <!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css"> -->
         <link rel="stylesheet" href="styles/override.css" />
 
         <!-- build:css styles/app.css-->
@@ -77,6 +81,8 @@
         <script src="bower_components/phoneformat/dist/phone-format.js"></script>
         <script src="bower_components/ui-select/dist/select.js"></script>
         <script src="bower_components/angular-spinner/angular-spinner.js"></script>
+        <script src="bower_components/angular-messages/angular-messages.js"></script>
+        <script src="bower_components/ag-grid/dist/ag-grid.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -97,9 +103,11 @@
         <script src="app/user/user.constants.js"></script>
         <script src="app/user/gsaModalCtrl.js"></script>
         <script src="app/registry/ctrp.app.registry.js"></script>
+        <script src="app/registry/registration/viewTrialCtrl.js"></script>
         <script src="app/registry/registration/trialDetailCtrl.js"></script>
         <script src="app/registry/registration/trialCtrl.js"></script>
         <script src="app/registry/registration/trial-registration.routes.js"></script>
+        <script src="app/registry/registration/importTrialCtrl.js"></script>
         <script src="app/po/ctrp.app.po.js"></script>
         <script src="app/po/person/personSearchCtrl.js"></script>
         <script src="app/po/person/personDetailCtrl.js"></script>
@@ -132,13 +140,19 @@
         <script src="app/pa/dashboard/gov_import/gov-import.routes.js"></script>
         <script src="app/pa/dashboard/ctrp.app.pa.dashboard.js"></script>
         <script src="app/pa/dashboard/abstraction/trial_overview/trialIdentificationCtrl.js"></script>
+        <script src="app/pa/dashboard/abstraction/trial_overview/trialHistoryCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/trial_overview/trial-abstraction.routes.js"></script>
         <script src="app/pa/dashboard/abstraction/trial_overview/paTrialOverviewCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/admin/trialRegIndCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/admin/trialRegFdaCtrl.js"></script>
+        <script src="app/pa/dashboard/abstraction/admin/trialParticipatingSitesCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/admin/trialNciCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/admin/trialFundingCtrl.js"></script>
+        <script src="app/pa/dashboard/abstraction/admin/trialCollaboratorsCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/admin/trial-admin.routes.js"></script>
+        <script src="app/pa/dashboard/abstraction/admin/regulatoryInfoHumanSafetyCtrl.js"></script>
+        <script src="app/pa/dashboard/abstraction/admin/paTrialStatusCtrl.js"></script>
+        <script src="app/pa/dashboard/abstraction/admin/paTrialRelatedDocsCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/admin/generalTrialDetailsCtrl.js"></script>
         <script src="app/modules/widgets/ctrp.module.widgets.js"></script>
         <script src="app/modules/widgets/forms/ctrp.widgets.autoFocus.directive.js"></script>
@@ -160,6 +174,7 @@
         <script src="app/modules/data_services/ctrp.module.dataservices.js"></script>
         <script src="app/modules/data_services/UserService.js"></script>
         <script src="app/modules/data_services/TrialService.js"></script>
+        <script src="app/modules/data_services/AuditTrialService.js"></script>
         <script src="app/modules/data_services/PersonService.js"></script>
         <script src="app/modules/data_services/OrganizationService.js"></script>
         <script src="app/modules/data_services/GeoLocationService.js"></script>

@@ -74,35 +74,20 @@ When I have selected Reset button
 Then the information entered or edited on the Add/Edit Sub-group Informtion screen will not be saved to the trial record
 And the screen will be refreshed with the data since the last save.
 
-Scenario:  #9 I can Cancel Sub-group Information for a Trial
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Add Edit Sub-group Information screen
-When I have selected Cancel button
-Then the information entered or edited on the Add/Edit Sub-group Informtion screen will not be saved to the trial record
-And the Subgroups Information screen will display
 
-Scenario:  #10 I can delete  a Sub-groups Stratification Criteria for a Trial
+Scenario:  #9 I can delete  a Sub-groups Stratification Criteria for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Sub-group Information screen
-When I have selected the Delete check box for an SubGroup 
-And I have selected the Delete check box for another SubGroup
-And have clicked on Delete button
-And the message displays 'click OK to remove selected Marker(s) form the study. Click Cancel to abort'
-And I have clicked the OK button
+And I can select the Delete check box for a SubGroup 
+And I can select the Delete check box for another SubGroup
+And I can click on the Select All button to check delete check box for all entries
+When I have clicked on Delete button
+And the message displays 'click OK to remove selected Marker(s) fromm the study. Click Cancel to abort'
+When I have clicked the OK button
 Then the SubGroup is removed from the trial record
 And 'Record(s) deleted' message is displayed
-When I have Clicked the Select All button
-And the Delete check box is checked for all entries
-And have clicked on Delete button
-And the message displays 'click OK to remove selected SubGroups from the study. Click Cancel to abort'
-And I have clicked on OK
-Then the Marker(s) is removed from the trial record
-And 'Record(s) deleted' message is displayed
-When I have Clicked on the Delete button
-And the message displays 'click OK to remove selected SubGroups from the study. Click Cancel to abort'
-And I have clicked on the Cancel button
+When I have clicked on the Cancel button
 Then the SubGroup(s) is not removed from the trial record
 And 'Record(s) deleted' message is not displayed
 

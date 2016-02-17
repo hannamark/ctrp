@@ -36,6 +36,7 @@ And the Trail Overview for a Trial will include the following fields:
 |Admin Check Out Button|
 |Scientific Check Out Button|
 |Admin and Scientific Check Out Button|
+|Information Source (Trials.internal_source_id Internal_Sources.name )|
 
 Scenario: #3 I can view the Lead Organization for a Trial
 Given I am logged into the CTRP Protocol Abstraction application

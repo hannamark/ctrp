@@ -1,4 +1,6 @@
-class UtilController < ActionController::Base
+class UtilController < ApplicationController
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+
   def get_countries
     @countries = Country.all.sort
     us_idx = @countries.index(["United States", "US"])

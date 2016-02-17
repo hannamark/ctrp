@@ -10,10 +10,10 @@
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
         '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES',
-        '$scope', 'TrialService', 'UserService', 'curTrial', '_'];
+        '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService'];
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES,
-            $scope, TrialService, UserService, curTrial, _) {
+            $scope, TrialService, UserService, curTrial, _, PersonService) {
 
         var vm = this;
         vm.accordionOpen = true; //default open accordion
@@ -31,6 +31,12 @@
         vm.scientificCheckoutAllowed = false;
         vm.scientificCheckoutBtnDisabled = false;
         vm.curUser = UserService.currentUser();
+        vm.submitter = {}; // container for the last submitter information
+        vm.submitterPopOver = {
+            submitter: vm.submitter,
+            templateUrl: 'submitterPopOverTemplate.html',
+            title: 'Last Trial Submitter'
+        };
 
         activate();
 
@@ -48,10 +54,9 @@
             $state.go('main.paTrialSearch');
         } //backToPATrialSearch
 
-
         function checkoutTrial(checkoutType) {
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
-                console.log('checkout result: ', res.result);
+                // console.log('checkout result: ', res.result);
                 updateTrialDetailObj(res.result);
                 showToastr(checkoutType + ' checkout was successful!', 'top right');
             });
@@ -59,7 +64,7 @@
 
         function checkinTrial(checkinType) {
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
-                console.log('checkin result: ', res.result);
+                // console.log('checkin result: ', res.result);
                 updateTrialDetailObj(res.result);
                 showToastr(checkinType + ' checkin was successful!', 'top right')
             });
@@ -71,34 +76,30 @@
          */
         function updateTrialDetailObj(data) {
             console.log('in updating trial detail obj, admin_checkout: ' + data.admin_checkout + ', scientific_checkout: ' + data.scientific_checkout);
-            delete vm.trialDetailObj.server_response;
             vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
             vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
-            if (!vm.trialDetailObj.pi.fullName) {
-                vm.trialDetailObj.pi.fullName = _extractFullName(vm.trialDetailObj.pi);
+            if (vm.trialDetailObj.pi && !vm.trialDetailObj.pi.fullName) {
+                vm.trialDetailObj.pi.fullName = PersonService.extractFullName(vm.trialDetailObj.pi);
             }
             // sort the submissions by DESC submission_num
             vm.trialDetailObj.submissions = _.sortBy(vm.trialDetailObj.submissions, function(s) {
                 return -s.submission_num; // DESC order
             });
-            // extract the submitter for the last submission
-            // vm.trialDetailObj.submitter = vm.trialDetailObj.submissions[0].submitter || '';
-            if (!!vm.trialDetailObj.submitter) {
-                vm.trialDetailObj.submitterName = _extractFullName(vm.trialDetailObj.submitter);
-            }
 
             if (!vm.trialDetailObj.central_contacts) {
                 vm.trialDetailObj.central_contacts = [].concat({});
             }
 
-            if (!!data.admin_checkout || !!data.scientific_checkout) {
-                vm.trialDetailObj.pa_editable = true;
-            } else {
-                vm.trialDetailObj.pa_editable = false;
-            }
-            // vm.trialDetailObj.lock_version = data.lock_version || '';
-            console.log('lock version: ', data.lock_version);
+            // fill submitter's info:
+            vm.submitterPopOver.submitter = vm.trialDetailObj.submitter || {};
+            vm.submitterPopOver.submitter.organization = vm.trialDetailObj.submitters_organization || '';
+
+            console.log('vm.submitterPopOver: ', vm.submitterPopOver);
+
+            // false if neither type is checked out
+            vm.trialDetailObj.pa_editable = !!data.admin_checkout || !!data.scientific_checkout;
+            vm.trialDetailObj.lock_version = data.lock_version;
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
             $scope.trialDetailObj = vm.trialDetailObj;
@@ -115,12 +116,14 @@
 
             $scope.$watch(function() {return vm.trialDetailObj.admin_checkout;},
                 function(newVal) {
-                    vm.adminCheckoutAllowed = (newVal === null); // if not null, do not allow checkout again
+                    vm.adminCheckoutAllowed = (newVal === null); // boolean, if not null, do not allow checkout again
 
                     if (!!newVal) {
+                        var curUserRole = UserService.getUserRole() || '';
                         // ROLE_SUPER can override the checkout button
                         vm.adminCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.admin_checkout.by &&
-                            UserService.getUserRole() !== 'ROLE_SUPER' && UserService.getUserRole() != "ROLE_ABSTRACTOR";
+                        curUserRole !== 'ROLE_SUPER' && curUserRole !== 'ROLE_ABSTRACTOR' &&
+                        curUserRole !== 'ROLE_ABSTRACTOR-SU' && curUserRole !== 'ROLE_ADMIN';
                     }
                 });
 
@@ -129,9 +132,11 @@
                     vm.scientificCheckoutAllowed = (newVal === null); // if not null, do not allow checkout again
 
                     if (!!newVal) {
+                        var curUserRole = UserService.getUserRole() || '';
                         // ROLE_SUPER can override the checkout button
                         vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.scientific_checkout.by &&
-                            UserService.getUserRole() !== 'ROLE_SUPER' && UserService.getUserRole() != "ROLE_ABSTRACTOR";;
+                            curUserRole !== 'ROLE_SUPER' && curUserRole !== 'ROLE_ABSTRACTOR' &&
+                            curUserRole !== 'ROLE_ABSTRACTOR-SU' && curUserRole !== 'ROLE_ADMIN';
                     }
                 });
         } //watchCheckoutButtons
@@ -164,22 +169,6 @@
                 console.log('updated trialDetail obj: ', res);
             });
         }
-
-        /**
-         * extract the person object's full name
-         * @param  {JSON} personObj [a Person object in json]
-         * @return {String}
-         */
-        function _extractFullName(personObj) {
-            var fullName = '';
-            var firstName = personObj.fname || '';
-            var middleName = personObj.mname || '';
-            var lastName = personObj.lname || '';
-
-            fullName = firstName + ' ' + middleName + ' ' + lastName;
-            return fullName;
-        }
-
     }
 
 })();

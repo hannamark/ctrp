@@ -69,4 +69,4 @@ When I select Delete one or more documents
 And have selected a document with a type of :
 |Protocol Document|
 |IRB Approval Document|
-Then the system will display a warning message that the Protocol Document and or IRB Approval Document cannot be deleted
+Then the system will display a Error message that the Protocol Document and or IRB Approval Document cannot be deleted

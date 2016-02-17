@@ -12,7 +12,7 @@
             <div class="form-group">
                 <label for="person_fname" class="control-label col-xs-12 col-sm-3">First Name:</label>
                 <div class=" col-xs-12 col-sm-3">
-                    <input tabindex="12" type="text" id="person_fname" class="form-control input-sm" placeholder="First Name" ng-model="searchParams.fname" auto-focus/>
+                    <input tabindex="12" type="text" id="person_fname" class="form-control input-sm" placeholder="First Name" ng-model="searchParams.fname" auto-focus />
                 </div>
                 <label for="person_lname" class="control-label col-xs-12 col-sm-3">Last Name:</label>
                 <div class="col-xs-12 col-sm-3">
@@ -71,13 +71,13 @@
                 </label>
                 <div class="col-xs-12 col-sm-5">
                     <div class="input-group add-on col-sm-12 date datepicker">
-                        <input tabindex="25" type="text" class="form-control input-sm" id="start_date" name="startDate"
+                        <input tabindex="20" type="text" class="form-control input-sm" id="start_date" name="startDate"
                                uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.startDate" is-open="startDateOpened"
-                               datepicker-options="dateOptions" ng-click="openCalendar($event, 'start')"
-                               ng-required="false" close-text="Close" placeholder="Start Date"/>
+                               datepicker-options="dateOptions"
+                               ng-required="false" close-text="Close" placeholder="Start Date"  ng-click="openCalendar($event, 'start')" />
                         <span class="input-group-btn">
-                            <button tabindex="26" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
+                            <button tabindex="21" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -88,13 +88,13 @@
                 <!--<label for="person_fname" class="control-label col-sm-2"></label>-->
                 <div class="col-xs-12 col-sm-4">
                     <div class="input-group add-on col-sm-12 date datepicker" ng-class="{'has-error': search_person_form.endDate.dateLaterThan && search_person_form.endDate.$dirty}">
-                        <input tabindex="27" type="text" class="form-control input-sm" id="end_date" name="endDate"
+                        <input tabindex="22" type="text" class="form-control input-sm" id="end_date" name="endDate"
                                uib-datepicker-popup="{{dateFormat}}" show-weeks="false"
                                ng-model="searchParams.endDate" is-open="endDateOpened" ng-click="openCalendar($event, 'end')"
                                datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
-                               ng-required="false" close-text="Close" placeholder="End Date"/>
+                               ng-required="false" close-text="Close" placeholder="End Date" ng-click="openCalendar($event, 'end')" />
                         <span class="input-group-btn">
-                            <button tabindex="28" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
+                            <button tabindex="23" type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -102,6 +102,17 @@
                     <span ng-show="search_person_form.endDate.$error.dateLaterThan" class="help-inline warning">
                         End date should be no earlier than start date
                     </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-12 col-sm-3"></div>
+                <div class="col-xs-12 col-sm-9">
+                    <div ng-class="searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
+                        <label for="wc_search">
+                            <input tabindex="11" type="checkbox" id="wc_search"  ng-model="searchParams.wc_search"  /> Exact Search
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -153,7 +164,7 @@
                 <!-- last updated by -->
                 <label for="updated_by" class="control-label col-xs-12 col-sm-3">Updated by: </label>
                 <div class="col-xs-12 col-sm-9">
-                    <input tabindex="12" type="text" class="form-control input-sm" id="updated_by" ng-model="searchParams.updated_by" placeholder="Username" />
+                    <input tabindex="24" type="text" class="form-control input-sm" id="updated_by" ng-model="searchParams.updated_by" placeholder="Username" />
                 </div>
                 <!-- end of last updated by -->
             </div>
@@ -162,13 +173,6 @@
     <!-- first row ends -->
 
     <div class="row">
-        <div class="col-xs-12 col-sm-9">
-            <div ng-class="searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
-                <label for="wc_search">
-                    <input tabindex="11" type="checkbox" id="wc_search"  ng-model="searchParams.wc_search"  /> Exact Search
-                </label>
-            </div>
-        </div>
         <div class="col-xs-12">
             <div class="btn-toolbar">
                 <button tabindex="30" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchPeople('fromStart')" ng-disabled="searching">

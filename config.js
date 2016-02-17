@@ -66,7 +66,15 @@ exports.config = {
         'features/Reg\ F07\ Register\ Trial\ Study\ Design.feature',
         'features/Reg\ F08\ Register\ Trial\ Person\ and\ Organization\ Associations.feature',
         'features/Reg\ F09\ Register\ Trial\ FDAAA\ Information.feature',
-        'features/Reg\ F10\ Register\ Trial\ Grant\ Information.feature'
+        'features/Reg\ F10\ Register\ Trial\ Grant\ Information.feature',
+
+         /************* PA Features ************/
+        'features/PAA\ F02\ Add\ and\ Edit\ NCI\ Specific\ Information.Feature',
+        'features/PAA\ F04\ Add\ and\ Edit\ Regulatory\ Information\ Human\ Subject\ Safety.Feature',
+        'features/PAA\ F05\ Add\ and\ Edit\ Regulatory\ Information\ IND-IDE.Feature',
+        'features/PAA\ F07\ Add\ and\ Edit\ Trial\ Funding.Feature',
+        'features/PAA\ F09\ Add\ and\ Edit\ Trial\ Collaborators.Feature'
+
     ],
 
     cucumberOpts: {

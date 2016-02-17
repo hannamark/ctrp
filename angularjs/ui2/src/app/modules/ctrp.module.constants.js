@@ -55,12 +55,18 @@
             'TRIAL_STATUSES': '/ctrp/registry/trial_statuses.json',
             'ACCEPTED_FILE_TYPES': '/ctrp/registry/accepted_file_types.json',
             'VALIDATE_TRIAL_STATUS': '/ctrp/registry/trials/validate_status.json',
+            'SEARCH_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/search_clinical_trials_gov.json',
+            'IMPORT_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/import_clinical_trials_gov.json',
+            'SITE_RECRUITMENT_STATUSES': '/ctrp/registry/site_recruitment_statuses.json',
+            'PARTCIPATING_SITE_LIST': '/ctrp/registry/participating_site_wrappers.json',
+            'A_PARTICIPATING_SITE': '/ctrp/registry/participating_sites/',
             'NCI_DIV_PA': '/ctrp/pa/nih_nci_div_pa.json',
             'NCI_PROG_PA': '/ctrp/pa/nih_nci_prog_pa.json',
             'SUBMISSION_METHODS': '/ctrp/pa/submission_methods.json',
-
+            'AUDIT_HISTORY': '/ctrp/trial_versions/history',
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
+                'PARTICIPATING_SITE_WITH_ID': '/ctrp/registry/participating_sites/{:id}.json',
             },
 
             'MILESTONES': '/ctrp/registry/milestones.json',
@@ -82,6 +88,7 @@
             'PA': {
                 'TRIALS_CHECKOUT_IN': '/ctrp/pa/trial/{:trialId}/{:checkWhat}/{:checkoutType}.json',
                 'TRIALS_CENTRAL_CONTACT_TYPES': '/ctrp/registry/trials/get_central_contact_types.json',
+                'BOARD_APPROVAL_STATUSES': '/ctrp/registry/trials/get_board_approval_statuses.json'
             }
         })
         .constant('MESSAGES', {

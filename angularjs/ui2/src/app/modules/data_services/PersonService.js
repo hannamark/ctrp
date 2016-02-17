@@ -124,7 +124,8 @@
             deletePerson : deletePerson,
             getPoAffStatuses : getPoAffStatuses,
             curatePerson : curatePerson,
-            checkUniquePerson : checkUniquePerson
+            checkUniquePerson : checkUniquePerson,
+            extractFullName: extractFullName
         };
 
         return services;
@@ -284,6 +285,28 @@
          */
         function checkUniquePerson(name) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.UNIQUE_PERSON, name);
+        }
+
+
+        /**
+         * Extract the person's full name from the personObj
+         * @param  {JSON} personObj [required fields: fname (String); mname (String); lname (String)]
+         * @return {String}           [full name, e.g. 'John Middle Doe']
+         */
+        function extractFullName(personObj) {
+            if (!personObj) {
+                return '';
+            }
+            var fullName = '';
+            var firstName = personObj.fname || '';
+            var middleName = personObj.mname || '';
+            var lastName = personObj.lname || '';
+
+            fullName += firstName;
+            fullName += !!middleName ? (' ' + middleName) : '';
+            fullName += !!lastName ? (' ' + lastName) : '';
+
+            return fullName;
         }
 
 

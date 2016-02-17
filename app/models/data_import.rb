@@ -20,6 +20,7 @@ class DataImport
       total_organizations  = Organization.all.size
       total_persons  = Person.all.size
       trial_spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-trials-random-2014.xls'))
+      start_lead_protocol_post_fix = 1776
       trial_spreadsheet.default_sheet = trial_spreadsheet.sheets.first
       ((trial_spreadsheet.first_row+1)..trial_spreadsheet.last_row).each do |row|
         trial = Trial.new
@@ -118,7 +119,10 @@ class DataImport
         trial.sec801_indicator = trial_spreadsheet.cell(row,'CN') == "YES" ? "Yes" : "No"
         trial.data_monitor_indicator = trial_spreadsheet.cell(row,'V') == "YES" ? "Yes" : "No"
         # Sponsor
-        trial.sponsor = Organization.all[rand(0..13)]
+        trial.sponsor = Organization.all[rand(0..total_organizations-1)]
+        # Internal Source
+        trial.internal_source = InternalSource.all[rand(0..(InternalSource.all.size-1))]
+        #Responsible party
         resp_party = trial_spreadsheet.cell(row,'CJ')
         responsible_party = ResponsibleParty.find_by_code(resp_party)
         if resp_party.present? && responsible_party.blank?
@@ -126,11 +130,14 @@ class DataImport
         else
           trial.responsible_party = responsible_party
         end
+
         trial.ind_ide_question = "Yes"
-        # randomly assign the rest of the data
-        trial.lead_protocol_id = "CTRP_01_" + rand(0..10000).to_s
-        trial.lead_org = Organization.all[rand(0..total_organizations-1)]
         trial.pilot = "Yes"
+
+        # randomly assign the rest of the data
+        trial.lead_protocol_id = "CTRP_01_" + start_lead_protocol_post_fix.to_s
+        start_lead_protocol_post_fix = start_lead_protocol_post_fix + 1
+        trial.lead_org = Organization.all[rand(0..total_organizations-1)]
         trial.pi = Person.all[rand(0..total_persons-1)]
         trial.investigator = Person.all[rand(0..total_persons-1)]
 
@@ -143,11 +150,31 @@ class DataImport
         trial_owner.user = trial_submitters[rand(0..2)]
         trial.trial_ownerships << trial_owner
 
+        #Assign random collaborators
+        c1 = Collaborator.new
+        c1.organization = Organization.all[rand(0..total_organizations-1)]
+        c1.org_name = c1.organization.name
+        c2 = Collaborator.new
+        c2.organization = Organization.all[rand(0..total_organizations-1)]
+        c2.org_name = c2.organization.name
+        trial.collaborators << c1
+        trial.collaborators << c2
         trial.save!
       end
     rescue Exception => e
       puts "Exception thrown while reading Trial spreadsheet #{e.inspect}"
     end
+    # Massaging data for PAA F02, Scenario 7
+    t = Trial.first
+    t.sponsor = Organization.find_by_name("National Cancer Institute")
+    t.lead_org = Organization.find_by_name("NCI - Center for Cancer Research")
+    org27 = Organization.find_or_create_by(name: 'John Hopkins')
+    c3 = Collaborator.new
+    c3.organization = org27
+    c3.org_name = org27.name
+    t.collaborators << c3
+    t.save!
+
   end
 
   def self.import_milestones
@@ -155,6 +182,7 @@ class DataImport
     total_submission_types = SubmissionType.all.size
     total_submission_methods = SubmissionMethod.all.size
     total_submission_sources = SubmissionSource.all.size
+    total_users = User.all.size
     spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-milestones_for_20_sample_trials_in_prod.xls'))
     spreadsheet.default_sheet = spreadsheet.sheets.first
     ((spreadsheet.first_row+1)..spreadsheet.last_row).each do |row|
@@ -171,6 +199,7 @@ class DataImport
           current_submission.submission_type = SubmissionType.all[rand(0..total_submission_types-1)]
           current_submission.submission_method = SubmissionMethod.all[rand(0..total_submission_methods-1)]
           current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
+          current_submission.user = User.all[rand(0..total_users-1)]
           trial.submissions << current_submission
           trial.save!
         end
@@ -209,8 +238,21 @@ class DataImport
         next
       end
       ps.trial = trial
-      ps.organization =  Organization.all[rand(0..13)]
-      ps.person = Person.all[rand(0..11)]
+      # Site recruitment data
+      srs = SiteRecStatusWrapper.new
+      srs.participating_site = ps
+      site_recruitment_status = spreadsheet.cell(row,'I')
+      #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
+      site_recruitment_status.gsub! "_", " "
+      #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
+      x = SiteRecruitmentStatus.where("lower(name) = ?", site_recruitment_status.downcase).first
+      #puts "x = #{x.inspect}"
+      srs.site_recruitment_status = x
+      srs.status_date =  spreadsheet.cell(row,'J')
+      ps.site_rec_status_wrappers <<  srs
+      #Organization and Person
+      ps.organization =  Organization.all[rand(0..(Organization.all.size-1))]
+      ps.person = Person.all[rand(0..(Person.all.size-1))]
       trial.participating_sites << ps
       trial.save!
     end

@@ -61,7 +61,6 @@ var PoCommonBar = function(){
         helper.clickLink(this.home, "Home link");
     };
 
-
     this.clickHomeEnterOrganizations = function(){
         self.homeEnterOrganizations.isPresent().then(function(retVal){
             console.log('value of ret val : ' + retVal);
@@ -70,7 +69,6 @@ var PoCommonBar = function(){
             }
         });
     };
-
 
     this.clickOrganizations = function(){
         helper.clickLink(this.organizations, "Organization link");

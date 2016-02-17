@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialRegIndCtrl', trialRegIndCtrl);
 
-    trialRegIndCtrl.$inject = ['TrialService', '$scope', '$state', 'toastr', 'trialDetailObj', 'nciObj', 'holderTypeObj']//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
+    trialRegIndCtrl.$inject = ['TrialService', 'PATrialService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'nciObj', 'holderTypeObj'];//, 'studySourceObj', 'nciDivObj', 'nciProgObj'];
 
-    function trialRegIndCtrl(TrialService, $scope, $state, toastr, trialDetailObj, nciObj, holderTypeObj){// studySourceObj, nciDivObj, nciProgObj) {
+    function trialRegIndCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, nciObj, holderTypeObj){// studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.nciArr = nciObj;
@@ -42,8 +42,16 @@
 
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-            }).catch(function(err) {
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                vm.curTrial.lock_version = response.lock_version || '';
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                $scope.$emit('updatedInChildScope', {});
+
+                toastr.clear();
+                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
 
@@ -51,7 +59,17 @@
 
         // Add IND/IDE to a temp array
         vm.addIndIde = function () {
+            //console.log("In addIndIde vm.addedIndIdes=" + JSON.stringify(vm.addedIndIdes));
             if (vm.ind_ide_type && vm.ind_ide_number && vm.grantor && vm.holder_type_id) {
+                // Check if there is a similar entry
+                for (var i = 0; i < vm.addedIndIdes.length; i++) {
+                   if((vm.addedIndIdes[i].ind_ide_type == vm.ind_ide_type) &&
+                       (vm.addedIndIdes[i].ind_ide_number == vm.ind_ide_number) &&
+                       (vm.addedIndIdes[i].grantor == vm.grantor) &&
+                       (vm.addedIndIdes[i].holder_type_id == vm.holder_type_id)) {
+                       return;
+                   }
+                }
                 var newIndIde = {};
                 newIndIde.ind_ide_type = vm.ind_ide_type;
                 newIndIde.ind_ide_number = vm.ind_ide_number;
@@ -132,7 +150,26 @@
         /****************** implementations below ***************/
         function activate() {
                 appendIndIdes();
+                getTrialDetailCopy();
+                watchTrialDetailObj();
         }
+
+        /**
+         * Get trial detail object from parent scope
+         */
+        function watchTrialDetailObj() {
+            $scope.$on(MESSAGES.TRIAL_DETAIL_SAVED, function() {
+                getTrialDetailCopy();
+            });
+        } //watchTrialDetailObj
+
+        function getTrialDetailCopy() {
+            $timeout(function() {
+                vm.curTrial = PATrialService.getCurrentTrialFromCache();
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+            }, 1);
+        } //getTrialDetailCopy
+
 
         function findNciOption(option) {
             if (option.code == 'NCI') {

@@ -1,27 +1,37 @@
 Rails.application.routes.draw do
 
+  resources :trial_versions
+
   resources :accrual_disease_terms
 
   resources :trial_documents
 
 
-namespace "ws" do
-  scope '/api' do
-    scope '/v1' do
-      scope '/trials' do
-        get '/' => 'api_trials#index'
-        get '/:id' =>  'api_trials#show'
-        post '/' => 'api_trials#create'
-        put  '/:id' =>  'api_trials#update'
-        put  '/:id/status' =>  'api_trials#change_status'
-      end
 
-    end
-  end
-end
 
 
   scope "/ctrp" do
+
+    namespace "ws" do
+      scope '/api' do
+        scope '/v1' do
+          scope '/trials' do
+            scope '/complete' do
+              get '/' => 'api_trials#index'
+              get '/:id' =>  'api_trials#show'
+              post '/' => 'api_trials#create'
+              post '/:idType/:id' => 'api_trials#update'
+              post '/:id' => 'api_trials#update'
+              put '/:idType/:id' => 'api_trials#amend'
+              put  '/:id' =>  'api_trials#update'
+              put  '/:id/status' =>  'api_trials#change_status'
+            end
+          end
+        end
+      end
+    end
+
+
     devise_for :users
     root 'ctrp#index'
 
@@ -100,6 +110,13 @@ end
       end
     end
 
+    resources :trial_versions do
+      collection do
+        get 'index'
+        post 'history'
+      end
+    end
+
     resources :po_affiliations
     resources :po_affiliation_statuses
 
@@ -154,6 +171,9 @@ end
           get  'get_grants_serialnumber'
           post 'get_grants_serialnumber'
           get  'get_central_contact_types'
+          get  'search_clinical_trials_gov'
+          post 'import_clinical_trials_gov'
+          get  'get_board_approval_statuses'
         end
       end
 
@@ -164,6 +184,9 @@ end
       resources :processing_statuses
       resources :milestones
       resources :research_categories
+      resources :site_recruitment_statuses
+      resources :participating_sites
+      resources :site_rec_status_wrappers
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'

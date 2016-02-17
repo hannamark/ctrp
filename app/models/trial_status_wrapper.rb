@@ -19,13 +19,12 @@
 #  index_trial_status_wrappers_on_trial_status_id  (trial_status_id)
 #
 
-class TrialStatusWrapper < ActiveRecord::Base
-  include BasicConcerns
+class TrialStatusWrapper < TrialBase
 
   belongs_to :trial_status
   belongs_to :trial
 
-  validates :status_date, presence: true
+  #validates :status_date, presence: true
   validates :trial_status, presence: true
 
   scope :by_value, ->  (value) {

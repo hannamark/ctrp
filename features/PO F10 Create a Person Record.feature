@@ -1,6 +1,6 @@
 @Global
 Feature: PO F10 Create a Person Record
-
+  @runthis
   Scenario Outline: As a Curator, I can request the creation of a new Person Record in CTRP
     Given I am logged in to CTRP PO application
     And I know the first name, last name, middle name, with any prefix or suffix, phone or email, and organization affiliation of the Person

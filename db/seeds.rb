@@ -1,3 +1,5 @@
+#Static seed data for all environments
+
 require 'rubygems'
 require 'roo'
 # This file should contain all the record creation needed to seed the database with its default values.
@@ -12,7 +14,9 @@ require 'roo'
 #NameAlias.delete_all
 #Organization.delete_all
 #Person.delete_all
+puts "Begin seeding"
 
+puts "Seeding static members"
 
 SourceContext.find_or_create_by(code: 'CTEP', name: 'CTEP')
 SourceContext.find_or_create_by(code: 'CTRP', name: 'CTRP')
@@ -23,20 +27,10 @@ SourceStatus.find_or_create_by(code: 'INACT', name: 'InActive')
 SourceStatus.find_or_create_by(code: 'NULLIFIED', name: 'Nullified')
 FamilyRelationship.find_or_create_by(code: 'ORG', name: 'Organizational')
 FamilyRelationship.find_or_create_by(code: 'AFF', name: 'Affiliation')
+InternalSource.find_or_create_by(code: 'CTGI', name: 'ClinicalTrials.gov Import')
+InternalSource.find_or_create_by(code: 'CTRP', name: 'CTRP')
 
-source_act = SourceStatus.find_by_code("ACT")
-source_pend = SourceStatus.find_by_code("PEND")
-source_inact = SourceStatus.find_by_code("INACT")
-source_nullified = SourceStatus.find_by_code("NULLIFIED")
 
-ctep = SourceContext.find_by_code('CTEP')
-ctrp = SourceContext.find_by_code('CTRP')
-nlm = SourceContext.find_by_code('NLM')
-
-org = FamilyRelationship.find_by_code('ORG')
-aff = FamilyRelationship.find_by_code('AFF')
-
-usa = "United States"
 
 
 ############## SEEDING STATIC DATA BEGINS ##################
@@ -53,6 +47,7 @@ FamilyStatus.find_or_create_by(code:'INACTIVE',name:'Inactive')
 FamilyType.find_or_create_by(code:'CANCERCENTER',name:'Cancer Center')
 FamilyType.find_or_create_by(code:'NCTN',name:'NCTN')
 FamilyType.find_or_create_by(code:'NIH',name:'NIH')
+FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
 FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
 
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
@@ -130,6 +125,7 @@ TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
 
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
+ResearchCategory.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 ResearchCategory.find_or_create_by(code: 'ANC', name: 'Ancillary Correlative')
 
 ProcessingStatus.find_or_create_by(code: 'SUB', name: 'Submitted')
@@ -183,6 +179,62 @@ SubmissionMethod.find_or_create_by(code: 'PDQ', name: 'PDQ')
 SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
 SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
 
+SiteRecruitmentStatus.find_or_create_by(code: 'CAC' ,name: 'Closed to Accrual')
+SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
+SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Completed')
+SiteRecruitmentStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
+SiteRecruitmentStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
+SiteRecruitmentStatus.find_or_create_by(code: 'ACT', name: 'Active')
+SiteRecruitmentStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation')
+SiteRecruitmentStatus.find_or_create_by(code: 'APP', name: 'Approved')
+SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
+SiteRecruitmentStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
+
+Gender.find_or_create_by(code: 'M', name: 'Male')
+Gender.find_or_create_by(code: 'F', name: 'Female')
+Gender.find_or_create_by(code: 'B', name: 'Both')
+
+StudyClassification.find_or_create_by(code: 'BAV', name: 'Bio-availability')
+StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bio-equivalence')
+StudyClassification.find_or_create_by(code: 'EFF', name: 'Efficacy')
+StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
+StudyClassification.find_or_create_by(code: 'PD', name: 'Pharmacodynamics')
+StudyClassification.find_or_create_by(code: 'PK', name: 'Pharmacokinetics')
+StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dynamics')
+StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
+StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
+
+OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
+OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
+OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
+
+Allocation.find_or_create_by(code: 'NA', name: 'NA')
+Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Control Trial')
+Allocation.find_or_create_by(code: 'NRT', name: 'Non-Randomized Trial')
+
+InterventionModel.find_or_create_by(code: 'SG', name: 'Single Group')
+InterventionModel.find_or_create_by(code: 'PL', name: 'Parallel')
+InterventionModel.find_or_create_by(code: 'CO', name: 'Cross-Over')
+InterventionModel.find_or_create_by(code: 'FT', name: 'Factorial')
+
+Masking.find_or_create_by(code: 'OP', name: 'Open')
+Masking.find_or_create_by(code: 'SB', name: 'Single Blind')
+Masking.find_or_create_by(code: 'DB', name: 'Double Blind')
+
+AgeUnit.find_or_create_by(code: 'YR', name: 'Year')
+AgeUnit.find_or_create_by(code: 'YRS', name: 'Years')
+AgeUnit.find_or_create_by(code: 'MO', name: 'Month')
+AgeUnit.find_or_create_by(code: 'MOS', name: 'Months')
+AgeUnit.find_or_create_by(code: 'WK', name: 'Week')
+AgeUnit.find_or_create_by(code: 'WKS', name: 'Weeks')
+AgeUnit.find_or_create_by(code: 'DY', name: 'Day')
+AgeUnit.find_or_create_by(code: 'DYS', name: 'Days')
+AgeUnit.find_or_create_by(code: 'HR', name: 'Hour')
+AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
+AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
+AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -193,17 +245,13 @@ AppSetting.find_or_create_by(code: 'IC', name: 'Institute Code List', value: 'se
 
 AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List', value: 'see big value', big_value: 'CCR,CCT/CTB,CIP,CDP,CTEP,DCB,DCCPS,DCEG,DCP,DEA,DTP,OD,OSB/SPOREs,TRP,RRP,N/A')
 
-AppSetting.find_or_create_by(code: 'LOGIN_BULLETIN', name: 'Login Bulletin', description: 'Message for login page if needed.', value: 'see big value', big_value: 'This is the CI tier at CBIIT')
-
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
-
-AppSetting.find_or_create_by(code: 'APP_RELEASE_MILESTONE', name: 'Application Release Milestone', description: 'Use this for identifying a milestone of a software release, e.g. 5.0 M1', value: 'S8', big_value: '')
 
 AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,zip,gz', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/zip, application/x-gzip')
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHBLI')
 
-AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP; SPORE; Steering Commitee Reviewed')
+AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering_Commitee_Reviewed')
 
 trial_status_transition = '{
                              "STATUSZERO": {
@@ -366,161 +414,27 @@ trial_status_transition = '{
 
 AppSetting.find_or_create_by(code: 'TRIAL_STATUS_TRANSITION', name: 'Trial Status Transition Matrix', value: 'see big value', big_value: trial_status_transition)
 
+AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
+
 ########## SEEDING APP SETTINGS ENDS ##########
-if Organization.all.size == 0
 
-  org1 = Organization.find_or_create_by( id: 139020, source_id: 'MN021', name: 'University of Minnesota/Masonic Children\'s Hospital', phone:'301-999-200f', source_status: source_act, source_context: ctep, address: '2450 Riverside Ave', city: 'Minneapolis', state_province: 'Minnesota', country:usa, postal_code: '35465', email: "ahaley@minnhealth.com")
-  if !org1.new_record?
-    org1.name_aliases.find_or_create_by(name: 'University of Minnesota Children\'s Hospital Fairview')
-    org1.name_aliases.find_or_create_by(name: 'University of Minnesota Medical Center-Fairview-Riverside')
-  end
-  org2 = Organization.find_or_create_by(id: 139049, source_id: 'MN022', name: 'University of Minnesota Medical Center-Fairview',  phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '516 Delaware St SE', city: 'Minneapolis', state_province:'Minnesota', country:usa, postal_code: '123432', email: "cdickens@minnhealth.com")
-  if !org2.new_record?
-    org2.name_aliases.find_or_create_by(name: 'Masonic Cancer Center, University of Minnesota')
-  end
+puts "Seeding ldap and local users"
+#Add LDAP and local test users
+#Need dummy org for LDAP users
+  org0 = Organization.find_or_create_by( id: 9999999,
+                                         source_id: '9999999',
+                                         name: 'ZZZ test org for test accounts',
+                                         phone:'240-276-0000',
+                                         source_status: SourceStatus.find_by_code("ACT"),
+                                         source_context: SourceContext.find_by_code('CTRP'),
+                                         address: '9605 Medical Center Dr',
+                                         city: 'Rockville',
+                                         state_province: 'Maryland',
+                                         country: 'United States',
+                                         postal_code: '20850',
+                                         email: "ncictrpdev@mail.nih.gov"
+  )
 
-  org3 = Organization.find_or_create_by(id: 153109, source_id: 'NC164', name: 'Coastal Carolina Radiation Oncology', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '1988 S 16th St', city: 'Wilmington', state_province:'North Carolina', country:usa, postal_code: '56456', email: "rdahl@wilmhealth.com")
-  org4 = Organization.find_or_create_by(id: 12733422, name: 'Comprehensive Cancer Center of Wake Forest University', phone:'315-425-2707', source_status: source_act, source_context:ctrp, address: '1 Medical Center Blvd', city: '', state_province:'North Carolina', country: usa, postal_code: '12344', email: "fforsyth@wakehealth.com") #labeled unknown in directory
-  org5 = Organization.find_or_create_by(id: 117163, source_id: 'LA032', name: 'Ochsner Baptist Medical Center', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '2700 Napoleon Ave', city: 'New Orleans', state_province:'Louisiana', country:usa, postal_code: '082345', email: "jlahiri@loiushealth.com")
-  if !org5.new_record?
-    org5.name_aliases.find_or_create_by(name: 'Ochsner Baptist Medical Center')
-  end
-  org6 = Organization.find_or_create_by(id: 173475, source_id: 'NY139', name: 'Syracuse Veterans Administration Medical Center', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: ' 800 Irving Ave', city: 'Syracuse', state_province:'New York', country:usa, postal_code: '12347', email: "kdesai@syrhealth.com")
-  org7 = Organization.find_or_create_by(id: 150970, source_id: 'NC088', name: 'Veterans Administration Medical Center.', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '50 Irving St NW', city: '', state_province:'District of Columbia', country:usa, postal_code: '95673', email: "pcoaehlo@columbiahealth.com")
-  org8 = Organization.find_or_create_by(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, postal_code: '27157', email: "gmarquez@salemhealth.com")
-  if !org8.new_record?
-    org8.name_aliases.create(name: 'Wake Forest Cancer Center Research Base')
-  end
-  org9 = Organization.find_or_create_by(id: 36296220, source_id: 'NC275', name: 'Wake Forest University at Clemmons', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '3540 Clemmons Rd', city: 'Clemmons', state_province:'North Carolina', country:usa, postal_code: '78778', email: "owilde@clemmhealth.com")
-  org10 = Organization.find_or_create_by(id: 36296062, source_id: 'NC273', name: 'Wake Forest University at Elkin', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '200 Johnson Ridge Medical Park', city: 'Elkin', state_province:'North Carolina', country:usa, postal_code: '27345', email: "rstevenson@elkinhealth.com")
-  org11 = Organization.find_or_create_by(id: 36296115, source_id: 'NC274', name: 'Wake Forest University at Lexington', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '250 Hospital Drive', city: 'Lexington', state_province:'North Carolina', country:usa, postal_code: '3427157', email: "jswift@lexhealth.com")
-  org12 = Organization.find_or_create_by(id: 36296009, source_id: 'NC272', name: 'Wake Forest University at Mount Airy', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '910 Worth St.', city: 'Mt. Airy', state_province:'North Carolina', country:usa, postal_code: '5627157', email: "jrrtolkien@airyhealth.com")
-  org13 = Organization.find_or_create_by(id: 149074, source_id: 'NC002', name: 'Wake Forest University Health Sciences', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '1 Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, postal_code: '3427157', email: "mtwain@wakehealth.com") #no source id
-  org14 = Organization.find_or_create_by(id: 149221, source_id: 'NC008', name: 'Wake Medical Center-Breast Screening and Diagnostic', phone:'315-425-2707', source_status: source_act, source_context: ctep, address: '3000 New Bern Avenue ', city: 'Raleigh', state_province:'North Carolina', country:usa, postal_code: '4527157', email: "jausten@wakehealth.com")
-  org15 = Organization.find_or_create_by(id: 23875109, name: 'ACORN Research, LLC', phone:'315-425-2707', source_status: source_pend, source_context:ctrp, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: '23456') #no source id
-  org16 = Organization.find_or_create_by(id: 24068, source_id: 'ACT', phone:'315-425-2707', name: 'Actelion Pharmaceuticals Switzerland', source_status: source_act, source_context: ctep, address: 'Gewerbestrasse 16', city: 'Allschwil', state_province:'Basel-Landschaft', country: 'Switzerland', postal_code: '34527157', email: "ebronte@wakehealth.com")
-  if !org16.new_record?
-    org16.name_aliases.find_or_create_by(name: 'Actelion')
-  end
-  org17 = Organization.find_or_create_by(id: 8352734, name: 'Boston University School Of Public Health', source_status: source_act,  source_context:ctrp, address: '715 Albany St', city: 'Boston', state_province:'Massachusetts', country: usa, postal_code: '27157', email: "cbronte@masshealth.com") #no source id
-  org18 = Organization.find_or_create_by(id: 34563051, name: 'UCB, Inc.', source_status: source_act,  source_context:ctrp, address: '1950 Lake Park Drive', city: 'Smyrna', state_province:'Georgia', country: usa, email: "enesbit@smyrnahealth.com") #no source id
-  if !org18.new_record?
-    org18.name_aliases.find_or_create_by(name: 'UCB Pharma')
-  end
-  org19 = Organization.find_or_create_by(name: 'ACORN Research, LLC', source_status: source_pend, source_context:ctep, address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: "ACRN", ctrp_id: org15.id, postal_code: '23455', email: "vhugo@memphishealth.com") #no source id
-
-  org20 = Organization.find_or_create_by(id: 226701, source_id: 'TX111', name: 'Texas Health Harris Methodist Hospital Fort Worth', phone:'865-541-1812', source_status: source_act, source_context: ctrp, email: "jgrisham@texashealth.com", address: '1300 West Terrell', city: 'Fort Worth', state_province:'Texas', country:usa, postal_code:"147892")
-  org21 = Organization.find_or_create_by(id: 595150, source_id: 'CO029', name: 'Memorial Hospital Colorado Springs', phone:'865-541-1813', source_status: source_act, source_context: ctrp, email: "mcrichton@boulderhealth.com", address: '1400 East Boulder', city: 'Colorado Springs', state_province:'Colorado', country:usa, postal_code:"37498")
-  org22 = Organization.find_or_create_by(id: 2118412, source_id: 'MA043', name: 'Boston Medical Center', phone:'617-353-7571', source_status: source_act, source_context: ctrp, email: "rcook@bostonhealth.com",  address: '1 Medical Center Drive', city: 'Boston', state_province:'Massachussets', country:usa, postal_code:"3849504")
-  org23 = Organization.find_or_create_by(id: 33699872, source_id: 'NVRF', name: 'Nevada Cancer Research Foundation CCOP', phone:'702-541-1815', source_status: source_act, source_context: ctrp,  email: "rludlum@lasvegashealth.com",  address: '1 Rancho Drive', city: 'Las Vegas', state_province:'Nevada', country:usa, postal_code:"926344")
-  org24 = Organization.find_or_create_by(id: 8149074, source_id: 'WA002', name: 'Harborview Medical Center', phone:'865-541-1816', source_status: source_act, source_context: ctrp, email: "dbrown@seattlehealth.com", address: '23 Wheeling Drive', city: 'Seattle', state_province:'Washington', country:usa, postal_code:"123683") #no source id
-
-  org25 = Organization.find_or_create_by(id: 23170023,  name: 'National Cancer Institute', phone:'301-555-0000', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '9609 Medical Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20850") #no source id
-  org25 = Organization.find_or_create_by(id: 16108126,  name: 'NCI - Center for Cancer Research', phone:'301-496-4365', source_status: source_act, source_context: ctrp, email: "cancerhelp@nih.gov", address: '31 Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20892") #no source id
-
-  family1 = Family.create(name: 'Masonic Cancer Center')
-  if !family1.new_record?
-    family1.family_memberships.create(organization: org1, family_relationship: aff)
-    family1.family_memberships.create(organization: org2, family_relationship: org)
-  end
-  family2 = Family.create(name: 'Wake Forest Comprehensive Cancer Center')
-  if !family2.new_record?
-    family2.family_memberships.create(organization: org3, family_relationship: aff)
-    family2.family_memberships.create(organization: org4, family_relationship: org)
-    family2.family_memberships.create(organization: org5, family_relationship: aff)
-    family2.family_memberships.create(organization: org6, family_relationship: aff)
-    family2.family_memberships.create(organization: org7, family_relationship: aff)
-    family2.family_memberships.create(organization: org8, family_relationship: org)
-    family2.family_memberships.create(organization: org9, family_relationship: org)
-    family2.family_memberships.create(organization: org10, family_relationship: org)
-    family2.family_memberships.create(organization: org11, family_relationship: org)
-    family2.family_memberships.create(organization: org12, family_relationship: org)
-    family2.family_memberships.create(organization: org13, family_relationship: org)
-    family2.family_memberships.create(organization: org14, family_relationship: org)
-  end
-end
-
-if Person.all.size == 0
-  person1 = Person.find_or_create_by(id:1699192, source_id:'33303', source_context: ctep, fname:'Ajeet', lname:'Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
-  person2 = Person.find_or_create_by(id:7857011, source_id:'518786', source_context: ctrp, fname:'Alicia', lname:'Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
-  person3 = Person.find_or_create_by(id:3567738, source_id:'515762', source_context: ctep, fname:'Amy', mname:'M.', lname:'Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
-  person4 = Person.find_or_create_by(id:2944806, source_id:'41379', source_context: ctrp, fname:'Amy', mname:'L.', lname:'Jonson', prefix:'Dr.', suffix:'', email:'jonso001@umn.edu', phone:'612-624-2620')
-  person5 = Person.find_or_create_by(id:1832268, source_id:'34482', source_context: ctep, fname:'Badrinath', mname:'R.', lname:'Konety', prefix:'Dr.', suffix:'', email:'brkonety@umn.edu', phone:'612-624-2620')
-  person6 = Person.find_or_create_by(id:10161459, source_id:'46120', source_context: ctrp, fname:'Christine', lname:'Holmberg', prefix:'Dr.', suffix:'', email:'christine.holmberg@charite.de', phone:'-1152')
-  person7 = Person.find_or_create_by(id:366649, source_id:'11640', source_context: ctep, fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143')
-  person8 = Person.find_or_create_by(id:2026171, source_id:'35504', source_context: ctrp, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
-  Person.find_or_create_by(source_id:'AB123', source_context: ctep, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@ctep', phone:'123-456-7890', ctrp_id: person8.id)
-  Person.find_or_create_by(source_id:'098', source_context: nlm, fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@nlm', phone:'098-765-4321', ctrp_id: person8.id)
-  person9 = Person.find_or_create_by(id:672434, source_id:'19844', source_context: ctep, fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100')
-  person10 = Person.find_or_create_by(id:1426655, source_id:'15179', source_context: ctrp, fname:'Gisele', lname:'Sarosy', prefix:'Dr.', suffix:'', email:'gsarosy@mail.nih.gov', phone:'800-411-1222')
-  person11 = Person.find_or_create_by(id:28417522, source_id:'15178', source_context: ctrp, source_status: source_act, fname:'Rachel', lname:'Nusbaum', prefix:'Dr.', suffix:'', email:'rhm23@georgetown.edu', phone:'800-555-1244')
-  person12 = Person.find_or_create_by(id:1950481, source_id:'15177', source_context: ctrp, source_status: source_act, fname:'Alessandra', lname:'Ferrajol', prefix:'Dr.', suffix:'', email:'aferrajo@mdanderson.org', phone:'800-111-1244')
-  person13 = Person.find_or_create_by(id:28186245, source_id:'15176', source_context: ctrp, source_status: source_act, fname:'Kristi', lname:'Graves', prefix:'Dr.', suffix:'', email:'kdg9@georgetown.edu', phone:'800-777-1244')
-  person14 = Person.find_or_create_by(id:3561594, source_id:'15175', source_context: ctrp, source_status: source_act, fname:'Diane', lname:'Roulston', prefix:'Dr.', suffix:'', email:'droulstn@umich.edu', phone:'800-777-1244')
-  person15 = Person.find_or_create_by(id:1500960, source_id:'15180', source_context: ctrp, source_status: source_act, fname:'James', lname:'Lee', prefix:'Mr.', suffix:'', email:'jal2024@med.cornell.edu', phone:'800-777-1244')
-
-
-  PoAffiliationStatus.find_or_create_by(name: 'Active', code: 'ACTIVE')
-  PoAffiliationStatus.find_or_create_by(name: 'Inactive', code: 'INACTIVE')
-end
-##Families
-family1 = Family.find_or_create_by(name: 'Albert Einstein Cancer Center',family_status_id:1,family_type_id:1)#Cancer Center
-family2 = Family.find_or_create_by(name: 'Arizona Cancer Center',family_status_id:1,family_type_id:1)#Cancer Center
-family3 = Family.find_or_create_by(name: 'David H. Koch Institute for Integrative Cancer Research at MIT',family_status_id:1,family_type_id:4) #Research Center
-family4 = Family.find_or_create_by(name: 'NCI Center for Cancer Research (CCR)',family_status_id:1,family_type_id:3) #NIH
-family5 = Family.find_or_create_by(name: 'NRG Oncology',family_status_id:1,family_type_id:2)#NCTN
-family6 = Family.find_or_create_by(name: 'Yale Cancer Center',family_status_id:2,family_type_id:1)#Cancer Center
-
-##Grants - Temporary grant information stored in seeds. WIll be replaced by nightly import of Grants information
-grant2 = Tempgrants.find_or_create_by(serial_number:134759 , institution_name:'UNIVERSITY OF MINNESOTA' , project_title:'Transposon-based screens for colorectal cancer genes' ,funding_mechanism:'R01' , institute_code: 'CA')
-grant3 = Tempgrants.find_or_create_by(serial_number:142845 , institution_name: 'MEHARRY MEDICAL COLLEGE', project_title:'Mechanisms for Benzo(a)pyrene-Induced Colon Cancer Exacerbation by Dietary Fat' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant4 = Tempgrants.find_or_create_by(serial_number:133230 , institution_name: 'VANDERBILT UNIVERSITY', project_title:'The alpha2beta1 Integrin and Tumor Metastasis' ,funding_mechanism: 'R01', institute_code: 'CA')
-
-grant5 = Tempgrants.find_or_create_by(serial_number:136472 , institution_name: 'UNIVERSITY OF MINNESOTA', project_title:'NMR Structural Studies of Ubiquitin Receptor Protein Complexes' ,funding_mechanism: 'R01', institute_code: 'CA')
-
-grant6 = Tempgrants.find_or_create_by(serial_number:136921 , institution_name: 'UNIVERSITY OF NEBRASKA MEDICAL CENTER', project_title:'NMR Structural Studies of Ubiquitin Receptor Protein Complexes' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant7 = Tempgrants.find_or_create_by(serial_number:128837 , institution_name: 'MEDICAL UNIVERSITY OF SOUTH CAROLINA', project_title:'Immunotherapy to prevent oral permalignant lesion recurrence and oral cancer.' ,funding_mechanism: 'R01', institute_code: 'CA')
-
-grant8 = Tempgrants.find_or_create_by(serial_number:129687 , institution_name: 'EMORY UNIVERSITY', project_title:'Molecular mechanisms of TRAIL resistance in glioblastoma' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant9 = Tempgrants.find_or_create_by(serial_number:136472 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'REST/NRSF-mediated medulloblastoma tumorigenesis' ,funding_mechanism: 'R01', institute_code: 'CA')
-
-grant10 = Tempgrants.find_or_create_by(serial_number:132840 , institution_name: 'UNIVERSITY OF TX MD ANDERSON CAN CTR', project_title:'Function of REV3L in limiting oncogenesis via DNA damage tolerance' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant11 = Tempgrants.find_or_create_by(serial_number:138410 , institution_name: 'UNIVERSITY OF LOUISVILLE', project_title:'Regulation of miRNA in breast cancer' ,funding_mechanism: 'R01', institute_code: 'CA')
-
-grant12 = Tempgrants.find_or_create_by(serial_number:138468 , institution_name: 'SLOAN-KETTERING INST CAN RESEARCH', project_title:'PET Imaging of Cancer with pH (Low) Insertion Peptide (pHLIP)' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant13 = Tempgrants.find_or_create_by(serial_number: 142587, institution_name: 'UNIVERSITY OF ALABAMA AT BIRMINGHAM', project_title:'Phase-sensitive x-ray breast tomosynthesis' ,funding_mechanism: 'R01', institute_code: 'CA')
-
-grant14 = Tempgrants.find_or_create_by(serial_number: 77267, institution_name: 'DARTMOUTH COLLEGE', project_title:'Invasive Behavior of Tumor Cells Producing Collagenase-1' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant15 = Tempgrants.find_or_create_by(serial_number:132672 , institution_name: 'UNIVERSITY OF PITTSBURGH AT PITTSBURGH', project_title:'Continued Development and Evaluation of caTIES' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant16 = Tempgrants.find_or_create_by(serial_number: 144563, institution_name: 'INDIANA UNIVERSITY BLOOMINGTON', project_title:'Studies Toward the Total Synthesis of Leiodelide' ,funding_mechanism: 'F31', institute_code: 'CA')
-
-grant17 = Tempgrants.find_or_create_by(serial_number:142118 , institution_name: 'YALE UNIVERSITY', project_title:'Live analysis of tumor-host cells interactions' ,funding_mechanism: 'F32', institute_code: 'CA')
-grant18 = Tempgrants.find_or_create_by(serial_number:139426 , institution_name: 'ROSWELL PARK CANCER INSTITUTE CORP', project_title:'Genome-Wide Predictors of Treatment-Related Toxicities' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant19 = Tempgrants.find_or_create_by(serial_number:130202 , institution_name: 'UNIVERSITY OF CHICAGO', project_title:'Pax3, Melanocyte Stem Cells and Melanoma' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant20 = Tempgrants.find_or_create_by(serial_number:130932 , institution_name: 'UNIVERSITY OF ILLINOIS AT CHICAGO', project_title:'Crosstalk between estrogen receptor and NFkB in target gene regulation' ,funding_mechanism: 'R01', institute_code: 'CA')
-
-grant21 = Tempgrants.find_or_create_by(serial_number: 131421, institution_name: 'ALBERT EINSTEIN COLLEGE OF MEDICINE', project_title:'Role of Skp2-cyclin A Interaction in Normal Physiology and Cancer' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant22 = Tempgrants.find_or_create_by(serial_number:90265 , institution_name: 'UNIVERSITY OF ARIZONA', project_title:'Anticancer Agents from Plant- and Lichen-Associated Fungi of the Sonoran Desert' ,funding_mechanism: 'R01', institute_code: 'CA')
-
-grant23 = Tempgrants.find_or_create_by(serial_number:129688 , institution_name: 'UNIVERSITY OF ARIZONA', project_title:'Mechanisms of colon cancer chemoprevention by ursodeoxycholic acid' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant24 = Tempgrants.find_or_create_by(serial_number:131080 , institution_name: 'UNIVERSITY OF SOUTH FLORIDA', project_title:'MBSR Symptom Cluster Trial for Breast Cancer Survivors' ,funding_mechanism: 'R01', institute_code: 'CA')
-grant25 = Tempgrants.find_or_create_by(serial_number:153978 , institution_name: 'MASSACHUSETTS GENERAL HOSPITAL', project_title:'Proliferation-promoting activities of pRB' ,funding_mechanism: 'F32', institute_code: 'CA')
-grant26 = Tempgrants.find_or_create_by(serial_number:150295 , institution_name: 'COLD SPRING HARBOR LABORATORY', project_title:'2010 Cold Spring Harbor Laboratory Conference on Systems Biology: Global Regulati' ,funding_mechanism: 'R13', institute_code: 'CA')
-grant27 = Tempgrants.find_or_create_by(serial_number: 97131, institution_name:'UNIVERSITY OF WISCONSIN-MADISON', project_title: 'Modulation of IGF-II Imprinting in the Aging Prostate' ,funding_mechanism: 'R01', institute_code: 'CA')
-
-
-## Trials
-## Delete existing Trial data
-if Trial.all.size == 0
-  DataImport.delete_trial_data
-  ## Reading and importing Trial related spreadsheets
-  puts "Parsing Trial Spreadsheet"
-  DataImport.import_trials
-  puts "Parsing Milestone Spreadsheet"
-  DataImport.import_milestones
-  puts "Parsing Participating Sites Spreadsheet"
-  DataImport.import_participating_sites
-end
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
@@ -528,19 +442,22 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true},
                {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
+               {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
+               {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
                {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "approve" => true},
                {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
                {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true}
-          ]
+]
 
 test_users.each do |u|
   user = User.find_by_username(u["username"])
   unless user.blank?
     user.role = u["role"]
     user.approved =  u["approve"]
-
-
+    unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER"
+      user.organization = org0
+    end
     user.save!
     #puts "Updated role of user = #{user.username}, role = #{user.role}"
   end
@@ -558,24 +475,40 @@ tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" =
 shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shenpei", "last_name" => "Wu" }
 sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sarada", "last_name" => "Chintala" }
 hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Hemant", "last_name" => "Undale" }
-radhika = {"email" => "radhika.tekumalla@nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
+radhika = {"email" => "tekumall@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
+vasu = {"email" => "nalluruvn@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Vasu", "last_name" => "Nalluru"}
+barry = {"email" => "alkisbd@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Barry", "last_name" => "Alkis"}
 
-ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika]
+
+ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika, vasu, barry]
 
 ##Add CTRP Business Analysts
 
-joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Joe", "last_name" => "Martucci" }
-jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
-michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Michael", "last_name" => "Izbicki"}
-sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Sandy", "last_name" => "Lightbody" }
+joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Joe", "last_name" => "Martucci" }
+michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Michael", "last_name" => "Izbicki"}
+sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sandy", "last_name" => "Lightbody" }
+susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Susan", "last_name" => "Nonemaker"  }
+sophia = {"email" => "rarhais@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sophia", "last_name" => "Rarhai"  }
+
+ba_users = [joe, michael, sandy, susan, sophia]
+
+##Add CTRO and Curator users
+
+stephanie = {"email" => "whitleys@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Stephanie", "last_name" => "Whitley" }
 kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
-deb = {"email" => "hopeda@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Deb", "last_name" => "Hope"  }
-susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_RO", "first_name" => "Susan", "last_name" => "Nonemaker"  }
-sophia = {"email" => "rarhais@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Sophia", "last_name" => "Rarhai"  }
+andrea = {"email" => "mooreaj@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Andrea", "last_name" => "Moore" }
+graysonra = {"email" => "graysonra@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Rachel", "last_name" => "Grayson" }
 
-ba_users = [joe, jose, michael, sandy, kirsten, deb, susan, sophia]
+ctro_users = [stephanie, kirsten, andrea, graysonra]
 
-all_users = ncictrpdev_users + ba_users
+#Add Fed users
+
+jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
+gene = {"email" => "krausg@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Gene", "last_name" => "Kraus" }
+
+fed_users = [jose, gene]
+
+all_users = ncictrpdev_users + ba_users + ctro_users + fed_users
 
 ## Save the users by bypassing validation. We want to save the user without the password
 begin
@@ -587,9 +520,16 @@ begin
     ldap_user.first_name = u["first_name"]
     ldap_user.last_name = u["last_name"]
     ldap_user.approved = true
+    ldap_user.organization = org0
     ldap_user.save(validate: false)
     #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"
 end
+
+
+#Line to include seeds from passed environment variable
+puts "Begin seeding environment-specfic data"
+load(Rails.root.join( 'db', 'seeds', "#{Rails.env.downcase}.rb"))
+puts "Seeding complete"
