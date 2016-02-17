@@ -32,7 +32,7 @@ end
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
     json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id
-    json.set! :added_by, document.added_by_id.nil? ? '' : User.find(document.added_by_id)
+    json.set! :added_by, document.added_by_id.nil? ? User.find(1) : ''    #document.added_by_id
   end
 end
 
