@@ -18,7 +18,6 @@
         vm.curPs = vm.curPs.data || vm.curPs;
         vm.curTrial = trialDetailObj;
         vm.curUser = userDetailObj;
-        vm.curPs = {};
         vm.availableOrgs = [];
         vm.srStatusArr = srStatusObj;
         vm.status_date_opened = false;
