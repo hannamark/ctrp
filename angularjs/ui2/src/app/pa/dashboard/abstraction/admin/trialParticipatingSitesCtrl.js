@@ -29,7 +29,7 @@
         vm.postal=null;
         vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
-        vm.currentParticipatingSite.selOrganization = {name: '', array: []};
+        vm.selOrganization = {name: '', array: []};
 
         //actions
         vm.addSiteRecruitment = addSiteRecruitment;
@@ -98,7 +98,7 @@
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
-                vm.curTrial.collaborators = response["collaborators"];
+                //vm.curTrial.collaborators = response["collaborators"];
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
@@ -117,7 +117,7 @@
 
         // Add Participating to a temp array
         function watchOrganization() {
-            $scope.$watchCollection(function() {return vm.currentParticipatingSite.selOrganization.array;}, function(newVal, oldVal) {
+            $scope.$watchCollection(function() {return vm.selOrganization.array;}, function(newVal, oldVal) {
                 if (angular.isArray(newVal) && newVal.length > 0) {
                     console.log("newVal = "+ JSON.stringify(newVal));
                     vm.currentParticipatingSite.name = newVal[0].name;
@@ -127,7 +127,7 @@
                     vm.state_province = newVal[0].state_province;
                     vm.country = newVal[0].country;
                     vm.postal_code = newVal[0].postal_code;
-                    vm.currentParticipatingSite.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
+                    vm.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
                     //console.log("vm.currentParticipatingSite =" + JSON.stringify(vm.currentParticipatingSite));
                 }
             });
@@ -149,7 +149,7 @@
             vm.country = vm.curTrial.participating_sites_list[idx].organization.country;
             vm.postal_code = vm.curTrial.participating_sites_list[idx].organization.postal_code;
             vm.po_name = vm.curTrial.participating_sites_list[idx].organization.po_name;
-            vm.currentParticipatingSite.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
+            vm.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
         }
 
         function openCalendar ($event, type) {
@@ -189,7 +189,7 @@
             // Temporary code. User of ng-options in the UI should resolve it.
             for (var i = 0; i < vm.siteRecruitmentStatusesArr.length; i++) {
                 if (vm.current_site_recruitment.site_recruitment_status == vm.siteRecruitmentStatusesArr[i].name) {
-                    vm.current_site_recruitment.site_recruitment_status = vm.siteRecruitmentStatusesArr[i];
+                    vm.current_site_recruitment.site_recruitment_status = vm.siteRecruitmentStatusesArr[i].id;
                 }
             }
 
