@@ -16,6 +16,8 @@
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.curUser = userDetailObj;
+        vm.curPs = {};
+        vm.availableOrgs = [];
         vm.srStatusArr = srStatusObj;
         vm.status_date_opened = false;
         vm.addedStatuses = [];
@@ -109,6 +111,22 @@
         /****************************** implementations **************************/
 
         function activate() {
+            populateOrgs();
+            setDefaultOrg();
+        }
+
+        // Populate available organization list
+        function populateOrgs() {
+            if (vm.curUser.role === 'ROLE_SITE-SU') {
+                vm.availableOrgs = vm.curUser.family_orgs;
+            } else {
+                vm.availableOrgs.push(vm.curUser.organization);
+            }
+        }
+
+        // Set the default organization
+        function setDefaultOrg() {
+            vm.curPs.organization_id = vm.availableOrgs[0].id;
         }
     }
 })();

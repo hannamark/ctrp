@@ -220,6 +220,20 @@ class  User < ActiveRecord::Base
     end
   end
 
+  # Array of all organizations in the families of user's organization
+  def family_orgs
+    family_orgs = []
+    family_orgs.append(self.organization)
+
+    self.organization.families.each do |family|
+      family.organizations.each do |org|
+        family_orgs.append(org)
+      end
+    end
+
+    return family_orgs.uniq
+  end
+
   private
 
   def compare_username(username_value)
