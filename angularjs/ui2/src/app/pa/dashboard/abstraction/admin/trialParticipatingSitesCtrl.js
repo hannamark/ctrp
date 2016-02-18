@@ -91,6 +91,11 @@
             //outerTrial.new = vm.curTrial.new;
             //outerTrial.id = vm.curTrial.id;
             //outerTrial.trial = vm.curTrial;
+            if (!vm.currentParticipatingSite.id) {
+                vm.currentParticipatingSite.new = true;
+            }
+            vm.currentParticipatingSite.trial_id = trialDetailObj.id;
+            console.log("In save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
 
             TrialService.upsertParticipatingSite(vm.currentParticipatingSite).then(function(response) {
                 console.log("response="+JSON.stringify(response));

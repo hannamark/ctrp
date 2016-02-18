@@ -206,7 +206,10 @@
                     templateUrl: 'app/pa/dashboard/abstraction/admin/pa_trial_related_docs.html',
                     controller: 'paTrialRelatedDocsCtrl as trialRelatedDocsView',
                     resolve: {
-
+                        TrialService: 'TrialService',
+                        acceptedFileTypesObj: function(TrialService) {
+                            return TrialService.getAcceptedFileTypes();
+                        }
                     },
                     section: 'pa',
                     ncyBreadcrumb: {
