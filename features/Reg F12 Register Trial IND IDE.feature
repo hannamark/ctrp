@@ -55,7 +55,7 @@ Then the IND/IDE Information for the trial registration will not indicate any er
 
 
 Scenario:#2 FDA IND/IDE Information Validation check rule
-    Given I am on The FDA IND/IDE Information for applicable trials
+    Given I am on the Register Trial IND/IDE Information screen
     When I have NOT entered <IND/IDETypes>
       |<IND/IDETypes>  |
       |IND/IDE Types  |
@@ -64,17 +64,17 @@ Scenario:#2 FDA IND/IDE Information Validation check rule
       |IND/IDE Holder Type  |
 
      And I have clicked on the Add IND/IDE Button
-     Then A message will be displayed "Please choose an IND/IDE Type,enter an IND/IDE Number, select an IND/IDE Grantor and select an IND/IDE Holder Type"
+     Then A message will be displayed "Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type"
 
       
-Scenario Outline: #3 I must enter FDA IND/IDE Information for applicable trials
+Scenario Outline: #3 I must Register Trial IND/IDE Information 
     Given I have selected the option to register a trial <TrialType>
-    And I am on the FDA IND/IDE Information for applicable trials
+    And I am on the Register Trial IND/IDE Information screen
     When I have not selected an IND/IDE Types
     And I have not entered IND/IDE Number
     And I have not selected an IND/IDE Grantor
     And I have not selected an IND/IDE Holder Type
-     Then the Register Trial FDA IND/IDE Information for applicable trials section will indicate an error type" FDA IND/IDE Information Required"
+     Then the Register Trial IND/IDE Information screen section will indicate an error type" FDA IND/IDE Information Required"
 
 Examples: 
 
