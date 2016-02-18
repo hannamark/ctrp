@@ -111,7 +111,7 @@
                     var newDoc = {};
                     newDoc.id = res.data.id;
                     newDoc.document_type = res.data.document_type;
-                    newDoc.file_name = res.data.file.file_name;
+                    newDoc.file_name = res.data.file_name;
                     newDoc.document_subtype = res.data.document_subtype;
                     newDoc.updated_at = res.data.updated_at;
                     newDoc.added_by = {username: UserService.getLoggedInUsername()};
