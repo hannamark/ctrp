@@ -371,8 +371,14 @@
 
 <!-- Grid the shows all the Participating Sites -->
 <div class="row">
-    <legend class="sub-bordered">Participating Sites:</legend>
-    <fieldset>
+    <uib-accordion close-others="false">
+        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+            <uib-accordion-heading>
+                List of Participating Sites <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+            </uib-accordion-heading>
+
+            <fieldset>
+        <legend class="sub-bordered">List of Participating Sites:</legend>
         <div class="form-group">
             <table class="table table-bordered table-striped table-hover">
                 <thead style="background-color: #d9edf7">
@@ -425,5 +431,7 @@
         </div>
 
     </fieldset>
+        </uib-accordion-group>
+    </uib-accordion>
 </div>
 
