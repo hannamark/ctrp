@@ -434,7 +434,19 @@ puts "Seeding ldap and local users"
                                          postal_code: '20850',
                                          email: "ncictrpdev@mail.nih.gov"
   )
-
+ctep = Organization.find_or_create_by( id: 9999998,
+                                       source_id: '9999998',
+                                       name: 'organization for restfulservices',
+                                       phone:'240-276-0001',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
@@ -447,7 +459,9 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "approve" => true},
                {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
-               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true}
+               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true},
+               {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true}
+
 ]
 
 test_users.each do |u|
@@ -455,8 +469,11 @@ test_users.each do |u|
   unless user.blank?
     user.role = u["role"]
     user.approved =  u["approve"]
-    unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER"
+    unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
       user.organization = org0
+    end
+    if user.role == "ROLE_SERVICE-REST"
+      user.organization = ctep
     end
     user.save!
     #puts "Updated role of user = #{user.username}, role = #{user.role}"

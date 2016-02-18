@@ -62,7 +62,7 @@ class  User < ActiveRecord::Base
   scope :not_approved, -> { where(approved: false) }
 
   #Define roles here to drive dropdown menu when adding users
-  ROLES = %i[ROLE_RO ROLE_SUPER ROLE_ADMIN ROLE_CURATOR ROLE_ABSTRACTOR ROLE_ABSTRACTOR-SU ROLE_TRIAL-SUBMITTER ROLE_ACCRUAL-SUBMITTER ROLE_SITE-SU]
+  ROLES = %i[ROLE_RO ROLE_SUPER ROLE_ADMIN ROLE_CURATOR ROLE_ABSTRACTOR ROLE_ABSTRACTOR-SU ROLE_TRIAL-SUBMITTER ROLE_ACCRUAL-SUBMITTER ROLE_SITE-SU ROLE_SERVICE-REST]
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 

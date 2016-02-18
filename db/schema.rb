@@ -344,8 +344,8 @@ ActiveRecord::Schema.define(version: 20160217010200) do
     t.string   "institute_code",    limit: 255
     t.string   "nci",               limit: 255
     t.integer  "trial_id"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "uuid",              limit: 255
     t.integer  "lock_version",                  default: 0
     t.string   "serial_number",     limit: 255
