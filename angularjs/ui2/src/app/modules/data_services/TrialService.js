@@ -175,7 +175,7 @@
         } //searchTrials
 
         function getGrantsSerialNumber(searchParams) {
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);            
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);
         } // getGrantsSerialNumber
         /**
          * get initial paramater object for trials search
