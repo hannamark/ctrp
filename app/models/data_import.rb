@@ -253,6 +253,11 @@ class DataImport
       #Organization and Person
       ps.organization =  Organization.all[rand(0..(Organization.all.size-1))]
       ps.person = Person.all[rand(0..(Person.all.size-1))]
+      psi = ParticipatingSiteInvestigator.new
+      psi.person = Person.all[rand(0..(Person.all.size-1))]
+      psi.investigator_type = "Principal Investigator"
+      psi.set_as_contact = false
+      ps.participating_site_investigators << psi
       trial.participating_sites << ps
       trial.save!
     end
