@@ -32,7 +32,8 @@
         'ui.grid.pagination',
         'ui.grid.selection',
         'ui.scrollpoint',
-        'angular-json-tree'
+        'angular-json-tree',
+        'smart-table',
 
     ]);
 })();

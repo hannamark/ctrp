@@ -36,6 +36,7 @@
         vm.editSiteRecruitment = editSiteRecruitment;
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
+        vm.openCalendar = openCalendar;
 
 
         activate();
@@ -155,17 +156,9 @@
         function openCalendar ($event, type) {
             $event.preventDefault();
             $event.stopPropagation();
-
+            
             if (type === 'status_date') {
                 vm.statusDateOpened = !vm.statusDateOpened;
-            } else if (type === 'start_date') {
-                vm.startDateOpened = !vm.startDateOpened;
-            } else if (type === 'primary_comp_date') {
-                vm.primaryCompDateOpened = !vm.primaryCompDateOpened;
-            } else if (type === 'comp_date') {
-                vm.compDateOpened = !vm.compDateOpened;
-            } else if (type === 'amendment_date') {
-                vm.amendmentDateOpened = !vm.amendmentDateOpened;
             }
         }; //openCalendar
 
