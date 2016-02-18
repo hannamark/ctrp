@@ -24,6 +24,7 @@ class TrialDocument < TrialBase
 
   belongs_to :added_by, class_name: "User"
   belongs_to :trial
+  belongs_to :submission
 
   mount_uploader :file, TrialDocumentUploader
 

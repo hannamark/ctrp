@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160218203101) do
+ActiveRecord::Schema.define(version: 20160218205431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -992,9 +992,11 @@ ActiveRecord::Schema.define(version: 20160218203101) do
     t.datetime "updated_at",                               null: false
     t.string   "uuid",             limit: 255
     t.integer  "lock_version",                 default: 0
+    t.integer  "submission_id"
   end
 
   add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree
+  add_index "trial_documents", ["submission_id"], name: "index_trial_documents_on_submission_id", using: :btree
   add_index "trial_documents", ["trial_id"], name: "index_trial_documents_on_trial_id", using: :btree
 
   create_table "trial_funding_sources", force: :cascade do |t|
@@ -1317,6 +1319,7 @@ ActiveRecord::Schema.define(version: 20160218203101) do
   add_foreign_key "trial_co_lead_orgs", "trials"
   add_foreign_key "trial_co_pis", "people"
   add_foreign_key "trial_co_pis", "trials"
+  add_foreign_key "trial_documents", "submissions"
   add_foreign_key "trial_documents", "trials"
   add_foreign_key "trial_documents", "users", column: "added_by_id"
   add_foreign_key "trial_funding_sources", "organizations"

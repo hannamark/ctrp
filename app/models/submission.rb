@@ -39,4 +39,5 @@ class Submission < TrialBase
   belongs_to :user
   has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
   has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
+  has_many :trial_documents, -> { order 'trial_documents.id' }
 end
