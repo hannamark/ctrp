@@ -22,6 +22,7 @@
             vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
             vm.curTrialDetailObj = {};
             vm.curDoc = _initCurDoc();
+            vm.docSubtypeShown = false;
             // TODO: this is served from app settings
             vm.documentTypes = ['Protocol Document', 'IRB Approval',
                     'Informed Consent', 'Change Memo Document',
@@ -37,6 +38,7 @@
             activate();
             function activate() {
                 _getTrialDetailCopy();
+                _watchCurDocType();
             }
 
             /**
@@ -93,7 +95,7 @@
              * @param  {Int} index [if index is null, upload new pic; otherwise, update]
              * @return {Void}
              */
-            function upsertDoc(file, index) {
+            function upsertDoc(index) {
 
                 vm.curDoc.file_name.upload = Upload.upload({
                     url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
@@ -115,7 +117,11 @@
                     newDoc.document_subtype = res.data.document_subtype;
                     newDoc.updated_at = res.data.updated_at;
                     newDoc.added_by = {username: UserService.getLoggedInUsername()};
-                    vm.curTrialDetailObj.trial_documents.unshift(newDoc);
+                    if (!!index && index < vm.curTrialDetailObj.trial_documents.length) {
+                        vm.curTrialDetailObj.trial_documents[index] = newDoc;
+                    } else {
+                        vm.curTrialDetailObj.trial_documents.unshift(newDoc);
+                    }
                     vm.curDoc = _initCurDoc();
                 }).catch(function(err) {
                     console.error('upload error: ', err);
@@ -131,6 +137,19 @@
                             });
                             */
 
+            }
+
+            /**
+             * Watch for the document type of the document to be uploaded,
+             * if the document type is 'Other', show the input field 'document_subtype'
+             * @return {[type]} [description]
+             */
+            function _watchCurDocType() {
+                $scope.$watch(function() {return vm.curDoc.document_type;},
+                    function(newVal, oldVal) {
+                        vm.docSubtypeShown = newVal.indexOf('Other') > -1;
+                        vm.curDoc.document_subtype = '';
+                    });
             }
 
 
