@@ -79,7 +79,7 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'lname', displayName: 'Last', enableSorting: true, minWidth: '100', width: '*',
+                {name: 'lname', displayName: 'Last', enableSorting: true, minWidth: '100', width: '*', sort: { direction: 'asc', priority: 1}, 
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },

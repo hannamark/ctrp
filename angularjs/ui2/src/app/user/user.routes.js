@@ -45,13 +45,12 @@
                     resolve: {
                         UserService: 'UserService'
                     },
-                ncyBreadcrumb: {
-                    parent: '',
-                    label: 'CTRP Sign Up'
-                    // skip: true,
-                }
+                    ncyBreadcrumb: {
+                        parent: 'main.sign_in',
+                        label: 'CTRP Sign Up'
+                        // skip: true,
+                    }
                 })
-
                 .state('main.welcome_signup', {
                     url: '/welcome_signup',
                     templateUrl: 'app/user/welcome_signup.html'
