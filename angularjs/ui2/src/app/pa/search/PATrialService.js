@@ -125,7 +125,6 @@
             getSubmissionTypes: getSubmissionTypes,
             getSubmissionMethods: getSubmissionMethods,
             getNih: getNih,
-            getExpandedAccessTypes: getExpandedAccessTypes,
             checkOtherId: checkOtherId,
             deleteTrial: deleteTrial,
             setCurrentTrial: setCurrentTrial,
@@ -278,10 +277,6 @@
         function getSiteRecruitementStatuses() {
             console.log("In getSiteRecruitementStatuses");
             return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
-        }
-
-        function getExpandedAccessTypes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
         }
 
         // Validation logic for Other Trial Identifier
