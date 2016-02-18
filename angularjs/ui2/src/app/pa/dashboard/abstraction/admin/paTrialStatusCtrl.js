@@ -311,7 +311,10 @@
             TrialService.upsertTrial(outerTrial).then(function(res) {
                 vm.trialDetailObj = res;
                 vm.trialDetailObj.lock_version = res.lock_version;
-
+                // delete vm.trialDetailObj.admin_checkout;
+                // delete vm.trialDetailObj.scientific_checkout;
+                console.log('checkout: ', vm.trialDetailObj.admin_checkout);
+                console.log('checkout2: ', vm.trialDetailObj.scientific_checkout);
                 PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
