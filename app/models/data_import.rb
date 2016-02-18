@@ -258,6 +258,13 @@ class DataImport
       psi.investigator_type = "Principal Investigator"
       psi.set_as_contact = false
       ps.participating_site_investigators << psi
+
+      psi2 = ParticipatingSiteInvestigator.new
+      psi2.person = Person.all[rand(0..(Person.all.size-1))]
+      psi2.investigator_type = "Principal Investigator"
+      psi2.set_as_contact = false
+
+      ps.participating_site_investigators << psi2
       trial.participating_sites << ps
       trial.save!
     end
