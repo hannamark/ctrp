@@ -86,7 +86,7 @@
                     updated_at: '',
                     created_at: '',
                     edit: false,
-                    index: '',
+                    index: null,
                     _destroy: false
                 };
                 return doc;
