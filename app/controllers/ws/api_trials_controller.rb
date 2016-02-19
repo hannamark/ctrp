@@ -1238,24 +1238,7 @@ end
       end
   end
 
-  def  delete_funding_sponsor(trialkeys)
 
-    existing_fs = Array.new()
-
-    existing_fs = TrialFundingSource.where(trial_id: @trial.id).pluck(:id)
-
-    len = existing_fs.length
-     if len > 0
-        for i in 0..len-1
-          myHash= Hash.new();
-          myHash.store("id", existing_fs[i])
-          myHash.store("_destroy","true")
-          @trial_funding_sources.push(myHash);
-         end
-  @trialMasterMap.store("trial_funding_sources_attributes",@trial_funding_sources);
-
-     end
-  end
 
   def process_funding_sponsor(trialkeys)
   if trialkeys["summary4FundingSponsor"].kind_of?(Array)
@@ -1432,5 +1415,27 @@ end
 
     end
   end
+
+  def  delete_funding_sponsor(trialkeys)
+
+    existing_fs = Array.new()
+
+    existing_fs = TrialFundingSource.where(trial_id: @trial.id).pluck(:id)
+
+    len = existing_fs.length
+     if len > 0
+        for i in 0..len-1
+          myHash= Hash.new();
+          myHash.store("id", existing_fs[i])
+          myHash.store("_destroy","true")
+          @trial_funding_sources.push(myHash);
+         end
+  @trialMasterMap.store("trial_funding_sources_attributes",@trial_funding_sources);
+
+     end
+  end
+
+
+
 
   end #main end

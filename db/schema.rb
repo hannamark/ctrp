@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217010200) do
+ActiveRecord::Schema.define(version: 20160218040543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -378,8 +378,8 @@ ActiveRecord::Schema.define(version: 20160217010200) do
     t.integer  "holder_type_id"
     t.integer  "expanded_access_type_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "uuid",                    limit: 255
     t.integer  "lock_version",                        default: 0
     t.boolean  "expanded_access"
