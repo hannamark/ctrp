@@ -34,6 +34,7 @@
             vm.deleteDoc = deleteDoc;
             vm.editDoc = editDoc;
             vm.upsertDoc = upsertDoc;
+            vm.resetForm = resetForm;
 
             activate();
             function activate() {
@@ -50,10 +51,6 @@
                     vm.curTrialDetailObj = PATrialService.getCurrentTrialFromCache();
                 }, 0);
             } //getTrialDetailCopy
-
-            function saveDocuments() {
-                console.info('saving documents');
-            }
 
             function deleteDoc(index) {
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
@@ -125,7 +122,7 @@
                     });
 
                     vm.curDoc.file_name.upload.then(function(res) {
-                        console.info('upload res: ', res);
+                        // console.info('upload res: ', res);
                         var newDoc = {};
                         newDoc.id = res.data.id;
                         newDoc.document_type = res.data.document_type;
@@ -141,9 +138,9 @@
                             vm.curTrialDetailObj.trial_documents.splice(index, 1, newDoc); // insert immediately after 'index'
                         } else {
                             // insert the new document
-                            console.info('inserting a new document');
                             vm.curTrialDetailObj.trial_documents.unshift(newDoc);
                         }
+                        saveDocuments(false); // saveDocuments, showToastr: false
                         vm.curDoc = _initCurDoc();
                     }).catch(function(err) {
                         console.error('upload error: ', err);
@@ -163,6 +160,44 @@
                         vm.curDoc.document_subtype = '';
                     });
             }
+
+            /**
+             * Reset the form
+             */
+            function resetForm() {
+                _getTrialDetailCopy();
+                vm.curDoc = _initCurDoc();
+            }
+
+            /**
+             * POST the updated trial to backend
+             * @param  {Boolean} showToastr [show toastr or not]
+             * @return {Void}
+             */
+            function saveDocuments(showToastr) {
+                vm.curTrialDetailObj.trial_documents_attributes = vm.curTrialDetailObj.trial_documents;
+                var outerTrial = {};
+                outerTrial.new = false;
+                outerTrial.id = vm.curTrialDetailObj.id;
+                outerTrial.trial = vm.curTrialDetailObj;
+                // get the most updated lock_version
+                outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+                TrialService.upsertTrial(outerTrial).then(function(res) {
+                    vm.curTrialDetailObj = res;
+                    console.log('in trial related documents, res: ', res);
+                    vm.curTrialDetailObj.lock_version = res.lock_version;
+                    PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+                    if (showToastr) {
+                        toastr.clear();
+                        toastr.success('Trial related documents have been saved', 'Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        });
+                    }
+                });
+
+            } // updatedTrial
 
 
         } // paTrialRelatedDocsCtrl
