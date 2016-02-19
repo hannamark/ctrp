@@ -145,7 +145,7 @@
                                         </td>
 
                                         <td class="col-md-2">
-                                            <div ng-hide="psView.statusObj.edit">
+                                            <div ng-hide="psView.current_site_recruitment.edit">
                                                 <button class="btn btn-default" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
                                                         ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                     psView.current_site_recruitment.site_recruitment_status == '' ||
@@ -157,9 +157,9 @@
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
                                                 <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()">Commit</button>
                                             </div> -->
-                                            <div class="btn-group inline" ng-show="psView.statusObj.edit">
+                                            <div class="btn-group inline" ng-show="psView.current_site_recruitment.edit">
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelEdit()">Cancel</button>
-                                                <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEdit()"
+                                                <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEditSiteRecruitment()"
                                                         ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                     psView.current_site_recruitment.site_recruitment_status == '' ||
                                                     ps_form.status_comment.$viewValue.length > 160">Commit</button>
