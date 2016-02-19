@@ -32,7 +32,7 @@ end
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
     json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id
-    json.set! :added_by, document.added_by_id.nil? ? '' : User.find(document.added_by_id)
+    json.set! :added_by, document.added_by_id.nil? ? User.find(1) : ''    #document.added_by_id
   end
 end
 
@@ -51,7 +51,7 @@ end
 json.participating_sites_list do
   json.array!(@trial.participating_sites) do |participating_site|
     json.id participating_site.id
-    json.investigator participating_site.person.lname if participating_site.person.present?
+    json.investigator participating_site.person.present? ? participating_site.person.lname : ""
     json.primary_contact participating_site.contact_name
     json.organization participating_site.organization
     json.site_rec_status_wrappers do
@@ -59,6 +59,17 @@ json.participating_sites_list do
         json.id site_rec_status_wrapper.id
         json.status_date  site_rec_status_wrapper.status_date
         json.site_recruitment_status  site_rec_status_wrapper.site_recruitment_status.name
+      end
+    end
+
+    json.participating_site_investigators do
+      json.array!(participating_site.participating_site_investigators) do |inv|
+        json.po_id inv.person.present? ? inv.person.id : ""
+        json.lname  inv.person.present? ? inv.person.lname : ""
+        json.fname  inv.person.present? ? inv.person.fname : ""
+        json.investigator_type inv.investigator_type
+        json.set_as_contact inv.set_as_contact
+        json.status_code ""
       end
     end
 

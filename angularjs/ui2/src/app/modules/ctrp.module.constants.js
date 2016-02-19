@@ -74,7 +74,6 @@
             'PROCESSING_STATUSES': '/ctrp/registry/processing_statuses.json',
             'HOLDER_TYPES': '/ctrp/registry/holder_types.json',
             'NIH': '/ctrp/registry/nih.json',
-            'EXPANDED_ACCESS_TYPES': '/ctrp/registry/expanded_access_types.json',
             'TRIAL_DOCUMENT_LIST': '/ctrp/registry/trial_documents.json',
 
             //for comments

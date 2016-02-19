@@ -41,7 +41,7 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '120', width: '3%',
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '120', width: '3%', sort: { direction: 'asc', priority: 1}, 
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
@@ -125,7 +125,6 @@
             getSubmissionTypes: getSubmissionTypes,
             getSubmissionMethods: getSubmissionMethods,
             getNih: getNih,
-            getExpandedAccessTypes: getExpandedAccessTypes,
             checkOtherId: checkOtherId,
             deleteTrial: deleteTrial,
             setCurrentTrial: setCurrentTrial,
@@ -278,10 +277,6 @@
         function getSiteRecruitementStatuses() {
             console.log("In getSiteRecruitementStatuses");
             return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
-        }
-
-        function getExpandedAccessTypes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
         }
 
         // Validation logic for Other Trial Identifier

@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
 
-    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService','DateService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj'];
+    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService','DateService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, DateService , $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService, DateService , $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes) {
 
         var vm = this;
 
@@ -21,6 +21,7 @@
         // initializations
         vm.currentParticipatingSite= {};
         vm.current_site_recruitment = {};
+        vm.current_investigator = {};
         vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
         vm.showOrgFields = true;
         vm.city=null;
@@ -30,10 +31,12 @@
         vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
         vm.selOrganization = {name: '', array: []};
+        vm.centralContactTypes = centralContactTypes.types;
 
         //actions
         vm.addSiteRecruitment = addSiteRecruitment;
         vm.editSiteRecruitment = editSiteRecruitment;
+        vm.editInvestigator  = editInvestigator;
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.openCalendar = openCalendar;
@@ -91,6 +94,11 @@
             //outerTrial.new = vm.curTrial.new;
             //outerTrial.id = vm.curTrial.id;
             //outerTrial.trial = vm.curTrial;
+            if (!vm.currentParticipatingSite.id) {
+                vm.currentParticipatingSite.new = true;
+            }
+            vm.currentParticipatingSite.trial_id = trialDetailObj.id;
+            console.log("In save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
 
             TrialService.upsertParticipatingSite(vm.currentParticipatingSite).then(function(response) {
                 console.log("response="+JSON.stringify(response));
@@ -168,7 +176,18 @@
             vm.current_site_recruitment = angular.copy(vm.currentParticipatingSite.site_rec_status_wrappers[index]);
             vm.current_site_recruitment.edit = true;
             vm.current_site_recruitment.index = index;
-                // vm.tempTrialStatuses.splice(index, 1);
+            // vm.tempTrialStatuses.splice(index, 1);
+            //}
+        }
+
+        function editInvestigator(index) {
+            //if (index < vm.tempTrialStatuses.length) {
+            console.log("In editSiteRecruitment");
+            vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
+            vm.current_investigator.edit = true;
+            vm.current_investigator.index = index;
+            console.log("In editSiteRecruitment vm.current_investigator=" +JSON.stringify(vm.current_investigator));
+            // vm.tempTrialStatuses.splice(index, 1);
             //}
         }
 

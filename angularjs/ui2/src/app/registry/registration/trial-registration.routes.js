@@ -89,9 +89,6 @@
                     holderTypeObj: function(TrialService) {
                         return TrialService.getHolderTypes();
                     },
-                    expandedAccessTypeObj: function(TrialService) {
-                        return TrialService.getExpandedAccessTypes();
-                    },
                     GeoLocationService : 'GeoLocationService',
                     countryList: function(GeoLocationService) {
                         return GeoLocationService.getCountryList();
@@ -157,9 +154,6 @@
                     },
                     holderTypeObj: function(TrialService) {
                         return TrialService.getHolderTypes();
-                    },
-                    expandedAccessTypeObj: function(TrialService) {
-                        return TrialService.getExpandedAccessTypes();
                     },
                     GeoLocationService : 'GeoLocationService',
                     countryList: function(GeoLocationService) {

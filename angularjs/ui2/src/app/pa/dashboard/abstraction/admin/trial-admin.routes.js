@@ -148,6 +148,9 @@
                     siteRecruitmentStatusesObj: function(PATrialService) {
                         return PATrialService.getSiteRecruitementStatuses();
                     },
+                    centralContactTypes: function(PATrialService) {
+                        return PATrialService.getCentralContactTypes();
+                    }
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
@@ -206,7 +209,10 @@
                     templateUrl: 'app/pa/dashboard/abstraction/admin/pa_trial_related_docs.html',
                     controller: 'paTrialRelatedDocsCtrl as trialRelatedDocsView',
                     resolve: {
-
+                        TrialService: 'TrialService',
+                        acceptedFileTypesObj: function(TrialService) {
+                            return TrialService.getAcceptedFileTypes();
+                        }
                     },
                     section: 'pa',
                     ncyBreadcrumb: {
