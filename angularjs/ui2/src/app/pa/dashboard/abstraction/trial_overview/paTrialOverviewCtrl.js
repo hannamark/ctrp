@@ -119,7 +119,7 @@
          */
         function watchCheckoutButtons() {
 
-            $scope.$watch(function() {return vm.adminCheckoutObj},
+            $scope.$watch(function() {return vm.adminCheckoutObj;},
                 function(newVal) {
                     var curUserRole = UserService.getUserRole() || '';
                     vm.adminCheckoutAllowed = (newVal === null); // boolean, if not null, do not allow checkout again
