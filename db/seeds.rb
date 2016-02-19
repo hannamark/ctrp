@@ -102,11 +102,6 @@ HolderType.find_or_create_by(code: 'IND', name: 'Industry')
 HolderType.find_or_create_by(code: 'NIH', name: 'NIH')
 HolderType.find_or_create_by(code: 'NCI', name: 'NCI')
 
-ExpandedAccessType.find_or_create_by(code: 'AVA', name: 'Available')
-ExpandedAccessType.find_or_create_by(code: 'NLA', name: 'No Longer Available')
-ExpandedAccessType.find_or_create_by(code: 'TNA', name: 'Temporarily Not Available')
-ExpandedAccessType.find_or_create_by(code: 'AFM', name: 'Approved for Marketing')
-
 TrialStatus.find_or_create_by(code: 'INR', name: 'In Review')
 TrialStatus.find_or_create_by(code: 'APP', name: 'Approved')
 TrialStatus.find_or_create_by(code: 'ACT', name: 'Active')
