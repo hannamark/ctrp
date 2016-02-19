@@ -83,6 +83,7 @@
         var services = {
             getAllTrials: getAllTrials,
             getTrialById: getTrialById,
+            getParticipatingSiteById: getParticipatingSiteById,
             upsertTrial: upsertTrial,
             searchTrials: searchTrials,
             searchTrialsPa: searchTrialsPa,

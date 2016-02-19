@@ -16,7 +16,7 @@
         var vm = this;
         vm.curPs = psDetailObj || {};
         vm.curPs = vm.curPs.data || vm.curPs;
-        vm.curTrial = trialDetailObj;
+        vm.curTrial = trialDetailObj || vm.curPs.trial;
         vm.curUser = userDetailObj;
         vm.availableOrgs = [];
         vm.srStatusArr = srStatusObj;
@@ -102,7 +102,7 @@
                         newStatus.sr_status_code = status.code;
                     }
                 });
-                newStatus.comment = vm.status_comment;
+                newStatus.comments = vm.status_comment;
                 newStatus._destroy = false;
                 TrialService.addStatus(vm.addedStatuses, newStatus);
                 vm.srsNum++;
@@ -148,6 +148,10 @@
             appendNewPsFlag();
             populateOrgs();
             setDefaultOrg();
+
+            if (!vm.curTrial.new) {
+                appendStatuses();
+            }
         }
 
         /**
@@ -174,6 +178,28 @@
         // Set the default organization
         function setDefaultOrg() {
             vm.curPs.organization_id = vm.availableOrgs[0].id;
+        }
+
+        // Append site recruitment statuses for existing participating site
+        function appendStatuses() {
+            for (var i = 0; i < vm.curPs.site_rec_status_wrappers.length; i++) {
+                var statusWrapper = {};
+                statusWrapper.id = vm.curPs.site_rec_status_wrappers[i].id;
+                statusWrapper.status_date = DateService.convertISODateToLocaleDateStr(vm.curPs.site_rec_status_wrappers[i].status_date);
+                statusWrapper.site_recruitment_status_id = vm.curPs.site_rec_status_wrappers[i].site_recruitment_status_id;
+                // For displaying status name in the table
+                _.each(vm.srStatusArr, function (status) {
+                    if (status.id == vm.curPs.site_rec_status_wrappers[i].site_recruitment_status_id) {
+                        statusWrapper.sr_status_name = status.name;
+                        statusWrapper.sr_status_code = status.code;
+                    }
+                });
+                statusWrapper.comments = vm.curPs.site_rec_status_wrappers[i].comments;
+                statusWrapper._destroy = false;
+                TrialService.addStatus(vm.addedStatuses, statusWrapper);
+                vm.srsNum++;
+            }
+            vm.validateStatus();
         }
     }
 })();

@@ -224,6 +224,33 @@
                     parent: 'main.trials',
                     label: 'Add Participating Site'
                 }
+            })
+
+            .state('main.participatingSiteDetail', {
+                url: '/participating-sites/:psId',
+                templateUrl: 'app/registry/registration/psDetails.html',
+                controller: 'psDetailCtrl as psDetailView',
+                section: 'registry',
+                resolve: {
+                    TrialService: 'TrialService',
+                    UserService: 'UserService',
+                    psDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getParticipatingSiteById($stateParams.psId);
+                    },
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return null;
+                    },
+                    userDetailObj: function(UserService) {
+                        return UserService.getUserDetailsByUsername();
+                    },
+                    srStatusObj: function(TrialService) {
+                        return TrialService.getSrStatuses();
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.trials',
+                    label: 'Add Participating Site'
+                }
             });
     } //trialRegistrationRoutes
 })();
