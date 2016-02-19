@@ -5,7 +5,7 @@
                 Trial Related Documents <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
               </uib-accordion-heading>
                   <div class="row">
-                    <form name="trial_docs_form" role="form" class="form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments()">
+                    <form name="trial_docs_form" role="form" class="form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments(true)">
                         <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                             <legend class="sub-bordered">Trial Related Documents</legend>
                                 <div class="row top-buffer">
@@ -42,9 +42,13 @@
                                     </div>
                                     <div class="col-sm-2" ng-show="trialRelatedDocsView.curDoc.edit">
                                         <label for="" class="control-label"></label>
-                                        <button type="button" class="btn btn-danger" ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
-                                        ng-disabled="trialRelatedDocsView.curDoc.document_type=='' ||
-                                        trialRelatedDocsView.curDoc.file_name==''">Update</button>
+                                        <div class="btn-group inline">
+                                            <button type="button" class="btn btn-warning">Cancel</button>
+                                            <button type="button" class="btn btn-danger" ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
+                                                ng-disabled="trialRelatedDocsView.curDoc.document_type==''">
+                                                Update
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row top-buffer">
@@ -73,7 +77,9 @@
                                             </tr>
                                          </thead>
                                          <tbody>
-                                             <tr ng-repeat="doc in trialRelatedDocsView.curTrialDetailObj.trial_documents track by $index" class="animated-item" ng-class="doc._destroy ? 'deleted-text' : ''">
+                                             <tr ng-repeat="doc in trialRelatedDocsView.curTrialDetailObj.trial_documents track by $index"
+                                                 class="animated-item" ng-class="doc._destroy ? 'deleted-text' : ''"
+                                                 ng-hide="doc.replaced">
                                                  <td><a ng-class="doc._destroy ? 'deleted-text' : ''" href="{{trialRelatedDocsView.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></td>
                                                  <td>{{doc.document_type}}</td>
                                                  <td>{{doc.document_subtype}}</td>
@@ -83,7 +89,7 @@
                                                      <label class="btn btn-default" restriction-field ng-click="trialRelatedDocsView.deleteDoc($index)">
                                                          <i class="glyphicon" ng-class="doc._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                      </label>
-                                                     <label class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="trialRelatedDocsView.editDoc($index)">
+                                                     <label class="btn btn-default" restriction-field ng-disabled="doc._destroy" ng-click="trialRelatedDocsView.editDoc($index)">
                                                          <i class="glyphicon glyphicon-edit"></i>
                                                      </label>
                                                  </td>
@@ -92,9 +98,20 @@
                                      </table>
                                  </div>
                          </fieldset>
+                         <!-- end of fieldset for trial related documents -->
+                         <div class="form-group no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_editable">
+                               <div class="col-sm-3"></div>
+                               <div class="btn-toolbar col-xs-12 col-sm-9">
+                                 <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field>
+                                   <i class="glyphicon glyphicon-ok"></i>  Save
+                                 </button>
+                                 <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialRelatedDocsView.resetForm()" restriction-field>
+                                  <i class="glyphicon glyphicon-remove"></i>  Reset
+                                 </button>
+                               </div>
+                         </div>
                     </form>
                 </div>
-
           </uib-accordion-group>
       </uib-accordion>
   </div>
