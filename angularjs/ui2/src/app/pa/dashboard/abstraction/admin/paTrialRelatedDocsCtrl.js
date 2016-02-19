@@ -85,7 +85,9 @@
                     added_by: {},
                     updated_at: '',
                     created_at: '',
-                    edit: false
+                    edit: false,
+                    index: '',
+                    _destroy: false
                 };
                 return doc;
             }
