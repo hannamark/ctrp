@@ -60,7 +60,7 @@
         function checkoutTrial(checkoutType) {
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
                 console.log('checkout result: ', res.result);
-                // updateTrialDetailObj(res.result);
+                updateTrialDetailObj(res.result);
                 vm.adminCheckoutObj = JSON.parse(res.result.admin_checkout);
                 vm.scientificCheckoutObj = JSON.parse(res.result.scientific_checkout);
                 showToastr(checkoutType + ' checkout was successful!', 'top right');
@@ -70,6 +70,7 @@
         function checkinTrial(checkinType) {
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
                 console.log('checkin result: ', res.result);
+                updateTrialDetailObj(res.result);
                 vm.adminCheckoutObj = JSON.parse(res.result.admin_checkout); // null
                 vm.scientificCheckoutObj = JSON.parse(res.result.scientific_checkout); // null
                 // updateTrialDetailObj(res.result);
@@ -102,7 +103,7 @@
             vm.submitterPopOver.submitter = vm.trialDetailObj.submitter || {};
             vm.submitterPopOver.submitter.organization = vm.trialDetailObj.submitters_organization || '';
 
-            console.log('vm.submitterPopOver: ', vm.submitterPopOver);
+            // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);

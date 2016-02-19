@@ -307,14 +307,15 @@
             outerTrial.new = false;
             outerTrial.id = vm.trialDetailObj.id;
             outerTrial.trial = vm.trialDetailObj;
+            // get the most updated lock_version
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(res) {
                 vm.trialDetailObj = res;
+                console.log('in trial status, res: ', res);
                 vm.trialDetailObj.lock_version = res.lock_version;
                 // delete vm.trialDetailObj.admin_checkout;
                 // delete vm.trialDetailObj.scientific_checkout;
-                console.log('checkout: ', vm.trialDetailObj.admin_checkout);
-                console.log('checkout2: ', vm.trialDetailObj.scientific_checkout);
                 PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
@@ -325,7 +326,6 @@
                 });
                 _getTrialDetailCopy();
             });
-
         } // updateTrialStatuses
 
         function resetForm() {
