@@ -133,13 +133,13 @@
 
                                         <td class="col-md-3">
                                             <div>
-                                                <textarea class="form-control input-sm" id="comment" name="status_comment"
+                                                <textarea class="form-control input-sm" id="comments" name="comments"
                                                           rows="1"
                                                           ng-maxlength="160"
-                                                          ng-model="psView.current_site_recruitment.status_comment">
+                                                          ng-model="psView.current_site_recruitment.comments">
                                                 </textarea>
-                                                <span ng-show="ps_form.status_comment.$dirty">
-                                                    {{160 - ps_form.status_comment.$viewValue.length}} characters left
+                                                <span ng-show="ps_form.comments.$dirty">
+                                                    {{160 - ps_form.comments.$viewValue.length}} characters left
                                                 </span>
                                             </div>
                                         </td>
@@ -149,7 +149,7 @@
                                                 <button class="btn btn-default" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
                                                         ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                     psView.current_site_recruitment.site_recruitment_status == '' ||
-                                                    ps_form.status_comment.$viewValue.length > 160
+                                                    ps_form.comments.$viewValue.length > 160
                                                     "><i class="glyphicon glyphicon-plus"></i> Add</button>
                                             </div>
 
@@ -162,7 +162,7 @@
                                                 <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEditSiteRecruitment()"
                                                         ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                     psView.current_site_recruitment.site_recruitment_status == '' ||
-                                                    ps_form.status_comment.$viewValue.length > 160">Commit</button>
+                                                    ps_form.comments.$viewValue.length > 160">Commit</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -185,7 +185,7 @@
                                     <tr ng-repeat="site_rec in psView.currentParticipatingSite.site_rec_status_wrappers track by $index" class="animated-item text-center" ng-class="site_rec._destroy ? 'deleted-text' : ''">
                                         <td class="col-sm-2">{{site_rec.status_date}}</td>
                                         <td class="col-sm-1">{{site_rec.site_recruitment_status}}</td>
-                                        <td class="col-sm-2">{{site_rec.comment}}</td>
+                                        <td class="col-sm-2">{{site_rec.comments}}</td>
                                         <td class="col-sm-4">
                                             <div class="text-danger" ng-repeat="error in psView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
                                                 ERROR: Interim status [{{error.status}}] is missing
@@ -286,10 +286,10 @@
                                                 <textarea class="form-control input-sm" id="comment" name="status_comment"
                                                           rows="1"
                                                           ng-maxlength="160"
-                                                          ng-model="psView.current_site_recruitment.status_comment">
+                                                          ng-model="psView.current_site_recruitment.comments">
                                                 </textarea>
-                                                <span ng-show="ps_form.status_comment.$dirty">
-                                                    {{160 - ps_form.status_comment.$viewValue.length}} characters left
+                                                <span ng-show="ps_form.comments.$dirty">
+                                                    {{160 - ps_form.comments.$viewValue.length}} characters left
                                                 </span>
                                                 </div>
                                             </td>
@@ -298,7 +298,7 @@
                                                     <button class="btn btn-default" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
                                                             ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                     psView.current_site_recruitment.site_recruitment_status == '' ||
-                                                    ps_form.status_comment.$viewValue.length > 160
+                                                    ps_form.comments.$viewValue.length > 160
                                                     "><i class="glyphicon glyphicon-plus"></i> Add</button>
                                                 </div>
 
@@ -311,7 +311,7 @@
                                                     <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEdit()"
                                                             ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                     psView.current_site_recruitment.site_recruitment_status == '' ||
-                                                    ps_form.status_comment.$viewValue.length > 160">Commit</button>
+                                                    ps_form.comments.$viewValue.length > 160">Commit</button>
                                                 </div>
                                             </td>
                                         </tr>
