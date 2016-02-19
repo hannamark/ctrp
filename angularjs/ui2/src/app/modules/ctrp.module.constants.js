@@ -58,19 +58,21 @@
             'SEARCH_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/search_clinical_trials_gov.json',
             'IMPORT_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/import_clinical_trials_gov.json',
             'SITE_RECRUITMENT_STATUSES': '/ctrp/registry/site_recruitment_statuses.json',
+            'PARTICIPATING_SITE_LIST': '/ctrp/registry/participating_sites.json',
+            'A_PARTICIPATING_SITE': '/ctrp/registry/participating_sites/',
             'NCI_DIV_PA': '/ctrp/pa/nih_nci_div_pa.json',
             'NCI_PROG_PA': '/ctrp/pa/nih_nci_prog_pa.json',
             'SUBMISSION_METHODS': '/ctrp/pa/submission_methods.json',
-
+            'AUDIT_HISTORY': '/ctrp/trial_versions/history',
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
+                'PARTICIPATING_SITE_WITH_ID': '/ctrp/registry/participating_sites/{:id}.json',
             },
 
             'MILESTONES': '/ctrp/registry/milestones.json',
             'PROCESSING_STATUSES': '/ctrp/registry/processing_statuses.json',
             'HOLDER_TYPES': '/ctrp/registry/holder_types.json',
             'NIH': '/ctrp/registry/nih.json',
-            'EXPANDED_ACCESS_TYPES': '/ctrp/registry/expanded_access_types.json',
             'TRIAL_DOCUMENT_LIST': '/ctrp/registry/trial_documents.json',
 
             //for comments

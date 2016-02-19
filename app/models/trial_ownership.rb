@@ -16,9 +16,7 @@
 #  index_trial_ownerships_on_user_id   (user_id)
 #
 
-class TrialOwnership < ActiveRecord::Base
-  include BasicConcerns
-
+class TrialOwnership < TrialBase
   belongs_to :trial
   belongs_to :user
 end

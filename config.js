@@ -67,6 +67,7 @@ exports.config = {
         'features/Reg\ F08\ Register\ Trial\ Person\ and\ Organization\ Associations.feature',
         'features/Reg\ F09\ Register\ Trial\ FDAAA\ Information.feature',
         'features/Reg\ F10\ Register\ Trial\ Grant\ Information.feature',
+        'features/Reg\ F12\ Register\ Trial\ IND\ IDE.feature',
 
          /************* PA Features ************/
         'features/PAA\ F02\ Add\ and\ Edit\ NCI\ Specific\ Information.Feature',

@@ -45,7 +45,7 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140',
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140', sort: { direction: 'asc', priority: 1},
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
@@ -104,7 +104,6 @@
             getMilestones: getMilestones,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
-            getExpandedAccessTypes: getExpandedAccessTypes,
             getAcceptedFileTypes: getAcceptedFileTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
@@ -115,7 +114,8 @@
             importClinicalTrialsGov: importClinicalTrialsGov,
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial,
-            getGrantsSerialNumber: getGrantsSerialNumber
+            getGrantsSerialNumber: getGrantsSerialNumber,
+            upsertParticipatingSite: upsertParticipatingSite
         };
 
         return services;
@@ -174,7 +174,7 @@
         } //searchTrials
 
         function getGrantsSerialNumber(searchParams) {
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);            
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);
         } // getGrantsSerialNumber
         /**
          * get initial paramater object for trials search
@@ -252,6 +252,33 @@
             return PromiseTimeoutService.getData(url);
         }
 
+        function getParticipatingSiteById(participatingSiteId) {
+            //insert the participatingSiteId into the url
+            var url = URL_CONFIGS.TRIALS.PARTICIPATING_SITE_WITH_ID.replace(/\s*\{.*?\}\s*/g, participatingSiteId);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        /**
+         * Update or insert a Participating Site Records
+         *
+         * @param participatingSiteObj
+         * @returns {*}
+         */
+        function upsertParticipatingSite(participatingSiteObj) {
+            if (participatingSiteObj.new) {
+                //create a new trial
+                $log.info('creating a trial: ' + JSON.stringify(participatingSiteObj));
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PARTICIPATING_SITE_LIST, participatingSiteObj);
+            }
+
+            //update an Participating Site
+            var configObj = {}; //empty config
+            console.log('updating a participating site: ' + JSON.stringify(participatingSiteObj));
+            $log.info('updating a participating site: ' + JSON.stringify(participatingSiteObj));
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteObj.id + '.json', participatingSiteObj, configObj);
+        } //upsertParticipatingSite
+
+
         function getMilestones() {
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
         }
@@ -262,10 +289,6 @@
 
         function getNih() {
             return PromiseTimeoutService.getData(URL_CONFIGS.NIH);
-        }
-
-        function getExpandedAccessTypes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
         }
 
         function getAcceptedFileTypes() {

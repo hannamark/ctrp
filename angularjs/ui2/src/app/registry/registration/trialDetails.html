@@ -588,7 +588,7 @@
                                             <td class="col-md-2">{{status.trial_status_name}}</td>
                                             <td class="col-md-2">{{status.comment}}</td>
                                             <td class="col-md-2">{{status.why_stopped}}</td>
-                                            <td class="col-md-4">
+                                            <td class="col-md-4 status-error">
                                                 <div class="text-danger" ng-repeat="error in trialDetailView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
                                                     ERROR: Interim status [{{error.status}}] is missing
                                                 </div>

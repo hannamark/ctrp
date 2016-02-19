@@ -1,6 +1,5 @@
 class Ws::ApiTrialsController < Ws::BaseApiController
 
-
   #before_filter :find_trial, only: [:update]
   before_filter :sam, only: [:change_status]
 

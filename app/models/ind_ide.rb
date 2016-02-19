@@ -24,10 +24,9 @@
 #  index_ind_ides_on_trial_id                 (trial_id)
 #
 
-class IndIde < ActiveRecord::Base
+class IndIde < TrialBase
   include BasicConcerns
 
-  belongs_to :expanded_access_type
   belongs_to :holder_type
   belongs_to :trial
 
