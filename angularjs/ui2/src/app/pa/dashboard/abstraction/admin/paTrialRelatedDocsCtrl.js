@@ -140,7 +140,7 @@
                             // insert the new document
                             vm.curTrialDetailObj.trial_documents.unshift(newDoc);
                         }
-                        saveDocuments(false); // saveDocuments, showToastr: false
+                        // saveDocuments(false); // saveDocuments, showToastr: false
                         vm.curDoc = _initCurDoc();
                     }).catch(function(err) {
                         console.error('upload error: ', err);
