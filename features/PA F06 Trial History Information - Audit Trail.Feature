@@ -8,7 +8,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information Audit Trail Screen
 And I select View Audit Trail
-Then the aduit trail will be displayed for the Trial ordered by date with newest update first and include the following fields:
+Then the audit trail will be displayed for the Trial ordered by date with newest update first and include the following fields:
 
 |NCI ID (nci_id)|
 |Lead Protocol (lead_protocol_id)|
@@ -130,7 +130,7 @@ Then the aduit trail will be displayed for the Trial ordered by date with newest
 
 Examples:
 |NCI-ID| NCI-2015-01299 |
-| Lead Protocol| 9226 |
+|Lead Protocol| 9226 |
 |official_title|Individualized Treatment for Relapsed/Refractory Acute Leukemia Based on Chemosensitivity and Genomics/Gene Expression Data|
 |program_code| 45  |
 |grant_question|XXX|
@@ -138,13 +138,13 @@ Examples:
 |start_date_qual|Actual    | 
 |primary_comp_date|July 01, 2019 |
 |primary_comp_date_qual|Anticipated |
-|comp_date          |  |
+|comp_date   |  |
 |comp_date_qual|  |
 |ind_ide_question|No|
 |intervention_indicator| Single Group |
 |sec801_indicator|No|
 |data_monitor_indicator|Yes|
-| Study Source |XXXXIndustrial|
+|Study Source |XXXXIndustrial|
 |Phase |NA|
 |primary purpose|Treatment|
 |primary_purpose_other| |    
@@ -181,14 +181,14 @@ Examples:
 |study Model: study_models.name|NA|
 |study_model_other|Cohort OR NA|
 |time perspectives |Prospective|
-|time_perspective_other ||
+|time_perspective_other |  |
 |accept_vol ACCEPTS HEALTHY VOLUNTEERS|No|
 |gender |Both|
 |min_age|3.0|
 |min_age_unit |Years|
 |max_age|999.0|
 |max_age_unit|Years|
-|owner (owner_id:  Users/Username)|XXX|
+|owner (owner_id:  Users/Username)|XXX   |
 |board_approval_status (board_approval_status_id: board_approval_status/name)|XXX|
 |intervention_model (intervention_model_id:  intervention_models/name)|XXX|
 |masking |Open|
@@ -210,7 +210,7 @@ Examples:
 |Submission type|XXX|
 |Submission source|Registy|
 |Submission Method|XXX|
-|Admendment Number|1|
+|Amendment Number|1|
 |Milestone Name|XXX|
 |Processing Status Name|XXX|
 |Other ID (multiple) xxxx: other_ids.protocol_id, other_ids.protocol_id_origin_id:  protocol_id_origins.name||
