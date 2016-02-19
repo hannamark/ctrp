@@ -309,7 +309,6 @@
             outerTrial.trial = vm.trialDetailObj;
             // get the most updated lock_version
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-
             TrialService.upsertTrial(outerTrial).then(function(res) {
                 vm.trialDetailObj = res;
                 console.log('in trial status, res: ', res);
