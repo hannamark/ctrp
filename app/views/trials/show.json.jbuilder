@@ -59,6 +59,7 @@ json.participating_sites_list do
         json.id site_rec_status_wrapper.id
         json.status_date  site_rec_status_wrapper.status_date
         json.site_recruitment_status  site_rec_status_wrapper.site_recruitment_status.name
+        json.comments  site_rec_status_wrapper.comments
       end
     end
 

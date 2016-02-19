@@ -34,6 +34,7 @@
             vm.deleteDoc = deleteDoc;
             vm.editDoc = editDoc;
             vm.upsertDoc = upsertDoc;
+            vm.resetForm = resetForm;
 
             activate();
             function activate() {
@@ -51,22 +52,21 @@
                 }, 0);
             } //getTrialDetailCopy
 
-            function saveDocuments() {
-                console.info('saving documents');
-            }
-
             function deleteDoc(index) {
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     vm.curTrialDetailObj.trial_documents[index]._destroy = !vm.curTrialDetailObj.trial_documents[index]._destroy
                 }
             }
 
+            var prevFileName = '';
             function editDoc(index) {
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     // vm.curDoc = Object.assign({}, vm.curTrialDetailObj.trial_documents[index], {edit: true});
                     vm.curDoc = angular.copy(vm.curTrialDetailObj.trial_documents[index]);
                     vm.curDoc.edit = true;
+                    // vm.curDoc.document_type = vm.curTrialDetailObj.trial_documents[index].document_type;
                     vm.curDoc.index = index;
+                    prevFileName = vm.curDoc.file_name;
                     vm.curDoc.file_name = '';
                     console.log('curDoc: ', vm.curDoc);
                 }
@@ -85,7 +85,9 @@
                     added_by: {},
                     updated_at: '',
                     created_at: '',
-                    edit: false
+                    edit: false,
+                    index: '',
+                    _destroy: false
                 };
                 return doc;
             }
@@ -96,47 +98,54 @@
              * @return {Void}
              */
             function upsertDoc(index) {
-
-                vm.curDoc.file_name.upload = Upload.upload({
-                    url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
-                    method: 'POST',
-                    data: {
-                        'trial_document[document_type]': vm.curDoc.document_type,
-                        'trial_document[document_subtype]': vm.curDoc.document_subtype,
-                        'trial_document[trial_id]': vm.curTrialDetailObj.id,
-                        'trial_document[file]': vm.curDoc.file_name
-                    }
-                });
-
-                vm.curDoc.file_name.upload.then(function(res) {
-                    console.info('upload res: ', res);
-                    var newDoc = {};
-                    newDoc.id = res.data.id;
-                    newDoc.document_type = res.data.document_type;
-                    newDoc.file_name = res.data.file_name;
-                    newDoc.document_subtype = res.data.document_subtype;
-                    newDoc.updated_at = res.data.updated_at;
-                    newDoc.added_by = {username: UserService.getLoggedInUsername()};
-                    if (!!index && index < vm.curTrialDetailObj.trial_documents.length) {
-                        vm.curTrialDetailObj.trial_documents[index] = newDoc;
-                    } else {
-                        vm.curTrialDetailObj.trial_documents.unshift(newDoc);
-                    }
+                if (!vm.curDoc.file_name && index === null) {
+                    console.error('null object');
+                    // prevent uploading null object
+                    return;
+                } else if (!vm.curDoc.file_name && index !== null) {
+                    // update without uploading
+                    vm.curTrialDetailObj.trial_documents[index] = angular.copy(vm.curDoc);
+                    vm.curTrialDetailObj.trial_documents[index].file_name = prevFileName; // restore the file name
+                    prevFileName = '';
                     vm.curDoc = _initCurDoc();
-                }).catch(function(err) {
-                    console.error('upload error: ', err);
-                });
+                } else if (!!vm.curDoc.file_name) {
+                    // upload the new document
+                    vm.curDoc.file_name.upload = Upload.upload({
+                        url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
+                        method: 'POST',
+                        data: {
+                            'trial_document[document_type]': vm.curDoc.document_type,
+                            'trial_document[document_subtype]': vm.curDoc.document_subtype,
+                            'trial_document[trial_id]': vm.curTrialDetailObj.id,
+                            'trial_document[file]': vm.curDoc.file_name
+                        }
+                    });
 
-                /*
-                TrialService.uploadDocument(vm.curTrialDetailObj.id, vm.curDoc.document_type, '', vm.curDoc.file_name)
-                            .then(function(res) {
-                                console.info('upload res: ', res);
-                            })
-                            .error(function(err) {
-                                console.error('upload err: ', err);
-                            });
-                            */
-
+                    vm.curDoc.file_name.upload.then(function(res) {
+                        // console.info('upload res: ', res);
+                        var newDoc = {};
+                        newDoc.id = res.data.id;
+                        newDoc.document_type = res.data.document_type;
+                        newDoc.file_name = res.data.file_name;
+                        newDoc.document_subtype = res.data.document_subtype;
+                        newDoc.updated_at = res.data.updated_at;
+                        newDoc.added_by = {username: UserService.getLoggedInUsername()};
+                        if (index !== null && index < vm.curTrialDetailObj.trial_documents.length) {
+                            // update the document with the new upload
+                            console.info('replacing the existing document');
+                            vm.curTrialDetailObj.trial_documents[index].replaced = true;
+                            vm.curTrialDetailObj.trial_documents[index]._destroy = true;
+                            vm.curTrialDetailObj.trial_documents.splice(index, 1, newDoc); // insert immediately after 'index'
+                        } else {
+                            // insert the new document
+                            vm.curTrialDetailObj.trial_documents.unshift(newDoc);
+                        }
+                        // saveDocuments(false); // saveDocuments, showToastr: false
+                        vm.curDoc = _initCurDoc();
+                    }).catch(function(err) {
+                        console.error('upload error: ', err);
+                    });
+                }
             }
 
             /**
@@ -151,6 +160,44 @@
                         vm.curDoc.document_subtype = '';
                     });
             }
+
+            /**
+             * Reset the form
+             */
+            function resetForm() {
+                _getTrialDetailCopy();
+                vm.curDoc = _initCurDoc();
+            }
+
+            /**
+             * POST the updated trial to backend
+             * @param  {Boolean} showToastr [show toastr or not]
+             * @return {Void}
+             */
+            function saveDocuments(showToastr) {
+                vm.curTrialDetailObj.trial_documents_attributes = vm.curTrialDetailObj.trial_documents;
+                var outerTrial = {};
+                outerTrial.new = false;
+                outerTrial.id = vm.curTrialDetailObj.id;
+                outerTrial.trial = vm.curTrialDetailObj;
+                // get the most updated lock_version
+                outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+                TrialService.upsertTrial(outerTrial).then(function(res) {
+                    vm.curTrialDetailObj = res;
+                    console.log('in trial related documents, res: ', res);
+                    vm.curTrialDetailObj.lock_version = res.lock_version;
+                    PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+                    if (showToastr) {
+                        toastr.clear();
+                        toastr.success('Trial related documents have been saved', 'Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        });
+                    }
+                });
+
+            } // updatedTrial
 
 
         } // paTrialRelatedDocsCtrl
