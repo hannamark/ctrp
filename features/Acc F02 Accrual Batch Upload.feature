@@ -14,4 +14,12 @@ As a CTRP Accrual User, I can Upload Accrual Batch file
      Then the ZIP or TXT file that contains the accrual data will be linked to the selected trial
      When the selected file that contains the accrual data is not a ZIP or TXT file
      Then the error "The batch upload file must be either a plain text file or a zip file." will be displayed
+  
+  
+  Scenario:#2 I must upload a ZIP OR TXT file that contains the accrual data 
+    Given I am on the Accrual Batch Upload screen
+     When the selected file that contains the accrual data is not a ZIP or TXT file
+     Then the error "The batch upload file must be either a plain text file or a zip file." will be displayed
+      When I the user doesn't upload a file 
+      Then the error "Please select a valid file to upload."
 
