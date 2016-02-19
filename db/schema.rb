@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217010200) do
+ActiveRecord::Schema.define(version: 20160218205431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -264,15 +264,6 @@ ActiveRecord::Schema.define(version: 20160217010200) do
     t.integer  "lock_version",             default: 0
   end
 
-  create_table "expanded_access_types", force: :cascade do |t|
-    t.string   "code",         limit: 255
-    t.string   "name",         limit: 255
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "uuid",         limit: 255
-    t.integer  "lock_version",             default: 0
-  end
-
   create_table "families", force: :cascade do |t|
     t.string   "name",             limit: 255
     t.integer  "family_status_id"
@@ -372,22 +363,18 @@ ActiveRecord::Schema.define(version: 20160217010200) do
   end
 
   create_table "ind_ides", force: :cascade do |t|
-    t.string   "ind_ide_type",            limit: 255
-    t.string   "grantor",                 limit: 255
-    t.string   "nih_nci",                 limit: 255
+    t.string   "ind_ide_type",   limit: 255
+    t.string   "grantor",        limit: 255
+    t.string   "nih_nci",        limit: 255
     t.integer  "holder_type_id"
-    t.integer  "expanded_access_type_id"
     t.integer  "trial_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "uuid",                    limit: 255
-    t.integer  "lock_version",                        default: 0
-    t.boolean  "expanded_access"
-    t.boolean  "exempt"
-    t.string   "ind_ide_number",          limit: 255
+    t.string   "uuid",           limit: 255
+    t.integer  "lock_version",               default: 0
+    t.string   "ind_ide_number", limit: 255
   end
 
-  add_index "ind_ides", ["expanded_access_type_id"], name: "index_ind_ides_on_expanded_access_type_id", using: :btree
   add_index "ind_ides", ["holder_type_id"], name: "index_ind_ides_on_holder_type_id", using: :btree
   add_index "ind_ides", ["trial_id"], name: "index_ind_ides_on_trial_id", using: :btree
 
@@ -1005,9 +992,11 @@ ActiveRecord::Schema.define(version: 20160217010200) do
     t.datetime "updated_at",                               null: false
     t.string   "uuid",             limit: 255
     t.integer  "lock_version",                 default: 0
+    t.integer  "submission_id"
   end
 
   add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree
+  add_index "trial_documents", ["submission_id"], name: "index_trial_documents_on_submission_id", using: :btree
   add_index "trial_documents", ["trial_id"], name: "index_trial_documents_on_trial_id", using: :btree
 
   create_table "trial_funding_sources", force: :cascade do |t|
@@ -1279,7 +1268,6 @@ ActiveRecord::Schema.define(version: 20160217010200) do
   add_foreign_key "family_memberships", "family_relationships"
   add_foreign_key "family_memberships", "organizations"
   add_foreign_key "grants", "trials"
-  add_foreign_key "ind_ides", "expanded_access_types"
   add_foreign_key "ind_ides", "holder_types"
   add_foreign_key "ind_ides", "trials"
   add_foreign_key "interventions", "intervention_types"
@@ -1331,6 +1319,7 @@ ActiveRecord::Schema.define(version: 20160217010200) do
   add_foreign_key "trial_co_lead_orgs", "trials"
   add_foreign_key "trial_co_pis", "people"
   add_foreign_key "trial_co_pis", "trials"
+  add_foreign_key "trial_documents", "submissions"
   add_foreign_key "trial_documents", "trials"
   add_foreign_key "trial_documents", "users", column: "added_by_id"
   add_foreign_key "trial_funding_sources", "organizations"
@@ -1388,7 +1377,6 @@ ActiveRecord::Schema.define(version: 20160217010200) do
   create_sequence "comments_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "diseases_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "evaluation_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
-  create_sequence "expanded_access_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "families_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "family_memberships_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "family_relationships_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

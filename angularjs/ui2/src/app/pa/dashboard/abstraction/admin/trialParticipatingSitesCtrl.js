@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
 
-    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService','DateService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj'];
+    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService','DateService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, DateService , $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService, DateService , $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes) {
 
         var vm = this;
 
@@ -21,6 +21,7 @@
         // initializations
         vm.currentParticipatingSite= {};
         vm.current_site_recruitment = {};
+        vm.current_investigator = {};
         vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
         vm.showOrgFields = true;
         vm.city=null;
@@ -30,13 +31,16 @@
         vm.dateFormat = DateService.getFormats()[1];
         vm.dateOptions = DateService.getDateOptions();
         vm.selOrganization = {name: '', array: []};
+        vm.centralContactTypes = centralContactTypes.types;
 
         //actions
         vm.addSiteRecruitment = addSiteRecruitment;
         vm.editSiteRecruitment = editSiteRecruitment;
+        vm.editInvestigator  = editInvestigator;
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.openCalendar = openCalendar;
+        vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
 
 
         activate();
@@ -86,18 +90,18 @@
           //      }
           //  }
 
-            // An outer param wrapper is needed for nested attributes to work
-            //var outerTrial = {};
-            //outerTrial.new = vm.curTrial.new;
-            //outerTrial.id = vm.curTrial.id;
-            //outerTrial.trial = vm.curTrial;
             if (!vm.currentParticipatingSite.id) {
                 vm.currentParticipatingSite.new = true;
             }
+            // An outer param wrapper is needed for nested attributes to work
+            var outerPS = {};
+            outerPS.new = vm.currentParticipatingSite.new;
+            outerPS.id = vm.currentParticipatingSite.id;
+            outerPS.participating_site = vm.currentParticipatingSite;
             vm.currentParticipatingSite.trial_id = trialDetailObj.id;
             console.log("In save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
 
-            TrialService.upsertParticipatingSite(vm.currentParticipatingSite).then(function(response) {
+            TrialService.upsertParticipatingSite(outerPS).then(function(response) {
                 console.log("response="+JSON.stringify(response));
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.lock_version = response.lock_version || '';
@@ -111,7 +115,7 @@
                     timeOut: 0
                 });
             }).catch(function(err) {
-                console.log("error in updating trial " + JSON.stringify(outerTrial));
+                console.log("error in updating trial " + JSON.stringify(outerPS));
             });
 
         }//saveTrial
@@ -173,7 +177,44 @@
             vm.current_site_recruitment = angular.copy(vm.currentParticipatingSite.site_rec_status_wrappers[index]);
             vm.current_site_recruitment.edit = true;
             vm.current_site_recruitment.index = index;
-                // vm.tempTrialStatuses.splice(index, 1);
+            // vm.tempTrialStatuses.splice(index, 1);
+            //}
+        }
+
+        function commitEditSiteRecruitment() {
+           // vm.statusErrorMsg = '';
+           // if (!vm.statusObj.status_date || !vm.statusObj.trial_status_id) {
+           //     vm.statusErrorMsg = 'Both status date and trial status are required';
+           //     return;
+          //  }
+
+            console.log("In commitEditSiteRecruitment");
+            if (vm.current_site_recruitment.edit) {
+                // vm.statusObj.status_date = moment(vm.statusObj.status_date).format("DD-MMM-YYYY"); // e.g. 03-Feb-2016
+                // format date from 'yyyy-mm-DD' to 'yyyy-MMM-DD' (e.g. from 2009-12-03 to 03-Feb-2009)
+                vm.current_site_recruitment.status_date = DateService.convertISODateToLocaleDateStr(vm.current_site_recruitment.status_date);
+                var selectedStatus = _.findWhere(vm.siteRecruitmentStatusesArr, {id: vm.current_site_recruitment.trial_status_id});
+                if (!!selectedStatus) {
+                    vm.current_site_recruitment.site_rec_status_wrappers_attributes = selectedStatus;
+                    console.log("In commitEditSiteRecruitment=" + JSON.stringify(vm.current_site_recruitment));
+                }
+                // vm.tempTrialStatuses.splice(vm.statusObj.index, 0, vm.statusObj);
+               // vm.tempTrialStatuses[vm.statusObj.index] = vm.statusObj;
+              //  console.log('vm.tempTrialStatuses: ', vm.tempTrialStatuses);
+                //validateStatuses();
+                //vm.statusObj = _initStatusObj();
+            }
+        } // commitEdit
+
+
+        function editInvestigator(index) {
+            //if (index < vm.tempTrialStatuses.length) {
+            console.log("In editSiteRecruitment");
+            vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
+            vm.current_investigator.edit = true;
+            vm.current_investigator.index = index;
+            console.log("In editSiteRecruitment vm.current_investigator=" +JSON.stringify(vm.current_investigator));
+            // vm.tempTrialStatuses.splice(index, 1);
             //}
         }
 
@@ -182,15 +223,15 @@
              console.log("vm.current_site_recruitment="+JSON.stringify(vm.current_site_recruitment));
 
             console.log("vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
-             vm.current_site_recruitment.participating_site_id = vm.currentParticipatingSite.id;
+             vm.current_site_recruitment.participating_site_id= vm.currentParticipatingSite.id;
 
             // Temporary code. User of ng-options in the UI should resolve it.
             for (var i = 0; i < vm.siteRecruitmentStatusesArr.length; i++) {
                 if (vm.current_site_recruitment.site_recruitment_status == vm.siteRecruitmentStatusesArr[i].name) {
-                    vm.current_site_recruitment.site_recruitment_status = vm.siteRecruitmentStatusesArr[i].id;
+                    vm.current_site_recruitment.site_recruitment_status_id = vm.siteRecruitmentStatusesArr[i].id;
                 }
             }
-
+            vm.current_site_recruitment.new = true;
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
 

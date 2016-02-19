@@ -148,6 +148,9 @@
                     siteRecruitmentStatusesObj: function(PATrialService) {
                         return PATrialService.getSiteRecruitementStatuses();
                     },
+                    centralContactTypes: function(PATrialService) {
+                        return PATrialService.getCentralContactTypes();
+                    }
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
