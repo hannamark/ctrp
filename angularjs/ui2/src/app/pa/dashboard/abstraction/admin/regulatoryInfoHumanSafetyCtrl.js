@@ -108,7 +108,9 @@
             vm.trialDetailsObj.board_approval_num = !vm.trialDetailsObj.board_approval_num ? DateService.convertISODateToLocaleDateStr(moment().toISOString()) : vm.trialDetailsObj.board_approval_num;
             outerTrial.id = vm.trialDetailsObj.id;
             outerTrial.trial = vm.trialDetailsObj;
-
+            // get the most updated lock_version
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+            
             TrialService.upsertTrial(outerTrial).then(function(res) {
                 console.log('res: ', res);
                 vm.trialDetailsObj = res;

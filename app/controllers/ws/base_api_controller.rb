@@ -1,9 +1,7 @@
 class Ws::BaseApiController < ApplicationController
-  #before_filter :parse_request, :authenticate_user_from_token!
-  http_basic_authenticate_with name: "ctrptrialsubmitter", password: Rails.configuration.restful_service_pwd, except: :index
+  before_filter :check_auth
 
   private
-
   def authenticate_user_from_token!
 
     if !@json['api_token']
@@ -21,4 +19,18 @@ class Ws::BaseApiController < ApplicationController
   def parse_request
     @json = JSON.parse(request.body.read)
   end
+
+  def check_auth
+    authenticate_or_request_with_http_basic do |username,password|
+      resource = User.find_by_username_and_role(username,"ROLE_SERVICE-REST")
+
+      if resource && resource.valid_password?(password)
+        sign_in :user, resource
+      end
+
+    end
+  end
+
+
+
 end

@@ -9,15 +9,13 @@ And I am on the General Trial Details screen
 When I can edit the lead organization trial identifier
 And I can optionally enter or edit one or more Other Trial Identifiers
 Then the Protocol Identifier section will be complete
-
+  @runthis
 Scenario: #2 I can enter the Acronym and Official Title for a trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I edit the Official Title for the trial  
 And I can optionally enter or edit the Acronym for the trial
 Then the title section will be complete
-
-
 
 Scenario: #4 I can enter the Keywords for a trial
 Given I have selected a trial to abstract 
@@ -94,21 +92,21 @@ Given I have selected a trial to abstract
 And I am on the General Trial Details screen
 When I select save
 And the protocol ID is Null
-Then a warning message will appear “Please enter the Protocol Identifier”
+Then a warning message will appear ï¿½Please enter the Protocol Identifierï¿½
 
 Scenario: #14 Official Title not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I select save
 And the Official Title is Null
-Then a warning message will appear “Please enter the Official Title”
+Then a warning message will appear ï¿½Please enter the Official Titleï¿½
 
 Scenario: #15 Lead Organization is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I select save
 And the Lead Organization is Null
-Then a warning message will appear “Please enter the Lead Organization”
+Then a warning message will appear ï¿½Please enter the Lead Organizationï¿½
 
 Scenario: #16 Principal Investigator is not null
 Given I have selected a trial to abstract 
@@ -116,14 +114,14 @@ And I am on the General Trial Details screen
 When I select save
 And the Principal Investigator is Null
 And the Study Source is "National", "Externally-Peer-Reviewed" "Instutional"
-Then a warning message will appear “Please enter the Principal Investigator”
+Then a warning message will appear ï¿½Please enter the Principal Investigatorï¿½
 
 Scenario: #17 Sponsor is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I select save
 And the Sponsor is Null
-Then a warning message will appear “Please enter the Sponsor”
+Then a warning message will appear ï¿½Please enter the Sponsorï¿½
 
 Scenario: # 18 e-mail address format
 Given I know which e-mail address I want to edit
