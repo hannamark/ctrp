@@ -42,9 +42,13 @@
                                     </div>
                                     <div class="col-sm-2" ng-show="trialRelatedDocsView.curDoc.edit">
                                         <label for="" class="control-label"></label>
-                                        <button type="button" class="btn btn-danger" ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
-                                        ng-disabled="trialRelatedDocsView.curDoc.document_type=='' ||
-                                        trialRelatedDocsView.curDoc.file_name==''">Update</button>
+                                        <div class="btn-group inline">
+                                            <button type="button" class="btn btn-warning">Cancel</button>
+                                            <button type="button" class="btn btn-danger" ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
+                                            ng-disabled="trialRelatedDocsView.curDoc.document_type==''">
+                                                Update
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row top-buffer">
@@ -73,7 +77,9 @@
                                             </tr>
                                          </thead>
                                          <tbody>
-                                             <tr ng-repeat="doc in trialRelatedDocsView.curTrialDetailObj.trial_documents track by $index" class="animated-item" ng-class="doc._destroy ? 'deleted-text' : ''">
+                                             <tr ng-repeat="doc in trialRelatedDocsView.curTrialDetailObj.trial_documents track by $index"
+                                                 class="animated-item" ng-class="doc._destroy ? 'deleted-text' : ''"
+                                                 ng-hide="doc.replaced">
                                                  <td><a ng-class="doc._destroy ? 'deleted-text' : ''" href="{{trialRelatedDocsView.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></td>
                                                  <td>{{doc.document_type}}</td>
                                                  <td>{{doc.document_subtype}}</td>
@@ -83,7 +89,7 @@
                                                      <label class="btn btn-default" restriction-field ng-click="trialRelatedDocsView.deleteDoc($index)">
                                                          <i class="glyphicon" ng-class="doc._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                      </label>
-                                                     <label class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="trialRelatedDocsView.editDoc($index)">
+                                                     <label class="btn btn-default" restriction-field ng-disabled="doc._destroy" ng-click="trialRelatedDocsView.editDoc($index)">
                                                          <i class="glyphicon glyphicon-edit"></i>
                                                      </label>
                                                  </td>
