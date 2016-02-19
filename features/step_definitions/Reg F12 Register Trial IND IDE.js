@@ -157,5 +157,43 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    this.When(/^I have NOT entered IND\/IDE information$/, function (table, callback) {
+        expect(addTrial.addTrialFDAIND_IDETypes.getAttribute('value')).to.eventually.equal('');
+        expect(addTrial.addTrialFDAIND_IDENumber.getAttribute('value')).to.eventually.equal('');
+        expect(addTrial.addTrialFDAIND_IDEGrantor.getAttribute('value')).to.eventually.equal('');
+        expect(addTrial.addTrialFDAIND_IDEHolderType.getAttribute('value')).to.eventually.equal('');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have clicked on the Add IND\/IDE Button$/, function (callback) {
+        addTrial.clickAddTrialAddIND_IDEButton();
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have not selected an IND\/IDE Types$/, function (callback) {
+        expect(addTrial.addTrialFDAIND_IDETypes.getAttribute('value')).to.eventually.equal('');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have not entered IND\/IDE Number$/, function (callback) {
+        expect(addTrial.addTrialFDAIND_IDENumber.getAttribute('value')).to.eventually.equal('');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have not selected an IND\/IDE Grantor$/, function (callback) {
+        expect(addTrial.addTrialFDAIND_IDEGrantor.getAttribute('value')).to.eventually.equal('');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have not selected an IND\/IDE Holder Type$/, function (callback) {
+        expect(addTrial.addTrialFDAIND_IDEHolderType.getAttribute('value')).to.eventually.equal('');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Register Trial FDA IND\/IDE Information for applicable trials section will indicate an error type"([^"]*)"$/, function (arg1, callback) {
+        addTrial.clickAddTrialReviewButton();
+        expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true');
+        browser.sleep(25).then(callback);
+    });
 
 };
