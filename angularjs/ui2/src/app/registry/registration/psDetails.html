@@ -142,7 +142,7 @@
                                     <td class="col-md-2">{{status.status_date}}</td>
                                     <td class="col-md-2">{{status.sr_status_name}}</td>
                                     <td class="col-md-2">{{status.comment}}</td>
-                                    <td class="col-md-5">
+                                    <td class="col-md-5 status-error">
                                         <div class="text-danger" ng-repeat="error in psDetailView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
                                             ERROR: Interim status [{{error.status}}] is missing
                                         </div>
