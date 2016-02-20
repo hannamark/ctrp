@@ -7,6 +7,9 @@
             <li >
                 <a href ng-click="tab = 2"> Investigators</a>
             </li>
+            <li >
+                <a href ng-click="tab = 3"> General Contact</a>
+            </li>
         </ul>
     </div>
 
@@ -130,23 +133,23 @@
 
                                         <td class="col-md-3">
                                             <div>
-                                                <textarea class="form-control input-sm" id="comment" name="status_comment"
+                                                <textarea class="form-control input-sm" id="comments" name="comments"
                                                           rows="1"
                                                           ng-maxlength="160"
-                                                          ng-model="psView.current_site_recruitment.status_comment">
+                                                          ng-model="psView.current_site_recruitment.comments">
                                                 </textarea>
-                                                <span ng-show="ps_form.status_comment.$dirty">
-                                                    {{160 - ps_form.status_comment.$viewValue.length}} characters left
+                                                <span ng-show="ps_form.comments.$dirty">
+                                                    {{160 - ps_form.comments.$viewValue.length}} characters left
                                                 </span>
                                             </div>
                                         </td>
 
                                         <td class="col-md-2">
-                                            <div ng-hide="psView.statusObj.edit">
+                                            <div ng-hide="psView.current_site_recruitment.edit">
                                                 <button class="btn btn-default" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
                                                         ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                     psView.current_site_recruitment.site_recruitment_status == '' ||
-                                                    ps_form.status_comment.$viewValue.length > 160
+                                                    ps_form.comments.$viewValue.length > 160
                                                     "><i class="glyphicon glyphicon-plus"></i> Add</button>
                                             </div>
 
@@ -154,12 +157,12 @@
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
                                                 <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()">Commit</button>
                                             </div> -->
-                                            <div class="btn-group inline" ng-show="psView.statusObj.edit">
+                                            <div class="btn-group inline" ng-show="psView.current_site_recruitment.edit">
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelEdit()">Cancel</button>
-                                                <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEdit()"
+                                                <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEditSiteRecruitment()"
                                                         ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                     psView.current_site_recruitment.site_recruitment_status == '' ||
-                                                    ps_form.status_comment.$viewValue.length > 160">Commit</button>
+                                                    ps_form.comments.$viewValue.length > 160">Commit</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -182,7 +185,7 @@
                                     <tr ng-repeat="site_rec in psView.currentParticipatingSite.site_rec_status_wrappers track by $index" class="animated-item text-center" ng-class="site_rec._destroy ? 'deleted-text' : ''">
                                         <td class="col-sm-2">{{site_rec.status_date}}</td>
                                         <td class="col-sm-1">{{site_rec.site_recruitment_status}}</td>
-                                        <td class="col-sm-2">{{site_rec.comment}}</td>
+                                        <td class="col-sm-2">{{site_rec.comments}}</td>
                                         <td class="col-sm-4">
                                             <div class="text-danger" ng-repeat="error in psView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
                                                 ERROR: Interim status [{{error.status}}] is missing
@@ -198,7 +201,7 @@
                                             </div>
                                         </td>
                                         <td class="text-center" class="col-sm-1">
-                                            <label class="btn btn-default" restriction-field ng-click="psView.editSiteRecruitment($index)">
+                                            <label class="btn btn-default" restriction-field ng-click="psView.deleteSiteRecruitment($index)">
                                                 <i class="glyphicon" ng-class="status._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                             </label>
                                             <label class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="psView.editSiteRecruitment($index)">
@@ -283,10 +286,10 @@
                                                 <textarea class="form-control input-sm" id="comment" name="status_comment"
                                                           rows="1"
                                                           ng-maxlength="160"
-                                                          ng-model="psView.current_site_recruitment.status_comment">
+                                                          ng-model="psView.current_site_recruitment.comments">
                                                 </textarea>
-                                                <span ng-show="ps_form.status_comment.$dirty">
-                                                    {{160 - ps_form.status_comment.$viewValue.length}} characters left
+                                                <span ng-show="ps_form.comments.$dirty">
+                                                    {{160 - ps_form.comments.$viewValue.length}} characters left
                                                 </span>
                                                 </div>
                                             </td>
@@ -295,7 +298,7 @@
                                                     <button class="btn btn-default" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
                                                             ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                     psView.current_site_recruitment.site_recruitment_status == '' ||
-                                                    ps_form.status_comment.$viewValue.length > 160
+                                                    ps_form.comments.$viewValue.length > 160
                                                     "><i class="glyphicon glyphicon-plus"></i> Add</button>
                                                 </div>
 
@@ -308,7 +311,7 @@
                                                     <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEdit()"
                                                             ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                     psView.current_site_recruitment.site_recruitment_status == '' ||
-                                                    ps_form.status_comment.$viewValue.length > 160">Commit</button>
+                                                    ps_form.comments.$viewValue.length > 160">Commit</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -370,72 +373,6 @@
                             </fieldset>
                             <!-- End fieldset for Investigator  -->
 
-                            <!-- General Contact Begin -->
-
-
-                            <!-- fieldset for Central Contact -->
-                            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                                <legend class="sub-bordered">Central Contact</legend>
-                                <!-- Central contact -->
-                                <div class="form-group">
-                                    <div class="row" style="margin-bottom: 7px;">
-                                        <div class="col-sm-offset-3 col-sm-9 col-xs-12">
-                                            <label ng-repeat="type in psView.centralContactTypes track by $index" for="contact_type_{{$index}}" class="radio-inline control-label">
-                                                <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="generalTrialDetailView.centralContactType">{{type.name}}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div ng-hide="psView.centralContactType == 'None' || psView.centralContactType == ''">
-                                    <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name)}">
-                                        <label for="central_contact" class="control-label col-xs-12 col-sm-2">Central Contact</label>
-                                        <div class="col-xs-12 col-sm-10">
-                                            <div class="col-xs-12 col-sm-6">
-                                                <input type="text" id="central_contact_name" name="central_contact_name" class="form-control" placeholder="Central Contact"
-                                                       ng-disabled="psView.centralContactType !== 'General'"
-                                                       ng-model="psView.generalTrialDetailsObj.central_contacts[0].fullname"
-                                                       ng-required="psView.centralContactNameRequired">
-                                            </div>
-                                            <div class="col-xs-12 col-sm-6" ng-show="psView.centralContactType == 'Person'">
-                                                <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button>
-                                            </div>
-                  <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name) && general_trial_details_form.central_contact_name.$error">
-                      <span class="help-block" ng-message="required">Central contact name is required</span>
-                  </span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Email Address -->
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            <label for="email" class="control-label col-xs-12 col-sm-2">Email Address</label>
-                                            <div class="col-xs-12 col-sm-10">
-                                                <div class="col-xs-12 col-sm-6">
-                                                    <input type="email" id="email" name="email" ng-model="psView.generalTrialDetailsObj.central_contacts[0].email"
-                                                           class="form-control" placeholder="Email">
-                                                    <span class="form-control-feedback" ng-show="general_trial_details_form.email.$dirty" ng-class="!general_trial_details_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Phone Number -->
-                                        <div class="form-group">
-                                            <label for="phone" class="control-label col-xs-12 col-sm-2">Phone Number</label>
-                                            <div class="col-xs-12 col-sm-10">
-                                                <div class="col-xs-12 col-sm-4">
-                                                    <input type="text" id="phone" name="phone" ng-model="psView.generalTrialDetailsObj.central_contacts[0].phone"
-                                                           class="form-control" placeholder="Phone", ng-change="generalTrialDetailView.isValidPhoneNumber()">
-                                                    <span ng-show="general_trial_details_form.phone.$dirty" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-2">
-                                                    <input type="text" class="form-control" id="phone_extension" ng-model="psView.generalTrialDetailsObj.central_contacts[0].extension"
-                                                           placeholder="Extension">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                            </fieldset>
-
                             <!-- Saving the form for the Investigator tab" -->
                             <div class="form-group no-bottom-margin">
                                 <div class="btn-toolbar">
@@ -453,6 +390,82 @@
         </div>
         <!-- End Tab 2 -->
     </section>
+</div>
+
+<!-- Begin tab 3 -->
+<div class="row" ng-show="tab == 3">
+    <!-- General Contact Begin -->
+    <!-- fieldset for Central Contact -->
+    <uib-accordion close-others="false">
+        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+            <uib-accordion-heading>
+                General Contact Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+            </uib-accordion-heading>
+            <!-- fieldset for Organization -->
+
+            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+        <legend class="sub-bordered">Central Contact</legend>
+        <!-- Central contact -->
+        <div class="form-group">
+            <div class="row" style="margin-bottom: 7px;">
+                <div class="col-sm-offset-3 col-sm-9 col-xs-12">
+                    <label ng-repeat="type in psView.centralContactTypes track by $index" for="contact_type_{{$index}}" class="radio-inline control-label">
+                        <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="generalTrialDetailView.centralContactType">{{type.name}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div ng-hide="psView.centralContactType == 'None' || psView.centralContactType == ''">
+            <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name)}">
+                <label for="central_contact" class="control-label col-xs-12 col-sm-2">Central Contact</label>
+                <div class="col-xs-12 col-sm-10">
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" id="central_contact_name" name="central_contact_name" class="form-control" placeholder="Central Contact"
+                               ng-disabled="psView.centralContactType !== 'General'"
+                               ng-model="psView.generalTrialDetailsObj.central_contacts[0].fullname"
+                               ng-required="psView.centralContactNameRequired">
+                    </div>
+                    <div class="col-xs-12 col-sm-6" ng-show="psView.centralContactType == 'Person'">
+                        <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button>
+                    </div>
+                  <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name) && general_trial_details_form.central_contact_name.$error">
+                      <span class="help-block" ng-message="required">Central contact name is required</span>
+                  </span>
+                </div>
+            </div>
+
+            <!-- Email Address -->
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="email" class="control-label col-xs-12 col-sm-2">Email Address</label>
+                    <div class="col-xs-12 col-sm-10">
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="email" id="email" name="email" ng-model="psView.generalTrialDetailsObj.central_contacts[0].email"
+                                   class="form-control" placeholder="Email">
+                            <span class="form-control-feedback" ng-show="general_trial_details_form.email.$dirty" ng-class="!general_trial_details_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label for="phone" class="control-label col-xs-12 col-sm-2">Phone Number</label>
+                    <div class="col-xs-12 col-sm-10">
+                        <div class="col-xs-12 col-sm-4">
+                            <input type="text" id="phone" name="phone" ng-model="psView.generalTrialDetailsObj.central_contacts[0].phone"
+                                   class="form-control" placeholder="Phone", ng-change="generalTrialDetailView.isValidPhoneNumber()">
+                            <span ng-show="general_trial_details_form.phone.$dirty" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                        </div>
+                        <div class="col-xs-12 col-sm-2">
+                            <input type="text" class="form-control" id="phone_extension" ng-model="psView.generalTrialDetailsObj.central_contacts[0].extension"
+                                   placeholder="Extension">
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </fieldset>
+        </uib-accordion-group>
+    </uib-accordion>
 </div>
 
 <!-- Grid the shows all the Participating Sites -->

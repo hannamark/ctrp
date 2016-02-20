@@ -59,6 +59,7 @@ json.participating_sites_list do
         json.id site_rec_status_wrapper.id
         json.status_date  site_rec_status_wrapper.status_date
         json.site_recruitment_status  site_rec_status_wrapper.site_recruitment_status.name
+        json.comments  site_rec_status_wrapper.comments
       end
     end
 
@@ -71,15 +72,6 @@ json.participating_sites_list do
         json.set_as_contact inv.set_as_contact
         json.status_code ""
       end
-    end
-
-    latest_site_rec_status = participating_site.site_rec_status_wrappers.blank? ? nil:participating_site.site_rec_status_wrappers.last
-    unless latest_site_rec_status.nil?
-      json.site_recruitment_status latest_site_rec_status.site_recruitment_status.name
-      json.site_recruitment_status_date latest_site_rec_status.status_date
-    else
-      json.site_recruitment_status ""
-      json.site_recruitment_status_date ""
     end
   end
 end

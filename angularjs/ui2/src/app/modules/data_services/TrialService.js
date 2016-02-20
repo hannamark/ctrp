@@ -45,7 +45,7 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140',
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140', sort: { direction: 'asc', priority: 1},
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
@@ -104,7 +104,6 @@
             getMilestones: getMilestones,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
-            getExpandedAccessTypes: getExpandedAccessTypes,
             getAcceptedFileTypes: getAcceptedFileTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
@@ -116,7 +115,8 @@
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial,
             getGrantsSerialNumber: getGrantsSerialNumber,
-            upsertParticipatingSite: upsertParticipatingSite
+            upsertParticipatingSite: upsertParticipatingSite,
+            getParticipatingSiteById: getParticipatingSiteById
         };
 
         return services;
@@ -254,10 +254,17 @@
         }
 
         function getParticipatingSiteById(participatingSiteId) {
+            console.log('calling getParticipatingSiteById in TrialService');
+            //return PromiseService.getData(URL_CONFIGS.AN_TRIAL + trialId + '.json');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteId + '.json');
+        } //getTrialById
+
+
+       // function getParticipatingSiteById(participatingSiteId) {
             //insert the participatingSiteId into the url
-            var url = URL_CONFIGS.TRIALS.PARTICIPATING_SITE_WITH_ID.replace(/\s*\{.*?\}\s*/g, participatingSiteId);
-            return PromiseTimeoutService.getData(url);
-        }
+       //     var url = URL_CONFIGS.TRIALS.PARTICIPATING_SITE_WITH_ID.replace(/\s*\{.*?\}\s*/g, participatingSiteId);
+      //      return PromiseTimeoutService.getData(url);
+      //  }
 
         /**
          * Update or insert a Participating Site Records
@@ -290,10 +297,6 @@
 
         function getNih() {
             return PromiseTimeoutService.getData(URL_CONFIGS.NIH);
-        }
-
-        function getExpandedAccessTypes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
         }
 
         function getAcceptedFileTypes() {

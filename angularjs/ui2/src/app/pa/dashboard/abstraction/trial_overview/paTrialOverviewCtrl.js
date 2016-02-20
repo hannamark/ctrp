@@ -20,6 +20,9 @@
         vm.loadingTrialDetail = true;
         console.log('curTrial: ', curTrial);
         vm.trialDetailObj = curTrial;
+        vm.adminCheckoutObj = JSON.parse(vm.trialDetailObj.admin_checkout);
+        vm.scientificCheckoutObj = JSON.parse(vm.trialDetailObj.scientific_checkout);
+
         vm.isPanelOpen = true;
         vm.togglePanelOpen = togglePanelOpen;
         vm.backToPATrialSearch = backToPATrialSearch;
@@ -56,16 +59,21 @@
 
         function checkoutTrial(checkoutType) {
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
-                // console.log('checkout result: ', res.result);
+                console.log('checkout result: ', res.result);
                 updateTrialDetailObj(res.result);
+                vm.adminCheckoutObj = JSON.parse(res.result.admin_checkout);
+                vm.scientificCheckoutObj = JSON.parse(res.result.scientific_checkout);
                 showToastr(checkoutType + ' checkout was successful!', 'top right');
             });
         }
 
         function checkinTrial(checkinType) {
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
-                // console.log('checkin result: ', res.result);
+                console.log('checkin result: ', res.result);
                 updateTrialDetailObj(res.result);
+                vm.adminCheckoutObj = JSON.parse(res.result.admin_checkout); // null
+                vm.scientificCheckoutObj = JSON.parse(res.result.scientific_checkout); // null
+                // updateTrialDetailObj(res.result);
                 showToastr(checkinType + ' checkin was successful!', 'top right')
             });
         }
@@ -76,8 +84,8 @@
          */
         function updateTrialDetailObj(data) {
             console.log('in updating trial detail obj, admin_checkout: ' + data.admin_checkout + ', scientific_checkout: ' + data.scientific_checkout);
-            vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
-            vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
+            // vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
+            // vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
             if (vm.trialDetailObj.pi && !vm.trialDetailObj.pi.fullName) {
                 vm.trialDetailObj.pi.fullName = PersonService.extractFullName(vm.trialDetailObj.pi);
@@ -95,10 +103,7 @@
             vm.submitterPopOver.submitter = vm.trialDetailObj.submitter || {};
             vm.submitterPopOver.submitter.organization = vm.trialDetailObj.submitters_organization || '';
 
-            console.log('vm.submitterPopOver: ', vm.submitterPopOver);
-
-            // false if neither type is checked out
-            vm.trialDetailObj.pa_editable = !!data.admin_checkout || !!data.scientific_checkout;
+            // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
@@ -114,27 +119,32 @@
          */
         function watchCheckoutButtons() {
 
-            $scope.$watch(function() {return vm.trialDetailObj.admin_checkout;},
+            $scope.$watch(function() {return vm.adminCheckoutObj;},
                 function(newVal) {
+                    var curUserRole = UserService.getUserRole() || '';
                     vm.adminCheckoutAllowed = (newVal === null); // boolean, if not null, do not allow checkout again
-
+                    // trial is not editable if checkout is allowed (in checkedin state) or
+                    // the curUserRole is Super or Admin
+                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
                     if (!!newVal) {
-                        var curUserRole = UserService.getUserRole() || '';
                         // ROLE_SUPER can override the checkout button
-                        vm.adminCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.admin_checkout.by &&
+                        vm.adminCheckoutBtnDisabled = vm.curUser !== vm.adminCheckoutObj.by &&
                         curUserRole !== 'ROLE_SUPER' && curUserRole !== 'ROLE_ABSTRACTOR' &&
                         curUserRole !== 'ROLE_ABSTRACTOR-SU' && curUserRole !== 'ROLE_ADMIN';
                     }
                 });
 
-            $scope.$watch(function() {return vm.trialDetailObj.scientific_checkout;},
+            $scope.$watch(function() {return vm.scientificCheckoutObj;},
                 function(newVal) {
                     vm.scientificCheckoutAllowed = (newVal === null); // if not null, do not allow checkout again
+                    // trial is not editable if checkout is allowed (in checkedin state) or
+                    // the curUserRole is Super or Admin
+                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
 
                     if (!!newVal) {
                         var curUserRole = UserService.getUserRole() || '';
                         // ROLE_SUPER can override the checkout button
-                        vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.trialDetailObj.scientific_checkout.by &&
+                        vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.scientificCheckoutObj.by &&
                             curUserRole !== 'ROLE_SUPER' && curUserRole !== 'ROLE_ABSTRACTOR' &&
                             curUserRole !== 'ROLE_ABSTRACTOR-SU' && curUserRole !== 'ROLE_ADMIN';
                     }

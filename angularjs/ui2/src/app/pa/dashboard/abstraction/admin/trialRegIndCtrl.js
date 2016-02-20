@@ -39,7 +39,8 @@
             outerTrial.new = vm.curTrial.new;
             outerTrial.id = vm.curTrial.id;
             outerTrial.trial = vm.curTrial;
-
+            // get the most updated lock_version
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
@@ -202,15 +203,6 @@
                     }
                 });
                 indIde.nih_nci = vm.curTrial.ind_ides[i].nih_nci;
-                indIde.expanded_access = vm.curTrial.ind_ides[i].expanded_access;
-                indIde.expanded_access_type_id = vm.curTrial.ind_ides[i].expanded_access_type_id;
-                // For displaying name in the table
-                _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
-                    if (expandedAccessType.id == vm.curTrial.ind_ides[i].expanded_access_type_id) {
-                        indIde.expanded_access_type_name = expandedAccessType.name;
-                    }
-                });
-                indIde.exempt = vm.curTrial.ind_ides[i].exempt;
                 indIde._destroy = false;
                 vm.addedIndIdes.push(indIde);
                 vm.indIdeNum++;

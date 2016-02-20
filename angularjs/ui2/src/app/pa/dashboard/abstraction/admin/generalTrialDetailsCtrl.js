@@ -90,7 +90,8 @@
           outerTrial.new = false;
           outerTrial.id = vm.generalTrialDetailsObj.id;
           outerTrial.trial = vm.generalTrialDetailsObj;
-
+          // get the most updated lock_version
+          outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
           TrialService.upsertTrial(outerTrial).then(function(res) {
               console.log('saved trial: ', res);
               vm.generalTrialDetailsObj = res;

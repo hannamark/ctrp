@@ -147,6 +147,74 @@ var projectMethodsRegistry = function() {
         );
     };
 
+
+    /*****************************************************************
+     * Method: Verify Trial FDA IND/IDE information value
+     * @param INDIDEType
+     * @param INDIDENumber
+     * @param INDIDEGrantor
+     * @param INDIDEHolderType
+     * @param INDIDEProgramCode
+     *****************************************************************/
+    this.verifyAddTrialFDA_IND_IDEInformation = function (INDIDEType, INDIDENumber, INDIDEGrantor, INDIDEHolderType, INDIDEProgramCode) {
+        return addTrial.addTrialVerifyIND_IDETable.getText().filter(function (row) {
+            // Get the first column's text.
+            return row.$$('td').get(0).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name');
+                console.log(rowName);
+                console.log('print IND IDE name');
+                console.log(INDIDEType);
+                return rowName === INDIDEType;
+            });
+        }).then(function (rows) {
+                console.log('value of row' + rows);
+                expect(rows[0].element(by.binding('indIde.ind_ide_number')).getText()).to.eventually.equal(INDIDENumber);
+                expect(rows[0].element(by.binding('indIde.grantor')).getText()).to.eventually.equal(INDIDEGrantor);
+                expect(rows[0].element(by.binding('indIde.holder_type_name')).getText()).to.eventually.equal(INDIDEHolderType);
+                expect(rows[0].element(by.binding('indIde.nih_nci')).getText()).to.eventually.equal(INDIDEProgramCode);
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
+
+
+    /*****************************************************************
+     * Method: Verify Trial Status information value
+     * @param status
+     * @param statusDate
+     * @param comment
+     * @param whyStudyStopped
+     * @param errorsWarnings
+     *****************************************************************/
+        this.verifyAddTrialStatusInformation = function (status, statusDate, comment, whyStudyStopped, errorsWarnings) {
+        return addTrial.addTrialAddStatusTable.getText().filter(function (row) {
+            // Get the second column's text.
+            return row.$$('td').get(1).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name');
+                console.log(rowName);
+                console.log('print Status');
+                console.log(status);
+                return rowName === status;
+            });
+        }).then(function (rows) {
+                console.log('value of row' + rows);
+                expect(rows[0].element(by.binding('status.status_date')).getText()).to.eventually.equal(statusDate);
+                expect(rows[0].element(by.binding('status.comment')).getText()).to.eventually.equal(comment);
+                expect(rows[0].element(by.binding('status.why_stopped')).getText()).to.eventually.equal(whyStudyStopped);
+              //  expect(rows[0].element.all(by.css('tr[ng-repeat="status in trialDetailView.addedStatuses track by $index"]')).all(by.css('.col-md-4')).getText()).to.eventually.equal(errorsWarnings);
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
+
+
+
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/

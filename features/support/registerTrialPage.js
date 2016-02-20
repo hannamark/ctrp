@@ -68,6 +68,7 @@ var registerTrial = function(){
     this.addTrialStatus = element(by.model('trialDetailView.trial_status_id'));
     this.addTrialWhyStudyStopped = element(by.model('trialDetailView.why_stopped'));
     this.addTrialAddStatusButton = element(by.css('button[ng-click="trialDetailView.addStatus()"]'));
+    this.addTrialAddStatusTable = element.all(by.css('tr[ng-repeat="status in trialDetailView.addedStatuses track by $index"]'));
 
     /** Trial Dates **/
     this.addTrialStartDate = element(by.model('trialDetailView.curTrial.start_date'));
@@ -81,11 +82,16 @@ var registerTrial = function(){
     this.addTrialFDAIND_IDETypesQuestion = element(by.css('div[is-open="trialDetailView.accordions[9]"]')).all(by.css('.control-label.col-xs-12.col-sm-3'));
     this.addTrialFDAIND_IDEOption = element.all(by.model('trialDetailView.curTrial.ind_ide_question'));
     this.addTrialFDAIND_IDETypes = element(by.model('trialDetailView.ind_ide_type'));
+    this.addTrialFDAIND_IDETypesList = element.all(by.css('.ind-ide-type'));
     this.addTrialFDAIND_IDENumber = element(by.model('trialDetailView.ind_ide_number'));
     this.addTrialFDAIND_IDEGrantor = element(by.model('trialDetailView.grantor'));
+    this.addTrialFDAIND_IDEGrantorList = element.all(by.binding('grantor'));
     this.addTrialFDAIND_IDEHolderType = element(by.model('trialDetailView.holder_type_id'));
+    this.addTrialFDAIND_IDEHolderTypeList = element.all(by.css('option[ng-repeat="holderType in trialDetailView.holderTypeArr"]'));
     this.addTrialFDAProgramCode = element(by.model('trialDetailView.nih_nci'));
+    this.addTrialFDAProgramCodeList = element.all(by.binding('nihNci.code'));
     this.addTrialAddIND_IDEButton = element(by.css('button[ng-click="trialDetailView.addIndIde()"]'));
+    this.addTrialVerifyIND_IDETable = element.all(by.css('tr[ng-repeat="indIde in trialDetailView.addedIndIdes track by $index"]'));
 
     /** Regulatory Information **/
     this.addTrialRegulatoryInformationText = element(by.css('.control-label.col-xs-12.col-sm-7'));
@@ -117,6 +123,10 @@ var registerTrial = function(){
 
     /**Validation message**/
     this.addTrialValidationMessage = element.all(by.css('.add-association-error'));
+
+    /**Date fields**/
+    this.addTrialDateFields = element.all(by.css('.glyphicon.glyphicon-calendar'));
+    this.addTrialDateClickToday = element(by.buttonText('Today'));
 
     var helper = new helperFunctions();
 
@@ -491,6 +501,15 @@ var registerTrial = function(){
         helper.clickButtonNoHeaderIndex(this.addTrialPersonSearchModel,index, "Person Model Search button");
     };
 
+    /*************** Date fields **************/
+
+    this.clickAddTrialDateField = function(index){
+        helper.clickButtonNoHeaderIndex(this.addTrialDateFields,index, "Date Field button");
+    };
+
+    this.clickAddTrialDateToday = function(){
+        helper.clickButtonNoHeader(this.addTrialDateClickToday, "Today button on Add Date field")
+    }
 };
 
 module.exports = registerTrial;
