@@ -32,11 +32,11 @@
         vm.dateOptions = DateService.getDateOptions();
         vm.selOrganization = {name: '', array: []};
         vm.centralContactTypes = centralContactTypes.types;
-        vm.saveSuccess = false;
 
         //actions
         vm.addSiteRecruitment = addSiteRecruitment;
         vm.editSiteRecruitment = editSiteRecruitment;
+        vm.deleteSiteRecruitment = deleteSiteRecruitment;
         vm.editInvestigator  = editInvestigator;
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
@@ -245,6 +245,18 @@
             }
         } // commitEdit
 
+        function deleteSiteRecruitment(index) {
+            //if (index < vm.tempTrialStatuses.length) {
+            console.log("In delete  SiteRecruitment");
+            vm.current_site_recruitment = angular.copy(vm.currentParticipatingSite.site_rec_status_wrappers[index]);
+            vm.current_site_recruitment._destroy = true;
+            vm.current_site_recruitment.index = index;
+            vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
+            vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
+            vm.saveParticipatingSite();
+            // vm.tempTrialStatuses.splice(index, 1);
+            //}
+        }
 
 
         function editInvestigator(index) {
