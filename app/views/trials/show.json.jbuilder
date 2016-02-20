@@ -73,15 +73,6 @@ json.participating_sites_list do
         json.status_code ""
       end
     end
-
-    latest_site_rec_status = participating_site.site_rec_status_wrappers.blank? ? nil:participating_site.site_rec_status_wrappers.last
-    unless latest_site_rec_status.nil?
-      json.site_recruitment_status latest_site_rec_status.site_recruitment_status.name
-      json.site_recruitment_status_date latest_site_rec_status.status_date
-    else
-      json.site_recruitment_status ""
-      json.site_recruitment_status_date ""
-    end
   end
 end
 

@@ -42,6 +42,8 @@ class ParticipatingSitesController < ApplicationController
   def update
     respond_to do |format|
       if @participating_site.update(participating_site_params)
+        Rails.logger.info "HII In UPDATE = #{@participating_site.site_rec_status_wrappers.inspect}"
+        @participating_site = ParticipatingSite.find_by_id(@participating_site.id)
         format.html { redirect_to @participating_site, notice: 'Participating site was successfully updated.' }
         format.json { render :show, status: :ok, location: @participating_site }
       else

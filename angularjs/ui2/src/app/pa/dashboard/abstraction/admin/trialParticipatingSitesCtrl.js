@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
 
-    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService','DateService', '$scope', '$timeout','$state', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes'];
+    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService','DateService', '$scope', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, DateService , $scope, $timeout, $state, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService, DateService , $scope, $timeout, $stateParams, $route, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes) {
 
         var vm = this;
 
@@ -32,6 +32,7 @@
         vm.dateOptions = DateService.getDateOptions();
         vm.selOrganization = {name: '', array: []};
         vm.centralContactTypes = centralContactTypes.types;
+        vm.saveSuccess = false;
 
         //actions
         vm.addSiteRecruitment = addSiteRecruitment;
@@ -102,9 +103,24 @@
             console.log("In save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
 
             TrialService.upsertParticipatingSite(outerPS).then(function(response) {
-                console.log("response="+JSON.stringify(response));
+                console.log("server_response="+JSON.stringify(response));
+                //if (response.server_response.status == 200){
+                    //vm.curTrial. = response.server_response.config.data.participating_site;
+                  //  vm.saveSuccess = true;
+               // }
+                TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function(response) {
+                    console.log("getParticipatingSiteById response = " + JSON.stringify(response));
+                    vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
+                }).catch(function(err) {
+
+                });
+                //function($stateParams, TrialService) {
+               //     return TrialService.getTrialById($stateParams.trialId);
+               // },
+                //console.log("After save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
+                //vm.currentParticipatingSite = response["participating_site"];
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                vm.curTrial.lock_version = response.lock_version || '';
+                //vm.curTrial.lock_version = response.lock_version || '';
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
@@ -220,10 +236,10 @@
 
         function addSiteRecruitment() {
 
-             console.log("vm.current_site_recruitment="+JSON.stringify(vm.current_site_recruitment));
-
+            console.log("vm.current_site_recruitment="+JSON.stringify(vm.current_site_recruitment));
             console.log("vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
-             vm.current_site_recruitment.participating_site_id= vm.currentParticipatingSite.id;
+
+            vm.current_site_recruitment.participating_site_id= vm.currentParticipatingSite.id;
 
             // Temporary code. User of ng-options in the UI should resolve it.
             for (var i = 0; i < vm.siteRecruitmentStatusesArr.length; i++) {
@@ -236,29 +252,14 @@
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
 
             console.log("vm.current_participating_site.="+JSON.stringify(vm.currentParticipatingSite));
+
+            console.log("vm.curTrial.participating_sites_list="+JSON.stringify(vm.curTrial.participating_sites_list));
             vm.saveParticipatingSite();
+           // console.log("vm.saveSuccess = "+ vm.saveSuccess);
+           // vm.currentParticipatingSite.site_rec_status_wrappers.push(vm.current_site_recruitment);
+          //  vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
 
-            /**
-             TrialService.upsertParticipatingSite(vm.currentParticipatingSite).then(function(response) {
-                console.log("response = " + JSON.stringify(response));
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                //vm.curTrial.lock_version = response.lock_version || '';
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                 //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                $scope.$emit('updatedInChildScope', {});
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
-            }).catch(function(err) {
-                console.log("error in updating trial " + JSON.stringify(outerTrial));
-            });
 
-            //vm.current_site_recruitment.site_recruitment_status_id = vm.
-
-                 //vm.current_site_recruitment
-             **/
         }
 
 
