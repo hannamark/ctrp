@@ -104,31 +104,26 @@
 
             TrialService.upsertParticipatingSite(outerPS).then(function(response) {
                 console.log("server_response="+JSON.stringify(response));
-                //if (response.server_response.status == 200){
-                    //vm.curTrial. = response.server_response.config.data.participating_site;
-                  //  vm.saveSuccess = true;
-               // }
                 TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function(response) {
                     console.log("getParticipatingSiteById response = " + JSON.stringify(response));
                     vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
+                    vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
+                    console.log("YAHOOO");
+                    for (var i = 0; i < vm.curTrial.participating_sites_list.length; i++) {
+                        if (vm.curTrial.participating_sites_list[i] == vm.currentParticipatingSite.id ){
+                            vm.curTrial.participating_sites_list[i] = vm.currentParticipatingSite;
+                        }
+                    }
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    console.log("Before cache update vm.curTrial.participating_site_list ="+ JSON.stringify(vm.curTrial.participating_site_list));
+                    $scope.$emit('updatedInChildScope', {});
+                    toastr.clear();
+                    toastr.success('Participating Site of  ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
                 }).catch(function(err) {
 
-                });
-                //function($stateParams, TrialService) {
-               //     return TrialService.getTrialById($stateParams.trialId);
-               // },
-                //console.log("After save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
-                //vm.currentParticipatingSite = response["participating_site"];
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                //vm.curTrial.lock_version = response.lock_version || '';
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                //PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                $scope.$emit('updatedInChildScope', {});
-                //vm.curTrial.collaborators = response["collaborators"];
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
                 });
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerPS));
@@ -198,27 +193,18 @@
         }
 
         function commitEditSiteRecruitment() {
-           // vm.statusErrorMsg = '';
-           // if (!vm.statusObj.status_date || !vm.statusObj.trial_status_id) {
-           //     vm.statusErrorMsg = 'Both status date and trial status are required';
-           //     return;
-          //  }
-
             console.log("In commitEditSiteRecruitment");
             if (vm.current_site_recruitment.edit) {
-                // vm.statusObj.status_date = moment(vm.statusObj.status_date).format("DD-MMM-YYYY"); // e.g. 03-Feb-2016
-                // format date from 'yyyy-mm-DD' to 'yyyy-MMM-DD' (e.g. from 2009-12-03 to 03-Feb-2009)
                 vm.current_site_recruitment.status_date = DateService.convertISODateToLocaleDateStr(vm.current_site_recruitment.status_date);
-                var selectedStatus = _.findWhere(vm.siteRecruitmentStatusesArr, {id: vm.current_site_recruitment.trial_status_id});
+                console.log("site_recruitment_status_id="+JSON.stringify(vm.current_site_recruitment.site_recruitment_status));
+                var selectedStatus = _.findWhere(vm.siteRecruitmentStatusesArr, {id: vm.current_site_recruitment.site_recruitment_status_id});
+                console.log("selectedStatus="+JSON.stringify(selectedStatus));
                 if (!!selectedStatus) {
                     vm.current_site_recruitment.site_rec_status_wrappers_attributes = selectedStatus;
                     console.log("In commitEditSiteRecruitment=" + JSON.stringify(vm.current_site_recruitment));
                 }
-                // vm.tempTrialStatuses.splice(vm.statusObj.index, 0, vm.statusObj);
-               // vm.tempTrialStatuses[vm.statusObj.index] = vm.statusObj;
-              //  console.log('vm.tempTrialStatuses: ', vm.tempTrialStatuses);
-                //validateStatuses();
-                //vm.statusObj = _initStatusObj();
+                vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
+                vm.saveParticipatingSite();
             }
         } // commitEdit
 
@@ -255,11 +241,6 @@
 
             console.log("vm.curTrial.participating_sites_list="+JSON.stringify(vm.curTrial.participating_sites_list));
             vm.saveParticipatingSite();
-           // console.log("vm.saveSuccess = "+ vm.saveSuccess);
-           // vm.currentParticipatingSite.site_rec_status_wrappers.push(vm.current_site_recruitment);
-          //  vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
-
-
         }
 
 
