@@ -51,7 +51,7 @@ end
 json.participating_sites_list do
   json.array!(@trial.participating_sites) do |participating_site|
     json.id participating_site.id
-    json.investigator participating_site.person.lname
+    json.investigator participating_site.person.present? ? participating_site.person.lname : ""
     json.primary_contact participating_site.contact_name
     json.organization participating_site.organization
     json.site_rec_status_wrappers do
@@ -59,16 +59,19 @@ json.participating_sites_list do
         json.id site_rec_status_wrapper.id
         json.status_date  site_rec_status_wrapper.status_date
         json.site_recruitment_status  site_rec_status_wrapper.site_recruitment_status.name
+        json.comments  site_rec_status_wrapper.comments
       end
     end
 
-    latest_site_rec_status = participating_site.site_rec_status_wrappers.blank? ? nil:participating_site.site_rec_status_wrappers.last
-    unless latest_site_rec_status.nil?
-      json.site_recruitment_status latest_site_rec_status.site_recruitment_status.name
-      json.site_recruitment_status_date latest_site_rec_status.status_date
-    else
-      json.site_recruitment_status ""
-      json.site_recruitment_status_date ""
+    json.participating_site_investigators do
+      json.array!(participating_site.participating_site_investigators) do |inv|
+        json.po_id inv.person.present? ? inv.person.id : ""
+        json.lname  inv.person.present? ? inv.person.lname : ""
+        json.fname  inv.person.present? ? inv.person.fname : ""
+        json.investigator_type inv.investigator_type
+        json.set_as_contact inv.set_as_contact
+        json.status_code ""
+      end
     end
   end
 end
