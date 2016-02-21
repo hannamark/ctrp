@@ -37,6 +37,7 @@
         vm.addSiteRecruitment = addSiteRecruitment;
         vm.editSiteRecruitment = editSiteRecruitment;
         vm.deleteSiteRecruitment = deleteSiteRecruitment;
+        vm.cancelSiteRecruitmentEdit = cancelSiteRecruitmentEdit;
         vm.editInvestigator  = editInvestigator;
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
@@ -104,25 +105,38 @@
 
             TrialService.upsertParticipatingSite(outerPS).then(function(response) {
                 console.log("server_response="+JSON.stringify(response));
-                TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function(response) {
-                    console.log("getParticipatingSiteById response = " + JSON.stringify(response));
-                    vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
-                    vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
-                    for (var i = 0; i < vm.curTrial.participating_sites_list.length; i++) {
-                        if (vm.curTrial.participating_sites_list[i] == vm.currentParticipatingSite.id ){
-                            vm.curTrial.participating_sites_list[i] = vm.currentParticipatingSite;
+                var newParticipatingSite = false;
+                if(!vm.currentParticipatingSite.id){
+                    // New Participating Site
+                    newParticipatingSite = true;
+                    vm.currentParticipatingSite.id = response.id;
+                }
+                if(vm.currentParticipatingSite.id) {
+                    TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
+                        console.log("getParticipatingSiteById response = " + JSON.stringify(response));
+                        vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
+                        vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
+                        vm.current_site_recruitment = {};
+                        if(newParticipatingSite){
+                            vm.curTrial.participating_sites_list.push(vm.currentParticipatingSite);
+                        } else {
+                            for (var i = 0; i < vm.curTrial.participating_sites_list.length; i++) {
+                                if (vm.curTrial.participating_sites_list[i] == vm.currentParticipatingSite.id) {
+                                    vm.curTrial.participating_sites_list[i] = vm.currentParticipatingSite;
+                                }
+                            }
                         }
-                    }
-                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                    $scope.$emit('updatedInChildScope', {});
-                    toastr.clear();
-                    toastr.success('Participating Site of  ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
+                        PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                        $scope.$emit('updatedInChildScope', {});
+                        toastr.clear();
+                        toastr.success('Participating Site of  ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        });
+                    }).catch(function (err) {
+                        console.log("2server_response="+JSON.stringify(response));
                     });
-                }).catch(function(err) {
-
-                });
+                }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerPS));
             });
@@ -158,6 +172,14 @@
         function setAddMode() {
             console.log("SETTING TO ADDMODE");
             vm.addEditMode = true;
+            vm.currentParticipatingSite = {};
+            vm.current_site_recruitment = {};
+            vm.city = null;
+            vm.state_province =  null;
+            vm.country = null;
+            vm.postal_code = null;
+            vm.po_name = null;
+            vm.selOrganization = {name: '', array: []};
         }
 
         /**
@@ -256,6 +278,10 @@
             vm.saveParticipatingSite();
             // vm.tempTrialStatuses.splice(index, 1);
             //}
+        }
+
+        function cancelSiteRecruitmentEdit() {
+            vm.current_site_recruitment = {};
         }
 
 
