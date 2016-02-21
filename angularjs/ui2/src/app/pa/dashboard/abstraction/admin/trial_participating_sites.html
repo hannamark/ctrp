@@ -15,7 +15,7 @@
 
     <!-- Begin tab 1 -->
     <div class="row" ng-show="tab == 1">
-        <form class="form form-horizontal" role="form" name="ps_form" novalidate ctrp-submit="psView.updateTrial">
+        <form class="form form-horizontal" role="form" name="ps_form" novalidate ctrp-submit="psView.updateTrial()">
 
             <!-- first row in the accordion body -->
             <div class="row" ng-if="psView.addEditMode">
@@ -254,26 +254,25 @@
                                             <th>Last Name</th>
                                             <th>First Name</th>
                                             <th>Role</th>
-                                            <th>Status Code</th>
                                             <th>Set as Primary Contact</th>
                                         </thead>
                                         <tbody>
                                         <tr>
-                                             <td class="col-md-2">
-                                                <input type="text" id="po_id" name="po_id" class="form-control" ng-model="psView.current_investigator.po_id" placeholder="po_id">
+                                             <td class="col-md-1">
+                                                <input type="text" id="po_id" name="po_id" class="form-control" ng-model="psView.current_investigator.po_id" placeholder="po_id" ng-disabled="true">
                                             </td>
-                                            <td class="col-md-2">
-                                                <input type="text" id="last_name" name="last_name" class="form-control" ng-model="psView.current_investigator.lname" placeholder="Last Name">
+                                            <td class="col-md-1">
+                                                <input type="text" id="last_name" name="last_name" class="form-control" ng-model="psView.current_investigator.lname" placeholder="Last Name" ng-disabled="true">
                                             </td>
-                                            <td class="col-md-2">
-                                                <input type="text" id="first_name" name="first_name" class="form-control" ng-model="psView.current_investigator.fname" placeholder="First Name">
+                                            <td class="col-md-1">
+                                                <input type="text" id="first_name" name="first_name" class="form-control" ng-model="psView.current_investigator.fname" placeholder="First Name" ng-disabled="true">
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div>
-                                                    <select name="siteRecStatus" id="siteRecStatus_select"
+                                                    <select name="investigator_type" id="iinvestigator_type_select"
                                                             class="form-control input-sm"
                                                             restriction-field
-                                                            ng-model="psView.current_site_recruitment.site_recruitment_status">
+                                                            ng-model="psView.current_investigator.investigator_type">
                                                         <option value="">Select a status</option>
                                                         <option value="Principal Investigator">Principal Investigator</option>
                                                         <option value="Sub Investigator">Sub Investigator</option>
@@ -281,36 +280,22 @@
                                                 </div>
                                             </td>
 
-                                            <td class="col-md-3">
-                                                <div>
-                                                <textarea class="form-control input-sm" id="comment" name="status_comment"
-                                                          rows="1"
-                                                          ng-maxlength="160"
-                                                          ng-model="psView.current_site_recruitment.comments">
-                                                </textarea>
-                                                <span ng-show="ps_form.comments.$dirty">
-                                                    {{160 - ps_form.comments.$viewValue.length}} characters left
-                                                </span>
-                                                </div>
-                                            </td>
                                             <td class="col-md-2">
-                                                <div ng-hide="psView.statusObj.edit">
-                                                    <button class="btn btn-default" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
-                                                            ng-disabled="psView.current_site_recruitment.status_date == '' ||
-                                                    psView.current_site_recruitment.site_recruitment_status == '' ||
-                                                    ps_form.comments.$viewValue.length > 160
-                                                    "><i class="glyphicon glyphicon-plus"></i> Add</button>
-                                                </div>
-
-                                                <!-- <div class="btn-toolbar col-xs-12" ng-show="trialStatusView.statusObj.edit">
-                                                    <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
-                                                    <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()">Commit</button>
-                                                </div> -->
-                                                <div class="btn-group inline" ng-show="psView.statusObj.edit">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact"
+                                                           value="No"> No
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact"
+                                                           value="Yes"> Yes
+                                                </label>
+                                            </td>
+                                             <td class="col-md-2">
+                                                 <div class="btn-group inline" ng-show="psView.current_investigator.edit">
                                                     <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelEdit()">Cancel</button>
                                                     <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEdit()"
-                                                            ng-disabled="psView.current_site_recruitment.status_date == '' ||
-                                                    psView.current_site_recruitment.site_recruitment_status == '' ||
+                                                            ng-disabled="psView.current_investigator.status_date == '' ||
+                                                    psView.current_investigator.site_recruitment_status == '' ||
                                                     ps_form.comments.$viewValue.length > 160">Commit</button>
                                                 </div>
                                             </td>
@@ -354,17 +339,17 @@
                                     </table>
                                 </div>
                                 <!-- Principal investigator -->
-                                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.principal_investigator)}">
+                                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.principal_investigator)}">
                                     <label for="pi" class="col-xs-12 col-sm-2">Add new Principal Investigator</label>
                                     <div class="col-xs-12 col-sm-10">
                                         <div class="col-xs-12 col-sm-6">
-                                            <input type="text" id="pi" name="principal_investigator" disabled class="form-control" ng-model="generalTrialDetailView.principalInvestigator.name" placeholder="Principal Investigator" ng-required="false">
+                                            <input type="text" id="pi" name="principal_investigator" disabled class="form-control" ng-model="psView.principalInvestigator.name" placeholder="Principal Investigator" ng-required="false">
                                         </div>
                                         <div class="col-xs-12 col-sm-6">
                                             <!-- <button class="btn btn-primary">Look Up Person</button> -->
-                                            <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.principalInvestigator.array"></ctrp-person-adv-search-modal-button>
+                                            <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.principalInvestigator.array"></ctrp-person-adv-search-modal-button>
                                         </div>
-                <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.principal_investigator) && general_trial_details_form.principal_investigator.$error">
+                <span ng-messages="ctrpbtn.ps_form.needsAttention(ps_form.principal_investigator) && ps_form.principal_investigator.$error">
                     <span class="help-block" ng-message="required">Principal Investigator is required</span>
                 </span>
                                     </div>
@@ -376,7 +361,7 @@
                             <!-- Saving the form for the Investigator tab" -->
                             <div class="form-group no-bottom-margin">
                                 <div class="btn-toolbar">
-                                    <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()">Save</button>
+                                    <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveInvestigatorsTab()">Save</button>
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.reload()"  restriction-field ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
