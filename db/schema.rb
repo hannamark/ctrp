@@ -1053,9 +1053,9 @@ ActiveRecord::Schema.define(version: 20160222165008) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.text     "object"
+    t.jsonb    "object"
     t.datetime "created_at"
-    t.text     "object_changes"
+    t.jsonb    "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1240,9 +1240,9 @@ ActiveRecord::Schema.define(version: 20160222165008) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.text     "object"
+    t.jsonb    "object"
     t.datetime "created_at"
-    t.text     "object_changes"
+    t.jsonb    "object_changes"
     t.integer  "transaction_id"
   end
 
