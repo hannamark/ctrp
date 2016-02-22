@@ -8,26 +8,23 @@
     .controller('paTrialRelatedDocsCtrl', paTrialRelatedDocsCtrl);
 
     paTrialRelatedDocsCtrl.$inject = ['$scope', '_', 'PATrialService', 'TrialService',
-        'Common', 'DateService', '$timeout', 'CommentService',
+        'Common', 'DateService', '$timeout', 'CommentService', 'documentTypes',
         'UserService', 'toastr', 'HOST', 'URL_CONFIGS', 'acceptedFileTypesObj', 'Upload'];
 
         function paTrialRelatedDocsCtrl($scope, _, PATrialService, TrialService,
-            Common, DateService, $timeout, CommentService,
+            Common, DateService, $timeout, CommentService, documentTypes,
             UserService, toastr, HOST, URL_CONFIGS, acceptedFileTypesObj, Upload) {
 
             var vm = this;
             console.log('acceptedFileTypesObj: ', acceptedFileTypesObj);
+            console.log('documentTypes: ', documentTypes);
             vm.acceptedFileExtensions = acceptedFileTypesObj.accepted_file_extensions;
             vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
             vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
             vm.curTrialDetailObj = {};
             vm.curDoc = _initCurDoc();
             vm.docSubtypeShown = false;
-            // TODO: this is served from app settings
-            vm.documentTypes = ['Protocol Document', 'IRB Approval',
-                    'Informed Consent', 'Change Memo Document',
-                    'Other Document', 'List of Participating Sites',
-                    'Protocol Highlighted Document'];
+            vm.documentTypes = documentTypes.types;
 
             // actions
             vm.saveDocuments = saveDocuments;

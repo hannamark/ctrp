@@ -41,7 +41,7 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '120', width: '3%', sort: { direction: 'asc', priority: 1}, 
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '120', width: '3%', sort: { direction: 'asc', priority: 1},
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
@@ -133,7 +133,8 @@
             checkinTrial: checkinTrial,
             getCentralContactTypes: getCentralContactTypes,
             getBoardApprovalStatuses: getBoardApprovalStatuses,
-            getSiteRecruitementStatuses: getSiteRecruitementStatuses
+            getSiteRecruitementStatuses: getSiteRecruitementStatuses,
+            getTrialDocumentTypes: getTrialDocumentTypes
         };
 
         return services;
@@ -367,6 +368,10 @@
          */
         function getBoardApprovalStatuses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.BOARD_APPROVAL_STATUSES);
+        }
+
+        function getTrialDocumentTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIAL_DOCUMENT_TYPES);
         }
 
     }
