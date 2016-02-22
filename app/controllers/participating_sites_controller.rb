@@ -27,8 +27,6 @@ class ParticipatingSitesController < ApplicationController
   def create
     @participating_site = ParticipatingSite.new(participating_site_params)
 
-    @participating_site.user = @current_user
-
     respond_to do |format|
       if @participating_site.save
         format.html { redirect_to @participating_site, notice: 'Participating site was successfully created.' }

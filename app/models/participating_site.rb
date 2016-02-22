@@ -30,7 +30,6 @@ class ParticipatingSite < ActiveRecord::Base
   belongs_to :trial
   belongs_to :organization
   belongs_to :person
-  belongs_to :user
   has_many :site_rec_status_wrappers, -> { order 'site_rec_status_wrappers.id' }
   has_many :participating_site_investigators, -> { order 'participating_site_investigators.id' }
   has_many :people, through: :participating_site_investigators
