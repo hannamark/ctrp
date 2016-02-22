@@ -195,7 +195,7 @@
             }
             $timeout( function() {
                 vm.selectedPiArray.push(vm.curPs.participating_site_investigators[vm.sitePiIdx].person);
-            }, 1500);
+            }, 1000);
         }
 
         // Append site recruitment statuses for existing participating site
