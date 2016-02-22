@@ -7,8 +7,8 @@
 #  institute_code    :string(255)
 #  nci               :string(255)
 #  trial_id          :integer
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  created_at        :datetime
+#  updated_at        :datetime
 #  uuid              :string(255)
 #  lock_version      :integer          default(0)
 #  serial_number     :string(255)
