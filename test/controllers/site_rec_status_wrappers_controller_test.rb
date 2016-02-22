@@ -4,7 +4,7 @@ class SiteRecStatusWrappersControllerTest < ActionController::TestCase
   setup do
     @site_rec_status_wrapper = site_rec_status_wrappers(:one)
   end
-
+=begin
   test "should get index" do
     get :index
     assert_response :success
@@ -46,4 +46,5 @@ class SiteRecStatusWrappersControllerTest < ActionController::TestCase
 
     assert_redirected_to site_rec_status_wrappers_path
   end
+=end
 end
