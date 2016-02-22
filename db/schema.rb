@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160221011836) do
+ActiveRecord::Schema.define(version: 20160222182738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -643,11 +643,13 @@ ActiveRecord::Schema.define(version: 20160221011836) do
     t.string   "uuid",            limit: 255
     t.integer  "lock_version",                default: 0
     t.string   "extension",       limit: 255
+    t.integer  "user_id"
   end
 
   add_index "participating_sites", ["organization_id"], name: "index_participating_sites_on_organization_id", using: :btree
   add_index "participating_sites", ["person_id"], name: "index_participating_sites_on_person_id", using: :btree
   add_index "participating_sites", ["trial_id"], name: "index_participating_sites_on_trial_id", using: :btree
+  add_index "participating_sites", ["user_id"], name: "index_participating_sites_on_user_id", using: :btree
 
   create_table "people", force: :cascade do |t|
     t.string   "source_id",         limit: 255
@@ -1298,6 +1300,7 @@ ActiveRecord::Schema.define(version: 20160221011836) do
   add_foreign_key "participating_sites", "organizations"
   add_foreign_key "participating_sites", "people"
   add_foreign_key "participating_sites", "trials"
+  add_foreign_key "participating_sites", "users"
   add_foreign_key "people", "source_contexts"
   add_foreign_key "people", "source_statuses"
   add_foreign_key "po_affiliations", "organizations"
