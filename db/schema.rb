@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160221011836) do
+ActiveRecord::Schema.define(version: 20160222165008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -643,6 +643,7 @@ ActiveRecord::Schema.define(version: 20160221011836) do
     t.string   "uuid",            limit: 255
     t.integer  "lock_version",                default: 0
     t.string   "extension",       limit: 255
+    t.string   "contact_type",    limit: 255
   end
 
   add_index "participating_sites", ["organization_id"], name: "index_participating_sites_on_organization_id", using: :btree

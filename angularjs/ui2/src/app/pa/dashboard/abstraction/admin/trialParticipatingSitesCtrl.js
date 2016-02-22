@@ -23,6 +23,7 @@
         vm.current_site_recruitment = {};
         vm.current_investigator = {};
         vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
+        vm.currentParticipatingSite.contacts = [];
         vm.showOrgFields = true;
         vm.city=null;
         vm.state_province=null;
@@ -33,6 +34,12 @@
         vm.selOrganization = {name: '', array: []};
         vm.principalInvestigator = {name: '', array: []};
         vm.centralContactTypes = centralContactTypes.types;
+        for (var i = 0; i < vm.centralContactTypes; i++) {
+           if(vm.centralContactTypes[i].code  == "NONE") {
+               vm.centralContactTypes.slice(i, 1);
+           }
+        }
+        console.log('vm.centralContactTypes=' + JSON.stringify(vm.centralContactTypes));
 
         //actions
         vm.addSiteRecruitment = addSiteRecruitment;
@@ -46,6 +53,7 @@
         vm.setEditMode = setEditMode;
         vm.openCalendar = openCalendar;
         vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
+        vm.setAsSiteContact = setAsSiteContact;
 
 
         activate();
@@ -56,6 +64,7 @@
             watchTrialDetailObj();
             watchOrganization();
             watchPISelection();
+            watchContact();
         }
 
 
@@ -343,6 +352,45 @@
                 vm.saveParticipatingSite();
             }
         } // commitEdit
+
+        /**
+         *  Set the Investigator as a Primary Contact
+         */
+        function setAsSiteContact(index) {
+            var inv = vm.currentParticipatingSite.participating_site_investigators[index];
+            vm.currentParticipatingSite.contact_name = inv.person.lname;
+            vm.currentParticipatingSite.contact_phone = inv.person.phone;
+            vm.currentParticipatingSite.contact_email = inv.person.email;
+            for (var i = 0; i < vm.centralContactTypes; i++) {
+                if(vm.centralContactTypes[i].code  == "PI") {
+                    vm.currentParticipatingSite.contact_type = vm.centralContactTypes[i];
+                }
+            }
+            //vm.currentParticipatingSite.contact_type = ;
+        }
+
+        /**
+         * Third Tab
+         */
+
+        function watchContact() {
+            $scope.$watchCollection(function() {return vm.currentParticipatingSite.contact_type;}, function(newVal, oldVal) {
+                console.log("Watchcontact newVal " + newVal);
+                /**
+                if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullname) {
+                    vm.currentParticipatingSite.central_contacts[0] = newVal[0];
+                    var firstName = newVal[0].fname || '';
+                    var middleName = newVal[0].mname || '';
+                    var lastName = newVal[0].lname || '';
+                    var fullName = firstName + ' ' + middleName + ' ' + lastName;
+                    vm.currentParticipatingSite.central_contacts[0].fullname = (fullName).trim();
+                    vm.currentParticipatingSite.central_contacts[0].person_id = newVal[0].id || '';
+                    vm.currentParticipatingSite.central_contacts[0].phone = newVal[0].phone.replace(regex, '');
+                    delete vm.currentParticipatingSite.central_contacts[0].id;
+                } **/
+            });
+
+        }
 
 
         /**

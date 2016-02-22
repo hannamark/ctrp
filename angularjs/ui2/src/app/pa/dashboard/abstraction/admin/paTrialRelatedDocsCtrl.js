@@ -135,7 +135,7 @@
                             console.info('replacing the existing document');
                             vm.curTrialDetailObj.trial_documents[index].replaced = true;
                             vm.curTrialDetailObj.trial_documents[index]._destroy = true;
-                            vm.curTrialDetailObj.trial_documents.splice(index, 1, newDoc); // insert immediately after 'index'
+                            vm.curTrialDetailObj.trial_documents.splice(index, 0, newDoc); // insert immediately after 'index'
                         } else {
                             // insert the new document
                             vm.curTrialDetailObj.trial_documents.unshift(newDoc);
