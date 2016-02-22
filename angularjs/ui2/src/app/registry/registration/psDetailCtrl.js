@@ -8,10 +8,10 @@
     angular.module('ctrp.app.registry').controller('psDetailCtrl', psDetailCtrl);
 
     psDetailCtrl.$inject = ['psDetailObj', 'trialDetailObj', 'userDetailObj', 'TrialService', 'toastr', '$state',
-        'srStatusObj', 'DateService'];
+        'srStatusObj', 'DateService', '$timeout'];
 
     function psDetailCtrl(psDetailObj, trialDetailObj, userDetailObj, TrialService, toastr, $state,
-                          srStatusObj, DateService) {
+                          srStatusObj, DateService, $timeout) {
 
         var vm = this;
         vm.curPs = psDetailObj || {};
@@ -23,6 +23,7 @@
         vm.status_date_opened = false;
         vm.addedStatuses = [];
         vm.srsNum = 0;
+        vm.selectedPiArray = [];
 
         vm.updatePs = function() {
             // Prevent multiple submissions
@@ -32,7 +33,11 @@
 
             if (vm.selectedPiArray.length > 0) {
                 vm.curPs.participating_site_investigators_attributes = [];
-                vm.curPs.participating_site_investigators_attributes.push({person_id: vm.selectedPiArray[0].id});
+                var psInvestigatorObj = {person_id: vm.selectedPiArray[0].id, investigator_type: 'Principal Investigator'};
+                if (!vm.curPs.new) {
+                    psInvestigatorObj.id = vm.curPs.participating_site_investigators[vm.sitePiIdx].id;
+                }
+                vm.curPs.participating_site_investigators_attributes.push(psInvestigatorObj);
             }
 
             if (vm.addedStatuses.length > 0) {
@@ -150,6 +155,7 @@
             setDefaultOrg();
 
             if (!vm.curPs.new) {
+                setSitePi();
                 appendStatuses();
             }
         }
@@ -178,6 +184,18 @@
         // Set the default organization
         function setDefaultOrg() {
             vm.curPs.organization_id = vm.availableOrgs[0].id;
+        }
+
+        // Set the Site PI from many participating_site_investigators
+        function setSitePi() {
+            for (var i = 0; i < vm.curPs.participating_site_investigators.length; i++) {
+                if (vm.curPs.participating_site_investigators[i].investigator_type === 'Principal Investigator') {
+                    vm.sitePiIdx = i;
+                }
+            }
+            $timeout( function() {
+                vm.selectedPiArray.push(vm.curPs.participating_site_investigators[vm.sitePiIdx].person);
+            }, 1500);
         }
 
         // Append site recruitment statuses for existing participating site
