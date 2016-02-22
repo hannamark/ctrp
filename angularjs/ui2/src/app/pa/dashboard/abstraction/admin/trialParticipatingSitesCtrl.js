@@ -40,6 +40,7 @@
         vm.deleteSiteRecruitment = deleteSiteRecruitment;
         vm.cancelSiteRecruitmentEdit = cancelSiteRecruitmentEdit;
         vm.editInvestigator  = editInvestigator;
+        vm.deleteInvestigator  = deleteInvestigator;
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.openCalendar = openCalendar;
@@ -55,95 +56,6 @@
             watchOrganization();
             watchPISelection();
         }
-
-        /*
-         * This function is invoked when the organizations are added and saved
-         */
-        vm.updateTrial = function() {
-            // Prevent multiple submissions
-            console.log("update Trial ");
-            if (vm.addedParticipatingSites.length > 0) {
-                vm.curTrial.participating_sites_attributes = [];
-                _.each(vm.addedParticipatingSites, function (participating_site) {
-                    var exists = false
-                    for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {
-                        if (vm.curTrial.participating_sites[i].id) {
-                            if (vm.curTrial.participating_sites[i].organization_id == participating_site.organization_id) {
-                                exists = true;
-                            }
-                        }
-                    }
-                    console.log("update Trial exists ="+exists);
-                    if (!exists){
-                        vm.curTrial.participating_sites_attributes.push(collaborator);
-                    }
-                });
-            }
-            console.log("vm.curTrial.collaborators_attributes " + JSON.stringify(vm.curTrial.collaborators_attributes));
-            vm.saveTrial();
-            vm.addedCollaborators = [];
-
-        } // updateTrial
-
-        vm.saveInvestigatorsTab = function() {
-            vm.disableBtn = true;
-            console.log("In save trial");
-            //  for (var i = 0; i < vm.curTrial.participating_sites_list.length; i++) {
-            //      if (vm.curTrial.participating_sites_list[i] == vm.currentParticipatingSite.id) {
-            //          vm.curTrial.participating_sites_list[i] = vm.currentParticipatingSite.id;
-            //      }
-            //  }
-
-            if (!vm.currentParticipatingSite.id) {
-                vm.currentParticipatingSite.new = true;
-            }
-            // An outer param wrapper is needed for nested attributes to work
-            var outerPS = {};
-            outerPS.new = vm.currentParticipatingSite.new;
-            outerPS.id = vm.currentParticipatingSite.id;
-            outerPS.participating_site = vm.currentParticipatingSite;
-            vm.currentParticipatingSite.trial_id = trialDetailObj.id;
-            console.log("In save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
-
-            TrialService.upsertParticipatingSite(outerPS).then(function(response) {
-                console.log("server_response="+JSON.stringify(response));
-                var newParticipatingSite = false;
-                if(!vm.currentParticipatingSite.id){
-                    // New Participating Site
-                    newParticipatingSite = true;
-                    vm.currentParticipatingSite.id = response.id;
-                }
-                if(vm.currentParticipatingSite.id) {
-                    TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
-                        console.log("getParticipatingSiteById response = " + JSON.stringify(response));
-                        vm.currentParticipatingSite.participating_site_investigators = response.participating_site_investigators;
-                        vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-                        vm.current_principal_investigator = {};
-                        if(newParticipatingSite){
-                            vm.curTrial.participating_sites_list.push(vm.currentParticipatingSite);
-                        } else {
-                            for (var i = 0; i < vm.curTrial.participating_sites_list.length; i++) {
-                                if (vm.curTrial.participating_sites_list[i] == vm.currentParticipatingSite.id) {
-                                    vm.curTrial.participating_sites_list[i] = vm.currentParticipatingSite;
-                                }
-                            }
-                        }
-                        PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                        $scope.$emit('updatedInChildScope', {});
-                        toastr.clear();
-                        toastr.success('Participating Site of  ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                            extendedTimeOut: 1000,
-                            timeOut: 0
-                        });
-                    }).catch(function (err) {
-                        console.log("2server_response="+JSON.stringify(response));
-                    });
-                }
-            }).catch(function(err) {
-                console.log("error in updating trial " + JSON.stringify(outerPS));
-            });
-
-        }//saveTrial
 
 
         vm.saveParticipatingSite = function(){
@@ -179,6 +91,8 @@
                         console.log("getParticipatingSiteById response = " + JSON.stringify(response));
                         vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
                         vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
+                        vm.currentParticipatingSite.participating_site_investigators = response.participating_site_investigators;
+                        vm.currentParticipatingSite.participating_site_investigators_attributes = [];
                         vm.current_site_recruitment = {};
                         if(newParticipatingSite){
                             vm.curTrial.participating_sites_list.push(vm.currentParticipatingSite);
@@ -363,7 +277,7 @@
          */
         function watchPISelection() {
             $scope.$watchCollection(function() {return vm.principalInvestigator.array;}, function(newVal, oldVal) {
-                console.log("SARADA newVal=" + JSON.stringify(newVal));
+                console.log("newVal=" + JSON.stringify(newVal));
                 if (angular.isArray(newVal) && newVal.length > 0) {
                     vm.principalInvestigator.name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
                     vm.principalInvestigator.pi = vm.principalInvestigator.array[0];
@@ -375,6 +289,23 @@
                     vm.currentParticipatingSite.participating_site_investigators_attributes.push(participating_site_investigator);
                 }
             });
+        }
+
+        /**
+         *  Second Tab
+         *  Delete an existing Investigator in the Participating Site
+         */
+        function deleteInvestigator(index) {
+            //if (index < vm.tempTrialStatuses.length) {
+            console.log("In delete  deleteInvestigator");
+            vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
+            vm.current_investigator._destroy = true;
+            vm.current_investigator.index = index;
+            vm.currentParticipatingSite.participating_site_investigators_attributes = [];
+            vm.currentParticipatingSite.participating_site_investigators_attributes.push(vm.current_investigator);
+            vm.saveParticipatingSite();
+            // vm.tempTrialStatuses.splice(index, 1);
+            //}
         }
 
         /**

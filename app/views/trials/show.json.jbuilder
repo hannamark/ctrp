@@ -65,7 +65,7 @@ json.participating_sites_list do
 
     json.participating_site_investigators do
       json.array!(participating_site.participating_site_investigators) do |inv|
-        json.po_id inv.person.present? ? inv.person.id : ""
+        json.person_id inv.person.present? ? inv.person.id : ""
         json.lname  inv.person.present? ? inv.person.lname : ""
         json.fname  inv.person.present? ? inv.person.fname : ""
         json.investigator_type inv.investigator_type
