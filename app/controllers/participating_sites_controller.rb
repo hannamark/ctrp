@@ -1,5 +1,6 @@
 class ParticipatingSitesController < ApplicationController
   before_action :set_participating_site, only: [:show, :edit, :update, :destroy]
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
 
   # GET /participating_sites
   # GET /participating_sites.json
