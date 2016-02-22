@@ -283,20 +283,18 @@
                                             <td class="col-md-2">
                                                 <label class="radio-inline">
                                                     <input type="radio" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact"
-                                                           value="No"> No
+                                                           value="false"> No
                                                 </label>
                                                 <label class="radio-inline">
                                                     <input type="radio" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact"
-                                                           value="Yes"> Yes
+                                                           value="true"> Yes
                                                 </label>
                                             </td>
                                              <td class="col-md-2">
                                                  <div class="btn-group inline" ng-show="psView.current_investigator.edit">
                                                     <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelEdit()">Cancel</button>
-                                                    <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEdit()"
-                                                            ng-disabled="psView.current_investigator.status_date == '' ||
-                                                    psView.current_investigator.site_recruitment_status == '' ||
-                                                    ps_form.comments.$viewValue.length > 160">Commit</button>
+                                                    <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEditInvestigator()"
+                                                            ng-disabled="psView.current_investigator.person_id == null">Commit</button>
                                                 </div>
                                             </td>
                                         </tr>

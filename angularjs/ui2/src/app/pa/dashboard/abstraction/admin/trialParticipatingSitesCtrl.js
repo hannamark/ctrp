@@ -41,6 +41,7 @@
         vm.cancelSiteRecruitmentEdit = cancelSiteRecruitmentEdit;
         vm.editInvestigator  = editInvestigator;
         vm.deleteInvestigator  = deleteInvestigator;
+        vm.commitEditInvestigator = commitEditInvestigator;
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.openCalendar = openCalendar;
@@ -322,6 +323,26 @@
             // vm.tempTrialStatuses.splice(index, 1);
             //}
         }
+
+        /**
+         *  Second Tab
+         *  Edit an existing Site Recruitment Status Record in the Participating Site
+         *  This function is used to save the user entered values of the selected site recruitment record
+         */
+        function commitEditInvestigator() {
+            console.log("In commitEditInvestigator");
+            if (vm.current_investigator.edit) {
+               // var selectedStatus = _.findWhere(vm.siteRecruitmentStatusesArr, {name: vm.current_site_recruitment.site_recruitment_status});
+             //   console.log("selectedStatus="+JSON.stringify(selectedStatus));
+             //   if (!!selectedStatus) {
+             //       vm.current_investigator.investigator_type = selectedStatus.id;
+             //       console.log("In commitEditSiteRecruitment=" + JSON.stringify(vm.current_site_recruitment));
+             //   }
+                vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
+                vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_investigator);
+                vm.saveParticipatingSite();
+            }
+        } // commitEdit
 
 
         /**
