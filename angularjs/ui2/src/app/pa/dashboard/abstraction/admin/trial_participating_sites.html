@@ -397,25 +397,25 @@
             <div class="row" style="margin-bottom: 7px;">
                 <div class="col-sm-offset-3 col-sm-9 col-xs-12">
                     <label ng-repeat="type in psView.centralContactTypes track by $index" for="contact_type_{{$index}}" class="radio-inline control-label">
-                        <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="psView.contact_type">{{type.name}}
+                        <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="psView.currentParticipatingSite.contact_type">{{type.name}}
                     </label>
                 </div>
             </div>
         </div>
-        <div ng-hide="psView.contact_type == 'None' || psView.contact_type == ''">
+        <div ng-hide="psView.currentParticipatingSite.contact_type == 'None' || psView.currentParticipatingSite.contact_type == ''">
             <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.ps_form.needsAttention(ps_form.contact_name)}">
-                <label for="central_contact" class="control-label col-xs-12 col-sm-2">Contact</label>
+                <label for="contact_type" class="control-label col-xs-12 col-sm-2">Contact</label>
                 <div class="col-xs-12 col-sm-10">
                     <div class="col-xs-12 col-sm-6">
                         <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Central Contact"
-                               ng-disabled="psView.contact_type !== 'General'"
-                               ng-model="psView.contact_name"
+                               ng-disabled="psView.currentParticipatingSite.contact_type !== 'General'"
+                               ng-model="psView.currentParticipatingSite.contact_name"
                                ng-required="psView.centralContactNameRequired">
                     </div>
-                    <div class="col-xs-12 col-sm-6" ng-show="psView.contact_type == 'Person'">
-                        <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.currentParticipatingSite.contacts"></ctrp-person-adv-search-modal-button>
+                    <div class="col-xs-12 col-sm-6" ng-show="psView.currentParticipatingSite.contact_type == 'Person'">
+                        <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.selectedPerson.array"></ctrp-person-adv-search-modal-button>
                     </div>
-                  <span ng-messages="ctrpbtn.ps_form.needsAttention(ps_form.central_contact_name) && ps_form.central_contact_name.$error">
+                  <span ng-messages="ctrpbtn.ps_form.needsAttention(ps_form.contact_name) && ps_form.contact_name.$error">
                       <span class="help-block" ng-message="required">Central contact name is required</span>
                   </span>
                 </div>
