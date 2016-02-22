@@ -37,7 +37,6 @@ class ParticipatingSite < ActiveRecord::Base
   accepts_nested_attributes_for :site_rec_status_wrappers, allow_destroy: true
   accepts_nested_attributes_for :participating_site_investigators, allow_destroy: true
 
-
   scope :by_value, ->  (value) {
     joins(:organization).where("organizations.name ilike  ?","#{value.to_s}")
   }

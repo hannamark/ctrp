@@ -149,7 +149,7 @@
             populateOrgs();
             setDefaultOrg();
 
-            if (!vm.curTrial.new) {
+            if (!vm.curPs.new) {
                 appendStatuses();
             }
         }

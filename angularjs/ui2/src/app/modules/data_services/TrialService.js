@@ -83,7 +83,6 @@
         var services = {
             getAllTrials: getAllTrials,
             getTrialById: getTrialById,
-            getParticipatingSiteById: getParticipatingSiteById,
             upsertTrial: upsertTrial,
             searchTrials: searchTrials,
             searchTrialsPa: searchTrialsPa,
@@ -118,7 +117,8 @@
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial,
             getGrantsSerialNumber: getGrantsSerialNumber,
-            upsertParticipatingSite: upsertParticipatingSite
+            upsertParticipatingSite: upsertParticipatingSite,
+            getParticipatingSiteById: getParticipatingSiteById
         };
 
         return services;
@@ -260,10 +260,17 @@
         }
 
         function getParticipatingSiteById(participatingSiteId) {
+            console.log('calling getParticipatingSiteById in TrialService');
+            //return PromiseService.getData(URL_CONFIGS.AN_TRIAL + trialId + '.json');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteId + '.json');
+        } //getTrialById
+
+
+       // function getParticipatingSiteById(participatingSiteId) {
             //insert the participatingSiteId into the url
-            var url = URL_CONFIGS.TRIALS.PARTICIPATING_SITE_WITH_ID.replace(/\s*\{.*?\}\s*/g, participatingSiteId);
-            return PromiseTimeoutService.getData(url);
-        }
+       //     var url = URL_CONFIGS.TRIALS.PARTICIPATING_SITE_WITH_ID.replace(/\s*\{.*?\}\s*/g, participatingSiteId);
+      //      return PromiseTimeoutService.getData(url);
+      //  }
 
         /**
          * Update or insert a Participating Site Records
