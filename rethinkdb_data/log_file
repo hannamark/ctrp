@@ -1,0 +1,19 @@
+2016-02-22T13:41:43.242619000 0.003647s notice: Recursively removing directory /Users/wangg5/Desktop/Code/ctrp-gulp/rethinkdb_data/tmp
+2016-02-22T13:41:43.243623000 0.004654s notice: Initializing directory /Users/wangg5/Desktop/Code/ctrp-gulp/rethinkdb_data
+2016-02-22T13:41:43.243677000 0.004704s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/wangg5/Desktop/Code/ctrp-gulp/rethinkdb_data' did not already exist or is empty.)
+2016-02-22T13:41:43.243695000 0.004723s notice: Running rethinkdb 2.2.4 (CLANG 7.0.2 (clang-700.1.81))...
+2016-02-22T13:41:43.247170000 0.008198s notice: Running on Darwin 15.0.0 x86_64
+2016-02-22T13:41:43.247202000 0.008230s notice: Loading data from directory /Users/wangg5/Desktop/Code/ctrp-gulp/rethinkdb_data
+2016-02-22T13:41:43.307760000 0.068788s info: Automatically using cache size of 3320 MB
+2016-02-22T13:41:43.308011000 0.069038s notice: Listening for intracluster connections on port 29015
+2016-02-22T13:41:43.308945000 0.069973s notice: Listening for client driver connections on port 28015
+2016-02-22T13:41:43.309038000 0.070066s notice: Listening for administrative HTTP connections on port 8080
+2016-02-22T13:41:43.309041000 0.070068s notice: Listening on addresses: 127.0.0.1, ::1
+2016-02-22T13:41:43.309041001 0.070069s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2016-02-22T13:41:43.309043000 0.070071s notice: Server ready, "NCI_01966361_ML_efh" 972e62cf-b487-4bfa-b442-33ab2304c4ad
+2016-02-22T13:53:24.948440000 701.473333s info: Table c711521f-c9eb-4f06-94ea-ca8c86ab17b6: Added replica on this server.
+2016-02-22T13:53:26.911458000 703.436400s info: Table c711521f-c9eb-4f06-94ea-ca8c86ab17b6: Starting a new Raft election for term 1.
+2016-02-22T13:53:26.920270000 703.445212s info: Table c711521f-c9eb-4f06-94ea-ca8c86ab17b6: This server is Raft leader for term 1. Latest log index is 0.
+2016-02-22T13:53:47.109697000 723.635137s info: Table 78243c18-9421-41dc-a47e-8c81492cc82b: Added replica on this server.
+2016-02-22T13:53:48.784996000 725.310480s info: Table 78243c18-9421-41dc-a47e-8c81492cc82b: Starting a new Raft election for term 1.
+2016-02-22T13:53:48.795664000 725.321148s info: Table 78243c18-9421-41dc-a47e-8c81492cc82b: This server is Raft leader for term 1. Latest log index is 0.
