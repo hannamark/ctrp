@@ -88,10 +88,10 @@
             outerPS.id = vm.currentParticipatingSite.id;
             outerPS.participating_site = vm.currentParticipatingSite;
             vm.currentParticipatingSite.trial_id = trialDetailObj.id;
-            console.log("/n In save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
+            //console.log("/n In save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
 
             TrialService.upsertParticipatingSite(outerPS).then(function(response) {
-                console.log("/n server_response="+JSON.stringify(response));
+                //console.log("/n server_response="+JSON.stringify(response));
                 var newParticipatingSite = false;
                 if(!vm.currentParticipatingSite.id){
                     // New Participating Site
@@ -129,8 +129,7 @@
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerPS));
             });
-
-        }//saveParticipatingSite
+        };//saveParticipatingSite
 
 
 
@@ -343,16 +342,10 @@
         function commitEditInvestigator() {
             console.log("In commitEditInvestigator");
             if (vm.current_investigator.edit) {
-                console.log("EDIT!!!!!!In commitEditInvestigator");
-               // var selectedStatus = _.findWhere(vm.siteRecruitmentStatusesArr, {name: vm.current_site_recruitment.site_recruitment_status});
-             //   console.log("selectedStatus="+JSON.stringify(selectedStatus));
-             //   if (!!selectedStatus) {
-             //       vm.current_investigator.investigator_type = selectedStatus.id;
-             //       console.log("In commitEditSiteRecruitment=" + JSON.stringify(vm.current_site_recruitment));
-             //   }
+                //console.log("EDIT!!!!!!In commitEditInvestigator");
                 vm.currentParticipatingSite.participating_site_investigators_attributes = [];
                 vm.currentParticipatingSite.participating_site_investigators_attributes.push(vm.current_investigator);
-                console.log("EDIT!!!!!!In commitEditInvestigator=" + JSON.stringify(vm.currentParticipatingSite.participating_site_investigators_attributes));
+                //console.log("EDIT!!!!!!In commitEditInvestigator=" + JSON.stringify(vm.currentParticipatingSite.participating_site_investigators_attributes));
                 vm.saveParticipatingSite();
             }
         } // commitEdit
@@ -407,11 +400,11 @@
                     vm.currentParticipatingSite.contact_name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
                     vm.principalInvestigator.pi = vm.principalInvestigator.array[0];
                     vm.principalInvestigator.pi_id  = vm.principalInvestigator.array[0].id; // update PI on view
-                    var participating_site_investigator = {};
-                    participating_site_investigator.person_id = vm.principalInvestigator.array[0].id;
-                    participating_site_investigator.new = true;
+                    var participatingSiteInvestigator = {};
+                    participatingSiteInvestigator.person_id = vm.principalInvestigator.array[0].id;
+                    participatingSiteInvestigator.new = true;
                     vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-                    vm.currentParticipatingSite.participating_site_investigators_attributes.push(participating_site_investigator);
+                    vm.currentParticipatingSite.participating_site_investigators_attributes.push(participatingSiteInvestigator);
                 }
             });
         }

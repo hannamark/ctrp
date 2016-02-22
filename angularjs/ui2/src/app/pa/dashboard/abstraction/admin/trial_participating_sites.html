@@ -259,13 +259,13 @@
                                         <tbody>
                                         <tr>
                                              <td class="col-md-1">
-                                                <input type="text" id="person_id" name="person_id" class="form-control" ng-model="psView.current_investigator.person_id" placeholder="person_id" ng-disabled="true">
+                                                <input type="text" id="person_id" name="person_id" class="form-control" ng-model="psView.current_investigator.person.id" placeholder="person_id" ng-disabled="true">
                                             </td>
                                             <td class="col-md-1">
-                                                <input type="text" id="last_name" name="last_name" class="form-control" ng-model="psView.current_investigator.lname" placeholder="Last Name" ng-disabled="true">
+                                                <input type="text" id="last_name" name="last_name" class="form-control" ng-model="psView.current_investigator.person.lname" placeholder="Last Name" ng-disabled="true">
                                             </td>
                                             <td class="col-md-1">
-                                                <input type="text" id="first_name" name="first_name" class="form-control" ng-model="psView.current_investigator.fname" placeholder="First Name" ng-disabled="true">
+                                                <input type="text" id="first_name" name="first_name" class="form-control" ng-model="psView.current_investigator.person.fname" placeholder="First Name" ng-disabled="true">
                                             </td>
                                             <td class="col-md-1">
                                                 <div>
@@ -294,7 +294,7 @@
                                                  <div class="btn-group inline" ng-show="psView.current_investigator.edit">
                                                     <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelEdit()">Cancel</button>
                                                     <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEditInvestigator()"
-                                                            ng-disabled="psView.current_investigator.person_id == null">Commit</button>
+                                                            ng-disabled="psView.current_investigator.person.id == null">Commit</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -317,11 +317,11 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="inv in psView.currentParticipatingSite.participating_site_investigators track by $index" class="animated-item text-center" ng-class="inv._destroy ? 'deleted-text' : ''">
-                                            <td class="col-sm-2">{{inv.person_id}}</td>
-                                            <td class="col-sm-1">{{inv.lname}}</td>
-                                            <td class="col-sm-2">{{inv.fname}}</td>
-                                            <td class="col-sm-4">{{inv.investigator_type}}</td>
-                                            <td class="col-sm-2">{{inv.status_code}}</td>
+                                            <td class="col-sm-2">{{inv.person.id}}</td>
+                                            <td class="col-sm-1">{{inv.person.lname}}</td>
+                                            <td class="col-sm-2">{{inv.person.fname}}</td>
+                                            <td class="col-sm-2">{{inv.investigator_type}}</td>
+                                            <td class="col-sm-1">{{inv.status_code}}</td>
                                             <td class="col-sm-4">
                                                 <label class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="psView.setAsSiteContact($index)"  ng-style="inv.set_as_contact ? 'red' : 'blue'">
                                                 <i class="glyphicon glyphicon-check"></i>
