@@ -13,30 +13,30 @@
     function trialNciCtrl(TrialService, PATrialService, $scope, $timeout, $state, toastr, MESSAGES,trialDetailObj, studySourceObj, nciDivObj, nciProgObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
-        console.log("trialDetailObj.send_trial_flag  =" + JSON.stringify(trialDetailObj.send_trial_flag));
+        //console.log("trialDetailObj.send_trial_flag  =" + JSON.stringify(trialDetailObj.send_trial_flag));
         vm.nciDivArr = nciDivObj;
-        console.log("nciProgObj  =" + JSON.stringify(nciProgObj));
+        //console.log("nciProgObj  =" + JSON.stringify(nciProgObj));
         //console.log("trial  =" + JSON.stringify(trialDetailObj));
-        console.log("nci-div  =" + JSON.stringify(trialDetailObj["nih_nci_div"]));
-        console.log("nci-prog  =" + JSON.stringify(trialDetailObj["nih_nci_prog"]));
+        //console.log("nci-div  =" + JSON.stringify(trialDetailObj["nih_nci_div"]));
+        //console.log("nci-prog  =" + JSON.stringify(trialDetailObj["nih_nci_prog"]));
         vm.nciProgArr = nciProgObj;
         vm.studySourceArr = studySourceObj;
         vm.addedFses = [];
         vm.selectedFsArray = [];
         vm.study_source_id = vm.curTrial.study_source_id;
         vm.isSponsorNci = (trialDetailObj["sponsor"]["name"] == "National Cancer Institute")? true: false;
-        console.log("isSponsorNci"+ vm.isSponsorNci);
+        //console.log("isSponsorNci"+ vm.isSponsorNci);
         vm.isLeadOrgNciCcr = (trialDetailObj["lead_org"]["name"] == "NCI - Center for Cancer Research")? true: false;
-        console.log("isLeadOrgNciCcr"+ vm.isSponsorNci);
+        //console.log("isLeadOrgNciCcr"+ vm.isSponsorNci);
         //console.log("send_trial_flag="+ (vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"));
-        console.log( (vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"));
+        //console.log( (vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_flag == "No"));
 
         if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_rules_flag == "Yes"))==true) {
             vm.disable_send_trial = false;
-            console.log("disable set to false");
+            //console.log("disable set to false");
         } else if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_rules_flag == "No"))==true){
             vm.disable_send_trial = true;
-            console.log("disable set to true");
+            //console.log("disable set to true");
         } else if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==false))==true){
             vm.disable_send_trial = true;
         } else {
