@@ -1,21 +1,15 @@
-json.extract! @participating_site, :id,:site_rec_status_wrappers, :participating_site_investigators, :created_at, :updated_at
+json.extract! @participating_site, :id, :protocol_id, :program_code, :contact_name, :contact_phone, :contact_email,
+              :trial_id, :trial, :organization_id, :organization, :person_id, :person, :extension,
+              :created_at, :updated_at
 
-json.site_rec_status_wrappers do
-  json.array!(@participating_site.site_rec_status_wrappers) do |site_rec_status_wrapper|
-    json.id site_rec_status_wrapper.id
-    json.status_date  site_rec_status_wrapper.status_date
-    json.site_recruitment_status  site_rec_status_wrapper.site_recruitment_status.nil? ? "" : site_rec_status_wrapper.site_recruitment_status.name
-    json.comments  site_rec_status_wrapper.comments
+json.participating_site_investigators do
+  json.array!(@participating_site.participating_site_investigators) do |investigator|
+    json.extract! investigator, :id, :person_id, :person, :set_as_contact, :investigator_type
   end
-=begin
-  json.participating_site_investigators do
-    json.array!(@participating_site.participating_site_investigators) do |inv|
-      json.person_id inv.person.present? ? inv.person.id : nil
-      json.investigator_type inv.investigator_type
-      json.set_as_contact inv.set_as_contact
-
-    end
-  end
-=end
 end
 
+json.site_rec_status_wrappers do
+  json.array!(@participating_site.site_rec_status_wrappers) do |status|
+    json.extract! status, :id, :status_date, :site_recruitment_status_id, :site_recruitment_status, :comments
+  end
+end

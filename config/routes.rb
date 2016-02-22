@@ -185,7 +185,11 @@ Rails.application.routes.draw do
       resources :milestones
       resources :research_categories
       resources :site_recruitment_statuses
-      resources :participating_sites
+      resources :participating_sites do
+        collection do
+          post 'validate_status'
+        end
+      end
       resources :site_rec_status_wrappers
       resources :trial_documents do
         collection do

@@ -27,7 +27,7 @@
             + 'Action <span class="caret"></span>'
             + '</button>'
             + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions">'
-            + '<a ng-if="action == \'add-my-site\'">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'add-my-site\'" ui-sref="main.addParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '<a ng-if="action != \'add-my-site\'" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '</li></ul>'
             + '</div>';
@@ -100,6 +100,7 @@
             getInstituteCodes: getInstituteCodes,
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
+            getSrStatuses: getSrStatuses,
             getTrialStatusById: getTrialStatusById,
             getMilestones: getMilestones,
             getHolderTypes: getHolderTypes,
@@ -110,6 +111,7 @@
             checkAuthority: checkAuthority,
             addStatus: addStatus,
             validateStatus: validateStatus,
+            validateSrStatus: validateSrStatus,
             searchClinicalTrialsGov: searchClinicalTrialsGov,
             importClinicalTrialsGov: importClinicalTrialsGov,
             uploadDocument: uploadDocument,
@@ -247,6 +249,10 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_STATUSES);
         }
 
+        function getSrStatuses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
+        }
+
         function getTrialStatusById(trialStatusId) {
             //insert the trialStatusId into the url
             var url = URL_CONFIGS.TRIALS.STATUS_WITH_ID.replace(/\s*\{.*?\}\s*/g, trialStatusId);
@@ -275,7 +281,7 @@
         function upsertParticipatingSite(participatingSiteObj) {
             if (participatingSiteObj.new) {
                 //create a new trial
-                $log.info('creating a trial: ' + JSON.stringify(participatingSiteObj));
+                $log.info('creating a participating site: ' + JSON.stringify(participatingSiteObj));
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PARTICIPATING_SITE_LIST, participatingSiteObj);
             }
 
@@ -947,6 +953,17 @@
         function validateStatus(statuses) {
             if (!!statuses) {
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_TRIAL_STATUS, statuses);
+            }
+        }
+
+        /**
+         * Get validation warnings/errors for site recruitment statuses
+         *
+         * @param statuses
+         */
+        function validateSrStatus(statuses) {
+            if (!!statuses) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_SR_STATUS, statuses);
             }
         }
 
