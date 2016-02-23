@@ -29,7 +29,7 @@
                                     <div class="col-sm-4">
                                         <label for="" class="control-label"></label>
                                         <input type="file" restriction-field ngf-select=""
-                                               ng-model="trialRelatedDocsView.curDoc.file_name"
+                                               ng-model="trialRelatedDocsView.curDoc.file"
                                                name="current_doc" ngf-max-size="10MB"
                                                validate-file-type="{{trialRelatedDocsView.acceptedFileExtensions}}">
                                     </div>
@@ -38,7 +38,7 @@
                                         <button type="button" class="btn btn-default"
                                             ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
                                             ng-disabled="trialRelatedDocsView.curDoc.document_type=='' ||
-                                            trialRelatedDocsView.curDoc.file_name==''">Save</button>
+                                            trialRelatedDocsView.curDoc.file == ''">Save</button>
                                     </div>
                                     <div class="col-sm-2" ng-show="trialRelatedDocsView.curDoc.edit">
                                         <label for="" class="control-label"></label>

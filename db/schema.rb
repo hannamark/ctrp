@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160222165008) do
+ActiveRecord::Schema.define(version: 20160222205107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -994,6 +994,7 @@ ActiveRecord::Schema.define(version: 20160222165008) do
     t.string   "uuid",             limit: 255
     t.integer  "lock_version",                 default: 0
     t.integer  "submission_id"
+    t.boolean  "deleted",                      default: false
   end
 
   add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree

@@ -151,6 +151,7 @@ Rails.application.routes.draw do
     scope '/pa' do
       get 'nih_nci_div_pa' => 'util#get_nih_nci_div_pa'
       get 'nih_nci_prog_pa' => 'util#get_nih_nci_prog_pa'
+      get 'trial_document_types' => 'util#trial_document_types'
       resources :submission_methods
     end
 
