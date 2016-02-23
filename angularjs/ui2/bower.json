@@ -54,7 +54,8 @@
     "angular-spinner": "~0.8.0",
     "angular-messages": "~1.4.9",
     "ag-grid": "~3.2.2",
-    "angular-file-saver": "^1.0.3"
+    "angular-file-saver": "^1.0.3",
+    "angular-smart-table": "~2.1.7"
   },
   "devDependencies": {
     "bardjs": "~0.1.8",

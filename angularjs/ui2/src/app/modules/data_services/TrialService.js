@@ -27,7 +27,7 @@
             + 'Action <span class="caret"></span>'
             + '</button>'
             + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions">'
-            + '<a ng-if="action == \'add-my-site\'">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'add-my-site\'" ui-sref="main.addParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '<a ng-if="action != \'add-my-site\'" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '</li></ul>'
             + '</div>';
@@ -45,7 +45,7 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140',
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140', sort: { direction: 'asc', priority: 1},
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
@@ -100,22 +100,25 @@
             getInstituteCodes: getInstituteCodes,
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
+            getSrStatuses: getSrStatuses,
             getTrialStatusById: getTrialStatusById,
             getMilestones: getMilestones,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
-            getExpandedAccessTypes: getExpandedAccessTypes,
             getAcceptedFileTypes: getAcceptedFileTypes,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
             checkAuthority: checkAuthority,
             addStatus: addStatus,
             validateStatus: validateStatus,
+            validateSrStatus: validateSrStatus,
             searchClinicalTrialsGov: searchClinicalTrialsGov,
             importClinicalTrialsGov: importClinicalTrialsGov,
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial,
-            getGrantsSerialNumber: getGrantsSerialNumber
+            getGrantsSerialNumber: getGrantsSerialNumber,
+            upsertParticipatingSite: upsertParticipatingSite,
+            getParticipatingSiteById: getParticipatingSiteById
         };
 
         return services;
@@ -174,7 +177,7 @@
         } //searchTrials
 
         function getGrantsSerialNumber(searchParams) {
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);            
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);
         } // getGrantsSerialNumber
         /**
          * get initial paramater object for trials search
@@ -246,11 +249,49 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_STATUSES);
         }
 
+        function getSrStatuses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
+        }
+
         function getTrialStatusById(trialStatusId) {
             //insert the trialStatusId into the url
             var url = URL_CONFIGS.TRIALS.STATUS_WITH_ID.replace(/\s*\{.*?\}\s*/g, trialStatusId);
             return PromiseTimeoutService.getData(url);
         }
+
+        function getParticipatingSiteById(participatingSiteId) {
+            console.log('calling getParticipatingSiteById in TrialService');
+            //return PromiseService.getData(URL_CONFIGS.AN_TRIAL + trialId + '.json');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteId + '.json');
+        } //getTrialById
+
+
+       // function getParticipatingSiteById(participatingSiteId) {
+            //insert the participatingSiteId into the url
+       //     var url = URL_CONFIGS.TRIALS.PARTICIPATING_SITE_WITH_ID.replace(/\s*\{.*?\}\s*/g, participatingSiteId);
+      //      return PromiseTimeoutService.getData(url);
+      //  }
+
+        /**
+         * Update or insert a Participating Site Records
+         *
+         * @param participatingSiteObj
+         * @returns {*}
+         */
+        function upsertParticipatingSite(participatingSiteObj) {
+            if (participatingSiteObj.new) {
+                //create a new trial
+                $log.info('creating a participating site: ' + JSON.stringify(participatingSiteObj));
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PARTICIPATING_SITE_LIST, participatingSiteObj);
+            }
+
+            //update an Participating Site
+            var configObj = {}; //empty config
+            console.log('updating a participating site: ' + JSON.stringify(participatingSiteObj));
+            $log.info('updating a participating site: ' + JSON.stringify(participatingSiteObj));
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteObj.id + '.json', participatingSiteObj, configObj);
+        } //upsertParticipatingSite
+
 
         function getMilestones() {
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
@@ -262,10 +303,6 @@
 
         function getNih() {
             return PromiseTimeoutService.getData(URL_CONFIGS.NIH);
-        }
-
-        function getExpandedAccessTypes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
         }
 
         function getAcceptedFileTypes() {
@@ -916,6 +953,17 @@
         function validateStatus(statuses) {
             if (!!statuses) {
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_TRIAL_STATUS, statuses);
+            }
+        }
+
+        /**
+         * Get validation warnings/errors for site recruitment statuses
+         *
+         * @param statuses
+         */
+        function validateSrStatus(statuses) {
+            if (!!statuses) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_SR_STATUS, statuses);
             }
         }
 

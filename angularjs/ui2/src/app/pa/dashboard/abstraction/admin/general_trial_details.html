@@ -178,7 +178,7 @@
               <label for="lead_org" class="control-label col-xs-12 col-sm-2">Lead Organization</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="lead_org" name="lead_organization" ng-model="generalTrialDetailView.leadOrg.name" disabled class="form-control" placeholder="Lead Organization" required>
+                  <input type="text" id="lead_org" name="lead_organization" ng-model="generalTrialDetailView.leadOrg.name" disabled class="form-control" placeholder="Lead Organization" ng-required="true">
                   <span class="form-control-feedback" ng-show="generalTrialDetailView.leadOrg.name.length == 0" ng-class="general_trial_details_form.lead_organization.$dirty &&
                       !ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.lead_organization) ?
                       'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -188,20 +188,26 @@
                   <!-- <button class="btn btn-primary">Look Up Organization</button> -->
                   <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.leadOrg.array"></ctrp-org-adv-search-modal-button>
                 </div>
+                <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.lead_organization) && general_trial_details_form.lead_organization.$error">
+                    <span class="help-block" ng-message="required">Lead organization is required</span>
+                </span>
               </div>
             </div>
 
             <!-- Principal investigator -->
-            <div class="form-group">
+            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.principal_investigator)}">
               <label for="pi" class="control-label col-xs-12 col-sm-2">Principal Investigator</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
-                  <input type="text" id="pi" name="principal_investigator" disabled class="form-control" ng-model="generalTrialDetailView.principalInvestigator.name" placeholder="Principal Investigator">
+                  <input type="text" id="pi" name="principal_investigator" disabled class="form-control" ng-model="generalTrialDetailView.principalInvestigator.name" placeholder="Principal Investigator" ng-required="true">
                 </div>
                 <div class="col-xs-12 col-sm-6">
                   <!-- <button class="btn btn-primary">Look Up Person</button> -->
                   <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.principalInvestigator.array"></ctrp-person-adv-search-modal-button>
                 </div>
+                <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.principal_investigator) && general_trial_details_form.principal_investigator.$error">
+                    <span class="help-block" ng-message="required">Principal Investigator is required</span>
+                </span>
               </div>
             </div>
           </fieldset>
@@ -214,16 +220,14 @@
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-6">
                   <input type="text" id="sponsor" name="sponsor" ng-model="generalTrialDetailView.sponsor.name" disabled class="form-control" placeholder="Sponsor" required>
-                  <!-- <input type="text" id="sponsor" name="sponsor" disabled class="form-control" placeholder="Sponsor"> -->
-                  <span class="form-control-feedback" ng-show="generalTrialDetailView.sponsor.name.length == 0" ng-class="general_trial_details_form.sponsor.$dirty &&
-                      !ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.sponsor) ?
-                      'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                  <span class="help-block" ng-show="general_trial_details_form.sponsor.$dirty && general_trial_details_form.sponsor.$error.required">Sponsor is Required</span>
                 </div>
                 <div class="col-xs-12 col-sm-6">
                   <!-- <button class="btn btn-primary">Look Up Sponsor</button> -->
                   <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.sponsor.array"></ctrp-org-adv-search-modal-button>
                 </div>
+                <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.sponsor) && general_trial_details_form.sponsor.$error">
+                    <span class="help-block" ng-message="required">Sponsor is required</span>
+                </span>
               </div>
             </div>
           </fieldset>
@@ -242,19 +246,21 @@
                 </div>
             </div>
             <div ng-hide="generalTrialDetailView.centralContactType == 'None' || generalTrialDetailView.centralContactType == ''">
-              <div class="form-group">
+              <div class="form-group" ng-class="{'has-feedback required': generalTrialDetailView.centralContactNameRequired,'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name)}">
                 <label for="central_contact" class="control-label col-xs-12 col-sm-2">Central Contact</label>
                 <div class="col-xs-12 col-sm-10">
                   <div class="col-xs-12 col-sm-6">
-                    <input type="text" id="central_contact" name="central_contact" placeholder="Central Contact"
-                        ng-disabled="generalTrialDetailView.centralContactType != 'General'"
-                        class="form-control" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].fullname"
-                        >
+                    <input type="text" id="central_contact_name" name="central_contact_name" class="form-control" placeholder="Central Contact"
+                        ng-disabled="generalTrialDetailView.centralContactType !== 'General'"
+                        ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].fullname"
+                        ng-required="generalTrialDetailView.centralContactNameRequired">
                   </div>
                   <div class="col-xs-12 col-sm-6" ng-show="generalTrialDetailView.centralContactType == 'Person'">
-                    <!-- <button class="btn btn-primary">Look Up Person</button> -->
                     <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button>
                   </div>
+                  <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name) && general_trial_details_form.central_contact_name.$error">
+                      <span class="help-block" ng-message="required">Central contact name is required</span>
+                  </span>
                 </div>
               </div>
 
@@ -292,7 +298,7 @@
           <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
             <div class="col-sm-3"></div>
             <div class="btn-toolbar col-xs-12 col-sm-9">
-              <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="!general_trial_details_form.$valid">
+              <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field>
                 <i class="glyphicon glyphicon-ok"></i>  Save
               </button>
               <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="generalTrialDetailView.resetGeneralTrialDetails()" restriction-field>

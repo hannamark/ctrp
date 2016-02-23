@@ -1,5 +1,5 @@
 /**
- * Created by wangg5, Deember 31st, 2015
+ * Created by wangg5, December 31st, 2015
  */
 
 (function() {
@@ -20,6 +20,7 @@
         vm.trialStatuses = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
         vm.statusObj = _initStatusObj();
         vm.dateFormat = DateService.getFormats()[1];
+        vm.startDateRequired = true;
         vm.statusDateOpened = false;
         vm.startDateOpened = false;
         vm.primaryCompDateOpened = false;
@@ -306,11 +307,14 @@
             outerTrial.new = false;
             outerTrial.id = vm.trialDetailObj.id;
             outerTrial.trial = vm.trialDetailObj;
-
+            // get the most updated lock_version
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
             TrialService.upsertTrial(outerTrial).then(function(res) {
                 vm.trialDetailObj = res;
+                console.log('in trial status, res: ', res);
                 vm.trialDetailObj.lock_version = res.lock_version;
-
+                // delete vm.trialDetailObj.admin_checkout;
+                // delete vm.trialDetailObj.scientific_checkout;
                 PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
@@ -321,7 +325,6 @@
                 });
                 _getTrialDetailCopy();
             });
-
         } // updateTrialStatuses
 
         function resetForm() {

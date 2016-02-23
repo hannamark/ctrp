@@ -25,7 +25,7 @@ And the system will list
   |PO ID|
   |Name|
   |Deletion|
-And the organizations will be displyed orderd assending alphanumeric by Collaborator Name
+And the edited organizations will be displyed orderd assending alphanumeric by Collaborator Name
 
 Scenario: #3 I can Delete one or more Collaborators for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -45,4 +45,4 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Collaborators screen
 When I select Reset Collaborator
 Then the information entered or edited on the Collaborators screen will not be saved to the trial record 
-And the Trial Collaborators screen will be refreshed with the existing data
+And the Trial Collaborators screen will be refreshed with the existing list of Collaborators data

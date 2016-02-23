@@ -13,7 +13,7 @@ And I can select Search Synonyms
 And I can select Exact match only
 When I have started entering a term
 Then a list of type ahead terms display
-When I Select a term in the list
+When I have entered a term
 And click the search icon or click on Enter
 Then a list of Preferred Terms that contain the entered term display
 And a message displays with the number of results for the term entered 

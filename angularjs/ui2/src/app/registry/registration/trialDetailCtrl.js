@@ -10,12 +10,12 @@
     trialDetailCtrl.$inject = ['trialDetailObj', 'TrialService', 'DateService','$timeout','toastr', 'MESSAGES', '$scope', '$window',
         'Common', '$state', '$modal', 'studySourceCode', 'studySourceObj', 'protocolIdOriginObj', 'phaseObj', 'researchCategoryObj', 'primaryPurposeObj',
         'secondaryPurposeObj', 'accrualDiseaseTermObj', 'responsiblePartyObj', 'fundingMechanismObj', 'instituteCodeObj', 'nciObj', 'trialStatusObj',
-        'holderTypeObj', 'expandedAccessTypeObj', 'countryList', 'HOST', '$stateParams', 'acceptedFileTypesObj', '_'];
+        'holderTypeObj', 'countryList', 'HOST', '$stateParams', 'acceptedFileTypesObj', '_'];
 
     function trialDetailCtrl(trialDetailObj, TrialService, DateService, $timeout, toastr, MESSAGES, $scope, $window,
                              Common, $state, $modal, studySourceCode, studySourceObj, protocolIdOriginObj, phaseObj, researchCategoryObj, primaryPurposeObj,
                              secondaryPurposeObj, accrualDiseaseTermObj, responsiblePartyObj, fundingMechanismObj, instituteCodeObj, nciObj, trialStatusObj,
-                             holderTypeObj, expandedAccessTypeObj, countryList, HOST, $stateParams, acceptedFileTypesObj, _) {
+                             holderTypeObj, countryList, HOST, $stateParams, acceptedFileTypesObj, _) {
         var vm = this;
         vm.curTrial = trialDetailObj || {lead_protocol_id: ""}; //trialDetailObj.data;
         vm.curTrial = vm.curTrial.data || vm.curTrial;
@@ -37,7 +37,6 @@
         vm.grantorArr = [];
         vm.holderTypeArr = holderTypeObj;
         vm.nihNciArr = [];
-        vm.expandedAccessTypeArr = expandedAccessTypeObj;
         vm.countryArr = countryList;
         vm.authorityOrgArr = [];
         vm.status_date_opened = false;
@@ -943,15 +942,6 @@
                     }
                 });
                 indIde.nih_nci = vm.curTrial.ind_ides[i].nih_nci;
-                indIde.expanded_access = vm.curTrial.ind_ides[i].expanded_access;
-                indIde.expanded_access_type_id = vm.curTrial.ind_ides[i].expanded_access_type_id;
-                // For displaying name in the table
-                _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
-                    if (expandedAccessType.id == vm.curTrial.ind_ides[i].expanded_access_type_id) {
-                        indIde.expanded_access_type_name = expandedAccessType.name;
-                    }
-                });
-                indIde.exempt = vm.curTrial.ind_ides[i].exempt;
                 indIde._destroy = false;
                 vm.addedIndIdes.push(indIde);
                 vm.indIdeNum++;

@@ -13,9 +13,55 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
       | Expanded Access            | 
       | Observational              | 
       | Ancillary Correlative      | 
+  
+  Scenario Outline:
+  Examples:
+  
+      |From Research category  |To Research category  |field  |action (diplays OR deleted |
+      | Interventional |Expanded Access  |Expanded Access Type  |displays |
+      | Expanded Access | Interventional  |Expanded Access Type  |deleted  |
       
+      | Interventional or Expanded Access |Observational or Ancillary Correlative  |Secondary Purpose  | deleted |
+      | Interventional or Expanded Access|Observational or Ancillary Correlative |Secondary Purpose Other  | deleted |
+      | Interventional or Expanded Access |Observational or Ancillary Correlative | Intervention Model |deleted  |
+      |  Interventional or Expanded Access |Observational or Ancillary Correlative  | Arms/Groups |deleted  |
+      |Interventional or Expanded Access |Observational or Ancillary Correlative |Masking  |deleted  |
+      | Interventional or Expandedor Expanded Access Access |Observational or Ancillary Correlative  |Masking role Subject  |deleted  |
+      |Interventional or Expanded Access |Observational or Ancillary Correlative | Masking role investigator  |deleted  |
+  |Interventional or Expanded Access | Observational or Ancillary Correlative | Masking role Caregiver  |deleted  |
+     |Interventional or Expanded Access |Observational or Ancillary Correlative | Masking role outcome Assessor  |deleted  |  
+       |Interventional or Expanded Access |Observational or Ancillary Correlative |Allocation |deleted  | 
+       |Interventional or Expanded Access |Observational or Ancillary Correlative | Study Classification |deleted  |  
+         |Interventional or Expanded Access |Observational or Ancillary Correlative | Final Enrollment for clinicalTrials.gov|deleted  |  
+         |Interventional or Expanded Access|Observational or Ancillary Correlative | Accruals  |deleted  |  
+         |Interventionalor Expanded Access |Observational or Ancillary Correlative | Study Model  |displays |  
+       |Interventional |Observational or Ancillary Correlative|Study Model other  |displays  |  
+        |Interventional   or Expanded Access | Observational or Ancillary Correlative | Bio Specimen Retention |displays | 
+      |Interventional  or Expanded Access  |Observational or Ancillary Correlative | Bio Specimen description  |displays | 
+      |Interventional  or Expanded Access |Observational or Ancillary Correlative | Number of Groups/Cohorts  or Expanded Access   |displays | 
       
-      Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
+      | Observational or Ancillary Correlative |Interventional  or Expanded Access   |Secondary Purpose  | displays |
+      | Observational or Ancillary Correlative |Interventional  or Expanded Access   |Secondary Purpose Other  | displays |
+      | Observational or Ancillary Correlative |Interventional  or Expanded Access | Intervention Model |displays  |
+      | Observational or Ancillary Correlative |Interventional  or Expanded Access  | Arms/Groups |displays  |
+      |Observational or Ancillary Correlative|Interventional  or Expanded Access   |Masking  |displays  |
+      | Observational or Ancillary Correlative |Interventional  or Expanded Access   |Masking role Subject  |displays  |
+      |Observational or Ancillary Correlative |Interventional  or Expanded Access  | Masking role investigator  |displays  |
+  |Observational or Ancillary Correlative |Interventional   or Expanded Access | Masking role Caregiver  |displays  |
+     |Observational or Ancillary Correlative |Interventional  or Expanded Access  | Masking role outcome Assessor  |displays  |  
+       |Observational or Ancillary Correlative |Interventional  or Expanded Access  |Allocation |displays | 
+       |Observational or Ancillary Correlative |Interventional  or Expanded Access  | Study Classification |displays  |  
+         |Observational or Ancillary Correlative |Interventional  or Expanded Access  | Final Enrollment for clinicalTrials.gov|displays  |  
+         |Observational or Ancillary Correlative|Interventional  or Expanded Access  | Accruals  |displays  |  
+         |Observational or Ancillary Correlative |Interventional  or Expanded Access  | Study Model  |deleted |  
+         |Observational or Ancillary Correlative|Interventional  or Expanded Access  |Study Model other  |deleted  |  
+        |Observational or Ancillary Correlative|Interventional or Expanded Access  | Time Perspective  |deleted |  
+      |Observational or Ancillary Correlative |Interventional or Expanded Access  | Bio Specimen Retention |deleted | 
+      |Observational or Ancillary Correlative |Interventional or Expanded Access  | Bio Specimen description  |deleted | 
+      |Observational or Ancillary Correlative |Interventional or Expanded Access  | Number of Groups/Cohorts  |deleted | 
+    
+    
+    Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
     Given I am logged into the CTRP Protocol Abstraction application
        And I am on the Trial Design screen
       And the Clinical Research Category value is interventional
@@ -153,9 +199,7 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
      When I have selected Save
      Then the Observational  trial design is associated with the trial
       And the message Record Updated displays
-  
-  
-  
+    
   
   Scenario: #6 I can add and edit Trial Design for an Ancillary Correlative Clinical Research Category trial
     Given I am logged into the CTRP Protocol Abstraction application
@@ -175,15 +219,15 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
      Then the Ancillary Correlative trial design is associated with the trial
       And the message Record Updated displays
 
-  Scenario Outline:#7 Observational and Ancillary Correlative Trial Design Mandatory Fields rules
+  Scenario Outline:#7 Observational Trial Design Mandatory Fields rules
     Given I am on the Trial Design Screen
-      And the Clinical research Category is Observational or Ancillary Correlative 
+      And the Clinical research Category is Observational 
      When The Trial Design field <TrialDesignField> is not entered
       And I have seleted the save Button
      Then an error message <TrialDesignErrorMessage> will be displayed  
     Examples: 
   
-      | <TrialDesignField> | <TrialDesignErrorMessage>       | 
+      | <TrialDesignField> | <TrialDesignErrorMessage>          | 
       | Primary Purpose    | Primary Purpose must be entered    | 
       | Trial Phase        | Trial Phase must be entered        | 
       | Intervention Model | Intervention Model must be entered | 

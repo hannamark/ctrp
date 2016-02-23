@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :trial_versions
+
   resources :accrual_disease_terms
 
   resources :trial_documents
@@ -108,6 +110,13 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :trial_versions do
+      collection do
+        get 'index'
+        post 'history'
+      end
+    end
+
     resources :po_affiliations
     resources :po_affiliation_statuses
 
@@ -142,6 +151,7 @@ Rails.application.routes.draw do
     scope '/pa' do
       get 'nih_nci_div_pa' => 'util#get_nih_nci_div_pa'
       get 'nih_nci_prog_pa' => 'util#get_nih_nci_prog_pa'
+      get 'trial_document_types' => 'util#trial_document_types'
       resources :submission_methods
     end
 
@@ -175,6 +185,13 @@ Rails.application.routes.draw do
       resources :processing_statuses
       resources :milestones
       resources :research_categories
+      resources :site_recruitment_statuses
+      resources :participating_sites do
+        collection do
+          post 'validate_status'
+        end
+      end
+      resources :site_rec_status_wrappers
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'

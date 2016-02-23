@@ -28,7 +28,7 @@
 #  index_submissions_on_user_id               (user_id)
 #
 
-class Submission < ActiveRecord::Base
+class Submission < TrialBase
   include BasicConcerns
 
   belongs_to :amendment_reason
@@ -39,4 +39,5 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
   has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
+  has_many :trial_documents, -> { order 'trial_documents.id' }
 end

@@ -205,5 +205,4 @@ module.exports = function() {
         expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1)).to.become('true').and.notify(callback);
     });
 
-
 };

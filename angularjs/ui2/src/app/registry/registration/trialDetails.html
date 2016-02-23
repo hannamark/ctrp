@@ -422,7 +422,7 @@
 
                                             <td class="col-md-2">
                                                 <div class="select2-results-absolute">
-                                                    <ui-select autofocus="true" ng-model="trialDetailView.serial_number"
+                                                    <ui-select ng-model="trialDetailView.serial_number"
                                                                theme="select2"
                                                                ng-disabled="grantsInputs.disabled"
                                                                reset-search-input="false"
@@ -523,7 +523,7 @@
                                         <tr>
                                             <td class="col-md-2">
                                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                                    <input type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.status_date"
+                                                    <input restriction-field type="text" class="form-control input-sm" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.status_date"
                                                             ng-click="trialDetailView.openCalendar($event, 'status_date')" is-open="trialDetailView.status_date_opened" datepicker-options="trialDetailView.dateOptions" ng-required="false" close-text="Close">
                                                     <span class="input-group-btn">
                                                         <button restriction-field type="button" class="btn btn-default" ng-click="trialDetailView.openCalendar($event, 'status_date')">
@@ -544,12 +544,12 @@
                                             </td>
                                             <td class="col-md-3">
                                                 <div>
-                                                    <textarea style="resize: vertical;" class="form-control input-sm" id="status_comment" ng-model="trialDetailView.status_comment" />
+                                                    <textarea restriction-field style="resize: vertical;" class="form-control input-sm" id="status_comment" ng-model="trialDetailView.status_comment" />
                                                 </div>
                                             </td>
                                             <td class="col-md-3">
                                                 <div>
-                                                    <textarea style="resize: vertical;" class="form-control input-sm" id="why_stopped" ng-model="trialDetailView.why_stopped" ng-disabled="trialDetailView.why_stopped_disabled" />
+                                                    <textarea restriction-field style="resize: vertical;" class="form-control input-sm" id="why_stopped" ng-model="trialDetailView.why_stopped" ng-disabled="trialDetailView.why_stopped_disabled" />
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -588,7 +588,7 @@
                                             <td class="col-md-2">{{status.trial_status_name}}</td>
                                             <td class="col-md-2">{{status.comment}}</td>
                                             <td class="col-md-2">{{status.why_stopped}}</td>
-                                            <td class="col-md-4">
+                                            <td class="col-md-4 status-error">
                                                 <div class="text-danger" ng-repeat="error in trialDetailView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
                                                     ERROR: Interim status [{{error.status}}] is missing
                                                 </div>
