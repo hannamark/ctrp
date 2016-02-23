@@ -201,7 +201,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :trial_status_wrappers, allow_destroy: true
   accepts_nested_attributes_for :ind_ides, allow_destroy: true
   accepts_nested_attributes_for :oversight_authorities, allow_destroy: true
-  accepts_nested_attributes_for :trial_documents, allow_destroy: true
+  accepts_nested_attributes_for :trial_documents, allow_destroy: false
   accepts_nested_attributes_for :submissions, allow_destroy: true
 
   accepts_nested_attributes_for :central_contacts, allow_destroy: true

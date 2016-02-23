@@ -9,7 +9,7 @@ And I am on the General Trial Details screen
 When I can edit the lead organization trial identifier
 And I can optionally enter or edit one or more Other Trial Identifiers
 Then the Protocol Identifier section will be complete
-  @runthis
+
 Scenario: #2 I can enter the Acronym and Official Title for a trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
@@ -17,55 +17,55 @@ When I edit the Official Title for the trial
 And I can optionally enter or edit the Acronym for the trial
 Then the title section will be complete
 
-Scenario: #4 I can enter the Keywords for a trial
+Scenario: #3 I can enter the Keywords for a trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I can enter or edit the Keywords for the trial identifier
 Then the Keywords section will be complete
 
-Scenario: #5 I can associate an organization as the Lead Organization on a clinical trial
+Scenario: #4 I can associate an organization as the Lead Organization on a clinical trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 And I have selected organization look-up
-When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, IRB) are displayed
+When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (Lead, IRB) are displayed
 Then I can select an organization from the list or search for an organization
 And the selected organization will be associated to the trail as the Lead Organization
 
-Scenario: #6 I can associate a person as the Principal Investigator on a clinical trial
+Scenario: #5 I can associate a person as the Principal Investigator on a clinical trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I have performed a person look-up
-And I have selected a person as the trial's Principal Investigator
+And I have selected a person as the trial's Principal Investigator in the General Trial Details Screens
 Then the selected person will be associated to the trial as Principal Investigator
 
-Scenario: #7 I can associate an organization as the Sponsor Organization on a clinical trial
+Scenario: #6 I can associate an organization as the Sponsor Organization on a clinical trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
-And I have selected organization look-up
-When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (Lead , IRB) are displayed
+And I have selected Sponsor organization look-up
+When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, IRB) are displayed
 Then I can select an organization from the list or search for an organization
 And the selected organization will be associated to the trail as the Sponsor
 
-Scenario: #8 I can associate the Primary Investigator as the Central Contact or for the trial
+Scenario: #7 I can associate the Primary Investigator as the Central Contact or for the trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 And I am in the Central Contact section
-And I have selected the radio button for PI
+And selected the radio button for PI
 And the phone #, extension and e-mail address is displayed 
 Then I can edit the phone #, extension and e-mail address 
 And the PI, phone #, extension and e-mail address will be associated with this trail
 
-Scenario: #9 I can associate a person as the Central Contact or for the trial
+Scenario: #8 I can associate a person as the Central Contact or for the trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 And I am in the Central Contact section
 And I select the radio button for Person
-And preform a person look and select a person
+And preform a person look up and select a person
 And the selected Person, their phone #, extension and e-mail address will be displayed
 Then I can edit the phone # and e-mail address 
 And the Person, phone #, extension and e-mail address will be associated with this trail
 
-Scenario: #10 I can associate General Central Contact for the trial
+Scenario: #9 I can associate General Central Contact for the trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 And I am in the Central Contact section
@@ -74,56 +74,56 @@ And I enter the Central Contact Name
 And I enter either a Central Contact Phone Number and extension or Central Contact E-Mail Address or both
 Then the selected Central Contact, Phone #, extension and e-mail address will be Central contact for the trial
 
-Scenario: #11 Save General Trials Details information
+Scenario: #10 Save General Trials Details information
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When select save 
 Then the information entered or edited on the General Trails Details screen will be saved to the trial record
 
-Scenario: #12 Cancel General Trials Details information
+Scenario: #11 Cancel General Trials Details information
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When select Reset
 Then the information entered or edited on the General Trails Details screen will not be saved to the trial record 
-And the screen will be refreshed with the existing data
+And the General Trial Details screen will be refreshed with the existing data
 
-Scenario: #13 Protocol ID not null
+Scenario: #12 Protocol ID not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
-When I select save
 And the protocol ID is Null
+When I select save
 Then a warning message will appear �Please enter the Protocol Identifier�
 
-Scenario: #14 Official Title not null
+Scenario: #13 Official Title not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
-When I select save
 And the Official Title is Null
+When I select save
 Then a warning message will appear �Please enter the Official Title�
 
-Scenario: #15 Lead Organization is not null
+Scenario: #14 Lead Organization is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
-When I select save
 And the Lead Organization is Null
+When I select save
 Then a warning message will appear �Please enter the Lead Organization�
 
-Scenario: #16 Principal Investigator is not null
+Scenario: #15 Principal Investigator is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
-When I select save
 And the Principal Investigator is Null
+When I select save
 And the Study Source is "National", "Externally-Peer-Reviewed" "Instutional"
 Then a warning message will appear �Please enter the Principal Investigator�
 
-Scenario: #17 Sponsor is not null
+Scenario: #16 Sponsor is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
-When I select save
 And the Sponsor is Null
+When I select save
 Then a warning message will appear �Please enter the Sponsor�
 
-Scenario: # 18 e-mail address format
+Scenario: # 17 e-mail address format
 Given I know which e-mail address I want to edit
 And I am logged in to CTRP application
 And I have selected e-mail address field 

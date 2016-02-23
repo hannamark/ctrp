@@ -70,3 +70,27 @@ And have selected a document with a type of :
 |Protocol Document|
 |IRB Approval Document|
 Then the system will display a Error message that the Protocol Document and or IRB Approval Document cannot be deleted
+
+Scenario: #8 Valid Document Formats 
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Related Documents screen
+When I select a document to add
+And the document is not one of the valid extensions listed below
+|Pdf|
+|Doc|
+|docx|
+|docm|
+|Xls|
+|xlsx|
+|xlsm|
+|xlsb|
+|Rtf|
+|Htm|
+|html|
+|Msg|
+|Mht|
+|Txt|
+|Dot|
+|thmx|
+|XML|
+Then the system will display a Error message that "The selected document is not a valid document type"nnot be deleted
