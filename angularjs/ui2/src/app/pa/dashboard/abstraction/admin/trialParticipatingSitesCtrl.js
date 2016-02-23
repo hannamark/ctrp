@@ -39,7 +39,7 @@
         vm.investigatorArray = [];
         vm.selectedContactTypePI = false;
         vm.centralContactTypes = centralContactTypes.types;
-        for (var i = 0; i < vm.centralContactTypes; i++) {
+        for (var i = 0; i < vm.centralContactTypes.length; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
                console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
                vm.centralContactTypes.splice(i, 1);
@@ -112,7 +112,7 @@
                 }
                 if(vm.currentParticipatingSite.id) {
                     TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
-                        console.log("getParticipatingSiteById response = " + JSON.stringify(response));
+                        //console.log("getParticipatingSiteById response = " + JSON.stringify(response));
                         vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
                         vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
                         vm.currentParticipatingSite.participating_site_investigators = response.participating_site_investigators;
@@ -224,19 +224,11 @@
          **/
         function addSiteRecruitment() {
             //console.log("vm.current_site_recruitment="+JSON.stringify(vm.current_site_recruitment));
-            //console.log("vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
+           // console.log("vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
             vm.current_site_recruitment.participating_site_id= vm.currentParticipatingSite.id;
-            // Temporary code. User of ng-options in the UI should resolve it.
-            for (var i = 0; i < vm.siteRecruitmentStatusesArr.length; i++) {
-                if (vm.current_site_recruitment.site_recruitment_status == vm.siteRecruitmentStatusesArr[i].name) {
-                    vm.current_site_recruitment.site_recruitment_status_id = vm.siteRecruitmentStatusesArr[i].id;
-                }
-            }
             vm.current_site_recruitment.new = true;
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
-            //console.log("vm.current_participating_site.="+JSON.stringify(vm.currentParticipatingSite));
-            //console.log("vm.curTrial.participating_sites_list="+JSON.stringify(vm.curTrial.participating_sites_list));
             vm.saveParticipatingSite();
         }
 
@@ -513,7 +505,7 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 
