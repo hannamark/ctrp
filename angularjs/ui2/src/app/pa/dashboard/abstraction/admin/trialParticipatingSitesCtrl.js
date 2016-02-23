@@ -34,6 +34,8 @@
         vm.selOrganization = {name: '', array: []};
         vm.principalInvestigator = {name: '', array: []};
         vm.selectedPerson = {name: '', array: []};
+        vm.selectedInvestigator = null;
+        vm.investigatorArray = [];
         vm.centralContactTypes = centralContactTypes.types;
         for (var i = 0; i < vm.centralContactTypes; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
@@ -372,7 +374,17 @@
 
         function watchContact() {
             $scope.$watch(function() {return vm.currentParticipatingSite.contact_type;}, function(newVal, oldVal) {
-                console.log("Watchcontact newVal " + newVal);
+                if(newVal == "PI"){
+                    vm.investigatorArray = [];
+                    for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
+                        var id = vm.currentParticipatingSite.participating_site_investigators[i].id;
+                        var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[i].person);
+
+                        vm.investigatorArray.push({"id": id, "name": name});
+                        console.log('vm.investigatorArray' + JSON.stringify(vm.investigatorArray));
+                    }
+
+                }
                 /**
                 if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullname) {
                     vm.currentParticipatingSite.central_contacts[0] = newVal[0];

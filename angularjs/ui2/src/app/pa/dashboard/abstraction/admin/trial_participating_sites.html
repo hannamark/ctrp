@@ -402,6 +402,17 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <label for="purpose" class="control-label col-xs-12 col-sm-3">Select an Investigator as Primary Contact: </label>
+            <div class="col-xs-6 col-sm-4">
+                <ui-select id="investigator" ng-model="psView.selectedInvestigator">
+                    <ui-select-match placeholder="-Select Investigator-"></ui-select-match>
+                    <ui-select-choices repeat="investigator in psView.investigatorArray">{{investigator.name}}</ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+
         <div ng-hide="psView.currentParticipatingSite.contact_type == 'None' || psView.currentParticipatingSite.contact_type == ''">
             <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.ps_form.needsAttention(ps_form.contact_name)}">
                 <label for="contact_type" class="control-label col-xs-12 col-sm-2">Contact</label>
