@@ -199,9 +199,7 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
      When I have selected Save
      Then the Observational  trial design is associated with the trial
       And the message Record Updated displays
-  
-  
-  
+    
   
   Scenario: #6 I can add and edit Trial Design for an Ancillary Correlative Clinical Research Category trial
     Given I am logged into the CTRP Protocol Abstraction application
