@@ -9,15 +9,17 @@
 #  document_subtype :string(255)
 #  added_by_id      :integer
 #  trial_id         :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #  uuid             :string(255)
 #  lock_version     :integer          default(0)
+#  submission_id    :integer
 #
 # Indexes
 #
-#  index_trial_documents_on_added_by_id  (added_by_id)
-#  index_trial_documents_on_trial_id     (trial_id)
+#  index_trial_documents_on_added_by_id    (added_by_id)
+#  index_trial_documents_on_submission_id  (submission_id)
+#  index_trial_documents_on_trial_id       (trial_id)
 #
 
 require 'test_helper'

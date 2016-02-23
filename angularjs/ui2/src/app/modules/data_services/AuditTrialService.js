@@ -74,6 +74,19 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'program_code', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'grant_question', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'ind_ide_question', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'primary_purpose', enabledSorting: true , minWidth: '100', width: '*'},
+
+                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '5%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '170', width: '5%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'sponsor', enableSorting: true, minWidth: '100', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
                 {name: 'start_date', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'start_date_qual', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'primary_comp_date', enabledSorting: true , minWidth: '100', width: '*'},
@@ -83,7 +96,10 @@
                 {name: 'ind_ide_question', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'intervention_indicator', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'sec801_indicator', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'data_monitor_indicator', enabledSorting: true , minWidth: '100', width: '*'}
+                {name: 'data_monitor_indicator', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                }
 
             ]
         };
