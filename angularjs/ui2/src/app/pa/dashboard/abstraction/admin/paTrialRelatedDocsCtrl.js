@@ -109,11 +109,10 @@
                 } else if (!!vm.curDoc.file.size) {
                     console.info('file to be uploaded: ', vm.curDoc.file);
                     // file to be uploaded
+                    vm.curDoc.replacedDocId = vm.curDoc.id || null; // replacing document id: replacedDocId
                     vm.curDoc.file_name = vm.curDoc.file.name; // extract name from the File object
                     if (index !== null) {
                         // existing document
-                        console.log('replacedDocId: ', vm.curDoc.id);
-                        vm.curDoc.replacedDocId = vm.curDoc.id || null; // replacing document id: replacedDocId
                         vm.curTrialDetailObj.trial_documents[index] = vm.curDoc;
                     } else {
                         // new document

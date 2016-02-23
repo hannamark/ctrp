@@ -392,7 +392,7 @@
                         'trial_document[document_subtype]': trialDocObj.document_subtype,
                         'trial_document[trial_id]': trialId,
                         'trial_document[file]': trialDocObj.file,
-                        'replaced_doc_id': trialDocObj.replacedDocId || null
+                        'replaced_doc_id': trialDocObj.replacedDocId || ''  // if not present, use empty string
                     }
                 });
             } else {
