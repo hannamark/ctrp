@@ -8,11 +8,11 @@
     angular.module('ctrp.app.pa')
         .factory('PATrialService', PATrialService);
 
-    PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common',
-            '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST', 'LocalCacheService', 'uiGridConstants'];
+    PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', 'Upload',
+            '$rootScope', 'PromiseTimeoutService', 'HOST', 'LocalCacheService', 'uiGridConstants'];
 
-    function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common,
-            $rootScope, PromiseTimeoutService, Upload, HOST, LocalCacheService, uiGridConstants) {
+    function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, Upload,
+            $rootScope, PromiseTimeoutService, HOST, LocalCacheService, uiGridConstants) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -134,7 +134,9 @@
             getCentralContactTypes: getCentralContactTypes,
             getBoardApprovalStatuses: getBoardApprovalStatuses,
             getSiteRecruitementStatuses: getSiteRecruitementStatuses,
-            getTrialDocumentTypes: getTrialDocumentTypes
+            getTrialDocumentTypes: getTrialDocumentTypes,
+            uploadTrialRelatedDocs: uploadTrialRelatedDocs,
+            prepUploadingTrialRelatedDocs: prepUploadingTrialRelatedDocs
         };
 
         return services;
@@ -372,6 +374,40 @@
 
         function getTrialDocumentTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIAL_DOCUMENT_TYPES);
+        }
+
+        /**
+         * Convert each trial doc object to a promise for uploading
+         * @param  {JSON Object} trialDocObj
+         * @param  {Integer} trialId
+         * @return {a single promise}
+         */
+        function prepUploadingTrialRelatedDocs(trialDocObj, trialId) {
+            if (typeof trialDocObj.file === 'object' && !!trialDocObj.file.size) {
+                return Upload.upload({
+                    url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
+                    method: 'POST',
+                    data: {
+                        'trial_document[document_type]': trialDocObj.document_type,
+                        'trial_document[document_subtype]': trialDocObj.document_subtype,
+                        'trial_document[trial_id]': trialId,
+                        'trial_document[file]': trialDocObj.file_name
+                    }
+                });
+            } else {
+                console.log('not file');
+                return null;
+            }
+        }
+
+        function uploadTrialRelatedDocs(trialDocsArr, trialId) {
+            var promises = [];
+            promises = _.map(trialDocsArr, function(trialDocObj) {
+                console.log('trialDocObj: ', trialDocObj);
+                return prepUploadingTrialRelatedDocs(trialDocObj, trialId);
+            });
+
+            return PromiseTimeoutService.groupPromises(promises);
         }
 
     }

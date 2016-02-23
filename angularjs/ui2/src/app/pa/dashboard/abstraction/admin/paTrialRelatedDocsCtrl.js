@@ -86,7 +86,8 @@
                     created_at: '',
                     edit: false,
                     index: null,
-                    _destroy: false
+                    _destroy: false,
+                    deleted: false
                 };
                 return doc;
             }
@@ -211,28 +212,41 @@
              * @return {Void}
              */
             function saveDocuments(showToastr) {
-                vm.curTrialDetailObj.trial_documents_attributes = vm.curTrialDetailObj.trial_documents;
-                var outerTrial = {};
-                outerTrial.new = false;
-                outerTrial.id = vm.curTrialDetailObj.id;
-                outerTrial.trial = vm.curTrialDetailObj;
-                // get the most updated lock_version
-                outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-                TrialService.upsertTrial(outerTrial).then(function(res) {
-                    vm.curTrialDetailObj = res;
-                    console.log('in trial related documents, res: ', res);
-                    vm.curTrialDetailObj.lock_version = res.lock_version;
-                    PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
-                    $scope.$emit('updatedInChildScope', {});
-                    if (showToastr) {
-                        toastr.clear();
-                        toastr.success('Trial related documents have been saved', 'Successful!', {
-                            extendedTimeOut: 1000,
-                            timeOut: 0
+                PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id)
+                    .then(function(res) {
+                        console.log('group promises res: ', res);
+                        if (angular.isArray(res)) {
+                            _.each(res, function(uploadedDoc, index) {
+                                if (uploadedDoc !== null) {
+                                    vm.curTrialDetailObj.trial_documents[index].updated_at = uploadedDoc.data.updated_at;
+                                }
+                            });
+                        }
+                        vm.curTrialDetailObj.trial_documents_attributes = vm.curTrialDetailObj.trial_documents;
+                        var outerTrial = {};
+                        outerTrial.new = false;
+                        outerTrial.id = vm.curTrialDetailObj.id;
+                        outerTrial.trial = vm.curTrialDetailObj;
+                        // get the most updated lock_version
+                        outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+                        TrialService.upsertTrial(outerTrial).then(function(res) {
+                            vm.curTrialDetailObj = res;
+                            console.log('in trial related documents, res: ', res);
+                            vm.curTrialDetailObj.lock_version = res.lock_version;
+                            PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
+                            $scope.$emit('updatedInChildScope', {});
+                            if (showToastr) {
+                                toastr.clear();
+                                toastr.success('Trial related documents have been saved', 'Successful!', {
+                                    extendedTimeOut: 1000,
+                                    timeOut: 0
+                                });
+                            }
                         });
-                    }
-                });
 
+                    }).catch(function(err) {
+                        console.error('group promise err: ', err);
+                    });
             } // updatedTrial
 
 
