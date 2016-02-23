@@ -112,9 +112,7 @@
                 AuditService.getAudits(vm.trialHistoryObj).then(function (data) {
                 console.log('received search results: ' + JSON.stringify(data.trial_versions));
                 vm.gridOptions.data = data.trial_versions;
-                vm.gridOptions.totalItems = data.total;
-                    console.log(data.total)
-                    console.log(data.trial_versions.size)
+                vm.gridOptions.totalItems = data.trial_versions["length"];
             }).catch(function (err) {
                 console.log('Getting audit trials failed');
             }).finally(function() {
