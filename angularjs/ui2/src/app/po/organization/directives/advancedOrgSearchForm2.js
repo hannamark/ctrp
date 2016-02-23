@@ -205,12 +205,13 @@
                 var isNullified = rowEntity.source_status && rowEntity.source_status.indexOf('Nul') > -1;
                 if (isNullified || isActive || !rowEntity.nullifiable) {
                     //warning to user for nullifying active entity
-                    if (!rowEntity.nullifiable)
+                    if (!rowEntity.nullifiable) {
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
-                    else if (isActive)
+                    } else if(isActive) {
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
-                    else
+                    } else {
                         $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
+                    }
                     $scope.nullifiedId = '';
                     $scope.nullifiedOrgName = '';
                     //  console.log('cannot nullify this row, because it is active');

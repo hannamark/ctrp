@@ -5,6 +5,32 @@ json.trial_versions do
     json.lead_protocol_id trial_version.object_changes["lead_protocol_id"]?  trial_version.object_changes["lead_protocol_id"][1] : nil
     json.official_title trial_version.object_changes["official_title"]?  trial_version.object_changes["official_title"][1] : nil
     json.program_code trial_version.object_changes["program_code"]?  trial_version.object_changes["program_code"][1] : nil
+    json.grant_question trial_version.object_changes["grant_question"]?  trial_version.object_changes["grant_question"][1] : nil
+    json.ind_ide_question trial_version.object_changes["ind_ide_question"]?  trial_version.object_changes["ind_ide_question"][1] : nil
+
+
+    if trial_version.object_changes["primary_purpose_id"]
+      json.primary_purpose PrimaryPurpose.find_by_id(trial_version.object_changes["primary_purpose_id"][1]).name
+    end
+
+
+    if trial_version.object_changes["pi_id"]
+        per=Person.find_by_id(trial_version.object_changes["pi_id"][1])
+      json.pi  per.fname + " , " + per.lname
+    end
+
+    if trial_version.object_changes["lead_org_id"]
+      org=Organization.find_by_id(trial_version.object_changes["lead_org_id"][1])
+      json.lead_org  org.name
+    end
+
+    if trial_version.object_changes["sponsor_id"]
+      org=Organization.find_by_id(trial_version.object_changes["sponsor_id"][1])
+      json.sponsor  org.name
+    end
+
+
+
     json.start_date trial_version.object_changes["start_date"]?  trial_version.object_changes["start_date"][1] : nil
     json.start_date_qual trial_version.object_changes["start_date_qual"]?  trial_version.object_changes["start_date_qual"][1] : nil
     json.primary_comp_date trial_version.object_changes["primary_comp_date"]?  trial_version.object_changes["primary_comp_date"][1] : nil
@@ -15,6 +41,44 @@ json.trial_versions do
     json.intervention_indicator trial_version.object_changes["intervention_indicator"]?  trial_version.object_changes["intervention_indicator"][1] : nil
     json.sec801_indicator trial_version.object_changes["sec801_indicator"]?  trial_version.object_changes["sec801_indicator"][1] : nil
     json.data_monitor_indicator trial_version.object_changes["data_monitor_indicator"]?  trial_version.object_changes["data_monitor_indicator"][1] : nil
+
+
+    json.other_ids  ""
+    other_ids = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "OtherId",trial_version.transaction_id)
+     if other_ids
+      other_ids_string = ""
+      delimiter = ""
+      other_ids.each do |o|
+        case o.event
+          when "destroy"
+            p o.object
+            protocol_id = o.object["protocol_id"]
+            protocol_id_origin_id = o.object["protocol_id_origin_id"]
+          when "create" || "update"
+            p o.object_changes
+            protocol_id = o.object_changes["protocol_id"][1]
+            protocol_id_origin_id = o.object_changes["protocol_id_origin_id"][1]
+          else
+            protocol_id =""
+            protocol_id_origin_id=""
+        end
+
+        #name = ProtocolIdOrigin.find_by_protocol_id_origin_id(protocol_id_origin_id).pluck(:nam) if !protocol_id_origin_id
+        #next if o.protocol_id_origin.nil?
+        #name = o.protocol_id_origin.name
+        #unless name.nil?
+        #name.gsub!("Identifier", "")
+        other_ids_string = other_ids_string + delimiter + protocol_id.to_s + "   " + protocol_id_origin_id.to_s
+        delimiter = ";  " if o.event == "create" || "update"
+        delimiter = "(D); " if o.event == "destroy"
+     end
+      #end
+      json.other_ids  other_ids_string
+     end
+
+
+
+
 
     json.url trial_version_url(trial_version, format: :json)
   end

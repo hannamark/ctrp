@@ -102,6 +102,17 @@ Examples:
       |Active	                |Review                    |Error:Invalid status transition from [ACTIVE] to [IN REVIEW]                 |
       |Enrolling by Invitation  |Active                    |Error:Invalid status transition from [ENROLLING BY INVITATION] to [ACTIVE]   |
       
+  Scenario: #4 Transition rules 
+    Given I have selected the option to register a trial type
+   
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+      
+    And I am on the Register Trial Status screen
+    When Trial Status Transition from <TrialStatusA> to <TrialStatusB> on the same day
+    Then 
+
 
    
    Scenario Outline:#4 I can enter a trial status and trial status date for a trial
@@ -134,7 +145,7 @@ Then the <date> and <status> will be validated and displayed on the trial status
       |11-05-2017  | Complete                                      |                       |
 
    
-    Scenario Outline: #5 I can add, edit or delete a trial
+    Scenario Outline: #5 I can add and delete a trial
     Given I have selected the option to register a trial type 
 
       |National                 |
@@ -144,41 +155,20 @@ Then the <date> and <status> will be validated and displayed on the trial status
    And I am on the Register Trial Status screen
    When When I add a trial status 
    Then a new trial status will appear in the Trial Status History
-   And I can delete any status by clinking on the delete button in the Actions column
-   And I can edit any status by clicking on the edit button in the Actions column
-   Then the Trial Status history will be updated and no errors will be indicated during Trial Review
+   When I click on the delete button in the Actions column for a selected status
+   Then Please provide a comment box will be displayed
+   And I must provide a comment explaining why deleting this trial status
+   When the comment is entered in the provided box
+   And click on the delete button
+   Then the selected status will be deleted
    
-     Scenario Outline: #5 I can Edit Trial Status
-    Given I have selected the option to register a trial type 
-
-      |National                 |
-      |Externally Peer-Reviewed |
-      |Institutional            |
-     
-     And I am on the Register trial Status History table
-     When I click on the edit button in the Actions column for the trial status I want to edit
-     And I must have entered a Status Date 
-     And I must have entered a Trial status
-     And I have entered Why Study Stopped 
-     And I must have entered a comment 
-     And I have clicked on the save button
-     Then the trial status section will not indicate any errors during Trial Review
+ 
+   
+   
      
      
      
      
-     Then 
-
-  Example: 
-
-  Scenario Outline: 
-    Given 
-     When 
-     Then 
-
-  Example: 
-
-
 
  
    
