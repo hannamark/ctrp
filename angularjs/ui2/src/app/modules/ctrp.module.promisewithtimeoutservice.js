@@ -103,8 +103,8 @@
 
         /**
          * Group promises call, will resolve individually
-         * @param  {[type]} promiseObjArr [description]
-         * @return {[type]}               [description]
+         * @param  {Array} promiseObjArr, Array of promises
+         * @return {Grouped promises}
          */
         this.groupPromises = function(promiseObjArr) {
             var deferred = $q.defer();

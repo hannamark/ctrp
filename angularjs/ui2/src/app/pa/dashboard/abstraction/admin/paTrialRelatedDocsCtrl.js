@@ -51,7 +51,7 @@
 
             function deleteDoc(index) {
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
-                    vm.curTrialDetailObj.trial_documents[index]._destroy = !vm.curTrialDetailObj.trial_documents[index]._destroy
+                    vm.curTrialDetailObj.trial_documents[index].deleted = !vm.curTrialDetailObj.trial_documents[index].deleted;
                 }
             }
 
