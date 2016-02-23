@@ -112,8 +112,8 @@
                     vm.curDoc.file_name = vm.curDoc.file.name; // extract name from the File object
                     if (index !== null) {
                         // existing document
-                        // vm.curTrialDetailObj.trial_documents.splice(index, 1);
-                        // vm.curTrialDetailObj.trial_documents.push(vm.curDoc);
+                        console.log('replacedDocId: ', vm.curDoc.id);
+                        vm.curDoc.replacedDocId = vm.curDoc.id || null; // replacing document id: replacedDocId
                         vm.curTrialDetailObj.trial_documents[index] = vm.curDoc;
                     } else {
                         // new document

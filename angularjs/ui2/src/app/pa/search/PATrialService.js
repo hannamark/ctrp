@@ -391,7 +391,8 @@
                         'trial_document[document_type]': trialDocObj.document_type,
                         'trial_document[document_subtype]': trialDocObj.document_subtype,
                         'trial_document[trial_id]': trialId,
-                        'trial_document[file]': trialDocObj.file
+                        'trial_document[file]': trialDocObj.file,
+                        'replaced_doc_id': trialDocObj.replacedDocId || null
                     }
                 });
             } else {

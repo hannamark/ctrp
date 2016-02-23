@@ -26,6 +26,8 @@ class TrialDocument < TrialBase
   belongs_to :trial
   belongs_to :submission
 
+  cattr_accessor :replaced_doc_id
+
   mount_uploader :file, TrialDocumentUploader
 
   # Return true if this is the latest document uploaded in its document type
