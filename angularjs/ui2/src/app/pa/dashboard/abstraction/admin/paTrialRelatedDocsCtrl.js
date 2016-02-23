@@ -218,7 +218,9 @@
                         if (angular.isArray(res)) {
                             _.each(res, function(uploadedDoc, index) {
                                 if (uploadedDoc !== null) {
-                                    vm.curTrialDetailObj.trial_documents[index].updated_at = uploadedDoc.data.updated_at;
+                                    // vm.curTrialDetailObj.trial_documents[index].updated_at = uploadedDoc.data.updated_at;
+                                    vm.curTrialDetailObj.trial_documents[index] = uploadedDoc.data;
+                                    vm.curTrialDetailObj.trial_documents[index].added_by = {username: UserService.getLoggedInUsername()};
                                 }
                             });
                         }
