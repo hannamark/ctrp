@@ -36,6 +36,7 @@
         vm.selectedPerson = {name: '', array: []};
         vm.selectedInvestigator = null;
         vm.investigatorArray = [];
+        vm.selectedContactTypePI = false;
         vm.centralContactTypes = centralContactTypes.types;
         for (var i = 0; i < vm.centralContactTypes; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
@@ -69,6 +70,7 @@
             watchPISelection();
             watchContact();
             watchPersonSelection();
+            watchInvestigatorSelection();
         }
 
 
@@ -375,6 +377,7 @@
         function watchContact() {
             $scope.$watch(function() {return vm.currentParticipatingSite.contact_type;}, function(newVal, oldVal) {
                 if(newVal == "PI"){
+                    vm.selectedContactTypePI = true;
                     vm.investigatorArray = [];
                     for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
                         var id = vm.currentParticipatingSite.participating_site_investigators[i].id;
@@ -384,7 +387,10 @@
                         console.log('vm.investigatorArray' + JSON.stringify(vm.investigatorArray));
                     }
 
+                } else {
+                    vm.selectedContactTypePI = false;
                 }
+
                 /**
                 if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullname) {
                     vm.currentParticipatingSite.central_contacts[0] = newVal[0];
@@ -410,8 +416,8 @@
                 console.log(" watchPersonSelection newVal=" + JSON.stringify(newVal));
                 if (angular.isArray(newVal) && newVal.length > 0) {
                     vm.currentParticipatingSite.contact_name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
-                    vm.principalInvestigator.pi = vm.principalInvestigator.array[0];
-                    vm.principalInvestigator.pi_id  = vm.principalInvestigator.array[0].id; // update PI on view
+                    vm.principalInvestigator.pi = vm.selectedPerson.array[0];
+                    vm.principalInvestigator.pi_id  = vm.selectedPerson.array[0].id; // update PI on view
                     var participatingSiteInvestigator = {};
                     participatingSiteInvestigator.person_id = vm.principalInvestigator.array[0].id;
                     participatingSiteInvestigator.new = true;
@@ -420,6 +426,23 @@
                 }
             });
         }
+
+        /**
+         * Third Tab
+         */
+
+        function watchInvestigatorSelection() {
+            $scope.$watch(function() {return vm.selectedInvestigator;}, function(newVal, oldVal) {
+                for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
+                    if(vm.currentParticipatingSite.participating_site_investigators[i].id == newVal.id){
+                        var inv = vm.currentParticipatingSite.participating_site_investigators[i].person;
+                        vm.currentParticipatingSite.contact_name = PersonService.extractFullName(inv);
+                        vm.currentParticipatingSite.contact_phone = inv.phone;
+                        vm.currentParticipatingSite.contact_email = inv.email;
+                    }
+                }
+            });
+        };
 
         /**
          * Get trial detail object from parent scope
