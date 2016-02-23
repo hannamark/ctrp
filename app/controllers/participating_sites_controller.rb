@@ -89,7 +89,7 @@ class ParticipatingSitesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def participating_site_params
-      params[:participating_site].permit(:protocol_id, :program_code, :contact_name, :contact_phone, :contact_email, :trial_id, :organization_id,
+      params[:participating_site].permit(:protocol_id, :program_code, :contact_name, :contact_phone, :contact_email, :contact_type, :trial_id, :organization_id,
                                          site_rec_status_wrappers_attributes: [:id, :status_date, :site_recruitment_status_id, :comments, :_destroy],
                                          participating_site_investigators_attributes: [:id, :participating_site_id, :person_id, :set_as_contact, :investigator_type, :_destroy])
     end

@@ -467,6 +467,16 @@
                     </div>
                 </div>
             </div>
+            <!-- Saving the form for the Contact tab" -->
+            <div class="form-group no-bottom-margin">
+                <div class="btn-toolbar">
+                    <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveContact()">Save</button>
+                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.reload()"  restriction-field ng-disabled="psView.disableBtn">
+                        <i class="glyphicon glyphicon-remove"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
     </fieldset>
         </uib-accordion-group>
     </uib-accordion>
