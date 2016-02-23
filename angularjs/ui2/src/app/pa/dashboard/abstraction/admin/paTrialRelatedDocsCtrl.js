@@ -30,7 +30,7 @@
             vm.saveDocuments = saveDocuments;
             vm.deleteDoc = deleteDoc;
             vm.editDoc = editDoc;
-            vm.upsertDoc = upsertDoc;
+            vm.upsertDoc = upsertDocV2; //upsertDoc;
             vm.resetForm = resetForm;
 
             activate();
@@ -55,7 +55,7 @@
                 }
             }
 
-            var prevFileName = '';
+            var prevFile = '';
             function editDoc(index) {
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     // vm.curDoc = Object.assign({}, vm.curTrialDetailObj.trial_documents[index], {edit: true});
@@ -63,8 +63,9 @@
                     vm.curDoc.edit = true;
                     // vm.curDoc.document_type = vm.curTrialDetailObj.trial_documents[index].document_type;
                     vm.curDoc.index = index;
-                    prevFileName = vm.curDoc.file_name;
-                    vm.curDoc.file_name = '';
+                    prevFile = angular.copy(vm.curDoc.file);
+                    vm.curDoc.file = '';
+                    // vm.curDoc.file_name = '';
                     console.log('curDoc: ', vm.curDoc);
                 }
             }
@@ -78,6 +79,7 @@
                 var doc = {
                     document_type: '',
                     file_name: '',
+                    file: '', // File to be uploaded
                     document_subtype: '',
                     added_by: {},
                     updated_at: '',
@@ -89,12 +91,49 @@
                 return doc;
             }
 
+
+            function upsertDocV2(index) {
+                console.info('index: ', index);
+                console.info('vm.curDoc: ', vm.curDoc);
+                if (index === null && vm.curDoc.file === '') {
+                    console.error('null document object');
+                    return;
+                } else if (index !== null && !vm.curDoc.file.size) {
+                    console.info('update without uploading');
+                    // update without uploading
+                    vm.curDoc.file = prevFile !== '' ? prevFile : vm.curDoc.file;
+                    vm.curTrialDetailObj.trial_documents[index] = angular.copy(vm.curDoc);
+                    // vm.curTrialDetailObj.trial_documents[index].file_name = prevFileName; // restore the file name
+                    // prevFileName = '';
+                } else if (!!vm.curDoc.file.size) {
+                    console.info('file to be uploaded: ', vm.curDoc.file);
+                    // file to be uploaded
+                    vm.curDoc.file_name = vm.curDoc.file.name; // extract name from the File object
+                    if (index !== null) {
+                        // existing document
+                        vm.curTrialDetailObj.trial_documents[index] = angular.copy(vm.curDoc);
+                    } else {
+                        // new document
+                        vm.curDoc.updated_at = new Date();
+                        vm.curDoc.added_by = {username: UserService.getLoggedInUsername()};
+                        vm.curTrialDetailObj.trial_documents.push(vm.curDoc);
+                    }
+                }
+                // re-initialize the vm.curDoc
+                vm.curDoc = _initCurDoc();
+                prevFile = '';
+            }
+
+
             /**
              * update or insert new trial related document
              * @param  {Int} index [if index is null, upload new pic; otherwise, update]
              * @return {Void}
              */
             function upsertDoc(index) {
+                console.info('file_name: ', vm.curDoc.file.name);
+                console.info('typeof ', typeof vm.curDoc.file);
+                return;
                 if (!vm.curDoc.file_name && index === null) {
                     console.error('null object');
                     // prevent uploading null object
