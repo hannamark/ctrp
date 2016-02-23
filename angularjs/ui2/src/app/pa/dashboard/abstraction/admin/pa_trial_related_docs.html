@@ -38,7 +38,7 @@
                                         <button type="button" class="btn btn-default"
                                             ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
                                             ng-disabled="trialRelatedDocsView.curDoc.document_type=='' ||
-                                            trialRelatedDocsView.curDoc.file == ''">Save</button>
+                                            trialRelatedDocsView.curDoc.file == '' || trial_docs_form.current_doc.$error">Save</button>
                                     </div>
                                     <div class="col-sm-2" ng-show="trialRelatedDocsView.curDoc.edit">
                                         <label for="" class="control-label"></label>
