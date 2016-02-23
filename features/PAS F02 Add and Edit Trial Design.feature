@@ -13,6 +13,8 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
       | Expanded Access            | 
       | Observational              | 
       | Ancillary Correlative      | 
+     
+     
       
       
       Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial

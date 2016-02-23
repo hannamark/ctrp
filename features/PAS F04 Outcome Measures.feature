@@ -36,6 +36,7 @@ And the Outcome Measures table will display Outcomes Measures values
       |Edit  |
       |Copy  |
       |Delete  |
+And I can add another Outcome Measure      
 
 
 
