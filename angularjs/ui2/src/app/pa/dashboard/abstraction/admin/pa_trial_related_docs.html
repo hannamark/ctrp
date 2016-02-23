@@ -51,6 +51,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row top-buffer" ng-show="trial_docs_form.current_doc.$error">
+                                    <span class="help-block" ng-show="trial_docs_form.current_doc.$error.validateFileType">
+                                        Error: Please select a valid file. Allowed file types: {{trialRelatedDocsView.acceptedFileExtensions}}
+                                    </span>
+                                    <span class="help-block" ng-show="trial_docs_form.current_doc.$error.maxSize">
+                                        Error: File size exceeds 10 MB
+                                    </span>
+                                </div>
                                 <div class="row top-buffer">
                                      <!-- <table class="table table-striped table-condensed table-hover">
                                          <thead>
