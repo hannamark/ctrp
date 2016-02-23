@@ -23,6 +23,8 @@
         vm.current_site_recruitment = {};
         vm.current_investigator = {};
         vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
+        vm.currentParticipatingSite.participating_site_investigators=[];
+        vm.persisted_contact = {};
         vm.showOrgFields = true;
         vm.city=null;
         vm.state_province=null;
@@ -32,7 +34,18 @@
         vm.dateOptions = DateService.getDateOptions();
         vm.selOrganization = {name: '', array: []};
         vm.principalInvestigator = {name: '', array: []};
+        vm.selectedPerson = {name: '', array: []};
+        vm.selectedInvestigator = null;
+        vm.investigatorArray = [];
+        vm.selectedContactTypePI = false;
         vm.centralContactTypes = centralContactTypes.types;
+        for (var i = 0; i < vm.centralContactTypes; i++) {
+           if(vm.centralContactTypes[i].code  == "NONE") {
+               console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
+               vm.centralContactTypes.splice(i, 1);
+           }
+        }
+        console.log('vm.centralContactTypes=' + JSON.stringify(vm.centralContactTypes));
 
         //actions
         vm.addSiteRecruitment = addSiteRecruitment;
@@ -46,6 +59,8 @@
         vm.setEditMode = setEditMode;
         vm.openCalendar = openCalendar;
         vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
+        vm.setAsSiteContact = setAsSiteContact;
+        vm.saveContact;
 
 
         activate();
@@ -56,8 +71,16 @@
             watchTrialDetailObj();
             watchOrganization();
             watchPISelection();
+            watchContactType();
+            watchPersonSelection();
+            watchInvestigatorSelection();
         }
 
+        vm.saveContact = function(){
+            console.log("In saveContact vm.currentParticipatingSite =" + JSON.stringify(vm.currentParticipatingSite));
+            //if ()
+            vm.saveParticipatingSite();
+        }
 
         vm.saveParticipatingSite = function(){
             vm.disableBtn = true;
@@ -77,10 +100,10 @@
             outerPS.id = vm.currentParticipatingSite.id;
             outerPS.participating_site = vm.currentParticipatingSite;
             vm.currentParticipatingSite.trial_id = trialDetailObj.id;
-            console.log("In save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
+            //console.log("/n In save saveParticipatingSite vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
 
             TrialService.upsertParticipatingSite(outerPS).then(function(response) {
-                console.log("server_response="+JSON.stringify(response));
+                //console.log("/n server_response="+JSON.stringify(response));
                 var newParticipatingSite = false;
                 if(!vm.currentParticipatingSite.id){
                     // New Participating Site
@@ -94,7 +117,10 @@
                         vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
                         vm.currentParticipatingSite.participating_site_investigators = response.participating_site_investigators;
                         vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-                        vm.current_site_recruitment = {};
+                        vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
+                        vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
+                        vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
+                        vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
                         if(newParticipatingSite){
                             vm.curTrial.participating_sites_list.push(vm.currentParticipatingSite);
                         } else {
@@ -104,6 +130,7 @@
                                 }
                             }
                         }
+                        vm.current_site_recruitment = {};
                         PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                         $scope.$emit('updatedInChildScope', {});
                         toastr.clear();
@@ -118,8 +145,7 @@
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerPS));
             });
-
-        }//saveParticipatingSite
+        };//saveParticipatingSite
 
 
 
@@ -176,6 +202,11 @@
             vm.postal_code = vm.curTrial.participating_sites_list[idx].organization.postal_code;
             vm.po_name = vm.curTrial.participating_sites_list[idx].organization.po_name;
             vm.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
+            vm.persisted_contact = {};
+            vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
+            vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
+            vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
+            vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
         }
 
         function openCalendar ($event, type) {
@@ -318,7 +349,7 @@
             console.log("In editSiteRecruitment");
             vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
             vm.current_investigator.edit = true;
-            vm.current_investigator.index = index;
+            //vm.current_investigator.index = index;
             console.log("In editSiteRecruitment vm.current_investigator=" +JSON.stringify(vm.current_investigator));
             // vm.tempTrialStatuses.splice(index, 1);
             //}
@@ -332,18 +363,143 @@
         function commitEditInvestigator() {
             console.log("In commitEditInvestigator");
             if (vm.current_investigator.edit) {
-               // var selectedStatus = _.findWhere(vm.siteRecruitmentStatusesArr, {name: vm.current_site_recruitment.site_recruitment_status});
-             //   console.log("selectedStatus="+JSON.stringify(selectedStatus));
-             //   if (!!selectedStatus) {
-             //       vm.current_investigator.investigator_type = selectedStatus.id;
-             //       console.log("In commitEditSiteRecruitment=" + JSON.stringify(vm.current_site_recruitment));
-             //   }
-                vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
-                vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_investigator);
+                //console.log("EDIT!!!!!!In commitEditInvestigator");
+                vm.currentParticipatingSite.participating_site_investigators_attributes = [];
+                vm.currentParticipatingSite.participating_site_investigators_attributes.push(vm.current_investigator);
+                //console.log("EDIT!!!!!!In commitEditInvestigator=" + JSON.stringify(vm.currentParticipatingSite.participating_site_investigators_attributes));
                 vm.saveParticipatingSite();
             }
         } // commitEdit
 
+        /**
+         *  Set the Investigator as a Primary Contact
+         */
+        function setAsSiteContact(index) {
+            var inv = vm.currentParticipatingSite.participating_site_investigators[index];
+            vm.currentParticipatingSite.contact_name = inv.person.lname;
+            vm.currentParticipatingSite.contact_phone = inv.person.phone;
+            vm.currentParticipatingSite.contact_email = inv.person.email;
+            for (var i = 0; i < vm.centralContactTypes; i++) {
+                if(vm.centralContactTypes[i].code  == "PI") {
+                    vm.currentParticipatingSite.contact_type = vm.centralContactTypes[i];
+                }
+            }
+            //vm.currentParticipatingSite.contact_type = ;
+        }
+
+        /**
+         * Third Tab
+         */
+
+        function watchContactType() {
+            $scope.$watch(function() {return vm.currentParticipatingSite.contact_type;}, function(newVal, oldVal) {
+                console.log('Contact Type selected = ' + newVal);
+                //vm.currentParticipatingSite.contact_type = newVal;
+                if(newVal == "PI"){
+                    vm.selectedContactTypePI = true;
+                    vm.investigatorArray = [];
+                    for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
+                        var id = vm.currentParticipatingSite.participating_site_investigators[i].id;
+                        var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[i].person);
+
+                        vm.investigatorArray.push({"id": id, "name": name});
+                        console.log('vm.investigatorArray' + JSON.stringify(vm.investigatorArray));
+                    }
+                    if(vm.persisted_contact.contact_type == "PI"){
+                        vm.currentParticipatingSite.contact_name = vm.persisted_contact.contact_name;
+                        vm.currentParticipatingSite.contact_phone = vm.persisted_contact.contact_phone;
+                        vm.currentParticipatingSite.contact_email = vm.persisted_contact.contact_email;
+                        vm.currentParticipatingSite.person_id =  vm.persisted_contact.person_id;
+                    } else {
+                        vm.currentParticipatingSite.contact_name = null;
+                        vm.currentParticipatingSite.contact_phone = null;
+                        vm.currentParticipatingSite.contact_email = null;
+                        vm.currentParticipatingSite.person_id = null;
+                    }
+
+                } else if (newVal == "General"){
+                    vm.selectedContactTypePI = false;
+                    if(vm.persisted_contact.contact_type == "General"){
+                        vm.currentParticipatingSite.contact_name = vm.persisted_contact.contact_name;
+                        vm.currentParticipatingSite.contact_phone = vm.persisted_contact.contact_phone;
+                        vm.currentParticipatingSite.contact_email = vm.persisted_contact.contact_email;
+                        vm.currentParticipatingSite.person_id = null;
+                    } else {
+                        vm.currentParticipatingSite.contact_name = null;
+                        vm.currentParticipatingSite.contact_phone = null;
+                        vm.currentParticipatingSite.contact_email = null;
+                        vm.currentParticipatingSite.person_id = null;
+                    }
+                } else if (newVal == "Person"){
+                    vm.selectedContactTypePI = false;
+                    if(vm.persisted_contact.contact_type == "Person"){
+                        vm.currentParticipatingSite.contact_name = vm.persisted_contact.contact_name;
+                        vm.currentParticipatingSite.contact_phone = vm.persisted_contact.contact_phone;
+                        vm.currentParticipatingSite.contact_email = vm.persisted_contact.contact_email;
+                        vm.currentParticipatingSite.person_id =  vm.persisted_contact.person_id;
+                    } else {
+                        console.log("Initialize for Person");
+                        vm.currentParticipatingSite.contact_name = null;
+                        vm.currentParticipatingSite.contact_phone = null;
+                        vm.currentParticipatingSite.contact_email = null;
+                        vm.currentParticipatingSite.person_id = null;
+                    }
+                }
+
+                /**
+                if (angular.isArray(newVal) && newVal.length > 0 && !newVal[0].fullname) {
+                    vm.currentParticipatingSite.central_contacts[0] = newVal[0];
+                    var firstName = newVal[0].fname || '';
+                    var middleName = newVal[0].mname || '';
+                    var lastName = newVal[0].lname || '';
+                    var fullName = firstName + ' ' + middleName + ' ' + lastName;
+                    vm.currentParticipatingSite.central_contacts[0].fullname = (fullName).trim();
+                    vm.currentParticipatingSite.central_contacts[0].person_id = newVal[0].id || '';
+                    vm.currentParticipatingSite.central_contacts[0].phone = newVal[0].phone.replace(regex, '');
+                    delete vm.currentParticipatingSite.central_contacts[0].id;
+                } **/
+            });
+
+        }
+
+        /**
+         * Third Tab
+         * Selecting a new  Person
+         */
+        function watchPersonSelection() {
+            $scope.$watchCollection(function() {return vm.selectedPerson.array;}, function(newVal, oldVal) {
+                console.log(" watchPersonSelection newVal=" + JSON.stringify(newVal));
+                if (angular.isArray(newVal) && newVal.length > 0) {
+                    vm.currentParticipatingSite.contact_name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
+                    //vm.principalInvestigator.pi = vm.selectedPerson.array[0];
+                    //vm.principalInvestigator.pi_id  = vm.selectedPerson.array[0].id; // update PI on view
+                    var personAsContact = {};
+                    personAsContact.person_id = vm.selectedPerson.array[0].id;
+                    personAsContact.new = true;
+                    vm.currentParticipatingSite.contact_type = "Person";
+                    vm.currentParticipatingSite.participating_site_investigators_attributes = [];
+                    vm.currentParticipatingSite.participating_site_investigators_attributes.push(personAsContact);
+                }
+            });
+        }
+
+        /**
+         * Third Tab
+         */
+
+        function watchInvestigatorSelection() {
+            $scope.$watch(function() {return vm.selectedInvestigator;}, function(newVal, oldVal) {
+                for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
+                    if(vm.currentParticipatingSite.participating_site_investigators[i].id == newVal.id){
+                        var inv = vm.currentParticipatingSite.participating_site_investigators[i].person;
+                        vm.currentParticipatingSite.contact_name = PersonService.extractFullName(inv);
+                        vm.currentParticipatingSite.contact_phone = inv.phone;
+                        vm.currentParticipatingSite.contact_email = inv.email;
+                        vm.currentParticipatingSite.contact_type = "PI"; // replace hardcoding
+                    }
+                }
+            });
+        };
 
         /**
          * Get trial detail object from parent scope

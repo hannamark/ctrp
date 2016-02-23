@@ -13,9 +13,34 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
       | Expanded Access            | 
       | Observational              | 
       | Ancillary Correlative      | 
-      
-      
-      Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
+  
+  Examples:
+  
+      |From Research category  |To Research category  |field  |action (diplays OR deleted |
+      | Interventional |Expanded Access  |Expanded Access Type  |displays |
+      | Expanded Access | Interventional  |Expanded Access Type  |deleted  |
+      | Interventional |Observational  |Secondary Purpose  | deleted |
+      | Interventional |Observational  |Secondary Purpose Other  | deleted |
+      | Interventional |Observational | Intervention Model |deleted  |
+      |  Interventional |Observational  | Arms/Groups |deleted  |
+      |Interventional |Observational  |Masking  |deleted  |
+      | Interventional |Observational  |Masking role Subject  |deleted  |
+      |Interventional |Observational | Masking role investigator  |deleted  |
+  |Interventional |Observational | Masking role Caregiver  |deleted  |
+     |Interventional |Observational | Masking role outcome Assessor  |deleted  |  
+       |Interventional |Observational |Allocation |deleted  | 
+       |Interventional |Observational | Study Classification |deleted  |  
+         |Interventional |Observational | Final Enrollment for clinicalTrials.gov|deleted  |  
+         |Interventional |Observational | Accruals  |deleted  |  
+         |Interventional |Observational | Study Model  |displays |  
+         |Interventional |Observational |Study Model other  |displays  |  
+        |Interventional |Observational | Time Perspective  |displays |  
+      |Interventional |Observational | Bio Specimen Retention |displays | 
+      |Interventional |Observational | Bio Specimen description  |displays | 
+      |Interventional |Observational | Number of Groups/Cohorts  |displays | 
+    
+    
+    Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
     Given I am logged into the CTRP Protocol Abstraction application
        And I am on the Trial Design screen
       And the Clinical Research Category value is interventional
