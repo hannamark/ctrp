@@ -246,10 +246,23 @@ class Trial < TrialBase
       elsif self.internal_source && self.internal_source.code == 'CTRP'
         actions.append('update')
         actions.append('amend')
-      elsif self.internal_source && self.internal_source.code == 'CTGI'
-        actions.append('add-my-site')
       end
     end
+
+    if self.internal_source && self.internal_source.code == 'CTGI'
+      # Regular user and org hasn't been added || site admin user and there are one or more orgs in the family that haven't been added
+      if (self.current_user.role != 'ROLE_SITE-SU' && !self.ps_orgs.include?(self.current_user.organization)) ||
+          (self.current_user.role == 'ROLE_SITE-SU' && !(self.current_user.family_orgs - self.ps_orgs).empty?)
+        actions.append('add-my-site')
+      end
+      # Regular user and org has been added || site admin user and there are one or more orgs in the family that have been added
+      if (self.current_user.role != 'ROLE_SITE-SU' && self.ps_orgs.include?(self.current_user.organization)) ||
+          (self.current_user.role == 'ROLE_SITE-SU' && self.current_user.family_orgs.length > (self.current_user.family_orgs - self.ps_orgs).length)
+        actions.append('update-my-site')
+      end
+    end
+
+    return actions
   end
 
   def is_owner
