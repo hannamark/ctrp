@@ -163,24 +163,8 @@ Then the <date> and <status> will be validated and displayed on the trial status
    Then the selected status will be deleted
    
  
-   Then the Trial Status history will be updated and no errors will be indicated during Trial Review
    
-     Scenario Outline: #5 I can Edit Trial Status
-    Given I have selected the option to register a trial type 
-
-      |National                 |
-      |Externally Peer-Reviewed |
-      |Institutional            |
-     
-     And I am on the Register trial Status History table
-     When I click on the edit button in the Actions column for the trial status I want to edit
-     And I must have entered a Status Date 
-     And I must have entered a Trial status
-     And I have entered Why Study Stopped 
-     And I must have entered a comment 
-     And I have clicked on the save button
-     Then the trial status section will not indicate any errors during Trial Review
-     
+   
      
      
      
