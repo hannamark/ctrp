@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160222205107) do
+ActiveRecord::Schema.define(version: 20160224222501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -335,8 +335,8 @@ ActiveRecord::Schema.define(version: 20160222205107) do
     t.string   "institute_code",    limit: 255
     t.string   "nci",               limit: 255
     t.integer  "trial_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "uuid",              limit: 255
     t.integer  "lock_version",                  default: 0
     t.string   "serial_number",     limit: 255
@@ -917,8 +917,8 @@ ActiveRecord::Schema.define(version: 20160222205107) do
     t.date     "amendment_date"
     t.integer  "amendment_reason_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "uuid",                 limit: 255
     t.integer  "lock_version",                     default: 0
     t.string   "amendment_num",        limit: 255
@@ -1054,9 +1054,9 @@ ActiveRecord::Schema.define(version: 20160222205107) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.jsonb    "object"
+    t.text     "object"
     t.datetime "created_at"
-    t.jsonb    "object_changes"
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1241,9 +1241,9 @@ ActiveRecord::Schema.define(version: 20160222205107) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.jsonb    "object"
+    t.text     "object"
     t.datetime "created_at"
-    t.jsonb    "object_changes"
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 
