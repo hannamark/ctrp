@@ -122,9 +122,9 @@
                                                 <select name="siteRecStatus" id="siteRecStatus_select"
                                                         class="form-control input-sm"
                                                         restriction-field
-                                                        ng-model="psView.current_site_recruitment.site_recruitment_status.name">
+                                                        ng-model="psView.current_site_recruitment.site_recruitment_status_id">
                                                     <option value="">Select a status</option>
-                                                    <option ng-repeat="siteStatus in psView.siteRecruitmentStatusesArr" value="{{siteStatus.name}}">
+                                                    <option ng-repeat="siteStatus in psView.siteRecruitmentStatusesArr" value="{{siteStatus.id}}">
                                                         {{siteStatus.name}}
                                                     </option>
                                                 </select>
@@ -219,7 +219,7 @@
                         <div class="form-group no-bottom-margin">
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()">Save</button>
-                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.reload()"  restriction-field ng-disabled="psView.disableBtn">
+                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetPSTab()"  restriction-field ng-disabled="psView.disableBtn">
                                     <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
                             </div>
@@ -364,7 +364,7 @@
                             <div class="form-group no-bottom-margin">
                                 <div class="btn-toolbar">
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()">Save</button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.reload()"  restriction-field ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetInvestigatorTab()"  restriction-field ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
                                 </div>
@@ -471,7 +471,7 @@
             <div class="form-group no-bottom-margin">
                 <div class="btn-toolbar">
                     <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveContact()">Save</button>
-                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.reload()"  restriction-field ng-disabled="psView.disableBtn">
+                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetContactTab()"  restriction-field ng-disabled="psView.disableBtn">
                         <i class="glyphicon glyphicon-remove"></i> Reset
                     </button>
                 </div>
