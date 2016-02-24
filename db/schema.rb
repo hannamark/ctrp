@@ -994,7 +994,7 @@ ActiveRecord::Schema.define(version: 20160222205107) do
     t.string   "uuid",             limit: 255
     t.integer  "lock_version",                 default: 0
     t.integer  "submission_id"
-    t.boolean  "deleted",                      default: false
+    t.string   "status",                       default: "active"
   end
 
   add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree
@@ -1054,9 +1054,9 @@ ActiveRecord::Schema.define(version: 20160222205107) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.text     "object"
+    t.jsonb    "object"
     t.datetime "created_at"
-    t.text     "object_changes"
+    t.jsonb    "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1241,9 +1241,9 @@ ActiveRecord::Schema.define(version: 20160222205107) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.text     "object"
+    t.jsonb    "object"
     t.datetime "created_at"
-    t.text     "object_changes"
+    t.jsonb    "object_changes"
     t.integer  "transaction_id"
   end
 

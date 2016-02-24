@@ -55,7 +55,11 @@
 
             TrialService.upsertParticipatingSite(outerPs).then(function(response) {
                 if (response.server_response.status < 300) {
-                    $state.go('main.trials', null, {reload: true});
+                    if (vm.isManageScreen) {
+                        $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
+                    } else {
+                        $state.go('main.viewTrial', {trialId: response.trial.id});
+                    }
                     toastr.success('Participating Site ' + vm.curPs.id + ' has been recorded', 'Operation Successful!');
                 } else {
                     // Enable buttons in case of backend error
@@ -151,6 +155,7 @@
 
         function activate() {
             appendNewPsFlag();
+            setManageScreenFlag();
             populateOrgs();
             setDefaultOrg();
 
@@ -167,8 +172,18 @@
          *
          */
         function appendNewPsFlag() {
-            if ($state.$current.name.indexOf('add') > -1) {
-                vm.curPs.new = true;  //
+            if ($state.$current.name.indexOf('add') > -1 || $state.$current.name.indexOf('manage') > -1) {
+                vm.curPs.new = true;
+            } else {
+                vm.curPs.new = false;
+            }
+        }
+
+        function setManageScreenFlag() {
+            if ($state.$current.name.indexOf('manage') > -1) {
+                vm.isManageScreen = true;
+            } else {
+                vm.isManageScreen = false;
             }
         }
         

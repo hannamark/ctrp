@@ -46,13 +46,14 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
     Then the Principal Investigator selected will be recorded as the Responsible Party Investigator
     And the Investigator Title will be displayed as "Principal Investigator"
     And the Investigator Title may be edited
-    And the Investigator Affiliation will be the Principal Investigator's organization affiliation
+    And the Investigator Affiliation will be the Sponsor Organization
     And the Investigation Affiliation can be changed
 
-    Examples:
+     Examples:
       |trialType                |
       |National                 |
-
+      |Externally Peer-Reviewed |
+      |Institutional            |
 
   Scenario Outline:#3a Principal Investigator Rule
     Given I have selected the option to register a trial <trialType>

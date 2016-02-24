@@ -37,7 +37,7 @@ Feature: Reg F10 Register Trial Grant Information
       |Institutional             |
 
 
-
+  @runthis
   Scenario Outline: #3 I can enter the NCI Grant information for multiple Grants for a trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Grant Information screen
@@ -48,6 +48,8 @@ Feature: Reg F10 Register Trial Grant Information
     Examples:
       |trialType                 |
       |National                  |
+      |Externally Peer-Reviewed  |
+      |Institutional             |
 
 
   Scenario Outline: #4 I must enter Trial Grant Information for a Trial
