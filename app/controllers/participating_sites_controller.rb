@@ -55,6 +55,9 @@ class ParticipatingSitesController < ApplicationController
   # DELETE /participating_sites/1
   # DELETE /participating_sites/1.json
   def destroy
+    Rails.logger.info "IN HERE DESTØ‰Y!!"
+    @participating_site.site_rec_status_wrappers.delete_all
+    @participating_site.participating_site_investigators.delete_all
     @participating_site.destroy
     respond_to do |format|
       format.html { redirect_to participating_sites_url, notice: 'Participating site was successfully destroyed.' }
@@ -89,7 +92,7 @@ class ParticipatingSitesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def participating_site_params
-      params[:participating_site].permit(:protocol_id, :program_code, :contact_name, :contact_phone, :contact_email, :trial_id, :organization_id,
+      params[:participating_site].permit(:protocol_id, :program_code, :contact_name, :contact_phone, :contact_email, :contact_type, :trial_id, :organization_id,
                                          site_rec_status_wrappers_attributes: [:id, :status_date, :site_recruitment_status_id, :comments, :_destroy],
                                          participating_site_investigators_attributes: [:id, :participating_site_id, :person_id, :set_as_contact, :investigator_type, :_destroy])
     end

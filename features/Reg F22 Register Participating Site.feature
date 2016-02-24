@@ -82,11 +82,12 @@ Then CTRP will display Trial Details:
 |Funding Source |
 |Participating Sites| Organization Name | Principal Investigator | Local Trial Identifer | Program Code | Recruitment Status | Recruitment Status Date | Opened for Accrual Date| Closed for Accrual Date |
 
-Scenario: #6 As a CTRP User with Administrative Privileges, I can update any participating site I added on an Imported trial
-Given I have added a participating site on an Imported trial
-And I have selected the Available Action to Update My Site
-Then a list of participating sites I have added on an Imported trial will be displayed
-And I can select one of the participating sites
+Scenario: #6 As a CTRP User with Administrative Privileges, I can update any sites associated with the admin's family on an Imported trial
+Given I can view all participating sites added to an Imported trial
+And I can update any sites associated with the admin's family on an Imported Trial
+When I have selected the Available Action to Update Site
+Then a list of all participating sites added on an Imported trial will be displayed
+And I can select any one of the participating sites
 And I can update any of these data elements:
 |Local Trial Identifier|
 |Site Principal Investigator|

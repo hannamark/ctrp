@@ -32,6 +32,12 @@ class SessionsController < Devise::SessionsController
         self.raise_login_failed(error_text)
       end
 
+      if user.role == "ROLE_SERVICE-REST"
+        error_text = "This User role does not have access to UI"
+        self.raise_login_failed(error_text)
+      end
+
+
       ## Print informational login messages
       user.log_debug
 
