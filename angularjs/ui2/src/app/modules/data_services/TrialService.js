@@ -118,7 +118,8 @@
             deleteTrial: deleteTrial,
             getGrantsSerialNumber: getGrantsSerialNumber,
             upsertParticipatingSite: upsertParticipatingSite,
-            getParticipatingSiteById: getParticipatingSiteById
+            getParticipatingSiteById: getParticipatingSiteById,
+            deleteParticipatingSite: deleteParticipatingSite
         };
 
         return services;
@@ -998,6 +999,15 @@
          */
         function deleteTrial(trialId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_TRIAL + trialId + '.json');
+        }
+        /**
+         * delete an trial with the given trialId
+         *
+         * @param trialId
+         * @returns {*}
+         */
+        function deleteParticipatingSite(psId) {
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_PARTICIPATING_SITE + psId + '.json');
         }
     }
 })();
