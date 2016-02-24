@@ -73,7 +73,7 @@ json.trials do
     json.nih_nci_prog trial.nih_nci_prog.present? ? trial.nih_nci_prog : nil
 
     json.url trial_url(trial, format: :json)
-    json.actions trial.actions
+    #json.actions trial.actions
   end
 end
 json.start params[:start]

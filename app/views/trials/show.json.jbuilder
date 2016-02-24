@@ -48,7 +48,7 @@ json.collaborators_attributes do
   end
 end
 
-json.participating_sites_list do
+json.participating_sites do
   json.array!(@trial.participating_sites) do |participating_site|
     json.id participating_site.id
     json.investigator participating_site.person.present? ? participating_site.person.lname : ""

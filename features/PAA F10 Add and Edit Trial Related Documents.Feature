@@ -118,3 +118,23 @@ And have selected the Document type from the list of:
 And select save
 And the document not hiddedn from the trial related documents screen
 Then the system will display a Error message that "The selected document type is already been selected."
+
+Scenario: #11 I can reload a file a Trial Related Document 
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Related Documents screen
+When I select Edit a document
+And have browsed and selected a new file to attach
+And have selected the Document type from the list of:
+|Protocol Document|
+|IRB Approval Document|
+|Informed Consent Document|
+|Participating Sites|
+|Protocol Highlighted Document|
+|TSR|
+|Complete Sheet|
+|Change Memo|
+|Other|
+And have entered a Description of the Document when the document type is Other
+Then the Trial Related Document will be associated with the trail
+And the date the document was will be listed with the document 
+And the users name that added the document will be listed with the document
