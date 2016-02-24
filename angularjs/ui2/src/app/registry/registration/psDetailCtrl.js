@@ -151,6 +151,7 @@
 
         function activate() {
             appendNewPsFlag();
+            setManageScreenFlag();
             populateOrgs();
             setDefaultOrg();
 
@@ -167,8 +168,18 @@
          *
          */
         function appendNewPsFlag() {
-            if ($state.$current.name.indexOf('add') > -1) {
-                vm.curPs.new = true;  //
+            if ($state.$current.name.indexOf('add') > -1 || $state.$current.name.indexOf('manage') > -1) {
+                vm.curPs.new = true;
+            } else {
+                vm.curPs.new = false;
+            }
+        }
+
+        function setManageScreenFlag() {
+            if ($state.$current.name.indexOf('manage') > -1) {
+                vm.isManageScreen = true;
+            } else {
+                vm.isManageScreen = false;
             }
         }
         

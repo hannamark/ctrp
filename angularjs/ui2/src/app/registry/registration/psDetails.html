@@ -1,10 +1,39 @@
 <div class="row">
     <div class="col-xs-12 drop-shadow">
         <div class="row">
-            <h4>Add Participating Site</h4>
+            <h4 ng-show="!psDetailView.isManageScreen && psDetailView.curPs.new">Add Participating Site</h4>
+            <h4 ng-show="!psDetailView.isManageScreen && !psDetailView.curPs.new">Update Participating Site</h4>
+            <h4 ng-show="psDetailView.isManageScreen">Manage Participating Site</h4>
         </div>
+
         <div class="row">
             <form class="form form-horizontal" role="form" name="ps_form" novalidate ctrp-submit="psDetailView.updatePs()">
+                <div ng-show="psDetailView.isManageScreen && psDetailView.curTrial.participating_sites.length > 0" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Added Participating Sites:</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <table class="table table-bordered table-striped table-condensed">
+                            <thead>
+                                <th>Organization Name</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="ps in psDetailView.curTrial.participating_sites track by $index">
+                                <td class="col-md-4">{{ps.organization.name}}</td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div ng-show="psDetailView.isManageScreen && psDetailView.curTrial.participating_sites.length > 0" class="form-group no-bottom-margin">
+                    <div class="btn-toolbar col-xs-12">
+                        <button type="button" restriction-field class="btn btn-primary pull-right" ng-click="">
+                            Add New Participating Site
+                        </button>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">NCI ID:</label>
                     <div class="col-xs-12 col-sm-6 form-text">

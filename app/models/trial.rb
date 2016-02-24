@@ -250,19 +250,32 @@ class Trial < TrialBase
     end
 
     if self.internal_source && self.internal_source.code == 'CTGI'
-      # Regular user and org hasn't been added || site admin user and there are one or more orgs in the family that haven't been added
-      if (self.current_user.role != 'ROLE_SITE-SU' && !self.ps_orgs.include?(self.current_user.organization)) ||
-          (self.current_user.role == 'ROLE_SITE-SU' && !(self.current_user.family_orgs - self.ps_orgs).empty?)
-        actions.append('add-my-site')
-      end
-      # Regular user and org has been added || site admin user and there are one or more orgs in the family that have been added
-      if (self.current_user.role != 'ROLE_SITE-SU' && self.ps_orgs.include?(self.current_user.organization)) ||
-          (self.current_user.role == 'ROLE_SITE-SU' && self.current_user.family_orgs.length > (self.current_user.family_orgs - self.ps_orgs).length)
-        actions.append('update-my-site')
+      if self.current_user.role == 'ROLE_SITE-SU'
+        actions.append('manage-sites')
+      else
+        if self.ps_orgs.include?(self.current_user.organization)
+          # Associated org has been added as participating site
+          actions.append('update-my-site')
+        else
+          # Associated org hasn't been added as participating site
+          actions.append('add-my-site')
+        end
       end
     end
 
     return actions
+  end
+
+  def my_site_id
+    if self.current_user.role != 'ROLE_SITE-SU'
+      self.participating_sites.each do |e|
+        if e.organization.id == self.current_user.organization.id
+          return e.id
+        end
+      end
+    else
+      return nil
+    end
   end
 
   def is_owner
