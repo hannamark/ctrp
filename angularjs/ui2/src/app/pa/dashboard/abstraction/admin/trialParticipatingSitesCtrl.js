@@ -121,7 +121,7 @@
                 }
                 if(vm.currentParticipatingSite.id) {
                     TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
-                        //console.log("getParticipatingSiteById response = " + JSON.stringify(response));
+                        console.log("getParticipatingSiteById response = " + JSON.stringify(response.site_rec_status_wrappers));
                         vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
                         vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
                         vm.currentParticipatingSite.participating_site_investigators = response.participating_site_investigators;
@@ -218,7 +218,7 @@
             vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
             vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
             vm.initSiteRecruitmentGrid();
-            vm.validateStatus();
+            //vm.validateStatus();
         }
 
         vm.initSiteRecruitmentGrid = function (){
@@ -261,9 +261,11 @@
             _.each(vm.siteRecruitmentStatusesArr, function (status) {
                 //console.log(" addSiteRecruitment() = status = "+ JSON.stringify(status) );
                // console.log(" addSiteRecruitment() = status = "+ JSON.stringify(status) );
-                if (status.id == siteObj.site_recruitment_status.id) {
+                if (status.name == siteObj.site_recruitment_status.name) {
                     siteObj.sr_status_name = status.name;
                     siteObj.sr_status_code = status.code;
+                    siteObj.site_recruitment_status_id = status.id;
+                    siteObj.site_recruitment_status = status;
                 }
             });
             //vm.validateStatus();
