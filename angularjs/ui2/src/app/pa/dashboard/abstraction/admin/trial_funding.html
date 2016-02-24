@@ -71,7 +71,7 @@
                                                            reset-search-input="false"
                                                            style="width: 300px;">
                                                     <ui-select-match placeholder="Enter serial number...">{{$select.selected.serial_number}}</ui-select-match>
-                                                    <ui-select-choices repeat="tempgrant in trialDetailView.grantsInputs.grantResults | propsFilter: {serial_number: $select.search, institution_name: $select.search}"
+                                                    <ui-select-choices ng-hide="!trialDetailView.grantsInputs.grantResults.length" repeat="tempgrant in trialDetailView.grantsInputs.grantResults | propsFilter: {serial_number: $select.search, institution_name: $select.search}"
                                                                        refresh="refreshGrants($select.search)"
                                                                        refresh-delay="0">
                                                         <!--
@@ -83,7 +83,7 @@
                                                             <strong>PI:</strong> {{tempgrant.pi_full_name}}
                                                         </small>
                                                         -->
-                                                        <strong>{{tempgrant.serial_number}}</strong> - {{tempgrant.institution_name}}, {{tempgrant.project_title}}, {{tempgrant.pi_full_name}}
+                                                        <strong>{{tempgrant.serial_number}}</strong> - {{tempgrant.institution_name}}; {{tempgrant.project_title}}; {{tempgrant.pi_full_name}}
                                                     </ui-select-choices>
                                                 </ui-select>
                                             </div>

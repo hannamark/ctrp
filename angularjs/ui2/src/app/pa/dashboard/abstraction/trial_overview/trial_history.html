@@ -4,54 +4,53 @@
             <uib-accordion-heading>
                 Trial History <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
-            <form class="form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialHistoryView.updateTrialStatuses()">
+            <form class="form form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialHistoryView.updateTrialStatuses()">
 
-            <div class="row">
-                <td class="col-md-2">
-                    <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                        <label for="start_date" >Start Date </label>
-                        <input type="text" id="start_date" name="status_date" class="form-control input-sm"
-                               uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.start_date"
-                               ng-click="trialHistoryView.openCalendar($event, 'start_date')"
-                               is-open="trialHistoryView.startDateOpened"
-                               datepicker-options="trialHistoryView.dateOptions"
-                               close-text="Close" placeholder="Start Date" readonly />
-                                                <span class="input-group-btn">
-                                                    <button type="button" restriction-field class="btn btn-default" ng-click="trialHistoryView.openCalendar($event, 'start_date')">
-                                                        <i class="glyphicon glyphicon-calendar"></i>
-                                                    </button>
-                                                </span>
-                    </div>
-                </td>
+                <div class="row">
+                    <td class="col-md-2">
+                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                            <label for="start_date" >Start Date </label>
+                            <input type="text" id="start_date" name="status_date" class="form-control input-sm"
+                                   uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.start_date"
+                                   ng-click="trialHistoryView.openCalendar($event, 'start_date')"
+                                   is-open="trialHistoryView.startDateOpened"
+                                   datepicker-options="trialHistoryView.dateOptions"
+                                   close-text="Close" placeholder="Start Date" readonly />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" restriction-field class="btn btn-default" ng-click="trialHistoryView.openCalendar($event, 'start_date')">
+                                                            <i class="glyphicon glyphicon-calendar"></i>
+                                                        </button>
+                                                    </span>
+                        </div>
+                    </td>
 
-                <td class="col-md-2">
-                    <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                        <label for="start_date" >End Date </label>
-                        <input type="text" id="end_date" name="end_date" class="form-control input-sm"
-                               uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.end_date"
-                               ng-click="trialHistoryView.openCalendar($event, 'end_date')"
-                               is-open="trialHistoryView.endDateOpened"
-                               datepicker-options="trialHistoryView.dateOptions"
-                               date-later-than="{{trialHistoryView.statusObj.start_date| date: 'short'}}
-                               close-text="Close" placeholder="End Date" readonly />
-                                                <span class="input-group-btn">
-                                                    <button type="button" restriction-field class="btn btn-default" ng-click="trialHistoryView.openCalendar($event, 'end_date')">
-                                                        <i class="glyphicon glyphicon-calendar"></i>
-                                                    </button>
-                                                </span>
-                    </div>
-                </td>
+                    <td class="col-md-2">
+                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                            <label for="start_date" >End Date</label>
+                            <input type="text" id="end_date" name="end_date" class="form-control input-sm"
+                                   uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.end_date"
+                                   ng-click="trialHistoryView.openCalendar($event, 'end_date')"
+                                   is-open="trialHistoryView.endDateOpened"
+                                   datepicker-options="trialHistoryView.dateOptions"
+                                   date-later-than="{{trialHistoryView.statusObj.start_date| date: 'short'}}
+                                   close-text="Close" placeholder="End Date" readonly />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" restriction-field class="btn btn-default" ng-click="trialHistoryView.openCalendar($event, 'end_date')">
+                                                            <i class="glyphicon glyphicon-calendar"></i>
+                                                        </button>
+                                                    </span>
+                        </div>
+                    </td>
 
-            </div>
+                </div>
                 <div class="form-group no-bottom-margin" >
                     <div class="col-sm-3"></div>
                     <div class="btn-toolbar col-xs-12 col-sm-9">
-                        <button type="button" class="btn btn-primary pull-right" id="cancel_btn" ng-click="trialHistoryView.submit()" restriction-field>
+                        <button type="button" class="btn btn-primary pull-right" id="submit_btn" ng-click="trialHistoryView.submit()" restriction-field>
                             Submit
                         </button>
                     </div>
                 </div>
-
             </form>
 
             <!-- list of audit trials -->
