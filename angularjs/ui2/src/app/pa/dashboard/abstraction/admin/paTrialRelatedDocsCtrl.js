@@ -66,8 +66,13 @@
             function deleteDoc(index) {
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     var curStatus = vm.curTrialDetailObj.trial_documents[index].status || 'deleted';
-                    vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
-                    // vm.curTrialDetailObj.trial_documents[index].deleted = !vm.curTrialDetailObj.trial_documents[index].deleted;
+                    console.log('curStatus in deleteDoc: ', curStatus);
+                    vm.curTrialDetailObj.trial_documents[index].status = (curStatus === 'deleted' || curStatus === 'inactive') ? 'active' : 'deleted'; // toggle active and deleted
+                    console.log('after toggle, status: ', vm.curTrialDetailObj.trial_documents[index].status);
+                    if (vm.curTrialDetailObj.trial_documents[index].status === 'active') {
+                        // make sure only one doc of the same document_type 'active' except for 'Other Document'
+                        uniqfyDocTypes(index);
+                    }
                 }
             }
 
@@ -118,6 +123,33 @@
                 return indices;
             }
 
+            /**
+             * Make sure no duplication of the same document type except for 'Other Document'
+             * @param  {Integer} index [if null, it's a new document]
+             * @return {Void}       [description]
+             */
+            function uniqfyDocTypes(index) {
+                var docType = vm.curDoc.document_type;
+                if (index !== null) {
+                    // if index is specified, let it be 'active'
+                    vm.curTrialDetailObj.trial_documents[index].status = 'active';
+                    docType = vm.curTrialDetailObj.trial_documents[index].document_type;
+                }
+                // indices of the same document_type in the current trial_documents
+                var existingIndices = findIndices(vm.curTrialDetailObj.trial_documents, 'document_type', docType);
+                console.log('existing indices: ', existingIndices);
+                var foundIndex = existingIndices.indexOf(index);
+                if (foundIndex > -1) {
+                    existingIndices.splice(foundIndex, 1); // remove it from being labeled as 'inactive'
+                }
+                _.each(existingIndices, function(idx) {
+                    if (vm.curTrialDetailObj.trial_documents[idx].status === 'active' &&
+                        vm.curTrialDetailObj.trial_documents[idx].document_type.indexOf('Other') === -1) {
+                        vm.curTrialDetailObj.trial_documents[idx].status = 'inactive';
+                    }
+                });
+            }
+
             function upsertDoc(index) {
                 console.info('index: ', index);
                 console.info('vm.curDoc: ', vm.curDoc);
@@ -126,22 +158,12 @@
                     return;
                 }
 
-                var existingIndices = findIndices(vm.curTrialDetailObj.trial_documents, 'document_type', vm.curDoc.document_type);
-                console.log('existing indices: ', existingIndices);
-                _.each(existingIndices, function(idx) {
-                    if (vm.curTrialDetailObj.trial_documents[idx].status === 'active' &&
-                        vm.curTrialDetailObj.trial_documents[idx].document_type.indexOf('Other') === -1) {
-                        vm.curTrialDetailObj.trial_documents[idx].status = 'inactive';
-                    }
-                });
-
+                uniqfyDocTypes(index);
                 if (index !== null && !vm.curDoc.file.size) {
                     console.info('update without uploading');
                     // update without uploading
                     vm.curDoc.file = prevFile !== '' ? prevFile : vm.curDoc.file;
                     vm.curTrialDetailObj.trial_documents[index] = angular.copy(vm.curDoc);
-                    // vm.curTrialDetailObj.trial_documents[index].file_name = prevFileName; // restore the file name
-                    // prevFileName = '';
                 } else if (!!vm.curDoc.file.size) {
                     console.info('file to be uploaded: ', vm.curDoc.file);
                     // file to be uploaded
