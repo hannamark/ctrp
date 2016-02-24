@@ -69,6 +69,7 @@ When I select Delete one or more documents
 And have selected a document with a type of :
 |Protocol Document|
 |IRB Approval Document|
+And the Information Source is "Protocol" (Trials.internal_source_id Internal_Sources.name )|
 Then the system will display a Error message that the Protocol Document and or IRB Approval Document cannot be deleted
 
 Scenario: #8 Valid Document Formats 
