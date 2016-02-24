@@ -14,12 +14,16 @@
                         <table class="table table-bordered table-striped table-condensed">
                             <thead>
                                 <th>Organization Name</th>
-                                <th></th>
+                                <th>Edit</th>
                             </thead>
                             <tbody>
                             <tr ng-repeat="ps in psDetailView.curTrial.participating_sites track by $index">
-                                <td class="col-md-4">{{ps.organization.name}}</td>
-                                <td></td>
+                                <td class="col-md-11">{{ps.organization.name}}</td>
+                                <td class="col-md-1">
+                                    <label restriction-field class="btn btn-default" ng-click="psDetailView.editPs($index)">
+                                        <i class="glyphicon glyphicon-edit"></i>
+                                    </label>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -28,7 +32,7 @@
 
                 <div ng-show="psDetailView.isManageScreen && psDetailView.curTrial.participating_sites.length > 0" class="form-group no-bottom-margin">
                     <div class="btn-toolbar col-xs-12">
-                        <button type="button" restriction-field class="btn btn-primary pull-right" ng-click="">
+                        <button type="button" restriction-field class="btn btn-primary pull-right" ng-click="psDetailView.addPs()">
                             Add New Participating Site
                         </button>
                     </div>
@@ -57,12 +61,15 @@
 
                 <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.organization)}">
                     <label class="control-label col-xs-12 col-sm-3">Organization Name:</label>
-                    <div class="col-xs-12 col-sm-6">
+                    <div ng-if="!psDetailView.editMode" class="col-xs-12 col-sm-6">
                         <select restriction-field class="form-control input-sm" id="organization" name="organization" ng-model="psDetailView.curPs.organization_id"
                                 ng-options="org.id as org.name for org in psDetailView.availableOrgs" required></select>
                         <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(ps_form.organization)">
                             Organization is required
                         </span>
+                    </div>
+                    <div ng-if="psDetailView.editMode" class="col-xs-12 col-sm-6 form-text">
+                        {{psDetailView.curPs.organization.name}}
                     </div>
                 </div>
 
