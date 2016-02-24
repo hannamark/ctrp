@@ -19,6 +19,8 @@
         vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
 
         // initializations
+        vm.deleteListHandler = deleteListHandler;
+        vm.deleteSelected = deleteSelected;
         vm.currentParticipatingSite= {};
         vm.current_site_recruitment = {};
         vm.current_investigator = {};
@@ -509,6 +511,51 @@
             }, 1);
         } //getTrialDetailCopy
 
+        function deleteListHandler(participatingSitesSelectedInCheckboxes){
+            //console.log("In deleteListHandler");
+            var deleteList = [];
+            angular.forEach(participatingSitesSelectedInCheckboxes, function(item) {
+                if ( angular.isDefined(item.selected) && item.selected === true ) {
+                    deleteList.push(item);
+                }
+            });
+            vm.selectedDeleteParticipatingSitesList = deleteList ;
+           // console.log("In vm.selectedDeleteParticipatingSitesList=" + JSON.stringify(vm.selectedDeleteParticipatingSitesList));
+
+        };
+
+        function deleteSelected(){
+            vm.curTrial.participating_sites_attributes=[];
+            for (var i = 0; i < vm.selectedDeleteParticipatingSitesList.length; i++) {
+                vm.deleteParticipatingSite( vm.selectedDeleteParticipatingSitesList[i].id);
+            }
+        };
+
+        vm.deleteParticipatingSite = function(psId){
+            vm.disableBtn = true;
+
+            TrialService.deleteParticipatingSite(psId).then(function(response) {
+                console.log("response="+JSON.stringify(response));
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                vm.curTrial.lock_version = response.lock_version || '';
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                $scope.$emit('updatedInChildScope', {});
+                for (var j = 0; j < vm.curTrial.participating_sites_list.length; j++) {
+                    if (vm.curTrial.participating_sites_list[j].id == psId){
+                        vm.curTrial.participating_sites_list.splice(j, 1);
+                    }
+                }
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                toastr.clear();
+                toastr.success('Participating Site ' + psId + ' for' + vm.curTrial.lead_protocol_id + ' has been deleted', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
+            }).catch(function(err) {
+                console.log("error in deleting participating site=" + psId);
+            });
+
+        }//saveTrial
 
     } //trialParticipatingSitesCtrl
 

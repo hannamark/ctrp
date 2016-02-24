@@ -113,7 +113,6 @@ Given I have selected a trial to abstract
 And I am on the General Trial Details screen
 And the Principal Investigator is Null
 When I select save
-And the Study Source is "National", "Externally-Peer-Reviewed" "Instutional"
 Then a warning message will appear �Please enter the Principal Investigator�
 
 Scenario: #16 Sponsor is not null
@@ -122,7 +121,7 @@ And I am on the General Trial Details screen
 And the Sponsor is Null
 When I select save
 Then a warning message will appear �Please enter the Sponsor�
-
+  @runthis
 Scenario: # 17 e-mail address format
 Given I know which e-mail address I want to edit
 And I am logged in to CTRP application
