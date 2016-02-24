@@ -174,17 +174,17 @@ SubmissionMethod.find_or_create_by(code: 'PDQ', name: 'PDQ')
 SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
 SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
 
-SiteRecruitmentStatus.find_or_create_by(code: 'CAC' ,name: 'Closed to Accrual')
-SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
-SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Completed')
-SiteRecruitmentStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
-SiteRecruitmentStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
+SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
+SiteRecruitmentStatus.find_or_create_by(code: 'APP', name: 'Approved')
 SiteRecruitmentStatus.find_or_create_by(code: 'ACT', name: 'Active')
 SiteRecruitmentStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation')
-SiteRecruitmentStatus.find_or_create_by(code: 'APP', name: 'Approved')
-SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
-SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
+SiteRecruitmentStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual')
+SiteRecruitmentStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
+SiteRecruitmentStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
 SiteRecruitmentStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
+SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Complete')
+SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
+SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
 
 Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
@@ -408,6 +408,167 @@ trial_status_transition = '{
                            }'
 
 AppSetting.find_or_create_by(code: 'TRIAL_STATUS_TRANSITION', name: 'Trial Status Transition Matrix', value: 'see big value', big_value: trial_status_transition)
+
+sr_status_transition = '{
+                             "STATUSZERO": {
+                               "INR": {"valid": "Yes"},
+                               "APP": {"warnings": [{"status": "INR"}]},
+                               "WIT": {"warnings": [{"status": "INR"}, {"status": "APP"}]},
+                               "ACT": {"warnings": [{"status": "INR"}, {"status": "APP"}]},
+                               "EBI": {"warnings": [{"status": "INR"}, {"status": "APP"}]},
+                               "CAC": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}]},
+                               "CAI": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}]},
+                               "TCL": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}]},
+                               "TCA": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}, {"status": "TCL"}]},
+                               "COM": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}, {"status": "CAI"}]},
+                               "ACO": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}, {"status": "CAI"}]}
+                             },
+                             "INR": {
+                               "INR": {"errors": [{"message": "Duplicate"}]},
+                               "APP": {"valid": "Yes", "sameDay": "Yes"},
+                               "WIT": {"valid": "Yes", "sameDay": "Yes"},
+                               "ACT": {"warnings": [{"status": "APP"}], "sameDay": "Yes"},
+                               "EBI": {"warnings": [{"status": "APP"}], "sameDay": "Yes"},
+                               "CAC": {"warnings": [{"status": "APP"}, {"status": "ACT"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}], "sameDay": "Yes"},
+                               "TCL": {"warnings": [{"status": "APP"}, {"status": "ACT"}], "sameDay": "Yes"},
+                               "TCA": {"warnings": [{"status": "APP"}, {"status": "ACT"}, {"status": "TCL"}], "sameDay": "Yes"},
+                               "COM": {"warnings": [{"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
+                               "ACO": {"warnings": [{"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "APP": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Duplicate"}]},
+                               "WIT": {"valid": "Yes", "sameDay": "Yes"},
+                               "ACT": {"valid": "Yes", "sameDay": "Yes"},
+                               "EBI": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"warnings": [{"status": "ACT"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "ACT"}, {"status": "CAC"}], "sameDay": "Yes"},
+                               "TCL": {"warnings": [{"status": "ACT"}], "sameDay": "Yes"},
+                               "TCA": {"warnings": [{"status": "ACT"}, {"status": "TCL"}], "sameDay": "Yes"},
+                               "COM": {"errors": [{"status": "ACT"}, {"status": "CAC"}], "warnings": [{"status": "CAI"}], "sameDay": "Yes"},
+                               "ACO": {"errors": [{"status": "ACT"}, {"status": "CAC"}], "warnings": [{"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "WIT": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Duplicate"}]},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAI": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCL": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCA": {"errors": [{"message": "Invalid Transition"}]},
+                               "COM": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACO": {"errors": [{"message": "Invalid Transition"}]}
+                             },
+                             "ACT": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"valid": "Yes", "sameDay": "Yes"},
+                               "ACT": {"errors": [{"message": "Duplicate"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}], "sameDay": "Yes"},
+                               "TCL": {"valid": "Yes", "sameDay": "Yes"},
+                               "TCA": {"valid": "Yes", "sameDay": "Yes"},
+                               "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
+                               "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "EBI": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"valid": "Yes", "sameDay": "Yes"},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Duplicate"}]},
+                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}], "sameDay": "Yes"},
+                               "TCL": {"valid": "Yes", "sameDay": "Yes"},
+                               "TCA": {"valid": "Yes", "sameDay": "Yes"},
+                               "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
+                               "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "CAC": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"errors": [{"message": "Duplicate"}]},
+                               "CAI": {"valid": "Yes", "sameDay": "Yes"},
+                               "TCL": {"warnings": [{"message": "Invalid Transition"}], "sameDay": "Yes"},
+                               "TCA": {"warnings": [{"message": "Invalid Transition"}], "sameDay": "Yes"},
+                               "COM": {"warnings": [{"status": "CAI"}], "sameDay": "Yes"},
+                               "ACO": {"warnings": [{"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "CAI": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAI": {"errors": [{"message": "Duplicate"}]},
+                               "TCL": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCA": {"errors": [{"message": "Invalid Transition"}]},
+                               "COM": {"valid": "Yes", "sameDay": "Yes"},
+                               "ACO": {"valid": "Yes", "sameDay": "Yes"}
+                             },
+                             "TCL": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"valid": "Yes", "sameDay": "Yes"},
+                               "EBI": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAI": {"valid": "Yes", "sameDay": "Yes"},
+                               "TCL": {"errors": [{"message": "Duplicate"}]},
+                               "TCA": {"valid": "Yes", "sameDay": "Yes"},
+                               "COM": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "TCA": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"valid": "Yes", "sameDay": "Yes"},
+                               "EBI": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}], "sameDay": "Yes"},
+                               "TCL": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCA": {"errors": [{"message": "Duplicate"}]},
+                               "COM": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "COM": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAI": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCL": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCA": {"errors": [{"message": "Invalid Transition"}]},
+                               "COM": {"errors": [{"message": "Duplicate"}]},
+                               "ACO": {"errors": [{"message": "Invalid Transition"}]}
+                             },
+                             "ACO": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAI": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCL": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCA": {"errors": [{"message": "Invalid Transition"}]},
+                               "COM": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACO": {"errors": [{"message": "Duplicate"}]}
+                             }
+                           }'
+
+AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION', name: 'Site Recruitment Status Transition Matrix', value: 'see big value', big_value: sr_status_transition)
 
 AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
 

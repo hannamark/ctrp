@@ -24,6 +24,12 @@ class TrialDocumentsController < ApplicationController
   # POST /trial_documents
   # POST /trial_documents.json
   def create
+
+    if params[:replaced_doc_id].present?
+      TrialDocument.destroy(params[:replaced_doc_id]) # delete the replaced document
+      Rails.logger.info "replaced doc id: #{params[:replaced_doc_id]}"
+    end
+
     @trial_document = TrialDocument.new(trial_document_params)
 
     respond_to do |format|
@@ -73,6 +79,6 @@ class TrialDocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trial_document_params
-      params.require(:trial_document).permit(:file, :file_name, :document_type, :document_subtype, :added_by_id, :trial_id)
+      params.require(:trial_document).permit(:file, :file_name, :document_type, :document_subtype, :added_by_id, :trial_id, :deleted, :replaced_doc_id)
     end
 end

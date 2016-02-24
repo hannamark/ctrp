@@ -210,8 +210,12 @@
                     controller: 'paTrialRelatedDocsCtrl as trialRelatedDocsView',
                     resolve: {
                         TrialService: 'TrialService',
+                        PATrialService: 'PATrialService',
                         acceptedFileTypesObj: function(TrialService) {
                             return TrialService.getAcceptedFileTypes();
+                        },
+                        documentTypes: function(PATrialService) {
+                            return PATrialService.getTrialDocumentTypes();
                         }
                     },
                     section: 'pa',

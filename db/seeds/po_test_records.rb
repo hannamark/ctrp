@@ -17,7 +17,7 @@ aff = FamilyRelationship.find_by_code('AFF')
 usa = "United States"
 
 #one org is already loaded for test accounts from root seed file
-if Organization.all.size == 1
+if Organization.all.size == 2
   puts "...Seeding orgs"
 
   org1 = Organization.find_or_create_by( id: 139020, source_id: 'MN021', name: 'University of Minnesota/Masonic Children\'s Hospital', phone:'301-999-200f', source_status: source_act, source_context: ctep, address: '2450 Riverside Ave', city: 'Minneapolis', state_province: 'Minnesota', country:usa, postal_code: '35465', email: "ahaley@minnhealth.com")

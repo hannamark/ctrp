@@ -16,6 +16,7 @@
 #  uuid            :string(255)
 #  lock_version    :integer          default(0)
 #  extension       :string(255)
+#  contact_type    :string(255)
 #
 # Indexes
 #
@@ -35,7 +36,7 @@ class ParticipatingSite < ActiveRecord::Base
   has_many :people, through: :participating_site_investigators
 
   accepts_nested_attributes_for :site_rec_status_wrappers, allow_destroy: true
-
+  accepts_nested_attributes_for :participating_site_investigators, allow_destroy: true
 
   scope :by_value, ->  (value) {
     joins(:organization).where("organizations.name ilike  ?","#{value.to_s}")
