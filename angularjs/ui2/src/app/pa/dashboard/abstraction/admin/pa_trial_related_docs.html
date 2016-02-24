@@ -60,7 +60,7 @@
                                         Error: File size exceeds 10 MB
                                     </span>
                                 </div>
-                                <div class="row top-buffer">
+                                <div class="row top-buffer" ng-show="trialRelatedDocsView.curTrialDetailObj.trial_documents.length > 0">
                                      <!-- <table class="table table-striped table-condensed table-hover">
                                          <thead>
                                              <tr>
@@ -87,8 +87,8 @@
                                          </thead>
                                          <tbody>
                                              <tr ng-repeat="doc in trialRelatedDocsView.curTrialDetailObj.trial_documents track by $index"
-                                                 class="animated-item" ng-class="doc.deleted ? 'deleted-text' : ''">
-                                                 <td><a ng-class="doc.deleted ? 'deleted-text' : ''" href="{{trialRelatedDocsView.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></td>
+                                                 class="animated-item" ng-class="doc.status !== 'active' ? 'deleted-text' : ''">
+                                                 <td><a ng-class="doc.status !== 'active' ? 'deleted-text' : ''" href="{{trialRelatedDocsView.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></td>
                                                  <td>{{doc.document_type}}</td>
                                                  <td>{{doc.document_subtype}}</td>
                                                  <td>{{doc.updated_at | date: "dd-MMM-yyyy H:mm"}}</td>
@@ -97,9 +97,9 @@
                                                      <label class="btn btn-default" restriction-field
                                                          ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1"
                                                          ng-click="trialRelatedDocsView.deleteDoc($index)">
-                                                         <i class="glyphicon" ng-class="doc.deleted ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                                         <i class="glyphicon" ng-class="doc.status !=='active' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                      </label>
-                                                     <label class="btn btn-default" restriction-field ng-disabled="doc.deleted" ng-click="trialRelatedDocsView.editDoc($index)">
+                                                     <label class="btn btn-default" restriction-field ng-disabled="doc.status !== 'active'" ng-click="trialRelatedDocsView.editDoc($index)">
                                                          <i class="glyphicon glyphicon-edit"></i>
                                                      </label>
                                                  </td>

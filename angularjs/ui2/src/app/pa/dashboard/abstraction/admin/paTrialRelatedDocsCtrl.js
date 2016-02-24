@@ -23,6 +23,7 @@
             $document, UserService, toastr, HOST, URL_CONFIGS, acceptedFileTypesObj, Upload) {
 
             var vm = this;
+            var DOC_STATUSES = ['active', 'inactive', 'deleted']; // for storing document status in database
             vm.acceptedFileExtensions = acceptedFileTypesObj.accepted_file_extensions;
             vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
             vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
@@ -32,7 +33,9 @@
             vm.documentTypes = documentTypes.types;
             vm.docTypeSelectionDisabled = false;
             var immutableDocTypes = _.filter(vm.documentTypes, function(type) {
-                return type.indexOf('IRB Approval') > -1 || type.indexOf('Protocol Doc') > -1;
+                return type.indexOf('IRB Approval') > -1 ||
+                        type.indexOf('Protocol Doc') > -1 ||
+                        type.indexOf('Change Memo') > -1;
             }); // array of doc types that do not allow mutation
 
             // actions
@@ -56,13 +59,15 @@
             function _getTrialDetailCopy() {
                 $timeout(function() {
                     vm.curTrialDetailObj = PATrialService.getCurrentTrialFromCache();
-                    _filterOutDeletedDoc();
+                    _filterActiveDocs();
                 }, 0);
             } //getTrialDetailCopy
 
             function deleteDoc(index) {
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
-                    vm.curTrialDetailObj.trial_documents[index].deleted = !vm.curTrialDetailObj.trial_documents[index].deleted;
+                    var curStatus = vm.curTrialDetailObj.trial_documents[index].status || 'deleted';
+                    vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
+                    // vm.curTrialDetailObj.trial_documents[index].deleted = !vm.curTrialDetailObj.trial_documents[index].deleted;
                 }
             }
 
@@ -98,9 +103,19 @@
                     edit: false,
                     index: null,
                     _destroy: false,
-                    deleted: false
+                    status: 'active'
                 };
                 return doc;
+            }
+
+            function findIndices(arrayObjs, field, value) {
+                var indices = []; // array of integers
+                _.each(arrayObjs, function(obj, index) {
+                    if (obj[field] === value) {
+                        indices.push(index);
+                    }
+                });
+                return indices;
             }
 
             function upsertDoc(index) {
@@ -109,7 +124,17 @@
                 if (index === null && vm.curDoc.file === '') {
                     console.error('null document object');
                     return;
-                } else if (index !== null && !vm.curDoc.file.size) {
+                }
+
+                var existingIndices = findIndices(vm.curTrialDetailObj.trial_documents, 'document_type', vm.curDoc.document_type);
+                console.log('existing indices: ', existingIndices);
+                _.each(existingIndices, function(idx) {
+                    if (vm.curTrialDetailObj.trial_documents[idx].status === 'active') {
+                        vm.curTrialDetailObj.trial_documents[idx].status = 'inactive';
+                    }
+                });
+
+                if (index !== null && !vm.curDoc.file.size) {
                     console.info('update without uploading');
                     // update without uploading
                     vm.curDoc.file = prevFile !== '' ? prevFile : vm.curDoc.file;
@@ -194,7 +219,7 @@
                             vm.curTrialDetailObj.lock_version = res.lock_version;
                             PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
                             $scope.$emit('updatedInChildScope', {});
-                            _filterOutDeletedDoc();
+                            _filterActiveDocs();
                             if (showToastr) {
                                 toastr.clear();
                                 toastr.success('Trial related documents have been saved', 'Successful!', {
@@ -203,15 +228,18 @@
                                 });
                             }
                         });
-
                     }).catch(function(err) {
                         console.error('group promise err: ', err);
                     });
             } // updatedTrial
 
-            function _filterOutDeletedDoc() {
+            /**
+             * Filter out inactive or deleted documents from display
+             * @return {Void} [description]
+             */
+            function _filterActiveDocs() {
                 vm.curTrialDetailObj.trial_documents = _.filter(vm.curTrialDetailObj.trial_documents, function(doc) {
-                    return doc.deleted !== true; // do not show soft deleted document
+                    return doc.status === 'active'; // do not show soft deleted or inactive document
                 });
             }
 
