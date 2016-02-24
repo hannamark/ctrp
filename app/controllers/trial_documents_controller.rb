@@ -26,8 +26,10 @@ class TrialDocumentsController < ApplicationController
   def create
 
     if params[:replaced_doc_id].present?
-      TrialDocument.destroy(params[:replaced_doc_id]) # delete the replaced document
+      # TrialDocument.destroy(params[:replaced_doc_id]) # hard delete the replaced document
       Rails.logger.info "replaced doc id: #{params[:replaced_doc_id]}"
+      replaced_doc = TrialDocument.find(params[:replaced_doc_id])
+      replaced_doc.update_attribute('deleted', true) # soft delete the replaced document
     end
 
     @trial_document = TrialDocument.new(trial_document_params)

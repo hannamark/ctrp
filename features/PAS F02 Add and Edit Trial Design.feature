@@ -2,7 +2,7 @@
 Feature:  PAS F02 Add and Edit Trial Design 
 As a CTRP Scientific Abstractor, I can add and edit Trial Design 
 
-  Scenario: #1 I can change Clinical research Category for a trial
+  Scenario Outline: #1 I can change Clinical research Category for a trial
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
       And I am on the Trial Design screen
@@ -14,28 +14,28 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
       | Observational              | 
       | Ancillary Correlative      | 
   
-  Scenario Outline:
   Examples:
   
-      |From Research category  |To Research category  |field  |action (diplays OR deleted |
+      |From Research category  |To Research category  |field  |action (diplays OR deleted) |
       | Interventional |Expanded Access  |Expanded Access Type  |displays |
       | Expanded Access | Interventional  |Expanded Access Type  |deleted  |
+           
       
       | Interventional or Expanded Access |Observational or Ancillary Correlative  |Secondary Purpose  | deleted |
-      | Interventional or Expanded Access|Observational or Ancillary Correlative |Secondary Purpose Other  | deleted |
+      | Interventional or Expanded Access|Observational or Ancillary Correlative |Secondary Purpose Other| deleted |
       | Interventional or Expanded Access |Observational or Ancillary Correlative | Intervention Model |deleted  |
       |  Interventional or Expanded Access |Observational or Ancillary Correlative  | Arms/Groups |deleted  |
-      |Interventional or Expanded Access |Observational or Ancillary Correlative |Masking  |deleted  |
-      | Interventional or Expandedor Expanded Access Access |Observational or Ancillary Correlative  |Masking role Subject  |deleted  |
+      |Interventional or Expanded Access |Observational or Ancillary Correlative |Masking  |deleted|
+      | Interventional or Expanded Access|Observational or Ancillary Correlative  |Masking role Subject  |deleted  |
       |Interventional or Expanded Access |Observational or Ancillary Correlative | Masking role investigator  |deleted  |
   |Interventional or Expanded Access | Observational or Ancillary Correlative | Masking role Caregiver  |deleted  |
-     |Interventional or Expanded Access |Observational or Ancillary Correlative | Masking role outcome Assessor  |deleted  |  
+     |Interventional or Expanded Access |Observational or Ancillary Correlative | Masking role outcome Assessor |deleted  |  
        |Interventional or Expanded Access |Observational or Ancillary Correlative |Allocation |deleted  | 
        |Interventional or Expanded Access |Observational or Ancillary Correlative | Study Classification |deleted  |  
          |Interventional or Expanded Access |Observational or Ancillary Correlative | Final Enrollment for clinicalTrials.gov|deleted  |  
          |Interventional or Expanded Access|Observational or Ancillary Correlative | Accruals  |deleted  |  
-         |Interventionalor Expanded Access |Observational or Ancillary Correlative | Study Model  |displays |  
-       |Interventional |Observational or Ancillary Correlative|Study Model other  |displays  |  
+         |Interventional or Expanded Access |Observational or Ancillary Correlative | Study Model  |displays |  
+       |Interventional or Expanded Access|Observational or Ancillary Correlative|Study Model other  |displays  |  
         |Interventional   or Expanded Access | Observational or Ancillary Correlative | Bio Specimen Retention |displays | 
       |Interventional  or Expanded Access  |Observational or Ancillary Correlative | Bio Specimen description  |displays | 
       |Interventional  or Expanded Access |Observational or Ancillary Correlative | Number of Groups/Cohorts  or Expanded Access   |displays | 

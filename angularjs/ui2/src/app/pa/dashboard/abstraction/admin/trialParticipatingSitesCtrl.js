@@ -19,6 +19,8 @@
         vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
 
         // initializations
+        vm.deleteListHandler = deleteListHandler;
+        vm.deleteSelected = deleteSelected;
         vm.currentParticipatingSite= {};
         vm.current_site_recruitment = {};
         vm.current_investigator = {};
@@ -39,7 +41,7 @@
         vm.investigatorArray = [];
         vm.selectedContactTypePI = false;
         vm.centralContactTypes = centralContactTypes.types;
-        for (var i = 0; i < vm.centralContactTypes; i++) {
+        for (var i = 0; i < vm.centralContactTypes.length; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
                console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
                vm.centralContactTypes.splice(i, 1);
@@ -112,7 +114,7 @@
                 }
                 if(vm.currentParticipatingSite.id) {
                     TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
-                        console.log("getParticipatingSiteById response = " + JSON.stringify(response));
+                        //console.log("getParticipatingSiteById response = " + JSON.stringify(response));
                         vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
                         vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
                         vm.currentParticipatingSite.participating_site_investigators = response.participating_site_investigators;
@@ -224,19 +226,11 @@
          **/
         function addSiteRecruitment() {
             //console.log("vm.current_site_recruitment="+JSON.stringify(vm.current_site_recruitment));
-            //console.log("vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
+           // console.log("vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
             vm.current_site_recruitment.participating_site_id= vm.currentParticipatingSite.id;
-            // Temporary code. User of ng-options in the UI should resolve it.
-            for (var i = 0; i < vm.siteRecruitmentStatusesArr.length; i++) {
-                if (vm.current_site_recruitment.site_recruitment_status == vm.siteRecruitmentStatusesArr[i].name) {
-                    vm.current_site_recruitment.site_recruitment_status_id = vm.siteRecruitmentStatusesArr[i].id;
-                }
-            }
             vm.current_site_recruitment.new = true;
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
-            //console.log("vm.current_participating_site.="+JSON.stringify(vm.currentParticipatingSite));
-            //console.log("vm.curTrial.participating_sites_list="+JSON.stringify(vm.curTrial.participating_sites_list));
             vm.saveParticipatingSite();
         }
 
@@ -513,10 +507,55 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
+                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 
+        function deleteListHandler(participatingSitesSelectedInCheckboxes){
+            //console.log("In deleteListHandler");
+            var deleteList = [];
+            angular.forEach(participatingSitesSelectedInCheckboxes, function(item) {
+                if ( angular.isDefined(item.selected) && item.selected === true ) {
+                    deleteList.push(item);
+                }
+            });
+            vm.selectedDeleteParticipatingSitesList = deleteList ;
+           // console.log("In vm.selectedDeleteParticipatingSitesList=" + JSON.stringify(vm.selectedDeleteParticipatingSitesList));
+
+        };
+
+        function deleteSelected(){
+            vm.curTrial.participating_sites_attributes=[];
+            for (var i = 0; i < vm.selectedDeleteParticipatingSitesList.length; i++) {
+                vm.deleteParticipatingSite( vm.selectedDeleteParticipatingSitesList[i].id);
+            }
+        };
+
+        vm.deleteParticipatingSite = function(psId){
+            vm.disableBtn = true;
+
+            TrialService.deleteParticipatingSite(psId).then(function(response) {
+                console.log("response="+JSON.stringify(response));
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                vm.curTrial.lock_version = response.lock_version || '';
+                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                $scope.$emit('updatedInChildScope', {});
+                for (var j = 0; j < vm.curTrial.participating_sites_list.length; j++) {
+                    if (vm.curTrial.participating_sites_list[j].id == psId){
+                        vm.curTrial.participating_sites_list.splice(j, 1);
+                    }
+                }
+                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                toastr.clear();
+                toastr.success('Participating Site ' + psId + ' for' + vm.curTrial.lead_protocol_id + ' has been deleted', 'Operation Successful!', {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
+            }).catch(function(err) {
+                console.log("error in deleting participating site=" + psId);
+            });
+
+        }//saveTrial
 
     } //trialParticipatingSitesCtrl
 

@@ -13,9 +13,11 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
       |Sponsor-Investigator  |
     And I have selected one or more of the Trial Oversight Authority Country and Organization Names from the provided list
     And the FDA Regulated Intervention Indicator will be defaulted to the "N/A" setting
+    And the Section 801 Indicator will be defaulted to the "N/A" setting
+	And the Data Monitoring Committee Appointed Indicator will be defaulted to the "N/A" setting
     And I have the option to change the defaulted "NA" setting to either "yes" or "No"for FDA Regulated Intervention Indicator
-   And I have selected "Yes", "No", "NA" for Section 801 Indicator
-   And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
+   And I have the option to change the defaulted "NA" setting to either"Yes"or "No" for Section 801 Indicator
+   And I have the option to change the defaulted "NA" setting to either "Yes"or "No" for Data Monitoring Committee Appointed Indicator
     Then the Register Trial Regulatory Information section will not indicate any errors during Trial Review
 
     Examples:
@@ -44,7 +46,7 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
     Then the Principal Investigator selected will be recorded as the Responsible Party Investigator
     And the Investigator Title will be displayed as "Principal Investigator"
     And the Investigator Title may be edited
-    And the Investigator Affiliation will be the Sponsor Organization
+    And the Investigator Affiliation will be the Principal Investigator's organization affiliation
     And the Investigation Affiliation can be changed
 
     Examples:
@@ -116,11 +118,10 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
     And I am on the Register Trial Regulatory Information screen
     When I have selected "No" for FDA Regulated Intervention Indicator
     And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
-    Then the required Regulatory Information for the trial will be associated with the trial
-    And the Section 801 Indicator will be set to "No"
+    Then the Section 801 Indicator will be set to "No"
     When I have selected "Yes" for FDA Regulated Intervention Indicator
     And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
-    Then I can select "Yes" or "No" for Section 801 Indicator
+    Then I can select only "Yes" or "No" for Section 801 Indicator
     
     
    
