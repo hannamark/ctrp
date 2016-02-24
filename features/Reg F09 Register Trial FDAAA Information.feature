@@ -16,8 +16,8 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
     And the Section 801 Indicator will be defaulted to the "N/A" setting
 	And the Data Monitoring Committee Appointed Indicator will be defaulted to the "N/A" setting
     And I have the option to change the defaulted "NA" setting to either "yes" or "No"for FDA Regulated Intervention Indicator
-   And I can select "Yes", "No" for Section 801 Indicator
-   And I can select "Yes", "No" for Data Monitoring Committee Appointed Indicator
+   And I have the option to change the defaulted "NA" setting to either"Yes"or "No" for Section 801 Indicator
+   And I have the option to change the defaulted "NA" setting to either "Yes"or "No" for Data Monitoring Committee Appointed Indicator
     Then the Register Trial Regulatory Information section will not indicate any errors during Trial Review
 
     Examples:
@@ -118,11 +118,10 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
     And I am on the Register Trial Regulatory Information screen
     When I have selected "No" for FDA Regulated Intervention Indicator
     And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
-    Then the required Regulatory Information for the trial will be associated with the trial
-    And the Section 801 Indicator will be set to "No"
+    Then the Section 801 Indicator will be set to "No"
     When I have selected "Yes" for FDA Regulated Intervention Indicator
     And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
-    Then I can select "Yes" or "No" for Section 801 Indicator
+    Then I can select only "Yes" or "No" for Section 801 Indicator
     
     
    
