@@ -16,8 +16,6 @@
             UserService, toastr, HOST, URL_CONFIGS, acceptedFileTypesObj, Upload) {
 
             var vm = this;
-            console.log('acceptedFileTypesObj: ', acceptedFileTypesObj);
-            console.log('documentTypes: ', documentTypes);
             vm.acceptedFileExtensions = acceptedFileTypesObj.accepted_file_extensions;
             vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
             vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
@@ -25,12 +23,17 @@
             vm.curDoc = _initCurDoc();
             vm.docSubtypeShown = false;
             vm.documentTypes = documentTypes.types;
+            vm.docTypeSelectionDisabled = false;
+            var immutableDocTypes = _.filter(vm.documentTypes, function(type) {
+                return type.indexOf('IRB Approval') > -1 || type.indexOf('Protocol Doc') > -1;
+            }); // array of doc types that do not allow mutation
 
             // actions
             vm.saveDocuments = saveDocuments;
             vm.deleteDoc = deleteDoc;
             vm.editDoc = editDoc;
-            vm.upsertDoc = upsertDocV2; //upsertDoc;
+            vm.cancelEdit = cancelEdit;
+            vm.upsertDoc = upsertDoc; //upsertDoc;
             vm.resetForm = resetForm;
 
             activate();
@@ -46,6 +49,7 @@
             function _getTrialDetailCopy() {
                 $timeout(function() {
                     vm.curTrialDetailObj = PATrialService.getCurrentTrialFromCache();
+                    _filterOutDeletedDoc();
                 }, 0);
             } //getTrialDetailCopy
 
@@ -61,7 +65,7 @@
                     // vm.curDoc = Object.assign({}, vm.curTrialDetailObj.trial_documents[index], {edit: true});
                     vm.curDoc = angular.copy(vm.curTrialDetailObj.trial_documents[index]);
                     vm.curDoc.edit = true;
-                    // vm.curDoc.document_type = vm.curTrialDetailObj.trial_documents[index].document_type;
+                    vm.docTypeSelectionDisabled = _.contains(immutableDocTypes, vm.curDoc.document_type);
                     vm.curDoc.index = index;
                     prevFile = angular.copy(vm.curDoc.file);
                     vm.curDoc.file = '';
@@ -92,8 +96,7 @@
                 return doc;
             }
 
-
-            function upsertDocV2(index) {
+            function upsertDoc(index) {
                 console.info('index: ', index);
                 console.info('vm.curDoc: ', vm.curDoc);
                 if (index === null && vm.curDoc.file === '') {
@@ -124,66 +127,6 @@
                 // re-initialize the vm.curDoc
                 vm.curDoc = _initCurDoc();
                 prevFile = '';
-            }
-
-
-            /**
-             * update or insert new trial related document
-             * @param  {Int} index [if index is null, upload new pic; otherwise, update]
-             * @return {Void}
-             */
-            function upsertDoc(index) {
-                console.info('file_name: ', vm.curDoc.file.name);
-                console.info('typeof ', typeof vm.curDoc.file);
-                return;
-                if (!vm.curDoc.file_name && index === null) {
-                    console.error('null object');
-                    // prevent uploading null object
-                    return;
-                } else if (!vm.curDoc.file_name && index !== null) {
-                    // update without uploading
-                    vm.curTrialDetailObj.trial_documents[index] = angular.copy(vm.curDoc);
-                    vm.curTrialDetailObj.trial_documents[index].file_name = prevFileName; // restore the file name
-                    prevFileName = '';
-                    vm.curDoc = _initCurDoc();
-                } else if (!!vm.curDoc.file_name) {
-                    // upload the new document
-                    vm.curDoc.file_name.upload = Upload.upload({
-                        url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
-                        method: 'POST',
-                        data: {
-                            'trial_document[document_type]': vm.curDoc.document_type,
-                            'trial_document[document_subtype]': vm.curDoc.document_subtype,
-                            'trial_document[trial_id]': vm.curTrialDetailObj.id,
-                            'trial_document[file]': vm.curDoc.file_name
-                        }
-                    });
-
-                    vm.curDoc.file_name.upload.then(function(res) {
-                        // console.info('upload res: ', res);
-                        var newDoc = {};
-                        newDoc.id = res.data.id;
-                        newDoc.document_type = res.data.document_type;
-                        newDoc.file_name = res.data.file_name;
-                        newDoc.document_subtype = res.data.document_subtype;
-                        newDoc.updated_at = res.data.updated_at;
-                        newDoc.added_by = {username: UserService.getLoggedInUsername()};
-                        if (index !== null && index < vm.curTrialDetailObj.trial_documents.length) {
-                            // update the document with the new upload
-                            console.info('replacing the existing document');
-                            vm.curTrialDetailObj.trial_documents[index].replaced = true;
-                            vm.curTrialDetailObj.trial_documents[index]._destroy = true;
-                            vm.curTrialDetailObj.trial_documents.splice(index, 0, newDoc); // insert immediately after 'index'
-                        } else {
-                            // insert the new document
-                            vm.curTrialDetailObj.trial_documents.unshift(newDoc);
-                        }
-                        // saveDocuments(false); // saveDocuments, showToastr: false
-                        vm.curDoc = _initCurDoc();
-                    }).catch(function(err) {
-                        console.error('upload error: ', err);
-                    });
-                }
             }
 
             /**
@@ -238,6 +181,7 @@
                             vm.curTrialDetailObj.lock_version = res.lock_version;
                             PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
                             $scope.$emit('updatedInChildScope', {});
+                            _filterOutDeletedDoc();
                             if (showToastr) {
                                 toastr.clear();
                                 toastr.success('Trial related documents have been saved', 'Successful!', {
@@ -251,6 +195,17 @@
                         console.error('group promise err: ', err);
                     });
             } // updatedTrial
+
+            function _filterOutDeletedDoc() {
+                vm.curTrialDetailObj.trial_documents = _.filter(vm.curTrialDetailObj.trial_documents, function(doc) {
+                    return doc.deleted !== true; // do not show soft deleted document
+                });
+            }
+
+            function cancelEdit() {
+                vm.curDoc = _initCurDoc();
+                vm.docTypeSelectionDisabled = false;
+            }
 
 
         } // paTrialRelatedDocsCtrl
