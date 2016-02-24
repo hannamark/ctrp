@@ -5,15 +5,22 @@
 (function() {
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
-    .controller('paTrialRelatedDocsCtrl', paTrialRelatedDocsCtrl);
+    .controller('paTrialRelatedDocsCtrl', paTrialRelatedDocsCtrl)
+    .controller('warningToastrCtrl', warningToastrCtrl);
+    warningToastrCtrl.$inject = ['$scope', '$mdToast'];
+    function warningToastrCtrl($scope, $mdToast) {
+        $scope.closeWarning = function() {
+            $mdToast.hide();
+        };
+    }
 
     paTrialRelatedDocsCtrl.$inject = ['$scope', '_', 'PATrialService', 'TrialService',
-        'Common', 'DateService', '$timeout', 'CommentService', 'documentTypes',
-        'UserService', 'toastr', 'HOST', 'URL_CONFIGS', 'acceptedFileTypesObj', 'Upload'];
+        'Common', 'DateService', '$timeout', 'CommentService', 'documentTypes', '$mdToast',
+        '$document', 'UserService', 'toastr', 'HOST', 'URL_CONFIGS', 'acceptedFileTypesObj', 'Upload'];
 
         function paTrialRelatedDocsCtrl($scope, _, PATrialService, TrialService,
-            Common, DateService, $timeout, CommentService, documentTypes,
-            UserService, toastr, HOST, URL_CONFIGS, acceptedFileTypesObj, Upload) {
+            Common, DateService, $timeout, CommentService, documentTypes, $mdToast,
+            $document, UserService, toastr, HOST, URL_CONFIGS, acceptedFileTypesObj, Upload) {
 
             var vm = this;
             vm.acceptedFileExtensions = acceptedFileTypesObj.accepted_file_extensions;
@@ -156,6 +163,12 @@
              * @return {Void}
              */
             function saveDocuments(showToastr) {
+                // warning toastr for edited document
+                if (vm.curDoc.edit === true) {
+                    _showWarningToastr('Please cancel or commit the edited document first', 'bottom right');
+                    return;
+                }
+
                 PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id)
                     .then(function(res) {
                         console.log('group promises res: ', res);
@@ -206,6 +219,19 @@
                 vm.curDoc = _initCurDoc();
                 vm.docTypeSelectionDisabled = false;
             }
+
+
+
+            function _showWarningToastr(message, position) {
+                $mdToast.show({
+                controller: 'warningToastrCtrl',
+                template: '<md-toast style="background-color: #6200EA"><span flex>' + message + '</span><md-button ng-click="closeWarning()">Close</md-button></md-toast>',
+                parent: $document[0].querySelector('#warning_message'),
+                hideDelay: 15000,
+                position: position,
+                action: ''
+              });
+            } // _showWarningToastr
 
 
         } // paTrialRelatedDocsCtrl
