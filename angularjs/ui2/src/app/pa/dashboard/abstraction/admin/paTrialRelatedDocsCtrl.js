@@ -33,7 +33,7 @@
             vm.deleteDoc = deleteDoc;
             vm.editDoc = editDoc;
             vm.cancelEdit = cancelEdit;
-            vm.upsertDoc = upsertDocV2; //upsertDoc;
+            vm.upsertDoc = upsertDoc; //upsertDoc;
             vm.resetForm = resetForm;
 
             activate();
@@ -96,8 +96,7 @@
                 return doc;
             }
 
-
-            function upsertDocV2(index) {
+            function upsertDoc(index) {
                 console.info('index: ', index);
                 console.info('vm.curDoc: ', vm.curDoc);
                 if (index === null && vm.curDoc.file === '') {
@@ -128,66 +127,6 @@
                 // re-initialize the vm.curDoc
                 vm.curDoc = _initCurDoc();
                 prevFile = '';
-            }
-
-
-            /**
-             * update or insert new trial related document
-             * @param  {Int} index [if index is null, upload new pic; otherwise, update]
-             * @return {Void}
-             */
-            function upsertDoc(index) {
-                console.info('file_name: ', vm.curDoc.file.name);
-                console.info('typeof ', typeof vm.curDoc.file);
-                return;
-                if (!vm.curDoc.file_name && index === null) {
-                    console.error('null object');
-                    // prevent uploading null object
-                    return;
-                } else if (!vm.curDoc.file_name && index !== null) {
-                    // update without uploading
-                    vm.curTrialDetailObj.trial_documents[index] = angular.copy(vm.curDoc);
-                    vm.curTrialDetailObj.trial_documents[index].file_name = prevFileName; // restore the file name
-                    prevFileName = '';
-                    vm.curDoc = _initCurDoc();
-                } else if (!!vm.curDoc.file_name) {
-                    // upload the new document
-                    vm.curDoc.file_name.upload = Upload.upload({
-                        url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
-                        method: 'POST',
-                        data: {
-                            'trial_document[document_type]': vm.curDoc.document_type,
-                            'trial_document[document_subtype]': vm.curDoc.document_subtype,
-                            'trial_document[trial_id]': vm.curTrialDetailObj.id,
-                            'trial_document[file]': vm.curDoc.file_name
-                        }
-                    });
-
-                    vm.curDoc.file_name.upload.then(function(res) {
-                        // console.info('upload res: ', res);
-                        var newDoc = {};
-                        newDoc.id = res.data.id;
-                        newDoc.document_type = res.data.document_type;
-                        newDoc.file_name = res.data.file_name;
-                        newDoc.document_subtype = res.data.document_subtype;
-                        newDoc.updated_at = res.data.updated_at;
-                        newDoc.added_by = {username: UserService.getLoggedInUsername()};
-                        if (index !== null && index < vm.curTrialDetailObj.trial_documents.length) {
-                            // update the document with the new upload
-                            console.info('replacing the existing document');
-                            vm.curTrialDetailObj.trial_documents[index].replaced = true;
-                            vm.curTrialDetailObj.trial_documents[index]._destroy = true;
-                            vm.curTrialDetailObj.trial_documents.splice(index, 0, newDoc); // insert immediately after 'index'
-                        } else {
-                            // insert the new document
-                            vm.curTrialDetailObj.trial_documents.unshift(newDoc);
-                        }
-                        // saveDocuments(false); // saveDocuments, showToastr: false
-                        vm.curDoc = _initCurDoc();
-                    }).catch(function(err) {
-                        console.error('upload error: ', err);
-                    });
-                }
             }
 
             /**
