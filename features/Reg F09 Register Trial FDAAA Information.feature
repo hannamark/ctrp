@@ -121,7 +121,7 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
     Then the Section 801 Indicator will be set to "No"
     When I have selected "Yes" for FDA Regulated Intervention Indicator
     And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
-    Then I can select "Yes" or "No" for Section 801 Indicator
+    Then I can select only "Yes" or "No" for Section 801 Indicator
     
     
    
