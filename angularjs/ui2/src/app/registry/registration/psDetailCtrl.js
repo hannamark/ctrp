@@ -55,7 +55,11 @@
 
             TrialService.upsertParticipatingSite(outerPs).then(function(response) {
                 if (response.server_response.status < 300) {
-                    $state.go('main.trials', null, {reload: true});
+                    if (vm.isManageScreen) {
+                        $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
+                    } else {
+                        $state.go('main.viewTrial', {trialId: response.trial.id});
+                    }
                     toastr.success('Participating Site ' + vm.curPs.id + ' has been recorded', 'Operation Successful!');
                 } else {
                     // Enable buttons in case of backend error
