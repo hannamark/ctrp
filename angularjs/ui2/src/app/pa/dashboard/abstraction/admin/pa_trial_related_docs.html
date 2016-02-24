@@ -5,7 +5,7 @@
                 Trial Related Documents <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
               </uib-accordion-heading>
                   <div class="row">
-                    <form name="trial_docs_form" role="form" class="form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments(true)">
+                    <form name="trial_docs_form" role="form" class="form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments(true, trial_docs_form)">
                         <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                             <legend class="sub-bordered">Trial Related Documents</legend>
                                 <div class="row top-buffer">
@@ -61,19 +61,6 @@
                                     </span>
                                 </div>
                                 <div class="row top-buffer" ng-show="trialRelatedDocsView.curTrialDetailObj.trial_documents.length > 0">
-                                     <!-- <table class="table table-striped table-condensed table-hover">
-                                         <thead>
-                                             <tr>
-                                                <th class="file_name" custom-sort order="'file_name'" sort="sort">File Name&nbsp;</th>
-                                                <th class="document_type" custom-sort order="'document_type'" sort="sort">Document Type&nbsp;</th>
-                                                <th class="document_subtype" custom-sort order="'document_subtype'" sort="sort">Document Subtype&nbsp;</th>
-                                                <th class="updated_at" custom-sort order="'updated_at'" sort="sort">Date Added&nbsp;</th>
-                                                <th class="added_by" custom-sort order="'added_by'" sort="sort">Added By&nbsp;</th>
-                                                <th>Edit</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                         </thead>
-                                     </table> -->
                                      <table st-table="rowCollection" class="table table-bordered table-striped table-hover">
                                          <thead style="background-color: #d9edf7">
                                              <tr>
@@ -91,7 +78,7 @@
                                                  <td><a ng-class="doc.status !== 'active' ? 'deleted-text' : ''" href="{{trialRelatedDocsView.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></td>
                                                  <td>{{doc.document_type}}</td>
                                                  <td>{{doc.document_subtype}}</td>
-                                                 <td>{{doc.updated_at | date: "dd-MMM-yyyy H:mm"}}</td>
+                                                 <td>{{doc.created_at | date: "dd-MMM-yyyy H:mm"}}</td>
                                                  <td>{{doc.added_by.username}} <!-- to be replaced with full name when available --></td>
                                                  <td class="text-center" class="col-sm-1">
                                                      <label class="btn btn-default" restriction-field

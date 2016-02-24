@@ -103,7 +103,6 @@
                     file: '', // File to be uploaded
                     document_subtype: '',
                     added_by: {},
-                    updated_at: '',
                     created_at: '',
                     edit: false,
                     index: null,
@@ -175,7 +174,7 @@
                         vm.curTrialDetailObj.trial_documents[index] = vm.curDoc;
                     } else {
                         // new document
-                        vm.curDoc.updated_at = new Date();
+                        vm.curDoc.created_at = new Date();
                         vm.curDoc.added_by = {username: UserService.getLoggedInUsername()};
                         vm.curTrialDetailObj.trial_documents.push(vm.curDoc);
                     }
@@ -211,7 +210,9 @@
              * @param  {Boolean} showToastr [show toastr or not]
              * @return {Void}
              */
-            function saveDocuments(showToastr) {
+            function saveDocuments(showToastr, formName) {
+                formName.$valid = false;
+                console.error('form validity: ', formName.$valid);
                 // warning toastr for edited document
                 if (vm.curDoc.edit === true) {
                     _showWarningToastr('Please cancel or commit the edited document first', 'bottom right');
@@ -224,7 +225,7 @@
                         if (angular.isArray(res)) {
                             _.each(res, function(uploadedDoc, index) {
                                 if (uploadedDoc !== null) {
-                                    // vm.curTrialDetailObj.trial_documents[index].updated_at = uploadedDoc.data.updated_at;
+                                    // vm.curTrialDetailObj.trial_documents[index].created_at = uploadedDoc.data.created_at;
                                     vm.curTrialDetailObj.trial_documents[index] = uploadedDoc.data;
                                     vm.curTrialDetailObj.trial_documents[index].added_by = {username: UserService.getLoggedInUsername()};
                                 }
@@ -271,8 +272,6 @@
                 vm.curDoc = _initCurDoc();
                 vm.docTypeSelectionDisabled = false;
             }
-
-
 
             function _showWarningToastr(message, position) {
                 $mdToast.show({
