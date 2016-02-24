@@ -246,9 +246,35 @@ class Trial < TrialBase
       elsif self.internal_source && self.internal_source.code == 'CTRP'
         actions.append('update')
         actions.append('amend')
-      elsif self.internal_source && self.internal_source.code == 'CTGI'
-        actions.append('add-my-site')
       end
+    end
+
+    if self.internal_source && self.internal_source.code == 'CTGI'
+      if self.current_user.role == 'ROLE_SITE-SU'
+        actions.append('manage-sites')
+      else
+        if self.ps_orgs.include?(self.current_user.organization)
+          # Associated org has been added as participating site
+          actions.append('update-my-site')
+        else
+          # Associated org hasn't been added as participating site
+          actions.append('add-my-site')
+        end
+      end
+    end
+
+    return actions
+  end
+
+  def my_site_id
+    if self.current_user.role != 'ROLE_SITE-SU'
+      self.participating_sites.each do |e|
+        if e.organization.id == self.current_user.organization.id
+          return e.id
+        end
+      end
+    else
+      return nil
     end
   end
 
