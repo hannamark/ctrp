@@ -16,8 +16,6 @@
             UserService, toastr, HOST, URL_CONFIGS, acceptedFileTypesObj, Upload) {
 
             var vm = this;
-            console.log('acceptedFileTypesObj: ', acceptedFileTypesObj);
-            console.log('documentTypes: ', documentTypes);
             vm.acceptedFileExtensions = acceptedFileTypesObj.accepted_file_extensions;
             vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
             vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
@@ -46,6 +44,7 @@
             function _getTrialDetailCopy() {
                 $timeout(function() {
                     vm.curTrialDetailObj = PATrialService.getCurrentTrialFromCache();
+                    _filterOutDeletedDoc();
                 }, 0);
             } //getTrialDetailCopy
 
@@ -238,6 +237,7 @@
                             vm.curTrialDetailObj.lock_version = res.lock_version;
                             PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
                             $scope.$emit('updatedInChildScope', {});
+                            _filterOutDeletedDoc();
                             if (showToastr) {
                                 toastr.clear();
                                 toastr.success('Trial related documents have been saved', 'Successful!', {
@@ -251,6 +251,12 @@
                         console.error('group promise err: ', err);
                     });
             } // updatedTrial
+
+            function _filterOutDeletedDoc() {
+                vm.curTrialDetailObj.trial_documents = _.filter(vm.curTrialDetailObj.trial_documents, function(doc) {
+                    return doc.deleted !== true; // do not show soft deleted document
+                });
+            }
 
 
         } // paTrialRelatedDocsCtrl

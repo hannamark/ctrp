@@ -86,8 +86,7 @@
                                          </thead>
                                          <tbody>
                                              <tr ng-repeat="doc in trialRelatedDocsView.curTrialDetailObj.trial_documents track by $index"
-                                                 class="animated-item" ng-class="doc.deleted ? 'deleted-text' : ''"
-                                                 ng-hide="doc.replaced">
+                                                 class="animated-item" ng-class="doc.deleted ? 'deleted-text' : ''">
                                                  <td><a ng-class="doc.deleted ? 'deleted-text' : ''" href="{{trialRelatedDocsView.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></td>
                                                  <td>{{doc.document_type}}</td>
                                                  <td>{{doc.document_subtype}}</td>
