@@ -129,7 +129,8 @@
                 var existingIndices = findIndices(vm.curTrialDetailObj.trial_documents, 'document_type', vm.curDoc.document_type);
                 console.log('existing indices: ', existingIndices);
                 _.each(existingIndices, function(idx) {
-                    if (vm.curTrialDetailObj.trial_documents[idx].status === 'active') {
+                    if (vm.curTrialDetailObj.trial_documents[idx].status === 'active' &&
+                        vm.curTrialDetailObj.trial_documents[idx].document_type.indexOf('Other') === -1) {
                         vm.curTrialDetailObj.trial_documents[idx].status = 'inactive';
                     }
                 });
@@ -144,7 +145,8 @@
                 } else if (!!vm.curDoc.file.size) {
                     console.info('file to be uploaded: ', vm.curDoc.file);
                     // file to be uploaded
-                    vm.curDoc.replacedDocId = vm.curDoc.id || null; // replacing document id: replacedDocId
+                    // replacing document id
+                    vm.curDoc.replacedDocId = vm.curDoc.id || null; // what if vm.curDoc.document_type.indexOf('Other') > -1 ?????
                     vm.curDoc.file_name = vm.curDoc.file.name; // extract name from the File object
                     if (index !== null) {
                         // existing document
