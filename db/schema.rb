@@ -994,7 +994,7 @@ ActiveRecord::Schema.define(version: 20160222205107) do
     t.string   "uuid",             limit: 255
     t.integer  "lock_version",                 default: 0
     t.integer  "submission_id"
-    t.boolean  "deleted",                      default: false
+    t.string   "status",                       default: "active"
   end
 
   add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree

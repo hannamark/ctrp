@@ -24,12 +24,13 @@ class TrialDocumentsController < ApplicationController
   # POST /trial_documents
   # POST /trial_documents.json
   def create
-
+      Rails.logger.info "params: #{params}"
     if params[:replaced_doc_id].present?
       # TrialDocument.destroy(params[:replaced_doc_id]) # hard delete the replaced document
       Rails.logger.info "replaced doc id: #{params[:replaced_doc_id]}"
       replaced_doc = TrialDocument.find(params[:replaced_doc_id])
-      replaced_doc.update_attribute('deleted', true) # soft delete the replaced document
+      # replaced document is flagged as inactive except the document_type is "Other Document"
+      replaced_doc.update_attribute('status', 'inactive') # unless params[:document_type].include? "Other"
     end
 
     @trial_document = TrialDocument.new(trial_document_params)
@@ -81,6 +82,6 @@ class TrialDocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trial_document_params
-      params.require(:trial_document).permit(:file, :file_name, :document_type, :document_subtype, :added_by_id, :trial_id, :deleted, :replaced_doc_id)
+      params.require(:trial_document).permit(:file, :file_name, :document_type, :document_subtype, :added_by_id, :trial_id, :status, :replaced_doc_id)
     end
 end
