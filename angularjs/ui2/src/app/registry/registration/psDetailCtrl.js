@@ -175,6 +175,7 @@
         /****************************** implementations **************************/
 
         function activate() {
+            allowPermittedAction();
             appendNewPsFlag();
             setManageScreenFlag();
             populateOrgs();
@@ -183,6 +184,13 @@
             if (!vm.curPs.new) {
                 setSitePi();
                 appendStatuses();
+            }
+        }
+
+        // Redirect to search page if this user is not allowed to mange sites
+        function allowPermittedAction() {
+            if ($state.$current.name.indexOf('manage') > -1 && vm.curTrial.actions.indexOf('manage-sites') < 0) {
+                $state.go('main.trials', null, {reload: true});
             }
         }
 
