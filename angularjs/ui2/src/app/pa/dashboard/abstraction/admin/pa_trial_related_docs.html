@@ -15,6 +15,7 @@
                                         <select name="doc_type" id="doc_type"
                                             class="form-control input-sm"
                                             restriction-field
+                                            ng-disabled="trialRelatedDocsView.docTypeSelectionDisabled"
                                             ng-model="trialRelatedDocsView.curDoc.document_type"
                                             ng-options="type for type in trialRelatedDocsView.documentTypes">
                                             <option value="">- Please select a document type ...</option>
@@ -43,7 +44,7 @@
                                     <div class="col-sm-2" ng-show="trialRelatedDocsView.curDoc.edit">
                                         <label for="" class="control-label"></label>
                                         <div class="btn-group inline">
-                                            <button type="button" class="btn btn-warning">Cancel</button>
+                                            <button type="button" class="btn btn-warning" ng-click="trialRelatedDocsView.cancelEdit()">Cancel</button>
                                             <button type="button" class="btn btn-danger" ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
                                                 ng-disabled="trialRelatedDocsView.curDoc.document_type==''">
                                                 Update
@@ -93,7 +94,9 @@
                                                  <td>{{doc.updated_at | date: "dd-MMM-yyyy H:mm"}}</td>
                                                  <td>{{doc.added_by.username}} <!-- to be replaced with full name when available --></td>
                                                  <td class="text-center" class="col-sm-1">
-                                                     <label class="btn btn-default" restriction-field ng-click="trialRelatedDocsView.deleteDoc($index)">
+                                                     <label class="btn btn-default" restriction-field
+                                                         ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1"
+                                                         ng-click="trialRelatedDocsView.deleteDoc($index)">
                                                          <i class="glyphicon" ng-class="doc.deleted ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                      </label>
                                                      <label class="btn btn-default" restriction-field ng-disabled="doc.deleted" ng-click="trialRelatedDocsView.editDoc($index)">

@@ -23,11 +23,16 @@
             vm.curDoc = _initCurDoc();
             vm.docSubtypeShown = false;
             vm.documentTypes = documentTypes.types;
+            vm.docTypeSelectionDisabled = false;
+            var immutableDocTypes = _.filter(vm.documentTypes, function(type) {
+                return type.indexOf('IRB Approval') > -1 || type.indexOf('Protocol Doc') > -1;
+            }); // array of doc types that do not allow mutation
 
             // actions
             vm.saveDocuments = saveDocuments;
             vm.deleteDoc = deleteDoc;
             vm.editDoc = editDoc;
+            vm.cancelEdit = cancelEdit;
             vm.upsertDoc = upsertDocV2; //upsertDoc;
             vm.resetForm = resetForm;
 
@@ -60,7 +65,7 @@
                     // vm.curDoc = Object.assign({}, vm.curTrialDetailObj.trial_documents[index], {edit: true});
                     vm.curDoc = angular.copy(vm.curTrialDetailObj.trial_documents[index]);
                     vm.curDoc.edit = true;
-                    // vm.curDoc.document_type = vm.curTrialDetailObj.trial_documents[index].document_type;
+                    vm.docTypeSelectionDisabled = _.contains(immutableDocTypes, vm.curDoc.document_type);
                     vm.curDoc.index = index;
                     prevFile = angular.copy(vm.curDoc.file);
                     vm.curDoc.file = '';
@@ -256,6 +261,11 @@
                 vm.curTrialDetailObj.trial_documents = _.filter(vm.curTrialDetailObj.trial_documents, function(doc) {
                     return doc.deleted !== true; // do not show soft deleted document
                 });
+            }
+
+            function cancelEdit() {
+                vm.curDoc = _initCurDoc();
+                vm.docTypeSelectionDisabled = false;
             }
 
 
