@@ -150,6 +150,16 @@
             });
         };
 
+        vm.addPs = function() {
+            vm.editMode = false;
+            vm.curPs = {};
+            vm.curPs.new = true;
+            vm.addedStatuses = [];
+            vm.srsNum = 0;
+            vm.selectedPiArray = [];
+            setDefaultOrg();
+        };
+
         vm.editPs = function(psIdx) {
             vm.editMode = true;
             vm.curPs = vm.curTrial.participating_sites[psIdx];
