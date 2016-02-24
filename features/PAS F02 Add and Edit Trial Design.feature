@@ -22,14 +22,14 @@ As a CTRP Scientific Abstractor, I can add and edit Trial Design
            
       
       | Interventional or Expanded Access |Observational or Ancillary Correlative  |Secondary Purpose  | deleted |
-      | Interventional or Expanded Access|Observational or Ancillary Correlative |Secondary Purpose Other  | deleted |
+      | Interventional or Expanded Access|Observational or Ancillary Correlative |Secondary Purpose Other| deleted |
       | Interventional or Expanded Access |Observational or Ancillary Correlative | Intervention Model |deleted  |
       |  Interventional or Expanded Access |Observational or Ancillary Correlative  | Arms/Groups |deleted  |
-      |Interventional or Expanded Access |Observational or Ancillary Correlative |Masking  |deleted  |
+      |Interventional or Expanded Access |Observational or Ancillary Correlative |Masking  |deleted|
       | Interventional or Expanded Access|Observational or Ancillary Correlative  |Masking role Subject  |deleted  |
       |Interventional or Expanded Access |Observational or Ancillary Correlative | Masking role investigator  |deleted  |
   |Interventional or Expanded Access | Observational or Ancillary Correlative | Masking role Caregiver  |deleted  |
-     |Interventional or Expanded Access |Observational or Ancillary Correlative | Masking role outcome Assessor  |deleted  |  
+     |Interventional or Expanded Access |Observational or Ancillary Correlative | Masking role outcome Assessor |deleted  |  
        |Interventional or Expanded Access |Observational or Ancillary Correlative |Allocation |deleted  | 
        |Interventional or Expanded Access |Observational or Ancillary Correlative | Study Classification |deleted  |  
          |Interventional or Expanded Access |Observational or Ancillary Correlative | Final Enrollment for clinicalTrials.gov|deleted  |  
