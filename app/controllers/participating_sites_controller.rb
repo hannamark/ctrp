@@ -55,7 +55,6 @@ class ParticipatingSitesController < ApplicationController
   # DELETE /participating_sites/1
   # DELETE /participating_sites/1.json
   def destroy
-    Rails.logger.info "IN HERE DESTØ‰Y!!"
     @participating_site.site_rec_status_wrappers.delete_all
     @participating_site.participating_site_investigators.delete_all
     @participating_site.destroy
