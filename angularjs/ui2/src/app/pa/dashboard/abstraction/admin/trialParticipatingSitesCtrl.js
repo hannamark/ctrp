@@ -56,6 +56,7 @@
         vm.editSiteRecruitment = editSiteRecruitment;
         vm.deleteSiteRecruitment = deleteSiteRecruitment;
         vm.cancelSiteRecruitmentEdit = cancelSiteRecruitmentEdit;
+        vm.cancelInvestigatorEdit = cancelInvestigatorEdit;
         vm.editInvestigator  = editInvestigator;
         vm.deleteInvestigator  = deleteInvestigator;
         vm.commitEditInvestigator = commitEditInvestigator;
@@ -424,7 +425,7 @@
         function editInvestigator(index) {
             //if (index < vm.tempTrialStatuses.length) {
             console.log("In editSiteRecruitment");
-            vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
+            vm.current_investigator = angular.copy(vm.investigatorGrid[index]);
             vm.current_investigator.edit = true;
             //vm.current_investigator.index = index;
             console.log("In editSiteRecruitment vm.current_investigator=" +JSON.stringify(vm.current_investigator));
@@ -439,12 +440,23 @@
          */
         function commitEditInvestigator() {
             console.log("In commitEditInvestigator");
+            console.log("In commitEditInvestigator vm.current_investigator =" + JSON.stringify(vm.current_investigator));
             if (vm.current_investigator.edit) {
+                for (var i = 0; i < vm.investigatorGrid.length; i++) {
+                    console.log("In commitEditInvestigator  vm.investigatorGrid[i]=" + JSON.stringify( vm.investigatorGrid[i]));
+                    if (vm.current_investigator.person.id == vm.investigatorGrid[i].person.id){
+                        vm.investigatorGrid.splice(i,1);
+                        vm.investigatorGrid.push(vm.current_investigator);
+                            //person.investigator_type = vm.current_investigator.person.investigator_type;
+                        console.log("In commitEditInvestigator MATCHES vm.investigatorGrid[i]=" + JSON.stringify( vm.investigatorGrid[i]));
+                    }
+                    //if(vm.investigatorGrid.perso)
+                }
                 //console.log("EDIT!!!!!!In commitEditInvestigator");
-                vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-                vm.currentParticipatingSite.participating_site_investigators_attributes.push(vm.current_investigator);
+                //vm.currentParticipatingSite.participating_site_investigators_attributes = [];
+               // vm.currentParticipatingSite.participating_site_investigators_attributes.push(vm.current_investigator);
                 //console.log("EDIT!!!!!!In commitEditInvestigator=" + JSON.stringify(vm.currentParticipatingSite.participating_site_investigators_attributes));
-                vm.saveParticipatingSite();
+                //vm.saveParticipatingSite();
             }
         } // commitEdit
 
@@ -463,6 +475,16 @@
             }
             //vm.currentParticipatingSite.contact_type = ;
         }
+
+        /**
+         *  Second Tab
+         *  Cancel out of editing an existing Site Recruitment Status Record in the Participating Site
+         */
+        function cancelInvestigatorEdit() {
+            vm.current_investigator = {};
+        }
+
+
 
         /**
          * Third Tab
