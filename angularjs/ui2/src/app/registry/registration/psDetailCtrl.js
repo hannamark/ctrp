@@ -219,7 +219,7 @@
         // Populate available organization list
         function populateOrgs() {
             if (vm.curUser.role === 'ROLE_SITE-SU') {
-                vm.availableOrgs = vm.curUser.family_orgs;
+                vm.availableOrgs = vm.curTrial.available_family_orgs;
             } else {
                 vm.availableOrgs.push(vm.curUser.organization);
             }
@@ -227,7 +227,9 @@
 
         // Set the default organization
         function setDefaultOrg() {
-            vm.curPs.organization_id = vm.availableOrgs[0].id;
+            if (vm.availableOrgs.length > 0) {
+                vm.curPs.organization_id = vm.availableOrgs[0].id;
+            }
         }
 
         // Set the Site PI from many participating_site_investigators
