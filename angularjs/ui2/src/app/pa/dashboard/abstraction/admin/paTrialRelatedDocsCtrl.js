@@ -198,8 +198,10 @@
              */
             function saveDocuments(showToastr, formName) {
                 // warning toastr for edited document
+                // cancelEdit();
                 if (vm.curDoc.edit === true) {
-                    _showWarningToastr('Please cancel or commit the edited document first', 'bottom right');
+                    // _showWarningToastr('Please cancel or commit the edited document first', 'bottom right');
+                    vm.formError = 'Please cancel or commit the edited document first';
                     return;
                 }
                 if (!_isFormValid()) {
@@ -207,7 +209,6 @@
                     console.error('form validity: ', formName.$valid);
                     return;
                 }
-                cancelEdit();
                 PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id)
                     .then(function(res) {
                         console.log('group promises res: ', res);
