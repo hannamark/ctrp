@@ -11,11 +11,11 @@
                                 <div class="row top-buffer">
                                     <div class="col-sm-1"></div>
                                     <div class="col-sm-3">
-                                        <label class="control-label">Document Type</label>
+                                        <!-- <label class="control-label">Document Type</label> -->
                                         <select name="doc_type" id="doc_type"
                                             class="form-control input-sm"
                                             restriction-field
-                                            ng-disabled="trialRelatedDocsView.docTypeSelectionDisabled"
+                                            ng-disabled="trialRelatedDocsView.curDoc.edit"
                                             ng-model="trialRelatedDocsView.curDoc.document_type"
                                             ng-options="type for type in trialRelatedDocsView.documentTypes">
                                             <option value="">- Please select a document type ...</option>
@@ -24,11 +24,12 @@
                                     <div class="col-sm-2" ng-show="trialRelatedDocsView.docSubtypeShown">
                                         <labe class="control-label">Document Subtype</labe>
                                         <input type="text" class="form-control input-sm" name="document_subtype" id="document_subtype"
+                                            placeholder="Subtype"
                                             ng-model="trialRelatedDocsView.curDoc.document_subtype"
                                             ng-required="trialRelatedDocsView.docSubtypeShown">
                                     </div>
                                     <div class="col-sm-4">
-                                        <label for="" class="control-label"></label>
+                                        <!-- <label for="" class="control-label"></label> -->
                                         <input type="file" restriction-field ngf-select=""
                                                ng-model="trialRelatedDocsView.curDoc.file"
                                                name="current_doc" ngf-max-size="10MB"
@@ -52,12 +53,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row top-buffer" ng-show="trial_docs_form.current_doc.$error">
+                                <div class="row top-buffer" ng-show="trial_docs_form.current_doc.$error || trialRelatedDocsView.docTypeError !== ''">
                                     <span class="help-block" ng-show="trial_docs_form.current_doc.$error.validateFileType">
-                                        Error: Please select a valid file. Allowed file types: {{trialRelatedDocsView.acceptedFileExtensions}}
+                                        Error: The selected document is not a valid document type. Allowed file types: {{trialRelatedDocsView.acceptedFileExtensions}}
                                     </span>
                                     <span class="help-block" ng-show="trial_docs_form.current_doc.$error.maxSize">
                                         Error: File size exceeds 10 MB
+                                    </span>
+                                    <span class="help-block" ng-show="trialRelatedDocsView.docTypeError">
+                                        Error: {{trialRelatedDocsView.docTypeError}}
                                     </span>
                                 </div>
                                 <div class="row top-buffer" ng-show="trialRelatedDocsView.curTrialDetailObj.trial_documents.length > 0">
@@ -75,18 +79,18 @@
                                          <tbody>
                                              <tr ng-repeat="doc in trialRelatedDocsView.curTrialDetailObj.trial_documents track by $index"
                                                  class="animated-item" ng-class="doc.status !== 'active' ? 'deleted-text' : ''">
-                                                 <td><a ng-class="doc.status !== 'active' ? 'deleted-text' : ''" href="{{trialRelatedDocsView.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></td>
+                                                 <td><a ng-class="doc.status == 'deleted' ? 'deleted-text' : ''" href="{{trialRelatedDocsView.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></td>
                                                  <td>{{doc.document_type}}</td>
                                                  <td>{{doc.document_subtype}}</td>
                                                  <td>{{doc.created_at | date: "dd-MMM-yyyy H:mm"}}</td>
                                                  <td>{{doc.added_by.username}} <!-- to be replaced with full name when available --></td>
                                                  <td class="text-center" class="col-sm-1">
                                                      <label class="btn btn-default" restriction-field
-                                                         ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1"
+                                                         ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
                                                          ng-click="trialRelatedDocsView.deleteDoc($index)">
-                                                         <i class="glyphicon" ng-class="doc.status !=='active' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                                         <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                      </label>
-                                                     <label class="btn btn-default" restriction-field ng-disabled="doc.status !== 'active'" ng-click="trialRelatedDocsView.editDoc($index)">
+                                                     <label class="btn btn-default" restriction-field ng-disabled="doc.status == 'deleted'" ng-click="trialRelatedDocsView.editDoc($index)">
                                                          <i class="glyphicon glyphicon-edit"></i>
                                                      </label>
                                                  </td>

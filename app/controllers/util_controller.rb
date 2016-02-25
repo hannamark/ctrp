@@ -44,8 +44,8 @@ class UtilController < ApplicationController
   end
 
   def trial_document_types
-    document_types = ['Protocol Document', 'IRB Approval',
-                      'Informed Consent', 'Change Memo Document',
+    document_types = ['Protocol Document', 'IRB Approval', 'TSR',
+                      'Informed Consent', 'Change Memo Document', 'Complete Sheet',
                       'Other Document', 'List of Participating Sites',
                       'Protocol Highlighted Document']
     respond_to do |format|
