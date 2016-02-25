@@ -25,6 +25,7 @@
         vm.current_site_recruitment = {};
         vm.current_investigator = {};
         vm.siteRecruitmentGrid = [];
+        vm.investigatorGrid = [];
         vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
         vm.currentParticipatingSite.participating_site_investigators=[];
         vm.persisted_contact = {};
@@ -63,7 +64,8 @@
         vm.openCalendar = openCalendar;
         vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
         vm.setAsSiteContact = setAsSiteContact;
-        vm.saveContact;
+        vm.resetParticipatingSiteTab = resetParticipatingSiteTab;
+        //vm.saveContact;
 
 
         activate();
@@ -99,6 +101,16 @@
                 }
             }
             vm.siteRecruitmentGrid = [];
+
+            vm.currentParticipatingSite.participating_site_investigators_attributes = [];
+            for (var i = 0; i < vm.investigatorGrid.length; i++) {
+                var invObj = vm.investigatorGrid[i];
+                if (invObj.edit || invObj.new || invObj._destroy) {
+                    vm.currentParticipatingSite.participating_site_investigators_attributes.push(invObj);
+                }
+            }
+            //vm.currentParticipatingSite.participating_site_investigators_attributes.push(participating_site_investigator);
+
             //console.log("2vm.currentParticipatingSite.site_rec_status_wrappers_attributes=" + JSON.stringify(vm.currentParticipatingSite.site_rec_status_wrappers_attributes));
             //console.log("2vm.currentParticipatingSite.site_rec_status_wrappers=" + JSON.stringify(vm.currentParticipatingSite.site_rec_status_wrappers));
             if (!vm.currentParticipatingSite.id) {
@@ -128,6 +140,7 @@
                         vm.currentParticipatingSite.participating_site_investigators = response.participating_site_investigators;
                         vm.currentParticipatingSite.participating_site_investigators_attributes = [];
                         vm.initSiteRecruitmentGrid();
+                        vm.initInvestigatorGrid();
                         vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
                         vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
                         vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
@@ -216,6 +229,7 @@
             vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
             vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
             vm.initSiteRecruitmentGrid();
+            vm.initInvestigatorGrid();
             vm.validateStatus();
         }
 
@@ -236,6 +250,22 @@
                 vm.siteRecruitmentGrid.push(siteObj);
             };
             vm.validateStatus();
+        };
+
+        /**
+         *  Initialize Investigator Grid
+         */
+        vm.initInvestigatorGrid = function (){
+            console.log("in vm.initInvestigatorGrid");
+            vm.investigatorGrid = [];
+            for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
+                var invObj = vm.currentParticipatingSite.participating_site_investigators[i];
+                invObj._destroy = false;
+                invObj.edit = false;
+                invObj.new = false;
+                vm.investigatorGrid.push(invObj);
+            };
+            console.log("vm.investigatorGrid ="+ JSON.stringify(vm.investigatorGrid));
         };
 
         function openCalendar ($event, type) {
@@ -267,6 +297,7 @@
                 }
             });
             vm.validateStatus();
+            //TrialService.addStatus(vm.siteRecruitmentGrid, siteObj);
             vm.siteRecruitmentGrid.push(siteObj);
             console.log(" addSiteRecruitment() = siteObj="+ JSON.stringify(siteObj) );
             vm.current_site_recruitment = {};
@@ -358,8 +389,18 @@
                     var participating_site_investigator = {};
                     participating_site_investigator.person_id = vm.principalInvestigator.array[0].id;
                     participating_site_investigator.new = true;
-                    vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-                    vm.currentParticipatingSite.participating_site_investigators_attributes.push(participating_site_investigator);
+                    participating_site_investigator.person = vm.principalInvestigator.array[0];
+                    //participating_site_investigator.person.set_as_contact = false;
+                    // Check of Duplicate Entry
+                    var exists = false;
+                    for (var i = 0; i < vm.investigatorGrid.length; i++) {
+                        if(vm.investigatorGrid[i].person_id == participating_site_investigator.person_id){
+                            exists = true;
+                        }
+                    }
+                    if(!exists){
+                        vm.investigatorGrid.push(participating_site_investigator);
+                    }
                 }
             });
         }
@@ -628,6 +669,17 @@
             });
         };
 
+
+        function resetParticipatingSiteTab() {
+            vm.selOrganization = {name: '', array: []};
+            vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
+            vm.current_site_recruitment = {};
+            vm.initSiteRecruitmentGrid();
+           $timeout(function() {
+                getTrialDetailCopy();
+                //vm.centralContactType = _getCentralContactType(); // restore vm.centralContactType
+            }, 0);
+        }
 
     } //trialParticipatingSitesCtrl
 

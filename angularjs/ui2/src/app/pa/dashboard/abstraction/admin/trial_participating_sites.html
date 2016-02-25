@@ -219,7 +219,7 @@
                         <div class="form-group no-bottom-margin">
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()">Save</button>
-                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetPSTab()"  restriction-field ng-disabled="psView.disableBtn">
+                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSiteTab()"  restriction-field ng-disabled="psView.disableBtn">
                                     <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
                             </div>
@@ -304,7 +304,7 @@
                                         {{trialStatusView.statusErrorMsg}}
                                     </div>
                                 </div>
-                                <div class="row" ng-show="psView.currentParticipatingSite.participating_site_investigators.length > 0">
+                                <div class="row" ng-show="psView.investigatorGrid.length > 0">
                                     <table class="table table-bordered table-striped table-hover">
                                         <thead style="background-color: #d9edf7">
                                             <th>PO ID</th>
@@ -316,7 +316,7 @@
                                             <th class="text-center"> Delete/Edit </th>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="inv in psView.currentParticipatingSite.participating_site_investigators track by $index" class="animated-item text-center" ng-class="inv._destroy ? 'deleted-text' : ''">
+                                        <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item text-center" ng-class="inv._destroy ? 'deleted-text' : ''">
                                             <td class="col-sm-2">{{inv.person.id}}</td>
                                             <td class="col-sm-1">{{inv.person.lname}}</td>
                                             <td class="col-sm-2">{{inv.person.fname}}</td>
