@@ -335,8 +335,8 @@ ActiveRecord::Schema.define(version: 20160224222501) do
     t.string   "institute_code",    limit: 255
     t.string   "nci",               limit: 255
     t.integer  "trial_id"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "uuid",              limit: 255
     t.integer  "lock_version",                  default: 0
     t.string   "serial_number",     limit: 255
@@ -1054,9 +1054,9 @@ ActiveRecord::Schema.define(version: 20160224222501) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.text     "object"
+    t.jsonb    "object"
     t.datetime "created_at"
-    t.text     "object_changes"
+    t.jsonb    "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1241,9 +1241,9 @@ ActiveRecord::Schema.define(version: 20160224222501) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.text     "object"
+    t.jsonb    "object"
     t.datetime "created_at"
-    t.text     "object_changes"
+    t.jsonb    "object_changes"
     t.integer  "transaction_id"
   end
 
