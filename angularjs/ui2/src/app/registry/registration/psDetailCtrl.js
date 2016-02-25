@@ -162,7 +162,7 @@
 
         vm.editPs = function(psIdx) {
             vm.editMode = true;
-            vm.curPs = vm.curTrial.participating_sites[psIdx];
+            vm.curPs = vm.curTrial.sitesu_sites[psIdx];
             vm.addedStatuses = [];
             vm.srsNum = 0;
             vm.selectedPiArray = [];

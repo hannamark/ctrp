@@ -85,6 +85,23 @@ json.participating_sites do
   end
 end
 
+json.sitesu_sites do
+  json.array!(@trial.sitesu_sites) do |ps|
+    json.extract! ps, :id, :protocol_id, :program_code, :organization_id, :organization
+
+    json.site_rec_status_wrappers do
+      json.array!(ps.site_rec_status_wrappers) do |status|
+        json.extract! status, :id, :status_date, :site_recruitment_status_id, :site_recruitment_status, :comments
+      end
+    end
+
+    json.participating_site_investigators do
+      json.array!(ps.participating_site_investigators) do |investigator|
+        json.extract! investigator, :id, :person_id, :person, :investigator_type
+      end
+    end
+  end
+end
 
 ## append the protocol_id_origin.name
 unless @trial.other_ids.empty?

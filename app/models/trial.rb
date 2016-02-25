@@ -266,6 +266,7 @@ class Trial < TrialBase
     return actions
   end
 
+  # Participating site ID that has this user's associated org
   def my_site_id
     if self.current_user.present? && self.current_user.role != 'ROLE_SITE-SU'
       self.participating_sites.each do |e|
@@ -276,6 +277,21 @@ class Trial < TrialBase
     else
       return nil
     end
+  end
+
+  # Array of participating sites that site-su user can edit
+  def sitesu_sites
+    sitesu_sites = []
+
+    if self.current_user.present? && self.current_user.role == 'ROLE_SITE-SU'
+      self.participating_sites.each do |e|
+        if self.current_user.family_orgs.include? e.organization
+          sitesu_sites.append(e)
+        end
+      end
+    end
+
+    return sitesu_sites
   end
 
   def is_owner

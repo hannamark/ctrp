@@ -8,7 +8,7 @@
 
         <div class="row">
             <form class="form form-horizontal" role="form" name="ps_form" novalidate ctrp-submit="psDetailView.updatePs()">
-                <div ng-show="psDetailView.isManageScreen && psDetailView.curTrial.participating_sites.length > 0" class="form-group">
+                <div ng-show="psDetailView.isManageScreen && psDetailView.curTrial.sitesu_sites.length > 0" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Added Participating Sites:</label>
                     <div class="col-xs-12 col-sm-9">
                         <table class="table table-bordered table-striped table-condensed">
@@ -17,7 +17,7 @@
                                 <th>Edit</th>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="ps in psDetailView.curTrial.participating_sites track by $index">
+                            <tr ng-repeat="ps in psDetailView.curTrial.sitesu_sites track by $index">
                                 <td class="col-md-11">{{ps.organization.name}}</td>
                                 <td class="col-md-1">
                                     <label restriction-field class="btn btn-default" ng-click="psDetailView.editPs($index)">
