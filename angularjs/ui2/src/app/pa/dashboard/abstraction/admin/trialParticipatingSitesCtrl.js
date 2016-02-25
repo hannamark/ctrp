@@ -439,26 +439,31 @@
          *  This function is used to save the user entered values of the selected site recruitment record
          */
         function commitEditInvestigator() {
-            console.log("In commitEditInvestigator");
-            console.log("In commitEditInvestigator vm.current_investigator =" + JSON.stringify(vm.current_investigator));
+            var primary_contact_set = false;
             if (vm.current_investigator.edit) {
                 for (var i = 0; i < vm.investigatorGrid.length; i++) {
-                    console.log("In commitEditInvestigator  vm.investigatorGrid[i]=" + JSON.stringify( vm.investigatorGrid[i]));
-                    if (vm.current_investigator.person.id == vm.investigatorGrid[i].person.id){
+                    console.log("in commitEditInvestigator vm.current_investigator="+JSON.stringify(vm.current_investigator));
+                     if (vm.current_investigator.person.id == vm.investigatorGrid[i].person.id){
                         vm.investigatorGrid.splice(i,1);
                         vm.investigatorGrid.push(vm.current_investigator);
-                            //person.investigator_type = vm.current_investigator.person.investigator_type;
-                        console.log("In commitEditInvestigator MATCHES vm.investigatorGrid[i]=" + JSON.stringify( vm.investigatorGrid[i]));
-                    }
-                    //if(vm.investigatorGrid.perso)
+                         if(vm.current_investigator.set_as_contact){
+                             var name = PersonService.extractFullName(vm.investigatorGrid[i].person);
+                             vm.currentParticipatingSite.contact_name = name;
+                             vm.currentParticipatingSite.contact_phone = vm.investigatorGrid[i].person.phone;
+                             vm.currentParticipatingSite.contact_email = vm.investigatorGrid[i].person.email;
+                             vm.currentParticipatingSite.contact_type = "PI";
+                             vm.currentParticipatingSite.person_id =  vm.investigatorGrid[i].person.id;
+                             //console.log("SPARKY vm.currentParticipatingSite = " + JSON.stringify(vm.currentParticipatingSite));
+                         }
+                    } else {
+                         if(vm.current_investigator.set_as_contact){
+                             vm.investigatorGrid[i].set_as_contact = false;
+                         }
+                     }
                 }
-                //console.log("EDIT!!!!!!In commitEditInvestigator");
-                //vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-               // vm.currentParticipatingSite.participating_site_investigators_attributes.push(vm.current_investigator);
-                //console.log("EDIT!!!!!!In commitEditInvestigator=" + JSON.stringify(vm.currentParticipatingSite.participating_site_investigators_attributes));
-                //vm.saveParticipatingSite();
             }
-        } // commitEdit
+        } // commitEditInvestigator
+
 
         /**
          *  Set the Investigator as a Primary Contact
@@ -502,7 +507,7 @@
                         var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[i].person);
 
                         vm.investigatorArray.push({"id": id, "name": name});
-                        console.log('vm.investigatorArray' + JSON.stringify(vm.investigatorArray));
+                        //console.log('vm.investigatorArray' + JSON.stringify(vm.investigatorArray));
                     }
                     if(vm.persisted_contact.contact_type == "PI"){
                         vm.currentParticipatingSite.contact_name = vm.persisted_contact.contact_name;
