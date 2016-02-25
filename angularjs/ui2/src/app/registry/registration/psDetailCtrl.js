@@ -24,6 +24,7 @@
         vm.addedStatuses = [];
         vm.srsNum = 0;
         vm.selectedPiArray = [];
+        vm.editMode = false; // Flag used in manage sites screen
 
         vm.updatePs = function() {
             // Prevent multiple submissions
@@ -147,6 +148,26 @@
             }).catch(function(err) {
                 console.log("Error in validating trial status: " + err);
             });
+        };
+
+        vm.addPs = function() {
+            vm.editMode = false;
+            vm.curPs = {};
+            vm.curPs.new = true;
+            vm.addedStatuses = [];
+            vm.srsNum = 0;
+            vm.selectedPiArray = [];
+            setDefaultOrg();
+        };
+
+        vm.editPs = function(psIdx) {
+            vm.editMode = true;
+            vm.curPs = vm.curTrial.participating_sites[psIdx];
+            vm.addedStatuses = [];
+            vm.srsNum = 0;
+            vm.selectedPiArray = [];
+            setSitePi();
+            appendStatuses();
         };
 
         activate();
