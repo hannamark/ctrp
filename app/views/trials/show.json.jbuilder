@@ -31,7 +31,7 @@ end
 
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
-    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :deleted
+    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status
     json.set! :added_by, document.added_by_id.nil? ? User.find(1) : ''    #document.added_by_id
   end
 end
@@ -48,7 +48,7 @@ json.collaborators_attributes do
   end
 end
 
-json.participating_sites_list do
+json.participating_sites do
   json.array!(@trial.participating_sites) do |participating_site|
     json.id participating_site.id
     json.investigator participating_site.person.present? ? participating_site.person.lname : ""
@@ -56,12 +56,15 @@ json.participating_sites_list do
     json.contact_phone participating_site.contact_phone
     json.contact_email participating_site.contact_email
     json.contact_type participating_site.contact_type
+    json.protocol_id participating_site.protocol_id
+    json.program_code participating_site.program_code
 
     json.organization participating_site.organization
     json.site_rec_status_wrappers do
       json.array!(participating_site.site_rec_status_wrappers) do |site_rec_status_wrapper|
         json.id site_rec_status_wrapper.id
         json.status_date  site_rec_status_wrapper.status_date
+        json.site_recruitment_status_id site_rec_status_wrapper.site_recruitment_status.nil? ? "" : site_rec_status_wrapper.site_recruitment_status.id
         json.site_recruitment_status  site_rec_status_wrapper.site_recruitment_status.nil? ? "" : site_rec_status_wrapper.site_recruitment_status
         json.comments  site_rec_status_wrapper.comments
       end

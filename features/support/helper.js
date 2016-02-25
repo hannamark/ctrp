@@ -129,6 +129,11 @@ var helper = function() {
             console.log(errorMessage + " was clicked");
             expect(button.get(1).isSelected()).to.eventually.equal(true);
         }
+        else if (value === '2') {
+            button.get(2).click();
+            console.log(errorMessage + " was clicked");
+            expect(button.get(2).isSelected()).to.eventually.equal(true);
+        }
     };
 
     this.getValue = function (fieldName, errorMessage) {

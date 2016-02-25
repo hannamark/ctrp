@@ -50,6 +50,51 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    this.Given(/^the FDA Regulated Intervention Indicator will be defaulted to the "([^"]*)" setting$/, function (arg1, callback) {
+        addTrial.verifyAddTrialFDARegulatedInterventionIndicator('0', false);
+        addTrial.verifyAddTrialFDARegulatedInterventionIndicator('1', false);
+        addTrial.verifyAddTrialFDARegulatedInterventionIndicator('2', true);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^the Section (\d+) Indicator will be defaulted to the "([^"]*)" setting$/, function (arg1, arg2, callback) {
+        addTrial.verifyAddTrialSection801Indicator('0', false);
+        addTrial.verifyAddTrialSection801Indicator('1', false);
+        addTrial.verifyAddTrialSection801Indicator('2', true);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^the Data Monitoring Committee Appointed Indicator will be defaulted to the "([^"]*)" setting$/, function (arg1, callback) {
+        addTrial.verifyAddTrialDataMonitoringCommitteeAppointedIndicator('0', false);
+        addTrial.verifyAddTrialDataMonitoringCommitteeAppointedIndicator('1', false);
+        addTrial.verifyAddTrialDataMonitoringCommitteeAppointedIndicator('2', true);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have the option to change the defaulted "([^"]*)" setting to either "([^"]*)" or "([^"]*)"for FDA Regulated Intervention Indicator$/, function (arg1, arg2, arg3, callback) {
+        addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+        addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
+        addTrial.selectAddTrialFDARegulatedInterventionIndicator('2');
+        addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have the option to change the defaulted "([^"]*)" setting to either"([^"]*)"or "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, arg4, callback) {
+        addTrial.selectAddTrialSection801Indicator('0');
+        addTrial.selectAddTrialSection801Indicator('1');
+        addTrial.selectAddTrialSection801Indicator('2');
+        addTrial.selectAddTrialSection801Indicator('1');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have the option to change the defaulted "([^"]*)" setting to either "([^"]*)"or "([^"]*)" for Data Monitoring Committee Appointed Indicator$/, function (arg1, arg2, arg3, callback) {
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('0');
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('1');
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('2');
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('1');
+        browser.sleep(25).then(callback);
+    });
+
     this.Given(/^I have selected"([^"]*)" or "([^"]*)"for FDA Regulated Intervention Indicator$/, function (arg1, arg2, callback) {
         addTrial.verifyAddTrialFDARegulatedInterventionIndicator('0', false);
         addTrial.verifyAddTrialFDARegulatedInterventionIndicator('1', false);
@@ -267,31 +312,73 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have selected"([^"]*)"for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
-        addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+    this.When(/^I have selected "([^"]*)" for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
+        if (arg1 === 'No') {
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+        }
+        else if (arg1 === 'Yes') {
+            addTrial.clickAddTrialResetButton();
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
+        }
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have noted that Section (\d+) Indicator is set to "([^"]*)"$/, function (arg1, arg2, callback) {
+    this.Given(/^I have selected "([^"]*)", "([^"]*)", "([^"]*)" for Data Monitoring Committee Appointed Indicator$/, function (arg1, arg2, arg3, callback) {
+        expect(addTrial.addTrialDataMonitoringCommitteeAppointedIndicator.get(0).isEnabled()).to.become(true);
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('0');
+        expect(addTrial.addTrialDataMonitoringCommitteeAppointedIndicator.get(1).isEnabled()).to.become(true);
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('1');
+        expect(addTrial.addTrialDataMonitoringCommitteeAppointedIndicator.get(2).isEnabled()).to.become(true);
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('2');
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('1');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Section (\d+) Indicator will be set to "([^"]*)"$/, function (arg1, arg2, callback) {
         expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
         addTrial.verifyAddTrialSection801Indicator('0', true);
         expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(false);
+        addTrial.verifyAddTrialSection801Indicator('1', false);
+        expect(addTrial.addTrialSection801Indicator.get(2).isEnabled()).to.become(false);
+        addTrial.verifyAddTrialSection801Indicator('2', false);
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have selected "([^"]*)" for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
-        addTrial.clickAddTrialResetButton();
-        addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
-        browser.sleep(25).then(callback);
-    });
-
-    this.Then(/^I can select "([^"]*)" or "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, callback) {
+    this.Then(/^I can select only "([^"]*)" or "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, callback) {
         expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
         expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(true);
+        expect(addTrial.addTrialSection801Indicator.get(2).isEnabled()).to.become(false);
         addTrial.selectAddTrialSection801Indicator('0');
         addTrial.selectAddTrialSection801Indicator('1');
         browser.sleep(25).then(callback);
     });
+
+
+    //this.When(/^I have selected"([^"]*)"for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
+    //    addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+    //    browser.sleep(25).then(callback);
+    //});
+    //
+    //this.Given(/^I have noted that Section (\d+) Indicator is set to "([^"]*)"$/, function (arg1, arg2, callback) {
+    //    expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
+    //    addTrial.verifyAddTrialSection801Indicator('0', true);
+    //    expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(false);
+    //    browser.sleep(25).then(callback);
+    //});
+
+    //this.When(/^I have selected "([^"]*)" for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
+    //    addTrial.clickAddTrialResetButton();
+    //    addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
+    //    browser.sleep(25).then(callback);
+    //});
+    //
+    //this.Then(/^I can select "([^"]*)" or "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, callback) {
+    //    expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
+    //    expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(true);
+    //    addTrial.selectAddTrialSection801Indicator('0');
+    //    addTrial.selectAddTrialSection801Indicator('1');
+    //    browser.sleep(25).then(callback);
+    //});
 
     this.When(/^I add a duplicate Trial Oversight Authority and Organization Names$/, function (callback) {
         addTrial.selectAddTrialOversightAuthorityCountry('Gabon');

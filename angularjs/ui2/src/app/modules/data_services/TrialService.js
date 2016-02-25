@@ -28,7 +28,9 @@
             + '</button>'
             + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions">'
             + '<a ng-if="action == \'add-my-site\'" ui-sref="main.addParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '<a ng-if="action != \'add-my-site\'" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'update-my-site\'" ui-sref="main.participatingSiteDetail({psId: row.entity.my_site_id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'manage-sites\'" ui-sref="main.manageParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="[\'add-my-site\', \'update-my-site\', \'manage-sites\'].indexOf(action) < 0" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '</li></ul>'
             + '</div>';
 

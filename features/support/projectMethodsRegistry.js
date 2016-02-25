@@ -194,18 +194,18 @@ var projectMethodsRegistry = function() {
             // Get the second column's text.
             return row.$$('td').get(1).getText().then(function (rowName) {
                 // Filter rows matching the name you are looking for.
-                console.log('print row name');
-                console.log(rowName);
-                console.log('print Status');
-                console.log(status);
+                //console.log('print row name');
+                //console.log(rowName);
+                //console.log('print Status');
+                //console.log(status);
                 return rowName === status;
             });
         }).then(function (rows) {
-                console.log('value of row' + rows);
+                //console.log('value of row' + rows);
                 expect(rows[0].element(by.binding('status.status_date')).getText()).to.eventually.equal(statusDate);
                 expect(rows[0].element(by.binding('status.comment')).getText()).to.eventually.equal(comment);
                 expect(rows[0].element(by.binding('status.why_stopped')).getText()).to.eventually.equal(whyStudyStopped);
-              //  expect(rows[0].element.all(by.css('tr[ng-repeat="status in trialDetailView.addedStatuses track by $index"]')).all(by.css('.col-md-4')).getText()).to.eventually.equal(errorsWarnings);
+                expect(rows[0].element(by.css('.col-md-4.status-error')).getText()).to.eventually.equal(errorsWarnings);
             },
             function (err) {
                 console.log('There was an error! ' + err);
