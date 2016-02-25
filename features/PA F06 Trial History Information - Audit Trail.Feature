@@ -133,7 +133,7 @@ Examples:
 |Lead Protocol| 9226 |
 |official_title|Individualized Treatment for Relapsed/Refractory Acute Leukemia Based on Chemosensitivity and Genomics/Gene Expression Data|
 |program_code| 45  |
-|grant_question|XXX|
+|grant_question|Yes|
 |start_date |September 11, 2015| 
 |start_date_qual|Actual    | 
 |primary_comp_date|July 01, 2019 |
@@ -144,7 +144,7 @@ Examples:
 |intervention_indicator| Single Group |
 |sec801_indicator|No|
 |data_monitor_indicator|Yes|
-|Study Source |XXXXIndustrial|
+|Study Source |Institutional|
 |Phase |NA|
 |primary purpose|Treatment|
 |primary_purpose_other| |    
@@ -161,7 +161,7 @@ Examples:
 |accrual disease term|ICD9|
 |investigator_title|XXX|
 |investigator aff id (investigator_aff_id: Organizations/Name)|XXX|
-|created_by|XXX|
+|created_by|Dana Johnson|
 |updated_by|XXX|
 |process_priority|2- Normal  (AS IN 4x)|
 |process_comment| |
@@ -175,10 +175,10 @@ Examples:
 |brief_summary|This clinical trial studies the feasibility of choosing treatment based on a high throughput ex vivo drug sensitivity assay in combination with mutation analysis for patients with acute leukemia that has returned after a period of improvement or does not respond to treatment. A high throughput screening assay tests many different drugs individually or in combination that kill leukemia cells in tiny chambers at the same time. High throughput drug sensitivity assay and mutation analysis may help guide the choice most effective for an individual’s acute leukemia.|
 |detailed_description|Leukemia cells obtained from blood or bone marrow are analyzed for sensitivity to both individual drugs and drug combinations via high throughput chemotherapy sensitivity assay and next generation sequencing assays. Doctors will then recommend chemotherapy regimens based on the results. After completion of the chemotherapy regimen, patients are followed up at 2-4 weeks for response, and then every 3 months for 2 years for duration of response and survival. |
 |objectives|PRIMARY OBJECTIVES:I. To test patient cells in a high throughput assay against individual drugs and drug combinations within 21 days to enable optimal choice of drug combinations for therapy. II. To test gene expression that reveals activation of druggable pathways or mutations in genes that confer susceptibility to specific agents may also be considered in choice of treatment.  SECONDARY OBJECTIVES:  I. To evaluate the response to the chosen therapy.|
-||target_enrollment|15|
+|target_enrollment|15|
 |final_enrollment| |
 |accruals|0|
-|study Model: study_models.name|NA|
+|study Model: study_models.name| |
 |study_model_other|Cohort OR NA|
 |time perspectives |Prospective|
 |time_perspective_other |  |
@@ -223,7 +223,7 @@ Examples:
 |arms_groups (multiple) xxxx arms_groups.label,type,description, intervention_id intervention_types.code, name |XXX|
 |Subgroup Stratification Criteria (multiple) xxxx sub_groups.code, sub_groups.description |XXX|
 
-|trial owners (multiple) xxxx trial_ownerships.user_id: users.username| XXX|
+|trial owners (multiple)| Dana Johnson; Linda Mendelson|
 |trial documents (multiple) xxxx trial_documents.filename, document_type, document_subtype|XXX|
 |alternative titles (multiple) xxxx alternate_titles.category,  title  (???source) |XXX|
 
@@ -231,8 +231,8 @@ Examples:
 
 |citations (multiple) xxxx citations.description, pub_med_id, results_reference|  XXX|
 |collaborators (multiple) xxxx collaborators.org_name,organization_id: organizations.name  |XXX|
-| grants (multiple) xxxx grants.funding_mechanism, institute_code,nci,serial_number |XXX|
 
+| grants (multiple)| P30, CA, OD, 15704;|
 |Ind ( multiple) xxxx ind_ides.ind_ide_type, grantor, nih_nci,holder_type_id, expanded_access, exempt, ind_ide_number, expanded_access_type_id: expanded_access_types.name|XXX|
 |links (multiple) xxxx  links.description|XXX|
 |Milestones (multiple) xxxx milestone_wrappers.milestone_date, milestone_id: milestones.name, submission_id: submission_types.name|XXX|
