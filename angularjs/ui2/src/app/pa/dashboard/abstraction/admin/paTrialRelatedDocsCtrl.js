@@ -31,7 +31,11 @@
             vm.curDoc = _initCurDoc();
             vm.docSubtypeShown = false;
             vm.docTypeError = '';
+            vm.formError = '';
             vm.documentTypes = documentTypes.types;
+            var requiredDocTypes = _.filter(vm.documentTypes, function(type) {
+                return type.indexOf('IRB') > -1 || type.indexOf('Protocol Doc') > -1;
+            });
             var uniqueDocTypes = _.filter(vm.documentTypes, function(type) {
                 return type.indexOf('IRB') > -1 ||
                         type.indexOf('Protocol Doc') > -1 ||
@@ -191,11 +195,14 @@
              * @return {Void}
              */
             function saveDocuments(showToastr, formName) {
-                formName.$valid = false;
-                console.error('form validity: ', formName.$valid);
                 // warning toastr for edited document
                 if (vm.curDoc.edit === true) {
                     _showWarningToastr('Please cancel or commit the edited document first', 'bottom right');
+                    return;
+                }
+                if (!_isFormValid()) {
+                    formName.$valid = false;
+                    console.error('form validity: ', formName.$valid);
                     return;
                 }
 
@@ -263,8 +270,20 @@
               });
             } // _showWarningToastr
 
-            function _validateForm() {
-
+            /**
+             * check form for required fields
+             * @return {[type]} [description]
+             */
+            function _isFormValid() {
+                var valid = true;
+                _.each(requiredDocTypes, function(type){
+                    if (_.findIndex(vm.curTrialDetailObj.trial_documents, {'document_type': type}) === -1) {
+                        valid = false;
+                        return;
+                    }
+                });
+                vm.formError = valid ? '' : '<strong>Missing Documents: </strong>Both Protocol Document and IRB Approval Document are required';
+                return valid;
             }
 
 
