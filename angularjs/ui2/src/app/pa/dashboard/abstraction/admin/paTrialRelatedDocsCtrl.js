@@ -155,6 +155,7 @@
                     } else {
                         // new document
                         if (isDocTypeExistent(vm.curDoc.document_type)) {
+                            console.error('doctype exists already: ', vm.curDoc.document_type);
                             vm.docTypeError = 'The selected document type already exists.';
                             return;
                         } // check document type for new document
@@ -214,6 +215,7 @@
                                 if (uploadedDoc !== null) {
                                     // vm.curTrialDetailObj.trial_documents[index].created_at = uploadedDoc.data.created_at;
                                     vm.curTrialDetailObj.trial_documents[index] = uploadedDoc.data;
+                                    vm.curTrialDetailObj.trial_documents[index].status = 'active';
                                     vm.curTrialDetailObj.trial_documents[index].added_by = {username: UserService.getLoggedInUsername()};
                                 }
                             });
@@ -272,17 +274,17 @@
 
             /**
              * check form for required fields
-             * @return {[type]} [description]
+             * @return {Boolean}
              */
             function _isFormValid() {
                 var valid = true;
-                _.each(requiredDocTypes, function(type){
+                _.each(requiredDocTypes, function(type) {
                     if (_.findIndex(vm.curTrialDetailObj.trial_documents, {'document_type': type}) === -1) {
                         valid = false;
                         return;
                     }
                 });
-                vm.formError = valid ? '' : '<strong>Missing Documents: </strong>Both Protocol Document and IRB Approval Document are required';
+                vm.formError = valid ? '' : 'Both Protocol Document and IRB Approval Document are required';
                 return valid;
             }
 

@@ -54,13 +54,13 @@
                                     </div>
                                 </div>
                                 <div class="row top-buffer" ng-show="trial_docs_form.current_doc.$error || trialRelatedDocsView.docTypeError !== ''">
-                                    <span class="help-block" ng-show="trial_docs_form.current_doc.$error.validateFileType">
+                                    <span class="help-block alert alert-warning" ng-show="trial_docs_form.current_doc.$error.validateFileType">
                                         Error: The selected document is not a valid document type. Allowed file types: {{trialRelatedDocsView.acceptedFileExtensions}}
                                     </span>
-                                    <span class="help-block" ng-show="trial_docs_form.current_doc.$error.maxSize">
+                                    <span class="help-block alert alert-warning" ng-show="trial_docs_form.current_doc.$error.maxSize">
                                         Error: File size exceeds 10 MB
                                     </span>
-                                    <span class="help-block" ng-show="trialRelatedDocsView.docTypeError">
+                                    <span class="help-block alert alert-warning" ng-show="trialRelatedDocsView.docTypeError">
                                         Error: {{trialRelatedDocsView.docTypeError}}
                                     </span>
                                 </div>
@@ -101,20 +101,23 @@
                          </fieldset>
                          <!-- end of fieldset for trial related documents -->
                          <div class="form-group no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_editable">
-                               <div class="col-sm-3 pull-right">
-                                   <div class="alert alert-warning" ng-show="trialRelatedDocsView.formError.length > 0">
-                                       {{trialRelatedDocsView.formError}}
+                                <div class="row">
+                                    <div class="alert alert-warning" ng-show="trialRelatedDocsView.formError.length > 0">
+                                        <strong>Error: </strong>{{trialRelatedDocsView.formError}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                   <div class="col-sm-3"></div>
+                                   <div class="btn-toolbar col-xs-12 col-sm-9">
+                                     <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field>
+                                       <i class="glyphicon glyphicon-ok"></i>  Save
+                                     </button>
+                                     <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialRelatedDocsView.resetForm()" restriction-field>
+                                      <i class="glyphicon glyphicon-remove"></i>  Reset
+                                     </button>
                                    </div>
+                                   <div id="warning_message"></div>
                                </div>
-                               <div class="btn-toolbar col-xs-12 col-sm-9">
-                                 <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field>
-                                   <i class="glyphicon glyphicon-ok"></i>  Save
-                                 </button>
-                                 <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialRelatedDocsView.resetForm()" restriction-field>
-                                  <i class="glyphicon glyphicon-remove"></i>  Reset
-                                 </button>
-                               </div>
-                               <div id="warning_message"></div>
                          </div>
                     </form>
                 </div>
