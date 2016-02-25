@@ -93,7 +93,8 @@
           //          vm.curTrial.participating_sites_list[i] = vm.currentParticipatingSite.id;
           //      }
           //  }
-            console.log("vm.siteRecruitmentGrid="+ JSON.stringify(vm.siteRecruitmentGrid));
+            //console.log("vm.siteRecruitmentGrid="+ JSON.stringify(vm.siteRecruitmentGrid));
+            //console.log("1vm.currentParticipatingSite.site_rec_status_wrappers_attributes=" + JSON.stringify(vm.currentParticipatingSite.site_rec_status_wrappers_attributes));
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
             for (var i = 0; i < vm.siteRecruitmentGrid.length; i++) {
                 var siteObj = vm.siteRecruitmentGrid[i];
@@ -101,6 +102,8 @@
                     vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(siteObj);
                 }
             }
+
+            //console.log("2vm.currentParticipatingSite.site_rec_status_wrappers_attributes=" + JSON.stringify(vm.currentParticipatingSite.site_rec_status_wrappers_attributes));
             if (!vm.currentParticipatingSite.id) {
                 vm.currentParticipatingSite.new = true;
             }
@@ -219,7 +222,7 @@
             vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
             vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
             vm.initSiteRecruitmentGrid();
-            //vm.validateStatus();
+            vm.validateStatus();
         }
 
         vm.initSiteRecruitmentGrid = function (){
@@ -236,10 +239,9 @@
                         siteObj.sr_status_code = status.code;
                     }
                 });
-
                 vm.siteRecruitmentGrid.push(siteObj);
             };
-
+            vm.validateStatus();
         };
 
         function openCalendar ($event, type) {
@@ -267,10 +269,10 @@
                     siteObj.sr_status_name = status.name;
                     siteObj.sr_status_code = status.code;
                     siteObj.site_recruitment_status_id = status.id;
-                    siteObj.site_recruitment_status = status;
+                    //siteObj.site_recruitment_status = status;
                 }
             });
-            //vm.validateStatus();
+            vm.validateStatus();
             vm.siteRecruitmentGrid.push(siteObj);
             console.log(" addSiteRecruitment() = siteObj="+ JSON.stringify(siteObj) );
             vm.current_site_recruitment = {};
@@ -317,15 +319,15 @@
                         siteObj.site_recruitment_status_id = status.id;
                     }
                 });
-                console.log("2222In commitEditSiteRecruitment=" + JSON.stringify(vm.current_site_recruitment));
+                //console.log("2222In commitEditSiteRecruitment=" + JSON.stringify(vm.current_site_recruitment));
                 for (var i = 0; i < vm.siteRecruitmentGrid.length; i++) {
                     var siteObj = vm.siteRecruitmentGrid[i];
                     if(siteObj.id == vm.current_site_recruitment.id){
                         vm.siteRecruitmentGrid[i] = vm.current_site_recruitment;
                     }
                 }
-                console.log("3333In commitEditSiteRecruitment=" + JSON.stringify(vm.siteRecruitmentGrid));
-                //vm.validateStatus();
+                //console.log("3333In commitEditSiteRecruitment=" + JSON.stringify(vm.siteRecruitmentGrid));
+                vm.validateStatus();
                 //vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
                 //vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
                 //vm.saveParticipatingSite();
@@ -341,6 +343,7 @@
             console.log("In delete  SiteRecruitment index ="+index);
             vm.current_site_recruitment.edit = false;
             vm.siteRecruitmentGrid[index]._destroy = !vm.siteRecruitmentGrid[index]._destroy;
+            vm.validateStatus();
             //vm.current_site_recruitment = angular.copy(vm.currentParticipatingSite.site_rec_status_wrappers[index]);
             //vm.current_site_recruitment._destroy = true;
             //vm.current_site_recruitment.index = index;
