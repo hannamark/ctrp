@@ -122,9 +122,9 @@
                                                 <select name="siteRecStatus" id="siteRecStatus_select"
                                                         class="form-control input-sm"
                                                         restriction-field
-                                                        ng-model="psView.current_site_recruitment.site_recruitment_status_id">
+                                                        ng-model="psView.current_site_recruitment.site_recruitment_status.name">
                                                     <option value="">Select a status</option>
-                                                    <option ng-repeat="siteStatus in psView.siteRecruitmentStatusesArr" value="{{siteStatus.id}}">
+                                                    <option ng-repeat="siteStatus in psView.siteRecruitmentStatusesArr" value="{{siteStatus.name}}">
                                                         {{siteStatus.name}}
                                                     </option>
                                                 </select>
@@ -172,7 +172,7 @@
                                     {{trialStatusView.statusErrorMsg}}
                                 </div>
                             </div>
-                            <div class="row" ng-show="psView.currentParticipatingSite.site_rec_status_wrappers.length > 0">
+                            <div class="row" ng-show="psView.siteRecruitmentGrid.length > 0">
                                 <table class="table table-bordered table-striped table-hover">
                                     <thead style="background-color: #d9edf7">
                                     <th class="text-center">Status Date</th>
@@ -182,7 +182,7 @@
                                     <th class="text-center"> Delete/Edit </th>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="site_rec in psView.currentParticipatingSite.site_rec_status_wrappers track by $index" class="animated-item text-center" ng-class="site_rec._destroy ? 'deleted-text' : ''">
+                                    <tr ng-repeat="site_rec in psView.siteRecruitmentGrid track by $index" class="animated-item text-center" ng-class="site_rec._destroy ? 'deleted-text' : ''">
                                         <td class="col-sm-2">{{site_rec.status_date}}</td>
                                         <td class="col-sm-1">{{site_rec.site_recruitment_status.name}}</td>
                                         <td class="col-sm-2">{{site_rec.comments}}</td>
@@ -219,7 +219,7 @@
                         <div class="form-group no-bottom-margin">
                             <div class="btn-toolbar">
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()">Save</button>
-                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetPSTab()"  restriction-field ng-disabled="psView.disableBtn">
+                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSiteTab()"  restriction-field ng-disabled="psView.disableBtn">
                                     <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
                             </div>
@@ -292,7 +292,7 @@
                                             </td>
                                              <td class="col-md-2">
                                                  <div class="btn-group inline" ng-show="psView.current_investigator.edit">
-                                                    <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelEdit()">Cancel</button>
+                                                    <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">Cancel</button>
                                                     <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEditInvestigator()"
                                                             ng-disabled="psView.current_investigator.person.id == null">Commit</button>
                                                 </div>
@@ -304,7 +304,7 @@
                                         {{trialStatusView.statusErrorMsg}}
                                     </div>
                                 </div>
-                                <div class="row" ng-show="psView.currentParticipatingSite.participating_site_investigators.length > 0">
+                                <div class="row" ng-show="psView.investigatorGrid.length > 0">
                                     <table class="table table-bordered table-striped table-hover">
                                         <thead style="background-color: #d9edf7">
                                             <th>PO ID</th>
@@ -316,7 +316,7 @@
                                             <th class="text-center"> Delete/Edit </th>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="inv in psView.currentParticipatingSite.participating_site_investigators track by $index" class="animated-item text-center" ng-class="inv._destroy ? 'deleted-text' : ''">
+                                        <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item text-center" ng-class="inv._destroy ? 'deleted-text' : ''">
                                             <td class="col-sm-2">{{inv.person.id}}</td>
                                             <td class="col-sm-1">{{inv.person.lname}}</td>
                                             <td class="col-sm-2">{{inv.person.fname}}</td>
@@ -505,7 +505,7 @@
                 <th class="text-center">Deletion</th>
                 </thead>
                 <tbody>
-                <tr ng-repeat="participating_site in psView.curTrial.participating_sites_list track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">
+                <tr ng-repeat="participating_site in psView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">
                     <td>{{participating_site.organization.id}}</td>
                     <td>
                         {{participating_site.organization.name}}
@@ -529,7 +529,7 @@
 
                     </td>
                     <td>
-                        <input type="checkbox" ng-model="participating_site.selected" ng-change="psView.deleteListHandler(psView.curTrial.participating_sites_list)" /></td>
+                        <input type="checkbox" ng-model="participating_site.selected" ng-change="psView.deleteListHandler(psView.curTrial.participating_sites)" /></td>
                     </td>
                 </tr>
                 </tbody>

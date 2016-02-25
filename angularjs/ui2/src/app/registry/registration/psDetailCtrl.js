@@ -24,6 +24,7 @@
         vm.addedStatuses = [];
         vm.srsNum = 0;
         vm.selectedPiArray = [];
+        vm.editMode = false; // Flag used in manage sites screen
 
         vm.updatePs = function() {
             // Prevent multiple submissions
@@ -55,7 +56,11 @@
 
             TrialService.upsertParticipatingSite(outerPs).then(function(response) {
                 if (response.server_response.status < 300) {
-                    $state.go('main.trials', null, {reload: true});
+                    if (vm.isManageScreen) {
+                        $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
+                    } else {
+                        $state.go('main.viewTrial', {trialId: response.trial.id});
+                    }
                     toastr.success('Participating Site ' + vm.curPs.id + ' has been recorded', 'Operation Successful!');
                 } else {
                     // Enable buttons in case of backend error
@@ -145,12 +150,33 @@
             });
         };
 
+        vm.addPs = function() {
+            vm.editMode = false;
+            vm.curPs = {};
+            vm.curPs.new = true;
+            vm.addedStatuses = [];
+            vm.srsNum = 0;
+            vm.selectedPiArray = [];
+            setDefaultOrg();
+        };
+
+        vm.editPs = function(psIdx) {
+            vm.editMode = true;
+            vm.curPs = vm.curTrial.participating_sites[psIdx];
+            vm.addedStatuses = [];
+            vm.srsNum = 0;
+            vm.selectedPiArray = [];
+            setSitePi();
+            appendStatuses();
+        };
+
         activate();
 
         /****************************** implementations **************************/
 
         function activate() {
             appendNewPsFlag();
+            setManageScreenFlag();
             populateOrgs();
             setDefaultOrg();
 
@@ -167,8 +193,18 @@
          *
          */
         function appendNewPsFlag() {
-            if ($state.$current.name.indexOf('add') > -1) {
-                vm.curPs.new = true;  //
+            if ($state.$current.name.indexOf('add') > -1 || $state.$current.name.indexOf('manage') > -1) {
+                vm.curPs.new = true;
+            } else {
+                vm.curPs.new = false;
+            }
+        }
+
+        function setManageScreenFlag() {
+            if ($state.$current.name.indexOf('manage') > -1) {
+                vm.isManageScreen = true;
+            } else {
+                vm.isManageScreen = false;
             }
         }
         

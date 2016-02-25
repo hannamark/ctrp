@@ -23,25 +23,16 @@ Then the Trial Related Document will be associated with the trail
 And the date the document was will be listed with the document 
 And the users name that added the document will be listed with the document
 
-Scenario: #2 I can Edit the file name for a Trial Related Document 
+Scenario: #2 I can Edit(revise) the file name for a Trial Related Document 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Related Documents screen
-When I select Edit a document
+When I select Edit a Trial Related Document
 And have browsed and selected a new file to attach
-And have selected the Document type from the list of:
-|Protocol Document|
-|IRB Approval Document|
-|Informed Consent Document|
-|Participating Sites|
-|Protocol Highlighted Document|
-|TSR|
-|Complete Sheet|
-|Change Memo|
-|Other|
 And have entered a Description of the Document when the document type is Other
 Then the Trial Related Document will be associated with the trail
 And the date the document was will be listed with the document 
 And the users name that added the document will be listed with the document
+And the prior file will be annotated as Revised 
 
 Scenario: #3 I can Delete Trial Related Documents 
 Given I am logged into the CTRP Protocol Abstraction application
@@ -49,6 +40,7 @@ And I am on the Trial Related Documents screen
 And I select one or more documents to delete
 And enter a comment for why the document is deleted
 Then the Trial Related Document will not be visible on the Trial Related Documents screen
+And the file will be annotated as Deleted 
 
 Scenario: #4 Save Trial Related Documents
 Given I am logged into the CTRP Protocol Abstraction application
@@ -71,7 +63,6 @@ And have selected a document with a type of :
 |Protocol Document|
 |IRB Approval Document|
 |Change Memo Document|
-And the Information Source is "Protocol" (Trials.internal_source_id Internal_Sources.name )|
 Then the system will display a Error message that the Protocol Document and or IRB Approval Document cannot be deleted
 
 Scenario: #8 Valid Document Formats 
@@ -105,7 +96,7 @@ Then the following docuuments will be required
 |Protocol Document|
 |IRB Approval Document|
 
-Scenario: #10 Mutlipte documents of the same type 
+Scenario: #10 Mutliple documents of the same type 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Related Documents screen
 When I add a new document
@@ -116,15 +107,18 @@ And have selected the Document type from the list of:
 |Participating Sites|
 |Protocol Highlighted Document|
 And select save
-And the document not hiddedn from the trial related documents screen
+And there is already a Document type from the list of:
+|Protocol Document|
+|IRB Approval Document|
+|Informed Consent Document|
+|Participating Sites|
+|Protocol Highlighted Document|
 Then the system will display a Error message that "The selected document type is already been selected."
 
-Scenario: #11 I can reload a file a Trial Related Document 
+Scenario: #11 View Trial Related Documents 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Related Documents screen
-When I select Edit a document
-And have browsed and selected a new file to attach
-And have selected the Document type from the list of:
+Then I can see Document that have the following types:
 |Protocol Document|
 |IRB Approval Document|
 |Informed Consent Document|
@@ -134,7 +128,3 @@ And have selected the Document type from the list of:
 |Complete Sheet|
 |Change Memo|
 |Other|
-And have entered a Description of the Document when the document type is Other
-Then the Trial Related Document will be associated with the trail
-And the date the document was will be listed with the document 
-And the users name that added the document will be listed with the document
