@@ -87,7 +87,7 @@ end
 
 json.sitesu_sites do
   json.array!(@trial.sitesu_sites) do |ps|
-    json.extract! ps, :id, :protocol_id, :program_code, :organization_id, :organization
+    json.extract! ps, :id, :protocol_id, :program_code, :organization_id, :organization, :current_status_name, :site_pi
 
     json.site_rec_status_wrappers do
       json.array!(ps.site_rec_status_wrappers) do |status|
