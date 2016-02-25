@@ -26,14 +26,13 @@
             var DOC_STATUSES = ['active', 'inactive', 'deleted']; // for storing document status in database
             vm.acceptedFileExtensions = acceptedFileTypesObj.accepted_file_extensions;
             vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
-            console.log('file types: ', vm.acceptedFileTypes);
             vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
             vm.curTrialDetailObj = {};
             vm.curDoc = _initCurDoc();
             vm.docSubtypeShown = false;
             vm.docTypeError = '';
             vm.formError = '';
-            vm.documentTypes = documentTypes.types;
+            vm.documentTypes = documentTypes.types.split(',');
             var requiredDocTypes = _.filter(vm.documentTypes, function(type) {
                 return type.indexOf('IRB') > -1 || type.indexOf('Protocol Doc') > -1;
             });
