@@ -247,8 +247,9 @@
                             <!-- fieldset for Investigator -->
                             <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                                 <legend class="sub-bordered">Investigators</legend>
-                                <div class="row">
+                                <div class="row"  ng-show="psView.current_investigator.edit">
                                     <table class="table table-striped table-condensed">
+                                        <strong> Edit Investigator</strong>
                                         <thead>
                                             <th>PO ID</th>
                                             <th>Last Name</th>
@@ -261,13 +262,13 @@
                                              <td class="col-md-1">
                                                 <input type="text" id="person_id" name="person_id" class="form-control" ng-model="psView.current_investigator.person.id" placeholder="person_id" ng-disabled="true">
                                             </td>
-                                            <td class="col-md-1">
+                                            <td class="col-md-2">
                                                 <input type="text" id="last_name" name="last_name" class="form-control" ng-model="psView.current_investigator.person.lname" placeholder="Last Name" ng-disabled="true">
                                             </td>
-                                            <td class="col-md-1">
+                                            <td class="col-md-2">
                                                 <input type="text" id="first_name" name="first_name" class="form-control" ng-model="psView.current_investigator.person.fname" placeholder="First Name" ng-disabled="true">
                                             </td>
-                                            <td class="col-md-1">
+                                            <td class="col-md-2">
                                                 <div>
                                                     <select name="investigator_type" id="investigator_type_select"
                                                             class="form-control input-sm"
@@ -292,7 +293,7 @@
                                             </td>
                                              <td class="col-md-2">
                                                  <div class="btn-group inline" ng-show="psView.current_investigator.edit">
-                                                    <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelEdit()">Cancel</button>
+                                                    <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">Cancel</button>
                                                     <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEditInvestigator()"
                                                             ng-disabled="psView.current_investigator.person.id == null">Commit</button>
                                                 </div>
@@ -306,6 +307,7 @@
                                 </div>
                                 <div class="row" ng-show="psView.investigatorGrid.length > 0">
                                     <table class="table table-bordered table-striped table-hover">
+                                        <strong> List of Investigators</strong>
                                         <thead style="background-color: #d9edf7">
                                             <th>PO ID</th>
                                             <th>Last Name</th>
