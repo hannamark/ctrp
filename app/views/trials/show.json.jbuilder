@@ -9,7 +9,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
               :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
-              :board_approval_num, :board_approval_status_id, :uuid
+              :board_approval_num, :board_approval_status_id, :available_family_orgs, :uuid
 
 json.other_ids do
   json.array!(@trial.other_ids) do |id|
@@ -85,6 +85,23 @@ json.participating_sites do
   end
 end
 
+json.sitesu_sites do
+  json.array!(@trial.sitesu_sites) do |ps|
+    json.extract! ps, :id, :protocol_id, :program_code, :organization_id, :organization, :current_status_name, :site_pi
+
+    json.site_rec_status_wrappers do
+      json.array!(ps.site_rec_status_wrappers) do |status|
+        json.extract! status, :id, :status_date, :site_recruitment_status_id, :site_recruitment_status, :comments
+      end
+    end
+
+    json.participating_site_investigators do
+      json.array!(ps.participating_site_investigators) do |investigator|
+        json.extract! investigator, :id, :person_id, :person, :investigator_type
+      end
+    end
+  end
+end
 
 ## append the protocol_id_origin.name
 unless @trial.other_ids.empty?
