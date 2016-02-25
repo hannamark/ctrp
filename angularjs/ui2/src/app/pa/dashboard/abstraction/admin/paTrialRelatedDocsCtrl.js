@@ -236,6 +236,8 @@
                             $scope.$emit('updatedInChildScope', {});
                             _filterActiveDocs();
                             vm.curDoc = _initCurDoc();
+                            vm.docTypeError = '';
+                            vm.formError = '';
                             if (showToastr) {
                                 toastr.clear();
                                 toastr.success('Trial related documents have been saved', 'Successful!', {
