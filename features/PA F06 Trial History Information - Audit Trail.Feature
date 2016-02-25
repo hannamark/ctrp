@@ -215,7 +215,9 @@ Examples:
 |Processing Status Name|XXX|
 |Other ID (multiple) xxxx: other_ids.protocol_id, other_ids.protocol_id_origin_id:  protocol_id_origins.name||
 |Markers Name (multiple) xxxx: markers.name, markers.evaluation_type_id evaluation_types.name, markers.assay_type_id assay_types.name, markers.biomarker_use_id biomarker_uses.name, markers.biomarker_purpose_id biomarker_purposes.name, marker.specimen_type_id specimen_types.name, markers.record_status|XXX| 
-|Outcome Measure  (multiple) xxxxx: outcome_measures.outcome_measure_type_id: outcome_measures_types.name,  outcome_measures.title, outcome_measures.time_frame, outcome_measures.description, outcome_measures.safety_issue |XXX|
+
+|Outcome Measure  (multiple) xxxxx:|Primary, Percentage of patients we are able to test and initiate treatment within a 21 day period.,Up to 21 days,The study will be considered successful (feasibility demonstrated) if it is possible to choose and initiate a combination drug regimen within 21 days in 9 out of 15 patients. With that outcome, there would be 90% confidence that the true feasibility rate is at least 40%., No; Secondary, Rate of complete remission, Up to 2 years, ,No; Secondary, Survival, Up to 2 years, , No |
+
 |eligibility criteria (multiple) xxxx other_criteria.criteria_type, other_criteria.criteria_desc | XXX|
 |Associated Trials (multiple)  xxxx associated_trials.trial_identifier, identifier_type identifier_types.code, name  |XXX|
 |Disease and Condition (multiple) xxxx  diseases.preferred_name, diseases.code, diseases.thesaurus_id, diseases.display name  |XXX|
