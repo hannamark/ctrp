@@ -93,6 +93,7 @@
           //          vm.curTrial.participating_sites_list[i] = vm.currentParticipatingSite.id;
           //      }
           //  }
+            console.log("vm.siteRecruitmentGrid="+ JSON.stringify(vm.siteRecruitmentGrid));
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
             for (var i = 0; i < vm.siteRecruitmentGrid.length; i++) {
                 var siteObj = vm.siteRecruitmentGrid[i];
@@ -226,7 +227,8 @@
             for (var i = 0; i < vm.currentParticipatingSite.site_rec_status_wrappers.length; i++) {
                 var siteObj = vm.currentParticipatingSite.site_rec_status_wrappers[i];
                 siteObj._destroy = false;
-                siteObj.edit = true;
+                siteObj.edit = false;
+                siteObj.new = false;
                 // For displaying status name in the table
                 _.each(vm.siteRecruitmentStatusesArr, function (status) {
                     if (status.id == siteObj.site_recruitment_status.id) {
@@ -306,19 +308,23 @@
                 console.log("site_recruitment_status_id="+JSON.stringify(vm.current_site_recruitment.site_recruitment_status));
                 vm.current_site_recruitment.site_recruitment_status_id = vm.current_site_recruitment.site_recruitment_status.id;
                 console.log("In commitEditSiteRecruitment=" + JSON.stringify(vm.current_site_recruitment));
+                var siteObj = vm.current_site_recruitment;
+                _.each(vm.siteRecruitmentStatusesArr, function (status) {
+                    if (status.name == siteObj.site_recruitment_status.name) {
+                        siteObj.sr_status_name = status.name;
+                        siteObj.sr_status_code = status.code;
+                        siteObj.site_recruitment_status = status;
+                        siteObj.site_recruitment_status_id = status.id;
+                    }
+                });
+                console.log("2222In commitEditSiteRecruitment=" + JSON.stringify(vm.current_site_recruitment));
                 for (var i = 0; i < vm.siteRecruitmentGrid.length; i++) {
                     var siteObj = vm.siteRecruitmentGrid[i];
                     if(siteObj.id == vm.current_site_recruitment.id){
-                        vm.siteRecruitmentGrid[i] = siteObj;
+                        vm.siteRecruitmentGrid[i] = vm.current_site_recruitment;
                     }
                 }
-                var siteObj = vm.current_site_recruitment;
-                _.each(vm.siteRecruitmentStatusesArr, function (status) {
-                    if (status.id == siteObj.site_recruitment_status.id) {
-                        siteObj.sr_status_name = status.name;
-                        siteObj.sr_status_code = status.code;
-                    }
-                });
+                console.log("3333In commitEditSiteRecruitment=" + JSON.stringify(vm.siteRecruitmentGrid));
                 //vm.validateStatus();
                 //vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
                 //vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
