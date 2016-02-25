@@ -166,6 +166,38 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    this.Given(/^the Investigator Affiliation will be the Sponsor Organization$/, function (callback) {
+        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1');
+        addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+        addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+        addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+        //storePrincipalInvestigator.then(function (value) {
+        //    projectFunctionsRegistry.selectPerForTrial(value,'0');
+        //    addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+        //    addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+        //    addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+        //    addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
+        //});
+        //cukePerson.then(function (value) {
+        //    console.log('value of PERSON' + value);
+        //    projectFunctionsRegistry.selectPerForTrial(value,'1');
+        //    addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
+        //});
+        addTrial.getVerifyAddTrialInvestigatorTitle('Principal Investigator');
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 40).then(function() {
+            storePrincipalInvestigatorAffOrg = cukeOrganization.then(function (value) {
+                console.log('value of Org' + value);
+                addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
+                return value;
+            });
+        });
+        browser.sleep(25).then(callback);
+    });
+
+
     this.Given(/^the Investigator Affiliation will be the Principal Investigator's organization affiliation$/, function (callback) {
         storePrincipalInvestigatorAffOrg = cukeOrganization.then(function (value) {
             console.log('value of Principal Investigator affiliation Organization' + value);
