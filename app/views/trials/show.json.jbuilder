@@ -56,12 +56,15 @@ json.participating_sites do
     json.contact_phone participating_site.contact_phone
     json.contact_email participating_site.contact_email
     json.contact_type participating_site.contact_type
+    json.protocol_id participating_site.protocol_id
+    json.program_code participating_site.program_code
 
     json.organization participating_site.organization
     json.site_rec_status_wrappers do
       json.array!(participating_site.site_rec_status_wrappers) do |site_rec_status_wrapper|
         json.id site_rec_status_wrapper.id
         json.status_date  site_rec_status_wrapper.status_date
+        json.site_recruitment_status_id site_rec_status_wrapper.site_recruitment_status.nil? ? "" : site_rec_status_wrapper.site_recruitment_status.id
         json.site_recruitment_status  site_rec_status_wrapper.site_recruitment_status.nil? ? "" : site_rec_status_wrapper.site_recruitment_status
         json.comments  site_rec_status_wrapper.comments
       end
