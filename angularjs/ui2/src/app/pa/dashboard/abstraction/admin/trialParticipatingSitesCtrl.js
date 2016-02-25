@@ -87,14 +87,10 @@
 
         vm.saveParticipatingSite = function(){
             vm.disableBtn = true;
-            console.log("In save trial");
-          //  for (var i = 0; i < vm.curTrial.participating_sites_list.length; i++) {
-          //      if (vm.curTrial.participating_sites_list[i] == vm.currentParticipatingSite.id) {
-          //          vm.curTrial.participating_sites_list[i] = vm.currentParticipatingSite.id;
-          //      }
-          //  }
+            console.log("In save ps");
             //console.log("vm.siteRecruitmentGrid="+ JSON.stringify(vm.siteRecruitmentGrid));
             //console.log("1vm.currentParticipatingSite.site_rec_status_wrappers_attributes=" + JSON.stringify(vm.currentParticipatingSite.site_rec_status_wrappers_attributes));
+            //console.log("1vm.currentParticipatingSite.site_rec_status_wrappers=" + JSON.stringify(vm.currentParticipatingSite.site_rec_status_wrappers));
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
             for (var i = 0; i < vm.siteRecruitmentGrid.length; i++) {
                 var siteObj = vm.siteRecruitmentGrid[i];
@@ -102,8 +98,9 @@
                     vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(siteObj);
                 }
             }
-
+            vm.siteRecruitmentGrid = [];
             //console.log("2vm.currentParticipatingSite.site_rec_status_wrappers_attributes=" + JSON.stringify(vm.currentParticipatingSite.site_rec_status_wrappers_attributes));
+            //console.log("2vm.currentParticipatingSite.site_rec_status_wrappers=" + JSON.stringify(vm.currentParticipatingSite.site_rec_status_wrappers));
             if (!vm.currentParticipatingSite.id) {
                 vm.currentParticipatingSite.new = true;
             }
@@ -149,7 +146,7 @@
                         $scope.$emit('updatedInChildScope', {});
                         toastr.clear();
                         toastr.success('Participating Site of  ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                            extendedTimeOut: 1000,
+                            extendedTimeOut: 5,
                             timeOut: 0
                         });
                     }).catch(function (err) {
@@ -207,9 +204,6 @@
         function setEditMode(idx) {
             vm.addEditMode = true;
             vm.currentParticipatingSite = vm.curTrial.participating_sites[idx];
-            console.log("SETTING TO EDITMODE vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
-            console.log("SETTING TO EDITMODE vm.curTrial.participating_sites_list="+JSON.stringify(vm.curTrial.participating_sites));
-            console.log("SETTING TO EDITMODE vm.currentParticipatingSite.site_rec_status_wrappers="+JSON.stringify(vm.currentParticipatingSite["site_rec_status_wrappers"]));
             vm.city =  vm.curTrial.participating_sites[idx].organization.city;
             vm.state_province =  vm.curTrial.participating_sites[idx].organization.state_province;
             vm.country = vm.curTrial.participating_sites[idx].organization.country;
@@ -287,9 +281,9 @@
             //if (index < vm.tempTrialStatuses.length) {
             console.log("In editSiteRecruitment");
             vm.current_site_recruitment = angular.copy(vm.siteRecruitmentGrid[index]);
-            if(!vm.current_site_recruitment.new){
+            //if(!vm.current_site_recruitment.new){
                 vm.current_site_recruitment.edit = true;
-            }
+           // }
             vm.current_site_recruitment._destroy = false;
             vm.current_site_recruitment.index = index;
             console.log("vm.current_site_recruitment="+ JSON.stringify(vm.current_site_recruitment));
@@ -319,18 +313,13 @@
                         siteObj.site_recruitment_status_id = status.id;
                     }
                 });
-                //console.log("2222In commitEditSiteRecruitment=" + JSON.stringify(vm.current_site_recruitment));
                 for (var i = 0; i < vm.siteRecruitmentGrid.length; i++) {
                     var siteObj = vm.siteRecruitmentGrid[i];
                     if(siteObj.id == vm.current_site_recruitment.id){
                         vm.siteRecruitmentGrid[i] = vm.current_site_recruitment;
                     }
                 }
-                //console.log("3333In commitEditSiteRecruitment=" + JSON.stringify(vm.siteRecruitmentGrid));
                 vm.validateStatus();
-                //vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
-                //vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
-                //vm.saveParticipatingSite();
             }
         } // commitEdit
 
@@ -344,25 +333,6 @@
             vm.current_site_recruitment.edit = false;
             vm.siteRecruitmentGrid[index]._destroy = !vm.siteRecruitmentGrid[index]._destroy;
             vm.validateStatus();
-            //vm.current_site_recruitment = angular.copy(vm.currentParticipatingSite.site_rec_status_wrappers[index]);
-            //vm.current_site_recruitment._destroy = true;
-            //vm.current_site_recruitment.index = index;
-            /*
-            for (var i = 0; i < vm.siteRecruitmentGrid.length; i++) {
-                var siteObj = vm.siteRecruitmentGrid[i];
-                console.log("siteObj = " + JSON.stringify(siteObj));
-                if(siteObj.id == index){
-                    //vm.siteRecruitmentGrid.splice(i,1);
-                    vm.siteRecruitmentGrid[i]._destroy = !vm.siteRecruitmentGrid[i]._destroy;
-                    console.log("destroyed vm.siteRecruitmentGrid[i]="+JSON.stringify(vm.siteRecruitmentGrid[i]));
-                }
-            }*/
-            console.log("In delete  SiteRecruitment = " + JSON.stringify(vm.siteRecruitmentGrid));
-            //vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
-            //vm.currentParticipatingSite.site_rec_status_wrappers_attributes.push(vm.current_site_recruitment);
-           // vm.saveParticipatingSite();
-            // vm.tempTrialStatuses.splice(index, 1);
-            //}
         }
 
         /**
