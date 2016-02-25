@@ -207,7 +207,7 @@
                     console.error('form validity: ', formName.$valid);
                     return;
                 }
-
+                cancelEdit();
                 PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id)
                     .then(function(res) {
                         console.log('group promises res: ', res);
@@ -236,6 +236,8 @@
                             $scope.$emit('updatedInChildScope', {});
                             _filterActiveDocs();
                             vm.curDoc = _initCurDoc();
+                            vm.docTypeError = '';
+                            vm.formError = '';
                             if (showToastr) {
                                 toastr.clear();
                                 toastr.success('Trial related documents have been saved', 'Successful!', {
