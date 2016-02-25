@@ -210,6 +210,9 @@
             vm.postal_code = null;
             vm.po_name = null;
             vm.selOrganization = {name: '', array: []};
+            vm.siteRecruitmentGrid = [];
+            vm.investigatorGrid = [];
+
         }
 
         /**
