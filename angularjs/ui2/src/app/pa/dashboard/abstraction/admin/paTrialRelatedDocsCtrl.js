@@ -26,6 +26,7 @@
             var DOC_STATUSES = ['active', 'inactive', 'deleted']; // for storing document status in database
             vm.acceptedFileExtensions = acceptedFileTypesObj.accepted_file_extensions;
             vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
+            // console.info('accepted file types: ', vm.acceptedFileTypes);
             vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
             vm.curTrialDetailObj = {};
             vm.curDoc = _initCurDoc();
