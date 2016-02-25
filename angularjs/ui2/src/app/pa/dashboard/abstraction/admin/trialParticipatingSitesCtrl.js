@@ -414,12 +414,7 @@
             console.log("In delete  deleteInvestigator");
             vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
             vm.current_investigator._destroy = true;
-            vm.current_investigator.index = index;
-            vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-            vm.currentParticipatingSite.participating_site_investigators_attributes.push(vm.current_investigator);
-            vm.saveParticipatingSite();
-            // vm.tempTrialStatuses.splice(index, 1);
-            //}
+            vm.investigatorGrid[index]._destroy = !vm.investigatorGrid[index]._destroy;
         }
 
         /**
