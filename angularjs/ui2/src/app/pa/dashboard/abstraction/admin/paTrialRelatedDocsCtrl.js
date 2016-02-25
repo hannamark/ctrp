@@ -207,7 +207,7 @@
                     console.error('form validity: ', formName.$valid);
                     return;
                 }
-
+                cancelEdit();
                 PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id)
                     .then(function(res) {
                         console.log('group promises res: ', res);
