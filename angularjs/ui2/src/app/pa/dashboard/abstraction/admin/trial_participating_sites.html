@@ -217,9 +217,9 @@
                         <!-- End fieldset for Site Recruitment -->
                         <!-- Saving the form for the Participating site tab" -->
                         <div class="form-group no-bottom-margin">
-                            <div class="btn-toolbar">
+                            <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">>
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()">Save</button>
-                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetPSTab()"  restriction-field ng-disabled="psView.disableBtn">
+                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSiteTab()"  restriction-field ng-disabled="psView.disableBtn">
                                     <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
                             </div>
@@ -247,8 +247,9 @@
                             <!-- fieldset for Investigator -->
                             <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                                 <legend class="sub-bordered">Investigators</legend>
-                                <div class="row">
+                                <div class="row"  ng-show="psView.current_investigator.edit">
                                     <table class="table table-striped table-condensed">
+                                        <strong> Edit Investigator</strong>
                                         <thead>
                                             <th>PO ID</th>
                                             <th>Last Name</th>
@@ -261,13 +262,13 @@
                                              <td class="col-md-1">
                                                 <input type="text" id="person_id" name="person_id" class="form-control" ng-model="psView.current_investigator.person.id" placeholder="person_id" ng-disabled="true">
                                             </td>
-                                            <td class="col-md-1">
+                                            <td class="col-md-2">
                                                 <input type="text" id="last_name" name="last_name" class="form-control" ng-model="psView.current_investigator.person.lname" placeholder="Last Name" ng-disabled="true">
                                             </td>
-                                            <td class="col-md-1">
+                                            <td class="col-md-2">
                                                 <input type="text" id="first_name" name="first_name" class="form-control" ng-model="psView.current_investigator.person.fname" placeholder="First Name" ng-disabled="true">
                                             </td>
-                                            <td class="col-md-1">
+                                            <td class="col-md-2">
                                                 <div>
                                                     <select name="investigator_type" id="investigator_type_select"
                                                             class="form-control input-sm"
@@ -292,7 +293,7 @@
                                             </td>
                                              <td class="col-md-2">
                                                  <div class="btn-group inline" ng-show="psView.current_investigator.edit">
-                                                    <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelEdit()">Cancel</button>
+                                                    <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">Cancel</button>
                                                     <button class="btn btn-danger" restriction-field type="button" ng-click="psView.commitEditInvestigator()"
                                                             ng-disabled="psView.current_investigator.person.id == null">Commit</button>
                                                 </div>
@@ -304,8 +305,9 @@
                                         {{trialStatusView.statusErrorMsg}}
                                     </div>
                                 </div>
-                                <div class="row" ng-show="psView.currentParticipatingSite.participating_site_investigators.length > 0">
+                                <div class="row" ng-show="psView.investigatorGrid.length > 0">
                                     <table class="table table-bordered table-striped table-hover">
+                                        <strong> List of Investigators</strong>
                                         <thead style="background-color: #d9edf7">
                                             <th>PO ID</th>
                                             <th>Last Name</th>
@@ -316,7 +318,7 @@
                                             <th class="text-center"> Delete/Edit </th>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="inv in psView.currentParticipatingSite.participating_site_investigators track by $index" class="animated-item text-center" ng-class="inv._destroy ? 'deleted-text' : ''">
+                                        <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item text-center" ng-class="inv._destroy ? 'deleted-text' : ''">
                                             <td class="col-sm-2">{{inv.person.id}}</td>
                                             <td class="col-sm-1">{{inv.person.lname}}</td>
                                             <td class="col-sm-2">{{inv.person.fname}}</td>
@@ -362,7 +364,7 @@
 
                             <!-- Saving the form for the Investigator tab" -->
                             <div class="form-group no-bottom-margin">
-                                <div class="btn-toolbar">
+                                <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">>
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()">Save</button>
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetInvestigatorTab()"  restriction-field ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
@@ -469,7 +471,7 @@
             </div>
             <!-- Saving the form for the Contact tab" -->
             <div class="form-group no-bottom-margin">
-                <div class="btn-toolbar">
+                <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">>
                     <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveContact()">Save</button>
                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetContactTab()"  restriction-field ng-disabled="psView.disableBtn">
                         <i class="glyphicon glyphicon-remove"></i> Reset
@@ -535,7 +537,7 @@
                 </tbody>
             </table>
 
-            <div class="btn-toolbar">
+            <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                 <button type="submit" class="btn btn-primary pull-right" id="add_participating_site" restriction-field ng-click="psView.setAddMode()">Add Participating Site</button>
                 <button type="submit" class="btn btn-primary pull-right" id="delete" restriction-field ng-click="psView.deleteSelected()">Delete Participating Sites</button>
             </div>
