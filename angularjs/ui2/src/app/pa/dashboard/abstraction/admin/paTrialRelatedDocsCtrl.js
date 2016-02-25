@@ -26,6 +26,7 @@
             var DOC_STATUSES = ['active', 'inactive', 'deleted']; // for storing document status in database
             vm.acceptedFileExtensions = acceptedFileTypesObj.accepted_file_extensions;
             vm.acceptedFileTypes = acceptedFileTypesObj.accepted_file_types;
+            console.log('file types: ', vm.acceptedFileTypes);
             vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
             vm.curTrialDetailObj = {};
             vm.curDoc = _initCurDoc();
@@ -234,6 +235,7 @@
                             PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
                             $scope.$emit('updatedInChildScope', {});
                             _filterActiveDocs();
+                            vm.curDoc = _initCurDoc();
                             if (showToastr) {
                                 toastr.clear();
                                 toastr.success('Trial related documents have been saved', 'Successful!', {
