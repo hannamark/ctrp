@@ -220,11 +220,12 @@ Examples:
 
 |eligibility criteria (multiple) xxxx other_criteria.criteria_type, other_criteria.criteria_desc | XXX|
 |Associated Trials (multiple)  xxxx associated_trials.trial_identifier, identifier_type identifier_types.code, name  |XXX|
-|Disease and Condition (multiple) xxxx  diseases.preferred_name, diseases.code, diseases.thesaurus_id, diseases.display name  |XXX|
-|Interventions (multiple)xxxx interventions.name, other_name, description, intervention_type_id  intervention_types.code, name  |XXX|
-|arms_groups (multiple) xxxx arms_groups.label,type,description, intervention_id intervention_types.code, name |XXX|
-|Subgroup Stratification Criteria (multiple) xxxx sub_groups.code, sub_groups.description |XXX|
+|Disease and Condition (multiple) xxxx  diseases.preferred_name, diseases.code, diseases.thesaurus_id, diseases.display name  |Acute Leukemia of Ambiguous Lineage,,,; Recurrent Adult Acute Lymphoblastic Leukemia,,,; Recurrent Adult Acute Myeloid Leukemia,,,; Recurrent Childhood Acute Lymphoblastic Leukemia,,,; Recurrent Childhood Acute Myeloid Leukemia,,,; Refractory Childhood Acute Lymphoblastic Leukemia,,,|
 
+|Interventions (multiple)xxxx  |Cytology Specimen Collection Procedure,Cytologic Sampling, Cytology Specimen Collection Procedure,Undergo blood or bone marrow collection, Other; Cytology Specimen Collection Procedure, Gene Expression Analysis |
+
+|arms_groups (multiple) xxxx |Treatment (chemosensitivity testing, chemotherapy), Experminental,Leukemia cells purified from blood or bone samples are analyzed for sensitivity to individual drugs and drug combination and by next generation sequencing.marrow,   |
+|Subgroup Stratification Criteria (multiple) xxxx sub_groups.code, sub_groups.description | Gene Expression Analysis, Gene Expression Analysis, Analysis of leukemia cell genes to identify possible drug targets, Genetic|
 |trial owners (multiple)| Dana Johnson; Linda Mendelson|
 |trial documents (multiple) xxxx trial_documents.filename, document_type, document_subtype|XXX|
 |alternative titles (multiple) xxxx alternate_titles.category,  title  (???source) |XXX|
