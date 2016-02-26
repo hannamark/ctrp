@@ -46,7 +46,7 @@
         vm.centralContactTypes = centralContactTypes.types;
         for (var i = 0; i < vm.centralContactTypes.length; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
-               console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
+               //console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
                vm.centralContactTypes.splice(i, 1);
            }
         }
@@ -84,7 +84,7 @@
         }
 
         vm.saveContact = function(){
-            console.log("In saveContact vm.currentParticipatingSite =" + JSON.stringify(vm.currentParticipatingSite));
+            //console.log("In saveContact vm.currentParticipatingSite =" + JSON.stringify(vm.currentParticipatingSite));
             //if ()
             vm.saveParticipatingSite();
         }
@@ -256,13 +256,26 @@
          *  Initialize Investigator Grid
          */
         vm.initInvestigatorGrid = function (){
-            console.log("in vm.initInvestigatorGrid");
+            //console.log("in vm.initInvestigatorGrid");
             vm.investigatorGrid = [];
             for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
                 var invObj = vm.currentParticipatingSite.participating_site_investigators[i];
                 invObj._destroy = false;
                 invObj.edit = false;
                 invObj.new = false;
+                if(vm.currentParticipatingSite.contact_type == "PI"){
+                    //console.log("invObj.person.id=" + invObj.person.id);
+                    //console.log("vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
+                    if (vm.currentParticipatingSite.person_id == invObj.person.id) {
+                        //console.log("1111setting as contact as TRUE invObj"+JSON.stringify(invObj));
+                        //console.log("1111setting as contact as TRUE person_id"+JSON.stringify(vm.currentParticipatingSite.person));
+                        invObj.set_as_contact = true;
+                    } else {
+                        //console.log("2222setting as contact as FALSE" + JSON.stringify(invObj));
+                        //console.log("2222setting as contact as FALSE person_id" + JSON.stringify(vm.currentParticipatingSite.person));
+                        invObj.set_as_contact = false;
+                    }
+                }
                 vm.investigatorGrid.push(invObj);
             };
             //console.log("vm.investigatorGrid ="+ JSON.stringify(vm.investigatorGrid));
@@ -286,6 +299,7 @@
             vm.current_site_recruitment.new = true;
             var newSiteRec = vm.current_site_recruitment;
             var siteObj = vm.current_site_recruitment;
+            siteObj.status_date = DateService.convertISODateToLocaleDateStr( vm.current_site_recruitment.status_date);
             _.each(vm.siteRecruitmentStatusesArr, function (status) {
                 //console.log(" addSiteRecruitment() = status = "+ JSON.stringify(status) );
                // console.log(" addSiteRecruitment() = status = "+ JSON.stringify(status) );
@@ -426,7 +440,11 @@
             console.log("In editSiteRecruitment");
             vm.current_investigator = angular.copy(vm.investigatorGrid[index]);
             vm.current_investigator.edit = true;
-            //vm.current_investigator.index = index;
+            if((vm.currentParticipatingSite.contact_type == "PI") &&  (vm.currentParticipatingSite.person_id == vm.current_investigator.id)) {
+                vm.current_investigator.set_as_contact = true;
+            } else {
+                vm.current_investigator.set_as_contact = false;
+            }
             console.log("In editSiteRecruitment vm.current_investigator=" +JSON.stringify(vm.current_investigator));
             // vm.tempTrialStatuses.splice(index, 1);
             //}
@@ -441,7 +459,7 @@
             var primary_contact_set = false;
             if (vm.current_investigator.edit) {
                 for (var i = 0; i < vm.investigatorGrid.length; i++) {
-                    console.log("in commitEditInvestigator vm.current_investigator="+JSON.stringify(vm.current_investigator));
+                    //console.log("in commitEditInvestigator vm.current_investigator="+JSON.stringify(vm.current_investigator));
                      if (vm.current_investigator.person.id == vm.investigatorGrid[i].person.id){
                         vm.investigatorGrid.splice(i,1);
                         vm.investigatorGrid.push(vm.current_investigator);
@@ -452,7 +470,6 @@
                              vm.currentParticipatingSite.contact_email = vm.investigatorGrid[i].person.email;
                              vm.currentParticipatingSite.contact_type = "PI";
                              vm.currentParticipatingSite.person_id =  vm.investigatorGrid[i].person.id;
-                             //console.log("SPARKY vm.currentParticipatingSite = " + JSON.stringify(vm.currentParticipatingSite));
                          }
                     } else {
                          if(vm.current_investigator.set_as_contact){
@@ -513,6 +530,7 @@
                         vm.currentParticipatingSite.contact_phone = vm.persisted_contact.contact_phone;
                         vm.currentParticipatingSite.contact_email = vm.persisted_contact.contact_email;
                         vm.currentParticipatingSite.person_id =  vm.persisted_contact.person_id;
+                        vm.currentParticipatingSite.person =  vm.persisted_contact.person;
                     } else {
                         vm.currentParticipatingSite.contact_name = null;
                         vm.currentParticipatingSite.contact_phone = null;
@@ -574,12 +592,13 @@
                 //console.log(" watchPersonSelection newVal=" + JSON.stringify(newVal));
                 if (angular.isArray(newVal) && newVal.length > 0) {
                     vm.currentParticipatingSite.contact_name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
-                    //vm.principalInvestigator.pi = vm.selectedPerson.array[0];
-                    //vm.principalInvestigator.pi_id  = vm.selectedPerson.array[0].id; // update PI on view
                     var personAsContact = {};
-                    personAsContact.person_id = vm.selectedPerson.array[0].id;
+                    var person = vm.selectedPerson.array[0];
+                    personAsContact.person_id = person.id;
                     personAsContact.new = true;
                     vm.currentParticipatingSite.contact_type = "Person";
+                    vm.currentParticipatingSite.contact_phone = person.phone;
+                    vm.currentParticipatingSite.contact_email = person.email;
                     vm.currentParticipatingSite.participating_site_investigators_attributes = [];
                     vm.currentParticipatingSite.participating_site_investigators_attributes.push(personAsContact);
                 }
@@ -599,6 +618,8 @@
                         vm.currentParticipatingSite.contact_phone = inv.phone;
                         vm.currentParticipatingSite.contact_email = inv.email;
                         vm.currentParticipatingSite.contact_type = "PI"; // replace hardcoding
+                        vm.currentParticipatingSite.person = inv;
+                        vm.currentParticipatingSite.person_id = inv.id;
                     }
                 }
             });
@@ -644,7 +665,7 @@
             vm.disableBtn = true;
 
             TrialService.deleteParticipatingSite(psId).then(function(response) {
-                console.log("response="+JSON.stringify(response));
+                //console.log("response="+JSON.stringify(response));
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.lock_version = response.lock_version || '';
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
