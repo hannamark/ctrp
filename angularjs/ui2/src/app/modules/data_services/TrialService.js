@@ -28,7 +28,9 @@
             + '</button>'
             + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions">'
             + '<a ng-if="action == \'add-my-site\'" ui-sref="main.addParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '<a ng-if="action != \'add-my-site\'" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'update-my-site\'" ui-sref="main.participatingSiteDetail({psId: row.entity.my_site_id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'manage-sites\'" ui-sref="main.manageParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="[\'add-my-site\', \'update-my-site\', \'manage-sites\'].indexOf(action) < 0" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '</li></ul>'
             + '</div>';
 
@@ -118,7 +120,8 @@
             deleteTrial: deleteTrial,
             getGrantsSerialNumber: getGrantsSerialNumber,
             upsertParticipatingSite: upsertParticipatingSite,
-            getParticipatingSiteById: getParticipatingSiteById
+            getParticipatingSiteById: getParticipatingSiteById,
+            deleteParticipatingSite: deleteParticipatingSite
         };
 
         return services;
@@ -152,7 +155,7 @@
 
             //update an existing trial
             var configObj = {}; //empty config
-            $log.info('updating a trial: ' + JSON.stringify(trialObj));
+            // $log.info('updating a trial: ' + JSON.stringify(trialObj));
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_TRIAL + trialObj.id + '.json', trialObj, configObj);
         } //upsertTrial
 
@@ -998,6 +1001,15 @@
          */
         function deleteTrial(trialId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_TRIAL + trialId + '.json');
+        }
+        /**
+         * delete an trial with the given trialId
+         *
+         * @param trialId
+         * @returns {*}
+         */
+        function deleteParticipatingSite(psId) {
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_PARTICIPATING_SITE + psId + '.json');
         }
     }
 })();

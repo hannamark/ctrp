@@ -24,6 +24,7 @@
         vm.addedStatuses = [];
         vm.srsNum = 0;
         vm.selectedPiArray = [];
+        vm.editMode = false; // Flag used in manage sites screen
 
         vm.updatePs = function() {
             // Prevent multiple submissions
@@ -55,7 +56,11 @@
 
             TrialService.upsertParticipatingSite(outerPs).then(function(response) {
                 if (response.server_response.status < 300) {
-                    $state.go('main.trials', null, {reload: true});
+                    if (vm.isManageScreen) {
+                        $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
+                    } else {
+                        $state.go('main.viewTrial', {trialId: response.trial.id});
+                    }
                     toastr.success('Participating Site ' + vm.curPs.id + ' has been recorded', 'Operation Successful!');
                 } else {
                     // Enable buttons in case of backend error
@@ -145,18 +150,47 @@
             });
         };
 
+        vm.addPs = function() {
+            vm.editMode = false;
+            vm.curPs = {};
+            vm.curPs.new = true;
+            vm.addedStatuses = [];
+            vm.srsNum = 0;
+            vm.selectedPiArray = [];
+            setDefaultOrg();
+        };
+
+        vm.editPs = function(psIdx) {
+            vm.editMode = true;
+            vm.curPs = vm.curTrial.sitesu_sites[psIdx];
+            vm.addedStatuses = [];
+            vm.srsNum = 0;
+            vm.selectedPiArray = [];
+            setSitePi();
+            appendStatuses();
+        };
+
         activate();
 
         /****************************** implementations **************************/
 
         function activate() {
+            allowPermittedAction();
             appendNewPsFlag();
+            setManageScreenFlag();
             populateOrgs();
             setDefaultOrg();
 
             if (!vm.curPs.new) {
                 setSitePi();
                 appendStatuses();
+            }
+        }
+
+        // Redirect to search page if this user is not allowed to mange sites
+        function allowPermittedAction() {
+            if ($state.$current.name.indexOf('manage') > -1 && vm.curTrial.actions.indexOf('manage-sites') < 0) {
+                $state.go('main.trials', null, {reload: true});
             }
         }
 
@@ -167,15 +201,25 @@
          *
          */
         function appendNewPsFlag() {
-            if ($state.$current.name.indexOf('add') > -1) {
-                vm.curPs.new = true;  //
+            if ($state.$current.name.indexOf('add') > -1 || $state.$current.name.indexOf('manage') > -1) {
+                vm.curPs.new = true;
+            } else {
+                vm.curPs.new = false;
+            }
+        }
+
+        function setManageScreenFlag() {
+            if ($state.$current.name.indexOf('manage') > -1) {
+                vm.isManageScreen = true;
+            } else {
+                vm.isManageScreen = false;
             }
         }
         
         // Populate available organization list
         function populateOrgs() {
             if (vm.curUser.role === 'ROLE_SITE-SU') {
-                vm.availableOrgs = vm.curUser.family_orgs;
+                vm.availableOrgs = vm.curTrial.available_family_orgs;
             } else {
                 vm.availableOrgs.push(vm.curUser.organization);
             }
@@ -183,7 +227,9 @@
 
         // Set the default organization
         function setDefaultOrg() {
-            vm.curPs.organization_id = vm.availableOrgs[0].id;
+            if (vm.availableOrgs.length > 0) {
+                vm.curPs.organization_id = vm.availableOrgs[0].id;
+            }
         }
 
         // Set the Site PI from many participating_site_investigators

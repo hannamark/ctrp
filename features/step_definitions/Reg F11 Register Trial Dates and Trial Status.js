@@ -29,18 +29,30 @@ module.exports = function() {
     });
 
     this.When(/^I add a trial status from (.*) to trial status (.*) with the condition (.*)$/, function (statusFrom, statusTo, conditionText, table, callback) {
-        statusTable = table.hashes();
+    /*    statusTable = table.hashes();
         for (var i = 0; i < statusTable.length; i++) {
            // console.log('Table value');
            // console.log(statusTable);
             addTrial.clickAddTrialDateField('0');
             addTrial.clickAddTrialDateToday();
-                console.log('Status From');
+                console.log(' ******* Status From ******* ');
             console.log(statusTable[i].statusFrom);
             if (statusTable[i].statusFrom === 'In Review'){
                 console.log('statusTable value here');
                 addTrial.selectAddTrialStatus(statusTable[i].statusFrom);
                 addTrial.clickAddTrialAddStatusButton();
+                if(statusTable[i].statusTo === 'Active') {
+                    addTrial.clickAddTrialDateField('0');
+                    addTrial.clickAddTrialDateToday();
+                    addTrial.selectAddTrialStatus('Approved');
+                    addTrial.clickAddTrialAddStatusButton();
+                }
+                else if(statusTable[i].statusTo === 'Enrolling by Invitation'){
+                    addTrial.clickAddTrialDateField('0');
+                    addTrial.clickAddTrialDateToday();
+                    addTrial.selectAddTrialStatus('Approved');
+                    addTrial.clickAddTrialAddStatusButton();
+                }
             }
             else if (statusTable[i].statusFrom === 'Approved' ){
                 addTrial.selectAddTrialStatus('In Review');
@@ -184,17 +196,37 @@ module.exports = function() {
             }
             addTrial.clickAddTrialDateField('0');
             addTrial.clickAddTrialDateToday();
-            console.log('Status To');
+            console.log(' ******* Status To *******');
             console.log(statusTable[i].statusTo);
             addTrial.selectAddTrialStatus(statusTable[i].statusTo);
             addTrial.clickAddTrialAddStatusButton();
-            console.log('Condition Text');
+            console.log(' ******* Condition Text ******* ');
             console.log(statusTable[i].conditionText);
             projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', '');
-            browser.sleep(5678);
+            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', '', '');
+        //    browser.sleep(5678);
             addTrial.clickAddTrialResetButton();
+        } */
+        statusTable = table.hashes();
+        for (var i = 0; i < statusTable.length; i++) {
+            addTrial.clickAddTrialDateField('0');
+            addTrial.clickAddTrialDateToday();
+            addTrial.selectAddTrialStatus(statusTable[i].statusFrom);
+            addTrial.clickAddTrialAddStatusButton();
+            addTrial.clickAddTrialDateField('0');
+            addTrial.clickAddTrialDateToday();
+            addTrial.selectAddTrialStatus(statusTable[i].statusTo);
+            addTrial.clickAddTrialAddStatusButton();
+            console.log(' ******* Condition Text ******* ');
+            console.log(statusTable[i].conditionText);
+
+            var convStrng = statusTable[i].conditionText.toString().replace(/\\n/g, "\n", -1);
+            console.log(convStrng);
+
+            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', '');
+            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', '', convStrng);
         }
-        browser.sleep(5678).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^no error or warning should be displayed in the validation messages column$/, function (callback) {

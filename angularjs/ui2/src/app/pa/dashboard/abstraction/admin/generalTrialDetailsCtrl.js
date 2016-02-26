@@ -93,19 +93,20 @@
           // get the most updated lock_version
           outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
           TrialService.upsertTrial(outerTrial).then(function(res) {
-              console.log('saved trial: ', res);
-              vm.generalTrialDetailsObj = res;
-              vm.generalTrialDetailsObj.lock_version = res.lock_version;
-
-              PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
-              $scope.$emit('updatedInChildScope', {});
-
               toastr.clear();
-              toastr.success('Trial general details has been updated', 'Successful!', {
-                  extendedTimeOut: 1000,
-                  timeOut: 0
-              });
-              getTrialDetailCopy();
+              if (res.server_response.status === 200) {
+                  vm.generalTrialDetailsObj = res;
+                  vm.generalTrialDetailsObj.lock_version = res.lock_version;
+                  PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
+                  $scope.$emit('updatedInChildScope', {});
+                  toastr.success('Trial general details has been updated', 'Successful!', {
+                      extendedTimeOut: 1000,
+                      timeOut: 0
+                  });
+                  getTrialDetailCopy();
+              } else {
+                  toastr.error('Error', 'There are errors in the submitted data');
+              }
           });
       }
 
@@ -361,9 +362,12 @@
           }
       }
 
-      function updateLeadProtocolId() {
+      function updateLeadProtocolId(formName) {
           if (!vm.leadProtocolId || vm.leadProtocolId.trim() === '') {
+              formName.$valid = false;
+              formName.$invalid = true;
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
+              return;
           } else {
               vm.generalTrialDetailsObj.lead_protocol_id = vm.leadProtocolId.trim();
           }

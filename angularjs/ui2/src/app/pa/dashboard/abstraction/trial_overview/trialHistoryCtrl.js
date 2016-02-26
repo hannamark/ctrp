@@ -27,7 +27,7 @@
         vm.endDateOpened = false;
         vm.openCalendar = openCalendar;
         vm.submit = submit;
-
+        vm.searchWarningMessage = '';
 
         //ui-grid plugin options
         vm.gridOptions = AuditService.getGridOptions();
@@ -38,7 +38,7 @@
         activate();
 
         function activate() {
-           // getTrialDetailObj();
+            // getTrialDetailObj();
             //_getProcessingInfo();
         }
 
@@ -51,7 +51,7 @@
 
 
         function _getProcessingInfo() {
-            $timeout(function() {
+            $timeout(function () {
                 var _defaultPriority = _.findWhere(vm.priorities, {name: $scope.$parent.paTrialOverview.trialDetailObj.process_priority}) || vm.trialProcessingObj.priority;
                 vm.trialProcessingObj = {
                     trialId: $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId,
@@ -71,7 +71,7 @@
             updatedTrial.process_comment = vm.trialProcessingObj.comment;
             console.log('updated trial: ', updatedTrial);
 
-            TrialService.upsertTrial(updatedTrial).then(function(res) {
+            TrialService.upsertTrial(updatedTrial).then(function (res) {
                 console.log('priority and commented updated: ', res);
                 updatedTrial.lock_version = res.lock_version;
                 PATrialService.setCurrentTrial(updatedTrial);
@@ -90,7 +90,7 @@
         }
 
 
-        function openCalendar ($event, type) {
+        function openCalendar($event, type) {
             $event.preventDefault();
             $event.stopPropagation();
 
@@ -103,23 +103,29 @@
 
         function submit() {
 
-           var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+            var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
             var startDate = vm.start_date;
             var endDate = vm.end_date;
             console.log(startDate);
             vm.trialHistoryObj = {trial_id: trialId, start_date: startDate, end_date: endDate};
-
+            if (startDate != null && endDate != null) {
+                vm.searchWarningMessage=''
                 AuditService.getAudits(vm.trialHistoryObj).then(function (data) {
-                console.log('received search results: ' + JSON.stringify(data.trial_versions));
-                vm.gridOptions.data = data.trial_versions;
-                vm.gridOptions.totalItems = data.trial_versions["length"];
-            }).catch(function (err) {
-                console.log('Getting audit trials failed');
-            }).finally(function() {
-                console.log('search finished');
-                vm.searching = false;
-            });
-        }
+                    console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                    vm.gridOptions.data = data.trial_versions;
+                    vm.gridOptions.totalItems = data.trial_versions["length"];
+                }).catch(function (err) {
+                    console.log('Getting audit trials failed');
+                }).finally(function () {
+                    console.log('search finished');
+                    vm.searching = false;
+                });
+            }else{
+                vm.searchWarningMessage='Start Date and End Date can not be null'
+            }
+
+            }
+
 
 
     } //trialHistoryCtrl

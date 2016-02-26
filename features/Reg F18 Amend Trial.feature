@@ -34,12 +34,18 @@ And I will be able to review or cancel my amended information
 Scenario: #2 I will be be able to submit an amended trial after reviewing the trial with no errors
 Given I am in the CTRP Registration application
 And I am on the Amendment Trial screen
+aAnd the Submission source is a Cancer Center
+And the Submission Method is Registry
+And the Submission Type is Amendment 
 And I have enter the required trial amendment information
 When I select the review option
 Then CTRP will check the amended information 
 And if there are no errors, I can submit the trial amendment
 And the information updates will be submitted as an amendment with the Amendment Number in CTRP
 And the CTRO will be able to abstract the amended trial information
+And the Submission source is a Cancer Center
+And the Submission Method is Registry
+And the Submission Type is Amendment
 
 Scenario: #3 I will be be able to edit an amended trial after reviewing the trial with no errors
 Given I am in the CTRP Registration application
