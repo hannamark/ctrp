@@ -9,7 +9,7 @@
                 <div class="row">
 
                     <div class="form-group no-bottom-margin" ng-if="trialDetailView.addMode">
-                        <fieldset class="sub-bordered"> 
+                        <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"> 
                             <legend class="sub-bordered">Add Collaborators:</legend>
                             <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
                                 <label class="control-label col-xs-12 col-sm-3">Add Collaborator:</label>
@@ -41,7 +41,7 @@
                         </fieldset>
                     </div>
                     <div class="form-group">
-                        <fieldset class="sub-bordered"> 
+                        <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"> 
                             <legend class="sub-bordered">List of Collaborators</legend> 
                             <table class="table table-bordered table-striped table-hover">
                                 <thead style="background-color: #d9edf7">

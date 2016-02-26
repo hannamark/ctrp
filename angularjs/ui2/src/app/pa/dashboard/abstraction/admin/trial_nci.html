@@ -7,7 +7,7 @@
             </uib-accordion-heading>
             <!-- first row in the accordion body -->
             <div class="row">
-                <fieldset class="sub-bordered" restriction-field>
+                <fieldset class="sub-bordered" restriction-fieldng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                     <legend class="sub-bordered">Study Source:</legend>
                     <div class="form-group required" ng-class="{'has-error': !trialNciView.study_source_id && ctrpbtn.trial_form.needsAttention(trial_form.study_source_id)}">
                         <label for="study_source" class="control-label col-xs-12 col-sm-3">Study Source: </label>
@@ -24,7 +24,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset class="sub-bordered" restriction-field>
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                     <legend class="sub-bordered">Funding Source:</legend>
                     <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
                         <label class="control-label col-xs-12 col-sm-3">Data Table 4 Funding Source:</label>
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                  </fieldset>
-                <fieldset class="sub-bordered" restriction-field>
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                     <legend class="sub-bordered">NIH/NCI Identifiers:</legend>
                     <div class="form-group">
                         <label for="nih_nci_div" class="control-label col-xs-12 col-sm-3">NIH/NCI Division/Department Identifier: </label>
