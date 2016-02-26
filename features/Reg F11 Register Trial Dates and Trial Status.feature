@@ -115,7 +115,7 @@ Examples:
 
 
    
-   Scenario Outline:#4 I can enter a trial status and trial status date for a trial
+   Scenario Outline:#5 I can enter a trial status and trial status date for a trial
 Given I have selected the option to register a trial type 
 
       |National                 |
@@ -145,7 +145,7 @@ Then the <date> and <status> will be validated and displayed on the trial status
       |11-05-2017  | Complete                                      |                       |
 
    
-    Scenario Outline: #5 I can add and delete a trial
+    Scenario Outline: #6 I can add and delete a trial
     Given I have selected the option to register a trial type 
 
       |National                 |
@@ -163,10 +163,111 @@ Then the <date> and <status> will be validated and displayed on the trial status
    Then the selected status will be deleted
    
  
+   Then the Trial Status history will be updated and no errors will be indicated during Trial Review
    
-   
+     Scenario Outline: #7 I can Edit Trial Status
+    Given I have selected the option to register a trial type 
+
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+     
+     And I am on the Register trial Status History table
+     When I click on the edit button in the Actions column for the trial status I want to edit
+     And I must have entered a Status Date 
+     And I must have entered a Trial status
+     And I have entered Why Study Stopped 
+     And I must have entered a comment 
+     And I have clicked on the save button
+     Then the trial status section will not indicate any errors during Trial Review
      
      
+       Scenario Outline: #8 I can enter a Trial Dates as either Actual or Anticipated
+    Given I have selected the option to register a trial type 
+
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+     And I am on the Trial Dates Section
+     And I must enter Trial Dates values type
+     
+      |Trial Start Date  |
+      |Primary Completion Date  |
+      |Completion Date  |
+      
+      And I must Select Trial Date type for every Trial Date value
+      
+       |Actual  |
+       |Anticipated  |
+
+      When I have clicked on the review button
+      Then no errors should be displayed 
+      
+
+      Scenario:# 9 Trial Dates Mandatory Fields
+    Given I am on the Trial Dates Section
+     When I have not entered a Trial Date values for
+          
+      |Trial Start Date  |
+      |Primary Completion date  |
+	
+    Then an error message " Please Enter a valid date " will be displayed 
+    When I have not entered a Trial Date type for the mandatory Trial Dates
+    
+    
+      |Actual |
+      |Anticipated  |
+      
+      Then the error message " Please enter a valid date type " will be displayed 
+
+
+  Scenario Outline: #10 Rules for Status/Dates relationships
+    Given I am on the Trial Dates Section 
+     When Current Trial Status is <TrialStatusType>
+     Then The Trial date Type is <DateType>
+     
+     Example:
+     
+     
+      |<TrialStatusType                         |<DateType>  |
+      |Active                                   |Trial Start Date must be Actual   |
+      |Enrolling by Invitation                  |Trial Start Date must be Actual  |
+      |Closed to Accrual                        |Trial Start Date must be Actual    |
+      |Closed to Accrual and Intervention       |Trial Start Date must be Actual   |
+      |Temp Closed to Accrual                   |Trial Start Date must be Actual   |
+      |Temp Closed to Accrual and Intervention  |Trial Start Date must be Actual   |
+      |Complete                                 |All date types must be Actual     |
+      |Administratively Complete                |Trial Start Date must be Actual   |
+      |In Review                                |Trial Start Date could be Actual or Anticipated |
+      |Approved                                 |Trial Start Date could be Actual or Anticipated   |
+     
+     
+       Scenario: #11 Rules for Study Date types
+    Given I am on the Trial Dates Screen
+     When the Trial date is in the past
+     Then the Trial date type must be actual
+      When  the Trial date is today
+      Then the Trial Date type could be actual
+      And the Trial date Type could be anticipated
+      When the Trial date is in the future
+      Then the Trial date type must always be anticipated
+
+       Scenario: #12 general rules for Study Date values are as follows
+    Given I am on the trial date section
+    And The Trial Start Date can be in the past, present, or future
+    And The Trial Start Date can be in the past, present, or future
+    And The Completion Date is always the same as, or later than, the Primary Completion Date
+    And The Primary Completion Date is always the same as, or later than, the Trial Start Date
+    And The Primary Completion Date can be earlier than the Current Trial Status Dates Complete
+    When the Primary Completion Date is Actual
+    Then the primary Completion Date can be earlier than the Current Trial Status Dates Administratively Complete 
+    And The Completion Date is always the same as, or later than, the Primary Completion Date
+
+     
+
+
+
+
      
      
 
