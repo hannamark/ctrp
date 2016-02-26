@@ -230,16 +230,16 @@ Then the <date> and <status> will be validated and displayed on the trial status
      
      
       |<TrialStatusType                         |<DateType>  |
-      |Active                                   |Trial Start Date must be Actual (solid band)  |
-      |EBI                                      |Trial Start Date must be Actual (solid band)  |
-      |Closed to Accrual                        |Trial Start Date must be Actual (solid band)  |
-      |Closed to Accrual and Intervention       |Trial Start Date must be Actual (solid band)  |
-      |Temp Closed to Accrual                   |Trial Start Date must be Actual (solid band)  |
-      |Temp Closed to Accrual and Intervention  |Trial Start Date must be Actual (solid band)  |
-      |Complete                                 |All date types must be Actual (solid band)    |
-      |Administratively Complete                |Trial Start Date must be Actual (solid band)  |
-      |In Review                                |Trial Start Date could be Actual or Anticipated (diagonal stripes band)|
-      |Approved                                 |Trial Start Date could be Actual or Anticipated (diagonal stripes band)  |
+      |Active                                   |Trial Start Date must be Actual   |
+      |Enrolling by Invitation                  |Trial Start Date must be Actual  |
+      |Closed to Accrual                        |Trial Start Date must be Actual    |
+      |Closed to Accrual and Intervention       |Trial Start Date must be Actual   |
+      |Temp Closed to Accrual                   |Trial Start Date must be Actual   |
+      |Temp Closed to Accrual and Intervention  |Trial Start Date must be Actual   |
+      |Complete                                 |All date types must be Actual     |
+      |Administratively Complete                |Trial Start Date must be Actual   |
+      |In Review                                |Trial Start Date could be Actual or Anticipated |
+      |Approved                                 |Trial Start Date could be Actual or Anticipated   |
      
      
        Scenario: #11 Rules for Study Date types

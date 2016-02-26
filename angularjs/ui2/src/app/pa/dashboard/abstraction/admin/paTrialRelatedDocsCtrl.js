@@ -73,7 +73,12 @@
             function deleteDoc(index) {
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     var curStatus = vm.curTrialDetailObj.trial_documents[index].status || 'deleted';
+                    if (curStatus === 'active' && index === vm.curDoc.index) {
+                        // cancel editing the doc that is to be deleted
+                        cancelEdit();
+                    }
                     vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
+
                 }
             }
 
@@ -216,8 +221,9 @@
                             _.each(res, function(uploadedDoc, index) {
                                 if (uploadedDoc !== null) {
                                     // vm.curTrialDetailObj.trial_documents[index].created_at = uploadedDoc.data.created_at;
-                                    vm.curTrialDetailObj.trial_documents[index] = uploadedDoc.data;
-                                    vm.curTrialDetailObj.trial_documents[index].status = 'active';
+                                    vm.curTrialDetailObj.trial_documents[index].id = uploadedDoc.data.id;
+                                    // vm.curTrialDetailObj.trial_documents[index] = uploadedDoc.data;
+                                    // vm.curTrialDetailObj.trial_documents[index].status = 'active';
                                     vm.curTrialDetailObj.trial_documents[index].added_by = {username: UserService.getLoggedInUsername()};
                                 }
                             });
@@ -284,7 +290,7 @@
             function _isFormValid() {
                 var valid = true;
                 _.each(requiredDocTypes, function(type) {
-                    if (_.findIndex(vm.curTrialDetailObj.trial_documents, {'document_type': type}) === -1) {
+                    if (_.findIndex(vm.curTrialDetailObj.trial_documents, {'document_type': type, 'status': 'active'}) === -1) {
                         valid = false;
                         return;
                     }
