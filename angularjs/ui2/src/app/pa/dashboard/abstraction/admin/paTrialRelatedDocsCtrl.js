@@ -215,8 +215,7 @@
                         if (angular.isArray(res)) {
                             _.each(res, function(uploadedDoc, index) {
                                 if (uploadedDoc !== null) {
-                                    console.log('uploadedDoc.data: ', uploadedDoc.data);
-                                    vm.curTrialDetailObj.trial_documents[index].created_at = uploadedDoc.data.created_at;
+                                    // vm.curTrialDetailObj.trial_documents[index].created_at = uploadedDoc.data.created_at;
                                     vm.curTrialDetailObj.trial_documents[index].id = uploadedDoc.data.id;
                                     // vm.curTrialDetailObj.trial_documents[index] = uploadedDoc.data;
                                     // vm.curTrialDetailObj.trial_documents[index].status = 'active';
