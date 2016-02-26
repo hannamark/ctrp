@@ -76,7 +76,12 @@
                 {name: 'program_code', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'grant_question', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'ind_ide_question', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'pilot', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'primary_purpose', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'study_source', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'phase', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'responsible_party', enabledSorting: true , minWidth: '100', width: '*'},
+
 
                 {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '5%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -87,6 +92,9 @@
                 {name: 'sponsor', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
+
+                {name: 'research_category', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'accrual_disease_term', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'start_date', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'start_date_qual', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'primary_comp_date', enabledSorting: true , minWidth: '100', width: '*'},
@@ -99,7 +107,28 @@
                 {name: 'data_monitor_indicator', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                }
+                },
+                {name: 'grants', enableSorting: true, minWidth: '400', width: '25%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'submission_number', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'submission_date', enabledSorting: true , minWidth: '100', width: '*'},
+
+                {name: 'created_by', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'updated_by', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'min_age', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'max_age', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'process_priority', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'process_comment', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'nih_nci_div', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'nih_nci_prog', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'masking', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'investigator_id', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'nci_specific_comment', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'board_name', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'board_affiliation_id', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'board_approval_num', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'board_approval_status', enabledSorting: true , minWidth: '100', width: '*'}
 
             ]
         };

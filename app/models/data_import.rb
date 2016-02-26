@@ -247,16 +247,20 @@ class DataImport
       #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
       x = SiteRecruitmentStatus.where("lower(name) = ?", site_recruitment_status.downcase).first
       #puts "x = #{x.inspect}"
-      srs.site_recruitment_status = x
+      srs.site_recruitment_status = x || SiteRecruitmentStatus.all[rand(0..(SiteRecruitmentStatus.all.size-1))]
       srs.status_date =  spreadsheet.cell(row,'J')
       ps.site_rec_status_wrappers <<  srs
       #Organization and Person
       ps.organization =  Organization.all[rand(0..(Organization.all.size-1))]
       ps.person = Person.all[rand(0..(Person.all.size-1))]
+      ps.contact_name = ps.person.fname + " " + ps.person.lname;
+      ps.contact_type = "PI";
+      ps.contact_email = ps.person.email;
+      ps.contact_phone = ps.person.phone;
       psi = ParticipatingSiteInvestigator.new
-      psi.person = Person.all[rand(0..(Person.all.size-1))]
+      psi.person = ps.person;
       psi.investigator_type = "Principal Investigator"
-      psi.set_as_contact = false
+      psi.set_as_contact = true;
       ps.participating_site_investigators << psi
 
       psi2 = ParticipatingSiteInvestigator.new
