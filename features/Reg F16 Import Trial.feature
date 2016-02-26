@@ -51,6 +51,14 @@ And I have entered a NCT Number
 When the XML from ClinicalTrials.gov contains the XML: <agency_class>U.S. Fed</agency_class>
 Then the error message "Error Message:gov.nih.nci.pa.service.PAException: Unable to import study NCTxxxxxxxx because it does not belong to Industrial/Consortia category" will be displayed
 
+Scenario: #4c I will not be able to import a trial previously registered in CTRP
+Given I have selected the option to import a trial from ClinicalTrials.gov
+And I have entered a NCT Number
+When the NCT number has been previously registered in CTRP on a trial
+And the previously registered trial with the NCT number has not been rejected
+And the previously registered trial with the NCT number has not been submission terminated
+Then the error message will be displayed "A study with the given identifier already exists in CTRP.  To find this trial in CTRP, go to the Search Trials Page"
+
 Scenario: #5 I can add my site as a participating site after a trial is imported from ClinicalTrials.gov
 Given I have selected the option to import an Industrial, Expanded Access, or 'Other' trial
 And I am on the Import ClinicalTrials.gov Trials screen
