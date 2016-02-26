@@ -1,5 +1,6 @@
 <div >
     <section>
+        <div ng-bind="psView.currentParticipatingSite.id"></div>
         <md-tabs ng-show="psView.addEditMode" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
             <md-tab>
                 <md-tab-label>Participating Site</md-tab-label>
@@ -460,7 +461,9 @@
                 <th class="text-center">Deletion</th>
                 </thead>
                 <tbody>
-                <tr ng-repeat="participating_site in psView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">
+
+                <tr ng-repeat="participating_site in psView.curTrial.participating_sites track by $index" class="animated-item" ng-class="{'deleted-text': participating_site._destroy}">
+                <!--<tr ng-repeat="participating_site in psView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
                     <td>{{participating_site.organization.id}}</td>
                     <td>
                         {{participating_site.organization.name}}
