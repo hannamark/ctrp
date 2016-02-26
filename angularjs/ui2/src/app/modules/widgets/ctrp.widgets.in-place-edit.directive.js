@@ -26,6 +26,17 @@
         link: linkerFn,
         templateUrl: function(element, attrs) {
           return attrs.template || defaultTemplateUrl;
+        },
+        controller: function($scope) {
+            $scope.errorMsg = '';
+            $scope.$watch('model', function(newVal, oldVal) {
+                // console.info('newVal model: ', newVal, oldVal);
+                if (!newVal) {
+                    $scope.errorMsg = 'Please enter a value';
+                } else {
+                    $scope.errorMsg = '';
+                }
+            });
         }
       };
       return directiveObj;
