@@ -472,9 +472,9 @@
                              vm.currentParticipatingSite.person_id =  vm.investigatorGrid[i].person.id;
                          }
                     } else {
-                         if(vm.current_investigator.set_as_contact){
-                             vm.investigatorGrid[i].set_as_contact = false;
-                         }
+                         //if(vm.current_investigator.set_as_contact){
+                         //    vm.investigatorGrid[i].set_as_contact = false;
+                        // }
                      }
                 }
             }
