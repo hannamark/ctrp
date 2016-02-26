@@ -155,7 +155,7 @@
 
             //update an existing trial
             var configObj = {}; //empty config
-            $log.info('updating a trial: ' + JSON.stringify(trialObj));
+            // $log.info('updating a trial: ' + JSON.stringify(trialObj));
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_TRIAL + trialObj.id + '.json', trialObj, configObj);
         } //upsertTrial
 

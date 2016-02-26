@@ -377,13 +377,14 @@
         }
 
         /**
-         * Convert each trial doc object to a promise for uploading
+         * Convert each trial doc object to a promise for uploading, the doc must be 'active' to be uploaded
          * @param  {JSON Object} trialDocObj
          * @param  {Integer} trialId
          * @return {a single promise}
          */
         function prepUploadingTrialRelatedDocs(trialDocObj, trialId) {
-            if (typeof trialDocObj.file === 'object' && !!trialDocObj.file.size) {
+            if (typeof trialDocObj.file === 'object' &&
+                !!trialDocObj.file.size && trialDocObj.status === 'active') {
                 return Upload.upload({
                     url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
                     method: 'POST',
@@ -404,7 +405,7 @@
         function uploadTrialRelatedDocs(trialDocsArr, trialId) {
             var promises = [];
             promises = _.map(trialDocsArr, function(trialDocObj) {
-                console.log('trialDocObj: ', trialDocObj);
+                // console.log('trialDocObj: ', trialDocObj);
                 return prepUploadingTrialRelatedDocs(trialDocObj, trialId);
             });
 

@@ -5,7 +5,7 @@ As a CTRP User, I can update information on a trial that does not require IRB ap
 
 Scenario: #1 I search my trials and select the update option
 Given I am in the CTRP Registration applicatin
-And I have selected the option to search my trials in CTRP 
+And I have selected the option to search my trials in CTRP
 And I am the Trial Owner
 When the Update option is enabled on one of my trials
 And I have selected the Update option
@@ -30,8 +30,16 @@ And I will be able to review existing Trial Related Documents type
       |Other                     |
       |TSR                       |
 
-And I will be able to add Trial Related Document type Other
+And I will be able to add Trial Related Document type Other 
 And I will be able to review or cancel my update
+When I click on the Review Button to Review my trial
+And the click on the submit button
+Then my trial will be updated in the CTRP application
+And the Submission source is a Cancer Center 
+And the Submission method is Registry
+And Submission type is Update
+
+
 
 Scenario: #2 I search my trials and select the update option
 Given I am in the CTRP Registration application

@@ -217,9 +217,9 @@
                         <!-- End fieldset for Site Recruitment -->
                         <!-- Saving the form for the Participating site tab" -->
                         <div class="form-group no-bottom-margin">
-                            <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">>
+                            <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                                 <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>Save</button>
-                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSiteTab()"  restriction-field ng-disabled="psView.disableBtn">
+                                <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field>
                                     <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
                             </div>
@@ -365,7 +365,7 @@
                             <div class="form-group no-bottom-margin">
                                 <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()">Save</button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetInvestigatorTab()"  restriction-field ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field>
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
                                 </div>
@@ -474,7 +474,7 @@
             <div class="form-group no-bottom-margin">
                 <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                     <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field">Save</button>
-                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetContactTab()"  restriction-field ng-disabled="psView.disableBtn">
+                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field>
                         <i class="glyphicon glyphicon-remove"></i> Reset
                     </button>
                 </div>
