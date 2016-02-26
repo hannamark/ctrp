@@ -72,20 +72,15 @@ And the option to Register Trial will be not available
 
 Scenario: #3 I can submit my completed trial registration
 Given I have selected the option to register a National, Externally Peer-Reviewed, or Institutional trial
-And the Submission Source is a Cancer Center
-And the submission method is Registry
-And the Submission Type is Original
 And I have performed the Review Trial action without errors
 When I have selected Register Trial
 Then all registration information will be entered in CTRP
 And the trial status will be Submitted
 And the trial milestone Submission Received Date will be created with the current date and time
 And the trial record will have the NCI Identifer with the format NCI-YYYY-NNNNN 
-
-
-Submission source – Cancer Center (assumes that CTEP, DCP, CCR will use REST services)
-Submission method – Registry
-Submission type – Original/Update/Amendment – Known
+And the Submission Source is a Cancer Center
+And the submission method is Registry
+And the Submission Type is Original
 
 
 Scenario: #4 I can edit my completed trial registration
