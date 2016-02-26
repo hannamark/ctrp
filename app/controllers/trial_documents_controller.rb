@@ -30,7 +30,7 @@ class TrialDocumentsController < ApplicationController
       Rails.logger.info "replaced doc id: #{params[:replaced_doc_id]}"
       replaced_doc = TrialDocument.find(params[:replaced_doc_id])
       # replaced document is flagged as inactive except the document_type is "Other Document"
-      replaced_doc.update_attribute('status', 'inactive') # unless params[:document_type].include? "Other"
+      replaced_doc.update_attribute('status', 'inactive') unless params[:document_type].include? "Other"
     end
 
     @trial_document = TrialDocument.new(trial_document_params)
