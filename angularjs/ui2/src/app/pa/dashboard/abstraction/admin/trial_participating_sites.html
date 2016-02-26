@@ -294,8 +294,7 @@
                                             <td>{{inv.person.fname}}</td>
                                             <td>{{inv.investigator_type}}</td>
                                             <td>{{inv.status_code}}</td>
-                                            <td ng-if="inv.set_as_contact"> Yes</td>
-                                            <td ng-if="!inv.set_as_contact"> &nbsp;</td>
+                                            <td>{{inv.set_as_contact}}</td>
                                             <td class="text-center">
                                                 <label class="btn btn-default" restriction-field ng-click="psView.deleteInvestigator($index)">
                                                     <i class="glyphicon" ng-class="status._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
