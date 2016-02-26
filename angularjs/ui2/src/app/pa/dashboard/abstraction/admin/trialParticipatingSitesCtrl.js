@@ -299,6 +299,7 @@
             vm.current_site_recruitment.new = true;
             var newSiteRec = vm.current_site_recruitment;
             var siteObj = vm.current_site_recruitment;
+            siteObj.status_date = DateService.convertISODateToLocaleDateStr( vm.current_site_recruitment.status_date);
             _.each(vm.siteRecruitmentStatusesArr, function (status) {
                 //console.log(" addSiteRecruitment() = status = "+ JSON.stringify(status) );
                // console.log(" addSiteRecruitment() = status = "+ JSON.stringify(status) );
