@@ -284,7 +284,7 @@
         function openCalendar ($event, type) {
             $event.preventDefault();
             $event.stopPropagation();
-            
+
             if (type === 'status_date') {
                 vm.statusDateOpened = !vm.statusDateOpened;
             }
