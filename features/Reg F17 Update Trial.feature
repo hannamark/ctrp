@@ -32,6 +32,14 @@ And I will be able to review existing Trial Related Documents type
 
 And I will be able to add Trial Related Document type Other
 And I will be able to review or cancel my update
+When I click on the Review Button to Review my trial
+And the click on the submit button
+And the Submission source is a Cancer Center 
+And the Submission method is Registry
+And Submission type is Update
+Then my trial will be updated in the CTRP application
+
+
 
 Scenario: #2 I search my trials and select the update option
 Given I am in the CTRP Registration application
