@@ -154,10 +154,8 @@
                     vm.scientificCheckinAllowed = !vm.scientificCheckoutAllowed && (vm.curUser === checkedoutByUsername ||
                         curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU' ||
                         curUserRole === 'ROLE_ADMIN');
-                    console.log('scientific checkin allowed: ', vm.scientificCheckinAllowed);
 
                     if (!!newVal) {
-
                         // ROLE_SUPER can override the checkout button
                         vm.scientificCheckoutBtnDisabled = vm.curUser !== checkedoutByUsername &&
                             curUserRole !== 'ROLE_SUPER' && curUserRole !== 'ROLE_ABSTRACTOR' &&
