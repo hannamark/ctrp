@@ -73,7 +73,12 @@
             function deleteDoc(index) {
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     var curStatus = vm.curTrialDetailObj.trial_documents[index].status || 'deleted';
+                    if (curStatus === 'active' && index === vm.curDoc.index) {
+                        // cancel editing the doc that is to be deleted
+                        cancelEdit();
+                    }
                     vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
+
                 }
             }
 

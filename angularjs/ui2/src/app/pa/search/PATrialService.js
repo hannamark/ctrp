@@ -405,7 +405,7 @@
         function uploadTrialRelatedDocs(trialDocsArr, trialId) {
             var promises = [];
             promises = _.map(trialDocsArr, function(trialDocObj) {
-                console.log('trialDocObj: ', trialDocObj);
+                // console.log('trialDocObj: ', trialDocObj);
                 return prepUploadingTrialRelatedDocs(trialDocObj, trialId);
             });
 
