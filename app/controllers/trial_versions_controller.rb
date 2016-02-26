@@ -52,7 +52,10 @@ def history
 
 
   #@trial_versions =TrialVersion.where("item_type = ? AND item_id = ? ", "Trial",params[:trial_id])
-  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at BETWEEN ? AND ? ", "Trial",params[:trial_id],params[:start_date],params[:end_date]).order('created_at desc')
+
+  start_date = params[:start_date].to_date.beginning_of_day
+  end_date = params[:end_date].to_date.end_of_day
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at BETWEEN ? AND ? ", "Trial",params[:trial_id],start_date,end_date).order('created_at desc')
 
 
 end
