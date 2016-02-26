@@ -198,14 +198,14 @@ module.exports = function() {
     });
 
 
-    this.Given(/^the Investigator Affiliation will be the Principal Investigator's organization affiliation$/, function (callback) {
-        storePrincipalInvestigatorAffOrg = cukeOrganization.then(function (value) {
-            console.log('value of Principal Investigator affiliation Organization' + value);
-            addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
-            return value;
-        });
-        browser.sleep(25).then(callback);
-    });
+    //this.Given(/^the Investigator Affiliation will be the Principal Investigator's organization affiliation$/, function (callback) {
+    //    storePrincipalInvestigatorAffOrg = cukeOrganization.then(function (value) {
+    //        console.log('value of Principal Investigator affiliation Organization' + value);
+    //        addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
+    //        return value;
+    //    });
+    //    browser.sleep(25).then(callback);
+    //});
 
     this.Given(/^the Investigation Affiliation can be changed$/, function (callback) {
         /* Create or use an Org to affiliate Person Org **/
@@ -228,6 +228,10 @@ module.exports = function() {
             });
             addTrial.getVerifyAddTrialInvestigatorTitle('Principal Investigator');
             storePrincipalInvestigatorAffOrg.then(function (value) {
+                projectFunctionsRegistry.selectOrgforTrial(value,'1');
+                addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+                addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+                addTrial.selectAddTrialResponsibleParty('Principal Investigator');
                 addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
             });
             cukeOrganization.then(function (value) {
