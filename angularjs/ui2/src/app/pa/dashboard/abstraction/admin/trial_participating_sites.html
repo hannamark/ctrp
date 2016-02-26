@@ -314,21 +314,20 @@
                                             <th>First Name</th>
                                             <th>Role</th>
                                             <th>Status Code</th>
-                                            <th>Set as Primary Contact</th>
+                                            <th>Primary Contact</th>
                                             <th class="text-center"> Delete/Edit </th>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item text-center" ng-class="inv._destroy ? 'deleted-text' : ''">
                                             <td class="col-sm-2">{{inv.person.id}}</td>
-                                            <td class="col-sm-1">{{inv.person.lname}}</td>
+                                            <td class="col-sm-2">{{inv.person.lname}}</td>
                                             <td class="col-sm-2">{{inv.person.fname}}</td>
-                                            <td class="col-sm-2">{{inv.investigator_type}}</td>
+                                            <td class="col-sm-3">{{inv.investigator_type}}</td>
                                             <td class="col-sm-1">{{inv.status_code}}</td>
-                                            <td class="col-sm-4">
-                                                <label class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="psView.setAsSiteContact($index)"  ng-style="inv.set_as_contact ? 'red' : 'blue'">
-                                                <i class="glyphicon glyphicon-check"></i>
-                                                </label>
-                                                {{inv.set_as_contact}}</td>
+                                            <td class="col-sm-1" ng-if="inv.set_as_contact">
+                                               Yes</td>
+                                            <td class="col-sm-1" ng-if="!inv.set_as_contact">
+                                                &nbsp;</td>
                                             <td class="text-center" class="col-sm-1">
                                                 <label class="btn btn-default" restriction-field ng-click="psView.deleteInvestigator($index)">
                                                     <i class="glyphicon" ng-class="status._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
