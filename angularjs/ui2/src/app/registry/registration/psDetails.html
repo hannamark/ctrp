@@ -8,29 +8,37 @@
 
         <div class="row">
             <form class="form form-horizontal" role="form" name="ps_form" novalidate ctrp-submit="psDetailView.updatePs()">
-                <div ng-show="psDetailView.isManageScreen && psDetailView.curTrial.participating_sites.length > 0" class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Added Participating Sites:</label>
-                    <div class="col-xs-12 col-sm-9">
+                <div ng-show="psDetailView.isManageScreen && psDetailView.curTrial.sitesu_sites.length > 0" class="form-group">
+                    <div class="col-xs-12 col-sm-12">
+                        <h5>Added Participating Sites:</h5>
                         <table class="table table-bordered table-striped table-condensed">
                             <thead>
                                 <th>Organization Name</th>
+                                <th>Local Trial Identifier</th>
+                                <th>Site Principal Investigator</th>
+                                <th>Site Specific Program Code</th>
+                                <th>Current Status</th>
                                 <th>Edit</th>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="ps in psDetailView.curTrial.participating_sites track by $index">
-                                <td class="col-md-11">{{ps.organization.name}}</td>
-                                <td class="col-md-1">
-                                    <label restriction-field class="btn btn-default" ng-click="psDetailView.editPs($index)">
-                                        <i class="glyphicon glyphicon-edit"></i>
-                                    </label>
-                                </td>
-                            </tr>
+                                <tr ng-repeat="ps in psDetailView.curTrial.sitesu_sites track by $index">
+                                    <td class="col-md-3">{{ps.organization.name}}</td>
+                                    <td class="col-md-2">{{ps.protocol_id}}</td>
+                                    <td class="col-md-2">{{ps.site_pi.lname + (ps.site_pi.lname ? ', ' : ' ') + ps.site_pi.fname}}</td>
+                                    <td class="col-md-2">{{ps.program_code}}</td>
+                                    <td class="col-md-2">{{ps.current_status_name}}</td>
+                                    <td class="col-md-1">
+                                        <label restriction-field class="btn btn-default" ng-click="psDetailView.editPs($index)">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </label>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div ng-show="psDetailView.isManageScreen && psDetailView.curTrial.participating_sites.length > 0" class="form-group no-bottom-margin">
+                <div ng-show="psDetailView.isManageScreen && psDetailView.curTrial.sitesu_sites.length > 0" class="form-group no-bottom-margin">
                     <div class="btn-toolbar col-xs-12">
                         <button type="button" restriction-field class="btn btn-primary pull-right" ng-click="psDetailView.addPs()">
                             Add New Participating Site
@@ -100,7 +108,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Site Specific Program code:</label>
+                    <label class="control-label col-xs-12 col-sm-3">Site Specific Program Code:</label>
                     <div class=" col-xs-12 col-sm-6">
                         <input type="text" restriction-field class="form-control input-sm" id="program_code" ng-model="psDetailView.curPs.program_code">
                     </div>

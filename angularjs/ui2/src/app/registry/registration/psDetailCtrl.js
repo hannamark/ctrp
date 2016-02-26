@@ -162,7 +162,7 @@
 
         vm.editPs = function(psIdx) {
             vm.editMode = true;
-            vm.curPs = vm.curTrial.participating_sites[psIdx];
+            vm.curPs = vm.curTrial.sitesu_sites[psIdx];
             vm.addedStatuses = [];
             vm.srsNum = 0;
             vm.selectedPiArray = [];
@@ -175,6 +175,7 @@
         /****************************** implementations **************************/
 
         function activate() {
+            allowPermittedAction();
             appendNewPsFlag();
             setManageScreenFlag();
             populateOrgs();
@@ -183,6 +184,13 @@
             if (!vm.curPs.new) {
                 setSitePi();
                 appendStatuses();
+            }
+        }
+
+        // Redirect to search page if this user is not allowed to mange sites
+        function allowPermittedAction() {
+            if ($state.$current.name.indexOf('manage') > -1 && vm.curTrial.actions.indexOf('manage-sites') < 0) {
+                $state.go('main.trials', null, {reload: true});
             }
         }
 
@@ -211,7 +219,7 @@
         // Populate available organization list
         function populateOrgs() {
             if (vm.curUser.role === 'ROLE_SITE-SU') {
-                vm.availableOrgs = vm.curUser.family_orgs;
+                vm.availableOrgs = vm.curTrial.available_family_orgs;
             } else {
                 vm.availableOrgs.push(vm.curUser.organization);
             }
@@ -219,7 +227,9 @@
 
         // Set the default organization
         function setDefaultOrg() {
-            vm.curPs.organization_id = vm.availableOrgs[0].id;
+            if (vm.availableOrgs.length > 0) {
+                vm.curPs.organization_id = vm.availableOrgs[0].id;
+            }
         }
 
         // Set the Site PI from many participating_site_investigators
