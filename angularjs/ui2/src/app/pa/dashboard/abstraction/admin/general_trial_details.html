@@ -24,7 +24,7 @@
                 </textarea>
               </div>
               <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.trial_official_title) && general_trial_details_form.trial_official_title.$error">
-                  <span class="help-block" ng-message="required">Official Title is required</span>
+                  <span class="help-block" ng-message="required">Please enter the Official Title</span>
               </span>
             </div>
           </fieldset>
@@ -145,10 +145,11 @@
                       <tr>
                           <td>Lead Organization Trial ID</td>
                           <td>
-                              <span in-place-edit="generalTrialDetailView.leadProtocolId" on-save="generalTrialDetailView.updateLeadProtocolId()"
+                              <span in-place-edit="generalTrialDetailView.leadProtocolId" on-save="generalTrialDetailView.updateLeadProtocolId(general_trial_details_form)"
                                     template="app/pa/dashboard/abstraction/admin/other_identifier_edit_template.html" id="#other_id_edit">
                                     {{generalTrialDetailView.leadProtocolId}}
                               </span>
+                              <div class="help-block" ng-show="general_trial_details_form.$invalid">Please enter the Protocol Identifier</div>
                           </td>
                           <td class="text-center">--</td>
                       </tr>
