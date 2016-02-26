@@ -51,10 +51,12 @@ json.trial_versions do
       other_ids.each do |o|
         case o.event
           when "destroy"
-            p o.object
+            #p o.object
+            p o.event
             protocol_id = o.object["protocol_id"]
             protocol_id_origin_id = o.object["protocol_id_origin_id"]
           when "create" || "update"
+            p o.event
             p o.object_changes
             protocol_id = o.object_changes["protocol_id"][1]
             protocol_id_origin_id = o.object_changes["protocol_id_origin_id"][1]
@@ -62,18 +64,22 @@ json.trial_versions do
             protocol_id =""
             protocol_id_origin_id=""
         end
-
         #name = ProtocolIdOrigin.find_by_protocol_id_origin_id(protocol_id_origin_id).pluck(:nam) if !protocol_id_origin_id
         #next if o.protocol_id_origin.nil?
         #name = o.protocol_id_origin.name
         #unless name.nil?
         #name.gsub!("Identifier", "")
-        other_ids_string = other_ids_string + delimiter + protocol_id.to_s + "   " + protocol_id_origin_id.to_s
-        delimiter = ";  " if o.event == "create" || "update"
-        delimiter = "(D); " if o.event == "destroy"
+        o.event == "destroy"? destroy_sign = " (D) " : destroy_sign=""
+
+       p color_field_tag destroy_sign
+        p destroy_sign
+        other_ids_string = other_ids_string + delimiter + protocol_id.to_s + "   " + protocol_id_origin_id.to_s + destroy_sign
+        delimiter = ";"
+
      end
       #end
       json.other_ids  other_ids_string
+
      end
 
 
