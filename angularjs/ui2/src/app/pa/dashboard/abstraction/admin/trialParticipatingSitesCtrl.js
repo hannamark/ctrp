@@ -66,7 +66,7 @@
         vm.openCalendar = openCalendar;
         vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
         vm.setAsSiteContact = setAsSiteContact;
-        vm.resetParticipatingSiteTab = resetParticipatingSiteTab;
+        vm.resetParticipatingSite = resetParticipatingSite;
         //vm.saveContact;
 
 
@@ -709,6 +709,32 @@
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
             vm.current_site_recruitment = {};
            $timeout(function() {
+                getTrialDetailCopy();
+                //vm.centralContactType = _getCentralContactType(); // restore vm.centralContactType
+            }, 0);
+            //vm.setEditMode(vm.currentParticipatingSite.id);
+        }
+
+        function resetParticipatingSite() {
+            console.log("resetParticipatingSiteTab vm.currentParticipatingSite="+ JSON.stringify(vm.currentParticipatingSite));
+            if(vm.currentParticipatingSite.id > 0){
+                for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {
+                    if(vm.curTrial.participating_sites[i].id == vm.currentParticipatingSite.id){
+                        vm.currentParticipatingSite = vm.curTrial.participating_sites[i];
+                        vm.setEditMode(i);
+                    }
+                    //console.log("vm.curTrial.participating_sites[i]=" + JSON.stringify(vm.curTrial.participating_sites[i]));
+                }
+            } else {
+                vm.setAddMode();
+            }
+            vm.selOrganization = {name: '', array: []};
+            vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
+            vm.current_site_recruitment = {};
+            vm.principalInvestigator = {name: '', array: []};
+            vm.selectedPerson = {name: '', array: []};
+
+            $timeout(function() {
                 getTrialDetailCopy();
                 //vm.centralContactType = _getCentralContactType(); // restore vm.centralContactType
             }, 0);
