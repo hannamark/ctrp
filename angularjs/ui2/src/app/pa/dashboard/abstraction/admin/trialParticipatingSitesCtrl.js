@@ -14,14 +14,6 @@
 
         var vm = this;
 
-        // Tabs
-        vm.tabs = [
-            { id: 'sites', label: 'Participating Site'},
-            { id: 'investigators', label: 'Investigators'},
-            { id: 'contact', label: 'contact'}
-        ];
-        vm.tabIndex = vm.tabs[0].id;
-
         // injected objects
         vm.curTrial = trialDetailObj;
         vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
@@ -74,13 +66,12 @@
         vm.openCalendar = openCalendar;
         vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
         vm.setAsSiteContact = setAsSiteContact;
-        vm.resetParticipatingSiteTab = resetParticipatingSiteTab;
-        //vm.setTabIndex = setTabIndex;
         vm.resetParticipatingSite = resetParticipatingSite;
         //vm.saveContact;
 
 
         activate();
+
         /****************** implementations below ***************/
         function activate() {
             getTrialDetailCopy();
@@ -182,20 +173,6 @@
             $state.go($state.$current, null, { reload: true });
         };
 
-
-        // Tracks selected tab and sets initial tab to active
-        /*
-        function setTabIndex(tab) {
-            for (var i = 0; i < vm.tabs.length; i++) {
-                if (vm.tabs[i].id === tab.id) {
-                    vm.tabIndex = i;
-                }
-            }
-            console.log('vm.tabIndex is: ', vm.tabIndex);
-        }
-        */
-
-
         // Add Participating to a temp array
         function watchOrganization() {
             $scope.$watchCollection(function() {return vm.selOrganization.array;}, function(newVal, oldVal) {
@@ -254,7 +231,6 @@
             vm.initSiteRecruitmentGrid();
             vm.initInvestigatorGrid();
             vm.validateStatus();
-            vm.tabIndex = 0;
         }
 
         vm.initSiteRecruitmentGrid = function (){
