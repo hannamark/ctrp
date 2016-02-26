@@ -214,6 +214,7 @@
                     console.error('form validity: ', formName.$valid);
                     return;
                 }
+                vm.saveBtnDisabled = true;
                 PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id)
                     .then(function(res) {
                         console.log('group promises res: ', res);
@@ -252,6 +253,10 @@
                                     timeOut: 0
                                 });
                             }
+                        }).catch(function(err) {
+                            console.log('trial update error: ', err);
+                        }).finally(function() {
+                            vm.saveBtnDisabled = false;
                         });
                     }).catch(function(err) {
                         console.error('group promise err: ', err);
