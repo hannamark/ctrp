@@ -29,6 +29,7 @@
         vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
         vm.currentParticipatingSite.participating_site_investigators=[];
         vm.persisted_contact = {};
+        vm.persistedOrganization = {};
         vm.showOrgFields = true;
         vm.city=null;
         vm.state_province=null;
@@ -138,6 +139,7 @@
                         vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
                         vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
                         vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
+                        vm.persisted_organization = vm.currentParticipatingSite.organization;
                         if(newParticipatingSite){
                             vm.currentParticipatingSite.new = false;
                             vm.curTrial.participating_sites.push(vm.currentParticipatingSite);
@@ -225,6 +227,7 @@
             vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
             vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
             vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
+            vm.persisted_organization = vm.currentParticipatingSite.organization;
             vm.initSiteRecruitmentGrid();
             vm.initInvestigatorGrid();
             vm.validateStatus();
@@ -262,7 +265,7 @@
                 invObj.new = false;
                 vm.investigatorGrid.push(invObj);
             };
-            console.log("vm.investigatorGrid ="+ JSON.stringify(vm.investigatorGrid));
+            //console.log("vm.investigatorGrid ="+ JSON.stringify(vm.investigatorGrid));
         };
 
         function openCalendar ($event, type) {
@@ -689,14 +692,27 @@
 
 
         function resetParticipatingSiteTab() {
+            console.log("resetParticipatingSiteTab vm.currentParticipatingSite="+ JSON.stringify(vm.currentParticipatingSite));
+            //if(vm.currentParticipatingSite)
+            if(vm.currentParticipatingSite.id > 0){
+                for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {
+                    if(vm.curTrial.participating_sites[i].id == vm.currentParticipatingSite.id){
+                        vm.currentParticipatingSite = vm.curTrial.participating_sites[i];
+                        vm.setEditMode(i);
+                    }
+                    console.log("vm.curTrial.participating_sites[i]=" + JSON.stringify(vm.curTrial.participating_sites[i]));
+                }
+            } else {
+                vm.setAddMode();
+            }
             vm.selOrganization = {name: '', array: []};
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
             vm.current_site_recruitment = {};
-            vm.initSiteRecruitmentGrid();
            $timeout(function() {
                 getTrialDetailCopy();
                 //vm.centralContactType = _getCentralContactType(); // restore vm.centralContactType
             }, 0);
+            //vm.setEditMode(vm.currentParticipatingSite.id);
         }
 
     } //trialParticipatingSitesCtrl
