@@ -2,7 +2,7 @@
 Feature: PAA F02 Add and Edit NCI Specific Information
 
 As any CTRP PA User, I can enter NCI Specific Information
-
+   @runthis
 Scenario: #1 I can view and edit the value for Study Source
 Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
@@ -108,7 +108,7 @@ And I am on the NCI Specific Information screen
 And I have not selected a Study Source
 When I select Save to verify Study Source is required
 Then an Error message will appear "Study Source is required”
- @runthis
+
 Scenario: #13 Funding Source is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the NCI Specific Information screen 

@@ -362,9 +362,12 @@
           }
       }
 
-      function updateLeadProtocolId() {
+      function updateLeadProtocolId(formName) {
           if (!vm.leadProtocolId || vm.leadProtocolId.trim() === '') {
+              formName.$valid = false;
+              formName.$invalid = true;
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
+              return;
           } else {
               vm.generalTrialDetailsObj.lead_protocol_id = vm.leadProtocolId.trim();
           }

@@ -117,6 +117,8 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
   Scenario Outline:#5 I can select the Trial's information for FDAAA required Regulatory Information for a non FDA Regulated Interventional trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Regulatory Information screen
+    When I have selected "NA" for FDA Regulated Intervention Indicator
+    Then I can select "yes", "No", "NA" for the Section 801 Indicator field
     When I have selected "No" for FDA Regulated Intervention Indicator
     And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
     Then the Section 801 Indicator will be set to "No"
