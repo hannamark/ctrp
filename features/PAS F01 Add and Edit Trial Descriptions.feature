@@ -1,6 +1,6 @@
 @PA @global
 Feature:  PAS F01 Add and Edit Trial descriptions 
-As a CTRP Scientific Abstractor, I can add and edit Trial Descriptions 
+As a CTRP PA Abstractor, I can add and edit Trial Descriptions 
 
 Scenario: #1 I can add and edit Trial Description for a trial
 Given I am logged into the CTRP Protocol Abstraction application
