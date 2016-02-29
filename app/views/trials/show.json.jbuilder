@@ -51,6 +51,17 @@ end
 json.participating_sites do
   json.array!(@trial.participating_sites) do |participating_site|
     json.id participating_site.id
+    investigators = ""
+    delimiter = ""
+    if participating_site.participating_site_investigators.length > 1
+      delimiter = "; "
+    end
+    unless participating_site.participating_site_investigators.nil?
+      participating_site.participating_site_investigators.each do |inv|
+        investigators = investigators + inv.person.fname + " " + inv.person.lname + delimiter
+      end
+    end
+    json.view_investigators investigators
     json.investigator participating_site.person.present? ? participating_site.person.lname : ""
     json.contact_name participating_site.contact_name
     json.contact_phone participating_site.contact_phone
@@ -69,6 +80,8 @@ json.participating_sites do
         json.comments  site_rec_status_wrapper.comments
       end
     end
+    json.site_recruitment_status = participating_site.site_rec_status_wrappers.blank? ? "" : participating_site.site_rec_status_wrappers.last.site_recruitment_status.name
+    json.site_recruitment_status_date = participating_site.site_rec_status_wrappers.blank? ? "" : participating_site.site_rec_status_wrappers.last.status_date
 
     json.participating_site_investigators do
       json.array!(participating_site.participating_site_investigators) do |inv|

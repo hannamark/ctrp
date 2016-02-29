@@ -135,11 +135,12 @@
                 }
                 if(vm.currentParticipatingSite.id) {
                     TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
-                        console.log("getParticipatingSiteById response = " + JSON.stringify(response.site_rec_status_wrappers));
+                        console.log("getParticipatingSiteById response = " + JSON.stringify(response));
                         vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
                         vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
                         vm.currentParticipatingSite.participating_site_investigators = response.participating_site_investigators;
                         vm.currentParticipatingSite.participating_site_investigators_attributes = [];
+                        vm.currentParticipatingSite.view_investigators = response.view_investigators;
                         vm.initSiteRecruitmentGrid();
                         vm.initInvestigatorGrid();
                         vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
@@ -223,6 +224,7 @@
         function setEditMode(idx) {
             vm.addEditMode = true;
             vm.currentParticipatingSite = vm.curTrial.participating_sites[idx];
+            console.log("HIIII in setEditMode = " + JSON.stringify(vm.currentParticipatingSite));
             vm.city =  vm.curTrial.participating_sites[idx].organization.city;
             vm.state_province =  vm.curTrial.participating_sites[idx].organization.state_province;
             vm.country = vm.curTrial.participating_sites[idx].organization.country;
