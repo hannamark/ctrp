@@ -104,6 +104,13 @@
             vm.currentParticipatingSite.participating_site_investigators_attributes = [];
             for (var i = 0; i < vm.investigatorGrid.length; i++) {
                 var invObj = vm.investigatorGrid[i];
+                if(vm.currentParticipatingSite.contact_type != "PI"){
+                    invObj.set_as_contact = false;
+                } else if (invObj.person.id == vm.currentParticipatingSite.person_id) {
+                        invObj.set_as_contact = true;
+                } else {
+                    invObj.set_as_contact = false;
+                }
                 if (invObj.edit || invObj.new || invObj._destroy) {
                     vm.currentParticipatingSite.participating_site_investigators_attributes.push(invObj);
                 }
@@ -128,11 +135,11 @@
                 }
                 if(vm.currentParticipatingSite.id) {
                     TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
-                        console.log("getParticipatingSiteById response = " + JSON.stringify(response.site_rec_status_wrappers));
-                        vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
-                        vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
-                        vm.currentParticipatingSite.participating_site_investigators = response.participating_site_investigators;
-                        vm.currentParticipatingSite.participating_site_investigators_attributes = [];
+                        console.log("getParticipatingSiteById response = " + JSON.stringify(response));
+                        if (response.server_response.status === 200) {
+                            vm.currentParticipatingSite = response;
+                            //vm.currentParticipatingSite.lock_version = response.lock_version;
+                        }
                         vm.initSiteRecruitmentGrid();
                         vm.initInvestigatorGrid();
                         vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
@@ -145,8 +152,9 @@
                             vm.curTrial.participating_sites.push(vm.currentParticipatingSite);
                         } else {
                             for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {
-                                if (vm.curTrial.participating_sites[i] == vm.currentParticipatingSite.id) {
+                                if (vm.curTrial.participating_sites[i].id == vm.currentParticipatingSite.id) {
                                     vm.curTrial.participating_sites[i] = vm.currentParticipatingSite;
+                                    console.log("YAHOO vm.curTrial.participating_sites[i].latest_site_recruitment_status = " + JSON.stringify(vm.curTrial.participating_sites[i].latest_site_recruitment_status));
                                 }
                             }
                         }
@@ -216,6 +224,7 @@
         function setEditMode(idx) {
             vm.addEditMode = true;
             vm.currentParticipatingSite = vm.curTrial.participating_sites[idx];
+            console.log("HIIII in setEditMode = " + JSON.stringify(vm.currentParticipatingSite));
             vm.city =  vm.curTrial.participating_sites[idx].organization.city;
             vm.state_province =  vm.curTrial.participating_sites[idx].organization.state_province;
             vm.country = vm.curTrial.participating_sites[idx].organization.country;
@@ -275,6 +284,8 @@
                         //console.log("2222setting as contact as FALSE person_id" + JSON.stringify(vm.currentParticipatingSite.person));
                         invObj.set_as_contact = false;
                     }
+                } else {
+                    invObj.set_as_contact = false;
                 }
                 vm.investigatorGrid.push(invObj);
             };
@@ -284,7 +295,7 @@
         function openCalendar ($event, type) {
             $event.preventDefault();
             $event.stopPropagation();
-            
+
             if (type === 'status_date') {
                 vm.statusDateOpened = !vm.statusDateOpened;
             }
@@ -472,9 +483,9 @@
                              vm.currentParticipatingSite.person_id =  vm.investigatorGrid[i].person.id;
                          }
                     } else {
-                         if(vm.current_investigator.set_as_contact){
-                             vm.investigatorGrid[i].set_as_contact = false;
-                         }
+                         //if(vm.current_investigator.set_as_contact){
+                         //    vm.investigatorGrid[i].set_as_contact = false;
+                        // }
                      }
                 }
             }

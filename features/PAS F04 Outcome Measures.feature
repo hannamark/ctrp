@@ -1,6 +1,6 @@
 @PA @global
 Feature:  PAS F04 Add and Edit Outcome Measures
-As a CTRP Scientific Abstractor, I can add, edit, copy and delete Outcome Measures 
+As a CTRP PA Abstractor, I can add, edit, copy and delete Outcome Measures 
 
 Scenario: #1 I can add Outcome Measures for a trial
 Given I am logged into the CTRP Protocol Abstraction application

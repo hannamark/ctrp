@@ -223,11 +223,14 @@ class  User < ActiveRecord::Base
   # Array of all organizations in the families of user's organization
   def family_orgs
     family_orgs = []
-    family_orgs.append(self.organization)
 
-    self.organization.families.each do |family|
-      family.organizations.each do |org|
-        family_orgs.append(org)
+    if self.organization.present?
+      family_orgs.append(self.organization)
+
+      self.organization.families.each do |family|
+        family.organizations.each do |org|
+          family_orgs.append(org)
+        end
       end
     end
 

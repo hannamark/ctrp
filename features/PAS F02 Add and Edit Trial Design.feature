@@ -1,6 +1,6 @@
 @PA @global
 Feature:  PAS F02 Add and Edit Trial Design 
-As a CTRP Scientific Abstractor, I can add and edit Trial Design 
+As a CTRP PA Abstractor, I can add and edit Trial Design 
 
   Scenario Outline: #1 I can change Clinical research Category for a trial
     Given I am logged into the CTRP Protocol Abstraction application
