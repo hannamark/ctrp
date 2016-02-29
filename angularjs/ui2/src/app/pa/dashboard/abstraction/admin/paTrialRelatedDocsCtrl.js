@@ -87,10 +87,10 @@
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     // vm.curDoc = Object.assign({}, vm.curTrialDetailObj.trial_documents[index], {edit: true});
                     vm.curDoc = angular.copy(vm.curTrialDetailObj.trial_documents[index]);
-                    vm.curDoc.edit = true;
                     vm.curDoc.index = index;
                     prevFile = angular.copy(vm.curDoc.file);
                     vm.curDoc.file = '';
+                    vm.curDoc.edit = true;
                     console.log('curDoc: ', vm.curDoc);
                 }
             }
@@ -184,7 +184,7 @@
                 $scope.$watch(function() {return vm.curDoc.document_type;},
                     function(newVal, oldVal) {
                         vm.docSubtypeShown = newVal.indexOf('Other') > -1;
-                        vm.curDoc.document_subtype = '';
+                        // vm.curDoc.document_subtype = '';
                     });
             }
 
