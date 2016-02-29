@@ -190,14 +190,20 @@
                                         <div class="text-danger" ng-repeat="error in psDetailView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
                                             ERROR: Interim status [{{error.status}}] is missing
                                         </div>
-                                        <div class="text-danger" ng-repeat="error in psDetailView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message')">
-                                            ERROR: {{error.message}}
+                                        <div class="text-danger" ng-repeat="error in psDetailView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message') && error.message == 'Invalid Transition'">
+                                            ERROR: Invalid status transition from [{{error.from}}] to [{{error.to}}]
+                                        </div>
+                                        <div class="text-danger" ng-repeat="error in psDetailView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message') && error.message == 'Duplicate'">
+                                            ERROR: Duplicate [{{error.dupStatus}}] status is not allowed
                                         </div>
                                         <div class="text-warning" ng-repeat="warning in psDetailView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('status')">
                                             WARNING: Interim status [{{warning.status}}] is missing
                                         </div>
-                                        <div class="text-warning" ng-repeat="warning in psDetailView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
-                                            WARNING: {{warning.message}}
+                                        <div class="text-warning" ng-repeat="warning in psDetailView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Invalid Transition'">
+                                            WARNING: Invalid status transition from [{{warning.from}}] to [{{warning.to}}]
+                                        </div>
+                                        <div class="text-warning" ng-repeat="warning in psDetailView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Duplicate'">
+                                            WARNING: Duplicate [{{warning.dupStatus}}] status is not allowed
                                         </div>
                                     </td>
                                     <td class="col-md-1" style="vertical-align: middle">
