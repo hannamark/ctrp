@@ -452,7 +452,7 @@
                 <thead style="background-color: #d9edf7">
                 <th>PO ID</th>
                 <th>PO Name</th>
-                <th>Investigator</th>
+                <th>Investigators</th>
                 <th>Site Recruitment Status</th>
                 <th>Site Recruitment Status Date</th>
                 <th>Primary Contact</th>
@@ -468,13 +468,13 @@
                         {{participating_site.organization.name}}
                     </td>
                     <td>
-                        {{participating_site.investigator}}
+                        {{participating_site.view_investigators}}
                     </td>
                     <td>
-                        {{participating_site.site_recruitment_status}}
+                        {{participating_site.latest_site_recruitment_status}}
                     </td>
                     <td>
-                        {{participating_site.site_recruitment_status_date}}
+                        {{participating_site.latest_site_recruitment_status_date}}
                     </td>
                     <td>
                         {{participating_site.contact_name}}

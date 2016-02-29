@@ -22,6 +22,7 @@ And have entered a Description of the Document when the document type is Other
 Then the Trial Related Document will be associated with the trail
 And the date the document was will be listed with the document 
 And the users name that added the document will be listed with the document
+And the document will be ordered by date with the newest document first
 
 Scenario: #2 I can Edit(revise) the file name for a Trial Related Document 
 Given I am logged into the CTRP Protocol Abstraction application
@@ -87,7 +88,7 @@ And the document is not one of the valid extensions listed below
 |Dot|
 |thmx|
 |XML|
-Then the system will display a Error message that "The selected document is not a valid document type"nnot be deleted
+Then the system will display a Error message that "The selected document is not a valid document type"
 
 Scenario: #9 Protocol and IRB Approval Documents are required
 Given I am logged into the CTRP Protocol Abstraction application
