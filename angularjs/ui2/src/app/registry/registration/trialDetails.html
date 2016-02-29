@@ -996,7 +996,7 @@
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" restriction-field name="sec801_indicator" ng-model="trialDetailView.curTrial.sec801_indicator"
-                                           value="N/A" ng-disabled="trialDetailView.curTrial.intervention_indicator === 'No' || ['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> N/A
+                                           value="N/A" ng-disabled="trialDetailView.curTrial.intervention_indicator === 'No' || trialDetailView.curTrial.intervention_indicator === 'Yes' || ['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> N/A
                                 </label>
                             </div>
                         </div>
