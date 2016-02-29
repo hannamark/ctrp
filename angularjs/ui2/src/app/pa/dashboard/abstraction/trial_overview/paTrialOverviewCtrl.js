@@ -30,8 +30,11 @@
         vm.checkoutTrial = checkoutTrial;
         vm.checkinTrial = checkinTrial;
         vm.adminCheckoutAllowed = false;
+        vm.adminCheckinAllowed = true;
+
         vm.adminCheckoutBtnDisabled = false;
         vm.scientificCheckoutAllowed = false;
+        vm.scientificCheckinAllowed = true;
         vm.scientificCheckoutBtnDisabled = false;
         vm.curUser = UserService.currentUser();
         vm.submitter = {}; // container for the last submitter information
@@ -125,10 +128,16 @@
                     vm.adminCheckoutAllowed = (newVal === null); // boolean, if not null, do not allow checkout again
                     // trial is not editable if checkout is allowed (in checkedin state) or
                     // the curUserRole is Super or Admin
+                    var curUserRole = UserService.getUserRole() || '';
                     vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+                    var checkedoutByUsername = !!newVal ? newVal.by : '';
+                    vm.adminCheckinAllowed = !vm.adminCheckoutAllowed && (vm.curUser === checkedoutByUsername ||
+                        curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU' ||
+                        curUserRole === 'ROLE_ADMIN');
+
                     if (!!newVal) {
                         // ROLE_SUPER can override the checkout button
-                        vm.adminCheckoutBtnDisabled = vm.curUser !== vm.adminCheckoutObj.by &&
+                        vm.adminCheckoutBtnDisabled = vm.curUser !== checkedoutByUsername &&
                         curUserRole !== 'ROLE_SUPER' && curUserRole !== 'ROLE_ABSTRACTOR' &&
                         curUserRole !== 'ROLE_ABSTRACTOR-SU' && curUserRole !== 'ROLE_ADMIN';
                     }
@@ -139,12 +148,16 @@
                     vm.scientificCheckoutAllowed = (newVal === null); // if not null, do not allow checkout again
                     // trial is not editable if checkout is allowed (in checkedin state) or
                     // the curUserRole is Super or Admin
+                    var curUserRole = UserService.getUserRole() || '';
                     vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+                    var checkedoutByUsername = !!newVal ? newVal.by : '';
+                    vm.scientificCheckinAllowed = !vm.scientificCheckoutAllowed && (vm.curUser === checkedoutByUsername ||
+                        curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU' ||
+                        curUserRole === 'ROLE_ADMIN');
 
                     if (!!newVal) {
-                        var curUserRole = UserService.getUserRole() || '';
                         // ROLE_SUPER can override the checkout button
-                        vm.scientificCheckoutBtnDisabled = vm.curUser !== vm.scientificCheckoutObj.by &&
+                        vm.scientificCheckoutBtnDisabled = vm.curUser !== checkedoutByUsername &&
                             curUserRole !== 'ROLE_SUPER' && curUserRole !== 'ROLE_ABSTRACTOR' &&
                             curUserRole !== 'ROLE_ABSTRACTOR-SU' && curUserRole !== 'ROLE_ADMIN';
                     }

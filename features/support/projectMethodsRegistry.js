@@ -465,5 +465,43 @@ var projectMethodsRegistry = function() {
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
     };
+
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create a New Trial
+     * @param: trialType
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    //this.createTrial = function(trialType) {
+    //    self.selectTrials(trialType);
+    //    addTrial.setAddTrialLeadProtocolIdentifier();
+    //        addTrial.setAddTrialOfficialTitle
+    //        addTrial.selectAddTrialPhase
+    //        addTrial.selectAddTrialPilotOption
+    //        addTrial.selectAddTrialResearchCategory
+    //        addTrial.selectAddTrialPrimaryPurpose
+    //        addTrial.selectAddTrialAccrualDiseaseTerminology
+    //        addTrial.selectAddTrialFundedByNCIOption
+    //        addTrial.selectAddTrialFundingMechanism
+    //        addTrial.selectAddTrialInstituteCode
+    //        addTrial.setAddTrialSerialNumber
+    //        addTrial.selectAddTrialNCIDivisionProgramCode
+    //        addTrial.clickAddTrialAddGrantInfoButton
+    //        addTrial.selectAddTrialStatus
+    //        addTrial.clickAddTrialAddStatusButton
+    //        addTrial.selectAddTrialStartDateOption
+    //        addTrial.selectAddTrialPrimaryCompletionDateOption
+    //        addTrial.selectAddTrialCompletionDateOption
+    //        addTrial.selectAddTrialFDAIND_IDEOption
+    //    addTrial.selectAddTrialFDAIND_IDETypes
+    //    addTrial.setAddTrialFDAIND_IDENumber
+    //    addTrial.selectAddTrialFDAIND_IDEGrantor
+    //    addTrial.selectAddTrialFDAIND_IDEHolderType
+    //        addTrial.clickAddTrialAddIND_IDEButton
+    //
+    //
+    //
+    //
+    //
+    //};
 };
 module.exports = projectMethodsRegistry;

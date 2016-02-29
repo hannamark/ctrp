@@ -46,6 +46,24 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     puts "caught exception: #{e}"
     end
 
+
+
+  #  validate('input.xml', 'schema.xdf', 'container').each do |error|
+   #   puts error.message
+   # end
+
+
+    xsd = Nokogiri::XML::Schema(File.open("/Users/dullam/Downloads/Registration ws-6.xsd"))
+    #puts xsd
+
+    doc = Nokogiri::XML(string)
+
+   # puts doc
+
+    xsd.validate(doc).each do |error|
+       puts error.message
+    end
+
     @errors =Hash.new
     @trialMasterMap = Hash.new
     @trialService = TrialService.new
@@ -365,6 +383,16 @@ end # end of before_create
 
 
   private
+
+
+  def validate(document_path, schema_path, root_element)
+    schema = Nokogiri::XML::Schema(File.read("/Users/dullam/Downloads/Registration ws.xsd"))
+    document = Nokogiri::XML(File.read(document_path))
+    schema.validate(document.xpath("//#{root_element}").to_s)
+  end
+
+
+
 
   def process_docs(dochash,document_type)
 
@@ -1022,6 +1050,10 @@ end
    end
 
  end
-
+def validate(doc, schema_path, root_element)
+      schema = Nokogiri::XML::Schema(File.read(schema_path))
+      document = Nokogiri::XML(doc)
+      schema.validate(document.xpath("//#{root_element}").to_s)
+    end
 
 end #main end

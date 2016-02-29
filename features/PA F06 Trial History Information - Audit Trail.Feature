@@ -152,9 +152,9 @@ Examples:
 |secondary_purpose_other|  |
 |responsible party|Sponsor|
 |Lead Org|Fred Hutch/University of Washington Cancer Consortium|
-|PI Last Name, First Name, Middle Name|Becker, Pamela |
+|PI Last Name, First Name, Middle Name| Becker, Pamela |
 |Sponsor| 	University of Washington Medical Center|
-|Investigator Last Name, First Name, Middle Name |Becker, Pamela |
+|Investigator Last Name, First Name, Middle Name | Becker, Pamela |
 |Created At | July 29, 2015|
 |updated_at |September 18, 2015|
 |research category|Interventional   |
@@ -205,51 +205,45 @@ Examples:
 |study_pop_desc|XXX|
 |board_name|XXX|
 |board_affiliation (board_affiliation_id:  Organizations.name)|XXX|
-|submission number|XXX|
-|Submission date|XXX|
-|Submission type|XXX|
+|submission number|1|
+|Submission date|July 29, 2015|
+|Submission type|Original|
 |Submission source|Registy|
 |Submission Method|XXX|
 |Amendment Number|1|
-
 |Milestone Name|XXX|
-
 |Processing Status Name|XXX|
-
-|Other ID (multiple) xxxx: other_ids.protocol_id, other_ids.protocol_id_origin_id:  protocol_id_origins.name||
+|Other ID (multiple) xxxx: other_ids.protocol_id, other_ids.protocol_id_origin_id:  protocol_id_origins.name|    |
 
 |Markers Name (multiple) xxxx: markers.name, markers.evaluation_type_id evaluation_types.name, markers.assay_type_id assay_types.name, markers.biomarker_use_id biomarker_uses.name, markers.biomarker_purpose_id biomarker_purposes.name, marker.specimen_type_id specimen_types.name, markers.record_status|XXX| 
 
-|Outcome Measure  (multiple) xxxxx:|Primary, Percentage of patients we are able to test and initiate treatment within a 21 day period.,Up to 21 days,The study will be considered successful (feasibility demonstrated) if it is possible to choose and initiate a combination drug regimen within 21 days in 9 out of 15 patients. With that outcome, there would be 90% confidence that the true feasibility rate is at least 40%., No; Secondary, Rate of complete remission, Up to 2 years, ,No; Secondary, Survival, Up to 2 years, , No |
+|Outcome Measure  (multiple) xxxx|Primary, Percentage of patients we are able to test and initiate treatment within a 21 day period.,Up to 21 days,The study will be considered successful (feasibility demonstrated) if it is possible to choose and initiate a combination drug regimen within 21 days in 9 out of 15 patients. With that outcome, there would be 90% confidence that the true feasibility rate is at least 40%., No; Secondary, Rate of complete remission, Up to 2 years,,No; Secondary, Survival, Up to 2 Years, , No  |
 
-|eligibility criteria (multiple) xxxx other_criteria.criteria_type, other_criteria.criteria_desc | XXX|
+|eligibility criteria (multiple) xxxx | Inclusion,Diagnosis of acute leukemia by World Health Organization (WHO) criteria (e.g.-acute myeloid leukemia, acute lymphoblastic leukemia, acute leukemia of ambiguous origin); Inclusion,	Prior treatment with and exhaustion of at least two regimens or lines of treatment; Inclusion, •	Eastern Cooperative Oncology Group (ECOG) performance status 0 – 3; Inclusion, •	Expectation that we can obtain about 10 million blasts from blood and/or marrow (circulating blast count of 5,000 or greater or cellular marrow with greater than or equal to 20% blasts); Inclusion, •	Bilirubin =< 1 .5 x upper limit of normal (ULN) unless elevation is thought to be due to Gilbert’s syndrome, hemolysis, or hepatic infiltration by the hematologic malignancy; Inclusion, •	Serum glutamic oxaloacetic transaminase (SGOT) (aspartate aminotransferase [AST]) and serum glutamate pyruvate transaminase (SPGT) (alanine aminotransferase [ALT]) =< 2.5 x ULN, unless elevation is thought to be due to hepatic infiltration by the hematologic malignancy; Inclusion,•	Alkaline phosphatase =< 2.5 x ULN; Inclusion, •	Serum creatinine =< 2.0 mg/dL; Inclusion, •	Informed consent; Inclusion, •	Willing to use contraception when appropriate; Exclusion, •	No other concomitant treatment for leukemia, however treatment with hydroxyurea is permitted; Exclusion, •	No other active cancer that requires systemic chemotherapy or radiation; Exclusion, •	Active systemic fungal, bacterial, viral or other infection, unless disease is under treatment with anti-microbials and/or controlled or stable; patient needs to be clinically stable as defined as being afebrile and hemodynamically stable for 24-48 hours; Exclusion, •	Significant organ compromise that will increase risk of toxicity or mortality; Exclusion, •	Pregnancy or lactation  |
 
-|Associated Trials (multiple)  xxxx associated_trials.trial_identifier, identifier_type identifier_types.code, name  |XXX|
+|Associated Trials (multiple)  xxxx associated_trials.trial_identifier, identifier_type identifier_types.code, name  |Expectation that we can obtain about 10 million blasts from blood and/or marrow (circulating blast count of 5,000 or greater or cellular marrow with greater than or equal to 20% blasts)
 
-|Disease and Condition (multiple) xxxx  diseases.preferred_name, diseases.code, diseases.thesaurus_id, diseases.display name  |Acute Leukemia of Ambiguous Lineage,,,; Recurrent Adult Acute Lymphoblastic Leukemia,,,; Recurrent Adult Acute Myeloid Leukemia,,,; Recurrent Childhood Acute Lymphoblastic Leukemia,,,; Recurrent Childhood Acute Myeloid Leukemia,,,; Refractory Childhood Acute Lymphoblastic Leukemia,,,|
+|Disease and Condition (multiple) |Acute Leukemia of Ambiguous Lineage,CDR0000670794 ,C7464 ,Acute Leukemia of Ambiguous Lineage; Recurrent Adult Acute Lymphoblastic Leukemia, CDR0000038716, C7883,Recurrent Adult Acute Lymphoblastic Leukemia; Recurrent Adult Acute Myeloid Leukemia, CDR0000038678 ,C7882 ,Recurrent Adult Acute Myeloid Leukemia; Recurrent Childhood Acute Lymphoblastic Leukemia, CDR0000042458,  C7784 , Recurrent Childhood Acute Lymphoblastic Leukemia ; Recurrent Childhood Acute Myeloid Leukemia,CDR0000038643,C9068,Recurrent Childhood Acute Myeloid Leukemia; Rafractory Childhood Acute Lymphoblastic Leukemia,,C122624,Refractory Childhood Acute Lymphoblastic Leukemia|
 
-|Interventions (multiple)xxxx  |Cytology Specimen Collection Procedure,Cytologic Sampling, Cytology Specimen Collection Procedure,Undergo blood or bone marrow collection, Other; Cytology Specimen Collection Procedure, Gene Expression Analysis |
+|Interventions (multiple)xxxx interventions.name, other_name, description, intervention_type_id  intervention_types.code, name  |Cytology Specimen Collection Procedure,Cytologic Sampling, Cytology Specimen Collection Procedure, Undergo blood or bone marrow collection,other;  Gene Expression Analysis, Gene Expression Analysis, Analysis of leukemia cell genes to identify possible drug targets, Genetic |
 
-|arms_groups (multiple) xxxx |Treatment (chemosensitivity testing, chemotherapy), Experminental,Leukemia cells purified from blood or bone samples are analyzed for sensitivity to individual drugs and drug combination and by next generation sequencing.marrow,   |
+|arms_groups (multiple) xxxx |Treatment (chemosensitivity testing, chemotherapy), Experimental, Leukemia cells purified from blood or bone marrow samples are analyzed for sensitivity to individual drugs and drug combination and by next generation sequencing., Cytology Specimen Collection Procedure,Gene Expression Analysis|
 
-|Subgroup Stratification Criteria (multiple) xxxx sub_groups.code, sub_groups.description | Gene Expression Analysis, Gene Expression Analysis, Analysis of leukemia cell genes to identify possible drug targets, Genetic|
+|Subgroup Stratification Criteria (multiple) xxxx sub_groups.code, sub_groups.description |xxxx|
 
 |trial owners (multiple)| Dana Johnson; Linda Mendelson|
-
 |trial documents (multiple) xxxx trial_documents.filename, document_type, document_subtype|XXX|
-
 |alternative titles (multiple) xxxx alternate_titles.category,  title  (???source) |XXX|
 
 |central contacts (multiple) xxxx central_contacts.phone, email, central_contact_type_id: central_contact_types.name, person_id: people.fname, mname, lname |XXX|
 
 |citations (multiple) xxxx citations.description, pub_med_id, results_reference|  XXX|
-
 |collaborators (multiple) xxxx collaborators.org_name,organization_id: organizations.name  |XXX|
 
 | grants (multiple)| P30, CA, OD, 15704;|
 |Ind ( multiple) xxxx ind_ides.ind_ide_type, grantor, nih_nci,holder_type_id, expanded_access, exempt, ind_ide_number, expanded_access_type_id: expanded_access_types.name|XXX|
 |links (multiple) xxxx  links.description|XXX|
-|Milestones (multiple) xxxx milestone_wrappers.milestone_date, milestone_id: milestones.name, submission_id: submission_types.name|XXX|
+|Milestones (multiple) xxxx milestone_wrappers.milestone_date, milestone_id: milestones.name, submission_id: submission_types.name|2015-07-29 16:22:47, Submission Received Date, SUBMISSIONTYPE;2015-07-31 00:38:32,Submission Acceptance Date,SUBMISSIONTYPE;2015-08-11 09:42:21, Administrative Processing Start Date, SUBMISSIONTYPE;   |
 |submissions (multiple) xxxx submission.submission_num, submission_date, amendment_date,amendment_reason_id: cccc, submission_type_id: cccc, submission_source_id: submission_sources.name, submission_method_id: submission_methods.name|XXX|
 
 | oversight_authorities (multiple) xxxx oversight_authorities.country, organization|XXX|
