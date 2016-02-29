@@ -27,7 +27,7 @@ Given I have selected a trial to abstract the Regulatory Information FDAAA
 And I am on the Trial Regulatory Information screen
 When I enter the Title for the Investigator (Field will be prefilled with �Principal Investigator�)
 Then the selected value will be recorded as the Responsible Party Type with the Principal Investigator title
-  @runthis
+
 Scenario: #4 I can associate an organization as an Affiliation of the Investigator
 Given I have selected a trial to abstract the Regulatory Information FDAAA
 And I am on the Trial Regulatory Information screen
@@ -53,33 +53,33 @@ Then the required Regulatory Information for the trial will be associated with t
 Scenario: #6 I can add and edit Regulatory Information for a non-Regulated Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Register Trial Regulatory Information screen
-When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
+When I have selected one or more Trial Oversight Authority Country from a list of all the Trial Oversight Authority Countries
 And I have selected one or more of the Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
 And I have selected "No" for FDA Regulated Intervention Indicator
-And I have selected "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
-Then the required Regulatory Information for the trial will be associated with the trial
+And I have selected "Yes", "No", "N/A" for Data Monitoring Committee Appointed Indicator
+Then the required Regulatory Information for the trial will be associated
 And the Section 801 Indicator will be set to "No"
-
+  @runthis
 Scenario: #7 I can add and edit Regulatory Information for a Regulated Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information screen
-When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
-And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
-And I have selected "Yes" for FDA Regulated Intervention Indicator
+When I have selected one or more Trial Oversight Authority Country from the list of all Trial Oversight Authority Countries
+And I have selected one or more Trial Oversight Authority Organization Names from the list based on the selected Trial Oversight Authority Country
+And I have selected FDA Regulated Intervention Indicator as "Yes"
 Then I have the option to select "Yes", "No" for Section 801 Indicator
 
 Scenario: #8 Save Regulatory Information
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Register Trial Regulatory Information screen
-When select save 
+When select save at the Regulatory Information FDAAA screen
 Then the information entered or edited on the Regulatory Information screen will be saved to the trial record
 
 Scenario: #9 Cancel Regulatory Information
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Register Trial Regulatory Information screen
-When I select Reset 
+When I select Reset at the Regulatory Information FDAAA screen
 Then the information entered or edited on the Regulatory Information screen will not be saved to the trial record 
-And the screen will be refreshed with the existing data
+And the screen will be refreshed with the existing Regulatory Information FDAAA data
 
 Scenario: #10 Investigator is not null
 Given I have selected a trial to abstract 
