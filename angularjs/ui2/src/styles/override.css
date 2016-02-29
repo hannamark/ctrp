@@ -817,6 +817,10 @@ a.editable-click:hover {
     min-height: 310px;
 }
 
+.search-calendar-grid-sm {
+    min-height: 155px;
+}
+
 .select2-results-absolute .select2-results {
     position: absolute;
     width: 225%;
