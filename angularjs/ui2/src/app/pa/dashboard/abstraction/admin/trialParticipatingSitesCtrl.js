@@ -136,11 +136,10 @@
                 if(vm.currentParticipatingSite.id) {
                     TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
                         console.log("getParticipatingSiteById response = " + JSON.stringify(response));
-                        vm.currentParticipatingSite.site_rec_status_wrappers = response.site_rec_status_wrappers;
-                        vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
-                        vm.currentParticipatingSite.participating_site_investigators = response.participating_site_investigators;
-                        vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-                        vm.currentParticipatingSite.view_investigators = response.view_investigators;
+                        if (response.server_response.status === 200) {
+                            vm.currentParticipatingSite = response;
+                            //vm.currentParticipatingSite.lock_version = response.lock_version;
+                        }
                         vm.initSiteRecruitmentGrid();
                         vm.initInvestigatorGrid();
                         vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
@@ -153,8 +152,9 @@
                             vm.curTrial.participating_sites.push(vm.currentParticipatingSite);
                         } else {
                             for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {
-                                if (vm.curTrial.participating_sites[i] == vm.currentParticipatingSite.id) {
+                                if (vm.curTrial.participating_sites[i].id == vm.currentParticipatingSite.id) {
                                     vm.curTrial.participating_sites[i] = vm.currentParticipatingSite;
+                                    console.log("YAHOO vm.curTrial.participating_sites[i].latest_site_recruitment_status = " + JSON.stringify(vm.curTrial.participating_sites[i].latest_site_recruitment_status));
                                 }
                             }
                         }
