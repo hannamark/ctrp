@@ -349,7 +349,11 @@ module.exports = function() {
     });
 
     this.When(/^I have selected "([^"]*)" for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
-        if (arg1 === 'No') {
+        if (arg1 === 'NA') {
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('2');
+        }
+        else if (arg1 === 'No') {
+            addTrial.clickAddTrialResetButton();
             addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
         }
         else if (arg1 === 'Yes') {
@@ -358,6 +362,17 @@ module.exports = function() {
         }
         browser.sleep(25).then(callback);
     });
+
+    this.Then(/^I can select "([^"]*)", "([^"]*)", "([^"]*)" for the Section (\d+) Indicator field$/, function (arg1, arg2, arg3, arg4, callback) {
+        expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
+        expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(true);
+        expect(addTrial.addTrialSection801Indicator.get(2).isEnabled()).to.become(true);
+        addTrial.selectAddTrialSection801Indicator('0');
+        addTrial.selectAddTrialSection801Indicator('1');
+        addTrial.selectAddTrialSection801Indicator('2');
+        browser.sleep(25).then(callback);
+    });
+
 
     this.Given(/^I have selected "([^"]*)", "([^"]*)", "([^"]*)" for Data Monitoring Committee Appointed Indicator$/, function (arg1, arg2, arg3, callback) {
         expect(addTrial.addTrialDataMonitoringCommitteeAppointedIndicator.get(0).isEnabled()).to.become(true);
