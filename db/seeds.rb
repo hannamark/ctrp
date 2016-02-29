@@ -48,7 +48,6 @@ FamilyType.find_or_create_by(code:'CANCERCENTER',name:'Cancer Center')
 FamilyType.find_or_create_by(code:'NCTN',name:'NCTN')
 FamilyType.find_or_create_by(code:'NIH',name:'NIH')
 FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
-FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
 
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
@@ -242,7 +241,9 @@ AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List'
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
-AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,zip,gz', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/zip, application/x-gzip')
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,html,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
+
+AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other Document,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHBLI')
 
@@ -577,19 +578,108 @@ AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'Clinical
 puts "Seeding ldap and local users"
 #Add LDAP and local test users
 #Need dummy org for LDAP users
-  org0 = Organization.find_or_create_by( id: 9999999,
-                                         source_id: '9999999',
-                                         name: 'ZZZ test org for test accounts',
-                                         phone:'240-276-0000',
-                                         source_status: SourceStatus.find_by_code("ACT"),
-                                         source_context: SourceContext.find_by_code('CTRP'),
-                                         address: '9605 Medical Center Dr',
-                                         city: 'Rockville',
-                                         state_province: 'Maryland',
-                                         country: 'United States',
-                                         postal_code: '20850',
-                                         email: "ncictrpdev@mail.nih.gov"
-  )
+org0 = Organization.find_or_create_by( id: 9999999,
+                                       source_id: '9999999',
+                                       name: 'ZZZ test org for test accounts',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+org1 = Organization.find_or_create_by( id: 9999997,
+                                       source_id: '9999997',
+                                       name: 'ZZZ test org for test accounts 2',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+org2 = Organization.find_or_create_by( id: 9999996,
+                                       source_id: '9999996',
+                                       name: 'ZZZ test org for test accounts 3',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+family0 = Family.find_or_create_by( name: 'ZZZ family',
+                                    family_status: FamilyStatus.find_by_code('ACTIVE'),
+                                    family_type: FamilyType.find_by_code('CANCERCENTER')
+)
+
+family0.organizations << org0
+family0.organizations << org1
+family0.organizations << org2
+
+org3 = Organization.find_or_create_by( id: 9999995,
+                                       source_id: '9999995',
+                                       name: 'AAA test org for test accounts',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+org4 = Organization.find_or_create_by( id: 9999994,
+                                       source_id: '9999994',
+                                       name: 'AAA test org for test accounts 2',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+org5 = Organization.find_or_create_by( id: 9999993,
+                                       source_id: '9999993',
+                                       name: 'AAA test org for test accounts 3',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+family1 = Family.find_or_create_by( name: 'AAA family',
+                                    family_status: FamilyStatus.find_by_code('ACTIVE'),
+                                    family_type: FamilyType.find_by_code('NIH')
+)
+
+family1.organizations << org3
+family1.organizations << org4
+family1.organizations << org5
+
 ctep = Organization.find_or_create_by( id: 9999998,
                                        source_id: '9999998',
                                        name: 'organization for restfulservices',
@@ -614,6 +704,7 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
                {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "approve" => true},
                {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
+               {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
                {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true},
                {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true}
@@ -626,7 +717,11 @@ test_users.each do |u|
     user.role = u["role"]
     user.approved =  u["approve"]
     unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
-      user.organization = org0
+      if user.username == 'ctrpsitesu2'
+        user.organization = org3
+      else
+        user.organization = org0
+      end
     end
     if user.role == "ROLE_SERVICE-REST"
       user.organization = ctep

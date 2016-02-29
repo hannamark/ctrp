@@ -451,6 +451,9 @@ var registerTrial = function(){
         else if (trialFDARegulatedInterventionIndicator === '1') {
             expect(this.addTrialFDARegulatedInterventionIndicator.get(1).isSelected()).to.eventually.equal(result);
         }
+        else if (trialFDARegulatedInterventionIndicator === '2') {
+            expect(this.addTrialFDARegulatedInterventionIndicator.get(2).isSelected()).to.eventually.equal(result);
+        }
     };
 
     this.verifyAddTrialSection801Indicator = function(trialSection801Indicator, result)  {
@@ -460,6 +463,9 @@ var registerTrial = function(){
         else if (trialSection801Indicator === '1') {
             expect(this.addTrialSection801Indicator.get(1).isSelected()).to.eventually.equal(result);
         }
+        else if (trialSection801Indicator === '2') {
+            expect(this.addTrialSection801Indicator.get(2).isSelected()).to.eventually.equal(result);
+        }
     };
 
     this.verifyAddTrialDataMonitoringCommitteeAppointedIndicator= function(trialDataMonitoringCommitteeAppointedIndicator, result)  {
@@ -468,6 +474,9 @@ var registerTrial = function(){
         }
         else if (trialDataMonitoringCommitteeAppointedIndicator === '1') {
             expect(this.addTrialDataMonitoringCommitteeAppointedIndicator.get(1).isSelected()).to.eventually.equal(result);
+        }
+        else if (trialDataMonitoringCommitteeAppointedIndicator === '2') {
+            expect(this.addTrialDataMonitoringCommitteeAppointedIndicator.get(2).isSelected()).to.eventually.equal(result);
         }
     };
 

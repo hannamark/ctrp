@@ -28,7 +28,9 @@
             + '</button>'
             + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions">'
             + '<a ng-if="action == \'add-my-site\'" ui-sref="main.addParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '<a ng-if="action != \'add-my-site\'" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'update-my-site\'" ui-sref="main.participatingSiteDetail({psId: row.entity.my_site_id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'manage-sites\'" ui-sref="main.manageParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="[\'add-my-site\', \'update-my-site\', \'manage-sites\'].indexOf(action) < 0" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '</li></ul>'
             + '</div>';
 
@@ -56,7 +58,8 @@
                 },
                 {name: 'phase', enableSorting: true, minWidth: '70', width: '70'},
                 {name: 'purpose', enableSorting: true, minWidth: '120', width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
                 {name: 'pilot', enableSorting: true, minWidth: '60', width: '60'},
                 {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '180', width: '180',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -118,7 +121,8 @@
             deleteTrial: deleteTrial,
             getGrantsSerialNumber: getGrantsSerialNumber,
             upsertParticipatingSite: upsertParticipatingSite,
-            getParticipatingSiteById: getParticipatingSiteById
+            getParticipatingSiteById: getParticipatingSiteById,
+            deleteParticipatingSite: deleteParticipatingSite
         };
 
         return services;
@@ -152,7 +156,7 @@
 
             //update an existing trial
             var configObj = {}; //empty config
-            $log.info('updating a trial: ' + JSON.stringify(trialObj));
+            // $log.info('updating a trial: ' + JSON.stringify(trialObj));
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_TRIAL + trialObj.id + '.json', trialObj, configObj);
         } //upsertTrial
 
@@ -998,6 +1002,15 @@
          */
         function deleteTrial(trialId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_TRIAL + trialId + '.json');
+        }
+        /**
+         * delete an trial with the given trialId
+         *
+         * @param trialId
+         * @returns {*}
+         */
+        function deleteParticipatingSite(psId) {
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_PARTICIPATING_SITE + psId + '.json');
         }
     }
 })();

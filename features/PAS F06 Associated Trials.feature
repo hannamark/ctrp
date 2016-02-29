@@ -6,83 +6,66 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Associated Trials screen
 When  I have selected the Add button
-Then I am on the Add/Edit Associated Trial screen
-And I must enter the Trial Identifier
+Then I am on the Add Associated Trial screen
 And I must select <Identifier Type>
 |Identifier Type|
 |NCI |
 |CTEP|
-And I have selected the <Clinical Research Category>
-|Clinical Research Category|
-|Interventional|
-|Observational|
-|Ancillary-Correlative|
-|Expanded Access|
-And I have entered a value for Official Title
-When I have selected the Save button
-Then the selected study displays on the Associated Trials screen
+And I must enter the Trial Identifier
+When I click the Look Up Trial button
+Then the Requested Trial is retrieved
+
+      |Identifier type  |Retrieved from  |
+      |CTEP  |CTRP  |
+      |NCI  |ClinicalTrials.gov  |
+      
+And the Clinical Research Category populates
+And the Official Title populates
+When I have clicked the Save button
+Then the associated study displays on the Associated Trials screen
 And the Message Record Created displays
 And the Associated Trial will be associated with the trial
 
-Scenario: #2 I can add an Associated Trial for a trial with Trial Search
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Associated Trials screen
-When  I have selected the Add button
-Then I am on the Add/Edit Associated Trial screen
-When I have selected the Look Up Trial button
-Then I am on the Trial Search screen 
-And I have entered search criteria
-When I have selected the Search button
-Then the search results display
-When I have selected a study
-Then the selected study displays on the Associated Trials screen
-And the Message 'Record Created' displays
-And the Associated Trial will be associated with the trial
+Scenario Outline: #2 CTRP Associated Trial is updated
+Given the added Associated Trial is a CTRP study
+When the Associated Trial is displayed on the Associated Trials screen
+Then the <AssociatedTrialFields> on the Associated Trials screen of the Associated Trial study are updated
 
-Scenario: #3 I can edit an Associated Trial for a trial 
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Associated Trials screen
-When I have clicked on the edit icon for an individual CTRP registered trial 
-Then I am on the Add/Edit Associated Trial screen
-And the message displays 'Because this association is with a registered CTRP trial, you will not be able to change trial information on this screen.  Use Look Up Trial button if you need to change the association to a different registered trial, or create a brand new association if your trial is not registered in CTRP'
-When I click on the Cancel button
-Then the Associated Trials screen displays
-And the Associated Trial will still be associated with the trial
-When I have clicked on the edit icon for an individual trial that is not yet registered with CTRP 
-Then I am on the Add/Edit Associated Trial screen
-And the message displays 'This association is with a trial that is not yet registered in CTRP'
-And I have updated fields
-When I click the Save button
-Then the Associated Trials screen displays
-And the Message 'Record Updated' displays
-And the updated Associated Trial will be associated with the trial
+      |AssociatedTrialFields| 
+      |Identifier Type  |
+      |Trial Identifier  |
+      | Clinical Research Category |
+      |Official Title  |
+      
+      Example:
+      
+      |CTRPstudyID|Title | ClinRschCat|AssociatedTrial_Trial Identifier  |AssociatedTrial_ClinicalResearchCategory  | AssociatedTrial_Official Title| 
+      |111  |Root study  |Interventional  |555 |  Ancillary Correlative|Assoc study  |
+      |555  |Assoc Study | Ancillary Correlative  |111  |Inteventional  | Root Study|
+
+
+Scenario: #3 Associated Trial is not found
+Given I am on the Add Associated Trials screen
+And  I have selected Identifier Type
+And I have entered the Trial Identifier 
+And I have selected the Look Up Trial button
+When trial identifer is not found
+Then the message 'Trial is not found' displays 
 
 Scenario:  #4 Trial Identifier information not null   
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Add/Edit Associated Trial screen
-When I select Save 
-And the Brief Title is Null
-Then a warning message will appear "Brief title is required” 
+Given I am I am on the Add Associated Trial screen
+When I click on 'Look Up Trial' button 
+And the Trial Identifier is Null
+Then an error message will appear "Trial Identifier is required” 
 
 Scenario:  #5 Identifier Type not null   
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Add/Edit Associated Trial screen
-When I select Save 
+Given I am I am on the Add Associated Trial screen
+When I click on 'Look Up Trial' button 
 And the Identifier Type is Null
-Then a warning message will appear "Identifier Type is required” 
+Then an error message will appear "Identifier Type is required” 
 
-Scenario: #6 Official Title character count
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Associated Trial Screen
-When I enter a value for Official Title
-Then information text appears below the Official Title field to display the number of characters available to enter into the field.  
-|3000 characters left|
 
-Scenario: #7 Deleted Associated Trials
+Scenario: #6 Deleted Associated Trials
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Associated Trials screen
@@ -106,12 +89,11 @@ When I have clicked on the cancel button
 Then the Associated Trial is not removed 
 And no message displays
 
-Scenario: #8 Cancel Associated Trial for a trial
-Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial 
-And I am on the Add/Edit Associated Trial screen
-And I have updated Associated Trial
-When I select the Cancel button
-Then the information entered or edited on the Associated Trial screen will not be saved to the trial record
-And the screen will be refreshed with the existing data
+Scenario: #7 Reset Add Associated Trial for a trial
+Given I am on the Add Associated Trial screen
+And I have entered Identifier Type and Trial Identifier
+And I have selected 'Look Up Trial' button
+And Clinical Research Category and Official Title have populated
+When I select the Reset button
+Then the information on the Add Associated Trial screen will not be saved to the trial record
 And the Associated Trials screen displays

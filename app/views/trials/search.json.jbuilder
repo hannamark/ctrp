@@ -1,6 +1,6 @@
 json.trials do
   json.array!(@trials) do |trial|
-    json.extract! trial, :id, :lead_protocol_id, :nci_id, :official_title, :pilot
+    json.extract! trial, :id, :lead_protocol_id, :nci_id, :official_title, :pilot, :my_site_id
     json.phase trial.phase.present? ? trial.phase.name : nil
     json.purpose trial.primary_purpose.present? ? trial.primary_purpose.name : nil
     json.pi trial.pi.present? ? trial.pi.lname + ', ' + trial.pi.fname : nil

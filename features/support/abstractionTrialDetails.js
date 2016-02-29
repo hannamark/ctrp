@@ -114,8 +114,8 @@ var abstractionTrialDetails = function(){
     this.generalTrailPrincipalInvestigator = element(by.model('generalTrialDetailView.principalInvestigator.name'));
     this.generalTrailLeadOrganizationLbl = element(by.css('label[for="lead_org"]'));
     this.generalTrailPrincipalInvestigatorLbl = element(by.css('label[for="pi"]'));
-    this.generalTrailSearchOrganization = element(by.id('org_search_modal'));
-    this.generalTrailSearchPerson = element(by.id('person_search_modal'));
+    this.generalTrailSearchOrganization = element.all(by.id('org_search_modal'));
+    this.generalTrailSearchPerson = element.all(by.id('person_search_modal'));
 
     //Sponsor
     this.generalTrailSponsor = element(by.model('generalTrialDetailView.sponsor.name'));
@@ -123,13 +123,18 @@ var abstractionTrialDetails = function(){
     this.generalTrailSponsorSearchOrganization = element(by.id('org_search_modal'));
 
     //Central Contact
-    this.generalTrailCentralContactRadio = element(by.model('generalTrialDetailView.centralContactType'));
+    this.generalTrailCentralContactRadio = element.all(by.model('generalTrialDetailView.centralContactType'));
     //*****PI*****
     this.generalTrailCentralContactName = element(by.model('generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].fullname'));
     this.generalTrailCentralContactEmail = element(by.model('generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].email'));
     this.generalTrailCentralContactPhone = element(by.model('generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone'));
     this.generalTrailCentralContactPhoneExt = element(by.model('generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension'));
     this.generalTrailCentralContactSearchPerson = element(by.id('person_search_modal'));
+    this.generalTrailCentralContactRdoLbls = element.all(by.css('.radio-inline.control-label.ng-binding.ng-scope'));
+    this.generalTrailCentralContactNameReq = element.all(by.css('.help-block.ng-scope'));
+
+
+
 
     //Save and Reset
     this.generalTrailSave = element(by.id('save_btn'));
@@ -517,6 +522,61 @@ var abstractionTrialDetails = function(){
 
     };
 
+    //**********Lead Organization/Sponsor*************
+    this.clickSearchOrgButtonByIndex = function(index){
+        helper.clickButtonNoHeaderIndex(this.generalTrailSearchOrganization,index, "Search Organization Lookup button by Index:["+index+"]");
+    };
+
+    this.clickSearchPersonsButton = function(){
+        helper.clickButton(this.generalTrailSearchPerson,"Search Persons Lookup - button");
+    };
+
+    this.clickSearchPersonsButtonByIndex = function(index){
+        helper.clickButtonNoHeaderIndex(this.generalTrailSearchPerson, index, "Search Persons Lookup - button by Index");
+    };
+
+    //**************Central Contact*****************
+    this.selectCentralContactRdo = function(button, getRdoValue, errorMessage)  {
+            if (getRdoValue === 'None') {
+                button.get(0).click();
+                console.log(errorMessage + " was clicked");
+                expect(button.get(0).isSelected()).to.eventually.equal(true);
+            }else if (getRdoValue === 'PI') {
+                button.get(1).click();
+                console.log(errorMessage + " was clicked");
+                expect(button.get(1).isSelected()).to.eventually.equal(true);
+            }else if (getRdoValue === 'Person') {
+                button.get(2).click();
+                console.log(errorMessage + " was clicked");
+                expect(button.get(2).isSelected()).to.eventually.equal(true);
+            }else if (getRdoValue === 'General') {
+                button.get(3).click();
+                console.log(errorMessage + " was clicked");
+                expect(button.get(3).isSelected()).to.eventually.equal(true);
+            }
+    };
+
+    //Set Central Contact Name: Text Box
+    this.setCentralContactName = function(getCentralContactNm){
+        helper.setValue(this.generalTrailCentralContactName,getCentralContactNm,"Central Contact Name - field");
+    };
+
+    //Set Central Contact Email: Text Box
+    this.setCentralContactEmail = function(getCentralContactEmail){
+        helper.setValue(this.generalTrailCentralContactEmail,getCentralContactEmail,"Central Contact Email - field");
+    };
+
+    //Set Central Contact Phone: Text Box
+    this.setCentralContactPhone = function(getCentralContactPhone){
+        helper.setValue(this.generalTrailCentralContactPhone,getCentralContactPhone,"Central Contact Phone - field");
+    };
+
+    //Set Central Contact Phone Extension: Text Box
+    this.setCentralContactPhoneExtension = function(getCentralContactPhoneExtension){
+        helper.setValue(this.generalTrailCentralContactPhoneExt,getCentralContactPhoneExtension,"Central Contact Phone Extension - field");
+    };
+
+
 
     //*********Save and Reset*************
     //Save : Button
@@ -530,10 +590,13 @@ var abstractionTrialDetails = function(){
     };
 
 
+    //***********************************
+    //Verification
+    //***********************************
 
-
-
-
+    this.verifyTextFieldValue = function(getFieldName, getFieldValueToVerify, getFieldDesc){
+        helper.getVerifyValue(getFieldName, getFieldValueToVerify, getFieldDesc);
+    };
 
 
     //***********************************

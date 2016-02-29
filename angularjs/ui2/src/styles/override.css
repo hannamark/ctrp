@@ -173,6 +173,10 @@
     line-height: 1em;
 }
 
+.table-striped > tbody > tr.edit-selected {
+    background-color: rgba(42, 113, 165, .5);
+}
+
 .animated-item {
     -webkit-transition: all linear 0.5s;
     -o-transition: all linear 0.5s;
@@ -813,6 +817,10 @@ a.editable-click:hover {
     min-height: 310px;
 }
 
+.search-calendar-grid-sm {
+    min-height: 155px;
+}
+
 .select2-results-absolute .select2-results {
     position: absolute;
     width: 225%;
@@ -837,3 +845,5 @@ h5.border-bottom {
 span.date-qualifier {
     margin-left: 20px;
 }
+
+tr.sele

@@ -203,6 +203,10 @@ And the "On Hold Info" screen will be displayed
 Scenario: #24 Accept Trial Validation Error Non Import Non Amemdment
 Given I have selected a trial for Trail Validation 
 And I am on the Trial Validation (Submission) screen
+And the trial information source is
+|Protocol|
+And the trial submission number is (orginal)
+|1|
 And the study souce is:
 |National|
 |Externally Peer-Reviewed|
@@ -222,9 +226,13 @@ And any of the mandatory fields have not be entered:
 |Investigator Affiliation|
 Then a warning message will be displayed stating the missing information
 
-Scenario: #25 Accept Trial Validation Error Non Import Amemdment
+Scenario: #25 Accept Trial Validation Error Non Import Amendment
 Given I have selected a trial for Trail Validation 
 And I am on the Trial Validation (Submission) screen
+And the trial information source is
+|Protocol|
+And the trial submission number is (Amendment)
+|>1|
 And the study souce is:
 |National|
 |Externally Peer-Reviewed|
@@ -248,6 +256,8 @@ Then a warning message will be displayed stating the missing information
 Scenario: #26 Accept Trial Validation Errors Imported
 Given I have selected a trial for Trail Validation 
 And I am on the Trial Validation (Submission) screen
+And the trial information source is
+|Imported|
 And the study souce is:
 |Industrial|
 |Other|
@@ -259,4 +269,4 @@ And any of the mandatory fields have not be entered:
 |Phase|
 |Primary Purpose|
 |Lead Organization|
-Then a warning message will be displayed statinging the missing information
+Then a warning message will be displayed stating the missing information

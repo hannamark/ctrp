@@ -13,3 +13,24 @@ json.site_rec_status_wrappers do
     json.extract! status, :id, :status_date, :site_recruitment_status_id, :site_recruitment_status, :comments
   end
 end
+json.contact_name @participating_site.contact_name
+json.contact_phone @participating_site.contact_phone
+json.contact_email @participating_site.contact_email
+json.contact_type @participating_site.contact_type
+json.protocol_id @participating_site.protocol_id
+json.program_code @participating_site.program_code
+
+
+investigators = ""
+delimiter = ""
+if @participating_site.participating_site_investigators.length > 1
+  delimiter = "; "
+end
+unless @participating_site.participating_site_investigators.nil?
+  @participating_site.participating_site_investigators.each do |inv|
+    investigators = investigators + inv.person.fname + " " + inv.person.lname + delimiter
+  end
+end
+json.view_investigators investigators
+json.latest_site_recruitment_status  @participating_site.site_rec_status_wrappers.blank? ? "" : (@participating_site.site_rec_status_wrappers.last.site_recruitment_status.nil? ? "" : @participating_site.site_rec_status_wrappers.last.site_recruitment_status.name)
+json.latest_site_recruitment_status_date  @participating_site.site_rec_status_wrappers.blank? ? "" : @participating_site.site_rec_status_wrappers.last.status_date

@@ -1,15 +1,54 @@
 @PA @global
-Feature: PAM F15 Abstraction Dashboard - Workload
+Feature: PAM F24 Abstraction Dashboard - Search
 
-As a CTRP PA SuperUser, I can view and edit the CTRP Abstraction Dashboard Workload
+As a CTRP PA User, I can view  the CTRP Abstraction Dashboard Search
 
-Scenario: #1 I can view Workload 
+Scenario: #1 I can view Search section
  Given I am logged into the CTRP Protocol Abstraction application
- And I am on the CTRP Abstraction Dashboard Workload screen
- Then all trials that have one of the following latest milestones will be displayed 
+ And I am on the CTRP Abstraction Dashboard Search screen
+ And I can select a user that has checked out a trial
+ And I can select a date range for when a trail was submitted (Date of Milestone "Submission Received Date"
+ And I can select the submitter Organization (Org search)
+ And I can select multiple Priorities
+|1 - High|
+|2 - Normal|
+|3 - Low| 
+ And I can select one or more submission types
+|Original|
+|Amendment|
+|Update|
+ And I can select one or more On Hold Status
+|On Hold (Now)|
+|Not On Hold (Now)|
+|On Hold (anytime)|
+ And I can select one or more On Hold Reasons
+|Submission Incomplete|
+|Submission Incomplete -- Missing Documents| 
+|Submission Invalid Grant |
+|Submission Other |
+|Pending CTRO Review |
+|Pending Disease Curation |
+|Pending Person Curation |
+|Pending Organization Curation|
+|Pending Intervention Curation|
+|Pending Other (CTRO)| 
+And I can select one or more Processing Status'
+And I can select one or more Disease/Condition (similar to grant type ahead search)
+And I can select one or more Interventions (similar to grant type ahead search)
+And I can select NCI Sponsorship 
+|NCI Sponsored (Sponsor = National Cancer Institute)|
+|Not NCI Sponsored (Sponsor not = National Cancer Institute)|
+And I can select CTEP/DCP Trials
+|CTEP and DCP PIO Trials Only (NIH/NCI Div/Dept Identifier = DCP, CTEP)| 
+|CTEP PIO Trials Only  (NIH/NCI Div/Dept Identifier = CTEP) |
+|DCP PIO Trials Only  (NIH/NCI Div/Dept Identifier = DCP) |
+|Exclude CTEP and DCP Trials  (NIH/NCI Div/Dept Identifier not = DCP, CTEP)
+And I can select a trial milestone
 |Submission Received Date|
 |Submission Acceptance Date|
+|Submission Terminated Date|
 |Submission Reactivated Date|
+|Submission Rejection Date|
 |Administrative Processing Start Date|
 |Administrative Processing Completed Date|
 |Ready for Administrative QC Date|
@@ -21,52 +60,50 @@ Scenario: #1 I can view Workload
 |Scientific QC Start Date|
 |Scientific QC Completed Date|
 |Ready for TSR Date|
-And will display the following fields
+|Trial Summary Report Date|
+|Submitter Trial Summary Report Feedback Date|
+|Initial Abstraction Verified Date|
+|On-going Abstraction Verified Date|
+|Late Rejection Date|  
+And I can select a trail milestone type
+|Has a Milestone|
+|Has a Last Milestone|
+And I can select one or more Data Table 4 Anatomic Sites (similar to grant type ahead search)
+And I can select Show Trials Ready for (check boxes)
+|Administrative Abstraction|
+|Administrative QC|
+|Scientific Abstraction|
+|Scientific QC|
+|Administrative and Scientific Abstraction|
+|Administrative and Scientific QC|
+And I select Search
+Then the following fields will be will displayed for each trial
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
-|Submitted On|
-|Submission Date Plus 10 Business Days|
-|Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
-|Business Days Since Submitted|
-|Business Days on Hold (CTRP)|
-|Business Days on Hold (Submitter)|
-|Current On-Hold Date|
-|Accepted|
-|Admin Abstraction Completed|
-|Admin QC Completed|
-|Scientific Abstraction Completed|
-|Scientific QC Completed|
-|Ready for TSR|
-|Checked Out By (Userid and check out i.e. smithj AD/SC)|
+|CTEP/DCP|
+|Submitting Organization|
+|Submission Date|
+|Last Milestone|
+|Last Milestone Date|
+|Submission Source|
+|Processing Priority|
+|This Trial is|
 And the default sort order is by NCI Trial id ordered from newest ID to oldest
 And the following columns can be sorted
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
-|Submitted On|
-|Submission Date Plus 10 Business Days|
-|Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
-|Business Days Since Submitted|
-|Business Days on Hold (CTRP)|
-|Business Days on Hold (Submitter)|
-|Current On-Hold Date|
-|Accepted|
-|Admin Abstraction Completed|
-|Admin QC Completed|
-|Scientific Abstraction Completed|
-|Scientific QC Completed|
-|Ready for TSR|
-|Checked Out By (Userid and check out i.e. smithj AD/SC)|
-
-Scenario: #2 I can edit Expected Abstraction Completion Date
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the CTRP Abstraction Workload screen
-And I select a trial Expected Abstraction Completion Date
-Then I can edit the Expected Abstraction Completion Date
-And the Expected Abstraction Completion Date will be associated with the trial
+|CTEP/DCP|
+|Submitting Organization|
+|Submission Date|
+|Last Milestone|
+|Last Milestone Date|
+|Submission Source|
+|Processing Priority|
+|This Trial is|
 
 Scenario: #3 I can view trail details - Validate
 Given I am logged into the CTRP Protocol Abstraction application
-And I am on the CTRP Abstraction Workload screen
+And I am on the CTRP Abstraction Dashboard Search Results Section
 And I select a trial ID
 And the latest trial milestone is "Submission Received Date"
 Then the trail validaiton sidebar menu will appear
@@ -74,53 +111,18 @@ And the trial details screen will be displayed (see PAM F17 Abstraction Dashboar
 
 Scenario: #4 I can view trail details - Abstract
 Given I am logged into the CTRP Protocol Abstraction application
-And I am on the CTRP Abstraction Workload screen
+And I am on the CTRP Abstraction Dashboard Search Results Section
 And I select a trial ID
 And the latest trial milestone is not "Submission Received Date"
 Then the trail abstraction sidebar menu will appear
 And the trial details screen will be displayed (see PAM F17 Abstraction Dashboard - Details)
 
-Scenario: #5 I can sort the Workload 
- Given I am logged into the CTRP Protocol Abstraction application
- And I am on the CTRP Abstraction Dashboard Workload screen
- Then all trials that have one of the following latest milestones will be displayed 
-|Submission Received Date|
-|Submission Acceptance Date|
-|Submission Reactivated Date|
-|Administrative Processing Start Date|
-|Administrative Processing Completed Date|
-|Ready for Administrative QC Date|
-|Administrative QC Start Date|
-|Administrative QC Completed Date|
-|Scientific Processing Start Date|
-|Scientific Processing Completion Date|
-|Ready for Scientific QC Date|
-|Scientific QC Start Date|
-|Scientific QC Completed Date|
-|Ready for TSR Date|
-And the display fields can be sorted by the following fields
-|NCI Trial Identifier|
-|Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
-|Submitted On|
-|Submission Date Plus 10 Business Days|
-|Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
-|Business Days Since Submitted|
-|Business Days on Hold (CTRP)|
-|Business Days on Hold (Submitter)|
-|Current On-Hold Date|
-|Accepted|
-|Admin Abstraction Completed|
-|Admin QC Completed|
-|Scientific Abstraction Completed|
-|Scientific QC Completed|
-|Ready for TSR|
-|Checked Out By (Userid and check out i.e. smithj AD/SC)|
 
-Scenario: #6 I can export Abstraction Dashboard WorkLoad into an Excel spreadsheet
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the CTRP Abstraction Dashboard WorkLoad
+Scenario: #5 I can export Abstraction Dashboard On Hold into an Excel spreadsheet
+GGiven I am logged into the CTRP Protocol Abstraction application
+And I am on the CTRP Abstraction Dashboard On Hold Section
 When I select the export to Excel option
-Then the trials in the Abstraction Dashboard WorkLoad will be exported to an Excel format spreadsheet 
+Then the trials in the Abstraction Dashboard On Hold will be exported to an Excel format spreadsheet 
 And will includ the following fields:
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
@@ -211,7 +213,8 @@ And will includ the following fields:
 |Late Rejection Date Added By|
 |Late Rejection Date Added On|
 
-Scenario: #7 Logic for This Trial is Field
+
+Scenario: #6 Logic for This Trial is Field
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Dashboard WorkLoad
 When I select the export to Excel option
@@ -249,3 +252,6 @@ Examples:
 |Ready for Admin QC; Ready for Scientific Processing; On Hold since 1/1/2015; Reason: Pending CTRP Review|
 |Checked out by me; Ready for Scientific QC|
 |Submitted -- Not Accepted|
+
+
+

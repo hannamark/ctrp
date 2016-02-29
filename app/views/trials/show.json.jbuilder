@@ -9,7 +9,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
               :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
-              :board_approval_num, :board_approval_status_id, :uuid
+              :board_approval_num, :board_approval_status_id, :available_family_orgs, :uuid
 
 json.other_ids do
   json.array!(@trial.other_ids) do |id|
@@ -31,7 +31,7 @@ end
 
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
-    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :deleted
+    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status
     json.set! :added_by, document.added_by_id.nil? ? User.find(1) : ''    #document.added_by_id
   end
 end
@@ -48,24 +48,40 @@ json.collaborators_attributes do
   end
 end
 
-json.participating_sites_list do
+json.participating_sites do
   json.array!(@trial.participating_sites) do |participating_site|
     json.id participating_site.id
+    investigators = ""
+    delimiter = ""
+    if participating_site.participating_site_investigators.length > 1
+      delimiter = "; "
+    end
+    unless participating_site.participating_site_investigators.nil?
+      participating_site.participating_site_investigators.each do |inv|
+        investigators = investigators + inv.person.fname + " " + inv.person.lname + delimiter
+      end
+    end
+    json.view_investigators investigators
     json.investigator participating_site.person.present? ? participating_site.person.lname : ""
     json.contact_name participating_site.contact_name
     json.contact_phone participating_site.contact_phone
     json.contact_email participating_site.contact_email
     json.contact_type participating_site.contact_type
+    json.protocol_id participating_site.protocol_id
+    json.program_code participating_site.program_code
 
     json.organization participating_site.organization
     json.site_rec_status_wrappers do
       json.array!(participating_site.site_rec_status_wrappers) do |site_rec_status_wrapper|
         json.id site_rec_status_wrapper.id
         json.status_date  site_rec_status_wrapper.status_date
+        json.site_recruitment_status_id site_rec_status_wrapper.site_recruitment_status.nil? ? "" : site_rec_status_wrapper.site_recruitment_status.id
         json.site_recruitment_status  site_rec_status_wrapper.site_recruitment_status.nil? ? "" : site_rec_status_wrapper.site_recruitment_status
         json.comments  site_rec_status_wrapper.comments
       end
     end
+    json.latest_site_recruitment_status  participating_site.site_rec_status_wrappers.blank? ? "" : (participating_site.site_rec_status_wrappers.last.site_recruitment_status.nil? ? "" : participating_site.site_rec_status_wrappers.last.site_recruitment_status.name)
+    json.latest_site_recruitment_status_date  participating_site.site_rec_status_wrappers.blank? ? "" : participating_site.site_rec_status_wrappers.last.status_date
 
     json.participating_site_investigators do
       json.array!(participating_site.participating_site_investigators) do |inv|
@@ -82,6 +98,23 @@ json.participating_sites_list do
   end
 end
 
+json.sitesu_sites do
+  json.array!(@trial.sitesu_sites) do |ps|
+    json.extract! ps, :id, :protocol_id, :program_code, :organization_id, :organization, :current_status_name, :site_pi
+
+    json.site_rec_status_wrappers do
+      json.array!(ps.site_rec_status_wrappers) do |status|
+        json.extract! status, :id, :status_date, :site_recruitment_status_id, :site_recruitment_status, :comments
+      end
+    end
+
+    json.participating_site_investigators do
+      json.array!(ps.participating_site_investigators) do |investigator|
+        json.extract! investigator, :id, :person_id, :person, :investigator_type
+      end
+    end
+  end
+end
 
 ## append the protocol_id_origin.name
 unless @trial.other_ids.empty?

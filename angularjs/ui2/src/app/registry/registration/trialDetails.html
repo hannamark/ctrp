@@ -428,7 +428,7 @@
                                                                reset-search-input="false"
                                                                style="width: 300px;">
                                                       <ui-select-match placeholder="Enter serial number...">{{$select.selected.serial_number}}</ui-select-match>
-                                                      <ui-select-choices repeat="tempgrant in trialDetailView.grantsInputs.grantResults | propsFilter: {serial_number: $select.search, institution_name: $select.search}"
+                                                      <ui-select-choices ng-hide="!trialDetailView.grantsInputs.grantResults.length || $select.search.length < 2" repeat="tempgrant in trialDetailView.grantsInputs.grantResults | propsFilter: {serial_number: $select.search, institution_name: $select.search}"
                                                                          refresh="refreshGrants($select.search)"
                                                                          refresh-delay="0">
                                                             <!--
@@ -440,7 +440,7 @@
                                                                 <strong>PI:</strong> {{tempgrant.pi_full_name}}
                                                             </small>
                                                             -->
-                                                                <strong>{{tempgrant.serial_number}}</strong> - {{tempgrant.institution_name}}, {{tempgrant.project_title}}, {{tempgrant.pi_full_name}}
+                                                                <strong>{{tempgrant.serial_number}}</strong> - {{tempgrant.institution_name}}; {{tempgrant.project_title}}; {{tempgrant.pi_full_name}}
                                                             <!-- <span>{{tempgrant.serial_number}} - {{tempgrant.institution_name}}; {{tempgrant.project_title}}; {{tempgrant.pi_full_name}}</span> -->
                                                       </ui-select-choices>
                                                     </ui-select>
@@ -996,7 +996,7 @@
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" restriction-field name="sec801_indicator" ng-model="trialDetailView.curTrial.sec801_indicator"
-                                           value="N/A" ng-disabled="trialDetailView.curTrial.intervention_indicator === 'No' || ['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> N/A
+                                           value="N/A" ng-disabled="trialDetailView.curTrial.intervention_indicator === 'No' || trialDetailView.curTrial.intervention_indicator === 'Yes' || ['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> N/A
                                 </label>
                             </div>
                         </div>

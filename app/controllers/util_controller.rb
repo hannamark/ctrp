@@ -43,13 +43,10 @@ class UtilController < ApplicationController
     @file_types = AppSetting.find_by_code('ACCEPTED_FILE_TYPES').big_value
   end
 
-  def trial_document_types
-    document_types = ['Protocol Document', 'IRB Approval',
-                      'Informed Consent', 'Change Memo Document',
-                      'Other Document', 'List of Participating Sites',
-                      'Protocol Highlighted Document']
+  def get_trial_document_types
+    @doc_types = AppSetting.find_by_code('TRIAL_DOCUMENT_TYPES').value
     respond_to do |format|
-      format.json { render :json => {:types => document_types} }
+      format.json { render :json => {:types => @doc_types} }
     end
   end
 

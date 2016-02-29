@@ -604,7 +604,7 @@
                     vm.curTrial.investigator_title = 'Principal Investigator';
                     // Copy the value from PI and Sponsor
                     vm.selectedInvArray = vm.selectedPiArray;
-                    vm.selectedIaArray = vm.selectedLoArray;
+                    vm.selectedIaArray = vm.selectedSponsorArray;
                 } else if (siOption[0].id == vm.curTrial.responsible_party_id) {
                     vm.showInvestigator = true;
                     vm.showInvSearchBtn = true;
@@ -714,6 +714,7 @@
         function activate() {
             appendNewTrialFlag();
             getExpFlag();
+            adjustResearchCategoryArr();
             adjustTrialStatusArr();
 
             if (vm.curTrial.new) {
@@ -762,6 +763,14 @@
             } else {
                 if (vm.curTrial.study_source && vm.curTrial.study_source.code == 'EXP') {
                     vm.isExp = true;
+                }
+            }
+        }
+
+        function adjustResearchCategoryArr() {
+            for (var i = vm.researchCategoryArr.length - 1; i >= 0; i--) {
+                if (vm.researchCategoryArr[i].code == 'EXP') {
+                    vm.researchCategoryArr.splice(i, 1);
                 }
             }
         }
