@@ -51,7 +51,7 @@ And I am on the CTRP Abstraction Dashboard trial details screen
 When I select Reset
 Then the information will not be saved and the screen will be refresthed with existing trial data
 
-Scenario: #5 I can check out a trial
+Scenario: #5 I can check out a trial (same as PA F11 trial abstraction check out in)
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Dashboard trial details screen
 And I select one of the check out buttons
@@ -68,7 +68,7 @@ And that button will be a check in button
 |Scientific Check Out Button|
 |Admin. And Scientific Check In Button|
 
-Scenario: #6 I can check in a trial (same as trial abstraction check out iN)
+Scenario: #6 I can check in a trial (same as PA F11 trial abstraction check out in)
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Dashboard trial details screen 
 When I select one of the check in buttons

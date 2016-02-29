@@ -1,7 +1,7 @@
 @PA @global
 Feature: PAM F15 Abstraction Dashboard - Workload
 
-As a CTRP PA SuperUser, I can view and edit the CTRP Abstraction Dashboard Details
+As a CTRP PA SuperUser, I can view and edit the CTRP Abstraction Dashboard Workload
 
 Scenario: #1 I can view Workload 
  Given I am logged into the CTRP Protocol Abstraction application
@@ -38,7 +38,8 @@ And will display the following fields
 |Scientific QC Completed|
 |Ready for TSR|
 |Checked Out By (Userid and check out i.e. smithj AD/SC)|
-And defaul sort order is by NCI Trial id ordered from newest ID to oldest
+And the default sort order is by NCI Trial id ordered from newest ID to oldest
+And the following columns can be sorted
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
 |Submitted On|
@@ -157,7 +158,7 @@ And will includ the following fields:
 |Admin Check out Date (for admin checkout name)|
 |Scientific Check out Name|
 |Scientific Check out Date (for Scientific checkout name)|
-|CTEP/DCP|*
+|NIH/NCI Div/Dept Identifier|
 |Submitting Organization|
 |Submission Date|
 |Last Milestone|
@@ -166,7 +167,7 @@ And will includ the following fields:
 |Submission Method|
 |Processing Priority|
 |Trial Processing Comments|
-|This Trial is (LOV based on processing status, information source, Submission # and Milestone (list below))|*
+|This Trial is (LOV based on processing status, information source, Submission # and Milestone (list below))|
 |Submission Received Date|
 |Submission Received Date Added By|
 |Submission Received Date Added On|
@@ -210,6 +211,41 @@ And will includ the following fields:
 |Late Rejection Date Added By|
 |Late Rejection Date Added On|
 
+Scenario: #7 Logic for This Trial is Field
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the CTRP Abstraction Dashboard WorkLoad
+When I select the export to Excel option
+Then the trials in the Abstraction Dashboard WorkLoad will be exported to an Excel format spreadsheet 
+And will include the following field:
+|This Trial is|
 
+And the This Trial is field will be a concetionation of the following
+|Check Out Status|
+|Milestones|
+|On Hold Date|
+|On Hold Reason|
 
+And the Check Out Status will be 
+|<Logic>                                 |<Value>          |
+|When the trial is check out by my userid|Checked out by me|
 
+And the milestones will be 
+|<Logic>                                                                                          |<Value>|
+|Last Milestone = Submission Received Date                                                        |Submitted -- Not Accepted|
+|Last Milestone = Submission Acceptance Date and no Administrative Processing Start Date milestone|Ready for Admin Processing|
+|Last Milestone = Administrative QC Start Date                                                    |Ready for Admin QC|
+|Last Milestone = Submission Acceptance Date and no Scientific Processing Start Date milestone    |Ready for Scientific Processing|
+|Last Milestone = Scientific QC Start Date                                                        |Ready for Scientific QC|
+|Last Milestone = Scientific QC Start Date                                                        |Ready for Scientific QC|
+|Last Milestone = Ready for TSR Date                                                              |Ready for TSR Submission|
+
+And the On Hold Status will 
+|<Logic>                                                              |<Value>   
+|when the trial has an "on hold date" and no "No Longer on hold" date"|On Hold since "on hold date" ; Reasons: "on hold reason" |
+
+Examples:
+
+|Checked out by me; Ready for Admin QC; Ready for Scientific Processing; On Hold since 3/3/2016; Reason:  Other|
+|Ready for Admin QC; Ready for Scientific Processing; On Hold since 1/1/2015; Reason: Pending CTRP Review|
+|Checked out by me; Ready for Scientific QC|
+|Submitted -- Not Accepted|
