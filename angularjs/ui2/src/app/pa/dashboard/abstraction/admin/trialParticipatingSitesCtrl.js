@@ -104,6 +104,13 @@
             vm.currentParticipatingSite.participating_site_investigators_attributes = [];
             for (var i = 0; i < vm.investigatorGrid.length; i++) {
                 var invObj = vm.investigatorGrid[i];
+                if(vm.currentParticipatingSite.contact_type != "PI"){
+                    invObj.set_as_contact = false;
+                } else if (invObj.person.id == vm.currentParticipatingSite.person_id) {
+                        invObj.set_as_contact = true;
+                } else {
+                    invObj.set_as_contact = false;
+                }
                 if (invObj.edit || invObj.new || invObj._destroy) {
                     vm.currentParticipatingSite.participating_site_investigators_attributes.push(invObj);
                 }
@@ -275,6 +282,8 @@
                         //console.log("2222setting as contact as FALSE person_id" + JSON.stringify(vm.currentParticipatingSite.person));
                         invObj.set_as_contact = false;
                     }
+                } else {
+                    invObj.set_as_contact = false;
                 }
                 vm.investigatorGrid.push(invObj);
             };
