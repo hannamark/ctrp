@@ -36,16 +36,16 @@ And the Responsible Party Type is Principal Investigator
 And I have selected organization look-up at the Responsible Party section
 When list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed
 Then the selected organization will be the Affiliation of the Investigator for the trial
-
+  @runthis
 Scenario: #5 I can add and edit Regulatory Information for a Regulated Trial
-Given I have selected a trial to abstract the Regulatory Information FDAAA
-And I am on the Trial Regulatory Information screen
-When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
-And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
-And I can select "yes", "No", "NA" FDA Regulated Intervention Indicator
-And I can select "Yes", "No", "NA" for Section 801 Indicator
-And I can select "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
-Then the required Regulatory Information for the trial will be associated with the trial
+  Given I have selected a trial to abstract the Regulatory Information FDAAA
+  And I am on the Trial Regulatory Information screen
+  When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
+  And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
+  And I can select "yes", "No", "NA" FDA Regulated Intervention Indicator
+  And I can select "Yes", "No", "NA" for Section 801 Indicator
+  And I can select "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
+  Then the required Regulatory Information for the trial will be associated with the trial
 
 Scenario: #6 I can add and edit Regulatory Information for a non-Regulated Trial
 Given I am logged into the CTRP Protocol Abstraction application

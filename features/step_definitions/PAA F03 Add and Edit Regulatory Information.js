@@ -342,35 +342,138 @@ module.exports = function() {
      Then the required Regulatory Information for the trial will be associated with the trial
      */
 
+    /*
+     Scenario: #5 I can add and edit Regulatory Information for a Regulated Trial
+     Given I have selected a trial to abstract the Regulatory Information FDAAA
+     And I am on the Trial Regulatory Information screen
+     When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
+     And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
+     And I can select "yes", "No", "NA" FDA Regulated Intervention Indicator
+     And I can select "Yes", "No", "NA" for Section 801 Indicator
+     And I can select "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
+     Then the required Regulatory Information for the trial will be associated with the trial
+     */
+
+
     this.When(/^I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
+        fdaaa.selectResponsibleParty(reponsblPartyOptionPrincipal);
+        trialDetails.clickSearchOrgButtonByIndex('0');
+        searchOrg.setOrgName('*');
+        searchOrg.clickSearchButton();
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        //Trail Oversight Authority
+        fdaaa.selectAuthorityCountry(oversightCountryA);
+        fdaaa.selectAuthorityOrganization(oversightCountryAOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.selectAuthorityCountry(oversightCountryB);
+        fdaaa.selectAuthorityOrganization(oversightCountryBOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.selectAuthorityCountry(oversightCountryC);
+        fdaaa.selectAuthorityOrganization(oversightCountryCOrg);
+        fdaaa.clickAuthorityAddButton();
         browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country$/, function (callback) {
-        addTrial.selectAddTrialFDARegulatedInterventionIndicator('2');
-        addTrial.selectAddTrialSection801Indicator('2');
-        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('2');
+        fdaaa.selectAuthorityCountry(oversightCountryA);
+        fdaaa.selectAuthorityOrganization(oversightCountryAOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.verifyAuthorityErrMsg(oversightCountryA+' '+oversightCountryAOrg+' already exists');
         browser.sleep(25).then(callback);
     });
 
     this.When(/^I can select "([^"]*)", "([^"]*)", "([^"]*)" FDA Regulated Intervention Indicator$/, function (arg1, arg2, arg3, callback) {
-        // Write code here that turns the phrase above into concrete actions
+        yesVal = 'Yes';
+        noVal = 'No';
+        naVal = 'NA';
+        if (yesVal === arg1){
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorFDA, '1', true);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorFDA, '0', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorFDA, '2', false);
+        }
+        if (yesVal === arg2){
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorFDA, '1', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorFDA, '0', true);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorFDA, '2', false);
+        }
+        if (yesVal === arg3){
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('2');
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorFDA, '1', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorFDA, '0', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorFDA, '2', true);
+        }
         browser.sleep(25).then(callback);
     });
 
     this.When(/^I can select "([^"]*)", "([^"]*)", "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, arg4, callback) {
-        // Write code here that turns the phrase above into concrete actions
+        yesVal = 'Yes';
+        noVal = 'No';
+        naVal = 'NA';
+        if (yesVal === arg1){
+            addTrial.selectAddTrialSection801Indicator('1');
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '1', true);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '0', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '2', false);
+        }
+        if (yesVal === arg2){
+            addTrial.selectAddTrialSection801Indicator('0');
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '1', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '0', true);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '2', false);
+        }
+        if (yesVal === arg3){
+            addTrial.selectAddTrialSection801Indicator('2');
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '1', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '0', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '2', true);
+        }
         browser.sleep(25).then(callback);
     });
 
     this.When(/^I can select "([^"]*)", "([^"]*)", "([^"]*)" for Data Monitoring Committee Appointed Indicator$/, function (arg1, arg2, arg3, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        browser.sleep(25).then(callback);
+        yesVal = 'Yes';
+        noVal = 'No';
+        naVal = 'NA';
+        if (yesVal === arg1){
+            addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('1');
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorData, '1', true);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorData, '0', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorData, '2', false);
+        }
+        if (yesVal === arg2){
+            addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('0');
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorData, '1', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorData, '0', true);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorData, '2', false);
+        }
+        if (yesVal === arg3){
+            addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('2');
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorData, '1', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorData, '0', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorData, '2', true);
+        }
+        addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
+        addTrial.selectAddTrialSection801Indicator('1');
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('2');
+        fdaaa.clickSave();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the required Regulatory Information for the trial will be associated with the trial$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
+        fdaaa.clickAdminDataGeneralTrial();
+        fdaaa.clickAdminDataRegulatoryInfoFDA();
+        trialCollaborators.waitForElement(fdaaa.regulatoryInfoResponsiblePartyList, "Regulatory Information – FDAAA  - Responsible Party Drop down");
+        helper.verifyElementDisplayed(fdaaa.regulatoryInfoAuthorityCountry, true);
+        helper.verifyElementDisplayed(fdaaa.regulatoryInfoAuthorityOrg, true);
+        helper.wait_for(3000);
+        commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorFDA, '1', true);
+        commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '1', true);
+        commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicatorData, '2', true);
         browser.sleep(25).then(callback);
     });
 
