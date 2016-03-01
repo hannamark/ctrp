@@ -44,6 +44,14 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+      address: "mailfwd.nih.gov",
+      port: 25,
+      authentication: "plain"
+  }
+
   #added by shivece for Docker container testing
 #  class Application < Rails::Application
 #    config.web_console.whiny_requests = false
