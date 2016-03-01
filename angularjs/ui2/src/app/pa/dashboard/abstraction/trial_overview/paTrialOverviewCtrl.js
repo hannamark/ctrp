@@ -129,7 +129,8 @@
                     // trial is not editable if checkout is allowed (in checkedin state) or
                     // the curUserRole is Super or Admin
                     var curUserRole = UserService.getUserRole() || '';
-                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+                    vm.trialDetailObj.pa_sci_editable = !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
                     var checkedoutByUsername = !!newVal ? newVal.by : '';
                     vm.adminCheckinAllowed = !vm.adminCheckoutAllowed && (vm.curUser === checkedoutByUsername ||
                         curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU' ||
@@ -149,7 +150,8 @@
                     // trial is not editable if checkout is allowed (in checkedin state) or
                     // the curUserRole is Super or Admin
                     var curUserRole = UserService.getUserRole() || '';
-                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+                    vm.trialDetailObj.pa_sci_editable = !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
                     var checkedoutByUsername = !!newVal ? newVal.by : '';
                     vm.scientificCheckinAllowed = !vm.scientificCheckoutAllowed && (vm.curUser === checkedoutByUsername ||
                         curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU' ||
