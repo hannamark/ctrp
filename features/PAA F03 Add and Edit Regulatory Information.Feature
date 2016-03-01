@@ -42,9 +42,6 @@ Given I have selected a trial to abstract the Regulatory Information FDAAA
 And I am on the Trial Regulatory Information screen
 When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
 And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
-And the FDA Regulated Intervention Indicator will be defaulted to the "N/A" setting
-And the Section 801 Indicator will be defaulted to the "N/A" setting
-And the Data Monitoring Committee Appointed Indicator will be defaulted to the "N/A" setting
 And I can select "yes", "No", "NA" FDA Regulated Intervention Indicator
 And I can select "Yes", "No", "NA" for Section 801 Indicator
 And I can select "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
