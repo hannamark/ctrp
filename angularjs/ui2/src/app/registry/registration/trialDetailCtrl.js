@@ -1031,7 +1031,7 @@
         }
 
         function findStopOptions(option) {
-            if (option.code == 'TCA' || option.code == 'CAI' || option.code == 'ACO' || option.code == 'WIT') {
+            if (option.code == 'TCL' || option.code == 'TCA' || option.code == 'ACO' || option.code == 'WIT') {
                 return true;
             } else {
                 return false;
