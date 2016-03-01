@@ -115,7 +115,7 @@ And I select one of the check in buttons
 |Admin and Scientific Check In Button|
 Then my user name and date will be recorded in the trial check out history. 
 
-Scenario: #10 I can open the ClinicalTrails.gov record for the Trail
+Scenario: #10 I can open the ClinicalTrails.gov record for the Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
 And the Trail Identification Overview and is displayed 

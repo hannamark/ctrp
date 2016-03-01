@@ -117,6 +117,13 @@ module.exports = function() {
     var reponsblPartyOptionSponsorInv = 'Sponsor-Investigator';
     var investigatorTitle = 'Principal Investigator';
     var investigatorTitleEdit = 'Edit Principal Investigator';
+    var oversightCountryA = 'United States';
+    var oversightCountryB = 'Canada';
+    var oversightCountryC = 'Bangladesh';
+    var oversightCountryAOrg = 'Federal Government';
+    var oversightCountryBOrg = 'Canadian Institutes of Health Research';
+    var oversightCountryCOrg = 'Bangladesh Medical Research Council';
+
 
 
     /*
@@ -312,12 +319,225 @@ module.exports = function() {
     });
 
     this.Then(/^the selected organization will be the Affiliation of the Investigator for the trial$/, function (callback) {
+        helper.wait_for(1000);
         fdaaa.clickAdminDataGeneralTrial();
         fdaaa.clickAdminDataRegulatoryInfoFDA();
         fdaaa.selectResponsibleParty(reponsblPartyOptionPrincipal);
         trialDetails.verifyTextFieldValue(fdaaa.regulatoryInfoInvestigatorAffiliation, orgSearchNameC, "Verifying Investigator Affiliation Orgznization Name");
         browser.sleep(25).then(callback);
     });
+
+    /*
+     Scenario: #5 I can add and edit Regulatory Information for a Regulated Trial
+     Given I have selected a trial to abstract the Regulatory Information FDAAA
+     And I am on the Trial Regulatory Information screen
+     When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
+     And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
+     And the FDA Regulated Intervention Indicator will be defaulted to the "N/A" setting
+     And the Section 801 Indicator will be defaulted to the "N/A" setting
+     And the Data Monitoring Committee Appointed Indicator will be defaulted to the "N/A" setting
+     And I can select "yes", "No", "NA" FDA Regulated Intervention Indicator
+     And I can select "Yes", "No", "NA" for Section 801 Indicator
+     And I can select "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
+     Then the required Regulatory Information for the trial will be associated with the trial
+     */
+
+    this.When(/^I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.When(/^I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.When(/^I can select "([^"]*)", "([^"]*)", "([^"]*)" FDA Regulated Intervention Indicator$/, function (arg1, arg2, arg3, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.When(/^I can select "([^"]*)", "([^"]*)", "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, arg4, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.When(/^I can select "([^"]*)", "([^"]*)", "([^"]*)" for Data Monitoring Committee Appointed Indicator$/, function (arg1, arg2, arg3, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the required Regulatory Information for the trial will be associated with the trial$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+
+    /*
+     Scenario: #6 I can add and edit Regulatory Information for a non-Regulated Trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Register Trial Regulatory Information screen
+     When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
+     And I have selected one or more of the Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
+     And I have selected "No" for FDA Regulated Intervention Indicator
+     And I have selected "Yes", "No", "N/A" for Data Monitoring Committee Appointed Indicator
+     Then the required Regulatory Information for the trial will be associated with the trial
+     And the Section 801 Indicator will be set to "No"
+     */
+
+    this.When(/^I have selected one or more Trial Oversight Authority Country from a list of all the Trial Oversight Authority Countries$/, function (callback) {
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolIDD);
+        commonFunctions.adminCheckOut();
+        fdaaa.clickAdminDataRegulatoryInfoFDA();
+        trialCollaborators.waitForElement(fdaaa.regulatoryInfoResponsiblePartyList, "Regulatory Information – FDAAA  - Responsible Party Drop down");
+        helper.verifyElementDisplayed(fdaaa.regulatoryInfoAuthorityCountry, true);
+        helper.verifyElementDisplayed(fdaaa.regulatoryInfoAuthorityOrg, true);
+        fdaaa.selectResponsibleParty(reponsblPartyOptionPrincipal);
+        trialDetails.clickSearchOrgButtonByIndex('0');
+        searchOrg.setOrgName('*');
+        searchOrg.clickSearchButton();
+        searchOrg.setOrgName(orgSearchNameA);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        fdaaa.clickSave();
+        fdaaa.clickAdminDataGeneralTrial();
+        fdaaa.clickAdminDataRegulatoryInfoFDA();
+        trialDetails.clickSearchOrgButtonByIndex('0');
+        searchOrg.setOrgName(orgSearchNameC);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        helper.wait_for(250);
+        fdaaa.clickSave();
+        helper.wait_for(250);
+        fdaaa.selectAuthorityCountry(oversightCountryA);
+        fdaaa.selectAuthorityOrganization(oversightCountryAOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.selectAuthorityCountry(oversightCountryB);
+        fdaaa.selectAuthorityOrganization(oversightCountryBOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.selectAuthorityCountry(oversightCountryC);
+        fdaaa.selectAuthorityOrganization(oversightCountryCOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.selectAuthorityCountry(oversightCountryA);
+        fdaaa.selectAuthorityOrganization(oversightCountryAOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.verifyAuthorityErrMsg(oversightCountryA+' '+oversightCountryAOrg+' already exists');
+        fdaaa.clickSave();
+        //fdaaa.clickAdminDataGeneralTrial();
+        //fdaaa.clickAdminDataRegulatoryInfoFDA();
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have selected one or more of the Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country$/, function (callback) {
+        //fdaaa.findTrailAuthorityAndDeleteOrVerify(oversightCountryA, oversightCountryAOrg, 'delete', '');
+        //fdaaa.findTrailAuthorityAndDeleteOrVerify(oversightCountryB, oversightCountryBOrg, 'delete', '');
+        //fdaaa.findTrailAuthorityAndDeleteOrVerify(oversightCountryC, oversightCountryCOrg, 'delete', '');
+        //fdaaa.clickSave();
+        //helper.wait_for(2500);
+        //fdaaa.clickAdminDataGeneralTrial();
+        //fdaaa.clickAdminDataRegulatoryInfoFDA();
+        //fdaaa.selectAuthorityCountry(oversightCountryA);
+        //fdaaa.selectAuthorityOrganization(oversightCountryAOrg);
+        //fdaaa.clickSave();
+        //helper.wait_for(250);
+        //fdaaa.clickAdminDataGeneralTrial();
+        //fdaaa.clickAdminDataRegulatoryInfoFDA();
+        browser.sleep(250).then(callback);
+    });
+
+    this.Then(/^the required Regulatory Information for the trial will be associated$/, function (callback) {
+        fdaaa.findTrailAuthorityAndDeleteOrVerify(oversightCountryA, oversightCountryAOrg, '', 'verify');
+        fdaaa.findTrailAuthorityAndDeleteOrVerify(oversightCountryB, oversightCountryBOrg, '', 'verify');
+        fdaaa.findTrailAuthorityAndDeleteOrVerify(oversightCountryC, oversightCountryCOrg, '', 'verify');
+        browser.sleep(250).then(callback);
+    });
+
+    /*
+     Scenario: #7 I can add and edit Regulatory Information for a Regulated Trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Regulatory Information screen
+     When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
+     And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
+     And I have selected "Yes" for FDA Regulated Intervention Indicator
+     Then I have the option to select "Yes", "No" for Section 801 Indicator
+     */
+
+    this.When(/^I have selected one or more Trial Oversight Authority Country from the list of all Trial Oversight Authority Countries$/, function (callback) {
+        fdaaa.selectAuthorityCountry(oversightCountryA);
+        fdaaa.selectAuthorityOrganization(oversightCountryAOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.selectAuthorityCountry(oversightCountryB);
+        fdaaa.selectAuthorityOrganization(oversightCountryBOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.selectAuthorityCountry(oversightCountryC);
+        fdaaa.selectAuthorityOrganization(oversightCountryCOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.selectAuthorityCountry(oversightCountryA);
+        fdaaa.selectAuthorityOrganization(oversightCountryAOrg);
+        fdaaa.clickAuthorityAddButton();
+        fdaaa.verifyAuthorityErrMsg(oversightCountryA+' '+oversightCountryAOrg+' already exists');
+        fdaaa.clickSave();
+        browser.sleep(250).then(callback);
+    });
+
+    this.When(/^I have selected one or more Trial Oversight Authority Organization Names from the list based on the selected Trial Oversight Authority Country$/, function (callback) {
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have selected FDA Regulated Intervention Indicator as "([^"]*)"$/, function (arg1, callback) {
+        if (arg1 === 'No') {
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+        }
+        else if (arg1 === 'Yes') {
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
+        };
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^I have the option to select "([^"]*)", "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, callback) {
+        console.log('Section '+arg3+' Indicator:'+arg1+' or '+arg2);
+        var getArg1Val = 'No';
+        var getArg2Val = 'Yes';
+        if (getArg1Val === arg1){
+            addTrial.selectAddTrialSection801Indicator('0');
+            fdaaa.clickSave();
+            expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
+            addTrial.verifyAddTrialSection801Indicator('0', true);
+            expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(false);
+            addTrial.verifyAddTrialSection801Indicator('1', false);
+            expect(addTrial.addTrialSection801Indicator.get(2).isEnabled()).to.become(false);
+            addTrial.verifyAddTrialSection801Indicator('2', false);
+        };
+        if (getArg2Val === arg2){
+            addTrial.selectAddTrialSection801Indicator('1');
+            fdaaa.clickSave();
+            expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(false);
+            addTrial.verifyAddTrialSection801Indicator('0', false);
+            expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(true);
+            addTrial.verifyAddTrialSection801Indicator('1', true);
+            expect(addTrial.addTrialSection801Indicator.get(2).isEnabled()).to.become(false);
+            addTrial.verifyAddTrialSection801Indicator('2', false);
+        };
+        browser.sleep(25).then(callback);
+    });
+
+
+
+
+
+
+
+
+
 
 
 
