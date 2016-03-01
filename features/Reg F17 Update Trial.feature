@@ -53,6 +53,7 @@ And if there are no errors, I can submit the trial with indication of a successf
 And the information updates will be registered in CTRP
 And the CTRO will be able to acknowledge or reject the Update to trial information
 And the "Current Verification Date" will be updated in the Trial Data Verification Screen
+And an email entitled "Updated Trial" will be sent to the trial owner (Locate Email list on the shared drive under Functional/registration as: CTRP System Generated Emails)
 
 
   Scenario: #3 Documents Displayed during Update after an Original Submission

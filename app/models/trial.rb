@@ -417,7 +417,8 @@ class Trial < TrialBase
       ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: newSubmission)
     elsif self.edit_type == 'update'
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
-      new_sub_number = largest_sub_num.present? ? largest_sub_num + 1 : 1
+      # Don't increment submission number for updates
+      new_sub_number = largest_sub_num.present? ? largest_sub_num : 1
       upd = SubmissionType.find_by_code('UPD')
       if self.coming_from == 'rest'
         sub_method = SubmissionMethod.find_by_code('RSV')

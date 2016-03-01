@@ -28,6 +28,11 @@ module.exports = function() {
         callback();
     });
 
+    this.When(/^I add a trial status from (.*) to trial status (.*) along with why study stopped reason (.*) the respective checks (.*) will be there$/, function (statusFrom, statusTo, whyStudyStopped, errorsWarnings, table, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
     this.When(/^I add a trial status from (.*) to trial status (.*) with the condition (.*)$/, function (statusFrom, statusTo, conditionText, table, callback) {
     /*    statusTable = table.hashes();
         for (var i = 0; i < statusTable.length; i++) {

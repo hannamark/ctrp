@@ -75,7 +75,6 @@ module.exports = function() {
         addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
         addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
         addTrial.selectAddTrialFDARegulatedInterventionIndicator('2');
-        addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
         browser.sleep(25).then(callback);
     });
 
@@ -124,7 +123,7 @@ module.exports = function() {
         addTrial.getVerifyAddTrialResponsibleParty('Sponsor');
         projectFunctionsRegistry.verifyAddTrialOversightCountryOrganization('Gabon', 'Ministry of Health');
         projectFunctionsRegistry.verifyAddTrialOversightCountryOrganization('Italy', 'The Italian Medicines Agency');
-        addTrial.verifyAddTrialFDARegulatedInterventionIndicator('1', true);
+        addTrial.verifyAddTrialFDARegulatedInterventionIndicator('2', true);
         addTrial.verifyAddTrialSection801Indicator('1', true);
         addTrial.verifyAddTrialDataMonitoringCommitteeAppointedIndicator('1', true);
         browser.sleep(25).then(callback);
