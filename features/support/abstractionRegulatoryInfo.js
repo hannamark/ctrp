@@ -53,6 +53,9 @@ var abstractionRegulatoryInfo = function(){
     this.regulatoryInfoInvestigatorSearchOrg = element.all(by.id('org_search_modal'));
     //Sponsor Investigator
     this.regulatoryInfoInvestigatorPersonSearch = element.all(by.id('person_search_modal')); //by.css('button[ng-click="searchPerson(\\'lg\\')"]')
+    //Investigator Title Wraning message
+    this.regulatoryInfoResponsiblePartyInvesWaning = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.investigator_title)"]'));
+
     //Trial Oversight Authority
     this.regulatoryInfoAuthorityCountry = element(by.model('trialDetailView.authority_country'));
     this.regulatoryInfoAuthorityOrg = element(by.model('trialDetailView.authority_org'));
@@ -70,6 +73,9 @@ var abstractionRegulatoryInfo = function(){
 
     //page Header
     this.generalTrailHeader = element(by.css('h4.panel-title'));
+
+    //Labels Text
+    this.fdaaaTitle = element(by.css('h4.ng-scope'));
 
 
     this.authorityTable = element.all(by.css('.table.table-bordered.table-striped.table-condensed tbody tr'));
@@ -503,7 +509,6 @@ var abstractionRegulatoryInfo = function(){
     this.verifyTextFieldValue = function(getFieldName, getFieldValueToVerify, getFieldDesc){
         helper.getVerifyValue(getFieldName, getFieldValueToVerify, getFieldDesc);
     };
-
 
 
 

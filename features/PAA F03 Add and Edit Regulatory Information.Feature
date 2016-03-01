@@ -59,7 +59,7 @@ And I have selected "No" for FDA Regulated Intervention Indicator
 And I have selected "Yes", "No", "N/A" for Data Monitoring Committee Appointed Indicator
 Then the required Regulatory Information for the trial will be associated
 And the Section 801 Indicator will be set to "No"
-  @runthis
+
 Scenario: #7 I can add and edit Regulatory Information for a Regulated Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information screen
@@ -84,25 +84,25 @@ And the screen will be refreshed with the existing Regulatory Information FDAAA 
 Scenario: #10 Investigator is not null
 Given I have selected a trial to abstract 
 And I am on the Trial Regulatory Information screen
-When I select save
 And the Responsible Party Type is �Sponsor Investigator�
 And the Investigator is Null
+When I select save to verify warning message
 Then a warning message will appear �Please enter the Investigator�
 
 Scenario: #11 Investigator Title is not null
 Given I have selected a trial to abstract 
 And I am on the Trial Regulatory Information screen
-When I select save
 And the Responsible Party Type is �Sponsor Investigator�
 And the Investigator Title is Null
+When I select save to verify warning message
 Then a warning message will appear �Please enter the Investigator Title�
 
 Scenario: #12 Investigator Affiliation is not null
 Given I have selected a trial to abstract 
 And I am on the Trial Regulatory Information screen
-When I select save
 And the Responsible Party Type is �Principal Investigator�
 And the Investigator Affiliation is Null
+When I select save to verify warning message
 Then a warning message will appear �Please enter the Investigator Affiliation�
 
 Scenario: #13 "Upload from NCI CTRP" Note
@@ -111,7 +111,7 @@ And I am on the Trial Regulatory Information screen
 Then the label should be displayed below the Trial Regulatory Information section header
 |The information in this section is REQUIRED to enable "Upload from NCI CTRP" in ClinicalTrials.gov:|
 And ClinicalTrials.gov it a link to 
-|https://clinicaltrials.gov/|
+|https://clinicaltrials.gov|
 
 Scenario: #14 Can not have a duplicate trial Oversight Authority Country and Trial Oversight Authority Organization
 Given I am logged into the CTRP Protocol Abstraction application
@@ -120,17 +120,17 @@ And I have selected a Trial Oversight Authority Country from a list of all Trial
 And I have selected a Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
 When I select a Trial Oversight Authority Country and Trial Oversight Authority Organization that has already been associated with this trial
 Then a warning message will appear �The Trial Oversight Authority Country and Trial Oversight Authority Organization has already been selected.�
-
+  @runthis
 Scenario Outline: #15 Warning for null fields on the Trial Regulatory Information screen
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information screen
-When I select save
 And any of the following fields <fields> are null
+When I select save to verify warning message
 Then the following Warning messages <Warning message> will appear and the information associated with the trial will be associated with the trial
 
 Examples:
 |fields                              |Warning message               |
-|Responsible Party Type              |Responsible Party Typeis required for Upload to ClinicalTrials.gov|
+|Responsible Party Type              |Responsible Party Types required for Upload to ClinicalTrials.gov|
 |Trial Oversight Authority Country   |Trial Oversight Authority Country is required for Upload to ClinicalTrials.gov|
 |Trial Oversight Authority           |Trial Oversight Authority is required for Upload to ClinicalTrials.gov|
 |FDA Regulated Intervention Indicator|FDA Regulated Intervention Indicator is required for Upload to ClinicalTrials.gov|
