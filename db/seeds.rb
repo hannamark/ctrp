@@ -243,7 +243,7 @@ AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', val
 
 AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,html,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
 
-AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other Document,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
+AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHBLI')
 

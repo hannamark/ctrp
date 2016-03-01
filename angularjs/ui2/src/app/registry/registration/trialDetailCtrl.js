@@ -714,6 +714,7 @@
         function activate() {
             appendNewTrialFlag();
             getExpFlag();
+            adjustResearchCategoryArr();
             adjustTrialStatusArr();
 
             if (vm.curTrial.new) {
@@ -762,6 +763,14 @@
             } else {
                 if (vm.curTrial.study_source && vm.curTrial.study_source.code == 'EXP') {
                     vm.isExp = true;
+                }
+            }
+        }
+
+        function adjustResearchCategoryArr() {
+            for (var i = vm.researchCategoryArr.length - 1; i >= 0; i--) {
+                if (vm.researchCategoryArr[i].code == 'EXP') {
+                    vm.researchCategoryArr.splice(i, 1);
                 }
             }
         }
