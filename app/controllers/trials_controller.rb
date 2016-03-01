@@ -363,7 +363,7 @@ class TrialsController < ApplicationController
           from_status_code = statuses[i - 1]['trial_status_code']
         end
         to_status_code = statuses[i]['trial_status_code']
-        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code])
+        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code)
         @validation_msgs.append(validation_msg)
       end
     end
@@ -457,11 +457,23 @@ class TrialsController < ApplicationController
   end
 
   # Convert status code to name in validation messages
-  def convert_validation_msg (msg)
+  def convert_validation_msg (msg, from_status_code, to_status_code)
     if msg.has_key?('warnings')
       msg['warnings'].each do |warning|
         statusObj = TrialStatus.find_by_code(warning['status']) if warning.has_key?('status')
         warning['status'] = statusObj.name if statusObj.present?
+
+        if warning.has_key?('message')
+          if warning['message'] == 'Invalid Transition'
+            fromStatusObj = TrialStatus.find_by_code(from_status_code)
+            warning['from'] = fromStatusObj.name if fromStatusObj.present?
+            toStatusObj = TrialStatus.find_by_code(to_status_code)
+            warning['to'] = toStatusObj.name if toStatusObj.present?
+          elsif warning['message'] == 'Duplicate'
+            dupStatusObj = TrialStatus.find_by_code(from_status_code)
+            warning['dupStatus'] = dupStatusObj.name if dupStatusObj.present?
+          end
+        end
       end
     end
 
@@ -469,6 +481,18 @@ class TrialsController < ApplicationController
       msg['errors'].each do |error|
         statusObj = TrialStatus.find_by_code(error['status']) if error.has_key?('status')
         error['status'] = statusObj.name if statusObj.present?
+
+        if error.has_key?('message')
+          if error['message'] == 'Invalid Transition'
+            fromStatusObj = TrialStatus.find_by_code(from_status_code)
+            error['from'] = fromStatusObj.name if fromStatusObj.present?
+            toStatusObj = TrialStatus.find_by_code(to_status_code)
+            error['to'] = toStatusObj.name if toStatusObj.present?
+          elsif error['message'] == 'Duplicate'
+            dupStatusObj = TrialStatus.find_by_code(from_status_code)
+            error['dupStatus'] = dupStatusObj.name if dupStatusObj.present?
+          end
+        end
       end
     end
 

@@ -22,14 +22,14 @@ Then the Trial Administration and Scientific sections (listed below) will locked
 |Trial Design|
 |Trial Description|
 |Interventions|
-|Arms|
+|Arms/Groups|
 |Eligibility Criteria|
 |Associated Trials|
 |Disease / Condition|
 |Data Table 4 Anatomic Sites|
 |Outcome Measures|
-|Sub-Groups|
-|Bio Markers|
+|Sub-Groups Stratification|
+|Markers|
 And the Check Out Type will be Administrative
 And the Administrative Check Out User will be my User ID
 And the Administrative Check Out Date will be the current date and time
@@ -67,14 +67,14 @@ Then the Trial Scientific sections (listed below) will locked out from other Abs
 |Trial Design|
 |Trial Description|
 |Interventions|
-|Arms|
+|Arms/Groups|
 |Eligibility Criteria|
 |Associated Trials|
 |Disease / Condition|
 |Data Table 4 Anatomic Sites|
 |Outcome Measures|
-|Sub-Groups|
-|Bio Markers|
+|Sub-GroupsStratification|
+|Markers|
 And the Check Out Type will be Scientific
 And the Scientific Check Out User will be my User ID
 And the Scientific Check Out Date will be the current date and time
@@ -102,14 +102,14 @@ Then the Trial Administration and Scientific sections (listed below) will unlock
 |Trial Design|
 |Trial Description|
 |Interventions|
-|Arms|
+|Arms/Groups|
 |Eligibility Criteria|
 |Associated Trials|
 |Disease / Condition|
 |Data Table 4 Anatomic Sites|
 |Outcome Measures|
-|Sub-Groups|
-|Bio Markers|
+|Sub-Groups Stratification|
+|Markers|
 And the Check In Type will be Administrative
 And the Administrative Check In User will be my User ID
 And the Administrative Check In Date will be the current date and time
@@ -154,14 +154,14 @@ Then the Trial Scientific sections (listed below) will unlocked and to allow Abs
 |Trial Design|
 |Trial Description|
 |Interventions|
-|Arms|
+|Arms/Groups|
 |Eligibility Criteria|
 |Associated Trials|
 |Disease / Condition|
 |Data Table 4 Anatomic Sites|
 |Outcome Measures|
-|Sub-Groups|
-|Bio Markers|
+|Sub-Groups Stratification|
+|Markers|
 And the Check In Type will be Scientific
 And the Scientific Check In User will be my User ID
 And the Scientific Check In Date will be the current date and time

@@ -33,7 +33,7 @@
             vm.docSubtypeShown = false;
             vm.docTypeError = '';
             vm.formError = '';
-            vm.documentTypes = documentTypes.types.split(',');
+            vm.documentTypes = documentTypes.types.split(',').sort();
             var requiredDocTypes = _.filter(vm.documentTypes, function(type) {
                 return type.indexOf('IRB') > -1 || type.indexOf('Protocol Doc') > -1;
             });
