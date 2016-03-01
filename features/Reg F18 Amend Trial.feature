@@ -24,8 +24,6 @@ And I will be able to update trial start date, primary completion date, and comp
 And I will be able to add additional IND or IDE information
 And I will be able to update participating site status
 And I will be able to review existing Trial Related Documents type
-
-
 And I will enter the required amended Protocol Document
 And I will enter the required Change Memo Document or Protocol Highlighted Document
 And I will enter the IRB Approval Document
@@ -42,6 +40,7 @@ When I select the review option
 Then CTRP will check the amended information 
 And if there are no errors, I can submit the trial amendment
 And the information updates will be submitted as an amendment with the Amendment Number in CTRP
+Ans an email entitled " Amendment Submission" will be sent to the the trial owner (Emails list found on the shared drive under Functional/registration: CTRP System Generated Emails)
 And the CTRO will be able to abstract the amended trial information
 And the Submission source is a Cancer Center
 And the Submission Method is Registry
