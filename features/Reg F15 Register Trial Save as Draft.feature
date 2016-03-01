@@ -10,6 +10,7 @@ When I have selected Save as Draft
 Then the CTRP application will save all information that was entered as a draft
 And I will be able to search for saved draft registrations
 And I will be able to complete the registration at a future date
+And the an email entitled " Trial Partial Registration" will be sent to the user ( Emails list can be found on the share drive under functional/Registartion: CTRP System Generated Emails)
 
 Examples:
 
