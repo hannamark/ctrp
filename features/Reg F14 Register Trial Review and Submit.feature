@@ -68,6 +68,8 @@ When I have selected Review Trial
 Then the CTRP application will check that all required fields have been entered
 And the CTRP application will check that all registration sections have been completed
 And the registration errors will be displayed
+When I have entered a duplicate Lead Organization Trial Identifier for the selected Lead Organization
+Then the error message " A Trial exists in the system with the same Lead Organization Trial identifier for the selected Lead Organization" will be displayed
 And the option to Register Trial will be not available
 
 Scenario: #3 I can submit my completed trial registration
@@ -81,6 +83,7 @@ And the trial record will have the NCI Identifer with the format NCI-YYYY-NNNNN
 And the Submission Source is a Cancer Center
 And the submission method is Registry
 And the Submission Type is Original
+And the 
 
 
 Scenario: #4 I can edit my completed trial registration
