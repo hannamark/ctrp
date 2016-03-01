@@ -161,66 +161,7 @@ As a CTRP User, I can register a trial's key dates and trial status
       |Institutional            |
 
 
-      Scenario Outline:#2 Trial Status Rules
-    Given I have selected the option to register a trial type 
-  
-      |National                 |
-      |Externally Peer-Reviewed |
-      |Institutional            |
-
-    And I am on the Register Trial Status screen 
-    When the trial status type
-     
-      |Administratively Complete    |
-      |Withdrawn                    |
-      |Temporarily Closed to accrual| for the trial status type
-      
-    Then I must answer the question Why Study Stopped? and a green bubble will appear in the trial status Actions 
-    
-    Scenario Outline: #3 Invalid Trial Status Transitions 
-   Given I have selected the option to register a trial type
-   
-      |National                 |
-      |Externally Peer-Reviewed |
-      |Institutional            |
-      
-    And I am on the Register Trial Status screen
-   When I choose a trial status <status-from> from the status drop down box
-    And the trial status changes from <Status-from> to status <status-to>
-    And I click on the add status button
-   Then and a message <error-warning-text> will be displayed in the validation messages column 
-   
-   
-    Examples: 
-
-
-      |<Status-From>            |<Status-to>               |<Error-warning-text>                                                         |
-      |Review                   |Active                    |Warning: Interim satus [APPROVED] is missing                                 |
-      |Review                   |Enrolling by Invitation   |Warning: Interim status [APPROVED] is missing                                |
-      |Approved                 |Approved                  |Error: Duplicate [APPROVED] status is not allowed                            |
-      |StatusZero               |Closed to Accrual         |Error: Interim status [ACTIVE] is missing                                    |
-      |StatusZero               |Closed to Accrual         |Warning: Interim status [IN REVIEW] is missing                               |
-      |StatusZero               |Closed to Accrual         |Warning: Interim status [APPROVED] is missing                                |  	
-      |Active                   |Enrolling by invitation   |Error: Invalid status transition from [ACTIVE] to [ENROLLING BY INVITATION]  |
-      |Active                   |Complete                  |Error: Interim status [CLOSED TO ACCRUAL] is missing                         |
-      |Active	                |Complete                  |Warning: Interim status [CLOSED TO ACCRUAL AND INTERVENTION] is missing      |
-      |Active	                |Review                    |Error:Invalid status transition from [ACTIVE] to [IN REVIEW]                 |
-      |Enrolling by Invitation  |Active                    |Error:Invalid status transition from [ENROLLING BY INVITATION] to [ACTIVE]   |
-      
-  Scenario: #4 Transition rules 
-    Given I have selected the option to register a trial type
-   
-      |National                 |
-      |Externally Peer-Reviewed |
-      |Institutional            |
-      
-    And I am on the Register Trial Status screen
-    When Trial Status Transition from <TrialStatusA> to <TrialStatusB> on the same day
-    Then 
-
-
-   
-   Scenario Outline:#5 I can enter a trial status and trial status date for a trial
+     Scenario Outline:#5 I can enter a trial status and trial status date for a trial
 Given I have selected the option to register a trial type 
 
       |National                 |
@@ -234,8 +175,7 @@ When the system will check the entered <date> and <status> against validation ru
 @https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules
 Then the <date> and <status> will be validated and displayed on the trial status history table with any errors and warnings 
 
-
-	 Examples:
+Examples:
      
       |Status Date | Status                                        |Why study stopped      |
       |11-05-2015  | Approved                                      |                       
@@ -265,29 +205,11 @@ Then the <date> and <status> will be validated and displayed on the trial status
    And I must provide a comment explaining why deleting this trial status
    When the comment is entered in the provided box
    And click on the delete button
-   Then the selected status will be deleted
+   Then the selected status will be marked as deleted
+   And the record will be deleted after the trial is submitted
    
- 
-   Then the Trial Status history will be updated and no errors will be indicated during Trial Review
    
-     Scenario Outline: #7 I can Edit Trial Status
-    Given I have selected the option to register a trial type 
-
-      |National                 |
-      |Externally Peer-Reviewed |
-      |Institutional            |
-     
-     And I am on the Register trial Status History table
-     When I click on the edit button in the Actions column for the trial status I want to edit
-     And I must have entered a Status Date 
-     And I must have entered a Trial status
-     And I have entered Why Study Stopped 
-     And I must have entered a comment 
-     And I have clicked on the save button
-     Then the trial status section will not indicate any errors during Trial Review
-     
-     
-       Scenario Outline: #8 I can enter a Trial Dates as either Actual or Anticipated
+     Scenario Outline: #8 I can enter a Trial Dates as either Actual or Anticipated
     Given I have selected the option to register a trial type 
 
       |National                 |
