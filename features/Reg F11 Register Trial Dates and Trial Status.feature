@@ -160,35 +160,55 @@ As a CTRP User, I can register a trial's key dates and trial status
       |Externally Peer-Reviewed |
       |Institutional            |
 
-
-     Scenario Outline:#5 I can enter a trial status and trial status date for a trial
-Given I have selected the option to register a trial type 
-
-      |National                 |
-      |Externally Peer-Reviewed |
-      |Institutional            |
-      
+Scenario Outline:#5 I can enter a trial status and trial status date for a trial
+Given I have selected the option to register a <trialtype> 
 And I am on the Register Trial Status screen
-When I have selected a date <status date> and a status <status> and explained why study stopped <why study stopped>
-Then I click on the add status button
-When the system will check the entered <date> and <status> against validation rules 
-@https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules
-Then the <date> and <status> will be validated and displayed on the trial status history table with any errors and warnings 
+When I add a <status date> and a status <statusType> and explained why study stopped <why study stopped> 
+      
+      |status date                                            | statusType                                    |why study stopped      |
+      |Date Entered                                           |In Review                                      |                       |
+      |Future Date based on previous status entered           | Approved                                      | 					  |                      
+      |Future Date based on previous status entered           | Active                                        |                   	  |
+      |Future Date based on previous status entered           | Enrolling by invitation                       |                       |
+      |Future Date based on previous status entered           | Closed to accrual                             |                       |
+      |Future Date based on previous status entered           | Close to accrual and Intervention             |                       |
+      |Future Date based on previous status entered           | Temporarily Closed to accrual                 |Text                   |
+      |Future Date based on previous status entered           | Temporarily closed to accrual and Intervention|Text                   |
+      |Future Date based on previous status entered           | Withdrawn                                     |                       |
+      |Future Date based on previous status entered           | Administratively Complete                     |Text                   |
+      |Future Date based on previous status entered           | Complete                                      |Text                   |
+     
+Then no errors will be displayed
 
 Examples:
-     
-      |Status Date | Status                                        |Why study stopped      |
-      |11-05-2015  | Approved                                      |                       
-      |11-06-2015  | Active                                        |                   	   |
-      |11-06-2015  | Enrolling by invitation                       |                       |
-      |11-05-2016  | Closed to accrual                             |                       |
-      |11-05-2016  | Close to accrual and Intervention             |                       |
-      |11-08-2015  | Temporarily Closed to accrual                 |Text                   |
-      |11-08-2015  | Temporarily closed to accrual and Intervention|Text                   |
-      |11-08-2015  | Withdrawn                                     |Text                   |
-      |11-08-2015  | Administratively Complete                     |Text                   |
-      |11-05-2017  | Complete                                      |                       |
 
+	  |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            | 
+     
+      
+   Scenario Outline:#5a I can enter a trial status and trial status date for a trial
+Given I have selected the option to register a <trialtype> 
+And I am on the Register Trial Status screen
+  When I add a trial date <statusDateFrom> and trial status from <statusFrom> to trial date <statusDateTo> trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there
+
+  
+  
+   |statusDateFrom   |statusFrom	|statusDateTo                                    |statusTo	   |whyStudyStopped    |errorsWarnings	                                          |
+   | Date Entered Now| Approved     |Same Date entered later                         |In Review    |                   |Warning: Invalid Transition from [Approved] to [In Review]|
+   |Date Entered Now | Approved     |Different Date in the Future                    |In Review    |                   |Warning: Invalid Transition from [Approved] to [In Review]|
+   |Date Entered past| Active       |Date entered Now                                |Aproved      |                   |Warning: Invalid Transition from [Active] to [Approved]
+Examples:
+
+	  |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            | 
+     
+      
+   
+   
+   
+   
    
     Scenario Outline: #6 I can add and delete a trial
     Given I have selected the option to register a trial type 
