@@ -1,138 +1,21 @@
 class Ws::ApiTrialsController < Ws::BaseApiController
 
-  @@masterKeyMap = Hash.new();
 
-  @@masterKeyMap.store("phase",["required","amendable"])
-  @@masterKeyMap.store("accrualDiseaseTerminology",["required","amendable"])
-  @@masterKeyMap.store("primaryPurpose",["required","amendable"])
-  #@@masterKeyMap.store("interventionalDesign",["notrequired"])
-  #@@masterKeyMap.store("nonInterventionalDesign",[]"notrequired"])
-  @@masterKeyMap.store("summary4FundingSponsor",["required","amendable"])
-  @@masterKeyMap.store("trialStartDate",["required","updatable","amendable"])
-  @@masterKeyMap.store("primaryCompletionDate",["required","updatable","amendable"])
-  @@masterKeyMap.store("completionDate",["required","updatable","amendable"])
-  @@masterKeyMap.store("grant",["notrequired","updatable","amendable"])
-  @@masterKeyMap.store("category",["required","amendable"])
-  @@masterKeyMap.store("title",["required","amendable"])
-  @@masterKeyMap.store("leadOrganization",["required","amendable"])
-  @@masterKeyMap.store("sponsor",["required","amendable"])
-  @@masterKeyMap.store("pi",["required","amendable"])
-  @@masterKeyMap.store("fundedByNciGrant",["required","amendable"])
-  @@masterKeyMap.store("responsibleParty",["required","amendable"])
+  @@requestString
 
-  @@masterKeyMap.store("protocolDocument",["required","updatable","amendable"])
-  @@masterKeyMap.store("irbApprovalDocument",["required","updatable","amendable"])
-  @@masterKeyMap.store("participatingSitesDocument",["notrequired","updatable","amendable"])
-  @@masterKeyMap.store("informedConsentDocument",["notrequired","updatable","amendable"])
-  @@masterKeyMap.store("otherDocument",["notrequired","updatable","amendable"])
-
-  @@masterKeyMap.store("changeMemoDocument",["notrequired","amendable"])
-  @@masterKeyMap.store("protocolHighlightDocument",["notrequired","amendable"])
-
-  @@mode
-
-
-  #load_master_key_map()
+  before_action :validate_rest_request
 
 
   before_filter only: [:create] do
 
-    string = request.body.read
-    @docs =Array.new()
+    @p = TrialXml.load_from_xml(REXML::Document.new(@@requestString).root)
 
-    begin
-    bad_doc = Nokogiri::XML(string) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
-    rescue Nokogiri::XML::SyntaxError => e
-    puts "caught exception: #{e}"
+    if !@p.errors.empty?
+       render xml: @p.errors, status: :bad_request
     end
 
+  end # end of before_create
 
-
-  #  validate('input.xml', 'schema.xdf', 'container').each do |error|
-   #   puts error.message
-   # end
-
-
-    xsd = Nokogiri::XML::Schema(File.open("/Users/dullam/Downloads/Registration ws-6.xsd"))
-    #puts xsd
-
-    doc = Nokogiri::XML(string)
-
-   # puts doc
-
-    xsd.validate(doc).each do |error|
-       puts error.message
-    end
-
-    @errors =Hash.new
-    @trialMasterMap = Hash.new
-    @trialService = TrialService.new
-    @trialMasterMap["coming_from"] = "rest"
-    @@mode="create"
-
-    if request.content_type == "application/xml"
-        @object = Hash.from_xml(string)
-        puts "before raw input"
-        puts @object
-        puts "after raw output"
-        #doc = Nokogiri::XML(string)
-        #@object=Hash.from_xml(doc.to_s)
-      else
-        @errors.store("xml request body is not wellformed","");
-    end
-
-
-    if !@object.has_key?("CompleteTrialRegistration")
-      @errors.store("tns:CompleteTrialRegistration","this node has to be included in the request; Parent node for this request");
-    else
-      trialkeys = @object["CompleteTrialRegistration"]
-    end
-
-
-      trialkeys.has_key?("leadOrgTrialID") ? @trialMasterMap.store("lead_protocol_id",trialkeys["leadOrgTrialID"]) : @errors.store("leadOrgTrialID", "please verify its not existed")
-
-
-
-
-
-    if !@errors.empty?
-      render xml: @errors, status: :bad_request
-    else
-
-       @validate_errors = Hash.new();
-       @grants=Array.new()
-       @trial_funding_sources=Array.new
-       @trialDocs = Array.new
-       @trial_status_wrapper=Array.new();
-       @other_ids = Array.new()
-       @ind_ides=Array.new
-
-         @@masterKeyMap.each do | key, v |
-         process_entity(trialkeys,key)
-         end
-
-
-       @trialMasterMap.store("program_code",trialkeys["programCode"]) if trialkeys.has_key?("programCode")
-       process_trialstatus(trialkeys)
-       process_interventional_design(trialkeys)
-       process_regulatory_section(trialkeys)
-       process_pilot(trialkeys)
-       process_other_trial_id(trialkeys)
-
-       if trialkeys.has_key?("ind") || trialkeys.has_key?("ide")
-         @trialMasterMap.store("ind_ide_question","Yes")
-         process_ind_ides(trialkeys)
-       else
-         @trialMasterMap.store("ind_ide_question","No")
-       end
-
-       @trialMasterMap.store("trial_documents_attributes",@trialDocs);
-
-       render xml: @validate_errors, status: :bad_request if !@validate_errors.empty?
-
-    end
-
-end # end of before_create
 
   before_filter only: [:update] do
     @docs =Array.new()
@@ -158,9 +41,7 @@ end # end of before_create
       @errors.store("xml request body is not wellformed","");
     end
 
-    if !@object.has_key?("CompleteTrialUpdate")
-      @errors.store("tns:CompleteTrialUpdate","this node has to be included in the request; Parent node for this request");
-    end
+
 
     trialkeys = @object["CompleteTrialUpdate"]
     @trialMasterMap = Hash.new
@@ -195,9 +76,7 @@ end # end of before_create
     render xml: @validate_errors, status: :bad_request if !@validate_errors.empty?
 
     #@trialMasterMap["accrual_disease_term_id"]
-  end
-
-
+  end #end of before_update
 
 
   before_filter only: [:amend] do
@@ -228,12 +107,6 @@ end # end of before_create
       @errors.store("xml request body is not wellformed","");
     end
 
-
-    if !@object.has_key?("CompleteTrialAmendment")
-      @errors.store("tns:CompleteTrialAmendment","this node has to be included in the request; Parent node for this request");
-    end
-
-
    render xml: @errors, status: :bad_request if !@errors.empty?
 
     trialkeys = @object["CompleteTrialAmendment"]
@@ -241,7 +114,7 @@ end # end of before_create
 
 
     @grants=Array.new()
-        @trial_status_wrapper=Array.new();
+    @trial_status_wrapper=Array.new();
     @trialDocs = Array.new
     @trial_funding_sources=Array.new
     @other_ids = Array.new()
@@ -252,7 +125,6 @@ end # end of before_create
       delete_x(trialkeys,Grant,@grants,"grants_attributes")
     end
 
-
     delete_x(trialkeys,TrialStatusWrapper,@trial_status_wrapper,"trial_status_wrappers_attributes")
     process_trialstatus(trialkeys)
 
@@ -262,29 +134,16 @@ end # end of before_create
 
 
 
-    if @object.has_key?("amendmentDate")
-     # @trialMasterMap["comp_date_qual"]=trialkeys["amendmentDate"]
-    else
-      #@validate_errors.store("tns:amendmentDate","this node has to be included in the request;");
 
-    end
-
-
-    #################################################
-    if trialkeys.has_key?("leadOrgTrialID")
       @trialMasterMap.store("lead_protocol_id",trialkeys["leadOrgTrialID"])
-    end
-
-    if trialkeys.has_key?("programCode")
       @trialMasterMap.store("program_code",trialkeys["programCode"]);
-    end
 
-    delete_x(trialkeys,OtherId,@other_ids,"other_ids_attributes")
-    process_other_trial_id(trialkeys)
+      delete_x(trialkeys,OtherId,@other_ids,"other_ids_attributes")
+      process_other_trial_id(trialkeys)
 
     process_pilot(trialkeys)
     process_interventional_design(trialkeys)
-       process_regulatory_section(trialkeys)
+    process_regulatory_section(trialkeys)
 
     if trialkeys.has_key?("summary4FundingSponsor")
       delete_x(trialkeys,TrialFundingSource,@trial_funding_sources,"trial_funding_sources_attributes")
@@ -310,29 +169,20 @@ end # end of before_create
     render xml: @validate_errors, status: :bad_request if !@validate_errors.empty?
 
     #@trialMasterMap["accrual_disease_term_id"]
-  end
-
-
+  end #end of before_amend
 
 
 
   def create
-    puts @trialMasterMap
-    @trial= Trial.new(@trialMasterMap)
-    #@person.assign_attributes(@json['person'])
-    if @trial.save
+
+   @trial = @p.trial
+
+    if @trial.save!
       if request.content_type == "application/json"
         print response
         render json: @trial
         return
       elsif request.content_type == "application/xml"
-        len = @docs.length
-        if len > 0
-          for i in 0..len-1
-            temp=@docs[i]
-            File.delete(temp)
-          end
-        end
         render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
 
       else
@@ -383,6 +233,24 @@ end # end of before_create
 
 
   private
+
+  def validate_rest_request
+
+    @@requestString = request.body.read
+
+    xsd = Nokogiri::XML::Schema(File.open("/local/content/ctrp/apps/ctrp/ws.xsd"))
+    #puts xsd
+
+    doc = Nokogiri::XML(@@requestString)
+    p doc.root
+
+
+    xsd.validate(doc).each do |error|
+      puts error.message
+    end
+
+
+  end
 
 
   def validate(document_path, schema_path, root_element)
@@ -454,65 +322,7 @@ def process_category(trialkeys)
 end
 
 
-  def process_grants(trialkeys)
 
-    p "in grants"
-
-    if trialkeys["grant"].kind_of?(Array)
-        if trialkeys["grant"].length > 0
-          len=trialkeys["grant"].length
-
-          puts "grants length *********>>>>>>>> "
-
-          puts trialkeys["grant"]
-
-          puts len
-          for i in 0..len-1
-            if trialkeys["grant"][i].has_key?("fundingMechanism") #&& trialkeys["grant"][i].has_key?("nihInstitutionCode") && trialkeys["grant"][i].has_key?("serialNumber") && trialkeys["grant"][i].has_key?("nciDivisionProgramCode")
-
-              fundingMechanism=trialkeys["grant"][i]["fundingMechanism"]
-              nihInstitutionCode=trialkeys["grant"][i]["nihInstitutionCode"]
-              serialNumber=trialkeys["grant"][i]["serialNumber"]
-              nciDivisionProgramCode=trialkeys["grant"][i]["nciDivisionProgramCode"]
-              myHash= Hash.new();
-              myHash.store("funding_mechanism",fundingMechanism);
-              myHash.store("institute_code",nihInstitutionCode);
-              myHash.store("serial_number",serialNumber);
-              myHash.store("nci",nciDivisionProgramCode);
-
-              ###Giving Relaxation , Here if the given date is valid then storing it otherwise leaving it. ====RELAX===
-              @grants.push(myHash) if validate_grant(fundingMechanism,nihInstitutionCode,serialNumber,nciDivisionProgramCode)
-
-            else
-              @validate_errors.store("tns:grant"," For each grant fundingMechanism, nihInstitutionCode, serialNumber, nciDivisionProgramCode expected;")
-              break;
-            end
-
-          end
-
-        end
-      else
-        if trialkeys["grant"].has_key?("fundingMechanism") && trialkeys["grant"].has_key?("nihInstitutionCode") && trialkeys["grant"].has_key?("serialNumber") && trialkeys["grant"].has_key?("nciDivisionProgramCode")
-
-          fundingMechanism=trialkeys["grant"]["fundingMechanism"]
-          nihInstitutionCode=trialkeys["grant"]["nihInstitutionCode"]
-          serialNumber=trialkeys["grant"]["serialNumber"]
-          nciDivisionProgramCode=trialkeys["grant"]["nciDivisionProgramCode"]
-
-          myHash= Hash.new();
-          myHash.store("funding_mechanism",fundingMechanism);
-          myHash.store("institute_code",nihInstitutionCode);
-          myHash.store("serial_number",serialNumber);
-          myHash.store("nci",nciDivisionProgramCode);
-
-          @grants.push(myHash) if validate_grant(fundingMechanism,nihInstitutionCode,serialNumber,nciDivisionProgramCode)
-        end
-    end
-
-
-      @trialMasterMap.store("grants_attributes",@grants);
-
-  end
 
 
 def   validate_grant(fundingMechanism,nihInstitutionCode,serialNumber,nciDivisionProgramCode)
@@ -536,47 +346,27 @@ end
 
 
   def process_trial_date(trialkeys,date_attr,date_qual_str,date_str)
-    if !trialkeys[date_attr].kind_of?(Array)
-    ######&& ( trialkeys[date_attr]["type"].to_s.downcase == "Anticipated".to_s.downcase || trialkeys[date_attr]["type"].to_s.down_case == "Actual".to_s.downcase)
       @trialMasterMap[date_qual_str]=trialkeys[date_attr]["type"];
       @trialMasterMap[date_str]=trialkeys[date_attr]["__content__"];
-    else
-      @validate_errors.store(date_attr,"Exatly one date expected; or valid types are Anticipated and Actual ")
-
-    end
   end
 
   def process_other_trial_id(trialkeys)
 
-
-     clinical_id_map=Hash.new()
      other_id_map =Hash.new()
-
-   if trialkeys.has_key?("clinicalTrialsDotGovTrialID")
-
-       clinical_id_map["protocol_id_origin_id"]=ProtocolIdOrigin.find_by_name("ClinicalTrials.gov Identifier").id
-       clinical_id_map["protocol_id"]=trialkeys["clinicalTrialsDotGovTrialID"]
-       @other_ids.push(clinical_id_map);
-
+     other_id_map["protocol_id_origin_id"]=ProtocolIdOrigin.find_by_name("Other Identifier").id
+     other_id_map["protocol_id"]=trialkeys["otherTrialID"]
+     @other_ids.push(other_id_map);
   end
 
-  if trialkeys.has_key?("otherTrialID")
+    def process_clinical_trials_dot_gov_trial_ID(trialkeys)
 
-       other_id_map["protocol_id_origin_id"]=ProtocolIdOrigin.find_by_name("Other Identifier").id
-       other_id_map["protocol_id"]=trialkeys["otherTrialID"]
-       @other_ids.push(other_id_map);
-
-  end
-
- @trialMasterMap.store("other_ids_attributes",@other_ids) if @other_ids.any?
-
-  end
-
+        clinical_id_map=Hash.new()
+        clinical_id_map["protocol_id_origin_id"]=ProtocolIdOrigin.find_by_name("ClinicalTrials.gov Identifier").id
+        clinical_id_map["protocol_id"]=trialkeys["clinicalTrialsDotGovTrialID"]
+        @other_ids.push(clinical_id_map);
+    end
 
   def process_regulatory_section(trialkeys)
-
-    #:intervention_indicator, :sec801_indicator, :data_monitor_indicator,
-   if trialkeys.has_key?("regulatoryInformation")
 
      if trialkeys["regulatoryInformation"].has_key?("country") && trialkeys["regulatoryInformation"].has_key?("authorityName")
 
@@ -608,7 +398,6 @@ end
 
          end
      end
-
 
      if trialkeys["regulatoryInformation"].has_key?("dataMonitoringCommitteeAppointed")
        sec=trialkeys["regulatoryInformation"]["dataMonitoringCommitteeAppointed"]
@@ -645,10 +434,6 @@ end
        end
 
      end
-   end
-
-
-
   end
 
 
@@ -660,28 +445,12 @@ end
       end
      end
 
-
-
-
   ############
 
  def process_organization(trialkeys,keyname,org_attr)
-
-   if !trialkeys[keyname].has_key?("existingOrganization")
-
-   @validate_errors.store("tns:leadOrganization","Lead organization expected; with existingOrganization with active status and CTRP Context")
-
-   else
-
-     if trialkeys[keyname]["existingOrganization"].has_key?("poID")
      org =trialkeys[keyname]["existingOrganization"]["poID"]
      trialService=TrialService.new
      trialService.active_ctrp_org_count(org) > 0 ? @trialMasterMap[org_attr]=org : @validate_errors.store("tns:sponsor","Not existed Org in CTRP 5.X ; expected active and CTRP org")
-   else
-     @validate_errors.store(keyname,"this node is exoected")
-   end
-   end
-
  end
 
   def process_pi(trialkeys)
@@ -753,7 +522,7 @@ end
 
 
   def process_pilot(trialkeys)
-      if trialkeys.has_key?("pilot")
+
         if trialkeys["pilot"].to_s.downcase == "true".to_s.downcase
             @trialMasterMap.store("pilot","Yes");
         elsif trialkeys["pilot"].to_s.downcase == "false".to_s.downcase
@@ -761,7 +530,7 @@ end
         else
             @validate_errors.store("tns:pilot","True, False are valid values;;");
          end
-      end
+
   end
 
 
@@ -966,41 +735,32 @@ end
  end
 
   def  process_interventional_design(trialkeys)
-
-    if trialkeys.has_key?("interventionalDesign") && trialkeys.has_key?("nonInterventionalDesign")
-      @validate_errors.store("interventional", "Both interventional and nonInterventional are not expected")
-    elsif !trialkeys.has_key?("interventionalDesign") && !trialkeys.has_key?("nonInterventionalDesign")
-      @validate_errors.store("interventional", "Either interventional or nonInterventional expected")
-    end
-
-    if trialkeys.has_key?("interventionalDesign")
       @trialMasterMap.store("research_category_id",ResearchCategory.find_by_name("Interventional").id);
-    elsif trialkeys.has_key?(trialkeys["nonInterventionalDesign"])
-      if trialkeys["nonInterventionalDesign"].has_key?("trialType")
-        @trialMasterMap.store("research_category_id",ResearchCategory.find_by_name(trialkeys["nonInterventionalDesign"]["trialType"]).id);
-      end
-    end
-
   end
 
-
+def process_non_interventional_design(trialkeys)
+  @trialMasterMap.store("research_category_id",ResearchCategory.find_by_name(trialkeys["nonInterventionalDesign"]["trialType"]).id);
+end
 
 
   def process_entity(trialkeys,attr)
-
-    if @@mode == "create"
-      !trialkeys.has_key?(attr) ?  @validate_errors.store(attr , "Required") : make_corresponding_call(trialkeys,attr)  if @@masterKeyMap[attr].include?("required")
-      make_corresponding_call(trialkeys,attr) if @@masterKeyMap[attr].include?("notrequired") && trialkeys.has_key?(attr)
-    elsif @@mode == "update"
-      make_corresponding_call(trialkeys,attr) if @@masterKeyMap[attr].include?("updatable") && trialkeys.has_key?(attr)
-    elsif @@mode == "amend"
-      make_corresponding_call(trialkeys,attr) if @@masterKeyMap[attr].include?("amendable") && trialkeys.has_key?(attr)
-    end
-
+       make_corresponding_call(trialkeys,attr)  if trialkeys.has_key?(attr)
   end
 
+
   def make_corresponding_call(trialkeys,attr)
-   case attr
+
+    case attr
+     when "trialStatus"
+     process_trialstatus(trialkeys)
+     when "regulatoryInformation"
+        process_regulatory_section(trialkeys)
+     when "pilot"
+       process_pilot(trialkeys)
+     when "otherTrialId"
+     process_other_trial_id(trialkeys)
+     when "clinicalTrialsDotGovTrialID"
+       process_clinical_trials_dot_gov_trial_ID(trialkeys)
      when "phase"
          process_phase(trialkeys)
      when "accrualDiseaseTerminology"
@@ -1050,10 +810,5 @@ end
    end
 
  end
-def validate(doc, schema_path, root_element)
-      schema = Nokogiri::XML::Schema(File.read(schema_path))
-      document = Nokogiri::XML(doc)
-      schema.validate(document.xpath("//#{root_element}").to_s)
-    end
 
 end #main end
