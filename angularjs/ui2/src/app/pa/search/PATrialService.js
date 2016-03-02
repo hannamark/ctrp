@@ -8,10 +8,10 @@
     angular.module('ctrp.app.pa')
         .factory('PATrialService', PATrialService);
 
-    PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', 'Upload',
+    PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', 'Upload', 'TrialService',
             '$rootScope', 'PromiseTimeoutService', 'HOST', 'LocalCacheService', 'uiGridConstants'];
 
-    function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, Upload,
+    function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, Upload, TrialService,
             $rootScope, PromiseTimeoutService, HOST, LocalCacheService, uiGridConstants) {
 
         var initTrialSearchParams = {
@@ -136,7 +136,8 @@
             getSiteRecruitementStatuses: getSiteRecruitementStatuses,
             getTrialDocumentTypes: getTrialDocumentTypes,
             uploadTrialRelatedDocs: uploadTrialRelatedDocs,
-            prepUploadingTrialRelatedDocs: prepUploadingTrialRelatedDocs
+            prepUploadingTrialRelatedDocs: prepUploadingTrialRelatedDocs,
+            groupTrialDesignData: groupTrialDesignData
         };
 
         return services;
@@ -409,6 +410,21 @@
                 return prepUploadingTrialRelatedDocs(trialDocObj, trialId);
             });
 
+            return PromiseTimeoutService.groupPromises(promises);
+        }
+
+        /**
+         * Get grouped data objects/arrays for Trial Design,
+         * the ordered array: phases, research_category, primaryPurpose, secondaryPurpose
+         * @return {Array of promises} To be resolved as an array
+         */
+        function groupTrialDesignData() {
+            var promises = [
+                TrialService.getPhases(),
+                TrialService.getResearchCategories(),
+                TrialService.getPrimaryPurposes(),
+                TrialService.getSecondaryPurposes(),
+            ];
             return PromiseTimeoutService.groupPromises(promises);
         }
 

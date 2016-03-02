@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224222501) do
+ActiveRecord::Schema.define(version: 20160302210745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -926,6 +926,10 @@ ActiveRecord::Schema.define(version: 20160224222501) do
     t.integer  "submission_source_id"
     t.integer  "submission_method_id"
     t.integer  "user_id"
+    t.string   "acknowledge",          limit: 255
+    t.text     "acknowledge_comment"
+    t.date     "acknowledge_date"
+    t.string   "acknowledged_by",      limit: 255
   end
 
   add_index "submissions", ["amendment_reason_id"], name: "index_submissions_on_amendment_reason_id", using: :btree
@@ -1231,6 +1235,7 @@ ActiveRecord::Schema.define(version: 20160224222501) do
     t.integer "version_id"
     t.string  "foreign_key_name", null: false
     t.integer "foreign_key_id"
+    t.text    "foreign_details"
   end
 
   add_index "version_associations", ["foreign_key_name", "foreign_key_id"], name: "index_version_associations_on_foreign_key", using: :btree
