@@ -1,0 +1,38 @@
+<div class="row">
+    <form class="form-horizontal" role="form" name="trial_design_form" novalidate ctrp-submit="designView.submitForm()">
+        <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
+            <legend class="sub-bordered">
+                Trial Design - {{paTrialOverview.trialDetailObj.research_category.name}}
+            </legend>
+            <!-- research categories -->
+            <div class="form-group">
+                <label for="research_category" class="control-label col-xs-12 col-sm-2">Research Category</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="research_category" id="research_category"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.research_category_id"
+                        ng-options="cat.id as cat.name for cat in designView.researchCategories"
+                        >
+                        <option value="">- Please select a research category...</option>
+                        </select>
+                </div>
+            </div>
+            <!-- end of research categories -->
+
+            <!-- primary purposes -->
+            <div class="form-group">
+                <label for="primary_purpose" class="control-label col-xs-12 col-sm-2">Primary Purpose</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="primary_purpose" id="primary_purpose"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.primary_purpose_id"
+                        ng-options="purpose.id as purpose.name for purpose in designView.primaryPurposes"
+                        >
+                        <option value="">- Please select a primary purpose...</option>
+                        </select>
+                </div>
+            </div>
+            <!-- end of primary purposes -->
+        </fieldset>
+    </form>
+</div>

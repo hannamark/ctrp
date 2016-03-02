@@ -1,0 +1,43 @@
+<div class="row">
+    <uib-accordion close-others="false">
+        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+            <uib-accordion-heading>
+                Trial Descriptions <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+            </uib-accordion-heading>
+            <div class="row">
+                <form name="desc_form" role="form" class="form-horizontal" novalidate ctrp-submit="descView.saveTrialDescription()">
+                    <!-- fieldset for Title -->
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                        <legend class="sub-bordered">Title</legend>
+
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(desc_form.brief_title)}">
+                            <label for="brief_title" class="control-label col-xs-12 col-sm-2">Brief Title</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <textarea name="trial_brief_title"
+                                          id="brief_title"
+                                          rows="5"
+                                          class="form-control"
+                                          ng-model="descView.curTrial.brief_title"
+                                          ng-maxlength="20"
+                                          ng-required="true">
+                                </textarea>
+                            </div>
+                            <span ng-messages="ctrpbtn.desc_form.needsAttention(desc_form.trial_brief_title) && desc_form.brief_title.$error">
+                              <span class="help-block" ng-message="required">Please enter the Brief Title</span>
+                            </span>
+                        </div>
+                    </fieldset>
+                    <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                        <div class="btn-toolbar">
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="descView.saveTrial()">Save</button>
+                            <button type="button"class="btn btn-warning pull-right" ng-click="descView.reload()" restriction-field>
+                                <i class="glyphicon glyphicon-remove"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
+</div>
