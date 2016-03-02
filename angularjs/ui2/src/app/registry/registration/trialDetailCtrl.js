@@ -449,7 +449,7 @@
 
         // Add trial status to a temp array
         vm.addStatus = function () {
-            if (vm.status_date && vm.trial_status_id) {
+            if (vm.status_date && vm.trial_status_id && (vm.why_stopped_disabled || (!vm.why_stopped_disabled && vm.why_stopped))) {
                 var newStatus = {};
                 newStatus.status_date = DateService.convertISODateToLocaleDateStr(vm.status_date);
                 newStatus.trial_status_id = vm.trial_status_id;
