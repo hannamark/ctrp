@@ -14,7 +14,7 @@
                     url: '/trial-description',
                     templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_description.html',
                     controller: 'pasTrialDescriptionCtrl as descView',
-                resolve: {
+                    resolve: {
                     TrialService: 'TrialService',
                     PATrialService: 'PATrialService',
                     trialDetailObj: function($stateParams, TrialService) {
@@ -29,8 +29,14 @@
                 })
                 .state('main.pa.trialOverview.trialDesign', {
                     url: '/trial-design',
-                    templateUrl: '',
-                    controller: '',
+                    templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_design.html',
+                    controller: 'pasTrialDesignCtrl as designView',
+                    resolve: {
+                        PATrialService: 'PATrialService',
+                        groupedTrialDesignData: function(PATrialService) {
+                            return PATrialService.groupTrialDesignData();
+                        }
+                    },
                     section: 'pa',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
