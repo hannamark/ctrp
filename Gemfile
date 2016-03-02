@@ -93,6 +93,8 @@ gem 'rufus-scheduler'
 gem 'dbi'
 
 gem 'nokogiri'
+gem 'xml-mapping'
 
 gem 'cobravsmongoose'
 
+gem 'nokogiri-happymapper', :require => 'happymapper'
