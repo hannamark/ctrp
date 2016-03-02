@@ -38,17 +38,14 @@ When list of unique organizations including my organization, the organizations i
 Then the selected organization will be the Affiliation of the Investigator for the trial
 
 Scenario: #5 I can add and edit Regulatory Information for a Regulated Trial
-Given I have selected a trial to abstract the Regulatory Information FDAAA
-And I am on the Trial Regulatory Information screen
-When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
-And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
-And the FDA Regulated Intervention Indicator will be defaulted to the "N/A" setting
-And the Section 801 Indicator will be defaulted to the "N/A" setting
-And the Data Monitoring Committee Appointed Indicator will be defaulted to the "N/A" setting
-And I can select "yes", "No", "NA" FDA Regulated Intervention Indicator
-And I can select "Yes", "No", "NA" for Section 801 Indicator
-And I can select "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
-Then the required Regulatory Information for the trial will be associated with the trial
+  Given I have selected a trial to abstract the Regulatory Information FDAAA
+  And I am on the Trial Regulatory Information screen
+  When I have selected one or more Trial Oversight Authority Country from a list of all Trial Oversight Authority Countries
+  And I have selected one or more Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
+  And I can select "yes", "No", "NA" FDA Regulated Intervention Indicator
+  And I can select "Yes", "No", "NA" for Section 801 Indicator
+  And I can select "Yes", "No", "NA" for Data Monitoring Committee Appointed Indicator
+  Then the required Regulatory Information for the trial will be associated with the trial
 
 Scenario: #6 I can add and edit Regulatory Information for a non-Regulated Trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -120,7 +117,7 @@ And I have selected a Trial Oversight Authority Country from a list of all Trial
 And I have selected a Trial Oversight Authority Organization Names from a list based on the selected Trial Oversight Authority Country
 When I select a Trial Oversight Authority Country and Trial Oversight Authority Organization that has already been associated with this trial
 Then a warning message will appear �The Trial Oversight Authority Country and Trial Oversight Authority Organization has already been selected.�
-  @runthis
+
 Scenario Outline: #15 Warning for null fields on the Trial Regulatory Information screen
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information screen
