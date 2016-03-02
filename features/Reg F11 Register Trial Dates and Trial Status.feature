@@ -173,7 +173,8 @@ As a CTRP User, I can register a trial's key dates and trial status
      
       |Administratively Complete    |
       |Withdrawn                    |
-      |Temporarily Closed to accrual| for the trial status type
+      |Temporarily Closed to accrual|
+      |Temporarily closed to accrual and Intervention| for the trial status type
       
     Then I must answer the question Why Study Stopped? and a green bubble will appear in the trial status Actions 
     
