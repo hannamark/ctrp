@@ -14,6 +14,7 @@
 #  uuid             :string(255)
 #  lock_version     :integer          default(0)
 #  submission_id    :integer
+#  status           :string           default("active")
 #
 # Indexes
 #
