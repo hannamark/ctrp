@@ -29,8 +29,57 @@ module.exports = function() {
     });
 
     this.When(/^I add a trial status from (.*) to trial status (.*) along with why study stopped reason (.*) the respective checks (.*) will be there$/, function (statusFrom, statusTo, whyStudyStopped, errorsWarnings, table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        statusTable = table.hashes();
+        for (var i = 0; i < statusTable.length; i++) {
+            var convErrorsWarningsString = statusTable[i].errorsWarnings.toString().replace(/\\n/g, "\n", -1);
+            console.log('**************** Error Warning String *************');
+            console.log(convErrorsWarningsString);
+            if (statusTable[i].statusFrom === 'STATUSZERO') {
+                console.log('**************** STATUS FROM *************');
+                console.log(statusTable[i].statusFrom);
+            }
+            else {
+                addTrial.clickAddTrialDateField('0');
+                addTrial.clickAddTrialDateToday();
+                console.log('**************** STATUS FROM *************');
+                console.log(statusTable[i].statusFrom);
+                addTrial.selectAddTrialStatus(statusTable[i].statusFrom);
+                if(statusTable[i].whyStudyStopped === '') {
+                    expect(addTrial.addTrialWhyStudyStopped.isEnabled()).to.become(false);
+                }
+                else {
+                    addTrial.setAddTrialWhyStudyStopped(statusTable[i].whyStudyStopped);
+                }
+                addTrial.clickAddTrialAddStatusButton();
+                projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, convErrorsWarningsString);
+            }
+            if (statusTable[i].statusTo === 'STATUSZERO') {
+                console.log('**************** STATUS TO *************');
+                console.log(statusTable[i].statusTo);
+            }
+            else  {
+                addTrial.clickAddTrialDateField('0');
+                addTrial.clickAddTrialDateToday();
+                console.log('**************** STATUS TO *************');
+                console.log(statusTable[i].statusTo);
+                addTrial.selectAddTrialStatus(statusTable[i].statusTo);
+                if(statusTable[i].whyStudyStopped === '') {
+                    expect(addTrial.addTrialWhyStudyStopped.isEnabled()).to.become(false);
+                }
+                else {
+                    addTrial.setAddTrialWhyStudyStopped(statusTable[i].whyStudyStopped);
+                }
+                addTrial.clickAddTrialAddStatusButton();
+                projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, convErrorsWarningsString);
+            }
+                       //var convErrorsWarningsString = statusTable[i].errorsWarnings.toString().replace(/\\n/g, "\n", -1);
+            //console.log('**************** Error Warning String *************');
+            //console.log(convErrorsWarningsString);
+            //projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', convErrorsWarningsString);
+            //projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', '', convErrorsWarningsString);
+            addTrial.clickAddTrialResetButton();
+        }
+            browser.sleep(25).then(callback);
     });
 
     this.When(/^I add a trial status from (.*) to trial status (.*) with the condition (.*)$/, function (statusFrom, statusTo, conditionText, table, callback) {
