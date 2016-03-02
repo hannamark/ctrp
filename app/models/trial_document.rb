@@ -43,6 +43,6 @@ class TrialDocument < TrialBase
   private
 
   def save_submission_id
-    self.submission_id = self.trial.submissions.last.id if self.trial.submissions.last.present?
+    self.submission_id = self.trial.submissions.last.id if self.trial.present? && self.trial.submissions.last.present?
   end
 end
