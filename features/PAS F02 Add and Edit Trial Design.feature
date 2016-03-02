@@ -128,10 +128,10 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
      Then the Interventional Trial Design for the trial will be associated with the trial
       And the message Record Updated displays
       
-  Scenario Outline:#3 Trial Design Interventional Mandatory Fields rules for registry submission source
+  Scenario Outline:#3 Trial Design Interventional Mandatory Fields rules for PROTOCOL Information Source
     Given I am on the Trial Design Screen
       And the Clinical research Category is Interventional
-      And the submission method is 'Registry'
+      And the Information Source is 'Protocol'
      When The Trial Design field <TrialDesignField> is not entered
       And I have seleted the save Button
      Then An error message <TrialDesignErrorMessage> will be displayed  
@@ -146,10 +146,10 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       | Allocation                | Allocation must be entered            | 
       | Target Enrollment         | Target Enrollment must be entered     | 
 
-Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for imported trials
+Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPORT Information Source
     Given I am on the Trial Design Screen
       And the Clinical research Category is Interventional
-      And the study Method is not 'registry'
+      And the Information Source is Import
      When The Trial Design field <TrialDesignField> is not entered
       And I have seleted the save Button
      Then An error message <TrialDesignErrorMessage> will be displayed  
@@ -233,10 +233,10 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for impor
      Then the Ancillary Correlative trial design is associated with the trial
       And the message Record Updated displays
 
-  Scenario Outline:#8 Observational Trial Design Mandatory Fields rules for registry submission source
+  Scenario Outline:#8 Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source
     Given I am on the Trial Design Screen
       And the Clinical research Category is Observational 
-      And the Submission Method is 'Registry'
+      And the Information Source is 'Protocol'
      When The Trial Design field <TrialDesignField> is not entered
       And I have seleted the save Button
      Then an error message <TrialDesignErrorMessage> will be displayed  
@@ -251,10 +251,10 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for impor
       | Allocation         | Allocation must be entered               | 
       | Target Enrollment  | Target Enrollment must be entered        | 
   
-    Scenario Outline:#9 Observational Trial Design Mandatory Fields rules for imported trials
+    Scenario Outline:#9 Observational Trial Design Mandatory Fields rules for IMPORT Information Source
     Given I am on the Trial Design Screen
       And the Clinical research Category is Observational 
-      And the submission Method is not 'registry'
+      And the Information Source is 'Import'
      When The Trial Design field <TrialDesignField> is not entered
       And I have seleted the save Button
      Then an error message <TrialDesignErrorMessage> will be displayed  
