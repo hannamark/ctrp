@@ -560,10 +560,27 @@ module.exports = function() {
     });
 
     this.Then(/^the required Regulatory Information for the trial will be associated$/, function (callback) {
+        addTrial.selectAddTrialSection801Indicator('0');
+        expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
         fdaaa.findTrailAuthorityAndDeleteOrVerify(oversightCountryA, oversightCountryAOrg, '', 'verify');
         fdaaa.findTrailAuthorityAndDeleteOrVerify(oversightCountryB, oversightCountryBOrg, '', 'verify');
         fdaaa.findTrailAuthorityAndDeleteOrVerify(oversightCountryC, oversightCountryCOrg, '', 'verify');
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Section (\d+) Indicator will be associated as "([^"]*)"$/, function (arg1, arg2, callback) {
+        getArg1 = 'No';
+        getArg2 = 'Yes';
+        if (arg2 === getArg1){
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '0', true);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '1', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '2', false);
+        } else if(arg2 === getArg2){
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '0', false);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '1', true);
+            commonFunctions.verifyIndicator(fdaaa.regulatoryInfoIndicator801, '2', false);
+        };
+        browser.sleep(25).then(callback);
     });
 
     /*
