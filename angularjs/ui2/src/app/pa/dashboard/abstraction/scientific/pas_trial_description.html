@@ -1,0 +1,35 @@
+<div class="row">
+    <uib-accordion close-others="false">
+        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+            <uib-accordion-heading>
+                Trial description <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+            </uib-accordion-heading>
+            <div class="row">
+                <form name="desc_form" role="form" class="form-horizontal" novalidate ctrp-submit="descView.saveTrialDescription()">
+                    <!-- fieldset for Title -->
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                        <legend class="sub-bordered">Title</legend>
+                        <div class="form-group">
+                            <label for="acronym" class="control-label col-xs-12 col-sm-2">Acronym</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <input type="text" id="acronym" name="trial_acronym" class="form-control" ng-model="descView.generalTrialDetailsObj.acronym" placeholder="Acronym">
+                            </div>
+                        </div>
+
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(general_trial_details_form.trial_official_title)}">
+                            <label for="official_title" class="control-label col-xs-12 col-sm-2">Official Title</label>
+                            <div class="col-xs-12 col-sm-10">
+                            <textarea name="trial_official_title" id="official_title" rows="5" class="form-control"
+                                      ng-model="descView.generalTrialDetailsObj.official_title" ng-required="true">
+                            </textarea>
+                                        </div>
+                          <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(desc_form.trial_official_title) && desc_form.trial_official_title.$error">
+                              <span class="help-block" ng-message="required">Please enter the Official Title</span>
+                          </span>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
+</div>
