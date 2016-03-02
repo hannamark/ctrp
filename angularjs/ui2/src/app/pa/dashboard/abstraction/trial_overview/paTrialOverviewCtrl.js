@@ -106,6 +106,10 @@
             vm.submitterPopOver.submitter = vm.trialDetailObj.submitter || {};
             vm.submitterPopOver.submitter.organization = vm.trialDetailObj.submitters_organization || '';
 
+            // check if the trial is registered or not (registered/reported or imported)
+            var internalSourceObj = vm.trialDetailObj.internal_source; // if null, then it is imported
+            vm.trialDetailObj.isImported = !!internalSourceObj ? (internalSourceObj.code !== 'REG') : true;
+
             // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
             PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
