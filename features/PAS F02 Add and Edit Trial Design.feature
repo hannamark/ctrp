@@ -24,7 +24,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       | Interventional or Expanded Access |Observational or Ancillary Correlative  |Secondary Purpose  | deleted |
       | Interventional or Expanded Access|Observational or Ancillary Correlative |Secondary Purpose Other| deleted |
       | Interventional or Expanded Access |Observational or Ancillary Correlative | Intervention Model |deleted  |
-      |  Interventional or Expanded Access |Observational or Ancillary Correlative  | Arms/Groups |deleted  |
+      |  Interventional or Expanded Access |Observational or Ancillary Correlative  | Number of Arms/Groups |deleted  |
       |Interventional or Expanded Access |Observational or Ancillary Correlative |Masking  |deleted|
       | Interventional or Expanded Access|Observational or Ancillary Correlative  |Masking role Subject  |deleted  |
       |Interventional or Expanded Access |Observational or Ancillary Correlative | Masking role investigator  |deleted  |
@@ -38,12 +38,12 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
        |Interventional or Expanded Access|Observational or Ancillary Correlative|Study Model other  |displays  |  
         |Interventional   or Expanded Access | Observational or Ancillary Correlative | Bio Specimen Retention |displays | 
       |Interventional  or Expanded Access  |Observational or Ancillary Correlative | Bio Specimen description  |displays | 
-      |Interventional  or Expanded Access |Observational or Ancillary Correlative | Number of Groups/Cohorts  or Expanded Access   |displays | 
+      |Interventional  or Expanded Access |Observational or Ancillary Correlative | Number of Arms/Groups  or Expanded Access   |displays | 
       
       | Observational or Ancillary Correlative |Interventional  or Expanded Access   |Secondary Purpose  | displays |
       | Observational or Ancillary Correlative |Interventional  or Expanded Access   |Secondary Purpose Other  | displays |
       | Observational or Ancillary Correlative |Interventional  or Expanded Access | Intervention Model |displays  |
-      | Observational or Ancillary Correlative |Interventional  or Expanded Access  | Arms/Groups |displays  |
+      | Observational or Ancillary Correlative |Interventional  or Expanded Access  | Number of Arms/Groups |displays  |
       |Observational or Ancillary Correlative|Interventional  or Expanded Access   |Masking  |displays  |
       | Observational or Ancillary Correlative |Interventional  or Expanded Access   |Masking role Subject  |displays  |
       |Observational or Ancillary Correlative |Interventional  or Expanded Access  | Masking role investigator  |displays  |
@@ -58,7 +58,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
         |Observational or Ancillary Correlative|Interventional or Expanded Access  | Time Perspective  |deleted |  
       |Observational or Ancillary Correlative |Interventional or Expanded Access  | Bio Specimen Retention |deleted | 
       |Observational or Ancillary Correlative |Interventional or Expanded Access  | Bio Specimen description  |deleted | 
-      |Observational or Ancillary Correlative |Interventional or Expanded Access  | Number of Groups/Cohorts  |deleted | 
+      |Observational or Ancillary Correlative |Interventional or Expanded Access  | Number of Arms/Groups |deleted | 
     
     
     Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
@@ -100,7 +100,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       | Parallel           | 
       | Cross-Over         | 
       | Factorial          | 
-      And I can add or edit a value for Number of Arms
+      And I can add or edit a value for Number of Arms/Groups
       And I can select a value for Masking:
       | Masking      | 
       | Open         | 
@@ -136,14 +136,14 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
      Then An error message <TrialDesignErrorMessage> will be displayed  
     Examples: 
   
-      | <TrialDesignField> | <TrialDesignErrorMessage>       | 
-      | Primary Purpose    | Primary Purpose must be entered    | 
-      | Trial Phase        | Trial Phase must be entered        | 
-      | Intervention Model | Intervention Model must be entered | 
-      | Number of Arms     | Number of Arms must be entered     | 
-      | Masking            | Masking must be entered            | 
-      | Allocation         | Allocation must be entered         | 
-      | Target Enrollment  | Target Enrollment must be entered  | 
+      | <TrialDesignField>        | <TrialDesignErrorMessage>             | 
+      | Primary Purpose           | Primary Purpose must be entered       | 
+      | Trial Phase               | Trial Phase must be entered           | 
+      | Intervention Model        | Intervention Model must be entered    | 
+      | Number of Arms/Groups     | Number of Arms/Groups must be entered | 
+      | Masking                   | Masking must be entered               | 
+      | Allocation                | Allocation must be entered            | 
+      | Target Enrollment         | Target Enrollment must be entered     | 
   
   Scenario:#4 Masking field Rules
     Given I am on the Trial Design screen
@@ -192,7 +192,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       | None Retained          | 
       | Samples with DNA       | 
       | Samples Without DNA    | 
-      And I can enter a value for Groups/Cohorts
+      And I can enter a value for Number of Arms/Groups
      And I can enter a value for Target Enrollment
       And I can enter a value for Final Enrollment for ClinicalTrials.gov
       And the value of Accruals will be displayed 
@@ -211,7 +211,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       And I can select a value for Study Model 
       And I can select a value for Time Perspective
       And I can select a value for Bio-specimen Retention
-      And I can add or edit a value for Groups/Cohorts
+      And I can add or edit a value for Number of Arms/Groups
      And I can add or edit a value for Target Enrollment
       And I can add or edit a value for Final Enrollment for ClinicalTrials.gov
       And the value of Accruals will be displayed 
@@ -227,14 +227,14 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
      Then an error message <TrialDesignErrorMessage> will be displayed  
     Examples: 
   
-      | <TrialDesignField> | <TrialDesignErrorMessage>          | 
-      | Primary Purpose    | Primary Purpose must be entered    | 
-      | Trial Phase        | Trial Phase must be entered        | 
-      | Intervention Model | Intervention Model must be entered | 
-      | Number of Arms     | Number of Arms must be entered     | 
-      | Masking            | Masking must be entered            | 
-      | Allocation         | Allocation must be entered         | 
-      | Target Enrollment  | Target Enrollment must be entered  | 
+      | <TrialDesignField>    | <TrialDesignErrorMessage>             | 
+      | Primary Purpose       | Primary Purpose must be entered       | 
+      | Trial Phase           | Trial Phase must be entered           | 
+      | Intervention Model    | Intervention Model must be entered    | 
+      | Number of Arms/Groups | Number of Arms/Groups must be entered | 
+      | Masking            | Masking must be entered                  | 
+      | Allocation         | Allocation must be entered               | 
+      | Target Enrollment  | Target Enrollment must be entered        | 
   
     
   Scenario Outline: #8 I can up and edit Trial Design for a Expanded Access Clinical Research Category trial 
