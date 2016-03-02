@@ -128,9 +128,10 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
      Then the Interventional Trial Design for the trial will be associated with the trial
       And the message Record Updated displays
       
-  Scenario Outline:#3 Trial Design Interventional Mandatory Fields rules
+  Scenario Outline:#3 Trial Design Interventional Mandatory Fields rules for registry submission source
     Given I am on the Trial Design Screen
       And the Clinical research Category is Interventional
+      And the submission method is 'Registry'
      When The Trial Design field <TrialDesignField> is not entered
       And I have seleted the save Button
      Then An error message <TrialDesignErrorMessage> will be displayed  
@@ -144,8 +145,21 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       | Masking                   | Masking must be entered               | 
       | Allocation                | Allocation must be entered            | 
       | Target Enrollment         | Target Enrollment must be entered     | 
+
+Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for imported trials
+    Given I am on the Trial Design Screen
+      And the Clinical research Category is Interventional
+      And the study Method is not 'registry'
+     When The Trial Design field <TrialDesignField> is not entered
+      And I have seleted the save Button
+     Then An error message <TrialDesignErrorMessage> will be displayed  
+    Examples: 
   
-  Scenario:#4 Masking field Rules
+      | <TrialDesignField>        | <TrialDesignErrorMessage>             | 
+      | Primary Purpose           | Primary Purpose must be entered       | 
+      | Trial Phase               | Trial Phase must be entered           | 
+    
+  Scenario:#5 Masking field Rules
     Given I am on the Trial Design screen
       And the Clinical Research Category is Interventional
      When Masking field selected
@@ -165,7 +179,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
      
   
   
-  Scenario: #5 I can add and edit Trial Design for a Observational Clinical Research Category trial
+  Scenario: #6 I can add and edit Trial Design for a Observational Clinical Research Category trial
     Given I am logged into the CTRP Protocol Abstraction application
       And I am on the Trial Design screen
       And Clinical Research Category is Observational
@@ -201,7 +215,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       And the message Record Updated displays
     
   
-  Scenario: #6 I can add and edit Trial Design for an Ancillary Correlative Clinical Research Category trial
+  Scenario: #7 I can add and edit Trial Design for an Ancillary Correlative Clinical Research Category trial
     Given I am logged into the CTRP Protocol Abstraction application
       And I am on the Trial Design screen
       And Clinical Research Category is Ancillary Correlative
@@ -219,9 +233,10 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
      Then the Ancillary Correlative trial design is associated with the trial
       And the message Record Updated displays
 
-  Scenario Outline:#7 Observational Trial Design Mandatory Fields rules
+  Scenario Outline:#8 Observational Trial Design Mandatory Fields rules for registry submission source
     Given I am on the Trial Design Screen
       And the Clinical research Category is Observational 
+      And the Submission Method is 'Registry'
      When The Trial Design field <TrialDesignField> is not entered
       And I have seleted the save Button
      Then an error message <TrialDesignErrorMessage> will be displayed  
@@ -236,8 +251,21 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       | Allocation         | Allocation must be entered               | 
       | Target Enrollment  | Target Enrollment must be entered        | 
   
+    Scenario Outline:#9 Observational Trial Design Mandatory Fields rules for imported trials
+    Given I am on the Trial Design Screen
+      And the Clinical research Category is Observational 
+      And the submission Method is not 'registry'
+     When The Trial Design field <TrialDesignField> is not entered
+      And I have seleted the save Button
+     Then an error message <TrialDesignErrorMessage> will be displayed  
+    Examples: 
+  
+      | <TrialDesignField>    | <TrialDesignErrorMessage>             | 
+      | Primary Purpose       | Primary Purpose must be entered       | 
+      | Trial Phase           | Trial Phase must be entered           | 
+   
     
-  Scenario Outline: #8 I can up and edit Trial Design for a Expanded Access Clinical Research Category trial 
+  Scenario Outline: #10 I can up and edit Trial Design for a Expanded Access Clinical Research Category trial 
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
       And I am on the Trial Design screen
@@ -265,7 +293,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
      Then the Expanded Access trial design is associated with the trial
       And the message Record Updated displays
   
-  Scenario:  #8 Primary Purpose rule when value selected is "Other"
+  Scenario:  #11 Primary Purpose rule when value selected is "Other"
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
       And I am on the Trial Design screen
@@ -274,7 +302,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
      When Description is not entered in the displayed field "if Primary Purpose is "Other", describe"
      Then a warning message will appear "Primary Purpose Of Other text is required”
   
-  Scenario:  #10 Character display for Primary Purpose of Other
+  Scenario:  #12 Character display for Primary Purpose of Other
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
       And I am on the Trial Design screen
@@ -285,14 +313,14 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
      When I have reach the 200 characters limit
      Then no additional text can be entered
   
-  Scenario:  #11 Secondary Purpose of Other
+  Scenario:  #13 Secondary Purpose of Other
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
       And I am on the Trial Design screen
      When I have selected Other for Secondary Purpose
      Then a text box appears 
   
-  Scenario:  #12 Character display for Secondary Purpose of Other
+  Scenario:  #14 Character display for Secondary Purpose of Other
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
       And I am on the Trial Design screen
@@ -304,7 +332,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
      Then no additional text can be entered
   
     
-  Scenario:  #14 I can Reset Trial Description screen for a Trial
+  Scenario:  #15 I can Reset Trial Description screen for a Trial
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
       And I am on the Trial Design screen
