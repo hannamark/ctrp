@@ -395,9 +395,7 @@ class Trial < TrialBase
 
       # New Submission
       if self.edit_type == 'import'
-        newSubmission = self.submissions.last
-
-
+        new_submission = self.submissions.last
       else
         ori = SubmissionType.find_by_code('ORI')
         if self.coming_from == 'rest'
@@ -405,16 +403,22 @@ class Trial < TrialBase
         else
           sub_method = SubmissionMethod.find_by_code('REG')
           end
-        newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_method: sub_method)
+        new_submission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_method: sub_method)
       end
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
-      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: newSubmission)
+      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: new_submission)
 
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
-      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: newSubmission)
+      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: new_submission)
+      
+      # Populate Submission ID for documents uploaded in draft stage
+      self.trial_documents.each do |doc|
+        doc.submission = new_submission
+        doc.save
+      end
     elsif self.edit_type == 'update'
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       # Don't increment submission number for updates
