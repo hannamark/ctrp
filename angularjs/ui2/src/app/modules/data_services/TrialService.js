@@ -108,7 +108,7 @@
             getMilestones: getMilestones,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
-            getAcceptedFileTypes: getAcceptedFileTypes,
+            getAcceptedFileTypesForRegistry: getAcceptedFileTypesForRegistry,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
             checkAuthority: checkAuthority,
@@ -309,8 +309,8 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.NIH);
         }
 
-        function getAcceptedFileTypes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES);
+        function getAcceptedFileTypesForRegistry() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES_REG);
         }
 
         function getAuthorityOrgArr(country) {
