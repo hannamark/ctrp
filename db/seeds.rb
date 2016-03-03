@@ -229,6 +229,10 @@ AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
 AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
 AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
 
+AmendmentReason.find_or_create_by(code: 'AS', name: 'Acknowledged Scientific')
+AmendmentReason.find_or_create_by(code: 'AA', name: 'Acknowledged Administrative')
+AmendmentReason.find_or_create_by(code: 'AAS', name: 'Acknowledged Administrative and Scientific')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
