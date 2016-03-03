@@ -404,8 +404,9 @@ module.exports = function() {
             }
         });
         indIDE.clickSave();
-        indIDE.clickAdminDataGeneralTrial();
-        indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.wait_for(2500);
+        //indIDE.clickAdminDataGeneralTrial();
+        //indIDE.clickAdminDataRegulatoryInfoIND();
         if (arg1 === argVerification){
             helper.verifyTableRowText(indIDE.indIDETblHdr, verifTbleHdr, "IND/IDE Table Header(s)");
             helper.verifyTableRowText(indIDE.indIDETblRowA, verifTbleRowA, "IND/IDE Table Row A");
@@ -481,8 +482,9 @@ module.exports = function() {
             }
         });
         indIDE.clickSave();
-        indIDE.clickAdminDataGeneralTrial();
-        indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.wait_for(2500);
+        //indIDE.clickAdminDataGeneralTrial();
+        //indIDE.clickAdminDataRegulatoryInfoIND();
         if (arg1 === argVerification){
             helper.verifyTableRowText(indIDE.indIDETblHdr, verifTbleHdr, "IND/IDE Table Header(s)");
             helper.verifyTableRowText(indIDE.indIDETblRowA, verifTbleRowA, "IND/IDE Table Row A");
@@ -499,6 +501,7 @@ module.exports = function() {
         indIDE.clickSave();
         indIDE.clickAdminDataGeneralTrial();
         indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.wait_for(2500);
         helper.verifyElementDisplayed(indIDE.indIDEInfoTable, false);
         browser.sleep(300).then(callback);
     });
@@ -579,6 +582,7 @@ module.exports = function() {
             }
         });
         indIDE.clickSave();
+        helper.wait_for(2500);
         indIDE.clickAdminDataGeneralTrial();
         indIDE.clickAdminDataRegulatoryInfoIND();
         if (arg1s5 === argVerifications5) {
@@ -599,8 +603,10 @@ module.exports = function() {
             indIDE.clickRowDelete(i);
         };
         indIDE.clickSave();
+        helper.wait_for(3000);
         indIDE.clickAdminDataGeneralTrial();
         indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.wait_for(2500);
         helper.verifyElementDisplayed(indIDE.indIDEInfoTable, false);
         browser.sleep(300).then(callback);
     });
@@ -624,6 +630,7 @@ module.exports = function() {
         indIDE.clickSave();
         indIDE.clickAdminDataGeneralTrial();
         indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.wait_for(2500);
         helper.verifyElementDisplayed(indIDE.indIDEInfoTable, false);
         var arg1s6 = 'Add IND/IDE'
         var getArgValToSplits6 = arg1s6.split(' ');
@@ -688,6 +695,7 @@ module.exports = function() {
         indIDE.clickReset();
         indIDE.clickAdminDataGeneralTrial();
         indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.wait_for(2500);
         helper.verifyElementDisplayed(indIDE.indIDEInfoTable, false);
         browser.sleep(25).then(callback);
     });
