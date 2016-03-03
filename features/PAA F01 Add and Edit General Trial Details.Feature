@@ -1,7 +1,7 @@
 @PA @global
 Feature: PAA F01 Add and Edit General Trial Details
 
-As any CTRP PA User, I can enter general trial details 
+As any CTRP PA User, I can enter general trial details
 
 Scenario: #1 I can enter the different Protocol Identifiers for a trial
 Given I have selected a trial to abstract 
@@ -121,7 +121,7 @@ And I am on the General Trial Details screen
 And the Sponsor is Null
 When I select save
 Then a warning message will appear �Please enter the Sponsor�
-  @runthis
+
 Scenario: # 17 e-mail address format
 Given I know which e-mail address I want to edit
 And I am logged in to CTRP application
