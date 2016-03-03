@@ -216,6 +216,27 @@ var projectMethodsRegistry = function() {
     };
 
 
+    /*****************************************************************
+     * Method: Verify Trial Status for duplicate status
+     * @param status
+     * @param statusDate
+     * @param comment
+     * @param whyStudyStopped
+     * @param errorsWarnings
+     *****************************************************************/
+    this.verifyAddTrialDuplicateStatusInformation = function (status, statusDate, comment, whyStudyStopped, errorsWarnings) {
+        expect(element.all(by.binding('status.status_date')).get(0).getText()).to.eventually.equal(statusDate);
+        expect(element.all(by.binding('status.trial_status_name')).get(0).getText()).to.eventually.equal(status);
+        expect(element.all(by.binding('status.comment')).get(0).getText()).to.eventually.equal(comment);
+        expect(element.all(by.binding('status.why_stopped')).get(0).getText()).to.eventually.equal(whyStudyStopped);
+        expect(element.all(by.css('.col-md-4.status-error')).get(0).getText()).to.eventually.equal('');
+        expect(element.all(by.binding('status.status_date')).get(1).getText()).to.eventually.equal(statusDate);
+        expect(element.all(by.binding('status.trial_status_name')).get(1).getText()).to.eventually.equal(status);
+        expect(element.all(by.binding('status.comment')).get(1).getText()).to.eventually.equal(comment);
+        expect(element.all(by.binding('status.why_stopped')).get(1).getText()).to.eventually.equal(whyStudyStopped);
+        expect(element.all(by.css('.col-md-4.status-error')).get(1).getText()).to.eventually.equal(errorsWarnings);
+    };
+
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one

@@ -14,8 +14,8 @@ exports.config = {
 
     },
 
-    baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
-    //     baseUrl: 'http://localhost/ctrp/',
+ //   baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
+         baseUrl: 'http://localhost/ctrp/',
 
     params: {
         login: {

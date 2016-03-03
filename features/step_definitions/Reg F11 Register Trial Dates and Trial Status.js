@@ -51,7 +51,9 @@ module.exports = function() {
                     addTrial.setAddTrialWhyStudyStopped(statusTable[i].whyStudyStopped);
                 }
                 addTrial.clickAddTrialAddStatusButton();
-                projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, convErrorsWarningsString);
+                if(statusTable[i].statusFrom !== statusTable[i].statusTo) {
+                    projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, '');
+                }
             }
             if (statusTable[i].statusTo === 'STATUSZERO') {
                 console.log('**************** STATUS TO *************');
@@ -70,13 +72,13 @@ module.exports = function() {
                     addTrial.setAddTrialWhyStudyStopped(statusTable[i].whyStudyStopped);
                 }
                 addTrial.clickAddTrialAddStatusButton();
-                projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, convErrorsWarningsString);
+                if(statusTable[i].statusFrom !== statusTable[i].statusTo) {
+                    projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, convErrorsWarningsString);
+                }
+                else {
+                    projectFunctionsRegistry.verifyAddTrialDuplicateStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, convErrorsWarningsString);
+                }
             }
-                       //var convErrorsWarningsString = statusTable[i].errorsWarnings.toString().replace(/\\n/g, "\n", -1);
-            //console.log('**************** Error Warning String *************');
-            //console.log(convErrorsWarningsString);
-            //projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', convErrorsWarningsString);
-            //projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', '', convErrorsWarningsString);
             addTrial.clickAddTrialResetButton();
         }
             browser.sleep(25).then(callback);
