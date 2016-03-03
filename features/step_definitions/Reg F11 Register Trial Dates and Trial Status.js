@@ -47,12 +47,21 @@ module.exports = function() {
                 if(statusTable[i].whyStudyStopped === '') {
                     expect(addTrial.addTrialWhyStudyStopped.isEnabled()).to.become(false);
                 }
-                else {
+                else if (statusTable[i].statusFrom === 'Withdrawn' ||statusTable[i].statusFrom === 'Temporarily Closed to Accrual' ||statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' ||statusTable[i].statusFrom === 'Administratively Complete' ){
+                    expect(addTrial.addTrialWhyStudyStopped.isEnabled()).to.become(true);
                     addTrial.setAddTrialWhyStudyStopped(statusTable[i].whyStudyStopped);
                 }
                 addTrial.clickAddTrialAddStatusButton();
                 if(statusTable[i].statusFrom !== statusTable[i].statusTo) {
-                    projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, '');
+                    if(statusTable[i].whyStudyStopped === '' ) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', '');
+                    }
+                    else if (statusTable[i].statusFrom === 'Withdrawn' ||statusTable[i].statusFrom === 'Temporarily Closed to Accrual' ||statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' ||statusTable[i].statusFrom === 'Administratively Complete' ){
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, '');
+                    }
+                    else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', '');
+                    }
                 }
             }
             if (statusTable[i].statusTo === 'STATUSZERO') {
@@ -68,12 +77,21 @@ module.exports = function() {
                 if(statusTable[i].whyStudyStopped === '') {
                     expect(addTrial.addTrialWhyStudyStopped.isEnabled()).to.become(false);
                 }
-                else {
+                else if (statusTable[i].statusFrom === 'Withdrawn' ||statusTable[i].statusFrom === 'Temporarily Closed to Accrual' ||statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' ||statusTable[i].statusFrom === 'Administratively Complete' ){
+                    expect(addTrial.addTrialWhyStudyStopped.isEnabled()).to.become(true);
                     addTrial.setAddTrialWhyStudyStopped(statusTable[i].whyStudyStopped);
                 }
                 addTrial.clickAddTrialAddStatusButton();
                 if(statusTable[i].statusFrom !== statusTable[i].statusTo) {
-                    projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, convErrorsWarningsString);
+                    if(statusTable[i].whyStudyStopped === '') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', '', convErrorsWarningsString);
+                    }
+                    else if (statusTable[i].statusFrom === 'Withdrawn' ||statusTable[i].statusFrom === 'Temporarily Closed to Accrual' ||statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' ||statusTable[i].statusFrom === 'Administratively Complete' ){
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, convErrorsWarningsString);
+                    }
+                    else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', '', convErrorsWarningsString);
+                    }
                 }
                 else {
                     projectFunctionsRegistry.verifyAddTrialDuplicateStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, convErrorsWarningsString);
