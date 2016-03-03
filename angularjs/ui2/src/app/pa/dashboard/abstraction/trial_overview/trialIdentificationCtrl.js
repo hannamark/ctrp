@@ -53,11 +53,9 @@
         function saveProcessingInfo() {
             //console.log('processing info: ', vm.trialProcessingObj);
             var updatedTrial = PATrialService.getCurrentTrialFromCache();
-            console.log('processing, lock_version: ' + updatedTrial.lock_version);
             //angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
             updatedTrial.process_priority = vm.trialProcessingObj.priority.name;
             updatedTrial.process_comment = vm.trialProcessingObj.comment;
-            console.log('updated trial: ', updatedTrial);
 
             TrialService.upsertTrial(updatedTrial).then(function(res) {
                 console.log('priority and commented updated: ', res);

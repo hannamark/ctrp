@@ -189,7 +189,7 @@
 
         function watchUpdatesInChildrenScope() {
             $scope.$on('updatedInChildScope', function() {
-                vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                // vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
             });
         }
 

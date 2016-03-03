@@ -317,7 +317,7 @@
           vm.generalTrialDetailsObj.central_contacts[0]._destroy = false;
           vm.generalTrialDetailsObj.central_contacts[0].fullname = vm.principalInvestigator.name;
           vm.generalTrialDetailsObj.central_contacts[0].email = vm.generalTrialDetailsObj.pi.email;
-          vm.generalTrialDetailsObj.central_contacts[0].phone = vm.generalTrialDetailsObj.pi.phone.replace(regex, '');
+          vm.generalTrialDetailsObj.central_contacts[0].phone = !!vm.generalTrialDetailsObj.pi.phone ? vm.generalTrialDetailsObj.pi.phone.replace(regex, '') : '';
           vm.generalTrialDetailsObj.central_contacts[0].person_id = vm.generalTrialDetailsObj.pi.id; //
           delete vm.generalTrialDetailsObj.central_contacts[0].id;
           vm.isPhoneValid = true;
