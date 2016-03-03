@@ -309,3 +309,6 @@ module.exports = function() {
 
 
 };
+
+'WARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing'
+'WARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed To Accrual] is missing'
