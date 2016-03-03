@@ -131,7 +131,7 @@
               vm.generalTrialDetailsObj = PATrialService.getCurrentTrialFromCache();
               // vm.leadOrg.name = vm.generalTrialDetailsObj.lead_org.name;
               vm.leadOrg.array = [].concat(angular.copy(vm.generalTrialDetailsObj.lead_org));
-
+              isValidPhoneNumber(); 
               vm.sponsor.array = [].concat(angular.copy(vm.generalTrialDetailsObj.sponsor));
               vm.principalInvestigator.array = [].concat(angular.copy(vm.generalTrialDetailsObj.pi));
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
