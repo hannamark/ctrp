@@ -112,7 +112,7 @@
 
             // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
-            PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
+            PATrialService.setCurrentTrial(vm.trialDetailObj, 'checkoutin'); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
             $scope.trialDetailObj = vm.trialDetailObj;
         }

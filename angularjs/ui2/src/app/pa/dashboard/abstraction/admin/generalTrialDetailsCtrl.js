@@ -131,7 +131,7 @@
               vm.generalTrialDetailsObj = PATrialService.getCurrentTrialFromCache();
               // vm.leadOrg.name = vm.generalTrialDetailsObj.lead_org.name;
               vm.leadOrg.array = [].concat(angular.copy(vm.generalTrialDetailsObj.lead_org));
-
+              isValidPhoneNumber();
               vm.sponsor.array = [].concat(angular.copy(vm.generalTrialDetailsObj.sponsor));
               vm.principalInvestigator.array = [].concat(angular.copy(vm.generalTrialDetailsObj.pi));
               vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
@@ -297,11 +297,13 @@
       }
 
       function isValidPhoneNumber() {
-          if (vm.generalTrialDetailsObj.central_contacts[0].phone.length === 0) {
-              vm.isPhoneValid = true; // blank phone number is valid
-          } else {
-              vm.isPhoneValid = isValidNumberPO(vm.generalTrialDetailsObj.central_contacts[0].phone, _defaultCountry);
+          var phoneNumber = '';
+          if (angular.isArray(vm.generalTrialDetailsObj.central_contacts) &&
+                !!vm.generalTrialDetailsObj.central_contacts[0] &&
+                !!vm.generalTrialDetailsObj.central_contacts[0].phone) {
+              phoneNumber = vm.generalTrialDetailsObj.central_contacts[0].phone;
           }
+          vm.isPhoneValid = phoneNumber.length === 0 || isValidNumberPO(phoneNumber, _defaultCountry);
       }
 
       /**
@@ -317,7 +319,7 @@
           vm.generalTrialDetailsObj.central_contacts[0]._destroy = false;
           vm.generalTrialDetailsObj.central_contacts[0].fullname = vm.principalInvestigator.name;
           vm.generalTrialDetailsObj.central_contacts[0].email = vm.generalTrialDetailsObj.pi.email;
-          vm.generalTrialDetailsObj.central_contacts[0].phone = vm.generalTrialDetailsObj.pi.phone.replace(regex, '');
+          vm.generalTrialDetailsObj.central_contacts[0].phone = !!vm.generalTrialDetailsObj.pi.phone ? vm.generalTrialDetailsObj.pi.phone.replace(regex, '') : '';
           vm.generalTrialDetailsObj.central_contacts[0].person_id = vm.generalTrialDetailsObj.pi.id; //
           delete vm.generalTrialDetailsObj.central_contacts[0].id;
           vm.isPhoneValid = true;

@@ -14,6 +14,7 @@
     function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, Upload, TrialService,
             $rootScope, PromiseTimeoutService, HOST, LocalCacheService, uiGridConstants) {
 
+        var curTrial = {};
         var initTrialSearchParams = {
             //for pagination and sorting
             sort: '',
@@ -327,11 +328,21 @@
         /**
          * Cache the current trial object
          * @param {JSON} trialDetailObj
+         * @param {String} checkoutinFlag, if 'undefined', ignore its checkout record
          */
-        function setCurrentTrial(trialDetailObj) {
+        function setCurrentTrial(trialDetailObj, checkoutinFlag) {
             // trim off unused fields
             delete trialDetailObj.server_response;
             delete trialDetailObj.history;
+
+            // trialDetailObj comes from controllers other than trial overview controller,
+            // the flag is undefined, the checkout record should be retained from trial overview controller
+            if (checkoutinFlag === undefined) {
+                curTrial = getCurrentTrialFromCache();
+                trialDetailObj.admin_checkout = curTrial.admin_checkout;
+                trialDetailObj.scientific_checkout = curTrial.scientific_checkout;
+            }
+
             LocalCacheService.cacheItem('current_trial_object', trialDetailObj);
         }
 
