@@ -57,7 +57,7 @@ var abstractionRegulatoryIND = function(){
     this.indIDESave = element(by.buttonText('Save'));
     this.indIDEReset = element(by.css('button[ng-click="trialDetailView.reload()"]'));
 
-
+    this.indIDEErrMsg = element(by.css('.add-association-error'));
 
     var helper = new helperFunctions();
 
