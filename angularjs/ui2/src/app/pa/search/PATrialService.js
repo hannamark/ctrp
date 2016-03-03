@@ -338,7 +338,6 @@
             // trialDetailObj comes from controllers other than trial overview controller,
             // the flag is undefined, the checkout record should be retained from trial overview controller
             if (checkoutinFlag === undefined) {
-                console.error('checkout flag is undefined!, retain');
                 curTrial = getCurrentTrialFromCache();
                 trialDetailObj.admin_checkout = curTrial.admin_checkout;
                 trialDetailObj.scientific_checkout = curTrial.scientific_checkout;
