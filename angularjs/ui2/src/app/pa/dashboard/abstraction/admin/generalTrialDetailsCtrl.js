@@ -227,7 +227,7 @@
 
       function watchLeadOrg() {
           $scope.$watchCollection(function() {return vm.leadOrg.array;}, function(newVal, oldVal) {
-             if (angular.isArray(newVal) && newVal.length > 0) {
+             if (angular.isArray(newVal) && newVal.length > 0 && !!newVal[0]) {
                  // console.log('new lead org: ', newVal[0]);
                  vm.leadOrg.name = newVal[0].name;
                  vm.generalTrialDetailsObj.lead_org = newVal[0];
