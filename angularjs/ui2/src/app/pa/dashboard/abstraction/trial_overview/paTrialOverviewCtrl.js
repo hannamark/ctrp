@@ -112,6 +112,8 @@
 
             // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
+            vm.trialDetailObj.is_draft = ''
+            vm.trialDetailObj.edit_type = vm.trialDetailObj.isImported ? 'imported_update' : '';
             PATrialService.setCurrentTrial(vm.trialDetailObj, 'checkoutin'); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
             $scope.trialDetailObj = vm.trialDetailObj;

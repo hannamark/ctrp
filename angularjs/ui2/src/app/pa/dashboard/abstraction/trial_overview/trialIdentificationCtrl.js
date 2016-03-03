@@ -56,7 +56,6 @@
             //angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
             updatedTrial.process_priority = vm.trialProcessingObj.priority.name;
             updatedTrial.process_comment = vm.trialProcessingObj.comment;
-
             TrialService.upsertTrial(updatedTrial).then(function(res) {
                 // console.log('priority and commented updated: ', res);
                 updatedTrial.lock_version = res.lock_version;
