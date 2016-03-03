@@ -697,6 +697,8 @@ ctep = Organization.find_or_create_by( id: 9999998,
 )
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpsuper3", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
@@ -708,6 +710,8 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "approve" => true},
                {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true},
                {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true}
 
