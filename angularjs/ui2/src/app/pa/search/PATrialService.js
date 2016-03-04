@@ -139,7 +139,8 @@
             uploadTrialRelatedDocs: uploadTrialRelatedDocs,
             prepUploadingTrialRelatedDocs: prepUploadingTrialRelatedDocs,
             groupTrialDesignData: groupTrialDesignData,
-            getAcceptedFileTypesPA: getAcceptedFileTypesPA
+            getAcceptedFileTypesPA: getAcceptedFileTypesPA,
+            getInterventionModels: getInterventionModels
         };
 
         return services;
@@ -393,6 +394,10 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES);
         }
 
+        function getInterventionModels() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERVENTION_MODELS);
+        }
+
         /**
          * Convert each trial doc object to a promise for uploading, the doc must be 'active' to be uploaded
          * @param  {JSON Object} trialDocObj
@@ -439,7 +444,7 @@
                 TrialService.getPhases(),
                 TrialService.getResearchCategories(),
                 TrialService.getPrimaryPurposes(),
-                TrialService.getSecondaryPurposes(),
+                TrialService.getSecondaryPurposes()
             ];
             return PromiseTimeoutService.groupPromises(promises);
         }

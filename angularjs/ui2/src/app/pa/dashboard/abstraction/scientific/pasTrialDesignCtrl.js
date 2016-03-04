@@ -15,6 +15,7 @@
         vm.researchCategories = [];
         vm.primaryPurposes = [];
         vm.secondaryPurposes = [];
+        vm.interventionModels = [];
         vm.isOtherPrimaryPurpose = false;
 
         activate();
@@ -51,6 +52,11 @@
                         vm.isInterventional = researchCategoryTitle.indexOf('intervention') > -1;
                         vm.isObservational = researchCategoryTitle.indexOf('observation') > -1;
                         vm.isAncillary = researchCategoryTitle.indexOf('ancillary') > -1;
+
+                        // fetch intervention models
+                        if (vm.isInterventional && vm.interventionModels.length === 0) {
+                            _fetchInterventionModels();
+                        }
                     }
                 });
         } // _watchResearchCategory
@@ -65,6 +71,19 @@
                 }
             });
         } // _watchPrimaryPurpose
+
+        /**
+         * Fetch intervention models
+         * @return {[type]} [description]
+         */
+        function _fetchInterventionModels() {
+            PATrialService.getInterventionModels().then(function(res) {
+                if (res.server_response.status === 200) {
+                    vm.interventionModels = res.models || [];
+                    console.info('models: ', vm.interventionModels);
+                }
+            });
+        }
 
     } //pasTrialDesignCtrl
 

@@ -74,6 +74,14 @@ class TrialsController < ApplicationController
     end
   end
 
+  def get_intervention_models
+    @intervention_models = InterventionModel.all
+
+    respond_to do |format|
+        format.json { render :json => {:models => @intervention_models} }
+    end
+  end
+
   # Get
   def get_grants_serialnumber
     @tempgrants=Tempgrants.all
