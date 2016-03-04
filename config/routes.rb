@@ -177,6 +177,8 @@ Rails.application.routes.draw do
           get  'get_board_approval_statuses'
           get  'get_intervention_models'
           get  'get_maskings'
+          get  'get_allocations'
+          get  'study_classifications'
         end
       end
 

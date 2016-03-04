@@ -92,7 +92,9 @@
                 'BOARD_APPROVAL_STATUSES': '/ctrp/registry/trials/get_board_approval_statuses.json',
                 'TRIAL_DOCUMENT_TYPES': '/ctrp/pa/trial_document_types.json',
                 'INTERVENTION_MODELS': '/ctrp/registry/trials/get_intervention_models.json',
-                'MASKINGS': '/ctrp/registry/trials/get_maskings.json'
+                'MASKINGS': '/ctrp/registry/trials/get_maskings.json',
+                'ALLOCATIONS': '/ctrp/registry/trials/get_allocations.json',
+                'STUDY_CLASSIFICATIONS': '/ctrp/registry/trials/study_classifications.json'
             }
         })
         .constant('MESSAGES', {

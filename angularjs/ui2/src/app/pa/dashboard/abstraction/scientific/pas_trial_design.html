@@ -140,6 +140,36 @@
             </div>
             <!-- end of maskings -->
 
+            <!-- allocations -->
+            <div class="form-group">
+                <label for="allocation" class="control-label col-xs-12 col-sm-2">Allocation</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="allocation" id="allocation"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.allocation_id"
+                        ng-options="allocation.id as allocation.name for allocation in designView.allocations"
+                        >
+                        <option value="">- Please select an allocation...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of allocations -->
+
+            <!-- allocations -->
+            <div class="form-group">
+                <label for="study_classification" class="control-label col-xs-12 col-sm-2">Study Classification</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="study_classification" id="study_classification"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.study_classification_id"
+                        ng-options="class.id as class.name for class in designView.studyClassifications"
+                        >
+                        <option value="">- Please select a study classification...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of allocations -->
+
             <!-- num of arms -->
             <div class="form-group">
                 <label for="num_arms" class="control-label col-xs-12 col-sm-2">Number of Arms & Groups</label>

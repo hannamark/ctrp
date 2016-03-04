@@ -74,6 +74,20 @@ class TrialsController < ApplicationController
     end
   end
 
+  def study_classifications
+    @classifications = StudyClassification.all
+    respond_to do |format|
+      format.json { render :json => {:data => @classifications } }
+    end
+  end
+
+  def get_allocations
+    @allocations = Allocation.all
+    respond_to do |format|
+      format.json { render :json => {:allocations => @allocations } }
+    end
+  end
+
   def get_maskings
     @maskings = Masking.all
     respond_to do |format|
@@ -448,7 +462,7 @@ class TrialsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def trial_params
-    params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
+    params.require(:trial).permit(:nci_id, :lead_protocol_id, :allocation_id, :official_title, :acronym, :pilot, :research_category_id,
                                   :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id,
                                   :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms,
                                   :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id,
@@ -456,7 +470,7 @@ class TrialsController < ApplicationController
                                   :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                   :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
                                   :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
-                                  :brief_title, :brief_summary,
+                                  :brief_title, :brief_summary, :study_classification_id,
                                   :process_priority, :process_comment, :nci_specific_comment, :nih_nci_div, :nih_nci_prog, :keywords,
                                   :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],

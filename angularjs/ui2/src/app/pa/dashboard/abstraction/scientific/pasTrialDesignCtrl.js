@@ -17,6 +17,8 @@
         vm.secondaryPurposes = [];
         vm.interventionModels = [];
         vm.maskings = [];
+        vm.allocations = [];
+        vm.studyClassifications = [];
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
 
@@ -64,6 +66,14 @@
                     if (vm.isInterventional && vm.maskings.length === 0) {
                         _fetchMaskings();
                     }
+
+                    if (vm.isInterventional && vm.allocations.length === 0) {
+                        _fetchAllocations();
+                    }
+
+                    if (vm.isInterventional && vm.studyClassifications.length == 0) {
+                        _fetchStudyClassifications()
+                    }
                 });
         } // _watchResearchCategory
 
@@ -96,7 +106,7 @@
         function _fetchInterventionModels() {
             PATrialService.getInterventionModels().then(function(res) {
                 if (res.server_response.status === 200) {
-                    vm.interventionModels = res.models || [];
+                    vm.interventionModels = res.models.sort() || [];
                     console.info('models: ', vm.interventionModels);
                 }
             });
@@ -105,11 +115,29 @@
         function _fetchMaskings() {
             PATrialService.getMaskings().then(function(res) {
                 if (res.server_response.status === 200) {
-                    vm.maskings = res.maskings || [];
+                    vm.maskings = res.maskings.sort() || [];
                     console.info(vm.maskings);
                 }
             });
         } // _fetchMaskings
+
+        function _fetchAllocations() {
+            PATrialService.getAllocations().then(function(res) {
+                if (res.server_response.status === 200) {
+                    vm.allocations = res.allocations || [];
+                    vm.allocations.sort();
+                }
+            })
+        }
+
+        function _fetchStudyClassifications() {
+            PATrialService.getStudyClassifications().then(function(res) {
+                if (res.server_response.status === 200) {
+                    vm.studyClassifications = res.data || [];
+                    vm.studyClassifications.sort();
+                }
+            })
+        }
 
     } //pasTrialDesignCtrl
 
