@@ -176,6 +176,7 @@ Rails.application.routes.draw do
           post 'import_clinical_trials_gov'
           get  'get_board_approval_statuses'
           get  'get_intervention_models'
+          get  'get_maskings'
         end
       end
 

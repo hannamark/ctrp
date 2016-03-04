@@ -140,7 +140,8 @@
             prepUploadingTrialRelatedDocs: prepUploadingTrialRelatedDocs,
             groupTrialDesignData: groupTrialDesignData,
             getAcceptedFileTypesPA: getAcceptedFileTypesPA,
-            getInterventionModels: getInterventionModels
+            getInterventionModels: getInterventionModels,
+            getMaskings: getMaskings
         };
 
         return services;
@@ -396,6 +397,10 @@
 
         function getInterventionModels() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERVENTION_MODELS);
+        }
+
+        function getMaskings() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.MASKINGS);
         }
 
         /**
