@@ -138,7 +138,8 @@
             getTrialDocumentTypes: getTrialDocumentTypes,
             uploadTrialRelatedDocs: uploadTrialRelatedDocs,
             prepUploadingTrialRelatedDocs: prepUploadingTrialRelatedDocs,
-            groupTrialDesignData: groupTrialDesignData
+            groupTrialDesignData: groupTrialDesignData,
+            getAcceptedFileTypesPA: getAcceptedFileTypesPA
         };
 
         return services;
@@ -386,6 +387,10 @@
 
         function getTrialDocumentTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIAL_DOCUMENT_TYPES);
+        }
+
+        function getAcceptedFileTypesPA() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES);
         }
 
         /**

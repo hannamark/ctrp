@@ -229,6 +229,10 @@ AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
 AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
 AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
 
+AmendmentReason.find_or_create_by(code: 'AS', name: 'Acknowledged Scientific')
+AmendmentReason.find_or_create_by(code: 'AA', name: 'Acknowledged Administrative')
+AmendmentReason.find_or_create_by(code: 'AAS', name: 'Acknowledged Administrative and Scientific')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -697,6 +701,8 @@ ctep = Organization.find_or_create_by( id: 9999998,
 )
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpsuper3", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
@@ -708,6 +714,8 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "approve" => true},
                {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true},
                {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true}
 
