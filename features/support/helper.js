@@ -180,6 +180,11 @@ var helper = function() {
         expect(fieldName.isDisplayed()).to.eventually.equal(fieldValueTrueOrFalse);
     };
 
+    this.verifyElementDisplayedByIndex =function (fieldName, index, fieldValueTrueOrFalse) {
+        expect(fieldName.get(index).isDisplayed()).to.eventually.equal(fieldValueTrueOrFalse);
+    };
+
+
     this.verifyTableRowText = function (tbleRowIdentifier, expectedTblRwVal, errorMessage) {
         this.wait(tbleRowIdentifier, errorMessage);
         expect(tbleRowIdentifier.getText()).to.eventually.equal(expectedTblRwVal);

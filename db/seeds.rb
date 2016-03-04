@@ -166,12 +166,12 @@ SubmissionSource.find_or_create_by(code: 'CTEP', name: 'CTEP')
 SubmissionSource.find_or_create_by(code: 'DCP', name: 'DCP')
 SubmissionSource.find_or_create_by(code: 'CCT', name: 'Cancer Center')
 
-SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registery')
+SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registry')
 SubmissionMethod.find_or_create_by(code: 'BAT', name: 'Batch')
 SubmissionMethod.find_or_create_by(code: 'CTI', name: 'ClinicalTrials.gov Import')
-SubmissionMethod.find_or_create_by(code: 'PDQ', name: 'PDQ')
 SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
 SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
+SubmissionMethod.find_or_create_by(code: 'OTHER', name: 'Other')
 
 SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
 SiteRecruitmentStatus.find_or_create_by(code: 'APP', name: 'Approved')
@@ -229,6 +229,10 @@ AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
 AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
 AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
 
+AmendmentReason.find_or_create_by(code: 'AS', name: 'Acknowledged Scientific')
+AmendmentReason.find_or_create_by(code: 'AA', name: 'Acknowledged Administrative')
+AmendmentReason.find_or_create_by(code: 'AAS', name: 'Acknowledged Administrative and Scientific')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -241,7 +245,9 @@ AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List'
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
-AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,html,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES_REG', name: 'Accepted File Types for Registry', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,htm,html,msg,mht,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
+
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,htm,html,msg,mht,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
 
 AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
@@ -695,6 +701,8 @@ ctep = Organization.find_or_create_by( id: 9999998,
 )
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpsuper3", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
@@ -706,6 +714,8 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "approve" => true},
                {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true},
                {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true}
 

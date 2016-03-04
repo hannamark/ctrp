@@ -134,8 +134,9 @@
                     vm.currentParticipatingSite.id = response.id;
                 }
                 if(vm.currentParticipatingSite.id) {
+                    console.log("before update person = " + JSON.stringify(vm.currentParticipatingSite.person));
                     TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
-                        console.log("getParticipatingSiteById response = " + JSON.stringify(response));
+                        console.log("getParticipatingSiteById response.person = " + JSON.stringify(response.person));
                         if (response.server_response.status === 200) {
                             vm.currentParticipatingSite = response;
                             //vm.currentParticipatingSite.lock_version = response.lock_version;
@@ -146,6 +147,7 @@
                         vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
                         vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
                         vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
+                        vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person;
                         vm.persisted_organization = vm.currentParticipatingSite.organization;
                         if(newParticipatingSite){
                             vm.currentParticipatingSite.new = false;
@@ -203,7 +205,7 @@
          *  Set Add Mode. This causes the first tab to appear for a new Participating Site
          **/
         function setAddMode() {
-            console.log("SETTING TO ADDMODE");
+            //console.log("SETTING TO ADDMODE");
             vm.addEditMode = true;
             vm.currentParticipatingSite = {};
             vm.current_site_recruitment = {};
@@ -224,7 +226,7 @@
         function setEditMode(idx) {
             vm.addEditMode = true;
             vm.currentParticipatingSite = vm.curTrial.participating_sites[idx];
-            console.log("HIIII in setEditMode = " + JSON.stringify(vm.currentParticipatingSite));
+            //console.log("HIIII in setEditMode = " + JSON.stringify(vm.currentParticipatingSite));
             vm.city =  vm.curTrial.participating_sites[idx].organization.city;
             vm.state_province =  vm.curTrial.participating_sites[idx].organization.state_province;
             vm.country = vm.curTrial.participating_sites[idx].organization.country;
@@ -236,6 +238,7 @@
             vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
             vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
             vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
+            vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person
             vm.persisted_organization = vm.currentParticipatingSite.organization;
             vm.initSiteRecruitmentGrid();
             vm.initInvestigatorGrid();
@@ -467,25 +470,30 @@
          *  This function is used to save the user entered values of the selected site recruitment record
          */
         function commitEditInvestigator() {
+            console.log("in commitEditInvestigator");
             var primary_contact_set = false;
             if (vm.current_investigator.edit) {
                 for (var i = 0; i < vm.investigatorGrid.length; i++) {
-                    //console.log("in commitEditInvestigator vm.current_investigator="+JSON.stringify(vm.current_investigator));
-                     if (vm.current_investigator.person.id == vm.investigatorGrid[i].person.id){
+                    console.log("in commitEditInvestigator vm.current_investigator="+JSON.stringify(vm.current_investigator));
+                     if (vm.current_investigator.id == vm.investigatorGrid[i].id){
                         vm.investigatorGrid.splice(i,1);
                         vm.investigatorGrid.push(vm.current_investigator);
                          if(vm.current_investigator.set_as_contact){
-                             var name = PersonService.extractFullName(vm.investigatorGrid[i].person);
+                             var name = PersonService.extractFullName(vm.current_investigator.person);
                              vm.currentParticipatingSite.contact_name = name;
-                             vm.currentParticipatingSite.contact_phone = vm.investigatorGrid[i].person.phone;
-                             vm.currentParticipatingSite.contact_email = vm.investigatorGrid[i].person.email;
+                             vm.currentParticipatingSite.contact_phone = vm.current_investigator.person.phone;
+                             vm.currentParticipatingSite.contact_email = vm.current_investigator.person.email;
                              vm.currentParticipatingSite.contact_type = "PI";
-                             vm.currentParticipatingSite.person_id =  vm.investigatorGrid[i].person.id;
+                             vm.currentParticipatingSite.person_id =  vm.current_investigator.person.id;
+                             //console.log("in commitEditInvestigator vm.currentParticipatingSite.contact_name =" + vm.currentParticipatingSite.contact_name);
+                             //console.log("in commitEditInvestigator vm.currentParticipatingSite.person =" + JSON.stringify(vm.investigatorGrid[i].person));
+                            // vm.currentParticipatingSite.person_id =  vm.investigatorGrid[i].person.id;
+
                          }
                     } else {
-                         //if(vm.current_investigator.set_as_contact){
-                         //    vm.investigatorGrid[i].set_as_contact = false;
-                        // }
+                         if(vm.current_investigator.set_as_contact){
+                             vm.investigatorGrid[i].set_as_contact = false;
+                         }
                      }
                 }
             }
@@ -610,8 +618,10 @@
                     vm.currentParticipatingSite.contact_type = "Person";
                     vm.currentParticipatingSite.contact_phone = person.phone;
                     vm.currentParticipatingSite.contact_email = person.email;
-                    vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-                    vm.currentParticipatingSite.participating_site_investigators_attributes.push(personAsContact);
+                    vm.currentParticipatingSite.person_id =  person;
+
+                    //vm.currentParticipatingSite.participating_site_investigators_attributes = [];
+                    //vm.currentParticipatingSite.participating_site_investigators_attributes.push(personAsContact);
                 }
             });
         }
@@ -622,6 +632,7 @@
 
         function watchInvestigatorSelection() {
             $scope.$watch(function() {return vm.selectedInvestigator;}, function(newVal, oldVal) {
+                console.log("In watchInvestigatorSelection newVal="+ JSON.stringify(newVal));
                 for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
                     if(vm.currentParticipatingSite.participating_site_investigators[i].id == newVal.id){
                         var inv = vm.currentParticipatingSite.participating_site_investigators[i].person;

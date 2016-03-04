@@ -51,6 +51,8 @@ class TrialsController < ApplicationController
     @trial.updated_by = @current_user.username unless @current_user.nil?
     @trial.current_user = @current_user
 
+    Rails.logger.info "params in update: #{params}"
+
     respond_to do |format|
       if @trial.update(trial_params)
         format.html { redirect_to @trial, notice: 'Trial was successfully updated.' }
@@ -872,4 +874,5 @@ class TrialsController < ApplicationController
 
     return ctrp_primary_purpose_code
   end
+
 end
