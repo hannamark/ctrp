@@ -141,7 +141,9 @@
             groupTrialDesignData: groupTrialDesignData,
             getAcceptedFileTypesPA: getAcceptedFileTypesPA,
             getInterventionModels: getInterventionModels,
-            getMaskings: getMaskings
+            getMaskings: getMaskings,
+            getAllocations: getAllocations,
+            getStudyClassifications: getStudyClassifications
         };
 
         return services;
@@ -401,6 +403,14 @@
 
         function getMaskings() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.MASKINGS);
+        }
+
+        function getAllocations() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.ALLOCATIONS);
+        }
+
+        function getStudyClassifications() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.STUDY_CLASSIFICATIONS);
         }
 
         /**
