@@ -160,7 +160,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Externally Peer-Reviewed |
       |Institutional            |
 
-  Scenario Outline: #5 I can enter a trial status and trial status date for a trial
+  Scenario Outline: #2 I can enter a trial status and trial status date for a trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a <status date> and a status <statusType> and explained why study stopped <why study stopped>
@@ -185,7 +185,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
 
 
-  Scenario Outline:#5a I can enter a trial status and trial status date for a trial
+  Scenario Outline:#3 I can enter a trial status and trial status date for a trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial date <statusDateFrom> and trial status from <statusFrom> to trial date <statusDateTo> trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there
@@ -201,7 +201,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
 
 
-  Scenario Outline: #6 I can add and delete a trial
+  Scenario Outline: #4 I can add and delete a trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When When I add a trial status
@@ -221,7 +221,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
 
 
-  Scenario Outline: #8 I can enter a Trial Dates as either Actual or Anticipated
+  Scenario Outline: #5 I can enter a Trial Dates as either Actual or Anticipated
     Given I have selected the option to register a trial <trialType>
     And I am on the Trial Dates Section
     And I must enter Trial Dates values type
@@ -242,7 +242,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
 
 
-  Scenario Outline:# 9 Trial Dates Mandatory Fields
+  Scenario Outline:#6 Trial Dates Mandatory Fields
     Given I have selected the option to register a trial <trialType>
     And I am on the Trial Dates Section
     When I have not entered a Trial Date values for
@@ -261,7 +261,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
 
 
-  Scenario Outline: #10 Rules for Status/Dates relationships
+  Scenario Outline: #7 Rules for Status/Dates relationships
     Given I have selected the option to register a trial <trialType>
     And I am on the Trial Dates Section
     When Current Trial Status is <TrialStatusType> then the Trial date Type must be <DateType>
@@ -284,7 +284,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
 
 
-  Scenario Outline: #11 Rules for Study Date types
+  Scenario Outline: #8 Rules for Study Date types
     Given I have selected the option to register a trial <trialType>
     And I am on the Trial Dates Screen
     When the Trial date is in the past
@@ -301,7 +301,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Externally Peer-Reviewed |
       |Institutional            |
 
-  Scenario Outline: #12 general rules for Study Date values are as follows
+  Scenario Outline: #9 general rules for Study Date values are as follows
     Given I have selected the option to register a trial <trialType>
     And I am on the trial date section
     And The Trial Start Date can be in the past, present, or future
