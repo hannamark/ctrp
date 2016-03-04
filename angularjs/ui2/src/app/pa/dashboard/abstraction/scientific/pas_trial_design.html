@@ -104,6 +104,21 @@
             </div>
             <!-- end of intervention models -->
 
+            <!-- maskings -->
+            <div class="form-group">
+                <label for="masking" class="control-label col-xs-12 col-sm-2">Masking</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="masking" id="masking"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.masking_id"
+                        ng-options="mask.id as mask.name for mask in designView.maskings"
+                        >
+                        <option value="">- Please select a masking...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of maskings -->
+
             <!-- num of arms -->
             <div class="form-group">
                 <label for="num_arms" class="control-label col-xs-12 col-sm-2">Number of Arms & Groups</label>

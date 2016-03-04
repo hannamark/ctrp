@@ -16,6 +16,7 @@
         vm.primaryPurposes = [];
         vm.secondaryPurposes = [];
         vm.interventionModels = [];
+        vm.maskings = [];
         vm.isOtherPrimaryPurpose = false;
 
         activate();
@@ -57,6 +58,11 @@
                         if (vm.isInterventional && vm.interventionModels.length === 0) {
                             _fetchInterventionModels();
                         }
+
+                        // fetch maskings
+                        if (vm.isInterventional && vm.maskings.length === 0) {
+                            _fetchMaskings();
+                        }
                     }
                 });
         } // _watchResearchCategory
@@ -84,6 +90,15 @@
                 }
             });
         }
+
+        function _fetchMaskings() {
+            PATrialService.getMaskings().then(function(res) {
+                if (res.server_response.status === 200) {
+                    vm.maskings = res.maskings || [];
+                    console.info(vm.maskings);
+                }
+            });
+        } // _fetchMaskings
 
     } //pasTrialDesignCtrl
 

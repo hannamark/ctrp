@@ -91,7 +91,8 @@
                 'TRIALS_CENTRAL_CONTACT_TYPES': '/ctrp/registry/trials/get_central_contact_types.json',
                 'BOARD_APPROVAL_STATUSES': '/ctrp/registry/trials/get_board_approval_statuses.json',
                 'TRIAL_DOCUMENT_TYPES': '/ctrp/pa/trial_document_types.json',
-                'INTERVENTION_MODELS': '/ctrp/registry/trials/get_intervention_models.json'
+                'INTERVENTION_MODELS': '/ctrp/registry/trials/get_intervention_models.json',
+                'MASKINGS': '/ctrp/registry/trials/get_maskings.json'
             }
         })
         .constant('MESSAGES', {

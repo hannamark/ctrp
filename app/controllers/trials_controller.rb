@@ -74,6 +74,13 @@ class TrialsController < ApplicationController
     end
   end
 
+  def get_maskings
+    @maskings = Masking.all
+    respond_to do |format|
+      format.json { render :json => {:maskings => @maskings} }
+    end
+  end
+
   def get_intervention_models
     @intervention_models = InterventionModel.all
 
@@ -444,7 +451,7 @@ class TrialsController < ApplicationController
     params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
                                   :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id,
                                   :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms,
-                                  :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question,
+                                  :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id,
                                   :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
                                   :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                   :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
