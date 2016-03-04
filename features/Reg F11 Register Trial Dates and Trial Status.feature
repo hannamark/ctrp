@@ -2,7 +2,7 @@
 Feature: Reg F11 Register Trial Dates and Trial Status
 
 As a CTRP User, I can register a trial's key dates and trial status
-@runthis
+
   Scenario Outline: #1 Trial Status Transition Rules
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
@@ -157,6 +157,8 @@ As a CTRP User, I can register a trial's key dates and trial status
     Examples:
       |trialType  |
       |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
 
 
       Scenario Outline:#2 Trial Status Rules
