@@ -15,15 +15,17 @@
         vm.researchCategories = [];
         vm.primaryPurposes = [];
         vm.secondaryPurposes = [];
+        vm.isOtherPrimaryPurpose = false;
 
         activate();
         function activate() {
-            unpackPromisedData();
+            _unpackPromisedData();
             _getTrialDetailCopy();
+            _watchPrimaryPurpose();
         }
 
         // break down the grouped promised data as arrays
-        function unpackPromisedData() {
+        function _unpackPromisedData() {
             if (groupedTrialDesignData.length === 4) {
                 vm.trialPhases = groupedTrialDesignData[0];
                 vm.researchCategories = groupedTrialDesignData[1];
@@ -41,6 +43,18 @@
                 vm.isObservational = researchCategoryTitle.indexOf('observation') > -1;
                 vm.isAncillary = researchCategoryTitle.indexOf('ancillary') > -1;
             }, 0);
+        } // _getTrialDetailCopy
+
+        function _watchPrimaryPurpose() {
+            $scope.$watch(function() {return vm.trialDetailObj.primary_purpose_id;},
+                function(newVal, oldVal) {
+
+                if (!!newVal) {
+                    var curPrimaryPurposeObj = _.findWhere(vm.primaryPurposes, {id: newVal});
+                    vm.isOtherPrimaryPurpose = curPrimaryPurposeObj.name.toLowerCase().indexOf('other') > -1;
+                    console.info('isOtherPrimaryPurpose: ', vm.isOtherPrimaryPurpose);
+                }
+            })
         }
 
     } //pasTrialDesignCtrl

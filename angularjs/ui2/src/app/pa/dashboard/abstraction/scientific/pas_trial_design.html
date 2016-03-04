@@ -29,10 +29,51 @@
                         ng-options="purpose.id as purpose.name for purpose in designView.primaryPurposes"
                         >
                         <option value="">- Please select a primary purpose...</option>
-                        </select>
+                    </select>
                 </div>
             </div>
             <!-- end of primary purposes -->
+
+            <!-- description if primary purpose is Other -->
+            <div class="form-group" ng-show="designView.isOtherPrimaryPurpose">
+                <label for="description_other" class="control-label col-xs-12 col-sm-2">Description of Other Primary Purpose</label>
+                <div class="col-xs-12 col-sm-5">
+                    <textarea class="form-control"
+                        name="description_other" id="description_other"
+                        ng-model="designView.trialDetailObj.primary_purpose_other" rows="3"></textarea>
+                </div>
+            </div>
+            <!-- end of description -->
+
+            <!-- secondary purpose -->
+            <div class="form-group">
+                <label for="secondary_purpose" class="control-label col-xs-12 col-sm-2">Secondary Purpose</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="secondary_purpose" id="secondary_purpose"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.secondary_purpose_id"
+                        ng-options="purpose.id as purpose.name for purpose in designView.secondaryPurposes"
+                        >
+                        <option value="">- Please select a secondary purpose...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of secondary purpose -->
+
+            <!-- trial phase -->
+            <div class="form-group">
+                <label for="trial_phase" class="control-label col-xs-12 col-sm-2">Trial Phase</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="trial_phase" id="trial_phase"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.phase_id"
+                        ng-options="phase.id as phase.name for phase in designView.trialPhases"
+                        >
+                        <option value="">- Please select a trial phase...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of trial phase -->
         </fieldset>
     </form>
 </div>
