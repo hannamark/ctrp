@@ -2,7 +2,7 @@
 Feature: Reg F11 Register Trial Dates and Trial Status
 
 As a CTRP User, I can register a trial's key dates and trial status
-
+@runthis
   Scenario Outline: #1 Trial Status Transition Rules
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
@@ -43,8 +43,8 @@ As a CTRP User, I can register a trial's key dates and trial status
       |Approved	                                        |Closed to Accrual and Intervention	            |			        |WARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing	                                                                                                                                                                        |
       |Approved	                                        |Temporarily Closed to Accrual  	            |Add Stopped Reason	|WARNING: Interim status [Active] is missing	                                                                                                                                                                                                                                |
       |Approved	                                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|WARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing	                                                                                                                                                            |
-      |Approved	                                        |Complete	                                    |			        |ERROR: Interim status [Active] is missing\n ERROR: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                    |
-      |Approved	                                        |Administratively Complete	                    |Add Stopped Reason	|ERROR: Interim status [Active] is missing\n ERROR: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing                                                                                                      |
+      |Approved	                                        |Complete	                                    |			        |ERROR: Interim status [Active] is missing\nERROR: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                    |
+      |Approved	                                        |Administratively Complete	                    |Add Stopped Reason	|ERROR: Interim status [Active] is missing\nERROR: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing                                                                                                      |
       |Withdrawn	                                    |STATUSZERO	                                    |Add Stopped Reason	|                                                                                                                                                                                                                                                                               |
       |Withdrawn	                                    |In Review	                                    |Add Stopped Reason	|ERROR: Invalid status transition from [Withdrawn] to [In Review] 	                                                                                                                                                                                                            |
       |Withdrawn	                                    |Approved                                     	|Add Stopped Reason	|ERROR: Invalid status transition from [Withdrawn] to [Approved] 	                                                                                                                                                                                                            |
@@ -147,7 +147,7 @@ As a CTRP User, I can register a trial's key dates and trial status
       |Administratively Complete	                    |Withdrawn	                                    |Add Stopped Reason	|ERROR: Invalid status Transition from [Administratively Complete] to [Withdrawn]	                                                                                                                                                                                            |
       |Administratively Complete	                    |Active	                                        |Add Stopped Reason	|ERROR: Invalid status Transition from [Administratively Complete] to [Active]	                                                                                                                                                                                                |
       |Administratively Complete	                    |Enrolling by Invitation	                    |Add Stopped Reason	|ERROR: Invalid status Transition from [Administratively Complete] to [Enrolling by Invitation]	                                                                                                                                                                                |
-      |Administratively Complete	                    |Closed to Accrual	                            |Add Stopped Reason	|ERROR: Invalid status Transition from [Administratively Complete]  to [Closed to Accrual]	                                                                                                                                                                                    |
+      |Administratively Complete	                    |Closed to Accrual	                            |Add Stopped Reason	|ERROR: Invalid status Transition from [Administratively Complete] to [Closed to Accrual]	                                                                                                                                                                                    |
       |Administratively Complete	                    |Closed to Accrual and Intervention             |Add Stopped Reason	|ERROR: Invalid status Transition from [Administratively Complete] to [Closed to Accrual and Intervention]                                                                                                                                                                    |
       |Administratively Complete	                    |Temporarily Closed to Accrual                  |Add Stopped Reason	|ERROR: Invalid status Transition from [Administratively Complete] to [Temporarily Closed to Accrual]	                                                                                                                                                                        |
       |Administratively Complete	                    |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|ERROR: Invalid status Transition from [Administratively Complete] to [Temporarily Closed to Accrual and Intervention]	                                                                                                                                                    |
@@ -157,8 +157,6 @@ As a CTRP User, I can register a trial's key dates and trial status
     Examples:
       |trialType  |
       |National                 |
-      |Externally Peer-Reviewed |
-      |Institutional            |
 
 
       Scenario Outline:#2 Trial Status Rules
@@ -217,7 +215,6 @@ As a CTRP User, I can register a trial's key dates and trial status
 
     And I am on the Register Trial Status screen
     When Trial Status Transition from <TrialStatusA> to <TrialStatusB> on the same day
-    Then
 
 
 

@@ -225,16 +225,15 @@ var projectMethodsRegistry = function() {
      * @param errorsWarnings
      *****************************************************************/
     this.verifyAddTrialDuplicateStatusInformation = function (status, statusDate, comment, whyStudyStopped, errorsWarnings) {
-        expect(element.all(by.binding('status.status_date')).get(0).getText()).to.eventually.equal(statusDate);
-        expect(element.all(by.binding('status.trial_status_name')).get(0).getText()).to.eventually.equal(status);
-        expect(element.all(by.binding('status.comment')).get(0).getText()).to.eventually.equal(comment);
-        expect(element.all(by.binding('status.why_stopped')).get(0).getText()).to.eventually.equal(whyStudyStopped);
-        expect(element.all(by.css('.col-md-4.status-error')).get(0).getText()).to.eventually.equal('');
-        expect(element.all(by.binding('status.status_date')).get(1).getText()).to.eventually.equal(statusDate);
-        expect(element.all(by.binding('status.trial_status_name')).get(1).getText()).to.eventually.equal(status);
-        expect(element.all(by.binding('status.comment')).get(1).getText()).to.eventually.equal(comment);
-        expect(element.all(by.binding('status.why_stopped')).get(1).getText()).to.eventually.equal(whyStudyStopped);
-        expect(element.all(by.css('.col-md-4.status-error')).get(1).getText()).to.eventually.equal(errorsWarnings);
+        expect(addTrial.addTrialStatusDateTable.get(0).getText()).to.eventually.equal(statusDate);
+        expect(addTrial.addTrialStatusNameTable.get(0).getText()).to.eventually.equal(status);
+        expect(addTrial.addTriaCommentTable.get(0).getText()).to.eventually.equal(comment);
+        expect(addTrial.addTrialWhyStudyStoppedTable.get(0).getText()).to.eventually.equal(whyStudyStopped);
+        expect(addTrial.addTrialStatusDateTable.get(1).getText()).to.eventually.equal(statusDate);
+        expect(addTrial.addTrialStatusNameTable.get(1).getText()).to.eventually.equal(status);
+        expect(addTrial.addTriaCommentTable.get(1).getText()).to.eventually.equal(comment);
+        expect(addTrial.addTrialWhyStudyStoppedTable.get(1).getText()).to.eventually.equal(whyStudyStopped);
+        expect(addTrial.addTrialErrorWarningTable.get(1).getText()).to.eventually.equal(errorsWarnings);
     };
 
 
