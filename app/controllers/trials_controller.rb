@@ -443,7 +443,7 @@ class TrialsController < ApplicationController
   def trial_params
     params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
                                   :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id,
-                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date,
+                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms,
                                   :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question,
                                   :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
                                   :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
@@ -454,6 +454,7 @@ class TrialsController < ApplicationController
                                   :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                   alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
+                                  arms_groups_attributes: [:id, :label, :type, :description, :intervention_id, :trial_id, :_destroy],
                                   central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname, :extension],
                                   trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                   collaborators_attributes: [:id, :organization_id, :org_name, :_destroy],
