@@ -846,4 +846,6 @@ span.date-qualifier {
     margin-left: 20px;
 }
 
-tr.sele
+textarea.resize-vertical {
+    resize: vertical;
+}

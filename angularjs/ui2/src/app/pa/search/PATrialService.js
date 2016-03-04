@@ -8,12 +8,13 @@
     angular.module('ctrp.app.pa')
         .factory('PATrialService', PATrialService);
 
-    PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', 'Upload',
+    PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', 'Upload', 'TrialService',
             '$rootScope', 'PromiseTimeoutService', 'HOST', 'LocalCacheService', 'uiGridConstants'];
 
-    function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, Upload,
+    function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, Upload, TrialService,
             $rootScope, PromiseTimeoutService, HOST, LocalCacheService, uiGridConstants) {
 
+        var curTrial = {};
         var initTrialSearchParams = {
             //for pagination and sorting
             sort: '',
@@ -136,7 +137,11 @@
             getSiteRecruitementStatuses: getSiteRecruitementStatuses,
             getTrialDocumentTypes: getTrialDocumentTypes,
             uploadTrialRelatedDocs: uploadTrialRelatedDocs,
-            prepUploadingTrialRelatedDocs: prepUploadingTrialRelatedDocs
+            prepUploadingTrialRelatedDocs: prepUploadingTrialRelatedDocs,
+            groupTrialDesignData: groupTrialDesignData,
+            getAcceptedFileTypesPA: getAcceptedFileTypesPA,
+            getInterventionModels: getInterventionModels,
+            getMaskings: getMaskings
         };
 
         return services;
@@ -326,11 +331,21 @@
         /**
          * Cache the current trial object
          * @param {JSON} trialDetailObj
+         * @param {String} checkoutinFlag, if 'undefined', ignore its checkout record
          */
-        function setCurrentTrial(trialDetailObj) {
+        function setCurrentTrial(trialDetailObj, checkoutinFlag) {
             // trim off unused fields
             delete trialDetailObj.server_response;
             delete trialDetailObj.history;
+
+            // trialDetailObj comes from controllers other than trial overview controller,
+            // the flag is undefined, the checkout record should be retained from trial overview controller
+            if (checkoutinFlag === undefined) {
+                curTrial = getCurrentTrialFromCache();
+                trialDetailObj.admin_checkout = curTrial.admin_checkout;
+                trialDetailObj.scientific_checkout = curTrial.scientific_checkout;
+            }
+
             LocalCacheService.cacheItem('current_trial_object', trialDetailObj);
         }
 
@@ -376,6 +391,18 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIAL_DOCUMENT_TYPES);
         }
 
+        function getAcceptedFileTypesPA() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES);
+        }
+
+        function getInterventionModels() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERVENTION_MODELS);
+        }
+
+        function getMaskings() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.MASKINGS);
+        }
+
         /**
          * Convert each trial doc object to a promise for uploading, the doc must be 'active' to be uploaded
          * @param  {JSON Object} trialDocObj
@@ -409,6 +436,21 @@
                 return prepUploadingTrialRelatedDocs(trialDocObj, trialId);
             });
 
+            return PromiseTimeoutService.groupPromises(promises);
+        }
+
+        /**
+         * Get grouped data objects/arrays for Trial Design,
+         * the ordered array: phases, research_category, primaryPurpose, secondaryPurpose
+         * @return {Array of promises} To be resolved as an array
+         */
+        function groupTrialDesignData() {
+            var promises = [
+                TrialService.getPhases(),
+                TrialService.getResearchCategories(),
+                TrialService.getPrimaryPurposes(),
+                TrialService.getSecondaryPurposes()
+            ];
             return PromiseTimeoutService.groupPromises(promises);
         }
 

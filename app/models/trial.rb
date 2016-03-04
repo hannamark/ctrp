@@ -195,6 +195,7 @@ class Trial < TrialBase
   attr_accessor :coming_from
   attr_accessor :current_user
 
+  accepts_nested_attributes_for :arms_groups, allow_destroy: true
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
   accepts_nested_attributes_for :grants, allow_destroy: true
@@ -212,23 +213,23 @@ class Trial < TrialBase
   accepts_nested_attributes_for :other_criteria, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
-  validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :phase, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :research_category, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :primary_purpose, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :accrual_disease_term, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :lead_org, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :pi, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :sponsor, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :grant_question, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :ind_ide_question, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :start_date, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :start_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :primary_comp_date, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :phase, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :research_category, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :primary_purpose, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :accrual_disease_term, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :lead_org, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :pi, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :sponsor, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :grant_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :ind_ide_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :start_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :start_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :primary_comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
+  validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
 
   before_create :save_history
   before_create :save_internal_source
@@ -395,9 +396,7 @@ class Trial < TrialBase
 
       # New Submission
       if self.edit_type == 'import'
-        newSubmission = self.submissions.last
-
-
+        new_submission = self.submissions.last
       else
         ori = SubmissionType.find_by_code('ORI')
         if self.coming_from == 'rest'
@@ -405,16 +404,22 @@ class Trial < TrialBase
         else
           sub_method = SubmissionMethod.find_by_code('REG')
           end
-        newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_method: sub_method)
+        new_submission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_method: sub_method)
       end
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
-      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: newSubmission)
+      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: new_submission)
 
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
-      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: newSubmission)
+      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: new_submission)
+      
+      # Populate Submission ID for documents uploaded in draft stage
+      self.trial_documents.each do |doc|
+        doc.submission = new_submission
+        doc.save
+      end
     elsif self.edit_type == 'update'
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       # Don't increment submission number for updates

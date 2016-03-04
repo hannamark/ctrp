@@ -106,9 +106,15 @@
             vm.submitterPopOver.submitter = vm.trialDetailObj.submitter || {};
             vm.submitterPopOver.submitter.organization = vm.trialDetailObj.submitters_organization || '';
 
+            // check if the trial is registered or not (registered/reported or imported)
+            var internalSourceObj = vm.trialDetailObj.internal_source; // if null, then it is imported
+            vm.trialDetailObj.isImported = !!internalSourceObj ? (internalSourceObj.code !== 'REG') : true;
+
             // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
-            PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
+            vm.trialDetailObj.is_draft = ''
+            vm.trialDetailObj.edit_type = vm.trialDetailObj.isImported ? 'imported_update' : '';
+            PATrialService.setCurrentTrial(vm.trialDetailObj, 'checkoutin'); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
             $scope.trialDetailObj = vm.trialDetailObj;
         }
@@ -185,6 +191,7 @@
 
         function watchUpdatesInChildrenScope() {
             $scope.$on('updatedInChildScope', function() {
+                console.info('updatedInChildScope, getting current trial now!');
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
             });
         }

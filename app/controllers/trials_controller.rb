@@ -51,6 +51,8 @@ class TrialsController < ApplicationController
     @trial.updated_by = @current_user.username unless @current_user.nil?
     @trial.current_user = @current_user
 
+    Rails.logger.info "params in update: #{params}"
+
     respond_to do |format|
       if @trial.update(trial_params)
         format.html { redirect_to @trial, notice: 'Trial was successfully updated.' }
@@ -69,6 +71,21 @@ class TrialsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to trials_url, notice: 'Trial was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def get_maskings
+    @maskings = Masking.all
+    respond_to do |format|
+      format.json { render :json => {:maskings => @maskings} }
+    end
+  end
+
+  def get_intervention_models
+    @intervention_models = InterventionModel.all
+
+    respond_to do |format|
+        format.json { render :json => {:models => @intervention_models} }
     end
   end
 
@@ -432,17 +449,19 @@ class TrialsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def trial_params
     params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
-                                  :primary_purpose_other, :secondary_purpose_other, :investigator_title,
-                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date,
-                                  :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question,
+                                  :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id,
+                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms,
+                                  :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id,
                                   :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
                                   :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
                                   :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
                                   :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
+                                  :brief_title, :brief_summary,
                                   :process_priority, :process_comment, :nci_specific_comment, :nih_nci_div, :nih_nci_prog, :keywords,
                                   :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                   alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
+                                  arms_groups_attributes: [:id, :label, :type, :description, :intervention_id, :trial_id, :_destroy],
                                   central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname, :extension],
                                   trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                   collaborators_attributes: [:id, :organization_id, :org_name, :_destroy],
@@ -871,4 +890,5 @@ class TrialsController < ApplicationController
 
     return ctrp_primary_purpose_code
   end
+
 end
