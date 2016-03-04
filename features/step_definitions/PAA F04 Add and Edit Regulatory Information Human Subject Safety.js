@@ -158,9 +158,10 @@ module.exports = function() {
             console.log('test current')
             humanSafety.selectBoardApprovalStatus(boardApprovalStatusSelect);
             humanSafety.clickSave();
-            helper.wait_for(25);
+            helper.wait_for(250);
             humanSafety.clickAdminDataGeneralTrial();
             humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+            helper.wait_for(2500);
         };
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatus, true);
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatuslbl, true);
@@ -217,10 +218,10 @@ module.exports = function() {
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         humanSafety.clickSave();
-        helper.wait_for(250);
-        humanSafety.clickAdminDataGeneralTrial();
-        humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
-        browser.sleep(25).then(callback);
+        //helper.wait_for(250);
+        //humanSafety.clickAdminDataGeneralTrial();
+        //humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the Board Approval Status , Board Approval Number, Board Name, Board Affiliation will be associated with the trial along with the Board Affiliation�s address \(street, city, state, zip, country\), Phone \# and e\-mail address$/, function (callback) {
@@ -277,9 +278,10 @@ module.exports = function() {
             console.log('test current')
             humanSafety.selectBoardApprovalStatus(boardApprovalStatusSelect);
             humanSafety.clickSave();
-            helper.wait_for(25);
+            helper.wait_for(250);
             humanSafety.clickAdminDataGeneralTrial();
             humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+            helper.wait_for(2500);
         };
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatus, true);
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatuslbl, true);
@@ -347,9 +349,10 @@ module.exports = function() {
             console.log('test current')
             humanSafety.selectBoardApprovalStatus(boardApprovalStatusSelect);
             humanSafety.clickSave();
-            helper.wait_for(25);
+            helper.wait_for(250);
             humanSafety.clickAdminDataGeneralTrial();
             humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+            helper.wait_for(2500);
         };
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatus, true);
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatuslbl, true);
@@ -416,9 +419,10 @@ module.exports = function() {
             console.log('test current')
             humanSafety.selectBoardApprovalStatus(boardApprovalStatusSelect);
             humanSafety.clickSave();
-            helper.wait_for(25);
+            helper.wait_for(250);
             humanSafety.clickAdminDataGeneralTrial();
             humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+            helper.wait_for(2500);
         };
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatus, true);
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatuslbl, true);
@@ -445,19 +449,19 @@ module.exports = function() {
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         humanSafety.clickSave();
-        helper.wait_for(250);
-        humanSafety.clickAdminDataGeneralTrial();
-        humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+        helper.wait_for(2500);
+        //humanSafety.clickAdminDataGeneralTrial();
+        //humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
         organizationSearch.clickSearchOrganization();
         searchOrg.setOrgName(orgSearchNameA);
         searchOrg.clickSearchButton();
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         humanSafety.clickSave();
-        helper.wait_for(250);
-        humanSafety.clickAdminDataGeneralTrial();
-        humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
-        browser.sleep(25).then(callback);
+        //helper.wait_for(250);
+        //humanSafety.clickAdminDataGeneralTrial();
+        //humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the information entered or edited on the Regulatory Information \- Human Subject Safety screen will be saved to the trial record$/, function (callback) {
@@ -507,9 +511,10 @@ module.exports = function() {
             console.log('test current')
             humanSafety.selectBoardApprovalStatus(boardApprovalStatusSelect);
             humanSafety.clickSave();
-            helper.wait_for(25);
+            helper.wait_for(250);
             humanSafety.clickAdminDataGeneralTrial();
             humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+            helper.wait_for(2500);
         };
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatus, true);
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatuslbl, true);
@@ -536,12 +541,12 @@ module.exports = function() {
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         humanSafety.clickReset();
-        browser.sleep(250).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the information entered or edited on the Regulatory Information \- Human Subject Safety screen will not be saved to the trial record$/, function (callback) {
-        humanSafety.clickAdminDataGeneralTrial();
-        humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+        //humanSafety.clickAdminDataGeneralTrial();
+        //humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
         browser.sleep(25).then(callback);
     });
 
@@ -616,7 +621,7 @@ module.exports = function() {
 
     this.When(/^selected Save at the Regulatory Information� Human Subject Safety screen$/, function (callback) {
         humanSafety.clickSave();
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the system will display an Error that Approval Number, Board Name, Board Affiliation must be entered in order to associate the Regulatory Information \- Human Subject Safety Information for the trial$/, function (callback) {
@@ -698,9 +703,10 @@ module.exports = function() {
             console.log('test current')
             humanSafety.selectBoardApprovalStatus(boardApprovalStatusSelect);
             humanSafety.clickSave();
-            helper.wait_for(25);
+            helper.wait_for(250);
             humanSafety.clickAdminDataGeneralTrial();
             humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+            helper.wait_for(2500);
         };
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatus, true);
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatuslbl, true);
@@ -731,10 +737,10 @@ module.exports = function() {
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         humanSafety.clickSave();
-        helper.wait_for(250);
-        humanSafety.clickAdminDataGeneralTrial();
-        humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
-        browser.sleep(25).then(callback);
+        //helper.wait_for(250);
+        //humanSafety.clickAdminDataGeneralTrial();
+        //humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the selected organization will associated with the trial as the Board Affiliation along with the Board$/, function (callback) {
@@ -776,9 +782,10 @@ module.exports = function() {
             console.log('test current')
             humanSafety.selectBoardApprovalStatus(boardApprovalStatusSelect);
             humanSafety.clickSave();
-            helper.wait_for(25);
+            helper.wait_for(250);
             humanSafety.clickAdminDataGeneralTrial();
             humanSafety.clickAdminDataRegulatoryInfoHumanSafety();
+            helper.wait_for(2500);
         };
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatus, true);
         helper.verifyElementDisplayed(humanSafety.humanSafetyBoradApprovalStatuslbl, true);
