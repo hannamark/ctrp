@@ -46,23 +46,21 @@
         function _watchResearchCategory() {
             $scope.$watch(function() {return vm.trialDetailObj.research_category_id;},
                 function(newVal, oldVal) {
-                    if (newVal !== undefined && newVal !== null) {
-                        var curResearchCategoryObj = _.findWhere(vm.researchCategories, {id: newVal});
-                        var researchCategoryTitle = !!curResearchCategoryObj ? curResearchCategoryObj.name.toLowerCase() : '';
-                        vm.isExpandedAccess = researchCategoryTitle.indexOf('expand') > -1;
-                        vm.isInterventional = researchCategoryTitle.indexOf('intervention') > -1;
-                        vm.isObservational = researchCategoryTitle.indexOf('observation') > -1;
-                        vm.isAncillary = researchCategoryTitle.indexOf('ancillary') > -1;
+                    var curResearchCategoryObj = _.findWhere(vm.researchCategories, {id: newVal});
+                    vm.researchCategoryTitle = !!curResearchCategoryObj ? ' - ' + curResearchCategoryObj.name : '';
+                    vm.isExpandedAccess = vm.researchCategoryTitle.toLowerCase().indexOf('expand') > -1;
+                    vm.isInterventional = vm.researchCategoryTitle.toLowerCase().indexOf('intervention') > -1;
+                    vm.isObservational = vm.researchCategoryTitle.toLowerCase().indexOf('observation') > -1;
+                    vm.isAncillary = vm.researchCategoryTitle.toLowerCase().indexOf('ancillary') > -1;
 
-                        // fetch intervention models
-                        if (vm.isInterventional && vm.interventionModels.length === 0) {
-                            _fetchInterventionModels();
-                        }
+                    // fetch intervention models
+                    if (vm.isInterventional && vm.interventionModels.length === 0) {
+                        _fetchInterventionModels();
+                    }
 
-                        // fetch maskings
-                        if (vm.isInterventional && vm.maskings.length === 0) {
-                            _fetchMaskings();
-                        }
+                    // fetch maskings
+                    if (vm.isInterventional && vm.maskings.length === 0) {
+                        _fetchMaskings();
                     }
                 });
         } // _watchResearchCategory

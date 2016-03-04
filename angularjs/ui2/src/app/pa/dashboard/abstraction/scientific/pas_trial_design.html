@@ -2,7 +2,7 @@
     <form class="form-horizontal" role="form" name="trial_design_form" novalidate ctrp-submit="designView.submitForm()">
         <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
             <legend class="sub-bordered">
-                Trial Design - {{paTrialOverview.trialDetailObj.research_category.name}}
+                Trial Design{{designView.researchCategoryTitle}}
             </legend>
             <!-- research categories -->
             <div class="form-group">
