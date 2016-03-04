@@ -77,7 +77,7 @@ class TrialsController < ApplicationController
   def get_maskings
     @maskings = Masking.all
     respond_to do |format|
-      format.json { render :json => {:maskings => @maskings } }
+      format.json { render :json => {:maskings => @maskings} }
     end
   end
 
