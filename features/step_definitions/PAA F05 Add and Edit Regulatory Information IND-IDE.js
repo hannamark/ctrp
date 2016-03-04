@@ -191,7 +191,19 @@ module.exports = function() {
      Then the IND/IDE Information for the trial will be associated with the trial
      */
 
-    this.When(/^I have selected the IND\/IDE Type from a list$/, function (table, callback) {
+    this.When(/^selected the IND\/IDE Type from a list$/, function (table, callback) {
+        indIDE.indIDEInfoTable.all(by.css('tr')).isDisplayed().then(function(result){
+            if (result === true){
+                indIDE.indIDEInfoTable.all(by.css('tr')).count().then(function(rowCount) {
+                    counttim = rowCount;
+                    console.log(counttim);
+                });
+                for (var i = 1; i < counttim; i++){
+                    console.log('Current Row' + i);
+                    indIDE.clickRowDelete(i);
+                };
+            }
+        });
         var strVal = '';
         indIDETypeOptions = table.raw();
         strVal = indIDETypeOptions.toString().replace(/,/g, "\n", -1);
@@ -209,12 +221,12 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have entered the IND\/IDE number$/, function (callback) {
+    this.When(/^entered the IND\/IDE number$/, function (callback) {
         indIDE.setINDIDENumbr(indIDENmbrC);
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have selected the IND\/IDE Grantor from a list based on IND or IDE selected$/, function (table, callback) {
+    this.When(/^selected the IND\/IDE Grantor from a list based on IND or IDE selected$/, function (table, callback) {
         //|IND:-Select-,CDER,CBER,IDE:-Select-,CDRH,CBER|
         var strValGrantor = '';
         indIDEGrantorOptions = table.raw();
@@ -253,7 +265,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have selected the IND\/IDE Holder Type from a list$/, function (table, callback) {
+    this.When(/^selected the IND\/IDE Holder Type from a list$/, function (table, callback) {
         var strValHoldrTyp = '';
         indIDEHolderTypeOptions = table.raw();
         strValHoldrTyp = indIDEHolderTypeOptions.toString().replace(/,/g, "\n", -1);
@@ -269,7 +281,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have selected the NIH Institution or NCI Division\/Program Code from a list$/, function (table, callback) {
+    this.When(/^selected the NIH Institution or NCI Division\/Program Code from a list$/, function (table, callback) {
         var verifTbleHdrs2 = ''+ indIDEInfoTbleColeA +' '+ indIDEInfoTbleColeB +' '+ indIDEInfoTbleColeC +' '+ indIDEInfoTbleColeD +' '+ indIDEInfoTbleColeE +'';
         var verifTbleRowAs2 = ''+ indTypVal +' '+ indIDENmbrC +' '+ indIDEGrntrCDER +' '+ indIDEHldTypNIH +' '+ indIDEDivProgCdeNLM +'';
         var strValNIHNCIPrgoCode = '';
@@ -279,8 +291,9 @@ module.exports = function() {
         indIDE.selectINDIDEDivisionProgramCode(indIDEDivProgCdeNLM);
         indIDE.clickAdd();
         indIDE.clickSave();
-        indIDE.clickAdminDataGeneralTrial();
-        indIDE.clickAdminDataRegulatoryInfoIND();
+        //indIDE.clickAdminDataGeneralTrial();
+        //indIDE.clickAdminDataRegulatoryInfoIND();
+
         helper.verifyTableRowText(indIDE.indIDETblHdr, verifTbleHdrs2, "IND/IDE Table Header(s)");
         helper.verifyTableRowText(indIDE.indIDETblRowA, verifTbleRowAs2, "IND/IDE Table Row A");
         indIDE.indIDEInfoTable.all(by.css('tr')).count().then(function(rowCount) {
@@ -296,8 +309,10 @@ module.exports = function() {
             indIDE.clickRowDelete(i);
         };
         indIDE.clickSave();
+        helper.wait_for(3000);
         indIDE.clickAdminDataGeneralTrial();
         indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.wait_for(3000);
         helper.verifyElementDisplayed(indIDE.indIDEInfoTable, false);
         browser.sleep(25).then(callback);
     });
@@ -335,7 +350,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have entered the information for an IND or IDE$/, function (callback) {
+    this.When(/^I entered the information for an IND or IDE$/, function (callback) {
         indIDE.verifyFdaIndIdeYesOrNoOption('0', true);
         helper.verifyElementDisplayed(indIDE.indIDEType, true);
         helper.verifyElementDisplayed(indIDE.indIDENumber, true);
@@ -347,7 +362,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^I will be able to select "([^"]*)" and enter the information for multiple IND\/IDEs$/, function (arg1, callback) {
+    this.Then(/^I am able to select "([^"]*)" and enter the information for multiple IND\/IDEs$/, function (arg1, callback) {
         var getArgValToSplit = arg1.split(' ');
         var splitdArgVal = getArgValToSplit[1];
         var getArgVal = splitdArgVal.split('/');
@@ -493,12 +508,17 @@ module.exports = function() {
         browser.sleep(300).then(callback);
     });
 
-    this.Then(/^I will be able to remove the IND or IDE information for one or more INDs or IDEs$/, function (callback) {
+    this.Then(/^I am able to remove the IND or IDE information for one or more INDs or IDEs$/, function (callback) {
+        indIDE.indIDEInfoTable.all(by.css('tr')).count().then(function(rowCount) {
+            counttim = rowCount;
+            console.log(counttim);
+        });
         for (var i = 1; i < counttim; i++){
             console.log('Current Row' + i);
             indIDE.clickRowDelete(i);
         };
         indIDE.clickSave();
+        helper.wait_for(2500);
         indIDE.clickAdminDataGeneralTrial();
         indIDE.clickAdminDataRegulatoryInfoIND();
         helper.wait_for(2500);
@@ -730,7 +750,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have selected values the (.*)$/, function (INDIDEType, callback) {
+    this.When(/^selected values the (.*)$/, function (INDIDEType, callback) {
         if (globalYesNoFlag === 'No'){
             if (INDIDEType === 'null'){
                 indIDE.verifyFdaIndIdeYesOrNoOption('1', true);
@@ -753,14 +773,14 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have entered the (.*)$/, function (INDIDENumber, callback) {
+    this.Given(/^entered the (.*)$/, function (INDIDENumber, callback) {
         if (globalYesNoFlag === 'No'){
             if (INDIDENumber === 'null'){
                 helper.verifyElementDisplayed(indIDE.indIDENumber, false);
                 INDIDENumber = glovalNullVal;
             }
         } else if(globalYesNoFlag === 'Yes'){
-            if (!INDIDENumber === 'null'){
+            if (INDIDENumber === '77782'){
                 helper.verifyElementDisplayed(indIDE.indIDENumber, true);
                 indIDE.setINDIDENumbr(INDIDENumber);
             }
@@ -772,14 +792,15 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have selected the (.*)$/, function (INDIDEGrantor, callback) {
+    this.Given(/^selected the (.*)$/, function (INDIDEGrantor, callback) {
         if (globalYesNoFlag === 'No'){
             if (INDIDEGrantor === 'null'){
                 helper.verifyElementDisplayed(indIDE.indIDEGrantor, false);
                 INDIDEGrantor = glovalNullVal;
             }
         } else if(globalYesNoFlag === 'Yes'){
-            if (!INDIDEGrantor === 'null'){
+            if (INDIDEGrantor === 'CDER'){
+                console.log('Test grantor selection')
                 helper.verifyElementDisplayed(indIDE.indIDEGrantor, true);
                 indIDE.selectINDIDEGrantor(INDIDEGrantor);
                 INDIDEGrantor = indIDEGrntrCDER;
@@ -790,17 +811,25 @@ module.exports = function() {
                 INDIDEGrantor = indIDEGrntrCDER;
             }
         };
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
-    this.Given(/^I have selected the (.*)$/, function (INDIDEHolderType, callback) {
+    this.Given(/^selected the (.*)$/, function (INDIDEHolderType, callback) {
         if (globalYesNoFlag === 'No'){
             if (INDIDEHolderType === 'null'){
                 helper.verifyElementDisplayed(indIDE.indIDEHolderType, false);
                 INDIDEHolderType = glovalNullVal;
             }
         } else if(globalYesNoFlag === 'Yes'){
-            if (!INDIDEHolderType === 'null'){
+            if (INDIDEHolderType === 'Investigator'){
+                helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
+                indIDE.selectINDIDEHolderType(INDIDEHolderType);
+            }
+            if (INDIDEHolderType === 'NCI'){
+                helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
+                indIDE.selectINDIDEHolderType(INDIDEHolderType);
+            }
+            if (INDIDEHolderType === 'NIH'){
                 helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
                 indIDE.selectINDIDEHolderType(INDIDEHolderType);
             }
@@ -809,10 +838,11 @@ module.exports = function() {
                 //Select Nothing
             }
         };
-        browser.sleep(25).then(callback);
+        indIDE.indIDEDisvisionProgramCode.click();
+        browser.sleep(3000).then(callback);
     });
 
-    this.Given(/^I have selected the (.*)$/, function (NIHInstitutionOrNCIDivisionOrProgram, callback) {
+    this.Given(/^selected the (.*)$/, function (NIHInstitutionOrNCIDivisionOrProgram, callback) {
         if (globalYesNoFlag === 'No'){
             if (NIHInstitutionOrNCIDivisionOrProgram === 'null'){
                 helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, false);
@@ -820,7 +850,12 @@ module.exports = function() {
                 NIHInstitutionOrNCIDivisionOrProgram = glovalNullVal;
             }
         } else if(globalYesNoFlag === 'Yes'){
-            if (!NIHInstitutionOrNCIDivisionOrProgram === 'null'){
+            if (NIHInstitutionOrNCIDivisionOrProgram === 'CTEP'){
+                helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
+                helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
+                indIDE.selectINDIDEDivisionProgramCode(NIHInstitutionOrNCIDivisionOrProgram);
+            }
+            if (NIHInstitutionOrNCIDivisionOrProgram === 'NLM-National Library of Medicine'){
                 helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
                 helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
                 indIDE.selectINDIDEDivisionProgramCode(NIHInstitutionOrNCIDivisionOrProgram);
@@ -831,7 +866,7 @@ module.exports = function() {
                 //Select Nothing
             }
         };
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Given(/^selected Save$/, function (callback) {
@@ -841,23 +876,52 @@ module.exports = function() {
             helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
             indIDE.clickAdd();
         };
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
-
+/*
+    |Yes|IND|77782|CDER|null|null||
+    |Yes|IND|77782|CDER|null|null||
+    |Yes|IND|77782|null|NCI|null||
+    |Yes|IND|null|CDER|NCI|CTEP||
+    |Yes|null|77782|CDER|NCI|CTEP||
+*/
     this.Then(/^the system will display a warning (.*) that each of values that were not entered must be entered in order to associate the IND\/IDE Information for the trial$/, function (Message, callback) {
+        var commonErrorMsg = 'Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type';
         if (globalYesNoFlag === 'No'){
             if (Message === 'null'){
-                Message = glovalNullVal;
+                //helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
             }
         } else if(globalYesNoFlag === 'Yes'){
-            if (!Message === 'null'){
+            if (Message === 'Warning - The NIH Institution/NCI Division/Program Code is Required'){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
+            }
+            if (Message === 'Warning - The NIH Institution/NCI Division/Program Code is Required'){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
+            }
+            if (Message === 'Warning - The NIH  is Required'){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
+            }
+            if (Message === 'Warning - The IND/IDE Holder Type is Required'){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
+            }
+            if (Message === 'Warning - IND/IDE number is Required'){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
+            }
+            if (Message === 'Warning - IND/IDE Type is Required'){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
                 console.log('Current Warning Message:['+ Message +']');
             }
             if (Message === 'null'){
                 console.log('Current Warning Message:['+ Message +']');
             }
         };
-        browser.sleep(25).then(callback);
+        browser.sleep(250).then(callback);
     });
 
 

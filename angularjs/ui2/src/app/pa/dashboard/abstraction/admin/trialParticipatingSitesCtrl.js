@@ -134,6 +134,7 @@
                     vm.currentParticipatingSite.id = response.id;
                 }
                 if(vm.currentParticipatingSite.id) {
+                    console.log("before update person = " + JSON.stringify(vm.currentParticipatingSite.person));
                     TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
                         console.log("getParticipatingSiteById response.person = " + JSON.stringify(response.person));
                         if (response.server_response.status === 200) {
@@ -607,7 +608,7 @@
          */
         function watchPersonSelection() {
             $scope.$watchCollection(function() {return vm.selectedPerson.array;}, function(newVal, oldVal) {
-                console.log(" watchPersonSelection newVal=" + JSON.stringify(newVal));
+                //console.log(" watchPersonSelection newVal=" + JSON.stringify(newVal));
                 if (angular.isArray(newVal) && newVal.length > 0) {
                     vm.currentParticipatingSite.contact_name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
                     var personAsContact = {};
@@ -617,8 +618,10 @@
                     vm.currentParticipatingSite.contact_type = "Person";
                     vm.currentParticipatingSite.contact_phone = person.phone;
                     vm.currentParticipatingSite.contact_email = person.email;
-                    vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-                    vm.currentParticipatingSite.participating_site_investigators_attributes.push(personAsContact);
+                    vm.currentParticipatingSite.person_id =  person;
+
+                    //vm.currentParticipatingSite.participating_site_investigators_attributes = [];
+                    //vm.currentParticipatingSite.participating_site_investigators_attributes.push(personAsContact);
                 }
             });
         }
