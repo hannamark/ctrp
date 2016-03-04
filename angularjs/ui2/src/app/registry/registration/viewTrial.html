@@ -383,7 +383,7 @@
                 </div>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Other Document' && viewTrialView.curTrial.is_owner"
+                     ng-if="document.document_type == 'Other Document' && document.status === 'active' && viewTrialView.curTrial.is_owner"
                      class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Other:</label>
                     <div class="col-xs-12 col-sm-9 form-text">

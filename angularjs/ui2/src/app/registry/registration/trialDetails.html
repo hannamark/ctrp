@@ -1196,7 +1196,7 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Other Document'" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Other Document' && document.status === 'active'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>

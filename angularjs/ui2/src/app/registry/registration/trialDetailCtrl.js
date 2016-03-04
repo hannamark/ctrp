@@ -170,6 +170,9 @@
                 vm.curTrial.trial_documents_attributes = [];
                 _.each(vm.addedDocuments, function (document) {
                     if (document._destroy) {
+                        // Soft delete the document
+                        document._destroy = false;
+                        document.status = 'deleted';
                         vm.curTrial.trial_documents_attributes.push(document);
                     }
                 });
@@ -982,15 +985,15 @@
                 vm.addedDocuments.push(document);
 
                 // Keep track of doc number for validation purpose
-                if (vm.curTrial.trial_documents[i].document_type === 'Protocol Document') {
+                if (vm.curTrial.trial_documents[i].document_type === 'Protocol Document' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.protocolDocNum++;
-                } else if (vm.curTrial.trial_documents[i].document_type === 'IRB Approval') {
+                } else if (vm.curTrial.trial_documents[i].document_type === 'IRB Approval' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.irbApprovalNum++;
-                }  else if (vm.curTrial.trial_documents[i].document_type === 'Informed Consent') {
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Informed Consent' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.informedConsentNum++;
-                }  else if (vm.curTrial.trial_documents[i].document_type === 'Change Memo Document') {
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Change Memo Document' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.changeMemoNum++;
-                }  else if (vm.curTrial.trial_documents[i].document_type === 'Protocol Highlighted Document') {
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Protocol Highlighted Document' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.protocolHighlightedNum++;
                 }
             }
