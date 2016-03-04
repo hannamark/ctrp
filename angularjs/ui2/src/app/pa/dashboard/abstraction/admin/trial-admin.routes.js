@@ -209,10 +209,9 @@
                     templateUrl: 'app/pa/dashboard/abstraction/admin/pa_trial_related_docs.html',
                     controller: 'paTrialRelatedDocsCtrl as trialRelatedDocsView',
                     resolve: {
-                        TrialService: 'TrialService',
                         PATrialService: 'PATrialService',
-                        acceptedFileTypesObj: function(TrialService) {
-                            return TrialService.getAcceptedFileTypes();
+                        acceptedFileTypesObj: function(PATrialService) {
+                            return PATrialService.getAcceptedFileTypesPA();
                         },
                         documentTypes: function(PATrialService) {
                             return PATrialService.getTrialDocumentTypes();
