@@ -18,12 +18,14 @@
         vm.interventionModels = [];
         vm.maskings = [];
         vm.isOtherPrimaryPurpose = false;
+        vm.isOtherSecondaryPurpose = false;
 
         activate();
         function activate() {
             _unpackPromisedData();
             _getTrialDetailCopy();
             _watchPrimaryPurpose();
+            _watchSecondaryPurpose();
             _watchResearchCategory();
         }
 
@@ -75,6 +77,17 @@
                 }
             });
         } // _watchPrimaryPurpose
+
+        function _watchSecondaryPurpose() {
+            $scope.$watch(function() {return vm.trialDetailObj.secondary_purpose_id;},
+                function(newVal, oldVal) {
+                    if (newVal !== undefined && newVal !== null) {
+                        var curSecondaryPurposeObj = _.findWhere(vm.secondaryPurposes, {id: newVal});
+                        console.info('curSecondaryPurposeObj: ', curSecondaryPurposeObj);
+                        vm.isOtherSecondaryPurpose = curSecondaryPurposeObj.name.toLowerCase().indexOf('other') > -1;
+                    }
+                });
+        }
 
         /**
          * Fetch intervention models
