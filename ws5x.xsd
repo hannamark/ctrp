@@ -151,34 +151,6 @@
     </restriction>
   </simpleType>
 
-  <simpleType name="StudyModelCode">
-    <annotation>
-      <documentation>Study model codes.
-      </documentation>
-    </annotation>
-    <restriction base="string">
-      <enumeration value="Cohort" />
-      <enumeration value="Case-control" />
-      <enumeration value="Case-only" />
-      <enumeration value="Case-crossover" />
-      <enumeration value="Ecologic or community studies" />
-      <enumeration value="Family-based" />
-      <enumeration value="Other" />
-    </restriction>
-  </simpleType>
-
-  <simpleType name="TimePerspectiveCode">
-    <annotation>
-      <documentation>Time perspective codes.
-      </documentation>
-    </annotation>
-    <restriction base="string">
-      <enumeration value="Prospective" />
-      <enumeration value="Retrospective" />
-      <enumeration value="Cross-sectional" />
-      <enumeration value="Other" />
-    </restriction>
-  </simpleType>
 
   <simpleType name="ResponsiblePartyType">
     <annotation>
@@ -746,26 +718,6 @@
     </annotation>
     <sequence>
       <element name="trialType" type="tns:NonInterventionalTrialType" />
-      <element name="studyModelCode" type="tns:StudyModelCode" />
-      <element name="studyModelCodeOtherDescription" type="tns:OtherDescription"
-               minOccurs="0">
-        <annotation>
-          <documentation>If Trial Study Model Code is 'Other', please provide
-            an additional description using this
-            element.
-          </documentation>
-        </annotation>
-      </element>
-      <element name="timePerspectiveCode" type="tns:TimePerspectiveCode" />
-      <element name="timePerspectiveCodeOtherDescription" type="tns:OtherDescription"
-               minOccurs="0">
-        <annotation>
-          <documentation>If Time Perspective Code is 'Other', please provide
-            an additional description using this
-            element.
-          </documentation>
-        </annotation>
-      </element>
     </sequence>
   </complexType>
 

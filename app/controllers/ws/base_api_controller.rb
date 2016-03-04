@@ -1,4 +1,5 @@
 class Ws::BaseApiController < ApplicationController
+
   before_filter :check_auth
 
   private
@@ -20,7 +21,9 @@ class Ws::BaseApiController < ApplicationController
     @json = JSON.parse(request.body.read)
   end
 
+
   def check_auth
+    begin
     authenticate_or_request_with_http_basic do |username,password|
       resource = User.find_by_username_and_role(username,"ROLE_SERVICE-REST")
 
@@ -29,8 +32,11 @@ class Ws::BaseApiController < ApplicationController
       end
 
     end
-  end
+    rescue Errors::UnauthorizedAccessError => error
+      render(xml: error, status: error.status)
+    end
 
+end
 
 
 end
