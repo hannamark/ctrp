@@ -74,6 +74,35 @@
                 </div>
             </div>
             <!-- end of trial phase -->
+
+            <!-- pilot or not -->
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2">Is this a pilot?</label>
+                <div class="col-xs-12 col-sm-5">
+                    <label class="radio-inline">
+                      <input type="radio" name="optradio" ng-model="designView.trialDetailObj.pilot" value="Yes">Yes
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="optradio" ng-model="designView.trialDetailObj.pilot" value="No">No
+                    </label>
+                </div>
+            </div>
+            <!-- end of pilot -->
+
+            <!-- intervention models -->
+            <div class="form-group">
+                <label for="intervention_model" class="control-label col-xs-12 col-sm-2">Intervention Model</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="intervention_model" id="intervention_model"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.intervention_model_id"
+                        ng-options="model.id as model.name for model in designView.interventionModels"
+                        >
+                        <option value="">- Please select a intervention model...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of intervention models -->
         </fieldset>
     </form>
 </div>
