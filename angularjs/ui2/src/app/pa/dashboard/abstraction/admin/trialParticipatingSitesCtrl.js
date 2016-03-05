@@ -379,6 +379,9 @@
                     }
                 }
                 vm.validateStatus();
+
+                /* ADDED BY ADIL IN ORDER TO RESET EDIT VIEW AND REMOVE IT FROM THE UI AS NEEDED */
+                vm.current_site_recruitment = {};
             }
         } // commitEdit
 
@@ -440,9 +443,12 @@
         function deleteInvestigator(index) {
             //if (index < vm.tempTrialStatuses.length) {
             console.log("In delete  deleteInvestigator");
-            vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
-            vm.current_investigator._destroy = true;
+            //vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
+            //vm.current_investigator._destroy = true;
+            //vm.currentParticipatingSite.participating_site_investigators[index]._destroy = true;
+            console.log('vm.investigatorGrid[index]._destroy is: ', vm.investigatorGrid[index]._destroy);
             vm.investigatorGrid[index]._destroy = !vm.investigatorGrid[index]._destroy;
+            console.log('vm.investigatorGrid[index]._destroy is: ', vm.investigatorGrid[index]._destroy);
         }
 
         /**
@@ -454,11 +460,14 @@
             console.log("In editSiteRecruitment");
             vm.current_investigator = angular.copy(vm.investigatorGrid[index]);
             vm.current_investigator.edit = true;
-            if((vm.currentParticipatingSite.contact_type == "PI") &&  (vm.currentParticipatingSite.person_id == vm.current_investigator.id)) {
+
+            /* COMMENTED OUT BY ADIL, VERIFY WITH SARADA
+            if((vm.currentParticipatingSite.contact_type === "PI") &&  (vm.currentParticipatingSite.person_id === vm.current_investigator.id)) {
                 vm.current_investigator.set_as_contact = true;
             } else {
                 vm.current_investigator.set_as_contact = false;
             }
+            */
             console.log("In editSiteRecruitment vm.current_investigator=" +JSON.stringify(vm.current_investigator));
             // vm.tempTrialStatuses.splice(index, 1);
             //}
@@ -474,6 +483,7 @@
             var primary_contact_set = false;
             if (vm.current_investigator.edit) {
                 for (var i = 0; i < vm.investigatorGrid.length; i++) {
+
                     console.log("in commitEditInvestigator vm.current_investigator="+JSON.stringify(vm.current_investigator));
                      if (vm.current_investigator.id == vm.investigatorGrid[i].id){
                         vm.investigatorGrid.splice(i,1);
@@ -496,6 +506,8 @@
                          }
                      }
                 }
+                /* ADDED BY ADIL, TO RESET AND REMOVE EDIT SECTION ONCE EDIT HAS BEEN CONFIRMED */
+                vm.current_investigator = {};
             }
         } // commitEditInvestigator
 

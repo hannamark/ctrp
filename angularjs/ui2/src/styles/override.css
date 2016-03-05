@@ -144,6 +144,13 @@
 /* Overriding default table classes */
 .table-bordered > thead >tr > td, .table-bordered > thead > tr > th {
     border-bottom-width: 1px;
+    background: #f3f3f3;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(1, #ffffff));
+    background: -ms-linear-gradient(bottom, #eeeeee, #ffffff);
+    background: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 100%);
+    background: -o-linear-gradient(#ffffff, #eeeeee);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eeeeee', GradientType=0);
+    -webkit-border-top-right-radius: -1px;
 }
 
 .table-bordered > tbody > tr > td,
@@ -174,7 +181,7 @@
 }
 
 .table-striped > tbody > tr.edit-selected {
-    background-color: rgba(42, 113, 165, .5);
+    background-color: #DDEBF7;
 }
 
 .animated-item {
@@ -541,11 +548,14 @@ form {
     padding-left: 10px;
 }
 
-h4, .panel-title {
+h4, h5, .panel-title {
     color: #2A71A5;
 }
 h4 {
     font-size: 16px;
+}
+h5 {
+    font-size: 13px;
 }
 .panel-title {
     font-size: 14px;
