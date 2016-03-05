@@ -26,10 +26,10 @@ Then the associated study displays on the Associated Trials screen
 And the Message Record Created displays
 And the Associated Trial will be associated with the trial
 
-Scenario Outline: #2 CTRP Associated Trial is updated
+Scenario Outline: #2   corresponding Associated Trial records will be created for both associated trials  
 Given the added Associated Trial is a CTRP study
 When the Associated Trial is displayed on the Associated Trials screen
-Then the <AssociatedTrialFields> on the Associated Trials screen of the Associated Trial study are updated
+Then the <AssociatedTrialFields> on the Associated Trials screen of the Associated Trial study are added
 
       |AssociatedTrialFields| 
       |Identifier Type  |

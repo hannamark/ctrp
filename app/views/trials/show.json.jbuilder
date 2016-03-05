@@ -1,4 +1,5 @@
-json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id, :research_category,
+json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id, :masking_id,
+              :research_category, :allocation_id, :study_classification_id, :target_enrollment, :final_enrollment,
               :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
               :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual, :comp_date, :comp_date_qual,
               :ind_ide_question, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
@@ -7,6 +8,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :created_at, :updated_at, :created_by, :updated_by, :study_source, :lead_org, :pi, :sponsor,
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
+              :brief_title, :brief_summary, :intervention_model_id, :num_of_arms,
               :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
               :board_approval_num, :board_approval_status_id, :available_family_orgs, :uuid
@@ -69,6 +71,7 @@ json.participating_sites do
     json.contact_type participating_site.contact_type
     json.protocol_id participating_site.protocol_id
     json.program_code participating_site.program_code
+    json.person participating_site.person
 
     json.organization participating_site.organization
     json.site_rec_status_wrappers do
@@ -87,14 +90,17 @@ json.participating_sites do
       json.array!(participating_site.participating_site_investigators) do |inv|
         json.id inv.id
         json.person inv.person
-        #json.person_id inv.person.present? ? inv.person.id : ""
-        #json.lname  inv.person.present? ? inv.person.lname : ""
-        #json.fname  inv.person.present? ? inv.person.fname : ""
         json.investigator_type inv.investigator_type
         json.set_as_contact inv.set_as_contact
         json.status_code ""
       end
     end
+  end
+end
+
+json.arms_groups do
+  json.array!(@trial.arms_groups) do |ag|
+    json.extract! ag, :id, :label, :type, :description, :intervention_id, :trial_id
   end
 end
 

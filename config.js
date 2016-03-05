@@ -14,8 +14,8 @@ exports.config = {
 
     },
 
-    baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
-    //     baseUrl: 'http://localhost/ctrp/',
+        baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
+ //     baseUrl: 'http://localhost/ctrp/',
 
     params: {
         login: {
@@ -67,11 +67,13 @@ exports.config = {
         'features/Reg\ F08\ Register\ Trial\ Person\ and\ Organization\ Associations.feature',
         'features/Reg\ F09\ Register\ Trial\ FDAAA\ Information.feature',
         'features/Reg\ F10\ Register\ Trial\ Grant\ Information.feature',
+        'features/Reg\ F11\ Register\ Trial\ Dates\ and\ Trial\ Status.feature',
         'features/Reg\ F12\ Register\ Trial\ IND\ IDE.feature',
 
          /************* PA Features ************/
         'features/PAA\ F01\ Add\ and\ Edit\ General\ Trial\ Details.Feature',
         'features/PAA\ F02\ Add\ and\ Edit\ NCI\ Specific\ Information.Feature',
+        'features/PAA\ F03\ Add\ and\ Edit\ Regulatory\ Information.Feature',
         'features/PAA\ F04\ Add\ and\ Edit\ Regulatory\ Information\ Human\ Subject\ Safety.Feature',
         'features/PAA\ F05\ Add\ and\ Edit\ Regulatory\ Information\ IND-IDE.Feature',
         'features/PAA\ F07\ Add\ and\ Edit\ Trial\ Funding.Feature',

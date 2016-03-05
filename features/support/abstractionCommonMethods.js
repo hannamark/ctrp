@@ -333,6 +333,13 @@ var abstractionCommonMethods = function(){
         helper.getVerifyValue(obj, expectedValue, "Funding Source Organization field");
     };
 
+    /*****************************************
+     * Verify expected value : Radio Button
+     *****************************************/
+    this.verifyIndicator = function(getObject ,getIndicator, result)  {
+        expect(getObject.get(getIndicator).isSelected()).to.eventually.equal(result);
+    };
+
 };
 
 module.exports = abstractionCommonMethods;

@@ -1,0 +1,201 @@
+<div class="row">
+    <form class="form-horizontal" role="form" name="trial_design_form" novalidate ctrp-submit="designView.submitForm()">
+        <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
+            <legend class="sub-bordered">
+                Trial Design{{designView.researchCategoryTitle}}
+            </legend>
+            <!-- research categories -->
+            <div class="form-group">
+                <label for="research_category" class="control-label col-xs-12 col-sm-2">Research Category</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="research_category" id="research_category"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.research_category_id"
+                        ng-options="cat.id as cat.name for cat in designView.researchCategories"
+                        >
+                        <option value="">- Please select a research category...</option>
+                        </select>
+                </div>
+            </div>
+            <!-- end of research categories -->
+
+            <!-- primary purposes -->
+            <div class="form-group">
+                <label for="primary_purpose" class="control-label col-xs-12 col-sm-2">Primary Purpose</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="primary_purpose" id="primary_purpose"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.primary_purpose_id"
+                        ng-options="purpose.id as purpose.name for purpose in designView.primaryPurposes"
+                        >
+                        <option value="">- Please select a primary purpose...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of primary purposes -->
+
+            <!-- description if primary purpose is Other -->
+            <div class="form-group" ng-show="designView.isOtherPrimaryPurpose">
+                <label for="description_other" class="control-label col-xs-12 col-sm-2">Description of Other Primary Purpose</label>
+                <div class="col-xs-12 col-sm-5">
+                    <textarea class="form-control"
+                        name="description_other" id="description_other"
+                        maxlength="200" ng-maxlength="200"
+                        ng-model="designView.trialDetailObj.primary_purpose_other" rows="3">
+                    </textarea>
+                    <span ng-show="trial_design_form.description_other.$viewValue.length > 0">
+                        {{200 - trial_design_form.description_other.$viewValue.length}} characters left
+                    </span>
+                </div>
+            </div>
+            <!-- end of description -->
+
+            <!-- secondary purpose -->
+            <div class="form-group">
+                <label for="secondary_purpose" class="control-label col-xs-12 col-sm-2">Secondary Purpose</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="secondary_purpose" id="secondary_purpose"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.secondary_purpose_id"
+                        ng-options="purpose.id as purpose.name for purpose in designView.secondaryPurposes"
+                        >
+                        <option value="">- Please select a secondary purpose...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of secondary purpose -->
+
+            <!-- description if primary purpose is Other -->
+            <div class="form-group" ng-show="designView.isOtherSecondaryPurpose">
+                <label for="description_other2" class="control-label col-xs-12 col-sm-2">Description of Other Secondary Purpose</label>
+                <div class="col-xs-12 col-sm-5">
+                    <textarea class="form-control"
+                        name="description_other2" id="description_other2"
+                        ng-maxlength="1000" maxlength="1000"
+                        ng-model="designView.trialDetailObj.secondary_purpose_other" rows="3">
+                    </textarea>
+                    <span ng-show="trial_design_form.description_other2.$viewValue.length > 0">
+                        {{1000 - trial_design_form.description_other2.$viewValue.length}} characters left
+                    </span>
+                </div>
+            </div>
+            <!-- end of description -->
+
+            <!-- trial phase -->
+            <div class="form-group">
+                <label for="trial_phase" class="control-label col-xs-12 col-sm-2">Trial Phase</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="trial_phase" id="trial_phase"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.phase_id"
+                        ng-options="phase.id as phase.name for phase in designView.trialPhases"
+                        >
+                        <option value="">- Please select a trial phase...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of trial phase -->
+
+            <!-- pilot or not -->
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2">Is this a pilot?</label>
+                <div class="col-xs-12 col-sm-5">
+                    <label class="radio-inline">
+                      <input type="radio" name="optradio" ng-model="designView.trialDetailObj.pilot" value="Yes">Yes
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="optradio" ng-model="designView.trialDetailObj.pilot" value="No">No
+                    </label>
+                </div>
+            </div>
+            <!-- end of pilot -->
+
+            <!-- intervention models -->
+            <div class="form-group">
+                <label for="intervention_model" class="control-label col-xs-12 col-sm-2">Intervention Model</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="intervention_model" id="intervention_model"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.intervention_model_id"
+                        ng-options="model.id as model.name for model in designView.interventionModels"
+                        >
+                        <option value="">- Please select a intervention model...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of intervention models -->
+
+            <!-- maskings -->
+            <div class="form-group">
+                <label for="masking" class="control-label col-xs-12 col-sm-2">Masking</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="masking" id="masking"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.masking_id"
+                        ng-options="mask.id as mask.name for mask in designView.maskings"
+                        >
+                        <option value="">- Please select a masking...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of maskings -->
+
+            <!-- allocations -->
+            <div class="form-group">
+                <label for="allocation" class="control-label col-xs-12 col-sm-2">Allocation</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="allocation" id="allocation"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.allocation_id"
+                        ng-options="allocation.id as allocation.name for allocation in designView.allocations"
+                        >
+                        <option value="">- Please select an allocation...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of allocations -->
+
+            <!-- allocations -->
+            <div class="form-group">
+                <label for="study_classification" class="control-label col-xs-12 col-sm-2">Study Classification</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="study_classification" id="study_classification"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.study_classification_id"
+                        ng-options="class.id as class.name for class in designView.studyClassifications"
+                        >
+                        <option value="">- Please select a study classification...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of allocations -->
+
+            <!-- num of arms -->
+            <div class="form-group">
+                <label for="num_arms" class="control-label col-xs-12 col-sm-2">Number of Arms & Groups</label>
+                <div class="col-xs-12 col-sm-2">
+                    <input type="number" min="0" name="num_arms" id="num_arms" class="form-control input-sm" ng-class="designView.trialDetailObj.num_of_arms" placeholder="">
+                </div>
+            </div>
+            <!-- end of number of arms -->
+
+            <!-- target enrollment -->
+            <div class="form-group">
+                <label for="target_enrollment" class="control-label col-xs-12 col-sm-2">Target Enrollment</label>
+                <div class="col-xs-12 col-sm-2">
+                    <input type="number" min="0" name="target_enrollment" id="target_enrollment" class="form-control input-sm" ng-class="designView.trialDetailObj.target_enrollment" placeholder="">
+                </div>
+            </div>
+            <!-- end of target enrollment -->
+
+            <!-- final enrollment -->
+            <div class="form-group">
+                <label for="final_enrollment" class="control-label col-xs-12 col-sm-2">Final Enrollment</label>
+                <div class="col-xs-12 col-sm-2">
+                    <input type="number" min="0" name="final_enrollment" id="final_enrollment" class="form-control input-sm" ng-class="designView.trialDetailObj.final_enrollment" placeholder="">
+                </div>
+            </div>
+            <!-- end of final enrollment -->
+        </fieldset>
+    </form>
+</div>

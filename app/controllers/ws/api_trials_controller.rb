@@ -53,16 +53,16 @@ class Ws::ApiTrialsController < Ws::BaseApiController
    # end
 
 
-    xsd = Nokogiri::XML::Schema(File.open("/Users/dullam/Downloads/Registration ws-6.xsd"))
+    #xsd = Nokogiri::XML::Schema(File.open("/Users/dullam/Downloads/Registration ws-6.xsd"))
     #puts xsd
 
-    doc = Nokogiri::XML(string)
+    #doc = Nokogiri::XML(string)
 
    # puts doc
 
-    xsd.validate(doc).each do |error|
-       puts error.message
-    end
+    #xsd.validate(doc).each do |error|
+    #   puts error.message
+    #end
 
     @errors =Hash.new
     @trialMasterMap = Hash.new

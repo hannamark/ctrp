@@ -21,6 +21,7 @@ var selectValuePage = require('../support/CommonSelectList');
 var loginPage = require('../support/LoginPage');
 var moment = require('moment');
 //var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 
 
 var projectMethodsRegistry = function() {
@@ -38,6 +39,7 @@ var projectMethodsRegistry = function() {
     var searchTrial = new searchTrialPage();
     var trialMenuItem = new trialMenuItemList();
 //    var projectFunctionsRegistry = new projectFunctionRegistryPage();
+    var commonFunctions = new abstractionCommonMethods();
     var self = this;
 
     this.selectTrials = function(trialType) {
@@ -213,6 +215,26 @@ var projectMethodsRegistry = function() {
         );
     };
 
+
+    /*****************************************************************
+     * Method: Verify Trial Status for duplicate status
+     * @param status
+     * @param statusDate
+     * @param comment
+     * @param whyStudyStopped
+     * @param errorsWarnings
+     *****************************************************************/
+    this.verifyAddTrialDuplicateStatusInformation = function (status, statusDate, comment, whyStudyStopped, errorsWarnings) {
+        expect(addTrial.addTrialStatusDateTable.get(0).getText()).to.eventually.equal(statusDate);
+        expect(addTrial.addTrialStatusNameTable.get(0).getText()).to.eventually.equal(status);
+        expect(addTrial.addTriaCommentTable.get(0).getText()).to.eventually.equal(comment);
+        expect(addTrial.addTrialWhyStudyStoppedTable.get(0).getText()).to.eventually.equal(whyStudyStopped);
+        expect(addTrial.addTrialStatusDateTable.get(1).getText()).to.eventually.equal(statusDate);
+        expect(addTrial.addTrialStatusNameTable.get(1).getText()).to.eventually.equal(status);
+        expect(addTrial.addTriaCommentTable.get(1).getText()).to.eventually.equal(comment);
+        expect(addTrial.addTrialWhyStudyStoppedTable.get(1).getText()).to.eventually.equal(whyStudyStopped);
+        expect(addTrial.addTrialErrorWarningTable.get(1).getText()).to.eventually.equal(errorsWarnings);
+    };
 
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
@@ -471,37 +493,211 @@ var projectMethodsRegistry = function() {
      * Method: This will create a New Trial
      * @param: trialType
      ******************************** ******************************** ******************************** ******************************** ********************************/
-    //this.createTrial = function(trialType) {
-    //    self.selectTrials(trialType);
-    //    addTrial.setAddTrialLeadProtocolIdentifier();
-    //        addTrial.setAddTrialOfficialTitle
-    //        addTrial.selectAddTrialPhase
-    //        addTrial.selectAddTrialPilotOption
-    //        addTrial.selectAddTrialResearchCategory
-    //        addTrial.selectAddTrialPrimaryPurpose
-    //        addTrial.selectAddTrialAccrualDiseaseTerminology
-    //        addTrial.selectAddTrialFundedByNCIOption
-    //        addTrial.selectAddTrialFundingMechanism
-    //        addTrial.selectAddTrialInstituteCode
-    //        addTrial.setAddTrialSerialNumber
-    //        addTrial.selectAddTrialNCIDivisionProgramCode
-    //        addTrial.clickAddTrialAddGrantInfoButton
-    //        addTrial.selectAddTrialStatus
-    //        addTrial.clickAddTrialAddStatusButton
-    //        addTrial.selectAddTrialStartDateOption
-    //        addTrial.selectAddTrialPrimaryCompletionDateOption
-    //        addTrial.selectAddTrialCompletionDateOption
-    //        addTrial.selectAddTrialFDAIND_IDEOption
-    //    addTrial.selectAddTrialFDAIND_IDETypes
-    //    addTrial.setAddTrialFDAIND_IDENumber
-    //    addTrial.selectAddTrialFDAIND_IDEGrantor
-    //    addTrial.selectAddTrialFDAIND_IDEHolderType
-    //        addTrial.clickAddTrialAddIND_IDEButton
-    //
-    //
-    //
-    //
-    //
-    //};
+    this.createTrial = function(trialType, leadOrgIdentifier) {
+        self.createOrgforTrialfromPO('leadOrg');
+        /**** Stores the value of Lead Org ****/
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 40).then(function() {
+            storeLeadOrg = cukeOrganization.then(function (value) {
+                console.log('This is the Lead Organization that is added' + value);
+                return value;
+            });
+        });
+        self.createPersonforTrialfromPO('prinInv');
+        /**** Stores the value of Principal Investigator ****/
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 40).then(function() {
+            storePrinInv = per4.then(function (value) {
+                console.log('This is the Principal Investigator that is added' + value);
+                return value;
+            });
+        });
+        self.createOrgforTrialfromPO('sponsorOrg');
+        /**** Stores the value of Sponsor Org ****/
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 40).then(function() {
+            storeSponOrg = cukeOrganization.then(function (value) {
+                console.log('This is the Sponsor Organization that is added' + value);
+                return value;
+            });
+        });
+        self.createOrgforTrialfromPO('dataTbl4Org');
+        /**** Stores the value of Lead Org ****/
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 40).then(function() {
+            storeDateTblOrg = cukeOrganization.then(function (value) {
+                console.log('This is the Data Table 4 Organization that is added' + value);
+                return value;
+            });
+            browser.get('ui/#/main/sign_in');
+            commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
+            self.selectTrials(trialType);
+            login.clickWriteMode('On');
+            addTrial.setAddTrialLeadProtocolIdentifier(leadOrgIdentifier + moment().format('MMMDoYY h'));
+            addTrial.setAddTrialOfficialTitle('Trial Shi created by Cuke Test script');
+            addTrial.selectAddTrialPhase('IV');
+            addTrial.selectAddTrialPilotOption('1');
+            addTrial.selectAddTrialResearchCategory('Observational');
+            addTrial.selectAddTrialPrimaryPurpose('Treatment');
+            addTrial.selectAddTrialAccrualDiseaseTerminology('SDC');
+            /***** This will add the Lead Org ******/
+            browser.driver.wait(function () {
+                console.log('wait here');
+                return true;
+            }, 40).then(function () {
+                storeLeadOrg.then(function (value) {
+                    self.selectOrgforTrial(value, '0');
+                });
+                /***** This will add the Principal Investigator ******/
+                storePrinInv.then(function (value) {
+                    self.selectPerForTrial(value, '0');
+                });
+                /***** This will add the Sponsor Org ******/
+                storeSponOrg.then(function (value) {
+                    self.selectOrgforTrial(value, '1');
+                });
+                /***** This will add the Data Table 4 Org ******/
+                storeDateTblOrg.then(function (value) {
+                    self.selectOrgforTrial(value, '2');
+                });
+            });
+            addTrial.selectAddTrialFundedByNCIOption('0');
+            addTrial.selectAddTrialFundingMechanism('F32');
+            addTrial.selectAddTrialInstituteCode('CA');
+            addTrial.setAddTrialSerialNumber('153978');
+            addTrial.addTrialSerialNumberSelect.click();
+            addTrial.selectAddTrialNCIDivisionProgramCode('CCR');
+            addTrial.clickAddTrialAddGrantInfoButton();
+            //    addTrial.selectAddTrialStatus
+            //    addTrial.clickAddTrialAddStatusButton
+            //    addTrial.selectAddTrialStartDateOption
+            //    addTrial.selectAddTrialPrimaryCompletionDateOption
+            //    addTrial.selectAddTrialCompletionDateOption
+            //    addTrial.selectAddTrialFDAIND_IDEOption
+            //addTrial.selectAddTrialFDAIND_IDETypes
+            //addTrial.setAddTrialFDAIND_IDENumber
+            //addTrial.selectAddTrialFDAIND_IDEGrantor
+            //addTrial.selectAddTrialFDAIND_IDEHolderType
+            //    addTrial.clickAddTrialAddIND_IDEButton
+            addTrial.clickAddTrialReviewButton();
+        });
+
+
+    };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Trial Organization in PO, it creates a new org then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createOrgforTrialfromPO = function(orgName){
+        browser.get('ui/#/main/sign_in');
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
+        // login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 40).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode('On');
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.setOrgName(orgName + moment().format('MMMDoYY h'));
+            cukeOrganization = searchOrg.orgName.getAttribute('value');
+            searchOrg.clickSearchButton();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Organization exists');
+                    cukeOrganization.then(function(value){
+                        element(by.linkText(value)).click();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                    });
+                }
+                else {
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 40).then(function() {
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddOrganizations();
+                        cukeOrganization.then(function(value){
+                            console.log('Add org Name' + value);
+                            addOrg.setAddOrgName(value);
+                        });
+                        addOrg.setAddAlias('shEditAlias');
+                        addOrg.clickSaveAlias();
+                        addOrg.setAddAddress('9609 Medical Trial Center Drive');
+                        addOrg.setAddAddress2('9609 Medical Trial2 Center Drive');
+                        selectValue.selectCountry('Jordan');
+                        selectValue.selectState('Irbid');
+                        addOrg.setAddCity('editTrialCity');
+                        addOrg.setAddPostalCode('42666');
+                        addOrg.setAddEmail('editTrialOrg@email.com');
+                        addOrg.setAddPhone('589-8888-956');
+                        addOrg.setAddFax('898-9420-442');
+                        addOrg.clickSave();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                    });
+                }
+            });
+        });
+    };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Person for Trial, it creates a new person then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createPersonforTrialfromPO = function(perName){
+        browser.get('ui/#/main/sign_in');
+        commonFunctions.onPrepareLoginTest('ctrpcurator');
+        // login.accept();
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 40).then(function() {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode('On');
+            menuItem.clickPeople();
+            menuItem.clickListPeople();
+            searchPeople.setPersonFirstName(perName + moment().format('MMMDoYY h'));
+            per4 = searchPeople.personFirstName.getAttribute('value');
+            searchPeople.clickSearch();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Person exists');
+                    per4.then(function(value){
+                        element(by.linkText(value)).click();
+                        perSourceId = addPeople.addPersonSourceId.getText();
+                    });
+                }
+                else {
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 40).then(function() {
+                        menuItem.clickPeople();
+                        menuItem.clickAddPerson();
+                        addPeople.setAddPersonPrefix('prefix');
+                        per4.then(function (value1) {
+                            console.log('Add first Name' + value1);
+                            addPeople.setAddPersonFirstName(value1);
+                        });
+                        addPeople.setAddPersonSecondName('Rauniyar');
+                        addPeople.setAddPersonLastName('SinghTrial');
+                        addPeople.setAddPersonSuffix('suffix');
+                        addPeople.setAddPersonEmail('shiPercukeTrial@pr.com');
+                        addPeople.setAddPersonPhone('420-8754-906');
+                        addPeople.clickSave();
+                        perSourceId = addPeople.addPersonSourceId.getText();
+                    });
+                }
+            });
+        });
+    };
 };
 module.exports = projectMethodsRegistry;

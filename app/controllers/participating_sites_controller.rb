@@ -77,7 +77,7 @@ class ParticipatingSitesController < ApplicationController
           from_status_code = statuses[i - 1]['sr_status_code']
         end
         to_status_code = statuses[i]['sr_status_code']
-        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code])
+        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code)
         @validation_msgs.append(validation_msg)
       end
     end
@@ -91,17 +91,29 @@ class ParticipatingSitesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def participating_site_params
-      params[:participating_site].permit(:protocol_id, :program_code, :contact_name, :contact_phone, :contact_email, :contact_type, :trial_id, :organization_id,
+      params[:participating_site].permit(:protocol_id, :program_code, :contact_name, :contact_phone, :contact_email, :contact_type, :trial_id, :organization_id, :person_id,
                                          site_rec_status_wrappers_attributes: [:id, :status_date, :site_recruitment_status_id, :comments, :_destroy],
                                          participating_site_investigators_attributes: [:id, :participating_site_id, :person_id, :set_as_contact, :investigator_type, :_destroy])
     end
 
   # Convert status code to name in validation messages
-  def convert_validation_msg (msg)
+  def convert_validation_msg (msg, from_status_code, to_status_code)
     if msg.has_key?('warnings')
       msg['warnings'].each do |warning|
         statusObj = SiteRecruitmentStatus.find_by_code(warning['status']) if warning.has_key?('status')
         warning['status'] = statusObj.name if statusObj.present?
+
+        if warning.has_key?('message')
+          if warning['message'] == 'Invalid Transition'
+            fromStatusObj = TrialStatus.find_by_code(from_status_code)
+            warning['from'] = fromStatusObj.name if fromStatusObj.present?
+            toStatusObj = TrialStatus.find_by_code(to_status_code)
+            warning['to'] = toStatusObj.name if toStatusObj.present?
+          elsif warning['message'] == 'Duplicate'
+            dupStatusObj = TrialStatus.find_by_code(from_status_code)
+            warning['dupStatus'] = dupStatusObj.name if dupStatusObj.present?
+          end
+        end
       end
     end
 
@@ -109,6 +121,18 @@ class ParticipatingSitesController < ApplicationController
       msg['errors'].each do |error|
         statusObj = SiteRecruitmentStatus.find_by_code(error['status']) if error.has_key?('status')
         error['status'] = statusObj.name if statusObj.present?
+
+        if error.has_key?('message')
+          if error['message'] == 'Invalid Transition'
+            fromStatusObj = TrialStatus.find_by_code(from_status_code)
+            error['from'] = fromStatusObj.name if fromStatusObj.present?
+            toStatusObj = TrialStatus.find_by_code(to_status_code)
+            error['to'] = toStatusObj.name if toStatusObj.present?
+          elsif error['message'] == 'Duplicate'
+            dupStatusObj = TrialStatus.find_by_code(from_status_code)
+            error['dupStatus'] = dupStatusObj.name if dupStatusObj.present?
+          end
+        end
       end
     end
 

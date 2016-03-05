@@ -54,6 +54,7 @@
             'NCI': '/ctrp/registry/nci.json',
             'TRIAL_STATUSES': '/ctrp/registry/trial_statuses.json',
             'SITE_RECRUITMENT_STATUSES': '/ctrp/registry/site_recruitment_statuses.json',
+            'ACCEPTED_FILE_TYPES_REG': '/ctrp/registry/accepted_file_types_for_registry.json',
             'ACCEPTED_FILE_TYPES': '/ctrp/registry/accepted_file_types.json',
             'VALIDATE_TRIAL_STATUS': '/ctrp/registry/trials/validate_status.json',
             'VALIDATE_SR_STATUS': '/ctrp/registry/participating_sites/validate_status.json',
@@ -89,7 +90,11 @@
                 'TRIALS_CHECKOUT_IN': '/ctrp/pa/trial/{:trialId}/{:checkWhat}/{:checkoutType}.json',
                 'TRIALS_CENTRAL_CONTACT_TYPES': '/ctrp/registry/trials/get_central_contact_types.json',
                 'BOARD_APPROVAL_STATUSES': '/ctrp/registry/trials/get_board_approval_statuses.json',
-                'TRIAL_DOCUMENT_TYPES': '/ctrp/pa/trial_document_types.json'
+                'TRIAL_DOCUMENT_TYPES': '/ctrp/pa/trial_document_types.json',
+                'INTERVENTION_MODELS': '/ctrp/registry/trials/get_intervention_models.json',
+                'MASKINGS': '/ctrp/registry/trials/get_maskings.json',
+                'ALLOCATIONS': '/ctrp/registry/trials/get_allocations.json',
+                'STUDY_CLASSIFICATIONS': '/ctrp/registry/trials/study_classifications.json'
             }
         })
         .constant('MESSAGES', {
