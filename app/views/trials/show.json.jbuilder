@@ -8,7 +8,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :created_at, :updated_at, :created_by, :updated_by, :study_source, :lead_org, :pi, :sponsor,
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
-              :brief_title, :brief_summary, :intervention_model_id, :num_of_arms,
+              :brief_title, :brief_summary, :objective, :detailed_description, :intervention_model_id, :num_of_arms,
               :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
               :board_approval_num, :board_approval_status_id, :available_family_orgs, :uuid
