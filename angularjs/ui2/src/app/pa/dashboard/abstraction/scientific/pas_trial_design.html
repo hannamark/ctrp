@@ -19,6 +19,10 @@
             </div>
             <!-- end of research categories -->
 
+            <!-- fields specific to research categories -->
+            <div ng-include="designView.curSpecificFieldsPartial"></div>
+            <!-- end of fields specific -->
+
             <!-- primary purposes -->
             <div class="form-group">
                 <label for="primary_purpose" class="control-label col-xs-12 col-sm-2">Primary Purpose</label>
@@ -139,6 +143,18 @@
                 </div>
             </div>
             <!-- end of maskings -->
+
+            <!-- masking roles -->
+            <div class="form-group" ng-show="designView.trialDetailObj.showMaskingRoles">
+                <label class="control-label col-xs-12 col-sm-2">Masking Role(s)</label>
+                <div class="col-xs-12 col-sm-10" layout="row" layout-wrap flex-xs="100">
+                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_subject" aria-label="Subject">Subject</md-checkbox>
+                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_investigator" aria-label="Investigator">Investigator</md-checkbox>
+                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_caregiver" aria-label="Caregiver">Caregiver</md-checkbox>
+                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_outcome_assessor" aria-label="Outcomes Assessor">Outcomes Assessor</md-checkbox>
+                </div>
+            </div>
+            <!-- end of masking roles -->
 
             <!-- Expaned Access Type -->
             <div class="form-group" ng-show="designView.isExpandedAccess">

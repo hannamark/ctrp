@@ -9,6 +9,13 @@
     function pasTrialDesignCtrl($scope, TrialService, PATrialService, toastr,
         MESSAGES, _, $timeout, groupedTrialDesignData) {
         var vm = this;
+        // partial templates for different fields
+        var INTERVENTIONAL_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_interventional.html';
+        var OBSERVATIONAL_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_observational.html';
+        var ANCILLARY_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_ancillary.html';
+        var EXPANDEDACCESS_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_expanded_access.html';
+        vm.curSpecificFieldsPartial = '';
+
         console.info('groupedTrialDesignData: ', groupedTrialDesignData);
         vm.trialDetailObj = {};
         vm.trialPhases = [];
@@ -21,6 +28,7 @@
         vm.studyClassifications = [];
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
+        vm.trialDetailObj.showMaskingRoles = false;
 
         activate();
         function activate() {
@@ -29,6 +37,7 @@
             _watchPrimaryPurpose();
             _watchSecondaryPurpose();
             _watchResearchCategory();
+            _watchMasking();
         }
 
         // break down the grouped promised data as arrays
@@ -74,6 +83,11 @@
                     if (vm.isInterventional && vm.studyClassifications.length == 0) {
                         _fetchStudyClassifications()
                     }
+
+                    vm.curSpecificFieldsPartial = vm.isInterventional ? INTERVENTIONAL_FIELDS : '';
+                    vm.curSpecificFieldsPartial = vm.isExpandedAccess ? EXPANDEDACCESS_FIELDS : '';
+                    vm.curSpecificFieldsPartial = vm.isObservational ? OBSERVATIONAL_FIELDS : '';
+                    vm.curSpecificFieldsPartial = vm.isAncillary ? ANCILLARY_FIELDS : '';
                 });
         } // _watchResearchCategory
 
@@ -138,6 +152,16 @@
                 }
             })
         }
+
+        function _watchMasking() {
+            $scope.$watch(function() {return vm.trialDetailObj.masking_id;}, function(newVal) {
+                var curMasking = _.findWhere(vm.maskings, {id: newVal});
+                var maskingName = !!curMasking ? curMasking.name : '';
+                vm.trialDetailObj.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
+            })
+        }
+
+
 
     } //pasTrialDesignCtrl
 
