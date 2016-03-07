@@ -94,7 +94,8 @@
                 'INTERVENTION_MODELS': '/ctrp/registry/trials/get_intervention_models.json',
                 'MASKINGS': '/ctrp/registry/trials/get_maskings.json',
                 'ALLOCATIONS': '/ctrp/registry/trials/get_allocations.json',
-                'STUDY_CLASSIFICATIONS': '/ctrp/registry/trials/study_classifications.json'
+                'STUDY_CLASSIFICATIONS': '/ctrp/registry/trials/study_classifications.json',
+                'STUDY_MODELS': '/ctrp/registry/trials/study_models.json'
             }
         })
         .constant('MESSAGES', {

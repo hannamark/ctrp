@@ -1,6 +1,6 @@
 json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id, :masking_id,
               :masking_role_caregiver, :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
-              :research_category, :allocation_id, :study_classification_id, :target_enrollment, :final_enrollment,
+              :research_category, :allocation_id, :study_classification_id, :target_enrollment, :final_enrollment, :study_model_id, :study_model_other,
               :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
               :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual, :comp_date, :comp_date_qual,
               :ind_ide_question, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history, :accruals,
