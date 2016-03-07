@@ -341,6 +341,7 @@
             vm.current_site_recruitment = angular.copy(vm.siteRecruitmentGrid[index]);
             //if(!vm.current_site_recruitment.new){
                 vm.current_site_recruitment.edit = true;
+                vm.siteRecruitmentGrid[index].edit = true;
            // }
             vm.current_site_recruitment._destroy = false;
             vm.current_site_recruitment.index = index;
@@ -378,6 +379,9 @@
                     }
                 }
                 vm.validateStatus();
+
+                /* ADDED BY ADIL IN ORDER TO RESET EDIT VIEW AND REMOVE IT FROM THE UI AS NEEDED */
+                vm.current_site_recruitment = {};
             }
         } // commitEdit
 
@@ -439,6 +443,7 @@
         function deleteInvestigator(index) {
             //if (index < vm.tempTrialStatuses.length) {
             console.log("In delete  deleteInvestigator");
+            vm.currentParticipatingSite.participating_site_investigators[index].edit = false;
             vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
             if( vm.current_investigator) {
                 vm.current_investigator._destroy = true;
@@ -458,6 +463,7 @@
             vm.current_investigator = angular.copy(vm.investigatorGrid[index]);
             if(vm.current_investigator.id) {
                 vm.current_investigator.edit = true;
+                vm.investigatorGrid[index].edit = true;
             } else {
                 vm.current_investigator.new = true;
             }
@@ -484,7 +490,8 @@
                     console.log("in commitEditInvestigator vm.current_investigator="+JSON.stringify(vm.current_investigator));
                      if (vm.current_investigator.id == vm.investigatorGrid[i].id){
                         vm.investigatorGrid.splice(i,1);
-                        vm.investigatorGrid.push(vm.current_investigator);
+                        vm.investigatorGrid.splice(i, 0, vm.current_investigator);
+                        //vm.investigatorGrid.push(vm.current_investigator);
                          if(vm.current_investigator.set_as_contact){
                              var name = PersonService.extractFullName(vm.current_investigator.person);
                              vm.currentParticipatingSite.contact_name = name;
@@ -503,6 +510,7 @@
                          }
                      }
                 }
+                vm.current_investigator = {};
            // }
         } // commitEditInvestigator
 
