@@ -22,6 +22,7 @@
         vm.studyClassifications = [];
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
+        vm.isOtherStudyModel = false;
         vm.trialDetailObj.showMaskingRoles = false;
 
         activate();
@@ -31,6 +32,7 @@
             _watchPrimaryPurpose();
             _watchSecondaryPurpose();
             _watchResearchCategory();
+            _watchStudyModel();
             _watchMasking();
         }
 
@@ -102,6 +104,17 @@
                         var curSecondaryPurposeObj = _.findWhere(vm.secondaryPurposes, {id: newVal});
                         console.info('curSecondaryPurposeObj: ', curSecondaryPurposeObj);
                         vm.isOtherSecondaryPurpose = curSecondaryPurposeObj.name.toLowerCase().indexOf('other') > -1;
+                    }
+                });
+        }
+
+        function _watchStudyModel() {
+            $scope.$watch(function() {return vm.trialDetailObj.study_model_id;},
+                function(newVal, oldVal) {
+                    if (newVal !== undefined && newVal !== null) {
+                        var curStudyModel = _.findWhere(vm.studyModels, {id: newVal});
+                        console.info('curStudyModel: ', curStudyModel);
+                        vm.isOtherStudyModel = curStudyModel.name.toLowerCase().indexOf('other') > -1;
                     }
                 });
         }

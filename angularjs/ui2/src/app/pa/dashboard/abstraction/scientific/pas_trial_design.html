@@ -183,6 +183,22 @@
             </div>
             <!-- end of study models -->
 
+            <!-- description if study model is Other -->
+            <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.isOtherStudyModel">
+                <label for="study_model_other" class="control-label col-xs-12 col-sm-2">Description of Other Study Model</label>
+                <div class="col-xs-12 col-sm-5">
+                    <textarea class="form-control"
+                        name="study_model_other" id="study_model_other"
+                        maxlength="200" ng-maxlength="200"
+                        ng-model="designView.trialDetailObj.study_model_other" rows="3">
+                    </textarea>
+                    <span ng-show="trial_design_form.study_model_other.$viewValue.length > 0">
+                        {{200 - trial_design_form.study_model_other.$viewValue.length}} characters left
+                    </span>
+                </div>
+            </div>
+            <!-- end of description for study model -->
+
             <!-- allocations -->
             <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="allocation" class="control-label col-xs-12 col-sm-2">Allocation</label>
