@@ -199,6 +199,14 @@ StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dyna
 StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
 StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
 
+StudyModel.find_or_create_by(code: 'COH', name: 'Cohort')
+StudyModel.find_or_create_by(code: 'CASECO', name: 'Case-control')
+StudyModel.find_or_create_by(code: 'CASEON', name: 'Case-only')
+StudyModel.find_or_create_by(code: 'CASECR', name: 'Case-crossover')
+StudyModel.find_or_create_by(code: 'EORCS', name: 'Ecologic or Community Studies')
+StudyModel.find_or_create_by(code: 'FAMB', name: 'Family-based')
+StudyModel.find_or_create_by(code: 'OTH', name: 'Other')
+
 OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
 OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')

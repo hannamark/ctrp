@@ -4,10 +4,10 @@
         .controller('pasTrialDesignCtrl', pasTrialDesignCtrl);
 
     pasTrialDesignCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData'];
+        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData', 'Common'];
 
     function pasTrialDesignCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, groupedTrialDesignData) {
+        MESSAGES, _, $timeout, groupedTrialDesignData, Common) {
         var vm = this;
         console.info('groupedTrialDesignData: ', groupedTrialDesignData);
         vm.trialDetailObj = {};
@@ -37,10 +37,10 @@
         // break down the grouped promised data as arrays
         function _unpackPromisedData() {
             if (groupedTrialDesignData.length === 4) {
-                vm.trialPhases = groupedTrialDesignData[0];
-                vm.researchCategories = groupedTrialDesignData[1];
-                vm.primaryPurposes = groupedTrialDesignData[2];
-                vm.secondaryPurposes = groupedTrialDesignData[3];
+                vm.trialPhases = groupedTrialDesignData[0].sort(Common.a2zComparator());
+                vm.researchCategories = groupedTrialDesignData[1].sort(Common.a2zComparator());
+                vm.primaryPurposes = groupedTrialDesignData[2].sort(Common.a2zComparator());
+                vm.secondaryPurposes = groupedTrialDesignData[3].sort(Common.a2zComparator());
             }
         }
 
@@ -113,7 +113,7 @@
         function _fetchInterventionModels() {
             PATrialService.getInterventionModels().then(function(res) {
                 if (res.server_response.status === 200) {
-                    vm.interventionModels = res.models.sort() || [];
+                    vm.interventionModels = res.models.sort(Common.a2zComparator()) || [];
                     console.info('models: ', vm.interventionModels);
                 }
             });
@@ -122,7 +122,7 @@
         function _fetchMaskings() {
             PATrialService.getMaskings().then(function(res) {
                 if (res.server_response.status === 200) {
-                    vm.maskings = res.maskings.sort() || [];
+                    vm.maskings = res.maskings.sort(Common.a2zComparator()) || [];
                     console.info(vm.maskings);
                 }
             });
@@ -132,7 +132,7 @@
             PATrialService.getAllocations().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.allocations = res.allocations || [];
-                    vm.allocations.sort();
+                    vm.allocations.sort(Common.a2zComparator());
                 }
             })
         }
@@ -141,7 +141,7 @@
             PATrialService.getStudyClassifications().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.studyClassifications = res.data || [];
-                    vm.studyClassifications.sort();
+                    vm.studyClassifications.sort(Common.a2zComparator());
                 }
             })
         }
@@ -149,8 +149,7 @@
         function _fetchStudyModels() {
             PATrialService.getStudyModels().then(function(res) {
                 vm.studyModels = res.data || [];
-                // TODO: sort
-                console.info('studyModels: ', vm.studyModels);
+                vm.studyModels.sort(Common.a2zComparator());
             });
         }
 

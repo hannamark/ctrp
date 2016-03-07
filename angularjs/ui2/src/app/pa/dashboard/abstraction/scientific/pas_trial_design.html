@@ -168,6 +168,21 @@
             </div>
             <!-- end of Expanded Access Type -->
 
+            <!-- Study models -->
+            <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
+                <label for="study_model" class="control-label col-xs-12 col-sm-2">Study Model</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="study_model" id="study_model"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.study_model_id"
+                        ng-options="model.id as model.name for model in designView.studyModels"
+                        >
+                        <option value="">- Please select a study model...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of study models -->
+
             <!-- allocations -->
             <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="allocation" class="control-label col-xs-12 col-sm-2">Allocation</label>
