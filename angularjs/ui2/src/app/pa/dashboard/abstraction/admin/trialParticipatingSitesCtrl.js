@@ -275,6 +275,7 @@
                 invObj._destroy = false;
                 invObj.edit = false;
                 invObj.new = false;
+                invObj._destroy = false;
                 if(vm.currentParticipatingSite.contact_type == "PI"){
                     //console.log("invObj.person.id=" + invObj.person.id);
                     //console.log("vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
@@ -411,7 +412,6 @@
             for (var i = 0; i < vm.siteRecruitmentGrid.length; i++) {
                 var siteObj = vm.siteRecruitmentGrid[i];
                 if(siteObj.id == vm.current_site_recruitment.id){
-                    vm.siteRecruitmentGrid[i] = vm.current_site_recruitment;
                     vm.siteRecruitmentGrid[i].uiEdit = false;
                 }
             }
@@ -480,9 +480,13 @@
             //if (index < vm.tempTrialStatuses.length) {
             console.log("In editInvestigator");
             vm.current_investigator = angular.copy(vm.investigatorGrid[index]);
+            vm.current_investigator.uiEdit = true;
+            vm.investigatorGrid[index].uiEdit = true;
+
             if(vm.current_investigator.id) {
                 vm.current_investigator.edit = true;
                 vm.investigatorGrid[index].edit = true;
+
             } else {
                 vm.current_investigator.new = true;
             }
@@ -539,6 +543,13 @@
          *  Cancel out of editing an existing Site Recruitment Status Record in the Participating Site
          */
         function cancelInvestigatorEdit() {
+
+            for (var i = 0; i < vm.investigatorGrid.length; i++) {
+                console.log("in commitEditInvestigator vm.current_investigator=" + JSON.stringify(vm.current_investigator));
+                if (vm.current_investigator.id == vm.investigatorGrid[i].id) {
+                    vm.investigatorGrid[i].uiEdit = false;
+                }
+            }
             vm.current_investigator = {};
         }
 

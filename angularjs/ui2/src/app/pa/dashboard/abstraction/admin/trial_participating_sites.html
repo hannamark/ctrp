@@ -312,7 +312,7 @@
                                                 <th width="10%" class="text-center"> Delete/Edit </th>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item text-center" ng-class="{'deleted-text': inv._destroy, 'edit-selected': psView.current_investigator.id === inv.id}">
+                                            <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item text-center" ng-class="{'deleted-text': inv._destroy, 'edit-selected': inv.uiEdit}">
                                                 <td>{{inv.person.id}}  <span ng-bind="inv.id"></span></td>
                                                 <td>{{inv.person.lname}}</td>
                                                 <td>{{inv.person.fname}}</td>
