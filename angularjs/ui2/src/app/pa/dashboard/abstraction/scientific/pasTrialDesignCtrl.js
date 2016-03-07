@@ -4,18 +4,11 @@
         .controller('pasTrialDesignCtrl', pasTrialDesignCtrl);
 
     pasTrialDesignCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData'];
+        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData', 'Common'];
 
     function pasTrialDesignCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, groupedTrialDesignData) {
+        MESSAGES, _, $timeout, groupedTrialDesignData, Common) {
         var vm = this;
-        // partial templates for different fields
-        var INTERVENTIONAL_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_interventional.html';
-        var OBSERVATIONAL_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_observational.html';
-        var ANCILLARY_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_ancillary.html';
-        var EXPANDEDACCESS_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_expanded_access.html';
-        vm.curSpecificFieldsPartial = '';
-
         console.info('groupedTrialDesignData: ', groupedTrialDesignData);
         vm.trialDetailObj = {};
         vm.trialPhases = [];
@@ -23,6 +16,7 @@
         vm.primaryPurposes = [];
         vm.secondaryPurposes = [];
         vm.interventionModels = [];
+        vm.studyModels = [];
         vm.maskings = [];
         vm.allocations = [];
         vm.studyClassifications = [];
@@ -43,10 +37,10 @@
         // break down the grouped promised data as arrays
         function _unpackPromisedData() {
             if (groupedTrialDesignData.length === 4) {
-                vm.trialPhases = groupedTrialDesignData[0];
-                vm.researchCategories = groupedTrialDesignData[1];
-                vm.primaryPurposes = groupedTrialDesignData[2];
-                vm.secondaryPurposes = groupedTrialDesignData[3];
+                vm.trialPhases = groupedTrialDesignData[0].sort(Common.a2zComparator());
+                vm.researchCategories = groupedTrialDesignData[1].sort(Common.a2zComparator());
+                vm.primaryPurposes = groupedTrialDesignData[2].sort(Common.a2zComparator());
+                vm.secondaryPurposes = groupedTrialDesignData[3].sort(Common.a2zComparator());
             }
         }
 
@@ -67,27 +61,26 @@
                     vm.isAncillary = vm.researchCategoryTitle.toLowerCase().indexOf('ancillary') > -1;
 
                     // fetch intervention models
-                    if (vm.isInterventional && vm.interventionModels.length === 0) {
+                    if ((vm.isInterventional || vm.isExpandedAccess) && vm.interventionModels.length === 0) {
                         _fetchInterventionModels();
                     }
 
                     // fetch maskings
-                    if (vm.isInterventional && vm.maskings.length === 0) {
+                    if ((vm.isInterventional || vm.isExpandedAccess) && vm.maskings.length === 0) {
                         _fetchMaskings();
                     }
 
-                    if (vm.isInterventional && vm.allocations.length === 0) {
+                    if ((vm.isInterventional || vm.isExpandedAccess) && vm.allocations.length === 0) {
                         _fetchAllocations();
                     }
 
-                    if (vm.isInterventional && vm.studyClassifications.length == 0) {
+                    if ((vm.isInterventional || vm.isExpandedAccess) && vm.studyClassifications.length === 0) {
                         _fetchStudyClassifications()
                     }
 
-                    vm.curSpecificFieldsPartial = vm.isInterventional ? INTERVENTIONAL_FIELDS : '';
-                    vm.curSpecificFieldsPartial = vm.isExpandedAccess ? EXPANDEDACCESS_FIELDS : '';
-                    vm.curSpecificFieldsPartial = vm.isObservational ? OBSERVATIONAL_FIELDS : '';
-                    vm.curSpecificFieldsPartial = vm.isAncillary ? ANCILLARY_FIELDS : '';
+                    if ((vm.isObservational || vm.isAncillary) && vm.studyModels.length === 0) {
+                        _fetchStudyModels();
+                    }
                 });
         } // _watchResearchCategory
 
@@ -120,7 +113,7 @@
         function _fetchInterventionModels() {
             PATrialService.getInterventionModels().then(function(res) {
                 if (res.server_response.status === 200) {
-                    vm.interventionModels = res.models.sort() || [];
+                    vm.interventionModels = res.models.sort(Common.a2zComparator()) || [];
                     console.info('models: ', vm.interventionModels);
                 }
             });
@@ -129,7 +122,7 @@
         function _fetchMaskings() {
             PATrialService.getMaskings().then(function(res) {
                 if (res.server_response.status === 200) {
-                    vm.maskings = res.maskings.sort() || [];
+                    vm.maskings = res.maskings.sort(Common.a2zComparator()) || [];
                     console.info(vm.maskings);
                 }
             });
@@ -139,7 +132,7 @@
             PATrialService.getAllocations().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.allocations = res.allocations || [];
-                    vm.allocations.sort();
+                    vm.allocations.sort(Common.a2zComparator());
                 }
             })
         }
@@ -148,9 +141,16 @@
             PATrialService.getStudyClassifications().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.studyClassifications = res.data || [];
-                    vm.studyClassifications.sort();
+                    vm.studyClassifications.sort(Common.a2zComparator());
                 }
             })
+        }
+
+        function _fetchStudyModels() {
+            PATrialService.getStudyModels().then(function(res) {
+                vm.studyModels = res.data || [];
+                vm.studyModels.sort(Common.a2zComparator());
+            });
         }
 
         function _watchMasking() {
@@ -160,8 +160,6 @@
                 vm.trialDetailObj.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
             })
         }
-
-
 
     } //pasTrialDesignCtrl
 

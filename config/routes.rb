@@ -179,6 +179,7 @@ Rails.application.routes.draw do
           get  'get_maskings'
           get  'get_allocations'
           get  'study_classifications'
+          get  'study_models'
         end
       end
 

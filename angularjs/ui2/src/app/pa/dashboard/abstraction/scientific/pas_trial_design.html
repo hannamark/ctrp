@@ -19,10 +19,6 @@
             </div>
             <!-- end of research categories -->
 
-            <!-- fields specific to research categories -->
-            <div ng-include="designView.curSpecificFieldsPartial"></div>
-            <!-- end of fields specific -->
-
             <!-- primary purposes -->
             <div class="form-group">
                 <label for="primary_purpose" class="control-label col-xs-12 col-sm-2">Primary Purpose</label>
@@ -55,7 +51,7 @@
             <!-- end of description -->
 
             <!-- secondary purpose -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="secondary_purpose" class="control-label col-xs-12 col-sm-2">Secondary Purpose</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="secondary_purpose" id="secondary_purpose"
@@ -70,7 +66,7 @@
             <!-- end of secondary purpose -->
 
             <!-- description if primary purpose is Other -->
-            <div class="form-group" ng-show="designView.isOtherSecondaryPurpose">
+            <div class="form-group" ng-show="designView.isOtherSecondaryPurpose && (designView.isInterventional || designView.isExpandedAccess)">
                 <label for="description_other2" class="control-label col-xs-12 col-sm-2">Description of Other Secondary Purpose</label>
                 <div class="col-xs-12 col-sm-5">
                     <textarea class="form-control"
@@ -130,7 +126,7 @@
             <!-- end of intervention models -->
 
             <!-- maskings -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="masking" class="control-label col-xs-12 col-sm-2">Masking</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="masking" id="masking"
@@ -145,7 +141,7 @@
             <!-- end of maskings -->
 
             <!-- masking roles -->
-            <div class="form-group" ng-show="designView.trialDetailObj.showMaskingRoles">
+            <div class="form-group" ng-show="designView.trialDetailObj.showMaskingRoles && (designView.isInterventional || designView.isExpandedAccess)">
                 <label class="control-label col-xs-12 col-sm-2">Masking Role(s)</label>
                 <div class="col-xs-12 col-sm-10" layout="row" layout-wrap flex-xs="100">
                     <md-checkbox ng-model="designView.trialDetailObj.masking_role_subject" aria-label="Subject">Subject</md-checkbox>
@@ -160,19 +156,35 @@
             <div class="form-group" ng-show="designView.isExpandedAccess">
                 <label for="expanded_access" class="control-label col-xs-12 col-sm-2">Expanded Access Type</label>
                 <div class="col-xs-12 col-sm-5">
-                    <select name="masking" id="masking"
+                    <strong>TODO - List</strong>
+                    <!-- <select name="masking" id="masking"
                         class="form-control input-sm"
                         ng-model="designView.trialDetailObj.masking_id"
                         ng-options="mask.id as mask.name for mask in designView.maskings"
                         >
                         <option value="">- Please select an expanded access type...</option>
-                    </select>
+                    </select> -->
                 </div>
             </div>
             <!-- end of Expanded Access Type -->
 
+            <!-- Study models -->
+            <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
+                <label for="study_model" class="control-label col-xs-12 col-sm-2">Study Model</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="study_model" id="study_model"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.study_model_id"
+                        ng-options="model.id as model.name for model in designView.studyModels"
+                        >
+                        <option value="">- Please select a study model...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of study models -->
+
             <!-- allocations -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="allocation" class="control-label col-xs-12 col-sm-2">Allocation</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="allocation" id="allocation"
@@ -187,7 +199,7 @@
             <!-- end of allocations -->
 
             <!-- allocations -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="study_classification" class="control-label col-xs-12 col-sm-2">Study Classification</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="study_classification" id="study_classification"
@@ -202,7 +214,7 @@
             <!-- end of allocations -->
 
             <!-- num of arms -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="num_arms" class="control-label col-xs-12 col-sm-2">Number of Arms/Groups</label>
                 <div class="col-xs-12 col-sm-2">
                     <input type="number" min="0" name="num_arms" id="num_arms" class="form-control input-sm" ng-class="designView.trialDetailObj.num_of_arms" placeholder="">
@@ -221,7 +233,7 @@
 
             <!-- final enrollment -->
             <div class="form-group">
-                <label for="final_enrollment" class="control-label col-xs-12 col-sm-2">Final Enrollment</label>
+                <label for="final_enrollment" class="control-label col-xs-12 col-sm-2">Final Enrollment for CT.gov</label>
                 <div class="col-xs-12 col-sm-2">
                     <input type="number" min="0" name="final_enrollment" id="final_enrollment" class="form-control input-sm" ng-class="designView.trialDetailObj.final_enrollment" placeholder="">
                 </div>
