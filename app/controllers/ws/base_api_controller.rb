@@ -2,6 +2,11 @@ class Ws::BaseApiController < ApplicationController
 
   before_filter :check_auth
 
+
+  def indicate_source
+    @api = true
+  end
+
   private
   def authenticate_user_from_token!
 

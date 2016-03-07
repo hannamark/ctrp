@@ -27,12 +27,21 @@ class ApiTrialParamsLoader
     @@rest_params[:lead_protocol_id] = @@xmlMapperObject.lead_protocol_id if @@xmlMapperObject.lead_protocol_id
 
     ###Lead Org, PI, Sponsor
-    lead_org=@@xmlMapperObject.leadOrganization.existingOrganization.id
-    sponsor=@@xmlMapperObject.sponsor.existingOrganization.id
-    pi = @@xmlMapperObject.pi.existingPerson.id
-    @@rest_params[:lead_org_id] = self.lead_org_id(lead_org)  if lead_org
-    @@rest_params[:sponsor_id]  = self.sponsor_id(sponsor)    if sponsor
-    @@rest_params[:pi_id]       = self.pi_id(pi)              if pi
+    lead_org_id=@@xmlMapperObject.leadOrganization.existingOrganization.id if @@xmlMapperObject.leadOrganization
+    sponsor_id=@@xmlMapperObject.sponsor.existingOrganization.id           if @@xmlMapperObject.sponsor
+    pi_id = @@xmlMapperObject.pi.existingPerson.id                         if @@xmlMapperObject.pi
+    @@rest_params[:lead_org_id] = lead_org_id  if lead_org_id && valid_org("leadOrganization",lead_org_id)
+    @@rest_params[:sponsor_id]  = sponsor_id    if sponsor_id && valid_org("Sponsor",sponsor_id)
+    @@rest_params[:pi_id]       = pi_id              if pi_id && valid_person("pi",pi_id)
+
+    ###Funding Sources
+    @@rest_params[:trial_funding_sources_attributes] = []
+    @@xmlMapperObject.fundingSources.each do |fs|
+      organization_id=fs.existingOrganization.id
+      @@rest_params[:trial_funding_sources_attributes].push({organization_id:organization_id}) if organization_id && valid_org("summary4FundingSponsor",organization_id)
+    end
+    @@rest_params[:program_code]       = @@xmlMapperObject.program_code  if @@xmlMapperObject.program_code
+
 
     ###Grants
     @@rest_params[:grants_attributes] = []
@@ -76,6 +85,10 @@ class ApiTrialParamsLoader
 
     ###Trial Docs
 
+    content = @@xmlMapperObject.protocol_content
+    p @@xmlMapperObject.protocol_file_name.keys[0]
+
+    p decode_base64_content = Base64.decode64(content)
 
 
 
@@ -89,18 +102,40 @@ class ApiTrialParamsLoader
     return @@errors
   end
 
-  def lead_org_id(id)
+  def valid_org(type,id)
     trialService=TrialService.new
-    trialService.active_ctrp_org_count(id) > 0 ? lead_org_id=id : @@errors.store("leadOrganization","Given Lead Organization does not exist in CTRP")
+    count = 0
+    begin
+      count=trialService.active_ctrp_org_count(id)
+    rescue Exception=>e
+      p e
+    end
+
+    if  count > 0
+      return true
+    else
+      @@errors.store(type,"Given Organization does not exist in CTRP "+id)
+      return false
+    end
+
   end
-  def sponsor_id(id)
+
+  def valid_person(type,id)
+    count=0
     trialService=TrialService.new
-    trialService.active_ctrp_org_count(id) > 0 ? sponsor_id=id : @@errors.store("sponsor","Given Sponsor does not exist in CTRP")
+    begin
+      count=trialService.active_ctrp_person_count(id)
+    rescue Exception=>e
+      p e
+    end
+    if count > 0
+        return true
+    else
+      @@errors.store(type,"Given Person does not exist in CTRP")
+      return false
+    end
   end
-  def pi_id(id)
-    trialService=TrialService.new
-    trialService.active_ctrp_person_count(id) > 0 ? pi_id=id : @@errors.store("pi","Given Prinicipal Investigator does not exist in CTRP")
-  end
+
   def phase_id
     Phase.find_by_name(@@xmlMapperObject.phase) ? phase_id=Phase.find_by_name(@@xmlMapperObject.phase).id : self.pluck_and_save_error(Phase,"phase")
   end
@@ -137,13 +172,46 @@ class ApiTrialParamsLoader
 
     ##If the holder type is NIH, select the NIH Institution.
     if holder_type_id == HolderType.find_by_code("NIH").id
+      nihInstitution=ind_ide.nihInstitution
+      nihInstMap=get_nih_inst_map
+      p nihInstMap
 
+      nihInstMap.has_key?(nihInstitution) ? ind_ide_hash[:nih_nci]=nihInstMap[:nihInstitution] : @@errors.store(type,"If holder type is NIH,valid nihInstitution expected ")
     end
     ##If the holder type is NCI, select the NCI Division Program Code.
-    if holder_type_id == HolderType.find_by_code("NIH").id
-
+    if holder_type_id == HolderType.find_by_code("NCI").id
+      isNciPCValid  =  AppSetting.find_by_code("NCI").big_value.split(',').include?(ind_ide.nciDivisionProgramCode)
+      isNciPCValid ? ind_ide_hash[:nih_nci]=ind_ide.nciDivisionProgramCode : @@errors.store(type,"If holder type is NCI,valid nciDivisionProgramCode expected ")
     end
     @@rest_params[:ind_ides_attributes].push(ind_ide_hash)
+  end
+
+ def get_nih_inst_map
+   arr=[]
+   hash = {}
+   arr=AppSetting.find_by_code("NIH").big_value.split(';')
+   arr.each  do |o|
+     key=o.split(/-/).first
+     val=o.split(/-/).second
+     hash[key]=val
+   end
+   return hash
+ end
+
+  def delete_x(trialkeys,x,xarray,xname)
+    existing_x = Array.new()
+    existing_x = x.where(trial_id: @trial.id).pluck(:id)
+    len = existing_x.length
+    if len > 0
+      for i in 0..len-1
+        myHash= Hash.new();
+        myHash.store("id", existing_x[i])
+        myHash.store("_destroy","true")
+        xarray.push(myHash);
+      end
+      @trialMasterMap.store(xname,xarray);
+
+    end
   end
 
 
@@ -172,6 +240,11 @@ class ApiTrialParamsLoader
 
   end
 
+
+
+
+
+  ################################  Deleting #########################
 
 
   def process_other_trial_id(trialkeys)
@@ -307,24 +380,6 @@ class ApiTrialParamsLoader
     end
 
   end
-
-
-  def delete_x(trialkeys,x,xarray,xname)
-    existing_x = Array.new()
-    existing_x = x.where(trial_id: @trial.id).pluck(:id)
-    len = existing_x.length
-    if len > 0
-      for i in 0..len-1
-        myHash= Hash.new();
-        myHash.store("id", existing_x[i])
-        myHash.store("_destroy","true")
-        xarray.push(myHash);
-      end
-      @trialMasterMap.store(xname,xarray);
-
-    end
-  end
-
 
 
   def  process_interventional_design(trialkeys)

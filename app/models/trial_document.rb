@@ -32,6 +32,14 @@ class TrialDocument < TrialBase
 
   mount_uploader :file, TrialDocumentUploader
 
+  before_create :hello
+
+  def hello
+    p "before file"
+    p self.file
+    p "after file"
+  end
+
   # Return true if this is the latest document uploaded in its document type
   def is_latest
     latest_doc = TrialDocument.where("trial_id = ? AND document_type = ?", self.trial_id, self.document_type).order(:id).last

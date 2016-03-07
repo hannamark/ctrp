@@ -57,6 +57,8 @@
 
     ##Funding Source
     array_node  :fundingSources, "summary4FundingSponsor", :class =>ExistingOrganization,:optional=>true
+    text_node :program_code, "programCode",:optional=>true, :default_valuse=>nil
+
 
     ###Grants
 
@@ -87,6 +89,8 @@
 
 
     ###Trial Docs
+    hash_node :protocol_file_name, "protocolDocument", "@filename", :class=>TrialDate,:optional=>true
+    text_node :protocol_content, "protocolDocument",:default_value=>nil,:optional=>true
 
 
   end
