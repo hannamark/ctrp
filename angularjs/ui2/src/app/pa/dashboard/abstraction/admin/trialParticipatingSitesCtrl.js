@@ -65,7 +65,6 @@
         vm.setEditMode = setEditMode;
         vm.openCalendar = openCalendar;
         vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
-        vm.setAsSiteContact = setAsSiteContact;
         vm.resetParticipatingSite = resetParticipatingSite;
         //vm.saveContact;
 
@@ -441,25 +440,33 @@
             //if (index < vm.tempTrialStatuses.length) {
             console.log("In delete  deleteInvestigator");
             vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
-            vm.current_investigator._destroy = true;
-            vm.investigatorGrid[index]._destroy = !vm.investigatorGrid[index]._destroy;
+            if( vm.current_investigator) {
+                vm.current_investigator._destroy = true;
+                vm.investigatorGrid[index]._destroy = !vm.investigatorGrid[index]._destroy;
+            } else{
+                vm.investigatorGrid.splice(index,1);
+            }
         }
 
         /**
-         * Editing an existing investigator
+         * Editing an existing Investigator
          * @param index
          */
         function editInvestigator(index) {
             //if (index < vm.tempTrialStatuses.length) {
-            console.log("In editSiteRecruitment");
+            console.log("In editInvestigator");
             vm.current_investigator = angular.copy(vm.investigatorGrid[index]);
-            vm.current_investigator.edit = true;
+            if(vm.current_investigator.id) {
+                vm.current_investigator.edit = true;
+            } else {
+                vm.current_investigator.new = true;
+            }
             if((vm.currentParticipatingSite.contact_type == "PI") &&  (vm.currentParticipatingSite.person_id == vm.current_investigator.id)) {
                 vm.current_investigator.set_as_contact = true;
             } else {
                 vm.current_investigator.set_as_contact = false;
             }
-            console.log("In editSiteRecruitment vm.current_investigator=" +JSON.stringify(vm.current_investigator));
+            console.log("In editInvestigator vm.current_investigator=" +JSON.stringify(vm.current_investigator));
             // vm.tempTrialStatuses.splice(index, 1);
             //}
         }
@@ -472,7 +479,7 @@
         function commitEditInvestigator() {
             console.log("in commitEditInvestigator");
             var primary_contact_set = false;
-            if (vm.current_investigator.edit) {
+           // if (vm.current_investigator.edit) {
                 for (var i = 0; i < vm.investigatorGrid.length; i++) {
                     console.log("in commitEditInvestigator vm.current_investigator="+JSON.stringify(vm.current_investigator));
                      if (vm.current_investigator.id == vm.investigatorGrid[i].id){
@@ -496,25 +503,9 @@
                          }
                      }
                 }
-            }
+           // }
         } // commitEditInvestigator
 
-
-        /**
-         *  Set the Investigator as a Primary Contact
-         */
-        function setAsSiteContact(index) {
-            var inv = vm.currentParticipatingSite.participating_site_investigators[index];
-            vm.currentParticipatingSite.contact_name = inv.person.lname;
-            vm.currentParticipatingSite.contact_phone = inv.person.phone;
-            vm.currentParticipatingSite.contact_email = inv.person.email;
-            for (var i = 0; i < vm.centralContactTypes; i++) {
-                if(vm.centralContactTypes[i].code  == "PI") {
-                    vm.currentParticipatingSite.contact_type = vm.centralContactTypes[i];
-                }
-            }
-            //vm.currentParticipatingSite.contact_type = ;
-        }
 
         /**
          *  Second Tab
