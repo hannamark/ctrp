@@ -140,6 +140,21 @@
             </div>
             <!-- end of maskings -->
 
+            <!-- Expaned Access Type -->
+            <div class="form-group" ng-show="designView.isExpandedAccess">
+                <label for="expanded_access" class="control-label col-xs-12 col-sm-2">Expanded Access Type</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="masking" id="masking"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.masking_id"
+                        ng-options="mask.id as mask.name for mask in designView.maskings"
+                        >
+                        <option value="">- Please select an expanded access type...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of Expanded Access Type -->
+
             <!-- allocations -->
             <div class="form-group">
                 <label for="allocation" class="control-label col-xs-12 col-sm-2">Allocation</label>
@@ -172,7 +187,7 @@
 
             <!-- num of arms -->
             <div class="form-group">
-                <label for="num_arms" class="control-label col-xs-12 col-sm-2">Number of Arms & Groups</label>
+                <label for="num_arms" class="control-label col-xs-12 col-sm-2">Number of Arms/Groups</label>
                 <div class="col-xs-12 col-sm-2">
                     <input type="number" min="0" name="num_arms" id="num_arms" class="form-control input-sm" ng-class="designView.trialDetailObj.num_of_arms" placeholder="">
                 </div>
@@ -196,6 +211,15 @@
                 </div>
             </div>
             <!-- end of final enrollment -->
+
+            <!-- Accruals -->
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2">Accruals</label>
+                <div class="col-xs-12 col-sm-2 form-text">
+                    {{designView.trialDetailObj.accruals}}
+                </div>
+            </div>
+            <!-- end of Accruals -->
         </fieldset>
     </form>
 </div>
