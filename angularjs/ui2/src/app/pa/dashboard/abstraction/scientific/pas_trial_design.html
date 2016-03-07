@@ -184,7 +184,7 @@
             <!-- end of study models -->
 
             <!-- description if study model is Other -->
-            <div class="form-group" ng-show="designView.isOtherStudyModel">
+            <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.isOtherStudyModel">
                 <label for="study_model_other" class="control-label col-xs-12 col-sm-2">Description of Other Study Model</label>
                 <div class="col-xs-12 col-sm-5">
                     <textarea class="form-control"
