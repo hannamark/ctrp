@@ -9,13 +9,6 @@
     function pasTrialDesignCtrl($scope, TrialService, PATrialService, toastr,
         MESSAGES, _, $timeout, groupedTrialDesignData) {
         var vm = this;
-        // partial templates for different fields
-        var INTERVENTIONAL_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_interventional.html';
-        var OBSERVATIONAL_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_observational.html';
-        var ANCILLARY_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_ancillary.html';
-        var EXPANDEDACCESS_FIELDS = 'app/pa/dashboard/abstraction/scientific/partials/_design_view_expanded_access.html';
-        vm.curSpecificFieldsPartial = '';
-
         console.info('groupedTrialDesignData: ', groupedTrialDesignData);
         vm.trialDetailObj = {};
         vm.trialPhases = [];
@@ -23,6 +16,7 @@
         vm.primaryPurposes = [];
         vm.secondaryPurposes = [];
         vm.interventionModels = [];
+        vm.studyModels = [];
         vm.maskings = [];
         vm.allocations = [];
         vm.studyClassifications = [];
@@ -67,27 +61,26 @@
                     vm.isAncillary = vm.researchCategoryTitle.toLowerCase().indexOf('ancillary') > -1;
 
                     // fetch intervention models
-                    if (vm.isInterventional && vm.interventionModels.length === 0) {
+                    if ((vm.isInterventional || vm.isExpandedAccess) && vm.interventionModels.length === 0) {
                         _fetchInterventionModels();
                     }
 
                     // fetch maskings
-                    if (vm.isInterventional && vm.maskings.length === 0) {
+                    if ((vm.isInterventional || vm.isExpandedAccess) && vm.maskings.length === 0) {
                         _fetchMaskings();
                     }
 
-                    if (vm.isInterventional && vm.allocations.length === 0) {
+                    if ((vm.isInterventional || vm.isExpandedAccess) && vm.allocations.length === 0) {
                         _fetchAllocations();
                     }
 
-                    if (vm.isInterventional && vm.studyClassifications.length == 0) {
+                    if ((vm.isInterventional || vm.isExpandedAccess) && vm.studyClassifications.length === 0) {
                         _fetchStudyClassifications()
                     }
 
-                    vm.curSpecificFieldsPartial = vm.isInterventional ? INTERVENTIONAL_FIELDS : '';
-                    vm.curSpecificFieldsPartial = vm.isExpandedAccess ? EXPANDEDACCESS_FIELDS : '';
-                    vm.curSpecificFieldsPartial = vm.isObservational ? OBSERVATIONAL_FIELDS : '';
-                    vm.curSpecificFieldsPartial = vm.isAncillary ? ANCILLARY_FIELDS : '';
+                    if ((vm.isObservational || vm.isAncillary) && vm.studyModels.length === 0) {
+                        _fetchStudyModels();
+                    }
                 });
         } // _watchResearchCategory
 
@@ -153,6 +146,14 @@
             })
         }
 
+        function _fetchStudyModels() {
+            PATrialService.getStudyModels().then(function(res) {
+                vm.studyModels = res.data || [];
+                // TODO: sort
+                console.info('studyModels: ', vm.studyModels);
+            });
+        }
+
         function _watchMasking() {
             $scope.$watch(function() {return vm.trialDetailObj.masking_id;}, function(newVal) {
                 var curMasking = _.findWhere(vm.maskings, {id: newVal});
@@ -160,6 +161,8 @@
                 vm.trialDetailObj.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
             })
         }
+
+
 
 
 
