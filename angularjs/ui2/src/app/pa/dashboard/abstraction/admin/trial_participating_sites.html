@@ -319,10 +319,10 @@
                                                 <td>{{inv.status_code}}</td>
                                                 <td ng-bind="inv.set_as_contact ? 'Yes' : 'No'"></td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-default" restriction-field ng-click="psView.deleteInvestigator($index)">
+                                                    <button type="button" class="btn btn-default" restriction-field ng-click="psView.deleteInvestigator($index)" ng-disabled="psView.current_investigator.edit">
                                                         <i class="glyphicon" ng-class="inv._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                     </button>
-                                                    <button class="btn btn-default" restriction-field ng-disabled="inv._destroy" ng-click="psView.editInvestigator($index)">
+                                                    <button type="button" class="btn btn-default" restriction-field ng-disabled="inv._destroy || psView.current_investigator.edit" ng-click="psView.editInvestigator($index)">
                                                         <i class="glyphicon glyphicon-edit"></i>
                                                     </button>
                                                 </td>
