@@ -242,7 +242,7 @@
                                         </span>
                                     </div>
 
-                                    <div class="row table-responsive top-offset-xs"  ng-show="psView.current_investigator.edit">
+                                    <div class="row table-responsive top-offset-xs" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
                                         <h5>Edit Investigator</h5>
                                         <table class="table table-striped table-condensed">
                                             <thead>
@@ -281,7 +281,7 @@
                                                     </label>
                                                 </td>
                                                  <td>
-                                                     <div class="btn-toolbar" ng-show="psView.current_investigator.edit">
+                                                     <div class="btn-toolbar" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
                                                         <button class="btn btn-default" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">
                                                             <i class="glyphicon glyphicon-remove"></i>
                                                         </button>
