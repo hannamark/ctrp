@@ -7,14 +7,17 @@
             <!-- research categories -->
             <div class="form-group">
                 <label for="research_category" class="control-label col-xs-12 col-sm-2">Research Category</label>
-                <div class="col-xs-12 col-sm-5">
+                <div class="col-xs-12 col-sm-5" layout="row" layout-wrap flex-xs="100">
                     <select name="research_category" id="research_category"
                         class="form-control input-sm"
                         ng-model="designView.trialDetailObj.research_category_id"
                         ng-options="cat.id as cat.name for cat in designView.researchCategories"
                         >
                         <option value="">- Please select a research category...</option>
-                        </select>
+                    </select>
+                    <!-- <md-radio-group ng-model="designView.trialDetailObj.research_category_id" layout="row">
+                        <md-radio-button ng-repeat="cat in designView.researchCategories" value="{{cat.id}}" class="md-primary">{{cat.name}}</md-radio-button>
+                    </md-radio-group> -->
                 </div>
             </div>
             <!-- end of research categories -->
