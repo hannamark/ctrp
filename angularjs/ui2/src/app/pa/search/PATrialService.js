@@ -139,7 +139,13 @@
             uploadTrialRelatedDocs: uploadTrialRelatedDocs,
             prepUploadingTrialRelatedDocs: prepUploadingTrialRelatedDocs,
             groupTrialDesignData: groupTrialDesignData,
-            getAcceptedFileTypesPA: getAcceptedFileTypesPA
+            getAcceptedFileTypesPA: getAcceptedFileTypesPA,
+            getInterventionModels: getInterventionModels,
+            getMaskings: getMaskings,
+            getAllocations: getAllocations,
+            getStudyClassifications: getStudyClassifications,
+            getStudyModels: getStudyModels,
+            getTimePerspectives: getTimePerspectives
         };
 
         return services;
@@ -393,6 +399,30 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES);
         }
 
+        function getInterventionModels() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERVENTION_MODELS);
+        }
+
+        function getMaskings() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.MASKINGS);
+        }
+
+        function getAllocations() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.ALLOCATIONS);
+        }
+
+        function getStudyClassifications() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.STUDY_CLASSIFICATIONS);
+        }
+
+        function getStudyModels() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.STUDY_MODELS);
+        }
+
+        function getTimePerspectives() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TIME_PERSPECTIVES);
+        }
+
         /**
          * Convert each trial doc object to a promise for uploading, the doc must be 'active' to be uploaded
          * @param  {JSON Object} trialDocObj
@@ -439,7 +469,7 @@
                 TrialService.getPhases(),
                 TrialService.getResearchCategories(),
                 TrialService.getPrimaryPurposes(),
-                TrialService.getSecondaryPurposes(),
+                TrialService.getSecondaryPurposes()
             ];
             return PromiseTimeoutService.groupPromises(promises);
         }

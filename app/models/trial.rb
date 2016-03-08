@@ -195,6 +195,7 @@ class Trial < TrialBase
   attr_accessor :coming_from
   attr_accessor :current_user
 
+  accepts_nested_attributes_for :arms_groups, allow_destroy: true
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
   accepts_nested_attributes_for :grants, allow_destroy: true

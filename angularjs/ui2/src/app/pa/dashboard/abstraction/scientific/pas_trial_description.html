@@ -18,11 +18,11 @@
                                           rows="5"
                                           class="form-control"
                                           ng-model="descView.curTrial.brief_title"
-                                          ng-maxlength="20"
+                                          ng-maxlength="300"
                                           ng-required="true">
                                 </textarea>
                                 <span ng-show="desc_form.brief_title.$dirty">
-                                    {{20 - desc_form.brief_title.$viewValue.length}} characters left
+                                    {{300 - desc_form.brief_title.$viewValue.length}} characters left
                                 </span>
 
                             </div>
@@ -30,6 +30,65 @@
                             <span ng-messages="ctrpbtn.desc_form.needsAttention(desc_form.brief_title) && desc_form.brief_title.$error">
                               <span class="help-block" ng-message="required">Please enter the Brief Title</span>
                             </span>
+                        </div>
+                    </fieldset>
+                    <!-- fieldset for Summary -->
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                        <legend class="sub-bordered">Summary</legend>
+
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(desc_form.brief_summary)}">
+                            <label for="brief_title" class="control-label col-xs-12 col-sm-2">Brief Summary</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <textarea name="brief_summary"
+                                          id="brief_summary"
+                                          rows="5"
+                                          class="form-control"
+                                          ng-model="descView.curTrial.brief_summary"
+                                          ng-maxlength="5000"
+                                          ng-required="true">
+                                </textarea>
+                                <span ng-show="desc_form.brief_summary.$dirty">
+                                    {{5000 - desc_form.brief_summary.$viewValue.length}} characters left
+                                </span>
+                            </div>
+
+                            <span ng-messages="ctrpbtn.desc_form.needsAttention(desc_form.brief_summary) && desc_form.brief_summary.$error">
+                              <span class="help-block" ng-message="required">Please enter the Brief Summary</span>
+                            </span>
+                        </div>
+                    </fieldset>
+                    <!-- fieldset for Objectives -->
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                        <legend class="sub-bordered">Objectives</legend>
+
+                        <div class="form-group has-feedback">
+                            <label for="objectives" class="control-label col-xs-12 col-sm-2">Objectives</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <textarea name="objective"
+                                          id="objective"
+                                          rows="5"
+                                          class="form-control"
+                                          ng-model="descView.curTrial.objective"
+                                          ng-maxlength="5000">
+                                </textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- fieldset for Detailed Description -->
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                        <legend class="sub-bordered">Detailed Description</legend>
+
+                        <div class="form-group has-feedback">
+                            <label for="detailed_description" class="control-label col-xs-12 col-sm-2">Detailed Description</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <textarea name="detailed_description"
+                                          id="detailed_description"
+                                          rows="5"
+                                          class="form-control"
+                                          ng-model="descView.curTrial.detailed_description"
+                                          ng-maxlength="32000">
+                                </textarea>
+                            </div>
                         </div>
                     </fieldset>
                     <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
@@ -40,7 +99,6 @@
                             </button>
                         </div>
                     </div>
-
                 </form>
             </div>
         </uib-accordion-group>

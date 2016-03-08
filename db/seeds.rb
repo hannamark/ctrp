@@ -74,6 +74,11 @@ PrimaryPurpose.find_or_create_by(code: 'HSR', name: 'Health Services Research')
 PrimaryPurpose.find_or_create_by(code: 'BSC', name: 'Basic Science')
 PrimaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
+TimePerspective.find_or_create_by(code: 'PRO', name: 'Prospective')
+TimePerspective.find_or_create_by(code: 'RET', name: 'Retrospective')
+TimePerspective.find_or_create_by(code: 'CRO', name: 'Cross sectional')
+TimePerspective.find_or_create_by(code: 'OTH', name: 'Other')
+
 SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
@@ -199,6 +204,14 @@ StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dyna
 StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
 StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
 
+StudyModel.find_or_create_by(code: 'COH', name: 'Cohort')
+StudyModel.find_or_create_by(code: 'CASECO', name: 'Case-control')
+StudyModel.find_or_create_by(code: 'CASEON', name: 'Case-only')
+StudyModel.find_or_create_by(code: 'CASECR', name: 'Case-crossover')
+StudyModel.find_or_create_by(code: 'EORCS', name: 'Ecologic or Community Studies')
+StudyModel.find_or_create_by(code: 'FAMB', name: 'Family-based')
+StudyModel.find_or_create_by(code: 'OTH', name: 'Other')
+
 OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
 OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
@@ -247,7 +260,7 @@ AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', val
 
 AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES_REG', name: 'Accepted File Types for Registry', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,htm,html,msg,mht,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
 
-AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,htm,html,msg,mht,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types for PA', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,htm,html,msg,mht,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
 
 AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
