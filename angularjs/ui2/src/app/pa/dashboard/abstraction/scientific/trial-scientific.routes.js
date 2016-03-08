@@ -50,7 +50,7 @@
                 resolve: {
                     TrialService: 'TrialService',
                     PATrialService: 'PATrialService',
-                    trialDetailObj: function($stateParams, TrialService) { 
+                    trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
                     },
                 },
