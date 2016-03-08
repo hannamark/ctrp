@@ -19,6 +19,7 @@
                                           class="form-control"
                                           ng-model="descView.curTrial.brief_title"
                                           ng-maxlength="300"
+                                          maxlength="300"
                                           ng-required="true">
                                 </textarea>
                                 <span ng-show="desc_form.brief_title.$dirty">
@@ -44,6 +45,7 @@
                                           rows="5"
                                           class="form-control"
                                           ng-model="descView.curTrial.brief_summary"
+                                          maxlength="5000"
                                           ng-maxlength="5000"
                                           ng-required="true">
                                 </textarea>
@@ -68,8 +70,7 @@
                                           id="objective"
                                           rows="5"
                                           class="form-control"
-                                          ng-model="descView.curTrial.objective"
-                                          ng-maxlength="5000">
+                                          ng-model="descView.curTrial.objective">
                                 </textarea>
                             </div>
                         </div>
@@ -78,7 +79,7 @@
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Detailed Description</legend>
 
-                        <div class="form-group has-feedback">
+                        <div class="form-group has-feedback" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(desc_form.detailed_description)}">
                             <label for="detailed_description" class="control-label col-xs-12 col-sm-2">Detailed Description</label>
                             <div class="col-xs-12 col-sm-10">
                                 <textarea name="detailed_description"
@@ -86,8 +87,12 @@
                                           rows="5"
                                           class="form-control"
                                           ng-model="descView.curTrial.detailed_description"
+                                          maxlength="32000"
                                           ng-maxlength="32000">
                                 </textarea>
+                                <span ng-show="desc_form.detailed_description.$dirty">
+                                    {{32000 - desc_form.detailed_description.$viewValue.length}} characters left
+                                </span>
                             </div>
                         </div>
                     </fieldset>
