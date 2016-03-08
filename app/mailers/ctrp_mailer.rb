@@ -1,8 +1,8 @@
 class CtrpMailer < ApplicationMailer
   default from: "noreply@ctrp.nci.nih.gov"
 
-  def general_email(to, subject, body)
+  def general_email(from, to, cc, bcc, subject, body)
     @body = body
-    mail(to: to, subject: subject)
+    mail(from: from, to: to, cc: cc, bcc: bcc, subject: subject)
   end
 end
