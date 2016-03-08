@@ -195,6 +195,7 @@ class Trial < TrialBase
   attr_accessor :coming_from
   attr_accessor :current_user
 
+  accepts_nested_attributes_for :arms_groups, allow_destroy: true
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
   accepts_nested_attributes_for :grants, allow_destroy: true
@@ -401,9 +402,10 @@ class Trial < TrialBase
         if self.coming_from == 'rest'
           sub_method = SubmissionMethod.find_by_code('RSV')
         else
+          sub_source = SubmissionSource.find_by_code('CCT')
           sub_method = SubmissionMethod.find_by_code('REG')
-          end
-        new_submission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_method: sub_method)
+        end
+        new_submission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_source: sub_source, submission_method: sub_method)
       end
 
       # New Milestone
@@ -427,9 +429,10 @@ class Trial < TrialBase
       if self.coming_from == 'rest'
         sub_method = SubmissionMethod.find_by_code('RSV')
       else
+        sub_source = SubmissionSource.find_by_code('CCT')
         sub_method = SubmissionMethod.find_by_code('REG')
       end
-      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, user: self.current_user, submission_type: upd, submission_method: sub_method)
+      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, user: self.current_user, submission_type: upd, submission_source: sub_source, submission_method: sub_method)
     elsif self.edit_type == 'amend'
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
@@ -437,12 +440,14 @@ class Trial < TrialBase
       if self.coming_from == 'rest'
         sub_method = SubmissionMethod.find_by_code('RSV')
       else
+        sub_source = SubmissionSource.find_by_code('CCT')
         sub_method = SubmissionMethod.find_by_code('REG')
       end
       latest_submission = self.submissions.last
       latest_submission.submission_num = largest_sub_num.present? ? largest_sub_num + 1 : 1
       latest_submission.user = self.current_user
       latest_submission.submission_type = amd
+      latest_submission.submission_source = sub_source
       latest_submission.submission_method = sub_method
 
       srd = Milestone.find_by_code('SRD')

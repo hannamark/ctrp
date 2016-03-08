@@ -170,6 +170,9 @@
                 vm.curTrial.trial_documents_attributes = [];
                 _.each(vm.addedDocuments, function (document) {
                     if (document._destroy) {
+                        // Soft delete the document
+                        document._destroy = false;
+                        document.status = 'deleted';
                         vm.curTrial.trial_documents_attributes.push(document);
                     }
                 });
@@ -470,6 +473,7 @@
                 vm.status_comment = null;
                 vm.why_stopped = null;
                 vm.showAddStatusError = false;
+                vm.why_stopped_disabled = true;
                 vm.validateStatus();
             } else {
                 vm.showAddStatusError = true;
@@ -977,19 +981,20 @@
                 document.document_type = vm.curTrial.trial_documents[i].document_type;
                 document.document_subtype = vm.curTrial.trial_documents[i].document_subtype;
                 document.is_latest = vm.curTrial.trial_documents[i].is_latest;
+                document.status = vm.curTrial.trial_documents[i].status;
                 document._destroy = vm.curTrial.trial_documents[i]._destroy;
                 vm.addedDocuments.push(document);
 
                 // Keep track of doc number for validation purpose
-                if (vm.curTrial.trial_documents[i].document_type === 'Protocol Document') {
+                if (vm.curTrial.trial_documents[i].document_type === 'Protocol Document' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.protocolDocNum++;
-                } else if (vm.curTrial.trial_documents[i].document_type === 'IRB Approval') {
+                } else if (vm.curTrial.trial_documents[i].document_type === 'IRB Approval' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.irbApprovalNum++;
-                }  else if (vm.curTrial.trial_documents[i].document_type === 'Informed Consent') {
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Informed Consent' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.informedConsentNum++;
-                }  else if (vm.curTrial.trial_documents[i].document_type === 'Change Memo Document') {
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Change Memo Document' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.changeMemoNum++;
-                }  else if (vm.curTrial.trial_documents[i].document_type === 'Protocol Highlighted Document') {
+                }  else if (vm.curTrial.trial_documents[i].document_type === 'Protocol Highlighted Document' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.protocolHighlightedNum++;
                 }
             }
@@ -1057,38 +1062,58 @@
         // Return the number of documents to be uploaded
         function uploadDocuments(trialId) {
             var docCount = 0;
+            var latestDocId = null;
 
             if (vm.protocol_document) {
                 docCount++;
-                TrialService.uploadDocument(trialId, 'Protocol Document', '', vm.protocol_document);
+                // Inactivate the document only in draft stage
+                latestDocId = vm.curTrial.edit_type === 'complete' ? getLatestDocId('Protocol Document') : null;
+                TrialService.uploadDocument(trialId, 'Protocol Document', '', vm.protocol_document, latestDocId);
             }
             if (vm.irb_approval) {
                 docCount++;
-                TrialService.uploadDocument(trialId, 'IRB Approval', '', vm.irb_approval);
+                latestDocId = vm.curTrial.edit_type === 'complete' ? getLatestDocId('IRB Approval') : null;
+                TrialService.uploadDocument(trialId, 'IRB Approval', '', vm.irb_approval, latestDocId);
             }
             if (vm.participating_sites) {
                 docCount++;
-                TrialService.uploadDocument(trialId, 'List of Participating Sites', '', vm.participating_sites);
+                latestDocId = vm.curTrial.edit_type === 'complete' ? getLatestDocId('List of Participating Sites') : null;
+                TrialService.uploadDocument(trialId, 'List of Participating Sites', '', vm.participating_sites, latestDocId);
             }
             if (vm.informed_consent) {
                 docCount++;
-                TrialService.uploadDocument(trialId, 'Informed Consent', '', vm.informed_consent);
+                latestDocId = vm.curTrial.edit_type === 'complete' ? getLatestDocId('Informed Consent') : null;
+                TrialService.uploadDocument(trialId, 'Informed Consent', '', vm.informed_consent, latestDocId);
             }
             for (var key in vm.other_documents) {
                 docCount++;
                 var subtype = (vm.other_document_subtypes && vm.other_document_subtypes[key]) ? vm.other_document_subtypes[key] : '';
-                TrialService.uploadDocument(trialId, 'Other Document', subtype, vm.other_documents[key]);
+                TrialService.uploadDocument(trialId, 'Other Document', subtype, vm.other_documents[key], null);
             }
             if (vm.change_memo) {
                 docCount++;
-                TrialService.uploadDocument(trialId, 'Change Memo Document', '', vm.change_memo);
+                latestDocId = vm.curTrial.edit_type === 'complete' ? getLatestDocId('Change Memo Document') : null;
+                TrialService.uploadDocument(trialId, 'Change Memo Document', '', vm.change_memo, latestDocId);
             }
             if (vm.protocol_highlighted) {
                 docCount++;
-                TrialService.uploadDocument(trialId, 'Protocol Highlighted Document', '', vm.protocol_highlighted);
+                latestDocId = vm.curTrial.edit_type === 'complete' ? getLatestDocId('Protocol Highlighted Document') : null;
+                TrialService.uploadDocument(trialId, 'Protocol Highlighted Document', '', vm.protocol_highlighted, latestDocId);
             }
 
             return docCount;
+        }
+
+        function getLatestDocId(docType) {
+            var latestDocId = null;
+
+            for (var i = 0; i < vm.addedDocuments.length; i++) {
+                if (vm.addedDocuments[i].document_type === docType && vm.addedDocuments[i].is_latest) {
+                    latestDocId = vm.addedDocuments[i].id;
+                }
+            }
+
+            return latestDocId;
         }
     }
 })();

@@ -340,6 +340,26 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
      Then the information entered or edited on the Trial Design screen will not be saved to the trial record
       And the screen will be refreshed with the data since the last save.
   
+ Scenario:  #16 Character display for Study Model of Other
+     Given I am on the Trial Design screen
+       And Clinical Research Category is Observational or Ancillary Correlative 
+      And the 'Study Model' is 'Other', describe' box displays
+      And I can type 200 characters in the displayed field 
+     When I start typing text in field
+     Then the 200 characters provided under the Study Model Other field starts to decrement
+     When I have reach the 200 characters limit
+     Then no additional text can be entered
+     
+      Scenario:  #17 Character display for TIme Prespective of Other
+     Given I am on the Trial Design screen
+       And Clinical Research Category is Observational or Ancillary Correlative 
+      And the 'time Perspective' is 'Other', describe' box displays
+      And I can type 200 characters in the displayed field 
+     When I start typing text in field
+     Then the 200 characters provided under the Time Perspective Other field starts to decrement
+     When I have reach the 200 characters limit
+     Then no additional text can be entered
+  
 
   
   

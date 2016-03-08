@@ -1,25 +1,93 @@
 @Acc @global
 
 Feature: Acc F01 Search Clinical Trials
-As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application 
+As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrual Application 
 
-  Scenario: #1 I can search for Active CTRP clinical trials   (Active)
+    Scenario: # I can submit Accrual Data
+    Given I am logged into the CTRP Accrual Application
+    And I have permission to submit accrual data 
+     And I have been assigned a role type
+     
+      |Trial Submitter  |
+      |Site Accrual Submitter  |
+      |Organization Family Accrual Submitter  |
+   When I log in to Accrual Application
+   Then the list of Trials to which I have been granted access will be displayed automatically 
+   
+
+  Scenario: #1 I can search and select Abstracted CTRP clinical trials   
     Given I am logged into the CTRP Accrual Application 
-    And I can view a list of trials I have accrual access for with information type
+    And A list of Trials I have been granted access is displayed automatically with information type
       |NCI Trial Identifier  |
       |Official Title  |
       |Current Trial Status  |
       |Trial Type  |
       |Accrual Disease Terminology  |
-
+    And I can search specific Trial
      When I have entered an NCI Trial Identifier
      And I have entered a ClinicalTrials.gov ID
-     And I have entered a Trial's Official Title
+     And I have entered a Trial's Official Title using wildcards and keywords ????
      And I have clicked on the Search Trials Button
      Then the searched trial will be displayed 
      When the user does not have accrual access for the searched NCI Trial Identifier 
     Then the message "Nothing found to display" will be displayed 
-    And no trials will be listed
+    And NO trials will be listed
+    
+      Scenario: # I can choose Acrual Disease Terminology for a Trial
+    Given I am logged into the CTRP Accrual Application
+    And I am on the List of Trials section
+    When the trial have no Added Study Subjects
+     Then I have the option to select an Accrual Disease Terminology type from the drop down box
+     
+      |SDC  |
+      |ICD10  |
+      |ICD9  |
+      |ICD-O-3  |
+    And the note "Value Change to SDC" will be displayed under the 
+    When the Accrual Disease Terminology Type is ICD-O-3
+    Then the add Study Subject Screen will display the fields type
+    
+      |Study Subject ID  |
+      |Study Subject Birth Date(MM/YYYY)  |
+      |Study Subject Gender  |
+      |Study Subject Race  |
+      |Study Subject Ethnicity  |
+      |Study Subject Country  |
+      |Study Subject Zip Code  |
+      |Registration Date  |
+      |Study Subject method of Payment  |
+      |Site  |
+      |Disease  |
+      |Participating Site  |
+      |User who created  |
+      |Last Updated Date/Time  |
+
+     Scenario:# I can search Sites in a Trial
+    Given I am on the Add Study Subject
+    And the Accrual Disease Terminology Type is ICD-O-3
+     When I click on the Look Up button to seach a Trial Site
+     Then the Search Site screen will be displayed with search site type
+     
+      |Site Name  |
+      |Site Code  |
+      |Site Code System  |
+     And the Site Code System will be populated
+     And the Site Code System can't be changes
+     And I can enter a Site name 
+     And I can enter a Site Code
+     When I click on the search Button
+     Then the site informaiton will be displayed with information type
+     
+      |Name  |
+      |Code  |
+      |System  |
+      |Menu Display Name  |
+      |Select  |
+      And I can search site types using the search field ?????
+     When I click on the select button for a site
+     Then the selected Site will be added to the site field
+     When I click on the cancel button 
+     Then the Add Study Subject screen will be displayed
     
       Scenario:#2 I can choose Trial information to be displayed on the list of trials
     Given I am on the Trial Search screen
@@ -33,20 +101,21 @@ As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application
       |Accrual Disease Terminology  |
 
      
-     When I can check a trial information box
+     When I check a trial information box
      Then the checked trial information will be displayed as a column on the list of trials table
      When I don't check a box
      Then the trial information column won't be displayed on the trial list
 
-      
+     
 
-    Scenario: #3 I can view study subjects
+    Scenario: #3 I can view study subjects for Complete Trials
       Given I am on the Trial Search screen 
       And I can view a list of Trials
      When I have clicked on the NCI Trial Identifier of the selected trial
      Then the trial details type will be displayed at the top of the screen
      
-      |NCI Trial Identifier: Title  |
+      |NCI Trial Identifier:   |
+      |Official Title:  |
       |Lead Organization Trial ID: 9672 |
       |Principal Investigator: George,Suzanne  |
       |Lead Organization: Dane-Farber Cancer Institute  |
@@ -67,7 +136,7 @@ As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application
       |Last Update Date/Time  |
       |Actions  |
   
-    Scenario: #4 I can search study subject 
+    Scenario: #4 I can search study subject for a complete Trial
     Given I am on the Search Study Subject Screen
     And I can see the list of study subject section
     And I can search study subjects using <dataType>
@@ -78,24 +147,27 @@ As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application
       |Last Update Date/Time  |
 
      When I enter a <dataType> 
-     Then The exact data type information will be displayed on the list of Study Subject
+     Then The searched data type information will be displayed on the list of Study Subject
 
  
    
    
-  Scenario:#5 I Can search a Study Subject
+  Scenario:#5 I Can search a Study Subject for a complete Trial
     Given I am on the Search Study Subject Screen
-     And I have entered a Study Subject ID
+     And I have entered a unique Study Subject ID
      And I have selected a Participating Site
      And I have entered a Study Subject Birth Date
      When I have clicked on the search Button
      Then the study Suject will be displayed
      
-       Scenario:#6 I can Add New Study Subject 
-    Given I am on the Search Study Subject Screen
+   Scenario:#6 I can Add New Study Subject for a complete trial
+    Given I am on the Trial Search screen 
+      And I can view a list of Trials
+     When I have clicked on the NCI Trial Identifier of the selected trial
+     Then  the Search Study Subject Screen will be displayed
      When I click on the Add New Study Subject Button
      Then The Add Study Subject screen will be displayed
-     And I have entered a Study Subject ID
+     And I have entered a Unique Study Subject ID
      And I have entered a Study Subject Birth Date(MM/YYYY)
      And I have selected a Study Subject Gender Type
      
@@ -142,12 +214,20 @@ As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application
       |Other  |
       |Unknown  |
    And I can Look up a Disease
-   And I can select a Participating Site
+   And I can select the appropriate Participating Site from the drop-down list
    When I have clicked on the save button
    Then the new study subject will be added to the study
+   And I can add more study subjects
    When I have clicked on the Cancel button
-   then the new study subject will not be added to the study
+   Then the new study subject will not be added to the study
+   And the search Study Subject will be displayed
    
+     Scenario: # Study Subject ID must be a unique ID
+    Given I am on the Add Study Subject screen
+     When I add an existing Study Suject ID 
+     Then the error message "This Study Subject id(1234)has already been added to this site"
+
+
    
      Scenario:#7 Look Up Disease Function
     Given I am on the Add Study Subject Screen
@@ -155,8 +235,7 @@ As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application
      Then the Search Disease sceen will be displayed
      And I can enter Disease Name
      And I can enter Disease Code
-     And the Disease Code System Type will be populated 
-     And the Disease Code Sytem type can't be changed
+     And I can enter Disease Code System Type
      When I have clicked on the search button
      Then a list of Diseases information type will be displayed 
      
@@ -176,6 +255,8 @@ As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application
     Given I am on the Search Disease Screen
      When I have not entered a Disease Name
      And I have not entered a Disease code
+     And The Disease Code System will be populated
+     And The Disease Code can't be changed
      Then the error "Please enter a name or code to search" will be displayed
      
     Scenario:#9 Add Study Subject Mandatory fields
@@ -190,7 +271,8 @@ As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application
       |Study Subject Race                 |Race is required  |
       |Study Subject Ethnicity            |Ethnicity is required  |
       |Study Subject Country              |Study Subject Country is required 
-      |Registration date                  |Registration Date is required  |
+      |Registration Date                  |Registration Date is Required  |
+      |Site                               |Site is Required  |
       |Disease                            |Disease is required  |
       |Participating Site                 |Participating Site is required  |
      When the Subject Country is "United States"
@@ -220,7 +302,7 @@ As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application
    And I can click on the Back button to go back to the Search Study Subject Screen
    
    
-     Scenario:#11 I can Update Study Subject Information
+     Scenario:#11 I can Update Study Subject Information for Complete trials
     Given I am on the Search Study Subject screen
     And I can view a list of study Subjects
      When I have clicked on the edit icon on the actions column for the selected study subject
@@ -238,13 +320,13 @@ As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application
       |Disease  |
       |Participating Site  |
      When I have clicked on the save button
-     Then all the updated are saved 
+     Then all the updated data are saved 
      And the "message:Record Updated" will be displayed
      When I have clicked on the cancel button
-     Then the study subject last saved date won't be updated 
+     Then the study subject last saved data won't be updated 
      And the search Study Subject screen will be displayed
 
-  Scenario: #12 I can delete Study Subject Information
+  Scenario: #12 I can delete Study Subject Information for Complete Trials
     Given I am on the Search Study Subject screen
     And I can view a list of study Subjects
      When I have clicked on the delete icon on the actions column for the selected study subject
@@ -259,3 +341,55 @@ As a CTRP User, I can search CTRP clinical trial in the CTRP Accrual Application
     And the "Message: Record Deleted" will be displayed
     When I have clicked on the Cancel Button
     Then the study subject won't be deleted
+    
+    
+      Scenario: # I can record the total number of accruals associated with Abbreviated and Other Clinical Trials
+    Given I am a registered member of one or more of the Participating Sites 
+    And I am affiliated with the site for a given trial
+    And I am on the Trial Search screen
+    And I can a list of trials 
+     When I click on the NCI Trial Identifier of an Abbreviated Trial
+     Then The Participating Site Subject Accrual Count screen will be displayed with the date type
+     
+      |PO Id  |
+      |Site Name  |
+      |# of Subjects Enrolled |
+      |Date Last Updated|
+      |Actions  |
+
+     
+     And the trial information type will be displayed at the top of the screen 
+     
+      |NCI-2015-01718  |Relapse-Prevention Booklets an an Adjunt to a Tobacco Quitline  |
+      |Lead Organization Trial ID:  |MCC-15725  |
+      |Lead Organization:  |Moffitt Cancer Center   |
+      
+      And I can enter "# of Subjects Enrolled" currently enrolled in studies at my site
+      When I click on the Reset button
+      Then the "# of Subjects Enrolled" will be reset to the last entered number
+      When I have clicked on the "Save icon" on the actions column
+      Then the" # of Asubjects Enrolled" added will be assciated with the trial
+      And "the message: Record Updated" will be displayed 
+      And the CTRP system records each COUNT submitted as the total number
+
+     
+      Scenario: # I can update Site Subject Accrual Counts
+    Given I am on the Participating Site Accrual Count
+     And I can click on the "save" icon in the Actions column to update the "# of Subjects Enrolled"
+     When I click on the "Save" icon 
+     Then The "# of Subjects Enrolled" will be updated
+     And the "Message: Record Updated" will be displayed
+     
+       Scenario: # I can delete Site Subject Accrual Counts
+    Given I am on the Participating Site Accrual Count
+     When I have cliked on the Delete Icon in the Actions column
+     Then The message "Click OK to remove selected site(s) accrual counts. Cancel to abort" will be displayed
+     When I click on the OK button
+     Then the "# of subjects enrolled" will be deleted 
+     And the "Message: Subject Accrual Count Deleted" will be displayed
+     
+     
+
+
+
+

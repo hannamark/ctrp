@@ -74,6 +74,11 @@ PrimaryPurpose.find_or_create_by(code: 'HSR', name: 'Health Services Research')
 PrimaryPurpose.find_or_create_by(code: 'BSC', name: 'Basic Science')
 PrimaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
+TimePerspective.find_or_create_by(code: 'PRO', name: 'Prospective')
+TimePerspective.find_or_create_by(code: 'RET', name: 'Retrospective')
+TimePerspective.find_or_create_by(code: 'CRO', name: 'Cross sectional')
+TimePerspective.find_or_create_by(code: 'OTH', name: 'Other')
+
 SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
@@ -109,9 +114,9 @@ TrialStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual')
 TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
 TrialStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
 TrialStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
-TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
-TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
+TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
 TrialStatus.find_or_create_by(code: 'AVA', name: 'Available')
 TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available')
 TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available')
@@ -181,9 +186,9 @@ SiteRecruitmentStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual')
 SiteRecruitmentStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
 SiteRecruitmentStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
 SiteRecruitmentStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
-SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Complete')
-SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
+SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Complete')
 
 Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
@@ -198,6 +203,14 @@ StudyClassification.find_or_create_by(code: 'PK', name: 'Pharmacokinetics')
 StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dynamics')
 StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
 StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
+
+StudyModel.find_or_create_by(code: 'COH', name: 'Cohort')
+StudyModel.find_or_create_by(code: 'CASECO', name: 'Case-control')
+StudyModel.find_or_create_by(code: 'CASEON', name: 'Case-only')
+StudyModel.find_or_create_by(code: 'CASECR', name: 'Case-crossover')
+StudyModel.find_or_create_by(code: 'EORCS', name: 'Ecologic or Community Studies')
+StudyModel.find_or_create_by(code: 'FAMB', name: 'Family-based')
+StudyModel.find_or_create_by(code: 'OTH', name: 'Other')
 
 OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
@@ -229,6 +242,10 @@ AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
 AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
 AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
 
+AmendmentReason.find_or_create_by(code: 'AS', name: 'Acknowledged Scientific')
+AmendmentReason.find_or_create_by(code: 'AA', name: 'Acknowledged Administrative')
+AmendmentReason.find_or_create_by(code: 'AAS', name: 'Acknowledged Administrative and Scientific')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -243,7 +260,7 @@ AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', val
 
 AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES_REG', name: 'Accepted File Types for Registry', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,htm,html,msg,mht,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
 
-AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,htm,html,msg,mht,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types for PA', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,htm,html,msg,mht,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
 
 AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 

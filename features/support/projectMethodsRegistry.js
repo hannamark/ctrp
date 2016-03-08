@@ -216,6 +216,26 @@ var projectMethodsRegistry = function() {
     };
 
 
+    /*****************************************************************
+     * Method: Verify Trial Status for duplicate status
+     * @param status
+     * @param statusDate
+     * @param comment
+     * @param whyStudyStopped
+     * @param errorsWarnings
+     *****************************************************************/
+    this.verifyAddTrialDuplicateStatusInformation = function (status, statusDate, comment, whyStudyStopped, errorsWarnings) {
+        expect(addTrial.addTrialStatusDateTable.get(0).getText()).to.eventually.equal(statusDate);
+        expect(addTrial.addTrialStatusNameTable.get(0).getText()).to.eventually.equal(status);
+        expect(addTrial.addTriaCommentTable.get(0).getText()).to.eventually.equal(comment);
+        expect(addTrial.addTrialWhyStudyStoppedTable.get(0).getText()).to.eventually.equal(whyStudyStopped);
+        expect(addTrial.addTrialStatusDateTable.get(1).getText()).to.eventually.equal(statusDate);
+        expect(addTrial.addTrialStatusNameTable.get(1).getText()).to.eventually.equal(status);
+        expect(addTrial.addTriaCommentTable.get(1).getText()).to.eventually.equal(comment);
+        expect(addTrial.addTrialWhyStudyStoppedTable.get(1).getText()).to.eventually.equal(whyStudyStopped);
+        expect(addTrial.addTrialErrorWarningTable.get(1).getText()).to.eventually.equal(errorsWarnings);
+    };
+
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one

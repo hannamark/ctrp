@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <label for="family_name" class="control-label col-xs-12 col-sm-3">Name:</label>
                             <div class="col-xs-12 col-sm-9">
-                                <input tabindex="12" type="text" id="family_name" class="form-control input-sm" placeholder="Family Name" ng-model="familyView.searchParams.name" auto-focus/>
+                                <input type="text" id="family_name" class="form-control input-sm" placeholder="Family Name" ng-model="familyView.searchParams.name" auto-focus/>
                             </div>
                         </div>
                         <!-- family name ends -->
@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="family_status" class="control-label col-xs-12 col-sm-3">Family Status: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <select tabindex="14" class="form-control input-sm" id="family_status" ng-model="familyView.searchParams.family_status">
+                                <select class="form-control input-sm" id="family_status" ng-model="familyView.searchParams.family_status">
                                     <option value="">Select a status</option>
                                     <option ng-repeat="status in familyView.familyStatusArr" value="{{status.name}}">{{status.name}}</option>
                                 </select>
@@ -55,7 +55,7 @@
                             <div class="col-xs-12 col-sm-9">
                                 <div ng-class="familyView.searchParams.wc_search == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
                                     <label for="wc_search">
-                                        <input tabindex="11" type="checkbox" id="wc_search"  ng-model="familyView.searchParams.wc_search"  /> Exact Search
+                                        <input type="checkbox" id="wc_search"  ng-model="familyView.searchParams.wc_search"  /> Exact Search
                                     </label>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                         <div class="form-group">
                             <label for="family_type" class="control-label col-xs-12 col-sm-3">Family Type: </label>
                             <div class="col-xs-12 col-sm-9">
-                                <select tabindex="13" class="form-control input-sm" id="family_type" ng-model="familyView.searchParams.family_type">
+                                <select class="form-control input-sm" id="family_type" ng-model="familyView.searchParams.family_type">
                                     <option value="">Select a type</option>
                                     <option ng-repeat="type in familyView.familyTypeArr" value="{{type.name}}">{{type.name}}</option>
                                 </select>
@@ -79,10 +79,10 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="btn-toolbar">
-                            <button tabindex="26" type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="familyView.searchFamilies('fromStart')" ng-disabled="familyView.searching">
+                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="familyView.searchFamilies('fromStart')" ng-disabled="familyView.searching">
                                 <i class="glyphicon glyphicon-search"></i> Search
                             </button>
-                            <button tabindex="25" class="btn btn-warning pull-right" id="reset_btn" ng-click="familyView.resetSearch()" ng-disabled="familyView.searching">
+                            <button class="btn btn-warning pull-right" id="reset_btn" ng-click="familyView.resetSearch()" ng-disabled="familyView.searching">
                                 <i class="glyphicon glyphicon-remove"></i> Clear
                             </button>
                         </div>
