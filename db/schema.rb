@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302210745) do
+ActiveRecord::Schema.define(version: 20160308184756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -431,6 +431,21 @@ ActiveRecord::Schema.define(version: 20160302210745) do
   end
 
   add_index "links", ["trial_id"], name: "index_links_on_trial_id", using: :btree
+
+  create_table "mail_templates", force: :cascade do |t|
+    t.text     "from"
+    t.text     "to"
+    t.text     "cc"
+    t.text     "bcc"
+    t.text     "subject"
+    t.text     "body"
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
 
   create_table "markers", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -1398,6 +1413,7 @@ ActiveRecord::Schema.define(version: 20160302210745) do
   create_sequence "intervention_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "links_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "mail_templates_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "markers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "maskings_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestone_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

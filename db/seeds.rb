@@ -594,6 +594,18 @@ AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'Clinical
 
 ########## SEEDING APP SETTINGS ENDS ##########
 
+########## SEEDING MAIL TEMPLATES STARTS ##########
+
+MailTemplate.find_or_create_by(
+                code: 'TRIAL_REG',
+                name: 'Trial Registration',
+                from: 'noreply@ctrp.nci.nih.gov',
+                subject: 'NCI CTRP: Trial RECORD CREATED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+                body: '<hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers} ${otherIdentifiersRow} <table border="0"> <tr> <td><b>Submission Date:</b></td> <td>${submissionDate}</td> </tr> </table> <hr> <p>Date: ${CurrentDate}</p> <p>Dear ${SubmitterName},</p> <p>You have successfully created a record in the NCI Clinical Trials Reporting Program (CTRP) for the trial identified above.</p> <p>The CTRP has assigned your trial the following unique NCI Trial Identification (Trial ID) number:<br> <b>${nciTrialIdentifier}</b><br></br><br></br> Please reference this number in all future correspondence with the Clinical Trials Reporting Office (CTRO).</p> <p>${errors}</p> <p><b>NEXT STEPS:</b><br> The Clinical Trials Reporting Office (CTRO) staff is reviewing your trial to ensure that it meets all of the requirements for registration in the CTRP system. They will email you their findings within two (2) business days. </p> <p>In the meantime, if you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p> <p>Thank you for submitting your trial for registration in the Clinical Trials Reporting Program.</p>'
+)
+
+########## SEEDING MAIL TEMPLATES ENDS ############
+
 puts "Seeding ldap and local users"
 #Add LDAP and local test users
 #Need dummy org for LDAP users
