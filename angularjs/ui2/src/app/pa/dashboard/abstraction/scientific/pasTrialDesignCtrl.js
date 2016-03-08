@@ -92,7 +92,8 @@
                 if (newVal !== undefined && newVal !== null) {
                     var curPrimaryPurposeObj = _.findWhere(vm.primaryPurposes, {id: newVal});
                     vm.isOtherPrimaryPurpose = curPrimaryPurposeObj.name.toLowerCase().indexOf('other') > -1;
-                    // console.info('isOtherPrimaryPurpose: ', vm.isOtherPrimaryPurpose);
+                    // reset to original data or empty
+                    vm.trialDetailObj.primary_purpose_other = _getOriginalValueForField('primary_purpose_other');
                 }
             });
         } // _watchPrimaryPurpose
@@ -104,6 +105,8 @@
                         var curSecondaryPurposeObj = _.findWhere(vm.secondaryPurposes, {id: newVal});
                         console.info('curSecondaryPurposeObj: ', curSecondaryPurposeObj);
                         vm.isOtherSecondaryPurpose = curSecondaryPurposeObj.name.toLowerCase().indexOf('other') > -1;
+                        // reset to original data or empty
+                        vm.trialDetailObj.secondary_purpose_other = _getOriginalValueForField('secondary_purpose_other');
                     }
                 });
         }
@@ -115,6 +118,8 @@
                         var curStudyModel = _.findWhere(vm.studyModels, {id: newVal});
                         console.info('curStudyModel: ', curStudyModel);
                         vm.isOtherStudyModel = curStudyModel.name.toLowerCase().indexOf('other') > -1;
+                        // reset to original data or empty
+                        vm.trialDetailObj.study_model_other = _getOriginalValueForField('study_model_other');
                     }
                 });
         }
@@ -172,6 +177,12 @@
                 var maskingName = !!curMasking ? curMasking.name : '';
                 vm.trialDetailObj.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
             })
+        }
+
+        function _getOriginalValueForField(fieldName) {
+            var cachedTrial = PATrialService.getCurrentTrialFromCache();
+            var val = cachedTrial[fieldName] || '';
+            return val;
         }
 
     } //pasTrialDesignCtrl
