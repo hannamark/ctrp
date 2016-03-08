@@ -160,23 +160,36 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Externally Peer-Reviewed |
       |Institutional            |
 
-  Scenario Outline: #2 I can enter a trial status and trial status date for a trial
+
+  Scenario Outline: #2 I can enter a trial status and trial status date for a trial; valid transitions
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
-    When I add a <status date> and a status <statusType> and explained why study stopped <why study stopped>
-      |status date                                            | statusType                                    |why study stopped      |
-      |Date Entered                                           |In Review                                      |                       |
-      |Future Date based on previous status entered           | Approved                                      | 					  |
-      |Future Date based on previous status entered           | Active                                        |                   	  |
-      |Future Date based on previous status entered           | Enrolling by invitation                       |                       |
-      |Future Date based on previous status entered           | Closed to accrual                             |                       |
-      |Future Date based on previous status entered           | Close to accrual and Intervention             |                       |
-      |Future Date based on previous status entered           | Temporarily Closed to accrual                 |Text                   |
-      |Future Date based on previous status entered           | Temporarily closed to accrual and Intervention|Text                   |
-      |Future Date based on previous status entered           | Withdrawn                                     |                       |
-      |Future Date based on previous status entered           | Administratively Complete                     |Text                   |
-      |Future Date based on previous status entered           | Complete                                      |Text                   |
-    Then no errors will be displayed
+    When I add a <status date> and status transitions from <statusTransitions>
+      |status date                                          | statusTransitions                                    |
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Active' TO 'Temporarily Closed to Accrual' TO 'Temporarily Closed to Accrual and Intervention' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Enrolling by Invitation' TO 'Temporarily Closed to Accrual' TO 'Temporarily Closed to Accrual and Intervention' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Active' TO 'Temporarily Closed to Accrual' TO 'Temporarily Closed to Accrual and Intervention' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Administratively Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Enrolling by Invitation' TO 'Temporarily Closed to Accrual' TO 'Temporarily Closed to Accrual and Intervention' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Administratively Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Active' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Enrolling by Invitation' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Active' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Administratively Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Enrolling by Invitation' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Administratively Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Withdrawn'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Withdrawn'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Active' TO 'Temporarily Closed to Accrual' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Enrolling by Invitation' TO 'Temporarily Closed to Accrual' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Active' TO 'Temporarily Closed to Accrual' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Administratively Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Enrolling by Invitation' TO 'Temporarily Closed to Accrual' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Administratively Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Active' TO 'Temporarily Closed to Accrual and Intervention' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Enrolling by Invitation' TO 'Temporarily Closed to Accrual and Intervention' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Active' TO 'Temporarily Closed to Accrual and Intervention' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Administratively Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Enrolling by Invitation' TO 'Temporarily Closed to Accrual and Intervention' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Administratively Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Active' TO 'Temporarily Closed to Accrual and Intervention' TO 'Enrolling by Invitation' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Administratively Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Enrolling by Invitation' TO 'Temporarily Closed to Accrual and Intervention' TO 'Active' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Active' TO 'Temporarily Closed to Accrual' TO 'Enrolling by Invitation' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Administratively Complete'|
+      |Dates are entered on Future based on previous status | 'In Review' TO 'Approved' TO 'Enrolling by Invitation' TO 'Temporarily Closed to Accrual' TO 'Active' TO 'Closed to Accrual' TO 'Closed to Accrual and Intervention' TO 'Complete'|
+
+    Then no errors-warnings will be displayed
 
     Examples:
       |trialType  |
@@ -185,14 +198,84 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
 
 
-  Scenario Outline:#3 I can enter a trial status and trial status date for a trial
+  Scenario Outline:#2a I can enter a trial status and trial status date for a trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
-    When I add a trial date <statusDateFrom> and trial status from <statusFrom> to trial date <statusDateTo> trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there
-      |statusDateFrom   |statusFrom	  |statusDateTo                 |statusTo	   |whyStudyStopped    |errorsWarnings	                                          |
-      |Date Entered Now |Approved     |Same Date entered later      |In Review     |                   |Warning: Invalid Transition from [Approved] to [In Review]|
-      |Date Entered Now |Approved     |Different Date in the Future |In Review     |                   |Warning: Invalid Transition from [Approved] to [In Review]|
-      |Date Entered past|Active       |Date entered Now             |Approved      |                   |Warning: Invalid Transition from [Active] to [Approved]
+    When I add a trial date <statusDateFrom> and trial status from <statusFrom> to trial date <statusDateTo> trial status <statusTo> with the <condition> then the respective checks <errorsWarnings> will be there
+      |statusDateFrom   |statusFrom	                                    |statusDateTo                 |statusTo	                                      |condition                                                                                                                  |errorsWarnings	                                                |
+      |Date Entered Now |Approved                                       |Same Date entered later      |In Review                                      |                                                                                                                           |Warning: Invalid Transition from [Approved] to [In Review]       |
+      |Date Entered Now |In Review                                      |Same Date entered later      |Approved                                       |                                                                                                                           |                                                                 |
+      |Date Entered Now |Approved                                       |Different Date in the Future |In Review                                      |                                                                                                                           |Warning: Invalid Transition from [Approved] to [In Review]       |
+      |Date Entered past|In Review                                      |Date entered Now             |Approved                                       |                                                                                                                           |Warning: Invalid Transition from [In Review] to [Approved]       |
+      |Date Entered Now |Active                                         |Same Date entered later      |Temporarily Closed to Accrual                  |all the previous Status before Active has been added                                                                       |                                                                 |
+      |Date Entered Now |Temporarily Closed to Accrual                  |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Temporarily Closed to Accrual has been added                 |                                                                 |
+      |Date Entered Now |Temporarily Closed to Accrual                  |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
+      |Date Entered Now |Active                                         |Same Date entered later      |Temporarily Closed to Accrual and Intervention |all the previous Status before Active has been added                                                                       |                                                                 |
+      |Date Entered Now |Temporarily Closed to Accrual and Intervention |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Temporarily Closed to Accrual and Intervention has been added|                                                                 |
+      |Date Entered Now |Temporarily Closed to Accrual and Intervention |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
+      |Date Entered Now |Active                                         |Same Date entered later      |Closed to Accrual                              |all the previous Status before Active has been added                                                                       |                                                                 |
+      |Date Entered Now |Closed to Accrual                              |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Closed to Accrual has been added                             |Warning: Invalid Transition from [Closed to Accrual] to [Active] |
+      |Date Entered Now |Closed to Accrual                              |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
+
+    Examples:
+      |trialType  |
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+
+  Scenario Outline:#3 Order of Trial status list
+    Given I have selected the option to register a trial <trialType>
+    And I am on the Register Trial Status screen
+    When I click on the Trial status list
+    Then the order of trial status list should be
+      |In Review                                      |
+      |Approved                                       |
+      |Active                                         |
+      |Enrolling by Invitation                        |
+      |Closed to Accrual                              |
+      |Closed to Accrual and Intervention             |
+      |Temporarily Closed to Accrual                  |
+      |Temporarily Closed to Accrual and Intervention |
+      |Withdrawn                                      |
+      |Administratively Complete                      |
+      |Complete                                       |
+
+    Examples:
+      |trialType  |
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+
+  Scenario Outline:#3a Validation rule for Trial status fields
+    Given I have selected the option to register a trial <trialType>
+    And I am on the Register Trial Status screen
+    When I click on Review Trial without any Trial Status
+    Then I should get an error message as "Trial Status is required"
+    And On Add Trial Status if Status Date or Status is missing
+    Then I should get an error message as "Please provide a Status Date and select a Status"
+    And On Add Trial Status when the Status selected is
+      |Temporarily Closed to Accrual                  |
+      |Temporarily Closed to Accrual and Intervention |
+      |Withdrawn                                      |
+      |Administratively Complete                      |
+    And Why Study Stopped reason is not provided
+    Then I should get an error message as "Enter Why Study Stopped"
+
+    Examples:
+      |trialType  |
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+
+  Scenario Outline:#3b Validation rule for Trial status Dates
+    Given I have selected the option to register a trial <trialType>
+    And I am on the Register Trial Status screen
+    When I select a Status Date in Past
+    Then It should not give any error message for status date
+    When I select a Status Date in Today
+    Then It should not give any error message for status date
+    When I select a Status Date in Future
+    Then It should not give any error message for status date
 
     Examples:
       |trialType  |

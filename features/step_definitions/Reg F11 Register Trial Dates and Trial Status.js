@@ -159,6 +159,36 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    this.When(/^I add a (.*) and status transitions from (.*)$/, function (statusDate, statusTransitions, table, callback) {
+        statusTable = table.hashes();
+        for (var i = 0; i < statusTable.length; i++) {
+        console.log('Status Trnasitions');
+            var splitTO = statusTable[i].statusTransitions.replace(/'/g, "").split(" TO ");
+            console.log(splitTO);
+            console.log('Length after split' + splitTO.length);
+            for (var j = 0; j < splitTO.length; j++) {
+                addTrial.clickAddTrialDateField('0');
+                var jIn = j+1;
+                addTrial.clickAddTrialDateFieldPreviousMonth('0' + jIn);
+                addTrial.selectAddTrialStatus(splitTO[j]);
+                if (splitTO[j] === 'Withdrawn' || splitTO[j] === 'Temporarily Closed to Accrual' || splitTO[j] === 'Temporarily Closed to Accrual and Intervention' || splitTO[j] === 'Administratively Complete') {
+                    addTrial.setAddTrialWhyStudyStopped('Reason for Study stopped added cuke test');
+                    addTrial.clickAddTrialAddStatusButton();
+                    projectFunctionsRegistry.verifyAddTrialStatusInformation(splitTO[j], moment().subtract(1, 'months').startOf('month').add(j, 'day').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', '');
+                }
+                else {
+                    addTrial.clickAddTrialAddStatusButton();
+                projectFunctionsRegistry.verifyAddTrialStatusInformation(splitTO[j], moment().subtract(1, 'months').startOf('month').add(j, 'day').format('DD-MMM-YYYY'), '', '', '');
+            }
+            }
+            addTrial.clickAddTrialResetButton();
+        }
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^no errors\-warnings will be displayed$/, function (callback) {
+        callback();
+    });
 
 };
 
