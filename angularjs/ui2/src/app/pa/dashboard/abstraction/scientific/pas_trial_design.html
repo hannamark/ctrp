@@ -155,22 +155,6 @@
             </div>
             <!-- end of masking roles -->
 
-            <!-- Expaned Access Type -->
-            <div class="form-group" ng-show="designView.isExpandedAccess">
-                <label for="expanded_access" class="control-label col-xs-12 col-sm-2">Expanded Access Type</label>
-                <div class="col-xs-12 col-sm-5">
-                    <strong>TODO - List</strong>
-                    <!-- <select name="masking" id="masking"
-                        class="form-control input-sm"
-                        ng-model="designView.trialDetailObj.masking_id"
-                        ng-options="mask.id as mask.name for mask in designView.maskings"
-                        >
-                        <option value="">- Please select an expanded access type...</option>
-                    </select> -->
-                </div>
-            </div>
-            <!-- end of Expanded Access Type -->
-
             <!-- Study models -->
             <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
                 <label for="study_model" class="control-label col-xs-12 col-sm-2">Study Model</label>
@@ -248,7 +232,7 @@
             </div>
             <!-- end of allocations -->
 
-            <!-- allocations -->
+            <!-- Study classification -->
             <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="study_classification" class="control-label col-xs-12 col-sm-2">Study Classification</label>
                 <div class="col-xs-12 col-sm-5">
@@ -261,7 +245,38 @@
                     </select>
                 </div>
             </div>
-            <!-- end of allocations -->
+            <!-- end of study classification -->
+
+            <!-- Biospecimen Retention -->
+            <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
+                <label for="biospecimen_retention" class="control-label col-xs-12 col-sm-2">Bio-specimen Retention</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="biospecimen_retention" id="biospecimen_retention"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.biospecimen_retention_id"
+                        ng-options="retention.id as retention.name for retention in designView.biospecimenRetentions"
+                        >
+                        <option value="">- Please select a bio-specimen retention...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of Biospecimen Retention -->
+
+            <!-- description biospecimenRetention -->
+            <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.trialDetailObj.biospecimen_retention_id">
+                <label for="biospecimen_desc" class="control-label col-xs-12 col-sm-2">Bio-specimen Description</label>
+                <div class="col-xs-12 col-sm-5">
+                    <textarea class="form-control"
+                        name="biospecimen_desc" id="biospecimen_desc"
+                        maxlength="200" ng-maxlength="200"
+                        ng-model="designView.trialDetailObj.biospecimen_desc" rows="3">
+                    </textarea>
+                    <span ng-show="trial_design_form.biospecimen_desc.$viewValue.length > 0">
+                        {{200 - trial_design_form.biospecimen_desc.$viewValue.length}} characters left
+                    </span>
+                </div>
+            </div>
+            <!-- end of description for biospecimenRetention -->
 
             <!-- num of arms -->
             <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
