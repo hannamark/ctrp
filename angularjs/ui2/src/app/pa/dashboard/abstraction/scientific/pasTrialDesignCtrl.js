@@ -27,6 +27,13 @@
         vm.isOtherStudyModel = false;
         vm.trialDetailObj.showMaskingRoles = false;
         vm.isOtherTimePerspective = false;
+        // information sources:
+        vm.isInfoSourceProtocol = false;
+        vm.isInfoSourceImport = false;
+
+        // actions:
+        vm.updateTrialDesign = updateTrialDesign;
+        vm.resetForm = resetForm;
 
         activate();
         function activate() {
@@ -53,6 +60,9 @@
         function _getTrialDetailCopy() {
             $timeout(function() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                var infoSourceName = vm.trialDetailObj.internal_source.name.toLowerCase();
+                vm.isInfoSourceProtocol = infoSourceName.indexOf('protocol') > -1;
+                vm.isInfoSourceImport = true; //!vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
             }, 0);
         } // _getTrialDetailCopy
 
@@ -227,6 +237,40 @@
                 vm.timePerspectives.sort(Common.a2zComparator());
                 console.info('time perspectives: ', res);
             });
+        }
+
+        function updateTrialDesign() {
+            var outerTrial = {};
+            outerTrial.new = false;
+            outerTrial.id = vm.trialDetailObj.id;
+            outerTrial.trial = vm.trialDetailObj;
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+            PATrialService.upsertTrial(outerTrial).then(function(res) {
+
+                if (res.server_response.status === 200) {
+                    vm.trialDetailObj = res;
+                    console.log('status: ', res.server_response.status);
+                    vm.trialDetailObj.lock_version = res.lock_version;
+                    // delete vm.trialDetailObj.admin_checkout;
+                    // delete vm.trialDetailObj.scientific_checkout;
+                    PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+
+                    toastr.clear();
+                    toastr.success('Trial statuses has been updated', 'Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                    _getTrialDetailCopy();
+                }
+
+            }).catch(function(err) {
+                console.error('error in updating trial design: ', err);
+            });
+        }
+
+        function resetForm() {
+            _getTrialDetailCopy();
         }
 
     } //pasTrialDesignCtrl

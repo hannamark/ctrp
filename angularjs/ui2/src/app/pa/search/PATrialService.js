@@ -350,7 +350,7 @@
                 trialDetailObj.admin_checkout = curTrial.admin_checkout;
                 trialDetailObj.scientific_checkout = curTrial.scientific_checkout;
             }
-
+            
             LocalCacheService.cacheItem('current_trial_object', trialDetailObj);
         }
 
