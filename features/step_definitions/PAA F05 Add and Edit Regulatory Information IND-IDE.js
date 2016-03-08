@@ -108,14 +108,22 @@ module.exports = function() {
     var indIDEAssociatedQueVals7 = '';
     var globalYesNoFlag = '';
     var glovalNullVal = 'null';
+    var glovalSelectVal = '-Select-';
+    var commonErrorMsg = 'Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type';
+    var warnTheNIHIns = 'Warning - The NIH Institution/NCI Division/Program Code is Required';
+    var warnNIHReq = 'Warning - The NIH  is Required';
+    var warnINDHoldrTypReq = 'Warning - The IND/IDE Holder Type is Required';
+    var warnINDNmbrReq = 'Warning - IND/IDE number is Required';
+    var warnINDTypeReq = 'Warning - IND/IDE Type is Required';
 
-        /*
-         Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
-         Given I am logged into the CTRP Protocol Abstraction application
-         And I am on the Trial Regulatory Information (IND/IDE) screen
-         When I have selected "No" where the question "Does this trial have an associated IND/IDE?"
-         Then the IND/IDE Information section will allow the entry of an IND/IDE for this trial
-         */
+
+    /*
+     Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Regulatory Information (IND/IDE) screen
+     When I have selected "No" where the question "Does this trial have an associated IND/IDE?"
+     Then the IND/IDE Information section will allow the entry of an IND/IDE for this trial
+     */
 
     this.Given(/^I am on the Trial Regulatory Information \(IND\/IDE\) screen$/, function (callback) {
         pageMenu.homeSearchTrials.click();
@@ -799,7 +807,7 @@ module.exports = function() {
         if (globalYesNoFlag === 'No'){
             if (INDIDEGrantor === 'null'){
                 helper.verifyElementDisplayed(indIDE.indIDEGrantor, false);
-                INDIDEGrantor = glovalNullVal;
+                //INDIDEGrantor = glovalNullVal;
             }
         } else if(globalYesNoFlag === 'Yes'){
             //helper.waitForElement(indIDE.indIDEType, "Wait for the IND IDE Types");
@@ -807,12 +815,13 @@ module.exports = function() {
                 console.log('Grantor selection');
                 //helper.verifyElementDisplayed(indIDE.indIDEGrantor, true);
                 indIDE.selectINDIDEGrantor(INDIDEGrantor);
-                INDIDEGrantor = indIDEGrntrCDER;
+                //INDIDEGrantor = indIDEGrntrCDER;
             }
             if (INDIDEGrantor === 'null'){
                 //helper.verifyElementDisplayed(indIDE.indIDEGrantor, true);
                 //Select Nothing
-                INDIDEGrantor = indIDEGrntrCDER;
+                indIDE.selectINDIDEGrantor(glovalSelectVal);
+                //INDIDEGrantor = indIDEGrntrCDER;
             }
         };
         browser.sleep(2500).then(callback);
@@ -886,7 +895,6 @@ module.exports = function() {
     });
 
     this.Then(/^the system will display a warning (.*) that each of values that were not entered must be entered in order to associate the IND\/IDE Information for the trial$/, function (Message, callback) {
-        var commonErrorMsg = 'Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type';
         if (globalYesNoFlag === 'No'){
             if (Message === 'null'){
                 //helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
@@ -896,27 +904,23 @@ module.exports = function() {
             if (Message === 'null'){
                 console.log('Current Warning Message:['+ Message +']');
             }
-            if (Message === 'Warning - The NIH Institution/NCI Division/Program Code is Required'){
+            if (Message === warnTheNIHIns){
                 helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
                 console.log('Current Warning Message:['+ Message +']');
             }
-            if (Message === 'Warning - The NIH Institution/NCI Division/Program Code is Required'){
+            if (Message === warnNIHReq){
                 helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
                 console.log('Current Warning Message:['+ Message +']');
             }
-            if (Message === 'Wa - The NIH  is Required'){
+            if (Message === warnINDHoldrTypReq){
                 helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
                 console.log('Current Warning Message:['+ Message +']');
             }
-            if (Message === 'Warning - The IND/IDE Holder Type is Required'){
+            if (Message === warnINDNmbrReq){
                 helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
                 console.log('Current Warning Message:['+ Message +']');
             }
-            if (Message === 'Warning - IND/IDE number is Required'){
-                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
-                console.log('Current Warning Message:['+ Message +']');
-            }
-            if (Message === 'Warning - IND/IDE Type is Required'){
+            if (Message === warnINDTypeReq){
                 helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
                 console.log('Current Warning Message:['+ Message +']');
             }

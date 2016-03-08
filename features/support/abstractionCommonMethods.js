@@ -208,7 +208,7 @@ var abstractionCommonMethods = function(){
         var BrwsrVal = browser.getCurrentUrl();
         iteraCntLg = iteraCntLg + 1;
         var getCrntCntLg = iteraCntLg + 1;
-        console.log('calculating count:'+getCrntCntLg+'')
+        console.log('calculating count:'+iteraCntLg++);
         //if (getCrntCntLg == '010101'){
         //    login.loginPageVerification.getText().then (function(text){
         //        var passTxtA = ''+text+'';
