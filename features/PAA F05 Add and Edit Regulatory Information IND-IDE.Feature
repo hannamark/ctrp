@@ -124,9 +124,12 @@ Examples:
 |Yes|IND|77782|CDER|null|null|Warning - The NIH  is Required|
 |Yes|IND|77782|null|NCI|null|Warning - The IND/IDE Holder Type is Required|
 |Yes|IND|null|CDER|NCI|CTEP|Warning - IND/IDE number is Required|
+|Yes|IND|77782|null|null|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
+|Yes|IND|77782|CDER|null|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
 |Yes|null|77782|CDER|NCI|CTEP|Warning - IND/IDE Type is Required|
-|Yes|IND|77782|null|null|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
-|Yes|IND|77782|null|null|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
+
+
+
 
 
 
