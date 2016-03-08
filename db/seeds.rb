@@ -79,6 +79,10 @@ TimePerspective.find_or_create_by(code: 'RET', name: 'Retrospective')
 TimePerspective.find_or_create_by(code: 'CRO', name: 'Cross sectional')
 TimePerspective.find_or_create_by(code: 'OTH', name: 'Other')
 
+BiospecimenRetention.find_or_create_by(code: 'NONE', name: 'None Retained')
+BiospecimenRetention.find_or_create_by(code: 'SDNA', name: 'Samples With DNA')
+BiospecimenRetention.find_or_create_by(code: 'SNODNA', name: 'Samples Without DNA')
+
 SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 

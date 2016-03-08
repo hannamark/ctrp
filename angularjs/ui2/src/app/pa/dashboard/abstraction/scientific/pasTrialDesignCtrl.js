@@ -21,6 +21,7 @@
         vm.allocations = [];
         vm.studyClassifications = [];
         vm.timePerspectives = [];
+        vm.biospecimenRetentions = [];
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
         vm.isOtherStudyModel = false;
@@ -83,10 +84,18 @@
                         _fetchStudyClassifications()
                     }
 
-                    if ((vm.isObservational || vm.isAncillary) && (vm.studyModels.length === 0 || vm.timePerspectives.length === 0)) {
+                    if ((vm.isObservational || vm.isAncillary) && vm.studyModels.length === 0) {
                         _fetchStudyModels();
+                    }
+
+                    if ((vm.isObservational || vm.isAncillary) && vm.timePerspectives.length === 0) {
                         _getTimePerspectives();
                     }
+
+                    if ((vm.isObservational || vm.isAncillary) && vm.biospecimenRetentions.length === 0) {
+                        _fetchBiospecimenRetention()
+                    }
+
                 });
         } // _watchResearchCategory
 
@@ -184,6 +193,12 @@
             PATrialService.getStudyModels().then(function(res) {
                 vm.studyModels = res.data || [];
                 vm.studyModels.sort(Common.a2zComparator());
+            });
+        }
+
+        function _fetchBiospecimenRetention() {
+            PATrialService.getBiospecimenRetentions().then(function(res) {
+                vm.biospecimenRetentions = res.data.sort(Common.a2zComparator()) || [];
             });
         }
 

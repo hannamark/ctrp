@@ -247,6 +247,21 @@
             </div>
             <!-- end of allocations -->
 
+            <!-- Biospecimen Retention -->
+            <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
+                <label for="biospecimen_retention" class="control-label col-xs-12 col-sm-2">Bio-specimen Retention</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="biospecimen_retention" id="biospecimen_retention"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.biospecimen_retention_id"
+                        ng-options="retention.id as retention.name for retention in designView.biospecimenRetentions"
+                        >
+                        <option value="">- Please select a bio-specimen retention...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of Biospecimen Retention -->
+
             <!-- num of arms -->
             <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="num_arms" class="control-label col-xs-12 col-sm-2">Number of Arms/Groups</label>
