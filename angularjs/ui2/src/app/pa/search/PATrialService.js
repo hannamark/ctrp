@@ -144,7 +144,8 @@
             getMaskings: getMaskings,
             getAllocations: getAllocations,
             getStudyClassifications: getStudyClassifications,
-            getStudyModels: getStudyModels
+            getStudyModels: getStudyModels,
+            getTimePerspectives: getTimePerspectives
         };
 
         return services;
@@ -416,6 +417,10 @@
 
         function getStudyModels() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.STUDY_MODELS);
+        }
+
+        function getTimePerspectives() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TIME_PERSPECTIVES);
         }
 
         /**

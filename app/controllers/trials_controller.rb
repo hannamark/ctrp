@@ -74,6 +74,13 @@ class TrialsController < ApplicationController
     end
   end
 
+  def time_perspectives
+    @perspectives = TimePerspective.all
+    respond_to do |format|
+      format.json { render :json => {:data => @perspectives} }
+    end
+  end
+
   def study_models
     @study_models = StudyModel.all
     respond_to do |format|
@@ -476,7 +483,7 @@ class TrialsController < ApplicationController
                                   :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
                                   :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
                                   :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :study_model_id, :study_model_other,
-                                  :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
+                                  :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :time_perspective_id, :time_perspective_other,
                                   :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
                                   :brief_title, :brief_summary, :objective, :detailed_description, :study_classification_id, :target_enrollment, :final_enrollment,
                                   :process_priority, :process_comment, :nci_specific_comment, :nih_nci_div, :nih_nci_prog, :keywords,
