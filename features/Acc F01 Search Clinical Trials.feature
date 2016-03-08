@@ -423,6 +423,12 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
      And I must enter subsequent accrual data at the same level
 
  
+       Scenario: #19 Submit Summary Level Accrual rules
+    Given I logged into the Accrual Application
+     When I have entered a Summary level Accrual count 
+     Then the CTRP system records each COUNT submitted as the TOTAL number of subjects accrued to date
+     And the CTRP system does not add the count currently entered to previously-recorded counts
+
 
 
 
