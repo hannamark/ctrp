@@ -309,7 +309,7 @@
             <div class="form-group">
                 <label class="control-label col-xs-12 col-sm-2">Accruals</label>
                 <div class="col-xs-12 col-sm-2 form-text">
-                    {{designView.trialDetailObj.accruals}}
+                    {{designView.trialDetailObj.accruals || 0}} <!-- if null, set it to 0 -->
                 </div>
             </div>
             <!-- end of Accruals -->
