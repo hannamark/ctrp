@@ -43,6 +43,9 @@ And I can select CTEP/DCP Trials
 |CTEP PIO Trials Only  (NIH/NCI Div/Dept Identifier = CTEP) |
 |DCP PIO Trials Only  (NIH/NCI Div/Dept Identifier = DCP) |
 |Exclude CTEP and DCP Trials  (NIH/NCI Div/Dept Identifier not = DCP, CTEP)
+And I can select the Information Source|
+|Protocol|
+|Imported|
 And I can select a trial milestone
 |Submission Received Date|
 |Submission Acceptance Date|

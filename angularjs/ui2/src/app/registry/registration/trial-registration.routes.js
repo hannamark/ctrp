@@ -94,7 +94,7 @@
                         return GeoLocationService.getCountryList();
                     },
                     acceptedFileTypesObj: function(TrialService) {
-                        return TrialService.getAcceptedFileTypes();
+                        return TrialService.getAcceptedFileTypesForRegistry();
                     }
                 },
                 ncyBreadcrumb: {
@@ -160,7 +160,7 @@
                         return GeoLocationService.getCountryList();
                     },
                     acceptedFileTypesObj: function(TrialService) {
-                        return TrialService.getAcceptedFileTypes();
+                        return TrialService.getAcceptedFileTypesForRegistry();
                     }
                 },
                 ncyBreadcrumb: {

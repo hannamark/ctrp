@@ -38,6 +38,11 @@ class UtilController < ApplicationController
     @nih_nci_prog_pa = AppSetting.find_by_code('NIH_NCI_PROG_PA').big_value.split(';')
   end
 
+  def get_accepted_file_types_for_registry
+    @file_extensions = AppSetting.find_by_code('ACCEPTED_FILE_TYPES_REG').value
+    @file_types = AppSetting.find_by_code('ACCEPTED_FILE_TYPES_REG').big_value
+  end
+
   def get_accepted_file_types
     @file_extensions = AppSetting.find_by_code('ACCEPTED_FILE_TYPES').value
     @file_types = AppSetting.find_by_code('ACCEPTED_FILE_TYPES').big_value

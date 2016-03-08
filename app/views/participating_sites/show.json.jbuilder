@@ -19,6 +19,7 @@ json.contact_email @participating_site.contact_email
 json.contact_type @participating_site.contact_type
 json.protocol_id @participating_site.protocol_id
 json.program_code @participating_site.program_code
+json.person @participating_site.person
 
 
 investigators = ""

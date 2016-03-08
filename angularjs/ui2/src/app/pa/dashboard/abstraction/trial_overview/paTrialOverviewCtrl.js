@@ -106,9 +106,15 @@
             vm.submitterPopOver.submitter = vm.trialDetailObj.submitter || {};
             vm.submitterPopOver.submitter.organization = vm.trialDetailObj.submitters_organization || '';
 
+            // check if the trial is registered or not (registered/reported or imported)
+            var internalSourceObj = vm.trialDetailObj.internal_source; // if null, then it is imported
+            vm.trialDetailObj.isImported = !!internalSourceObj ? (internalSourceObj.code !== 'REG') : true;
+
             // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
-            PATrialService.setCurrentTrial(vm.trialDetailObj); //cache the trial data
+            vm.trialDetailObj.is_draft = ''
+            vm.trialDetailObj.edit_type = vm.trialDetailObj.isImported ? 'imported_update' : '';
+            PATrialService.setCurrentTrial(vm.trialDetailObj, 'checkoutin'); //cache the trial data
             Common.broadcastMsg(MESSAGES.TRIAL_DETAIL_SAVED);
             $scope.trialDetailObj = vm.trialDetailObj;
         }
@@ -129,7 +135,8 @@
                     // trial is not editable if checkout is allowed (in checkedin state) or
                     // the curUserRole is Super or Admin
                     var curUserRole = UserService.getUserRole() || '';
-                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+                    vm.trialDetailObj.pa_sci_editable = !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
                     var checkedoutByUsername = !!newVal ? newVal.by : '';
                     vm.adminCheckinAllowed = !vm.adminCheckoutAllowed && (vm.curUser === checkedoutByUsername ||
                         curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU' ||
@@ -149,7 +156,8 @@
                     // trial is not editable if checkout is allowed (in checkedin state) or
                     // the curUserRole is Super or Admin
                     var curUserRole = UserService.getUserRole() || '';
-                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+                    vm.trialDetailObj.pa_sci_editable = !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
                     var checkedoutByUsername = !!newVal ? newVal.by : '';
                     vm.scientificCheckinAllowed = !vm.scientificCheckoutAllowed && (vm.curUser === checkedoutByUsername ||
                         curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU' ||
@@ -183,6 +191,7 @@
 
         function watchUpdatesInChildrenScope() {
             $scope.$on('updatedInChildScope', function() {
+                console.info('updatedInChildScope, getting current trial now!');
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
             });
         }

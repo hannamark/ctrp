@@ -138,7 +138,7 @@
                                         <tr ng-repeat="otherId in trialDetailView.addedOtherIds track by $index" ng-class="otherId._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                             <td class="col-md-4 protocol-id-origin">{{otherId.protocol_id_origin_name}}</td>
                                             <td class="col-md-6 protocol-id">{{otherId.protocol_id}}</td>
-                                            <td class="col-md-2" style="vertical-align: middle">
+                                            <td class="col-md-2">
                                                 <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'other_id')">
                                                     <i ng-class="otherId._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                                 </label>
@@ -492,7 +492,7 @@
                                             <td class="col-md-2">{{grant.institute_code}}</td>
                                             <td class="col-md-3">{{grant.serial_number}}</td>
                                             <td class="col-md-4">{{grant.nci}}</td>
-                                            <td class="col-md-1" style="vertical-align: middle">
+                                            <td class="col-md-1">
                                                 <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'grant')">
                                                     <i ng-class="grant._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                                 </label>
@@ -544,12 +544,12 @@
                                             </td>
                                             <td class="col-md-3">
                                                 <div>
-                                                    <textarea restriction-field style="resize: vertical;" class="form-control input-sm" id="status_comment" ng-model="trialDetailView.status_comment" />
+                                                    <textarea restriction-field class="form-control input-sm resize-vertical" id="status_comment" ng-model="trialDetailView.status_comment" />
                                                 </div>
                                             </td>
                                             <td class="col-md-3">
                                                 <div>
-                                                    <textarea restriction-field style="resize: vertical;" class="form-control input-sm" id="why_stopped" ng-model="trialDetailView.why_stopped" ng-disabled="trialDetailView.why_stopped_disabled" />
+                                                    <textarea restriction-field class="form-control input-sm resize-vertical" id="why_stopped" ng-model="trialDetailView.why_stopped" ng-disabled="trialDetailView.why_stopped_disabled" />
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -569,8 +569,11 @@
                                     Trial Status is required
                                 </span>
 
-                                <div class="add-association-error" ng-show="trialDetailView.showAddStatusError">
-                                    Please provide a Status Date and select a Status
+                                <div class="add-association-error" ng-show="trialDetailView.showAddStatusError && trialDetailView.why_stopped_disabled">
+                                    Please provide a Status Date, select a Status
+                                </div>
+                                <div class="add-association-error" ng-show="trialDetailView.showAddStatusError && !trialDetailView.why_stopped_disabled">
+                                    Please provide a Status Date, select a Status and enter Why Study Stopped
                                 </div>
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedStatuses.length > 0">
@@ -608,7 +611,7 @@
                                                     WARNING: Duplicate [{{warning.dupStatus}}] status is not allowed
                                                 </div>
                                             </td>
-                                            <td class="col-md-1" style="vertical-align: middle">
+                                            <td class="col-md-1">
                                                 <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
                                                     <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                                 </label>
@@ -834,7 +837,7 @@
                                             <td class="col-md-2">{{indIde.grantor}}</td>
                                             <td class="col-md-2">{{indIde.holder_type_name}}</td>
                                             <td class="col-md-3">{{indIde.nih_nci}}</td>
-                                            <td class="col-md-1" style="vertical-align: middle" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
+                                            <td class="col-md-1" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
                                                 <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'ind_ide')">
                                                     <i ng-class="indIde._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                                 </label>
@@ -960,7 +963,7 @@
                                         <tr ng-repeat="authority in trialDetailView.addedAuthorities track by $index" ng-class="authority._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                             <td class="col-md-4">{{authority.country}}</td>
                                             <td class="col-md-6">{{authority.organization}}</td>
-                                            <td class="col-md-2" style="vertical-align: middle" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
+                                            <td class="col-md-2" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
                                                 <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'authority')">
                                                     <i ng-class="authority._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                                 </label>
@@ -1046,7 +1049,7 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Document' && document.is_latest" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Document' && document.status === 'active'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1070,7 +1073,7 @@
                                 </div>
                             </div>
 
-                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Change Memo Document' && document.is_latest" class="form-group">
+                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Change Memo Document' && document.status === 'active'" class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3"></label>
                                 <div class="col-xs-12 col-sm-9">
                                     <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1093,7 +1096,7 @@
                                 </div>
                             </div>
 
-                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Highlighted Document' && document.is_latest" class="form-group">
+                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Highlighted Document' && document.status === 'active'" class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3"></label>
                                 <div class="col-xs-12 col-sm-9">
                                     <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1117,7 +1120,7 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'IRB Approval' && document.is_latest" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'IRB Approval' && document.status === 'active'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1136,7 +1139,7 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'List of Participating Sites' && document.is_latest" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'List of Participating Sites' && document.status === 'active'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1159,7 +1162,7 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Informed Consent' && document.is_latest" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Informed Consent' && document.status === 'active'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
@@ -1196,7 +1199,7 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Other Document'" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Other Document' && document.status === 'active'" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>

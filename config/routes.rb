@@ -175,6 +175,12 @@ Rails.application.routes.draw do
           get  'search_clinical_trials_gov'
           post 'import_clinical_trials_gov'
           get  'get_board_approval_statuses'
+          get  'get_intervention_models'
+          get  'get_maskings'
+          get  'get_allocations'
+          get  'study_classifications'
+          get  'study_models'
+          get  'time_perspectives'
         end
       end
 
@@ -203,7 +209,7 @@ Rails.application.routes.draw do
       get 'institute_codes' => 'util#get_institute_codes'
       get 'nci' => 'util#get_nci'
       get 'nih' => 'util#get_nih'
-
+      get 'accepted_file_types_for_registry' => 'util#get_accepted_file_types_for_registry'
       get 'accepted_file_types' => 'util#get_accepted_file_types'
     end
   end
