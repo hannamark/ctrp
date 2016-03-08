@@ -158,6 +158,11 @@
                     <md-checkbox ng-model="designView.trialDetailObj.masking_role_investigator" aria-label="Investigator">Investigator</md-checkbox>
                     <md-checkbox ng-model="designView.trialDetailObj.masking_role_caregiver" aria-label="Caregiver">Caregiver</md-checkbox>
                     <md-checkbox ng-model="designView.trialDetailObj.masking_role_outcome_assessor" aria-label="Outcomes Assessor">Outcomes Assessor</md-checkbox>
+                    <div ng-hide="designView.trialDetailObj.masking_role_subject || designView.trialDetailObj.masking_role_investigator
+                        || designView.trialDetailObj.masking_role_caregiver || designView.trialDetailObj.masking_role_outcome_assessor">
+                        {{designView.trialDetailObj.masking_role_outcome_assessor}}
+                        Even though not mandatory on this screen, failure to select masking role(s) may lead to abstraction <u>validation warnings/errors</u>.
+                    </div>
                 </div>
             </div>
             <!-- end of masking roles -->
