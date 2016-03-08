@@ -42,6 +42,24 @@
                         parent: 'main.pa.trialOverview',
                         label: 'Trial Design'
                     }
-                });
+                })
+            .state('main.pa.trialOverview.trialOutcomeMeasures', {
+                url: '/trial-outcome-measures',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_outcome_measures.html',
+                controller: 'pasTrialOutcomeMeasuresCtrl as omView',
+                resolve: {
+                    TrialService: 'TrialService',
+                    OutcomeMeasureService: 'OutcomeMeasureService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                },
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Outcome Measures'
+                }
+            });
     }
 })();

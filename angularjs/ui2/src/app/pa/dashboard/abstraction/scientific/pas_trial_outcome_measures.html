@@ -1,0 +1,25 @@
+<div class="row">
+
+    <uib-accordion close-others="false">
+        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+            <uib-accordion-heading>
+                Trial History <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+            </uib-accordion-heading>
+            <!-- list of audit trials -->
+            <h1>hello this is outcome</h1>
+            <div class="row" ng-class="{'top-offset-xs': omView.gridOptions.data.length > 0 }">
+                <div class="col-xs-12">
+                    <div class="row" ng-if="omView.gridOptions.totalItems != null">
+                        <p><h4>Outcome Measures: {{omView.gridOptions.totalItems}} found</h4></p>
+                    </div>
+                    <div class="row animated-item" ng-if="omView.gridOptions.data.length > 0">
+                        <div class="col-xs-12">
+                            <div ui-grid="omView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
+</div>
+

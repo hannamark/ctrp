@@ -66,6 +66,7 @@
             'NCI_PROG_PA': '/ctrp/pa/nih_nci_prog_pa.json',
             'SUBMISSION_METHODS': '/ctrp/pa/submission_methods.json',
             'AUDIT_HISTORY': '/ctrp/trial_versions/history',
+            'OUTCOME_MEASURES': '/ctrp/outcome_measures/search',
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
                 'PARTICIPATING_SITE_WITH_ID': '/ctrp/registry/participating_sites/{:id}.json',
