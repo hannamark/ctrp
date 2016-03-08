@@ -181,6 +181,7 @@ Rails.application.routes.draw do
           get  'study_classifications'
           get  'study_models'
           get  'time_perspectives'
+          get  'biospecimen_rententions'
         end
       end
 

@@ -145,7 +145,8 @@
             getAllocations: getAllocations,
             getStudyClassifications: getStudyClassifications,
             getStudyModels: getStudyModels,
-            getTimePerspectives: getTimePerspectives
+            getTimePerspectives: getTimePerspectives,
+            getBiospecimenRetentions: getBiospecimenRetentions
         };
 
         return services;
@@ -421,6 +422,10 @@
 
         function getTimePerspectives() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.TIME_PERSPECTIVES);
+        }
+
+        function getBiospecimenRetentions() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.BIOSPECIMEN_RETENTIONS);
         }
 
         /**
