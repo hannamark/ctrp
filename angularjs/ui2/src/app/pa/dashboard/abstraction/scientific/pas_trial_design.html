@@ -114,7 +114,7 @@
             <!-- end of pilot -->
 
             <!-- intervention models -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="intervention_model" class="control-label col-xs-12 col-sm-2">Intervention Model</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="intervention_model" id="intervention_model"
@@ -122,7 +122,7 @@
                         ng-model="designView.trialDetailObj.intervention_model_id"
                         ng-options="model.id as model.name for model in designView.interventionModels"
                         >
-                        <option value="">- Please select a intervention model...</option>
+                        <option value="">- Please select an intervention model...</option>
                     </select>
                 </div>
             </div>
@@ -197,6 +197,37 @@
                     </textarea>
                     <span ng-show="trial_design_form.study_model_other.$viewValue.length > 0">
                         {{200 - trial_design_form.study_model_other.$viewValue.length}} characters left
+                    </span>
+                </div>
+            </div>
+            <!-- end of description for study model -->
+
+            <!-- Time Perspectives -->
+            <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
+                <label for="time_perspective" class="control-label col-xs-12 col-sm-2">Time Perspective</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="time_perspective" id="time_perspective"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.time_perspective_id"
+                        ng-options="perspective.id as perspective.name for perspective in designView.timePerspectives"
+                        >
+                        <option value="">- Please select a time perspective...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of Time perspectives -->
+
+            <!-- description if study model is Other -->
+            <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.isOtherTimePerspective">
+                <label for="time_perspective_other" class="control-label col-xs-12 col-sm-2">Description of Other time perspective</label>
+                <div class="col-xs-12 col-sm-5">
+                    <textarea class="form-control"
+                        name="time_perspective_other" id="time_perspective_other"
+                        maxlength="200" ng-maxlength="200"
+                        ng-model="designView.trialDetailObj.time_perspective_other" rows="3">
+                    </textarea>
+                    <span ng-show="trial_design_form.time_perspective_other.$viewValue.length > 0">
+                        {{200 - trial_design_form.time_perspective_other.$viewValue.length}} characters left
                     </span>
                 </div>
             </div>

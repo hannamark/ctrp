@@ -74,6 +74,11 @@ PrimaryPurpose.find_or_create_by(code: 'HSR', name: 'Health Services Research')
 PrimaryPurpose.find_or_create_by(code: 'BSC', name: 'Basic Science')
 PrimaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
+TimePerspective.find_or_create_by(code: 'PRO', name: 'Prospective')
+TimePerspective.find_or_create_by(code: 'RET', name: 'Retrospective')
+TimePerspective.find_or_create_by(code: 'CRO', name: 'Cross sectional')
+TimePerspective.find_or_create_by(code: 'OTH', name: 'Other')
+
 SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 

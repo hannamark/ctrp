@@ -20,10 +20,12 @@
         vm.maskings = [];
         vm.allocations = [];
         vm.studyClassifications = [];
+        vm.timePerspectives = [];
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
         vm.isOtherStudyModel = false;
         vm.trialDetailObj.showMaskingRoles = false;
+        vm.isOtherTimePerspective = false;
 
         activate();
         function activate() {
@@ -33,6 +35,7 @@
             _watchSecondaryPurpose();
             _watchResearchCategory();
             _watchStudyModel();
+            _watchTimePerspective();
             _watchMasking();
         }
 
@@ -80,8 +83,9 @@
                         _fetchStudyClassifications()
                     }
 
-                    if ((vm.isObservational || vm.isAncillary) && vm.studyModels.length === 0) {
+                    if ((vm.isObservational || vm.isAncillary) && (vm.studyModels.length === 0 || vm.timePerspectives.length === 0)) {
                         _fetchStudyModels();
+                        _getTimePerspectives();
                     }
                 });
         } // _watchResearchCategory
@@ -92,7 +96,8 @@
                 if (newVal !== undefined && newVal !== null) {
                     var curPrimaryPurposeObj = _.findWhere(vm.primaryPurposes, {id: newVal});
                     vm.isOtherPrimaryPurpose = curPrimaryPurposeObj.name.toLowerCase().indexOf('other') > -1;
-                    // console.info('isOtherPrimaryPurpose: ', vm.isOtherPrimaryPurpose);
+                    // reset to original data or empty
+                    vm.trialDetailObj.primary_purpose_other = _resetValueForField('primary_purpose_other');
                 }
             });
         } // _watchPrimaryPurpose
@@ -104,6 +109,8 @@
                         var curSecondaryPurposeObj = _.findWhere(vm.secondaryPurposes, {id: newVal});
                         console.info('curSecondaryPurposeObj: ', curSecondaryPurposeObj);
                         vm.isOtherSecondaryPurpose = curSecondaryPurposeObj.name.toLowerCase().indexOf('other') > -1;
+                        // reset to original data or empty
+                        vm.trialDetailObj.secondary_purpose_other = _resetValueForField('secondary_purpose_other');
                     }
                 });
         }
@@ -115,6 +122,20 @@
                         var curStudyModel = _.findWhere(vm.studyModels, {id: newVal});
                         console.info('curStudyModel: ', curStudyModel);
                         vm.isOtherStudyModel = curStudyModel.name.toLowerCase().indexOf('other') > -1;
+                        // reset to original data or empty
+                        vm.trialDetailObj.study_model_other = _resetValueForField('study_model_other');
+                    }
+                });
+        }
+
+        function _watchTimePerspective() {
+            $scope.$watch(function() {return vm.trialDetailObj.time_perspective_id;},
+                function(newVal, oldVal) {
+                    if (newVal !== undefined && newVal !== null) {
+                        var curTimePerspective = _.findWhere(vm.timePerspectives, {id: newVal});
+                        vm.isOtherTimePerspective = curTimePerspective.name.toLowerCase().indexOf('other') > -1;
+                        // reset to original data or empty
+                        vm.trialDetailObj.time_perspective_other = _resetValueForField('time_perspective_other');
                     }
                 });
         }
@@ -172,6 +193,25 @@
                 var maskingName = !!curMasking ? curMasking.name : '';
                 vm.trialDetailObj.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
             })
+        }
+
+        /**
+         * Get the value for the fieldName in the cached trial object
+         * @param  {[type]} fieldName [description]
+         * @return {String}  a String value that could be a blank String
+         */
+        function _resetValueForField(fieldName) {
+            var cachedTrial = PATrialService.getCurrentTrialFromCache();
+            var val = cachedTrial[fieldName] || '';
+            return val;
+        }
+
+        function _getTimePerspectives() {
+            PATrialService.getTimePerspectives().then(function(res) {
+                vm.timePerspectives = res.data || [];
+                vm.timePerspectives.sort(Common.a2zComparator());
+                console.info('time perspectives: ', res);
+            });
         }
 
     } //pasTrialDesignCtrl
