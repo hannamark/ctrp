@@ -9,7 +9,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       When I view the prefilled Clinical Research Category value
       Then I can select a different value
        
-      | Interventional             | 
+      | Interventional             |   
       | Expanded Access            | 
       | Observational              | 
       | Ancillary Correlative      | 
@@ -283,12 +283,6 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
       And I can enter a value for Target Enrollment
       And I can enter a value for Final Enrollment for ClinicalTrials.gov
       And the value of Accruals will be displayed 
-      And I select a value for <Expanded Access Type>
-      | Expanded Access Type      | 
-      | Available                 | 
-      | No longer available       | 
-      | Temporarily not available | 
-      | Approved for marketing    | 
       And I select Save
      Then the Expanded Access trial design is associated with the trial
       And the message Record Updated displays
