@@ -27,6 +27,12 @@
         vm.isOtherStudyModel = false;
         vm.trialDetailObj.showMaskingRoles = false;
         vm.isOtherTimePerspective = false;
+        // information sources:
+        vm.isInfoSourceProtocol = false;
+        vm.isInfoSourceImport = false;
+
+        // actions:
+        vm.updateTrialDesign = updateTrialDesign;
 
         activate();
         function activate() {
@@ -53,6 +59,9 @@
         function _getTrialDetailCopy() {
             $timeout(function() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                var infoSourceName = vm.trialDetailObj.internal_source.name.toLowerCase();
+                vm.isInfoSourceProtocol = true; //infoSourceName.indexOf('protocol') > -1;
+                vm.isInfoSourceImport = !vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
             }, 0);
         } // _getTrialDetailCopy
 
@@ -227,6 +236,10 @@
                 vm.timePerspectives.sort(Common.a2zComparator());
                 console.info('time perspectives: ', res);
             });
+        }
+
+        function updateTrialDesign() {
+            console.info('updating trial design');
         }
 
     } //pasTrialDesignCtrl
