@@ -86,6 +86,8 @@ json.participating_sites do
     json.protocol_id participating_site.protocol_id
     json.program_code participating_site.program_code
     json.person participating_site.person
+    json.person_id participating_site.person.nil? ? nil:participating_site.person.id
+
 
     json.organization participating_site.organization
     json.site_rec_status_wrappers do
