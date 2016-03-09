@@ -345,9 +345,9 @@
             console.log("In editSiteRecruitment");
             vm.current_site_recruitment = angular.copy(vm.siteRecruitmentGrid[index]);
             vm.current_site_recruitment.edit = true;
+            vm.siteRecruitmentGrid[index].edit = true;
             vm.current_site_recruitment.uiEdit = true;
             vm.siteRecruitmentGrid[index].uiEdit = true;
-            vm.siteRecruitmentGrid[index].edit = true;
             vm.current_site_recruitment._destroy = false;
             vm.current_site_recruitment.index = index;
             console.log("vm.current_site_recruitment="+ JSON.stringify(vm.current_site_recruitment));
@@ -489,6 +489,7 @@
 
             } else {
                 vm.current_investigator.new = true;
+                vm.current_investigator.uiEdit = true;
             }
             if((vm.currentParticipatingSite.contact_type == "PI") &&  (vm.currentParticipatingSite.person_id == vm.current_investigator.id)) {
                 vm.current_investigator.set_as_contact = true;
