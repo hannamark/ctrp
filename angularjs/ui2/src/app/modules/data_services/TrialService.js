@@ -122,7 +122,10 @@
             getGrantsSerialNumber: getGrantsSerialNumber,
             upsertParticipatingSite: upsertParticipatingSite,
             getParticipatingSiteById: getParticipatingSiteById,
-            deleteParticipatingSite: deleteParticipatingSite
+            deleteParticipatingSite: deleteParticipatingSite,
+            upsertOutcomeMeasure: upsertOutcomeMeasure,
+            deleteOutcomeMeasure: deleteOutcomeMeasure,
+            getOutcomeMeasureTypes:getOutcomeMeasureTypes
         };
 
         return services;
@@ -295,6 +298,27 @@
             $log.info('updating a participating site: ' + JSON.stringify(participatingSiteObj));
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteObj.id + '.json', participatingSiteObj, configObj);
         } //upsertParticipatingSite
+
+
+        /**
+         * Update or insert a Outcome Measure Record
+         *
+         * @param outcomeMeasureObj
+         * @returns {*}
+         */
+        function upsertOutcomeMeasure(outcomeMeasureObj) {
+            if (outcomeMeasureObj.new) {
+                //create a new trial
+                $log.info('creating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.OUTCOME_MEASURE_LIST, outcomeMeasureObj);
+            }
+
+            //update an Participating Site
+            var configObj = {}; //empty config
+            console.log('updating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+            $log.info('updating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_OUTCOME_MEASURE + outcomeMeasureObj.id + '.json', outcomeMeasureObj, configObj);
+        } //upsertOutcomeMeasure
 
 
         function getMilestones() {
@@ -1013,5 +1037,24 @@
         function deleteParticipatingSite(psId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_PARTICIPATING_SITE + psId + '.json');
         }
+
+        /**
+         * delete an trial with the given trialId
+         *
+         * @param trialId
+         * @returns {*}
+         */
+        function deleteOutcomeMeasure(psId) {
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_OUTCOME_MEASURE + psId + '.json');
+        }
+
+        /**
+         * retrieve out come measures types from backend service
+         * @return {promise}
+         */
+        function getOutcomeMeasureTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.OUTCOME_MEASURE_TYPES);
+        } //getSourceStatuses
+
     }
 })();

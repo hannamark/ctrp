@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+
   resources :trial_versions
 
   resources :accrual_disease_terms
@@ -117,6 +118,9 @@ Rails.application.routes.draw do
       end
     end
 
+
+
+    resources :outcome_measure_types
     resources :po_affiliations
     resources :po_affiliation_statuses
 
@@ -193,12 +197,14 @@ Rails.application.routes.draw do
       resources :milestones
       resources :research_categories
       resources :site_recruitment_statuses
+      resources :anatomic_sites
       resources :participating_sites do
         collection do
           post 'validate_status'
         end
       end
-      resources :site_rec_status_wrappers
+      resources :outcome_measures
+      #resources :site_rec_status_wrappers
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'

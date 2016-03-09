@@ -16,6 +16,7 @@
             $scope, TrialService, UserService, curTrial, _, PersonService) {
 
         var vm = this;
+        var curUserRole = UserService.getUserRole() || '';
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         console.log('curTrial: ', curTrial);
@@ -130,17 +131,14 @@
 
             $scope.$watch(function() {return vm.adminCheckoutObj;},
                 function(newVal) {
-                    var curUserRole = UserService.getUserRole() || '';
                     vm.adminCheckoutAllowed = (newVal === null); // boolean, if not null, do not allow checkout again
                     // trial is not editable if checkout is allowed (in checkedin state) or
                     // the curUserRole is Super or Admin
-                    var curUserRole = UserService.getUserRole() || '';
-                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
-                    vm.trialDetailObj.pa_sci_editable = !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
                     var checkedoutByUsername = !!newVal ? newVal.by : '';
                     vm.adminCheckinAllowed = !vm.adminCheckoutAllowed && (vm.curUser === checkedoutByUsername ||
                         curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU' ||
                         curUserRole === 'ROLE_ADMIN');
+                    _checkEditableStatus();
 
                     if (!!newVal) {
                         // ROLE_SUPER can override the checkout button
@@ -155,13 +153,12 @@
                     vm.scientificCheckoutAllowed = (newVal === null); // if not null, do not allow checkout again
                     // trial is not editable if checkout is allowed (in checkedin state) or
                     // the curUserRole is Super or Admin
-                    var curUserRole = UserService.getUserRole() || '';
-                    vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
-                    vm.trialDetailObj.pa_sci_editable = !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
                     var checkedoutByUsername = !!newVal ? newVal.by : '';
                     vm.scientificCheckinAllowed = !vm.scientificCheckoutAllowed && (vm.curUser === checkedoutByUsername ||
                         curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU' ||
                         curUserRole === 'ROLE_ADMIN');
+
+                    _checkEditableStatus();
 
                     if (!!newVal) {
                         // ROLE_SUPER can override the checkout button
@@ -193,7 +190,13 @@
             $scope.$on('updatedInChildScope', function() {
                 console.info('updatedInChildScope, getting current trial now!');
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                _checkEditableStatus();          
             });
+        }
+
+        function _checkEditableStatus() {
+            vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+            vm.trialDetailObj.pa_sci_editable = !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
         }
 
         function _getUpdatedTrialDetailObj() {
