@@ -210,6 +210,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :participating_sites, allow_destroy: true
   accepts_nested_attributes_for :collaborators, allow_destroy: true
   accepts_nested_attributes_for :outcome_measures, allow_destroy: true
+  accepts_nested_attributes_for :anatomic_site_wrappers, allow_destroy: true
   accepts_nested_attributes_for :other_criteria, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
