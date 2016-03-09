@@ -143,7 +143,9 @@
             getInterventionModels: getInterventionModels,
             getMaskings: getMaskings,
             getAllocations: getAllocations,
-            getStudyClassifications: getStudyClassifications
+            getStudyClassifications: getStudyClassifications,
+            getStudyModels: getStudyModels,
+            getTimePerspectives: getTimePerspectives
         };
 
         return services;
@@ -411,6 +413,14 @@
 
         function getStudyClassifications() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.STUDY_CLASSIFICATIONS);
+        }
+
+        function getStudyModels() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.STUDY_MODELS);
+        }
+
+        function getTimePerspectives() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TIME_PERSPECTIVES);
         }
 
         /**

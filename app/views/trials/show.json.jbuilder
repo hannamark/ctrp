@@ -1,11 +1,11 @@
 json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id, :masking_id,
               :masking_role_caregiver, :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
-              :research_category, :allocation_id, :study_classification_id, :target_enrollment, :final_enrollment,
+              :research_category, :allocation_id, :study_classification_id, :target_enrollment, :final_enrollment, :study_model_id, :study_model_other,
               :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
               :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual, :comp_date, :comp_date_qual,
               :ind_ide_question, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history, :accruals,
               :study_source_id, :phase_id, :phase, :primary_purpose_id, :primary_purpose, :secondary_purpose_id, :secondary_purpose, :responsible_party_id, :responsible_party,
-              :accrual_disease_term_id, :accrual_disease_term, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id,
+              :accrual_disease_term_id, :accrual_disease_term, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id, :time_perspective_id, :time_perspective_other,
               :created_at, :updated_at, :created_by, :updated_by, :study_source, :lead_org, :pi, :sponsor,
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
@@ -36,6 +36,13 @@ json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
     json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status
     json.set! :added_by, document.added_by_id.nil? ? User.find(1) : ''    #document.added_by_id
+  end
+end
+
+json.outcome_measures do
+  json.array!(@trial.outcome_measures) do |outcome_measure|
+    json.extract! outcome_measure, :id, :title, :time_frame, :description, :safety_issue
+    json.outcome_measure_type outcome_measure.outcome_measure_type.present? ? outcome_measure.outcome_measure_type.name : nil
   end
 end
 

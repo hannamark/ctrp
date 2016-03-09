@@ -1,5 +1,6 @@
 class OutcomeMeasuresController < ApplicationController
   before_action :set_outcome_measure, only: [:show, :edit, :update, :destroy]
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
 
   # GET /outcome_measures
   # GET /outcome_measures.json
@@ -75,6 +76,7 @@ class OutcomeMeasuresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def outcome_measure_params
-      params[:outcome_measure]
+      params[:outcome_measure].permit(:trial_id,:title,:time_frame,:description,:safety_issue)
     end
+
 end

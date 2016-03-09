@@ -74,6 +74,20 @@ class TrialsController < ApplicationController
     end
   end
 
+  def time_perspectives
+    @perspectives = TimePerspective.all
+    respond_to do |format|
+      format.json { render :json => {:data => @perspectives} }
+    end
+  end
+
+  def study_models
+    @study_models = StudyModel.all
+    respond_to do |format|
+      format.json { render :json => {:data => @study_models} }
+    end
+  end
+
   def study_classifications
     @classifications = StudyClassification.all
     respond_to do |format|
@@ -468,8 +482,8 @@ class TrialsController < ApplicationController
                                   :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id, :masking_role_caregiver,
                                   :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
                                   :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
-                                  :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
-                                  :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
+                                  :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :study_model_id, :study_model_other,
+                                  :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :time_perspective_id, :time_perspective_other,
                                   :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
                                   :brief_title, :brief_summary, :objective, :detailed_description, :study_classification_id, :target_enrollment, :final_enrollment,
                                   :process_priority, :process_comment, :nci_specific_comment, :nih_nci_div, :nih_nci_prog, :keywords,
@@ -487,7 +501,8 @@ class TrialsController < ApplicationController
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status],
-                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy])
+                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
+                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy])
   end
 
   # Convert status code to name in validation messages

@@ -66,7 +66,9 @@
             'NCI_PROG_PA': '/ctrp/pa/nih_nci_prog_pa.json',
             'SUBMISSION_METHODS': '/ctrp/pa/submission_methods.json',
             'AUDIT_HISTORY': '/ctrp/trial_versions/history',
-            'OUTCOME_MEASURES': '/ctrp/outcome_measures/search',
+            'OUTCOME_MEASURE_TYPES': '/ctrp/outcome_measure_types.json',
+            'OUTCOME_MEASURE_LIST' : '/ctrp/registry/outcome_measures.json',
+            'A_OUTCOME_MEASURE' : '/ctrp/registry/outcome_measures/',
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
                 'PARTICIPATING_SITE_WITH_ID': '/ctrp/registry/participating_sites/{:id}.json',
@@ -95,7 +97,9 @@
                 'INTERVENTION_MODELS': '/ctrp/registry/trials/get_intervention_models.json',
                 'MASKINGS': '/ctrp/registry/trials/get_maskings.json',
                 'ALLOCATIONS': '/ctrp/registry/trials/get_allocations.json',
-                'STUDY_CLASSIFICATIONS': '/ctrp/registry/trials/study_classifications.json'
+                'STUDY_CLASSIFICATIONS': '/ctrp/registry/trials/study_classifications.json',
+                'STUDY_MODELS': '/ctrp/registry/trials/study_models.json',
+                'TIME_PERSPECTIVES': '/ctrp/registry/trials/time_perspectives.json'
             }
         })
         .constant('MESSAGES', {

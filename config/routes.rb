@@ -118,12 +118,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :outcome_measures do
-      collection do
-        get 'search'
-      end
-    end
 
+
+    resources :outcome_measure_types
     resources :po_affiliations
     resources :po_affiliation_statuses
 
@@ -186,6 +183,8 @@ Rails.application.routes.draw do
           get  'get_maskings'
           get  'get_allocations'
           get  'study_classifications'
+          get  'study_models'
+          get  'time_perspectives'
         end
       end
 
@@ -202,6 +201,7 @@ Rails.application.routes.draw do
           post 'validate_status'
         end
       end
+      resources :outcome_measures
       resources :site_rec_status_wrappers
       resources :trial_documents do
         collection do

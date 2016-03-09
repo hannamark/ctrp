@@ -78,7 +78,9 @@
 
         var services = {
             getGridOptions : getGridOptions,
-            getOutcomeMeasures : getOutcomeMeasures
+            getOutcomeMeasures : getOutcomeMeasures,
+            getOutcomeMeasureTypes : getOutcomeMeasureTypes
+
         };
 
         return services;
@@ -88,7 +90,7 @@
         /*********************** implementations *****************/
 
         function getOutcomeMeasures(){
-            return PromiseTimeoutService.getData(URL_CONFIGS.OUTCOME_MEASURES);
+            return PromiseTimeoutService.getData(URL_CONFIGS.OUTCOME_MEASURE_LIST);
 
         }
 
@@ -97,6 +99,13 @@
             return gridOptions;
         }
 
+        /**
+         * retrieve out come measures types from backend service
+         * @return {promise}
+         */
+        function getOutcomeMeasureTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.OUTCOME_MEASURE_TYPES);
+        } //getSourceStatuses
 
     }
 

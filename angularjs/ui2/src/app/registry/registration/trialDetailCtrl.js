@@ -473,6 +473,7 @@
                 vm.status_comment = null;
                 vm.why_stopped = null;
                 vm.showAddStatusError = false;
+                vm.why_stopped_disabled = true;
                 vm.validateStatus();
             } else {
                 vm.showAddStatusError = true;

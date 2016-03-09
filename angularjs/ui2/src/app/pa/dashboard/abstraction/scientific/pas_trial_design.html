@@ -7,21 +7,20 @@
             <!-- research categories -->
             <div class="form-group">
                 <label for="research_category" class="control-label col-xs-12 col-sm-2">Research Category</label>
-                <div class="col-xs-12 col-sm-5">
+                <div class="col-xs-12 col-sm-5" layout="row" layout-wrap flex-xs="100">
                     <select name="research_category" id="research_category"
                         class="form-control input-sm"
                         ng-model="designView.trialDetailObj.research_category_id"
                         ng-options="cat.id as cat.name for cat in designView.researchCategories"
                         >
                         <option value="">- Please select a research category...</option>
-                        </select>
+                    </select>
+                    <!-- <md-radio-group ng-model="designView.trialDetailObj.research_category_id" layout="row">
+                        <md-radio-button ng-repeat="cat in designView.researchCategories" value="{{cat.id}}" class="md-primary">{{cat.name}}</md-radio-button>
+                    </md-radio-group> -->
                 </div>
             </div>
             <!-- end of research categories -->
-
-            <!-- fields specific to research categories -->
-            <div ng-include="designView.curSpecificFieldsPartial"></div>
-            <!-- end of fields specific -->
 
             <!-- primary purposes -->
             <div class="form-group">
@@ -55,7 +54,7 @@
             <!-- end of description -->
 
             <!-- secondary purpose -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="secondary_purpose" class="control-label col-xs-12 col-sm-2">Secondary Purpose</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="secondary_purpose" id="secondary_purpose"
@@ -70,7 +69,7 @@
             <!-- end of secondary purpose -->
 
             <!-- description if primary purpose is Other -->
-            <div class="form-group" ng-show="designView.isOtherSecondaryPurpose">
+            <div class="form-group" ng-show="designView.isOtherSecondaryPurpose && (designView.isInterventional || designView.isExpandedAccess)">
                 <label for="description_other2" class="control-label col-xs-12 col-sm-2">Description of Other Secondary Purpose</label>
                 <div class="col-xs-12 col-sm-5">
                     <textarea class="form-control"
@@ -115,7 +114,7 @@
             <!-- end of pilot -->
 
             <!-- intervention models -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="intervention_model" class="control-label col-xs-12 col-sm-2">Intervention Model</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="intervention_model" id="intervention_model"
@@ -123,14 +122,14 @@
                         ng-model="designView.trialDetailObj.intervention_model_id"
                         ng-options="model.id as model.name for model in designView.interventionModels"
                         >
-                        <option value="">- Please select a intervention model...</option>
+                        <option value="">- Please select an intervention model...</option>
                     </select>
                 </div>
             </div>
             <!-- end of intervention models -->
 
             <!-- maskings -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="masking" class="control-label col-xs-12 col-sm-2">Masking</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="masking" id="masking"
@@ -145,7 +144,7 @@
             <!-- end of maskings -->
 
             <!-- masking roles -->
-            <div class="form-group" ng-show="designView.trialDetailObj.showMaskingRoles">
+            <div class="form-group" ng-show="designView.trialDetailObj.showMaskingRoles && (designView.isInterventional || designView.isExpandedAccess)">
                 <label class="control-label col-xs-12 col-sm-2">Masking Role(s)</label>
                 <div class="col-xs-12 col-sm-10" layout="row" layout-wrap flex-xs="100">
                     <md-checkbox ng-model="designView.trialDetailObj.masking_role_subject" aria-label="Subject">Subject</md-checkbox>
@@ -160,19 +159,82 @@
             <div class="form-group" ng-show="designView.isExpandedAccess">
                 <label for="expanded_access" class="control-label col-xs-12 col-sm-2">Expanded Access Type</label>
                 <div class="col-xs-12 col-sm-5">
-                    <select name="masking" id="masking"
+                    <strong>TODO - List</strong>
+                    <!-- <select name="masking" id="masking"
                         class="form-control input-sm"
                         ng-model="designView.trialDetailObj.masking_id"
                         ng-options="mask.id as mask.name for mask in designView.maskings"
                         >
                         <option value="">- Please select an expanded access type...</option>
-                    </select>
+                    </select> -->
                 </div>
             </div>
             <!-- end of Expanded Access Type -->
 
+            <!-- Study models -->
+            <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
+                <label for="study_model" class="control-label col-xs-12 col-sm-2">Study Model</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="study_model" id="study_model"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.study_model_id"
+                        ng-options="model.id as model.name for model in designView.studyModels"
+                        >
+                        <option value="">- Please select a study model...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of study models -->
+
+            <!-- description if study model is Other -->
+            <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.isOtherStudyModel">
+                <label for="study_model_other" class="control-label col-xs-12 col-sm-2">Description of Other Study Model</label>
+                <div class="col-xs-12 col-sm-5">
+                    <textarea class="form-control"
+                        name="study_model_other" id="study_model_other"
+                        maxlength="200" ng-maxlength="200"
+                        ng-model="designView.trialDetailObj.study_model_other" rows="3">
+                    </textarea>
+                    <span ng-show="trial_design_form.study_model_other.$viewValue.length > 0">
+                        {{200 - trial_design_form.study_model_other.$viewValue.length}} characters left
+                    </span>
+                </div>
+            </div>
+            <!-- end of description for study model -->
+
+            <!-- Time Perspectives -->
+            <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
+                <label for="time_perspective" class="control-label col-xs-12 col-sm-2">Time Perspective</label>
+                <div class="col-xs-12 col-sm-5">
+                    <select name="time_perspective" id="time_perspective"
+                        class="form-control input-sm"
+                        ng-model="designView.trialDetailObj.time_perspective_id"
+                        ng-options="perspective.id as perspective.name for perspective in designView.timePerspectives"
+                        >
+                        <option value="">- Please select a time perspective...</option>
+                    </select>
+                </div>
+            </div>
+            <!-- end of Time perspectives -->
+
+            <!-- description if study model is Other -->
+            <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.isOtherTimePerspective">
+                <label for="time_perspective_other" class="control-label col-xs-12 col-sm-2">Description of Other time perspective</label>
+                <div class="col-xs-12 col-sm-5">
+                    <textarea class="form-control"
+                        name="time_perspective_other" id="time_perspective_other"
+                        maxlength="200" ng-maxlength="200"
+                        ng-model="designView.trialDetailObj.time_perspective_other" rows="3">
+                    </textarea>
+                    <span ng-show="trial_design_form.time_perspective_other.$viewValue.length > 0">
+                        {{200 - trial_design_form.time_perspective_other.$viewValue.length}} characters left
+                    </span>
+                </div>
+            </div>
+            <!-- end of description for study model -->
+
             <!-- allocations -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="allocation" class="control-label col-xs-12 col-sm-2">Allocation</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="allocation" id="allocation"
@@ -187,7 +249,7 @@
             <!-- end of allocations -->
 
             <!-- allocations -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="study_classification" class="control-label col-xs-12 col-sm-2">Study Classification</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="study_classification" id="study_classification"
@@ -202,7 +264,7 @@
             <!-- end of allocations -->
 
             <!-- num of arms -->
-            <div class="form-group">
+            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
                 <label for="num_arms" class="control-label col-xs-12 col-sm-2">Number of Arms/Groups</label>
                 <div class="col-xs-12 col-sm-2">
                     <input type="number" min="0" name="num_arms" id="num_arms" class="form-control input-sm" ng-class="designView.trialDetailObj.num_of_arms" placeholder="">
@@ -221,7 +283,7 @@
 
             <!-- final enrollment -->
             <div class="form-group">
-                <label for="final_enrollment" class="control-label col-xs-12 col-sm-2">Final Enrollment</label>
+                <label for="final_enrollment" class="control-label col-xs-12 col-sm-2">Final Enrollment for CT.gov</label>
                 <div class="col-xs-12 col-sm-2">
                     <input type="number" min="0" name="final_enrollment" id="final_enrollment" class="form-control input-sm" ng-class="designView.trialDetailObj.final_enrollment" placeholder="">
                 </div>
