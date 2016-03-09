@@ -299,9 +299,10 @@ module.exports = function() {
         indIDE.selectINDIDEDivisionProgramCode(indIDEDivProgCdeNLM);
         indIDE.clickAdd();
         indIDE.clickSave();
-        //indIDE.clickAdminDataGeneralTrial();
-        //indIDE.clickAdminDataRegulatoryInfoIND();
-
+        helper.wait_for(3000);
+        indIDE.clickAdminDataGeneralTrial();
+        indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.wait_for(3000);
         helper.verifyTableRowText(indIDE.indIDETblHdr, verifTbleHdrs2, "IND/IDE Table Header(s)");
         helper.verifyTableRowText(indIDE.indIDETblRowA, verifTbleRowAs2, "IND/IDE Table Row A");
         indIDE.indIDEInfoTable.all(by.css('tr')).count().then(function(rowCount) {
