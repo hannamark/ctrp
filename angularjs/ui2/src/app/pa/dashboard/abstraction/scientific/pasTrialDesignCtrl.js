@@ -249,7 +249,6 @@
 
                 if (res.server_response.status === 200) {
                     vm.trialDetailObj = res;
-                    console.log('status: ', res.server_response.status);
                     vm.trialDetailObj.lock_version = res.lock_version;
                     // delete vm.trialDetailObj.admin_checkout;
                     // delete vm.trialDetailObj.scientific_checkout;
@@ -257,7 +256,7 @@
                     $scope.$emit('updatedInChildScope', {});
 
                     toastr.clear();
-                    toastr.success('Trial statuses has been updated', 'Successful!', {
+                    toastr.success('Trial design has been updated', 'Successful!', {
                         extendedTimeOut: 1000,
                         timeOut: 0
                     });
