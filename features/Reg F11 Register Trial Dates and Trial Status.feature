@@ -202,22 +202,22 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial date <statusDateFrom> and trial status from <statusFrom> to trial date <statusDateTo> trial status <statusTo> with the <condition> then the respective checks <errorsWarnings> will be there
-      |statusDateFrom   |statusFrom	                                    |statusDateTo                 |statusTo	                                      |condition                                                                                                                  |errorsWarnings	                                                |
-      |Date Entered Now |Approved                                       |Same Date entered later      |In Review                                      |                                                                                                                           |Warning: Invalid Transition from [Approved] to [In Review]       |
-      |Date Entered Now |In Review                                      |Same Date entered later      |Approved                                       |                                                                                                                           |                                                                 |
-      |Date Entered Now |Approved                                       |Different Date in the Future |In Review                                      |                                                                                                                           |Warning: Invalid Transition from [Approved] to [In Review]       |
-      |Date Entered past|In Review                                      |Date entered Now             |Approved                                       |                                                                                                                           |Warning: Invalid Transition from [In Review] to [Approved]       |
-      |Date Entered Now |Active                                         |Same Date entered later      |Temporarily Closed to Accrual                  |all the previous Status before Active has been added                                                                       |                                                                 |
-      |Date Entered Now |Temporarily Closed to Accrual                  |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Temporarily Closed to Accrual has been added                 |                                                                 |
-      |Date Entered Now |Temporarily Closed to Accrual                  |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
-      |Date Entered Now |Active                                         |Same Date entered later      |Temporarily Closed to Accrual and Intervention |all the previous Status before Active has been added                                                                       |                                                                 |
-      |Date Entered Now |Temporarily Closed to Accrual and Intervention |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Temporarily Closed to Accrual and Intervention has been added|                                                                 |
-      |Date Entered Now |Temporarily Closed to Accrual and Intervention |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
-      |Date Entered Now |Active                                         |Same Date entered later      |Closed to Accrual                              |all the previous Status before Active has been added                                                                       |                                                                 |
-      |Date Entered Now |Closed to Accrual                              |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Closed to Accrual has been added                             |Warning: Invalid Transition from [Closed to Accrual] to [Active] |
-      |Date Entered Now |Closed to Accrual                              |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
+      |statusDateFrom   |statusFrom	                                    |statusDateTo            |statusTo	                                      |condition                                                                                                                  |errorsWarnings	                                                |
+      |Date Entered Now |Approved                                       |Same Date entered later |In Review                                      |                                                                                                                           |ERROR: Invalid status transition from [Approved] to [In Review]       |
+      |Date Entered Now |In Review                                      |Same Date entered later |Approved                                       |                                                                                                                           |                                                                 |
+      |Date in Past     |Approved                                       |Date Entered Now        |In Review                                      |                                                                                                                           |ERROR: Invalid status transition from [Approved] to [In Review]       |
+      |Date in Past     |In Review                                      |Date entered Now        |Approved                                       |                                                                                                                           |                                                                        |
+      |Date Entered Now |Active                                         |Same Date entered later |Temporarily Closed to Accrual                  |all the previous Status before Active has been added                                                                       |                                                                 |
+      |Date Entered Now |Temporarily Closed to Accrual                  |Same Date entered later |Active                                         |all the previous Status before Active including Active before Temporarily Closed to Accrual has been added                 |                                                                 |
+      |Date Entered Now |Temporarily Closed to Accrual                  |Same Date entered later |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
+      |Date Entered Now |Active                                         |Same Date entered later |Temporarily Closed to Accrual and Intervention |all the previous Status before Active has been added                                                                       |                                                                 |
+      |Date Entered Now |Temporarily Closed to Accrual and Intervention |Same Date entered later |Active                                         |all the previous Status before Active including Active before Temporarily Closed to Accrual and Intervention has been added|                                                                 |
+      |Date Entered Now |Temporarily Closed to Accrual and Intervention |Same Date entered later |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] |
+      |Date Entered Now |Active                                         |Same Date entered later |Closed to Accrual                              |all the previous Status before Active has been added                                                                       |                                                                 |
+      |Date Entered Now |Closed to Accrual                              |Same Date entered later |Active                                         |all the previous Status before Active including Active before Closed to Accrual has been added                             |ERROR: Invalid status transition from [Closed to Accrual] to [Active] |
+      |Date Entered Now |Closed to Accrual                              |Same Date entered later |Active                                         |all the previous Status before Active has been added                                                                       |ERROR: Invalid status transition from [Closed to Accrual] to [Active]                    |
 
-    Examples:
+  Examples:
       |trialType  |
       |National                 |
       |Externally Peer-Reviewed |
@@ -252,14 +252,14 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     When I click on Review Trial without any Trial Status
     Then I should get an error message as "Trial Status is required"
     And On Add Trial Status if Status Date or Status is missing
-    Then I should get an error message as "Please provide a Status Date and select a Status"
+    Then I should get an error message as "Please provide a Status Date, select a Status"
     And On Add Trial Status when the Status selected is
       |Temporarily Closed to Accrual                  |
       |Temporarily Closed to Accrual and Intervention |
       |Withdrawn                                      |
       |Administratively Complete                      |
     And Why Study Stopped reason is not provided
-    Then I should get an error message as "Enter Why Study Stopped"
+    Then I should get an error message as "Please provide a Status Date, select a Status and enter Why Study Stopped"
 
     Examples:
       |trialType  |
@@ -272,10 +272,12 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And I am on the Register Trial Status screen
     When I select a Status Date in Past
     Then It should not give any error message for status date
+    And the added date format should be DD-MMM-YYYY format
     When I select a Status Date in Today
     Then It should not give any error message for status date
+    And the added date format should be DD-MMM-YYYY format
     When I select a Status Date in Future
-    Then It should not give any error message for status date
+    Then It should give an error message for future status date
 
     Examples:
       |trialType  |

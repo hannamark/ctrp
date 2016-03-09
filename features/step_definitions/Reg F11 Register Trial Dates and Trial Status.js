@@ -162,7 +162,7 @@ module.exports = function() {
     this.When(/^I add a (.*) and status transitions from (.*)$/, function (statusDate, statusTransitions, table, callback) {
         statusTable = table.hashes();
         for (var i = 0; i < statusTable.length; i++) {
-        console.log('Status Trnasitions');
+            console.log('Status Trnasitions');
             var splitTO = statusTable[i].statusTransitions.replace(/'/g, "").split(" TO ");
             console.log(splitTO);
             console.log('Length after split' + splitTO.length);
@@ -178,8 +178,8 @@ module.exports = function() {
                 }
                 else {
                     addTrial.clickAddTrialAddStatusButton();
-                projectFunctionsRegistry.verifyAddTrialStatusInformation(splitTO[j], moment().subtract(1, 'months').startOf('month').add(j, 'day').format('DD-MMM-YYYY'), '', '', '');
-            }
+                    projectFunctionsRegistry.verifyAddTrialStatusInformation(splitTO[j], moment().subtract(1, 'months').startOf('month').add(j, 'day').format('DD-MMM-YYYY'), '', '', '');
+                }
             }
             addTrial.clickAddTrialResetButton();
         }
@@ -188,6 +188,176 @@ module.exports = function() {
 
     this.Then(/^no errors\-warnings will be displayed$/, function (callback) {
         callback();
+    });
+
+    this.When(/^I add a trial date (.*) and trial status from (.*) to trial date (.*) trial status (.*) with the (.*) then the respective checks (.*) will be there$/, function (statusDateFrom, statusFrom, statusDateTo, statusTo, condition, errorsWarnings, table, callback) {
+        statusTable = table.hashes();
+        for (var i = 0; i < statusTable.length; i++) {
+            if (statusTable[i].statusDateFrom === 'Date in Past') {
+                addTrial.clickAddTrialDateField('0');
+                addTrial.clickAddTrialDateFieldPreviousMonth('01');
+            } else if (statusTable[i].statusDateFrom === 'Date in Future') {
+                addTrial.clickAddTrialDateField('0');
+                addTrial.clickAddTrialDateFieldNextMonth('01');
+            } else {
+                if (statusTable[i].condition === 'all the previous Status before Active has been added') {
+                    addTrial.clickAddTrialDateField('0');
+                    addTrial.clickAddTrialDateToday();
+                    addTrial.selectAddTrialStatus('In Review');
+                    addTrial.clickAddTrialAddStatusButton();
+                    addTrial.clickAddTrialDateField('0');
+                    addTrial.clickAddTrialDateToday();
+                    addTrial.selectAddTrialStatus('Approved');
+                    addTrial.clickAddTrialAddStatusButton();
+                } else if (/^all the previous Status before Active including Active/.test(statusTable[i].condition)) {
+                    //else if (statusTable[i].condition === /all the previous Status before Active including Active*/) {
+                    addTrial.clickAddTrialDateField('0');
+                    addTrial.clickAddTrialDateToday();
+                    addTrial.selectAddTrialStatus('In Review');
+                    addTrial.clickAddTrialAddStatusButton();
+                    addTrial.clickAddTrialDateField('0');
+                    addTrial.clickAddTrialDateToday();
+                    addTrial.selectAddTrialStatus('Approved');
+                    addTrial.clickAddTrialAddStatusButton();
+                    addTrial.clickAddTrialDateField('0');
+                    addTrial.clickAddTrialDateToday();
+                    addTrial.selectAddTrialStatus('Active');
+                    addTrial.clickAddTrialAddStatusButton();
+                }
+                addTrial.clickAddTrialDateField('0');
+                addTrial.clickAddTrialDateToday();
+            }
+            addTrial.selectAddTrialStatus(statusTable[i].statusFrom);
+            if (statusTable[i].statusFrom === 'Withdrawn' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' || statusTable[i].statusFrom === 'Administratively Complete') {
+                addTrial.setAddTrialWhyStudyStopped('Reason for Study stopped added cuke test');
+                addTrial.clickAddTrialAddStatusButton();
+                if (statusTable[i].statusDateFrom === 'Date in Past') {
+                    if (statusTable[i].statusFrom === 'Approved') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [In Review] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [Active] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', '');
+                    }
+                } else if (statusTable[i].statusDateFrom === 'Date in Future') {
+                    if (statusTable[i].statusFrom === 'Approved') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [In Review] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [Active] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', '');
+                    }
+                } else {
+                    if (statusTable[i].statusFrom === 'Approved') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [In Review] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [Active] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', '');
+                    }
+                }
+            } else {
+                addTrial.clickAddTrialAddStatusButton();
+                if (statusTable[i].statusDateFrom === 'Date in Past') {
+                    if (statusTable[i].statusFrom === 'Approved') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [Active] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', '');
+                    }
+                } else if (statusTable[i].statusDateFrom === 'Date in Future') {
+                    if (statusTable[i].statusFrom === 'Approved') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [Active] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', '');
+                    }
+                } else {
+                    if (statusTable[i].statusFrom === 'Approved') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [Active] is missing');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', '');
+                    }
+                }
+            }
+            if (statusTable[i].statusDateTo === 'Date in Past') {
+                addTrial.clickAddTrialDateField('0');
+                addTrial.clickAddTrialDateFieldPreviousMonth('01');
+            } else if (statusTable[i].statusDateTo === 'Date in Future') {
+                addTrial.clickAddTrialDateField('0');
+                addTrial.clickAddTrialDateFieldNextMonth('01');
+            } else {
+                addTrial.clickAddTrialDateField('0');
+                addTrial.clickAddTrialDateToday();
+            }
+            addTrial.selectAddTrialStatus(statusTable[i].statusTo);
+            if (statusTable[i].statusTo === 'Withdrawn' || statusTable[i].statusTo === 'Temporarily Closed to Accrual' || statusTable[i].statusTo === 'Temporarily Closed to Accrual and Intervention' || statusTable[i].statusTo === 'Administratively Complete') {
+                addTrial.setAddTrialWhyStudyStopped('Reason for Study stopped added cuke test');
+                addTrial.clickAddTrialAddStatusButton();
+                if (statusTable[i].statusDateTo === 'Date in Past') {
+                    if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', '');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', statusTable[i].errorsWarnings);
+                    }
+                } else if (statusTable[i].statusDateTo === 'Date in Future') {
+                    if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', '');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', statusTable[i].errorsWarnings);
+                    }
+                } else {
+                    if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', '');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', statusTable[i].errorsWarnings);
+                    }
+                }
+            } else {
+                addTrial.clickAddTrialAddStatusButton();
+                if (statusTable[i].statusDateTo === 'Date in Past') {
+                    if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', '');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', statusTable[i].errorsWarnings);
+                    }
+                } else if (statusTable[i].statusDateTo === 'Date in Future') {
+                    if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' || statusTable[i].statusFrom === 'Closed to Accrual')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', '');
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', statusTable[i].errorsWarnings);
+                    }
+                } else {
+                    if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention')) {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', '', '');
+                    } else if (statusTable[i].condition === 'all the previous Status before Active including Active before Closed to Accrual has been added' && statusTable[i].statusFrom === 'Closed to Accrual') {
+                        //  projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', '', '');
+                        expect(addTrial.addTrialErrorWarningTable.get(2).getText()).to.eventually.equal('');
+                        expect(addTrial.addTrialErrorWarningTable.get(4).getText()).to.eventually.equal(statusTable[i].errorsWarnings);
+                    } else {
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusTo, moment().format('DD-MMM-YYYY'), '', '', statusTable[i].errorsWarnings);
+                    }
+                }
+            }
+            addTrial.clickAddTrialResetButton();
+        }
+        browser.sleep(25).then(callback);
     });
 
 };
