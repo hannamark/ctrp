@@ -485,7 +485,7 @@ class Trial < TrialBase
         if self.current_user.email.present?
           mail_template.to = self.current_user.email
         end
-        CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body).deliver_now
+        CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
       end
     end
   end

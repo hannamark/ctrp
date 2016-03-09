@@ -438,7 +438,8 @@ ActiveRecord::Schema.define(version: 20160308184756) do
     t.text     "cc"
     t.text     "bcc"
     t.text     "subject"
-    t.text     "body"
+    t.text     "body_text"
+    t.text     "body_html"
     t.string   "code",         limit: 255
     t.string   "name",         limit: 255
     t.datetime "created_at",                           null: false

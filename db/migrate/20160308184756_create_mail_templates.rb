@@ -6,7 +6,8 @@ class CreateMailTemplates < ActiveRecord::Migration
       t.text :cc
       t.text :bcc
       t.text :subject
-      t.text :body
+      t.text :body_text
+      t.text :body_html
 
       t.static_member_base_columns
       t.timestamps null: false

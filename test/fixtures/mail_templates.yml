@@ -8,7 +8,8 @@
 #  cc           :text
 #  bcc          :text
 #  subject      :text
-#  body         :text
+#  body_text    :text
+#  body_html    :text
 #  code         :string(255)
 #  name         :string(255)
 #  created_at   :datetime         not null
