@@ -10,11 +10,11 @@
 
     function trialAbstractionScientificRoutes($stateProvider) {
         $stateProvider
-                .state('main.pa.trialOverview.trialDescription', {
-                    url: '/trial-description',
-                    templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_description.html',
-                    controller: 'pasTrialDescriptionCtrl as descView',
-                    resolve: {
+            .state('main.pa.trialOverview.trialDescription', {
+                url: '/trial-description',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_description.html',
+                controller: 'pasTrialDescriptionCtrl as descView',
+                resolve: {
                     TrialService: 'TrialService',
                     PATrialService: 'PATrialService',
                     trialDetailObj: function($stateParams, TrialService) {
@@ -22,11 +22,11 @@
                     },
                 },
                 section: 'pa',
-                    ncyBreadcrumb: {
-                        parent: 'main.pa.trialOverview',
-                        label: 'Trial Description'
-                    }
-                })
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Trial Description'
+                }
+            })
             .state('main.pa.trialOverview.trialDesign', {
                 url: '/trial-design',
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_design.html',
@@ -50,19 +50,19 @@
                 resolve: {
                     TrialService: 'TrialService',
                     PATrialService: 'PATrialService',
-                    trialDetailObj: function ($stateParams, TrialService) {
+                    trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
                     },
                     anatomicSitesObj: function(PATrialService) {
                         return PATrialService.getAnatomicSites();
-                    }
+                    },
                 },
-                    section: 'pa',
-                    ncyBreadcrumb: {
-                        parent: 'main.pa.trialOverview',
-                        label: 'Trial Design'
-                    }
-                })
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Anatomic Sites'
+                }
+            })
             .state('main.pa.trialOverview.trialOutcomeMeasures', {
                 url: '/trial-outcome-measures',
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_outcome_measures.html',
@@ -83,6 +83,6 @@
                     parent: 'main.pa.trialOverview',
                     label: 'Outcome Measures'
                 }
-            })
+            });
     }
 })();
