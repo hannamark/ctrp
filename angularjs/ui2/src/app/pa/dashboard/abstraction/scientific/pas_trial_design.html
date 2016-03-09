@@ -166,6 +166,10 @@
                         <option value="">- Please select a masking...</option>
                     </select>
                 </div>
+                <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.masking) &&
+                                    trial_design_form.masking.$error">
+                    <span class="help-block" ng-message="required">Masking is required</span>
+               </span>
             </div>
             <!-- end of maskings -->
 
