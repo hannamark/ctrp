@@ -236,6 +236,7 @@ class Trial < TrialBase
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
+  after_save :send_email
 
   # Array of actions can be taken on this Trial
   def actions
@@ -467,10 +468,25 @@ class Trial < TrialBase
   def create_ownership
     # New Trial Ownership
     if self.coming_from == 'rest'
-     TrialOwnership.create(trial: self, user: User.find_by_username("ctrptrialsubmitter"))
+      TrialOwnership.create(trial: self, user: User.find_by_username("ctrptrialsubmitter"))
     else
-    TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
+      TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
+    end
+  end
 
+  def send_email
+    last_submission = self.submissions.last
+    last_sub_type = last_submission.submission_type if last_submission.present?
+    last_sub_method = last_submission.submission_method if last_submission.present?
+
+    if last_sub_type.present? && last_sub_type.code == 'ORI' && last_sub_method.present? && last_sub_method.code == 'REG'
+      mail_template = MailTemplate.find_by_code('TRIAL_REG')
+      if mail_template.present?
+        if self.current_user.email.present?
+          mail_template.to = self.current_user.email
+        end
+        CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body).deliver_now
+      end
     end
   end
 

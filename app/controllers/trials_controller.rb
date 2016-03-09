@@ -36,9 +36,6 @@ class TrialsController < ApplicationController
 
     respond_to do |format|
       if @trial.save
-        # Sends email when trial is created
-        #CtrpMailer.general_email('shenpei.wu@nih.gov, shenpei.wu@gmail.com', 'Test Email for two recipients', 'Hello!').deliver
-
         format.html { redirect_to @trial, notice: 'Trial was successfully created.' }
         format.json { render :show, status: :created, location: @trial }
       else
