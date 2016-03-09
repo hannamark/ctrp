@@ -275,24 +275,17 @@
                 invObj._destroy = false;
                 invObj.edit = false;
                 invObj.new = false;
+                invObj.uiEdit = false;
                 invObj._destroy = false;
                 if(vm.currentParticipatingSite.contact_type == "PI"){
-                    //console.log("invObj.person.id=" + invObj.person.id);
-                    //console.log("vm.currentParticipatingSite=" + JSON.stringify(vm.currentParticipatingSite));
-                    if (vm.currentParticipatingSite.person_id == invObj.person.id) {
-                        //console.log("1111setting as contact as TRUE invObj"+JSON.stringify(invObj));
-                        //console.log("1111setting as contact as TRUE person_id"+JSON.stringify(vm.currentParticipatingSite.person));
+                    if (vm.currentParticipatingSite.person.id == invObj.person.id) {
                         invObj.set_as_contact = true;
                     } else {
-                        //console.log("2222setting as contact as FALSE" + JSON.stringify(invObj));
-                        //console.log("2222setting as contact as FALSE person_id" + JSON.stringify(vm.currentParticipatingSite.person));
                         invObj.set_as_contact = false;
                     }
                 } else {
                     invObj.set_as_contact = false;
-                }
-                vm.current_site_recruitment.uiEdit = false;
-                vm.current_site_recruitment._destroy = true;
+                };
                 vm.investigatorGrid.push(invObj);
             };
             //console.log("vm.investigatorGrid ="+ JSON.stringify(vm.investigatorGrid));
@@ -492,9 +485,13 @@
                 vm.current_investigator.new = true;
                 vm.current_investigator.uiEdit = true;
             }
-            if((vm.currentParticipatingSite.contact_type == "PI") &&  (vm.currentParticipatingSite.person_id == vm.current_investigator.person.id)) {
-                vm.current_investigator.set_as_contact = true;
-            } else {
+            if(vm.currentParticipatingSite.contact_type == "PI") {
+                if (vm.currentParticipatingSite.person.id == vm.current_investigator.person.id) {
+                    vm.current_investigator.set_as_contact = true;
+                } else {
+                    vm.current_investigator.set_as_contact = false;
+                }
+            } else{
                 vm.current_investigator.set_as_contact = false;
             }
             console.log("In editInvestigator vm.current_investigator=" +JSON.stringify(vm.current_investigator));
@@ -524,10 +521,6 @@
                              vm.currentParticipatingSite.contact_email = vm.current_investigator.person.email;
                              vm.currentParticipatingSite.contact_type = "PI";
                              vm.currentParticipatingSite.person_id =  vm.current_investigator.person.id;
-                             //console.log("in commitEditInvestigator vm.currentParticipatingSite.contact_name =" + vm.currentParticipatingSite.contact_name);
-                             //console.log("in commitEditInvestigator vm.currentParticipatingSite.person =" + JSON.stringify(vm.investigatorGrid[i].person));
-                            // vm.currentParticipatingSite.person_id =  vm.investigatorGrid[i].person.id;
-
                          }
                     } else {
                          if(vm.current_investigator.set_as_contact){
