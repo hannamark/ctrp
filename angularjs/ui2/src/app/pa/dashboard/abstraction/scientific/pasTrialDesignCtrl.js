@@ -25,7 +25,7 @@
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
         vm.isOtherStudyModel = false;
-        vm.trialDetailObj.showMaskingRoles = false;
+        vm.showMaskingRoles = false;
         vm.isOtherTimePerspective = false;
         // information sources:
         vm.isInfoSourceProtocol = false;
@@ -62,7 +62,7 @@
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
                 var infoSourceName = vm.trialDetailObj.internal_source.name.toLowerCase();
                 vm.isInfoSourceProtocol = infoSourceName.indexOf('protocol') > -1;
-                vm.isInfoSourceImport = true; //!vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
+                vm.isInfoSourceImport = vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
             }, 0);
         } // _getTrialDetailCopy
 
@@ -216,7 +216,7 @@
             $scope.$watch(function() {return vm.trialDetailObj.masking_id;}, function(newVal) {
                 var curMasking = _.findWhere(vm.maskings, {id: newVal});
                 var maskingName = !!curMasking ? curMasking.name : '';
-                vm.trialDetailObj.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
+                vm.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
             })
         }
 
