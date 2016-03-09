@@ -447,6 +447,7 @@
                         participating_site_investigator._destroy = false;
                         vm.investigatorGrid.push(participating_site_investigator);
                     }
+                    vm.principalInvestigator = {name: '', array: []};
                 }
             });
         }
