@@ -26,6 +26,12 @@ json.trial_status_wrappers do
   end
 end
 
+json.anatomic_site_wrappers do
+  json.array!(@trial.anatomic_site_wrappers) do |anatomic_site_wrapper|
+    json.extract! anatomic_site_wrapper, :trial_id, :id, :anatomic_site_id, :anatomic_site, :created_at, :updated_at
+  end
+end
+
 json.ind_ides do
   json.array!(@trial.ind_ides) do |ind_ide|
     json.extract! ind_ide, :trial_id, :id, :ind_ide_type, :grantor, :nih_nci, :holder_type_id, :holder_type, :ind_ide_number

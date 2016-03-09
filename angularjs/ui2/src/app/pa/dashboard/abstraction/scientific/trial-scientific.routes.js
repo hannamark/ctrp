@@ -53,6 +53,9 @@
                     trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
                     },
+                    anatomicSitesObj: function(PATrialService) {
+                        return PATrialService.getAnatomicSites();
+                    },
                 },
                 section: 'pa',
                 ncyBreadcrumb: {

@@ -54,6 +54,7 @@
             'NCI': '/ctrp/registry/nci.json',
             'TRIAL_STATUSES': '/ctrp/registry/trial_statuses.json',
             'SITE_RECRUITMENT_STATUSES': '/ctrp/registry/site_recruitment_statuses.json',
+            'ANATOMIC_SITES': '/ctrp/registry/anatomic_sites.json',
             'ACCEPTED_FILE_TYPES_REG': '/ctrp/registry/accepted_file_types_for_registry.json',
             'ACCEPTED_FILE_TYPES': '/ctrp/registry/accepted_file_types.json',
             'VALIDATE_TRIAL_STATUS': '/ctrp/registry/trials/validate_status.json',
