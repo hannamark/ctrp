@@ -278,7 +278,7 @@
                 invObj.uiEdit = false;
                 invObj._destroy = false;
                 if(vm.currentParticipatingSite.contact_type == "PI"){
-                    if (vm.currentParticipatingSite.person.id == invObj.person.id) {
+                    if (vm.currentParticipatingSite.person_id == invObj.person.id) {
                         invObj.set_as_contact = true;
                     } else {
                         invObj.set_as_contact = false;
@@ -486,7 +486,7 @@
                 vm.current_investigator.uiEdit = true;
             }
             if(vm.currentParticipatingSite.contact_type == "PI") {
-                if (vm.currentParticipatingSite.person.id == vm.current_investigator.person.id) {
+                if (vm.currentParticipatingSite.person_id == vm.current_investigator.person.id) {
                     vm.current_investigator.set_as_contact = true;
                 } else {
                     vm.current_investigator.set_as_contact = false;
@@ -601,6 +601,7 @@
                         vm.currentParticipatingSite.contact_phone = vm.persisted_contact.contact_phone;
                         vm.currentParticipatingSite.contact_email = vm.persisted_contact.contact_email;
                         vm.currentParticipatingSite.person_id =  vm.persisted_contact.person_id;
+                        vm.currentParticipatingSite.person =  vm.persisted_contact.person;
                     } else {
                         console.log("Initialize for Person");
                         vm.currentParticipatingSite.contact_name = null;
