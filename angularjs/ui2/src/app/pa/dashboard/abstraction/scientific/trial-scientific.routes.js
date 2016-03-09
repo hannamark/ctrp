@@ -35,6 +35,9 @@
                     PATrialService: 'PATrialService',
                     groupedTrialDesignData: function(PATrialService) {
                         return PATrialService.groupTrialDesignData();
+                    },
+                    maskings: function(PATrialService) {
+                        return PATrialService.getMaskings();
                     }
                 },
                 section: 'pa',

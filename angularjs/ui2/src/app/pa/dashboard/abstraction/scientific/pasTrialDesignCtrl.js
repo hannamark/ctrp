@@ -4,10 +4,10 @@
         .controller('pasTrialDesignCtrl', pasTrialDesignCtrl);
 
     pasTrialDesignCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData', 'Common'];
+        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData', 'Common', 'maskings'];
 
     function pasTrialDesignCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, groupedTrialDesignData, Common) {
+        MESSAGES, _, $timeout, groupedTrialDesignData, Common, maskings) {
         var vm = this;
         console.info('groupedTrialDesignData: ', groupedTrialDesignData);
         vm.trialDetailObj = {};
@@ -17,7 +17,7 @@
         vm.secondaryPurposes = [];
         vm.interventionModels = [];
         vm.studyModels = [];
-        vm.maskings = [];
+        vm.maskings = maskings.maskings.sort(Common.a2zComparator());
         vm.allocations = [];
         vm.studyClassifications = [];
         vm.timePerspectives = [];
@@ -25,7 +25,7 @@
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
         vm.isOtherStudyModel = false;
-        vm.showMaskingRoles = false;
+        // vm.showMaskingRoles = false;
         vm.isOtherTimePerspective = false;
         // information sources:
         vm.isInfoSourceProtocol = false;
@@ -79,11 +79,6 @@
                     // fetch intervention models
                     if ((vm.isInterventional || vm.isExpandedAccess) && vm.interventionModels.length === 0) {
                         _fetchInterventionModels();
-                    }
-
-                    // fetch maskings
-                    if ((vm.isInterventional || vm.isExpandedAccess) && vm.maskings.length === 0) {
-                        _fetchMaskings();
                     }
 
                     if ((vm.isInterventional || vm.isExpandedAccess) && vm.allocations.length === 0) {
@@ -167,19 +162,9 @@
             PATrialService.getInterventionModels().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.interventionModels = res.models.sort(Common.a2zComparator()) || [];
-                    console.info('models: ', vm.interventionModels);
                 }
             });
         }
-
-        function _fetchMaskings() {
-            PATrialService.getMaskings().then(function(res) {
-                if (res.server_response.status === 200) {
-                    vm.maskings = res.maskings.sort(Common.a2zComparator()) || [];
-                    console.info(vm.maskings);
-                }
-            });
-        } // _fetchMaskings
 
         function _fetchAllocations() {
             PATrialService.getAllocations().then(function(res) {
@@ -187,7 +172,7 @@
                     vm.allocations = res.allocations || [];
                     vm.allocations.sort(Common.a2zComparator());
                 }
-            })
+            });
         }
 
         function _fetchStudyClassifications() {
@@ -196,7 +181,7 @@
                     vm.studyClassifications = res.data || [];
                     vm.studyClassifications.sort(Common.a2zComparator());
                 }
-            })
+            });
         }
 
         function _fetchStudyModels() {
@@ -216,8 +201,10 @@
             $scope.$watch(function() {return vm.trialDetailObj.masking_id;}, function(newVal) {
                 var curMasking = _.findWhere(vm.maskings, {id: newVal});
                 var maskingName = !!curMasking ? curMasking.name : '';
+                console.info('maskingName: ', maskingName, newVal);
                 vm.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
-            })
+                console.info('show roles? ', vm.showMaskingRoles);
+            });
         }
 
         /**
