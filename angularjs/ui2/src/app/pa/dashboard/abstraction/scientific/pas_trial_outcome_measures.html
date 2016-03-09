@@ -11,26 +11,23 @@
                 <!-- fieldset for outcome measure details-->
                 <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                     <legend class="sub-bordered">Outcome Measure Details</legend>
-
-
-
-    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.om_form.needsAttention(om_form.om_type)}">
-
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.om_form.needsAttention(om_form.om_type)}">
                     <label for="om_type" class="control-label col-xs-12 col-sm-3">Outcomemeasure Type</label>
                     <div class="col-xs-12 col-sm-5">
                         <select name="om_type" id="om_type"
                                 class="form-control input-sm"
+                                ng-required="true"
                                 ng-model="omView.currentOutcomeMeasure.outcome_measure_type_id"
                                 ng-options="om.id as om.name for om in omView.om_types"
                                 >
                             <option value="">- Please select a  outcome-measure type...</option>
                         </select>
                     </div>
-                <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.om_type) &&
+                        <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.om_type) &&
                                     om_form.primary_purpose.$error">
-                    <span class="help-block" ng-message="required">Outcomemeasure Type is required</span>
-               </span>
-    </div>
+                        <span class="help-block" ng-message="required">Outcomemeasure Type is required</span>
+                        </span>
+                     </div>
                 <!--/fieldset-->
                 <!-- end of outcome measure types -->
 
@@ -117,6 +114,7 @@
                     <div class="col-xs-12 col-sm-5">
                         <select name="safety_issue" id="safety_issue"
                                 class="form-control input-sm"
+                                ng-required="true"
                                 ng-model="omView.currentOutcomeMeasure.safety_issue"
                                 ng-options="om for om in omView.safety_issues"
                                 >
