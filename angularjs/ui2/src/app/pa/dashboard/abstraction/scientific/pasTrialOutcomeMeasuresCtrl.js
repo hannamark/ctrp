@@ -52,6 +52,7 @@
             //outerOM.outcome_measure = vm.currentOutcomeMeasure;
             vm.currentOutcomeMeasure.trial_id = trialDetailObj.id;
 
+            console.log(vm.currentOutcomeMeasure);
 
             TrialService.upsertOutcomeMeasure(vm.currentOutcomeMeasure).then(function(response) {
                 //console.log("/n server_response="+JSON.stringify(response));
@@ -122,21 +123,6 @@
             });
 
         }//saveTrial
-
-
-        function submit() {
-
-                OutcomeMeasureService.getOutcomeMeasures().then(function (data) {
-                    console.log('received search results: ' + JSON.stringify(data));
-                    vm.gridOptions.data = data.outcome_measures;
-                    vm.gridOptions.totalItems = data.outcome_measures["length"];
-                }).catch(function (err) {
-                    console.log('Getting audit trials failed');
-                }).finally(function () {
-                    console.log('search finished');
-                    vm.searching = false;
-                });
-            }
 
 
         /**

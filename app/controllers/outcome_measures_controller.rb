@@ -76,7 +76,7 @@ class OutcomeMeasuresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def outcome_measure_params
-      params[:outcome_measure].permit(:trial_id,:title,:time_frame,:description,:safety_issue)
+      params[:outcome_measure].permit(:trial_id,:title,:time_frame,:description,:safety_issue,:outcome_measure_type_id)
     end
 
 end
