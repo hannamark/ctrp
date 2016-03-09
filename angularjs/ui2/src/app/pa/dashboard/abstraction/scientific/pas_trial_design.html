@@ -311,8 +311,7 @@
             <!-- end of description for biospecimenRetention -->
 
             <!-- num of arms -->
-            <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess"
-                ng-class="{'has-feedback required': designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess), 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.num_arms)}">
+            <div class="form-group" ng-class="{'has-feedback required': designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess), 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.num_arms)}">
                 <label for="num_arms" class="control-label col-xs-12 col-sm-3">Number of Arms/Groups</label>
                 <div class="col-xs-12 col-sm-2">
                     <input type="number" min="0" name="num_arms" id="num_arms"
