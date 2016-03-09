@@ -482,9 +482,28 @@ class Trial < TrialBase
     if last_sub_type.present? && last_sub_type.code == 'ORI' && last_sub_method.present? && last_sub_method.code == 'REG'
       mail_template = MailTemplate.find_by_code('TRIAL_REG')
       if mail_template.present?
-        if self.current_user.email.present?
-          mail_template.to = self.current_user.email
+        mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present?
+
+        # Populate the trial data in the email body
+        mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
+        mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+        mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
+
+        table = '<table border="0">'
+        table += "<tr><td><b>Lead Organization Trial ID:</b></td><td>#{self.lead_protocol_id}</td></tr>" if self.lead_protocol_id.present?
+        table += "<tr><td><b>Lead Organization:</b></td><td>#{self.lead_org.name}</td></tr>" if self.lead_org.present?
+        table += "<tr><td><b>NCI Trial ID:</b></td><td>#{self.nci_id}</td></tr>" if self.nci_id.present?
+        self.other_ids.each do |other_id|
+          table += "<tr><td><b>#{other_id.protocol_id_origin.name}:</b></td><td>#{other_id.protocol_id}</td></tr>"
         end
+        table += '</table>'
+        mail_template.body_html.sub!('${trialIdentifiers}', table)
+
+        mail_template.body_html.sub!('${submissionDate}', last_submission.submission_date.strftime('%d-%b-%Y')) if last_submission.submission_date.present?
+        mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
+        mail_template.body_html.sub!('${SubmitterName}', last_submission.user.first_name + ' ' + last_submission.user.last_name) if last_submission.user.present?
+        mail_template.body_html.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
+
         CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
       end
     end
