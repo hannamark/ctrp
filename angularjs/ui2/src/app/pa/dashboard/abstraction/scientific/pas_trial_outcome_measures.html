@@ -8,24 +8,35 @@
                     Outcome Measure Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
                 </uib-accordion-heading>
 
-                <!-- outcome measure types -->
-                <div class="form-group">
-                    <label for="om_type" class="control-label col-xs-12 col-sm-2">Outcome Measure Type</label>
+                <!-- fieldset for outcome measure details-->
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                    <legend class="sub-bordered">Outcome Measure Details</legend>
+
+
+
+    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.om_form.needsAttention(om_form.om_type)}">
+
+                    <label for="om_type" class="control-label col-xs-12 col-sm-3">Outcomemeasure Type</label>
                     <div class="col-xs-12 col-sm-5">
                         <select name="om_type" id="om_type"
                                 class="form-control input-sm"
                                 ng-model="omView.currentOutcomeMeasure.outcome_measure_type_id"
                                 ng-options="om.id as om.name for om in omView.om_types"
                                 >
-                            <option value="">- Please select a outcome measure type...</option>
+                            <option value="">- Please select a  outcome-measure type...</option>
                         </select>
                     </div>
-                </div>
+                <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.om_type) &&
+                                    om_form.primary_purpose.$error">
+                    <span class="help-block" ng-message="required">Outcomemeasure Type is required</span>
+               </span>
+    </div>
+                <!--/fieldset-->
                 <!-- end of outcome measure types -->
 
                 <!-- fieldset for Title -->
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                    <legend class="sub-bordered">Title</legend>
+                <!--fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                    <legend class="sub-bordered">Title</legend-->
 
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.om_form.needsAttention(om_form.title)}">
                         <label for="title" class="control-label col-xs-12 col-sm-2">Title</label>
@@ -38,20 +49,20 @@
                                           ng-maxlength="255"
                                           ng-required="true">
                                 </textarea>
-                                <span ng-show="om_form.brief_title.$dirty">
-                                    {{300 - om_form.brief_title.$viewValue.length}} characters left
+                                <span ng-show="om_form.title.$dirty">
+                                    {{255 - om_form.title.$viewValue.length}} characters left
                                 </span>
 
                         </div>
 
-                            <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.brief_title) && om_form.brief_title.$error">
-                              <span class="help-block" ng-message="required">Please enter the Brief Title</span>
+                            <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.title) && om_form.title.$error">
+                              <span class="help-block" ng-message="required">Please enter the Title</span>
                             </span>
                     </div>
-                </fieldset>
+                <!--/fieldset-->
                 <!-- fieldset for Time Frame -->
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                    <legend class="sub-bordered">Time Frame</legend>
+                <!--fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                    <legend class="sub-bordered">Time Frame</legend-->
 
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.om_form.needsAttention(om_form.time_frame)}">
                         <label for="title" class="control-label col-xs-12 col-sm-2">Time Frame</label>
@@ -69,15 +80,15 @@
                                 </span>
                         </div>
 
-                            <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.brief_summary) && om_form.brief_summary.$error">
-                              <span class="help-block" ng-message="required">Please enter the Brief Summary</span>
+                            <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.time_frame) && om_form.time_frame.$error">
+                              <span class="help-block" ng-message="required">Please enter the Time Frame</span>
                             </span>
                     </div>
-                </fieldset>
+                <!--/fieldset-->
 
                 <!-- fieldset for Description -->
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                    <legend class="sub-bordered">Description</legend>
+                <!--fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                    <legend class="sub-bordered">Description</legend-->
 
                     <div class="form-group has-feedback">
                         <label for="description" class="control-label col-xs-12 col-sm-2">Description</label>
@@ -89,13 +100,20 @@
                                           ng-model="omView.currentOutcomeMeasure.description"
                                           ng-maxlength="1000">
                                 </textarea>
+                             <span ng-show="om_form.description.$dirty">
+                                    {{1000 - om_form.description.$viewValue.length}} characters left
+                                </span>
                         </div>
                     </div>
-                </fieldset>
+                <!--/fieldset-->
 
                 <!-- safety issue -->
-                <div class="form-group">
-                    <label for="safety_issue" class="control-label col-xs-12 col-sm-2">Safety Issuee</label>
+                <!-- fieldset for outcome measure types-->
+                <!--fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                    <legend class="sub-bordered">Safety Issue</legend-->
+
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.om_form.needsAttention(om_form.safety_issue)}">
+                    <label for="safety_issue" class="control-label col-xs-12 col-sm-2">Safety Issue</label>
                     <div class="col-xs-12 col-sm-5">
                         <select name="safety_issue" id="safety_issue"
                                 class="form-control input-sm"
@@ -105,7 +123,12 @@
                             <option value="">- Please select a safety issue type...</option>
                         </select>
                     </div>
+                     <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.safety_issue) &&
+                                    om_form.safety_issue.$error">
+                    <span class="help-block" ng-message="required">Outcomemeasure Type is required</span>
+               </span>
                 </div>
+                </fieldset>
                 <!-- safety issue -->
                
                 <!-- Saving the form for the Outcome Measure" -->
