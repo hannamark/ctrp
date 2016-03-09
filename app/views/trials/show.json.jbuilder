@@ -47,7 +47,7 @@ end
 
 json.outcome_measures do
   json.array!(@trial.outcome_measures) do |outcome_measure|
-    json.extract! outcome_measure, :id, :title, :time_frame, :description, :safety_issue
+    json.extract! outcome_measure, :id, :title, :time_frame, :description, :safety_issue,:outcome_measure_type_id
     json.outcome_measure_type outcome_measure.outcome_measure_type.present? ? outcome_measure.outcome_measure_type.name : nil
   end
 end

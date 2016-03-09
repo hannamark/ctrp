@@ -163,6 +163,7 @@
                         <th>Description</th>
                         <th>Safety Issue</th>
                         <th class="text-center">Edit</th>
+                        <th class="text-center">Copy</th>
                         <th class="text-center">Deletion</th>
                         </thead>
                         <tbody>
@@ -186,6 +187,11 @@
                             <td>
                                 <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="omView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="omView.setCopyMode($index)">
+                                    <i class="glyphicon glyphicon-copy"></i>
                                 </button>
                             </td>
                             <td>
