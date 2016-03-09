@@ -492,7 +492,7 @@
                 vm.current_investigator.new = true;
                 vm.current_investigator.uiEdit = true;
             }
-            if((vm.currentParticipatingSite.contact_type == "PI") &&  (vm.currentParticipatingSite.person_id == vm.current_investigator.id)) {
+            if((vm.currentParticipatingSite.contact_type == "PI") &&  (vm.currentParticipatingSite.person_id == vm.current_investigator.person.id)) {
                 vm.current_investigator.set_as_contact = true;
             } else {
                 vm.current_investigator.set_as_contact = false;
