@@ -90,23 +90,23 @@
                                 <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <div ng-class="{'has-error':  trialDetailView.toaNum<=0}">
+                                        <div class="form-group required" ng-class="{'has-error': trialDetailView.authority_country && ctrpbtn.trial_form.needsAttention(trial_form.authority_country)}">
                                             <select restriction-field class="form-control input-sm" id="authority_country" ng-model="trialDetailView.authority_country" ng-change="trialDetailView.watchOption('authority_country')" required>
                                                 <option value="">-Select a Country-</option>
                                                 <option ng-repeat="country in trialDetailView.countryArr track by $index" value="{{country.name}}" ng-selected="trialDetailView.curTrial.authority_country == country.name">{{country.name}}</option>
                                             </select>
-                                            <span class="help-block" ng-show="trialDetailView.toaNum<=0">
+                                            <span class="help-block" ng-show="!trialDetailView.authority_country  && trialDetailView.toaNum <=0">
                                                 Trial Oversight Authority Country is required for Upload to ClinicalTrials.gov
                                             </span>
                                         </div>
                                     </td>
                                     <td class="col-md-6">
-                                        <div ng-class="{'has-error': trialDetailView.toaNum<=0}">
+                                        <div class="form-group required" ng-class="{'has-error': trialDetailView.authority_org && trialDetailView.toaNum <=0 && ctrpbtn.trial_form.needsAttention(trial_form.authority_org)}">
                                             <select restriction-field class="form-control input-sm" id="authority_org" required ng-model="trialDetailView.authority_org">
                                                 <option value="">-Select an Organization-</option>
                                                 <option ng-repeat="org in trialDetailView.authorityOrgArr track by $index" value="{{org}}" ng-selected="trialDetailView.curTrial.authority_org == org">{{org}}</option>
                                             </select>
-                                            <span class="help-block" ng-show="trialDetailView.toaNum<=0">
+                                            <span class="help-block" ng-show="!trialDetailView.authority_org && trialDetailView.toaNum <=0">
                                                Trial Oversight Authority is required for Upload to ClinicalTrials.gov
                                             </span>
                                         </div>

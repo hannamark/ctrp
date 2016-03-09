@@ -74,6 +74,13 @@ class TrialsController < ApplicationController
     end
   end
 
+  def biospecimen_rententions
+    @retention = BiospecimenRetention.all
+    respond_to do |format|
+      format.json { render :json => {:data => @retention} }
+    end
+  end
+
   def time_perspectives
     @perspectives = TimePerspective.all
     respond_to do |format|
@@ -478,7 +485,7 @@ class TrialsController < ApplicationController
   def trial_params
     params.require(:trial).permit(:nci_id, :lead_protocol_id, :allocation_id, :official_title, :acronym, :pilot, :research_category_id,
                                   :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id,
-                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms,
+                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms, :biospecimen_retention_id, :biospecimen_desc,
                                   :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id, :masking_role_caregiver,
                                   :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
                                   :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,

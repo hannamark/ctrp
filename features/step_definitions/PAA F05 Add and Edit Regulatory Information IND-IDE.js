@@ -776,7 +776,7 @@ module.exports = function() {
             };
             if (INDIDEType === 'null'){
                 helper.verifyElementDisplayed(indIDE.indIDEType, true);
-                //Select Nothing
+                indIDE.selectINDIDETypes(glovalSelectVal);
                 INDIDEType = glovalNullVal;
             };
         };
@@ -796,6 +796,7 @@ module.exports = function() {
                 indIDE.setINDIDENumbr(INDIDENumber);
             }
             if (INDIDENumber === 'null'){
+                indIDE.setINDIDENumbr('');
                 helper.verifyElementDisplayed(indIDE.indIDENumber, true);
                 indIDE.setINDIDENumbr('');
             }
@@ -819,7 +820,6 @@ module.exports = function() {
             }
             if (INDIDEGrantor === 'null'){
                 //helper.verifyElementDisplayed(indIDE.indIDEGrantor, true);
-                //Select Nothing
                 indIDE.selectINDIDEGrantor(glovalSelectVal);
                 //INDIDEGrantor = indIDEGrntrCDER;
             }
@@ -848,8 +848,8 @@ module.exports = function() {
                 indIDE.selectINDIDEHolderType(INDIDEHolderType);
             }
             if (INDIDEHolderType === 'null'){
+                indIDE.selectINDIDEHolderType(glovalSelectVal);
                 //helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
-                //Select Nothing
             }
         };
         //indIDE.indIDEDisvisionProgramCode.click();
@@ -876,6 +876,7 @@ module.exports = function() {
                 indIDE.selectINDIDEDivisionProgramCode(NIHInstitutionOrNCIDivisionOrProgram);
             }
             if (NIHInstitutionOrNCIDivisionOrProgram === 'null'){
+                indIDE.selectINDIDEDivisionProgramCode(glovalSelectVal);
                 //helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
                 //helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
                 //Select Nothing
@@ -925,7 +926,7 @@ module.exports = function() {
                 console.log('Current Warning Message:['+ Message +']');
             }
         };
-        login.logout();
+        //login.logout();
         browser.sleep(250).then(callback);
     });
 
