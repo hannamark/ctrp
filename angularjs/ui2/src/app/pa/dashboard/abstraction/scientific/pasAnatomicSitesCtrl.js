@@ -14,29 +14,30 @@
                                      MESSAGES, _, $timeout, trialDetailObj, anatomicSitesObj) {
         var vm = this;
 
-        vm.deleteListHandler = deleteListHandler;
-        vm.deleteSelected = deleteSelected;
-        vm.saveSelection = saveSelection;
-        vm.setAddMode = setAddMode;
         vm.selectedDeleteAnatomicSiteList = [];
-        vm.anatomicSitesArr = anatomicSitesObj;
-        //vm.anatomicSitesArr = [{"id":1,"code":"AN","name":"Anus"},{"id":2,"code":"BJ","name":"Bones and Joints"}];
         vm.anatomic_sites_selected = [];
         vm.selected_anatomic_site = {};
 
-        console.log('IN pasAnatomicSitesCtrl='+ JSON.stringify(anatomicSitesObj));
         // injected objects
         vm.curTrial = trialDetailObj;
+        vm.anatomicSitesArr = anatomicSitesObj;
 
-        console.log('IN pasAnatomicSitesCtrl anatomicView.curTrial.anatomic_sites='+ JSON.stringify(vm.curTrial.anatomic_site_wrappers));
+        // actions
+        vm.setAddMode = setAddMode;
+        vm.deleteListHandler = deleteListHandler;
+        vm.deleteSelected = deleteSelected;
+        vm.saveSelection = saveSelection;
+        vm.reset = reset();
 
-        console.log("vm.curTrial.anatomic_sites="+ JSON.stringify(vm.curTrial.anatomic_site_wrappers));
+        //console.log('IN pasAnatomicSitesCtrl anatomicView.curTrial.anatomic_sites='+ JSON.stringify(vm.curTrial.anatomic_site_wrappers));
+
+       // console.log("vm.curTrial.anatomic_sites="+ JSON.stringify(vm.curTrial.anatomic_site_wrappers));
 
         /**
          *  Set Add Mode. This causes the dropdown of Anatomic Sites to appear for selection
          **/
         function setAddMode() {
-            console.log("SETTING TO ADDMODE");
+            //console.log("SETTING TO ADDMODE");
             vm.addMode = true;
         }
 
@@ -119,10 +120,12 @@
                 });
             }
             console.log(" vm.curTrial.anatomic_site_wrappers_attributes="+ JSON.stringify(vm.curTrial.anatomic_site_wrappers_attributes));
+            vm.anatomic_sites_selected = [];
             vm.saveTrial();
         }
         function reset() {
-
+            console.log("IN RESET");
+            $scope.anatomic_sites_selected = [];
         }
 
     } //pasAnatomicSitesCtrl
