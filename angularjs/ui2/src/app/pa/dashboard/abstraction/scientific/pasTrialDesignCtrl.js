@@ -4,10 +4,10 @@
         .controller('pasTrialDesignCtrl', pasTrialDesignCtrl);
 
     pasTrialDesignCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData', 'Common', 'maskings'];
+        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData', 'Common', 'maskings', 'timePerspectivesObj'];
 
     function pasTrialDesignCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, groupedTrialDesignData, Common, maskings) {
+        MESSAGES, _, $timeout, groupedTrialDesignData, Common, maskings, timePerspectivesObj) {
         var vm = this;
         console.info('groupedTrialDesignData: ', groupedTrialDesignData);
         vm.trialDetailObj = {};
@@ -20,7 +20,7 @@
         vm.maskings = maskings.maskings;
         vm.allocations = [];
         vm.studyClassifications = [];
-        vm.timePerspectives = [];
+        vm.timePerspectives = timePerspectivesObj.data;
         vm.biospecimenRetentions = [];
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
@@ -91,10 +91,6 @@
 
                     if ((vm.isObservational || vm.isAncillary) && vm.studyModels.length === 0) {
                         _fetchStudyModels();
-                    }
-
-                    if ((vm.isObservational || vm.isAncillary) && vm.timePerspectives.length === 0) {
-                        _getTimePerspectives();
                     }
 
                     if ((vm.isObservational || vm.isAncillary) && vm.biospecimenRetentions.length === 0) {
@@ -216,14 +212,6 @@
             var cachedTrial = PATrialService.getCurrentTrialFromCache();
             var val = cachedTrial[fieldName] || '';
             return val;
-        }
-
-        function _getTimePerspectives() {
-            PATrialService.getTimePerspectives().then(function(res) {
-                vm.timePerspectives = res.data || [];
-                vm.timePerspectives;
-                console.info('time perspectives: ', res);
-            });
         }
 
         function updateTrialDesign() {

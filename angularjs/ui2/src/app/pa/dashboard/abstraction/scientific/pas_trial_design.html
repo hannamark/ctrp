@@ -51,16 +51,21 @@
             <!-- end of primary purposes -->
 
             <!-- description if primary purpose is Other -->
-            <div class="form-group" ng-show="designView.isOtherPrimaryPurpose">
+            <div class="form-group" ng-show="designView.isOtherPrimaryPurpose" ng-class="{'has-feedback required': designView.isOtherPrimaryPurpose, 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.description_other)}">
                 <label for="description_other" class="control-label col-xs-12 col-sm-3">Description of Other Primary Purpose</label>
                 <div class="col-xs-12 col-sm-5">
                     <textarea class="form-control"
                         name="description_other" id="description_other"
                         maxlength="200" ng-maxlength="200"
+                        ng-required="designView.isOtherPrimaryPurpose"
                         ng-model="designView.trialDetailObj.primary_purpose_other" rows="3">
                     </textarea>
                     <span ng-show="trial_design_form.description_other.$viewValue.length > 0">
                         {{200 - trial_design_form.description_other.$viewValue.length}} characters left
+                    </span>
+                    <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.description_other) &&
+                                        trial_design_form.description_other.$error">
+                        <span class="help-block" ng-message="required">Primary Purpose Of Other text is required</span>
                     </span>
                 </div>
             </div>

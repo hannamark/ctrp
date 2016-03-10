@@ -38,6 +38,9 @@
                     },
                     maskings: function(PATrialService) {
                         return PATrialService.getMaskings();
+                    },
+                    timePerspectivesObj: function(PATrialService) {
+                        return PATrialService.getTimePerspectives()
                     }
                 },
                 section: 'pa',
