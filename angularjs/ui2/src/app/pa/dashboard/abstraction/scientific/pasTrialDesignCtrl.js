@@ -145,7 +145,7 @@
                         var curTimePerspective = _.findWhere(vm.timePerspectives, {id: newVal});
                         vm.isOtherTimePerspective = curTimePerspective.name.toLowerCase().indexOf('other') > -1;
                         // reset to original data or empty
-                        vm.trialDetailObj.time_perspective_other = _resetValueForField('time_perspective_other');
+                        vm.trialDetailObj.time_perspective_other = ''; // _resetValueForField('time_perspective_other');
                     }
                 });
         }
