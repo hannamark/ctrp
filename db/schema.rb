@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160310181621) do
+ActiveRecord::Schema.define(version: 20160310195839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1089,7 +1089,7 @@ ActiveRecord::Schema.define(version: 20160310181621) do
     t.text     "official_title"
     t.string   "pilot",                         limit: 255
     t.string   "primary_purpose_other",         limit: 255
-    t.string   "secondary_purpose_other",       limit: 255
+    t.text     "secondary_purpose_other"
     t.string   "program_code",                  limit: 255
     t.string   "grant_question",                limit: 255
     t.date     "start_date"
