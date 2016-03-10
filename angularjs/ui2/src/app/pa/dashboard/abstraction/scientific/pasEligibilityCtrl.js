@@ -7,12 +7,15 @@
         .controller('pasEligibilityCtrl', pasEligibilityCtrl);
 
     pasEligibilityCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout'];
+        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits'];
 
     function pasEligibilityCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout) {
+        MESSAGES, _, $timeout, genderList, ageUnits) {
         var vm = this;
         vm.trialDetailObj = {};
+        vm.genderList = genderList;
+        vm.ageUnits = ageUnits;
+        console.info(genderList, ageUnits);
 
         activate();
         function activate() {

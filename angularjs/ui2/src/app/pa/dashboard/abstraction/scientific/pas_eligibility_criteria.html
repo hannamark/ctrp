@@ -1,1 +1,28 @@
-hello
+<div class="row">
+    <form name="criteria_form" role="form" class="form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria()">
+        <!-- fieldset for eligibility criteria -->
+            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <legend class="sub-bordered">Eligibility Criteria</legend>
+                <div class="form-group">
+                    <label for="volunteer" class="control-label col-xs-12 col-sm-3">Accepts Healthy Volunteer?</label>
+                    <div class="col-xs-12 col-sm-9" layout="row" layout-wrap flex-xs="100">
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="control-label col-xs-12 col-sm-3"></label>
+                </div>
+                <div class="form-group">
+                    <label for="" class="control-label col-xs-12 col-sm-3"></label>
+                </div>
+            </fieldset>
+        <!-- end of fieldset for eligibility criteria -->
+
+        <!-- fieldset for other criteria -->
+            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <legend class="sub-bordered">Other Criteria</legend>
+            </fieldset>
+        <!-- end of fieldset for other criteria -->
+
+    </form>
+</div>

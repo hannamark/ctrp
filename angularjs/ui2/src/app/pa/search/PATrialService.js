@@ -146,7 +146,9 @@
             getStudyClassifications: getStudyClassifications,
             getStudyModels: getStudyModels,
             getTimePerspectives: getTimePerspectives,
-            getBiospecimenRetentions: getBiospecimenRetentions
+            getBiospecimenRetentions: getBiospecimenRetentions,
+            getAgeUnits: getAgeUnits,
+            getGenderList: getGenderList
         };
 
         return services;
@@ -429,6 +431,14 @@
 
         function getBiospecimenRetentions() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.BIOSPECIMEN_RETENTIONS);
+        }
+
+        function getGenderList() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.GENDERS);
+        }
+
+        function getAgeUnits() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.AGE_UNITS);
         }
 
         /**

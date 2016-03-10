@@ -91,8 +91,17 @@
             .state('main.pa.trialOverview.eligibilityCriteria', {
                 url: '/eligibility-critiera',
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_eligibility_criteria.html',
-                controller: 'pasEligibilityCtrl',
+                controller: 'pasEligibilityCtrl as criteriaView',
                 section: 'pa',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    genderList: function(PATrialService) {
+                        return PATrialService.getGenderList();
+                    },
+                    ageUnits: function(PATrialService) {
+                        return PATrialService.getAgeUnits();
+                    }
+                },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Eligibility Criteria'
