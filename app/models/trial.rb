@@ -249,6 +249,7 @@ class Trial < TrialBase
       elsif self.internal_source && self.internal_source.code == 'CTRP'
         actions.append('update')
         actions.append('amend')
+        actions.append('verify-data')
       end
     end
 
