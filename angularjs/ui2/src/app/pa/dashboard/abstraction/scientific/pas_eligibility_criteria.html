@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="" class="control-label col-xs-12 col-sm-3">Gender</label>
+                    <label class="control-label col-xs-12 col-sm-3">Gender</label>
                     <div class="col-xs-12 col-sm-9">
                         <label ng-repeat="g in criteriaView.genderList" class="radio-inline">
                             <input type="radio" id="gender" name="gender" ng-model="criteriaView.trialDetailObj.gender_id" ng-value="g.id"> {{g.name}}
@@ -38,7 +38,37 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="" class="control-label col-xs-12 col-sm-3"></label>
+                    <label for="min_age" class="control-label col-xs-12 col-sm-3">Minimum Age</label>
+                    <div class="col-xs-12 col-sm-3">
+                        <input type="number" min="0" name="min_age" id="min_age" ng-model="criteriaView.trialDetailObj.min_age" class="form-control input-sm" placeholder="">
+                    </div>
+                    <label for="min_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
+                    <div class="col-xs-12 col-sm-4">
+                        <select name="min_age_unit" id="min_age_unit"
+                            class="form-control input-sm"
+                            ng-model="criteriaView.trialDetailObj.min_age_unit_id"
+                            ng-options="unit.id as unit.name for unit in criteriaView.ageUnits"
+                            >
+                            <option value="">- Please select a unit...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="max_age" class="control-label col-xs-12 col-sm-3">Maximum Age</label>
+                    <div class="col-xs-12 col-sm-3">
+                        <input type="number" min="0" name="max_age" id="max_age" ng-model="criteriaView.trialDetailObj.max_age" class="form-control input-sm" placeholder="">
+                    </div>
+                    <label for="max_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
+                    <div class="col-xs-12 col-sm-4">
+                        <select name="max_age_unit" id="max_age_unit"
+                            class="form-control input-sm"
+                            ng-model="criteriaView.trialDetailObj.max_age_unit_id"
+                            ng-options="unit.id as unit.name for unit in criteriaView.ageUnits"
+                            >
+                            <option value="">- Please select a unit...</option>
+                        </select>
+                    </div>
                 </div>
             </fieldset>
         <!-- end of fieldset for eligibility criteria -->
