@@ -83,6 +83,7 @@
                             }
                         }
                     }
+                    vm.addEditMode=false;
 
                 }
             }).catch(function(err) {

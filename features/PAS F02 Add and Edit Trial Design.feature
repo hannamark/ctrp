@@ -245,7 +245,6 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
       | <TrialDesignField>    | <TrialDesignErrorMessage>             | 
       | Primary Purpose       | Primary Purpose must be entered       | 
       | Trial Phase           | Trial Phase must be entered           | 
-      | Intervention Model    | Intervention Model must be entered    | 
       | Number of Arms/Groups | Number of Arms/Groups must be entered | 
       | Masking            | Masking must be entered                  | 
       | Allocation         | Allocation must be entered               | 

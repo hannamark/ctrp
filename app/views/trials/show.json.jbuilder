@@ -52,6 +52,12 @@ json.outcome_measures do
   end
 end
 
+json.sub_groups do
+  json.array!(@trial.sub_groups) do |sub_group|
+    json.extract! sub_group, :id, :label, :description
+  end
+end
+
 json.collaborators do
   json.array!(@trial.collaborators) do |collaborator|
     json.extract! collaborator, :id, :organization_id, :org_name
