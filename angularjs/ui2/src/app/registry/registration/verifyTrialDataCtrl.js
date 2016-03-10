@@ -15,28 +15,30 @@
         vm.curTrial = trialDetailObj;
 
         vm.updateTrial = function(updateType) {
-            // Prevent multiple submissions
-            vm.disableBtn = true;
+            if (confirm('Are you sure you would like to save a Data Verification record with todays\'s date')) {
+                // Prevent multiple submissions
+                vm.disableBtn = true;
 
-            vm.curTrial.verification_date = DateService.convertISODateToLocaleDateStr(new Date());
-            vm.curTrial.edit_type = 'verify'
+                vm.curTrial.verification_date = DateService.convertISODateToLocaleDateStr(new Date());
+                vm.curTrial.edit_type = 'verify'
 
-            // An outer param wrapper is needed for nested attributes to work
-            var outerTrial = {};
-            outerTrial.id = vm.curTrial.id;
-            outerTrial.trial = vm.curTrial;
+                // An outer param wrapper is needed for nested attributes to work
+                var outerTrial = {};
+                outerTrial.id = vm.curTrial.id;
+                outerTrial.trial = vm.curTrial;
 
-            TrialService.upsertTrial(outerTrial).then(function(response) {
-                if (response.server_response.status < 300) {
-                    $state.go('main.verifyTrialData', {trialId: response.id} , {reload: true});
-                    toastr.success('Trial data has been verified', 'Operation Successful!');
-                } else {
-                    // Enable buttons in case of backend error
-                    vm.disableBtn = false;
-                }
-            }).catch(function(err) {
-                console.log("error in verifying trial data " + JSON.stringify(outerTrial));
-            });
+                TrialService.upsertTrial(outerTrial).then(function (response) {
+                    if (response.server_response.status < 300) {
+                        $state.go('main.verifyTrialData', {trialId: response.id}, {reload: true});
+                        toastr.success('Trial data has been verified', 'Operation Successful!');
+                    } else {
+                        // Enable buttons in case of backend error
+                        vm.disableBtn = false;
+                    }
+                }).catch(function (err) {
+                    console.log("error in verifying trial data " + JSON.stringify(outerTrial));
+                });
+            }
         }; // updateTrial
 
         activate();
