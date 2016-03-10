@@ -198,15 +198,14 @@ Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
 
-StudyClassification.find_or_create_by(code: 'BAV', name: 'Bio-availability')
-StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bio-equivalence')
-StudyClassification.find_or_create_by(code: 'EFF', name: 'Efficacy')
-StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
+StudyClassification.find_or_create_by(code: 'SAFE', name: 'Safety')
+StudyClassification.find_or_create_by(code: 'EFFI', name: 'Efficacy')
+StudyClassification.find_or_create_by(code: 'SAEF', name: 'Safety/Efficacy')
+StudyClassification.find_or_create_by(code: 'BAV', name: 'Bioavailability')
+StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bioequivalence')
 StudyClassification.find_or_create_by(code: 'PD', name: 'Pharmacodynamics')
-StudyClassification.find_or_create_by(code: 'PK', name: 'Pharmacokinetics')
-StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dynamics')
-StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
-StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
+StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/Pharmacodynamics')
+StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
 
 StudyModel.find_or_create_by(code: 'COH', name: 'Cohort')
 StudyModel.find_or_create_by(code: 'CASECO', name: 'Case-control')
@@ -295,6 +294,11 @@ AnatomicSite.find_or_create_by(code:'ST', name: "Stomach")
 AnatomicSite.find_or_create_by(code:'TH', name: "Thyroid")
 AnatomicSite.find_or_create_by(code:'UM', name: "Unknown Sites")
 AnatomicSite.find_or_create_by(code:'UR', name: "Urinary Bladder")
+
+UserStatus.find_or_create_by(code: 'INR', name: 'In Review')
+UserStatus.find_or_create_by(code: 'ACT', name: 'Active')
+UserStatus.find_or_create_by(code: 'INA', name: 'Inactive')
+UserStatus.find_or_create_by(code: 'DEL', name: 'Deleted')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
@@ -653,7 +657,7 @@ MailTemplate.find_or_create_by(
                 to: 'noreply@ctrp.nci.nih.gov',
                 subject: 'NCI CTRP: Trial RECORD CREATED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
                 body_text: 'Text version.',
-                body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers} <table border="0"> <tr> <td><b>Submission Date:</b></td> <td>${submissionDate}</td> </tr> </table> <hr> <p>Date: ${CurrentDate}</p> <p>Dear ${SubmitterName},</p> <p>You have successfully created a record in the NCI Clinical Trials Reporting Program (CTRP) for the trial identified above.</p> <p>The CTRP has assigned your trial the following unique NCI Trial Identification (Trial ID) number:<br> <b>${nciTrialIdentifier}</b><br></br><br></br> Please reference this number in all future correspondence with the Clinical Trials Reporting Office (CTRO).</p> <p><b>NEXT STEPS:</b><br> The Clinical Trials Reporting Office (CTRO) staff is reviewing your trial to ensure that it meets all of the requirements for registration in the CTRP system. They will email you their findings within two (2) business days. </p> <p>In the meantime, if you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p> <p>Thank you for submitting your trial for registration in the Clinical Trials Reporting Program.</p></body></html>'
+                body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers} <table border="0"> <tr> <td><b>Submission Date:</b></td> <td>${submissionDate}</td> </tr> </table> <hr> <p>Date: ${CurrentDate}</p> <p>Dear ${SubmitterName},</p> <p>You have successfully created a record in the NCI Clinical Trials Reporting Program (CTRP) for the trial identified above.</p> <p>The CTRP has assigned your trial the following unique NCI Trial Identification (Trial ID) number:<br> <b>${nciTrialIdentifier}</b><br><br> Please reference this number in all future correspondence with the Clinical Trials Reporting Office (CTRO).</p> <p><b>NEXT STEPS:</b><br> The Clinical Trials Reporting Office (CTRO) staff is reviewing your trial to ensure that it meets all of the requirements for registration in the CTRP system. They will email you their findings within two (2) business days. </p> <p>In the meantime, if you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p> <p>Thank you for submitting your trial for registration in the Clinical Trials Reporting Program.</p></body></html>'
 )
 
 ########## SEEDING MAIL TEMPLATES ENDS ############

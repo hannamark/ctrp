@@ -14,26 +14,98 @@
                         </div>
                     </div>
                 </div> -->
-                <div class="form-group">
-                    <label for="volunteer" class="control-label col-xs-12 col-sm-3 vertical-align">Accepts Healthy Volunteer?</label>
+                <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.accept_vol)}">
+                    <label for="volunteer" class="control-label col-xs-12 col-sm-3 vertical-align">Accepts Healthy Volunteers?</label>
                     <div class="col-xs-12 col-sm-9" layout="row" layout-wrap layout-sm="100">
                         <!-- <md-radio-group ng-model="criteriaView.trialDetailObj.accept_vol" class="md-primary" layout="row">
                             <md-radio-button value="Yes"> Yes </md-radio-button>
                             <md-radio-button value="No"> No </md-radio-button>
                         </md-radio-group> -->
                         <label class="radio-inline">
-                            <input type="radio" id="accept_vol" name="accept_vol" ng-model="criteriaView.trialDetailObj.accept_vol" value="Yes"> Yes
+                            <input type="radio" id="accept_vol" name="accept_vol"
+                                ng-model="criteriaView.trialDetailObj.accept_vol"
+                                value="Yes"
+                                ng-required="criteriaView.trialDetailObj.accept_vol === ''"> Yes
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" id="accept_vol" name="accept_vol" ng-model="criteriaView.trialDetailObj.accept_vol" value="No"> No
+                            <input type="radio" id="accept_vol" name="accept_vol"
+                            ng-model="criteriaView.trialDetailObj.accept_vol"
+                            value="No"
+                            ng-required="!criteriaView.trialDetailObj.accept_vol"> No
                         </label>
+                        <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.accept_vol) &&
+                                            criteria_form.accept_vol.$error">
+                            <span class="help-block" ng-message="required"><br /><strong>A choice for Accepts Healthy Volunteers is required</strong></span>
+                       </span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="" class="control-label col-xs-12 col-sm-3"></label>
+
+                <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.gender)}">
+                    <label class="control-label col-xs-12 col-sm-3">Gender</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <label ng-repeat="g in criteriaView.genderList" class="radio-inline">
+                            <input type="radio" id="gender" name="gender"
+                                ng-model="criteriaView.trialDetailObj.gender_id"
+                                ng-value="g.id"
+                                ng-required="!criteriaView.trialDetailObj.gender_id"> {{g.name}}
+                        </label>
+                        <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.gender) &&
+                                            criteria_form.gender.$error">
+                            <span class="help-block" ng-message="required"><strong>Gender is required</strong></span>
+                       </span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="" class="control-label col-xs-12 col-sm-3"></label>
+
+                <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.min_age) ||
+                        ctrpbtn.criteria_form.needsAttention(criteria_form.min_age_unit)}">
+                    <label for="min_age" class="control-label col-xs-12 col-sm-3">Minimum Age</label>
+                    <div class="col-xs-12 col-sm-2">
+                        <input type="number" min="0" name="min_age" id="min_age" ng-model="criteriaView.trialDetailObj.min_age" class="form-control input-sm" placeholder="" required>
+                        <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.min_age) &&
+                                            criteria_form.min_age.$error">
+                            <span class="help-block" ng-message="required"><strong>Minimum Age is required</strong></span>
+                       </span>
+                    </div>
+                    <label for="min_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
+                    <div class="col-xs-12 col-sm-2">
+                        <select name="min_age_unit" id="min_age_unit"
+                            class="form-control input-sm"
+                            ng-model="criteriaView.trialDetailObj.min_age_unit_id"
+                            ng-options="unit.id as unit.name for unit in criteriaView.ageUnits"
+                            required>
+                            <option value="">- Please select a unit...</option>
+                        </select>
+                        <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.min_age_unit) &&
+                                            criteria_form.min_age_unit.$error">
+                            <span class="help-block" ng-message="required"><strong>Minimum Age Unit is required</strong></span>
+                       </span>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.max_age) ||
+                    ctrpbtn.criteria_form.needsAttention(criteria_form.max_age_unit)}">
+                    <label for="max_age" class="control-label col-xs-12 col-sm-3">Maximum Age</label>
+                    <div class="col-xs-12 col-sm-2">
+                        <input type="number" min="0" name="max_age" id="max_age" ng-model="criteriaView.trialDetailObj.max_age" class="form-control input-sm" placeholder="" required>
+                        <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.max_age) &&
+                                            criteria_form.max_age.$error">
+                            <span class="help-block" ng-message="required"><strong>Maximum Age is required</strong></span>
+                       </span>
+                    </div>
+                    <label for="max_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
+                    <div class="col-xs-12 col-sm-2">
+                        <select name="max_age_unit" id="max_age_unit"
+                            class="form-control input-sm"
+                            ng-model="criteriaView.trialDetailObj.max_age_unit_id"
+                            ng-options="unit.id as unit.name for unit in criteriaView.ageUnits"
+                            required>
+                            <option value="">- Please select a unit...</option>
+                        </select>
+                        <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.max_age_unit) &&
+                                            criteria_form.max_age_unit.$error">
+                            <span class="help-block" ng-message="required"><strong>Maximum Age Unit is required</strong></span>
+                       </span>
+                    </div>
                 </div>
             </fieldset>
         <!-- end of fieldset for eligibility criteria -->
@@ -43,6 +115,19 @@
                 <legend class="sub-bordered">Other Criteria</legend>
             </fieldset>
         <!-- end of fieldset for other criteria -->
+        <div class="form-group no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
+           <div class="row">
+              <div class="col-sm-3"></div>
+              <div class="btn-toolbar col-xs-12 col-sm-9">
+                <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field>
+                  <i class="glyphicon glyphicon-ok"></i>  Save
+                </button>
+                <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="criteriaView.resetForm()" restriction-field>
+                 <i class="glyphicon glyphicon-remove"></i>  Reset
+                </button>
+              </div>
+          </div>
+        </div>
 
     </form>
 </div>

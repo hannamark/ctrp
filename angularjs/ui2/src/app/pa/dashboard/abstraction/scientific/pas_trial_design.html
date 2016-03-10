@@ -51,16 +51,21 @@
             <!-- end of primary purposes -->
 
             <!-- description if primary purpose is Other -->
-            <div class="form-group" ng-show="designView.isOtherPrimaryPurpose">
+            <div class="form-group" ng-show="designView.isOtherPrimaryPurpose" ng-class="{'has-feedback required': designView.isOtherPrimaryPurpose, 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.description_other)}">
                 <label for="description_other" class="control-label col-xs-12 col-sm-3">Description of Other Primary Purpose</label>
                 <div class="col-xs-12 col-sm-5">
                     <textarea class="form-control"
                         name="description_other" id="description_other"
                         maxlength="200" ng-maxlength="200"
+                        ng-required="designView.isOtherPrimaryPurpose"
                         ng-model="designView.trialDetailObj.primary_purpose_other" rows="3">
                     </textarea>
                     <span ng-show="trial_design_form.description_other.$viewValue.length > 0">
                         {{200 - trial_design_form.description_other.$viewValue.length}} characters left
+                    </span>
+                    <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.description_other) &&
+                                        trial_design_form.description_other.$error">
+                        <span class="help-block" ng-message="required">Primary Purpose Of Other text is required</span>
                     </span>
                 </div>
             </div>
@@ -177,10 +182,10 @@
             <div class="form-group" ng-show="designView.showMaskingRoles && (designView.isInterventional || designView.isExpandedAccess)">
                 <label class="control-label col-xs-12 col-sm-3">Masking Role(s)</label>
                 <div class="col-xs-12 col-sm-9" layout="row" layout-wrap flex-xs="100">
-                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_subject" aria-label="Subject">Subject</md-checkbox>
-                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_investigator" aria-label="Investigator">Investigator</md-checkbox>
-                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_caregiver" aria-label="Caregiver">Caregiver</md-checkbox>
-                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_outcome_assessor" aria-label="Outcomes Assessor">Outcomes Assessor</md-checkbox>
+                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_subject" restriction-field aria-label="Subject" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">Subject</md-checkbox>
+                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_investigator" restriction-field aria-label="Investigator" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">Investigator</md-checkbox>
+                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_caregiver" restriction-field aria-label="Caregiver" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">Caregiver</md-checkbox>
+                    <md-checkbox ng-model="designView.trialDetailObj.masking_role_outcome_assessor" restriction-field aria-label="Outcomes Assessor" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">Outcomes Assessor</md-checkbox>
                     <span class="help-block alert alert-warning" ng-hide="designView.trialDetailObj.masking_role_subject || designView.trialDetailObj.masking_role_investigator
                         || designView.trialDetailObj.masking_role_caregiver || designView.trialDetailObj.masking_role_outcome_assessor">
                         Even though not mandatory on this screen, failure to select masking role(s) may lead to abstraction <u>validation warnings/errors</u>.
