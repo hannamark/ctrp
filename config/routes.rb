@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
 
+
   resources :trial_versions
 
   resources :accrual_disease_terms
@@ -211,7 +212,7 @@ Rails.application.routes.draw do
         end
       end
 
-
+      resources :sub_groups
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'
       get 'nci' => 'util#get_nci'

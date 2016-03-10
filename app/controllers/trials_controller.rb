@@ -509,7 +509,8 @@ class TrialsController < ApplicationController
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
-                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy])
+                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
+                                  sub_groups_attributes:[:id,:label,:description,:_destroy])
   end
 
   # Convert status code to name in validation messages

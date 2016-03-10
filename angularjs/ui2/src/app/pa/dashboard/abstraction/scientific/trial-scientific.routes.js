@@ -86,6 +86,23 @@
                     parent: 'main.pa.trialOverview',
                     label: 'Outcome Measures'
                 }
-            });
+            })
+    .state('main.pa.trialOverview.trialSubGroups', {
+            url: '/trial-sub-groups',
+            templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_sub_groups.html',
+            controller: 'pasTrialSubGroupsCtrl as sgView',
+            resolve: {
+                TrialService: 'TrialService',
+                PATrialService: 'PATrialService',
+                trialDetailObj: function($stateParams, TrialService) {
+                    return TrialService.getTrialById($stateParams.trialId);
+                }
+            },
+            section: 'pa',
+            ncyBreadcrumb: {
+                parent: 'main.pa.trialOverview',
+                label: 'Sub Groups'
+            }
+        });
     }
 })();
