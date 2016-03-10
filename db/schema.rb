@@ -1251,7 +1251,6 @@ ActiveRecord::Schema.define(version: 20160308184756) do
     t.integer "version_id"
     t.string  "foreign_key_name", null: false
     t.integer "foreign_key_id"
-    t.text    "foreign_details"
   end
 
   add_index "version_associations", ["foreign_key_name", "foreign_key_id"], name: "index_version_associations_on_foreign_key", using: :btree
