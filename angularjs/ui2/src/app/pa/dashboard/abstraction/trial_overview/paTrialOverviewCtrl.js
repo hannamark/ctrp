@@ -113,8 +113,13 @@
             var internalSourceObj = vm.trialDetailObj.internal_source; // if null, then it is imported
             vm.trialDetailObj.isImported = !!internalSourceObj ? (internalSourceObj.code !== 'REG') : true;
 
-            // get research category name
-            vm.trialDetailObj.researchCatName = _getResearchCategory(researchCats, vm.trialDetailObj.research_category_id);
+            // get research category name and determine its research category 
+            vm.trialDetailObj.researchCategoryName = _getResearchCategory(researchCats, vm.trialDetailObj.research_category_id);
+            vm.trialDetailObj.isExpandedAccess = vm.trialDetailObj.researchCategoryName.indexOf('expand') > -1;
+            vm.trialDetailObj.isInterventional = vm.trialDetailObj.researchCategoryName.indexOf('intervention') > -1;
+            vm.trialDetailObj.isObservational = vm.trialDetailObj.researchCategoryName.indexOf('observation') > -1;
+            vm.trialDetailObj.isAncillary = vm.trialDetailObj.researchCategoryName.indexOf('ancillary') > -1;
+
             // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
             vm.trialDetailObj.is_draft = ''

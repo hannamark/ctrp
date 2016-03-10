@@ -11,7 +11,18 @@
 
     function pasEligibilityCtrl($scope, TrialService, PATrialService, toastr,
         MESSAGES, _, $timeout) {
+        var vm = this;
+        vm.trialDetailObj = {};
 
+        activate();
+        function activate() {
+            _getTrialDetailCopy();
+        }
+
+        function _getTrialDetailCopy() {
+            vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+            console.info('research cat name: ', vm.trialDetailObj.isInterventional);
+        }
 
     } // pasEligibilityCtrl
 
