@@ -9,14 +9,16 @@
     .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
-        '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES',
+        '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES', 'researchCategories',
         '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService'];
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
-            $mdToast, $document, $timeout, Common, MESSAGES,
+            $mdToast, $document, $timeout, Common, MESSAGES, researchCategories,
             $scope, TrialService, UserService, curTrial, _, PersonService) {
 
         var vm = this;
         var curUserRole = UserService.getUserRole() || '';
+        var researchCats = researchCategories;
+
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         console.log('curTrial: ', curTrial);
@@ -111,6 +113,13 @@
             var internalSourceObj = vm.trialDetailObj.internal_source; // if null, then it is imported
             vm.trialDetailObj.isImported = !!internalSourceObj ? (internalSourceObj.code !== 'REG') : true;
 
+            // get research category name and determine its research category 
+            vm.trialDetailObj.researchCategoryName = _getResearchCategory(researchCats, vm.trialDetailObj.research_category_id);
+            vm.trialDetailObj.isExpandedAccess = vm.trialDetailObj.researchCategoryName.indexOf('expand') > -1;
+            vm.trialDetailObj.isInterventional = vm.trialDetailObj.researchCategoryName.indexOf('intervention') > -1;
+            vm.trialDetailObj.isObservational = vm.trialDetailObj.researchCategoryName.indexOf('observation') > -1;
+            vm.trialDetailObj.isAncillary = vm.trialDetailObj.researchCategoryName.indexOf('ancillary') > -1;
+
             // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
             vm.trialDetailObj.is_draft = ''
@@ -190,7 +199,7 @@
             $scope.$on('updatedInChildScope', function() {
                 console.info('updatedInChildScope, getting current trial now!');
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
-                _checkEditableStatus();          
+                _checkEditableStatus();
             });
         }
 
@@ -203,6 +212,19 @@
             TrialService.getTrialById(vm.trialDetailObj.id).then(function(res) {
                 console.log('updated trialDetail obj: ', res);
             });
+        }
+
+        /**
+         * Find the research category name in the provided research category array
+         * @param  {Array} researchCategoryArr array of JSON objects
+         * @param  {Integer} researchCatId       e.g. vm.trialDetailObj.research_category_id
+         * @return {String}                     research category name (lower case), could be empty if not found
+         */
+        function _getResearchCategory(researchCategoryArr, researchCatId) {
+
+            var catObj = _.findWhere(researchCategoryArr, {id: researchCatId});
+            var catName = !!catObj ? catObj.name : '';
+            return catName.toLowerCase();
         }
     }
 

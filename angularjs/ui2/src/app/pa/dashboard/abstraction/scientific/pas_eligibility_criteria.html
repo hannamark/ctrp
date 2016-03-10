@@ -1,0 +1,83 @@
+<div class="row">
+    <form name="criteria_form" role="form" class="form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria()">
+        <!-- fieldset for eligibility criteria -->
+            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <legend class="sub-bordered">Eligibility Criteria</legend>
+                <!-- <div class="form-group">
+                    <div layout="row">
+                        <div flex>Accepts Healthy Volunteer?</div>
+                        <div flex>
+                            <md-radio-group ng-model="criteriaView.trialDetailObj.accept_vol" class="md-primary" layout="row">
+                                <md-radio-button value="Yes"> Yes </md-radio-button>
+                                <md-radio-button value="No"> No </md-radio-button>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <label for="volunteer" class="control-label col-xs-12 col-sm-3 vertical-align">Accepts Healthy Volunteer?</label>
+                    <div class="col-xs-12 col-sm-9" layout="row" layout-wrap layout-sm="100">
+                        <!-- <md-radio-group ng-model="criteriaView.trialDetailObj.accept_vol" class="md-primary" layout="row">
+                            <md-radio-button value="Yes"> Yes </md-radio-button>
+                            <md-radio-button value="No"> No </md-radio-button>
+                        </md-radio-group> -->
+                        <label class="radio-inline">
+                            <input type="radio" id="accept_vol" name="accept_vol" ng-model="criteriaView.trialDetailObj.accept_vol" value="Yes"> Yes
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" id="accept_vol" name="accept_vol" ng-model="criteriaView.trialDetailObj.accept_vol" value="No"> No
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Gender</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <label ng-repeat="g in criteriaView.genderList" class="radio-inline">
+                            <input type="radio" id="gender" name="gender" ng-model="criteriaView.trialDetailObj.gender_id" ng-value="g.id"> {{g.name}}
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="min_age" class="control-label col-xs-12 col-sm-3">Minimum Age</label>
+                    <div class="col-xs-12 col-sm-3">
+                        <input type="number" min="0" name="min_age" id="min_age" ng-model="criteriaView.trialDetailObj.min_age" class="form-control input-sm" placeholder="">
+                    </div>
+                    <label for="min_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
+                    <div class="col-xs-12 col-sm-4">
+                        <select name="min_age_unit" id="min_age_unit"
+                            class="form-control input-sm"
+                            ng-model="criteriaView.trialDetailObj.min_age_unit_id"
+                            ng-options="unit.id as unit.name for unit in criteriaView.ageUnits"
+                            >
+                            <option value="">- Please select a unit...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="max_age" class="control-label col-xs-12 col-sm-3">Maximum Age</label>
+                    <div class="col-xs-12 col-sm-3">
+                        <input type="number" min="0" name="max_age" id="max_age" ng-model="criteriaView.trialDetailObj.max_age" class="form-control input-sm" placeholder="">
+                    </div>
+                    <label for="max_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
+                    <div class="col-xs-12 col-sm-4">
+                        <select name="max_age_unit" id="max_age_unit"
+                            class="form-control input-sm"
+                            ng-model="criteriaView.trialDetailObj.max_age_unit_id"
+                            ng-options="unit.id as unit.name for unit in criteriaView.ageUnits"
+                            >
+                            <option value="">- Please select a unit...</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        <!-- end of fieldset for eligibility criteria -->
+
+        <!-- fieldset for other criteria -->
+            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <legend class="sub-bordered">Other Criteria</legend>
+            </fieldset>
+        <!-- end of fieldset for other criteria -->
+
+    </form>
+</div>
