@@ -65,10 +65,10 @@ module.exports = function() {
     var nciID = 'NCI-2014-00894';
     var randNmbr = Math.floor(Math.random()*(95-77+1)+77);
     var leadProtocolID = 'CTRP_01_1776';
-    var leadProtocolIDA = 'CTRP_01_1777';
-    var leadProtocolIDB = 'CTRP_01_1778';
+    var leadProtocolIDA = 'CTRP_01_1779';
+    var leadProtocolIDB = 'CTRP_01_1780';
     var leadProtocolIDC = 'CTRP_01_17'+randNmbr;
-    var leadProtocolIDD = 'CTRP_01_1781';
+    var leadProtocolIDD = 'CTRP_01_1787';
     var searchResultCountText = 'Trial Search Results';
     var indIDEAssociatedQueVal = '';
     var indTypVal = 'IND';
@@ -182,7 +182,7 @@ module.exports = function() {
     this.Then(/^the organizations will be displyed orderd assending alphanumeric by Collaborator Name$/, function (callback) {
         trialCollaborators.selectAllOrg();
         trialCollaborators.clickDeleteCollaborator();
-        helper.wait_for(300);
+        helper.wait_for(2000);
         trialCollaborators.clickAddCollaboratorButton();
         organizationSearch.clickSearchOrganization();
         searchOrg.setOrgName(orgSearchNameC);
@@ -190,15 +190,21 @@ module.exports = function() {
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         trialCollaborators.clickSave();
+        helper.wait_for(2000);
+        trialCollaborators.clickAdminDataGeneralTrial();
+        trialCollaborators.clickAdminDataCollaborators();
+        trialCollaborators.clickAddCollaboratorButton();
         organizationSearch.clickSearchOrganization();
+        helper.wait_for(2000);
         searchOrg.setOrgName(orgSearchNameB);
         searchOrg.clickSearchButton();
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         trialCollaborators.clickSave();
-        helper.wait_for(300);
+        helper.wait_for(2000);
         trialCollaborators.clickAdminDataGeneralTrial();
         trialCollaborators.clickAdminDataCollaborators();
+        helper.wait_for(3000);
         helper.verifyTableRowText(trialCollaborators.collaboratorsTableTBodyRowAColB, orgSearchNameB, "Verifying assending alphanumeric by Collaborator Name");
         helper.verifyTableRowText(trialCollaborators.collaboratorsTableTBodyRowBColB, orgSearchNameC, "Verifying assending alphanumeric by Collaborator Name");
         browser.sleep(25).then(callback);
@@ -379,7 +385,7 @@ module.exports = function() {
         trialCollaborators.clickAdminDataCollaborators();
         trialCollaborators.clickAddCollaboratorButton();
         organizationSearch.clickSearchOrganization();
-        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.setOrgName(orgSearchNameC);
         searchOrg.clickSearchButton();
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
@@ -397,7 +403,7 @@ module.exports = function() {
         //Refresh page
         trialCollaborators.clickAdminDataGeneralTrial();
         trialCollaborators.clickAdminDataCollaborators();
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the information entered or edited on the Collaborators screen will not be saved to the trial record$/, function (callback) {
@@ -406,7 +412,7 @@ module.exports = function() {
     });
 
     this.Then(/^the Trial Collaborators screen will be refreshed with the existing list of Collaborators data$/, function (callback) {
-        trialCollaborators.findOrgOnTheTableList(orgSearchNameB);
+        trialCollaborators.findOrgOnTheTableList(orgSearchNameC);
         browser.sleep(25).then(callback);
     });
 

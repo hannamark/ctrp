@@ -221,7 +221,7 @@ OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
 OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
 
 Allocation.find_or_create_by(code: 'NA', name: 'NA')
-Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Control Trial')
+Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Controlled Trial')
 Allocation.find_or_create_by(code: 'NRT', name: 'Non-Randomized Trial')
 
 InterventionModel.find_or_create_by(code: 'SG', name: 'Single Group')
@@ -643,6 +643,20 @@ AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION', name: 'Site Recruitme
 AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
 
 ########## SEEDING APP SETTINGS ENDS ##########
+
+########## SEEDING MAIL TEMPLATES STARTS ##########
+
+MailTemplate.find_or_create_by(
+                code: 'TRIAL_REG',
+                name: 'Trial Registration',
+                from: 'noreply@ctrp.nci.nih.gov',
+                to: 'noreply@ctrp.nci.nih.gov',
+                subject: 'NCI CTRP: Trial RECORD CREATED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+                body_text: 'Text version.',
+                body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers} <table border="0"> <tr> <td><b>Submission Date:</b></td> <td>${submissionDate}</td> </tr> </table> <hr> <p>Date: ${CurrentDate}</p> <p>Dear ${SubmitterName},</p> <p>You have successfully created a record in the NCI Clinical Trials Reporting Program (CTRP) for the trial identified above.</p> <p>The CTRP has assigned your trial the following unique NCI Trial Identification (Trial ID) number:<br> <b>${nciTrialIdentifier}</b><br></br><br></br> Please reference this number in all future correspondence with the Clinical Trials Reporting Office (CTRO).</p> <p><b>NEXT STEPS:</b><br> The Clinical Trials Reporting Office (CTRO) staff is reviewing your trial to ensure that it meets all of the requirements for registration in the CTRP system. They will email you their findings within two (2) business days. </p> <p>In the meantime, if you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p> <p>Thank you for submitting your trial for registration in the Clinical Trials Reporting Program.</p></body></html>'
+)
+
+########## SEEDING MAIL TEMPLATES ENDS ############
 
 puts "Seeding ldap and local users"
 #Add LDAP and local test users

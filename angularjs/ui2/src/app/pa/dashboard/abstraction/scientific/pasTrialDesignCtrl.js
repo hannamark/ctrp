@@ -17,7 +17,7 @@
         vm.secondaryPurposes = [];
         vm.interventionModels = [];
         vm.studyModels = [];
-        vm.maskings = maskings.maskings.sort(Common.a2zComparator());
+        vm.maskings = maskings.maskings;
         vm.allocations = [];
         vm.studyClassifications = [];
         vm.timePerspectives = [];
@@ -50,10 +50,10 @@
         // break down the grouped promised data as arrays
         function _unpackPromisedData() {
             if (groupedTrialDesignData.length === 4) {
-                vm.trialPhases = groupedTrialDesignData[0].sort(Common.a2zComparator());
-                vm.researchCategories = groupedTrialDesignData[1].sort(Common.a2zComparator());
-                vm.primaryPurposes = groupedTrialDesignData[2].sort(Common.a2zComparator());
-                vm.secondaryPurposes = groupedTrialDesignData[3].sort(Common.a2zComparator());
+                vm.trialPhases = groupedTrialDesignData[0];
+                vm.researchCategories = groupedTrialDesignData[1];
+                vm.primaryPurposes = groupedTrialDesignData[2];
+                vm.secondaryPurposes = groupedTrialDesignData[3];
             }
         }
 
@@ -161,7 +161,7 @@
         function _fetchInterventionModels() {
             PATrialService.getInterventionModels().then(function(res) {
                 if (res.server_response.status === 200) {
-                    vm.interventionModels = res.models.sort(Common.a2zComparator()) || [];
+                    vm.interventionModels = res.models || [];
                 }
             });
         }
@@ -170,7 +170,7 @@
             PATrialService.getAllocations().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.allocations = res.allocations || [];
-                    vm.allocations.sort(Common.a2zComparator());
+                    vm.allocations;
                 }
             });
         }
@@ -179,7 +179,7 @@
             PATrialService.getStudyClassifications().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.studyClassifications = res.data || [];
-                    vm.studyClassifications.sort(Common.a2zComparator());
+                    vm.studyClassifications;
                 }
             });
         }
@@ -187,13 +187,13 @@
         function _fetchStudyModels() {
             PATrialService.getStudyModels().then(function(res) {
                 vm.studyModels = res.data || [];
-                vm.studyModels.sort(Common.a2zComparator());
+                vm.studyModels;
             });
         }
 
         function _fetchBiospecimenRetention() {
             PATrialService.getBiospecimenRetentions().then(function(res) {
-                vm.biospecimenRetentions = res.data.sort(Common.a2zComparator()) || [];
+                vm.biospecimenRetentions = res.data || [];
             });
         }
 
@@ -221,7 +221,7 @@
         function _getTimePerspectives() {
             PATrialService.getTimePerspectives().then(function(res) {
                 vm.timePerspectives = res.data || [];
-                vm.timePerspectives.sort(Common.a2zComparator());
+                vm.timePerspectives;
                 console.info('time perspectives: ', res);
             });
         }

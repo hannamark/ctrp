@@ -87,7 +87,7 @@
                     label: 'Outcome Measures'
                 }
             })
-    .state('main.pa.trialOverview.trialSubGroups', {
+            .state('main.pa.trialOverview.trialSubGroups', {
             url: '/trial-sub-groups',
             templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_sub_groups.html',
             controller: 'pasTrialSubGroupsCtrl as sgView',
@@ -98,11 +98,30 @@
                     return TrialService.getTrialById($stateParams.trialId);
                 }
             },
-            section: 'pa',
-            ncyBreadcrumb: {
-                parent: 'main.pa.trialOverview',
-                label: 'Sub Groups'
-            }
-        });
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Sub Groups'
+                }
+            })
+            .state('main.pa.trialOverview.eligibilityCriteria', {
+                url: '/eligibility-critiera',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_eligibility_criteria.html',
+                controller: 'pasEligibilityCtrl as criteriaView',
+                section: 'pa',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    genderList: function(PATrialService) {
+                        return PATrialService.getGenderList();
+                    },
+                    ageUnits: function(PATrialService) {
+                        return PATrialService.getAgeUnits();
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Eligibility Criteria'
+                }
+            });
     }
 })();
