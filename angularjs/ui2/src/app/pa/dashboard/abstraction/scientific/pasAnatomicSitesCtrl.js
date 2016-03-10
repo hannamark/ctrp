@@ -73,7 +73,7 @@
 
 
         function deleteListHandler(anatomicSitesSelectedInCheckboxes){
-            console.log("In deleteListHandler anatomicSitesSelectedInCheckboxes" + JSON.stringify(anatomicSitesSelectedInCheckboxes));
+            //console.log("In deleteListHandler anatomicSitesSelectedInCheckboxes" + JSON.stringify(anatomicSitesSelectedInCheckboxes));
             var deleteList = [];
             angular.forEach(anatomicSitesSelectedInCheckboxes, function(item) {
                 if ( angular.isDefined(item.selected) && item.selected === true ) {
@@ -81,7 +81,7 @@
                 }
             });
             vm.selectedDeleteAnatomicSiteList = deleteList ;
-            console.log("In vm.selectedDeleteAnatomicSiteList=" + JSON.stringify(vm.selectedDeleteAnatomicSiteList));
+            //console.log("In vm.selectedDeleteAnatomicSiteList=" + JSON.stringify(vm.selectedDeleteAnatomicSiteList));
 
         };
 
@@ -119,12 +119,12 @@
                     }
                 });
             }
-            console.log(" vm.curTrial.anatomic_site_wrappers_attributes="+ JSON.stringify(vm.curTrial.anatomic_site_wrappers_attributes));
+            //console.log(" vm.curTrial.anatomic_site_wrappers_attributes="+ JSON.stringify(vm.curTrial.anatomic_site_wrappers_attributes));
             vm.anatomic_sites_selected = [];
             vm.saveTrial();
         }
         function reset() {
-            console.log("IN RESET");
+            //console.log("IN RESET");
             $scope.anatomic_sites_selected = [];
         }
 
