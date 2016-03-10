@@ -8,7 +8,7 @@
 #  official_title                :text
 #  pilot                         :string(255)
 #  primary_purpose_other         :string(255)
-#  secondary_purpose_other       :string(255)
+#  secondary_purpose_other       :text
 #  program_code                  :string(255)
 #  grant_question                :string(255)
 #  start_date                    :date
