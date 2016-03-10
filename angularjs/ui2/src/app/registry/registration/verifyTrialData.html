@@ -4,7 +4,7 @@
             <h4>Trial Data Verification</h4>
         </div>
         <div class="row">
-            <form class="form form-horizontal" role="form">
+            <form class="form form-horizontal" role="form" ctrp-submit="verifyTrialDataView.updateTrial()">
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">NCI Trial Identifier:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
@@ -37,6 +37,14 @@
                     <label class="control-label col-xs-12 col-sm-3">Current Verification Date:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{verifyTrialDataView.curTrial.verification_date}}
+                    </div>
+                </div>
+
+                <div class="form-group no-bottom-margin">
+                    <div class="btn-toolbar col-xs-12">
+                        <button type="submit" restriction-field class="btn btn-primary pull-right" id="submit_btn" ng-disabled="verifyTrialDataView.disableBtn">
+                            Save Verification Record
+                        </button>
                     </div>
                 </div>
             </form>

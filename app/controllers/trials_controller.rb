@@ -499,7 +499,7 @@ class TrialsController < ApplicationController
   def trial_params
     params.require(:trial).permit(:nci_id, :lead_protocol_id, :allocation_id, :official_title, :acronym, :pilot, :research_category_id,
                                   :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id, :accept_vol, :min_age, :max_age, :min_age_unit_id, :max_age_unit_id, :gender_id,
-    :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms, :biospecimen_retention_id, :biospecimen_desc,
+                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms, :biospecimen_retention_id, :biospecimen_desc,
                                   :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id, :masking_role_caregiver,
                                   :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
                                   :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
@@ -508,7 +508,7 @@ class TrialsController < ApplicationController
                                   :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
                                   :brief_title, :brief_summary, :objective, :detailed_description, :study_classification_id, :target_enrollment, :final_enrollment,
                                   :process_priority, :process_comment, :nci_specific_comment, :nih_nci_div, :nih_nci_prog, :keywords,
-                                  :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag,
+                                  :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag, :verification_date,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                   alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
                                   arms_groups_attributes: [:id, :label, :type, :description, :intervention_id, :trial_id, :_destroy],
