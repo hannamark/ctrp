@@ -14,6 +14,7 @@
 
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
+        vm.setCopyMode = setCopyMode;
         vm.deleteListHandler = deleteListHandler;
         vm.deleteSelected = deleteSelected;
         vm.resetOutcomeMeasure = resetOutcomeMeasure;
@@ -63,8 +64,17 @@
                     vm.currentOutcomeMeasure.id = response.id;
                 }
                 if(vm.currentOutcomeMeasure.id) {
+                    //setting up "outcome measure type" on the fly to display on grid
+                    for (var i = 0; i < vm.om_types.length; i++) {
+                        if(vm.om_types[i].id == vm.currentOutcomeMeasure.outcome_measure_type_id){
+                            console.log(vm.om_types[i].name)
+                            vm.currentOutcomeMeasure.outcome_measure_type=vm.om_types[i].name;
+                        }
+                    }
+
                     if(newOutcomeMeasure){
                         vm.currentOutcomeMeasure.new = false;
+                        //vm.curTrial.outcome_measure_type=vm.curTrial.outcome_measure_type
                         vm.curTrial.outcome_measures.push(vm.currentOutcomeMeasure);
                     } else {
                         for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
@@ -126,7 +136,7 @@
 
 
         /**
-         *  Set Add Mode. This causes the first tab to appear for a new Outcome Measure
+         *  Set Add Mode.
          **/
         function setAddMode() {
             vm.addEditMode = true;
@@ -134,11 +144,27 @@
         }
 
         /**
-         *  Set Edit Mode. This causes the first tab to appear for an existing Participating Site
+         *  Set Edit Mode.
          **/
         function setEditMode(idx) {
             vm.addEditMode = true;
             vm.currentOutcomeMeasure = vm.curTrial.outcome_measures[idx];
+        }
+
+        /**
+         *  Set Copy Mode.
+         **/
+        function setCopyMode(idx) {
+            vm.addEditMode = true;
+            vm.currentOutcomeMeasure ={}
+            vm.copyOM =vm.curTrial.outcome_measures[idx];
+            vm.currentOutcomeMeasure.title = vm.copyOM.title
+            vm.currentOutcomeMeasure.time_frame = vm.copyOM.time_frame
+            vm.currentOutcomeMeasure.description = vm.copyOM.description
+            vm.currentOutcomeMeasure.outcome_measure_type_id = vm.copyOM.outcome_measure_type_id
+            vm.currentOutcomeMeasure.safety_issue = vm.copyOM.safety_issue
+            vm.currentOutcomeMeasure.new=true;
+            vm.currentOutcomeMeasure.id=null;
         }
 
         function resetOutcomeMeasure() {
