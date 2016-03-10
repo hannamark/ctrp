@@ -507,14 +507,15 @@ module.exports = function() {
         });
         indIDE.clickSave();
         helper.wait_for(2500);
-        //indIDE.clickAdminDataGeneralTrial();
-        //indIDE.clickAdminDataRegulatoryInfoIND();
+
         if (arg1 === argVerification){
             helper.verifyTableRowText(indIDE.indIDETblHdr, verifTbleHdr, "IND/IDE Table Header(s)");
             helper.verifyTableRowText(indIDE.indIDETblRowA, verifTbleRowA, "IND/IDE Table Row A");
-            helper.verifyTableRowText(indIDE.indIDETblRowB, verifTbleRowA, "IND/IDE Table Row B");
+            helper.verifyTableRowText(indIDE.indIDETblRowB, verifTbleRowB, "IND/IDE Table Row B");
         };
-        browser.sleep(300).then(callback);
+        indIDE.clickAdminDataGeneralTrial();
+        indIDE.clickAdminDataRegulatoryInfoIND();
+        browser.sleep(3000).then(callback);
     });
 
     this.Then(/^I am able to remove the IND or IDE information for one or more INDs or IDEs$/, function (callback) {
