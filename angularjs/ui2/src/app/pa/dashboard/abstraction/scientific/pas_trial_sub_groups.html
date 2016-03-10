@@ -29,7 +29,7 @@
 
                             </div>
 
-                            <span ng-messages="ctrpbtn.sg_form.needsAttention(sg_form.title) && sg_form.title.$error">
+                            <span ng-messages="ctrpbtn.sg_form.needsAttention(sg_form.label) && sg_form.label.$error">
                               <span class="help-block" ng-message="required">Please enter the Label</span>
                             </span>
                         </div>
@@ -62,7 +62,7 @@
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                             <button type="submit" class="btn btn-primary pull-right" id="submit_processing">Save</button>
-                            <button type="button" class="btn btn-warning pull-right" ng-click="sgView.resetOutcomeMeasure()">
+                            <button type="button" class="btn btn-warning pull-right" ng-click="sgView.resetSubGroup()">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                         </div>
@@ -89,7 +89,6 @@
                         <th>Label</th>
                         <th>Description</th>
                         <th class="text-center">Edit</th>
-                        <th class="text-center">Copy</th>
                         <th class="text-center">Deletion</th>
                         </thead>
                         <tbody>
@@ -97,7 +96,7 @@
                         <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'deleted-text': sub_group._destroy, 'edit-selected': sub_group.id === sgView.currentSubGroup.id}">
 
                             <td>
-                                {{sub_group.title}}
+                                {{sub_group.label}}
                             </td>
 
                             <td>
@@ -109,11 +108,7 @@
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </button>
                             </td>
-                            <td>
-                                <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="sgView.setCopyMode($index)">
-                                    <i class="glyphicon glyphicon-copy"></i>
-                                </button>
-                            </td>
+
                             <td>
                                 <input type="checkbox" ng-model="sub_group.selected" ng-change="sgView.deleteListHandler(sgView.curTrial.sub_groups)" />
                             </td>

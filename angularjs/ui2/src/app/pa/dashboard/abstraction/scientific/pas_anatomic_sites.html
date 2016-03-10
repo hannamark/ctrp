@@ -19,7 +19,7 @@
                             <!--<tr ng-repeat="participating_site in anatomicViewView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
                             <td>{{anatomic_site.anatomic_site.name}}</td>
                             <td>
-                                <input type="checkbox" ng-model="anatomic_site.selected" ng-change="anatomicView.deleteListHandler(anatomicView.curTrial.anatomic_sites)" />
+                                <input type="checkbox" ng-model="anatomic_site.selected" ng-change="anatomicView.deleteListHandler(anatomicView.curTrial.anatomic_site_wrappers)" />
                             </td>
                         </tr>
                         </tbody>
