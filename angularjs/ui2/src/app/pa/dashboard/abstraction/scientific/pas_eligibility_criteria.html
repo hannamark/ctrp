@@ -3,10 +3,30 @@
         <!-- fieldset for eligibility criteria -->
             <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                 <legend class="sub-bordered">Eligibility Criteria</legend>
+                <!-- <div class="form-group">
+                    <div layout="row">
+                        <div flex>Accepts Healthy Volunteer?</div>
+                        <div flex>
+                            <md-radio-group ng-model="criteriaView.trialDetailObj.accept_vol" class="md-primary" layout="row">
+                                <md-radio-button value="Yes"> Yes </md-radio-button>
+                                <md-radio-button value="No"> No </md-radio-button>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                </div> -->
                 <div class="form-group">
-                    <label for="volunteer" class="control-label col-xs-12 col-sm-3">Accepts Healthy Volunteer?</label>
-                    <div class="col-xs-12 col-sm-9" layout="row" layout-wrap flex-xs="100">
-                        
+                    <label for="volunteer" class="control-label col-xs-12 col-sm-3 vertical-align">Accepts Healthy Volunteer?</label>
+                    <div class="col-xs-12 col-sm-9" layout="row" layout-wrap layout-sm="100">
+                        <!-- <md-radio-group ng-model="criteriaView.trialDetailObj.accept_vol" class="md-primary" layout="row">
+                            <md-radio-button value="Yes"> Yes </md-radio-button>
+                            <md-radio-button value="No"> No </md-radio-button>
+                        </md-radio-group> -->
+                        <label class="radio-inline">
+                            <input type="radio" id="accept_vol" name="accept_vol" ng-model="criteriaView.trialDetailObj.accept_vol" value="Yes"> Yes
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" id="accept_vol" name="accept_vol" ng-model="criteriaView.trialDetailObj.accept_vol" value="No"> No
+                        </label>
                     </div>
                 </div>
                 <div class="form-group">
