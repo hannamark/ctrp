@@ -86,6 +86,17 @@
                     parent: 'main.pa.trialOverview',
                     label: 'Outcome Measures'
                 }
+            })
+
+            .state('main.pa.trialOverview.eligibilityCriteria', {
+                url: '/eligibility-critiera',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_eligibility_criteria.html',
+                controller: 'pasEligibilityCtrl',
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Eligibility Criteria'
+                }
             });
     }
 })();

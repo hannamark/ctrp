@@ -146,8 +146,7 @@
             getStudyClassifications: getStudyClassifications,
             getStudyModels: getStudyModels,
             getTimePerspectives: getTimePerspectives,
-            getBiospecimenRetentions: getBiospecimenRetentions,
-            getAnatomicSites: getAnatomicSites
+            getBiospecimenRetentions: getBiospecimenRetentions
         };
 
         return services;
@@ -351,7 +350,7 @@
                 trialDetailObj.admin_checkout = curTrial.admin_checkout;
                 trialDetailObj.scientific_checkout = curTrial.scientific_checkout;
             }
-            
+
             LocalCacheService.cacheItem('current_trial_object', trialDetailObj);
         }
 
@@ -360,7 +359,10 @@
          * @return {JSON}
          */
         function getCurrentTrialFromCache() {
-            return LocalCacheService.getCacheWithKey('current_trial_object');
+            var curTrial = LocalCacheService.getCacheWithKey('current_trial_object');
+            delete curTrial.admin_checkout;
+            delete curTrial.scientific_checkout;
+            return curTrial;
         }
 
         function checkoutTrial(trialId, checkoutType) {
@@ -427,10 +429,6 @@
 
         function getBiospecimenRetentions() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.BIOSPECIMEN_RETENTIONS);
-        }
-
-        function getAnatomicSites() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.ANATOMIC_SITES);
         }
 
         /**
