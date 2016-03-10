@@ -159,6 +159,17 @@ class DataImport
         c2.org_name = c2.organization.name
         trial.collaborators << c1
         trial.collaborators << c2
+
+        #Assign Random Anatomic sites
+        a1 = AnatomicSiteWrapper.new
+        a1.anatomic_site = AnatomicSite.all[rand(0..AnatomicSite.all.size-1)]
+        a1.trial = trial
+        trial.anatomic_site_wrappers << a1
+        a2 = AnatomicSiteWrapper.new
+        a2.anatomic_site = AnatomicSite.all[rand(0..AnatomicSite.all.size-1)]
+        a2.trial = trial
+        trial.anatomic_site_wrappers << a2
+        #save Trial
         trial.save!
       end
     rescue Exception => e

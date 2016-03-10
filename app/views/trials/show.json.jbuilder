@@ -1,12 +1,15 @@
-json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id, :research_category,
+json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id, :masking_id, :biospecimen_retention_id, :biospecimen_desc,
+              :masking_role_caregiver, :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject, :accept_vol, :min_age, :max_age, :min_age_unit_id, :max_age_unit_id, :gender_id,
+              :research_category, :allocation_id, :study_classification_id, :target_enrollment, :final_enrollment, :study_model_id, :study_model_other,
               :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
               :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual, :comp_date, :comp_date_qual,
-              :ind_ide_question, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
+              :ind_ide_question, :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history, :accruals,
               :study_source_id, :phase_id, :phase, :primary_purpose_id, :primary_purpose, :secondary_purpose_id, :secondary_purpose, :responsible_party_id, :responsible_party,
-              :accrual_disease_term_id, :accrual_disease_term, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id,
+              :accrual_disease_term_id, :accrual_disease_term, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id, :time_perspective_id, :time_perspective_other,
               :created_at, :updated_at, :created_by, :updated_by, :study_source, :lead_org, :pi, :sponsor,
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
               :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :is_draft, :lock_version,
+              :brief_title, :brief_summary, :objective, :detailed_description, :intervention_model_id, :num_of_arms,
               :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
               :board_approval_num, :board_approval_status_id, :available_family_orgs, :uuid
@@ -23,6 +26,12 @@ json.trial_status_wrappers do
   end
 end
 
+json.anatomic_site_wrappers do
+  json.array!(@trial.anatomic_site_wrappers) do |anatomic_site_wrapper|
+    json.extract! anatomic_site_wrapper, :trial_id, :id, :anatomic_site_id, :anatomic_site, :created_at, :updated_at
+  end
+end
+
 json.ind_ides do
   json.array!(@trial.ind_ides) do |ind_ide|
     json.extract! ind_ide, :trial_id, :id, :ind_ide_type, :grantor, :nih_nci, :holder_type_id, :holder_type, :ind_ide_number
@@ -33,6 +42,19 @@ json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
     json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status
     json.set! :added_by, document.added_by_id.nil? ? User.find(1) : ''    #document.added_by_id
+  end
+end
+
+json.outcome_measures do
+  json.array!(@trial.outcome_measures) do |outcome_measure|
+    json.extract! outcome_measure, :id, :title, :time_frame, :description, :safety_issue,:outcome_measure_type_id
+    json.outcome_measure_type outcome_measure.outcome_measure_type.present? ? outcome_measure.outcome_measure_type.name : nil
+  end
+end
+
+json.sub_groups do
+  json.array!(@trial.sub_groups) do |sub_group|
+    json.extract! sub_group, :id, :label, :description
   end
 end
 
@@ -51,6 +73,17 @@ end
 json.participating_sites do
   json.array!(@trial.participating_sites) do |participating_site|
     json.id participating_site.id
+    investigators = ""
+    delimiter = ""
+    if participating_site.participating_site_investigators.length > 1
+      delimiter = "; "
+    end
+    unless participating_site.participating_site_investigators.nil?
+      participating_site.participating_site_investigators.each do |inv|
+        investigators = investigators + inv.person.fname + " " + inv.person.lname + delimiter
+      end
+    end
+    json.view_investigators investigators
     json.investigator participating_site.person.present? ? participating_site.person.lname : ""
     json.contact_name participating_site.contact_name
     json.contact_phone participating_site.contact_phone
@@ -58,6 +91,9 @@ json.participating_sites do
     json.contact_type participating_site.contact_type
     json.protocol_id participating_site.protocol_id
     json.program_code participating_site.program_code
+    json.person participating_site.person
+    json.person_id participating_site.person.nil? ? nil:participating_site.person.id
+
 
     json.organization participating_site.organization
     json.site_rec_status_wrappers do
@@ -69,19 +105,24 @@ json.participating_sites do
         json.comments  site_rec_status_wrapper.comments
       end
     end
+    json.latest_site_recruitment_status  participating_site.site_rec_status_wrappers.blank? ? "" : (participating_site.site_rec_status_wrappers.last.site_recruitment_status.nil? ? "" : participating_site.site_rec_status_wrappers.last.site_recruitment_status.name)
+    json.latest_site_recruitment_status_date  participating_site.site_rec_status_wrappers.blank? ? "" : participating_site.site_rec_status_wrappers.last.status_date
 
     json.participating_site_investigators do
       json.array!(participating_site.participating_site_investigators) do |inv|
         json.id inv.id
         json.person inv.person
-        #json.person_id inv.person.present? ? inv.person.id : ""
-        #json.lname  inv.person.present? ? inv.person.lname : ""
-        #json.fname  inv.person.present? ? inv.person.fname : ""
         json.investigator_type inv.investigator_type
         json.set_as_contact inv.set_as_contact
         json.status_code ""
       end
     end
+  end
+end
+
+json.arms_groups do
+  json.array!(@trial.arms_groups) do |ag|
+    json.extract! ag, :id, :label, :type, :description, :intervention_id, :trial_id
   end
 end
 

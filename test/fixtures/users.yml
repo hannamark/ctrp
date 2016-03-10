@@ -36,6 +36,7 @@
 #  approved                    :boolean          default(FALSE), not null
 #  organization_id             :integer
 #  source                      :string
+#  user_status_id              :integer
 #
 # Indexes
 #
@@ -44,6 +45,7 @@
 #  index_users_on_organization_id       (organization_id)
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
+#  index_users_on_user_status_id        (user_status_id)
 #  index_users_on_username              (username) UNIQUE
 #
 

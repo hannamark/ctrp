@@ -753,7 +753,7 @@ var projectMethods = function() {
     };
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
-     * Method: This will create Person for Search, it creates a new org then checks if it exist then use the same one
+     * Method: This will create Person for Search, it creates a new person then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createPersonforSearch = function(){
         browser.get('ui/#/main/sign_in');

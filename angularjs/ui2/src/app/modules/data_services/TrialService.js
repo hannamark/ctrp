@@ -58,7 +58,8 @@
                 },
                 {name: 'phase', enableSorting: true, minWidth: '70', width: '70'},
                 {name: 'purpose', enableSorting: true, minWidth: '120', width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
                 {name: 'pilot', enableSorting: true, minWidth: '60', width: '60'},
                 {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '180', width: '180',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -107,7 +108,7 @@
             getMilestones: getMilestones,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
-            getAcceptedFileTypes: getAcceptedFileTypes,
+            getAcceptedFileTypesForRegistry: getAcceptedFileTypesForRegistry,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
             checkAuthority: checkAuthority,
@@ -121,7 +122,10 @@
             getGrantsSerialNumber: getGrantsSerialNumber,
             upsertParticipatingSite: upsertParticipatingSite,
             getParticipatingSiteById: getParticipatingSiteById,
-            deleteParticipatingSite: deleteParticipatingSite
+            deleteParticipatingSite: deleteParticipatingSite,
+            upsertOutcomeMeasure: upsertOutcomeMeasure,
+            deleteOutcomeMeasure: deleteOutcomeMeasure,
+            getOutcomeMeasureTypes:getOutcomeMeasureTypes
         };
 
         return services;
@@ -296,6 +300,27 @@
         } //upsertParticipatingSite
 
 
+        /**
+         * Update or insert a Outcome Measure Record
+         *
+         * @param outcomeMeasureObj
+         * @returns {*}
+         */
+        function upsertOutcomeMeasure(outcomeMeasureObj) {
+            if (outcomeMeasureObj.new) {
+                //create a new trial
+                $log.info('creating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.OUTCOME_MEASURE_LIST, outcomeMeasureObj);
+            }
+
+            //update an Participating Site
+            var configObj = {}; //empty config
+            console.log('updating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+            $log.info('updating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_OUTCOME_MEASURE + outcomeMeasureObj.id + '.json', outcomeMeasureObj, configObj);
+        } //upsertOutcomeMeasure
+
+
         function getMilestones() {
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
         }
@@ -308,8 +333,8 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.NIH);
         }
 
-        function getAcceptedFileTypes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES);
+        function getAcceptedFileTypesForRegistry() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES_REG);
         }
 
         function getAuthorityOrgArr(country) {
@@ -902,7 +927,7 @@
          * @param documentType
          * @param file
          */
-        function uploadDocument(trialId, documentType, documentSubtype, file) {
+        function uploadDocument(trialId, documentType, documentSubtype, file, replacedDocId) {
             Upload.upload({
                 url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
                 method: 'POST',
@@ -910,7 +935,8 @@
                     'trial_document[document_type]': documentType,
                     'trial_document[document_subtype]': documentSubtype,
                     'trial_document[trial_id]': trialId,
-                    'trial_document[file]': file
+                    'trial_document[file]': file,
+                    'replaced_doc_id': replacedDocId ? replacedDocId : ''
                 }
                 //file: file,
                 //fileFormDataName: 'trial_document[file]'
@@ -1011,5 +1037,24 @@
         function deleteParticipatingSite(psId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_PARTICIPATING_SITE + psId + '.json');
         }
+
+        /**
+         * delete an trial with the given trialId
+         *
+         * @param trialId
+         * @returns {*}
+         */
+        function deleteOutcomeMeasure(psId) {
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_OUTCOME_MEASURE + psId + '.json');
+        }
+
+        /**
+         * retrieve out come measures types from backend service
+         * @return {promise}
+         */
+        function getOutcomeMeasureTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.OUTCOME_MEASURE_TYPES);
+        } //getSourceStatuses
+
     }
 })();

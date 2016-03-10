@@ -3,7 +3,8 @@
  * Date: 02/16/2016
  * Feature: PAA F01 Add and Edit General Trial Details
  *
- * Note: In the PAA search screen it has dependency on the seed data
+ * Note: In the PAA search screen it has dependency on the seed data.
+ *
  */
 
 //Common dependencies
@@ -88,7 +89,7 @@ module.exports = function() {
     var orgSearchNameA = 'Boston Medical Center';
     var orgSearchNameB = 'Boston University School Of Public Health';
     var orgSearchNameC = 'National Cancer Institute';
-    var orgSearchNameD = 'ZZZ test org for test accounts';
+    var orgSearchNameD = 'Memorial Hospital Colorado Springs';
     var personFNmA = 'Alessandra';
     var personLNmA = 'Ferrajol';
     var personFNmB = 'Kristi';
@@ -129,8 +130,8 @@ module.exports = function() {
     var keywordB = 'Pazopanib';
     var cntralCntctEmail = 'cythomas@wakehealth.edu';
     var cntralCntctEmailEdit = 'cythomas@wakehealth.com';
-    var cntralCntctPh = '4342436143';
-    var cntralCntctPhEdit = '4342436143';
+    var cntralCntctPh = '434-243-6143';
+    var cntralCntctPhEdit = '434-243-6143';
     var cntralCntctPhExtension = '1234';
     var cntralCntctPhExtensionEdit = '4321';
     var cntralCntctGeneralName = 'FName LName';
@@ -189,7 +190,7 @@ module.exports = function() {
         helper.wait_for(3000);
         trialDetails.clickAdminDataNCISpecificInformation();
         trialDetails.clickAdminDataGeneralTrial();
-        browser.sleep(25).then(callback);
+        browser.sleep(3000).then(callback);
     });
 
     this.When(/^I can edit the lead organization trial identifier$/, function (callback) {
@@ -203,7 +204,7 @@ module.exports = function() {
         helper.wait_for(300);
         trialDetails.findTrailIdentifierAndClickEdit(identifierCTEP, 'edit',identifierNmbrEdited, 'save', 'verify', identifierNmbrEdited);
         trialDetails.clickSave();
-        browser.sleep(250).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.When(/^I can optionally enter or edit one or more Other Trial Identifiers$/, function (callback) {
@@ -213,13 +214,13 @@ module.exports = function() {
         trialDetails.clickSave();
         helper.wait_for(300);
         trialDetails.findTrailIdentifierAndClickEdit(identifierDCP, 'edit',identifierNmbrEdited, 'save', 'verify', identifierNmbrEdited);
-        browser.sleep(25).then(callback);
+        trialDetails.clickSave();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the Protocol Identifier section will be complete$/, function (callback) {
-        trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.findTrailIdentifierAndClickEdit(identifierCTEP, '', '', '', 'verify', identifierNmbrEdited);
         trialDetails.findTrailIdentifierAndClickEdit(identifierDCP, '', '', '', 'verify', identifierNmbrEdited);
         browser.sleep(25).then(callback);
@@ -237,28 +238,28 @@ module.exports = function() {
     this.When(/^I edit the Official Title for the trial$/, function (callback) {
         trialDetails.setOfficialTitle(officialTitleEdit);
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitleEdit, "Verifying the Official Title");
         trialDetails.setOfficialTitle(officialTitle);
         trialDetails.clickSave();
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.When(/^I can optionally enter or edit the Acronym for the trial$/, function (callback) {
         trialDetails.setAcronym(acronymA);
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymA, "Verifying the Acronym");
         trialDetails.setAcronym(acronymB);
         trialDetails.clickSave();
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the title section will be complete$/, function (callback) {
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymB, "Verifying the Acronym");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitle, "Verifying the Official Title");
         browser.sleep(25).then(callback);
@@ -275,17 +276,17 @@ module.exports = function() {
     this.When(/^I can enter or edit the Keywords for the trial identifier$/, function (callback) {
         trialDetails.setKeywords(keywordA);
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordA, "Verifying the Keywords");
         trialDetails.setKeywords(keywordB);
         trialDetails.clickSave();
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the Keywords section will be complete$/, function (callback) {
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordB, "Verifying the Keywords");
         browser.sleep(25).then(callback);
     });
@@ -301,10 +302,7 @@ module.exports = function() {
      */
 
     this.Given(/^I have selected organization look\-up$/, function (callback) {
-        //projectFunctionsRegistry.selectOrgforTrial()
         trialDetails.clickSearchOrgButtonByIndex('0');
-        //helper.wait_for(9000);
-        //addTrial.clickAddTrialOrgSearchModel('1');
         browser.sleep(25).then(callback);
     });
 
@@ -322,10 +320,8 @@ module.exports = function() {
 
     this.Then(/^the selected organization will be associated to the trail as the Lead Organization$/, function (callback) {
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailLeadOrganization, orgSearchNameD, "Verifying the Lead Organization Name");
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     /*
@@ -338,7 +334,7 @@ module.exports = function() {
      */
 
     this.When(/^I have performed a person look\-up$/, function (callback) {
-        trialDetails.clickSearchPersonsButton();
+        trialDetails.clickSearchPersonsButtonByIndex('0');
         browser.sleep(25).then(callback);
     });
 
@@ -354,10 +350,10 @@ module.exports = function() {
     this.Then(/^the selected person will be associated to the trial as Principal Investigator$/, function (callback) {
         var buildPrincipalInvestigatorNM = ''+ personFNmA +' '+ personLNmA +'';
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailPrincipalInvestigator, buildPrincipalInvestigatorNM, "Verifying the Principal Investigator");
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     /*
@@ -383,10 +379,10 @@ module.exports = function() {
 
     this.Then(/^the selected organization will be associated to the trail as the Sponsor$/, function (callback) {
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailSponsor, orgSearchNameD, "Verifying the Sponsor Organization Name");
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     /*
@@ -441,15 +437,15 @@ module.exports = function() {
         trialDetails.setCentralContactPhone(cntralCntctPh);
         trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtension);
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.setCentralContactEmail(cntralCntctEmailEdit);
         trialDetails.setCentralContactPhone(cntralCntctPhEdit);
         trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtensionEdit);
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
-        browser.sleep(25).then(callback);
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the PI, phone \#, extension and e\-mail address will be associated with this trail$/, function (callback) {
@@ -473,7 +469,7 @@ module.exports = function() {
 
     this.Given(/^I select the radio button for Person$/, function (callback) {
         trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'Person', 'Central Contact - Person');
-        browser.sleep(250).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^preform a person look up and select a person$/, function (callback) {
@@ -489,10 +485,10 @@ module.exports = function() {
     this.Given(/^the selected Person, their phone \#, extension and e\-mail address will be displayed$/, function (callback) {
         var buildCentralcontactNM = ''+ personFNmB +'  '+ personLNmB +'';
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, buildCentralcontactNM, "Verifying the Central Contact Name");
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^I can edit the phone \# and e\-mail address$/, function (callback) {
@@ -500,15 +496,15 @@ module.exports = function() {
         trialDetails.setCentralContactPhone(cntralCntctPh);
         trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtension);
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.setCentralContactEmail(cntralCntctEmailEdit);
         trialDetails.setCentralContactPhone(cntralCntctPhEdit);
         trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtensionEdit);
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
-        browser.sleep(25).then(callback);
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the Person, phone \#, extension and e\-mail address will be associated with this trail$/, function (callback) {
@@ -550,8 +546,8 @@ module.exports = function() {
         trialDetails.setCentralContactPhone(cntralCntctGeneralPh);
         trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtension);
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, '', "Verifying the Central Contact Name");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPh, "Verifying the Central Contact Name");
@@ -560,21 +556,21 @@ module.exports = function() {
         trialDetails.setCentralContactPhone('');
         trialDetails.setCentralContactPhoneExtension('');
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctGeneralEmail, "Verifying the Central Contact Name");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, '', "Verifying the Central Contact Name");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, '', "Verifying the Central Contact Name");
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.setCentralContactEmail(cntralCntctGeneralEmail);
         trialDetails.setCentralContactPhone(cntralCntctGeneralPh);
         trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtension);
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
-        browser.sleep(25).then(callback);
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the selected Central Contact, Phone \#, extension and e\-mail address will be Central contact for the trial$/, function (callback) {
@@ -601,8 +597,8 @@ module.exports = function() {
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
 
         //Acronym
         trialDetails.setAcronym(acronymA);
@@ -649,10 +645,10 @@ module.exports = function() {
 
         //Click Save
         trialDetails.clickSave();
-        helper.wait_for(250);
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
-        browser.sleep(250).then(callback);
+        //helper.wait_for(250);
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the information entered or edited on the General Trails Details screen will be saved to the trial record$/, function (callback) {
@@ -688,8 +684,8 @@ module.exports = function() {
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
 
         //Acronym
         trialDetails.setAcronym(acronymA);
@@ -736,9 +732,9 @@ module.exports = function() {
 
         //Click Save
         trialDetails.clickSave();
-        helper.wait_for(250);
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        helper.wait_for(2500);
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
 
         //Reset
 
@@ -787,7 +783,7 @@ module.exports = function() {
 
         //Click Save
         trialDetails.clickReset();
-        browser.sleep(250).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the information entered or edited on the General Trails Details screen will not be saved to the trial record$/, function (callback) {
@@ -807,9 +803,9 @@ module.exports = function() {
     });
 
     this.Then(/^the General Trial Details screen will be refreshed with the existing data$/, function (callback) {
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
-        helper.wait_for(250);
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
+        //helper.wait_for(250);
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymA, "Verifying the Acronym");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitleEdit, "Verifying the Official Title");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordB, "Verifying the Keywords");
@@ -843,10 +839,11 @@ module.exports = function() {
 
     this.When(/^I select save$/, function (callback) {
         trialDetails.clickSave();
-        browser.sleep(25).then(callback);
+        browser.sleep(300).then(callback);
     });
 
     this.Then(/^a warning message will appear �Please enter the Protocol Identifier�$/, function (callback) {
+        console.log('Please enter the Protocol Identifier warning message can not be verified, since it does not have any edit option');
         //trialDetails.generalTrailCentralContactNameReq.getText().then(function(valueReq){
         //    console.log('Central Contact Name Required:['+valueReq+']');
         //    expect(valueReq.toString()).to.eql(protocolIDReq.toString());
@@ -869,10 +866,10 @@ module.exports = function() {
     });
 
     this.Then(/^a warning message will appear �Please enter the Official Title�$/, function (callback) {
-        //trialDetails.generalTrailCentralContactNameReq.getText().then(function(valueReq){
-        //    console.log('Central Contact Name Required:['+valueReq+']');
-        //    expect(valueReq.toString()).to.eql(officialTitleReq.toString());
-        //});
+        trialDetails.generalTrailCentralContactNameReq.getText().then(function(valueReq){
+            console.log('Central Contact Name required message:['+valueReq+']');
+            expect(valueReq.toString()).to.eql(officialTitleReq.toString());
+        });
         browser.sleep(25).then(callback);
     });
 
@@ -895,7 +892,7 @@ module.exports = function() {
     });
 
     this.Then(/^a warning message will appear �Please enter the Lead Organization�$/, function (callback) {
-        //Defult value is the Lead Org for this field. So no way I can get Led Org warning message.
+        //Defult value is the Lead Org for this field. So no way I can get the Led Org warning message.
         console.log('As per design, user unable to edit Lead Org field. So required warning message is missing: Please enter the Lead Organization');
         browser.sleep(25).then(callback);
     });
@@ -986,10 +983,10 @@ module.exports = function() {
         trialDetails.findTrailIdentifierAndClickEdit(identifierDCP, 'edit',identifierNmbrEdited, 'delete', '', '');
         trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'None', 'Central Contact - General');
         trialDetails.clickSave();
-        helper.wait_for(300);
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
-        browser.sleep(25).then(callback);
+        //helper.wait_for(300);
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
+        browser.sleep(2500).then(callback);
     });
 
     this.Given(/^I have selected e\-mail address field$/, function (callback) {
@@ -1008,8 +1005,8 @@ module.exports = function() {
         buildEmailAdd = ''+getArg1+'@'+getArg2+'.'+getArg3+'';
         trialDetails.setCentralContactEmail(buildEmailAdd);
         trialDetails.clickSave();
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralNameEdit, "Verifying the Central Contact Name");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, buildEmailAdd, "Verifying the Central Contact Name");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPhEdit, "Verifying the Central Contact Name");
@@ -1024,6 +1021,7 @@ module.exports = function() {
         buildEmailAdd = ''+getArg1+'@'+getArg2+''+getArg3+'';
         trialDetails.setCentralContactEmail(buildEmailAdd);
         trialDetails.clickSave();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the system displays a warning message that says "([^"]*)"$/, function (arg1, callback) {
@@ -1031,10 +1029,7 @@ module.exports = function() {
         //trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, buildEmailAdd, "Verifying the Central Contact Name");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPhEdit, "Verifying the Central Contact Name");
         trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtensionEdit, "Verifying the Central Contact Name");
-        trialDetails.generalTrailCentralContactNameReq.getText().then(function(valueReq){
-            console.log('Central Contact Email Required:['+valueReq+']');
-            expect(valueReq.toString()).to.eql(arg1.toString());
-        });
+        helper.verifyElementDisplayedByIndex(trialDetails.redSignWarning, '1', true);
         browser.sleep(25).then(callback);
     });
 

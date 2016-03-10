@@ -43,18 +43,18 @@
               <strong>Scientific Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.scientificDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.scientificDataOpen}"></i>
           </uib-accordion-heading>
           <ul class="nav nav-pills nav-stacked">
-              <li><a href="">Trial Design</a></li>
-              <li><a href="">Trial Description</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialDesign">Trial Design</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialDescription">Trial Description</a></li>
               <li><a href="">Design Details</a></li>
-              <li><a href="">Outcome Measures</a></li>
-              <li><a href="">Eligibility Criteria</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialOutcomeMeasures">Outcome Measures</a></li>
+              <li><a ui-sref="main.pa.trialOverview.eligibilityCriteria">Eligibility Criteria</a></li>
               <li><a href="">Associated Trials</a></li>
               <li><a href="">Disease/Condition</a></li>
-              <li><a href="">Data Table 4 Anatomic Sites</a></li>
+              <li><a ui-sref="main.pa.trialOverview.anatomicSites">Data Table 4 Anatomic Sites</a></li>
               <li><a href="">Bio Markers</a></li>
               <li><a href="">Interventions</a></li>
               <li><a href="">Arms</a></li>
-              <li><a href="">Sub-Groups</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialSubGroups">Sub-Groups</a></li>
           </ul>
       </uib-accordion-group>
       <uib-accordion-group is-open="paMenuPanel.menuAccordions.completeOpen">

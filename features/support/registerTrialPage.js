@@ -69,6 +69,12 @@ var registerTrial = function(){
     this.addTrialWhyStudyStopped = element(by.model('trialDetailView.why_stopped'));
     this.addTrialAddStatusButton = element(by.css('button[ng-click="trialDetailView.addStatus()"]'));
     this.addTrialAddStatusTable = element.all(by.css('tr[ng-repeat="status in trialDetailView.addedStatuses track by $index"]'));
+    this.addTrialStatusDateTable = element.all(by.binding('status.status_date'));
+    this.addTrialStatusNameTable = element.all(by.binding('status.trial_status_name'));
+    this.addTriaCommentTable = element.all(by.binding('status.comment'));
+    this.addTrialWhyStudyStoppedTable = element.all(by.binding('status.why_stopped'));
+    this.addTrialErrorWarningTable = element.all(by.css('.col-md-4.status-error'));
+
 
     /** Trial Dates **/
     this.addTrialStartDate = element(by.model('trialDetailView.curTrial.start_date'));
@@ -127,6 +133,8 @@ var registerTrial = function(){
     /**Date fields**/
     this.addTrialDateFields = element.all(by.css('.glyphicon.glyphicon-calendar'));
     this.addTrialDateClickToday = element(by.buttonText('Today'));
+    this.addTrialDateClickPreviousMonth = element(by.css('.glyphicon.glyphicon-chevron-left'));
+    this.addTrialDateClickNextMonth = element(by.css('.glyphicon.glyphicon-chevron-right'));
 
     var helper = new helperFunctions();
 
@@ -517,8 +525,18 @@ var registerTrial = function(){
     };
 
     this.clickAddTrialDateToday = function(){
-        helper.clickButtonNoHeader(this.addTrialDateClickToday, "Today button on Add Date field")
-    }
+        helper.clickButtonNoHeader(this.addTrialDateClickToday, "Today button on Add Date field");
+    };
+
+    this.clickAddTrialDateFieldPreviousMonth = function(dateofPreviousMonth){
+        helper.clickButtonNoHeader(this.addTrialDateClickPreviousMonth, "Previous Month button on Add Date field");
+        element(by.buttonText(dateofPreviousMonth)).click();
+    };
+
+    this.clickAddTrialDateFieldNextMonth = function(dateofNextMonth){
+        helper.clickButtonNoHeader(this.addTrialDateClickNextMonth, "Next Month button on Add Date field");
+        element(by.buttonText(dateofNextMonth)).click();
+    };
 };
 
 module.exports = registerTrial;

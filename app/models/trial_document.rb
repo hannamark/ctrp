@@ -14,6 +14,7 @@
 #  uuid             :string(255)
 #  lock_version     :integer          default(0)
 #  submission_id    :integer
+#  status           :string           default("active")
 #
 # Indexes
 #
@@ -32,17 +33,17 @@ class TrialDocument < TrialBase
 
   mount_uploader :file, TrialDocumentUploader
 
-  before_create :hello
-
-  def hello
-    p "before file"
-    p self.file
-    p "after file"
-  end
+  before_create :save_submission_id
 
   # Return true if this is the latest document uploaded in its document type
   def is_latest
     latest_doc = TrialDocument.where("trial_id = ? AND document_type = ?", self.trial_id, self.document_type).order(:id).last
     return latest_doc.id == self.id
+  end
+
+  private
+
+  def save_submission_id
+    self.submission_id = self.trial.submissions.last.id if self.trial.present? && self.trial.submissions.last.present?
   end
 end

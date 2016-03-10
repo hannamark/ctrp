@@ -131,7 +131,8 @@ var abstractionTrialDetails = function(){
     this.generalTrailCentralContactPhoneExt = element(by.model('generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension'));
     this.generalTrailCentralContactSearchPerson = element(by.id('person_search_modal'));
     this.generalTrailCentralContactRdoLbls = element.all(by.css('.radio-inline.control-label.ng-binding.ng-scope'));
-    this.generalTrailCentralContactNameReq = element.all(by.css('.help-block.ng-scope'));
+    this.generalTrailCentralContactNameReq = element.all(by.css('.form-group.has-feedback.required.has-error .help-block'));
+    this.redSignWarning = element.all(by.css('.form-control-feedback.glyphicon.glyphicon-exclamation-sign.glyphicon-red'));
 
 
 

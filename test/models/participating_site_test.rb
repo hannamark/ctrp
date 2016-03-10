@@ -16,6 +16,7 @@
 #  uuid            :string(255)
 #  lock_version    :integer          default(0)
 #  extension       :string(255)
+#  contact_type    :string(255)
 #
 # Indexes
 #

@@ -23,9 +23,9 @@
                                     <div class="col-sm-2" ng-show="trialRelatedDocsView.docSubtypeShown">
                                         <!-- <labe class="control-label">Document Subtype</labe> -->
                                         <input type="text" class="form-control input-sm"
+                                            ng-model="trialRelatedDocsView.curDoc.document_subtype"
                                             name="document_subtype" id="document_subtype"
                                             placeholder="Subtype"
-                                            ng-model="trialRelatedDocsView.curDoc.document_subtype"
                                             ng-required="trialRelatedDocsView.docSubtypeShown">
                                     </div>
                                     <div class="col-sm-4">
@@ -109,7 +109,7 @@
                                 <div class="row">
                                    <div class="col-sm-3"></div>
                                    <div class="btn-toolbar col-xs-12 col-sm-9">
-                                     <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field>
+                                     <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="trialRelatedDocsView.saveBtnDisabled">
                                        <i class="glyphicon glyphicon-ok"></i>  Save
                                      </button>
                                      <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialRelatedDocsView.resetForm()" restriction-field>

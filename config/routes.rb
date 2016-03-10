@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+
+
   resources :trial_versions
 
   resources :accrual_disease_terms
@@ -117,6 +119,9 @@ Rails.application.routes.draw do
       end
     end
 
+
+
+    resources :outcome_measure_types
     resources :po_affiliations
     resources :po_affiliation_statuses
 
@@ -175,6 +180,15 @@ Rails.application.routes.draw do
           get  'search_clinical_trials_gov'
           post 'import_clinical_trials_gov'
           get  'get_board_approval_statuses'
+          get  'get_intervention_models'
+          get  'get_maskings'
+          get  'get_allocations'
+          get  'study_classifications'
+          get  'study_models'
+          get  'time_perspectives'
+          get  'biospecimen_rententions'
+          get  'genders'
+          get  'age_units'
         end
       end
 
@@ -186,24 +200,26 @@ Rails.application.routes.draw do
       resources :milestones
       resources :research_categories
       resources :site_recruitment_statuses
+      resources :anatomic_sites
       resources :participating_sites do
         collection do
           post 'validate_status'
         end
       end
-      resources :site_rec_status_wrappers
+      resources :outcome_measures
+      #resources :site_rec_status_wrappers
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'
         end
       end
 
-
+      resources :sub_groups
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'
       get 'nci' => 'util#get_nci'
       get 'nih' => 'util#get_nih'
-
+      get 'accepted_file_types_for_registry' => 'util#get_accepted_file_types_for_registry'
       get 'accepted_file_types' => 'util#get_accepted_file_types'
     end
   end

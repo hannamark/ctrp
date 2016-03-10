@@ -24,19 +24,20 @@ class TrialDocumentsController < ApplicationController
   # POST /trial_documents
   # POST /trial_documents.json
   def create
-      Rails.logger.info "params: #{params}"
-    if params[:replaced_doc_id].present?
-      # TrialDocument.destroy(params[:replaced_doc_id]) # hard delete the replaced document
-      Rails.logger.info "replaced doc id: #{params[:replaced_doc_id]}"
-      replaced_doc = TrialDocument.find(params[:replaced_doc_id])
-      # replaced document is flagged as inactive except the document_type is "Other Document"
-      replaced_doc.update_attribute('status', 'inactive') # unless params[:document_type].include? "Other"
-    end
+    Rails.logger.info "params: #{params}"
 
     @trial_document = TrialDocument.new(trial_document_params)
 
     respond_to do |format|
       if @trial_document.save
+        if params[:replaced_doc_id].present?
+          # TrialDocument.destroy(params[:replaced_doc_id]) # hard delete the replaced document
+          Rails.logger.info "replaced doc id: #{params[:replaced_doc_id]}"
+          replaced_doc = TrialDocument.find(params[:replaced_doc_id])
+          # replaced document is flagged as inactive except the document_type is "Other Document"
+          replaced_doc.update_attribute('status', 'inactive') # unless params[:document_type].include? "Other"
+        end
+
         format.html { redirect_to @trial_document, notice: 'Trial document was successfully created.' }
         format.json { render :show, status: :created, location: @trial_document }
       else

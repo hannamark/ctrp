@@ -74,6 +74,15 @@ PrimaryPurpose.find_or_create_by(code: 'HSR', name: 'Health Services Research')
 PrimaryPurpose.find_or_create_by(code: 'BSC', name: 'Basic Science')
 PrimaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
+TimePerspective.find_or_create_by(code: 'PRO', name: 'Prospective')
+TimePerspective.find_or_create_by(code: 'RET', name: 'Retrospective')
+TimePerspective.find_or_create_by(code: 'CRO', name: 'Cross sectional')
+TimePerspective.find_or_create_by(code: 'OTH', name: 'Other')
+
+BiospecimenRetention.find_or_create_by(code: 'NONE', name: 'None Retained')
+BiospecimenRetention.find_or_create_by(code: 'SDNA', name: 'Samples With DNA')
+BiospecimenRetention.find_or_create_by(code: 'SNODNA', name: 'Samples Without DNA')
+
 SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
 
@@ -109,9 +118,9 @@ TrialStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual')
 TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
 TrialStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
 TrialStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
-TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
-TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
+TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
 TrialStatus.find_or_create_by(code: 'AVA', name: 'Available')
 TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available')
 TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available')
@@ -166,12 +175,12 @@ SubmissionSource.find_or_create_by(code: 'CTEP', name: 'CTEP')
 SubmissionSource.find_or_create_by(code: 'DCP', name: 'DCP')
 SubmissionSource.find_or_create_by(code: 'CCT', name: 'Cancer Center')
 
-SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registery')
+SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registry')
 SubmissionMethod.find_or_create_by(code: 'BAT', name: 'Batch')
 SubmissionMethod.find_or_create_by(code: 'CTI', name: 'ClinicalTrials.gov Import')
-SubmissionMethod.find_or_create_by(code: 'PDQ', name: 'PDQ')
 SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
 SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
+SubmissionMethod.find_or_create_by(code: 'OTHER', name: 'Other')
 
 SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
 SiteRecruitmentStatus.find_or_create_by(code: 'APP', name: 'Approved')
@@ -181,30 +190,37 @@ SiteRecruitmentStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual')
 SiteRecruitmentStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
 SiteRecruitmentStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
 SiteRecruitmentStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
-SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Complete')
-SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
 SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
+SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Complete')
 
 Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
 
-StudyClassification.find_or_create_by(code: 'BAV', name: 'Bio-availability')
-StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bio-equivalence')
-StudyClassification.find_or_create_by(code: 'EFF', name: 'Efficacy')
-StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
+StudyClassification.find_or_create_by(code: 'SAFE', name: 'Safety')
+StudyClassification.find_or_create_by(code: 'EFFI', name: 'Efficacy')
+StudyClassification.find_or_create_by(code: 'SAEF', name: 'Safety/Efficacy')
+StudyClassification.find_or_create_by(code: 'BAV', name: 'Bioavailability')
+StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bioequivalence')
 StudyClassification.find_or_create_by(code: 'PD', name: 'Pharmacodynamics')
-StudyClassification.find_or_create_by(code: 'PK', name: 'Pharmacokinetics')
-StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dynamics')
-StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
-StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
+StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/Pharmacodynamics')
+StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
+
+StudyModel.find_or_create_by(code: 'COH', name: 'Cohort')
+StudyModel.find_or_create_by(code: 'CASECO', name: 'Case-control')
+StudyModel.find_or_create_by(code: 'CASEON', name: 'Case-only')
+StudyModel.find_or_create_by(code: 'CASECR', name: 'Case-crossover')
+StudyModel.find_or_create_by(code: 'EORCS', name: 'Ecologic or Community Studies')
+StudyModel.find_or_create_by(code: 'FAMB', name: 'Family-based')
+StudyModel.find_or_create_by(code: 'OTH', name: 'Other')
 
 OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
 OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
 
 Allocation.find_or_create_by(code: 'NA', name: 'NA')
-Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Control Trial')
+Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Controlled Trial')
 Allocation.find_or_create_by(code: 'NRT', name: 'Non-Randomized Trial')
 
 InterventionModel.find_or_create_by(code: 'SG', name: 'Single Group')
@@ -229,6 +245,61 @@ AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
 AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
 AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
 
+AmendmentReason.find_or_create_by(code: 'AS', name: 'Acknowledged Scientific')
+AmendmentReason.find_or_create_by(code: 'AA', name: 'Acknowledged Administrative')
+AmendmentReason.find_or_create_by(code: 'AAS', name: 'Acknowledged Administrative and Scientific')
+
+AnatomicSite.find_or_create_by(code:'AN', name: 'Anus')
+AnatomicSite.find_or_create_by(code:'BJ', name: 'Bones and Joints')
+AnatomicSite.find_or_create_by(code:'BN', name: 'Brain and Nervous System')
+AnatomicSite.find_or_create_by(code:'BF', name: 'Breast - Female')
+AnatomicSite.find_or_create_by(code:'BM', name: 'Breast - Male')
+AnatomicSite.find_or_create_by(code:'CE', name: 'Cervix')
+AnatomicSite.find_or_create_by(code:'CO', name: 'Colon')
+AnatomicSite.find_or_create_by(code:'CU', name: 'Corpus Uteri')
+AnatomicSite.find_or_create_by(code:'ES', name: 'Esophagus')
+AnatomicSite.find_or_create_by(code:'ET', name: 'Eye and Orbit')
+AnatomicSite.find_or_create_by(code:'HL', name: "Hodgkin's Lymphoma")
+AnatomicSite.find_or_create_by(code:'IS', name: 'Ill-Defined Sites')
+AnatomicSite.find_or_create_by(code:'KA', name: "Kaposi's Sarcoma")
+AnatomicSite.find_or_create_by(code:'KI', name: "Kidney")
+AnatomicSite.find_or_create_by(code:'LA', name: 'Larynx')
+AnatomicSite.find_or_create_by(code:'LN', name: 'Leukemia, not otherwise specified')
+AnatomicSite.find_or_create_by(code:'LO', name: 'Leukemia, other')
+AnatomicSite.find_or_create_by(code:'LP', name: 'Lip, Oral Cavity and Pharynx')
+AnatomicSite.find_or_create_by(code:'LR', name: 'Liver')
+AnatomicSite.find_or_create_by(code:'LU', name: 'Lung')
+AnatomicSite.find_or_create_by(code:'LY', name: 'Lymphoid Leukemia')
+AnatomicSite.find_or_create_by(code:'ME', name: 'Melanoma, Skin')
+AnatomicSite.find_or_create_by(code:'ML', name: 'Multiple')
+AnatomicSite.find_or_create_by(code:'MM', name: 'Multiple Myeloma')
+AnatomicSite.find_or_create_by(code:'MY', name: 'Mycosis Fungoides')
+AnatomicSite.find_or_create_by(code:'MZ', name: 'Myeloid and Monocyte Leukemia')
+AnatomicSite.find_or_create_by(code:'NL', name: "Non-Hodgkin's Lymphoma")
+AnatomicSite.find_or_create_by(code:'OD', name: "Other Digestive Organ")
+AnatomicSite.find_or_create_by(code:'OE', name: "Other Endocrine System")
+AnatomicSite.find_or_create_by(code:'OF', name: "Other Female Genital")
+AnatomicSite.find_or_create_by(code:'OH', name: "Other Hematopoietic")
+AnatomicSite.find_or_create_by(code:'OM', name: "Other Male Genital")
+AnatomicSite.find_or_create_by(code:'OR', name: "Other Respiratory/Intrathoracic Organs")
+AnatomicSite.find_or_create_by(code:'OS', name: "Other Skin")
+AnatomicSite.find_or_create_by(code:'OU', name: "Other Urinary")
+AnatomicSite.find_or_create_by(code:'OV', name: "Ovary")
+AnatomicSite.find_or_create_by(code:'PA', name: "Pancreas")
+AnatomicSite.find_or_create_by(code:'PR', name: "Prostate")
+AnatomicSite.find_or_create_by(code:'RE', name: "Rectum")
+AnatomicSite.find_or_create_by(code:'SI', name: "Small Intestine")
+AnatomicSite.find_or_create_by(code:'SO', name: "Soft Tissue / Sarcoma")
+AnatomicSite.find_or_create_by(code:'ST', name: "Stomach")
+AnatomicSite.find_or_create_by(code:'TH', name: "Thyroid")
+AnatomicSite.find_or_create_by(code:'UM', name: "Unknown Sites")
+AnatomicSite.find_or_create_by(code:'UR', name: "Urinary Bladder")
+
+UserStatus.find_or_create_by(code: 'INR', name: 'In Review')
+UserStatus.find_or_create_by(code: 'ACT', name: 'Active')
+UserStatus.find_or_create_by(code: 'INA', name: 'Inactive')
+UserStatus.find_or_create_by(code: 'DEL', name: 'Deleted')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -241,9 +312,11 @@ AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List'
 
 AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
-AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,zip,gz', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/zip, application/x-gzip')
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES_REG', name: 'Accepted File Types for Registry', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,htm,html,msg,mht,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
 
-AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other Document,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types for PA', value: 'pdf,doc,docx,xls,xlsx,docm,xlsm,xlsb,rtf,htm,html,msg,mht,txt,thmx,dotm,dotx,xml', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-word.document.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/rtf,text/html,text/plain,application/vnd.ms-officetheme,application/vnd.ms-word.template.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/xml')
+
+AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHBLI')
 
@@ -575,6 +648,20 @@ AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'Clinical
 
 ########## SEEDING APP SETTINGS ENDS ##########
 
+########## SEEDING MAIL TEMPLATES STARTS ##########
+
+MailTemplate.find_or_create_by(
+                code: 'TRIAL_REG',
+                name: 'Trial Registration',
+                from: 'noreply@ctrp.nci.nih.gov',
+                to: 'noreply@ctrp.nci.nih.gov',
+                subject: 'NCI CTRP: Trial RECORD CREATED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+                body_text: 'Text version.',
+                body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers} <table border="0"> <tr> <td><b>Submission Date:</b></td> <td>${submissionDate}</td> </tr> </table> <hr> <p>Date: ${CurrentDate}</p> <p>Dear ${SubmitterName},</p> <p>You have successfully created a record in the NCI Clinical Trials Reporting Program (CTRP) for the trial identified above.</p> <p>The CTRP has assigned your trial the following unique NCI Trial Identification (Trial ID) number:<br> <b>${nciTrialIdentifier}</b><br><br> Please reference this number in all future correspondence with the Clinical Trials Reporting Office (CTRO).</p> <p><b>NEXT STEPS:</b><br> The Clinical Trials Reporting Office (CTRO) staff is reviewing your trial to ensure that it meets all of the requirements for registration in the CTRP system. They will email you their findings within two (2) business days. </p> <p>In the meantime, if you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p> <p>Thank you for submitting your trial for registration in the Clinical Trials Reporting Program.</p></body></html>'
+)
+
+########## SEEDING MAIL TEMPLATES ENDS ############
+
 puts "Seeding ldap and local users"
 #Add LDAP and local test users
 #Need dummy org for LDAP users
@@ -695,6 +782,8 @@ ctep = Organization.find_or_create_by( id: 9999998,
 )
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "approve" => true},
+               {"username" => "ctrpsuper3", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
                {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
@@ -706,6 +795,8 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "approve" => true},
                {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "approve" => true},
+               {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "approve" => true},
                {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true},
                {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true}
 
