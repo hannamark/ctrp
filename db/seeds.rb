@@ -221,7 +221,7 @@ OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
 OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
 
 Allocation.find_or_create_by(code: 'NA', name: 'NA')
-Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Control Trial')
+Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Controlled Trial')
 Allocation.find_or_create_by(code: 'NRT', name: 'Non-Randomized Trial')
 
 InterventionModel.find_or_create_by(code: 'SG', name: 'Single Group')
