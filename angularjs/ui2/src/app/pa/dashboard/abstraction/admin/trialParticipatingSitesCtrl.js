@@ -155,7 +155,7 @@
                             for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {
                                 if (vm.curTrial.participating_sites[i].id == vm.currentParticipatingSite.id) {
                                     vm.curTrial.participating_sites[i] = vm.currentParticipatingSite;
-                                    console.log("YAHOO vm.curTrial.participating_sites[i].latest_site_recruitment_status = " + JSON.stringify(vm.curTrial.participating_sites[i].latest_site_recruitment_status));
+                                    //console.log("vm.curTrial.participating_sites[i].latest_site_recruitment_status = " + JSON.stringify(vm.curTrial.participating_sites[i].latest_site_recruitment_status));
                                 }
                             }
                         }
