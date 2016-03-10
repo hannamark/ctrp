@@ -62,7 +62,7 @@
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
                 var infoSourceName = vm.trialDetailObj.internal_source.name.toLowerCase();
                 vm.isInfoSourceProtocol = infoSourceName.indexOf('protocol') > -1;
-                vm.isInfoSourceImport = vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
+                vm.isInfoSourceImport = !vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
             }, 0);
         } // _getTrialDetailCopy
 
