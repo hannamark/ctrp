@@ -16,6 +16,9 @@
         vm.genderList = genderList;
         vm.ageUnits = ageUnits;
         console.info(genderList, ageUnits);
+        
+        vm.updateCriteria = updateCriteria;
+        vm.resetForm = resetForm;
 
         activate();
         function activate() {
@@ -25,6 +28,14 @@
         function _getTrialDetailCopy() {
             vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
             console.info('research cat name: ', vm.trialDetailObj.isInterventional);
+        }
+
+        function resetForm() {
+            _getTrialDetailCopy();
+        }
+
+        function updateCriteria() {
+            console.info('updateCriteria');
         }
 
     } // pasEligibilityCtrl
