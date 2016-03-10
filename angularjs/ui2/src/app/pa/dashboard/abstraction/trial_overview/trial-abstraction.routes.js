@@ -21,6 +21,9 @@
                             var trialId = $stateParams.trialId;
                             console.log('trialId: ' + trialId);
                             return TrialService.getTrialById(trialId);
+                        },
+                        researchCategories: function(TrialService) {
+                            return TrialService.getResearchCategories();
                         }
                     },
                     ncyBreadcrumb: {

@@ -186,6 +186,8 @@ Rails.application.routes.draw do
           get  'study_models'
           get  'time_perspectives'
           get  'biospecimen_rententions'
+          get  'genders'
+          get  'age_units'
         end
       end
 
