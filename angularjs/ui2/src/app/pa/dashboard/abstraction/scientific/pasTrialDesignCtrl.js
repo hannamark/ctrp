@@ -4,10 +4,10 @@
         .controller('pasTrialDesignCtrl', pasTrialDesignCtrl);
 
     pasTrialDesignCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData', 'Common'];
+        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData', 'Common', 'maskings'];
 
     function pasTrialDesignCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, groupedTrialDesignData, Common) {
+        MESSAGES, _, $timeout, groupedTrialDesignData, Common, maskings) {
         var vm = this;
         console.info('groupedTrialDesignData: ', groupedTrialDesignData);
         vm.trialDetailObj = {};
@@ -17,15 +17,23 @@
         vm.secondaryPurposes = [];
         vm.interventionModels = [];
         vm.studyModels = [];
-        vm.maskings = [];
+        vm.maskings = maskings.maskings;
         vm.allocations = [];
         vm.studyClassifications = [];
         vm.timePerspectives = [];
+        vm.biospecimenRetentions = [];
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
         vm.isOtherStudyModel = false;
-        vm.trialDetailObj.showMaskingRoles = false;
+        // vm.showMaskingRoles = false;
         vm.isOtherTimePerspective = false;
+        // information sources:
+        vm.isInfoSourceProtocol = false;
+        vm.isInfoSourceImport = false;
+
+        // actions:
+        vm.updateTrialDesign = updateTrialDesign;
+        vm.resetForm = resetForm;
 
         activate();
         function activate() {
@@ -42,16 +50,19 @@
         // break down the grouped promised data as arrays
         function _unpackPromisedData() {
             if (groupedTrialDesignData.length === 4) {
-                vm.trialPhases = groupedTrialDesignData[0].sort(Common.a2zComparator());
-                vm.researchCategories = groupedTrialDesignData[1].sort(Common.a2zComparator());
-                vm.primaryPurposes = groupedTrialDesignData[2].sort(Common.a2zComparator());
-                vm.secondaryPurposes = groupedTrialDesignData[3].sort(Common.a2zComparator());
+                vm.trialPhases = groupedTrialDesignData[0];
+                vm.researchCategories = groupedTrialDesignData[1];
+                vm.primaryPurposes = groupedTrialDesignData[2];
+                vm.secondaryPurposes = groupedTrialDesignData[3];
             }
         }
 
         function _getTrialDetailCopy() {
             $timeout(function() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                var infoSourceName = vm.trialDetailObj.internal_source.name.toLowerCase();
+                vm.isInfoSourceProtocol = infoSourceName.indexOf('protocol') > -1;
+                vm.isInfoSourceImport = vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
             }, 0);
         } // _getTrialDetailCopy
 
@@ -70,11 +81,6 @@
                         _fetchInterventionModels();
                     }
 
-                    // fetch maskings
-                    if ((vm.isInterventional || vm.isExpandedAccess) && vm.maskings.length === 0) {
-                        _fetchMaskings();
-                    }
-
                     if ((vm.isInterventional || vm.isExpandedAccess) && vm.allocations.length === 0) {
                         _fetchAllocations();
                     }
@@ -83,10 +89,18 @@
                         _fetchStudyClassifications()
                     }
 
-                    if ((vm.isObservational || vm.isAncillary) && (vm.studyModels.length === 0 || vm.timePerspectives.length === 0)) {
+                    if ((vm.isObservational || vm.isAncillary) && vm.studyModels.length === 0) {
                         _fetchStudyModels();
+                    }
+
+                    if ((vm.isObservational || vm.isAncillary) && vm.timePerspectives.length === 0) {
                         _getTimePerspectives();
                     }
+
+                    if ((vm.isObservational || vm.isAncillary) && vm.biospecimenRetentions.length === 0) {
+                        _fetchBiospecimenRetention()
+                    }
+
                 });
         } // _watchResearchCategory
 
@@ -147,43 +161,39 @@
         function _fetchInterventionModels() {
             PATrialService.getInterventionModels().then(function(res) {
                 if (res.server_response.status === 200) {
-                    vm.interventionModels = res.models.sort(Common.a2zComparator()) || [];
-                    console.info('models: ', vm.interventionModels);
+                    vm.interventionModels = res.models || [];
                 }
             });
         }
-
-        function _fetchMaskings() {
-            PATrialService.getMaskings().then(function(res) {
-                if (res.server_response.status === 200) {
-                    vm.maskings = res.maskings.sort(Common.a2zComparator()) || [];
-                    console.info(vm.maskings);
-                }
-            });
-        } // _fetchMaskings
 
         function _fetchAllocations() {
             PATrialService.getAllocations().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.allocations = res.allocations || [];
-                    vm.allocations.sort(Common.a2zComparator());
+                    vm.allocations;
                 }
-            })
+            });
         }
 
         function _fetchStudyClassifications() {
             PATrialService.getStudyClassifications().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.studyClassifications = res.data || [];
-                    vm.studyClassifications.sort(Common.a2zComparator());
+                    vm.studyClassifications;
                 }
-            })
+            });
         }
 
         function _fetchStudyModels() {
             PATrialService.getStudyModels().then(function(res) {
                 vm.studyModels = res.data || [];
-                vm.studyModels.sort(Common.a2zComparator());
+                vm.studyModels;
+            });
+        }
+
+        function _fetchBiospecimenRetention() {
+            PATrialService.getBiospecimenRetentions().then(function(res) {
+                vm.biospecimenRetentions = res.data || [];
             });
         }
 
@@ -191,8 +201,10 @@
             $scope.$watch(function() {return vm.trialDetailObj.masking_id;}, function(newVal) {
                 var curMasking = _.findWhere(vm.maskings, {id: newVal});
                 var maskingName = !!curMasking ? curMasking.name : '';
-                vm.trialDetailObj.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
-            })
+                console.info('maskingName: ', maskingName, newVal);
+                vm.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
+                console.info('show roles? ', vm.showMaskingRoles);
+            });
         }
 
         /**
@@ -209,9 +221,42 @@
         function _getTimePerspectives() {
             PATrialService.getTimePerspectives().then(function(res) {
                 vm.timePerspectives = res.data || [];
-                vm.timePerspectives.sort(Common.a2zComparator());
+                vm.timePerspectives;
                 console.info('time perspectives: ', res);
             });
+        }
+
+        function updateTrialDesign() {
+            var outerTrial = {};
+            outerTrial.new = false;
+            outerTrial.id = vm.trialDetailObj.id;
+            outerTrial.trial = vm.trialDetailObj;
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+            PATrialService.upsertTrial(outerTrial).then(function(res) {
+
+                if (res.server_response.status === 200) {
+                    vm.trialDetailObj = res;
+                    vm.trialDetailObj.lock_version = res.lock_version;
+                    // delete vm.trialDetailObj.admin_checkout;
+                    // delete vm.trialDetailObj.scientific_checkout;
+                    PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+
+                    toastr.clear();
+                    toastr.success('Trial design has been updated', 'Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                    _getTrialDetailCopy();
+                }
+
+            }).catch(function(err) {
+                console.error('error in updating trial design: ', err);
+            });
+        }
+
+        function resetForm() {
+            _getTrialDetailCopy();
         }
 
     } //pasTrialDesignCtrl

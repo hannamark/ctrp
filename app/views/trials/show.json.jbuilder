@@ -1,5 +1,5 @@
-json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id, :masking_id,
-              :masking_role_caregiver, :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
+json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, :research_category_id, :masking_id, :biospecimen_retention_id, :biospecimen_desc,
+              :masking_role_caregiver, :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject, :accept_vol, :min_age, :max_age, :min_age_unit_id, :max_age_unit_id, :gender_id,
               :research_category, :allocation_id, :study_classification_id, :target_enrollment, :final_enrollment, :study_model_id, :study_model_other,
               :primary_purpose_other, :secondary_purpose_other, :investigator_title, :program_code, :grant_question,
               :start_date, :start_date_qual, :primary_comp_date, :primary_comp_date_qual, :comp_date, :comp_date_qual,
@@ -26,6 +26,12 @@ json.trial_status_wrappers do
   end
 end
 
+json.anatomic_site_wrappers do
+  json.array!(@trial.anatomic_site_wrappers) do |anatomic_site_wrapper|
+    json.extract! anatomic_site_wrapper, :trial_id, :id, :anatomic_site_id, :anatomic_site, :created_at, :updated_at
+  end
+end
+
 json.ind_ides do
   json.array!(@trial.ind_ides) do |ind_ide|
     json.extract! ind_ide, :trial_id, :id, :ind_ide_type, :grantor, :nih_nci, :holder_type_id, :holder_type, :ind_ide_number
@@ -36,6 +42,13 @@ json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
     json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status
     json.set! :added_by, document.added_by_id.nil? ? User.find(1) : ''    #document.added_by_id
+  end
+end
+
+json.outcome_measures do
+  json.array!(@trial.outcome_measures) do |outcome_measure|
+    json.extract! outcome_measure, :id, :title, :time_frame, :description, :safety_issue,:outcome_measure_type_id
+    json.outcome_measure_type outcome_measure.outcome_measure_type.present? ? outcome_measure.outcome_measure_type.name : nil
   end
 end
 
@@ -73,6 +86,8 @@ json.participating_sites do
     json.protocol_id participating_site.protocol_id
     json.program_code participating_site.program_code
     json.person participating_site.person
+    json.person_id participating_site.person.nil? ? nil:participating_site.person.id
+
 
     json.organization participating_site.organization
     json.site_rec_status_wrappers do

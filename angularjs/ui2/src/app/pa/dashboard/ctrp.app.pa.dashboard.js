@@ -34,6 +34,7 @@
         'ui.scrollpoint',
         'angular-json-tree',
         'smart-table',
+        'ngFileSaver',
 
     ]);
 })();

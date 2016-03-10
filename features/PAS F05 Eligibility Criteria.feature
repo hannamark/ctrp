@@ -205,8 +205,7 @@ And I have selected a trial
      Then information text appears to display the number of characters available to enter into the field
       | 5000 characters left | 
 And a cumulative message displays with the Total Character of all Eligibility Criterion Descriptions that have been saved 
-     When 15000 characters have been entered
-     Then no additional text can be entered
+     "Total characters for all 'Other Criteria is ####"   
 
 Scenario:  #15 I can Delete Eligibility Criterion for a Trial
 Given I am logged into the CTRP Protocol Abstraction application

@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  # before_filter :wrapper_authenticate_user unless Rails.env.test?
+  # load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -71,6 +71,27 @@ class TrialsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to trials_url, notice: 'Trial was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def genders
+    @genders = Gender.all
+    respond_to do |format|
+      format.json { render :json => @genders }
+    end
+  end
+
+  def age_units
+    @age_units = AgeUnit.all
+    respond_to do |format|
+      format.json { render :json => @age_units }
+    end
+  end
+
+  def biospecimen_rententions
+    @retention = BiospecimenRetention.all
+    respond_to do |format|
+      format.json { render :json => {:data => @retention} }
     end
   end
 
@@ -477,8 +498,8 @@ class TrialsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def trial_params
     params.require(:trial).permit(:nci_id, :lead_protocol_id, :allocation_id, :official_title, :acronym, :pilot, :research_category_id,
-                                  :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id,
-                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms,
+                                  :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id, :accept_vol, :min_age, :max_age, :min_age_unit_id, :max_age_unit_id, :gender_id,
+    :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms, :biospecimen_retention_id, :biospecimen_desc,
                                   :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id, :masking_role_caregiver,
                                   :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
                                   :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
@@ -501,7 +522,9 @@ class TrialsController < ApplicationController
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status],
-                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy])
+                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
+                                  anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
+                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy])
   end
 
   # Convert status code to name in validation messages

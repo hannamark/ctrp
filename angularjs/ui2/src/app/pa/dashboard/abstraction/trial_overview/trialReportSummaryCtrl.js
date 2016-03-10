@@ -5,7 +5,7 @@
 
 (function() {
     'use strict';
-    angular.module('ctrp.app.pa.dashboard', ['ngFileSaver'])
+    angular.module('ctrp.app.pa.dashboard')
     .controller('trialReportSummaryCtrl', trialReportSummaryCtrl);
 
     trialReportSummaryCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',

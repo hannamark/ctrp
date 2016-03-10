@@ -10,11 +10,11 @@
 
     function trialAbstractionScientificRoutes($stateProvider) {
         $stateProvider
-                .state('main.pa.trialOverview.trialDescription', {
-                    url: '/trial-description',
-                    templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_description.html',
-                    controller: 'pasTrialDescriptionCtrl as descView',
-                    resolve: {
+            .state('main.pa.trialOverview.trialDescription', {
+                url: '/trial-description',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_description.html',
+                controller: 'pasTrialDescriptionCtrl as descView',
+                resolve: {
                     TrialService: 'TrialService',
                     PATrialService: 'PATrialService',
                     trialDetailObj: function($stateParams, TrialService) {
@@ -22,11 +22,11 @@
                     },
                 },
                 section: 'pa',
-                    ncyBreadcrumb: {
-                        parent: 'main.pa.trialOverview',
-                        label: 'Trial Description'
-                    }
-                })
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Trial Description'
+                }
+            })
             .state('main.pa.trialOverview.trialDesign', {
                 url: '/trial-design',
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_design.html',
@@ -35,6 +35,9 @@
                     PATrialService: 'PATrialService',
                     groupedTrialDesignData: function(PATrialService) {
                         return PATrialService.groupTrialDesignData();
+                    },
+                    maskings: function(PATrialService) {
+                        return PATrialService.getMaskings();
                     }
                 },
                 section: 'pa',
@@ -50,14 +53,58 @@
                 resolve: {
                     TrialService: 'TrialService',
                     PATrialService: 'PATrialService',
-                    trialDetailObj: function($stateParams, TrialService) { 
+                    trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    anatomicSitesObj: function(PATrialService) {
+                        return PATrialService.getAnatomicSites();
                     },
                 },
                 section: 'pa',
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Anatomic Sites'
+                }
+            })
+            .state('main.pa.trialOverview.trialOutcomeMeasures', {
+                url: '/trial-outcome-measures',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_outcome_measures.html',
+                controller: 'pasTrialOutcomeMeasuresCtrl as omView',
+                resolve: {
+                    TrialService: 'TrialService',
+                    OutcomeMeasureService: 'OutcomeMeasureService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    outcomeTypesObj: function($stateParams, TrialService) {
+                        return TrialService.getOutcomeMeasureTypes();
+                    }
+                },
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Outcome Measures'
+                }
+            })
+
+            .state('main.pa.trialOverview.eligibilityCriteria', {
+                url: '/eligibility-critiera',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_eligibility_criteria.html',
+                controller: 'pasEligibilityCtrl as criteriaView',
+                section: 'pa',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    genderList: function(PATrialService) {
+                        return PATrialService.getGenderList();
+                    },
+                    ageUnits: function(PATrialService) {
+                        return PATrialService.getAgeUnits();
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Eligibility Criteria'
                 }
             });
     }

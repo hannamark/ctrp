@@ -136,23 +136,13 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
       |Last Update Date/Time  |
       |Actions  |
   
-    Scenario: #4 I can search study subject for a complete Trial
-    Given I am on the Search Study Subject Screen
-    And I can see the list of study subject section
-    And I can search study subjects using <dataType>
-       
-      |Study Subject ID  | 
-      |Registration Date  |
-      |Participating Site  |
-      |Last Update Date/Time  |
-
-     When I enter a <dataType> 
-     Then The searched data type information will be displayed on the list of Study Subject
-
- 
+    Scenario: #4 I can filter Accrual Search results
+    Given I am logged in to the Accrual Application
+    When I type one or more characters contained in any of the fields 
+    Then the list is filtered as I type subsequent characters 
+    
    
-   
-  Scenario:#5 I Can search a Study Subject for a complete Trial
+  Scenario:#5 I Can search Study Subject for a complete Trial
     Given I am on the Search Study Subject Screen
      And I have entered a unique Study Subject ID
      And I have selected a Participating Site
@@ -160,7 +150,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
      When I have clicked on the search Button
      Then the study Suject will be displayed
      
-   Scenario:#6 I can Add New Study Subject for a complete trial
+   Scenario:#6 I can Add New Study Subject 
     Given I am on the Trial Search screen 
       And I can view a list of Trials
      When I have clicked on the NCI Trial Identifier of the selected trial
@@ -302,7 +292,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
    And I can click on the Back button to go back to the Search Study Subject Screen
    
    
-     Scenario:#11 I can Update Study Subject Information for Complete trials
+     Scenario:#11 I can Update Study Subject Information
     Given I am on the Search Study Subject screen
     And I can view a list of study Subjects
      When I have clicked on the edit icon on the actions column for the selected study subject
@@ -326,7 +316,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
      Then the study subject last saved data won't be updated 
      And the search Study Subject screen will be displayed
 
-  Scenario: #12 I can delete Study Subject Information for Complete Trials
+  Scenario: #12 I can delete Study Subject Information 
     Given I am on the Search Study Subject screen
     And I can view a list of study Subjects
      When I have clicked on the delete icon on the actions column for the selected study subject
@@ -343,7 +333,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
     Then the study subject won't be deleted
     
     
-      Scenario: # I can record the total number of accruals associated with Abbreviated and Other Clinical Trials
+      Scenario: #13 I can record the total number of accruals associated with Abbreviated and Other Clinical Trials
     Given I am a registered member of one or more of the Participating Sites 
     And I am affiliated with the site for a given trial
     And I am on the Trial Search screen
@@ -373,14 +363,14 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
       And the CTRP system records each COUNT submitted as the total number
 
      
-      Scenario: # I can update Site Subject Accrual Counts
+      Scenario: #14 I can update Site Subject Accrual Counts
     Given I am on the Participating Site Accrual Count
      And I can click on the "save" icon in the Actions column to update the "# of Subjects Enrolled"
      When I click on the "Save" icon 
      Then The "# of Subjects Enrolled" will be updated
      And the "Message: Record Updated" will be displayed
      
-       Scenario: # I can delete Site Subject Accrual Counts
+       Scenario: #15 I can delete Site Subject Accrual Counts
     Given I am on the Participating Site Accrual Count
      When I have cliked on the Delete Icon in the Actions column
      Then The message "Click OK to remove selected site(s) accrual counts. Cancel to abort" will be displayed
@@ -389,6 +379,57 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
      And the "Message: Subject Accrual Count Deleted" will be displayed
      
      
+
+      Scenario: #16 I can Submit Summary Level Accrual for a Non-Interventional Trial 
+    Given I can view a list of trials on the Trial Search screen
+     When I have clicked on the NCI Trial Identifier for a Non-Interventioanl Trial 
+     Then the Participating Site Subject Accrual Count screen will display table type
+     
+      |PO Id  |
+      |Site Name  |
+      |# of Subjects Enrolled  |
+      |Date Last Updated  |
+      |Actions  |
+
+      And I can view Trial information type at the top of the screen
+     
+     
+      |NCI-2015-01723  |Protocol For A Research Database For Hematopoietic Stem Cell Transplantation, Other Cellular Therapies and Marrow Toxic Injuries  |
+      |Lead Organization Trial ID  |NMDP IRB-1999-0021  |
+      |Lead Oganization  |Center for International Blood and Marrow Transplant Research  |
+      
+      And I can enter "# of Subjects Enrolled"for the displayed Participating sites
+      When I click on the save icon
+      Then the "# of Subjects Enrolled" added will be recorded 
+      
+
+      Scenario:#17 I can Submit Detail Subject Accrual for a Non-Interventioanl Trial
+    Given I am on the Participating Site Subject Accrual Count for a Non-Interventional Trial
+    When no accrual counts have been added for the selected trial previously
+    Then I can elect to submit the accrual data at the subject level instead of the summary level
+    And I can view " Switch to Subject Level Accrual" tab at the top right
+     When I have clicked on the "Switch to Subject Level Accrual" 
+     Then The Search Study Subject screen will display
+     And I can enter Study Subjects 
+     
+     
+       Scenario:#18 Non-Interventional Trial Accruals rules
+    Given I am on the participating Site Subject Accrual Count
+    And Participating Sites can enter accrual data at the summary level by default
+     When Currently There are no accrual records for my trial in CTRP
+     Then I can enter demographic accrual information at the study subject
+     When a participating site has recorded accruals
+     Then I can no longer choose which level to use
+     And I must enter subsequent accrual data at the same level
+
+ 
+       Scenario: #19 Submit Summary Level Accrual rules
+    Given I logged into the Accrual Application
+     When I have entered a Summary level Accrual count 
+     Then the CTRP system records each COUNT submitted as the TOTAL number of subjects accrued to date
+     And the CTRP system does not add the count currently entered to previously-recorded counts
+
+
 
 
 

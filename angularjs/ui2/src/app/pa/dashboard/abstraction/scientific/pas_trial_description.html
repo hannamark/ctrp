@@ -7,7 +7,7 @@
             <div class="row">
                 <form name="desc_form" role="form" class="form-horizontal" novalidate ctrp-submit="descView.saveTrialDescription()">
                     <!-- fieldset for Title -->
-                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <legend class="sub-bordered">Title</legend>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(desc_form.brief_title)}">
@@ -19,6 +19,7 @@
                                           class="form-control"
                                           ng-model="descView.curTrial.brief_title"
                                           ng-maxlength="300"
+                                          maxlength="300"
                                           ng-required="true">
                                 </textarea>
                                 <span ng-show="desc_form.brief_title.$dirty">
@@ -33,7 +34,7 @@
                         </div>
                     </fieldset>
                     <!-- fieldset for Summary -->
-                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <legend class="sub-bordered">Summary</legend>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(desc_form.brief_summary)}">
@@ -44,6 +45,7 @@
                                           rows="5"
                                           class="form-control"
                                           ng-model="descView.curTrial.brief_summary"
+                                          maxlength="5000"
                                           ng-maxlength="5000"
                                           ng-required="true">
                                 </textarea>
@@ -58,7 +60,7 @@
                         </div>
                     </fieldset>
                     <!-- fieldset for Objectives -->
-                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <legend class="sub-bordered">Objectives</legend>
 
                         <div class="form-group has-feedback">
@@ -68,30 +70,33 @@
                                           id="objective"
                                           rows="5"
                                           class="form-control"
-                                          ng-model="descView.curTrial.objective"
-                                          ng-maxlength="5000">
+                                          ng-model="descView.curTrial.objective">
                                 </textarea>
                             </div>
                         </div>
                     </fieldset>
                     <!-- fieldset for Detailed Description -->
-                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <legend class="sub-bordered">Detailed Description</legend>
 
-                        <div class="form-group has-feedback">
+                        <div class="form-group has-feedback" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(desc_form.detailed_description)}">
                             <label for="detailed_description" class="control-label col-xs-12 col-sm-2">Detailed Description</label>
                             <div class="col-xs-12 col-sm-10">
                                 <textarea name="detailed_description"
                                           id="detailed_description"
-                                          rows="5"
+                                          rows="10"
                                           class="form-control"
                                           ng-model="descView.curTrial.detailed_description"
+                                          maxlength="32000"
                                           ng-maxlength="32000">
                                 </textarea>
+                                <span ng-show="desc_form.detailed_description.$dirty">
+                                    {{32000 - desc_form.detailed_description.$viewValue.length}} characters left
+                                </span>
                             </div>
                         </div>
                     </fieldset>
-                    <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                    <div class="form-group no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
                         <div class="btn-toolbar">
                             <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>Save</button>
                             <button type="button"class="btn btn-warning pull-right" ng-click="descView.reload()" restriction-field>

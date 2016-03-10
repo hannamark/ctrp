@@ -111,6 +111,10 @@ module.exports = function() {
     var optionG = '';
     var optionH = '';
     var optionI = '';
+    var tblOptionA = '';
+    var tblOptionB = '';
+    var tblOptionC = '';
+    var tblOptionD = '';
     var reponsblPartyOptionSelect = '-Select a Responsible Party-';
     var reponsblPartyOptionSponsor = 'Sponsor';
     var reponsblPartyOptionPrincipal = 'Principal Investigator';
@@ -173,19 +177,20 @@ module.exports = function() {
             expect(items.toString().split("\n")).to.eql(strVal.toString().split("\n"));
         });
         var tableDataSplt = strVal.toString().split("\n");
-        optionA = tableDataSplt[0];
-        optionB = tableDataSplt[1];
-        optionC = tableDataSplt[2];
-        optionD = tableDataSplt[3];
-        fdaaa.selectResponsibleParty(optionB);
+        tblOptionA = tableDataSplt[0];
+        tblOptionB = tableDataSplt[1];
+        tblOptionC = tableDataSplt[2];
+        tblOptionD = tableDataSplt[3];
+        fdaaa.selectResponsibleParty(tblOptionB);
         fdaaa.clickSave();
-        browser.sleep(250).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the selected value will be recorded as the Responsible Party Type$/, function (callback) {
         fdaaa.clickAdminDataGeneralTrial();
         fdaaa.clickAdminDataRegulatoryInfoFDA();
-        helper.getVerifyListValue(fdaaa.regulatoryInfoResponsiblePartyList, optionB, "Responsible Party - Selected Value verification");
+        helper.wait_for(3000);
+        helper.getVerifyListValue(fdaaa.regulatoryInfoResponsiblePartyList, tblOptionB, "Responsible Party - Selected Value verification");
         browser.sleep(25).then(callback);
     });
 

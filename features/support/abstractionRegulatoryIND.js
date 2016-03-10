@@ -32,6 +32,7 @@ var abstractionRegulatoryIND = function(){
 
     this.indIDEAssociatedQuelbl = element(by.css('.control-label.col-xs-12.col-sm-6')); //by.css('label.control-label.col-xs-12.col-sm-6')
     this.indIDEAssociatedRdo = element.all(by.model('trialDetailView.curTrial.ind_ide_question')); //by.css('input[ng-model="trialDetailView.curTrial.ind_ide_question"]')
+    this.indIDEAssociatedRdoCehck = element(by.model('trialDetailView.curTrial.ind_ide_question'));
 
     this.indIDEType = element(by.model('trialDetailView.ind_ide_type'));
     this.indIDETypeAll = element.all(by.model('trialDetailView.ind_ide_type'));
