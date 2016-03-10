@@ -148,7 +148,8 @@
             getTimePerspectives: getTimePerspectives,
             getBiospecimenRetentions: getBiospecimenRetentions,
             getAgeUnits: getAgeUnits,
-            getGenderList: getGenderList
+            getGenderList: getGenderList,
+            getAnatomicSites: getAnatomicSites
         };
 
         return services;
@@ -439,6 +440,10 @@
 
         function getAgeUnits() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.AGE_UNITS);
+        }
+
+        function getAnatomicSites() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ANATOMIC_SITES);
         }
 
         /**
