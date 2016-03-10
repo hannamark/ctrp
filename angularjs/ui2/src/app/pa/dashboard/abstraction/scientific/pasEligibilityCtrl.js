@@ -1,5 +1,6 @@
-pasEligibilityCtrl
-
+/**
+ * created by wangg5 on Feb 10, 2016
+ */
 (function() {
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
