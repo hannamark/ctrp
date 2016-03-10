@@ -24,7 +24,6 @@
 
         function _getTrialDetailCopy() {
             vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
-            vm.trialDetailObj.accept_vol = 'No';
             console.info('research cat name: ', vm.trialDetailObj.isInterventional);
         }
 
