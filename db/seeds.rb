@@ -296,6 +296,11 @@ AnatomicSite.find_or_create_by(code:'TH', name: "Thyroid")
 AnatomicSite.find_or_create_by(code:'UM', name: "Unknown Sites")
 AnatomicSite.find_or_create_by(code:'UR', name: "Urinary Bladder")
 
+UserStatus.find_or_create_by(code: 'INR', name: 'In Review')
+UserStatus.find_or_create_by(code: 'ACT', name: 'Active')
+UserStatus.find_or_create_by(code: 'INA', name: 'Inactive')
+UserStatus.find_or_create_by(code: 'DEL', name: 'Deleted')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
