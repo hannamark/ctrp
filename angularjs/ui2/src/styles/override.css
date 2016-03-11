@@ -581,6 +581,10 @@ h5 {
     right: 5px;
 }
 
+.feedback-height-sm {
+    line-height: 25px;
+}
+
 .input-group-addon {
     line-height: 1;
     padding: 3px 3px 3px 4px;

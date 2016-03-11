@@ -6,183 +6,185 @@
             </p>
         </div>
         <div class="row">
-            <form class="form-horizontal" role="form" name="userDetail_form" novalidate ctrp-submit="userDetailView.updateUser()">
-                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.username)}">
-                    <label class="control-label col-xs-12 col-sm-3">User Name:</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <input type="text" class="form-control input-sm" name="username" required ng-model="userDetailView.userDetails.username" placeholder="Username" ng-disabled="true">
-                        <span class="form-control-feedback" ng-show="userDetailView.userDetails.username.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.username) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.username.$error.required">Username is Required</span>
-                    </div>
-                </div>
-
-                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.role)}">
-                    <label class="control-label col-xs-12 col-sm-3">Role:</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <select restriction-field class="form-control input-sm" id="role" ng-model="userDetailView.userDetails.role" name="role" required ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'">
-                            <option value="" ng-selected="userDetailView.userDetails.role == ''">Select a role</option>
-                            <option ng-repeat="role in userDetailView.rolesArr track by $index" value="{{role}}" ng-selected="userDetailView.userDetails.role === role">{{role}}</option>
-                        </select>
-                        <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.role.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.role) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.role.$invalid">Role is Required</span>
-                    </div>
-                </div>
-
-                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.first_name)}">
-                    <label class="control-label col-xs-12 col-sm-3">First Name</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <input type="text" class="form-control input-sm" name="first_name" required ng-model="userDetailView.userDetails.first_name" placeholder="first_name">
-                        <span class="form-control-feedback" ng-show="userDetailView.userDetails.first_name.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.first_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.first_name.$error.required">First Name is Required</span>
-                    </div>
-                </div>
-
-                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.last_name)}">
-                    <label class="control-label col-xs-12 col-sm-3">Last Name</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <input type="text" class="form-control input-sm" name="last_name" required ng-model="userDetailView.userDetails.last_name" placeholder="last_name">
-                        <span class="form-control-feedback" ng-show="userDetailView.userDetails.last_name.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.last_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.last_name.$error.required">Last Name is Required</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Middle Name</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.middle_name" placeholder="middle_name">
-                    </div>
-                </div>
-
-                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.street_address)}">
-                    <label class="control-label col-xs-12 col-sm-3">Street Address</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <input type="text" class="form-control input-sm" name="street_address" required ng-model="userDetailView.userDetails.street_address" placeholder="street_address">
-                        <span class="form-control-feedback" ng-show="userDetailView.userDetails.street_address.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.street_address) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.street_address.$error.required">Street Address is Required</span>
-                    </div>
-                </div>
-                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.country)}">
-                    <label for="country" class="control-label col-xs-12 col-sm-3">Country:</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <select restriction-field class="form-control input-sm" id="country"
-                                ng-model="userDetailView.userDetails.country"
-                                ng-change="userDetailView.watchCountrySelection(userDetailView.userDetails.country)" name="country" required>
-                            <option value="" ng-selected="userDetailView.userDetails.country == ''">Select a country</option>
-                            <option ng-repeat="country in userDetailView.countriesArr track by $index" value="{{country.name}}" ng-selected="userDetailView.userDetails.country == country.name">{{country.name}}</option>
-                        </select>
-                        <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.country.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.country) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.country.$invalid">Country is Required</span>
-                    </div>
-                </div>
-
-                <div class="form-group has-feedback required" ng-class="{'has-error': userDetailView.states.length && ctrpbtn.userDetail_form.needsAttention(userDetail_form.state_province)}">
-                    <label for="state" class="control-label col-xs-12 col-sm-3">State:</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <select restriction-field class="form-control input-sm" name="state_province" id="state" required ng-model="userDetailView.userDetails.state_province" ng-disabled="!userDetailView.states.length">
-                            <option value="" ng-selected="userDetailView.userDetails.state_province == ''">Select a state or province</option>
-                            <option ng-repeat="state in userDetailView.states track by $index" value="{{state.name}}" ng-selected="state.name== userDetailView.userDetails.state_province">{{state.name}}</option>
-                        </select>
-                        <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.state_province.length && userDetailView.states.length" ng-class="!(ctrpbtn.userDetail_form.needsAttention(userDetail_form.state_province) && userDetailView.states.length) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.state_province.$invalid && userDetailView.states.length">State/Province is Required</span>
-                    </div>
-                </div>
-
-                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.city) || ctrpbtn.userDetail_form.needsAttention(userDetail_form.zipcode)}">
-                    <label class="control-label col-xs-12 col-sm-3">City</label>
-                    <div class="col-xs-12 col-sm-3">
-                        <input name="city" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.city" placeholder="City">
-                        <span class="form-control-feedback" ng-show="userDetailView.userDetails.city.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.city) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.city.$error.required">City is Required</span>
-                    </div>
-                    <label class="control-label col-xs-12 col-sm-1">Zip Code</label>
-                    <div class="col-xs-12 col-sm-2">
-                        <input name="zipcode" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.zipcode" placeholder="zipcode">
-                        <span class="form-control-feedback" ng-show="userDetailView.userDetails.zipcode.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.zipcode) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.zipcode.$error.required">Zipcode/Postal Code is Required</span>
-                    </div>
-                </div>
-
-                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.email) || ctrpbtn.userDetail_form.needsAttention(userDetail_form.phone)}">
-                    <label class="control-label col-xs-12 col-sm-3">Email:</label>
-                    <div class="col-xs-12 col-sm-3">
-                        <input name="email" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.email" placeholder="email">
-                        <span class="form-control-feedback" ng-show="userDetailView.userDetails.email.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.email) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.email.$error.required">Email is Required</span>
-                    </div>
-                    <label class="control-label col-xs-12 col-sm-1">Phone:</label>
-                    <div class="col-xs-12 col-sm-2">
-                        <input name="phone" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.phone" placeholder="Phone">
-                        <span class="form-control-feedback" ng-show="userDetailView.userDetails.phone.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.phone) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                        <span class="help-block" ng-show="userDetail_form.phone.$error.required">Phone is Required</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Receive Email Notifications</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <label class="radio-inline control-label">
-                            <input type="radio" name="receive_email_notifications" ng-value="{{userDetailView.userDetails.receive_email_notifications}}" id="email_notification_1" ng-model="userDetailView.userDetails.receive_email_notifications"> Yes
-                        </label>
-                        <label class="radio-inline control-label">
-                            <input type="radio" name="receive_email_notifications" ng-value="{{userDetailView.userDetails.receive_email_notifications}}" id="email_notification_2" ng-model="userDetailView.userDetails.receive_email_notifications"> No
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">PRS Organization Name</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.prs_organizations_name" placeholder="prs_organizations_name">
-                    </div>
-                </div>
-
-                <div class="form-group has-feedback required" ng-class="{'has-error': !userDetailView.selectedOrgsArray.length}">
-                    <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
-                    <div class="col-xs-12 col-sm-9">
-                        <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" allow-overwrite="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button>
-                        <span class="help-block" ng-show="!userDetailView.selectedOrgsArray.length">Affiliated Organization is Required</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-12 col-sm-2"></div>
-                    <div class="col-xs-12 col-sm-9">
-                        <!-- ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button-->
-                        <div class="row animated-item">
-                            <table class="table table-bordered table-striped table-condensed" ng-if="userDetailView.selectedOrgsArray.length">
-                                <thead>
-                                    <th width="6%">CTRP ID</th>
-                                    <th width="93%">Organization</th>
-                                    <th width="1%"></th>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="org in userDetailView.selectedOrgsArray | filter: {'name': userDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                    <td>{{org.id}}</td>
-                                    <td>{{org.name}}</td>
-                                    <td>
-                                        <label class="btn btn-default" ng-click="userDetailView.toggleSelection($index)">
-                                            <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                                        </label>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+            <fieldset restriction-field>
+                <form class="form-horizontal" role="form" name="userDetail_form" novalidate ctrp-submit="userDetailView.updateUser()">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.username)}">
+                        <label class="control-label col-xs-12 col-sm-3">User Name:</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" class="form-control input-sm" name="username" required ng-model="userDetailView.userDetails.username" placeholder="Username" ng-disabled="true">
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.username.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.username) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.username.$error.required">Username is Required</span>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-1"></div>
-                </div>
 
-                <div class="form-group no-bottom-margin">
-                    <div class="col-xs-12 col-sm-3"></div>
-                    <div class="btn-toolbar col-xs-12 col-sm-9">
-                        <button type="submit" class="btn btn-primary pull-right" id="save_btn">
-                            Save
-                        </button>
-                        <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="userDetailView.reset()">
-                            <i class="glyphicon glyphicon-remove"></i> Reset
-                        </button>
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.role)}">
+                        <label class="control-label col-xs-12 col-sm-3">Role:</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <select class="form-control input-sm" id="role" ng-model="userDetailView.userDetails.role" name="role" required ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'">
+                                <option value="" ng-selected="userDetailView.userDetails.role == ''">Select a role</option>
+                                <option ng-repeat="role in userDetailView.rolesArr track by $index" value="{{role}}" ng-selected="userDetailView.userDetails.role === role">{{role}}</option>
+                            </select>
+                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.role.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.role) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.role.$invalid">Role is Required</span>
+                        </div>
                     </div>
-                </div>
-            </form>
+
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.first_name)}">
+                        <label class="control-label col-xs-12 col-sm-3">First Name</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" class="form-control input-sm" name="first_name" required ng-model="userDetailView.userDetails.first_name" placeholder="first_name">
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.first_name.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.first_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.first_name.$error.required">First Name is Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.last_name)}">
+                        <label class="control-label col-xs-12 col-sm-3">Last Name</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" class="form-control input-sm" name="last_name" required ng-model="userDetailView.userDetails.last_name" placeholder="last_name">
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.last_name.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.last_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.last_name.$error.required">Last Name is Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-3">Middle Name</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.middle_name" placeholder="middle_name">
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.street_address)}">
+                        <label class="control-label col-xs-12 col-sm-3">Street Address</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" class="form-control input-sm" name="street_address" required ng-model="userDetailView.userDetails.street_address" placeholder="street_address">
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.street_address.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.street_address) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.street_address.$error.required">Street Address is Required</span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.country)}">
+                        <label for="country" class="control-label col-xs-12 col-sm-3">Country:</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <select class="form-control input-sm" id="country"
+                                    ng-model="userDetailView.userDetails.country"
+                                    ng-change="userDetailView.watchCountrySelection(userDetailView.userDetails.country)" name="country" required>
+                                <option value="" ng-selected="userDetailView.userDetails.country == ''">Select a country</option>
+                                <option ng-repeat="country in userDetailView.countriesArr track by $index" value="{{country.name}}" ng-selected="userDetailView.userDetails.country == country.name">{{country.name}}</option>
+                            </select>
+                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.country.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.country) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.country.$invalid">Country is Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback required" ng-class="{'has-error': userDetailView.states.length && ctrpbtn.userDetail_form.needsAttention(userDetail_form.state)}">
+                        <label for="state" class="control-label col-xs-12 col-sm-3">State:</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <select class="form-control input-sm" name="state" id="state" required ng-model="userDetailView.userDetails.state" ng-disabled="!userDetailView.states.length">
+                                <option value="" ng-selected="userDetailView.userDetails.state == ''">Select a state or province</option>
+                                <option ng-repeat="state in userDetailView.states track by $index" value="{{state.name}}" ng-selected="state.name== userDetailView.userDetails.state">{{state.name}}</option>
+                            </select>
+                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.state.length && userDetailView.states.length" ng-class="!(ctrpbtn.userDetail_form.needsAttention(userDetail_form.state) && userDetailView.states.length) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.state.$invalid && userDetailView.states.length">State/Province is Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.city) || ctrpbtn.userDetail_form.needsAttention(userDetail_form.zipcode)}">
+                        <label class="control-label col-xs-12 col-sm-3">City</label>
+                        <div class="col-xs-12 col-sm-3">
+                            <input name="city" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.city" placeholder="City">
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.city.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.city) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.city.$error.required">City is Required</span>
+                        </div>
+                        <label class="control-label col-xs-12 col-sm-1">Zip Code</label>
+                        <div class="col-xs-12 col-sm-2">
+                            <input name="zipcode" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.zipcode" placeholder="zipcode">
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.zipcode.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.zipcode) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.zipcode.$error.required">Zipcode/Postal Code is Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.email) || ctrpbtn.userDetail_form.needsAttention(userDetail_form.phone)}">
+                        <label class="control-label col-xs-12 col-sm-3">Email:</label>
+                        <div class="col-xs-12 col-sm-3">
+                            <input name="email" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.email" placeholder="email">
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.email.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.email) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.email.$error.required">Email is Required</span>
+                        </div>
+                        <label class="control-label col-xs-12 col-sm-1">Phone:</label>
+                        <div class="col-xs-12 col-sm-2">
+                            <input name="phone" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.phone" placeholder="Phone">
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.phone.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.phone) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.phone.$error.required">Phone is Required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-3">Receive Email Notifications?:</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <label class="radio-inline control-label">
+                                <input type="radio" name="receive_email_notifications" ng-value="true" id="email_notification_1" ng-model="userDetailView.userDetails.receive_email_notifications"> Yes
+                            </label>
+                            <label class="radio-inline control-label">
+                                <input type="radio" name="receive_email_notifications" ng-value="false" id="email_notification_2" ng-model="userDetailView.userDetails.receive_email_notifications"> No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-3">PRS Organization Name</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.prs_organization_name" placeholder="prs_organization_name">
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback required" ng-class="{'has-error': !userDetailView.selectedOrgsArray.length}">
+                        <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
+                        <div class="col-xs-12 col-sm-9">
+                            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" allow-overwrite="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button>
+                            <span class="help-block" ng-show="!userDetailView.selectedOrgsArray.length">Affiliated Organization is Required</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-2"></div>
+                        <div class="col-xs-12 col-sm-9">
+                            <!-- ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button-->
+                            <div class="row animated-item">
+                                <table class="table table-bordered table-striped table-condensed" ng-if="userDetailView.selectedOrgsArray.length">
+                                    <thead>
+                                        <th width="6%">CTRP ID</th>
+                                        <th width="93%">Organization</th>
+                                        <th width="1%"></th>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="org in userDetailView.selectedOrgsArray | filter: {'name': userDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                        <td>{{org.id}}</td>
+                                        <td>{{org.name}}</td>
+                                        <td>
+                                            <label class="btn btn-default" ng-click="userDetailView.toggleSelection($index)">
+                                                <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-1"></div>
+                    </div>
+
+                    <div class="form-group no-bottom-margin">
+                        <div class="col-xs-12 col-sm-3"></div>
+                        <div class="btn-toolbar col-xs-12 col-sm-9">
+                            <button type="submit" class="btn btn-primary pull-right" id="save_btn">
+                                Save
+                            </button>
+                            <button type="button" class="btn btn-warning pull-right" ng-click="userDetailView.reset()">
+                                <i class="glyphicon glyphicon-remove"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
         </div>
         <div class="row top-offset-xs"></div>
     </div>

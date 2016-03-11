@@ -15,6 +15,7 @@
         var vm = this;
 
         // { "local_user"=>{"username"=>"e", "email"=>"e@x.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "role"=>"ROLE_READONLY"}, "commit"=>"Sign up"}
+        $scope.signup_form = {};
 
         vm.userObj = {
             'local_user': {
@@ -29,7 +30,6 @@
         };
 
         vm.searchParams = OrgService.getInitialOrgSearchParams();
-
         vm.masterCopy = angular.copy(vm.userObj);
 
         vm.typeAheadNameSearch = function () {
