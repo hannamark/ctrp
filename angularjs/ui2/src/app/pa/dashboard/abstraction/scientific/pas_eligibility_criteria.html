@@ -1,7 +1,7 @@
 <div class="row">
     <form name="criteria_form" role="form" class="form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria()">
         <!-- fieldset for eligibility criteria -->
-            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                 <legend class="sub-bordered">Eligibility Criteria</legend>
                 <!-- <div class="form-group">
                     <div layout="row">
@@ -150,7 +150,7 @@
         <!-- end of fieldset for eligibility criteria -->
 
         <!-- fieldset for other criteria -->
-            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                 <legend class="sub-bordered">Other Criteria</legend>
                 <div class="row">
                     <button type="button" class="btn btn-default" ng-click="criteriaView.prepareOtherCriterion('Inclusion')"><i class="glyphicon glyphicon-plus"></i> Add Inclusion Criterion</button>
@@ -179,7 +179,7 @@
                     </div>
                 </div>
                 <div class="row top-buffer">
-                    <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-striped">
+                    <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-striped table-hover">
                 		<thead>
                         <!-- <tr>
                 			<th>
