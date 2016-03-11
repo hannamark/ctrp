@@ -297,4 +297,12 @@ When I add a trial status from <statusFrom> to trial status <statusTo> and the r
       |Administratively Complete	                    |Administratively Complete	                    |ERROR: Duplicate [ADMINISTRATIVELY COMPLETE] status is not allowed	                                                                                                                                                                                                            |
 
   
-     
+   
+
+Scenario: #12 Delete Trial Status Comment not null
+Given I am on the Participating Site Page
+And I have selected an organization 
+And I have selected the Participating Site Status History
+And I have selected a status to delete
+And I have not entered a Comment
+Then the will display the error "A comment must be entered"  
