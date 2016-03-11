@@ -28,8 +28,6 @@
 
         function _getTrialDetailCopy() {
             vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
-            vm.trialDetailObj.isObservational = true;
-            console.info('research cat name: ', vm.trialDetailObj.isInterventional);
         }
 
         function resetForm() {
