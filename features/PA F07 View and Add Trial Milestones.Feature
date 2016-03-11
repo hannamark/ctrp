@@ -16,6 +16,11 @@ And I can select a Milestone from the list:
 |Submission Terminated Date|
 |Submission Reactivated Date|
 |Submission Rejection Date|
+|Validation processing Start Date         |
+|Validation Processing Completed Date     |
+|Ready for Validation QC date             |
+|Validation QC Start Date                 |
+|Validaiton QC Completed Date
 |Administrative Processing Start Date|
 |Administrative Processing Completed Date|
 |Ready for Administrative QC Date|
@@ -182,7 +187,7 @@ Scenario Outline: #5 Trials Milestones validation rules
       |Scientific QC Completed Date                |3.Cannot be recorded if Trail is checked out for Scientific processing                                                                                                                                                                                                                      |
       |Ready for TSR Date                          |1.If "Administrative QC Completed Date" and "Scientific QC Completed Date" milestones exists and Abstraction Validation successful                                                                                                                                                          |
       |Ready for TSR Date                          |2.Cannot be recorded if both "Administrative QC Completed Date" and "Scientific Completed Date" milestones do not exist in case of an original submission or amendment submission with both reasons for amendment                                                                           |
-      |Ready for TSR Date                          |3.Cannot be recorded if "Administrative QC Completed Date" milestone does nor exist for an amendment submission with "Administrative" Reason for amendment                                                                                                                                  |
+      |Ready for TSR Date                          |3.Cannot be recorded if "Administrative QC Completed Date" milestone does not exist for an amendment submission with "Administrative" Reason for amendment                                                                                                                                  |
       |Ready for TSR Date                          |4.Cannot be recorded if "Scientific QC Completed Date" milestone does not exist for an amendment submission with "Scientific" reason for amendment                                                                                                                                          |
       |Ready for TSR Date                          |5.Cannot be recorded if at least one active "On-Hold" record exists                                                                                                                                                                                                                         |
       |Ready for TSR Date                          |6.Cannot be recorded if at least one unprocessed update record exists                                                                                                                                                                                                                       |
