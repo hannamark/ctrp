@@ -15,6 +15,7 @@
         var vm = this;
 
         // { "local_user"=>{"username"=>"e", "email"=>"e@x.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "role"=>"ROLE_READONLY"}, "commit"=>"Sign up"}
+        $scope.signup_form = {};
 
         vm.userObj = {
             'local_user': {
@@ -23,13 +24,13 @@
                 password: '',
                 password_confirmation: '',
                 organization: '',
-                role: 'ROLE_RO'
+                role: ''
             },
             'type': vm.type
         };
 
+        vm.rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
         vm.searchParams = OrgService.getInitialOrgSearchParams();
-
         vm.masterCopy = angular.copy(vm.userObj);
 
         vm.typeAheadNameSearch = function () {

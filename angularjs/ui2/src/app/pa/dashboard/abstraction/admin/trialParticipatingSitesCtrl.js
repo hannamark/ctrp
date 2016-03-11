@@ -66,6 +66,7 @@
         vm.openCalendar = openCalendar;
         vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
         vm.resetParticipatingSite = resetParticipatingSite;
+        vm.tabIndex = 0;
         //vm.saveContact;
 
 
@@ -216,7 +217,7 @@
             vm.selOrganization = {name: '', array: []};
             vm.siteRecruitmentGrid = [];
             vm.investigatorGrid = [];
-
+            vm.tabIndex = 0;
         }
 
         /**
@@ -242,6 +243,7 @@
             vm.initSiteRecruitmentGrid();
             vm.initInvestigatorGrid();
             vm.validateStatus();
+            vm.tabIndex = 0;
         }
 
         vm.initSiteRecruitmentGrid = function (){

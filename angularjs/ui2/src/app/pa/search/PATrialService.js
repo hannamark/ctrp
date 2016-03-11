@@ -150,7 +150,7 @@
             getAgeUnits: getAgeUnits,
             getGenderList: getGenderList,
             getSamplingMethods: getSamplingMethods,
-            // getAnatomicSites: getAnatomicSites
+            getAnatomicSites: getAnatomicSites
         };
 
         return services;
@@ -258,6 +258,10 @@
 
         function getMilestones() {
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
+        }
+
+        function getAnatomicSites() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ANATOMIC_SITES);
         }
 
         function getProcessingStatuses() {
