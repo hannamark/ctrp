@@ -107,6 +107,25 @@
                        </span>
                     </div>
                 </div>
+
+                <div class="form-group" ng-show="criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary"
+                    ng-class="{'has-feedback required': criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.sampling_method) ||
+                        ctrpbtn.criteria_form.needsAttention(criteria_form.sampling_method)}">
+                        <label for="sampling_method" class="control-label col-xs-12 col-sm-3">Sampling Method</label>
+                        <div class="col-xs-12 col-sm-2">
+                            <select name="sampling_method" id="sampling_method"
+                                class="form-control input-sm"
+                                ng-model="criteriaView.trialDetailObj.sampling_method_id"
+                                ng-options="unit.id as unit.name for unit in criteriaView.ageUnits"
+                                ng-required="criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary">
+                                <option value="">- Please select a method...</option>
+                            </select>
+                            <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.sampling_method) &&
+                                                criteria_form.sampling_method.$error">
+                                <span class="help-block" ng-message="required"><strong>Sampling Method is required</strong></span>
+                           </span>
+                        </div>
+                </div>
             </fieldset>
         <!-- end of fieldset for eligibility criteria -->
 
