@@ -30,7 +30,8 @@
             + '<a ng-if="action == \'add-my-site\'" ui-sref="main.addParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '<a ng-if="action == \'update-my-site\'" ui-sref="main.participatingSiteDetail({psId: row.entity.my_site_id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '<a ng-if="action == \'manage-sites\'" ui-sref="main.manageParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '<a ng-if="[\'add-my-site\', \'update-my-site\', \'manage-sites\'].indexOf(action) < 0" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'verify-data\'" ui-sref="main.verifyTrialData({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="[\'add-my-site\', \'update-my-site\', \'manage-sites\', \'verify-data\'].indexOf(action) < 0" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
             + '</li></ul>'
             + '</div>';
 
@@ -122,7 +123,10 @@
             getGrantsSerialNumber: getGrantsSerialNumber,
             upsertParticipatingSite: upsertParticipatingSite,
             getParticipatingSiteById: getParticipatingSiteById,
-            deleteParticipatingSite: deleteParticipatingSite
+            deleteParticipatingSite: deleteParticipatingSite,
+            upsertOutcomeMeasure: upsertOutcomeMeasure,
+            deleteOutcomeMeasure: deleteOutcomeMeasure,
+            getOutcomeMeasureTypes:getOutcomeMeasureTypes
         };
 
         return services;
@@ -156,7 +160,7 @@
 
             //update an existing trial
             var configObj = {}; //empty config
-            // $log.info('updating a trial: ' + JSON.stringify(trialObj));
+            $log.info('updating a trial: ' + JSON.stringify(trialObj));
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_TRIAL + trialObj.id + '.json', trialObj, configObj);
         } //upsertTrial
 
@@ -295,6 +299,27 @@
             $log.info('updating a participating site: ' + JSON.stringify(participatingSiteObj));
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteObj.id + '.json', participatingSiteObj, configObj);
         } //upsertParticipatingSite
+
+
+        /**
+         * Update or insert a Outcome Measure Record
+         *
+         * @param outcomeMeasureObj
+         * @returns {*}
+         */
+        function upsertOutcomeMeasure(outcomeMeasureObj) {
+            if (outcomeMeasureObj.new) {
+                //create a new trial
+                $log.info('creating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.OUTCOME_MEASURE_LIST, outcomeMeasureObj);
+            }
+
+            //update an Participating Site
+            var configObj = {}; //empty config
+            console.log('updating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+            $log.info('updating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_OUTCOME_MEASURE + outcomeMeasureObj.id + '.json', outcomeMeasureObj, configObj);
+        } //upsertOutcomeMeasure
 
 
         function getMilestones() {
@@ -1013,5 +1038,24 @@
         function deleteParticipatingSite(psId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_PARTICIPATING_SITE + psId + '.json');
         }
+
+        /**
+         * delete an trial with the given trialId
+         *
+         * @param trialId
+         * @returns {*}
+         */
+        function deleteOutcomeMeasure(psId) {
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_OUTCOME_MEASURE + psId + '.json');
+        }
+
+        /**
+         * retrieve out come measures types from backend service
+         * @return {promise}
+         */
+        function getOutcomeMeasureTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.OUTCOME_MEASURE_TYPES);
+        } //getSourceStatuses
+
     }
 })();

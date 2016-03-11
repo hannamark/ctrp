@@ -143,7 +143,14 @@
             getInterventionModels: getInterventionModels,
             getMaskings: getMaskings,
             getAllocations: getAllocations,
-            getStudyClassifications: getStudyClassifications
+            getStudyClassifications: getStudyClassifications,
+            getStudyModels: getStudyModels,
+            getTimePerspectives: getTimePerspectives,
+            getBiospecimenRetentions: getBiospecimenRetentions,
+            getAgeUnits: getAgeUnits,
+            getGenderList: getGenderList,
+            getSamplingMethods: getSamplingMethods,
+            // getAnatomicSites: getAnatomicSites
         };
 
         return services;
@@ -356,7 +363,10 @@
          * @return {JSON}
          */
         function getCurrentTrialFromCache() {
-            return LocalCacheService.getCacheWithKey('current_trial_object');
+            var curTrial = LocalCacheService.getCacheWithKey('current_trial_object');
+            delete curTrial.admin_checkout;
+            delete curTrial.scientific_checkout;
+            return curTrial;
         }
 
         function checkoutTrial(trialId, checkoutType) {
@@ -411,6 +421,30 @@
 
         function getStudyClassifications() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.STUDY_CLASSIFICATIONS);
+        }
+
+        function getStudyModels() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.STUDY_MODELS);
+        }
+
+        function getTimePerspectives() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TIME_PERSPECTIVES);
+        }
+
+        function getBiospecimenRetentions() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.BIOSPECIMEN_RETENTIONS);
+        }
+
+        function getGenderList() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.GENDERS);
+        }
+
+        function getAgeUnits() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.AGE_UNITS);
+        }
+
+        function getSamplingMethods() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.SAMPLING_METHODS);
         }
 
         /**

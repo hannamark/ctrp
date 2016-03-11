@@ -108,14 +108,22 @@ module.exports = function() {
     var indIDEAssociatedQueVals7 = '';
     var globalYesNoFlag = '';
     var glovalNullVal = 'null';
+    var glovalSelectVal = '-Select-';
+    var commonErrorMsg = 'Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type';
+    var warnTheNIHIns = 'Warning - The NIH Institution/NCI Division/Program Code is Required';
+    var warnNIHReq = 'Warning - The NIH  is Required';
+    var warnINDHoldrTypReq = 'Warning - The IND/IDE Holder Type is Required';
+    var warnINDNmbrReq = 'Warning - IND/IDE number is Required';
+    var warnINDTypeReq = 'Warning - IND/IDE Type is Required';
 
-        /*
-         Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
-         Given I am logged into the CTRP Protocol Abstraction application
-         And I am on the Trial Regulatory Information (IND/IDE) screen
-         When I have selected "No" where the question "Does this trial have an associated IND/IDE?"
-         Then the IND/IDE Information section will allow the entry of an IND/IDE for this trial
-         */
+
+    /*
+     Scenario: #1 I can indicate that the trial does not have an associated IND or IDE
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Regulatory Information (IND/IDE) screen
+     When I have selected "No" where the question "Does this trial have an associated IND/IDE?"
+     Then the IND/IDE Information section will allow the entry of an IND/IDE for this trial
+     */
 
     this.Given(/^I am on the Trial Regulatory Information \(IND\/IDE\) screen$/, function (callback) {
         pageMenu.homeSearchTrials.click();
@@ -128,7 +136,7 @@ module.exports = function() {
         commonFunctions.clickLinkText(leadProtocolIDD);
         commonFunctions.adminCheckOut();
         indIDE.clickAdminDataRegulatoryInfoIND();
-        browser.sleep(25).then(callback);
+        browser.sleep(3000).then(callback);
     });
 
     this.When(/^I have selected "([^"]*)" where the question "([^"]*)"$/, function (arg1, arg2, callback) {
@@ -291,9 +299,10 @@ module.exports = function() {
         indIDE.selectINDIDEDivisionProgramCode(indIDEDivProgCdeNLM);
         indIDE.clickAdd();
         indIDE.clickSave();
-        //indIDE.clickAdminDataGeneralTrial();
-        //indIDE.clickAdminDataRegulatoryInfoIND();
-
+        helper.wait_for(3000);
+        indIDE.clickAdminDataGeneralTrial();
+        indIDE.clickAdminDataRegulatoryInfoIND();
+        helper.wait_for(3000);
         helper.verifyTableRowText(indIDE.indIDETblHdr, verifTbleHdrs2, "IND/IDE Table Header(s)");
         helper.verifyTableRowText(indIDE.indIDETblRowA, verifTbleRowAs2, "IND/IDE Table Row A");
         indIDE.indIDEInfoTable.all(by.css('tr')).count().then(function(rowCount) {
@@ -498,14 +507,15 @@ module.exports = function() {
         });
         indIDE.clickSave();
         helper.wait_for(2500);
-        //indIDE.clickAdminDataGeneralTrial();
-        //indIDE.clickAdminDataRegulatoryInfoIND();
+
         if (arg1 === argVerification){
             helper.verifyTableRowText(indIDE.indIDETblHdr, verifTbleHdr, "IND/IDE Table Header(s)");
             helper.verifyTableRowText(indIDE.indIDETblRowA, verifTbleRowA, "IND/IDE Table Row A");
-            helper.verifyTableRowText(indIDE.indIDETblRowB, verifTbleRowA, "IND/IDE Table Row B");
+            helper.verifyTableRowText(indIDE.indIDETblRowB, verifTbleRowB, "IND/IDE Table Row B");
         };
-        browser.sleep(300).then(callback);
+        indIDE.clickAdminDataGeneralTrial();
+        indIDE.clickAdminDataRegulatoryInfoIND();
+        browser.sleep(3000).then(callback);
     });
 
     this.Then(/^I am able to remove the IND or IDE information for one or more INDs or IDEs$/, function (callback) {
@@ -740,6 +750,7 @@ module.exports = function() {
      */
 
     this.Given(/^I have selected conditions for the question (.*)$/, function (DoesThisTrialHaveAnAssociatedINDOrIDE, callback) {
+        //commonFunctions.waitForElement(indIDE.indIDEAssociatedRdo, "IND IDE Yes or No Radio Button");
         globalYesNoFlag = DoesThisTrialHaveAnAssociatedINDOrIDE;
         console.log('Condition: '+globalYesNoFlag);
         if (DoesThisTrialHaveAnAssociatedINDOrIDE === 'No'){
@@ -747,7 +758,7 @@ module.exports = function() {
         }else if(DoesThisTrialHaveAnAssociatedINDOrIDE === 'Yes'){
             indIDE.selectAssociatedINDIDERdo('0');
         };
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.When(/^selected values the (.*)$/, function (INDIDEType, callback) {
@@ -759,6 +770,7 @@ module.exports = function() {
             };
 
         } else if(globalYesNoFlag === 'Yes'){
+            //helper.waitForElement(indIDE.indIDEType, "Wait for the IND IDE Types");
             if (INDIDEType === 'IND'){
                 helper.verifyElementDisplayed(indIDE.indIDEType, true);
                 indIDE.selectINDIDETypes(indTypVal);
@@ -766,11 +778,11 @@ module.exports = function() {
             };
             if (INDIDEType === 'null'){
                 helper.verifyElementDisplayed(indIDE.indIDEType, true);
-                //Select Nothing
+                indIDE.selectINDIDETypes(glovalSelectVal);
                 INDIDEType = glovalNullVal;
             };
         };
-        browser.sleep(25).then(callback);
+        browser.sleep(250).then(callback);
     });
 
     this.Given(/^entered the (.*)$/, function (INDIDENumber, callback) {
@@ -780,69 +792,73 @@ module.exports = function() {
                 INDIDENumber = glovalNullVal;
             }
         } else if(globalYesNoFlag === 'Yes'){
+            //helper.waitForElement(indIDE.indIDEType, "Wait for the IND IDE Types");
             if (INDIDENumber === '77782'){
                 helper.verifyElementDisplayed(indIDE.indIDENumber, true);
                 indIDE.setINDIDENumbr(INDIDENumber);
             }
             if (INDIDENumber === 'null'){
+                indIDE.setINDIDENumbr('');
                 helper.verifyElementDisplayed(indIDE.indIDENumber, true);
                 indIDE.setINDIDENumbr('');
-            }
-        };
-        browser.sleep(25).then(callback);
-    });
-
-    this.Given(/^selected the (.*)$/, function (INDIDEGrantor, callback) {
-        if (globalYesNoFlag === 'No'){
-            if (INDIDEGrantor === 'null'){
-                helper.verifyElementDisplayed(indIDE.indIDEGrantor, false);
-                INDIDEGrantor = glovalNullVal;
-            }
-        } else if(globalYesNoFlag === 'Yes'){
-            if (INDIDEGrantor === 'CDER'){
-                console.log('Test grantor selection')
-                helper.verifyElementDisplayed(indIDE.indIDEGrantor, true);
-                indIDE.selectINDIDEGrantor(INDIDEGrantor);
-                INDIDEGrantor = indIDEGrntrCDER;
-            }
-            if (INDIDEGrantor === 'null'){
-                helper.verifyElementDisplayed(indIDE.indIDEGrantor, true);
-                //Select Nothing
-                INDIDEGrantor = indIDEGrntrCDER;
             }
         };
         browser.sleep(2500).then(callback);
     });
 
-    this.Given(/^selected the (.*)$/, function (INDIDEHolderType, callback) {
+    this.Given(/^I am able to select Grantor as (.*)$/, function (INDIDEGrantor, callback) {
+        if (globalYesNoFlag === 'No'){
+            if (INDIDEGrantor === 'null'){
+                helper.verifyElementDisplayed(indIDE.indIDEGrantor, false);
+                //INDIDEGrantor = glovalNullVal;
+            }
+        } else if(globalYesNoFlag === 'Yes'){
+            //helper.waitForElement(indIDE.indIDEType, "Wait for the IND IDE Types");
+            if (INDIDEGrantor === 'CDER'){
+                console.log('Grantor selection');
+                //helper.verifyElementDisplayed(indIDE.indIDEGrantor, true);
+                indIDE.selectINDIDEGrantor(INDIDEGrantor);
+                //INDIDEGrantor = indIDEGrntrCDER;
+            }
+            if (INDIDEGrantor === 'null'){
+                //helper.verifyElementDisplayed(indIDE.indIDEGrantor, true);
+                indIDE.selectINDIDEGrantor(glovalSelectVal);
+                //INDIDEGrantor = indIDEGrntrCDER;
+            }
+        };
+        browser.sleep(2500).then(callback);
+    });
+
+    this.Given(/^I am able to select Holder Type as (.*)$/, function (INDIDEHolderType, callback) {
         if (globalYesNoFlag === 'No'){
             if (INDIDEHolderType === 'null'){
                 helper.verifyElementDisplayed(indIDE.indIDEHolderType, false);
-                INDIDEHolderType = glovalNullVal;
+                //INDIDEHolderType = glovalNullVal;
             }
         } else if(globalYesNoFlag === 'Yes'){
+            //helper.waitForElement(indIDE.indIDEType, "Wait for the IND IDE Types");
             if (INDIDEHolderType === 'Investigator'){
-                helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
+                //helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
                 indIDE.selectINDIDEHolderType(INDIDEHolderType);
             }
             if (INDIDEHolderType === 'NCI'){
-                helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
+                //helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
                 indIDE.selectINDIDEHolderType(INDIDEHolderType);
             }
             if (INDIDEHolderType === 'NIH'){
-                helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
+                //helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
                 indIDE.selectINDIDEHolderType(INDIDEHolderType);
             }
             if (INDIDEHolderType === 'null'){
-                helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
-                //Select Nothing
+                indIDE.selectINDIDEHolderType(glovalSelectVal);
+                //helper.verifyElementDisplayed(indIDE.indIDEHolderType, true);
             }
         };
-        indIDE.indIDEDisvisionProgramCode.click();
+        //indIDE.indIDEDisvisionProgramCode.click();
         browser.sleep(3000).then(callback);
     });
 
-    this.Given(/^selected the (.*)$/, function (NIHInstitutionOrNCIDivisionOrProgram, callback) {
+    this.Given(/^I am able to select NIH Institution or NCI Division or Program as (.*)$/, function (NIHInstitutionOrNCIDivisionOrProgram, callback) {
         if (globalYesNoFlag === 'No'){
             if (NIHInstitutionOrNCIDivisionOrProgram === 'null'){
                 helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, false);
@@ -850,19 +866,21 @@ module.exports = function() {
                 NIHInstitutionOrNCIDivisionOrProgram = glovalNullVal;
             }
         } else if(globalYesNoFlag === 'Yes'){
+            //helper.waitForElement(indIDE.indIDEType, "Wait for the IND IDE Types");
             if (NIHInstitutionOrNCIDivisionOrProgram === 'CTEP'){
-                helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
-                helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
+                //helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
+                //helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
                 indIDE.selectINDIDEDivisionProgramCode(NIHInstitutionOrNCIDivisionOrProgram);
             }
             if (NIHInstitutionOrNCIDivisionOrProgram === 'NLM-National Library of Medicine'){
-                helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
-                helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
+                //helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
+                //helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
                 indIDE.selectINDIDEDivisionProgramCode(NIHInstitutionOrNCIDivisionOrProgram);
             }
             if (NIHInstitutionOrNCIDivisionOrProgram === 'null'){
-                helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
-                helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
+                indIDE.selectINDIDEDivisionProgramCode(glovalSelectVal);
+                //helper.verifyElementDisplayed(indIDE.indIDEDisvisionProgramCode, true);
+                //helper.verifyElementDisplayed(indIDE.indIDEAddButton, true);
                 //Select Nothing
             }
         };
@@ -878,49 +896,39 @@ module.exports = function() {
         };
         browser.sleep(2500).then(callback);
     });
-/*
-    |Yes|IND|77782|CDER|null|null||
-    |Yes|IND|77782|CDER|null|null||
-    |Yes|IND|77782|null|NCI|null||
-    |Yes|IND|null|CDER|NCI|CTEP||
-    |Yes|null|77782|CDER|NCI|CTEP||
-*/
+
     this.Then(/^the system will display a warning (.*) that each of values that were not entered must be entered in order to associate the IND\/IDE Information for the trial$/, function (Message, callback) {
-        var commonErrorMsg = 'Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type';
         if (globalYesNoFlag === 'No'){
             if (Message === 'null'){
                 //helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
                 console.log('Current Warning Message:['+ Message +']');
             }
         } else if(globalYesNoFlag === 'Yes'){
-            if (Message === 'Warning - The NIH Institution/NCI Division/Program Code is Required'){
-                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
-                console.log('Current Warning Message:['+ Message +']');
-            }
-            if (Message === 'Warning - The NIH Institution/NCI Division/Program Code is Required'){
-                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
-                console.log('Current Warning Message:['+ Message +']');
-            }
-            if (Message === 'Warning - The NIH  is Required'){
-                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
-                console.log('Current Warning Message:['+ Message +']');
-            }
-            if (Message === 'Warning - The IND/IDE Holder Type is Required'){
-                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
-                console.log('Current Warning Message:['+ Message +']');
-            }
-            if (Message === 'Warning - IND/IDE number is Required'){
-                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
-                console.log('Current Warning Message:['+ Message +']');
-            }
-            if (Message === 'Warning - IND/IDE Type is Required'){
-                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
-                console.log('Current Warning Message:['+ Message +']');
-            }
             if (Message === 'null'){
                 console.log('Current Warning Message:['+ Message +']');
             }
+            if (Message === warnTheNIHIns){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
+            }
+            if (Message === warnNIHReq){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
+            }
+            if (Message === warnINDHoldrTypReq){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
+            }
+            if (Message === warnINDNmbrReq){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
+            }
+            if (Message === warnINDTypeReq){
+                helper.getVerifyRequired(indIDE.indIDEErrMsg, commonErrorMsg, "Error Message Verification");
+                console.log('Current Warning Message:['+ Message +']');
+            }
         };
+        //login.logout();
         browser.sleep(250).then(callback);
     });
 

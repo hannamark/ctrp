@@ -59,6 +59,15 @@ exports.config = {
         'features/PO\ F14\ Change\ a\ Person\'s\ Affiliated\ Organization.feature',
         'features/PO\ F15\ Add\ Organization\ Alias.feature',
 
+        /************* PA Features ************/
+        'features/PAA\ F01\ Add\ and\ Edit\ General\ Trial\ Details.Feature',
+        'features/PAA\ F02\ Add\ and\ Edit\ NCI\ Specific\ Information.Feature',
+        'features/PAA\ F03\ Add\ and\ Edit\ Regulatory\ Information.Feature',
+        'features/PAA\ F04\ Add\ and\ Edit\ Regulatory\ Information\ Human\ Subject\ Safety.Feature',
+        'features/PAA\ F05\ Add\ and\ Edit\ Regulatory\ Information\ IND-IDE.Feature',
+        'features/PAA\ F07\ Add\ and\ Edit\ Trial\ Funding.Feature',
+        'features/PAA\ F09\ Add\ and\ Edit\ Trial\ Collaborators.Feature',
+
         /************* Registry Features ************/
         'features/Reg\ F04\ Register\ Trial\ Study\ Source.feature',
         'features/Reg\ F05\ Register\ Trial\ Protocol\ Identifiers.feature',
@@ -70,14 +79,7 @@ exports.config = {
         'features/Reg\ F11\ Register\ Trial\ Dates\ and\ Trial\ Status.feature',
         'features/Reg\ F12\ Register\ Trial\ IND\ IDE.feature',
 
-         /************* PA Features ************/
-        'features/PAA\ F01\ Add\ and\ Edit\ General\ Trial\ Details.Feature',
-        'features/PAA\ F02\ Add\ and\ Edit\ NCI\ Specific\ Information.Feature',
-        'features/PAA\ F03\ Add\ and\ Edit\ Regulatory\ Information.Feature',
-        'features/PAA\ F04\ Add\ and\ Edit\ Regulatory\ Information\ Human\ Subject\ Safety.Feature',
-        'features/PAA\ F05\ Add\ and\ Edit\ Regulatory\ Information\ IND-IDE.Feature',
-        'features/PAA\ F07\ Add\ and\ Edit\ Trial\ Funding.Feature',
-        'features/PAA\ F09\ Add\ and\ Edit\ Trial\ Collaborators.Feature'
+
 
     ],
 

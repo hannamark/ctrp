@@ -9,7 +9,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       When I view the prefilled Clinical Research Category value
       Then I can select a different value
        
-      | Interventional             | 
+      | Interventional             |   
       | Expanded Access            | 
       | Observational              | 
       | Ancillary Correlative      | 
@@ -245,7 +245,6 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
       | <TrialDesignField>    | <TrialDesignErrorMessage>             | 
       | Primary Purpose       | Primary Purpose must be entered       | 
       | Trial Phase           | Trial Phase must be entered           | 
-      | Intervention Model    | Intervention Model must be entered    | 
       | Number of Arms/Groups | Number of Arms/Groups must be entered | 
       | Masking            | Masking must be entered                  | 
       | Allocation         | Allocation must be entered               | 
@@ -283,12 +282,6 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
       And I can enter a value for Target Enrollment
       And I can enter a value for Final Enrollment for ClinicalTrials.gov
       And the value of Accruals will be displayed 
-      And I select a value for <Expanded Access Type>
-      | Expanded Access Type      | 
-      | Available                 | 
-      | No longer available       | 
-      | Temporarily not available | 
-      | Approved for marketing    | 
       And I select Save
      Then the Expanded Access trial design is associated with the trial
       And the message Record Updated displays
@@ -339,6 +332,26 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
      When I have selected Reset
      Then the information entered or edited on the Trial Design screen will not be saved to the trial record
       And the screen will be refreshed with the data since the last save.
+  
+ Scenario:  #16 Character display for Study Model of Other
+     Given I am on the Trial Design screen
+       And Clinical Research Category is Observational or Ancillary Correlative 
+      And the 'Study Model' is 'Other', describe' box displays
+      And I can type 200 characters in the displayed field 
+     When I start typing text in field
+     Then the 200 characters provided under the Study Model Other field starts to decrement
+     When I have reach the 200 characters limit
+     Then no additional text can be entered
+     
+      Scenario:  #17 Character display for TIme Prespective of Other
+     Given I am on the Trial Design screen
+       And Clinical Research Category is Observational or Ancillary Correlative 
+      And the 'time Perspective' is 'Other', describe' box displays
+      And I can type 200 characters in the displayed field 
+     When I start typing text in field
+     Then the 200 characters provided under the Time Perspective Other field starts to decrement
+     When I have reach the 200 characters limit
+     Then no additional text can be entered
   
 
   
