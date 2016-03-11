@@ -1,5 +1,5 @@
 class UtilController < ApplicationController
-  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
 
   def get_countries
     @countries = Country.all.sort
