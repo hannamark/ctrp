@@ -19,13 +19,14 @@
         vm.samplingMethods = samplingMethods; // array
         vm.otherCriterion = {};
         vm.otherCriteriaPerPage = 10; // pagination
+        vm.addOtherCriterionFormShown = false;
 
         vm.prepareOtherCriterion = prepareOtherCriterion;
         vm.upsertOtherCriterion = upsertOtherCriterion;
         vm.deleteOtherCriterion = deleteOtherCriterion;
         vm.updateCriteria = updateCriteria;
         vm.resetForm = resetForm;
-        vm.addOtherCriterionFormShown = false;
+        vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
 
         activate();
         function activate() {
@@ -100,12 +101,13 @@
          * @return {[type]}                   [description]
          */
         function upsertOtherCriterion(otherCriterionObj) {
-            if (otherCriterionObj.id !== undefined) {
+            console.info('adding: ', otherCriterionObj);
+            if (otherCriterionObj.id === undefined) {
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
             } else {
                 vm.trialDetailObj.other_criteria[otherCriterionObj.index] = otherCriterionObj;
             }
-            vm.otherCriterion = newOtherCriterion();
+            cancelEditOtherCriterion();
         }
 
         /**
@@ -126,6 +128,12 @@
                 obj.criteria_desc = 'Test blah blah ' + i;
                 vm.trialDetailObj.other_criteria.unshift(obj);
             }
+        }
+
+        function cancelEditOtherCriterion() {
+            console.info('cancelling');
+            vm.addOtherCriterionFormShown = false;
+            vm.otherCriterion = newOtherCriterion('');
         }
 
     } // pasEligibilityCtrl
