@@ -88,6 +88,10 @@
             }
         };// toggleSelection
 
+        vm.reset = function() {
+            vm.userDetails = angular.copy(userDetailObj);
+        };
+
         $scope.$watch(function() {return vm.selectedOrgsArray;}, function(newVal) {
            console.log('selected org:' + JSON.stringify(vm.selectedOrgsArray));
         });
