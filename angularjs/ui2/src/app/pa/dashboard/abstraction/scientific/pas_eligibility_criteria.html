@@ -198,14 +198,18 @@
                 		<tr>
                 			<th st-sort="criteria_type">Eligibility Criterion Type</th>
                 			<th>Eligibility Criterion Description</th>
-                			<th>Edit/Delete</th>
+                			<th class="text-center">Edit/Delete</th>
                 		</tr>
                 		</thead>
                 		<tbody>
-                		<tr ng-repeat="row in criteriaView.trialDetailObj.other_criteria">
+                		<tr ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="row._destroy ? 'deleted-text' : ''">
                 			<td>{{row.criteria_type}}</td>
                 			<td>{{row.criteria_desc}}</td>
-                			<td>Edit/Delete</td>
+                			<td class="text-center">
+                                <label class="btn btn-default" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)">
+                                    <i class="glyphicon" ng-class="row._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                </label>
+                			</td>
                 		</tr>
                 		</tbody>
                 		<tfoot>
