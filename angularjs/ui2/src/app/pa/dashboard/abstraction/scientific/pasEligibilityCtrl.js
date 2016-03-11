@@ -17,8 +17,6 @@
         vm.ageUnits = ageUnits;
         delete samplingMethods.server_response;
         vm.samplingMethods = samplingMethods; // array
-        
-        console.info('samplingMethods: ', vm.samplingMethods);
 
         vm.updateCriteria = updateCriteria;
         vm.resetForm = resetForm;
